@@ -918,7 +918,7 @@ function FillLinkScopePanel({
       {error ? <p className="fill-link-dialog__error">{error}</p> : null}
 
       {activeTab === 'responses' ? (
-        <section className="fill-link-dialog__section fill-link-dialog__section--surface">
+        <section className="fill-link-dialog__section fill-link-dialog__section--surface fill-link-dialog__section--responses">
           <ResponsesPanel
             open={open}
             link={link}

@@ -525,7 +525,7 @@ const Homepage: React.FC<HomepageProps> = ({
                   Once your form is ready, you can upload a CSV, Excel, JSON, or TXT schema file and map
                   field names to the PDF, or publish a native DullyPDF Fill By Link from a saved template so up to 10,000 respondents can
                   submit data through a mobile-friendly HTML form to be filled in on your PDF. Database rows stay in browser for Search
-                  &amp; Fill 
+                  &amp; Fill.
                 </p>
 
                 <div className="features-section">
