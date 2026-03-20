@@ -1291,6 +1291,7 @@ def test_billing_webhook_health_endpoint_returns_health_payload(
             "endpointId": "we_123",
             "endpointUrl": "https://billing.example.com/api/billing/webhook",
             "expectedEndpointUrl": "https://billing.example.com/api/billing/webhook",
+            "expectedEndpointUrls": ["https://billing.example.com/api/billing/webhook"],
         },
     )
 
@@ -1307,6 +1308,7 @@ def test_billing_webhook_health_endpoint_returns_health_payload(
     assert "endpointId" not in payload
     assert "endpointUrl" not in payload
     assert "expectedEndpointUrl" not in payload
+    assert "expectedEndpointUrls" not in payload
     app_main.resolve_webhook_health.assert_called_once_with(force_refresh=False)
 
 
@@ -1340,6 +1342,7 @@ def test_billing_webhook_health_endpoint_includes_endpoint_details_for_god_role(
             "endpointId": "we_123",
             "endpointUrl": "https://billing.example.com/api/billing/webhook",
             "expectedEndpointUrl": "https://billing.example.com/api/billing/webhook",
+            "expectedEndpointUrls": ["https://billing.example.com/api/billing/webhook"],
         },
     )
 
@@ -1351,6 +1354,7 @@ def test_billing_webhook_health_endpoint_includes_endpoint_details_for_god_role(
     assert payload["endpointId"] == "we_123"
     assert payload["endpointUrl"] == "https://billing.example.com/api/billing/webhook"
     assert payload["expectedEndpointUrl"] == "https://billing.example.com/api/billing/webhook"
+    assert payload["expectedEndpointUrls"] == ["https://billing.example.com/api/billing/webhook"]
     app_main.resolve_webhook_health.assert_called_once_with(force_refresh=True)
 
 

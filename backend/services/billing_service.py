@@ -612,9 +612,29 @@ def _normalize_webhook_endpoint_url(raw_url: Optional[str]) -> str:
     return urlunsplit((scheme, netloc, path, query, ""))
 
 
+def _resolve_expected_webhook_endpoint_urls() -> list[str]:
+    raw_values: list[str] = []
+    primary = env_value("STRIPE_WEBHOOK_ENDPOINT_URL")
+    if primary:
+        raw_values.append(primary)
+    aliases = env_value("STRIPE_WEBHOOK_ENDPOINT_URL_ALIASES")
+    if aliases:
+        raw_values.extend(aliases.split(","))
+
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for value in raw_values:
+        endpoint_url = _normalize_webhook_endpoint_url(value)
+        if not endpoint_url or endpoint_url in seen:
+            continue
+        seen.add(endpoint_url)
+        normalized.append(endpoint_url)
+    return normalized
+
+
 def _resolve_expected_webhook_endpoint_url() -> Optional[str]:
-    normalized = _normalize_webhook_endpoint_url(env_value("STRIPE_WEBHOOK_ENDPOINT_URL"))
-    return normalized or None
+    urls = _resolve_expected_webhook_endpoint_urls()
+    return urls[0] if urls else None
 
 
 def _extract_webhook_endpoint_data(value: Any) -> list[Dict[str, Any]]:
@@ -658,6 +678,8 @@ def resolve_webhook_health(*, force_refresh: bool = False) -> Dict[str, Any]:
 
     checked_at = int(now)
     enforced_for_checkout = webhook_health_enforced_for_checkout()
+    expected_endpoint_urls = _resolve_expected_webhook_endpoint_urls()
+    expected_endpoint_url_set = set(expected_endpoint_urls)
     expected_endpoint_url = _resolve_expected_webhook_endpoint_url()
 
     def _build_payload(*, healthy: bool, reason: str, **extra: Any) -> Dict[str, Any]:
@@ -667,6 +689,7 @@ def resolve_webhook_health(*, force_refresh: bool = False) -> Dict[str, Any]:
             "checkedAt": checked_at,
             "enforcedForCheckout": enforced_for_checkout,
             "expectedEndpointUrl": expected_endpoint_url,
+            "expectedEndpointUrls": expected_endpoint_urls,
         }
         payload.update(extra)
         return payload
@@ -721,7 +744,7 @@ def resolve_webhook_health(*, force_refresh: bool = False) -> Dict[str, Any]:
                     )
 
                     if status != "enabled":
-                        if expected_endpoint_url and endpoint_url == expected_endpoint_url:
+                        if expected_endpoint_url_set and endpoint_url in expected_endpoint_url_set:
                             expected_endpoint_seen = True
                             expected_endpoint_id = str(endpoint.get("id") or "").strip() or None
                             expected_endpoint_raw_url = str(endpoint.get("url") or "").strip() or None
@@ -734,7 +757,7 @@ def resolve_webhook_health(*, force_refresh: bool = False) -> Dict[str, Any]:
                     elif fallback_missing_events is None or len(missing_events) < len(fallback_missing_events):
                         fallback_missing_events = missing_events
 
-                    if expected_endpoint_url and endpoint_url == expected_endpoint_url:
+                    if expected_endpoint_url_set and endpoint_url in expected_endpoint_url_set:
                         expected_endpoint_seen = True
                         expected_endpoint_enabled = True
                         expected_endpoint_id = str(endpoint.get("id") or "").strip() or None
@@ -748,14 +771,17 @@ def resolve_webhook_health(*, force_refresh: bool = False) -> Dict[str, Any]:
                     if not expected_endpoint_seen:
                         payload = _build_payload(
                             healthy=False,
-                            reason=f"Configured Stripe webhook endpoint URL was not found: {expected_endpoint_url}",
+                            reason=(
+                                "Configured Stripe webhook endpoint URL was not found. "
+                                f"Expected one of: {', '.join(expected_endpoint_urls)}"
+                            ),
                         )
                     elif not expected_endpoint_enabled:
                         payload = _build_payload(
                             healthy=False,
                             reason=(
                                 "Configured Stripe webhook endpoint is not enabled. "
-                                f"Configure or enable endpoint URL: {expected_endpoint_url}"
+                                f"Configure or enable one of: {', '.join(expected_endpoint_urls)}"
                             ),
                             endpointId=expected_endpoint_id,
                             endpointUrl=expected_endpoint_raw_url,

@@ -141,6 +141,50 @@ def test_resolve_webhook_health_returns_healthy_when_enabled_endpoint_has_requir
     assert payload["expectedEndpointUrl"] == "https://billing.example.com/api/billing/webhook"
 
 
+def test_resolve_webhook_health_allows_alias_endpoint_match_during_cutover(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_health")
+    monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_health")
+    monkeypatch.setenv("STRIPE_WEBHOOK_ENDPOINT_URL", "https://dullypdf.com/api/billing/webhook")
+    monkeypatch.setenv(
+        "STRIPE_WEBHOOK_ENDPOINT_URL_ALIASES",
+        "https://dullypdf-backend-qa5udwbvvq-uc.a.run.app/api/billing/webhook",
+    )
+
+    class _FakeWebhookEndpoint:
+        @staticmethod
+        def list(**kwargs):
+            assert kwargs == {"limit": 50}
+            return {
+                "data": [
+                    {
+                        "id": "we_123",
+                        "url": "https://dullypdf-backend-qa5udwbvvq-uc.a.run.app/api/billing/webhook",
+                        "status": "enabled",
+                        "enabled_events": ["checkout.session.completed", "invoice.paid", "customer.subscription.updated", "customer.subscription.deleted"],
+                    }
+                ]
+            }
+
+    class _FakeStripe:
+        api_key = None
+        WebhookEndpoint = _FakeWebhookEndpoint
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    payload = billing_service.resolve_webhook_health(force_refresh=True)
+
+    assert payload["healthy"] is True
+    assert payload["endpointId"] == "we_123"
+    assert payload["endpointUrl"] == "https://dullypdf-backend-qa5udwbvvq-uc.a.run.app/api/billing/webhook"
+    assert payload["expectedEndpointUrl"] == "https://dullypdf.com/api/billing/webhook"
+    assert payload["expectedEndpointUrls"] == [
+        "https://dullypdf.com/api/billing/webhook",
+        "https://dullypdf-backend-qa5udwbvvq-uc.a.run.app/api/billing/webhook",
+    ]
+
+
 def test_resolve_webhook_health_returns_unhealthy_when_enabled_endpoint_missing(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

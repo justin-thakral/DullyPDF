@@ -693,6 +693,7 @@ async def get_webhook_health(
     redacted.pop("endpointId", None)
     redacted.pop("endpointUrl", None)
     redacted.pop("expectedEndpointUrl", None)
+    redacted.pop("expectedEndpointUrls", None)
     if redacted.get("healthy") is True:
         redacted["reason"] = "Stripe webhook health check passed."
     else:
