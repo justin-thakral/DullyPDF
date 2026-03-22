@@ -17,18 +17,14 @@ flowchart LR
     WEB["Browsers + Crawlers<br/>Users request the site over HTTPS"]
 
     subgraph FRONT["Frontend Layer"]
-        BUILD["Build + SEO prerender<br/>TypeScript + React (Vite SPA)<br/>generate-static-html.mjs creates route-specific HTML + sitemap<br/>Public routes become crawler-readable before React hydrates"]
-        HOST["Firebase Hosting<br/>Hosts built SPA assets + prerendered public HTML<br/>Serves same-origin frontend requests<br/>Rewrites /api/* and /detect-fields* to dullypdf-backend-east4"]
-        FE["Browser app runtime<br/>TypeScript + React<br/>Homepage, upload flow, profile, workspace, public docs"]
+        BUILD["Firebase Hosted frontend<br/>TypeScript + React (Vite SPA)<br/>Serves built assets + prerendered route HTML<br/>generate-static-html.mjs creates route-specific HTML + sitemap"]
         AUTH["Firebase Auth<br/>Email/password, Google, GitHub login flows<br/>Returns Firebase ID token (JWT) to the browser"]
         DETREQ["Field detection request shape<br/>Method: POST /detect-fields<br/>Body: multipart/form-data<br/>Fields: file, pipeline, prewarmRename, prewarmRemap<br/>Header: Authorization: Bearer Firebase ID token"]
 
-        BUILD -->|"deploy built assets + prerendered route HTML"| HOST
-        WEB -->|"HTTPS"| HOST
-        HOST -->|"serves app shell + prerendered HTML"| FE
-        FE -->|"login/signup/reset over HTTPS"| AUTH
-        AUTH -->|"returns Firebase ID token (JWT)"| FE
-        FE -->|"compose upload + auth headers"| DETREQ
+        WEB -->|"HTTPS"| BUILD
+        BUILD -->|"login/signup/reset over HTTPS"| AUTH
+        AUTH -->|"returns Firebase ID token (JWT)"| BUILD
+        BUILD -->|"compose upload + auth headers"| DETREQ
     end
 
     API["dullypdf-backend-east4<br/>Public API entrypoint behind Firebase Hosting rewrites<br/>Cloud Run service<br/>Python + FastAPI<br/><br/>Top endpoints<br/>GET /api/health<br/>POST /detect-fields<br/>GET /detect-fields/{sessionId}<br/>POST /api/renames/ai<br/>GET /api/profile"]
@@ -46,7 +42,7 @@ flowchart LR
     end
 
     DETREQ -->|"HTTPS HTTP API call over TCP"| API
-    FE -->|"other HTTPS API calls over TCP<br/>profile, health, rename, remap, groups, saved forms, billing"| API
+    BUILD -->|"other HTTPS API calls over TCP<br/>profile, health, rename, remap, groups, saved forms, billing"| API
 
     API -->|"verify bearer token, enforce auth, orchestrate workflows"| AUTH
     API -->|"Firebase Admin / Firestore client<br/>gRPC-backed SDK calls"| FIRESTORE
