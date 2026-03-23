@@ -18,6 +18,7 @@ interface HomepageProps {
   authPending?: boolean;
   onSignIn?: () => void;
   onOpenProfile?: () => void;
+  onInitialRenderReady?: () => void;
 }
 
 type DemoWalkthroughStep = {
@@ -127,6 +128,7 @@ const Homepage: React.FC<HomepageProps> = ({
   authPending,
   onSignIn,
   onOpenProfile,
+  onInitialRenderReady,
 }) => {
   const demoRef = useRef<HTMLDivElement | null>(null);
   const demoNavRef = useRef<HTMLDivElement | null>(null);
@@ -138,6 +140,7 @@ const Homepage: React.FC<HomepageProps> = ({
   const [demoFocusActive, setDemoFocusActive] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [desktopFitScale, setDesktopFitScale] = useState(1);
+  const initialRenderReadyRef = useRef(false);
   const userInitial = useMemo(() => (userEmail ? userEmail.charAt(0).toUpperCase() : null), [userEmail]);
 
   const activeStep = DEMO_WALKTHROUGH[activeDemoIndex];
@@ -332,6 +335,45 @@ const Homepage: React.FC<HomepageProps> = ({
       if (resizeObserver) resizeObserver.disconnect();
     };
   }, [computeDesktopFitScale]);
+
+  useEffect(() => {
+    if (!onInitialRenderReady || initialRenderReadyRef.current) return;
+
+    let cancelled = false;
+    const waitForNextFrame = () => new Promise<void>((resolve) => {
+      if (typeof window === 'undefined') {
+        resolve();
+        return;
+      }
+      window.requestAnimationFrame(() => resolve());
+    });
+
+    const reportInitialRenderReady = async () => {
+      if (typeof document !== 'undefined' && 'fonts' in document && document.fonts?.ready) {
+        try {
+          await document.fonts.ready;
+        } catch {
+          // Ignore font readiness errors and continue to the next frame barrier.
+        }
+      }
+
+      // The desktop landing page applies a measured fit scale after mount and again
+      // after fonts resolve. Waiting a couple of frames lets those post-mount writes
+      // land before the splash screen is removed.
+      await waitForNextFrame();
+      await waitForNextFrame();
+
+      if (cancelled || initialRenderReadyRef.current) return;
+      initialRenderReadyRef.current = true;
+      onInitialRenderReady();
+    };
+
+    void reportInitialRenderReady();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [onInitialRenderReady]);
 
   const homepageStyle = useMemo(
     () => ({ '--homepage-fit-scale': desktopFitScale } as CSSProperties),

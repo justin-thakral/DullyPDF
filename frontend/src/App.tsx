@@ -33,10 +33,12 @@ type AppProps = {
 function App({
   initialBrowserRoute = { kind: 'homepage' },
 }: AppProps) {
+  const HOMEPAGE_SPLASH_FALLBACK_MS = 2500;
   const [authReady, setAuthReady] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [authSignInProvider, setAuthSignInProvider] = useState<string | null>(null);
   const [browserRoute, setBrowserRoute] = useState<WorkspaceBrowserRoute>(initialBrowserRoute);
+  const [homepageInitialRenderReady, setHomepageInitialRenderReady] = useState(false);
 
   const [runtimeMounted, setRuntimeMounted] = useState(false);
   const [launchIntent, setLaunchIntent] = useState<WorkspaceLaunchIntent>(null);
@@ -136,6 +138,7 @@ function App({
       setLaunchIntent(null);
       setRuntimeStarting(false);
       setRuntimeStartError(null);
+      setHomepageInitialRenderReady(false);
     }
   }, [abortRuntimeStart, replaceBrowserRoute]);
 
@@ -152,6 +155,21 @@ function App({
       abortRuntimeStart();
     };
   }, [abortRuntimeStart]);
+
+  useEffect(() => {
+    if (browserRoute.kind !== 'homepage' || runtimeMounted) {
+      setHomepageInitialRenderReady(false);
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setHomepageInitialRenderReady(true);
+    }, HOMEPAGE_SPLASH_FALLBACK_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [browserRoute.kind, runtimeMounted]);
 
   const startRuntime = useCallback(async (
     intent: WorkspaceLaunchIntent,
@@ -369,8 +387,11 @@ function App({
     );
   }
 
+  const showHomepageSplash = browserRoute.kind === 'homepage' && !homepageInitialRenderReady;
+
   return (
-    <div className="homepage-shell">
+    <>
+      <div className="homepage-shell" aria-hidden={showHomepageSplash}>
       <LegacyHeader
         currentView="homepage"
         onNavigateHome={() => {}}
@@ -389,9 +410,16 @@ function App({
           authPending={!authReady}
           onSignIn={!verifiedUser ? handleSignIn : undefined}
           onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
+          onInitialRenderReady={() => {
+            setHomepageInitialRenderReady(true);
+          }}
         />
       </main>
-    </div>
+      </div>
+      {showHomepageSplash ? (
+        <div className="homepage-loading-overlay" aria-hidden="true" />
+      ) : null}
+    </>
   );
 }
 
