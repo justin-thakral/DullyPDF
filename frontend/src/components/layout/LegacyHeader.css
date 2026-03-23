@@ -322,6 +322,21 @@
   transform: translateY(-1px);
 }
 
+.header-auth-pending {
+  display: flex;
+  align-items: center;
+  padding: 0 0.95rem;
+  height: var(--header-pill-height);
+  background: rgba(15, 23, 42, 0.25);
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.7);
+  cursor: default;
+  min-height: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .header-content {

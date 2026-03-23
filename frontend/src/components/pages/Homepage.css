@@ -497,6 +497,16 @@
   transform: translateY(-1px);
 }
 
+.homepage-auth-button--pending {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.homepage-auth-button--pending:hover {
+  transform: none;
+  background: rgba(15, 23, 42, 0.45);
+}
+
 .homepage-auth-avatar {
   width: 22px;
   height: 22px;

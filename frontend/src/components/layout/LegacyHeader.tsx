@@ -9,6 +9,7 @@ interface LegacyHeaderProps {
   onNavigateHome: () => void;
   showBackButton?: boolean;
   userEmail?: string | null;
+  authPending?: boolean;
   onOpenProfile?: () => void;
   onSignOut?: () => void;
   onSignIn?: () => void;
@@ -22,6 +23,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
   onNavigateHome,
   showBackButton = false,
   userEmail,
+  authPending,
   onOpenProfile,
   onSignOut,
   onSignIn,
@@ -126,6 +128,10 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
                 </button>
               )}
             </div>
+          ) : authPending ? (
+            <span className="header-auth-pending" aria-busy="true">
+              Signing in…
+            </span>
           ) : (
             onSignIn && (
               <button type="button" className="signin-button" onClick={onSignIn}>

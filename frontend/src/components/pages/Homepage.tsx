@@ -15,6 +15,7 @@ interface HomepageProps {
   onStartWorkflow: () => void;
   onStartDemo?: () => void;
   userEmail?: string | null;
+  authPending?: boolean;
   onSignIn?: () => void;
   onOpenProfile?: () => void;
 }
@@ -123,6 +124,7 @@ const Homepage: React.FC<HomepageProps> = ({
   onStartWorkflow,
   onStartDemo,
   userEmail,
+  authPending,
   onSignIn,
   onOpenProfile,
 }) => {
@@ -346,6 +348,10 @@ const Homepage: React.FC<HomepageProps> = ({
       {userInitial ? <span className="homepage-auth-avatar">{userInitial}</span> : null}
       <span className="homepage-auth-label">Profile</span>
     </button>
+  ) : authPending ? (
+    <span className="homepage-auth-button homepage-auth-button--pending" aria-busy="true">
+      Signing in…
+    </span>
   ) : onSignIn ? (
     <button type="button" className="homepage-auth-button" onClick={onSignIn}>
       Sign in

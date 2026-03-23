@@ -313,7 +313,7 @@ function App({
     }
   }, []);
 
-  if (!authReady) {
+  if (!authReady && browserRoute.kind !== 'homepage') {
     return (
       <div className="auth-loading-screen">
         <div className="auth-loading-card">Loading workspace…</div>
@@ -376,6 +376,7 @@ function App({
         onNavigateHome={() => {}}
         showBackButton={false}
         userEmail={userEmail}
+        authPending={!authReady}
         onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
         onSignOut={verifiedUser ? handleSignOut : undefined}
         onSignIn={!verifiedUser ? handleSignIn : undefined}
@@ -385,6 +386,7 @@ function App({
           onStartWorkflow={handleStartWorkflow}
           onStartDemo={handleStartDemo}
           userEmail={userEmail}
+          authPending={!authReady}
           onSignIn={!verifiedUser ? handleSignIn : undefined}
           onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
         />

@@ -9,6 +9,8 @@ pnpm-debug.log*
 frontend/dist/
 frontend/.vite/
 playwright-report/
+frontend/output/
+frontend/test/playwright/run_homepage_instant_render.mjs
 
 # Local PDFs (keep untracked)
 *.pdf

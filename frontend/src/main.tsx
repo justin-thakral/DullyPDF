@@ -156,6 +156,38 @@ const resolveRoute = (): AppRoute => {
   return { kind: 'not-found', requestedPath: normalizedPath };
 };
 
+const renderRoute = (route: AppRoute) => {
+  switch (route.kind) {
+    case 'legal':
+      return <LegalPage kind={route.legalKind} />;
+    case 'fill-link-public':
+      return <FillLinkPublicPage token={route.token} />;
+    case 'account-action':
+      return <AccountActionPage />;
+    case 'intent-hub':
+      return <IntentHubPage hubKey={route.hubKey} />;
+    case 'feature-plan':
+      return <FeaturePlanPage pageKey={route.planKey} />;
+    case 'intent':
+      return <IntentLandingPage pageKey={route.intentKey} />;
+    case 'usage-docs':
+      return <UsageDocsPage pageKey={route.pageKey} />;
+    case 'usage-docs-not-found':
+      return <UsageDocsNotFoundPage requestedPath={route.requestedPath} />;
+    case 'blog-index':
+      return <BlogIndexPage />;
+    case 'blog-post':
+      return <BlogPostPage slug={route.slug} />;
+    case 'not-found':
+      return <PublicNotFoundPage requestedPath={route.requestedPath} />;
+    case 'app':
+      return <App initialBrowserRoute={route.browserRoute} />;
+  }
+
+  const exhaustiveCheck: never = route;
+  return exhaustiveCheck;
+};
+
 const route = resolveRoute();
 
 if (typeof window !== 'undefined' && route.kind === 'app') {
@@ -165,31 +197,7 @@ if (typeof window !== 'undefined' && route.kind === 'app') {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Suspense fallback={null}>
-      {route.kind === 'legal' ? (
-        <LegalPage kind={route.legalKind} />
-      ) : route.kind === 'fill-link-public' ? (
-        <FillLinkPublicPage token={route.token} />
-      ) : route.kind === 'account-action' ? (
-        <AccountActionPage />
-      ) : route.kind === 'intent-hub' ? (
-        <IntentHubPage hubKey={route.hubKey} />
-      ) : route.kind === 'feature-plan' ? (
-        <FeaturePlanPage pageKey={route.planKey} />
-      ) : route.kind === 'intent' ? (
-        <IntentLandingPage pageKey={route.intentKey} />
-      ) : route.kind === 'usage-docs' ? (
-        <UsageDocsPage pageKey={route.pageKey} />
-      ) : route.kind === 'usage-docs-not-found' ? (
-        <UsageDocsNotFoundPage requestedPath={route.requestedPath} />
-      ) : route.kind === 'blog-index' ? (
-        <BlogIndexPage />
-      ) : route.kind === 'blog-post' ? (
-        <BlogPostPage slug={route.slug} />
-      ) : route.kind === 'not-found' ? (
-        <PublicNotFoundPage requestedPath={route.requestedPath} />
-      ) : (
-        <App initialBrowserRoute={route.browserRoute} />
-      )}
+      {renderRoute(route)}
     </Suspense>
   </StrictMode>,
 );
