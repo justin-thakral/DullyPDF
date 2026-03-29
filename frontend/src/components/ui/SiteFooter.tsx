@@ -98,10 +98,14 @@ export const SiteFooter = () => {
           <div className="site-footer__mobile-rows">
             <div className="site-footer__mobile-row">
               <InlineLinkGroup title="Product" links={PRODUCT_LINKS} />
+            </div>
+            <div className="site-footer__mobile-row">
               <InlineLinkGroup title="Workflows" links={MOBILE_WORKFLOW_LINKS} />
             </div>
             <div className="site-footer__mobile-row">
               <InlineLinkGroup title="Resources" links={RESOURCE_LINKS} />
+            </div>
+            <div className="site-footer__mobile-row">
               <InlineLinkGroup title="Legal" links={LEGAL_LINKS} />
             </div>
           </div>

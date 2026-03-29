@@ -728,29 +728,11 @@ function generatePageHtml(route, viteAssets) {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <style data-seo-shell="true">${SEO_SHELL_STYLE}</style>
     ${structuredDataScripts}
     ${viteAssets.linkTags.join('\n    ')}
   </head>
   <body>
-    <div id="root">
-      <div class="seo-shell" data-seo-shell-visible="true">
-        <div class="seo-shell__card">
-          <header class="seo-shell__topbar">
-            <div class="seo-shell__brand">
-              <img src="/DullyPDFLogoImproved.png" alt="DullyPDF logo" class="seo-shell__brand-mark" />
-              <div>
-                <span class="seo-shell__brand-name">DullyPDF</span>
-                <span class="seo-shell__brand-tagline">Repeat PDF workflow automation</span>
-              </div>
-            </div>
-            ${renderTopNav()}
-          </header>
-          ${bodyContent}
-          ${footerHtml}
-        </div>
-      </div>
-    </div>
+    <div id="root"></div>
     ${viteAssets.scriptTags.join('\n    ')}
   </body>
 </html>

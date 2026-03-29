@@ -209,8 +209,7 @@ for asset_path in "${CRITICAL_WEBP_ASSETS[@]}"; do
 done
 
 check_remote_status "${LIVE_BASE_URL}/fill-pdf-from-csv/" "301"
-check_remote_body_contains "${LIVE_BASE_URL}/fill-pdf-from-csv" 'data-seo-shell-visible="true"'
-check_remote_body_not_contains "${LIVE_BASE_URL}/fill-pdf-from-csv" 'display:none'
+check_remote_body_contains "${LIVE_BASE_URL}/fill-pdf-from-csv" 'data-seo-jsonld="true"'
 check_remote_status_not "${LIVE_BASE_URL}/this-path-should-not-exist" "200"
 
 echo "Frontend deploy checks passed: critical WebP assets are present locally and served remotely as image/webp."

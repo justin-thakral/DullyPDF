@@ -442,57 +442,69 @@ const Homepage: React.FC<HomepageProps> = ({
         </div>
 
         <div className="mobile-copy">
+          <h2 className="mobile-main-title">
+            Automatic PDF to Fillable Forms, Fill By Link or API,
+            Database Map Fields and U.S. E-Sign Workflows
+          </h2>
           <p className="mobile-description">
-            DullyPDF converts raw PDFs into editable templates with precise form fields. Then you can either search
-            local CSV, Excel, JSON, or TXT data or publish a native Fill By Link from a saved template so respondents
-            can answer from a phone.
-          </p>
-          <p className="mobile-description">
-            If you are searching for ways to fill information in PDF files, generate PDF database templates, or clean
-            fillable form field names before auto-fill, these workflows are supported in one pipeline with
+            This software converts raw PDFs into fillable forms using
             {' '}
             <CommonFormsAttribution />
             {' '}
-            for field detections.
+            for field detections with writable areas at input fields.
+            It supports text fields, checkbox groups, radio groups, dates, and signatures in the editor.
+            Once your form is ready, you can upload a CSV, Excel, JSON, or TXT schema file, map PDF fields to
+            database headers, and fill the PDF from matching database rows in Search &amp; Fill; publish a DullyPDF
+            Fill By Link web form for clients to answer so their responses can fill the PDF later; expose a
+            template-scoped API Fill endpoint; or route eligible records into DullyPDF&apos;s supported U.S. e-sign
+            workflow. Database rows stay in browser for Search &amp; Fill.
           </p>
         </div>
 
         <div className="mobile-steps">
-          <h3>Workflow overview</h3>
+          <h3>Complete Workflow Process</h3>
           <div className="feature-list">
             <div className="feature-item">
               <span className="feature-number">1</span>
               <div className="feature-content">
-                <h4>Upload the PDF</h4>
-                <p>Bring in any intake form, contract, or template PDF with blank fields.</p>
+                <h4>PDF to Form with AI-Powered Field Detection</h4>
+                <p>
+                  The detection pipeline analyzes your PDF and automatically identifies
+                  potential form fields with confidence scoring and field names pulled from nearby labels.
+                </p>
               </div>
             </div>
             <div className="feature-item">
               <span className="feature-number">2</span>
               <div className="feature-content">
-                <h4>Detect fields with <CommonFormsAttribution /></h4>
-                <p>The detector finds input regions and matches them to nearby labels.</p>
+                <h4>Interactive Visual Editing</h4>
+                <p>
+                  Review and refine detected fields using the Form Field Editor.
+                  Resize, rename, reposition, and adjust field properties with precision tools for
+                  accurate, production-ready templates.
+                </p>
               </div>
             </div>
             <div className="feature-item">
               <span className="feature-number">3</span>
               <div className="feature-content">
-                <h4>Refine in the editor</h4>
-                <p>Resize, rename, and retype fields before finalizing the template.</p>
+                <h4>Publish Fill By Link, API Fill, or Connect Local Data</h4>
+                <p>
+                  Save the template, then either publish a DullyPDF Fill By Link web form for clients to answer,
+                  expose a template-scoped API Fill endpoint, or upload a CSV/Excel/JSON/TXT schema file to map
+                  PDF fields to database headers for Search &amp; Fill.
+                </p>
               </div>
             </div>
             <div className="feature-item">
               <span className="feature-number">4</span>
               <div className="feature-content">
-                <h4>Publish Fill By Link or map local data</h4>
-                <p>Save the template, then either connect local rows or publish a DullyPDF-hosted HTML form link.</p>
-              </div>
-            </div>
-            <div className="feature-item">
-              <span className="feature-number">5</span>
-              <div className="feature-content">
-                <h4>Select a respondent and generate the PDF</h4>
-                <p>Choose a saved respondent record inside DullyPDF and create the final PDF only when it is needed.</p>
+                <h4>Search, Generate, or Route Into U.S. E-Sign</h4>
+                <p>
+                  Choose a matching database row or a stored respondent submission in the workspace. DullyPDF
+                  fills the mapped template, generates the PDF only when you download it, or routes eligible
+                  records into DullyPDF&apos;s supported U.S. e-sign workflow.
+                </p>
               </div>
             </div>
           </div>

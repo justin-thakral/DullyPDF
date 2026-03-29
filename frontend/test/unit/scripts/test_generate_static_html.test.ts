@@ -9,35 +9,36 @@ const EMPTY_VITE_ASSETS = {
 };
 
 describe('generate-static-html', () => {
-  it('renders a visible static shell instead of hidden prerender content', () => {
+  it('renders head-only SEO signals without a visible body shell', () => {
     const route = ALL_ROUTES.find((entry) => entry.path === '/fill-pdf-from-csv');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS);
 
-    expect(html).toContain('data-seo-shell-visible="true"');
-    expect(html).not.toContain('display:none');
-    expect(html).toContain('Supporting Documentation');
+    expect(html).toContain('data-seo-jsonld="true"');
+    expect(html).toContain('<div id="root"></div>');
+    expect(html).not.toContain('data-seo-shell-visible');
   });
 
-  it('renders richer usage docs support sections in static HTML', () => {
+  it('includes head SEO signals for usage docs pages', () => {
     const route = ALL_ROUTES.find((entry) => entry.path === '/usage-docs/getting-started');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS);
 
-    expect(html).toContain('How to Use This Docs Page');
-    expect(html).toContain('Adjacent Docs');
-    expect(html).toContain('/usage-docs/rename-mapping');
+    expect(html).toContain('<title>');
+    expect(html).toContain('name="description"');
+    expect(html).toContain('rel="canonical"');
   });
 
-  it('renders blog index links to individual posts in static HTML', () => {
+  it('includes head SEO signals for blog index', () => {
     const route = ALL_ROUTES.find((entry) => entry.path === '/blog');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS);
 
-    expect(html).toContain('/blog/how-to-convert-pdf-to-fillable-form');
-    expect(html).toContain('All Guides');
+    expect(html).toContain('<title>');
+    expect(html).toContain('name="description"');
+    expect(html).toContain('data-seo-jsonld="true"');
   });
 });
