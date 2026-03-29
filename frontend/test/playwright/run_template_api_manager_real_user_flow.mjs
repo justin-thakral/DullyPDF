@@ -232,16 +232,13 @@ async function callPublicSchema(requestContext, schemaUrl, secret) {
   });
 }
 
-async function callPublicFill(requestContext, fillUrl, secret, data) {
+async function callPublicFill(requestContext, fillUrl, secret, payload) {
   return requestContext.post(fillUrl, {
     headers: {
       Authorization: buildBasicAuthHeader(secret),
       'Content-Type': 'application/json',
     },
-    data: {
-      data,
-      strict: true,
-    },
+    data: payload,
   });
 }
 
@@ -270,8 +267,8 @@ async function waitForTemplateApiDialog(page) {
 }
 
 async function readVisibleSecret(page) {
-  await page.locator('.template-api-dialog__secret-row code').waitFor({ timeout: 30000 });
-  const value = await page.locator('.template-api-dialog__secret-row code').textContent();
+  await page.locator('.template-api-dialog__secret-value[aria-label="API key"]').waitFor({ timeout: 30000 });
+  const value = await page.locator('.template-api-dialog__secret-value[aria-label="API key"]').textContent();
   return String(value || '').trim();
 }
 
@@ -320,8 +317,8 @@ async function main() {
       throw new Error(`Unexpected published secret prefix: ${firstSecret}`);
     }
 
-    const fillUrl = String(await page.locator('.template-api-dialog__endpoint-row').nth(0).locator('code').textContent() || '').trim();
-    const schemaUrl = String(await page.locator('.template-api-dialog__endpoint-row').nth(1).locator('code').textContent() || '').trim();
+    const fillUrl = String(await page.locator('.template-api-dialog__endpoint-value').nth(0).textContent() || '').trim();
+    const schemaUrl = String(await page.locator('.template-api-dialog__endpoint-value').nth(1).textContent() || '').trim();
     if (!fillUrl || !schemaUrl) {
       throw new Error('Missing public endpoint URLs after publish.');
     }
@@ -335,7 +332,7 @@ async function main() {
     logStep('verifying published public schema and fill routes');
     const schemaResponse = await callPublicSchema(context.request, schemaUrl, firstSecret);
     if (schemaResponse.status() !== 200) {
-      throw new Error(`Expected schema route to succeed after publish, got ${schemaResponse.status()}`);
+      throw new Error(`Expected schema route to succeed after publish, got ${schemaResponse.status()}: ${await schemaResponse.text()}`);
     }
     const schemaPayload = await schemaResponse.json();
     const scalarKeys = Array.isArray(schemaPayload?.schema?.fields)
@@ -352,15 +349,18 @@ async function main() {
     ).trim();
     const displayedExamplePayload = JSON.parse(schemaSnippetText);
     const publishedExamplePayload = schemaPayload?.schema?.exampleData || {};
-    if (JSON.stringify(displayedExamplePayload) !== JSON.stringify(publishedExamplePayload)) {
+    if (JSON.stringify(displayedExamplePayload?.data || {}) !== JSON.stringify(publishedExamplePayload)) {
       throw new Error(
         `Displayed schema example payload drifted from the published schema. UI=${JSON.stringify(displayedExamplePayload)} schema=${JSON.stringify(publishedExamplePayload)}`,
       );
     }
+    if (displayedExamplePayload?.exportMode !== 'flat' || displayedExamplePayload?.strict !== true) {
+      throw new Error(`Displayed schema request envelope is missing the expected flat/strict defaults: ${JSON.stringify(displayedExamplePayload)}`);
+    }
 
     const fillResponse = await callPublicFill(context.request, fillUrl, firstSecret, displayedExamplePayload);
     if (fillResponse.status() !== 200) {
-      throw new Error(`Expected fill route to succeed after publish, got ${fillResponse.status()}`);
+      throw new Error(`Expected fill route to succeed after publish, got ${fillResponse.status()}: ${await fillResponse.text()}`);
     }
     const fillContentType = fillResponse.headers()['content-type'] || '';
     if (!fillContentType.toLowerCase().includes('application/pdf')) {
@@ -374,7 +374,10 @@ async function main() {
     logStep('verifying strict-mode failure does not look like success to the owner');
     const strictFailureResponse = await callPublicFill(context.request, fillUrl, firstSecret, {
       ...displayedExamplePayload,
-      ignored_key: 'should-fail',
+      data: {
+        ...(displayedExamplePayload?.data || {}),
+        ignored_key: 'should-fail',
+      },
     });
     if (strictFailureResponse.status() !== 400) {
       throw new Error(`Expected strict-mode unknown key failure, got ${strictFailureResponse.status()}`);
@@ -409,7 +412,7 @@ async function main() {
     await page.getByRole('button', { name: 'Rotate key' }).click();
     await page.waitForFunction(
       (previousSecret) => {
-        const nextValue = document.querySelector('.template-api-dialog__secret-row code')?.textContent?.trim() || '';
+        const nextValue = document.querySelector('.template-api-dialog__secret-value[aria-label="API key"]')?.textContent?.trim() || '';
         return Boolean(nextValue) && nextValue !== previousSecret;
       },
       firstSecret,

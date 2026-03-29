@@ -1,0 +1,333 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { chromium } from 'playwright';
+import {
+  createCustomToken,
+  signInWithCustomTokenHarness,
+  signOutHarness,
+} from './helpers/downgradeFixture.mjs';
+
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const frontendRoot = path.resolve(scriptDir, '..', '..');
+const repoRoot = path.resolve(frontendRoot, '..');
+const baseUrl = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:5173';
+const artifactDir = path.resolve(frontendRoot, 'output/playwright');
+const screenshotPath = path.join(artifactDir, 'signing-monthly-quota-smoke.png');
+const summaryPath = path.join(artifactDir, 'signing-monthly-quota-smoke.json');
+const samplePdfPath = path.resolve(
+  repoRoot,
+  'samples/fieldDetecting/pdfs/native/intake/new_patient_intake_form_fillable_badc6aa21d.pdf',
+);
+
+function logStep(message) {
+  console.log(`[signing-monthly-quota-smoke] ${message}`);
+}
+
+function assertExists(filePath) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Missing required file: ${filePath}`);
+  }
+}
+
+function makeProfile(email) {
+  return {
+    email,
+    displayName: 'Signing Quota Smoke Owner',
+    role: 'base',
+    creditsRemaining: 10,
+    availableCredits: 10,
+    billing: {
+      enabled: true,
+      plans: {},
+      hasSubscription: false,
+      subscriptionStatus: null,
+      cancelAtPeriodEnd: false,
+    },
+    limits: {
+      detectMaxPages: 5,
+      fillableMaxPages: 50,
+      savedFormsMax: 5,
+      fillLinkResponsesMonthlyMax: 25,
+      templateApiActiveMax: 1,
+      templateApiRequestsMonthlyMax: 250,
+      templateApiMaxPages: 25,
+      signingRequestsMonthlyMax: 25,
+    },
+  };
+}
+
+function buildSigningOptions() {
+  return {
+    modes: [
+      { key: 'sign', label: 'Sign' },
+      { key: 'fill_and_sign', label: 'Fill and Sign' },
+    ],
+    signatureModes: [
+      { key: 'business', label: 'Business' },
+      { key: 'consumer', label: 'Consumer' },
+    ],
+    categories: [
+      {
+        key: 'ordinary_business_form',
+        label: 'Ordinary business form',
+        blocked: false,
+      },
+    ],
+  };
+}
+
+function buildSigningRequest(payload, overrides = {}) {
+  const sourcePdfSha256 = payload.sourcePdfSha256 || overrides.sourcePdfSha256 || null;
+  return {
+    id: overrides.id || 'signing-owner-req',
+    title: payload.title || 'Owner Signing Quota Smoke',
+    mode: payload.mode || 'sign',
+    signatureMode: payload.signatureMode || 'business',
+    sourceType: payload.sourceType || 'workspace',
+    sourceId: payload.sourceId || null,
+    sourceLinkId: payload.sourceLinkId || null,
+    sourceRecordLabel: payload.sourceRecordLabel || null,
+    sourceDocumentName: payload.sourceDocumentName || 'Signing Quota Smoke.pdf',
+    sourceTemplateId: payload.sourceTemplateId || null,
+    sourceTemplateName: payload.sourceTemplateName || payload.sourceDocumentName || 'Signing Quota Smoke.pdf',
+    sourcePdfSha256,
+    sourcePdfPath: overrides.sourcePdfPath || null,
+    sourceVersion: overrides.sourceVersion || `workspace:${sourcePdfSha256 || 'pending'}`,
+    documentCategory: payload.documentCategory || 'ordinary_business_form',
+    documentCategoryLabel: 'Ordinary business form',
+    manualFallbackEnabled: payload.manualFallbackEnabled !== false,
+    signerName: payload.signerName || 'Alex Signer',
+    signerEmail: payload.signerEmail || 'alex@example.com',
+    status: overrides.status || 'draft',
+    anchors: Array.isArray(payload.anchors) ? payload.anchors : [],
+    disclosureVersion: 'us-esign-business-v1',
+    publicToken: overrides.publicToken || 'owner-signing-public-token',
+    publicPath: overrides.publicPath || '/sign/owner-signing-public-token',
+    createdAt: overrides.createdAt || '2026-03-28T15:00:00Z',
+    updatedAt: overrides.updatedAt || '2026-03-28T15:00:00Z',
+    ownerReviewConfirmedAt: overrides.ownerReviewConfirmedAt || null,
+    sentAt: overrides.sentAt || null,
+    completedAt: null,
+    retentionUntil: overrides.retentionUntil || null,
+    openedAt: null,
+    reviewedAt: null,
+    consentedAt: null,
+    signatureAdoptedAt: null,
+    signatureAdoptedName: null,
+    manualFallbackRequestedAt: null,
+    invalidatedAt: null,
+    invalidationReason: null,
+    artifacts: overrides.artifacts || {
+      signedPdf: { available: false, downloadPath: null },
+      auditManifest: { available: false, downloadPath: null },
+      auditReceipt: { available: false, downloadPath: null },
+    },
+  };
+}
+
+async function installWorkspaceApiMocks(page, email) {
+  const state = {
+    templateSessionId: 'template-session-owner',
+    createdDraft: null,
+    sendAttempts: 0,
+  };
+  const limitMessage = 'This account has already reached the 25 sent signing request limit for this month.';
+
+  await page.route('**/api/**', async (route, request) => {
+    const url = new URL(request.url());
+    const { pathname } = url;
+    const method = request.method().toUpperCase();
+
+    const json = async (status, body) => {
+      await route.fulfill({
+        status,
+        contentType: 'application/json',
+        body: JSON.stringify(body),
+      });
+    };
+
+    if (method === 'GET' && pathname === '/api/profile') {
+      await json(200, makeProfile(email));
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/api/health') {
+      await json(200, { ok: true, status: 'ok' });
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/api/saved-forms') {
+      await json(200, { forms: [] });
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/api/groups') {
+      await json(200, { groups: [] });
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/api/signing/options') {
+      await json(200, buildSigningOptions());
+      return;
+    }
+
+    if (method === 'POST' && pathname === '/api/templates/session') {
+      await json(200, {
+        success: true,
+        sessionId: state.templateSessionId,
+        fieldCount: 4,
+        pageCount: 2,
+      });
+      return;
+    }
+
+    if (method === 'POST' && pathname === '/api/forms/materialize') {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/pdf',
+        body: fs.readFileSync(samplePdfPath),
+      });
+      return;
+    }
+
+    if (method === 'POST' && pathname === '/api/signing/requests') {
+      const payload = JSON.parse(request.postData() || '{}');
+      state.createdDraft = buildSigningRequest(payload, {
+        id: 'signing-owner-req',
+        status: 'draft',
+        createdAt: '2026-03-28T15:01:00Z',
+        updatedAt: '2026-03-28T15:01:00Z',
+      });
+      await json(201, { request: state.createdDraft });
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/api/signing/requests') {
+      await json(200, { requests: state.createdDraft ? [state.createdDraft] : [] });
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/api/signing/requests/signing-owner-req') {
+      await json(200, { request: state.createdDraft });
+      return;
+    }
+
+    if (method === 'POST' && pathname === '/api/signing/requests/signing-owner-req/send') {
+      state.sendAttempts += 1;
+      await json(403, { detail: limitMessage });
+      return;
+    }
+
+    if (method === 'POST' && pathname === `/api/sessions/${encodeURIComponent(state.templateSessionId)}/touch`) {
+      await json(200, { success: true, sessionId: state.templateSessionId });
+      return;
+    }
+
+    console.error(`[signing-monthly-quota-smoke] unhandled mock API request: ${method} ${pathname}`);
+    await route.fulfill({
+      status: 501,
+      contentType: 'application/json',
+      body: JSON.stringify({ detail: `Unhandled mock API request: ${method} ${pathname}` }),
+    });
+  });
+
+  return { state, limitMessage };
+}
+
+async function main() {
+  assertExists(samplePdfPath);
+  fs.mkdirSync(artifactDir, { recursive: true });
+
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+  page.on('pageerror', (error) => {
+    console.error(`[signing-monthly-quota-smoke][pageerror] ${error instanceof Error ? error.stack || error.message : String(error)}`);
+  });
+  page.on('console', (message) => {
+    if (message.type() === 'error' || message.type() === 'warning') {
+      console.log(`[signing-monthly-quota-smoke][browser:${message.type()}] ${message.text()}`);
+    }
+  });
+
+  let mockBundle = null;
+  const fixtureUid = `pw-signing-monthly-quota-${Date.now()}`;
+  const fixtureEmail = 'codex-signing-quota@example.com';
+
+  try {
+    logStep('opening frontend');
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    logStep('installing workspace API mocks');
+    mockBundle = await installWorkspaceApiMocks(page, fixtureEmail);
+    logStep('signing in with custom token');
+    const customToken = createCustomToken(fixtureUid);
+    await signInWithCustomTokenHarness(page, customToken);
+
+    logStep('opening workspace');
+    await page.goto(`${baseUrl}/ui`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.getByText('Upload PDF for Field Detection').waitFor({ timeout: 30000 });
+
+    logStep('uploading fillable PDF with signature anchors');
+    await page.getByLabel('Upload Fillable PDF Template').setInputFiles(samplePdfPath);
+    await page.getByRole('button', { name: 'Send PDF for Signature by email' }).waitFor({ timeout: 30000 });
+    await page.locator('.panel-mode-chip').filter({ hasText: 'Signature' }).first().click();
+    await page.locator('[aria-label="Draw signature field"]').first().click({ position: { x: 160, y: 160 } });
+    await page.getByRole('button', { name: 'Send PDF for Signature by email' }).click();
+    await page.getByRole('heading', { name: 'Send PDF for Signature by email' }).waitFor({ timeout: 10000 });
+
+    logStep('saving signing draft');
+    await page.locator('label:has-text("Signer name") input').fill('Alex Signer');
+    await page.locator('label:has-text("Signer email") input').fill('alex.signer@example.com');
+    await page.getByRole('checkbox', {
+      name: /I reviewed the blocked-category list.*confirm this document is eligible/i,
+    }).check();
+    await page.getByRole('button', { name: 'Save Signing Draft' }).click();
+
+    await page.getByText(/Draft saved\./i).waitFor({ timeout: 10000 });
+    await page.getByRole('heading', { name: 'Batch review and send' }).waitFor({ timeout: 10000 });
+
+    logStep('attempting send and expecting monthly quota rejection');
+    const sendDraftResponse = page.waitForResponse((response) => {
+      return response.url().includes('/api/signing/requests/signing-owner-req/send')
+        && response.request().method() === 'POST'
+        && response.status() === 403;
+    }, { timeout: 15000 });
+    await page.getByRole('button', { name: 'Review and Send' }).click();
+    await sendDraftResponse;
+
+    await page.getByText(mockBundle.limitMessage).waitFor({ timeout: 10000 });
+    await page.getByRole('button', { name: 'Review and Send' }).waitFor({ timeout: 10000 });
+
+    const sendButtonDisabled = await page.getByRole('button', { name: 'Review and Send' }).evaluate((button) => {
+      return button instanceof HTMLButtonElement ? button.disabled : true;
+    });
+    if (sendButtonDisabled) {
+      throw new Error('Review and Send should stay enabled after a monthly quota rejection.');
+    }
+
+    logStep('capturing screenshot');
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+
+    const summary = {
+      ok: true,
+      screenshotPath,
+      summaryPath,
+      requestId: mockBundle.state.createdDraft?.id || null,
+      sendAttempts: mockBundle.state.sendAttempts,
+      limitMessage: mockBundle.limitMessage,
+    };
+    fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2));
+    console.log(JSON.stringify(summary));
+  } finally {
+    try {
+      await signOutHarness(page);
+    } catch {}
+    await page.close();
+    await browser.close();
+  }
+}
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.stack || error.message : String(error));
+  process.exitCode = 1;
+});

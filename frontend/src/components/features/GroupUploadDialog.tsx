@@ -1,6 +1,6 @@
 import { useId, useMemo, useRef } from 'react';
 import { CommonFormsAttribution } from '../ui/CommonFormsAttribution';
-import { DialogFrame } from '../ui/Dialog';
+import { DialogCloseButton, DialogFrame } from '../ui/Dialog';
 import type { GroupUploadItem } from '../../hooks/useGroupUploadModal';
 import './GroupUploadDialog.css';
 
@@ -95,14 +95,7 @@ export function GroupUploadDialog({
           <h2 id={dialogTitleId}>Upload PDF Group</h2>
           <p id={dialogDescriptionId}>Scan multiple PDFs, optionally run OpenAI actions, save them as templates, and open the group in one flow.</p>
         </div>
-        <button
-          type="button"
-          className="group-upload-modal__close"
-          onClick={onClose}
-          aria-label="Close group upload dialog"
-        >
-          Close
-        </button>
+        <DialogCloseButton onClick={onClose} label="Close Upload PDF Group dialog" />
       </div>
 
       <div className="group-upload-modal__body">

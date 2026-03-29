@@ -7,7 +7,7 @@ from typing import Any, Dict
 from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 
 from backend.api.schemas import FillLinkPublicRetrySigningRequest, FillLinkPublicSubmitRequest
 from backend.firebaseDB.fill_link_database import (
@@ -15,6 +15,8 @@ from backend.firebaseDB.fill_link_database import (
     get_fill_link_response,
     submit_fill_link_response,
 )
+from backend.firebaseDB.signing_database import get_signing_request_for_user
+from backend.firebaseDB.storage_service import download_storage_bytes
 from backend.firebaseDB.user_database import get_user_profile
 from backend.env_utils import int_env as _int_env
 from backend.logging_config import get_logger
@@ -28,6 +30,7 @@ from backend.services.fill_link_download_service import (
     respondent_pdf_download_enabled,
 )
 from backend.services.fill_link_signing_service import (
+    FillLinkSigningUnavailableError,
     ensure_fill_link_response_signing_request,
     resolve_fill_link_signer_identity_from_answers,
 )
@@ -35,6 +38,7 @@ from backend.services.fill_link_scope_service import (
     close_fill_link_if_scope_invalid,
     preview_fill_link_if_scope_invalid,
 )
+from backend.services.downgrade_retention_service import get_user_retention_locked_template_ids
 from backend.services.fill_links_service import (
     build_fill_link_search_text,
     coerce_fill_link_answers,
@@ -51,6 +55,7 @@ from backend.services.fill_links_service import (
     resolve_fill_link_view_rate_limits,
 )
 from backend.services.pdf_service import cleanup_paths
+from backend.services.pdf_service import safe_pdf_download_filename
 from backend.services.signing_consumer_consent_service import persist_consumer_disclosure_artifact
 from backend.services.signing_invite_service import (
     SIGNING_INVITE_DELIVERY_FAILED,
@@ -58,9 +63,10 @@ from backend.services.signing_invite_service import (
     SIGNING_INVITE_DELIVERY_SKIPPED,
     deliver_signing_invite_for_request,
     resolve_signing_invite_event_type,
+    resolve_signing_invite_origin,
 )
 from backend.services.signing_provenance_service import record_signing_provenance_event
-from backend.services.signing_request_limit_service import SigningRequestDocumentLimitError
+from backend.services.signing_quota_service import SigningRequestMonthlyLimitError
 from backend.services.signing_service import (
     SIGNING_EVENT_REQUEST_CREATED,
     SIGNING_EVENT_REQUEST_SENT,
@@ -77,6 +83,17 @@ from backend.services.recaptcha_service import (
 
 router = APIRouter()
 logger = get_logger(__name__)
+
+
+def _fill_link_references_locked_templates(record) -> bool:
+    if record is None:
+        return False
+    locked_template_ids = get_user_retention_locked_template_ids(record.user_id)
+    if not locked_template_ids:
+        return False
+    if record.scope_type == "template":
+        return bool(record.template_id and record.template_id in locked_template_ids)
+    return any(template_id in locked_template_ids for template_id in record.template_ids)
 
 def _check_public_rate_limits(
     *,
@@ -248,35 +265,120 @@ def _serialize_post_submit_signing_limit_failure(error_message: str) -> Dict[str
     }
 
 
+def _serialize_post_submit_signing_unavailable_failure(error_message: str) -> Dict[str, Any]:
+    return {
+        "enabled": True,
+        "available": False,
+        "requestId": None,
+        "status": None,
+        "deliveryStatus": None,
+        "emailHint": None,
+        "canResend": False,
+        "resendAvailableAt": None,
+        "message": None,
+        "errorMessage": error_message,
+    }
+
+
+def _resolve_existing_post_submit_signing_request(link, response):
+    request_id = str(getattr(response, "signing_request_id", "") or "").strip()
+    if not request_id:
+        return None
+    record = get_signing_request_for_user(request_id, link.user_id)
+    if record is None:
+        return None
+    if str(getattr(record, "status", "") or "").strip().lower() == "invalidated":
+        return None
+    return record
+
+
+async def _deliver_post_submit_signing_request(
+    *,
+    signing_request,
+    link,
+    response,
+    sender_email: str | None,
+    request_origin: str | None,
+) -> Dict[str, Any]:
+    if not _can_resend_signing_email(signing_request):
+        if getattr(signing_request, "invite_delivery_status", None) != SIGNING_INVITE_DELIVERY_SENT:
+            return _serialize_post_submit_signing_payload(signing_request)
+        resend_available_at = _resolve_resend_available_at(getattr(signing_request, "invite_last_attempt_at", None))
+        retry_message = (
+            f"We already emailed the signing link to {mask_signing_email(signing_request.signer_email) or 'the signer email'}."
+        )
+        if resend_available_at:
+            retry_message = f"{retry_message} You can resend it after {resend_available_at}."
+        return _serialize_post_submit_signing_payload(signing_request, message=retry_message)
+    invite_attempt = await deliver_signing_invite_for_request(
+        record=signing_request,
+        user_id=link.user_id,
+        sender_email=sender_email,
+        request_origin=request_origin,
+    )
+    invite_event_type = resolve_signing_invite_event_type(invite_attempt.delivery.delivery_status)
+    if invite_event_type:
+        record_signing_provenance_event(
+            invite_attempt.record,
+            event_type=invite_event_type,
+            sender_email=sender_email,
+            invite_method=SIGNING_INVITE_METHOD_EMAIL,
+            source="fill_link_auto_send",
+            response_id=response.id,
+            user_agent=None,
+            extra={
+                "provider": invite_attempt.delivery.provider,
+                "providerMessageId": invite_attempt.delivery.invite_message_id,
+                "deliveryStatus": invite_attempt.delivery.delivery_status,
+                "deliveryErrorCode": invite_attempt.delivery.error_code,
+                "deliveryErrorSummary": invite_attempt.delivery.error_message,
+                "publicLinkVersion": resolve_signing_public_link_version(invite_attempt.record),
+            },
+            occurred_at=invite_attempt.delivery.sent_at or invite_attempt.delivery.attempted_at,
+        )
+    if invite_attempt.delivery.delivery_status == SIGNING_INVITE_DELIVERY_SENT:
+        success_message = (
+            "We emailed the signing link for this response."
+            if not getattr(signing_request, "invite_last_attempt_at", None)
+            else "We resent the signing link for this response."
+        )
+        return _serialize_post_submit_signing_payload(invite_attempt.record, message=success_message)
+    return _serialize_post_submit_signing_payload(invite_attempt.record)
+
+
 async def _build_post_submit_signing_payload(
     *,
     link,
     response,
     request_origin: str | None = None,
 ) -> Dict[str, Any]:
-    snapshot = (
-        response.respondent_pdf_snapshot
-        if response and isinstance(response.respondent_pdf_snapshot, dict)
-        else link.respondent_pdf_snapshot
-        if isinstance(link.respondent_pdf_snapshot, dict)
-        else None
-    )
     cleanup_targets: list[Any] = []
-    if snapshot is None:
-        return {
-            "enabled": True,
-            "available": False,
-            "errorMessage": "This submitted record could not be prepared for signature. Contact the sender.",
-        }
     try:
-        output_path, cleanup_targets, _ = materialize_fill_link_response_download(
-            snapshot,
-            answers=response.answers,
-            export_mode="flat",
-        )
-        source_pdf_bytes = Path(output_path).read_bytes()
         sender_email = _resolve_fill_link_owner_email(link.user_id)
         sender_display_name = _resolve_fill_link_owner_display_name(link.user_id)
+        existing_request = _resolve_existing_post_submit_signing_request(link, response)
+        existing_request_status = str(getattr(existing_request, "status", "") or "").strip().lower()
+        source_pdf_bytes: bytes | None = None
+        if existing_request_status not in {"sent", "completed"}:
+            snapshot = (
+                response.respondent_pdf_snapshot
+                if response and isinstance(response.respondent_pdf_snapshot, dict)
+                else link.respondent_pdf_snapshot
+                if isinstance(link.respondent_pdf_snapshot, dict)
+                else None
+            )
+            if snapshot is None:
+                return {
+                    "enabled": True,
+                    "available": False,
+                    "errorMessage": "This submitted record could not be prepared for signature. Contact the sender.",
+                }
+            output_path, cleanup_targets, _ = materialize_fill_link_response_download(
+                snapshot,
+                answers=response.answers,
+                export_mode="flat",
+            )
+            source_pdf_bytes = Path(output_path).read_bytes()
         signing_materialization = ensure_fill_link_response_signing_request(
             link=link,
             response=response,
@@ -284,6 +386,7 @@ async def _build_post_submit_signing_payload(
             signing_config=link.signing_config,
             sender_email=sender_email,
             sender_display_name=sender_display_name,
+            public_app_origin=resolve_signing_invite_origin(request_origin=request_origin),
         )
         signing_request = persist_consumer_disclosure_artifact(signing_materialization.record) or signing_materialization.record
         if signing_materialization.created_now:
@@ -320,52 +423,17 @@ async def _build_post_submit_signing_payload(
                 },
                 occurred_at=signing_request.sent_at,
             )
-        if not _can_resend_signing_email(signing_request):
-            if getattr(signing_request, "invite_delivery_status", None) != SIGNING_INVITE_DELIVERY_SENT:
-                return _serialize_post_submit_signing_payload(signing_request)
-            resend_available_at = _resolve_resend_available_at(getattr(signing_request, "invite_last_attempt_at", None))
-            retry_message = (
-                f"We already emailed the signing link to {mask_signing_email(signing_request.signer_email) or 'the signer email'}."
-            )
-            if resend_available_at:
-                retry_message = f"{retry_message} You can resend it after {resend_available_at}."
-            return _serialize_post_submit_signing_payload(signing_request, message=retry_message)
-        invite_attempt = await deliver_signing_invite_for_request(
-            record=signing_request,
-            user_id=link.user_id,
+        return await _deliver_post_submit_signing_request(
+            signing_request=signing_request,
+            link=link,
+            response=response,
             sender_email=sender_email,
             request_origin=request_origin,
         )
-        invite_event_type = resolve_signing_invite_event_type(invite_attempt.delivery.delivery_status)
-        if invite_event_type:
-            record_signing_provenance_event(
-                invite_attempt.record,
-                event_type=invite_event_type,
-                sender_email=sender_email,
-                invite_method=SIGNING_INVITE_METHOD_EMAIL,
-                source="fill_link_auto_send",
-                response_id=response.id,
-                user_agent=None,
-                extra={
-                    "provider": invite_attempt.delivery.provider,
-                    "providerMessageId": invite_attempt.delivery.invite_message_id,
-                    "deliveryStatus": invite_attempt.delivery.delivery_status,
-                    "deliveryErrorCode": invite_attempt.delivery.error_code,
-                    "deliveryErrorSummary": invite_attempt.delivery.error_message,
-                    "publicLinkVersion": resolve_signing_public_link_version(invite_attempt.record),
-                },
-                occurred_at=invite_attempt.delivery.sent_at or invite_attempt.delivery.attempted_at,
-            )
-        if invite_attempt.delivery.delivery_status == SIGNING_INVITE_DELIVERY_SENT:
-            success_message = (
-                "We emailed the signing link for this response."
-                if not getattr(signing_request, "invite_last_attempt_at", None)
-                else "We resent the signing link for this response."
-            )
-            return _serialize_post_submit_signing_payload(invite_attempt.record, message=success_message)
-        return _serialize_post_submit_signing_payload(invite_attempt.record)
-    except SigningRequestDocumentLimitError as exc:
+    except SigningRequestMonthlyLimitError as exc:
         return _serialize_post_submit_signing_limit_failure(exc.public_message)
+    except FillLinkSigningUnavailableError as exc:
+        return _serialize_post_submit_signing_unavailable_failure(str(exc))
     except Exception:
         logger.warning(
             "Fill By Link post-submit signing failed for link=%s response=%s",
@@ -398,6 +466,13 @@ async def get_public_fill_link(token: str, request: Request) -> Dict[str, Any]:
     record = preview_fill_link_if_scope_invalid(get_fill_link_by_public_token(public_token))
     if not record:
         raise HTTPException(status_code=404, detail="Fill By Link not found")
+    if _fill_link_references_locked_templates(record):
+        return {
+            "link": {
+                "status": "closed",
+                "statusMessage": fill_link_public_status_message("closed", "downgrade_retention"),
+            }
+        }
     return {"link": _serialize_public_link(record)}
 
 
@@ -431,6 +506,12 @@ async def submit_public_fill_link(
     record = close_fill_link_if_scope_invalid(get_fill_link_by_public_token(public_token))
     if not record:
         raise HTTPException(status_code=404, detail="Fill By Link not found")
+    if _fill_link_references_locked_templates(record):
+        raise HTTPException(
+            status_code=409,
+            detail=fill_link_public_status_message("closed", "downgrade_retention")
+            or "This link is no longer accepting responses.",
+        )
     normalized_attempt_id = (payload.attemptId or "").strip()
     if record.status != "active" and not normalized_attempt_id:
         link_payload = _serialize_public_link(record)
@@ -476,7 +557,10 @@ async def submit_public_fill_link(
                 status_code=409,
                 detail="This signing-enabled form is misconfigured. Contact the sender to update the signer fields.",
             ) from exc
-    respondent_label, respondent_secondary_label = derive_fill_link_respondent_label(answers)
+    respondent_label, respondent_secondary_label = derive_fill_link_respondent_label(
+        answers,
+        record.questions,
+    )
     search_text = build_fill_link_search_text(answers, respondent_label)
     result = submit_fill_link_response(
         public_token,
@@ -488,6 +572,11 @@ async def submit_public_fill_link(
     )
     if result.status == "not_found":
         raise HTTPException(status_code=404, detail="Fill By Link not found")
+    if result.status == "monthly_limit_reached":
+        raise HTTPException(
+            status_code=409,
+            detail="This account has reached its monthly Fill By Link response limit. Contact the sender.",
+        )
     if result.status in {"closed", "limit_reached"}:
         link_payload = _serialize_public_link(result.link or record)
         raise HTTPException(
@@ -605,6 +694,8 @@ async def download_public_fill_link_response(
             status_code=409,
             detail="Respondent PDF download is only available for template Fill By Link.",
         )
+    if _fill_link_references_locked_templates(record):
+        raise HTTPException(status_code=409, detail="This respondent PDF is no longer available.")
     if not respondent_pdf_download_enabled(record):
         raise HTTPException(status_code=404, detail="Respondent PDF download is not available for this link.")
     if is_closed_reason_blocking_download(record.closed_reason):
@@ -620,6 +711,36 @@ async def download_public_fill_link_response(
     )
     if not snapshot:
         raise HTTPException(status_code=404, detail="Respondent PDF download is not available for this link.")
+    filename = safe_pdf_download_filename(
+        str(snapshot.get("filename") or snapshot.get("templateName") or "fill-link-response"),
+        "fill-link-response",
+    )
+    linked_signing_request = None
+    if response_record.signing_request_id:
+        linked_signing_request = get_signing_request_for_user(
+            response_record.signing_request_id,
+            record.user_id,
+        )
+    linked_status = str(getattr(linked_signing_request, "status", "") or "").strip().lower()
+    linked_source_bucket_path = str(getattr(linked_signing_request, "source_pdf_bucket_path", "") or "").strip()
+    if linked_status in {"sent", "completed"} and linked_source_bucket_path:
+        try:
+            pdf_bytes = download_storage_bytes(linked_source_bucket_path)
+        except FileNotFoundError as exc:
+            raise HTTPException(
+                status_code=404,
+                detail="The retained respondent PDF for this signing record is unavailable.",
+            ) from exc
+        except Exception as exc:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to load the retained respondent PDF for this signing record.",
+            ) from exc
+        response = Response(content=pdf_bytes, media_type="application/pdf")
+        response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        response.headers.update(resolve_stream_cors_headers(request.headers.get("origin")))
+        response.headers["Cache-Control"] = "private, no-store"
+        return response
 
     try:
         output_path, cleanup_targets, filename = materialize_fill_link_response_download(

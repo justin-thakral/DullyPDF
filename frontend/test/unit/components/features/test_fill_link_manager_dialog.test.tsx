@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { FillLinkManagerDialog } from '../../../../src/components/features/FillLinkManagerDialog';
 import { ApiService } from '../../../../src/services/api';
@@ -40,7 +40,6 @@ describe('FillLinkManagerDialog', () => {
         title: 'Hiring Packet',
         status: 'active',
         responseCount: 2,
-        maxResponses: 1000,
         publicPath: '/respond/group-link-1',
         requireAllFields: false,
         publishedAt: '2026-03-10T12:00:00.000Z',
@@ -75,6 +74,7 @@ describe('FillLinkManagerDialog', () => {
     );
 
     return {
+      onClose: props.onClose,
       onRefreshGroup: props.onRefreshGroup,
       onSearchGroupResponses: props.onSearchGroupResponses,
     };
@@ -90,7 +90,6 @@ describe('FillLinkManagerDialog', () => {
           title: 'Template One Intake',
           status: 'active',
           responseCount: 3,
-          maxResponses: 1000,
           publicPath: '/respond/template-link-1',
           requireAllFields: true,
           allowRespondentPdfDownload: true,
@@ -115,6 +114,12 @@ describe('FillLinkManagerDialog', () => {
     vi.useFakeTimers();
     vi.stubGlobal('open', vi.fn());
     window.open = vi.fn() as unknown as typeof window.open;
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: vi.fn().mockResolvedValue(undefined),
+      },
+    });
   });
 
   afterEach(() => {
@@ -129,6 +134,135 @@ describe('FillLinkManagerDialog', () => {
 
     expect(onSearchGroupResponses).not.toHaveBeenCalled();
     expect(onRefreshGroup).not.toHaveBeenCalled();
+  });
+
+  it('uses the visible top-right close control when the shared header is hidden', () => {
+    const { onClose } = renderGroupDialog();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close Fill By Web Form Link + Sign dialog' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows visible feedback after copying the public link', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderGroupDialog();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Copy link' }));
+      await Promise.resolve();
+    });
+
+    expect(screen.getByText('Public link copied.')).toBeTruthy();
+    expect(writeText).toHaveBeenCalledWith(expect.stringContaining('/respond/group-link-1'));
+  });
+
+  it('shows a visible error when public-link copy is unavailable', async () => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    });
+
+    renderGroupDialog();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Copy link' }));
+
+    expect(screen.getByText('Clipboard copy is unavailable in this browser. Open the link and copy it manually.')).toBeTruthy();
+  });
+
+  it('copies the public link instead of showing an error when popup blocking prevents opening it', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+    vi.mocked(window.open).mockReturnValueOnce(null);
+
+    renderGroupDialog();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Open link' }));
+      await Promise.resolve();
+    });
+
+    expect(screen.getByText('Public link copied.')).toBeTruthy();
+    expect(writeText).toHaveBeenCalledWith(expect.stringContaining('/respond/group-link-1'));
+  });
+
+  it('hydrates fresh source data while the builder is still pristine', () => {
+    const initialProps = buildGroupDialogProps({
+      templateName: 'Template One',
+      hasActiveTemplate: true,
+      templateLink: null,
+      templateResponses: [],
+      templateSourceQuestions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', sourceType: 'pdf_field', visible: true },
+      ],
+      groupName: null,
+      hasActiveGroup: false,
+      groupLink: null,
+      groupResponses: [],
+    });
+
+    const { rerender } = render(<FillLinkManagerDialog {...initialProps} />);
+    const titleInput = screen.getByLabelText('Form title') as HTMLInputElement;
+
+    expect(titleInput.value).toBe('Template One');
+
+    rerender(
+      <FillLinkManagerDialog
+        {...initialProps}
+        templateLink={{
+          id: 'template-link-fresh',
+          title: 'Server Refreshed Title',
+          status: 'active',
+          responseCount: 0,
+          publicPath: '/respond/template-link-fresh',
+          requireAllFields: false,
+          publishedAt: '2026-03-10T12:00:00.000Z',
+        }}
+      />,
+    );
+
+    expect((screen.getByLabelText('Form title') as HTMLInputElement).value).toBe('Server Refreshed Title');
+  });
+
+  it('preserves unsaved builder edits when source props refresh while open', () => {
+    const initialProps = buildGroupDialogProps({
+      templateName: 'Template One',
+      hasActiveTemplate: true,
+      templateLink: null,
+      templateResponses: [],
+      templateSourceQuestions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', sourceType: 'pdf_field', visible: true },
+      ],
+      groupName: null,
+      hasActiveGroup: false,
+      groupLink: null,
+      groupResponses: [],
+    });
+
+    const { rerender } = render(<FillLinkManagerDialog {...initialProps} />);
+    const titleInput = screen.getByLabelText('Form title') as HTMLInputElement;
+
+    fireEvent.change(titleInput, { target: { value: 'Unsaved title' } });
+    expect(titleInput.value).toBe('Unsaved title');
+
+    rerender(
+      <FillLinkManagerDialog
+        {...initialProps}
+        templateSourceQuestions={[
+          { key: 'full_name', label: 'Full Name', type: 'text', sourceType: 'pdf_field', visible: true },
+          { key: 'email', label: 'Email', type: 'email', sourceType: 'custom', visible: true },
+        ]}
+      />,
+    );
+
+    expect((screen.getByLabelText('Form title') as HTMLInputElement).value).toBe('Unsaved title');
   });
 
   it('shows the respondent PDF toggle only for template links and reuses the saved flag state', () => {
@@ -239,8 +373,8 @@ describe('FillLinkManagerDialog', () => {
 
     fireEvent.click(screen.getByRole('checkbox', { name: /require signature/i }));
     fireEvent.change(screen.getByLabelText('Signature mode'), { target: { value: 'consumer' } });
-    fireEvent.change(screen.getByLabelText('Signer name question'), { target: { value: 'full_name' } });
-    fireEvent.change(screen.getByLabelText('Signer email question'), { target: { value: 'email' } });
+    fireEvent.change(screen.getByLabelText(/Question that supplies the signer's full name/i), { target: { value: 'full_name' } });
+    fireEvent.change(screen.getByLabelText(/Question that supplies the signer's email address/i), { target: { value: 'email' } });
     fireEvent.change(screen.getByLabelText('Paper-copy or offline procedure'), {
       target: { value: 'Email owner@example.com to request paper delivery.' },
     });
@@ -289,7 +423,7 @@ describe('FillLinkManagerDialog', () => {
 
     fireEvent.click(screen.getByRole('checkbox', { name: /require signature/i }));
 
-    const signerEmailSelect = screen.getByLabelText('Signer email question') as HTMLSelectElement;
+    const signerEmailSelect = screen.getByLabelText(/Question that supplies the signer's email address/i) as HTMLSelectElement;
     expect(signerEmailSelect.value).toBe('email');
 
     fireEvent.click(screen.getByRole('button', { name: 'Preview' }));
@@ -339,7 +473,7 @@ describe('FillLinkManagerDialog', () => {
 
     fireEvent.click(screen.getByRole('checkbox', { name: /require signature/i }));
 
-    const signerEmailSelect = screen.getByLabelText('Signer email question') as HTMLSelectElement;
+    const signerEmailSelect = screen.getByLabelText(/Question that supplies the signer's email address/i) as HTMLSelectElement;
     expect(signerEmailSelect.disabled).toBe(false);
     expect(Array.from(signerEmailSelect.options).some((option) => option.textContent === 'Signer Email')).toBe(true);
     expect(signerEmailSelect.value).toBe('signer_email');
@@ -371,7 +505,6 @@ describe('FillLinkManagerDialog', () => {
         title: 'Template One Intake',
         status: 'active',
         responseCount: 3,
-        maxResponses: 1000,
         publicPath: '/respond/template-link-legacy-attested',
         requireAllFields: true,
         allowRespondentPdfDownload: true,
@@ -410,7 +543,6 @@ describe('FillLinkManagerDialog', () => {
         title: 'Template One Intake',
         status: 'active',
         responseCount: 3,
-        maxResponses: 1000,
         publicPath: '/respond/template-link-legacy-blocked',
         requireAllFields: true,
         allowRespondentPdfDownload: true,
@@ -468,6 +600,7 @@ describe('FillLinkManagerDialog', () => {
             artifacts: {
               signedPdf: { available: true, downloadPath: '/api/signing/requests/sign-1/artifacts/signed_pdf' },
               auditReceipt: { available: true, downloadPath: '/api/signing/requests/sign-1/artifacts/audit_receipt' },
+              disputePackage: { available: true, downloadPath: '/api/signing/requests/sign-1/artifacts/dispute_package' },
             },
           },
         },
@@ -486,6 +619,11 @@ describe('FillLinkManagerDialog', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       '/api/signing/requests/sign-1/artifacts/audit_receipt',
       expect.objectContaining({ filename: 'Ada Lovelace-audit-receipt.pdf' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Full package' }));
+    expect(downloadSpy).toHaveBeenCalledWith(
+      '/api/signing/requests/sign-1/artifacts/dispute_package',
+      expect.objectContaining({ filename: 'Ada Lovelace-dispute-package.zip' }),
     );
   });
 
@@ -570,7 +708,6 @@ describe('FillLinkManagerDialog', () => {
           title: 'Benefits Packet',
           status: 'active',
           responseCount: 1,
-          maxResponses: 1000,
           publicPath: '/respond/group-link-2',
           requireAllFields: false,
           publishedAt: '2026-03-10T12:05:00.000Z',
@@ -623,7 +760,6 @@ describe('FillLinkManagerDialog', () => {
         title: 'Hiring Packet',
         status: 'active',
         responseCount: 2,
-        maxResponses: 1000,
         publicPath: '/respond/group-link-1',
         requireAllFields: false,
         publishedAt: '2026-03-10T12:00:00.000Z',

@@ -9,6 +9,7 @@ import {
 } from '../services/api';
 import {
   buildSigningAnchorsFromFields,
+  clonePdfBytes,
   hashSourcePdfSha256,
   hasMeaningfulFillValues,
   type ReviewedFillContext,
@@ -28,6 +29,13 @@ export interface UseWorkspaceSigningDeps {
 
 export type WorkspaceSigningDraftPayload = Omit<CreateSigningRequestPayload, 'signerName' | 'signerEmail'> & {
   recipients: SigningRecipientInput[];
+};
+
+type PreparedSigningSource = {
+  mode: CreateSigningRequestPayload['mode'];
+  filename: string;
+  pdfBytes: Uint8Array<ArrayBuffer>;
+  sourcePdfSha256: string;
 };
 
 function buildRecipientSpecificTitle(baseTitle: string | undefined, recipient: SigningRecipientInput, totalRecipients: number): string | undefined {
@@ -55,6 +63,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
   const [signingError, setSigningError] = useState<string | null>(null);
   const [signingNotice, setSigningNotice] = useState<string | null>(null);
   const [createdSigningRequests, setCreatedSigningRequests] = useState<SigningRequestSummary[]>([]);
+  const [preparedSigningSource, setPreparedSigningSource] = useState<PreparedSigningSource | null>(null);
 
   const defaultAnchors = useMemo(
     () => buildSigningAnchorsFromFields(deps.fields),
@@ -69,6 +78,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
     setSigningError(null);
     setSigningNotice(null);
     setCreatedSigningRequests([]);
+    setPreparedSigningSource(null);
     if (!signingOptions) {
       setSigningOptionsRequested(true);
     }
@@ -123,6 +133,17 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
     }
   }, [deps.verifiedUser]);
 
+  const prepareSigningSource = useCallback(async (mode: CreateSigningRequestPayload['mode']): Promise<PreparedSigningSource> => {
+    const pdfBytes = clonePdfBytes(await deps.resolveSourcePdfBytes(mode));
+    const sourcePdfSha256 = await hashSourcePdfSha256(pdfBytes);
+    return {
+      mode,
+      filename: `${deps.sourceDocumentName || 'signing-source'}.pdf`,
+      pdfBytes,
+      sourcePdfSha256,
+    };
+  }, [deps]);
+
   const createDrafts = useCallback(async (payload: WorkspaceSigningDraftPayload) => {
     setSigningSaveInProgress(true);
     setSigningError(null);
@@ -132,8 +153,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
       if (!recipients.length) {
         throw new Error('Add at least one recipient before saving a signing draft.');
       }
-      const sourcePdfBytes = await deps.resolveSourcePdfBytes(payload.mode);
-      const sourcePdfSha256 = await hashSourcePdfSha256(sourcePdfBytes);
+      const nextPreparedSigningSource = await prepareSigningSource(payload.mode);
       const fillContext = payload.mode === 'fill_and_sign' ? deps.reviewedFillContext ?? null : null;
       const created: SigningRequestSummary[] = [];
       const failed: string[] = [];
@@ -146,7 +166,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
             sourceId: fillContext?.sourceId || payload.sourceId,
             sourceLinkId: fillContext?.sourceLinkId || undefined,
             sourceRecordLabel: fillContext?.sourceRecordLabel || undefined,
-            sourcePdfSha256,
+            sourcePdfSha256: nextPreparedSigningSource.sourcePdfSha256,
             signerName: recipient.name,
             signerEmail: recipient.email,
           });
@@ -157,6 +177,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
         }
       }
       setCreatedSigningRequests(created);
+      setPreparedSigningSource(created.length ? nextPreparedSigningSource : null);
       await refreshResponses();
       if (created.length) {
         setSigningNotice(
@@ -179,7 +200,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
     } finally {
       setSigningSaveInProgress(false);
     }
-  }, [deps]);
+  }, [deps, prepareSigningSource, refreshResponses]);
 
   const createSingleDraft = useCallback(async (payload: CreateSigningRequestPayload) => {
     await createDrafts({
@@ -201,9 +222,14 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
     setSigningNotice(null);
     try {
       const [firstRequest] = createdSigningRequests;
-      const sourcePdfBytes = await deps.resolveSourcePdfBytes(firstRequest.mode);
-      const sourcePdfSha256 = await hashSourcePdfSha256(sourcePdfBytes);
-      const pdfBlobBytes = new Uint8Array(sourcePdfBytes);
+      const activePreparedSigningSource = (
+        preparedSigningSource && preparedSigningSource.mode === firstRequest.mode
+      )
+        ? preparedSigningSource
+        : await prepareSigningSource(firstRequest.mode);
+      if (!preparedSigningSource || preparedSigningSource.mode !== activePreparedSigningSource.mode) {
+        setPreparedSigningSource(activePreparedSigningSource);
+      }
       const nextRequests: SigningRequestSummary[] = [];
       const failed: string[] = [];
       for (const request of createdSigningRequests) {
@@ -213,9 +239,9 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
         }
         try {
           const sentRequest = await ApiService.sendSigningRequest(request.id, {
-            pdf: new Blob([pdfBlobBytes], { type: 'application/pdf' }),
-            filename: `${deps.sourceDocumentName || 'signing-source'}.pdf`,
-            sourcePdfSha256,
+            pdf: new Blob([activePreparedSigningSource.pdfBytes], { type: 'application/pdf' }),
+            filename: activePreparedSigningSource.filename,
+            sourcePdfSha256: activePreparedSigningSource.sourcePdfSha256,
             ownerReviewConfirmed: options?.ownerReviewConfirmed,
           });
           nextRequests.push(sentRequest);
@@ -254,7 +280,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
     } finally {
       setSigningSendInProgress(false);
     }
-  }, [createdSigningRequests, deps, refreshResponses]);
+  }, [createdSigningRequests, prepareSigningSource, preparedSigningSource, refreshResponses]);
 
   const sendDisabledReason = useMemo(() => {
     if (!createdSigningRequests.length) return null;

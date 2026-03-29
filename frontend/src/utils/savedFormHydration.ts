@@ -7,7 +7,8 @@ import type {
   SavedFormEditorSnapshot,
   TextTransformRule,
 } from '../types';
-import { buildRadioGroups, normalizeRadioKey } from './radioGroups';
+import { buildRadioGroups } from './radioGroups';
+import { deriveRadioGroupSuggestionsFromCheckboxRules } from './openAiFields';
 
 type FillRulesSource = {
   fillRules?: {
@@ -206,115 +207,13 @@ function normalizePageSizes(
   return normalized;
 }
 
-function compareFields(left: PdfField, right: PdfField) {
-  if (left.page !== right.page) return left.page - right.page;
-  if (left.rect.y !== right.rect.y) return left.rect.y - right.rect.y;
-  if (left.rect.x !== right.rect.x) return left.rect.x - right.rect.x;
-  return left.name.localeCompare(right.name, undefined, { sensitivity: 'base' });
-}
-
-function humanizeLegacyLabel(raw: string, fallback: string): string {
-  const candidate = String(raw || '').trim();
-  const base = candidate || fallback;
-  return base
-    .replace(/[_-]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
-function deriveLegacyOptionLabel(field: PdfField, groupKey: string, index: number): string {
-  const explicit = String(field.optionLabel || field.radioOptionLabel || '').trim();
-  if (explicit) {
-    return explicit;
-  }
-  const rawOptionKey = String(field.optionKey || field.radioOptionKey || '').trim();
-  if (rawOptionKey) {
-    return humanizeLegacyLabel(rawOptionKey, `Option ${index}`);
-  }
-  const groupPrefix = `${normalizeRadioKey(groupKey, groupKey)}_`;
-  const normalizedFieldName = normalizeRadioKey(field.name, field.name);
-  if (normalizedFieldName.startsWith(groupPrefix)) {
-    return humanizeLegacyLabel(normalizedFieldName.slice(groupPrefix.length), `Option ${index}`);
-  }
-  return humanizeLegacyLabel(field.name, `Option ${index}`);
-}
-
 export function deriveLegacyRadioGroupSuggestions(
   fields: PdfField[],
   checkboxRules: CheckboxRule[],
 ): RadioGroupSuggestion[] {
-  if (!fields.length || !checkboxRules.length) {
-    return [];
-  }
-
-  const checkboxGroups = new Map<string, PdfField[]>();
-  for (const field of fields) {
-    if (field.type !== 'checkbox') {
-      continue;
-    }
-    const rawGroupKey = String(field.groupKey || '').trim();
-    const groupKey = normalizeRadioKey(rawGroupKey, '');
-    if (!groupKey) {
-      continue;
-    }
-    const group = checkboxGroups.get(groupKey);
-    if (group) {
-      group.push(field);
-    } else {
-      checkboxGroups.set(groupKey, [field]);
-    }
-  }
-
-  const suggestionsByGroup = new Map<string, RadioGroupSuggestion>();
-  for (const rule of checkboxRules) {
-    if (rule.operation !== 'yes_no' && rule.operation !== 'enum') {
-      continue;
-    }
-    const groupKey = normalizeRadioKey(String(rule.groupKey || '').trim(), '');
-    if (!groupKey || suggestionsByGroup.has(groupKey)) {
-      continue;
-    }
-    const groupFields = [...(checkboxGroups.get(groupKey) || [])].sort(compareFields);
-    if (groupFields.length < 2) {
-      continue;
-    }
-    if (groupFields.some((field) => field.type === 'radio' || field.radioGroupId)) {
-      continue;
-    }
-    const groupLabel = humanizeLegacyLabel(
-      String(groupFields[0]?.groupLabel || '').trim(),
-      groupKey,
-    );
-    const suggestion: RadioGroupSuggestion = {
-      id: `legacy_${groupKey}`,
-      suggestedType: 'radio_group',
-      groupKey,
-      groupLabel,
-      suggestedFields: groupFields.map((field, index) => {
-        const optionLabel = deriveLegacyOptionLabel(field, groupKey, index + 1);
-        const optionKey = normalizeRadioKey(
-          String(field.optionKey || field.radioOptionKey || '').trim() || optionLabel,
-          `option_${index + 1}`,
-        );
-        return {
-          fieldId: field.id,
-          fieldName: field.name,
-          optionKey,
-          optionLabel,
-        };
-      }),
-      sourceField: String(rule.databaseField || '').trim() || undefined,
-      selectionReason: rule.operation === 'yes_no' ? 'yes_no' : 'enum',
-      confidence: typeof rule.confidence === 'number' ? rule.confidence : undefined,
-      reasoning: String(rule.reasoning || '').trim() || `Legacy checkbox rule "${rule.operation}" targeted "${groupLabel}". Review and convert this cluster into an explicit radio group if it is single-choice.`,
-    };
-    suggestionsByGroup.set(groupKey, suggestion);
-  }
-
-  return [...suggestionsByGroup.values()].sort((left, right) => (
-    left.groupLabel.localeCompare(right.groupLabel, undefined, { sensitivity: 'base' })
-  ));
+  return deriveRadioGroupSuggestionsFromCheckboxRules(fields, checkboxRules, {
+    idPrefix: 'legacy_',
+  });
 }
 
 export function buildSavedFormEditorSnapshot(params: {

@@ -34,7 +34,6 @@ function createLink(id: string, responseCount = 1) {
     id,
     status: 'active',
     responseCount,
-    maxResponses: 1000,
     publicPath: `/respond/${id}`,
   };
 }

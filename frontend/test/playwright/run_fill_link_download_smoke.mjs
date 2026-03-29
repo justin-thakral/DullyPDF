@@ -92,8 +92,9 @@ from pypdf import PdfReader
 from backend.firebaseDB.firebase_service import get_firestore_client, init_firebase
 from backend.firebaseDB.storage_service import upload_form_pdf, upload_template_pdf
 from backend.firebaseDB.template_database import create_template
-from backend.firebaseDB.fill_link_database import create_fill_link
+from backend.firebaseDB.fill_link_database import create_or_update_fill_link
 from backend.services.fill_link_download_service import build_template_fill_link_download_snapshot
+from backend.services.fill_links_service import build_fill_link_public_token
 
 uid = os.environ["PW_UID"]
 email = os.environ["PW_EMAIL"]
@@ -174,7 +175,7 @@ try:
         },
     ]
 
-    link = create_fill_link(
+    link = create_or_update_fill_link(
         uid,
         scope_type="template",
         template_id=template.id,
@@ -183,15 +184,15 @@ try:
         title="Download Smoke Link",
         questions=questions,
         require_all_fields=False,
-        max_responses=100,
         respondent_pdf_download_enabled=True,
         respondent_pdf_snapshot=snapshot,
     )
+    public_token = build_fill_link_public_token(link.id)
 
     print(json.dumps({
         "templateId": template.id,
         "linkId": link.id,
-        "publicToken": link.public_token,
+        "publicToken": public_token,
         "questions": questions,
     }, sort_keys=True))
 finally:
@@ -256,14 +257,14 @@ async function main() {
     logStep(`seeded link ${seeded.linkId} with token ${seeded.publicToken}`);
 
     // ── Step 2: Navigate to the public fill link page ──
-    const publicUrl = `${baseUrl}/fill/${seeded.publicToken}`;
+    const publicUrl = `${baseUrl}/respond/${seeded.publicToken}`;
     logStep(`navigating to public fill link page: ${publicUrl}`);
     await page.goto(publicUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     // ── Step 3: Verify the download hint text is visible (pre-submit) ──
     logStep('verifying pre-submit download hint is visible');
     await retry('check download hint', 10, async () => {
-      const hintText = page.getByText('PDF copy available after submit');
+      const hintText = page.getByText(/PDF copy available after submit/i);
       const visible = await hintText.isVisible().catch(() => false);
       if (!visible) {
         throw new Error('Expected "PDF copy available after submit" hint to be visible');
@@ -294,13 +295,13 @@ async function main() {
 
     // ── Step 6: Submit the form ──
     logStep('submitting the form');
-    const submitButton = page.getByRole('button', { name: 'Submit' });
+    const submitButton = page.getByRole('button', { name: /Submit response/i });
     await submitButton.click();
 
     // ── Step 7: Wait for success message ──
     logStep('waiting for success message');
     await retry('wait for success', 15, async () => {
-      const successText = page.getByText('Your response was submitted');
+      const successText = page.getByText(/Your response was submitted\./i);
       const visible = await successText.isVisible().catch(() => false);
       if (!visible) {
         throw new Error('Success message not yet visible');

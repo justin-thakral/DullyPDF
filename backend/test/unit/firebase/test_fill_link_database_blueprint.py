@@ -27,7 +27,6 @@ def test_create_or_update_fill_link_creates_and_updates_owned_record(mocker) -> 
         title="Intake Form",
         questions=[{"key": "full_name", "label": "Full Name", "type": "text"}],
         require_all_fields=True,
-        max_responses=5,
     )
 
     assert created.status == "active"
@@ -46,7 +45,6 @@ def test_create_or_update_fill_link_creates_and_updates_owned_record(mocker) -> 
         title="Updated Title",
         questions=[{"key": "dob", "label": "DOB", "type": "date"}],
         require_all_fields=False,
-        max_responses=5,
         status="closed",
         closed_reason="owner_closed",
     )
@@ -59,20 +57,12 @@ def test_create_or_update_fill_link_creates_and_updates_owned_record(mocker) -> 
     assert updated.public_token is None
 
 
-def test_create_or_update_fill_link_enforces_active_limit_and_updates_counter_on_close(mocker) -> None:
+def test_create_or_update_fill_link_allows_multiple_active_links_for_one_owner(mocker) -> None:
     client = FakeFirestoreClient()
     mocker.patch("backend.firebaseDB.fill_link_database.get_firestore_client", return_value=client)
     mocker.patch(
         "backend.firebaseDB.fill_link_database.now_iso",
-        side_effect=[
-            "ts-create-1",
-            "ts-state-1",
-            "ts-create-2",
-            "ts-close",
-            "ts-close-state",
-            "ts-create-3",
-            "ts-state-3",
-        ],
+        side_effect=["ts-create-1", "ts-create-2", "ts-close", "ts-create-3"],
     )
     mocker.patch(
         "backend.firebaseDB.fill_link_database.allow_legacy_fill_link_public_tokens",
@@ -86,23 +76,7 @@ def test_create_or_update_fill_link_enforces_active_limit_and_updates_counter_on
         title="First",
         questions=[{"key": "full_name", "label": "Full Name", "type": "text"}],
         require_all_fields=True,
-        max_responses=5,
-        active_limit=1,
     )
-
-    with pytest.raises(fldb.FillLinkActiveLimitExceededError, match="Fill By Link limit reached"):
-        fldb.create_or_update_fill_link(
-            "user-1",
-            template_id="tpl-2",
-            template_name="Template Two",
-            title="Second",
-            questions=[{"key": "full_name", "label": "Full Name", "type": "text"}],
-            require_all_fields=True,
-            max_responses=5,
-            active_limit=1,
-        )
-
-    closed = fldb.update_fill_link(first.id, "user-1", status="closed")
     second = fldb.create_or_update_fill_link(
         "user-1",
         template_id="tpl-2",
@@ -110,15 +84,22 @@ def test_create_or_update_fill_link_enforces_active_limit_and_updates_counter_on
         title="Second",
         questions=[{"key": "full_name", "label": "Full Name", "type": "text"}],
         require_all_fields=True,
-        max_responses=5,
-        active_limit=1,
+    )
+
+    closed = fldb.update_fill_link(first.id, "user-1", status="closed")
+    third = fldb.create_or_update_fill_link(
+        "user-1",
+        template_id="tpl-3",
+        template_name="Template Three",
+        title="Third",
+        questions=[{"key": "full_name", "label": "Full Name", "type": "text"}],
+        require_all_fields=True,
     )
 
     assert closed is not None
     assert closed.status == "closed"
     assert second.template_id == "tpl-2"
-    state_payload = client.collection(fldb.FILL_LINK_STATE_COLLECTION).document("user-1").get().to_dict()
-    assert state_payload["active_count"] == 1
+    assert third.template_id == "tpl-3"
 
 
 def test_update_fill_link_reactivate_clears_legacy_public_token_and_preserves_link_id(mocker) -> None:
@@ -133,7 +114,6 @@ def test_update_fill_link_reactivate_clears_legacy_public_token_and_preserves_li
             "public_token": "token-old",
             "status": "closed",
             "closed_reason": "owner_closed",
-            "max_responses": 5,
             "response_count": 1,
             "questions": [{"key": "name", "label": "Name", "type": "text"}],
             "require_all_fields": False,
@@ -151,7 +131,6 @@ def test_update_fill_link_reactivate_clears_legacy_public_token_and_preserves_li
         "user-1",
         status="active",
         require_all_fields=True,
-        max_responses=10,
     )
 
     assert updated is not None
@@ -159,7 +138,6 @@ def test_update_fill_link_reactivate_clears_legacy_public_token_and_preserves_li
     assert updated.status == "active"
     assert updated.public_token is None
     assert updated.require_all_fields is True
-    assert updated.max_responses == 10
     stored = collection.document("link-1").get().to_dict()
     assert stored["public_token"] is None
     assert stored["status"] == "active"
@@ -176,7 +154,6 @@ def test_signed_public_tokens_work_even_when_record_still_has_legacy_public_toke
             "title": "Fill Link",
             "public_token": "token-rotated",
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
@@ -201,7 +178,6 @@ def test_legacy_public_tokens_only_work_when_opt_in_flag_is_enabled(mocker) -> N
             "title": "Fill Link",
             "public_token": "token-legacy",
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
@@ -229,7 +205,6 @@ def test_list_fill_links_filters_by_owner_and_template(mocker) -> None:
             "title": "Old",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 1,
             "questions": [{"key": "name", "label": "Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
@@ -244,7 +219,6 @@ def test_list_fill_links_filters_by_owner_and_template(mocker) -> None:
             "title": "New",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 2,
             "questions": [{"key": "name", "label": "Name", "type": "text"}],
             "created_at": "2024-02-01T00:00:00+00:00",
@@ -259,7 +233,6 @@ def test_list_fill_links_filters_by_owner_and_template(mocker) -> None:
             "title": "Foreign",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [{"key": "name", "label": "Name", "type": "text"}],
             "created_at": "2024-03-01T00:00:00+00:00",
@@ -275,7 +248,7 @@ def test_list_fill_links_filters_by_owner_and_template(mocker) -> None:
     assert [record.id for record in template_filtered] == ["owned-old"]
 
 
-def test_submit_fill_link_response_auto_closes_at_limit(mocker) -> None:
+def test_submit_fill_link_response_keeps_link_active_when_monthly_quota_has_capacity(mocker) -> None:
     client = FakeFirestoreClient()
     signed_token = build_fill_link_public_token("link-1")
     client.collection(fldb.FILL_LINKS_COLLECTION).document("link-1").seed(
@@ -286,7 +259,6 @@ def test_submit_fill_link_response_auto_closes_at_limit(mocker) -> None:
             "title": "Fill Link",
             "public_token": None,
             "status": "active",
-            "max_responses": 2,
             "response_count": 1,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
@@ -296,6 +268,7 @@ def test_submit_fill_link_response_auto_closes_at_limit(mocker) -> None:
     )
     mocker.patch("backend.firebaseDB.fill_link_database.get_firestore_client", return_value=client)
     mocker.patch("backend.firebaseDB.fill_link_database.now_iso", return_value="ts-submit")
+    mocker.patch("backend.firebaseDB.fill_link_database._resolve_fill_link_monthly_limit_for_user", return_value=25)
 
     result = fldb.submit_fill_link_response(
         signed_token,
@@ -308,15 +281,19 @@ def test_submit_fill_link_response_auto_closes_at_limit(mocker) -> None:
     assert result.status == "accepted"
     assert result.link is not None
     assert result.link.response_count == 2
-    assert result.link.status == "closed"
+    assert result.link.status == "active"
     stored_link = client.collection(fldb.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
-    assert stored_link["closed_reason"] == "response_limit"
+    assert stored_link["status"] == "active"
+    usage_doc = client.collection(fldb.FILL_LINK_USAGE_COUNTERS_COLLECTION).document(
+        f"user-1__{fldb._current_month_key()}"
+    ).get().to_dict()
+    assert usage_doc["response_count"] == 1
     stored_responses = client.collection(fldb.FILL_LINK_RESPONSES_COLLECTION)
     response_doc = stored_responses.document(result.response.id).get().to_dict()
     assert response_doc["respondent_label"] == "Ada Lovelace"
 
 
-def test_submit_fill_link_response_returns_closed_when_cap_already_reached(mocker) -> None:
+def test_submit_fill_link_response_returns_monthly_limit_reached_when_quota_is_exhausted(mocker) -> None:
     client = FakeFirestoreClient()
     signed_token = build_fill_link_public_token("link-1")
     client.collection(fldb.FILL_LINKS_COLLECTION).document("link-1").seed(
@@ -327,15 +304,26 @@ def test_submit_fill_link_response_returns_closed_when_cap_already_reached(mocke
             "title": "Fill Link",
             "public_token": None,
             "status": "active",
-            "max_responses": 1,
             "response_count": 1,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
             "updated_at": "2024-01-01T00:00:00+00:00",
         }
     )
+    client.collection(fldb.FILL_LINK_USAGE_COUNTERS_COLLECTION).document(
+        f"user-1__{fldb._current_month_key()}"
+    ).seed(
+        {
+            "user_id": "user-1",
+            "month_key": fldb._current_month_key(),
+            "response_count": 1,
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
     mocker.patch("backend.firebaseDB.fill_link_database.get_firestore_client", return_value=client)
     mocker.patch("backend.firebaseDB.fill_link_database.now_iso", return_value="ts-submit")
+    mocker.patch("backend.firebaseDB.fill_link_database._resolve_fill_link_monthly_limit_for_user", return_value=1)
 
     result = fldb.submit_fill_link_response(
         signed_token,
@@ -345,13 +333,13 @@ def test_submit_fill_link_response_returns_closed_when_cap_already_reached(mocke
         search_text="ada lovelace full_name",
     )
 
-    assert result.status == "limit_reached"
+    assert result.status == "monthly_limit_reached"
     assert result.link is not None
-    assert result.link.status == "closed"
-    assert result.link.closed_reason == "response_limit"
+    assert result.link.status == "active"
+    assert result.link.closed_reason is None
     stored_link = client.collection(fldb.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
-    assert stored_link["status"] == "closed"
-    assert stored_link["closed_reason"] == "response_limit"
+    assert stored_link["status"] == "active"
+    assert stored_link.get("closed_reason") is None
 
 
 def test_submit_fill_link_response_reuses_existing_attempt_without_incrementing_count(mocker) -> None:
@@ -365,7 +353,6 @@ def test_submit_fill_link_response_reuses_existing_attempt_without_incrementing_
             "title": "Fill Link",
             "public_token": None,
             "status": "active",
-            "max_responses": 1,
             "response_count": 0,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
@@ -423,7 +410,6 @@ def test_submit_fill_link_response_persists_response_snapshot_for_downloads(mock
             "title": "Fill Link",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "respondent_pdf_download_enabled": True,
@@ -461,7 +447,6 @@ def test_list_fill_link_responses_filters_search(mocker) -> None:
             "title": "Fill Link",
             "public_token": "token-1",
             "status": "active",
-            "max_responses": 5,
             "response_count": 2,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "created_at": "2024-01-01T00:00:00+00:00",
@@ -496,3 +481,57 @@ def test_list_fill_link_responses_filters_search(mocker) -> None:
     records = fldb.list_fill_link_responses("link-1", "user-1", search="grace")
 
     assert [record.id for record in records] == ["resp-2"]
+
+
+def test_delete_fill_link_preserves_response_provenance_when_linked_signing_request_exists(mocker) -> None:
+    client = FakeFirestoreClient()
+    client.collection(fldb.FILL_LINKS_COLLECTION).document("link-1").seed(
+        {
+            "user_id": "user-1",
+            "template_id": "tpl-1",
+            "template_name": "Template 1",
+            "title": "Fill Link",
+            "public_token": "token-1",
+            "status": "active",
+            "response_count": 2,
+            "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    responses = client.collection(fldb.FILL_LINK_RESPONSES_COLLECTION)
+    responses.document("resp-unlinked").seed(
+        {
+            "link_id": "link-1",
+            "user_id": "user-1",
+            "template_id": "tpl-1",
+            "respondent_label": "Ada Lovelace",
+            "answers": {"full_name": "Ada Lovelace"},
+            "search_text": "ada lovelace",
+            "submitted_at": "2024-02-01T00:00:00+00:00",
+        }
+    )
+    responses.document("resp-linked").seed(
+        {
+            "link_id": "link-1",
+            "user_id": "user-1",
+            "template_id": "tpl-1",
+            "respondent_label": "Grace Hopper",
+            "answers": {"full_name": "Grace Hopper"},
+            "search_text": "grace hopper",
+            "submitted_at": "2024-03-01T00:00:00+00:00",
+            "signing_request_id": "sign-1",
+        }
+    )
+    mocker.patch("backend.firebaseDB.fill_link_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.fill_link_database.now_iso", return_value="ts-orphaned")
+
+    deleted = fldb.delete_fill_link("link-1", "user-1")
+
+    assert deleted is True
+    assert not client.collection(fldb.FILL_LINKS_COLLECTION).document("link-1").get().exists
+    assert not responses.document("resp-unlinked").get().exists
+    linked_payload = responses.document("resp-linked").get().to_dict()
+    assert linked_payload["signing_request_id"] == "sign-1"
+    assert linked_payload["orphaned_by_link_delete_at"] == "ts-orphaned"
+    assert linked_payload["orphaned_by_link_delete_reason"] == "linked_signing_request_retained"

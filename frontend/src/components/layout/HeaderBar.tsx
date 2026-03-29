@@ -7,6 +7,8 @@ import type { DataSourceKind } from '../../types';
 
 const HEADER_GROUP_TEMPLATE_TRIGGER_MAX_CHARS = 22;
 const HEADER_GROUP_TEMPLATE_MENU_MAX_CHARS = 24;
+// Keep inline header hints short enough to stay on one compact line.
+const HEADER_INLINE_HINT_MAX_CHARS = 43;
 const MIN_ZOOM_PERCENT = 25;
 const MAX_ZOOM_PERCENT = 1000;
 
@@ -82,6 +84,11 @@ function truncateHeaderText(value: string, maxChars: number): string {
   const normalized = value.trim();
   if (normalized.length <= maxChars) return normalized;
   return `${normalized.slice(0, Math.max(1, maxChars - 1)).trimEnd()}…`;
+}
+
+function formatInlineHeaderHint(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return truncateHeaderText(value, HEADER_INLINE_HINT_MAX_CHARS);
 }
 
 function formatGroupTemplateOptionLabel(
@@ -207,7 +214,7 @@ export function HeaderBar({
         : disableRename
           ? renameDisabledReason
           : null;
-  const actionHint = isSchemaPrerequisiteHint(rawActionHint) ? null : rawActionHint;
+  const actionHint = isSchemaPrerequisiteHint(rawActionHint) ? null : formatInlineHeaderHint(rawActionHint);
   const mapSchemaTooltip = disableMapSchema
     ? demoLockedHint || mapSchemaDisabledReason || 'Mapping is unavailable right now.'
     : 'Map PDF field names to schema headers';
@@ -497,14 +504,14 @@ export function HeaderBar({
               Sign in
             </button>
           ) : null}
-          <div className="header-logo">
-            <picture>
-              <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
-              <img className="logo-image" src="/DullyPDFLogoImproved.png" alt="DullyPDF" decoding="async" />
-            </picture>
-            <span className="logo-text">DullyPDF</span>
-          </div>
+        <div className="header-logo">
+          <picture>
+            <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
+            <img className="logo-image" src="/DullyPDFLogoImproved.png" alt="DullyPDF" decoding="async" />
+          </picture>
+          <span className="logo-text">DullyPDF</span>
         </div>
+      </div>
       </div>
       {hasMappingControls || onSaveToProfile ? (
         <div className="ui-header__actions-bottom">

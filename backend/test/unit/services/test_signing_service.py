@@ -260,6 +260,50 @@ def test_validate_esign_eligibility_confirmation_requires_explicit_true() -> Non
     assert signing_service.validate_esign_eligibility_confirmation(True) is True
 
 
+def test_resolve_signing_company_authority_attestation_returns_versioned_artifact() -> None:
+    artifact = signing_service.resolve_signing_company_authority_attestation(True)
+
+    assert artifact is not None
+    assert artifact["version"] == signing_service.SIGNING_COMPANY_AUTHORITY_ATTESTATION_VERSION
+    assert artifact["text"] == signing_service.SIGNING_COMPANY_AUTHORITY_ATTESTATION_TEXT
+    assert artifact["sha256"] == signing_service.sha256_hex_for_bytes(
+        signing_service.SIGNING_COMPANY_AUTHORITY_ATTESTATION_TEXT.encode("utf-8")
+    )
+    assert artifact["independentlyVerified"] is False
+
+
+def test_resolve_company_authority_completion_payload_requires_attestation_and_fields() -> None:
+    record = type("SigningRecord", (), {"company_binding_enabled": True, "authority_attestation_version": None})()
+
+    with pytest.raises(ValueError, match="Confirm the company authority attestation"):
+        signing_service.resolve_company_authority_completion_payload(
+            record,
+            authority_confirmed=False,
+            representative_title="General Counsel",
+            representative_company_name="Acme, Inc.",
+        )
+
+    with pytest.raises(ValueError, match="Representative title is required"):
+        signing_service.resolve_company_authority_completion_payload(
+            record,
+            authority_confirmed=True,
+            representative_title="",
+            representative_company_name="Acme, Inc.",
+        )
+
+    payload = signing_service.resolve_company_authority_completion_payload(
+        record,
+        authority_confirmed=True,
+        representative_title="General Counsel",
+        representative_company_name="Acme, Inc.",
+    )
+
+    assert payload == {
+        "representative_title": "General Counsel",
+        "representative_company_name": "Acme, Inc.",
+    }
+
+
 def test_resolve_signing_consumer_disclosure_fields_requires_request_specific_procedures() -> None:
     with pytest.raises(ValueError, match="paper-copy procedure"):
         signing_service.resolve_signing_consumer_disclosure_fields(
@@ -289,6 +333,14 @@ def test_resolve_signing_disclosure_payload_uses_sender_specific_consumer_detail
     assert payload["paperOption"] is None
     assert payload["withdrawal"]["instructions"].startswith("Use withdraw-consent")
     assert payload["summaryLines"][-1] == "Paper-copy fees and charges: No paper-copy fee is charged."
+
+
+def test_resolve_signing_disclosure_payload_business_copy_is_state_law_neutral() -> None:
+    payload = signing_service.resolve_signing_disclosure_payload("us-esign-business-v1")
+
+    assert payload["summaryLines"][0].endswith("applicable state electronic signature laws.")
+    assert "UETA" not in " ".join(payload["summaryLines"])
+    assert any("immutable source PDF" in line for line in payload["summaryLines"])
 
 
 def test_validate_signing_sendable_record_revalidates_document_category() -> None:

@@ -40,17 +40,20 @@ def estimate_page_payload(
     user_message: str,
     clean_page_url: str | None,
     overlay_url: str | None,
+    analysis_overlay_url: str | None = None,
     prev_page_url: str | None,
 ) -> Dict[str, int]:
     clean_bytes = estimate_data_url_bytes(clean_page_url)
     overlay_bytes = estimate_data_url_bytes(overlay_url)
+    analysis_overlay_bytes = estimate_data_url_bytes(analysis_overlay_url)
     prev_bytes = estimate_data_url_bytes(prev_page_url)
     return {
         "prompt_chars": len(system_message or "") + len(user_message or ""),
         "clean_bytes": clean_bytes,
         "overlay_bytes": overlay_bytes,
+        "analysis_overlay_bytes": analysis_overlay_bytes,
         "prev_bytes": prev_bytes,
-        "image_bytes": clean_bytes + overlay_bytes + prev_bytes,
+        "image_bytes": clean_bytes + overlay_bytes + analysis_overlay_bytes + prev_bytes,
     }
 
 
@@ -59,15 +62,18 @@ def budget_page_payload(
     page_idx: int,
     page_image: Any,
     overlay_image: Any,
+    analysis_overlay_image: Any | None = None,
     prev_crop_image: Any | None,
     system_message: str,
     user_message: str,
     clean_profile: Dict[str, Any],
     overlay_profile: Dict[str, Any],
+    analysis_overlay_profile: Dict[str, Any] | None = None,
     prev_detail: str,
     page_prompt_char_budget: int,
     page_image_byte_budget: int,
     overlay_min_dim: int,
+    analysis_overlay_min_dim: int = 0,
     budget_clean_profile: Dict[str, Any],
     encode_model_image: Callable[..., str],
     logger: Any | None = None,
@@ -84,6 +90,10 @@ def budget_page_payload(
     page_overlay_quality = int(overlay_profile["quality"])
     page_overlay_format = str(overlay_profile["format"])
     page_overlay_detail = str(overlay_profile["detail"])
+    page_analysis_overlay_max_dim = int((analysis_overlay_profile or {}).get("max_dim") or 0)
+    page_analysis_overlay_quality = int((analysis_overlay_profile or {}).get("quality") or 0)
+    page_analysis_overlay_format = str((analysis_overlay_profile or {}).get("format") or "png")
+    page_analysis_overlay_detail = str((analysis_overlay_profile or {}).get("detail") or "low")
 
     page_prev_detail = str(prev_detail)
 
@@ -99,6 +109,14 @@ def budget_page_payload(
         format=page_overlay_format,
         quality=page_overlay_quality,
     )
+    analysis_overlay_url = None
+    if analysis_overlay_image is not None and analysis_overlay_profile:
+        analysis_overlay_url = encode_model_image(
+            analysis_overlay_image,
+            max_dim=page_analysis_overlay_max_dim,
+            format=page_analysis_overlay_format,
+            quality=page_analysis_overlay_quality,
+        )
     prev_page_url = None
     if prev_crop_image is not None:
         prev_page_url = encode_model_image(
@@ -113,6 +131,7 @@ def budget_page_payload(
         user_message=user_message,
         clean_page_url=clean_page_url,
         overlay_url=overlay_url,
+        analysis_overlay_url=analysis_overlay_url,
         prev_page_url=prev_page_url,
     )
 
@@ -148,6 +167,7 @@ def budget_page_payload(
                 user_message=user_message,
                 clean_page_url=clean_page_url,
                 overlay_url=overlay_url,
+                analysis_overlay_url=analysis_overlay_url,
                 prev_page_url=prev_page_url,
             )
 
@@ -158,6 +178,46 @@ def budget_page_payload(
             user_message=user_message,
             clean_page_url=clean_page_url,
             overlay_url=overlay_url,
+            analysis_overlay_url=analysis_overlay_url,
+            prev_page_url=prev_page_url,
+        )
+
+    min_analysis_dim_for_budget = max(
+        256,
+        min(page_analysis_overlay_max_dim, int(analysis_overlay_min_dim or page_analysis_overlay_max_dim or 256)),
+    )
+    while (
+        analysis_overlay_url
+        and payload_metrics["image_bytes"] > page_image_byte_budget
+        and page_analysis_overlay_max_dim > min_analysis_dim_for_budget
+    ):
+        next_dim = max(min_analysis_dim_for_budget, int(page_analysis_overlay_max_dim * 0.85))
+        if next_dim >= page_analysis_overlay_max_dim:
+            break
+        page_analysis_overlay_max_dim = next_dim
+        analysis_overlay_url = encode_model_image(
+            analysis_overlay_image,
+            max_dim=page_analysis_overlay_max_dim,
+            format=page_analysis_overlay_format,
+            quality=page_analysis_overlay_quality,
+        )
+        payload_metrics = estimate_page_payload(
+            system_message=system_message,
+            user_message=user_message,
+            clean_page_url=clean_page_url,
+            overlay_url=overlay_url,
+            analysis_overlay_url=analysis_overlay_url,
+            prev_page_url=prev_page_url,
+        )
+
+    if analysis_overlay_url and payload_metrics["image_bytes"] > page_image_byte_budget:
+        analysis_overlay_url = None
+        payload_metrics = estimate_page_payload(
+            system_message=system_message,
+            user_message=user_message,
+            clean_page_url=clean_page_url,
+            overlay_url=overlay_url,
+            analysis_overlay_url=analysis_overlay_url,
             prev_page_url=prev_page_url,
         )
 
@@ -178,6 +238,7 @@ def budget_page_payload(
             user_message=user_message,
             clean_page_url=clean_page_url,
             overlay_url=overlay_url,
+            analysis_overlay_url=analysis_overlay_url,
             prev_page_url=prev_page_url,
         )
 
@@ -199,6 +260,8 @@ def budget_page_payload(
         "clean_detail": page_clean_detail,
         "overlay_url": overlay_url,
         "overlay_detail": page_overlay_detail,
+        "analysis_overlay_url": analysis_overlay_url,
+        "analysis_overlay_detail": page_analysis_overlay_detail,
         "prev_page_url": prev_page_url,
         "prev_detail": page_prev_detail,
         "payload_metrics": payload_metrics,

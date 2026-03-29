@@ -240,3 +240,39 @@ def test_detect_commonforms_fields_calls_inject_when_output_pdf_requested(
     assert inject_args[0] == pdf_path
     assert inject_args[2] == output_pdf
     assert inject_args[1]["coordinateSystem"] == "originTop"
+
+
+def test_build_detector_candidates_groups_widget_shapes() -> None:
+    widgets_by_page = {
+        0: [
+            cf.DetectedWidget(
+                "TextBox",
+                _BoundingBoxStub(x0=0.10, y0=0.20, x1=0.60, y1=0.23),
+                0,
+                0.91,
+            ),
+            cf.DetectedWidget(
+                "TextBox",
+                _BoundingBoxStub(x0=0.10, y0=0.30, x1=0.30, y1=0.45),
+                0,
+                0.88,
+            ),
+            cf.DetectedWidget(
+                "ChoiceButton",
+                _BoundingBoxStub(x0=0.10, y0=0.50, x1=0.14, y1=0.54),
+                0,
+                0.95,
+            ),
+        ]
+    }
+
+    candidates = cf._build_detector_candidates(
+        widgets_by_page,
+        page_sizes={0: (100.0, 100.0)},
+    )
+
+    assert set(candidates[1].keys()) == {"lineCandidates", "boxCandidates", "checkboxCandidates"}
+    assert len(candidates[1]["lineCandidates"]) == 1
+    assert len(candidates[1]["boxCandidates"]) == 1
+    assert len(candidates[1]["checkboxCandidates"]) == 1
+    assert candidates[1]["checkboxCandidates"][0]["detector"] == "commonforms"

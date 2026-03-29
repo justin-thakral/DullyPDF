@@ -29,19 +29,6 @@
   color: #64748b;
 }
 
-.searchfill-modal__close {
-  border: none;
-  background: transparent;
-  font-size: 1.6rem;
-  line-height: 1;
-  color: #64748b;
-  cursor: pointer;
-}
-
-.searchfill-modal__close:hover {
-  color: #0f172a;
-}
-
 .searchfill-modal__body {
   padding: 1.25rem 1.5rem;
   display: flex;

@@ -221,7 +221,12 @@ def resolve_task_config(profile: Optional[str], *, target: Optional[str] = None)
     }
 
 
-def enqueue_detection_task(payload: Dict[str, Any], *, profile: Optional[str] = None) -> str:
+def enqueue_detection_task(
+    payload: Dict[str, Any],
+    *,
+    profile: Optional[str] = None,
+    target: Optional[str] = None,
+) -> str:
     try:
         from google.cloud import tasks_v2
     except ImportError as exc:
@@ -231,9 +236,16 @@ def enqueue_detection_task(payload: Dict[str, Any], *, profile: Optional[str] = 
         ) from exc
 
     resolved_profile = (profile or DETECTOR_PROFILE_LIGHT).strip().lower()
+    # The API layer may already have chosen a CPU/GPU lane using page-count and
+    # queue-pressure signals. Preserve that explicit target instead of
+    # recomputing here, while keeping the older fallback for callers that only
+    # pass a profile.
+    resolved_target = target
+    if resolved_target is None:
+        resolved_target = resolve_detector_target(resolved_profile, page_count=None)
     config = resolve_task_config(
         resolved_profile,
-        target=resolve_detector_target(resolved_profile, page_count=None),
+        target=resolved_target,
     )
     client = tasks_v2.CloudTasksClient()
     parent = client.queue_path(config["project"], config["location"], config["queue"])

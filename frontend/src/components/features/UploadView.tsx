@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react';
 import type { SavedFormSummary, TemplateGroupSummary } from '../../services/api';
 import { Alert } from '../ui/Alert';
 import { CommonFormsAttribution } from '../ui/CommonFormsAttribution';
-import { DialogFrame } from '../ui/Dialog';
+import { DialogCloseButton, DialogFrame } from '../ui/Dialog';
 import { GroupCreateDialog } from './GroupCreateDialog';
 import UploadComponent from './UploadComponent';
 
@@ -122,17 +122,13 @@ export default function UploadView({
           setEditingGroupId(null);
         }}
         onSubmit={async (payload) => {
-          try {
-            if (editingGroup) {
-              await onUpdateGroup(editingGroup.id, payload);
-            } else {
-              await onCreateGroup(payload);
-            }
-            setShowCreateGroup(false);
-            setEditingGroupId(null);
-          } catch {
-            // Keep the dialog open so the user can adjust the name or selection.
+          if (editingGroup) {
+            await onUpdateGroup(editingGroup.id, payload);
+          } else {
+            await onCreateGroup(payload);
           }
+          setShowCreateGroup(false);
+          setEditingGroupId(null);
         }}
       />
       {showPipelineModal && (
@@ -144,8 +140,11 @@ export default function UploadView({
           describedBy={pendingDetectFile ? 'pipeline-modal-description' : undefined}
         >
           <div className="pipeline-modal__header">
-            <h2 id="pipeline-modal-title" className="pipeline-modal__title">Choose your detection pipeline</h2>
-            {pendingDetectFile && <p id="pipeline-modal-description" className="pipeline-modal__subtitle">{pendingDetectFile.name}</p>}
+            <div>
+              <h2 id="pipeline-modal-title" className="pipeline-modal__title">Choose your detection pipeline</h2>
+              {pendingDetectFile && <p id="pipeline-modal-description" className="pipeline-modal__subtitle">{pendingDetectFile.name}</p>}
+            </div>
+            <DialogCloseButton onClick={onPipelineCancel} label="Close detection pipeline dialog" />
           </div>
           <div className="pipeline-modal__section">
             <span className="pipeline-modal__section-title">Detection pipeline</span>

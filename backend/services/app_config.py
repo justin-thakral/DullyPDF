@@ -148,6 +148,18 @@ def require_prod_env() -> None:
         missing.append("SANDBOX_TRUSTED_HOSTS (cannot be '*')")
     if not _env_truthy("SANDBOX_TRUST_PROXY_HEADERS"):
         missing.append("SANDBOX_TRUST_PROXY_HEADERS=true")
+    else:
+        trusted_proxy_depth_raw = _env_value("SANDBOX_TRUSTED_PROXY_DEPTH").strip()
+        if not trusted_proxy_depth_raw:
+            missing.append("SANDBOX_TRUSTED_PROXY_DEPTH (must be a positive integer in prod)")
+        else:
+            try:
+                trusted_proxy_depth = int(trusted_proxy_depth_raw)
+            except ValueError:
+                missing.append("SANDBOX_TRUSTED_PROXY_DEPTH (must be a positive integer in prod)")
+            else:
+                if trusted_proxy_depth <= 0:
+                    missing.append("SANDBOX_TRUSTED_PROXY_DEPTH (must be a positive integer in prod)")
     if not _env_value("FIREBASE_PROJECT_ID"):
         missing.append("FIREBASE_PROJECT_ID")
     if not _env_truthy("FIREBASE_USE_ADC"):

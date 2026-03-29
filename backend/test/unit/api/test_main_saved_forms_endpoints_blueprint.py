@@ -33,6 +33,7 @@ def _patch_auth(mocker, app_main, user) -> None:
 
 def test_saved_forms_list_and_get_not_found(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_templates", return_value=[_template_record(template_id="a"), _template_record(template_id="b")])
     response = client.get("/api/saved-forms", headers=auth_headers)
     assert response.status_code == 200
@@ -42,10 +43,15 @@ def test_saved_forms_list_and_get_not_found(client, app_main, base_user, mocker,
     response = client.get("/api/saved-forms/missing", headers=auth_headers)
     assert response.status_code == 404
     assert "Form not found" in response.text
+    assert sync_mock.call_args_list == [
+        mocker.call(base_user.app_user_id, create_if_missing=True),
+        mocker.call(base_user.app_user_id, create_if_missing=True),
+    ]
 
 
 def test_saved_form_get_includes_fill_rule_metadata(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(
         app_main,
         "get_template",
@@ -64,6 +70,7 @@ def test_saved_form_get_includes_fill_rule_metadata(client, app_main, base_user,
     assert payload["checkboxRules"] == [{"databaseField": "consent", "groupKey": "consent_group"}]
     assert payload["textTransformRules"] == [{"targetField": "full_name", "operation": "copy", "sources": ["first_name"]}]
     assert payload["fillRules"]["textTransformRules"] == payload["textTransformRules"]
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_saved_form_get_includes_editor_snapshot_when_available(
@@ -74,6 +81,7 @@ def test_saved_form_get_includes_editor_snapshot_when_available(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(
         app_main,
         "get_template",
@@ -112,6 +120,7 @@ def test_saved_form_get_includes_editor_snapshot_when_available(
     payload = response.json()
     assert payload["editorSnapshot"]["fields"][0]["name"] == "full_name"
     assert payload["editorSnapshot"]["hasRenamedFields"] is True
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_saved_form_get_uses_legacy_template_rules_as_text_transform_rules(
@@ -122,6 +131,7 @@ def test_saved_form_get_uses_legacy_template_rules_as_text_transform_rules(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(
         app_main,
         "get_template",
@@ -139,15 +149,18 @@ def test_saved_form_get_uses_legacy_template_rules_as_text_transform_rules(
     payload = response.json()
     assert payload["textTransformRules"] == [{"targetField": "full_name", "operation": "copy", "sources": ["first_name"]}]
     assert payload["fillRules"]["textTransformRules"] == payload["textTransformRules"]
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_saved_form_download_requires_gcs_path(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "get_template", return_value=_template_record(pdf_path="/tmp/local.pdf"))
     mocker.patch.object(app_main, "is_gcs_path", return_value=False)
     response = client.get("/api/saved-forms/tpl-1/download", headers=auth_headers)
     assert response.status_code == 404
     assert "not found in storage" in response.text
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_saved_form_download_success_sets_private_no_store(
@@ -158,6 +171,7 @@ def test_saved_form_download_success_sets_private_no_store(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "get_template", return_value=_template_record(pdf_path="gs://forms/saved.pdf"))
     mocker.patch.object(app_main, "is_gcs_path", return_value=True)
     mocker.patch.object(app_main, "stream_pdf", return_value=io.BytesIO(b"%PDF-1.4\n"))
@@ -171,6 +185,7 @@ def test_saved_form_download_success_sets_private_no_store(
     assert response.status_code == 200
     assert response.headers["cache-control"] == "private, no-store"
     assert response.headers["access-control-allow-origin"] == "https://app.example.com"
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_saved_form_download_missing_storage_blob_returns_404(
@@ -211,6 +226,7 @@ def test_saved_form_download_storage_failure_returns_500(
 
 def test_saved_form_session_creation_not_found_and_success(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "get_template", return_value=None)
     response = client.post("/api/saved-forms/missing/session", json={"fields": [{"name": "f"}]}, headers=auth_headers)
     assert response.status_code == 404
@@ -228,6 +244,10 @@ def test_saved_form_session_creation_not_found_and_success(client, app_main, bas
     assert response.status_code == 200
     assert response.json()["success"] is True
     assert response.json()["fieldCount"] == 1
+    assert sync_mock.call_args_list == [
+        mocker.call(base_user.app_user_id, create_if_missing=True),
+        mocker.call(base_user.app_user_id, create_if_missing=True),
+    ]
 
 
 def test_saved_form_session_missing_storage_blob_returns_404(
@@ -238,6 +258,7 @@ def test_saved_form_session_missing_storage_blob_returns_404(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "get_template", return_value=_template_record(pdf_path="gs://forms/missing.pdf"))
     mocker.patch.object(app_main, "is_gcs_path", return_value=True)
     mocker.patch.object(app_main, "download_pdf_bytes", side_effect=FileNotFoundError("missing blob"))
@@ -250,6 +271,7 @@ def test_saved_form_session_missing_storage_blob_returns_404(
 
     assert response.status_code == 404
     assert "Form PDF not found in storage" in response.text
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_save_form_enforces_saved_form_limit_for_base_and_allows_god(
@@ -265,6 +287,7 @@ def test_save_form_enforces_saved_form_limit_for_base_and_allows_god(
     temp_pdf.write_bytes(b"%PDF-1.4\n")
 
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "_write_upload_to_temp", return_value=temp_pdf)
     mocker.patch.object(app_main, "_validate_pdf_for_detection", return_value=PdfValidationResult(pdf_bytes=b"%PDF-1.4\n", page_count=1, was_decrypted=False))
     mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
@@ -278,8 +301,10 @@ def test_save_form_enforces_saved_form_limit_for_base_and_allows_god(
     )
     assert response.status_code == 403
     assert "Saved form limit reached" in response.text
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
     _patch_auth(mocker, app_main, god_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_templates", return_value=[_template_record(template_id="existing")])
     mocker.patch.object(app_main, "upload_form_pdf", return_value="gs://forms/new.pdf")
     mocker.patch.object(app_main, "upload_template_pdf", return_value="gs://templates/new.pdf")
@@ -292,6 +317,7 @@ def test_save_form_enforces_saved_form_limit_for_base_and_allows_god(
     )
     assert response.status_code == 200
     assert response.json()["id"] == "created"
+    sync_mock.assert_called_once_with(god_user.app_user_id, create_if_missing=True)
 
 
 def test_save_form_overwrite_updates_existing_form(client, app_main, base_user, mocker, auth_headers, tmp_path: Path) -> None:
@@ -420,6 +446,7 @@ def test_saved_form_editor_snapshot_patch_updates_existing_saved_form(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     existing = _template_record(
         template_id="tpl-1",
         metadata={
@@ -486,6 +513,7 @@ def test_saved_form_editor_snapshot_patch_updates_existing_saved_form(
     upload_snapshot_mock.assert_called_once()
     assert update_mock.call_args.kwargs["metadata"]["editorSnapshot"]["path"] == "gs://sessions/new-snapshot.json"
     delete_mock.assert_called_once_with("gs://sessions/old-snapshot.json")
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_saved_form_editor_snapshot_patch_rejects_invalid_payload(
@@ -496,6 +524,7 @@ def test_saved_form_editor_snapshot_patch_rejects_invalid_payload(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "get_template", return_value=_template_record(template_id="tpl-1"))
 
     response = client.patch(
@@ -515,6 +544,7 @@ def test_saved_form_editor_snapshot_patch_rejects_invalid_payload(
 
     assert response.status_code == 400
     assert "pageSizes missing entry for page 1" in response.text
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
 
 def test_save_form_overwrite_cleans_new_uploads_when_template_update_fails(
@@ -699,9 +729,11 @@ def test_delete_saved_form_handles_storage_failure_and_success(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "delete_saved_form_assets", side_effect=RuntimeError("delete fail"))
     response = client.delete("/api/saved-forms/tpl-1", headers=auth_headers)
     assert response.status_code == 500
+    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
 
     delete_assets_mock = mocker.patch.object(app_main, "delete_saved_form_assets", return_value=True)
     sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
@@ -709,7 +741,10 @@ def test_delete_saved_form_handles_storage_failure_and_success(
     assert response.status_code == 200
     assert response.json() == {"success": True}
     delete_assets_mock.assert_called_once_with("tpl-1", base_user.app_user_id, hard_delete_link_records=False)
-    sync_mock.assert_called_once_with(base_user.app_user_id)
+    assert sync_mock.call_args_list == [
+        mocker.call(base_user.app_user_id, create_if_missing=True),
+        mocker.call(base_user.app_user_id),
+    ]
 
 
 def test_delete_saved_form_allows_missing_storage_blob(
@@ -728,7 +763,10 @@ def test_delete_saved_form_allows_missing_storage_blob(
     assert response.status_code == 200
     assert response.json() == {"success": True}
     delete_assets_mock.assert_called_once_with("tpl-1", base_user.app_user_id, hard_delete_link_records=False)
-    sync_mock.assert_called_once_with(base_user.app_user_id)
+    assert sync_mock.call_args_list == [
+        mocker.call(base_user.app_user_id, create_if_missing=True),
+        mocker.call(base_user.app_user_id),
+    ]
 
 
 # ---------------------------------------------------------------------------

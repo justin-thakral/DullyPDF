@@ -22,10 +22,18 @@ import type {
   TextTransformRule,
 } from '../types';
 import { buildTemplateFields, clearFieldValues } from '../utils/fields';
-import { applyRenamePayloadToFields } from '../utils/openAiFields';
+import {
+  applyMappingPayloadToFields,
+  applyRenamePayloadToFields,
+} from '../utils/openAiFields';
+import { hashSourcePdfSha256 } from '../utils/pdfFingerprint';
 import { resolveGroupTemplates, useGroupTemplateCache } from './useGroupTemplateCache';
 import type { SavedFormSessionResume } from './useDetection';
 import { useGroupUploadModal } from './useGroupUploadModal';
+import {
+  applyRadioGroupSuggestions,
+  shouldAutoApplyRadioGroupSuggestion,
+} from '../utils/radioGroupSuggestions';
 
 type SearchFillPresetState = {
   query: string;
@@ -845,6 +853,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
             throw new Error('No embedded fields were found in this saved form.');
           }
           const templateFields = buildTemplateFields(fields);
+          const sourcePdfSha256 = await hashSourcePdfSha256(blob);
           const sessionPayload = await ApiService.createSavedFormSession(template.id, {
             fields: templateFields,
             pageCount: snapshot.pageCount,
@@ -852,6 +861,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
           const renameResult = await ApiService.renameFields({
             sessionId: sessionPayload.sessionId,
             schemaId: resolvedSchemaId,
+            sourcePdfSha256,
             templateFields,
           });
           const renamedFields = applyRenamePayloadToFields(
@@ -861,15 +871,35 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
           if (!renameResult?.success || !renamedFields || renamedFields.length === 0) {
             throw new Error(renameResult?.error || 'Rename + Map did not return updated fields.');
           }
-          const checkboxRules = Array.isArray(renameResult?.checkboxRules) ? renameResult.checkboxRules : [];
-          const textTransformRules = Array.isArray(
-            (renameResult as { textTransformRules?: TextTransformRule[] } | null)?.textTransformRules,
-          )
-            ? ((renameResult as { textTransformRules?: TextTransformRule[] }).textTransformRules ?? [])
-            : [];
+          let nextFields = renamedFields;
+          const mappingResult = await ApiService.mapSchema(
+            resolvedSchemaId,
+            buildTemplateFields(nextFields),
+            template.id,
+            sessionPayload.sessionId,
+            undefined,
+            sourcePdfSha256,
+          );
+          if (!mappingResult?.success) {
+            throw new Error(mappingResult?.error || 'Rename + Map schema mapping failed.');
+          }
+          const mapped = applyMappingPayloadToFields(
+            nextFields,
+            mappingResult.mappingResults,
+            deps.dataSource.dataColumns,
+          );
+          nextFields = mapped.fields;
+          const autoApplicableSuggestions = mapped.radioGroupSuggestions.filter(
+            (suggestion) => shouldAutoApplyRadioGroupSuggestion(suggestion),
+          );
+          if (autoApplicableSuggestions.length) {
+            nextFields = applyRadioGroupSuggestions(nextFields, autoApplicableSuggestions).fields;
+          }
+          const checkboxRules = mapped.checkboxRules;
+          const textTransformRules = mapped.textTransformRules;
           const materializedBlob = await ApiService.materializeFormPdf(
             blob,
-            clearFieldValues(renamedFields),
+            clearFieldValues(nextFields),
           );
           await ApiService.saveFormToProfile(
             materializedBlob,

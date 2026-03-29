@@ -37,7 +37,11 @@ describe('PublicSigningValidationPage', () => {
       sourcePdfSha256: 'a'.repeat(64),
       signedPdfSha256: 'b'.repeat(64),
       auditManifestSha256: 'c'.repeat(64),
+      auditEnvelopeSha256: 'e'.repeat(64),
       auditReceiptSha256: 'd'.repeat(64),
+      warnings: [
+        "This record uses DullyPDF's local development signing certificate. It proves integrity in dev, but it is not a publicly trusted production signing identity.",
+      ],
       checks: [
         { key: 'audit_manifest_signature', label: 'Audit manifest envelope signature', passed: true },
         { key: 'signed_pdf_hash', label: 'Signed PDF hash matches the retained audit manifest', passed: true },
@@ -60,6 +64,7 @@ describe('PublicSigningValidationPage', () => {
     expect(screen.getByText(/DullyPDF verified the retained audit evidence/i)).toBeTruthy();
     expect(screen.getByText('Bravo Packet')).toBeTruthy();
     expect(screen.getByText(/Audit manifest envelope signature/i)).toBeTruthy();
+    expect(screen.getByText(/local development signing certificate/i)).toBeTruthy();
     expect(screen.getByText(/dev_hmac_sha256/i)).toBeTruthy();
   });
 });

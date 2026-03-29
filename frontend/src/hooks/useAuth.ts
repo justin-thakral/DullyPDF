@@ -4,7 +4,8 @@ import type { UserProfile } from '../services/api';
 import { Auth } from '../services/auth';
 import { setAuthToken } from '../services/authTokenStore';
 import { ApiService } from '../services/api';
-import { AUTH_READY_FALLBACK_MS, DEFAULT_PROFILE_LIMITS } from '../config/appConstants';
+import { AUTH_READY_FALLBACK_MS } from '../config/appConstants';
+import { DEFAULT_PROFILE_LIMITS } from '../config/profileDefaults';
 import { debugLog } from '../utils/debug';
 
 let sharedProfileRequest: {

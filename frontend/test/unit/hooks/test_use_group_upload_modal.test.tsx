@@ -386,6 +386,7 @@ describe('useGroupUploadModal', () => {
       undefined,
       'session-1',
       expectAbortableOptions(),
+      expect.any(String),
     );
   });
 
@@ -507,6 +508,25 @@ describe('useGroupUploadModal', () => {
         checkboxRules: [],
         radioGroupSuggestions: [],
       });
+    mapSchemaMock
+      .mockResolvedValueOnce({
+        success: true,
+        mappingResults: {
+          mappings: [{ originalPdfField: 'first_name', pdfField: 'first_name_mapped', confidence: 0.91 }],
+          checkboxRules: [],
+          radioGroupSuggestions: [],
+          textTransformRules: [],
+        },
+      })
+      .mockResolvedValueOnce({
+        success: true,
+        mappingResults: {
+          mappings: [{ originalPdfField: 'first_name', pdfField: 'first_name_mapped', confidence: 0.91 }],
+          checkboxRules: [],
+          radioGroupSuggestions: [],
+          textTransformRules: [],
+        },
+      });
     materializeFormPdfMock
       .mockResolvedValueOnce(new Blob(['alpha']))
       .mockResolvedValueOnce(new Blob(['beta']));
@@ -544,6 +564,25 @@ describe('useGroupUploadModal', () => {
         schemaId: 'schema-1',
       }),
       expectAbortableOptions(),
+    );
+    expect(mapSchemaMock).toHaveBeenCalledTimes(2);
+    expect(mapSchemaMock).toHaveBeenNthCalledWith(
+      1,
+      'schema-1',
+      [expect.objectContaining({ name: 'first_name' })],
+      undefined,
+      'session-1',
+      expectAbortableOptions(),
+      expect.any(String),
+    );
+    expect(mapSchemaMock).toHaveBeenNthCalledWith(
+      2,
+      'schema-1',
+      [expect.objectContaining({ name: 'first_name' })],
+      undefined,
+      'session-2',
+      expectAbortableOptions(),
+      expect.any(String),
     );
     expect(saveFormToProfileMock).toHaveBeenCalledTimes(2);
     expect(deps.createGroup).toHaveBeenCalledWith({

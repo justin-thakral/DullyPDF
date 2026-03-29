@@ -291,8 +291,8 @@ export function DemoTour({ open, step, stepIndex, stepCount, onNext, onBack, onC
           <div className="demo-tour__card" ref={calloutRef}>
             <div className="demo-tour__header">
               <span className="demo-tour__eyebrow">Demo step {stepIndex + 1} of {stepCount}</span>
-              <button className="demo-tour__close" type="button" onClick={onClose}>
-                Exit demo
+              <button className="demo-tour__close" type="button" onClick={onClose} aria-label="Close demo tour">
+                ×
               </button>
             </div>
             <h3 id="demo-tour-title" className="demo-tour__title">{step.title}</h3>
@@ -329,8 +329,8 @@ export function DemoTour({ open, step, stepIndex, stepCount, onNext, onBack, onC
         >
           <div className="demo-tour__header">
             <span className="demo-tour__eyebrow">Demo step {stepIndex + 1} of {stepCount}</span>
-            <button className="demo-tour__close" type="button" onClick={onClose}>
-              Exit demo
+            <button className="demo-tour__close" type="button" onClick={onClose} aria-label="Close demo tour">
+              ×
             </button>
           </div>
           <h3 className="demo-tour__title">{step.title}</h3>

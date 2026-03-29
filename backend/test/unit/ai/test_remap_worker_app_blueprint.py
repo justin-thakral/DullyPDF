@@ -64,6 +64,35 @@ def test_require_internal_auth_rejects_invalid_remap_token(mocker, monkeypatch) 
     assert exc_info.value.detail == "Invalid remap worker auth token"
 
 
+@pytest.mark.parametrize(
+    ("status_code", "detail"),
+    [
+        (401, "Missing remap worker auth token"),
+        (403, "Remap worker caller not allowed"),
+    ],
+)
+def test_remap_worker_auth_failures_do_not_mutate_job_state(mocker, status_code: int, detail: str) -> None:
+    client = TestClient(remap_worker.app)
+    mocker.patch.object(
+        remap_worker,
+        "_require_internal_auth",
+        side_effect=HTTPException(status_code=status_code, detail=detail),
+    )
+    reject_mock = mocker.patch.object(remap_worker, "_reject_job_request")
+    get_job_mock = mocker.patch.object(remap_worker, "get_openai_job")
+    update_job_mock = mocker.patch.object(remap_worker, "update_openai_job")
+    refund_mock = mocker.patch.object(remap_worker, "attempt_credit_refund", return_value=True)
+
+    response = client.post("/internal/remap", json=_payload())
+
+    assert response.status_code == status_code
+    assert response.json() == {"detail": detail}
+    reject_mock.assert_not_called()
+    get_job_mock.assert_not_called()
+    update_job_mock.assert_not_called()
+    refund_mock.assert_not_called()
+
+
 def test_remap_worker_completes_job_and_persists_checkbox_outputs(mocker) -> None:
     client = TestClient(remap_worker.app)
     mocker.patch.object(remap_worker, "_require_internal_auth", return_value={"sub": "task"})
@@ -138,6 +167,49 @@ def test_remap_worker_refunds_credits_when_schema_is_missing(mocker) -> None:
     assert response.status_code == 200
     assert response.json()["status"] == "failed"
     assert "Schema not found" in response.json()["error"]
+    refund_mock.assert_called_once_with(
+        user_id="user-1",
+        role="base",
+        credits=1,
+        source="remap.worker",
+        request_id="job-1",
+        job_id="job-1",
+        credit_breakdown=None,
+    )
+
+
+def test_remap_worker_rejects_locked_saved_form_template_after_downgrade(mocker) -> None:
+    client = TestClient(remap_worker.app)
+    mocker.patch.object(remap_worker, "_require_internal_auth", return_value={"sub": "task"})
+    mocker.patch.object(
+        remap_worker,
+        "get_openai_job",
+        return_value={
+            "status": "queued",
+            "user_id": "user-1",
+            "schema_id": "schema-1",
+            "template_id": "form-6",
+            "request_id": "job-1",
+        },
+    )
+    mocker.patch.object(remap_worker, "update_openai_job", return_value=None)
+    mocker.patch.object(
+        remap_worker,
+        "get_schema",
+        return_value=SimpleNamespace(id="schema-1", fields=[{"name": "first_name", "type": "string"}]),
+    )
+    mocker.patch.object(remap_worker, "is_user_retention_template_locked", return_value=True)
+    get_template_mock = mocker.patch.object(remap_worker, "get_template")
+    mapping_mock = mocker.patch.object(remap_worker, "call_openai_schema_mapping_chunked")
+    refund_mock = mocker.patch.object(remap_worker, "attempt_credit_refund", return_value=True)
+
+    response = client.post("/internal/remap", json=_payload(templateId="form-6", sessionId=None))
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "failed"
+    assert "locked on the base plan" in response.json()["error"]
+    get_template_mock.assert_not_called()
+    mapping_mock.assert_not_called()
     refund_mock.assert_called_once_with(
         user_id="user-1",
         role="base",

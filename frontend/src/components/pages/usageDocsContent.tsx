@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react';
 import { USAGE_DOCS_PAGES as SHARED_USAGE_DOCS_PAGES } from '../../config/publicRouteSeoData.mjs';
 import type { IntentPageKey } from '../../config/intentPages';
+import {
+  FREE_PLAN_CREDITS,
+  FREE_PLAN_LIMITS,
+  PREMIUM_PLAN_CREDITS,
+  PREMIUM_PLAN_LIMITS,
+  formatPlanLimitCount,
+} from '../../config/planLimits.mjs';
 
 export type UsageDocsPageKey =
   | 'index'
@@ -423,8 +430,8 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             </li>
             <li>Review checkbox metadata (`groupKey`, `optionKey`, `optionLabel`) after rename/map runs.</li>
             <li>
-              Review <code>radioGroupSuggestions</code> after mapping runs so single-select groups stay separate from
-              true multi-select checkbox groups.
+              High-confidence <code>radioGroupSuggestions</code> auto-apply so explicit radio groups are created before
+              publish; lower-confidence suggestions stay review-only.
             </li>
             <li>Treat AI output as recommendations and validate before production usage.</li>
           </ul>
@@ -543,8 +550,11 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               Use inspector create tools to draw text, date, signature, checkbox, and radio fields directly on-canvas,
               including quick-radio helpers for common single-select groups.
             </li>
+            <li>Activating a create tool exits <code>Transform</code> and <code>Info</code> so drawing gestures stay deterministic.</li>
+            <li>Turning the create tool off restores the previous viewer mode and visibility toggles.</li>
+            <li>Click once to place a default-size field, or drag past the click threshold to size the field from the gesture.</li>
             <li>Use inspector inputs for exact x/y/width/height updates.</li>
-            <li>Delete invalid candidates to keep templates clean.</li>
+            <li>Delete invalid candidates one by one, or use the inspector bulk-delete action when you want to reset the field set and start over.</li>
             <li>Geometry is clamped to page bounds and type-based minimum sizes.</li>
             <li>If a selected field is hidden by active filters, use <code>Reveal selected</code> in the list panel.</li>
           </ul>
@@ -581,6 +591,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
           <ul>
             <li>Undo/redo depth is 10 edits.</li>
             <li><code>Clear</code> removes meaningful field values and resets them to null.</li>
+            <li>Workspace edits update the editor state immediately, while the PDF bytes are rewritten when you save or download.</li>
             <li>For booleans, only true values are considered filled for clear-state checks.</li>
             <li>Header OpenAI actions surface prerequisite hints when disabled to reduce trial-and-error clicks.</li>
           </ul>
@@ -594,7 +605,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li><code>Ctrl/Cmd+Z</code>: undo</li>
             <li><code>Ctrl/Cmd+Shift+Z</code> or <code>Ctrl/Cmd+Y</code>: redo</li>
             <li><code>Delete</code>, <code>Backspace</code>, or <code>Ctrl/Cmd+X</code>: delete selected field</li>
-            <li><code>T</code> / <code>D</code> / <code>S</code> / <code>C</code> / <code>R</code>: activate Text/Date/Signature/Checkbox/Radio create tools</li>
+            <li><code>T</code> / <code>D</code> / <code>S</code> / <code>C</code> / <code>R</code> / <code>Q</code>: activate Text/Date/Signature/Checkbox/Radio/Quick Radio create tools</li>
             <li><code>Esc</code>: clear active create tool</li>
             <li><code>Ctrl/Cmd+F</code> or <code>/</code>: focus field search</li>
             <li><code>[</code> and <code>]</code>: previous/next page</li>
@@ -648,7 +659,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>Clear and refill when testing mapping revisions.</li>
             <li>Validate at least one full record before saving templates for teams.</li>
             <li>Search &amp; Fill is enabled only for CSV/XLSX/JSON with at least one row, stored respondent records, and a loaded document.</li>
-            <li>Public Fill By Link forms close automatically when their response cap is reached: free closes at 5 responses and premium closes at 10,000 responses.</li>
+            <li>Fill By Link submissions consume an account-level monthly quota instead of closing one link at a fixed per-link cap: base allows 25 accepted responses per month and premium allows 10,000.</li>
           </ul>
         ),
       },
@@ -730,6 +741,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
           <ol>
             <li>Open the saved template or saved group you want to publish.</li>
             <li>Use Fill By Link to generate the public URL, set global defaults such as requiredness and text limits, and tune each visible question before sharing.</li>
+            <li>When <code>Require signature after submit</code> is enabled on a template link, choose the visible question that supplies the signer&apos;s full name, choose the visible email question that receives the invite, and review the compact readiness checklist before publishing. Those mapped signer questions are automatically required while signing stays enabled, and the builder now warns that saved PDF field values can still carry into the frozen signer copy when the web form does not overwrite them.</li>
             <li>Open the generated URL yourself first to confirm question wording and mobile layout.</li>
             <li>Copy the link and send it to respondents. Their answers are stored in DullyPDF under the owner account.</li>
           </ol>
@@ -755,6 +767,10 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <p>
               Template builders can also add custom questions that do not exist on the PDF itself, while group links
               currently stay limited to the merged packet field set.
+            </p>
+            <p>
+              Explicit PDF radio groups publish as one single-choice web question, while PDF signature widgets stay out
+              of the public form entirely because DullyPDF reserves signature capture for the signing workflow.
             </p>
             <p>
               Template links can also require signature after submit. In that mode the public web form collects the
@@ -785,9 +801,11 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         title: 'Limits and sharing guidance',
         body: (
           <ul>
-            <li>Free accounts get 1 active Fill By Link and up to 5 accepted responses.</li>
-            <li>Premium accounts can publish a shareable link for every saved template and accept up to 10,000 responses per link.</li>
+            <li>Base accounts can publish links from any accessible saved template and accept up to 25 responses per month across the account.</li>
+            <li>Premium accounts can publish links across their saved-template library and accept up to 10,000 responses per month across the account.</li>
+            <li>Current plan pages at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a> also summarize saved-form, API Fill, signing, and credit limits.</li>
             <li>Preview the public form before you share it so required fields and labels match what respondents should submit.</li>
+            <li>The owner builder popup ignores outside clicks; use the red X or <code>Escape</code> when you intentionally want to leave and discard in-progress edits.</li>
           </ul>
         ),
       },
@@ -805,6 +823,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li><code>Require signature after submit</code> starts from a template Fill By Web Form Link, stores the respondent answers, materializes the filled PDF, then hands the signer into the same ceremony.</li>
             <li>Both paths converge on the same immutable PDF boundary before the signer sees the document, and both now begin with email verification on the public signing page.</li>
             <li>The owner workflow remains one request per signer, even when the UI saves recipient batches from pasted or uploaded TXT/CSV data.</li>
+            <li>The owner signing popup ignores outside clicks; use the red X or <code>Escape</code> when you intentionally want to leave the draft flow.</li>
           </ul>
         ),
       },
@@ -827,11 +846,73 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         body: (
           <ul>
             <li>Completed requests store the immutable source PDF, final signed PDF, audit-manifest envelope, and human-readable audit receipt.</li>
+            <li>The detailed owner audit manifest records the request id, document category, immutable source hash/version, sender and signer identity fields, invite delivery metadata, OTP/verification state, ceremony timestamps, signature-adoption details, digital-signature metadata, and retained artifact hashes/paths.</li>
+            <li>For consumer requests, that audit evidence also stores the disclosure payload and hash, the first-presented timestamp, the consent scope, and the access-demonstration evidence used before the signer can continue.</li>
             <li>The owner `Responses` tab in the signing dialog surfaces waiting vs signed requests plus signed-form and audit-receipt downloads.</li>
-            <li>Template Fill By Web Form Link responses also surface linked signing status so the owner can download the finished signed copy from the response row later.</li>
+            <li>The owner `Responses` tab also offers a full dispute-package ZIP with the source PDF, signed PDF, audit receipt, owner audit manifest, validation snapshot, and delivery metadata.</li>
+            <li>Template Fill By Web Form Link responses also surface linked signing status so the owner can download the finished signed copy or the same full package from the response row later.</li>
             <li>Signed PDFs are flattened before delivery so normal PDF viewers do not keep the underlying form widgets editable.</li>
             <li>Per-document signer-request caps are enforced server-side across both email and Fill By Web Form signing entry paths.</li>
           </ul>
+        ),
+      },
+      {
+        id: 'audit-log-and-esign-alignment',
+        title: 'Audit log and E-SIGN alignment',
+        body: (
+          <>
+            <p>
+              DullyPDF is designed to support the core evidentiary mechanics behind the U.S. E-SIGN Act for ordinary
+              business records and the product's consumer-mode ceremony. It does not rely on a single audit timestamp.
+              Instead, it preserves the exact record, the signer actions taken against that record, and the retained
+              evidence needed to reconstruct the ceremony later.
+            </p>
+            <ul>
+              <li>Intent to sign: the signer must open the signing session, review the exact frozen PDF, adopt a signature mark, and explicitly finish the ceremony. E-SIGN defines an electronic signature as an electronic sound, symbol, or process executed or adopted with intent to sign.</li>
+              <li>Logical association with the exact record: the ceremony is tied to the immutable source PDF hash and version, and the retained signed PDF plus validation record point back to that same source.</li>
+              <li>Consumer disclosures and consent: consumer mode captures paper-copy, fee, withdrawal, contact-update, and scope disclosures, then requires affirmative consent plus the PDF access-check step before completion. That is the part intended to line up with E-SIGN's consumer-disclosure and reasonable-demonstration concepts.</li>
+              <li>Retention for later reference: the source PDF, signed PDF, audit receipt, owner audit manifest, and public <code>/verify-signing/:token</code> page are retained so the record can be reproduced and checked later.</li>
+              <li>Delivery and attribution evidence: the audit log also keeps invite provider/message metadata, verification state, session and network evidence, and completion timestamps so the owner can build a dispute packet without depending on the signer to preserve every email.</li>
+            </ul>
+            <p>
+              Official references: <a href="https://uscode.house.gov/view.xhtml?req=%28title%3A15+section%3A7001+edition%3Aprelim%29">15 U.S.C. § 7001</a> covers
+              validity, consumer consent, and retention; <a href="https://uscode.house.gov/view.xhtml?req=%28title%3A15+section%3A7003+edition%3Aprelim%29">15 U.S.C. § 7003</a> lists
+              excluded categories; the <a href="https://www.ftc.gov/news-events/news/press-releases/2001/06/joint-ftccommerce-department-report-released-reasonable-demonstration-requirement-esign">FTC/Commerce report on the consumer consent provision</a> explains why the
+              "reasonable demonstration" step matters for discouraging fraud and preserving access to written
+              information in consumer workflows.
+            </p>
+            <p>
+              This is product documentation, not legal advice. DullyPDF is engineered to align with those core E-SIGN
+              requirements, but document-type-specific laws, excluded categories, sector rules, and jurisdictional
+              overlays still need policy or legal review before a team should claim support for a specific workflow.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: 'pdf-trust-vs-audit-evidence',
+        title: 'PDF trust versus audit evidence',
+        body: (
+          <>
+            <p>
+              When no production PKCS#12 or Cloud KMS signing identity is configured, DullyPDF can still finish the
+              workflow by self-signing the finalized PDF with its own certificate. In that configuration, PDF viewers
+              such as Edge or Acrobat may label the embedded certificate as untrusted because the certificate chain does
+              not anchor to a public trust store.
+            </p>
+            <p>
+              That viewer warning does not automatically mean the document was modified or that the workflow failed. The
+              self-signed PDF seal still provides cryptographic tamper evidence, while DullyPDF's retained audit
+              artifacts provide the higher-level workflow proof: immutable source PDF, signed PDF, audit-manifest
+              envelope, audit receipt, and the public <code>/verify-signing/:token</code> validation page.
+            </p>
+            <p>
+              In practice, this means self-signed PDFs can still be sufficient for many internal, pilot, or
+              ordinary-business workflows when the recipient is expected to rely on the audit log and retained validation
+              record rather than a browser or PDF-reader trust badge. It should not be marketed as the same thing as a
+              publicly trusted CA-backed signing certificate.
+            </p>
+          </>
         ),
       },
       {
@@ -1059,21 +1140,25 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               <li>Formula: total credits = baseCost x ceil(pageCount / bucketSize).</li>
               <li>Current default bucket size is 5 pages.</li>
               <li>Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
-              <li>Base users start with 10 credits. Pro users get a 500 monthly pool plus refill credits.</li>
+              <li>Base users top back up to 10 credits each month when their balance is below that floor. Premium users get a 500 monthly pool plus refill credits.</li>
               <li>Refill credits do not expire and are consumed after monthly credits.</li>
+              <li>Signing uses a monthly sent-request quota. Saving a draft does not consume quota; the first successful send does.</li>
             </ul>
             <p>
-              Base profile fallback limits used by the frontend are detect pages=5, fillable pages=50, and saved forms=3.
-              Effective limits may differ by server role/config.
+              Current default free-tier limits are {formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms,
+              {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, `}
+              no active Fill By Link cap, {formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month,
+              {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, `}
+              {formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} API pages per request, {formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month,
+              and a base OpenAI pool that tops back up to {formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.
             </p>
             <p>
-              Fill By Link tier limits are separate from credits: free includes 1 active published link with 5 accepted
-              responses, while premium supports a shareable link on every saved template with up to 10,000 accepted
-              responses per link.
-            </p>
-            <p>
-              Signing limits are separate from OpenAI credits too: by default free allows 10 signer requests for one
-              immutable document version, while Pro allows 1,000.
+              Current default premium-tier limits are {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms,
+              {` ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, `}
+              no active Fill By Link cap, {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month,
+              {` ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, `}
+              {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} API pages per request, {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month,
+              and a recurring {formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool before refill packs.
             </p>
             <p>
               API Fill is a hosted backend runtime, not a browser-local tool. Published API endpoints are scoped to one
@@ -1100,9 +1185,10 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               <li>Payments are handled through Stripe Checkout for secure transaction processing.</li>
               <li>Canceling Pro schedules cancellation at period end; Pro access remains active until that date.</li>
               <li>
-                If an account downgrades to free while holding more saved forms than the free tier allows, DullyPDF keeps
-                the default oldest set, opens a 30-day grace period, and shows a retention dialog on each site visit so
-                the owner can swap which saved forms stay, delete the queued set immediately, or reactivate Pro.
+                If an account downgrades to base while holding more saved forms than the base tier allows, DullyPDF keeps
+                the earliest-created saved forms up to the base cap accessible and marks the rest locked in place instead
+                of deleting them. The retention dialog explains which templates remain accessible, which are locked, and
+                how downgrade-managed Fill By Link records reopen automatically after re-upgrade.
               </li>
             </ul>
             <p>

@@ -6,9 +6,13 @@ from backend.firebaseDB.fill_link_database import (
 from backend.firebaseDB.group_database import TemplateGroupRecord
 from backend.firebaseDB.signing_database import SigningRequestRecord
 from backend.firebaseDB.template_database import TemplateRecord
-from backend.services.fill_link_signing_service import FillLinkSigningRequestMaterialization
+from backend.services.fill_link_signing_service import (
+    FillLinkSigningRequestMaterialization,
+    FillLinkSigningUnavailableError,
+)
 from backend.services.fill_links_service import build_fill_link_public_token
-from backend.services.signing_request_limit_service import SigningRequestDocumentLimitError
+from backend.services.signing_quota_service import SigningRequestMonthlyLimitError
+from types import SimpleNamespace
 
 
 def _patch_auth(mocker, app_main, user) -> None:
@@ -32,7 +36,6 @@ def _fill_link_record(
     *,
     status: str = "active",
     response_count: int = 0,
-    max_responses: int = 5,
     public_token: str | None = None,
     respondent_pdf_download_enabled: bool = False,
     respondent_pdf_snapshot: dict | None = None,
@@ -55,7 +58,6 @@ def _fill_link_record(
         public_token=public_token,
         status=status,
         closed_reason=None if status == "active" else "owner_closed",
-        max_responses=max_responses,
         response_count=response_count,
         questions=resolved_questions,
         require_all_fields=require_all_fields,
@@ -120,7 +122,6 @@ def _group_fill_link_record() -> FillLinkRecord:
         public_token=None,
         status="active",
         closed_reason=None,
-        max_responses=25,
         response_count=0,
         questions=questions,
         require_all_fields=True,
@@ -158,6 +159,13 @@ def _signing_request_record(
         document_category="client_intake_form",
         esign_eligibility_confirmed_at="2024-02-01T00:00:00+00:00",
         esign_eligibility_confirmed_source="owner_request_create",
+        company_binding_enabled=False,
+        authority_attestation_version=None,
+        authority_attestation_text=None,
+        authority_attestation_sha256=None,
+        representative_title=None,
+        representative_company_name=None,
+        authority_attested_at=None,
         manual_fallback_enabled=True,
         signer_name="Ada Lovelace",
         signer_email="ada@example.com",
@@ -187,6 +195,8 @@ def _signing_request_record(
         status=status,
         anchors=[],
         disclosure_version="v1",
+        business_disclosure_payload=None,
+        business_disclosure_sha256=None,
         consumer_disclosure_version=None,
         consumer_disclosure_payload=None,
         consumer_disclosure_sha256=None,
@@ -198,6 +208,8 @@ def _signing_request_record(
         updated_at="2024-02-01T00:00:00+00:00",
         owner_review_confirmed_at="2024-02-01T00:00:00+00:00",
         sent_at="2024-02-01T00:00:00+00:00",
+        quota_consumed_at="2024-02-01T00:00:00+00:00",
+        quota_month_key="2024-02",
         opened_at="2024-02-01T00:05:00+00:00",
         reviewed_at="2024-02-01T00:06:00+00:00",
         consented_at="2024-02-01T00:07:00+00:00",
@@ -247,21 +259,27 @@ def _signing_request_record(
         public_link_last_reissued_at=None,
         invalidated_at=None,
         invalidation_reason=None,
+        public_app_origin=None,
     )
 
 
 def test_fill_links_list_create_and_response_endpoints(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_fill_links", return_value=[_fill_link_record()])
     response = client.get("/api/fill-links", headers=auth_headers)
     assert response.status_code == 200
     assert response.json()["links"][0]["publicPath"] == f"/respond/{build_fill_link_public_token('link-1')}"
+    assert response.json()["links"][0]["accountMonthlyResponsesMax"] == 25
 
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=1)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=5)
-    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=25)
+    pending_template_ids_mock = mocker.patch.object(
+        app_main,
+        "get_user_retention_pending_template_ids",
+        return_value=set(),
+    )
     mocker.patch.object(app_main, "list_fill_links", return_value=[])
     mocker.patch.object(
         app_main,
@@ -306,7 +324,7 @@ def test_fill_links_list_create_and_response_endpoints(client, app_main, base_us
     assert create_response.status_code == 200
     assert create_response.json()["link"]["status"] == "active"
     assert create_response.json()["link"]["requireAllFields"] is True
-    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
+    pending_template_ids_mock.assert_called_once_with(base_user.app_user_id)
     snapshot_mock.assert_called_once()
     app_main.create_or_update_fill_link.assert_called_once_with(
         base_user.app_user_id,
@@ -321,7 +339,6 @@ def test_fill_links_list_create_and_response_endpoints(client, app_main, base_us
         require_all_fields=True,
         web_form_config={"schemaVersion": 2, "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}]},
         signing_config=None,
-        max_responses=5,
         respondent_pdf_download_enabled=True,
         respondent_pdf_snapshot={
             "version": 1,
@@ -334,7 +351,6 @@ def test_fill_links_list_create_and_response_endpoints(client, app_main, base_us
         },
         status="active",
         closed_reason=None,
-        active_limit=1,
     )
 
     mocker.patch.object(app_main, "get_fill_link", return_value=_fill_link_record())
@@ -381,14 +397,12 @@ def test_fill_links_update_endpoint_uses_link_id_and_serializes_canonical_signed
             "filename": "template-one-response.pdf",
         },
     )
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=3)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=25)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=25)
     update_mock = mocker.patch.object(
         app_main,
         "update_fill_link",
         return_value=_fill_link_record(
             status="active",
-            max_responses=25,
             public_token="token-new",
             respondent_pdf_download_enabled=True,
             respondent_pdf_snapshot={
@@ -442,8 +456,6 @@ def test_fill_links_update_endpoint_uses_link_id_and_serializes_canonical_signed
         },
         status="active",
         closed_reason=None,
-        max_responses=25,
-        active_limit=3,
     )
     create_or_update_mock.assert_not_called()
 
@@ -458,8 +470,7 @@ def test_fill_links_create_accepts_template_post_submit_signing_config(
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=1)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=5)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=5)
     mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_fill_links", return_value=[])
     mocker.patch.object(
@@ -563,6 +574,7 @@ def test_fill_links_create_accepts_template_post_submit_signing_config(
         "esign_eligibility_confirmed": True,
         "esign_eligibility_confirmed_at": mocker.ANY,
         "esign_eligibility_confirmed_source": "fill_link_publish",
+        "company_binding_enabled": False,
         "manual_fallback_enabled": True,
         "sender_display_name": "Base User",
         "sender_contact_email": "base@example.com",
@@ -588,8 +600,7 @@ def test_fill_links_create_forces_respondent_downloads_flat_when_post_submit_sig
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=1)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=5)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=5)
     mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_fill_links", return_value=[])
     mocker.patch.object(
@@ -697,8 +708,7 @@ def test_fill_links_create_rejects_post_submit_signing_without_esign_attestation
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=1)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=5)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=5)
     mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_fill_links", return_value=[])
     mocker.patch.object(
@@ -771,20 +781,25 @@ def test_fill_links_owner_responses_include_linked_signing_summary_for_signed_re
     assert payload["linkedSigning"]["artifacts"]["signedPdf"]["available"] is True
     assert payload["linkedSigning"]["artifacts"]["signedPdf"]["downloadPath"] == "/api/signing/requests/sign-1/artifacts/signed_pdf"
     assert payload["linkedSigning"]["artifacts"]["auditReceipt"]["downloadPath"] == "/api/signing/requests/sign-1/artifacts/audit_receipt"
+    assert payload["linkedSigning"]["artifacts"]["disputePackage"]["downloadPath"] == "/api/signing/requests/sign-1/artifacts/dispute_package"
 
 
-def test_fill_links_create_enforces_active_limit(client, app_main, base_user, mocker, auth_headers) -> None:
+def test_fill_links_create_no_longer_enforces_active_link_count(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
     mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_fill_links", return_value=[_fill_link_record()])
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=1)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=25)
     mocker.patch.object(
         app_main,
-        "build_fill_link_questions",
-        return_value=[{"key": "full_name", "label": "Full Name", "type": "text"}],
+        "_build_template_web_form_schema",
+        return_value=(
+            {"schemaVersion": 2, "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}]},
+            [{"key": "full_name", "label": "Full Name", "type": "text"}],
+        ),
     )
+    create_mock = mocker.patch.object(app_main, "create_or_update_fill_link", return_value=_fill_link_record())
 
     response = client.post(
         "/api/fill-links",
@@ -795,27 +810,30 @@ def test_fill_links_create_enforces_active_limit(client, app_main, base_user, mo
         headers=auth_headers,
     )
 
-    assert response.status_code == 403
-    assert "Fill By Link limit reached" in response.text
+    assert response.status_code == 200
+    create_mock.assert_called_once()
+    assert "active_limit" not in create_mock.call_args.kwargs
 
 
-def test_fill_links_create_maps_storage_active_limit_conflict_to_403(client, app_main, base_user, mocker, auth_headers) -> None:
+def test_fill_links_create_uses_monthly_response_limit_without_active_limit_arg(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
     mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
     mocker.patch.object(app_main, "list_fill_links", return_value=[])
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=1)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=5)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=25)
     mocker.patch.object(
         app_main,
-        "build_fill_link_questions",
-        return_value=[{"key": "full_name", "label": "Full Name", "type": "text"}],
+        "_build_template_web_form_schema",
+        return_value=(
+            {"schemaVersion": 2, "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}]},
+            [{"key": "full_name", "label": "Full Name", "type": "text"}],
+        ),
     )
-    mocker.patch.object(
+    create_mock = mocker.patch.object(
         app_main,
         "create_or_update_fill_link",
-        side_effect=app_main.FillLinkActiveLimitExceededError("Fill By Link limit reached (1 active links max for your tier)."),
+        return_value=_fill_link_record(),
     )
 
     response = client.post(
@@ -827,8 +845,8 @@ def test_fill_links_create_maps_storage_active_limit_conflict_to_403(client, app
         headers=auth_headers,
     )
 
-    assert response.status_code == 403
-    assert "Fill By Link limit reached" in response.text
+    assert response.status_code == 200
+    assert "active_limit" not in create_mock.call_args.kwargs
 
 
 def test_fill_links_create_blocks_pending_delete_template_after_downgrade(
@@ -841,10 +859,10 @@ def test_fill_links_create_blocks_pending_delete_template_after_downgrade(
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_template", return_value=_template_record())
     mocker.patch.object(app_main, "get_fill_link_for_template", return_value=None)
-    sync_mock = mocker.patch.object(
+    pending_template_ids_mock = mocker.patch.object(
         app_main,
-        "sync_user_downgrade_retention",
-        return_value={"pendingDeleteTemplateIds": ["tpl-1"]},
+        "get_user_retention_pending_template_ids",
+        return_value={"tpl-1"},
     )
     mocker.patch.object(
         app_main,
@@ -862,8 +880,8 @@ def test_fill_links_create_blocks_pending_delete_template_after_downgrade(
     )
 
     assert response.status_code == 409
-    assert "queued for deletion" in response.text.lower()
-    sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)
+    assert "locked on the base plan" in response.text.lower()
+    pending_template_ids_mock.assert_called_once_with(base_user.app_user_id)
 
 
 def test_fill_links_create_group_link_merges_group_templates(client, app_main, base_user, mocker, auth_headers) -> None:
@@ -887,8 +905,7 @@ def test_fill_links_create_group_link_merges_group_templates(client, app_main, b
         ],
     )
     mocker.patch.object(app_main, "get_fill_link_for_group", return_value=None)
-    mocker.patch.object(app_main, "_resolve_fill_links_active_limit", return_value=3)
-    mocker.patch.object(app_main, "_resolve_fill_link_response_limit", return_value=25)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=25)
     mocker.patch.object(app_main, "list_fill_links", return_value=[])
     build_questions_mock = mocker.patch.object(
         app_main,
@@ -947,8 +964,8 @@ def test_fill_links_update_blocks_reactivate_when_template_is_queued_for_deletio
     )
     mocker.patch.object(
         app_main,
-        "sync_user_downgrade_retention",
-        return_value={"pendingDeleteTemplateIds": ["tpl-1"]},
+        "get_user_retention_pending_template_ids",
+        return_value={"tpl-1"},
     )
 
     response = client.patch(
@@ -961,7 +978,7 @@ def test_fill_links_update_blocks_reactivate_when_template_is_queued_for_deletio
     )
 
     assert response.status_code == 409
-    assert "queued for deletion" in response.text.lower()
+    assert "locked on the base plan" in response.text.lower()
 
 
 def test_fill_links_update_blocks_reactivate_when_backing_template_was_deleted(
@@ -998,7 +1015,6 @@ def test_fill_links_update_blocks_reactivate_when_backing_template_was_deleted(
 def test_fill_links_public_get_and_submit(client, app_main, mocker) -> None:
     record = _fill_link_record(
         response_count=4,
-        max_responses=5,
         respondent_pdf_download_enabled=True,
         respondent_pdf_snapshot={
             "version": 1,
@@ -1034,7 +1050,6 @@ def test_fill_links_public_get_and_submit(client, app_main, mocker) -> None:
             link=_fill_link_record(
                 status="closed",
                 response_count=5,
-                max_responses=5,
                 respondent_pdf_download_enabled=True,
                 respondent_pdf_snapshot={
                     "version": 1,
@@ -1148,7 +1163,11 @@ def test_fill_links_public_submit_returns_signing_handoff_when_enabled(client, a
             sent_now=False,
         ),
     )
-    mocker.patch.object(app_main, "get_user_profile", return_value=mocker.Mock(email="owner@example.com"))
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=SimpleNamespace(email="owner@example.com", display_name=None),
+    )
     mocker.patch.object(app_main, "persist_consumer_disclosure_artifact", return_value=None)
     mocker.patch.object(app_main, "record_signing_provenance_event", return_value=None)
     deliver_invite_mock = mocker.patch.object(
@@ -1266,7 +1285,7 @@ def test_fill_links_public_submit_returns_non_retryable_signing_limit_error(clie
     ensure_signing_mock = mocker.patch.object(
         app_main,
         "ensure_fill_link_response_signing_request",
-        side_effect=SigningRequestDocumentLimitError(limit=10, source_document_name="Template One"),
+        side_effect=SigningRequestMonthlyLimitError(limit=25),
     )
     deliver_invite_mock = mocker.patch.object(app_main, "deliver_signing_invite_for_request")
     cleanup_mock = mocker.patch.object(app_main, "cleanup_paths")
@@ -1288,8 +1307,173 @@ def test_fill_links_public_submit_returns_non_retryable_signing_limit_error(clie
         "canResend": False,
         "resendAvailableAt": None,
         "message": None,
-        "errorMessage": "This submitted record has already reached the sender's signature request limit for this document. Contact the sender for an offline copy.",
+        "errorMessage": "This sender has already reached their monthly signing limit. Contact the sender for an offline copy.",
     }
+    ensure_signing_mock.assert_called_once()
+    deliver_invite_mock.assert_not_called()
+    cleanup_mock.assert_called_once_with(["tmp-path"])
+
+
+def test_fill_links_public_retry_signing_reuses_existing_sent_request_without_materializing_pdf(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    record = _fill_link_record(
+        signing_config={
+            "enabled": True,
+            "signature_mode": "consumer",
+            "document_category": "client_intake_form",
+            "document_category_label": "Client intake form",
+            "esign_eligibility_confirmed": True,
+            "esign_eligibility_confirmed_at": "2024-02-01T00:00:00+00:00",
+            "esign_eligibility_confirmed_source": "fill_link_publish",
+            "manual_fallback_enabled": True,
+            "signer_name_question_key": "full_name",
+            "signer_email_question_key": "email",
+        },
+    )
+    response_record = _response_record(signing_request_id="sign-1")
+    existing_request = _signing_request_record(request_id="sign-1", status="sent", invite_last_attempt_at=None)
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "_resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "get_fill_link_response", return_value=response_record)
+    mocker.patch.object(app_main, "get_signing_request_for_user", return_value=existing_request)
+    materialize_mock = mocker.patch.object(app_main, "materialize_fill_link_response_download")
+    ensure_signing_mock = mocker.patch.object(
+        app_main,
+        "ensure_fill_link_response_signing_request",
+        return_value=FillLinkSigningRequestMaterialization(
+            record=existing_request,
+            created_now=False,
+            sent_now=False,
+        ),
+    )
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=SimpleNamespace(email="owner@example.com", display_name=None),
+    )
+    mocker.patch.object(app_main, "persist_consumer_disclosure_artifact", return_value=None)
+    mocker.patch.object(app_main, "record_signing_provenance_event", return_value=None)
+    deliver_invite_mock = mocker.patch.object(
+        app_main,
+        "deliver_signing_invite_for_request",
+        return_value=mocker.Mock(
+            record=mocker.Mock(
+                id="sign-1",
+                status="sent",
+                invite_last_attempt_at="2099-01-01T00:05:00+00:00",
+                invite_delivery_status="sent",
+                signer_email="ada@example.com",
+            ),
+            delivery=mocker.Mock(delivery_status="sent"),
+        ),
+    )
+    cleanup_mock = mocker.patch.object(app_main, "cleanup_paths")
+
+    response = client.post(
+        "/api/fill-links/public/token-1/retry-signing",
+        json={"responseId": "resp-1"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["success"] is True
+    assert payload["signing"]["requestId"] == "sign-1"
+    assert payload["signing"]["message"] == "We emailed the signing link for this response."
+    materialize_mock.assert_not_called()
+    ensure_signing_mock.assert_called_once()
+    ensure_kwargs = ensure_signing_mock.call_args.kwargs
+    assert ensure_kwargs["response"] == response_record
+    assert ensure_kwargs["source_pdf_bytes"] is None
+    assert ensure_kwargs["signing_config"] == record.signing_config
+    assert ensure_kwargs["sender_email"] == "owner@example.com"
+    assert ensure_kwargs["sender_display_name"] is None
+    assert ensure_kwargs["public_app_origin"] == "http://localhost:5173"
+    deliver_invite_mock.assert_called_once()
+    cleanup_mock.assert_called_once_with([])
+
+
+def test_fill_links_public_retry_signing_returns_non_retryable_unavailable_error(client, app_main, mocker, tmp_path) -> None:
+    record = _fill_link_record(
+        questions=[
+            {"key": "full_name", "label": "Full Name", "type": "text", "visible": True},
+            {"key": "email", "label": "Email", "type": "email", "visible": True},
+        ],
+        signing_config={
+            "enabled": True,
+            "signature_mode": "consumer",
+            "document_category": "client_intake_form",
+            "document_category_label": "Client intake form",
+            "esign_eligibility_confirmed": True,
+            "esign_eligibility_confirmed_at": "2024-02-01T00:00:00+00:00",
+            "esign_eligibility_confirmed_source": "fill_link_publish",
+            "manual_fallback_enabled": True,
+            "signer_name_question_key": "full_name",
+            "signer_email_question_key": "email",
+        },
+        respondent_pdf_snapshot={
+            "version": 1,
+            "sourcePdfPath": "gs://forms/template.pdf",
+            "filename": "template-one-response.pdf",
+            "fields": [
+                {"name": "Signer", "type": "signature", "page": 1, "rect": {"x": 1, "y": 2, "width": 3, "height": 1}},
+            ],
+        },
+    )
+    response_record = _response_record(respondent_pdf_snapshot=record.respondent_pdf_snapshot)
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "_resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "get_fill_link_response", return_value=response_record)
+    output_path = tmp_path / "submitted-fill-link-signing-unavailable.pdf"
+    output_path.write_bytes(b"%PDF-1.4\n%stub\n")
+    materialize_mock = mocker.patch.object(
+        app_main,
+        "materialize_fill_link_response_download",
+        return_value=(output_path, ["tmp-path"], "template-one-response.pdf"),
+    )
+    mocker.patch.object(app_main, "get_signing_request_for_user", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=SimpleNamespace(email="owner@example.com", display_name=None),
+    )
+    ensure_signing_mock = mocker.patch.object(
+        app_main,
+        "ensure_fill_link_response_signing_request",
+        side_effect=FillLinkSigningUnavailableError(
+            "This signing request is unavailable because the source form was deleted. Contact the sender."
+        ),
+    )
+    deliver_invite_mock = mocker.patch.object(app_main, "deliver_signing_invite_for_request")
+    cleanup_mock = mocker.patch.object(app_main, "cleanup_paths")
+
+    response = client.post(
+        "/api/fill-links/public/token-1/retry-signing",
+        json={"responseId": "resp-1"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["success"] is False
+    assert payload["signing"] == {
+        "enabled": True,
+        "available": False,
+        "requestId": None,
+        "status": None,
+        "deliveryStatus": None,
+        "emailHint": None,
+        "canResend": False,
+        "resendAvailableAt": None,
+        "message": None,
+        "errorMessage": "This signing request is unavailable because the source form was deleted. Contact the sender.",
+    }
+    materialize_mock.assert_called_once()
     ensure_signing_mock.assert_called_once()
     deliver_invite_mock.assert_not_called()
     cleanup_mock.assert_called_once_with(["tmp-path"])
@@ -1504,7 +1688,7 @@ def test_fill_links_public_get_closed_link_hides_schema_and_closed_reason(client
 
 
 def test_fill_links_public_submit_blocks_closed_link(client, app_main, mocker) -> None:
-    record = _fill_link_record(status="closed", response_count=5, max_responses=5)
+    record = _fill_link_record(status="closed", response_count=5)
     mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
     mocker.patch.object(app_main, "_resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
     mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
@@ -1528,7 +1712,7 @@ def test_fill_links_public_submit_blocks_closed_link(client, app_main, mocker) -
 
 
 def test_fill_links_public_submit_hides_downgrade_closure_reason(client, app_main, mocker) -> None:
-    record = _fill_link_record(status="closed", response_count=0, max_responses=5)
+    record = _fill_link_record(status="closed", response_count=0)
     record = FillLinkRecord(
         **{
             **record.__dict__,
@@ -1674,3 +1858,43 @@ def test_fill_links_public_download_prefers_response_snapshot_for_historical_sub
         },
         answers={"full_name": "Ada Lovelace"},
     )
+
+
+def test_fill_links_public_download_reuses_retained_signing_source_pdf_when_signing_exists(client, app_main, mocker) -> None:
+    record = _fill_link_record(
+        respondent_pdf_download_enabled=True,
+        respondent_pdf_snapshot={
+            "version": 1,
+            "sourcePdfPath": "gs://forms/template.pdf",
+            "filename": "template-one-response.pdf",
+            "fields": [{"name": "full_name", "type": "text", "page": 1}],
+        },
+    )
+    response_record = _response_record(
+        respondent_pdf_snapshot=record.respondent_pdf_snapshot,
+        signing_request_id="sign-1",
+    )
+    signing_record = _signing_request_record(request_id="sign-1", status="sent")
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "get_template", return_value=_template_record())
+    mocker.patch.object(app_main, "_resolve_fill_link_download_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "get_fill_link_response", return_value=response_record)
+    mocker.patch.object(app_main, "get_signing_request_for_user", return_value=signing_record)
+    download_mock = mocker.patch.object(
+        app_main,
+        "download_storage_bytes",
+        return_value=b"%PDF-1.4\n%retained-source\n",
+    )
+    materialize_mock = mocker.patch.object(app_main, "materialize_fill_link_response_download")
+
+    response = client.get("/api/fill-links/public/token-1/responses/resp-1/download")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/pdf"
+    assert response.headers["cache-control"] == "private, no-store"
+    assert "template-one-response.pdf" in response.headers["content-disposition"]
+    assert response.content == b"%PDF-1.4\n%retained-source\n"
+    download_mock.assert_called_once_with("gs://bucket/source.pdf")
+    materialize_mock.assert_not_called()

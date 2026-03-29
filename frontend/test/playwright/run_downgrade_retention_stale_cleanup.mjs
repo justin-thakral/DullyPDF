@@ -53,10 +53,10 @@ async function main() {
 
     const customToken = createCustomToken(fixtureUid);
     await signInWithCustomTokenHarness(page, customToken);
-    await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.goto(`${baseUrl}/ui/profile`, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     const state = await retry('verify stale retention cleanup', 10, async () => {
-      if (await page.getByText('Downgraded account retention').isVisible().catch(() => false)) {
+      if (await page.getByRole('dialog', { name: 'Base plan template access' }).isVisible().catch(() => false)) {
         throw new Error('Stale retention dialog should not render for an active Pro account.');
       }
       const current = readFixtureState(fixtureUid);

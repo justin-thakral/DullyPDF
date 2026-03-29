@@ -510,6 +510,68 @@ def _build_fields(
     return fields
 
 
+def _build_detector_candidates(
+    widgets_by_page: Dict[int, List[DetectedWidget]],
+    *,
+    page_sizes: Dict[int, tuple[float, float]],
+) -> Dict[int, Dict[str, List[Dict[str, Any]]]]:
+    """
+    Build lightweight per-page detector primitives for downstream rename context.
+
+    The CommonForms integration currently exposes finalized widgets rather than the raw
+    detector internals, so we derive a stable primitive summary from those widgets:
+    - wide, short text widgets -> lineCandidates
+    - other text/signature widgets -> boxCandidates
+    - choice buttons -> checkboxCandidates
+
+    Time complexity:
+    - O(W) for W detected widgets because each widget is classified once.
+    """
+    detector_candidates_by_page: Dict[int, Dict[str, List[Dict[str, Any]]]] = {}
+
+    for page_idx in sorted(widgets_by_page.keys()):
+        widgets = widgets_by_page.get(page_idx, [])
+        if not widgets:
+            continue
+        page_width, page_height = page_sizes.get(page_idx, (0.0, 0.0))
+        page_number = page_idx + 1
+        page_candidates = {
+            "lineCandidates": [],
+            "boxCandidates": [],
+            "checkboxCandidates": [],
+        }
+
+        for idx, widget in enumerate(widgets, start=1):
+            rect = _bbox_to_rect(widget.bounding_box, page_width, page_height)
+            rect_w = max(0.0, float(rect[2]) - float(rect[0]))
+            rect_h = max(0.0, float(rect[3]) - float(rect[1]))
+            candidate = {
+                "id": f"commonforms_{page_number}_{idx}",
+                "bbox": rect,
+                "detector": "commonforms",
+                "confidence": float(widget.confidence),
+                "widgetType": str(widget.widget_type or ""),
+            }
+
+            if widget.widget_type == "ChoiceButton":
+                page_candidates["checkboxCandidates"].append(candidate)
+                continue
+
+            is_line_candidate = (
+                rect_h > 0.0
+                and rect_w >= max(rect_h * 4.0, page_width * 0.12)
+                and rect_h <= max(12.0, page_height * 0.04)
+            )
+            if is_line_candidate:
+                page_candidates["lineCandidates"].append(candidate)
+            else:
+                page_candidates["boxCandidates"].append(candidate)
+
+        detector_candidates_by_page[page_number] = page_candidates
+
+    return detector_candidates_by_page
+
+
 def detect_commonforms_fields(
     pdf_path: Path,
     *,
@@ -581,6 +643,10 @@ def detect_commonforms_fields(
         model=model_label,
         use_signature_fields=use_signature_fields,
     )
+    detector_candidates_by_page = _build_detector_candidates(
+        widgets_by_page,
+        page_sizes=page_sizes,
+    )
     if output_pdf is not None:
         template = {
             "fields": fields,
@@ -592,6 +658,7 @@ def detect_commonforms_fields(
     return {
         "fields": fields,
         "coordinateSystem": "originTop",
+        "detectorCandidatesByPage": detector_candidates_by_page,
         "meta": {
             "pipeline": "commonforms",
             "model": model_label,

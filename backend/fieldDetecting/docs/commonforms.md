@@ -53,6 +53,10 @@ python -m backend.fieldDetecting.commonforms.commonForm path/to/sample.pdf
   - `name`, `type`, `page`, `rect` (originTop points)
   - `confidence`, `category`, `source=commonforms`, `model`, `candidateId`
 - `coordinateSystem`: `originTop`
+- `detectorCandidatesByPage`: optional per-page detector primitive summary used by OpenAI rename
+  - `lineCandidates`
+  - `boxCandidates`
+  - `checkboxCandidates`
 - `meta`: detection configuration (model, confidence threshold, image size, device, etc.)
 
 Optional artifacts when `output_pdf` is provided:

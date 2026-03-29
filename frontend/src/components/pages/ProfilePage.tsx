@@ -60,6 +60,12 @@ type ProfileDetail = {
   tone?: 'default' | 'accent' | 'warning';
 };
 
+type ProfileLimitCard = {
+  title: string;
+  description: string;
+  items: ProfileDetail[];
+};
+
 const numberFormatter = new Intl.NumberFormat();
 
 function formatPlanPrice(plan?: BillingPlanCatalogItem): string | null {
@@ -102,6 +108,21 @@ function formatTimestampLabel(value?: string | null): string | null {
 
 function formatCountLabel(value: number | null | undefined): string {
   return numberFormatter.format(value ?? 0);
+}
+
+function formatLimitValue(value: number | null | undefined): string {
+  if (typeof value !== 'number' || Number.isNaN(value)) return 'Unavailable';
+  return formatCountLabel(value);
+}
+
+function resolveSavedFormAccessStatus(
+  form: SavedFormSummary,
+  fallbackStatus?: string | null,
+): 'accessible' | 'locked' {
+  if (form.locked || form.accessStatus === 'locked' || fallbackStatus === 'locked' || fallbackStatus === 'pending_delete') {
+    return 'locked';
+  }
+  return 'accessible';
 }
 
 function toSentenceCase(value: string | null | undefined): string | null {
@@ -196,6 +217,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     : (cancelScheduled ? 'Cancelled' : (isPro ? 'Cancel Pro Subscription' : 'Cancel Subscription'));
   const resolvedAvailableCredits =
     typeof availableCredits === 'number' ? availableCredits : (creditsRemaining ?? 0);
+  const fillLinkResponsesMonthlyLimit = limits.fillLinkResponsesMonthlyMax;
   const creditsLabel = isGod ? 'Unlimited' : formatCountLabel(resolvedAvailableCredits);
   const monthlyLabel = isGod ? 'Unlimited' : formatCountLabel(monthlyCreditsRemaining);
   const refillLabel = isGod ? 'Unlimited' : formatCountLabel(refillCreditsRemaining);
@@ -226,19 +248,35 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       return null;
     }
   }, [cancelEffectiveAt]);
-  const retentionDeadlineLabel = useMemo(() => {
-    if (!retention?.graceEndsAt) return 'the grace deadline';
-    const parsed = new Date(retention.graceEndsAt);
-    if (Number.isNaN(parsed.getTime())) return 'the grace deadline';
-    return parsed.toLocaleDateString();
-  }, [retention?.graceEndsAt]);
+  const accessibleTemplateCount =
+    retention?.accessibleTemplateIds?.length
+    ?? retention?.counts.keptTemplates
+    ?? 0;
+  const lockedTemplateCount =
+    retention?.lockedTemplateIds?.length
+    ?? retention?.counts.pendingTemplates
+    ?? 0;
+  const lockedLinkCount =
+    retention?.lockedLinkIds?.length
+    ?? retention?.counts.pendingLinks
+    ?? 0;
+  const affectedSigningRequestCount = retention?.counts.affectedSigningRequests ?? 0;
+  const affectedSigningDraftCount = retention?.counts.affectedSigningDrafts ?? 0;
+  const retainedSigningRequestCount = retention?.counts.retainedSigningRequests ?? 0;
   const retentionStatusByFormId = useMemo(() => {
     const next = new Map<string, string>();
     for (const template of retention?.templates ?? []) {
-      next.set(template.id, template.status);
+      next.set(template.id, template.accessStatus || template.status);
     }
     return next;
   }, [retention?.templates]);
+  const lockedSavedFormsCount = useMemo(
+    () => savedForms.reduce((count, form) => count + (
+      resolveSavedFormAccessStatus(form, retentionStatusByFormId.get(form.id)) === 'locked' ? 1 : 0
+    ), 0),
+    [retentionStatusByFormId, savedForms],
+  );
+  const accessibleSavedFormsCount = Math.max(0, savedForms.length - lockedSavedFormsCount);
   const filteredForms = useMemo(() => {
     const trimmed = query.trim().toLowerCase();
     if (!trimmed) return savedForms;
@@ -248,8 +286,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const heroDescription = isGod
     ? 'God tier bypasses credit enforcement and exposes the highest workflow limits.'
     : isPro
-      ? 'Your profile tracks credits, saved templates, billing status, and fill-link capacity in one place.'
-      : 'Upgrade and storage decisions are driven from this profile page, with limits and billing details kept in sync.';
+      ? 'Your profile tracks credits, saved templates, Fill By Link, API Fill, signing, and billing state in one place.'
+      : 'Upgrade and storage decisions are driven from this profile page, with backend-enforced limits for PDFs, saved forms, Fill By Link, API Fill, signing, and credits kept in sync.';
   const subscriptionSummary = isGod
     ? 'Bypassed for God tier'
     : hasBillingSubscription
@@ -277,42 +315,85 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       note: 'Templates stored in your profile and available to reopen or publish.',
     },
     {
-      label: 'Scan page limit',
-      value: formatCountLabel(limits.detectMaxPages),
-      note: 'Maximum PDF pages accepted for a single detection request.',
+      label: 'Fill By Link / month',
+      value: formatLimitValue(fillLinkResponsesMonthlyLimit),
+      note: 'Accepted respondent submissions allowed across all published Fill By Link forms each month.',
     },
     {
-      label: 'Active fill links',
-      value: formatCountLabel(limits.fillLinksActiveMax),
-      note: 'Templates or groups that can publish a Fill By Link at the same time.',
+      label: 'Active API endpoints',
+      value: formatLimitValue(limits.templateApiActiveMax),
+      note: 'Template-scoped API Fill endpoints that can stay published at once.',
     },
   ];
 
-  const capabilityStats: ProfileStat[] = [
+  const enforcedLimitCards: ProfileLimitCard[] = [
     {
-      label: 'Monthly credits',
-      value: monthlyLabel,
-      note: 'Monthly pool available to Pro subscriptions.',
+      title: 'Templates and PDFs',
+      description: 'Limits tied to storage and PDF processing inside the workspace.',
+      items: [
+        {
+          label: 'Saved forms',
+          value: `${formatCountLabel(savedForms.length)} used / ${formatLimitValue(limits.savedFormsMax)} max`,
+          tone: 'accent',
+        },
+        {
+          label: 'Detect pages / PDF',
+          value: formatLimitValue(limits.detectMaxPages),
+        },
+        {
+          label: 'Fillable pages / PDF',
+          value: formatLimitValue(limits.fillableMaxPages),
+        },
+      ],
     },
     {
-      label: 'Refill credits',
-      value: refillLabel,
-      note: 'Purchased refill credits remain available until consumed.',
+      title: 'Fill By Link and API Fill',
+      description: 'Limits for hosted respondent links and template-scoped JSON-to-PDF endpoints.',
+      items: [
+        {
+          label: 'Published Fill By Links',
+          value: 'No plan cap',
+        },
+        {
+          label: 'Responses / month',
+          value: formatLimitValue(fillLinkResponsesMonthlyLimit),
+        },
+        {
+          label: 'Active API endpoints',
+          value: formatLimitValue(limits.templateApiActiveMax),
+        },
+        {
+          label: 'API fills / month',
+          value: formatLimitValue(limits.templateApiRequestsMonthlyMax),
+        },
+        {
+          label: 'API pages / request',
+          value: formatLimitValue(limits.templateApiMaxPages),
+        },
+      ],
     },
     {
-      label: 'Max fillable pages',
-      value: formatCountLabel(limits.fillableMaxPages),
-      note: 'Applies when uploading already-fillable templates for reuse.',
-    },
-    {
-      label: 'Responses per link',
-      value: formatCountLabel(limits.fillLinkResponsesMax),
-      note: 'Upper bound for accepted respondents on each published Fill By Link.',
-    },
-    {
-      label: 'Signature requests / document',
-      value: formatCountLabel(limits.signingRequestsPerDocumentMax),
-      note: 'Maximum signer requests the current tier can create for one immutable document version.',
+      title: 'Signing and credits',
+      description: 'Limits for monthly signing volume and backend-enforced OpenAI credit pools.',
+      items: [
+        {
+          label: 'Signing requests / month',
+          value: formatLimitValue(limits.signingRequestsMonthlyMax),
+        },
+        {
+          label: 'Available credits',
+          value: creditsLabel,
+          tone: 'accent',
+        },
+        {
+          label: 'Monthly credits remaining',
+          value: monthlyLabel,
+        },
+        {
+          label: 'Refill credits remaining',
+          value: refillLabel,
+        },
+      ],
     },
   ];
 
@@ -347,7 +428,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               <div className="profile-chip-row">
                 <span className="profile-chip profile-chip--accent">{normalizedRole} tier</span>
                 <span className="profile-chip">{formatCountLabel(savedForms.length)} saved forms</span>
-                <span className="profile-chip">{formatCountLabel(limits.fillLinksActiveMax)} active fill links</span>
+                <span className="profile-chip">{formatLimitValue(fillLinkResponsesMonthlyLimit)} Fill By Link responses / month</span>
               </div>
             </div>
           </div>
@@ -394,14 +475,20 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
             <section className="profile-panel">
               <div className="profile-panel__header">
                 <div>
-                  <p className="profile-panel__eyebrow">Capacity</p>
-                  <h2>Credits and workflow limits</h2>
-                  <p>These values come from the backend and represent the limits the workspace enforces.</p>
+                  <p className="profile-panel__eyebrow">Limits</p>
+                  <h2>All enforced limits</h2>
+                  <p>These values come from the backend and represent the limits the workspace currently enforces for this account.</p>
                 </div>
               </div>
-              <div className="profile-stat-grid">
-                {capabilityStats.map((stat) => (
-                  <ProfileStatCard key={stat.label} {...stat} />
+              <div className="profile-limit-grid">
+                {enforcedLimitCards.map((card) => (
+                  <article key={card.title} className="profile-limit-card">
+                    <div className="profile-limit-card__header">
+                      <h3>{card.title}</h3>
+                      <p>{card.description}</p>
+                    </div>
+                    <ProfileSummaryList items={card.items} />
+                  </article>
                 ))}
               </div>
             </section>
@@ -538,12 +625,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               <section className="profile-panel profile-panel--retention">
                 <div className="profile-panel__header">
                   <div>
-                    <p className="profile-panel__eyebrow">Retention</p>
-                    <h2>Downgrade retention queue</h2>
+                    <p className="profile-panel__eyebrow">Template access</p>
+                    <h2>Base plan access locks</h2>
                     <p>
-                      {retention.counts.pendingTemplates} saved form{retention.counts.pendingTemplates === 1 ? '' : 's'} and{' '}
-                      {retention.counts.pendingLinks} Fill By Link record{retention.counts.pendingLinks === 1 ? '' : 's'} are queued
-                      for deletion on {retentionDeadlineLabel}.
+                      {accessibleTemplateCount} saved form{accessibleTemplateCount === 1 ? '' : 's'} stay accessible on
+                      base. {lockedTemplateCount} saved form{lockedTemplateCount === 1 ? '' : 's'} and {lockedLinkCount}{' '}
+                      linked Fill By Link record{lockedLinkCount === 1 ? '' : 's'} stay preserved but locked until you
+                      upgrade.
                     </p>
                   </div>
                   <button
@@ -552,13 +640,31 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     onClick={onOpenDowngradeRetention}
                     disabled={!onOpenDowngradeRetention}
                   >
-                    Review retention queue
+                    Review locked templates
                   </button>
                 </div>
                 <p className="profile-panel__supporting-copy">
-                  Free accounts keep {retention.savedFormsLimit} saved form{retention.savedFormsLimit === 1 ? '' : 's'}.
-                  You can still swap which forms remain before the grace period ends.
+                  Base accounts keep the earliest-created {retention.savedFormsLimit} saved form
+                  {retention.savedFormsLimit === 1 ? '' : 's'} accessible. Locked templates are preserved in place
+                  rather than deleted.
                 </p>
+                {affectedSigningRequestCount ? (
+                  <p className="profile-panel__supporting-copy">
+                    {affectedSigningDraftCount ? (
+                      <>
+                        {affectedSigningDraftCount} signing draft{affectedSigningDraftCount === 1 ? '' : 's'} tied to
+                        locked saved forms cannot be sent until you upgrade and restore access.
+                      </>
+                    ) : null}
+                    {retainedSigningRequestCount ? (
+                      <>
+                        {' '}
+                        {retainedSigningRequestCount} sent or completed signing request
+                        {retainedSigningRequestCount === 1 ? '' : 's'} stay retained.
+                      </>
+                    ) : null}
+                  </p>
+                ) : null}
               </section>
             ) : null}
 
@@ -572,6 +678,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                       ? 'Loading saved forms from the backend...'
                       : `${formatCountLabel(filteredForms.length)} of ${formatCountLabel(savedForms.length)} saved forms shown`}
                   </p>
+                  {retention ? (
+                    <p className="profile-panel__supporting-copy">
+                      {formatCountLabel(accessibleSavedFormsCount)} accessible and {formatCountLabel(lockedSavedFormsCount)} locked on the current base plan.
+                    </p>
+                  ) : null}
                   {!allowSavedFormOpen ? (
                     <p className="profile-panel__supporting-copy">
                       Opening saved forms is desktop-only. Increase window width above 900px to reopen templates.
@@ -608,24 +719,23 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     const isDeleting = deletingFormId === form.id;
                     const createdLabel = formatTimestampLabel(form.createdAt);
                     const retentionStatus = retentionStatusByFormId.get(form.id) ?? null;
-                    const retentionStatusLabel =
-                      retentionStatus === 'pending_delete'
-                        ? 'Queued for deletion'
-                        : retentionStatus === 'kept'
-                          ? 'Kept'
-                          : null;
+                    const accessStatus = resolveSavedFormAccessStatus(form, retentionStatus);
+                    const locked = accessStatus === 'locked';
+                    const accessStatusLabel = retention
+                      ? (locked ? 'Locked on base' : 'Accessible on base')
+                      : null;
                     return (
                       <article
                         key={form.id}
                         className={[
                           'saved-form-row',
-                          retentionStatus === 'pending_delete' ? 'saved-form-row--queued' : '',
-                          retentionStatus === 'kept' ? 'saved-form-row--kept' : '',
+                          locked ? 'saved-form-row--locked' : '',
+                          retention && !locked ? 'saved-form-row--accessible' : '',
                         ].filter(Boolean).join(' ')}
                         role="listitem"
                       >
                         <div className="saved-form-row__info">
-                          {allowSavedFormOpen ? (
+                          {allowSavedFormOpen && !locked ? (
                             <button
                               type="button"
                               className="saved-form-row__name"
@@ -642,16 +752,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                           )}
                           <div className="saved-form-row__meta">
                             <span>{createdLabel ? `Saved ${createdLabel}` : 'Saved date unavailable'}</span>
-                            {retentionStatusLabel ? (
+                            {accessStatusLabel ? (
                               <span
                                 className={[
                                   'saved-form-row__badge',
-                                  retentionStatus === 'pending_delete'
-                                    ? 'saved-form-row__badge--queued'
-                                    : 'saved-form-row__badge--kept',
+                                  locked ? 'saved-form-row__badge--locked' : 'saved-form-row__badge--accessible',
                                 ].join(' ')}
                               >
-                                {retentionStatusLabel}
+                                {accessStatusLabel}
                               </span>
                             ) : null}
                           </div>
@@ -661,13 +769,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                             <button
                               type="button"
                               className="profile-button profile-button--secondary"
-                              onClick={() => onSelectSavedForm(form.id)}
-                              disabled={isDeleting}
+                              onClick={() => {
+                                if (locked) {
+                                  onOpenDowngradeRetention?.();
+                                  return;
+                                }
+                                onSelectSavedForm(form.id);
+                              }}
+                              disabled={isDeleting || (locked && !onOpenDowngradeRetention)}
                             >
-                              Open
+                              {locked ? 'Review lock' : 'Open'}
                             </button>
                           ) : null}
-                          {onDeleteSavedForm ? (
+                          {onDeleteSavedForm && !locked ? (
                             <button
                               type="button"
                               className="profile-button profile-button--danger"

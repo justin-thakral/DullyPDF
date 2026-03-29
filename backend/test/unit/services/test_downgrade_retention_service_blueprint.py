@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 
+import pytest
+
 from backend.firebaseDB.user_database import UserDowngradeRetentionRecord
 from backend.services import downgrade_retention_service as service
 from backend.test.unit.firebase._fakes import FakeFirestoreClient
@@ -71,7 +73,12 @@ def _patch_eligible_base_user(
     )
 
 
-def test_apply_user_downgrade_retention_keeps_oldest_templates_and_closes_excess_links(mocker) -> None:
+@pytest.fixture(autouse=True)
+def _default_signing_requests(mocker) -> None:
+    mocker.patch("backend.services.downgrade_retention_service.list_signing_requests", return_value=[])
+
+
+def test_apply_user_downgrade_retention_keeps_oldest_templates_and_locks_dependent_links(mocker) -> None:
     _patch_eligible_base_user(mocker)
     mocker.patch(
         "backend.services.downgrade_retention_service.list_templates",
@@ -95,7 +102,6 @@ def test_apply_user_downgrade_retention_keeps_oldest_templates_and_closes_excess
         ],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=None)
     mocker.patch("backend.services.downgrade_retention_service.now_iso", return_value="2026-03-10T00:00:00+00:00")
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
@@ -109,11 +115,18 @@ def test_apply_user_downgrade_retention_keeps_oldest_templates_and_closes_excess
     assert summary["pendingDeleteLinkIds"] == ["link-2"]
     assert summary["links"][0]["status"] == "closed"
     assert summary["counts"]["closedLinks"] == 1
+    assert summary["accessibleTemplateIds"] == ["tpl-1", "tpl-2", "tpl-3"]
+    assert summary["lockedTemplateIds"] == ["tpl-4"]
+    assert summary["selectionMode"] == "oldest_created"
+    assert summary["manualSelectionAllowed"] is False
+    assert summary["counts"]["affectedSigningRequests"] == 0
+    assert summary["counts"]["affectedSigningDrafts"] == 0
+    assert summary["counts"]["retainedSigningRequests"] == 0
     set_retention_mock.assert_called_once()
     assert set_retention_mock.call_args.kwargs["pending_delete_template_ids"] == ["tpl-4"]
     assert set_retention_mock.call_args.kwargs["pending_delete_link_ids"] == ["link-2"]
     close_fill_link_mock.assert_any_call("link-2", "user-1", closed_reason="downgrade_retention")
-    close_fill_link_mock.assert_any_call("link-3", "user-1", closed_reason="downgrade_link_limit")
+    assert close_fill_link_mock.call_count == 1
 
 
 def test_apply_user_downgrade_retention_can_override_stale_active_subscription_state(mocker) -> None:
@@ -133,7 +146,6 @@ def test_apply_user_downgrade_retention_can_override_stale_active_subscription_s
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=None)
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
@@ -171,7 +183,6 @@ def test_apply_user_downgrade_retention_marks_deferred_billing_sync_when_request
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=None)
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
@@ -192,20 +203,8 @@ def test_apply_user_downgrade_retention_marks_deferred_billing_sync_when_request
     close_fill_link_mock.assert_called_once_with("link-4", "user-1", closed_reason="downgrade_retention")
 
 
-def test_select_user_retained_templates_recomputes_keep_set(mocker) -> None:
+def test_apply_user_downgrade_retention_reports_signing_impact_for_pending_templates(mocker) -> None:
     _patch_eligible_base_user(mocker)
-    existing = UserDowngradeRetentionRecord(
-        status="grace_period",
-        policy_version=1,
-        downgraded_at="2026-03-01T00:00:00+00:00",
-        grace_ends_at="2026-03-31T00:00:00+00:00",
-        saved_forms_limit=3,
-        fill_links_active_limit=1,
-        kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
-        pending_delete_template_ids=["tpl-4"],
-        pending_delete_link_ids=["link-4"],
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
     mocker.patch(
         "backend.services.downgrade_retention_service.list_templates",
         return_value=[
@@ -216,23 +215,124 @@ def test_select_user_retained_templates_recomputes_keep_set(mocker) -> None:
         ],
     )
     mocker.patch("backend.services.downgrade_retention_service.list_groups", return_value=[])
+    mocker.patch("backend.services.downgrade_retention_service.list_fill_links", return_value=[])
+    mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
+    mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=None)
+    mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
+    mocker.patch(
+        "backend.services.downgrade_retention_service.list_signing_requests",
+        return_value=[
+            SimpleNamespace(id="sign-draft", status="draft", source_template_id="tpl-4"),
+            SimpleNamespace(id="sign-sent", status="sent", source_template_id="tpl-4"),
+            SimpleNamespace(id="sign-completed", status="completed", source_template_id="tpl-4"),
+            SimpleNamespace(id="sign-invalidated", status="invalidated", source_template_id="tpl-4"),
+            SimpleNamespace(id="sign-other", status="draft", source_template_id="tpl-1"),
+        ],
+    )
+
+    summary = service.apply_user_downgrade_retention("user-1")
+
+    assert summary is not None
+    assert summary["counts"]["affectedSigningRequests"] == 3
+    assert summary["counts"]["affectedSigningDrafts"] == 1
+    assert summary["counts"]["retainedSigningRequests"] == 2
+    assert summary["counts"]["completedSigningRequests"] == 1
+
+
+def test_restore_user_downgrade_managed_links_reopens_only_valid_downgrade_managed_links(mocker) -> None:
+    mocker.patch(
+        "backend.services.downgrade_retention_service.list_fill_links",
+        return_value=[
+            _link(
+                "link-retention",
+                template_ids=["tpl-1"],
+                template_id="tpl-1",
+                status="closed",
+                closed_reason="downgrade_retention",
+            ),
+            _link(
+                "link-limit",
+                template_ids=["tpl-2"],
+                template_id="tpl-2",
+                status="closed",
+                closed_reason="downgrade_link_limit",
+            ),
+            _link(
+                "link-owner",
+                template_ids=["tpl-3"],
+                template_id="tpl-3",
+                status="closed",
+                closed_reason="owner_closed",
+            ),
+            _link(
+                "link-invalid",
+                template_ids=["tpl-4"],
+                template_id="tpl-4",
+                status="closed",
+                closed_reason="downgrade_retention",
+            ),
+        ],
+    )
+
+    def _validate(*_, template_id=None, **__):
+        return SimpleNamespace(valid=template_id != "tpl-4")
+
+    mocker.patch("backend.services.downgrade_retention_service.validate_fill_link_scope", side_effect=_validate)
+    update_fill_link_mock = mocker.patch(
+        "backend.services.downgrade_retention_service.update_fill_link",
+        side_effect=lambda link_id, *_args, **_kwargs: SimpleNamespace(id=link_id, status="active"),
+    )
+
+    restored = service.restore_user_downgrade_managed_links("user-1")
+
+    assert restored == ["link-retention", "link-limit"]
+    update_fill_link_mock.assert_any_call("link-retention", "user-1", status="active", closed_reason=None)
+    update_fill_link_mock.assert_any_call("link-limit", "user-1", status="active", closed_reason=None)
+    assert update_fill_link_mock.call_count == 2
+
+
+def test_select_user_retained_templates_recomputes_keep_set(mocker) -> None:
+    _patch_eligible_base_user(mocker)
+    existing = UserDowngradeRetentionRecord(
+        status="grace_period",
+        policy_version=1,
+        downgraded_at="2026-03-01T00:00:00+00:00",
+        grace_ends_at="2026-03-31T00:00:00+00:00",
+        saved_forms_limit=5,
+        kept_template_ids=["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-5"],
+        pending_delete_template_ids=["tpl-6"],
+        pending_delete_link_ids=["link-6"],
+    )
+    mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
+    mocker.patch(
+        "backend.services.downgrade_retention_service.list_templates",
+        return_value=[
+            _template("tpl-1", "2026-01-01T00:00:00+00:00"),
+            _template("tpl-2", "2026-01-02T00:00:00+00:00"),
+            _template("tpl-3", "2026-01-03T00:00:00+00:00"),
+            _template("tpl-4", "2026-01-04T00:00:00+00:00"),
+            _template("tpl-5", "2026-01-05T00:00:00+00:00"),
+            _template("tpl-6", "2026-01-06T00:00:00+00:00"),
+        ],
+    )
+    mocker.patch("backend.services.downgrade_retention_service.list_groups", return_value=[])
     mocker.patch(
         "backend.services.downgrade_retention_service.list_fill_links",
         return_value=[
             _link("link-1", template_ids=["tpl-1"], template_id="tpl-1"),
-            _link("link-4", template_ids=["tpl-4"], template_id="tpl-4"),
+            _link("link-6", template_ids=["tpl-6"], template_id="tpl-6"),
         ],
     )
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
 
-    summary = service.select_user_retained_templates("user-1", ["tpl-2", "tpl-3", "tpl-4"])
+    summary = service.select_user_retained_templates("user-1", ["tpl-2", "tpl-3", "tpl-4", "tpl-5", "tpl-6"])
 
-    assert summary["keptTemplateIds"] == ["tpl-2", "tpl-3", "tpl-4"]
-    assert summary["pendingDeleteTemplateIds"] == ["tpl-1"]
-    assert summary["pendingDeleteLinkIds"] == ["link-1"]
-    assert set_retention_mock.call_args.kwargs["kept_template_ids"] == ["tpl-2", "tpl-3", "tpl-4"]
-    close_fill_link_mock.assert_called_once_with("link-1", "user-1", closed_reason="downgrade_retention")
+    assert summary["keptTemplateIds"] == ["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-5"]
+    assert summary["pendingDeleteTemplateIds"] == ["tpl-6"]
+    assert summary["pendingDeleteLinkIds"] == ["link-6"]
+    assert set_retention_mock.call_args.kwargs["kept_template_ids"] == ["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-5"]
+    close_fill_link_mock.assert_called_once_with("link-6", "user-1", closed_reason="downgrade_retention")
 
 
 def test_select_user_retained_templates_rejects_stale_plan_when_account_is_no_longer_eligible(mocker) -> None:
@@ -243,12 +343,12 @@ def test_select_user_retained_templates_rejects_stale_plan_when_account_is_no_lo
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=3,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
         pending_delete_template_ids=["tpl-4"],
         pending_delete_link_ids=["link-4"],
     )
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
+    restore_mock = mocker.patch("backend.services.downgrade_retention_service.restore_user_downgrade_managed_links", return_value=["link-4"])
     clear_mock = mocker.patch("backend.services.downgrade_retention_service.clear_user_downgrade_retention", return_value=None)
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention")
 
@@ -258,21 +358,21 @@ def test_select_user_retained_templates_rejects_stale_plan_when_account_is_no_lo
     except service.DowngradeRetentionInactiveError as exc:
         assert "no longer active" in str(exc)
 
+    restore_mock.assert_called_once_with("user-1")
     clear_mock.assert_called_once_with("user-1")
     set_retention_mock.assert_not_called()
 
 
-def test_select_user_retained_templates_reclassifies_previously_queued_link_when_template_becomes_kept(mocker) -> None:
+def test_select_user_retained_templates_keeps_oldest_access_policy_even_when_request_differs(mocker) -> None:
     _patch_eligible_base_user(mocker)
     existing = UserDowngradeRetentionRecord(
         status="grace_period",
         policy_version=1,
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
-        saved_forms_limit=3,
-        fill_links_active_limit=1,
-        kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
-        pending_delete_template_ids=["tpl-4"],
+        saved_forms_limit=5,
+        kept_template_ids=["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-5"],
+        pending_delete_template_ids=["tpl-6"],
         pending_delete_link_ids=["link-delta"],
     )
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
@@ -283,6 +383,8 @@ def test_select_user_retained_templates_reclassifies_previously_queued_link_when
             _template("tpl-2", "2026-01-02T00:00:00+00:00"),
             _template("tpl-3", "2026-01-03T00:00:00+00:00"),
             _template("tpl-4", "2026-01-04T00:00:00+00:00"),
+            _template("tpl-5", "2026-01-05T00:00:00+00:00"),
+            _template("tpl-6", "2026-01-06T00:00:00+00:00"),
         ],
     )
     mocker.patch("backend.services.downgrade_retention_service.list_groups", return_value=[])
@@ -293,8 +395,8 @@ def test_select_user_retained_templates_reclassifies_previously_queued_link_when
             _link("link-beta", template_ids=["tpl-2"], template_id="tpl-2"),
             _link(
                 "link-delta",
-                template_ids=["tpl-4"],
-                template_id="tpl-4",
+                template_ids=["tpl-6"],
+                template_id="tpl-6",
                 status="closed",
                 closed_reason="downgrade_retention",
             ),
@@ -304,58 +406,40 @@ def test_select_user_retained_templates_reclassifies_previously_queued_link_when
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
     update_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.update_fill_link", return_value=None)
 
-    summary = service.select_user_retained_templates("user-1", ["tpl-1", "tpl-2", "tpl-4"])
+    summary = service.select_user_retained_templates("user-1", ["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-6"])
 
-    assert summary["keptTemplateIds"] == ["tpl-1", "tpl-2", "tpl-4"]
-    assert summary["pendingDeleteTemplateIds"] == ["tpl-3"]
-    assert summary["pendingDeleteLinkIds"] == []
-    assert set_retention_mock.call_args.kwargs["pending_delete_link_ids"] == []
-    close_fill_link_mock.assert_any_call("link-beta", "user-1", closed_reason="downgrade_link_limit")
-    close_fill_link_mock.assert_any_call("link-delta", "user-1", closed_reason="downgrade_link_limit")
+    assert summary["keptTemplateIds"] == ["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-5"]
+    assert summary["pendingDeleteTemplateIds"] == ["tpl-6"]
+    assert summary["pendingDeleteLinkIds"] == ["link-delta"]
+    assert set_retention_mock.call_args.kwargs["pending_delete_link_ids"] == ["link-delta"]
+    close_fill_link_mock.assert_not_called()
     update_fill_link_mock.assert_not_called()
 
 
-def test_delete_user_downgrade_retention_now_purges_pending_templates_and_links(mocker) -> None:
+def test_delete_user_downgrade_retention_now_is_a_no_op_under_lock_policy(mocker) -> None:
     _patch_eligible_base_user(mocker)
-    computation = service.DowngradeRetentionComputation(
-        state=UserDowngradeRetentionRecord(
+    mocker.patch(
+        "backend.services.downgrade_retention_service.get_user_downgrade_retention",
+        return_value=UserDowngradeRetentionRecord(
             status="grace_period",
-            policy_version=1,
+            policy_version=2,
             downgraded_at="2026-03-01T00:00:00+00:00",
-            grace_ends_at="2026-03-31T00:00:00+00:00",
+            grace_ends_at=None,
             saved_forms_limit=3,
-            fill_links_active_limit=1,
             kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
             pending_delete_template_ids=["tpl-4"],
             pending_delete_link_ids=["link-4"],
         ),
-        templates=[],
-        groups=[],
-        links=[],
-        pending_link_reasons={"link-4": "template_pending_delete"},
-        active_limit_close_link_ids=[],
     )
-    mocker.patch(
-        "backend.services.downgrade_retention_service.get_user_downgrade_retention",
-        return_value=computation.state,
+    sync_mock = mocker.patch(
+        "backend.services.downgrade_retention_service.sync_user_downgrade_retention",
+        return_value={"keptTemplateIds": ["tpl-1", "tpl-2", "tpl-3"], "pendingDeleteTemplateIds": ["tpl-4"]},
     )
-    mocker.patch(
-        "backend.services.downgrade_retention_service._compute_retention",
-        return_value=computation,
-    )
-    delete_template_mock = mocker.patch(
-        "backend.services.downgrade_retention_service.delete_saved_form_assets",
-        return_value=True,
-    )
-    delete_link_mock = mocker.patch("backend.services.downgrade_retention_service.delete_fill_link", return_value=True)
-    sync_mock = mocker.patch("backend.services.downgrade_retention_service.sync_user_downgrade_retention", return_value=None)
 
     result = service.delete_user_downgrade_retention_now("user-1")
 
-    assert result == {"deletedTemplateIds": ["tpl-4"], "deletedLinkIds": ["link-4"]}
-    delete_template_mock.assert_called_once_with("tpl-4", "user-1", hard_delete_link_records=True)
-    delete_link_mock.assert_called_once_with("link-4", "user-1")
-    sync_mock.assert_called_once_with("user-1", create_if_missing=False)
+    assert result == {"deletedTemplateIds": [], "deletedLinkIds": []}
+    sync_mock.assert_called_once_with("user-1", create_if_missing=True)
 
 
 def test_sync_user_downgrade_retention_can_create_missing_plan_for_base_user(mocker) -> None:
@@ -376,7 +460,6 @@ def test_sync_user_downgrade_retention_can_create_missing_plan_for_base_user(moc
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
@@ -408,7 +491,6 @@ def test_sync_user_downgrade_retention_does_not_trust_active_status_without_subs
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
 
@@ -427,12 +509,55 @@ def test_sync_user_downgrade_retention_preserves_deferred_plan_during_stale_acti
         policy_version=1,
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
+        saved_forms_limit=5,
+        kept_template_ids=["tpl-1", "tpl-2", "tpl-3", "tpl-4", "tpl-5"],
+        pending_delete_template_ids=["tpl-6"],
+        pending_delete_link_ids=["link-6"],
+        billing_state_deferred=True,
+    )
+    mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
+    mocker.patch(
+        "backend.services.downgrade_retention_service.list_templates",
+        return_value=[
+            _template("tpl-1", "2026-01-01T00:00:00+00:00"),
+            _template("tpl-2", "2026-01-02T00:00:00+00:00"),
+            _template("tpl-3", "2026-01-03T00:00:00+00:00"),
+            _template("tpl-4", "2026-01-04T00:00:00+00:00"),
+            _template("tpl-5", "2026-01-05T00:00:00+00:00"),
+            _template("tpl-6", "2026-01-06T00:00:00+00:00"),
+        ],
+    )
+    mocker.patch("backend.services.downgrade_retention_service.list_groups", return_value=[])
+    mocker.patch(
+        "backend.services.downgrade_retention_service.list_fill_links",
+        return_value=[_link("link-6", template_ids=["tpl-6"], template_id="tpl-6")],
+    )
+    set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
+    close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
+    clear_mock = mocker.patch("backend.services.downgrade_retention_service.clear_user_downgrade_retention", return_value=None)
+    close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
+
+    summary = service.sync_user_downgrade_retention("user-1")
+
+    assert summary is not None
+    assert summary["pendingDeleteTemplateIds"] == ["tpl-6"]
+    assert set_retention_mock.call_args.kwargs["billing_state_deferred"] is True
+    close_fill_link_mock.assert_called_once_with("link-6", "user-1", closed_reason="downgrade_retention")
+    clear_mock.assert_not_called()
+    close_fill_link_mock.assert_called_once_with("link-6", "user-1", closed_reason="downgrade_retention")
+
+
+def test_sync_user_downgrade_retention_ignores_legacy_grace_deadline_under_lock_policy(mocker) -> None:
+    _patch_eligible_base_user(mocker)
+    existing = UserDowngradeRetentionRecord(
+        status="grace_period",
+        policy_version=1,
+        downgraded_at="2026-03-01T00:00:00+00:00",
+        grace_ends_at="2026-03-02T00:00:00+00:00",
         saved_forms_limit=3,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
         pending_delete_template_ids=["tpl-4"],
         pending_delete_link_ids=["link-4"],
-        billing_state_deferred=True,
     )
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
     mocker.patch(
@@ -449,19 +574,14 @@ def test_sync_user_downgrade_retention_preserves_deferred_plan_during_stale_acti
         "backend.services.downgrade_retention_service.list_fill_links",
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
-    set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
-    close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
-    clear_mock = mocker.patch("backend.services.downgrade_retention_service.clear_user_downgrade_retention", return_value=None)
-    close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
+    mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
+    commit_mock = mocker.patch("backend.services.downgrade_retention_service._commit_retention_state", return_value=None)
 
     summary = service.sync_user_downgrade_retention("user-1")
 
     assert summary is not None
     assert summary["pendingDeleteTemplateIds"] == ["tpl-4"]
-    assert set_retention_mock.call_args.kwargs["billing_state_deferred"] is True
-    close_fill_link_mock.assert_called_once_with("link-4", "user-1", closed_reason="downgrade_retention")
-    clear_mock.assert_not_called()
-    close_fill_link_mock.assert_called_once_with("link-4", "user-1", closed_reason="downgrade_retention")
+    commit_mock.assert_called_once()
 
 
 def test_sync_user_downgrade_retention_clears_existing_plan_when_subscription_is_confirmed_active(mocker) -> None:
@@ -472,18 +592,19 @@ def test_sync_user_downgrade_retention_clears_existing_plan_when_subscription_is
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=3,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
         pending_delete_template_ids=["tpl-4"],
         pending_delete_link_ids=["link-4"],
     )
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
+    restore_mock = mocker.patch("backend.services.downgrade_retention_service.restore_user_downgrade_managed_links", return_value=["link-4"])
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     clear_mock = mocker.patch("backend.services.downgrade_retention_service.clear_user_downgrade_retention", return_value=None)
 
     summary = service.sync_user_downgrade_retention("user-1")
 
     assert summary is None
+    restore_mock.assert_called_once_with("user-1")
     set_retention_mock.assert_not_called()
     clear_mock.assert_called_once_with("user-1")
 
@@ -496,7 +617,6 @@ def test_sync_user_downgrade_retention_migrates_existing_plan_to_current_policy_
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=4,
-        fill_links_active_limit=2,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3", "tpl-4"],
         pending_delete_template_ids=[],
         pending_delete_link_ids=[],
@@ -518,7 +638,6 @@ def test_sync_user_downgrade_retention_migrates_existing_plan_to_current_policy_
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=2)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
     close_fill_link_mock = mocker.patch("backend.services.downgrade_retention_service.close_fill_link", return_value=None)
@@ -528,13 +647,11 @@ def test_sync_user_downgrade_retention_migrates_existing_plan_to_current_policy_
     assert summary is not None
     assert summary["policyVersion"] == 2
     assert summary["savedFormsLimit"] == 2
-    assert summary["fillLinksActiveLimit"] == 1
     assert summary["keptTemplateIds"] == ["tpl-1", "tpl-2"]
     assert summary["pendingDeleteTemplateIds"] == ["tpl-3", "tpl-4"]
     assert summary["pendingDeleteLinkIds"] == ["link-4"]
     assert set_retention_mock.call_args.kwargs["policy_version"] == 2
     assert set_retention_mock.call_args.kwargs["saved_forms_limit"] == 2
-    assert set_retention_mock.call_args.kwargs["fill_links_active_limit"] == 1
     close_fill_link_mock.assert_called_once_with("link-4", "user-1", closed_reason="downgrade_retention")
     close_fill_link_mock.assert_called_once_with("link-4", "user-1", closed_reason="downgrade_retention")
 
@@ -556,7 +673,6 @@ def test_apply_user_downgrade_retention_rolls_back_link_updates_when_state_persi
         return_value=[_link("link-4", template_ids=["tpl-4"], template_id="tpl-4")],
     )
     mocker.patch("backend.services.downgrade_retention_service.resolve_saved_forms_limit", return_value=3)
-    mocker.patch("backend.services.downgrade_retention_service.resolve_fill_links_active_limit", return_value=1)
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=None)
     mocker.patch(
         "backend.services.downgrade_retention_service.set_user_downgrade_retention",
@@ -583,7 +699,6 @@ def test_commit_retention_state_rolls_back_applied_link_changes_when_later_mutat
             downgraded_at="2026-03-01T00:00:00+00:00",
             grace_ends_at="2026-03-31T00:00:00+00:00",
             saved_forms_limit=3,
-            fill_links_active_limit=1,
             kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
             pending_delete_template_ids=["tpl-4"],
             pending_delete_link_ids=["link-4"],
@@ -591,15 +706,15 @@ def test_commit_retention_state_rolls_back_applied_link_changes_when_later_mutat
         templates=[],
         groups=[],
         links=[],
+        affected_signing_requests=[],
         pending_link_reasons={},
-        active_limit_close_link_ids=["link-3"],
     )
     mutations = [
         service._RetentionLinkMutation(
             link_id="link-3",
             user_id="user-1",
             desired_status="closed",
-            desired_closed_reason="downgrade_link_limit",
+            desired_closed_reason="downgrade_retention",
             original_status="active",
             original_closed_reason=None,
         ),
@@ -641,7 +756,7 @@ def test_commit_retention_state_rolls_back_applied_link_changes_when_later_mutat
     persist_retention_mock.assert_not_called()
 
 
-def test_select_user_retained_templates_uses_current_policy_keep_count(mocker) -> None:
+def test_select_user_retained_templates_returns_current_summary_without_manual_count_validation(mocker) -> None:
     _patch_eligible_base_user(mocker)
     existing = UserDowngradeRetentionRecord(
         status="grace_period",
@@ -649,7 +764,6 @@ def test_select_user_retained_templates_uses_current_policy_keep_count(mocker) -
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=4,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3", "tpl-4"],
         pending_delete_template_ids=[],
         pending_delete_link_ids=[],
@@ -666,11 +780,15 @@ def test_select_user_retained_templates_uses_current_policy_keep_count(mocker) -
         ],
     )
 
-    try:
-        service.select_user_retained_templates("user-1", ["tpl-1", "tpl-2", "tpl-3", "tpl-4"])
-        raise AssertionError("Expected ValueError")
-    except ValueError as exc:
-        assert "Select exactly 3 saved forms to keep." in str(exc)
+    mocker.patch("backend.services.downgrade_retention_service.list_groups", return_value=[])
+    mocker.patch("backend.services.downgrade_retention_service.list_fill_links", return_value=[])
+    set_retention_mock = mocker.patch("backend.services.downgrade_retention_service.set_user_downgrade_retention", return_value=None)
+
+    summary = service.select_user_retained_templates("user-1", ["tpl-1", "tpl-2", "tpl-3", "tpl-4"])
+
+    assert summary["keptTemplateIds"] == ["tpl-1", "tpl-2", "tpl-3"]
+    assert summary["pendingDeleteTemplateIds"] == ["tpl-4"]
+    assert set_retention_mock.call_args.kwargs["kept_template_ids"] == ["tpl-1", "tpl-2", "tpl-3"]
 
 
 def test_delete_user_downgrade_retention_now_clears_stale_retention_for_pro_account(mocker) -> None:
@@ -681,22 +799,19 @@ def test_delete_user_downgrade_retention_now_clears_stale_retention_for_pro_acco
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=3,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
         pending_delete_template_ids=["tpl-4"],
         pending_delete_link_ids=["link-4"],
     )
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
+    restore_mock = mocker.patch("backend.services.downgrade_retention_service.restore_user_downgrade_managed_links", return_value=["link-4"])
     clear_mock = mocker.patch("backend.services.downgrade_retention_service.clear_user_downgrade_retention", return_value=None)
-    delete_template_mock = mocker.patch("backend.services.downgrade_retention_service.delete_saved_form_assets")
-    delete_link_mock = mocker.patch("backend.services.downgrade_retention_service.delete_fill_link")
 
     result = service.delete_user_downgrade_retention_now("user-1")
 
     assert result == {"deletedTemplateIds": [], "deletedLinkIds": []}
+    restore_mock.assert_called_once_with("user-1")
     clear_mock.assert_called_once_with("user-1")
-    delete_template_mock.assert_not_called()
-    delete_link_mock.assert_not_called()
 
 
 def test_delete_user_downgrade_retention_now_clears_stale_retention_for_base_account_with_active_subscription(mocker) -> None:
@@ -707,202 +822,59 @@ def test_delete_user_downgrade_retention_now_clears_stale_retention_for_base_acc
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=3,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
         pending_delete_template_ids=["tpl-4"],
         pending_delete_link_ids=["link-4"],
     )
     mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
+    restore_mock = mocker.patch("backend.services.downgrade_retention_service.restore_user_downgrade_managed_links", return_value=["link-4"])
     clear_mock = mocker.patch("backend.services.downgrade_retention_service.clear_user_downgrade_retention", return_value=None)
-    delete_template_mock = mocker.patch("backend.services.downgrade_retention_service.delete_saved_form_assets")
-    delete_link_mock = mocker.patch("backend.services.downgrade_retention_service.delete_fill_link")
 
     result = service.delete_user_downgrade_retention_now("user-1")
 
     assert result == {"deletedTemplateIds": [], "deletedLinkIds": []}
+    restore_mock.assert_called_once_with("user-1")
     clear_mock.assert_called_once_with("user-1")
-    delete_template_mock.assert_not_called()
-    delete_link_mock.assert_not_called()
 
 
-def test_delete_user_downgrade_retention_now_reports_links_deleted_by_template_cascade(mocker) -> None:
+def test_delete_user_downgrade_retention_now_does_not_delete_templates_or_links(mocker) -> None:
     _patch_eligible_base_user(mocker)
-    existing = UserDowngradeRetentionRecord(
-        status="grace_period",
-        policy_version=1,
-        downgraded_at="2026-03-01T00:00:00+00:00",
-        grace_ends_at="2026-03-31T00:00:00+00:00",
-        saved_forms_limit=3,
-        fill_links_active_limit=1,
-        kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
-        pending_delete_template_ids=["tpl-4"],
-        pending_delete_link_ids=["link-template", "link-group"],
+    mocker.patch(
+        "backend.services.downgrade_retention_service.get_user_downgrade_retention",
+        return_value=UserDowngradeRetentionRecord(
+            status="grace_period",
+            policy_version=2,
+            downgraded_at="2026-03-01T00:00:00+00:00",
+            grace_ends_at=None,
+            saved_forms_limit=3,
+            kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
+            pending_delete_template_ids=["tpl-4"],
+            pending_delete_link_ids=["link-template", "link-group"],
+        ),
     )
-    computation = service.DowngradeRetentionComputation(
-        state=existing,
-        templates=[
-            _template("tpl-1", "2026-01-01T00:00:00+00:00"),
-            _template("tpl-2", "2026-01-02T00:00:00+00:00"),
-            _template("tpl-3", "2026-01-03T00:00:00+00:00"),
-            _template("tpl-4", "2026-01-04T00:00:00+00:00"),
-        ],
-        groups=[],
-        links=[
-            _link("link-template", template_ids=["tpl-4"], template_id="tpl-4"),
-            _link("link-group", template_ids=["tpl-3", "tpl-4"], scope_type="group"),
-        ],
-        active_limit_close_link_ids=[],
-        pending_link_reasons={"link-template": "template_pending_delete", "link-group": "template_pending_delete"},
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_user_downgrade_retention", return_value=existing)
-    mocker.patch("backend.services.downgrade_retention_service._compute_retention", return_value=computation)
-    delete_template_mock = mocker.patch("backend.services.downgrade_retention_service.delete_saved_form_assets", return_value=True)
-    delete_link_mock = mocker.patch("backend.services.downgrade_retention_service.delete_fill_link", return_value=False)
-    sync_mock = mocker.patch("backend.services.downgrade_retention_service.sync_user_downgrade_retention", return_value=None)
+    sync_mock = mocker.patch("backend.services.downgrade_retention_service.sync_user_downgrade_retention", return_value={"pendingDeleteTemplateIds": ["tpl-4"]})
 
     result = service.delete_user_downgrade_retention_now("user-1")
 
-    assert result == {"deletedTemplateIds": ["tpl-4"], "deletedLinkIds": ["link-template", "link-group"]}
-    delete_template_mock.assert_called_once_with("tpl-4", "user-1", hard_delete_link_records=True)
-    delete_link_mock.assert_any_call("link-template", "user-1")
-    delete_link_mock.assert_any_call("link-group", "user-1")
-    sync_mock.assert_called_once_with("user-1", create_if_missing=False)
+    assert result == {"deletedTemplateIds": [], "deletedLinkIds": []}
+    sync_mock.assert_called_once_with("user-1", create_if_missing=True)
 
 
 def test_list_users_with_expired_downgrade_retention_filters_deadline(mocker) -> None:
-    client = FakeFirestoreClient()
-    now_dt = datetime(2026, 3, 10, tzinfo=timezone.utc)
-    client.collection("app_users").document("expired-user").seed(
-        {
-            "role": "base",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            }
-        }
-    )
-    client.collection("app_users").document("active-user").seed(
-        {
-            "role": "base",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt + timedelta(days=5)).isoformat(),
-            }
-        }
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_firestore_client", return_value=client)
-
-    expired_users = service.list_users_with_expired_downgrade_retention(as_of=now_dt)
-
-    assert expired_users == ["expired-user"]
+    assert service.list_users_with_expired_downgrade_retention() == []
 
 
 def test_list_users_with_expired_downgrade_retention_skips_active_subscription(mocker) -> None:
-    client = FakeFirestoreClient()
-    now_dt = datetime(2026, 3, 10, tzinfo=timezone.utc)
-    client.collection("app_users").document("expired-user").seed(
-        {
-            "role": "base",
-            "stripe_subscription_id": "sub_123",
-            "stripe_subscription_status": "active",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            },
-        }
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_firestore_client", return_value=client)
-
-    expired_users = service.list_users_with_expired_downgrade_retention(as_of=now_dt)
-
-    assert expired_users == []
+    assert service.list_users_with_expired_downgrade_retention() == []
 
 
 def test_list_users_with_expired_downgrade_retention_does_not_trust_status_without_subscription_id(mocker) -> None:
-    client = FakeFirestoreClient()
-    now_dt = datetime(2026, 3, 10, tzinfo=timezone.utc)
-    client.collection("app_users").document("expired-user").seed(
-        {
-            "role": "base",
-            "stripe_subscription_status": "active",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            },
-        }
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_firestore_client", return_value=client)
-
-    expired_users = service.list_users_with_expired_downgrade_retention(as_of=now_dt)
-
-    assert expired_users == ["expired-user"]
+    assert service.list_users_with_expired_downgrade_retention() == []
 
 
 def test_list_users_with_expired_downgrade_retention_skips_paid_accounts(mocker) -> None:
-    client = FakeFirestoreClient()
-    now_dt = datetime(2026, 3, 10, tzinfo=timezone.utc)
-    client.collection("app_users").document("pro-user").seed(
-        {
-            "role": "pro",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            },
-        }
-    )
-    client.collection("app_users").document("active-billing-user").seed(
-        {
-            "role": "base",
-            "stripe_subscription_id": "sub_123",
-            "stripe_subscription_status": "active",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            },
-        }
-    )
-    client.collection("app_users").document("expired-base-user").seed(
-        {
-            "role": "base",
-            "stripe_subscription_status": "canceled",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            },
-        }
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_firestore_client", return_value=client)
-
-    expired_users = service.list_users_with_expired_downgrade_retention(as_of=now_dt)
-
-    assert expired_users == ["expired-base-user"]
+    assert service.list_users_with_expired_downgrade_retention() == []
 
 
 def test_list_users_with_expired_downgrade_retention_uses_snapshot_retention_payload(mocker) -> None:
-    client = FakeFirestoreClient()
-    now_dt = datetime(2026, 3, 10, tzinfo=timezone.utc)
-    client.collection("app_users").document("expired-user").seed(
-        {
-            "role": "base",
-            "downgrade_retention": {
-                "status": "grace_period",
-                "policy_version": 2,
-                "saved_forms_limit": 3,
-                "fill_links_active_limit": 1,
-                "kept_template_ids": ["tpl-1"],
-                "pending_delete_template_ids": ["tpl-2"],
-                "pending_delete_link_ids": ["link-2"],
-                "grace_ends_at": (now_dt - timedelta(days=1)).isoformat(),
-            },
-        }
-    )
-    mocker.patch("backend.services.downgrade_retention_service.get_firestore_client", return_value=client)
-    get_retention_mock = mocker.patch(
-        "backend.services.downgrade_retention_service.get_user_downgrade_retention",
-        side_effect=AssertionError("Should use the query snapshot instead of reloading retention."),
-    )
-
-    expired_users = service.list_users_with_expired_downgrade_retention(as_of=now_dt)
-
-    assert expired_users == ["expired-user"]
-    get_retention_mock.assert_not_called()
+    assert service.list_users_with_expired_downgrade_retention() == []

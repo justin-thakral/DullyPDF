@@ -170,6 +170,23 @@ describe('HeaderBar', () => {
     expect(onOpenFillLink).toHaveBeenCalledTimes(1);
   });
 
+  it('truncates long inline action hints so the header row stays compact', () => {
+    render(
+      <HeaderBar
+        {...createProps({
+          canMapSchema: false,
+          mapSchemaDisabledReason: 'Detect fields or add at least one field before mapping.',
+        })}
+      />,
+    );
+
+    const hint = screen.getByText('Detect fields or add at least one field be…');
+    expect(hint.textContent?.length).toBeLessThanOrEqual(43);
+    expect(screen.getByRole('button', { name: 'Map Schema' }).getAttribute('title')).toBe(
+      'Detect fields or add at least one field before mapping.',
+    );
+  });
+
   it('renders API Fill beside download for saved templates', async () => {
     const user = userEvent.setup();
     const onOpenTemplateApi = vi.fn();

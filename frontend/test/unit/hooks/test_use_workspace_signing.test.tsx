@@ -242,8 +242,11 @@ describe('useWorkspaceSigning', () => {
     }));
   });
 
-  it('sends a created draft by uploading the current PDF bytes', async () => {
-    const resolveSourcePdfBytes = vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3, 4]));
+  it('sends a created draft by reusing the frozen PDF bytes captured at draft creation', async () => {
+    const resolveSourcePdfBytes = vi
+      .fn()
+      .mockResolvedValueOnce(new Uint8Array([1, 2, 3, 4]))
+      .mockResolvedValueOnce(new Uint8Array([4, 3, 2, 1]));
     getSigningOptionsMock.mockResolvedValue({
       modes: [{ key: 'sign', label: 'Sign' }],
       signatureModes: [{ key: 'business', label: 'Business' }],
@@ -321,8 +324,8 @@ describe('useWorkspaceSigning', () => {
       sourcePdfSha256: '9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a',
       pdf: expect.any(Blob),
     }));
+    expect(resolveSourcePdfBytes).toHaveBeenCalledTimes(1);
     expect(resolveSourcePdfBytes).toHaveBeenNthCalledWith(1, 'sign');
-    expect(resolveSourcePdfBytes).toHaveBeenNthCalledWith(2, 'sign');
     expect(hook.current.dialogProps.createdRequest).toEqual(expect.objectContaining({
       status: 'sent',
       sourcePdfPath: 'gs://signing/user-1/req-1/source.pdf',
@@ -330,7 +333,10 @@ describe('useWorkspaceSigning', () => {
   });
 
   it('refreshes the draft after a failed send so invalidation state is surfaced to the owner', async () => {
-    const resolveSourcePdfBytes = vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3, 4]));
+    const resolveSourcePdfBytes = vi
+      .fn()
+      .mockResolvedValueOnce(new Uint8Array([1, 2, 3, 4]))
+      .mockResolvedValueOnce(new Uint8Array([4, 3, 2, 1]));
     getSigningOptionsMock.mockResolvedValue({
       modes: [{ key: 'sign', label: 'Sign' }],
       signatureModes: [{ key: 'business', label: 'Business' }],
@@ -406,6 +412,7 @@ describe('useWorkspaceSigning', () => {
     expect(sendSigningRequestMock).toHaveBeenCalledWith('req-1', expect.objectContaining({
       sourcePdfSha256: '9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a',
     }));
+    expect(resolveSourcePdfBytes).toHaveBeenCalledTimes(1);
     expect(getSigningRequestMock).toHaveBeenCalledWith('req-1');
     expect(hook.current.dialogProps.error).toBe(
       'The source PDF changed after this signing draft was created. Create a new draft before sending.',
@@ -419,8 +426,98 @@ describe('useWorkspaceSigning', () => {
     );
   });
 
+  it('surfaces monthly signing quota failures without invalidating the draft', async () => {
+    const resolveSourcePdfBytes = vi.fn().mockResolvedValueOnce(new Uint8Array([1, 2, 3, 4]));
+    getSigningOptionsMock.mockResolvedValue({
+      modes: [{ key: 'sign', label: 'Sign' }],
+      signatureModes: [{ key: 'business', label: 'Business' }],
+      categories: [{ key: 'ordinary_business_form', label: 'Ordinary business form', blocked: false }],
+    });
+    createSigningRequestMock.mockResolvedValue({
+      id: 'req-1',
+      sourceDocumentName: 'Bravo Packet',
+      publicPath: '/sign/token-1',
+      anchors: [{ kind: 'signature', page: 2, rect: { x: 10, y: 20, width: 120, height: 24 } }],
+      documentCategory: 'ordinary_business_form',
+      documentCategoryLabel: 'Ordinary business form',
+      disclosureVersion: 'us-esign-business-v1',
+      manualFallbackEnabled: true,
+      mode: 'sign',
+      signatureMode: 'business',
+      signerEmail: 'alex@example.com',
+      signerName: 'Alex Signer',
+      sourceType: 'workspace',
+      sourcePdfSha256: '9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a',
+      sourceVersion: 'workspace:9f64a747e1b9',
+      status: 'draft',
+    });
+    sendSigningRequestMock.mockRejectedValue(new Error('This account has already reached the 25 sent signing request limit for this month.'));
+    getSigningRequestMock.mockResolvedValue({
+      id: 'req-1',
+      sourceDocumentName: 'Bravo Packet',
+      publicPath: '/sign/token-1',
+      anchors: [{ kind: 'signature', page: 2, rect: { x: 10, y: 20, width: 120, height: 24 } }],
+      documentCategory: 'ordinary_business_form',
+      documentCategoryLabel: 'Ordinary business form',
+      disclosureVersion: 'us-esign-business-v1',
+      manualFallbackEnabled: true,
+      mode: 'sign',
+      signatureMode: 'business',
+      signerEmail: 'alex@example.com',
+      signerName: 'Alex Signer',
+      sourceType: 'workspace',
+      sourcePdfSha256: '9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a',
+      sourceVersion: 'workspace:9f64a747e1b9',
+      status: 'draft',
+    });
+    const hook = renderHookHarness(createDeps({ resolveSourcePdfBytes }));
+
+    act(() => {
+      hook.current.openDialog();
+    });
+    await waitFor(() => expect(getSigningOptionsMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      await hook.current.dialogProps.onCreateDraft({
+        title: 'Bravo Packet Signature Request',
+        mode: 'sign',
+        signatureMode: 'business',
+        sourceType: 'workspace',
+        sourceId: 'form-1',
+        sourceDocumentName: 'Bravo Packet',
+        sourceTemplateId: 'form-1',
+        sourceTemplateName: 'Bravo Packet',
+        documentCategory: 'ordinary_business_form',
+        manualFallbackEnabled: true,
+        signerName: 'Alex Signer',
+        signerEmail: 'alex@example.com',
+        anchors: [{ kind: 'signature', page: 2, rect: { x: 10, y: 20, width: 120, height: 24 } }],
+      });
+    });
+
+    await act(async () => {
+      await hook.current.dialogProps.onSendRequest?.();
+    });
+
+    expect(sendSigningRequestMock).toHaveBeenCalledWith('req-1', expect.objectContaining({
+      sourcePdfSha256: '9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a',
+    }));
+    expect(getSigningRequestMock).toHaveBeenCalledWith('req-1');
+    expect(hook.current.dialogProps.error).toBe(
+      'This account has already reached the 25 sent signing request limit for this month.',
+    );
+    expect(hook.current.dialogProps.createdRequest).toEqual(expect.objectContaining({
+      id: 'req-1',
+      status: 'draft',
+    }));
+    expect(hook.current.dialogProps.sendDisabledReason).toBeNull();
+  });
+
   it('captures reviewed Fill By Link provenance for fill-and-sign drafts and sends with owner review confirmation', async () => {
-    const resolveSourcePdfBytes = vi.fn().mockResolvedValue(new Uint8Array([5, 6, 7, 8]));
+    const resolveSourcePdfBytes = vi
+      .fn()
+      .mockResolvedValueOnce(new Uint8Array([5, 6, 7, 8]))
+      .mockResolvedValueOnce(new Uint8Array([8, 7, 6, 5]));
     const reviewedFillContext: ReviewedFillContext = {
       sourceType: 'fill_link_response',
       sourceId: 'resp-42',
@@ -540,8 +637,8 @@ describe('useWorkspaceSigning', () => {
       ownerReviewConfirmed: true,
       pdf: expect.any(Blob),
     }));
+    expect(resolveSourcePdfBytes).toHaveBeenCalledTimes(1);
     expect(resolveSourcePdfBytes).toHaveBeenNthCalledWith(1, 'fill_and_sign');
-    expect(resolveSourcePdfBytes).toHaveBeenNthCalledWith(2, 'fill_and_sign');
     expect(hook.current.dialogProps.createdRequest).toEqual(expect.objectContaining({
       status: 'sent',
       ownerReviewConfirmedAt: '2026-03-24T21:10:00Z',

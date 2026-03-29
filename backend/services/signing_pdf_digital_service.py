@@ -26,10 +26,12 @@ from pyhanko.pdf_utils.reader import PdfFileReader
 from pyhanko.sign import fields, signers
 from pyhanko.sign.timestamps import HTTPTimeStamper
 from pyhanko.sign.validation import async_validate_pdf_signature, validate_pdf_signature
+from pyhanko_certvalidator import ValidationContext
 from pyhanko_certvalidator.registry import SimpleCertificateStore
 
 from backend.env_utils import env_value as _env_value
 from backend.services.app_config import is_prod
+from backend.services.cloud_kms_service import resolve_kms_asymmetric_signing_key_version
 
 SIGNING_PDF_PKCS12_B64_ENV = "SIGNING_PDF_PKCS12_B64"
 SIGNING_PDF_PKCS12_PASSWORD_ENV = "SIGNING_PDF_PKCS12_PASSWORD"
@@ -214,24 +216,12 @@ def _require_kms_module():
 
 
 def _resolve_kms_key_version(client, key_name: str) -> tuple[str, str]:
-    normalized = str(key_name or "").strip()
-    if not normalized:
-        raise RuntimeError(
-            f"{SIGNING_PDF_KMS_KEY_ENV} or SIGNING_AUDIT_KMS_KEY must be configured for Cloud KMS PDF signing"
-        )
-    if "/cryptoKeyVersions/" in normalized:
-        version = client.get_crypto_key_version(name=normalized)
-        return normalized, str(version.algorithm)
-    crypto_key = client.get_crypto_key(name=normalized)
-    primary = getattr(crypto_key, "primary", None)
-    primary_name = str(getattr(primary, "name", "") or "").strip()
-    if not primary_name:
-        raise RuntimeError("Cloud KMS key does not have a primary key version for PDF signing")
-    primary_algorithm = str(getattr(primary, "algorithm", "") or "").strip()
-    if primary_algorithm:
-        return primary_name, primary_algorithm
-    version = client.get_crypto_key_version(name=primary_name)
-    return primary_name, str(version.algorithm)
+    return resolve_kms_asymmetric_signing_key_version(
+        client,
+        key_name,
+        required_env_name=f"{SIGNING_PDF_KMS_KEY_ENV} or SIGNING_AUDIT_KMS_KEY",
+        usage_label="PDF signing",
+    )
 
 
 def _load_pem_certificates(pem_text: str) -> list[asn1_x509.Certificate]:
@@ -522,6 +512,56 @@ def export_pdf_signing_certificate_pem() -> bytes:
     raise RuntimeError("No PDF signing certificate is configured.")
 
 
+def _extract_self_signed_validation_root_from_pem(pem_bytes: bytes) -> Optional[asn1_x509.Certificate]:
+    try:
+        certs = _load_pem_certificates(pem_bytes.decode("utf-8"))
+    except Exception:
+        return None
+    for cert in certs:
+        if cert.subject == cert.issuer:
+            return cert
+    return None
+
+
+def _build_local_signer_validation_context(embedded_signature: Any) -> Optional[ValidationContext]:
+    """Trust matching local self-signed signing identities outside production.
+
+    Local development commonly uses a bundled or ad hoc self-signed signing
+    certificate. pyHanko logs those as path-building failures unless the caller
+    explicitly trusts the signing certificate. Restrict the override to
+    non-production validation and only when the embedded signer matches a local
+    self-signed identity we control, so prod validation semantics still reflect
+    the real certificate chain.
+    """
+
+    if is_prod():
+        return None
+
+    signer_cert = getattr(embedded_signature, "signer_cert", None)
+    if signer_cert is None:
+        return None
+
+    candidate_roots: list[asn1_x509.Certificate] = []
+    if _DEV_CERT_PATH.exists():
+        bundled_root = _extract_self_signed_validation_root_from_pem(_DEV_CERT_PATH.read_bytes())
+        if bundled_root is not None:
+            candidate_roots.append(bundled_root)
+
+    try:
+        active_cert_pem = export_pdf_signing_certificate_pem()
+    except Exception:
+        active_cert_pem = b""
+    if active_cert_pem:
+        active_root = _extract_self_signed_validation_root_from_pem(active_cert_pem)
+        if active_root is not None and all(active_root.dump() != root.dump() for root in candidate_roots):
+            candidate_roots.append(active_root)
+
+    for root in candidate_roots:
+        if signer_cert.dump() == root.dump():
+            return ValidationContext(trust_roots=[root])
+    return None
+
+
 def _build_signature_reason(source_document_name: str) -> str:
     normalized_name = " ".join(str(source_document_name or "").strip().split()) or "document"
     return f"DullyPDF electronic signature for {normalized_name}"[:180]
@@ -662,8 +702,11 @@ def validate_digital_pdf_signature(
     if isinstance(validation_target, PdfDigitalSignatureValidation):
         return validation_target
 
-    embedded_signature, signature_count, expected_matches, actual_sha256 = validation_target
-    status = validate_pdf_signature(embedded_signature)
+    embedded_signature, signature_count, expected_matches, actual_sha256, signer_validation_context = validation_target
+    status = validate_pdf_signature(
+        embedded_signature,
+        signer_validation_context=signer_validation_context,
+    )
     return _build_pdf_signature_validation_result(
         status=status,
         embedded_signature=embedded_signature,
@@ -688,8 +731,11 @@ async def async_validate_digital_pdf_signature(
     if isinstance(validation_target, PdfDigitalSignatureValidation):
         return validation_target
 
-    embedded_signature, signature_count, expected_matches, actual_sha256 = validation_target
-    status = await async_validate_pdf_signature(embedded_signature)
+    embedded_signature, signature_count, expected_matches, actual_sha256, signer_validation_context = validation_target
+    status = await async_validate_pdf_signature(
+        embedded_signature,
+        signer_validation_context=signer_validation_context,
+    )
     return _build_pdf_signature_validation_result(
         status=status,
         embedded_signature=embedded_signature,
@@ -703,7 +749,7 @@ def _prepare_pdf_signature_validation_target(
     pdf_bytes: bytes,
     *,
     expected_sha256: Optional[str],
-) -> PdfDigitalSignatureValidation | tuple[Any, int, Optional[bool], str]:
+) -> PdfDigitalSignatureValidation | tuple[Any, int, Optional[bool], str, Optional[ValidationContext]]:
     actual_sha256 = hashlib.sha256(bytes(pdf_bytes or b"")).hexdigest()
     expected_matches = None
     if expected_sha256:
@@ -725,7 +771,9 @@ def _prepare_pdf_signature_validation_target(
             actual_sha256=actual_sha256,
         )
 
-    return embedded_signatures[-1], len(embedded_signatures), expected_matches, actual_sha256
+    embedded_signature = embedded_signatures[-1]
+    signer_validation_context = _build_local_signer_validation_context(embedded_signature)
+    return embedded_signature, len(embedded_signatures), expected_matches, actual_sha256, signer_validation_context
 
 
 def _build_absent_pdf_signature_validation(

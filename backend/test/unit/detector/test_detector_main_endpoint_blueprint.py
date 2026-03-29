@@ -76,7 +76,7 @@ def _patch_request_setup(
         (403, "Detector caller not allowed"),
     ],
 )
-def test_run_detection_auth_failures_finalize_the_session(
+def test_run_detection_auth_failures_do_not_finalize_the_session(
     client: TestClient,
     mocker,
     detect_payload: dict[str, Any],
@@ -88,25 +88,17 @@ def test_run_detection_auth_failures_finalize_the_session(
         "_require_internal_auth",
         side_effect=HTTPException(status_code=status_code, detail=detail),
     )
-    reject = mocker.patch.object(
-        dm,
-        "_reject_detection_request",
-        return_value={
-            "sessionId": "sess_1",
-            "status": DETECTION_STATUS_FAILED,
-            "error": detail,
-        },
-    )
+    reject = mocker.patch.object(dm, "_reject_detection_request")
+    upsert = mocker.patch.object(dm, "upsert_session_metadata")
+    update = mocker.patch.object(dm, "update_detection_request")
 
     response = client.post("/internal/detect", json=detect_payload)
 
-    assert response.status_code == 200
-    assert response.json() == {
-        "sessionId": "sess_1",
-        "status": DETECTION_STATUS_FAILED,
-        "error": detail,
-    }
-    reject.assert_called_once_with("sess_1", detail)
+    assert response.status_code == status_code
+    assert response.json() == {"detail": detail}
+    reject.assert_not_called()
+    upsert.assert_not_called()
+    update.assert_not_called()
 
 
 def test_run_detection_auth_success_path_calls_auth_guard_and_validates_pdf_path(

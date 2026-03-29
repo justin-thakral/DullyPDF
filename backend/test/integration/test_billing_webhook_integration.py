@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
-import hmac
-import json
 import time
 
 import pytest
@@ -12,47 +9,14 @@ from fastapi.testclient import TestClient
 
 import backend.main as main
 import backend.api.routes.billing as billing_routes
-import backend.services.billing_service as billing_service
 import backend.firebaseDB.billing_database as billing_database
 import backend.firebaseDB.user_database as user_database
+from backend.test.integration.billing_webhook_test_support import (
+    encode_event as _encode_event,
+    install_fake_stripe_module as _install_fake_stripe_module,
+    sign_stripe_payload as _sign_stripe_payload,
+)
 from backend.test.unit.firebase._fakes import FakeFirestoreClient
-
-
-def _encode_event(event: dict) -> bytes:
-    return json.dumps(event, separators=(",", ":"), sort_keys=True).encode("utf-8")
-
-
-def _sign_stripe_payload(payload: bytes, *, secret: str, timestamp: int | None = None) -> str:
-    signed_timestamp = int(timestamp or time.time())
-    signed_payload = f"{signed_timestamp}.".encode("utf-8") + payload
-    digest = hmac.new(secret.encode("utf-8"), signed_payload, hashlib.sha256).hexdigest()
-    return f"t={signed_timestamp},v1={digest}"
-
-
-def _install_fake_stripe_module(monkeypatch: pytest.MonkeyPatch) -> None:
-    class _FakeWebhook:
-        @staticmethod
-        def construct_event(payload: bytes, signature: str, secret: str):
-            try:
-                parts = dict(item.split("=", 1) for item in signature.split(","))
-                timestamp = int(parts["t"])
-                provided_digest = parts["v1"]
-            except Exception as exc:  # pragma: no cover - defensive parsing path
-                raise ValueError("Malformed Stripe-Signature header.") from exc
-
-            signed_payload = f"{timestamp}.".encode("utf-8") + payload
-            expected_digest = hmac.new(secret.encode("utf-8"), signed_payload, hashlib.sha256).hexdigest()
-            if not hmac.compare_digest(expected_digest, provided_digest):
-                raise ValueError("Webhook signature verification failed.")
-            if abs(int(time.time()) - timestamp) > 300:
-                raise ValueError("Webhook signature timestamp is outside the tolerance zone.")
-            return json.loads(payload.decode("utf-8"))
-
-    class _FakeStripe:
-        api_key = None
-        Webhook = _FakeWebhook
-
-    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
 
 
 def _active_pro_billing_record(uid: str = "integration-user") -> user_database.UserBillingRecord:
@@ -63,7 +27,6 @@ def _active_pro_billing_record(uid: str = "integration-user") -> user_database.U
         subscription_status="active",
         subscription_price_id="price_pro_monthly",
     )
-
 
 @pytest.fixture
 def client() -> TestClient:
@@ -319,7 +282,7 @@ def test_webhook_pro_checkout_unpaid_does_not_activate_membership(
     mocker.patch.object(billing_routes, "start_billing_event", return_value=True)
     activate_mock = mocker.patch.object(
         billing_routes,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
     complete_mock = mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
@@ -380,8 +343,13 @@ def test_webhook_invoice_paid_dispatches_pro_activation(
     )
     activate_mock = mocker.patch.object(
         billing_routes,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
+    )
+    set_subscription_mock = mocker.patch.object(
+        billing_routes,
+        "set_user_billing_subscription",
+        return_value=None,
     )
     complete_mock = mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
@@ -395,10 +363,113 @@ def test_webhook_invoice_paid_dispatches_pro_activation(
     assert response.status_code == 200
     assert response.json() == {"received": True}
     activate_mock.assert_called_once()
-    assert activate_mock.call_args.kwargs["subscription_id"] == "sub_integration_invoice"
-    assert activate_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+    assert activate_mock.call_args.kwargs["stripe_event_id"] == "evt_integration_invoice_paid"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_integration_invoice"
+    assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
     complete_mock.assert_called_once_with("evt_integration_invoice_paid")
     clear_mock.assert_not_called()
+
+
+def test_webhook_invoice_paid_does_not_reset_consumed_pro_credits_after_checkout_activation(
+    client: TestClient,
+    webhook_secret: str,
+    mocker,
+) -> None:
+    fake_client = FakeFirestoreClient()
+    fake_client.collection(user_database.USERS_COLLECTION).document("integration-user").seed(
+        {
+            "email": "integration@example.com",
+            "displayName": "Integration User",
+            user_database.ROLE_FIELD: user_database.ROLE_BASE,
+            user_database.OPENAI_CREDITS_FIELD: user_database.BASE_OPENAI_CREDITS,
+            user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD: "2026-03",
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-01T00:00:00+00:00",
+        }
+    )
+
+    mocker.patch.object(user_database, "get_firestore_client", return_value=fake_client)
+    mocker.patch.object(user_database.firebase_firestore, "transactional", side_effect=lambda fn: fn)
+    mocker.patch.object(billing_routes, "start_billing_event", return_value=True)
+    mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
+    mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
+    mocker.patch.object(
+        billing_routes,
+        "resolve_price_id_for_checkout_kind",
+        return_value="price_pro_monthly",
+    )
+    mocker.patch.object(
+        billing_routes,
+        "is_pro_price_id",
+        side_effect=lambda value: value == "price_pro_monthly",
+    )
+    mocker.patch.object(user_database, "_current_month_cycle_key", return_value="2026-03")
+
+    checkout_event = {
+        "id": "evt_integration_pro_checkout_paid",
+        "type": "checkout.session.completed",
+        "data": {
+            "object": {
+                "id": "cs_integration_pro_checkout",
+                "client_reference_id": "integration-user",
+                "metadata": {
+                    "userId": "integration-user",
+                    "checkoutKind": "pro_monthly",
+                    "checkoutPriceId": "price_pro_monthly",
+                },
+                "subscription": "sub_integration_pro",
+                "customer": "cus_integration",
+                "payment_status": "paid",
+            }
+        },
+    }
+    invoice_event = {
+        "id": "evt_integration_invoice_after_checkout",
+        "type": "invoice.paid",
+        "data": {
+            "object": {
+                "subscription": "sub_integration_pro",
+                "customer": "cus_integration",
+                "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+            }
+        },
+    }
+
+    checkout_response = client.post(
+        "/api/billing/webhook",
+        content=_encode_event(checkout_event),
+        headers={"Stripe-Signature": _sign_stripe_payload(_encode_event(checkout_event), secret=webhook_secret)},
+    )
+
+    assert checkout_response.status_code == 200
+
+    remaining_after_consume, allowed = user_database.consume_openai_credits(
+        "integration-user",
+        credits=137,
+    )
+    assert allowed is True
+    assert remaining_after_consume == 363
+
+    invoice_response = client.post(
+        "/api/billing/webhook",
+        content=_encode_event(invoice_event),
+        headers={"Stripe-Signature": _sign_stripe_payload(_encode_event(invoice_event), secret=webhook_secret)},
+    )
+
+    assert invoice_response.status_code == 200
+
+    stored_user = (
+        fake_client.collection(user_database.USERS_COLLECTION)
+        .document("integration-user")
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.ROLE_FIELD] == user_database.ROLE_PRO
+    assert stored_user[user_database.OPENAI_CREDITS_MONTHLY_FIELD] == 363
+    assert stored_user[user_database.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD] == "2026-03"
+    assert stored_user[user_database.STRIPE_SUBSCRIPTION_ID_FIELD] == "sub_integration_pro"
 
 
 def test_webhook_invoice_paid_missing_user_returns_retryable(
@@ -438,8 +509,13 @@ def test_webhook_invoice_paid_missing_user_returns_retryable(
     )
     activate_mock = mocker.patch.object(
         billing_routes,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
+    )
+    set_subscription_mock = mocker.patch.object(
+        billing_routes,
+        "set_user_billing_subscription",
+        return_value=None,
     )
     complete_mock = mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
@@ -453,6 +529,7 @@ def test_webhook_invoice_paid_missing_user_returns_retryable(
     assert response.status_code == 503
     assert "awaiting subscription linkage" in response.text
     activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
     complete_mock.assert_not_called()
     clear_mock.assert_called_once_with("evt_integration_invoice_missing_user")
 
@@ -485,7 +562,7 @@ def test_webhook_subscription_deleted_updates_billing_state(
         side_effect=lambda value: value == "price_pro_monthly",
     )
     set_subscription_mock = mocker.patch.object(billing_routes, "set_user_billing_subscription", return_value=None)
-    set_role_mock = mocker.patch.object(billing_routes, "set_user_role", return_value=None)
+    activate_mock = mocker.patch.object(billing_routes, "activate_pro_membership", return_value=True)
     downgrade_mock = mocker.patch.object(billing_routes, "downgrade_to_base_membership", return_value=None)
     complete_mock = mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
@@ -499,11 +576,10 @@ def test_webhook_subscription_deleted_updates_billing_state(
     assert response.status_code == 200
     assert response.json() == {"received": True}
     set_subscription_mock.assert_called_once()
-    set_role_mock.assert_not_called()
+    activate_mock.assert_not_called()
     downgrade_mock.assert_called_once_with("integration-user")
     complete_mock.assert_called_once_with("evt_integration_deleted")
     clear_mock.assert_not_called()
-
 
 def test_webhook_subscription_updated_ignores_non_pro_price_events(
     client: TestClient,
@@ -534,7 +610,7 @@ def test_webhook_subscription_updated_ignores_non_pro_price_events(
         return_value=_active_pro_billing_record(),
     )
     set_subscription_mock = mocker.patch.object(billing_routes, "set_user_billing_subscription", return_value=None)
-    set_role_mock = mocker.patch.object(billing_routes, "set_user_role", return_value=None)
+    activate_mock = mocker.patch.object(billing_routes, "activate_pro_membership", return_value=True)
     downgrade_mock = mocker.patch.object(billing_routes, "downgrade_to_base_membership", return_value=None)
     complete_mock = mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
@@ -548,7 +624,7 @@ def test_webhook_subscription_updated_ignores_non_pro_price_events(
     assert response.status_code == 200
     assert response.json() == {"received": True}
     set_subscription_mock.assert_not_called()
-    set_role_mock.assert_not_called()
+    activate_mock.assert_not_called()
     downgrade_mock.assert_not_called()
     complete_mock.assert_called_once_with("evt_integration_non_pro_lifecycle")
     clear_mock.assert_not_called()

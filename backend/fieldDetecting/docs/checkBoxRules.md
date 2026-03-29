@@ -36,6 +36,11 @@ Simple direct matching works when a row key already equals a checkbox field name
 
 Suggestions are editor migration metadata, not runtime fill rules. Rules are higher-priority.
 
+Important distinction:
+- Fill By Link web forms only render radio questions for explicit radio widgets.
+- `radioGroupSuggestions` exist to convert checkbox clusters into explicit radios upstream.
+- If a checkbox cluster is not converted, respondent-facing web forms keep checkbox semantics (`boolean` or grouped multi-select) even when checkbox rules describe a single-choice pattern.
+
 ## Rule generation paths
 
 Rules can be produced by two OpenAI flows.
@@ -84,6 +89,7 @@ Files:
 - `backend/sessions/l2_persistence.py`
 
 - Rename writes `checkboxRules` only.
+- Frontend rename flows derive editor radio suggestions from those rename `checkboxRules` and from high-signal renamed checkbox layouts, so rename-only can still surface and auto-apply high-confidence checkbox-to-radio conversions even when the backend rule list is empty.
 - Mapping writes `checkboxRules`, `radioGroupSuggestions`, and text transforms.
 - Mapping persists explicit arrays (including `[]`) so reruns can clear stale metadata.
 - Session artifacts are stored as:
@@ -206,6 +212,12 @@ Checkbox rule confidence and rename confidence are separate signals:
   - Medium / yellow: `>= 0.30 and < 0.60`
   - Low / red: `< 0.30`
   - Backend CommonForms thresholds can be overridden with `COMMONFORMS_CONFIDENCE_GREEN` and `COMMONFORMS_CONFIDENCE_YELLOW`.
+
+## Radio suggestion auto-apply
+
+- High-confidence mapping suggestions (`>= 0.60`) can be auto-applied in the editor so single-choice checkbox clusters become explicit radio groups before publish.
+- Medium/low-confidence suggestions stay review-only and should be inspected before manual conversion.
+- Legacy saved forms that only have checkbox rules still reopen with review-only migration suggestions; they are not silently converted during hydration.
 
 ## Practical debugging checklist
 

@@ -110,7 +110,7 @@ describe('Homepage', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: 'Automatic PDF Templates, Fill By Link, and Database Mapping',
+        name: 'Automatic PDF to Fillable Forms, Fill By Link or API, Database Map Fields and U.S. E-Sign Workflows',
       }),
     ).toBeTruthy();
 

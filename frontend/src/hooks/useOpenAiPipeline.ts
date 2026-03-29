@@ -4,21 +4,20 @@ import type {
   BannerNotice,
   CheckboxRule,
   ConfirmDialogOptions,
-  FieldNameUpdate,
-  NameQueue,
   PdfField,
   RadioGroupSuggestion,
   TextTransformRule,
 } from '../types';
-import { deriveMappingConfidence, parseConfidence } from '../utils/confidence';
-import { normaliseDataKey } from '../utils/dataSource';
-import { computeCheckboxMeta, type CheckboxMeta } from '../utils/checkboxMeta';
-import { applyFieldNameUpdatesToList, enqueueByName } from '../utils/fieldUpdates';
 import { ALERT_MESSAGES } from '../utils/alertMessages';
 import { resolveIdentifierKey } from '../utils/dataSource';
 import { buildTemplateFields } from '../utils/fields';
 import { debugLog } from '../utils/debug';
-import { applyRenamePayloadToFields } from '../utils/openAiFields';
+import {
+  applyMappingPayloadToFields,
+  applyRenamePayloadToFields,
+  deriveCombinedRadioGroupSuggestions,
+} from '../utils/openAiFields';
+import { resolveSourcePdfSha256 } from '../utils/pdfFingerprint';
 import { ApiService } from '../services/api';
 import { ApiError } from '../services/apiConfig';
 import { fetchDetectionStatus } from '../services/detectionApi';
@@ -38,10 +37,12 @@ export interface UseOpenAiPipelineDeps {
   pendingAutoActionsRef: React.MutableRefObject<PendingAutoActions | null>;
   setBannerNotice: (notice: BannerNotice | null) => void;
   requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean>;
+  resolveSourcePdfBytes: () => Promise<Uint8Array>;
   loadUserProfile: () => Promise<any>;
   resetFieldHistory: (fields?: PdfField[]) => void;
   updateFieldsWith: (updater: (prev: PdfField[]) => PdfField[], options?: { trackHistory?: boolean }) => void;
   setIdentifierKey: (key: string | null) => void;
+  onBeforeOpenAiAction?: (action: 'rename' | 'map', sessionId: string | null) => Promise<void> | void;
   // For computed canRename/canMapSchema
   hasDocument: boolean;
   fieldsCount: number;
@@ -77,64 +78,49 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     deps.pendingAutoActionsRef.current = null;
   }, [deps.pendingAutoActionsRef]);
 
-  const applyFieldNameUpdates = useCallback(
-    (
-      updatesByCurrentName: Map<string, NameQueue<FieldNameUpdate>>,
-      checkboxMetaById?: Map<string, CheckboxMeta>,
-    ) => {
-      if (!updatesByCurrentName.size) return;
-      deps.updateFieldsWith((prev) => applyFieldNameUpdatesToList(prev, updatesByCurrentName, checkboxMetaById));
-    },
-    [deps.updateFieldsWith],
-  );
+  const resolveActiveSourcePdfSha256 = useCallback(async (): Promise<string> => {
+    return resolveSourcePdfSha256(deps.resolveSourcePdfBytes, {
+      onError: (error) => {
+        debugLog('Failed to resolve active PDF fingerprint for OpenAI action', error);
+      },
+    });
+  }, [deps.resolveSourcePdfBytes]);
+
+  const ensureTemplateSessionId = useCallback(async (): Promise<string | null> => {
+    if (deps.detectSessionId) {
+      return deps.detectSessionId;
+    }
+    if (!deps.activeSavedFormId) {
+      return null;
+    }
+    const activeFields = deps.fieldsRef.current;
+    if (!activeFields.length) {
+      return null;
+    }
+    const sessionPayload = await ApiService.createSavedFormSession(deps.activeSavedFormId, {
+      fields: buildTemplateFields(activeFields),
+      pageCount: deps.pageCount || undefined,
+    });
+    deps.setDetectSessionId(sessionPayload.sessionId);
+    deps.setMappingSessionId(sessionPayload.sessionId);
+    return sessionPayload.sessionId;
+  }, [deps]);
 
   const applyMappingResults = useCallback(
     (mappingResults?: any) => {
       if (!mappingResults) return;
-      const mappings = mappingResults.mappings || [];
-      const updates = new Map<string, NameQueue<FieldNameUpdate>>();
-      const normalizedColumns = deps.dataColumns.map((column) => normaliseDataKey(column)).filter(Boolean);
-      const checkboxMetaById = computeCheckboxMeta(deps.fieldsRef.current, normalizedColumns);
-
-      for (const mapping of mappings) {
-        if (!mapping || !mapping.pdfField) continue;
-        const currentName = mapping.originalPdfField || mapping.pdfField;
-        const desiredName = mapping.pdfField;
-        if (!currentName) continue;
-        const mappingConfidence =
-          parseConfidence(mapping.confidence) ?? deriveMappingConfidence(currentName, desiredName);
-        enqueueByName(updates, currentName, { newName: desiredName, mappingConfidence });
+      const mapped = applyMappingPayloadToFields(
+        deps.fieldsRef.current,
+        mappingResults,
+        deps.dataColumns,
+      );
+      if (mapped.fields !== deps.fieldsRef.current) {
+        deps.resetFieldHistory(mapped.fields);
+        debugLog('Applied AI mappings', { total: mapped.fields.length });
       }
-
-      if (updates.size) {
-        applyFieldNameUpdates(updates, checkboxMetaById);
-        debugLog('Applied AI mappings', { total: updates.size });
-      }
-
-      const fillRules = mappingResults.fillRules && typeof mappingResults.fillRules === 'object'
-        ? mappingResults.fillRules
-        : null;
-
-      const rules = Array.isArray(fillRules?.checkboxRules)
-        ? (fillRules.checkboxRules as CheckboxRule[])
-        : Array.isArray(mappingResults.checkboxRules)
-          ? (mappingResults.checkboxRules as CheckboxRule[])
-          : [];
-      setCheckboxRules(rules);
-      const suggestions = Array.isArray(mappingResults.radioGroupSuggestions)
-        ? (mappingResults.radioGroupSuggestions as RadioGroupSuggestion[])
-        : [];
-      setRadioGroupSuggestions(suggestions);
-      const textRules = Array.isArray(fillRules?.textTransformRules)
-        ? (fillRules.textTransformRules as TextTransformRule[])
-        : Array.isArray((fillRules as Record<string, unknown> | null)?.templateRules)
-          ? ((fillRules as Record<string, unknown>).templateRules as TextTransformRule[])
-        : Array.isArray(mappingResults.textTransformRules)
-          ? (mappingResults.textTransformRules as TextTransformRule[])
-          : Array.isArray((mappingResults as Record<string, unknown> | null)?.templateRules)
-            ? ((mappingResults as Record<string, unknown>).templateRules as TextTransformRule[])
-          : [];
-      setTextTransformRules(textRules);
+      setCheckboxRules(mapped.checkboxRules);
+      setRadioGroupSuggestions(mapped.radioGroupSuggestions);
+      setTextTransformRules(mapped.textTransformRules);
       const resolvedIdentifier = resolveIdentifierKey(
         mappingResults.identifierKey || mappingResults.identifier_key,
         deps.dataColumns,
@@ -143,7 +129,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         deps.setIdentifierKey(resolvedIdentifier);
       }
     },
-    [applyFieldNameUpdates, deps],
+    [deps],
   );
 
   const applyRenameResults = useCallback(
@@ -176,7 +162,18 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         setOpenAiError(ALERT_MESSAGES.noPdfFieldsToMap);
         return false;
       }
-      if (!deps.detectSessionId && !deps.activeSavedFormId) {
+      let activeSessionId = deps.detectSessionId;
+      if (!activeSessionId && deps.activeSavedFormId) {
+        try {
+          activeSessionId = await ensureTemplateSessionId();
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Failed to prepare this saved form for schema mapping.';
+          setOpenAiError(message);
+          debugLog('Failed to prepare saved form mapping session', message);
+          return false;
+        }
+      }
+      if (!activeSessionId && !deps.activeSavedFormId) {
         setOpenAiError('Template session is not ready yet. Try again in a moment.');
         return false;
       }
@@ -185,11 +182,19 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       try {
         const mappingLoadToken = deps.loadTokenRef.current;
         const templateFields = buildTemplateFields(activeFields);
+        const sourcePdfSha256 = await resolveActiveSourcePdfSha256();
+        try {
+          await deps.onBeforeOpenAiAction?.('map', activeSessionId);
+        } catch (error) {
+          debugLog('Failed to capture map session diagnostic', error);
+        }
         const mappingResult = await ApiService.mapSchema(
           activeSchemaId,
           templateFields,
           deps.activeSavedFormId || undefined,
-          deps.detectSessionId || undefined,
+          activeSessionId || undefined,
+          undefined,
+          sourcePdfSha256,
         );
         if (deps.loadTokenRef.current !== mappingLoadToken) return false;
         if (!mappingResult?.success) {
@@ -208,28 +213,8 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         return false;
       }
     },
-    [applyMappingResults, clearPendingAutoActions, deps, resolveCreditExhaustionMessage],
+    [applyMappingResults, clearPendingAutoActions, deps, ensureTemplateSessionId, resolveActiveSourcePdfSha256, resolveCreditExhaustionMessage],
   );
-
-  const ensureRenameSessionId = useCallback(async (): Promise<string | null> => {
-    if (deps.detectSessionId) {
-      return deps.detectSessionId;
-    }
-    if (!deps.activeSavedFormId) {
-      return null;
-    }
-    const activeFields = deps.fieldsRef.current;
-    if (!activeFields.length) {
-      return null;
-    }
-    const sessionPayload = await ApiService.createSavedFormSession(deps.activeSavedFormId, {
-      fields: buildTemplateFields(activeFields),
-      pageCount: deps.pageCount || undefined,
-    });
-    deps.setDetectSessionId(sessionPayload.sessionId);
-    deps.setMappingSessionId(sessionPayload.sessionId);
-    return sessionPayload.sessionId;
-  }, [deps]);
 
   const handleMappingSuccess = useCallback(() => {
     setHasMappedSchema(true);
@@ -260,7 +245,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       let activeSessionId = sessionId || deps.detectSessionId;
       if (!activeSessionId && deps.activeSavedFormId && deps.fieldsRef.current.length) {
         try {
-          activeSessionId = await ensureRenameSessionId();
+          activeSessionId = await ensureTemplateSessionId();
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Failed to prepare this saved form for rename.';
           setOpenAiError(message);
@@ -321,17 +306,25 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       try {
         const renameLoadToken = deps.loadTokenRef.current;
         const templateFields = buildTemplateFields(deps.fieldsRef.current);
+        const sourcePdfSha256 = await resolveActiveSourcePdfSha256();
+        try {
+          await deps.onBeforeOpenAiAction?.('rename', activeSessionId);
+        } catch (error) {
+          debugLog('Failed to capture rename session diagnostic', error);
+        }
         const result = await ApiService.renameFields({
           sessionId: activeSessionId,
           schemaId: renameSchemaId || undefined,
+          sourcePdfSha256,
           templateFields,
         });
         if (deps.loadTokenRef.current !== renameLoadToken) return null;
         if (!result?.success) throw new Error(result?.error || 'OpenAI rename failed.');
         const updated = applyRenameResults(result.fields);
         if (!updated || updated.length === 0) throw new Error('OpenAI rename returned no fields.');
-        setCheckboxRules(Array.isArray(result.checkboxRules) ? result.checkboxRules : []);
-        setRadioGroupSuggestions([]);
+        const rules = Array.isArray(result.checkboxRules) ? result.checkboxRules : [];
+        setCheckboxRules(rules);
+        setRadioGroupSuggestions(deriveCombinedRadioGroupSuggestions(updated, [], rules));
         setTextTransformRules([]);
         if (!hasSchemaForMap) {
           deps.setBannerNotice({
@@ -357,7 +350,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         if (hasSchemaForMap) setMapSchemaInProgress(false);
       }
     },
-    [applyRenameResults, clearPendingAutoActions, deps, ensureRenameSessionId, resolveCreditExhaustionMessage],
+    [applyRenameResults, clearPendingAutoActions, deps, ensureTemplateSessionId, resolveActiveSourcePdfSha256, resolveCreditExhaustionMessage],
   );
 
   const confirmRemap = useCallback(async () => {
@@ -417,9 +410,13 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       setOpenAiError(null);
       const renamed = await runOpenAiRename({ confirm: false, schemaId: resolvedSchemaId });
       if (!renamed) return;
-      handleMappingSuccess();
+      const mapped = await applySchemaMappings({
+        fieldsOverride: renamed,
+        schemaIdOverride: resolvedSchemaId,
+      });
+      if (mapped) handleMappingSuccess();
     },
-    [confirmRemap, handleMappingSuccess, runOpenAiRename, deps],
+    [applySchemaMappings, confirmRemap, handleMappingSuccess, runOpenAiRename, deps],
   );
 
   // ── Computed capability flags ──────────────────────────────────────

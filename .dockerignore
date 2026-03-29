@@ -15,6 +15,7 @@ test-results
 serviceAccounts
 env
 docs
+internal_stats
 config
 scripts/*
 !scripts/cleanup_sessions.py

@@ -1,7 +1,11 @@
 from fastapi import HTTPException
 from starlette import status
 
-from backend.firebaseDB.user_database import UserBillingRecord, UserProfileRecord
+from backend.firebaseDB.user_database import (
+    UserBillingRecord,
+    UserDowngradeRetentionRecord,
+    UserProfileRecord,
+)
 
 
 def _contact_payload(**overrides) -> dict:
@@ -63,7 +67,7 @@ def test_profile_response_shape_for_base_and_god(
         "sync_user_downgrade_retention",
         return_value={
             "status": "grace_period",
-            "savedFormsLimit": 3,
+            "savedFormsLimit": 5,
             "pendingDeleteTemplateIds": ["tpl-9"],
         },
     )
@@ -88,13 +92,12 @@ def test_profile_response_shape_for_base_and_god(
         return_value={
             "detectMaxPages": 5,
             "fillableMaxPages": 50,
-            "savedFormsMax": 3,
-            "fillLinksActiveMax": 1,
-            "fillLinkResponsesMax": 5,
+            "savedFormsMax": 5,
+            "fillLinkResponsesMonthlyMax": 25,
             "templateApiActiveMax": 1,
             "templateApiRequestsMonthlyMax": 250,
             "templateApiMaxPages": 25,
-            "signingRequestsPerDocumentMax": 10,
+            "signingRequestsMonthlyMax": 25,
         },
     )
     response = client.get("/api/profile", headers=auth_headers)
@@ -106,10 +109,9 @@ def test_profile_response_shape_for_base_and_god(
     assert response.json()["refillCreditsRemaining"] == 3
     assert response.json()["refillCreditsLocked"] is True
     assert response.json()["role"] == "base"
-    assert response.json()["limits"]["fillLinksActiveMax"] == 1
-    assert response.json()["limits"]["fillLinkResponsesMax"] == 5
+    assert response.json()["limits"]["fillLinkResponsesMonthlyMax"] == 25
     assert response.json()["limits"]["templateApiActiveMax"] == 1
-    assert response.json()["limits"]["signingRequestsPerDocumentMax"] == 10
+    assert response.json()["limits"]["signingRequestsMonthlyMax"] == 25
     assert response.json()["retention"]["status"] == "grace_period"
     assert response.json()["retention"]["pendingDeleteTemplateIds"] == ["tpl-9"]
     assert response.json()["billing"] == {
@@ -146,6 +148,118 @@ def test_profile_response_shape_for_base_and_god(
     assert response.json()["refillCreditsLocked"] is False
     assert response.json()["role"] == "god"
     assert response.json()["retention"] is None
+
+
+def test_profile_response_shape_for_pro_includes_full_limit_matrix(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=False)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="pro",
+            openai_credits_remaining=500,
+            openai_credits_monthly_remaining=320,
+            openai_credits_refill_remaining=180,
+            openai_credits_available=500,
+            refill_credits_locked=False,
+        ),
+    )
+    mocker.patch.object(
+        app_main,
+        "_resolve_role_limits",
+        return_value={
+            "detectMaxPages": 100,
+            "fillableMaxPages": 1000,
+            "savedFormsMax": 100,
+            "fillLinkResponsesMonthlyMax": 10000,
+            "templateApiActiveMax": 20,
+            "templateApiRequestsMonthlyMax": 10000,
+            "templateApiMaxPages": 250,
+            "signingRequestsMonthlyMax": 10000,
+        },
+    )
+
+    response = client.get("/api/profile", headers=auth_headers)
+
+    assert response.status_code == 200
+    assert response.headers["cache-control"] == "private, no-store"
+    payload = response.json()
+    assert payload["role"] == "pro"
+    assert payload["creditsRemaining"] == 500
+    assert payload["monthlyCreditsRemaining"] == 320
+    assert payload["refillCreditsRemaining"] == 180
+    assert payload["availableCredits"] == 500
+    assert payload["refillCreditsLocked"] is False
+    assert payload["retention"] is None
+    assert payload["limits"] == {
+        "detectMaxPages": 100,
+        "fillableMaxPages": 1000,
+        "savedFormsMax": 100,
+        "fillLinkResponsesMonthlyMax": 10000,
+        "templateApiActiveMax": 20,
+        "templateApiRequestsMonthlyMax": 10000,
+        "templateApiMaxPages": 250,
+        "signingRequestsMonthlyMax": 10000,
+    }
+    sync_mock.assert_not_called()
+
+
+def test_profile_clears_stale_non_base_retention_and_restores_downgrade_managed_links(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=False)
+    sync_mock = mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    restore_links_mock = mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=["link-1"])
+    clear_retention_mock = mocker.patch.object(app_main, "clear_user_downgrade_retention", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="pro",
+            openai_credits_remaining=500,
+            openai_credits_monthly_remaining=320,
+            openai_credits_refill_remaining=180,
+            openai_credits_available=500,
+            refill_credits_locked=False,
+            downgrade_retention=UserDowngradeRetentionRecord(
+                status="grace_period",
+                policy_version=1,
+                downgraded_at="2026-03-01T00:00:00+00:00",
+                grace_ends_at="2026-03-31T00:00:00+00:00",
+                saved_forms_limit=3,
+                kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
+                pending_delete_template_ids=["tpl-4"],
+                pending_delete_link_ids=["link-4"],
+            ),
+        ),
+    )
+
+    response = client.get("/api/profile", headers=auth_headers)
+
+    assert response.status_code == 200
+    assert response.json()["retention"] is None
+    restore_links_mock.assert_called_once_with(base_user.app_user_id)
+    clear_retention_mock.assert_called_once_with(base_user.app_user_id)
+    sync_mock.assert_not_called()
 
 
 def test_profile_includes_billing_catalog_when_enabled(
@@ -213,6 +327,53 @@ def test_profile_includes_billing_catalog_when_enabled(
     assert payload["billing"]["currentPeriodEnd"] is None
     assert payload["billing"]["plans"]["pro_monthly"]["unitAmount"] == 1000
     assert payload["creditPricing"]["renameBaseCost"] >= 1
+
+
+def test_profile_marks_inactive_subscription_as_not_subscribed(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=True)
+    mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    mocker.patch.object(app_main, "resolve_checkout_catalog", return_value={})
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="base",
+            openai_credits_remaining=7,
+            openai_credits_monthly_remaining=None,
+            openai_credits_refill_remaining=0,
+            openai_credits_available=7,
+            refill_credits_locked=False,
+        ),
+    )
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid=base_user.app_user_id,
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="canceled",
+            subscription_price_id="price_monthly",
+        ),
+    )
+
+    response = client.get("/api/profile", headers=auth_headers)
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["billing"]["enabled"] is True
+    assert payload["billing"]["hasSubscription"] is False
+    assert payload["billing"]["subscriptionStatus"] == "canceled"
 
 
 def test_profile_omits_retention_when_base_account_has_confirmed_active_subscription(
@@ -506,3 +667,52 @@ def test_touch_session_endpoint_ownership_and_refresh(
     )
     response = client.post("/api/sessions/sess-1/touch", headers=auth_headers)
     assert response.status_code == 403
+
+
+def test_download_session_pdf_endpoint_streams_owned_pdf(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(
+        app_main,
+        "_get_session_entry",
+        return_value={
+            "source_pdf": "Resume Packet.pdf",
+            "pdf_bytes": b"%PDF-1.4\nsession-pdf\n",
+        },
+    )
+
+    response = client.get("/api/sessions/sess-1/pdf", headers=auth_headers)
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/pdf"
+    assert 'attachment; filename="Resume_Packet.pdf"' in response.headers["content-disposition"]
+    assert response.headers["cache-control"] == "private, no-store"
+    assert response.content == b"%PDF-1.4\nsession-pdf\n"
+
+
+def test_download_session_pdf_endpoint_returns_404_when_pdf_missing(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(
+        app_main,
+        "_get_session_entry",
+        return_value={
+            "source_pdf": "Resume Packet.pdf",
+            "pdf_bytes": None,
+        },
+    )
+
+    response = client.get("/api/sessions/sess-1/pdf", headers=auth_headers)
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Session PDF not found"

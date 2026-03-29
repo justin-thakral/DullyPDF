@@ -274,13 +274,24 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
                 <strong>Access check:</strong>{' '}
                 {flow.consumerDisclosure?.accessCheck?.instructions || 'Open the PDF access check and enter the code shown there.'}
               </p>
-              <div className="public-signing-page__document-frame">
-                <iframe title="Consumer access check PDF" src={flow.consumerAccessPath} />
-              </div>
+              {flow.consumerAccessError ? <Alert tone="error" variant="inline" message={flow.consumerAccessError} /> : null}
+              {flow.consumerAccessLoading ? (
+                <p className="public-signing-page__support">Loading the consumer access-check PDF…</p>
+              ) : null}
+              {flow.consumerAccessObjectUrl ? (
+                <div className="public-signing-page__document-frame">
+                  <iframe title="Consumer access check PDF" src={flow.consumerAccessObjectUrl} />
+                </div>
+              ) : null}
               <div className="public-signing-page__button-group public-signing-page__button-group--secondary">
-                <a className="ui-button ui-button--ghost" href={flow.consumerAccessPath} target="_blank" rel="noreferrer">
+                <button
+                  className="ui-button ui-button--ghost"
+                  type="button"
+                  disabled={flow.consumerAccessLoading || !flow.consumerAccessObjectUrl}
+                  onClick={flow.handleOpenConsumerAccess}
+                >
                   Open access-check PDF in new tab
-                </a>
+                </button>
               </div>
             </>
           ) : null}
@@ -441,6 +452,46 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
           <p className="public-signing-page__support">
             This is the final signing action. DullyPDF records the timestamp, secure signing session, device information, and document hash for this request.
           </p>
+          {flow.companyBindingRequired ? (
+            <>
+              <p className="public-signing-page__support">
+                This sender marked the request as company-binding. DullyPDF records your authority attestation, title, and company name, but does not independently verify corporate authority.
+              </p>
+              <label className="public-signing-page__field">
+                <span>Representative title</span>
+                <input
+                  name="representativeTitle"
+                  value={flow.representativeTitle}
+                  onChange={(event) => flow.setRepresentativeTitle(event.target.value)}
+                  placeholder="General Counsel"
+                  autoComplete="organization-title"
+                  maxLength={200}
+                />
+              </label>
+              <label className="public-signing-page__field">
+                <span>Company or organization name</span>
+                <input
+                  name="representativeCompanyName"
+                  value={flow.representativeCompanyName}
+                  onChange={(event) => flow.setRepresentativeCompanyName(event.target.value)}
+                  placeholder="Acme, Inc."
+                  autoComplete="organization"
+                  maxLength={200}
+                />
+              </label>
+              <label className="public-signing-page__checkbox">
+                <input
+                  name="authorityConfirmed"
+                  type="checkbox"
+                  checked={flow.authorityConfirmed}
+                  onChange={(event) => flow.setAuthorityConfirmed(event.target.checked)}
+                />
+                <span>
+                  I represent that I am authorized to sign this document on behalf of the named company or organization and to bind that entity to this electronic record.
+                </span>
+              </label>
+            </>
+          ) : null}
           <label className="public-signing-page__checkbox">
             <input
               id={INTENT_CHECKBOX_ID}
@@ -454,7 +505,7 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
           <button
             className="ui-button ui-button--primary"
             type="button"
-            disabled={flow.busyAction !== null || flow.missingSession || !flow.intentConfirmed}
+            disabled={flow.busyAction !== null || flow.missingSession || !flow.intentConfirmed || !flow.authorityRequirementsSatisfied}
             onClick={flow.handleComplete}
           >
             {flow.busyAction === 'complete' ? 'Finishing signing…' : 'Finish Signing'}

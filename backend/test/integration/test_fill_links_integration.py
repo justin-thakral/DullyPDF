@@ -9,15 +9,24 @@ from fastapi.testclient import TestClient
 import pytest
 
 import backend.main as main
+import backend.api.middleware.security as security_middleware
+import backend.api.routes.fill_links as fill_links_routes
 import backend.firebaseDB.signing_database as signing_database
 import backend.firebaseDB.fill_link_database as fill_link_database
+import backend.firebaseDB.group_database as group_database
 import backend.firebaseDB.template_database as template_database
 import backend.firebaseDB.user_database as user_database
 import backend.api.routes.fill_links_public as fill_links_public_routes
 import backend.services.recaptcha_service as recaptcha_service
 from backend.services.fill_link_signing_service import FillLinkSigningRequestMaterialization
 from backend.services.fill_links_service import build_fill_link_public_token
-from backend.test.integration.signing_test_support import InMemorySigningStorage, patch_signing_artifact_storage
+from backend.firebaseDB.firebase_service import RequestUser
+from backend.test.integration.downgrade_test_support import seed_saved_form_inventory
+from backend.test.integration.signing_test_support import (
+    InMemorySigningStorage,
+    patch_signing_artifact_storage,
+    pdf_bytes as _pdf_bytes,
+)
 from backend.test.unit.firebase._fakes import FakeFirestoreClient
 
 
@@ -53,7 +62,35 @@ def _seed_owner_credit_profile(
     )
 
 
-def test_public_submit_accepts_then_closes_at_cap(client: TestClient, mocker) -> None:
+def _owner_request_user() -> RequestUser:
+    return RequestUser(
+        uid="uid-owner-1",
+        app_user_id="user-1",
+        email="owner@example.com",
+        display_name="Owner Example",
+        role=user_database.ROLE_BASE,
+    )
+
+
+def _seed_locked_template_set(
+    firestore_client: FakeFirestoreClient,
+    *,
+    user_id: str = "user-1",
+    total_templates: int = 7,
+) -> None:
+    seed_saved_form_inventory(
+        firestore_client,
+        user_id=user_id,
+        total_templates=total_templates,
+        pdf_bucket_prefix="gs://bucket",
+        template_bucket_prefix="gs://bucket",
+    )
+
+
+def test_public_submit_accepts_and_enforces_monthly_quota_without_closing_link(
+    client: TestClient,
+    mocker,
+) -> None:
     signed_token = build_fill_link_public_token("link-1")
     firestore_client = FakeFirestoreClient()
     firestore_client.collection(template_database.TEMPLATES_COLLECTION).document("tpl-1").seed(
@@ -74,7 +111,6 @@ def test_public_submit_accepts_then_closes_at_cap(client: TestClient, mocker) ->
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 1,
             "response_count": 0,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "require_all_fields": False,
@@ -86,6 +122,7 @@ def test_public_submit_accepts_then_closes_at_cap(client: TestClient, mocker) ->
 
     mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "resolve_fill_link_responses_monthly_limit", return_value=1)
     mocker.patch.object(fill_links_public_routes, "check_rate_limit", return_value=True)
     mocker.patch.object(fill_links_public_routes, "resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
     mocker.patch.object(fill_links_public_routes, "resolve_client_ip", return_value="198.51.100.20")
@@ -103,12 +140,16 @@ def test_public_submit_accepts_then_closes_at_cap(client: TestClient, mocker) ->
     assert response.status_code == 200
     payload = response.json()
     assert payload["success"] is True
-    assert payload["link"]["status"] == "closed"
+    assert payload["link"]["status"] == "active"
     assert payload["responseDownloadAvailable"] is False
     assert payload["responseDownloadPath"] is None
     stored_link = firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
     assert stored_link["response_count"] == 1
-    assert stored_link["closed_reason"] == "response_limit"
+    assert stored_link["status"] == "active"
+    assert stored_link.get("closed_reason") is None
+    usage = fill_link_database.get_fill_link_monthly_usage("user-1")
+    assert usage is not None
+    assert usage.response_count == 1
 
     closed_response = client.post(
         f"/api/fill-links/public/{signed_token}/submit",
@@ -116,6 +157,10 @@ def test_public_submit_accepts_then_closes_at_cap(client: TestClient, mocker) ->
     )
 
     assert closed_response.status_code == 409
+    assert "monthly fill by link response limit" in closed_response.text.lower()
+    stored_link = firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
+    assert stored_link["response_count"] == 1
+    assert stored_link["status"] == "active"
 
 
 def test_public_submit_reuses_duplicate_attempt_without_consuming_extra_capacity(client: TestClient, mocker) -> None:
@@ -139,7 +184,6 @@ def test_public_submit_reuses_duplicate_attempt_without_consuming_extra_capacity
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 1,
             "response_count": 0,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "require_all_fields": False,
@@ -151,6 +195,7 @@ def test_public_submit_reuses_duplicate_attempt_without_consuming_extra_capacity
 
     mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "resolve_fill_link_responses_monthly_limit", return_value=1)
     mocker.patch.object(fill_links_public_routes, "check_rate_limit", return_value=True)
     mocker.patch.object(fill_links_public_routes, "resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
     mocker.patch.object(fill_links_public_routes, "resolve_client_ip", return_value="198.51.100.20")
@@ -174,7 +219,288 @@ def test_public_submit_reuses_duplicate_attempt_without_consuming_extra_capacity
     assert second.json()["responseId"] == first.json()["responseId"]
     stored_link = firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
     assert stored_link["response_count"] == 1
-    assert stored_link["status"] == "closed"
+    assert stored_link["status"] == "active"
+    usage = fill_link_database.get_fill_link_monthly_usage("user-1")
+    assert usage is not None
+    assert usage.response_count == 1
+
+    third = client.post(
+        f"/api/fill-links/public/{signed_token}/submit",
+        json={"answers": {"full_name": "Grace Hopper"}, "attemptId": "attempt-2"},
+    )
+
+    assert third.status_code == 409
+    assert "monthly fill by link response limit" in third.text.lower()
+
+
+def test_public_submit_uses_real_base_monthly_limit_when_usage_bucket_is_near_exhausted(
+    client: TestClient,
+    mocker,
+) -> None:
+    signed_token = build_fill_link_public_token("link-1")
+    firestore_client = FakeFirestoreClient()
+    firestore_client.collection(template_database.TEMPLATES_COLLECTION).document("tpl-1").seed(
+        {
+            "user_id": "user-1",
+            "metadata": {"name": "Template One"},
+            "pdf_bucket_path": "gs://bucket/template-one.pdf",
+            "template_bucket_path": "gs://bucket/template-one.json",
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").seed(
+        {
+            "user_id": "user-1",
+            "template_id": "tpl-1",
+            "template_name": "Template One",
+            "title": "Template One Intake",
+            "public_token": None,
+            "status": "active",
+            "response_count": 0,
+            "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
+            "require_all_fields": False,
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+            "published_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINK_USAGE_COUNTERS_COLLECTION).document("user-1__2026-03").seed(
+        {
+            "user_id": "user-1",
+            "month_key": "2026-03",
+            "response_count": 24,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-27T00:00:00+00:00",
+        }
+    )
+    _seed_owner_credit_profile(firestore_client, user_id="user-1", role=user_database.ROLE_BASE)
+
+    mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(user_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "_current_month_key", return_value="2026-03")
+    mocker.patch.object(fill_links_public_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(fill_links_public_routes, "resolve_client_ip", return_value="198.51.100.20")
+    mocker.patch.object(recaptcha_service, "verify_recaptcha_token", return_value=None)
+    mocker.patch.object(fill_links_public_routes, "verify_recaptcha_token", return_value=None)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_recaptcha_action", return_value="fill_link_submit")
+    mocker.patch.object(fill_links_public_routes, "recaptcha_required_for_fill_link", return_value=False)
+    mocker.patch.object(fill_link_database, "now_iso", return_value="ts-submit")
+
+    accepted = client.post(
+        f"/api/fill-links/public/{signed_token}/submit",
+        json={"answers": {"full_name": "Ada Lovelace"}},
+    )
+    blocked = client.post(
+        f"/api/fill-links/public/{signed_token}/submit",
+        json={"answers": {"full_name": "Grace Hopper"}},
+    )
+
+    assert accepted.status_code == 200
+    assert blocked.status_code == 409
+    assert "monthly fill by link response limit" in blocked.text.lower()
+
+    stored_link = firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
+    assert stored_link["response_count"] == 1
+    assert stored_link["status"] == "active"
+    usage = fill_link_database.get_fill_link_monthly_usage("user-1", month_key="2026-03")
+    assert usage is not None
+    assert usage.response_count == 25
+
+
+def test_public_submit_starts_new_month_usage_bucket_after_prior_month_exhaustion(
+    client: TestClient,
+    mocker,
+) -> None:
+    signed_token = build_fill_link_public_token("link-1")
+    firestore_client = FakeFirestoreClient()
+    firestore_client.collection(template_database.TEMPLATES_COLLECTION).document("tpl-1").seed(
+        {
+            "user_id": "user-1",
+            "metadata": {"name": "Template One"},
+            "pdf_bucket_path": "gs://bucket/template-one.pdf",
+            "template_bucket_path": "gs://bucket/template-one.json",
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").seed(
+        {
+            "user_id": "user-1",
+            "template_id": "tpl-1",
+            "template_name": "Template One",
+            "title": "Template One Intake",
+            "public_token": None,
+            "status": "active",
+            "response_count": 0,
+            "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
+            "require_all_fields": False,
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+            "published_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINK_USAGE_COUNTERS_COLLECTION).document("user-1__2026-03").seed(
+        {
+            "user_id": "user-1",
+            "month_key": "2026-03",
+            "response_count": 25,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-31T00:00:00+00:00",
+        }
+    )
+    _seed_owner_credit_profile(firestore_client, user_id="user-1", role=user_database.ROLE_BASE)
+
+    mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(user_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "_current_month_key", return_value="2026-04")
+    mocker.patch.object(fill_links_public_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(fill_links_public_routes, "resolve_client_ip", return_value="198.51.100.20")
+    mocker.patch.object(recaptcha_service, "verify_recaptcha_token", return_value=None)
+    mocker.patch.object(fill_links_public_routes, "verify_recaptcha_token", return_value=None)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_recaptcha_action", return_value="fill_link_submit")
+    mocker.patch.object(fill_links_public_routes, "recaptcha_required_for_fill_link", return_value=False)
+    mocker.patch.object(fill_link_database, "now_iso", return_value="ts-submit")
+
+    response = client.post(
+        f"/api/fill-links/public/{signed_token}/submit",
+        json={"answers": {"full_name": "Ada Lovelace"}},
+    )
+
+    assert response.status_code == 200
+    previous_month_usage = fill_link_database.get_fill_link_monthly_usage("user-1", month_key="2026-03")
+    current_month_usage = fill_link_database.get_fill_link_monthly_usage("user-1", month_key="2026-04")
+    assert previous_month_usage is not None
+    assert previous_month_usage.response_count == 25
+    assert current_month_usage is not None
+    assert current_month_usage.response_count == 1
+
+
+def test_public_submit_allows_only_one_new_month_response_after_rollover_from_exhausted_base_quota(
+    client: TestClient,
+    mocker,
+) -> None:
+    signed_token = build_fill_link_public_token("link-1")
+    firestore_client = FakeFirestoreClient()
+    firestore_client.collection(template_database.TEMPLATES_COLLECTION).document("tpl-1").seed(
+        {
+            "user_id": "user-1",
+            "metadata": {"name": "Template One"},
+            "pdf_bucket_path": "gs://bucket/template-one.pdf",
+            "template_bucket_path": "gs://bucket/template-one.json",
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").seed(
+        {
+            "user_id": "user-1",
+            "template_id": "tpl-1",
+            "template_name": "Template One",
+            "title": "Template One Intake",
+            "public_token": None,
+            "status": "active",
+            "response_count": 0,
+            "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
+            "require_all_fields": False,
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+            "published_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINK_USAGE_COUNTERS_COLLECTION).document("user-1__2026-03").seed(
+        {
+            "user_id": "user-1",
+            "month_key": "2026-03",
+            "response_count": 25,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-31T00:00:00+00:00",
+        }
+    )
+    _seed_owner_credit_profile(firestore_client, user_id="user-1", role=user_database.ROLE_BASE)
+
+    mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(user_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "_current_month_key", return_value="2026-04")
+    mocker.patch.object(fill_link_database, "_resolve_fill_link_monthly_limit_for_user", return_value=1)
+    mocker.patch.object(fill_links_public_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(fill_links_public_routes, "resolve_client_ip", return_value="198.51.100.20")
+    mocker.patch.object(recaptcha_service, "verify_recaptcha_token", return_value=None)
+    mocker.patch.object(fill_links_public_routes, "verify_recaptcha_token", return_value=None)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_recaptcha_action", return_value="fill_link_submit")
+    mocker.patch.object(fill_links_public_routes, "recaptcha_required_for_fill_link", return_value=False)
+    mocker.patch.object(fill_link_database, "now_iso", side_effect=["ts-submit-1", "ts-submit-2"])
+
+    first = client.post(
+        f"/api/fill-links/public/{signed_token}/submit",
+        json={"answers": {"full_name": "Ada Lovelace"}, "attemptId": "rollover-1"},
+    )
+    second = client.post(
+        f"/api/fill-links/public/{signed_token}/submit",
+        json={"answers": {"full_name": "Grace Hopper"}, "attemptId": "rollover-2"},
+    )
+
+    assert first.status_code == 200
+    assert second.status_code == 409
+    assert "monthly fill by link response limit" in second.text.lower()
+
+    previous_month_usage = fill_link_database.get_fill_link_monthly_usage("user-1", month_key="2026-03")
+    current_month_usage = fill_link_database.get_fill_link_monthly_usage("user-1", month_key="2026-04")
+    assert previous_month_usage is not None
+    assert previous_month_usage.response_count == 25
+    assert current_month_usage is not None
+    assert current_month_usage.response_count == 1
+    stored_link = firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").get().to_dict()
+    assert stored_link["response_count"] == 1
+    assert stored_link["status"] == "active"
+
+
+def test_owner_create_fill_link_blocks_locked_saved_forms_after_downgrade(client: TestClient, mocker) -> None:
+    firestore_client = FakeFirestoreClient()
+    owner_user = _owner_request_user()
+    _seed_owner_credit_profile(firestore_client, user_id=owner_user.app_user_id, role=user_database.ROLE_BASE)
+    _seed_locked_template_set(firestore_client, user_id=owner_user.app_user_id)
+
+    mocker.patch.object(security_middleware, "verify_token", return_value={"uid": owner_user.uid})
+    mocker.patch.object(fill_links_routes, "require_user", return_value=owner_user)
+    for module in (fill_link_database, template_database, user_database, group_database, signing_database):
+        mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
+
+    response = client.post(
+        "/api/fill-links",
+        headers={"Authorization": "Bearer owner-token"},
+        json={
+            "templateId": "form-6",
+            "title": "Locked Template Link",
+            "templateName": "Saved Form 6",
+            "requireAllFields": True,
+            "respondentPdfDownloadEnabled": False,
+            "fields": [
+                {
+                    "name": "full_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 1, "y": 2, "width": 3, "height": 4},
+                }
+            ],
+            "checkboxRules": [],
+        },
+    )
+
+    assert response.status_code == 409
+    assert "locked on the base plan" in response.text.lower()
+    assert (
+        firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION)
+        .where("user_id", "==", owner_user.app_user_id)
+        .get()
+        == []
+    )
 
 
 def test_public_submit_rejects_missing_required_answers(client: TestClient, mocker) -> None:
@@ -198,7 +524,6 @@ def test_public_submit_rejects_missing_required_answers(client: TestClient, mock
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [
                 {"key": "full_name", "label": "Full Name", "type": "text"},
@@ -248,7 +573,6 @@ def test_public_get_closed_link_hides_schema_and_specific_closure_reason(client:
             "public_token": None,
             "status": "closed",
             "closed_reason": "downgrade_retention",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [{"key": "ssn", "label": "SSN", "type": "text"}],
             "require_all_fields": True,
@@ -286,7 +610,6 @@ def test_public_get_invalid_active_link_does_not_persist_close_state(client: Tes
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [{"key": "ssn", "label": "SSN", "type": "text"}],
             "require_all_fields": True,
@@ -324,7 +647,6 @@ def test_public_download_materializes_saved_template_snapshot(client: TestClient
             "public_token": None,
             "status": "closed",
             "closed_reason": "response_limit",
-            "max_responses": 5,
             "response_count": 1,
             "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
             "require_all_fields": False,
@@ -382,6 +704,61 @@ def test_public_download_materializes_saved_template_snapshot(client: TestClient
     )
 
 
+def test_public_download_rejects_locked_template_links_after_downgrade(client: TestClient, mocker) -> None:
+    signed_token = build_fill_link_public_token("link-1")
+    firestore_client = FakeFirestoreClient()
+    _seed_owner_credit_profile(firestore_client, user_id="user-1", role=user_database.ROLE_BASE)
+    _seed_locked_template_set(firestore_client, user_id="user-1")
+    firestore_client.collection(fill_link_database.FILL_LINKS_COLLECTION).document("link-1").seed(
+        {
+            "user_id": "user-1",
+            "template_id": "form-6",
+            "template_name": "Saved Form 6",
+            "title": "Locked Template Intake",
+            "public_token": None,
+            "status": "active",
+            "response_count": 1,
+            "questions": [{"key": "full_name", "label": "Full Name", "type": "text"}],
+            "require_all_fields": False,
+            "respondent_pdf_download_enabled": True,
+            "respondent_pdf_snapshot": {
+                "version": 1,
+                "sourcePdfPath": "gs://bucket/form-6.pdf",
+                "filename": "locked-template-response.pdf",
+                "fields": [{"name": "full_name", "type": "text", "page": 1, "rect": [1, 2, 4, 6]}],
+            },
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00",
+            "published_at": "2024-01-01T00:00:00+00:00",
+        }
+    )
+    firestore_client.collection(fill_link_database.FILL_LINK_RESPONSES_COLLECTION).document("resp-1").seed(
+        {
+            "link_id": "link-1",
+            "user_id": "user-1",
+            "scope_type": "template",
+            "template_id": "form-6",
+            "respondent_label": "Ada Lovelace",
+            "answers": {"full_name": "Ada Lovelace"},
+            "search_text": "ada lovelace",
+            "submitted_at": "2024-02-01T00:00:00+00:00",
+        }
+    )
+
+    for module in (fill_link_database, template_database, user_database, group_database, signing_database):
+        mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_links_public_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(fill_links_public_routes, "resolve_fill_link_download_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(fill_links_public_routes, "resolve_client_ip", return_value="198.51.100.20")
+    materialize_mock = mocker.patch.object(fill_links_public_routes, "materialize_fill_link_response_download")
+
+    response = client.get(f"/api/fill-links/public/{signed_token}/responses/resp-1/download")
+
+    assert response.status_code == 409
+    assert "no longer available" in response.text.lower()
+    materialize_mock.assert_not_called()
+
+
 def test_public_submit_returns_signing_handoff_when_template_requires_signature(client: TestClient, mocker, tmp_path) -> None:
     signed_token = build_fill_link_public_token("link-1")
     firestore_client = FakeFirestoreClient()
@@ -403,7 +780,6 @@ def test_public_submit_returns_signing_handoff_when_template_requires_signature(
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [
                 {"key": "full_name", "label": "Full Name", "type": "text", "visible": True},
@@ -544,7 +920,6 @@ def test_public_retry_signing_reuses_stored_response_snapshot(client: TestClient
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 1,
             "questions": [
                 {"key": "full_name", "label": "Full Name", "type": "text", "visible": True},
@@ -664,7 +1039,7 @@ def test_public_retry_signing_reuses_stored_response_snapshot(client: TestClient
     }
 
 
-def test_public_submit_and_retry_signing_preserve_owner_credits_and_enforce_document_limit(
+def test_public_submit_and_retry_signing_preserve_owner_credits_and_enforce_monthly_limit(
     client: TestClient,
     mocker,
     tmp_path,
@@ -673,7 +1048,7 @@ def test_public_submit_and_retry_signing_preserve_owner_credits_and_enforce_docu
     signed_token = build_fill_link_public_token("link-1")
     firestore_client = FakeFirestoreClient()
     storage = InMemorySigningStorage()
-    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_PER_DOCUMENT_MAX_BASE", "1")
+    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_BASE", "1")
 
     firestore_client.collection(template_database.TEMPLATES_COLLECTION).document("tpl-1").seed(
         {
@@ -693,7 +1068,6 @@ def test_public_submit_and_retry_signing_preserve_owner_credits_and_enforce_docu
             "title": "Template One Intake",
             "public_token": None,
             "status": "active",
-            "max_responses": 5,
             "response_count": 0,
             "questions": [
                 {"key": "full_name", "label": "Full Name", "type": "text", "visible": True},
@@ -743,7 +1117,7 @@ def test_public_submit_and_retry_signing_preserve_owner_credits_and_enforce_docu
     def _materialize_response_download(*_args, **_kwargs):
         materialize_call_count["value"] += 1
         output_path = tmp_path / f"response-signing-limit-{materialize_call_count['value']}.pdf"
-        output_path.write_bytes(b"%PDF-1.4\n%limit\n")
+        output_path.write_bytes(_pdf_bytes())
         return output_path, [output_path], "template-one-response.pdf"
 
     mocker.patch.object(
@@ -819,8 +1193,7 @@ def test_public_submit_and_retry_signing_preserve_owner_credits_and_enforce_docu
     assert retry_payload["signing"]["available"] is False
     assert retry_payload["signing"]["requestId"] is None
     assert retry_payload["signing"]["errorMessage"] == (
-        "This submitted record has already reached the sender's signature request limit for this document. "
-        "Contact the sender for an offline copy."
+        "This sender has already reached their monthly signing limit. Contact the sender for an offline copy."
     )
 
     after_retry_profile = user_database.get_user_profile("user-1")

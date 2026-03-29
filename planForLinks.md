@@ -215,7 +215,7 @@ Suggested shape:
   "source_template_name": "New Patient Intake",
   "status": "draft",
   "accepted_response_count": 0,
-  "max_responses": 5,
+  "account_monthly_responses_max": 25,
   "tier_snapshot": "basic",
   "name": "Patient Intake Link",
   "public_token_hash": "sha256(...)",

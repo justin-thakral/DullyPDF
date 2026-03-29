@@ -21,9 +21,8 @@ from backend.firebaseDB.user_database import (
     ROLE_BASE,
     ROLE_GOD,
     ROLE_PRO,
-    activate_pro_membership_with_subscription,
+    activate_pro_membership,
     add_refill_openai_credits,
-    clear_user_downgrade_retention,
     downgrade_to_base_membership,
     ensure_user,
     find_user_id_by_subscription_id,
@@ -31,7 +30,6 @@ from backend.firebaseDB.user_database import (
     get_user_profile,
     normalize_role,
     set_user_billing_subscription,
-    set_user_role,
 )
 from backend.services.auth_service import require_user
 from backend.security.rate_limit import check_rate_limit
@@ -60,6 +58,7 @@ from backend.services.billing_service import (
 from backend.services.downgrade_retention_service import (
     DowngradeRetentionEligibility,
     apply_user_downgrade_retention,
+    restore_user_downgrade_managed_links,
 )
 from backend.logging_config import get_logger
 
@@ -131,6 +130,34 @@ def _resolve_user_id_from_subscription(subscription_obj: Dict[str, Any]) -> Opti
     if not subscription_id:
         return None
     return find_user_id_by_subscription_id(subscription_id)
+
+
+def _extract_subscription_price_ids(subscription_obj: Dict[str, Any]) -> list[str]:
+    items = subscription_obj.get("items") if isinstance(subscription_obj, dict) else None
+    data = items.get("data") if isinstance(items, dict) else None
+    if not isinstance(data, list):
+        return []
+    price_ids: list[str] = []
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        price = item.get("price")
+        if isinstance(price, dict):
+            price_id = str(price.get("id") or "").strip()
+        else:
+            price_id = str(price or "").strip()
+        if price_id:
+            price_ids.append(price_id)
+    return price_ids
+
+
+def _resolve_subscription_price_id(subscription_obj: Dict[str, Any]) -> Optional[str]:
+    """Prefer the Pro item when Stripe sends a mixed-price subscription payload."""
+    price_ids = _extract_subscription_price_ids(subscription_obj)
+    pro_price_id = next((price_id for price_id in price_ids if is_pro_price_id(price_id)), None)
+    if pro_price_id:
+        return pro_price_id
+    return next((price_id for price_id in price_ids if price_id), None)
 
 
 def _coerce_positive_int(value: Any) -> Optional[int]:
@@ -243,11 +270,17 @@ def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_ev
         subscription_id = str(session_obj.get("subscription") or "").strip() or None
         customer_id = str(session_obj.get("customer") or "").strip() or None
         subscription_price_id = resolve_price_id_for_checkout_kind(checkout_kind)
-        # Role and Stripe linkage are written in one transaction so retries do
-        # not leave billing metadata partially populated.
-        activate_pro_membership_with_subscription(
+        # Checkout is the explicit purchase boundary, so it is responsible for
+        # granting the fresh monthly Pro pool. Stripe subscription metadata is
+        # synced in a separate write so later invoice lifecycle events can heal
+        # billing linkage without looking like a brand-new purchase.
+        activate_pro_membership(
             user_id,
             stripe_event_id=processing_key,
+            reset_monthly_credits=True,
+        )
+        set_user_billing_subscription(
+            user_id,
             customer_id=customer_id,
             subscription_id=subscription_id,
             subscription_status="active",
@@ -256,6 +289,7 @@ def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_ev
             cancel_at=None,
             current_period_end=None,
         )
+        restore_user_downgrade_managed_links(user_id)
         return
     if checkout_kind == CHECKOUT_KIND_REFILL_500:
         payment_status = str(session_obj.get("payment_status") or "").strip().lower()
@@ -322,9 +356,16 @@ def _handle_invoice_paid(invoice_obj: Dict[str, Any], *, stripe_event_id: str) -
         return
 
     customer_id = str(invoice_obj.get("customer") or "").strip() or None
-    activate_pro_membership_with_subscription(
+    # Invoice settlement confirms an active subscription and should heal role
+    # or billing linkage, but it must not blindly reset a Pro pool that was
+    # already granted and partially spent after checkout.
+    activate_pro_membership(
         user_id,
         stripe_event_id=stripe_event_id,
+        reset_monthly_credits=False,
+    )
+    set_user_billing_subscription(
+        user_id,
         customer_id=customer_id,
         subscription_id=subscription_id,
         subscription_status="active",
@@ -333,9 +374,14 @@ def _handle_invoice_paid(invoice_obj: Dict[str, Any], *, stripe_event_id: str) -
         cancel_at=None,
         current_period_end=None,
     )
+    restore_user_downgrade_managed_links(user_id)
 
 
-def _handle_subscription_lifecycle(subscription_obj: Dict[str, Any]) -> None:
+def _handle_subscription_lifecycle(
+    subscription_obj: Dict[str, Any],
+    *,
+    stripe_event_id: Optional[str] = None,
+) -> None:
     subscription_id = str(subscription_obj.get("id") or "").strip()
     if not subscription_id:
         return
@@ -356,17 +402,7 @@ def _handle_subscription_lifecycle(subscription_obj: Dict[str, Any]) -> None:
     except (TypeError, ValueError):
         current_period_end = None
 
-    subscription_price_id: Optional[str] = None
-    items = subscription_obj.get("items")
-    data = items.get("data") if isinstance(items, dict) else None
-    if isinstance(data, list) and data:
-        first_item = data[0]
-        if isinstance(first_item, dict):
-            first_price = first_item.get("price")
-            if isinstance(first_price, dict):
-                subscription_price_id = str(first_price.get("id") or "").strip() or None
-            else:
-                subscription_price_id = str(first_price or "").strip() or None
+    subscription_price_id = _resolve_subscription_price_id(subscription_obj)
     explicit_non_pro_price = bool(subscription_price_id and not is_pro_price_id(subscription_price_id))
 
     user_id = _resolve_user_id_from_subscription(subscription_obj)
@@ -406,8 +442,12 @@ def _handle_subscription_lifecycle(subscription_obj: Dict[str, Any]) -> None:
         current_period_end=current_period_end,
     )
     if is_subscription_active(status):
-        set_user_role(user_id, ROLE_PRO)
-        clear_user_downgrade_retention(user_id)
+        activate_pro_membership(
+            user_id,
+            stripe_event_id=stripe_event_id,
+            reset_monthly_credits=False,
+        )
+        restore_user_downgrade_managed_links(user_id)
         return
     downgrade_to_base_membership(user_id)
     apply_user_downgrade_retention(user_id)
@@ -1050,7 +1090,7 @@ async def stripe_webhook(
         elif event_type == "invoice.paid":
             _handle_invoice_paid(payload_object, stripe_event_id=event_id)
         elif event_type in {"customer.subscription.updated", "customer.subscription.deleted"}:
-            _handle_subscription_lifecycle(payload_object)
+            _handle_subscription_lifecycle(payload_object, stripe_event_id=event_id)
         else:
             logger.warning(
                 "Received unsupported Stripe webhook event type; no action taken.",

@@ -10,12 +10,14 @@ from typing import Any, Dict, Iterable, List, Optional
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-from backend.firebaseDB.signing_database import store_signing_request_consumer_disclosure
+from backend.firebaseDB.signing_database import (
+    store_signing_request_business_disclosure,
+    store_signing_request_consumer_disclosure,
+)
 
 from .signing_service import (
     SIGNING_STATUS_COMPLETED,
     SIGNATURE_MODE_CONSUMER,
-    build_signing_consumer_access_code,
     build_signing_public_token,
     resolve_signing_disclosure_payload_for_record,
     resolve_signing_public_link_version,
@@ -58,6 +60,10 @@ def build_consumer_disclosure_payload(record, *, public_token: Optional[str] = N
 
 def build_consumer_disclosure_artifact(record, *, public_token: Optional[str] = None) -> Dict[str, Any]:
     payload = build_consumer_disclosure_payload(record, public_token=public_token)
+    return build_signing_disclosure_artifact(payload)
+
+
+def build_signing_disclosure_artifact(payload: Dict[str, Any]) -> Dict[str, Any]:
     payload_bytes = _canonicalize_json_bytes(payload)
     return {
         "version": _normalize_optional_text(payload.get("version")),
@@ -119,6 +125,41 @@ def persist_consumer_disclosure_artifact(record, *, client=None):
     )
 
 
+def resolve_business_disclosure_artifact(record) -> Dict[str, Any]:
+    stored_payload = _normalize_optional_dict(getattr(record, "business_disclosure_payload", None))
+    if stored_payload:
+        payload_bytes = _canonicalize_json_bytes(stored_payload)
+        return {
+            "version": _normalize_optional_text(stored_payload.get("version"))
+            or _normalize_optional_text(getattr(record, "disclosure_version", None)),
+            "payload": stored_payload,
+            "sha256": _normalize_optional_text(getattr(record, "business_disclosure_sha256", None))
+            or hashlib.sha256(payload_bytes).hexdigest(),
+        }
+    return build_signing_disclosure_artifact(resolve_signing_disclosure_payload_for_record(record))
+
+
+def persist_business_disclosure_artifact(record, *, client=None):
+    if str(getattr(record, "signature_mode", "") or "").strip() == SIGNATURE_MODE_CONSUMER:
+        return record
+    artifact = resolve_business_disclosure_artifact(record)
+    stored_payload = _normalize_optional_dict(getattr(record, "business_disclosure_payload", None))
+    stored_sha256 = _normalize_optional_text(getattr(record, "business_disclosure_sha256", None))
+    if stored_payload == artifact["payload"] and stored_sha256 == artifact["sha256"]:
+        return record
+    if str(getattr(record, "status", "") or "").strip() == SIGNING_STATUS_COMPLETED:
+        return record
+    return (
+        store_signing_request_business_disclosure(
+            record.id,
+            disclosure_payload=artifact["payload"],
+            disclosure_sha256=artifact["sha256"],
+            client=client,
+        )
+        or record
+    )
+
+
 def _wrap_text(text: str, *, width: int) -> List[str]:
     words = [segment for segment in str(text or "").strip().split() if segment]
     if not words:
@@ -155,14 +196,14 @@ def _draw_wrapped_lines(
 
 def render_consumer_access_pdf(
     *,
-    request_id: str,
+    access_code: str,
     source_document_name: str,
     disclosure_payload: Dict[str, Any],
 ) -> bytes:
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=letter)
     page_width, page_height = letter
-    code = build_signing_consumer_access_code(request_id)
+    code = str(access_code or "").strip()
     summary_lines = [
         str(entry).strip()
         for entry in disclosure_payload.get("summaryLines") or []

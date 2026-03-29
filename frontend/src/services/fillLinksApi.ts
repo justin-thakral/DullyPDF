@@ -56,7 +56,7 @@ export type FillLinkQuestion = {
   key: string;
   label?: string;
   type: 'text' | 'textarea' | 'date' | 'boolean' | 'radio' | 'multi_select' | 'select' | 'email' | 'phone' | string;
-  sourceType?: 'pdf_field' | 'checkbox_group' | 'custom' | 'synthetic' | string;
+  sourceType?: 'pdf_field' | 'checkbox_group' | 'radio_group' | 'custom' | 'synthetic' | string;
   requiredForRespondentIdentity?: boolean;
   required?: boolean;
   synthetic?: boolean;
@@ -84,6 +84,7 @@ export type FillLinkSigningConfig = {
   documentCategoryLabel?: string | null;
   esignEligibilityConfirmed?: boolean;
   esignEligibilityConfirmedAt?: string | null;
+  companyBindingEnabled?: boolean;
   manualFallbackEnabled?: boolean;
   consumerPaperCopyProcedure?: string | null;
   consumerPaperCopyFeeDescription?: string | null;
@@ -108,7 +109,7 @@ export type FillLinkSummary = {
   closedReason?: string | null;
   statusMessage?: string | null;
   responseCount?: number;
-  maxResponses?: number;
+  accountMonthlyResponsesMax?: number;
   createdAt?: string | null;
   updatedAt?: string | null;
   publishedAt?: string | null;
@@ -160,6 +161,7 @@ export type FillLinkResponse = {
       sourcePdf?: { available?: boolean; downloadPath?: string | null } | null;
       signedPdf?: { available?: boolean; downloadPath?: string | null } | null;
       auditReceipt?: { available?: boolean; downloadPath?: string | null } | null;
+      disputePackage?: { available?: boolean; downloadPath?: string | null } | null;
     } | null;
   } | null;
 };
@@ -173,6 +175,11 @@ export type FillLinkTemplateFieldPayload = {
   optionKey?: string;
   optionLabel?: string;
   groupLabel?: string;
+  radioGroupId?: string;
+  radioGroupKey?: string;
+  radioGroupLabel?: string;
+  radioOptionKey?: string;
+  radioOptionLabel?: string;
 };
 
 export type FillLinkGroupTemplatePayload = {

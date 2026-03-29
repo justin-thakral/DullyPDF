@@ -28,9 +28,10 @@ from backend.firebaseDB.openai_job_database import (
     update_openai_job,
 )
 from backend.firebaseDB.schema_database import get_schema
-from backend.firebaseDB.template_database import get_template
+from backend.firebaseDB.template_database import get_template, list_templates
 from backend.logging_config import get_logger
 from backend.services.credit_refund_service import attempt_credit_refund
+from backend.services.downgrade_retention_service import is_user_retention_template_locked
 from backend.services.mapping_service import build_schema_mapping_payload
 from backend.services.task_auth_service import resolve_task_audiences, verify_internal_oidc_token
 from backend.sessions.session_store import (
@@ -298,6 +299,57 @@ def _parse_template_fields(raw_fields: List[Dict[str, Any]]) -> List[TemplateOve
     return parsed
 
 
+def _ensure_template_ai_accessible(user_id: str, template_id: Optional[str]) -> None:
+    normalized_template_id = str(template_id or "").strip()
+    if not normalized_template_id:
+        return
+    if is_user_retention_template_locked(user_id, normalized_template_id):
+        raise HTTPException(
+            status_code=409,
+            detail="This saved form is locked on the base plan. Upgrade to access it again.",
+        )
+
+
+def _resolve_session_source_template_id(
+    *,
+    user_id: str,
+    session_id: str,
+    session_entry: Dict[str, Any],
+) -> Optional[str]:
+    normalized_template_id = str(session_entry.get("source_template_id") or "").strip()
+    if normalized_template_id:
+        return normalized_template_id
+    pdf_path = str(session_entry.get("pdf_path") or "").strip()
+    if not pdf_path:
+        return None
+    matching_template_ids = [
+        template.id
+        for template in list_templates(user_id)
+        if str(getattr(template, "pdf_bucket_path", "") or "").strip() == pdf_path
+    ]
+    if len(matching_template_ids) != 1:
+        return None
+    resolved_template_id = matching_template_ids[0]
+    session_entry["source_template_id"] = resolved_template_id
+    _update_session_entry(session_id, session_entry)
+    return resolved_template_id
+
+
+def _ensure_session_ai_accessible(
+    *,
+    user_id: str,
+    session_id: str,
+    session_entry: Dict[str, Any],
+) -> None:
+    source_template_id = _resolve_session_source_template_id(
+        user_id=user_id,
+        session_id=session_id,
+        session_entry=session_entry,
+    )
+    if source_template_id:
+        _ensure_template_ai_accessible(user_id, source_template_id)
+
+
 @app.get("/health")
 async def health() -> Dict[str, str]:
     return {"status": "ok"}
@@ -317,7 +369,7 @@ async def run_remap_job(
     except HTTPException as exc:
         detail = exc.detail if isinstance(exc.detail, str) else "Schema mapping worker request rejected"
         logger.warning("Schema mapping job %s rejected before start: %s", payload.jobId, detail)
-        return _reject_job_request(payload.jobId, str(detail))
+        raise
 
     job = get_openai_job(payload.jobId)
     if not job:
@@ -365,6 +417,7 @@ async def run_remap_job(
             raise HTTPException(status_code=404, detail="Schema not found")
 
         if payload.templateId:
+            _ensure_template_ai_accessible(payload.userId, payload.templateId)
             template = get_template(payload.templateId, payload.userId)
             if not template:
                 raise HTTPException(status_code=403, detail="Template access denied")
@@ -396,6 +449,11 @@ async def run_remap_job(
                 include_result=False,
                 include_renames=False,
                 include_checkbox_rules=False,
+            )
+            _ensure_session_ai_accessible(
+                user_id=payload.userId,
+                session_id=payload.sessionId,
+                session_entry=session_entry,
             )
 
         attempt_usage_events: List[Dict[str, Any]] = []

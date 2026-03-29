@@ -331,12 +331,14 @@ function App({
     }
   }, []);
 
+  const workspaceLoadingScreen = (
+    <div className="auth-loading-screen">
+      <div className="auth-loading-card">Loading workspace…</div>
+    </div>
+  );
+
   if (!authReady && browserRoute.kind !== 'homepage') {
-    return (
-      <div className="auth-loading-screen">
-        <div className="auth-loading-card">Loading workspace…</div>
-      </div>
-    );
+    return workspaceLoadingScreen;
   }
 
   if (requiresEmailVerification) {
@@ -368,11 +370,7 @@ function App({
   if (runtimeMounted) {
     return (
       <Suspense
-        fallback={
-          <div className="auth-loading-screen">
-            <div className="auth-loading-card">Loading workspace…</div>
-          </div>
-        }
+        fallback={workspaceLoadingScreen}
       >
         <WorkspaceRuntime
           initialShowHomepage={launchIntent !== 'workflow' && launchIntent !== 'demo'}
@@ -385,6 +383,10 @@ function App({
         />
       </Suspense>
     );
+  }
+
+  if (browserRoute.kind !== 'homepage') {
+    return workspaceLoadingScreen;
   }
 
   const showHomepageSplash = browserRoute.kind === 'homepage' && !homepageInitialRenderReady;

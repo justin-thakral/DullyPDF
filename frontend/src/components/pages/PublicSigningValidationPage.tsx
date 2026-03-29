@@ -64,6 +64,9 @@ export default function PublicSigningValidationPage({ token }: PublicSigningVali
           <>
             <div className="public-signing-validation-page__card">
               <Alert tone={resolveStatusTone(validation)} variant="inline" message={validation.statusMessage} />
+              {validation.warnings?.map((warning) => (
+                <Alert key={warning} tone="warning" variant="inline" message={warning} />
+              ))}
               <dl className="public-signing-validation-page__facts">
                 <div>
                   <dt>Document</dt>
@@ -102,8 +105,12 @@ export default function PublicSigningValidationPage({ token }: PublicSigningVali
                   <dd className="public-signing-validation-page__code">{validation.signedPdfSha256 || 'Not recorded'}</dd>
                 </div>
                 <div className="public-signing-validation-page__fact--wide">
-                  <dt>Audit Manifest SHA-256</dt>
+                  <dt>Audit Manifest Payload SHA-256</dt>
                   <dd className="public-signing-validation-page__code">{validation.auditManifestSha256 || 'Not recorded'}</dd>
+                </div>
+                <div className="public-signing-validation-page__fact--wide">
+                  <dt>Audit Envelope SHA-256</dt>
+                  <dd className="public-signing-validation-page__code">{validation.auditEnvelopeSha256 || 'Not recorded'}</dd>
                 </div>
                 <div className="public-signing-validation-page__fact--wide">
                   <dt>Audit Receipt SHA-256</dt>

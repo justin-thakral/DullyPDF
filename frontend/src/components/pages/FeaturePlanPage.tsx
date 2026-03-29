@@ -267,7 +267,8 @@ const FeaturePlanPage = ({ pageKey }: FeaturePlanPageProps) => {
           <h2>Where this fits in the product</h2>
           <p>
             These public plan pages explain the free and premium workflow surfaces without forcing long billing copy
-            into the homepage CTA card. Use them when you need a direct explanation of what changes across tiers.
+            into the homepage CTA card. Use them when you need a direct explanation of what changes across saved forms,
+            PDF limits, Fill By Link, API Fill, signing, and credits.
           </p>
           <div className="intent-page__related-links">
             {page.relatedLinks.map((link) => (

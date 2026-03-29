@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ApiService,
+  type CompletePublicSigningRequestPayload,
   type PublicSigningBootstrap,
   type PublicSigningAdoptPayload,
   type PublicSigningFileResult,
@@ -50,10 +51,16 @@ export function usePublicSigningFlow(token: string) {
   const [accessCode, setAccessCode] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [intentConfirmed, setIntentConfirmed] = useState(false);
+  const [authorityConfirmed, setAuthorityConfirmed] = useState(false);
+  const [representativeTitle, setRepresentativeTitle] = useState('');
+  const [representativeCompanyName, setRepresentativeCompanyName] = useState('');
   const [artifactBusyKey, setArtifactBusyKey] = useState<ArtifactActionKey>(null);
   const [documentObjectUrl, setDocumentObjectUrl] = useState<string | null>(null);
   const [documentError, setDocumentError] = useState<string | null>(null);
   const [documentLoading, setDocumentLoading] = useState(false);
+  const [consumerAccessObjectUrl, setConsumerAccessObjectUrl] = useState<string | null>(null);
+  const [consumerAccessError, setConsumerAccessError] = useState<string | null>(null);
+  const [consumerAccessLoading, setConsumerAccessLoading] = useState(false);
   const loadRequestRef = useRef<{
     token: string | null;
     promise: Promise<LoadRequestResult> | null;
@@ -67,6 +74,9 @@ export function usePublicSigningFlow(token: string) {
     setAdoptedName((current) => nextRequest.signatureAdoptedName || current || nextRequest.signerName || '');
     setSignatureType((current) => nextRequest.signatureAdoptedMode || current || 'typed');
     setSignatureImageDataUrl((current) => nextRequest.signatureAdoptedImageDataUrl || current || null);
+    setRepresentativeTitle((current) => nextRequest.representativeTitle || current || '');
+    setRepresentativeCompanyName((current) => nextRequest.representativeCompanyName || current || '');
+    setAuthorityConfirmed((current) => (nextRequest.authorityAttestedAt ? true : current));
   }
 
   function applyBootstrapState(nextPayload: PublicSigningBootstrap) {
@@ -84,6 +94,9 @@ export function usePublicSigningFlow(token: string) {
     setArtifactBusyKey(null);
     setSession(null);
     setIntentConfirmed(false);
+    setAuthorityConfirmed(false);
+    setRepresentativeTitle('');
+    setRepresentativeCompanyName('');
     setAdoptedName('');
     setSignatureType('typed');
     setSignatureImageDataUrl(null);
@@ -92,6 +105,12 @@ export function usePublicSigningFlow(token: string) {
     setDocumentError(null);
     setDocumentLoading(false);
     setDocumentObjectUrl((current) => {
+      if (current) URL.revokeObjectURL(current);
+      return null;
+    });
+    setConsumerAccessError(null);
+    setConsumerAccessLoading(false);
+    setConsumerAccessObjectUrl((current) => {
       if (current) URL.revokeObjectURL(current);
       return null;
     });
@@ -232,6 +251,14 @@ export function usePublicSigningFlow(token: string) {
   const verificationExpiresLabel = formatDateTime(session?.verificationExpiresAt);
   const verificationCodeTrimmed = verificationCode.trim();
   const normalizedAdoptedName = adoptedName.trim();
+  const companyBindingRequired = Boolean(request?.companyBindingEnabled);
+  const normalizedRepresentativeTitle = representativeTitle.trim();
+  const normalizedRepresentativeCompanyName = representativeCompanyName.trim();
+  const authorityRequirementsSatisfied = !companyBindingRequired || (
+    authorityConfirmed
+      && Boolean(normalizedRepresentativeTitle)
+      && Boolean(normalizedRepresentativeCompanyName)
+  );
   const previewSignatureName = normalizedAdoptedName || request?.signerName || '';
   const canSubmitAdoptedSignature = signatureType === 'drawn' || signatureType === 'uploaded'
     ? Boolean(signatureImageDataUrl)
@@ -314,14 +341,93 @@ export function usePublicSigningFlow(token: string) {
     token,
   ]);
 
+  useEffect(() => {
+    const shouldLoadConsumerAccessPdf = Boolean(
+      request
+        && request.signatureMode === 'consumer'
+        && sessionToken
+        && verificationComplete
+        && consumerAccessPath
+        && !request.consentedAt
+        && !signingLocked,
+    );
+    if (!shouldLoadConsumerAccessPdf) {
+      setConsumerAccessLoading(false);
+      setConsumerAccessError(null);
+      setConsumerAccessObjectUrl((current) => {
+        if (current) URL.revokeObjectURL(current);
+        return null;
+      });
+      return undefined;
+    }
+
+    let active = true;
+    let pendingObjectUrl: string | null = null;
+    setConsumerAccessLoading(true);
+    setConsumerAccessError(null);
+
+    void ApiService.getPublicSigningConsumerAccessBlob(token, sessionToken!)
+      .then((file: PublicSigningFileResult) => {
+        const resolvedObjectUrl = URL.createObjectURL(file.blob);
+        pendingObjectUrl = resolvedObjectUrl;
+        if (!active) {
+          URL.revokeObjectURL(resolvedObjectUrl);
+          pendingObjectUrl = null;
+          return;
+        }
+        setConsumerAccessObjectUrl((current) => {
+          if (current) URL.revokeObjectURL(current);
+          return resolvedObjectUrl;
+        });
+        pendingObjectUrl = null;
+        setConsumerAccessLoading(false);
+      })
+      .catch((nextError) => {
+        if (!active) return;
+        setConsumerAccessObjectUrl((current) => {
+          if (current) URL.revokeObjectURL(current);
+          return null;
+        });
+        setConsumerAccessError(nextError instanceof Error ? nextError.message : 'Unable to load the consumer access-check PDF.');
+        setConsumerAccessLoading(false);
+      });
+
+    return () => {
+      active = false;
+      if (pendingObjectUrl) {
+        URL.revokeObjectURL(pendingObjectUrl);
+      }
+    };
+  }, [
+    consumerAccessPath,
+    request,
+    sessionToken,
+    signingLocked,
+    token,
+    verificationComplete,
+  ]);
+
   const requireSession = buildMissingSessionRunner(setActionError);
 
-  function handleOpenDocument(fallbackMessage: string) {
-    if (!documentObjectUrl) {
+  function handleOpenBlobUrl(blobUrl: string | null, fallbackMessage: string) {
+    if (!blobUrl) {
       setActionError(documentError || fallbackMessage);
       return;
     }
-    window.open(documentObjectUrl, '_blank', 'noopener,noreferrer');
+    const popup = window.open(blobUrl, '_blank', 'noopener,noreferrer');
+    if (popup === null) window.open(blobUrl, '_self');
+  }
+
+  function handleOpenDocument(fallbackMessage: string) {
+    handleOpenBlobUrl(documentObjectUrl, fallbackMessage);
+  }
+
+  function handleOpenConsumerAccess() {
+    if (consumerAccessError) {
+      setActionError(consumerAccessError);
+      return;
+    }
+    handleOpenBlobUrl(consumerAccessObjectUrl, 'The consumer access-check PDF is not available yet.');
   }
 
   function handleSendCode() {
@@ -429,7 +535,15 @@ export function usePublicSigningFlow(token: string) {
     if (!sessionToken && !requireSession()) {
       return;
     }
-    void runRequestAction('complete', () => ApiService.completePublicSigningRequest(token, sessionToken!));
+    const payload: CompletePublicSigningRequestPayload = {
+      intentConfirmed: true,
+    };
+    if (companyBindingRequired) {
+      payload.authorityConfirmed = authorityConfirmed;
+      payload.representativeTitle = normalizedRepresentativeTitle;
+      payload.representativeCompanyName = normalizedRepresentativeCompanyName;
+    }
+    void runRequestAction('complete', () => ApiService.completePublicSigningRequest(token, sessionToken!, payload));
   }
 
   return {
@@ -445,10 +559,16 @@ export function usePublicSigningFlow(token: string) {
     accessCode,
     verificationCode,
     intentConfirmed,
+    authorityConfirmed,
+    representativeTitle,
+    representativeCompanyName,
     artifactBusyKey,
     documentObjectUrl,
     documentError,
     documentLoading,
+    consumerAccessObjectUrl,
+    consumerAccessError,
+    consumerAccessLoading,
     currentStep,
     steps,
     sessionToken,
@@ -469,6 +589,10 @@ export function usePublicSigningFlow(token: string) {
     resendAvailableLabel,
     verificationExpiresLabel,
     verificationCodeTrimmed,
+    companyBindingRequired,
+    normalizedRepresentativeTitle,
+    normalizedRepresentativeCompanyName,
+    authorityRequirementsSatisfied,
     previewSignatureName,
     canSubmitAdoptedSignature,
     facts,
@@ -479,11 +603,15 @@ export function usePublicSigningFlow(token: string) {
     setAccessCode,
     setVerificationCode,
     setIntentConfirmed,
+    setAuthorityConfirmed,
+    setRepresentativeTitle,
+    setRepresentativeCompanyName,
     handleSendCode,
     handleVerifyCode,
     handleWithdrawConsent,
     handleManualFallback,
     handleOpenDocument,
+    handleOpenConsumerAccess,
     handleDownloadSignedPdf,
     handleDownloadAuditReceipt,
     handleConsent,

@@ -827,7 +827,7 @@ def test_create_checkout_session_does_not_reuse_open_pro_checkout_for_different_
     assert create_calls[0]["line_items"] == [{"price": "price_monthly_123", "quantity": 1}]
 
 
-def test_create_checkout_session_reuses_open_refill_checkout_even_for_different_attempt(
+def test_create_checkout_session_reuses_open_refill_checkout_for_same_attempt(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
@@ -882,7 +882,7 @@ def test_create_checkout_session_reuses_open_refill_checkout_even_for_different_
         user_id="user_123",
         user_email="user@example.com",
         checkout_kind="refill_500",
-        checkout_attempt_id="attempt_new_refill",
+        checkout_attempt_id="attempt_existing_refill",
     )
 
     assert session == {
@@ -893,6 +893,76 @@ def test_create_checkout_session_reuses_open_refill_checkout_even_for_different_
         "checkoutPriceId": "price_refill_123",
     }
     assert create_calls == []
+
+
+def test_create_checkout_session_creates_new_refill_checkout_for_different_attempt(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
+    monkeypatch.setenv("STRIPE_PRICE_REFILL_500", "price_refill_123")
+    monkeypatch.setenv("STRIPE_REFILL_CREDITS", "500")
+
+    create_calls: list[dict[str, object]] = []
+
+    class _FakeCheckoutSession:
+        @staticmethod
+        def list(**kwargs):
+            assert kwargs == {"customer": "cus_123", "status": "open", "limit": 20}
+            return {
+                "data": [
+                    {
+                        "id": "cs_open_refill",
+                        "url": "https://checkout.stripe.test/open-refill",
+                        "client_reference_id": "user_123",
+                        "metadata": {
+                            "userId": "user_123",
+                            "checkoutKind": "refill_500",
+                            "checkoutPriceId": "price_refill_123",
+                            "checkoutAttemptId": "attempt_existing_refill",
+                        },
+                    }
+                ]
+            }
+
+        @staticmethod
+        def create(**kwargs):
+            create_calls.append(kwargs)
+
+            class _Session:
+                id = "cs_new_refill"
+                url = "https://checkout.stripe.test/new-refill"
+
+            return _Session()
+
+    class _FakeCustomer:
+        @staticmethod
+        def list(email: str, limit: int):
+            assert email == "user@example.com"
+            assert limit == 25
+            return {"data": [{"id": "cus_123", "metadata": {"userId": "user_123"}}]}
+
+    class _FakeCheckout:
+        Session = _FakeCheckoutSession
+
+    class _FakeStripe:
+        api_key = None
+        checkout = _FakeCheckout
+        Customer = _FakeCustomer
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    session = billing_service.create_checkout_session(
+        user_id="user_123",
+        user_email="user@example.com",
+        checkout_kind="refill_500",
+        checkout_attempt_id="attempt_new_refill",
+    )
+
+    assert session["sessionId"] == "cs_new_refill"
+    assert session["checkoutAttemptId"] == "attempt_new_refill"
+    assert session["checkoutPriceId"] == "price_refill_123"
+    assert len(create_calls) == 1
+    assert create_calls[0]["metadata"]["checkoutAttemptId"] == "attempt_new_refill"
 
 
 def test_create_checkout_session_uses_distinct_idempotency_keys_per_pro_plan(

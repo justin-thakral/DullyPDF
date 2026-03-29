@@ -186,6 +186,12 @@ async def run_detection(
     metadata: Dict[str, Any]
     try:
         _require_internal_auth(authorization)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, str) else "Detector request rejected"
+        logger.warning("Detector auth rejected for session %s: %s", payload.sessionId, detail)
+        raise
+
+    try:
         if payload.pipeline != "commonforms":
             raise HTTPException(status_code=400, detail="Unsupported detection pipeline")
         if not is_gcs_path(payload.pdfPath):
@@ -212,10 +218,7 @@ async def run_detection(
         )
     except HTTPException as exc:
         detail = exc.detail if isinstance(exc.detail, str) else "Detector request rejected"
-        if exc.status_code in {401, 403}:
-            logger.warning("Detector auth rejected for session %s: %s", payload.sessionId, detail)
-        else:
-            logger.warning("Detector session %s rejected: %s", payload.sessionId, detail)
+        logger.warning("Detector session %s rejected: %s", payload.sessionId, detail)
         return _reject_detection_request(payload.sessionId, str(detail))
 
     try:

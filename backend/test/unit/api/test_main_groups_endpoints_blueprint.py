@@ -61,7 +61,6 @@ def _fill_link_record(
         public_token="token-1",
         status=status,
         closed_reason=None if status == "active" else "owner_closed",
-        max_responses=5,
         response_count=0,
         questions=questions,
         require_all_fields=False,

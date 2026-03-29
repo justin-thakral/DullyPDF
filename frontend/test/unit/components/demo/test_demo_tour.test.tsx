@@ -223,7 +223,7 @@ describe('DemoTour', () => {
     await user.click(screen.getByRole('button', { name: 'Next' }));
     expect(onNext).toHaveBeenCalledTimes(1);
 
-    await user.click(screen.getByRole('button', { name: 'Exit demo' }));
+    await user.click(screen.getByRole('button', { name: 'Close demo tour' }));
     expect(onClose).toHaveBeenCalledTimes(1);
 
     rerender(

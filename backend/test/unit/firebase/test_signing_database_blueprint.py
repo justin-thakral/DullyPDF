@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import pytest
+
 from backend.firebaseDB import signing_database
+from backend.services.signing_quota_service import SigningRequestMonthlyLimitError
 from backend.test.unit.firebase._fakes import FakeFirestoreClient
 
 
@@ -62,116 +65,180 @@ def test_increment_signing_session_verification_attempt_counts_failed_codes() ->
     assert once.verification_attempt_count == 1
     assert twice.verification_attempt_count == 2
 
-
-def test_count_signing_request_limit_usage_for_source_version_counts_reserved_slots_only() -> None:
+def test_mark_signing_request_sent_consumes_monthly_quota_and_rollback_restores_it(mocker) -> None:
     firestore_client = FakeFirestoreClient()
-    collection = firestore_client.collection(signing_database.SIGNING_REQUESTS_COLLECTION)
-    collection.document("draft-1").set(
-        {
-            "user_id": "user-1",
-            "mode": "sign",
-            "signature_mode": "business",
-            "source_type": "workspace",
-            "source_document_name": "Bravo Packet",
-            "source_version": "workspace:form-alpha:hash-one",
-            "document_category": "ordinary_business_form",
-            "manual_fallback_enabled": True,
-            "signer_name": "Alex Signer",
-            "signer_email": "alex@example.com",
-            "status": signing_database.SIGNING_STATUS_DRAFT,
-            "sent_at": None,
-            "anchors": [],
-            "disclosure_version": "us-esign-business-v1",
-            "created_at": "2026-03-24T12:00:00+00:00",
-            "updated_at": "2026-03-24T12:00:00+00:00",
-        }
+    request = signing_database.create_signing_request(
+        user_id="user-1",
+        title="Bravo Packet Signature Request",
+        mode="sign",
+        signature_mode="business",
+        source_type="workspace",
+        source_id="form-alpha",
+        source_link_id=None,
+        source_record_label=None,
+        source_document_name="Bravo Packet",
+        source_template_id="form-alpha",
+        source_template_name="Bravo Packet",
+        source_pdf_sha256="a" * 64,
+        source_version="workspace:form-alpha:hash-one",
+        document_category="ordinary_business_form",
+        company_binding_enabled=False,
+        authority_attestation_version=None,
+        authority_attestation_text=None,
+        authority_attestation_sha256=None,
+        manual_fallback_enabled=True,
+        signer_name="Alex Signer",
+        signer_email="alex@example.com",
+        anchors=[],
+        disclosure_version="us-esign-business-v1",
+        client=firestore_client,
     )
-    collection.document("sent-1").set(
-        {
-            "user_id": "user-1",
-            "mode": "sign",
-            "signature_mode": "business",
-            "source_type": "workspace",
-            "source_document_name": "Bravo Packet",
-            "source_version": "workspace:form-alpha:hash-one",
-            "document_category": "ordinary_business_form",
-            "manual_fallback_enabled": True,
-            "signer_name": "Alex Signer",
-            "signer_email": "alex@example.com",
-            "status": signing_database.SIGNING_STATUS_INVALIDATED,
-            "sent_at": "2026-03-24T12:10:00+00:00",
-            "anchors": [],
-            "disclosure_version": "us-esign-business-v1",
-            "created_at": "2026-03-24T12:09:00+00:00",
-            "updated_at": "2026-03-24T12:11:00+00:00",
-        }
-    )
-    collection.document("invalid-draft").set(
-        {
-            "user_id": "user-1",
-            "mode": "sign",
-            "signature_mode": "business",
-            "source_type": "workspace",
-            "source_document_name": "Bravo Packet",
-            "source_version": "workspace:form-alpha:hash-one",
-            "document_category": "ordinary_business_form",
-            "manual_fallback_enabled": True,
-            "signer_name": "Alex Signer",
-            "signer_email": "alex@example.com",
-            "status": signing_database.SIGNING_STATUS_INVALIDATED,
-            "sent_at": None,
-            "anchors": [],
-            "disclosure_version": "us-esign-business-v1",
-            "created_at": "2026-03-24T12:12:00+00:00",
-            "updated_at": "2026-03-24T12:12:00+00:00",
-        }
-    )
-    collection.document("other-source").set(
-        {
-            "user_id": "user-1",
-            "mode": "sign",
-            "signature_mode": "business",
-            "source_type": "workspace",
-            "source_document_name": "Other Packet",
-            "source_version": "workspace:form-beta:hash-two",
-            "document_category": "ordinary_business_form",
-            "manual_fallback_enabled": True,
-            "signer_name": "Alex Signer",
-            "signer_email": "alex@example.com",
-            "status": signing_database.SIGNING_STATUS_SENT,
-            "sent_at": "2026-03-24T12:15:00+00:00",
-            "anchors": [],
-            "disclosure_version": "us-esign-business-v1",
-            "created_at": "2026-03-24T12:14:00+00:00",
-            "updated_at": "2026-03-24T12:15:00+00:00",
-        }
-    )
-    collection.document("other-user").set(
-        {
-            "user_id": "user-2",
-            "mode": "sign",
-            "signature_mode": "business",
-            "source_type": "workspace",
-            "source_document_name": "Bravo Packet",
-            "source_version": "workspace:form-alpha:hash-one",
-            "document_category": "ordinary_business_form",
-            "manual_fallback_enabled": True,
-            "signer_name": "Alex Signer",
-            "signer_email": "alex@example.com",
-            "status": signing_database.SIGNING_STATUS_SENT,
-            "sent_at": "2026-03-24T12:20:00+00:00",
-            "anchors": [],
-            "disclosure_version": "us-esign-business-v1",
-            "created_at": "2026-03-24T12:19:00+00:00",
-            "updated_at": "2026-03-24T12:20:00+00:00",
-        }
+    mocker.patch.object(signing_database, "now_iso", return_value="2026-03-24T12:00:00+00:00")
+    mocker.patch.object(signing_database, "_current_month_key", return_value="2026-03")
+
+    sent = signing_database.mark_signing_request_sent(
+        request.id,
+        "user-1",
+        source_pdf_bucket_path="gs://signing-bucket/requests/source.pdf",
+        source_pdf_sha256="b" * 64,
+        source_version="workspace:form-alpha:hash-two",
+        monthly_limit=25,
+        client=firestore_client,
     )
 
-    assert signing_database.count_signing_request_limit_usage_for_source_version(
+    assert sent is not None
+    assert sent.status == signing_database.SIGNING_STATUS_SENT
+    assert sent.quota_consumed_at == "2026-03-24T12:00:00+00:00"
+    assert sent.quota_month_key == "2026-03"
+    usage = signing_database.get_signing_monthly_usage("user-1", month_key="2026-03", client=firestore_client)
+    assert usage is not None
+    assert usage.request_count == 1
+
+    rolled_back = signing_database.rollback_signing_request_sent(
+        request.id,
         "user-1",
-        "workspace:form-alpha:hash-one",
+        expected_source_pdf_bucket_path="gs://signing-bucket/requests/source.pdf",
+        expected_source_pdf_sha256="b" * 64,
         client=firestore_client,
-    ) == 2
+    )
+
+    assert rolled_back is not None
+    assert rolled_back.status == signing_database.SIGNING_STATUS_DRAFT
+    assert rolled_back.quota_consumed_at is None
+    assert rolled_back.quota_month_key is None
+    usage_after_rollback = signing_database.get_signing_monthly_usage("user-1", month_key="2026-03", client=firestore_client)
+    assert usage_after_rollback is not None
+    assert usage_after_rollback.request_count == 0
+
+
+def test_mark_signing_request_sent_blocks_when_monthly_quota_is_exhausted(mocker) -> None:
+    firestore_client = FakeFirestoreClient()
+    request = signing_database.create_signing_request(
+        user_id="user-1",
+        title="Bravo Packet Signature Request",
+        mode="sign",
+        signature_mode="business",
+        source_type="workspace",
+        source_id="form-alpha",
+        source_link_id=None,
+        source_record_label=None,
+        source_document_name="Bravo Packet",
+        source_template_id="form-alpha",
+        source_template_name="Bravo Packet",
+        source_pdf_sha256="a" * 64,
+        source_version="workspace:form-alpha:hash-one",
+        document_category="ordinary_business_form",
+        company_binding_enabled=False,
+        authority_attestation_version=None,
+        authority_attestation_text=None,
+        authority_attestation_sha256=None,
+        manual_fallback_enabled=True,
+        signer_name="Alex Signer",
+        signer_email="alex@example.com",
+        anchors=[],
+        disclosure_version="us-esign-business-v1",
+        client=firestore_client,
+    )
+    firestore_client.collection(signing_database.SIGNING_USAGE_COUNTERS_COLLECTION).document("user-1__2026-03").set(
+        {
+            "user_id": "user-1",
+            "month_key": "2026-03",
+            "request_count": 25,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-24T11:59:00+00:00",
+        }
+    )
+    mocker.patch.object(signing_database, "_current_month_key", return_value="2026-03")
+
+    with pytest.raises(SigningRequestMonthlyLimitError, match="25 sent signing request limit"):
+        signing_database.mark_signing_request_sent(
+            request.id,
+            "user-1",
+            source_pdf_bucket_path="gs://signing-bucket/requests/source.pdf",
+            source_pdf_sha256="b" * 64,
+            source_version="workspace:form-alpha:hash-two",
+            monthly_limit=25,
+            client=firestore_client,
+        )
+
+
+def test_mark_signing_request_sent_is_idempotent_for_existing_sent_request(mocker) -> None:
+    firestore_client = FakeFirestoreClient()
+    request = signing_database.create_signing_request(
+        user_id="user-1",
+        title="Bravo Packet Signature Request",
+        mode="sign",
+        signature_mode="business",
+        source_type="workspace",
+        source_id="form-alpha",
+        source_link_id=None,
+        source_record_label=None,
+        source_document_name="Bravo Packet",
+        source_template_id="form-alpha",
+        source_template_name="Bravo Packet",
+        source_pdf_sha256="a" * 64,
+        source_version="workspace:form-alpha:hash-one",
+        document_category="ordinary_business_form",
+        company_binding_enabled=False,
+        authority_attestation_version=None,
+        authority_attestation_text=None,
+        authority_attestation_sha256=None,
+        manual_fallback_enabled=True,
+        signer_name="Alex Signer",
+        signer_email="alex@example.com",
+        anchors=[],
+        disclosure_version="us-esign-business-v1",
+        client=firestore_client,
+    )
+    mocker.patch.object(signing_database, "now_iso", return_value="2026-03-24T12:00:00+00:00")
+    mocker.patch.object(signing_database, "_current_month_key", return_value="2026-03")
+
+    first = signing_database.mark_signing_request_sent(
+        request.id,
+        "user-1",
+        source_pdf_bucket_path="gs://signing-bucket/requests/source.pdf",
+        source_pdf_sha256="b" * 64,
+        source_version="workspace:form-alpha:hash-two",
+        monthly_limit=25,
+        client=firestore_client,
+    )
+    second = signing_database.mark_signing_request_sent(
+        request.id,
+        "user-1",
+        source_pdf_bucket_path="gs://signing-bucket/requests/source.pdf",
+        source_pdf_sha256="b" * 64,
+        source_version="workspace:form-alpha:hash-two",
+        monthly_limit=25,
+        client=firestore_client,
+    )
+
+    assert first is not None
+    assert second is not None
+    assert first.status == signing_database.SIGNING_STATUS_SENT
+    assert second.status == signing_database.SIGNING_STATUS_SENT
+    usage = signing_database.get_signing_monthly_usage("user-1", month_key="2026-03", client=firestore_client)
+    assert usage is not None
+    assert usage.request_count == 1
 
 
 def test_consumer_access_attempt_counter_tracks_failed_codes_and_can_reset() -> None:

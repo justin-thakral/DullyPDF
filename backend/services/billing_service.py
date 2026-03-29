@@ -1036,6 +1036,7 @@ def create_checkout_session(
             stripe=stripe,
             user_id=metadata["userId"],
             customer_id=resolved_customer_id,
+            checkout_attempt_id=normalized_checkout_attempt_id,
             checkout_price_id=plan.price_id,
         )
         if existing_open_refill_checkout:

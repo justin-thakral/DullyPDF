@@ -24,6 +24,7 @@ export type StoredEmailActionState =
       mode: SupportedEmailActionMode;
       status: 'success' | 'error';
       continuePath: string;
+      message?: string;
     }
   | {
       kind: 'pending-reset-password';
@@ -131,6 +132,7 @@ export function readStoredEmailActionState(historyState: unknown): StoredEmailAc
   const status = (candidate as Record<string, unknown>).status;
   const mode = (candidate as Record<string, unknown>).mode;
   const continuePath = (candidate as Record<string, unknown>).continuePath;
+  const message = (candidate as Record<string, unknown>).message;
   if (
     kind !== 'result' ||
     (status !== 'success' && status !== 'error') ||
@@ -145,6 +147,7 @@ export function readStoredEmailActionState(historyState: unknown): StoredEmailAc
     mode,
     status,
     continuePath,
+    message: typeof message === 'string' && message.trim() ? message : undefined,
   };
 }
 

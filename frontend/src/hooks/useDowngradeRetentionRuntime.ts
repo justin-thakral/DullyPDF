@@ -4,10 +4,9 @@ import {
   ApiService,
   type BillingCheckoutKind,
   type BillingPlanCatalogItem,
-  type SavedFormSummary,
   type UserProfile,
 } from '../services/api';
-import type { BannerNotice, ConfirmDialogOptions } from '../types';
+import type { BannerNotice } from '../types';
 import {
   clearExpiredPendingBillingCheckout,
   clearPendingBillingCheckout,
@@ -98,12 +97,8 @@ export type UseDowngradeRetentionRuntimeDeps = {
   loadUserProfile: () => Promise<UserProfile | null>;
   mutateUserProfile: (updater: (previous: UserProfile | null) => UserProfile | null) => void;
   setBannerNotice: (notice: BannerNotice | null) => void;
-  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean>;
   refreshSavedForms: (options?: { allowRetry?: boolean; throwOnError?: boolean }) => Promise<unknown>;
   refreshGroups: (options?: { throwOnError?: boolean }) => Promise<unknown>;
-  activeSavedFormId: string | null;
-  activeGroupTemplates: SavedFormSummary[];
-  clearWorkspace: () => void;
 };
 
 export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeDeps) {
@@ -115,18 +110,13 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
     loadUserProfile,
     mutateUserProfile,
     setBannerNotice,
-    requestConfirm,
     refreshSavedForms,
     refreshGroups,
-    activeSavedFormId,
-    activeGroupTemplates,
-    clearWorkspace,
   } = deps;
   const [billingCheckoutInProgressKind, setBillingCheckoutInProgressKind] = useState<BillingCheckoutKind | null>(null);
   const [billingCancelInProgress, setBillingCancelInProgress] = useState(false);
   const [showDowngradeRetentionDialog, setShowDowngradeRetentionDialog] = useState(false);
   const [downgradeRetentionSaveInProgress, setDowngradeRetentionSaveInProgress] = useState(false);
-  const [downgradeRetentionDeleteInProgress, setDowngradeRetentionDeleteInProgress] = useState(false);
   const openedDowngradeRetentionKeyRef = useRef<string | null>(null);
 
   const currentDowngradeRetention = userProfile?.retention ?? null;
@@ -134,16 +124,28 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
     ? `Reactivate ${userProfile.billing.plans.pro_monthly.label}`
     : 'Reactivate Pro Monthly';
 
-  // This visit key auto-opens the retention dialog once per unique downgrade event.
+  // This visit key auto-opens the retention dialog once per unique access-lock snapshot.
   const downgradeRetentionVisitKey = useMemo(() => {
-    if (!verifiedUser || !currentDowngradeRetention || currentDowngradeRetention.status !== 'grace_period') {
+    if (!verifiedUser || !currentDowngradeRetention) {
       return null;
     }
+    const accessibleTemplateIds = currentDowngradeRetention.accessibleTemplateIds
+      ?? currentDowngradeRetention.keptTemplateIds
+      ?? [];
+    const lockedTemplateIds = currentDowngradeRetention.lockedTemplateIds
+      ?? currentDowngradeRetention.pendingDeleteTemplateIds
+      ?? [];
+    const lockedLinkIds = currentDowngradeRetention.lockedLinkIds
+      ?? currentDowngradeRetention.pendingDeleteLinkIds
+      ?? [];
     return [
       verifiedUser.uid,
       currentDowngradeRetention.policyVersion,
       currentDowngradeRetention.downgradedAt ?? '',
-      currentDowngradeRetention.graceEndsAt ?? '',
+      currentDowngradeRetention.savedFormsLimit ?? 0,
+      [...accessibleTemplateIds].sort().join('|'),
+      [...lockedTemplateIds].sort().join('|'),
+      [...lockedLinkIds].sort().join('|'),
     ].join(':');
   }, [currentDowngradeRetention, verifiedUser]);
 
@@ -295,7 +297,7 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
   ]);
 
   const handleSaveDowngradeRetentionSelection = useCallback(async (keptTemplateIds: string[]) => {
-    if (downgradeRetentionSaveInProgress || downgradeRetentionDeleteInProgress || billingCheckoutInProgressKind !== null) {
+    if (downgradeRetentionSaveInProgress || billingCheckoutInProgressKind !== null) {
       return;
     }
     setDowngradeRetentionSaveInProgress(true);
@@ -307,76 +309,20 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
         tone: refreshStatus.profile && refreshStatus.savedForms && refreshStatus.groups ? 'success' : 'info',
         message:
           refreshStatus.profile && refreshStatus.savedForms && refreshStatus.groups
-            ? 'Saved forms kept during the downgrade grace period were updated.'
-            : 'Saved forms kept during the downgrade grace period were updated, but some views may need a refresh.',
+            ? 'Base plan accessible saved forms were updated.'
+            : 'Base plan accessible saved forms were updated, but some views may need a refresh.',
         autoDismissMs: refreshStatus.profile && refreshStatus.savedForms && refreshStatus.groups ? 7000 : 9000,
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to update downgrade retention.';
+      const message = error instanceof Error ? error.message : 'Failed to update base plan template access.';
       setBannerNotice({ tone: 'error', message, autoDismissMs: 8000 });
     } finally {
       setDowngradeRetentionSaveInProgress(false);
     }
   }, [
     billingCheckoutInProgressKind,
-    downgradeRetentionDeleteInProgress,
     downgradeRetentionSaveInProgress,
     mutateUserProfile,
-    refreshRetentionViews,
-    setBannerNotice,
-  ]);
-
-  const handleDeleteDowngradeRetentionNow = useCallback(async () => {
-    if (downgradeRetentionSaveInProgress || downgradeRetentionDeleteInProgress || billingCheckoutInProgressKind !== null) {
-      return;
-    }
-    const confirmed = await requestConfirm({
-      title: 'Delete queued saved forms now?',
-      message: 'This permanently deletes every queued saved form and its dependent Fill By Link records.',
-      confirmLabel: 'Delete queued data',
-      cancelLabel: 'Keep grace period',
-      tone: 'danger',
-    });
-    if (!confirmed) {
-      return;
-    }
-    setDowngradeRetentionDeleteInProgress(true);
-    try {
-      const result = await ApiService.deleteDowngradeRetentionNow();
-      const deletedTemplateIds = new Set(result.deletedTemplateIds || []);
-      const deletedCurrentSavedForm = Boolean(
-        activeSavedFormId && deletedTemplateIds.has(activeSavedFormId),
-      );
-      const deletedOpenGroupTemplate = activeGroupTemplates.some((template) => deletedTemplateIds.has(template.id));
-      mutateUserProfile((previous) => (previous ? { ...previous, retention: null } : previous));
-      const refreshStatus = await refreshRetentionViews();
-      if (deletedCurrentSavedForm || deletedOpenGroupTemplate) {
-        clearWorkspace();
-      }
-      setShowDowngradeRetentionDialog(false);
-      setBannerNotice({
-        tone: refreshStatus.profile && refreshStatus.savedForms && refreshStatus.groups ? 'success' : 'info',
-        message:
-          refreshStatus.profile && refreshStatus.savedForms && refreshStatus.groups
-            ? 'Queued saved forms and dependent Fill By Link records were deleted.'
-            : 'Queued saved forms and dependent Fill By Link records were deleted, but some views may need a refresh.',
-        autoDismissMs: refreshStatus.profile && refreshStatus.savedForms && refreshStatus.groups ? 8000 : 9000,
-      });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to delete downgraded saved forms.';
-      setBannerNotice({ tone: 'error', message, autoDismissMs: 8000 });
-    } finally {
-      setDowngradeRetentionDeleteInProgress(false);
-    }
-  }, [
-    activeGroupTemplates,
-    activeSavedFormId,
-    billingCheckoutInProgressKind,
-    clearWorkspace,
-    downgradeRetentionDeleteInProgress,
-    downgradeRetentionSaveInProgress,
-    mutateUserProfile,
-    requestConfirm,
     refreshRetentionViews,
     setBannerNotice,
   ]);
@@ -387,13 +333,12 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
   }, [userProfile?.retention]);
 
   const handleReactivateDowngradedAccount = useCallback(() => {
-    if (downgradeRetentionSaveInProgress || downgradeRetentionDeleteInProgress || billingCheckoutInProgressKind !== null) {
+    if (downgradeRetentionSaveInProgress || billingCheckoutInProgressKind !== null) {
       return;
     }
     void handleStartBillingCheckout('pro_monthly');
   }, [
     billingCheckoutInProgressKind,
-    downgradeRetentionDeleteInProgress,
     downgradeRetentionSaveInProgress,
     handleStartBillingCheckout,
   ]);
@@ -547,7 +492,6 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
     billingCancelInProgress,
     showDowngradeRetentionDialog,
     downgradeRetentionSaveInProgress,
-    downgradeRetentionDeleteInProgress,
     currentDowngradeRetention,
     downgradeRetentionReactivateLabel,
     closeDowngradeRetentionDialog,
@@ -555,7 +499,6 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
     handleStartBillingCheckout,
     handleCancelBillingSubscription,
     handleSaveDowngradeRetentionSelection,
-    handleDeleteDowngradeRetentionNow,
     handleReactivateDowngradedAccount,
   };
 }

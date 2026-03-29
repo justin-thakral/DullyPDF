@@ -51,7 +51,7 @@ function renderHarness(options?: {
       verifiedUser: { uid: 'user-1' },
       userProfile: null,
       loadUserProfile: vi.fn().mockResolvedValue(null),
-      profileLimits: { detectMaxPages: 10, fillableMaxPages: 20, savedFormsMax: 10, fillLinksActiveMax: 1, fillLinkResponsesMax: 5 },
+      profileLimits: { detectMaxPages: 10, fillableMaxPages: 20, savedFormsMax: 10, fillLinkResponsesMonthlyMax: 25 },
       dialog: {
         setBannerNotice: vi.fn(),
         requestConfirm: vi.fn().mockResolvedValue(true),

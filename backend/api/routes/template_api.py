@@ -24,6 +24,7 @@ from backend.logging_config import get_logger
 from backend.firebaseDB.template_database import get_template
 from backend.firebaseDB.user_database import get_user_profile, normalize_role
 from backend.services.auth_service import require_user
+from backend.services.downgrade_retention_service import is_user_retention_template_locked
 from backend.services.limits_service import (
     resolve_template_api_active_limit,
     resolve_template_api_max_pages,
@@ -258,6 +259,11 @@ def _resolve_template_or_404(template_id: str, user_id: str):
     template = get_template(template_id, user_id)
     if template is None:
         raise HTTPException(status_code=404, detail="Saved form not found")
+    if is_user_retention_template_locked(user_id, template.id):
+        raise HTTPException(
+            status_code=409,
+            detail="This saved form is locked on the base plan. Upgrade before publishing or republishing API Fill for it.",
+        )
     return template
 
 

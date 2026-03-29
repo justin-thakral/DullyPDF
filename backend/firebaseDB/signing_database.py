@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
 from firebase_admin import firestore as firebase_firestore
 
 from backend.logging_config import get_logger
+from backend.services.signing_quota_service import SigningRequestMonthlyLimitError
 from backend.services.signing_service import (
     SIGNING_STATUS_COMPLETED,
     SIGNING_STATUS_DRAFT,
@@ -32,6 +34,7 @@ logger = get_logger(__name__)
 SIGNING_REQUESTS_COLLECTION = "signing_requests"
 SIGNING_EVENTS_COLLECTION = "signing_events"
 SIGNING_SESSIONS_COLLECTION = "signing_sessions"
+SIGNING_USAGE_COUNTERS_COLLECTION = "signing_usage_counters"
 
 
 def _supports_firestore_transaction(transaction: Any) -> bool:
@@ -40,6 +43,31 @@ def _supports_firestore_transaction(transaction: Any) -> bool:
     return all(
         hasattr(transaction, attr)
         for attr in ("_read_only", "_commit", "_rollback", "_max_attempts")
+    )
+
+
+def _current_month_key() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m")
+
+
+def _coerce_month_key(value: Any) -> Optional[str]:
+    normalized = str(value or "").strip()
+    if len(normalized) != 7:
+        return None
+    try:
+        datetime.strptime(normalized, "%Y-%m")
+    except ValueError:
+        return None
+    return normalized
+
+
+def _build_signing_usage_counter_id(user_id: str, month_key: str) -> str:
+    return f"{str(user_id or '').strip().replace('/', '_')}__{month_key}"
+
+
+def _signing_usage_counter_doc_ref(user_id: str, month_key: str, client):
+    return client.collection(SIGNING_USAGE_COUNTERS_COLLECTION).document(
+        _build_signing_usage_counter_id(user_id, month_key)
     )
 
 
@@ -63,6 +91,10 @@ class SigningRequestRecord:
     document_category: str
     esign_eligibility_confirmed_at: Optional[str]
     esign_eligibility_confirmed_source: Optional[str]
+    company_binding_enabled: bool
+    authority_attestation_version: Optional[str]
+    authority_attestation_text: Optional[str]
+    authority_attestation_sha256: Optional[str]
     manual_fallback_enabled: bool
     signer_name: str
     signer_email: str
@@ -92,6 +124,8 @@ class SigningRequestRecord:
     status: str
     anchors: List[Dict[str, Any]]
     disclosure_version: str
+    business_disclosure_payload: Optional[Dict[str, Any]]
+    business_disclosure_sha256: Optional[str]
     consumer_disclosure_version: Optional[str]
     consumer_disclosure_payload: Optional[Dict[str, Any]]
     consumer_disclosure_sha256: Optional[str]
@@ -103,6 +137,8 @@ class SigningRequestRecord:
     updated_at: Optional[str]
     owner_review_confirmed_at: Optional[str]
     sent_at: Optional[str]
+    quota_consumed_at: Optional[str]
+    quota_month_key: Optional[str]
     opened_at: Optional[str]
     reviewed_at: Optional[str]
     consented_at: Optional[str]
@@ -111,6 +147,9 @@ class SigningRequestRecord:
     signature_adopted_mode: Optional[str]
     signature_adopted_image_data_url: Optional[str]
     signature_adopted_image_sha256: Optional[str]
+    representative_title: Optional[str]
+    representative_company_name: Optional[str]
+    authority_attested_at: Optional[str]
     manual_fallback_requested_at: Optional[str]
     manual_fallback_note: Optional[str]
     consent_withdrawn_at: Optional[str]
@@ -148,6 +187,17 @@ class SigningRequestRecord:
     public_link_last_reissued_at: Optional[str]
     invalidated_at: Optional[str]
     invalidation_reason: Optional[str]
+    public_app_origin: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class SigningMonthlyUsageRecord:
+    id: str
+    user_id: str
+    month_key: str
+    request_count: int
+    created_at: Optional[str]
+    updated_at: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -244,6 +294,10 @@ def _serialize_signing_request(doc) -> SigningRequestRecord:
         document_category=str(data.get("document_category") or "").strip(),
         esign_eligibility_confirmed_at=_coerce_optional_text(data.get("esign_eligibility_confirmed_at")),
         esign_eligibility_confirmed_source=_coerce_optional_text(data.get("esign_eligibility_confirmed_source")),
+        company_binding_enabled=bool(data.get("company_binding_enabled")),
+        authority_attestation_version=_coerce_optional_text(data.get("authority_attestation_version")),
+        authority_attestation_text=_coerce_optional_text(data.get("authority_attestation_text")),
+        authority_attestation_sha256=_coerce_optional_text(data.get("authority_attestation_sha256")),
         manual_fallback_enabled=bool(data.get("manual_fallback_enabled")),
         signer_name=str(data.get("signer_name") or "").strip(),
         signer_email=str(data.get("signer_email") or "").strip(),
@@ -273,6 +327,8 @@ def _serialize_signing_request(doc) -> SigningRequestRecord:
         status=str(data.get("status") or SIGNING_STATUS_DRAFT).strip() or SIGNING_STATUS_DRAFT,
         anchors=_coerce_dict_list(data.get("anchors")),
         disclosure_version=str(data.get("disclosure_version") or "").strip(),
+        business_disclosure_payload=_coerce_optional_dict(data.get("business_disclosure_payload")),
+        business_disclosure_sha256=_coerce_optional_text(data.get("business_disclosure_sha256")),
         consumer_disclosure_version=_coerce_optional_text(data.get("consumer_disclosure_version")),
         consumer_disclosure_payload=_coerce_optional_dict(data.get("consumer_disclosure_payload")),
         consumer_disclosure_sha256=_coerce_optional_text(data.get("consumer_disclosure_sha256")),
@@ -284,6 +340,8 @@ def _serialize_signing_request(doc) -> SigningRequestRecord:
         updated_at=_coerce_optional_text(data.get("updated_at")),
         owner_review_confirmed_at=_coerce_optional_text(data.get("owner_review_confirmed_at")),
         sent_at=_coerce_optional_text(data.get("sent_at")),
+        quota_consumed_at=_coerce_optional_text(data.get("quota_consumed_at")),
+        quota_month_key=_coerce_month_key(data.get("quota_month_key")),
         opened_at=_coerce_optional_text(data.get("opened_at")),
         reviewed_at=_coerce_optional_text(data.get("reviewed_at")),
         consented_at=_coerce_optional_text(data.get("consented_at")),
@@ -292,6 +350,9 @@ def _serialize_signing_request(doc) -> SigningRequestRecord:
         signature_adopted_mode=_coerce_optional_text(data.get("signature_adopted_mode")),
         signature_adopted_image_data_url=_coerce_optional_text(data.get("signature_adopted_image_data_url")),
         signature_adopted_image_sha256=_coerce_optional_text(data.get("signature_adopted_image_sha256")),
+        representative_title=_coerce_optional_text(data.get("representative_title")),
+        representative_company_name=_coerce_optional_text(data.get("representative_company_name")),
+        authority_attested_at=_coerce_optional_text(data.get("authority_attested_at")),
         manual_fallback_requested_at=_coerce_optional_text(data.get("manual_fallback_requested_at")),
         manual_fallback_note=_coerce_optional_text(data.get("manual_fallback_note")),
         consent_withdrawn_at=_coerce_optional_text(data.get("consent_withdrawn_at")),
@@ -329,6 +390,20 @@ def _serialize_signing_request(doc) -> SigningRequestRecord:
         public_link_last_reissued_at=_coerce_optional_text(data.get("public_link_last_reissued_at")),
         invalidated_at=_coerce_optional_text(data.get("invalidated_at")),
         invalidation_reason=_coerce_optional_text(data.get("invalidation_reason")),
+        public_app_origin=_coerce_optional_text(data.get("public_app_origin")),
+    )
+
+
+def _serialize_signing_usage_counter(doc) -> SigningMonthlyUsageRecord:
+    data = doc.to_dict() or {}
+    month_key = _coerce_month_key(data.get("month_key")) or _current_month_key()
+    return SigningMonthlyUsageRecord(
+        id=doc.id,
+        user_id=str(data.get("user_id") or "").strip(),
+        month_key=month_key,
+        request_count=_coerce_nonnegative_int(data.get("request_count")),
+        created_at=_coerce_optional_text(data.get("created_at")),
+        updated_at=_coerce_optional_text(data.get("updated_at")),
     )
 
 
@@ -408,6 +483,10 @@ def create_signing_request(
     signer_email: str,
     anchors: List[Dict[str, Any]],
     disclosure_version: str,
+    company_binding_enabled: bool = False,
+    authority_attestation_version: Optional[str] = None,
+    authority_attestation_text: Optional[str] = None,
+    authority_attestation_sha256: Optional[str] = None,
     sender_display_name: Optional[str] = None,
     esign_eligibility_confirmed_at: Optional[str] = None,
     esign_eligibility_confirmed_source: Optional[str] = None,
@@ -444,6 +523,10 @@ def create_signing_request(
         "document_category": document_category,
         "esign_eligibility_confirmed_at": _coerce_optional_text(esign_eligibility_confirmed_at) or now_value,
         "esign_eligibility_confirmed_source": _coerce_optional_text(esign_eligibility_confirmed_source),
+        "company_binding_enabled": bool(company_binding_enabled),
+        "authority_attestation_version": _coerce_optional_text(authority_attestation_version),
+        "authority_attestation_text": _coerce_optional_text(authority_attestation_text),
+        "authority_attestation_sha256": _coerce_optional_text(authority_attestation_sha256),
         "manual_fallback_enabled": bool(manual_fallback_enabled),
         "signer_name": signer_name,
         "signer_email": signer_email,
@@ -473,6 +556,8 @@ def create_signing_request(
         "status": SIGNING_STATUS_DRAFT,
         "anchors": list(anchors or []),
         "disclosure_version": disclosure_version,
+        "business_disclosure_payload": None,
+        "business_disclosure_sha256": None,
         "consumer_disclosure_version": None,
         "consumer_disclosure_payload": None,
         "consumer_disclosure_sha256": None,
@@ -484,6 +569,8 @@ def create_signing_request(
         "updated_at": now_value,
         "owner_review_confirmed_at": None,
         "sent_at": None,
+        "quota_consumed_at": None,
+        "quota_month_key": None,
         "opened_at": None,
         "reviewed_at": None,
         "consented_at": None,
@@ -492,6 +579,9 @@ def create_signing_request(
         "signature_adopted_mode": None,
         "signature_adopted_image_data_url": None,
         "signature_adopted_image_sha256": None,
+        "representative_title": None,
+        "representative_company_name": None,
+        "authority_attested_at": None,
         "manual_fallback_requested_at": None,
         "manual_fallback_note": None,
         "consent_withdrawn_at": None,
@@ -529,6 +619,7 @@ def create_signing_request(
         "public_link_last_reissued_at": None,
         "invalidated_at": None,
         "invalidation_reason": None,
+        "public_app_origin": None,
     }
     doc_ref = firestore_client.collection(SIGNING_REQUESTS_COLLECTION).document(request_id)
     doc_ref.set(payload)
@@ -553,41 +644,21 @@ def list_signing_requests(user_id: str, *, client=None) -> List[SigningRequestRe
     )
 
 
-def _signing_request_counts_against_document_limit(record: SigningRequestRecord) -> bool:
-    if _coerce_optional_text(record.sent_at):
-        return True
-    return record.status in {
-        SIGNING_STATUS_DRAFT,
-        SIGNING_STATUS_SENT,
-        SIGNING_STATUS_COMPLETED,
-    }
-
-
-def count_signing_request_limit_usage_for_source_version(
+def get_signing_monthly_usage(
     user_id: str,
-    source_version: str,
     *,
+    month_key: Optional[str] = None,
     client=None,
-) -> int:
+) -> Optional[SigningMonthlyUsageRecord]:
     normalized_user_id = str(user_id or "").strip()
-    normalized_source_version = str(source_version or "").strip()
-    if not normalized_user_id or not normalized_source_version:
-        return 0
+    normalized_month_key = _coerce_month_key(month_key) or _current_month_key()
+    if not normalized_user_id:
+        return None
     firestore_client = client or get_firestore_client()
-    snapshot = where_equals(
-        firestore_client.collection(SIGNING_REQUESTS_COLLECTION),
-        "user_id",
-        normalized_user_id,
-    ).get()
-    total = 0
-    for doc in snapshot:
-        record = _serialize_signing_request(doc)
-        if record.source_version != normalized_source_version:
-            continue
-        if _signing_request_counts_against_document_limit(record):
-            total += 1
-    return total
-
+    snapshot = _signing_usage_counter_doc_ref(normalized_user_id, normalized_month_key, firestore_client).get()
+    if not snapshot.exists:
+        return None
+    return _serialize_signing_usage_counter(snapshot)
 
 def get_signing_request(request_id: str, *, client=None) -> Optional[SigningRequestRecord]:
     normalized_request_id = str(request_id or "").strip()
@@ -997,7 +1068,9 @@ def mark_signing_request_sent(
     source_pdf_bucket_path: str,
     source_pdf_sha256: str,
     source_version: Optional[str],
+    monthly_limit: Optional[int] = None,
     owner_review_confirmed_at: Optional[str] = None,
+    public_app_origin: Optional[str] = None,
     client=None,
 ) -> Optional[SigningRequestRecord]:
     normalized_request_id = str(request_id or "").strip()
@@ -1006,24 +1079,16 @@ def mark_signing_request_sent(
         return None
     firestore_client = client or get_firestore_client()
     doc_ref = firestore_client.collection(SIGNING_REQUESTS_COLLECTION).document(normalized_request_id)
-    snapshot = doc_ref.get()
-    if not snapshot.exists:
-        return None
-    data = snapshot.to_dict() or {}
-    if str(data.get("user_id") or "").strip() != normalized_user_id:
-        return None
-    current_status = str(data.get("status") or "").strip()
-    if current_status != SIGNING_STATUS_DRAFT:
-        return _serialize_signing_request(snapshot)
-    now_value = now_iso()
-    request_expires_at = resolve_signing_request_expires_at(sent_at=now_value)
-    retention_until = _coerce_optional_text(data.get("retention_until")) or resolve_signing_retention_until(now_value)
-    transport = resolve_signing_signer_transport(
-        _coerce_optional_text(data.get("source_type")) or "workspace",
-        signer_contact_method=_coerce_optional_text(data.get("signer_contact_method")),
-    )
-    doc_ref.set(
-        {
+    normalized_monthly_limit = None if monthly_limit is None else max(0, int(monthly_limit))
+
+    def _build_sent_payload(data: Dict[str, Any], *, now_value: str, quota_month_key: Optional[str]) -> Dict[str, Any]:
+        request_expires_at = resolve_signing_request_expires_at(sent_at=now_value)
+        retention_until = _coerce_optional_text(data.get("retention_until")) or resolve_signing_retention_until(now_value)
+        transport = resolve_signing_signer_transport(
+            _coerce_optional_text(data.get("source_type")) or "workspace",
+            signer_contact_method=_coerce_optional_text(data.get("signer_contact_method")),
+        )
+        return {
             "status": SIGNING_STATUS_SENT,
             "source_pdf_bucket_path": str(source_pdf_bucket_path or "").strip() or None,
             "source_pdf_sha256": str(source_pdf_sha256 or "").strip() or None,
@@ -1042,6 +1107,10 @@ def mark_signing_request_sent(
             "verification_completed_at": None,
             "owner_review_confirmed_at": _coerce_optional_text(owner_review_confirmed_at),
             "sent_at": now_value,
+            "quota_consumed_at": now_value if quota_month_key else None,
+            "quota_month_key": quota_month_key,
+            "business_disclosure_payload": None,
+            "business_disclosure_sha256": None,
             "consumer_disclosure_version": None,
             "consumer_disclosure_payload": None,
             "consumer_disclosure_sha256": None,
@@ -1094,11 +1163,282 @@ def mark_signing_request_sent(
             "public_link_last_reissued_at": None,
             "invalidated_at": None,
             "invalidation_reason": None,
+            "public_app_origin": _coerce_optional_text(public_app_origin),
             "updated_at": now_value,
-        },
-        merge=True,
-    )
+        }
+
+    def _reserve_monthly_quota_if_needed(
+        data: Dict[str, Any],
+        *,
+        now_value: str,
+        transaction=None,
+    ) -> tuple[Optional[Dict[str, Any]], Optional[str]]:
+        if normalized_monthly_limit is None:
+            return None, None
+        quota_consumed_at = _coerce_optional_text(data.get("quota_consumed_at"))
+        quota_month_key = _coerce_month_key(data.get("quota_month_key"))
+        if quota_consumed_at and quota_month_key:
+            return None, quota_month_key
+        if normalized_monthly_limit <= 0:
+            raise SigningRequestMonthlyLimitError(limit=normalized_monthly_limit)
+        month_key = _current_month_key()
+        usage_doc_ref = _signing_usage_counter_doc_ref(normalized_user_id, month_key, firestore_client)
+        usage_snapshot = usage_doc_ref.get(transaction=transaction) if transaction is not None else usage_doc_ref.get()
+        usage_record = _serialize_signing_usage_counter(usage_snapshot) if usage_snapshot.exists else None
+        current_usage = usage_record.request_count if usage_record is not None else 0
+        if current_usage >= normalized_monthly_limit:
+            raise SigningRequestMonthlyLimitError(limit=normalized_monthly_limit)
+        usage_payload = {
+            "user_id": normalized_user_id,
+            "month_key": month_key,
+            "request_count": current_usage + 1,
+            "created_at": usage_record.created_at if usage_record is not None and usage_record.created_at else now_value,
+            "updated_at": now_value,
+        }
+        return {"doc_ref": usage_doc_ref, "payload": usage_payload}, month_key
+
+    def _merge_payload(data: Dict[str, Any], payload: Dict[str, Any]) -> Dict[str, Any]:
+        merged = dict(data)
+        merged.update(payload)
+        return merged
+
+    transaction = firestore_client.transaction()
+    if _supports_firestore_transaction(transaction):
+        @firebase_firestore.transactional
+        def _run(txn):
+            snapshot = doc_ref.get(transaction=txn)
+            if not snapshot.exists:
+                return None
+            data = snapshot.to_dict() or {}
+            if str(data.get("user_id") or "").strip() != normalized_user_id:
+                return None
+            current_status = str(data.get("status") or "").strip()
+            if current_status != SIGNING_STATUS_DRAFT:
+                return _serialize_signing_request(snapshot)
+            now_value = now_iso()
+            usage_update, quota_month_key = _reserve_monthly_quota_if_needed(data, now_value=now_value, transaction=txn)
+            payload = _build_sent_payload(data, now_value=now_value, quota_month_key=quota_month_key)
+            if usage_update is not None:
+                txn.set(usage_update["doc_ref"], usage_update["payload"], merge=True)
+            txn.set(doc_ref, payload, merge=True)
+            return _serialize_merged_signing_request(snapshot, _merge_payload(data, payload))
+
+        return _run(transaction)
+
+    snapshot = doc_ref.get()
+    if not snapshot.exists:
+        return None
+    data = snapshot.to_dict() or {}
+    if str(data.get("user_id") or "").strip() != normalized_user_id:
+        return None
+    current_status = str(data.get("status") or "").strip()
+    if current_status != SIGNING_STATUS_DRAFT:
+        return _serialize_signing_request(snapshot)
+    now_value = now_iso()
+    usage_update, quota_month_key = _reserve_monthly_quota_if_needed(data, now_value=now_value)
+    payload = _build_sent_payload(data, now_value=now_value, quota_month_key=quota_month_key)
+    if usage_update is not None:
+        usage_update["doc_ref"].set(usage_update["payload"], merge=True)
+    doc_ref.set(payload, merge=True)
     return _serialize_signing_request(doc_ref.get())
+
+
+def rollback_signing_request_sent(
+    request_id: str,
+    user_id: str,
+    *,
+    expected_source_pdf_bucket_path: Optional[str] = None,
+    expected_source_pdf_sha256: Optional[str] = None,
+    client=None,
+) -> Optional[SigningRequestRecord]:
+    normalized_request_id = str(request_id or "").strip()
+    normalized_user_id = str(user_id or "").strip()
+    expected_bucket_path = _coerce_optional_text(expected_source_pdf_bucket_path)
+    expected_sha256 = _coerce_optional_text(expected_source_pdf_sha256)
+    if not normalized_request_id or not normalized_user_id:
+        return None
+    firestore_client = client or get_firestore_client()
+    doc_ref = firestore_client.collection(SIGNING_REQUESTS_COLLECTION).document(normalized_request_id)
+    payload = {
+        "status": SIGNING_STATUS_DRAFT,
+        "source_pdf_bucket_path": None,
+        "source_pdf_sha256": None,
+        "source_version": None,
+        "signer_contact_method": None,
+        "signer_auth_method": None,
+        "invite_delivery_status": None,
+        "invite_last_attempt_at": None,
+        "invite_sent_at": None,
+        "invite_delivery_error": None,
+        "invite_delivery_error_code": None,
+        "invite_provider": None,
+        "invite_message_id": None,
+        "verification_required": False,
+        "verification_method": None,
+        "verification_completed_at": None,
+        "quota_consumed_at": None,
+        "quota_month_key": None,
+        "business_disclosure_payload": None,
+        "business_disclosure_sha256": None,
+        "consumer_disclosure_version": None,
+        "consumer_disclosure_payload": None,
+        "consumer_disclosure_sha256": None,
+        "consumer_disclosure_presented_at": None,
+        "consumer_consent_scope": None,
+        "consumer_access_demonstrated_at": None,
+        "consumer_access_demonstration_method": None,
+        "opened_at": None,
+        "reviewed_at": None,
+        "consented_at": None,
+        "signature_adopted_at": None,
+        "signature_adopted_name": None,
+        "signature_adopted_mode": None,
+        "signature_adopted_image_data_url": None,
+        "signature_adopted_image_sha256": None,
+        "manual_fallback_requested_at": None,
+        "manual_fallback_note": None,
+        "consent_withdrawn_at": None,
+        "completed_at": None,
+        "completed_session_id": None,
+        "completed_ip_address": None,
+        "completed_user_agent": None,
+        "completed_verification_method": None,
+        "completed_verification_completed_at": None,
+        "completed_verification_session_id": None,
+        "signed_pdf_bucket_path": None,
+        "signed_pdf_sha256": None,
+        "signed_pdf_digital_signature_method": None,
+        "signed_pdf_digital_signature_algorithm": None,
+        "signed_pdf_digital_signature_field_name": None,
+        "signed_pdf_digital_signature_subfilter": None,
+        "signed_pdf_digital_signature_timestamped": False,
+        "signed_pdf_digital_certificate_subject": None,
+        "signed_pdf_digital_certificate_issuer": None,
+        "signed_pdf_digital_certificate_serial_number": None,
+        "signed_pdf_digital_certificate_fingerprint_sha256": None,
+        "audit_manifest_bucket_path": None,
+        "audit_manifest_sha256": None,
+        "audit_receipt_bucket_path": None,
+        "audit_receipt_sha256": None,
+        "audit_signature_method": None,
+        "audit_signature_algorithm": None,
+        "audit_kms_key_resource_name": None,
+        "audit_kms_key_version_name": None,
+        "artifacts_generated_at": None,
+        "retention_until": None,
+        "expires_at": None,
+        "invalidated_at": None,
+        "invalidation_reason": None,
+        "public_app_origin": None,
+        "updated_at": now_iso(),
+    }
+
+    def _build_usage_decrement(data: Dict[str, Any], *, now_value: str):
+        quota_month_key = _coerce_month_key(data.get("quota_month_key"))
+        if not quota_month_key or not _coerce_optional_text(data.get("quota_consumed_at")):
+            return None
+        usage_doc_ref = _signing_usage_counter_doc_ref(normalized_user_id, quota_month_key, firestore_client)
+        return {"doc_ref": usage_doc_ref, "month_key": quota_month_key, "updated_at": now_value}
+
+    def _preconditions_met(data: Dict[str, Any]) -> bool:
+        if str(data.get("user_id") or "").strip() != normalized_user_id:
+            return False
+        if str(data.get("status") or "").strip() != SIGNING_STATUS_SENT:
+            return False
+        if expected_bucket_path and _coerce_optional_text(data.get("source_pdf_bucket_path")) != expected_bucket_path:
+            return False
+        if expected_sha256 and _coerce_optional_text(data.get("source_pdf_sha256")) != expected_sha256:
+            return False
+        return not any(
+            _has_field_value(data.get(field_name))
+            for field_name in (
+                "opened_at",
+                "reviewed_at",
+                "consented_at",
+                "signature_adopted_at",
+                "manual_fallback_requested_at",
+                "consent_withdrawn_at",
+                "completed_at",
+            )
+        )
+
+    transaction = firestore_client.transaction()
+    if _supports_firestore_transaction(transaction):
+        @firebase_firestore.transactional
+        def _run(txn):
+            snapshot = doc_ref.get(transaction=txn)
+            if not snapshot.exists:
+                return None
+            data = snapshot.to_dict() or {}
+            if not _preconditions_met(data):
+                return _serialize_signing_request(snapshot)
+            usage_decrement = _build_usage_decrement(data, now_value=payload["updated_at"])
+            if usage_decrement is not None:
+                usage_snapshot = usage_decrement["doc_ref"].get(transaction=txn)
+                if usage_snapshot.exists:
+                    usage_record = _serialize_signing_usage_counter(usage_snapshot)
+                    txn.set(
+                        usage_decrement["doc_ref"],
+                        {
+                            "user_id": normalized_user_id,
+                            "month_key": usage_record.month_key,
+                            "request_count": max(0, usage_record.request_count - 1),
+                            "created_at": usage_record.created_at,
+                            "updated_at": usage_decrement["updated_at"],
+                        },
+                        merge=True,
+                    )
+            txn.set(doc_ref, payload, merge=True)
+            merged = dict(data)
+            merged.update(payload)
+            return _serialize_merged_signing_request(snapshot, merged)
+
+        return _run(transaction)
+
+    snapshot = doc_ref.get()
+    if not snapshot.exists:
+        return None
+    data = snapshot.to_dict() or {}
+    if not _preconditions_met(data):
+        return _serialize_signing_request(snapshot)
+    usage_decrement = _build_usage_decrement(data, now_value=payload["updated_at"])
+    if usage_decrement is not None:
+        usage_snapshot = usage_decrement["doc_ref"].get()
+        if usage_snapshot.exists:
+            usage_record = _serialize_signing_usage_counter(usage_snapshot)
+            usage_decrement["doc_ref"].set(
+                {
+                    "user_id": normalized_user_id,
+                    "month_key": usage_record.month_key,
+                    "request_count": max(0, usage_record.request_count - 1),
+                    "created_at": usage_record.created_at,
+                    "updated_at": usage_decrement["updated_at"],
+                },
+                merge=True,
+            )
+    doc_ref.set(payload, merge=True)
+    return _serialize_signing_request(doc_ref.get())
+
+
+def store_signing_request_business_disclosure(
+    request_id: str,
+    *,
+    disclosure_payload: Dict[str, Any],
+    disclosure_sha256: Optional[str],
+    client=None,
+) -> Optional[SigningRequestRecord]:
+    normalized_request_id = str(request_id or "").strip()
+    if not normalized_request_id:
+        return None
+    return _update_public_signing_request(
+        normalized_request_id,
+        allowed_statuses={SIGNING_STATUS_SENT},
+        updates={
+            "business_disclosure_payload": dict(disclosure_payload or {}),
+            "business_disclosure_sha256": _coerce_optional_text(disclosure_sha256),
+        },
+        client=client,
+    )
 
 
 def store_signing_request_consumer_disclosure(
@@ -1665,6 +2005,7 @@ def reissue_signing_request(
     request_id: str,
     user_id: str,
     *,
+    public_app_origin: Optional[str] = None,
     client=None,
 ) -> Optional[SigningRequestRecord]:
     normalized_request_id = str(request_id or "").strip()
@@ -1766,6 +2107,8 @@ def reissue_signing_request(
             "expires_at": request_expires_at,
             "invalidated_at": None,
             "invalidation_reason": None,
+            "public_app_origin": _coerce_optional_text(public_app_origin)
+            or _coerce_optional_text(data.get("public_app_origin")),
             "updated_at": now_value,
         },
         merge=True,

@@ -13,8 +13,11 @@ import backend.api.middleware.security as security_middleware
 import backend.api.routes.ai as ai_routes
 import backend.api.routes.detection as detection_routes
 import backend.api.routes.saved_forms as saved_forms_routes
+import backend.firebaseDB.fill_link_database as fill_link_database
+import backend.firebaseDB.group_database as group_database
 import backend.firebaseDB.session_database as session_database
 import backend.firebaseDB.template_database as template_database
+import backend.firebaseDB.user_database as user_database
 from backend.detection.pdf_validation import PdfValidationResult
 from backend.detection.status import DETECTION_STATUS_COMPLETE, DETECTION_STATUS_QUEUED
 from backend.firebaseDB.firebase_service import RequestUser
@@ -101,13 +104,83 @@ def _reset_session_cache() -> None:
     _API_SESSION_CACHE.clear()
 
 
+def _seed_user_credit_profile(
+    firestore_client: FakeFirestoreClient,
+    qa_user: RequestUser,
+    *,
+    credits: int,
+    base_cycle_key: str,
+) -> None:
+    firestore_client.collection(user_database.USERS_COLLECTION).document(qa_user.app_user_id).seed(
+        {
+            "email": qa_user.email,
+            "displayName": qa_user.display_name,
+            user_database.ROLE_FIELD: user_database.ROLE_BASE,
+            user_database.OPENAI_CREDITS_FIELD: credits,
+            user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD: base_cycle_key,
+            "created_at": "2026-03-28T00:00:00+00:00",
+            "updated_at": "2026-03-28T00:00:00+00:00",
+        }
+    )
+
+
+def _start_detection_session(
+    client: TestClient,
+    auth_headers: dict[str, str],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    detect_response = client.post(
+        "/detect-fields",
+        files={"file": ("qa.pdf", b"%PDF-1.4\nintegration\n", "application/pdf")},
+        headers=auth_headers,
+    )
+
+    assert detect_response.status_code == 200
+    detect_payload = detect_response.json()
+    status_response = client.get(f"/detect-fields/{detect_payload['sessionId']}", headers=auth_headers)
+
+    assert status_response.status_code == 200
+    return detect_payload, status_response.json()
+
+
+def _seed_saved_form_template(
+    firestore_client: FakeFirestoreClient,
+    storage: _InMemoryStorage,
+    qa_user: RequestUser,
+    *,
+    template_id: str,
+    name: str,
+    created_at: str,
+) -> None:
+    pdf_bucket_path = f"gs://forms-bucket/{template_id}.pdf"
+    template_bucket_path = f"gs://templates-bucket/{template_id}.json"
+    storage._objects[pdf_bucket_path] = f"%PDF-1.4\n{template_id}\n".encode("utf-8")
+    storage._objects[template_bucket_path] = b'{"fields":[]}'
+    firestore_client.collection(template_database.TEMPLATES_COLLECTION).document(template_id).seed(
+        {
+            "user_id": qa_user.app_user_id,
+            "pdf_bucket_path": pdf_bucket_path,
+            "template_bucket_path": template_bucket_path,
+            "metadata": {
+                "name": name,
+                "fillRules": {"checkboxRules": [], "textTransformRules": []},
+            },
+            "created_at": created_at,
+            "updated_at": created_at,
+        }
+    )
+
+
 @pytest.fixture(autouse=True)
 def _integration_state(mocker, qa_user: RequestUser):
     firestore_client = FakeFirestoreClient()
     storage = _InMemoryStorage()
 
+    mocker.patch.object(user_database.firebase_firestore, "transactional", side_effect=lambda fn: fn)
     mocker.patch.object(session_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(user_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(group_database, "get_firestore_client", return_value=firestore_client)
 
     mocker.patch.object(security_middleware, "verify_token", return_value={"uid": qa_user.uid})
     mocker.patch.object(detection_routes, "verify_token", return_value={"uid": qa_user.uid})
@@ -169,6 +242,7 @@ def _integration_state(mocker, qa_user: RequestUser):
         user: RequestUser | None,
         *,
         page_count: int,
+        source_pdf_sha256: str | None = None,
         prewarm_rename: bool,
         prewarm_remap: bool,
     ) -> dict[str, Any]:
@@ -179,6 +253,7 @@ def _integration_state(mocker, qa_user: RequestUser):
             {
                 "user_id": user.app_user_id if user else "anonymous",
                 "source_pdf": source_pdf,
+                "source_pdf_sha256": source_pdf_sha256,
                 "pdf_bytes": pdf_bytes,
                 "fields": [
                     {
@@ -205,8 +280,15 @@ def _integration_state(mocker, qa_user: RequestUser):
 
     mocker.patch.object(detection_routes, "enqueue_detection_job", side_effect=_enqueue_detection_job)
 
-    def _run_openai_rename_on_pdf(*, pdf_bytes: bytes, pdf_name: str, fields: list[dict[str, Any]], database_fields: list[str] | None):
-        del pdf_name, database_fields
+    def _run_openai_rename_on_pdf(
+        *,
+        pdf_bytes: bytes,
+        pdf_name: str,
+        fields: list[dict[str, Any]],
+        database_fields: list[str] | None,
+        detector_candidates_by_page: dict[int, list[dict[str, Any]]] | None = None,
+    ):
+        del pdf_name, database_fields, detector_candidates_by_page
         assert pdf_bytes.startswith(b"%PDF-1.4")
         assert fields[0]["name"] == "patient_name"
         return (
@@ -252,21 +334,9 @@ def test_detect_rename_save_and_download_saved_form_round_trip(
     auth_headers: dict[str, str],
     _integration_state,
 ) -> None:
-    detect_response = client.post(
-        "/detect-fields",
-        files={"file": ("qa.pdf", b"%PDF-1.4\nintegration\n", "application/pdf")},
-        headers=auth_headers,
-    )
-
-    assert detect_response.status_code == 200
-    detect_payload = detect_response.json()
+    detect_payload, status_payload = _start_detection_session(client, auth_headers)
     assert detect_payload["sessionId"] == "sess-detect-rename-save"
     assert detect_payload["status"] == DETECTION_STATUS_QUEUED
-
-    status_response = client.get(f"/detect-fields/{detect_payload['sessionId']}", headers=auth_headers)
-
-    assert status_response.status_code == 200
-    status_payload = status_response.json()
     assert status_payload["status"] == DETECTION_STATUS_COMPLETE
     assert status_payload["fieldCount"] == 1
     assert status_payload["fields"][0]["name"] == "patient_name"
@@ -343,3 +413,399 @@ def test_detect_rename_save_and_download_saved_form_round_trip(
     )
     assert stored_template["metadata"]["checkboxRules"] == [{"databaseField": "accept_terms", "groupKey": "accept_terms"}]
     assert stored_template["metadata"]["fillRules"]["checkboxRules"] == stored_template["metadata"]["checkboxRules"]
+
+
+def test_saved_form_creation_rejects_sixth_form_on_base_plan(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    qa_user: RequestUser,
+    _integration_state,
+    mocker,
+) -> None:
+    firestore_client = _integration_state["firestore_client"]
+    storage = _integration_state["storage"]
+    firestore_client.collection(user_database.USERS_COLLECTION).document(qa_user.app_user_id).seed(
+        {
+            "email": qa_user.email,
+            "displayName": qa_user.display_name,
+            user_database.ROLE_FIELD: user_database.ROLE_BASE,
+            user_database.OPENAI_CREDITS_FIELD: 10,
+            user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD: "2026-03",
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-27T00:00:00+00:00",
+        }
+    )
+    mocker.patch.object(saved_forms_routes, "resolve_saved_forms_limit", return_value=5)
+
+    for index in range(5):
+        template_number = index + 1
+        _seed_saved_form_template(
+            firestore_client,
+            storage,
+            qa_user,
+            template_id=f"form-{template_number}",
+            name=f"Saved Form {template_number}",
+            created_at=f"2024-01-{template_number:02d}T00:00:00+00:00",
+        )
+
+    detect_payload, _ = _start_detection_session(client, auth_headers)
+    save_response = client.post(
+        "/api/saved-forms",
+        files={"pdf": ("limit-test.pdf", b"%PDF-1.4\nsaved\n", "application/pdf")},
+        data={
+            "name": "Blocked Sixth Form",
+            "sessionId": detect_payload["sessionId"],
+        },
+        headers=auth_headers,
+    )
+
+    assert save_response.status_code == 403
+    assert "Saved form limit reached" in save_response.text
+    stored_templates = list(template_database.list_templates(qa_user.app_user_id))
+    assert len(stored_templates) == 5
+    assert {template.id for template in stored_templates} == {
+        "form-1",
+        "form-2",
+        "form-3",
+        "form-4",
+        "form-5",
+    }
+
+
+def test_rename_endpoint_consumes_real_base_credits_until_exhausted(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    qa_user: RequestUser,
+    _integration_state,
+    mocker,
+) -> None:
+    firestore_client = _integration_state["firestore_client"]
+    _seed_user_credit_profile(
+        firestore_client,
+        qa_user,
+        credits=2,
+        base_cycle_key="2026-03",
+    )
+    mocker.patch.object(ai_routes, "consume_openai_credits", side_effect=user_database.consume_openai_credits)
+    mocker.patch.object(user_database, "_current_month_cycle_key", return_value="2026-03")
+
+    detect_payload, status_payload = _start_detection_session(client, auth_headers)
+    request_payload = {
+        "sessionId": detect_payload["sessionId"],
+        "templateFields": status_payload["fields"],
+    }
+
+    first_response = client.post("/api/renames/ai", json=request_payload, headers=auth_headers)
+    second_response = client.post("/api/renames/ai", json=request_payload, headers=auth_headers)
+    blocked_response = client.post("/api/renames/ai", json=request_payload, headers=auth_headers)
+
+    assert first_response.status_code == 200
+    assert second_response.status_code == 200
+    assert blocked_response.status_code == 402
+    assert "OpenAI credits exhausted" in blocked_response.text
+
+    stored_user = (
+        firestore_client.collection(user_database.USERS_COLLECTION)
+        .document(qa_user.app_user_id)
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.OPENAI_CREDITS_FIELD] == 0
+    assert stored_user[user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD] == "2026-03"
+
+
+@pytest.mark.parametrize(
+    ("starting_credits", "expected_remaining"),
+    [
+        (0, 9),
+        (12, 11),
+    ],
+)
+def test_rename_endpoint_applies_base_month_rollover_without_overcapping_existing_balance(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    qa_user: RequestUser,
+    _integration_state,
+    mocker,
+    starting_credits: int,
+    expected_remaining: int,
+) -> None:
+    firestore_client = _integration_state["firestore_client"]
+    _seed_user_credit_profile(
+        firestore_client,
+        qa_user,
+        credits=starting_credits,
+        base_cycle_key="2026-02",
+    )
+    mocker.patch.object(ai_routes, "consume_openai_credits", side_effect=user_database.consume_openai_credits)
+    mocker.patch.object(user_database, "_current_month_cycle_key", return_value="2026-03")
+
+    detect_payload, status_payload = _start_detection_session(client, auth_headers)
+    response = client.post(
+        "/api/renames/ai",
+        json={
+            "sessionId": detect_payload["sessionId"],
+            "templateFields": status_payload["fields"],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    stored_user = (
+        firestore_client.collection(user_database.USERS_COLLECTION)
+        .document(qa_user.app_user_id)
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.OPENAI_CREDITS_FIELD] == expected_remaining
+    assert stored_user[user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD] == "2026-03"
+
+
+def test_saved_forms_lock_access_to_templates_beyond_oldest_five_after_real_base_downgrade(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    qa_user: RequestUser,
+    _integration_state,
+) -> None:
+    firestore_client = _integration_state["firestore_client"]
+    storage = _integration_state["storage"]
+    firestore_client.collection(user_database.USERS_COLLECTION).document(qa_user.app_user_id).seed(
+        {
+            "email": qa_user.email,
+            "displayName": qa_user.display_name,
+            user_database.ROLE_FIELD: user_database.ROLE_PRO,
+            user_database.OPENAI_CREDITS_MONTHLY_FIELD: 500,
+            user_database.OPENAI_CREDITS_REFILL_FIELD: 0,
+            user_database.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD: "2026-03",
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-27T00:00:00+00:00",
+        }
+    )
+    for index in range(7):
+        template_number = index + 1
+        _seed_saved_form_template(
+            firestore_client,
+            storage,
+            qa_user,
+            template_id=f"form-{template_number}",
+            name=f"Saved Form {template_number}",
+            created_at=f"2024-01-{template_number:02d}T00:00:00+00:00",
+        )
+
+    user_database.downgrade_to_base_membership(qa_user.app_user_id)
+
+    list_response = client.get("/api/saved-forms", headers=auth_headers)
+
+    assert list_response.status_code == 200
+    forms = {entry["id"]: entry for entry in list_response.json()["forms"]}
+    assert set(forms) == {f"form-{value}" for value in range(1, 8)}
+    assert {form_id for form_id, entry in forms.items() if not entry["locked"]} == {
+        "form-1",
+        "form-2",
+        "form-3",
+        "form-4",
+        "form-5",
+    }
+    assert {form_id for form_id, entry in forms.items() if entry["locked"]} == {
+        "form-6",
+        "form-7",
+    }
+
+    retention_state = (
+        firestore_client.collection(user_database.USERS_COLLECTION)
+        .document(qa_user.app_user_id)
+        .get()
+        .to_dict()
+    )[user_database.DOWNGRADE_RETENTION_FIELD]
+    assert retention_state["kept_template_ids"] == [
+        "form-1",
+        "form-2",
+        "form-3",
+        "form-4",
+        "form-5",
+    ]
+    assert retention_state["pending_delete_template_ids"] == ["form-6", "form-7"]
+
+    accessible_response = client.get("/api/saved-forms/form-1", headers=auth_headers)
+    assert accessible_response.status_code == 200
+    assert accessible_response.json()["name"] == "Saved Form 1"
+
+    locked_response = client.get("/api/saved-forms/form-6", headers=auth_headers)
+    assert locked_response.status_code == 409
+    assert "locked on the base plan" in locked_response.text.lower()
+
+    download_locked_response = client.get("/api/saved-forms/form-7/download", headers=auth_headers)
+    assert download_locked_response.status_code == 409
+
+    session_locked_response = client.post(
+        "/api/saved-forms/form-7/session",
+        json={
+            "fields": [
+                {
+                    "name": "insured_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 100, "height": 24},
+                }
+            ]
+        },
+        headers=auth_headers,
+    )
+    assert session_locked_response.status_code == 409
+
+
+def test_schema_mapping_rejects_locked_saved_form_template_after_real_base_downgrade(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    qa_user: RequestUser,
+    _integration_state,
+    mocker,
+) -> None:
+    firestore_client = _integration_state["firestore_client"]
+    storage = _integration_state["storage"]
+    firestore_client.collection(user_database.USERS_COLLECTION).document(qa_user.app_user_id).seed(
+        {
+            "email": qa_user.email,
+            "displayName": qa_user.display_name,
+            user_database.ROLE_FIELD: user_database.ROLE_PRO,
+            user_database.OPENAI_CREDITS_MONTHLY_FIELD: 500,
+            user_database.OPENAI_CREDITS_REFILL_FIELD: 0,
+            user_database.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD: "2026-03",
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-27T00:00:00+00:00",
+        }
+    )
+    for index in range(7):
+        template_number = index + 1
+        _seed_saved_form_template(
+            firestore_client,
+            storage,
+            qa_user,
+            template_id=f"form-{template_number}",
+            name=f"Saved Form {template_number}",
+            created_at=f"2024-01-{template_number:02d}T00:00:00+00:00",
+        )
+
+    user_database.downgrade_to_base_membership(qa_user.app_user_id)
+
+    mocker.patch.object(
+        ai_routes,
+        "get_schema",
+        return_value=type("SchemaRecord", (), {"id": "schema_1", "fields": [{"name": "insured_name"}]})(),
+    )
+    build_allowlist_mock = mocker.patch.object(
+        ai_routes,
+        "build_allowlist_payload",
+        return_value={"schemaFields": [{"name": "insured_name"}], "templateTags": [{"tag": "insured_name"}]},
+    )
+    consume_mock = mocker.patch.object(ai_routes, "consume_openai_credits")
+    openai_mock = mocker.patch.object(ai_routes, "call_openai_schema_mapping_chunked")
+
+    response = client.post(
+        "/api/schema-mappings/ai",
+        json={
+            "schemaId": "schema_1",
+            "templateId": "form-6",
+            "templateFields": [
+                {
+                    "name": "insured_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 100, "height": 24},
+                }
+            ],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 409
+    assert "locked on the base plan" in response.text.lower()
+    build_allowlist_mock.assert_not_called()
+    consume_mock.assert_not_called()
+    openai_mock.assert_not_called()
+
+
+def test_rename_rejects_legacy_saved_form_session_for_locked_template_after_downgrade(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    qa_user: RequestUser,
+    _integration_state,
+    mocker,
+) -> None:
+    firestore_client = _integration_state["firestore_client"]
+    storage = _integration_state["storage"]
+    firestore_client.collection(user_database.USERS_COLLECTION).document(qa_user.app_user_id).seed(
+        {
+            "email": qa_user.email,
+            "displayName": qa_user.display_name,
+            user_database.ROLE_FIELD: user_database.ROLE_PRO,
+            user_database.OPENAI_CREDITS_MONTHLY_FIELD: 500,
+            user_database.OPENAI_CREDITS_REFILL_FIELD: 0,
+            user_database.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD: "2026-03",
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-27T00:00:00+00:00",
+        }
+    )
+    for index in range(7):
+        template_number = index + 1
+        _seed_saved_form_template(
+            firestore_client,
+            storage,
+            qa_user,
+            template_id=f"form-{template_number}",
+            name=f"Saved Form {template_number}",
+            created_at=f"2024-01-{template_number:02d}T00:00:00+00:00",
+        )
+
+    saved_form_session_response = client.post(
+        "/api/saved-forms/form-6/session",
+        json={
+            "fields": [
+                {
+                    "name": "insured_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 100, "height": 24},
+                }
+            ]
+        },
+        headers=auth_headers,
+    )
+
+    assert saved_form_session_response.status_code == 200
+    saved_session_id = saved_form_session_response.json()["sessionId"]
+    session_doc_ref = firestore_client.collection(session_database.SESSION_COLLECTION).document(saved_session_id)
+    session_metadata = session_doc_ref.get().to_dict()
+    assert session_metadata["source_template_id"] == "form-6"
+
+    legacy_session_metadata = dict(session_metadata)
+    legacy_session_metadata.pop("source_template_id", None)
+    session_doc_ref.seed(legacy_session_metadata)
+
+    user_database.downgrade_to_base_membership(qa_user.app_user_id)
+
+    consume_mock = mocker.patch.object(ai_routes, "consume_openai_credits")
+    openai_mock = mocker.patch.object(ai_routes, "run_openai_rename_on_pdf")
+
+    response = client.post(
+        "/api/renames/ai",
+        json={
+            "sessionId": saved_session_id,
+            "templateFields": [
+                {
+                    "name": "insured_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 100, "height": 24},
+                }
+            ],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 409
+    assert "locked on the base plan" in response.text.lower()
+    consume_mock.assert_not_called()
+    openai_mock.assert_not_called()
+    refreshed_session_metadata = session_doc_ref.get().to_dict()
+    assert refreshed_session_metadata["source_template_id"] == "form-6"

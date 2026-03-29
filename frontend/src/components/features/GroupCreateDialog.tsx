@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import type { SavedFormSummary } from '../../services/api';
-import { DialogFrame } from '../ui/Dialog';
+import { DialogCloseButton, DialogFrame } from '../ui/Dialog';
 import './GroupCreateDialog.css';
 
 type GroupCreateDialogProps = {
@@ -32,7 +32,14 @@ export function GroupCreateDialog({
   const initialSelectedIdsKey = initialSelectedIds.join('\u0000');
 
   const sortedForms = useMemo(
-    () => [...savedForms].sort((left, right) => left.name.localeCompare(right.name)),
+    () => [...savedForms].sort((left, right) => {
+      const leftLocked = Boolean(left.locked || left.accessStatus === 'locked');
+      const rightLocked = Boolean(right.locked || right.accessStatus === 'locked');
+      if (leftLocked !== rightLocked) {
+        return leftLocked ? 1 : -1;
+      }
+      return left.name.localeCompare(right.name);
+    }),
     [savedForms],
   );
 
@@ -51,6 +58,24 @@ export function GroupCreateDialog({
     ? (submitting ? 'Saving…' : 'Save group')
     : (submitting ? 'Creating…' : 'Create group');
 
+  const handleSubmit = async () => {
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setLocalError('Group name is required.');
+      return;
+    }
+    if (selectedIds.length === 0) {
+      setLocalError('Select at least one saved form.');
+      return;
+    }
+    setLocalError(null);
+    try {
+      await onSubmit({ name: trimmedName, templateIds: selectedIds });
+    } catch (error) {
+      setLocalError(error instanceof Error ? error.message : 'Unable to save this group right now.');
+    }
+  };
+
   return (
     <DialogFrame
       open={open}
@@ -60,8 +85,11 @@ export function GroupCreateDialog({
       describedBy={dialogDescriptionId}
     >
       <div className="group-create-modal__header">
-        <h2 id={dialogTitleId}>{dialogTitle}</h2>
-        <p id={dialogDescriptionId}>{dialogCopy}</p>
+        <div>
+          <h2 id={dialogTitleId}>{dialogTitle}</h2>
+          <p id={dialogDescriptionId}>{dialogCopy}</p>
+        </div>
+        <DialogCloseButton onClick={onClose} label={`Close ${dialogTitle} dialog`} />
       </div>
       <label className="group-create-modal__field">
         <span>Group name</span>
@@ -89,12 +117,17 @@ export function GroupCreateDialog({
             <div className="group-create-modal__list">
               {sortedForms.map((form) => {
                 const checked = selectedIds.includes(form.id);
+                const locked = Boolean(form.locked || form.accessStatus === 'locked');
                 return (
-                  <label key={form.id} className="group-create-modal__item">
+                  <label
+                    key={form.id}
+                    className="group-create-modal__item"
+                    aria-disabled={locked}
+                  >
                     <input
                       type="checkbox"
                       checked={checked}
-                      disabled={submitting}
+                      disabled={submitting || locked}
                       onChange={(event) => {
                         setSelectedIds((prev) => {
                           if (event.target.checked) {
@@ -105,7 +138,10 @@ export function GroupCreateDialog({
                         if (localError) setLocalError(null);
                       }}
                     />
-                    <span>{form.name}</span>
+                    <span>
+                      {form.name}
+                      {locked ? ' (Locked on base)' : ''}
+                    </span>
                   </label>
                 );
               })}
@@ -122,18 +158,7 @@ export function GroupCreateDialog({
           type="button"
           className="ui-button ui-button--primary"
           disabled={submitting || sortedForms.length === 0}
-          onClick={async () => {
-            const trimmedName = name.trim();
-            if (!trimmedName) {
-              setLocalError('Group name is required.');
-              return;
-            }
-            if (selectedIds.length === 0) {
-              setLocalError('Select at least one saved form.');
-              return;
-            }
-            await onSubmit({ name: trimmedName, templateIds: selectedIds });
-          }}
+          onClick={() => { void handleSubmit(); }}
         >
           {submitLabel}
         </button>

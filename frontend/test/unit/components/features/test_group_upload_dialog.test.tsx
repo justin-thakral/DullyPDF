@@ -44,6 +44,7 @@ describe('GroupUploadDialog', () => {
     expect(body?.children.length).toBe(2);
     expect(body?.children[0]?.className).toContain('group-upload-modal__column--main');
     expect(body?.children[1]?.className).toContain('group-upload-modal__column--side');
+    expect(screen.getByRole('button', { name: 'Close Upload PDF Group dialog' })).toBeTruthy();
   });
 
   it('shows schema controls when mapping is enabled', () => {

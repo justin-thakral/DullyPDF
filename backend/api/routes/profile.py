@@ -18,10 +18,11 @@ from backend.firebaseDB.user_database import (
     normalize_role,
 )
 from backend.services.auth_service import require_user
-from backend.services.billing_service import billing_enabled, resolve_checkout_catalog
+from backend.services.billing_service import billing_enabled, is_subscription_active, resolve_checkout_catalog
 from backend.services.downgrade_retention_service import (
     DowngradeRetentionInactiveError,
     delete_user_downgrade_retention_now,
+    restore_user_downgrade_managed_links,
     select_user_retained_templates,
     sync_user_downgrade_retention,
 )
@@ -57,6 +58,7 @@ async def get_profile(authorization: Optional[str] = Header(default=None)) -> Di
     if role == ROLE_BASE:
         retention_summary = sync_user_downgrade_retention(user.app_user_id, create_if_missing=True)
     elif profile and profile.downgrade_retention:
+        restore_user_downgrade_managed_links(user.app_user_id)
         clear_user_downgrade_retention(user.app_user_id)
     billing_is_enabled = billing_enabled()
     billing_record = get_user_billing_record(user.app_user_id) if billing_is_enabled else None
@@ -73,7 +75,11 @@ async def get_profile(authorization: Optional[str] = Header(default=None)) -> Di
         "billing": {
             "enabled": billing_is_enabled,
             "plans": resolve_checkout_catalog() if billing_is_enabled else {},
-            "hasSubscription": bool(billing_record and billing_record.subscription_id),
+            "hasSubscription": bool(
+                billing_record
+                and billing_record.subscription_id
+                and is_subscription_active(billing_record.subscription_status)
+            ),
             "subscriptionStatus": billing_record.subscription_status if billing_record else None,
             "cancelAtPeriodEnd": billing_record.cancel_at_period_end if billing_record else None,
             "cancelAt": billing_record.cancel_at if billing_record else None,

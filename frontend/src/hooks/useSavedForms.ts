@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import type { User } from 'firebase/auth';
 import type { BannerNotice, ConfirmDialogOptions } from '../types';
-import { ApiService } from '../services/api';
+import { ApiService, type SavedFormSummary } from '../services/api';
 import {
   SAVED_FORMS_RETRY_BASE_MS,
   SAVED_FORMS_RETRY_LIMIT,
@@ -12,7 +12,7 @@ import { debugLog } from '../utils/debug';
 
 let sharedSavedFormsRequest: {
   userId: string;
-  promise: Promise<Array<{ id: string; name: string; createdAt: string }>>;
+  promise: Promise<SavedFormSummary[]>;
 } | null = null;
 
 export function useSavedForms(deps: {
@@ -22,7 +22,7 @@ export function useSavedForms(deps: {
   refreshGroups?: () => Promise<unknown> | void;
   refreshProfile?: () => Promise<unknown> | void;
 }) {
-  const [savedForms, setSavedForms] = useState<Array<{ id: string; name: string; createdAt: string }>>([]);
+  const [savedForms, setSavedForms] = useState<SavedFormSummary[]>([]);
   const [savedFormsLoading, setSavedFormsLoading] = useState(false);
   const [activeSavedFormId, setActiveSavedFormId] = useState<string | null>(null);
   const [activeSavedFormName, setActiveSavedFormName] = useState<string | null>(null);

@@ -2,18 +2,21 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
+from datetime import datetime, timezone
 import hashlib
 from typing import Any, Dict, List, Optional
 
 from firebase_admin import firestore as firebase_firestore
 
 from backend.logging_config import get_logger
+from backend.services.limits_service import resolve_fill_link_responses_monthly_limit
 from backend.services.fill_links_service import (
     allow_legacy_fill_link_public_tokens,
     parse_fill_link_public_token,
 )
 from backend.time_utils import now_iso
+from .user_database import get_user_profile, normalize_role
 from .firestore_query_utils import where_equals
 from .firebase_service import get_firestore_client
 
@@ -22,11 +25,7 @@ logger = get_logger(__name__)
 
 FILL_LINKS_COLLECTION = "fill_links"
 FILL_LINK_RESPONSES_COLLECTION = "fill_link_responses"
-FILL_LINK_STATE_COLLECTION = "fill_link_state"
-
-
-class FillLinkActiveLimitExceededError(RuntimeError):
-    """Raised when a write would exceed the caller's active Fill By Link cap."""
+FILL_LINK_USAGE_COUNTERS_COLLECTION = "fill_link_usage_counters"
 
 
 @dataclass(frozen=True)
@@ -43,7 +42,6 @@ class FillLinkRecord:
     public_token: Optional[str]
     status: str
     closed_reason: Optional[str]
-    max_responses: int
     response_count: int
     questions: List[Dict[str, Any]]
     require_all_fields: bool
@@ -83,6 +81,16 @@ class FillLinkSubmissionResult:
     response: Optional[FillLinkResponseRecord]
 
 
+@dataclass(frozen=True)
+class FillLinkMonthlyUsageRecord:
+    id: str
+    user_id: str
+    month_key: str
+    response_count: int
+    created_at: Optional[str]
+    updated_at: Optional[str]
+
+
 def _coerce_dict_list(value: Any) -> List[Dict[str, Any]]:
     if not isinstance(value, list):
         return []
@@ -116,6 +124,21 @@ def _sanitize_doc_id_component(value: Any) -> str:
     return str(value or "").strip().replace("/", "_")
 
 
+def _current_month_key() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m")
+
+
+def _coerce_month_key(value: Any) -> Optional[str]:
+    normalized = str(value or "").strip()
+    if len(normalized) != 7:
+        return None
+    try:
+        datetime.strptime(normalized, "%Y-%m")
+    except ValueError:
+        return None
+    return normalized
+
+
 def _fill_link_scope_doc_id(
     *,
     user_id: str,
@@ -127,8 +150,14 @@ def _fill_link_scope_doc_id(
     return f"{_sanitize_doc_id_component(user_id)}__{_sanitize_doc_id_component(scope_type)}__{_sanitize_doc_id_component(scope_id)}"
 
 
-def _fill_link_state_doc_ref(user_id: str, client):
-    return client.collection(FILL_LINK_STATE_COLLECTION).document(user_id)
+def _build_fill_link_usage_counter_id(user_id: str, month_key: str) -> str:
+    return f"{_sanitize_doc_id_component(user_id)}__{month_key}"
+
+
+def _fill_link_usage_counter_doc_ref(user_id: str, month_key: str, client):
+    return client.collection(FILL_LINK_USAGE_COUNTERS_COLLECTION).document(
+        _build_fill_link_usage_counter_id(user_id, month_key)
+    )
 
 
 def _fill_link_response_doc_ref(
@@ -143,28 +172,6 @@ def _fill_link_response_doc_ref(
         return collection.document()
     digest = hashlib.sha256(f"{link_id}:{normalized_attempt_id}".encode("utf-8")).hexdigest()
     return collection.document(f"attempt_{digest}")
-
-
-def _count_active_fill_links_for_user(user_id: str, *, client=None) -> int:
-    normalized_user_id = str(user_id or "").strip()
-    if not normalized_user_id:
-        return 0
-    firestore_client = client or get_firestore_client()
-    snapshot = where_equals(firestore_client.collection(FILL_LINKS_COLLECTION), "user_id", normalized_user_id).get()
-    count = 0
-    for doc in snapshot:
-        if _serialize_fill_link(doc).status == "active":
-            count += 1
-    return count
-
-
-def _resolve_active_fill_link_count(state_snapshot, *, fallback_count: int) -> int:
-    if state_snapshot is not None and getattr(state_snapshot, "exists", False):
-        data = state_snapshot.to_dict() or {}
-        count = _coerce_int(data.get("active_count"), default=fallback_count)
-        if count >= 0:
-            return count
-    return max(0, int(fallback_count or 0))
 
 
 def _serialize_fill_link(doc) -> FillLinkRecord:
@@ -187,7 +194,6 @@ def _serialize_fill_link(doc) -> FillLinkRecord:
         public_token=(str(data.get("public_token") or "").strip() or None),
         status=str(data.get("status") or "closed").strip() or "closed",
         closed_reason=(str(data.get("closed_reason") or "").strip() or None),
-        max_responses=max(1, _coerce_int(data.get("max_responses"), default=1)),
         response_count=max(0, _coerce_int(data.get("response_count"), default=0)),
         questions=_coerce_dict_list(data.get("questions")),
         require_all_fields=bool(data.get("require_all_fields")),
@@ -222,6 +228,37 @@ def _serialize_fill_link_response(doc) -> FillLinkResponseRecord:
         signing_request_id=(str(data.get("signing_request_id") or "").strip() or None),
         signing_linked_at=(str(data.get("signing_linked_at") or "").strip() or None),
     )
+
+
+def _serialize_fill_link_usage_counter(doc) -> FillLinkMonthlyUsageRecord:
+    data = doc.to_dict() or {}
+    month_key = _coerce_month_key(data.get("month_key")) or _current_month_key()
+    return FillLinkMonthlyUsageRecord(
+        id=doc.id,
+        user_id=str(data.get("user_id") or "").strip(),
+        month_key=month_key,
+        response_count=max(0, _coerce_int(data.get("response_count"), default=0)),
+        created_at=data.get("created_at"),
+        updated_at=data.get("updated_at"),
+    )
+
+
+def get_fill_link_monthly_usage(user_id: str, *, month_key: Optional[str] = None) -> Optional[FillLinkMonthlyUsageRecord]:
+    normalized_user_id = str(user_id or "").strip()
+    normalized_month_key = _coerce_month_key(month_key) or _current_month_key()
+    if not normalized_user_id:
+        return None
+    client = get_firestore_client()
+    snapshot = _fill_link_usage_counter_doc_ref(normalized_user_id, normalized_month_key, client).get()
+    if not snapshot.exists:
+        return None
+    return _serialize_fill_link_usage_counter(snapshot)
+
+
+def _resolve_fill_link_monthly_limit_for_user(user_id: str) -> int:
+    profile = get_user_profile(str(user_id or "").strip())
+    role = normalize_role(profile.role if profile else None)
+    return resolve_fill_link_responses_monthly_limit(role)
 
 
 def list_fill_links(
@@ -319,7 +356,6 @@ def create_or_update_fill_link(
     require_all_fields: bool,
     web_form_config: Optional[Dict[str, Any]] = None,
     signing_config: Optional[Dict[str, Any]] = None,
-    max_responses: int,
     respondent_pdf_download_enabled: bool = False,
     respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
     status: str = "active",
@@ -328,7 +364,6 @@ def create_or_update_fill_link(
     group_id: Optional[str] = None,
     group_name: Optional[str] = None,
     template_ids: Optional[List[str]] = None,
-    active_limit: Optional[int] = None,
 ) -> FillLinkRecord:
     if not user_id:
         raise ValueError("user_id is required")
@@ -367,17 +402,12 @@ def create_or_update_fill_link(
             group_id=cleaned_group_id,
         )
     )
-    state_doc_ref = _fill_link_state_doc_ref(user_id, client)
-    fallback_active_count = _count_active_fill_links_for_user(user_id, client=client)
-    normalized_active_limit = max(1, int(active_limit)) if active_limit is not None else None
     transaction = client.transaction()
 
     @firebase_firestore.transactional
     def _upsert(txn: firebase_firestore.Transaction) -> None:
         snapshot = doc_ref.get(transaction=txn)
         current = _serialize_fill_link(snapshot) if snapshot.exists else None
-        state_snapshot = state_doc_ref.get(transaction=txn)
-        active_count = _resolve_active_fill_link_count(state_snapshot, fallback_count=fallback_active_count)
         timestamp = now_iso()
         payload: Dict[str, Any] = {
             "user_id": user_id,
@@ -390,7 +420,6 @@ def create_or_update_fill_link(
             "title": (title or "").strip() or None,
             "status": (status or "active").strip() or "active",
             "closed_reason": (closed_reason or "").strip() or None,
-            "max_responses": max(1, int(max_responses)),
             "questions": questions,
             "require_all_fields": bool(require_all_fields),
             "web_form_config": dict(web_form_config) if isinstance(web_form_config, dict) else None,
@@ -403,18 +432,7 @@ def create_or_update_fill_link(
             ),
             "updated_at": timestamp,
         }
-        current_is_active = bool(current and current.status == "active")
         next_is_active = payload["status"] == "active"
-        delta = 0
-        if next_is_active and not current_is_active:
-            delta = 1
-        elif current_is_active and not next_is_active:
-            delta = -1
-        projected_active_count = max(0, active_count + delta)
-        if normalized_active_limit is not None and delta > 0 and projected_active_count > normalized_active_limit:
-            raise FillLinkActiveLimitExceededError(
-                f"Fill By Link limit reached ({normalized_active_limit} active links max for your tier)."
-            )
 
         if current:
             if next_is_active:
@@ -432,16 +450,6 @@ def create_or_update_fill_link(
             payload["published_at"] = timestamp if next_is_active else None
             payload["closed_at"] = timestamp if not next_is_active else None
             txn.set(doc_ref, payload, merge=False)
-
-        if delta != 0 or not state_snapshot.exists:
-            txn.set(
-                state_doc_ref,
-                {
-                    "active_count": projected_active_count,
-                    "updated_at": timestamp,
-                },
-                merge=True,
-            )
 
     _upsert(transaction)
     logger.debug(
@@ -469,16 +477,11 @@ def update_fill_link(
     respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
     status: Optional[str] = None,
     closed_reason: Optional[str] = None,
-    max_responses: Optional[int] = None,
-    active_limit: Optional[int] = None,
 ) -> Optional[FillLinkRecord]:
     if not link_id or not user_id:
         return None
     client = get_firestore_client()
     doc_ref = client.collection(FILL_LINKS_COLLECTION).document(link_id)
-    state_doc_ref = _fill_link_state_doc_ref(user_id, client)
-    fallback_active_count = _count_active_fill_links_for_user(user_id, client=client)
-    normalized_active_limit = max(1, int(active_limit)) if active_limit is not None else None
     transaction = client.transaction()
 
     @firebase_firestore.transactional
@@ -490,8 +493,6 @@ def update_fill_link(
         if record.user_id != user_id:
             return False
 
-        state_snapshot = state_doc_ref.get(transaction=txn)
-        active_count = _resolve_active_fill_link_count(state_snapshot, fallback_count=fallback_active_count)
         timestamp = now_iso()
         payload: Dict[str, Any] = {"updated_at": timestamp, "public_token": None}
         if title is not None:
@@ -516,11 +517,7 @@ def update_fill_link(
                 if isinstance(respondent_pdf_snapshot, dict)
                 else None
             )
-        if max_responses is not None:
-            payload["max_responses"] = max(1, int(max_responses))
 
-        current_is_active = record.status == "active"
-        next_is_active = current_is_active
         if status is not None:
             normalized_status = status.strip() or "closed"
             payload["status"] = normalized_status
@@ -535,27 +532,7 @@ def update_fill_link(
         elif closed_reason is not None:
             payload["closed_reason"] = closed_reason.strip() or None
 
-        delta = 0
-        if next_is_active and not current_is_active:
-            delta = 1
-        elif current_is_active and not next_is_active:
-            delta = -1
-        projected_active_count = max(0, active_count + delta)
-        if normalized_active_limit is not None and delta > 0 and projected_active_count > normalized_active_limit:
-            raise FillLinkActiveLimitExceededError(
-                f"Fill By Link limit reached ({normalized_active_limit} active links max for your tier)."
-            )
-
         txn.set(doc_ref, payload, merge=True)
-        if delta != 0 or not state_snapshot.exists:
-            txn.set(
-                state_doc_ref,
-                {
-                    "active_count": projected_active_count,
-                    "updated_at": timestamp,
-                },
-                merge=True,
-            )
         return True
 
     if not _update(transaction):
@@ -621,10 +598,38 @@ def _cleanup_fill_link_responses(link_id: str, *, client=None) -> int:
     docs = list(response_docs)
     if not docs:
         return 0
+    orphaned_at = now_iso()
+    if not hasattr(firestore_client, "batch"):
+        for doc in docs:
+            payload = doc.to_dict() or {}
+            signing_request_id = str(payload.get("signing_request_id") or "").strip()
+            if signing_request_id:
+                doc.reference.set(
+                    {
+                        "orphaned_by_link_delete_at": orphaned_at,
+                        "orphaned_by_link_delete_reason": "linked_signing_request_retained",
+                    },
+                    merge=True,
+                )
+            else:
+                doc.reference.delete()
+        return len(docs)
     batch = firestore_client.batch()
     count = 0
     for doc in docs:
-        batch.delete(doc.reference)
+        payload = doc.to_dict() or {}
+        signing_request_id = str(payload.get("signing_request_id") or "").strip()
+        if signing_request_id:
+            batch.set(
+                doc.reference,
+                {
+                    "orphaned_by_link_delete_at": orphaned_at,
+                    "orphaned_by_link_delete_reason": "linked_signing_request_retained",
+                },
+                merge=True,
+            )
+        else:
+            batch.delete(doc.reference)
         count += 1
         if count % 400 == 0:
             batch.commit()
@@ -639,8 +644,6 @@ def delete_fill_link(link_id: str, user_id: str) -> bool:
         return False
     client = get_firestore_client()
     doc_ref = client.collection(FILL_LINKS_COLLECTION).document(link_id)
-    state_doc_ref = _fill_link_state_doc_ref(user_id, client)
-    fallback_active_count = _count_active_fill_links_for_user(user_id, client=client)
     transaction = client.transaction()
 
     @firebase_firestore.transactional
@@ -651,17 +654,6 @@ def delete_fill_link(link_id: str, user_id: str) -> bool:
         record = _serialize_fill_link(snapshot)
         if record.user_id != user_id:
             return False
-        if record.status == "active":
-            state_snapshot = state_doc_ref.get(transaction=txn)
-            active_count = _resolve_active_fill_link_count(state_snapshot, fallback_count=fallback_active_count)
-            txn.set(
-                state_doc_ref,
-                {
-                    "active_count": max(0, active_count - 1),
-                    "updated_at": now_iso(),
-                },
-                merge=True,
-            )
         txn.delete(doc_ref)
         return True
 
@@ -803,6 +795,7 @@ def submit_fill_link_response(
     doc_ref = _get_fill_link_doc_ref_by_public_token(public_token, client=client)
     if doc_ref is None:
         return FillLinkSubmissionResult(status="not_found", link=None, response=None)
+    month_key = _current_month_key()
     transaction = client.transaction()
 
     @firebase_firestore.transactional
@@ -821,26 +814,13 @@ def submit_fill_link_response(
             )
         if current.status != "active":
             return FillLinkSubmissionResult(status="closed", link=current, response=None)
-        if current.response_count >= current.max_responses:
-            timestamp = now_iso()
-            txn.set(
-                doc_ref,
-                {
-                    "status": "closed",
-                    "closed_reason": "response_limit",
-                    "closed_at": timestamp,
-                    "updated_at": timestamp,
-                },
-                merge=True,
-            )
-            next_link = replace(
-                current,
-                status="closed",
-                closed_reason="response_limit",
-                closed_at=timestamp,
-                updated_at=timestamp,
-            )
-            return FillLinkSubmissionResult(status="limit_reached", link=next_link, response=None)
+        usage_doc_ref = _fill_link_usage_counter_doc_ref(current.user_id, month_key, client)
+        usage_snapshot = usage_doc_ref.get(transaction=txn)
+        usage_record = _serialize_fill_link_usage_counter(usage_snapshot) if usage_snapshot.exists else None
+        current_usage = usage_record.response_count if usage_record is not None else 0
+        monthly_limit = _resolve_fill_link_monthly_limit_for_user(current.user_id)
+        if monthly_limit <= 0 or current_usage >= monthly_limit:
+            return FillLinkSubmissionResult(status="monthly_limit_reached", link=current, response=None)
 
         timestamp = now_iso()
         response_payload = {
@@ -866,14 +846,23 @@ def submit_fill_link_response(
         txn.set(response_doc_ref, response_payload)
 
         next_count = current.response_count + 1
+        next_usage = current_usage + 1
+        txn.set(
+            usage_doc_ref,
+            {
+                "user_id": current.user_id,
+                "month_key": month_key,
+                "response_count": next_usage,
+                "created_at": usage_record.created_at if usage_record is not None and usage_record.created_at else timestamp,
+                "updated_at": timestamp,
+            },
+            merge=True,
+        )
+
         link_payload: Dict[str, Any] = {
             "response_count": next_count,
             "updated_at": timestamp,
         }
-        if next_count >= current.max_responses:
-            link_payload["status"] = "closed"
-            link_payload["closed_reason"] = "response_limit"
-            link_payload["closed_at"] = timestamp
         txn.set(doc_ref, link_payload, merge=True)
 
         next_link = FillLinkRecord(
@@ -887,9 +876,8 @@ def submit_fill_link_response(
             template_ids=current.template_ids,
             title=current.title,
             public_token=current.public_token,
-            status=str(link_payload.get("status") or current.status),
-            closed_reason=str(link_payload.get("closed_reason") or current.closed_reason or "").strip() or None,
-            max_responses=current.max_responses,
+            status=current.status,
+            closed_reason=current.closed_reason,
             response_count=next_count,
             questions=current.questions,
             require_all_fields=current.require_all_fields,
@@ -900,7 +888,7 @@ def submit_fill_link_response(
             created_at=current.created_at,
             updated_at=timestamp,
             published_at=current.published_at,
-            closed_at=link_payload.get("closed_at") or current.closed_at,
+            closed_at=current.closed_at,
         )
         response = FillLinkResponseRecord(
             id=response_doc_ref.id,

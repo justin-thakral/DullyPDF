@@ -6,6 +6,7 @@ import type { CreateTool, FieldRect, FieldType, PdfField, PageSize, RadioGroupSu
 import { fieldConfidenceTierForField, nameConfidenceTierForField } from '../../utils/confidence';
 import { clamp, clampRectToPage, toViewportRect } from '../../utils/coords';
 import { getDefaultFieldRect, getMinFieldSize } from '../../utils/fields';
+import { radioGroupSuggestionConfidenceTier } from '../../utils/radioGroupSuggestions';
 import {
   collectQuickRadioSelection,
   type QuickRadioSelectionMode,
@@ -175,6 +176,15 @@ function resizeCornerWithAspectRatio(
   return { x: right - width, y: bottom - height, width, height };
 }
 
+function isCreateClick(
+  start: { x: number; y: number },
+  current: { x: number; y: number },
+) {
+  const width = Math.abs(current.x - start.x);
+  const height = Math.abs(current.y - start.y);
+  return width <= CREATE_CLICK_THRESHOLD && height <= CREATE_CLICK_THRESHOLD;
+}
+
 function toDragRect(
   start: { x: number; y: number },
   current: { x: number; y: number },
@@ -188,7 +198,7 @@ function toDragRect(
   const width = Math.abs(dx);
   const height = Math.abs(dy);
 
-  if (width <= CREATE_CLICK_THRESHOLD && height <= CREATE_CLICK_THRESHOLD) {
+  if (isCreateClick(start, current)) {
     return clampRectToPage(
       {
         x: start.x - defaultRect.width / 2,
@@ -335,6 +345,10 @@ export function FieldOverlay({
           setPreviewQuickRadioFieldIds(
             collectQuickRadioSelection(fields, nextDraft, point, selectionMode),
           );
+          return;
+        }
+        if (isCreateClick(createState.start, point)) {
+          setDraftCreateRect(null);
           return;
         }
         const nextDraft = toDragRect(createState.start, point, type, pageRef.current);
@@ -552,7 +566,7 @@ export function FieldOverlay({
       setPreviewQuickRadioFieldIds([]);
       return;
     }
-    setDraftCreateRect(toDragRect(start, start, type, pageRef.current));
+    setDraftCreateRect(null);
   };
 
   const selectedField = selectedFieldId
@@ -603,7 +617,11 @@ export function FieldOverlay({
           field.radioGroupId === selectedRadioGroupId &&
           !selected,
         );
-        const suggestedForRadio = radioSuggestionByFieldId.has(field.id);
+        const radioSuggestion = radioSuggestionByFieldId.get(field.id) ?? null;
+        const suggestedForRadio = Boolean(radioSuggestion);
+        const radioSuggestionTier = radioSuggestion
+          ? radioGroupSuggestionConfidenceTier(radioSuggestion)
+          : null;
         const isSmallField =
           field.type === 'checkbox' ||
           field.type === 'radio' ||
@@ -621,6 +639,7 @@ export function FieldOverlay({
           radioPeer ? 'field-box--radio-peer' : '',
           pendingQuickRadioIdSet.has(field.id) ? 'field-box--quick-radio-pending' : '',
           suggestedForRadio ? 'field-box--radio-suggestion' : '',
+          suggestedForRadio && radioSuggestionTier ? `field-box--radio-suggestion--${radioSuggestionTier}` : '',
         ]
           .filter(Boolean)
           .join(' ');

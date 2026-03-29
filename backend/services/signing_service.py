@@ -57,6 +57,11 @@ SIGNATURE_ADOPTED_MODES = frozenset(
 
 SIGNING_DISCLOSURE_VERSION_BUSINESS = "us-esign-business-v1"
 SIGNING_DISCLOSURE_VERSION_CONSUMER = "us-esign-consumer-v1"
+SIGNING_COMPANY_AUTHORITY_ATTESTATION_VERSION = "dullypdf-company-authority-v1"
+SIGNING_COMPANY_AUTHORITY_ATTESTATION_TEXT = (
+    "I represent that I am authorized to sign this document on behalf of the named company or organization "
+    "and to bind that entity to this electronic record."
+)
 
 SIGNING_EVENT_SESSION_STARTED = "session_started"
 SIGNING_EVENT_OPENED = "opened"
@@ -80,6 +85,9 @@ SIGNING_EVENT_VERIFICATION_RESENT = "verification_resent"
 SIGNING_EVENT_VERIFICATION_FAILED = "verification_failed"
 SIGNING_EVENT_VERIFICATION_PASSED = "verification_passed"
 SIGNING_EVENT_CONSUMER_ACCESS_FAILED = "consumer_access_failed"
+SIGNING_EVENT_ARTIFACT_ISSUED = "artifact_issued"
+SIGNING_EVENT_ARTIFACT_DOWNLOADED = "artifact_downloaded"
+SIGNING_EVENT_OWNER_ARTIFACT_DOWNLOADED = "owner_artifact_downloaded"
 
 SIGNING_INVITE_METHOD_EMAIL = "email"
 SIGNING_INVITE_METHOD_MANUAL_LINK = "manual_link"
@@ -90,12 +98,14 @@ SIGNING_ARTIFACT_SIGNED_PDF = "signed_pdf"
 SIGNING_ARTIFACT_SOURCE_PDF = "source_pdf"
 SIGNING_ARTIFACT_AUDIT_MANIFEST = "audit_manifest"
 SIGNING_ARTIFACT_AUDIT_RECEIPT = "audit_receipt"
+SIGNING_ARTIFACT_DISPUTE_PACKAGE = "dispute_package"
 SIGNING_ARTIFACT_KEYS = frozenset(
     {
         SIGNING_ARTIFACT_SOURCE_PDF,
         SIGNING_ARTIFACT_SIGNED_PDF,
         SIGNING_ARTIFACT_AUDIT_MANIFEST,
         SIGNING_ARTIFACT_AUDIT_RECEIPT,
+        SIGNING_ARTIFACT_DISPUTE_PACKAGE,
     }
 )
 
@@ -161,7 +171,9 @@ SIGNING_DISCLOSURE_TEXTS: Dict[str, List[str]] = {
         "You need a device, browser, and PDF-capable software that can open, display, print, and save PDF records.",
     ],
     SIGNING_DISCLOSURE_VERSION_BUSINESS: [
-        "By proceeding you agree to sign this document electronically under the US ESIGN Act and applicable state UETA provisions.",
+        "By proceeding you agree to sign this document electronically under the U.S. ESIGN Act and applicable state electronic signature laws.",
+        "Review the PDF carefully before continuing. Your adopted signature and final sign action will be logically associated with this retained PDF record.",
+        "After completion, DullyPDF retains the immutable source PDF, the completed signed PDF, and the audit evidence for later reference.",
     ],
 }
 
@@ -973,6 +985,24 @@ def signing_record_has_esign_eligibility_attestation(record) -> bool:
     return bool(normalize_optional_text(getattr(record, "esign_eligibility_confirmed_at", None), maximum_length=80))
 
 
+def resolve_signing_company_authority_attestation(enabled: Any) -> Optional[Dict[str, Any]]:
+    if not bool(enabled):
+        return None
+    attestation_text = SIGNING_COMPANY_AUTHORITY_ATTESTATION_TEXT
+    return {
+        "version": SIGNING_COMPANY_AUTHORITY_ATTESTATION_VERSION,
+        "text": attestation_text,
+        "sha256": sha256_hex_for_bytes(attestation_text.encode("utf-8")),
+        "independentlyVerified": False,
+    }
+
+
+def signing_record_requires_company_authority_attestation(record) -> bool:
+    return bool(getattr(record, "company_binding_enabled", False)) or bool(
+        normalize_optional_text(getattr(record, "authority_attestation_version", None), maximum_length=120)
+    )
+
+
 def resolve_document_category_label(value: Optional[str]) -> str:
     normalized = _normalize_key(value)
     if normalized in SIGNING_ALLOWED_DOCUMENT_CATEGORIES:
@@ -1012,6 +1042,24 @@ def validate_signer_name(value: Optional[str]) -> str:
         raise ValueError("Signer name is required")
     if len(normalized) > 200:
         raise ValueError("Signer name must be 200 characters or fewer")
+    return normalized
+
+
+def validate_representative_title(value: Optional[str]) -> str:
+    normalized = " ".join(str(value or "").strip().split())
+    if not normalized:
+        raise ValueError("Representative title is required for company-binding signing requests.")
+    if len(normalized) > 200:
+        raise ValueError("Representative title must be 200 characters or fewer.")
+    return normalized
+
+
+def validate_representative_company_name(value: Optional[str]) -> str:
+    normalized = " ".join(str(value or "").strip().split())
+    if not normalized:
+        raise ValueError("Representative company name is required for company-binding signing requests.")
+    if len(normalized) > 200:
+        raise ValueError("Representative company name must be 200 characters or fewer.")
     return normalized
 
 
@@ -1163,7 +1211,9 @@ def normalize_optional_sha256(value: Optional[str]) -> Optional[str]:
 def normalize_signing_artifact_key(value: Optional[str]) -> str:
     normalized = _normalize_key(value)
     if normalized not in SIGNING_ARTIFACT_KEYS:
-        raise ValueError("Artifact key must be source_pdf, signed_pdf, audit_manifest, or audit_receipt")
+        raise ValueError(
+            "Artifact key must be source_pdf, signed_pdf, audit_manifest, audit_receipt, or dispute_package"
+        )
     return normalized
 
 
@@ -1355,6 +1405,26 @@ def validate_public_signing_completable_record(record) -> None:
         raise ValueError("The adopted signature image is missing for this signing request.")
 
 
+def resolve_company_authority_completion_payload(
+    record,
+    *,
+    authority_confirmed: bool,
+    representative_title: Optional[str],
+    representative_company_name: Optional[str],
+) -> Dict[str, Optional[str]]:
+    if not signing_record_requires_company_authority_attestation(record):
+        return {
+            "representative_title": None,
+            "representative_company_name": None,
+        }
+    if not authority_confirmed:
+        raise ValueError("Confirm the company authority attestation before completing this signing request.")
+    return {
+        "representative_title": validate_representative_title(representative_title),
+        "representative_company_name": validate_representative_company_name(representative_company_name),
+    }
+
+
 def validate_public_signing_consent_withdrawable_record(record) -> None:
     validate_public_signing_actionable_record(record)
     if normalize_signature_mode(record.signature_mode) != SIGNATURE_MODE_CONSUMER:
@@ -1370,13 +1440,15 @@ def resolve_disclosure_text(disclosure_version: Optional[str]) -> List[str]:
     return list(SIGNING_DISCLOSURE_TEXTS.get(normalized, []))
 
 
-def build_signing_consumer_access_code(request_id: str) -> str:
+def build_signing_consumer_access_code(request_id: str, *, session_id: Optional[str] = None) -> str:
     normalized_request_id = str(request_id or "").strip()
     if not normalized_request_id:
         raise ValueError("request_id is required")
+    normalized_session_id = str(session_id or "").strip()
+    access_scope = f"{normalized_request_id}:{normalized_session_id}" if normalized_session_id else normalized_request_id
     digest = hmac.new(
         _resolve_signing_token_secret().encode("utf-8"),
-        f"consumer_access:{normalized_request_id}".encode("utf-8"),
+        f"consumer_access:{access_scope}".encode("utf-8"),
         hashlib.sha256,
     ).hexdigest()
     return digest[:6].upper()
@@ -1523,6 +1595,9 @@ def serialize_signing_ceremony_state(record) -> Dict[str, Any]:
         "signatureAdoptedName": record.signature_adopted_name,
         "signatureAdoptedMode": normalize_signature_adopted_mode(getattr(record, "signature_adopted_mode", None)),
         "signatureAdoptedImageDataUrl": getattr(record, "signature_adopted_image_data_url", None),
+        "representativeTitle": getattr(record, "representative_title", None),
+        "representativeCompanyName": getattr(record, "representative_company_name", None),
+        "authorityAttestedAt": getattr(record, "authority_attested_at", None),
         "manualFallbackRequestedAt": record.manual_fallback_requested_at,
     }
 

@@ -1,9 +1,11 @@
-const DEBUG_UI = false;
+export function isUiDebugEnabled(): boolean {
+  return Boolean(import.meta.env?.DEV);
+}
 
 /**
  * Conditional UI debug logger.
  */
 export function debugLog(...args: unknown[]) {
-  if (!DEBUG_UI) return;
+  if (!isUiDebugEnabled()) return;
   console.log('[dullypdf-ui]', ...args);
 }

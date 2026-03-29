@@ -2,6 +2,7 @@
  * Field inspector panel for editing geometry and metadata.
  */
 import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { ConfirmDialog } from '../ui/Dialog';
 import type {
   CreateTool,
   FieldRect,
@@ -18,6 +19,12 @@ import {
   sanitizeArrowKeyMoveStep,
 } from '../../utils/fieldMovement';
 import { CREATE_TOOLS, FIELD_TYPES, createToolLabel, fieldTypeLabel } from '../../utils/fieldUi';
+import {
+  isLegacyRadioGroupSuggestion,
+  radioGroupSuggestionConfidence,
+  radioGroupSuggestionConfidenceTier,
+  shouldAutoApplyRadioGroupSuggestion,
+} from '../../utils/radioGroupSuggestions';
 
 type InspectorDraft = {
   name: string;
@@ -43,6 +50,7 @@ type FieldInspectorPanelProps = {
   onSetFieldType: (fieldId: string, type: FieldType) => void;
   onUpdateFieldDraft: (fieldId: string, updates: Partial<PdfField>) => void;
   onDeleteField: (fieldId: string) => void;
+  onDeleteAllFields: () => void;
   onCreateToolChange: (type: CreateTool | null) => void;
   onUpdateRadioToolDraft: (updates: Partial<RadioToolDraft>) => void;
   onApplyPendingQuickRadioSelection: () => void;
@@ -82,6 +90,7 @@ export function FieldInspectorPanel({
   onUpdateField,
   onSetFieldType,
   onDeleteField,
+  onDeleteAllFields,
   onCreateToolChange,
   onUpdateRadioToolDraft,
   onApplyPendingQuickRadioSelection,
@@ -105,6 +114,13 @@ export function FieldInspectorPanel({
 }: FieldInspectorPanelProps) {
   const selected = selectedField ?? fields.find((field) => field.id === selectedFieldId) ?? null;
   const selectedMinSize = selected ? getMinFieldSize(selected.type) : getMinFieldSize('text');
+  const selectedId = selected?.id ?? null;
+  const selectedName = selected?.name ?? null;
+  const selectedPage = selected?.page ?? null;
+  const selectedRectX = selected?.rect.x ?? null;
+  const selectedRectY = selected?.rect.y ?? null;
+  const selectedRectWidth = selected?.rect.width ?? null;
+  const selectedRectHeight = selected?.rect.height ?? null;
   const [draft, setDraft] = useState<InspectorDraft | null>(null);
   const [arrowKeyMoveStepDraft, setArrowKeyMoveStepDraft] = useState(String(arrowKeyMoveStep));
   const [radioGroupLabelDraft, setRadioGroupLabelDraft] = useState('');
@@ -112,28 +128,29 @@ export function FieldInspectorPanel({
   const [radioOptionLabelDraft, setRadioOptionLabelDraft] = useState('');
   const [radioOptionKeyDraft, setRadioOptionKeyDraft] = useState('');
   const [radioMoveGroupId, setRadioMoveGroupId] = useState('');
+  const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false);
 
   useEffect(() => {
-    if (!selected) {
+    if (selectedId === null || selectedName === null || selectedPage === null) {
       setDraft(null);
       return;
     }
     setDraft({
-      name: selected.name,
-      page: String(selected.page),
-      x: String(Math.round(selected.rect.x)),
-      y: String(Math.round(selected.rect.y)),
-      width: String(Math.round(selected.rect.width)),
-      height: String(Math.round(selected.rect.height)),
+      name: selectedName,
+      page: String(selectedPage),
+      x: String(Math.round(selectedRectX ?? 0)),
+      y: String(Math.round(selectedRectY ?? 0)),
+      width: String(Math.round(selectedRectWidth ?? 0)),
+      height: String(Math.round(selectedRectHeight ?? 0)),
     });
   }, [
-    selected?.id,
-    selected?.name,
-    selected?.page,
-    selected?.rect.x,
-    selected?.rect.y,
-    selected?.rect.width,
-    selected?.rect.height,
+    selectedId,
+    selectedName,
+    selectedPage,
+    selectedRectX,
+    selectedRectY,
+    selectedRectWidth,
+    selectedRectHeight,
   ]);
 
   useEffect(() => {
@@ -144,6 +161,15 @@ export function FieldInspectorPanel({
     selected?.type === 'radio' && selected.radioGroupId
       ? radioGroups.find((group) => group.id === selected.radioGroupId) ?? null
       : null;
+  const selectedRadioSuggestionConfidence = selectedRadioSuggestion
+    ? radioGroupSuggestionConfidence(selectedRadioSuggestion)
+    : undefined;
+  const selectedRadioSuggestionConfidenceTier = selectedRadioSuggestion
+    ? radioGroupSuggestionConfidenceTier(selectedRadioSuggestion)
+    : null;
+  const selectedRadioSuggestionAutoApplies = selectedRadioSuggestion
+    ? shouldAutoApplyRadioGroupSuggestion(selectedRadioSuggestion)
+    : false;
   const selectedRadioIndex = selectedRadioGroup
     ? selectedRadioGroup.options.findIndex((option) => option.fieldId === selected?.id)
     : -1;
@@ -321,492 +347,530 @@ export function FieldInspectorPanel({
     onMoveRadioFieldToGroup(selected.id, targetGroup);
   };
 
+  const handleDeleteAllFieldsConfirm = () => {
+    onDeleteAllFields();
+    setDeleteAllDialogOpen(false);
+  };
+
   return (
-    <aside className="panel panel--inspector">
-      <div className="panel__header">
-        <div>
-          <h2>Inspector</h2>
-          <p className="panel__hint">
-            {selected ? `Editing ${selected.name} (enter to confirm)` : 'Select a field to edit its details.'}
-          </p>
-        </div>
-      </div>
-
-      <div className="panel__body">
-        <div className="panel__section">
-          {!selected ? (
-            <p className="panel__empty">No field selected.</p>
-          ) : (
-            <div className="inspector">
-              <label className="panel__label" htmlFor="field-name">
-                Name
-              </label>
-              <input
-                id="field-name"
-                name="field-name"
-                className="panel__input"
-                value={draft?.name ?? selected.name}
-                onFocus={beginFieldEdit}
-                onBlur={() => commitFieldEdit(commitName)}
-                onChange={(event) => updateDraftField('name', event.target.value)}
-                onKeyDown={handleNumberInputKeyDown(commitName)}
-              />
-
-              <div className="panel__row">
-                <label className="panel__label" htmlFor="field-type">
-                  Type
-                </label>
-                <select
-                  id="field-type"
-                  name="field-type"
-                  className="panel__select"
-                  value={selected.type}
-                  onChange={(event) => onSetFieldType(selected.id, event.target.value as FieldType)}
-                >
-                  {FIELD_TYPES.map((type) => (
-                    <option key={type} value={type}>
-                      {fieldTypeLabel(type)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="panel__row">
-                <label className="panel__label" htmlFor="field-page">
-                  Page
-                </label>
-                <input
-                  id="field-page"
-                  name="field-page"
-                  className="panel__input"
-                  type="number"
-                  min={1}
-                  value={draft?.page ?? String(selected.page)}
-                  onWheel={(event) => event.currentTarget.blur()}
-                  onFocus={beginFieldEdit}
-                  onBlur={() => commitFieldEdit(commitPage)}
-                  onChange={(event) => updateDraftField('page', event.target.value)}
-                  onKeyDown={handleNumberInputKeyDown(commitPage)}
-                />
-              </div>
-
-              <div className="panel__grid">
-                <div>
-                  <label className="panel__label" htmlFor="field-x">
-                    X
-                  </label>
-                  <input
-                    id="field-x"
-                    name="field-x"
-                    className="panel__input"
-                    type="number"
-                    value={draft?.x ?? String(Math.round(selected.rect.x))}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(() => commitRect('x'))}
-                    onChange={(event) => updateDraftField('x', event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(() => commitRect('x'))}
-                  />
-                </div>
-                <div>
-                  <label className="panel__label" htmlFor="field-y">
-                    Y
-                  </label>
-                  <input
-                    id="field-y"
-                    name="field-y"
-                    className="panel__input"
-                    type="number"
-                    value={draft?.y ?? String(Math.round(selected.rect.y))}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(() => commitRect('y'))}
-                    onChange={(event) => updateDraftField('y', event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(() => commitRect('y'))}
-                  />
-                </div>
-                <div>
-                  <label className="panel__label" htmlFor="field-width">
-                    Width
-                  </label>
-                  <input
-                    id="field-width"
-                    name="field-width"
-                    className="panel__input"
-                    type="number"
-                    value={draft?.width ?? String(Math.round(selected.rect.width))}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(() => commitRect('width'))}
-                    onChange={(event) => updateDraftField('width', event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(() => commitRect('width'))}
-                  />
-                </div>
-                <div>
-                  <label className="panel__label" htmlFor="field-height">
-                    Height
-                  </label>
-                  <input
-                    id="field-height"
-                    name="field-height"
-                    className="panel__input"
-                    type="number"
-                    value={draft?.height ?? String(Math.round(selected.rect.height))}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(() => commitRect('height'))}
-                    onChange={(event) => updateDraftField('height', event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(() => commitRect('height'))}
-                  />
-                </div>
-              </div>
-
-              <button
-                className="ui-button ui-button--danger ui-button--compact"
-                type="button"
-                onClick={() => onDeleteField(selected.id)}
-                title="Delete selected field (Delete/Backspace)"
-              >
-                Delete field
-              </button>
-
-              {selected.type === 'radio' && selectedRadioGroup ? (
-                <div className="panel__section panel__section--divider">
-                  <h3>Radio Group</h3>
-                  <label className="panel__label" htmlFor="radio-group-label">
-                    Group label
-                  </label>
-                  <input
-                    id="radio-group-label"
-                    name="radio-group-label"
-                    className="panel__input"
-                    value={radioGroupLabelDraft}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(commitRadioGroupDraft)}
-                    onChange={(event) => setRadioGroupLabelDraft(event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(commitRadioGroupDraft)}
-                  />
-                  <label className="panel__label" htmlFor="radio-group-key">
-                    Group key
-                  </label>
-                  <input
-                    id="radio-group-key"
-                    name="radio-group-key"
-                    className="panel__input"
-                    value={radioGroupKeyDraft}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(commitRadioGroupDraft)}
-                    onChange={(event) => setRadioGroupKeyDraft(event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(commitRadioGroupDraft)}
-                  />
-                  <div className="panel__row">
-                    <label className="panel__label" htmlFor="radio-move-group">
-                      Move to group
-                    </label>
-                    <select
-                      id="radio-move-group"
-                      name="radio-move-group"
-                      className="panel__select"
-                      value={radioMoveGroupId}
-                      onChange={(event) => handleMoveRadioGroup(event.target.value)}
-                    >
-                      <option value="">Current group</option>
-                      {otherRadioGroups.map((group) => (
-                        <option key={group.id} value={group.id}>
-                          {group.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <label className="panel__label" htmlFor="radio-option-label">
-                    Option label
-                  </label>
-                  <input
-                    id="radio-option-label"
-                    name="radio-option-label"
-                    className="panel__input"
-                    value={radioOptionLabelDraft}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(commitRadioOptionDraft)}
-                    onChange={(event) => setRadioOptionLabelDraft(event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(commitRadioOptionDraft)}
-                  />
-                  <label className="panel__label" htmlFor="radio-option-key">
-                    Option key
-                  </label>
-                  <input
-                    id="radio-option-key"
-                    name="radio-option-key"
-                    className="panel__input"
-                    value={radioOptionKeyDraft}
-                    onFocus={beginFieldEdit}
-                    onBlur={() => commitFieldEdit(commitRadioOptionDraft)}
-                    onChange={(event) => setRadioOptionKeyDraft(event.target.value)}
-                    onKeyDown={handleNumberInputKeyDown(commitRadioOptionDraft)}
-                  />
-                  <div className="panel__action-grid">
-                    <button
-                      className="ui-button ui-button--ghost ui-button--compact"
-                      type="button"
-                      onClick={() => onReorderRadioField(selected.id, 'up')}
-                      disabled={selectedRadioIndex <= 0}
-                    >
-                      Move up
-                    </button>
-                    <button
-                      className="ui-button ui-button--ghost ui-button--compact"
-                      type="button"
-                      onClick={() => onReorderRadioField(selected.id, 'down')}
-                      disabled={selectedRadioIndex < 0 || selectedRadioIndex >= selectedRadioGroup.options.length - 1}
-                    >
-                      Move down
-                    </button>
-                  </div>
-                  <button
-                    className="ui-button ui-button--danger ui-button--compact"
-                    type="button"
-                    onClick={() => onDissolveRadioGroup(selectedRadioGroup.id)}
-                  >
-                    Dissolve group to checkboxes
-                  </button>
-                </div>
-              ) : null}
-
-              {selectedRadioSuggestion ? (
-                <div className="panel__section panel__section--divider">
-                  <h3>OpenAI Radio Suggestion</h3>
-                  <p className="panel__micro">
-                    Suggested {selectedRadioSuggestion.groupLabel} radio group with {selectedRadioSuggestion.suggestedFields.length} options.
-                  </p>
-                  <div className="panel__list panel__list--compact">
-                    {selectedRadioSuggestion.suggestedFields.map((option) => (
-                      <div key={`${selectedRadioSuggestion.id}:${option.fieldId || option.fieldName}`} className="panel-selection-row">
-                        <span>{option.optionLabel}</span>
-                        <span className="panel__micro">{option.fieldName}</span>
-                      </div>
-                    ))}
-                  </div>
-                  {selectedRadioSuggestion.selectionReason ? (
-                    <p className="panel__micro">
-                      Pattern: {selectedRadioSuggestion.selectionReason}
-                    </p>
-                  ) : null}
-                  {selectedRadioSuggestion.reasoning ? (
-                    <p className="panel__micro">{selectedRadioSuggestion.reasoning}</p>
-                  ) : null}
-                  <div className="panel__action-grid">
-                    <button
-                      className="ui-button ui-button--primary ui-button--compact"
-                      type="button"
-                      onClick={() => onApplyRadioSuggestion(selectedRadioSuggestion)}
-                    >
-                      Apply suggestion
-                    </button>
-                    <button
-                      className="ui-button ui-button--ghost ui-button--compact"
-                      type="button"
-                      onClick={() => onDismissRadioSuggestion(selectedRadioSuggestion.id)}
-                    >
-                      Dismiss
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          )}
-        </div>
-
-        <div className="panel__section panel__section--divider">
-          <h3>Create field</h3>
-          <span className="panel__label">Create tool</span>
-          <div className="panel-display-modes" role="group" aria-label="Create tool">
-            {CREATE_TOOLS.map((type) => (
-              <button
-                key={type}
-                type="button"
-                className={`panel-mode-chip${activeCreateTool === type ? ' panel-mode-chip--active' : ''}`}
-                onClick={() => onCreateToolChange(activeCreateTool === type ? null : type)}
-              >
-                {createToolLabel(type)}
-              </button>
-            ))}
-            <button
-              type="button"
-              className={`panel-mode-chip${activeCreateTool === null ? ' panel-mode-chip--active' : ''}`}
-              onClick={() => onCreateToolChange(null)}
-            >
-              Off
-            </button>
-          </div>
-          <p className="panel__micro">
-            Draw fields on the page while a tool is active. Press Esc to exit the active tool.
-          </p>
-          {radioToolDraft && (activeCreateTool === 'radio' || activeCreateTool === 'quick-radio') ? (
-            <div className="panel__section panel__section--tight panel__section--divider">
-              <h3>{activeCreateTool === 'quick-radio' ? 'Quick Radio Group' : 'Radio Tool'}</h3>
-              <label className="panel__label" htmlFor="radio-tool-group-label">
-                Group label
-              </label>
-              <input
-                id="radio-tool-group-label"
-                name="radio-tool-group-label"
-                className="panel__input"
-                value={radioToolDraft.groupLabel}
-                onChange={(event) => onUpdateRadioToolDraft({ groupLabel: event.target.value })}
-              />
-              <label className="panel__label" htmlFor="radio-tool-group-key">
-                Group key
-              </label>
-              <input
-                id="radio-tool-group-key"
-                name="radio-tool-group-key"
-                className="panel__input"
-                value={radioToolDraft.groupKey}
-                onChange={(event) => onUpdateRadioToolDraft({ groupKey: event.target.value })}
-              />
-              {activeCreateTool === 'radio' ? (
-                <>
-                  <label className="panel__label" htmlFor="radio-tool-option-label">
-                    Next option label
-                  </label>
-                  <input
-                    id="radio-tool-option-label"
-                    name="radio-tool-option-label"
-                    className="panel__input"
-                    value={radioToolDraft.nextOptionLabel}
-                    onChange={(event) => onUpdateRadioToolDraft({ nextOptionLabel: event.target.value })}
-                  />
-                  <label className="panel__label" htmlFor="radio-tool-option-key">
-                    Next option key
-                  </label>
-                  <input
-                    id="radio-tool-option-key"
-                    name="radio-tool-option-key"
-                    className="panel__input"
-                    value={radioToolDraft.nextOptionKey}
-                    onChange={(event) => onUpdateRadioToolDraft({ nextOptionKey: event.target.value })}
-                  />
-                  <p className="panel__micro">
-                    Draw one radio option at a time. Each placement stays in this group until you switch tools or edit
-                    the group draft.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="panel__micro">
-                    Drag a selection box that mostly encloses the checkbox fields you want on the active page, review
-                    the selection here, and then convert them into one radio group. Hold Alt while dragging to include
-                    any checkbox the marquee touches.
-                  </p>
-                  <div className="panel__list panel__list--compact">
-                    {pendingQuickRadioFields.length ? (
-                      pendingQuickRadioFields.map((field) => (
-                        <div key={field.id} className="panel-selection-row">
-                          <span>{field.name}</span>
-                          <button
-                            className="panel-selection-row__remove"
-                            type="button"
-                            onClick={() => onRemovePendingQuickRadioField(field.id)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="panel__micro">No checkbox fields selected yet.</p>
-                    )}
-                  </div>
-                  <div className="panel__action-grid">
-                    <button
-                      className="ui-button ui-button--ghost ui-button--compact"
-                      type="button"
-                      onClick={onCancelPendingQuickRadioSelection}
-                      disabled={pendingQuickRadioFields.length === 0}
-                    >
-                      Clear selection
-                    </button>
-                    <button
-                      className="ui-button ui-button--primary ui-button--compact"
-                      type="button"
-                      onClick={onApplyPendingQuickRadioSelection}
-                      disabled={pendingQuickRadioFields.length === 0}
-                    >
-                      Convert selection
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          ) : null}
-          <div className="panel__section panel__section--tight">
-            <span className="panel__label">
-              Keyboard Move
-            </span>
-            <label
-              className={`panel-pill-toggle${arrowKeyMoveEnabled ? ' panel-pill-toggle--active' : ''}`}
-              htmlFor="arrow-key-move-toggle"
-            >
-              <input
-                id="arrow-key-move-toggle"
-                type="checkbox"
-                checked={arrowKeyMoveEnabled}
-                onChange={(event) => onArrowKeyMoveEnabledChange(event.target.checked)}
-              />
-              <span>Arrow keys</span>
-            </label>
-            <div className="panel__inline-control">
-              <label className="panel__label" htmlFor="arrow-key-move-step">
-                Step (pt)
-              </label>
-              <input
-                id="arrow-key-move-step"
-                name="arrow-key-move-step"
-                className="panel__input panel__input--inline"
-                type="number"
-                min={MIN_ARROW_KEY_MOVE_STEP}
-                max={MAX_ARROW_KEY_MOVE_STEP}
-                step={1}
-                inputMode="numeric"
-                value={arrowKeyMoveStepDraft}
-                onChange={(event) => setArrowKeyMoveStepDraft(event.target.value)}
-                onBlur={commitArrowKeyMoveStep}
-                onKeyDown={handleArrowKeyMoveStepKeyDown}
-              />
-            </div>
-            <p className="panel__micro">
-              When enabled, Arrow keys move the selected field by the configured step. Alt+Arrow still nudges by 1
-              point, and Shift+Alt+Arrow nudges by 10. Make sure you&apos;re in Edit mode.
+    <>
+      <aside className="panel panel--inspector">
+        <div className="panel__header">
+          <div>
+            <h2>Inspector</h2>
+            <p className="panel__hint">
+              {selected ? `Editing ${selected.name} (enter to confirm)` : 'Select a field to edit its details.'}
             </p>
           </div>
-          <span className="panel__label">History</span>
-          <div className="panel__action-grid">
-            <button
-              className="ui-button ui-button--ghost ui-button--compact"
-              type="button"
-              onClick={onUndo}
-              disabled={!canUndo}
-            >
-              Undo
-            </button>
-            <button
-              className="ui-button ui-button--ghost ui-button--compact"
-              type="button"
-              onClick={onRedo}
-              disabled={!canRedo}
-            >
-              Redo
-            </button>
-          </div>
-          <p className="panel__micro">Undo or redo the last 10 field edits.</p>
         </div>
 
-        <div className="panel__section panel__section--divider">
-          <h3>Shortcuts</h3>
-          <p className="panel__micro">
-            Shortcuts: T/D/S/C/R/Q set create tool, Esc clears active create tool,
-            Delete/Backspace delete selected, Ctrl/Cmd+Z undo, Ctrl/Cmd+Shift+Z or Ctrl/Cmd+Y redo, Ctrl/Cmd+F or /
-            focus search, [ and ] change pages, Arrow moves the selected field by the configured step when Keyboard
-            Move is enabled, Alt+Arrow nudges by 1 point (Shift+Alt for 10), and hold Shift during corner-resize to
-            lock aspect ratio.
-          </p>
+        <div className="panel__body">
+          <div className="panel__section">
+            {!selected ? (
+              <p className="panel__empty">No field selected.</p>
+            ) : (
+              <div className="inspector">
+                <label className="panel__label" htmlFor="field-name">
+                  Name
+                </label>
+                <input
+                  id="field-name"
+                  name="field-name"
+                  className="panel__input"
+                  value={draft?.name ?? selected.name}
+                  onFocus={beginFieldEdit}
+                  onBlur={() => commitFieldEdit(commitName)}
+                  onChange={(event) => updateDraftField('name', event.target.value)}
+                  onKeyDown={handleNumberInputKeyDown(commitName)}
+                />
+
+                <div className="panel__row">
+                  <label className="panel__label" htmlFor="field-type">
+                    Type
+                  </label>
+                  <select
+                    id="field-type"
+                    name="field-type"
+                    className="panel__select"
+                    value={selected.type}
+                    onChange={(event) => onSetFieldType(selected.id, event.target.value as FieldType)}
+                  >
+                    {FIELD_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {fieldTypeLabel(type)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="panel__row">
+                  <label className="panel__label" htmlFor="field-page">
+                    Page
+                  </label>
+                  <input
+                    id="field-page"
+                    name="field-page"
+                    className="panel__input"
+                    type="number"
+                    min={1}
+                    value={draft?.page ?? String(selected.page)}
+                    onWheel={(event) => event.currentTarget.blur()}
+                    onFocus={beginFieldEdit}
+                    onBlur={() => commitFieldEdit(commitPage)}
+                    onChange={(event) => updateDraftField('page', event.target.value)}
+                    onKeyDown={handleNumberInputKeyDown(commitPage)}
+                  />
+                </div>
+
+                <div className="panel__grid">
+                  <div>
+                    <label className="panel__label" htmlFor="field-x">
+                      X
+                    </label>
+                    <input
+                      id="field-x"
+                      name="field-x"
+                      className="panel__input"
+                      type="number"
+                      value={draft?.x ?? String(Math.round(selected.rect.x))}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(() => commitRect('x'))}
+                      onChange={(event) => updateDraftField('x', event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(() => commitRect('x'))}
+                    />
+                  </div>
+                  <div>
+                    <label className="panel__label" htmlFor="field-y">
+                      Y
+                    </label>
+                    <input
+                      id="field-y"
+                      name="field-y"
+                      className="panel__input"
+                      type="number"
+                      value={draft?.y ?? String(Math.round(selected.rect.y))}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(() => commitRect('y'))}
+                      onChange={(event) => updateDraftField('y', event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(() => commitRect('y'))}
+                    />
+                  </div>
+                  <div>
+                    <label className="panel__label" htmlFor="field-width">
+                      Width
+                    </label>
+                    <input
+                      id="field-width"
+                      name="field-width"
+                      className="panel__input"
+                      type="number"
+                      value={draft?.width ?? String(Math.round(selected.rect.width))}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(() => commitRect('width'))}
+                      onChange={(event) => updateDraftField('width', event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(() => commitRect('width'))}
+                    />
+                  </div>
+                  <div>
+                    <label className="panel__label" htmlFor="field-height">
+                      Height
+                    </label>
+                    <input
+                      id="field-height"
+                      name="field-height"
+                      className="panel__input"
+                      type="number"
+                      value={draft?.height ?? String(Math.round(selected.rect.height))}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(() => commitRect('height'))}
+                      onChange={(event) => updateDraftField('height', event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(() => commitRect('height'))}
+                    />
+                  </div>
+                </div>
+
+                <button
+                  className="ui-button ui-button--danger ui-button--compact"
+                  type="button"
+                  onClick={() => onDeleteField(selected.id)}
+                  title="Delete selected field (Delete/Backspace)"
+                >
+                  Delete field
+                </button>
+
+                {selected.type === 'radio' && selectedRadioGroup ? (
+                  <div className="panel__section panel__section--divider">
+                    <h3>Radio Group</h3>
+                    <label className="panel__label" htmlFor="radio-group-label">
+                      Group label
+                    </label>
+                    <input
+                      id="radio-group-label"
+                      name="radio-group-label"
+                      className="panel__input"
+                      value={radioGroupLabelDraft}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(commitRadioGroupDraft)}
+                      onChange={(event) => setRadioGroupLabelDraft(event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(commitRadioGroupDraft)}
+                    />
+                    <label className="panel__label" htmlFor="radio-group-key">
+                      Group key
+                    </label>
+                    <input
+                      id="radio-group-key"
+                      name="radio-group-key"
+                      className="panel__input"
+                      value={radioGroupKeyDraft}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(commitRadioGroupDraft)}
+                      onChange={(event) => setRadioGroupKeyDraft(event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(commitRadioGroupDraft)}
+                    />
+                    <div className="panel__row">
+                      <label className="panel__label" htmlFor="radio-move-group">
+                        Move to group
+                      </label>
+                      <select
+                        id="radio-move-group"
+                        name="radio-move-group"
+                        className="panel__select"
+                        value={radioMoveGroupId}
+                        onChange={(event) => handleMoveRadioGroup(event.target.value)}
+                      >
+                        <option value="">Current group</option>
+                        {otherRadioGroups.map((group) => (
+                          <option key={group.id} value={group.id}>
+                            {group.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <label className="panel__label" htmlFor="radio-option-label">
+                      Option label
+                    </label>
+                    <input
+                      id="radio-option-label"
+                      name="radio-option-label"
+                      className="panel__input"
+                      value={radioOptionLabelDraft}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(commitRadioOptionDraft)}
+                      onChange={(event) => setRadioOptionLabelDraft(event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(commitRadioOptionDraft)}
+                    />
+                    <label className="panel__label" htmlFor="radio-option-key">
+                      Option key
+                    </label>
+                    <input
+                      id="radio-option-key"
+                      name="radio-option-key"
+                      className="panel__input"
+                      value={radioOptionKeyDraft}
+                      onFocus={beginFieldEdit}
+                      onBlur={() => commitFieldEdit(commitRadioOptionDraft)}
+                      onChange={(event) => setRadioOptionKeyDraft(event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown(commitRadioOptionDraft)}
+                    />
+                    <div className="panel__action-grid">
+                      <button
+                        className="ui-button ui-button--ghost ui-button--compact"
+                        type="button"
+                        onClick={() => onReorderRadioField(selected.id, 'up')}
+                        disabled={selectedRadioIndex <= 0}
+                      >
+                        Move up
+                      </button>
+                      <button
+                        className="ui-button ui-button--ghost ui-button--compact"
+                        type="button"
+                        onClick={() => onReorderRadioField(selected.id, 'down')}
+                        disabled={selectedRadioIndex < 0 || selectedRadioIndex >= selectedRadioGroup.options.length - 1}
+                      >
+                        Move down
+                      </button>
+                    </div>
+                    <button
+                      className="ui-button ui-button--danger ui-button--compact"
+                      type="button"
+                      onClick={() => onDissolveRadioGroup(selectedRadioGroup.id)}
+                    >
+                      Dissolve group to checkboxes
+                    </button>
+                  </div>
+                ) : null}
+
+                {selectedRadioSuggestion ? (
+                  <div className="panel__section panel__section--divider">
+                    <h3>OpenAI Radio Suggestion</h3>
+                    <p className="panel__micro">
+                      Suggested {selectedRadioSuggestion.groupLabel} radio group with {selectedRadioSuggestion.suggestedFields.length} options.
+                    </p>
+                    <div className="panel__list panel__list--compact">
+                      {selectedRadioSuggestion.suggestedFields.map((option) => (
+                        <div key={`${selectedRadioSuggestion.id}:${option.fieldId || option.fieldName}`} className="panel-selection-row">
+                          <span>{option.optionLabel}</span>
+                          <span className="panel__micro">{option.fieldName}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {selectedRadioSuggestion.selectionReason ? (
+                      <p className="panel__micro">
+                        Pattern: {selectedRadioSuggestion.selectionReason}
+                      </p>
+                    ) : null}
+                    {typeof selectedRadioSuggestionConfidence === 'number' ? (
+                      <p className="panel__micro">
+                        Confidence: {Math.round(selectedRadioSuggestionConfidence * 100)}%
+                        {selectedRadioSuggestionConfidenceTier ? ` (${selectedRadioSuggestionConfidenceTier})` : ''}
+                      </p>
+                    ) : null}
+                    {!selectedRadioSuggestionAutoApplies ? (
+                      <p className="panel__micro">
+                        {isLegacyRadioGroupSuggestion(selectedRadioSuggestion)
+                          ? 'Legacy checkbox-rule suggestion. Review and convert manually if this cluster is single-choice.'
+                          : 'Below the auto-apply threshold. Review before converting this checkbox cluster into a radio group.'}
+                      </p>
+                    ) : null}
+                    {selectedRadioSuggestion.reasoning ? (
+                      <p className="panel__micro">{selectedRadioSuggestion.reasoning}</p>
+                    ) : null}
+                    <div className="panel__action-grid">
+                      <button
+                        className="ui-button ui-button--primary ui-button--compact"
+                        type="button"
+                        onClick={() => onApplyRadioSuggestion(selectedRadioSuggestion)}
+                      >
+                        Apply suggestion
+                      </button>
+                      <button
+                        className="ui-button ui-button--ghost ui-button--compact"
+                        type="button"
+                        onClick={() => onDismissRadioSuggestion(selectedRadioSuggestion.id)}
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
+
+          <div className="panel__section panel__section--divider">
+            <h3>Create field</h3>
+            <span className="panel__label">Create tool</span>
+            <div className="panel-display-modes" role="group" aria-label="Create tool">
+              {CREATE_TOOLS.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  className={`panel-mode-chip${activeCreateTool === type ? ' panel-mode-chip--active' : ''}`}
+                  onClick={() => onCreateToolChange(activeCreateTool === type ? null : type)}
+                >
+                  {createToolLabel(type)}
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`panel-mode-chip${activeCreateTool === null ? ' panel-mode-chip--active' : ''}`}
+                onClick={() => onCreateToolChange(null)}
+              >
+                Off
+              </button>
+            </div>
+            <p className="panel__micro">
+              Draw fields on the page while a tool is active. Press Esc to exit the active tool.
+            </p>
+            {radioToolDraft && (activeCreateTool === 'radio' || activeCreateTool === 'quick-radio') ? (
+              <div className="panel__section panel__section--tight panel__section--divider">
+                <h3>{activeCreateTool === 'quick-radio' ? 'Quick Radio Group' : 'Radio Tool'}</h3>
+                <label className="panel__label" htmlFor="radio-tool-group-label">
+                  Group label
+                </label>
+                <input
+                  id="radio-tool-group-label"
+                  name="radio-tool-group-label"
+                  className="panel__input"
+                  value={radioToolDraft.groupLabel}
+                  onChange={(event) => onUpdateRadioToolDraft({ groupLabel: event.target.value })}
+                />
+                <label className="panel__label" htmlFor="radio-tool-group-key">
+                  Group key
+                </label>
+                <input
+                  id="radio-tool-group-key"
+                  name="radio-tool-group-key"
+                  className="panel__input"
+                  value={radioToolDraft.groupKey}
+                  onChange={(event) => onUpdateRadioToolDraft({ groupKey: event.target.value })}
+                />
+                {activeCreateTool === 'radio' ? (
+                  <>
+                    <label className="panel__label" htmlFor="radio-tool-option-label">
+                      Next option label
+                    </label>
+                    <input
+                      id="radio-tool-option-label"
+                      name="radio-tool-option-label"
+                      className="panel__input"
+                      value={radioToolDraft.nextOptionLabel}
+                      onChange={(event) => onUpdateRadioToolDraft({ nextOptionLabel: event.target.value })}
+                    />
+                    <label className="panel__label" htmlFor="radio-tool-option-key">
+                      Next option key
+                    </label>
+                    <input
+                      id="radio-tool-option-key"
+                      name="radio-tool-option-key"
+                      className="panel__input"
+                      value={radioToolDraft.nextOptionKey}
+                      onChange={(event) => onUpdateRadioToolDraft({ nextOptionKey: event.target.value })}
+                    />
+                    <p className="panel__micro">
+                      Draw one radio option at a time. Each placement stays in this group until you switch tools or edit
+                      the group draft.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="panel__micro">
+                      Drag a selection box that mostly encloses the checkbox fields you want on the active page, review
+                      the selection here, and then convert them into one radio group. Hold Alt while dragging to include
+                      any checkbox the marquee touches.
+                    </p>
+                    <div className="panel__list panel__list--compact">
+                      {pendingQuickRadioFields.length ? (
+                        pendingQuickRadioFields.map((field) => (
+                          <div key={field.id} className="panel-selection-row">
+                            <span>{field.name}</span>
+                            <button
+                              className="panel-selection-row__remove"
+                              type="button"
+                              onClick={() => onRemovePendingQuickRadioField(field.id)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="panel__micro">No checkbox fields selected yet.</p>
+                      )}
+                    </div>
+                    <div className="panel__action-grid">
+                      <button
+                        className="ui-button ui-button--ghost ui-button--compact"
+                        type="button"
+                        onClick={onCancelPendingQuickRadioSelection}
+                        disabled={pendingQuickRadioFields.length === 0}
+                      >
+                        Clear selection
+                      </button>
+                      <button
+                        className="ui-button ui-button--primary ui-button--compact"
+                        type="button"
+                        onClick={onApplyPendingQuickRadioSelection}
+                        disabled={pendingQuickRadioFields.length === 0}
+                      >
+                        Convert selection
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : null}
+            <div className="panel__section panel__section--tight">
+              <span className="panel__label">
+                Keyboard Move
+              </span>
+              <label
+                className={`panel-pill-toggle${arrowKeyMoveEnabled ? ' panel-pill-toggle--active' : ''}`}
+                htmlFor="arrow-key-move-toggle"
+              >
+                <input
+                  id="arrow-key-move-toggle"
+                  type="checkbox"
+                  checked={arrowKeyMoveEnabled}
+                  onChange={(event) => onArrowKeyMoveEnabledChange(event.target.checked)}
+                />
+                <span>Arrow keys</span>
+              </label>
+              <div className="panel__inline-control">
+                <label className="panel__label" htmlFor="arrow-key-move-step">
+                  Step (pt)
+                </label>
+                <input
+                  id="arrow-key-move-step"
+                  name="arrow-key-move-step"
+                  className="panel__input panel__input--inline"
+                  type="number"
+                  min={MIN_ARROW_KEY_MOVE_STEP}
+                  max={MAX_ARROW_KEY_MOVE_STEP}
+                  step={1}
+                  inputMode="numeric"
+                  value={arrowKeyMoveStepDraft}
+                  onChange={(event) => setArrowKeyMoveStepDraft(event.target.value)}
+                  onBlur={commitArrowKeyMoveStep}
+                  onKeyDown={handleArrowKeyMoveStepKeyDown}
+                />
+              </div>
+              <p className="panel__micro">
+                When enabled, Arrow keys move the selected field by the configured step. Alt+Arrow still nudges by 1
+                point, and Shift+Alt+Arrow nudges by 10. Make sure you&apos;re in Edit mode.
+              </p>
+            </div>
+            <span className="panel__label">History</span>
+            <div className="panel__action-grid">
+              <button
+                className="ui-button ui-button--ghost ui-button--compact"
+                type="button"
+                onClick={onUndo}
+                disabled={!canUndo}
+              >
+                Undo
+              </button>
+              <button
+                className="ui-button ui-button--ghost ui-button--compact"
+                type="button"
+                onClick={onRedo}
+                disabled={!canRedo}
+              >
+                Redo
+              </button>
+            </div>
+            <p className="panel__micro">Undo or redo the last 10 field edits.</p>
+          </div>
+
+          <div className="panel__section panel__section--divider">
+            <button
+              className="ui-button ui-button--danger ui-button--compact"
+              type="button"
+              onClick={() => setDeleteAllDialogOpen(true)}
+              disabled={fields.length === 0}
+            >
+              Delete all fields
+            </button>
+            <h3>Shortcuts</h3>
+            <p className="panel__micro">
+              Shortcuts: T/D/S/C/R/Q set create tool, Esc clears active create tool,
+              Delete/Backspace delete selected, Ctrl/Cmd+Z undo, Ctrl/Cmd+Shift+Z or Ctrl/Cmd+Y redo, Ctrl/Cmd+F or /
+              focus search, [ and ] change pages, Arrow moves the selected field by the configured step when Keyboard
+              Move is enabled, Alt+Arrow nudges by 1 point (Shift+Alt for 10), and hold Shift during corner-resize to
+              lock aspect ratio.
+            </p>
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+      <ConfirmDialog
+        open={deleteAllDialogOpen}
+        title="Delete all fields"
+        description="Are you sure you want to delete all fields?"
+        confirmLabel="Yes"
+        cancelLabel="No"
+        tone="danger"
+        onConfirm={handleDeleteAllFieldsConfirm}
+        onCancel={() => setDeleteAllDialogOpen(false)}
+      />
+    </>
   );
 }

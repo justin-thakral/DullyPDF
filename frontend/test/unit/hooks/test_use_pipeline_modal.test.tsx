@@ -215,4 +215,58 @@ describe('usePipelineModal', () => {
     expect(hook.current.pipelineError).toBe('Detection uploads are limited to 5 pages on your plan.');
     expect(runDetectUpload).not.toHaveBeenCalled();
   });
+
+  it('blocks OpenAI actions when PDF page counting fails instead of estimating from one page', async () => {
+    const runDetectUpload = vi.fn();
+    const deps: UsePipelineModalDeps = {
+      verifiedUser: { uid: 'user-4' } as any,
+      loadUserProfile: vi.fn().mockResolvedValue({
+        role: 'pro',
+        availableCredits: 10,
+        creditsRemaining: 10,
+        creditPricing: {
+          pageBucketSize: 5,
+          renameBaseCost: 1,
+          remapBaseCost: 1,
+          renameRemapBaseCost: 2,
+        },
+      }),
+      userProfile: {
+        role: 'pro',
+        availableCredits: 10,
+        creditsRemaining: 10,
+      },
+      detectMaxPages: 20,
+      schemaId: null,
+      schemaUploadInProgress: false,
+      pendingSchemaPayload: null,
+      persistSchemaPayload: vi.fn().mockResolvedValue(null),
+      setSchemaUploadInProgress: vi.fn(),
+      runDetectUpload,
+    };
+    loadPdfFromFileMock.mockRejectedValue(new Error('unable to inspect pdf'));
+    const hook = renderHookHarness(deps);
+    const file = new File(['pdf'], 'unknown-pages.pdf', { type: 'application/pdf' });
+
+    act(() => {
+      hook.current.openModal(file);
+      hook.current.setUploadWantsRename(true);
+    });
+
+    await waitFor(() => expect(hook.current.pendingDetectPageCountLoading).toBe(false));
+
+    expect(hook.current.pendingDetectPageCount).toBeNull();
+    expect(hook.current.pipelineError).toBe(
+      'Unable to inspect this PDF page count. Detection can continue without OpenAI actions, but Rename or Map requires a readable page count.',
+    );
+
+    await act(async () => {
+      await hook.current.confirm();
+    });
+
+    expect(hook.current.pipelineError).toBe(
+      'Unable to inspect this PDF page count. Detection can continue without OpenAI actions, but Rename or Map requires a readable page count.',
+    );
+    expect(runDetectUpload).not.toHaveBeenCalled();
+  });
 });

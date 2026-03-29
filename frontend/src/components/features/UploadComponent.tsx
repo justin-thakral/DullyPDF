@@ -2,7 +2,7 @@
  * Upload panel for PDF detection or saved form selection.
  */
 import React, { useMemo, useRef, useState } from 'react';
-import type { TemplateGroupSummary } from '../../services/api';
+import type { SavedFormSummary, TemplateGroupSummary } from '../../services/api';
 import './UploadComponent.css';
 
 interface UploadComponentProps {
@@ -16,7 +16,7 @@ interface UploadComponentProps {
   title?: string;
   subtitle?: string;
   variant?: 'detect' | 'fillable' | 'group' | 'saved';
-  savedForms?: Array<{ id: string; name: string; createdAt: string }>;
+  savedForms?: SavedFormSummary[];
   groups?: TemplateGroupSummary[];
   groupsLoading?: boolean;
   selectedGroupFilterId?: string;
@@ -212,6 +212,8 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
               <span className="saved-browser__toolbar-title">Open Saved Form:</span>
               <label className="saved-browser__filter" aria-label="Filter saved forms by group">
                 <select
+                  id="saved-browser-group-filter"
+                  name="saved_browser_group_filter"
                   value={hasSelectedGroupFilterOption ? selectedGroupFilterId : '__selected_group_pending__'}
                   onChange={(event) => onSelectGroupFilter?.(event.target.value)}
                 >
@@ -228,6 +230,8 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
               </label>
               <label className={`saved-browser__toggle ${showGroupLibrary ? 'saved-browser__toggle--active' : ''}`}>
                 <input
+                  id="saved-browser-group-toggle"
+                  name="saved_browser_group_toggle"
                   type="checkbox"
                   checked={showGroupLibrary}
                   onChange={(event) => setShowGroupLibrary(event.target.checked)}
@@ -265,25 +269,35 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
                       const isDeletingGroup = deletingGroupId === group.id;
                       const isEditingGroup = editingGroupId === group.id;
                       const isActiveFilter = group.id === selectedGroupFilterId;
+                      const isLockedGroup = Boolean(group.locked || group.accessStatus === 'locked');
                       return (
                         <div
                           key={group.id}
-                          className={`saved-chip saved-chip--group ${isActiveFilter ? 'saved-chip--active' : ''}`}
+                          className={[
+                            'saved-chip',
+                            'saved-chip--group',
+                            isActiveFilter ? 'saved-chip--active' : '',
+                            isLockedGroup ? 'saved-chip--locked' : '',
+                          ].filter(Boolean).join(' ')}
                         >
                           <button
                             type="button"
                             className="saved-chip__content"
                             onClick={() => {
-                              if (!isDeletingGroup) onOpenGroup?.(group.id);
+                              if (!isDeletingGroup && !isLockedGroup) onOpenGroup?.(group.id);
                             }}
-                            disabled={isDeletingGroup}
+                            disabled={isDeletingGroup || isLockedGroup}
                           >
                             <span className="saved-chip__label">{group.name}</span>
                             <span className="saved-chip__meta">
                               {group.templateCount} template{group.templateCount === 1 ? '' : 's'}
+                              {isLockedGroup ? ' • Locked on base' : ''}
                             </span>
                           </button>
-                          {onEditGroup && (
+                          {isLockedGroup ? (
+                            <span className="saved-chip__status saved-chip__status--locked">Locked</span>
+                          ) : null}
+                          {!isLockedGroup && onEditGroup && (
                             <button
                               type="button"
                               className="saved-chip__action"
@@ -296,7 +310,7 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
                               {isEditingGroup ? 'Loading…' : 'Edit'}
                             </button>
                           )}
-                          {onDeleteGroup && (
+                          {!isLockedGroup && onDeleteGroup && (
                             <button
                               type="button"
                               className="saved-chip__action saved-chip__action--danger"
@@ -324,25 +338,39 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
                 <div className="saved-chip-list" aria-label="Saved templates">
                   {filteredSavedForms.map((form) => {
                     const isDeleting = deletingFormId === form.id;
+                    const isLocked = Boolean(form.locked || form.accessStatus === 'locked');
                     const parsedDate = form.createdAt ? new Date(form.createdAt) : null;
                     const dateLabel =
                       parsedDate && !Number.isNaN(parsedDate.getTime())
                         ? parsedDate.toLocaleDateString()
                         : 'Unknown date';
                     return (
-                      <div key={form.id} className="saved-chip saved-chip--form">
+                      <div
+                        key={form.id}
+                        className={[
+                          'saved-chip',
+                          'saved-chip--form',
+                          isLocked ? 'saved-chip--locked' : '',
+                        ].filter(Boolean).join(' ')}
+                      >
                         <button
                           type="button"
                           className="saved-chip__content"
                           onClick={() => {
-                            if (!isDeleting) onSelectSavedForm?.(form.id);
+                            if (!isDeleting && !isLocked) onSelectSavedForm?.(form.id);
                           }}
-                          disabled={isDeleting}
+                          disabled={isDeleting || isLocked}
                         >
                           <span className="saved-chip__label">{form.name}</span>
-                          <span className="saved-chip__meta">{dateLabel}</span>
+                          <span className="saved-chip__meta">
+                            {dateLabel}
+                            {isLocked ? ' • Locked on base' : ''}
+                          </span>
                         </button>
-                        {onDeleteSavedForm && (
+                        {isLocked ? (
+                          <span className="saved-chip__status saved-chip__status--locked">Locked</span>
+                        ) : null}
+                        {!isLocked && onDeleteSavedForm && (
                           <button
                             type="button"
                             className="saved-chip__action saved-chip__action--danger"
@@ -376,44 +404,43 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
 
   return (
     <div className={`upload-container ${containerClass}`}>
-      <label
-        className={`upload-area ${!isGroupVariant && dragActive ? 'drag-active' : ''}`}
-        onDragEnter={isGroupVariant ? undefined : handleDrag}
-        onDragLeave={isGroupVariant ? undefined : handleDrag}
-        onDragOver={isGroupVariant ? undefined : handleDrag}
-        onDrop={isGroupVariant ? undefined : handleDrop}
-        onClick={isGroupVariant ? onOpenDialog : openFileDialog}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            if (isGroupVariant) {
-              onOpenDialog?.();
-            } else {
+      {isGroupVariant ? (
+        <button
+          type="button"
+          className="upload-area"
+          onClick={onOpenDialog}
+        >
+          <div className="upload-icon upload-icon--group" aria-hidden="true" />
+          <h3>{heading}</h3>
+          <p>{sub}</p>
+          <p className="upload-requirements">Detect, rename, map, and group multiple PDFs in one batch</p>
+        </button>
+      ) : (
+        <label
+          className={`upload-area ${dragActive ? 'drag-active' : ''}`}
+          onDragEnter={handleDrag}
+          onDragLeave={handleDrag}
+          onDragOver={handleDrag}
+          onDrop={handleDrop}
+          onClick={openFileDialog}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
               openFileDialog();
             }
-          }
-        }}
-      >
-        <div
-          className={
-            variant === 'fillable'
-              ? 'upload-icon upload-icon--template'
-              : isGroupVariant
-                ? 'upload-icon upload-icon--group'
-                : 'upload-icon upload-icon--pdf'
-          }
-          aria-hidden="true"
-        />
-        <h3>{heading}</h3>
-        <p>
-          {sub} {!isGroupVariant && variant !== 'fillable' && <span className="upload-link">click to browse</span>}
-        </p>
-        <p className="upload-requirements">
-          {isGroupVariant ? 'Detect, rename, map, and group multiple PDFs in one batch' : 'Supports PDF files up to 50MB'}
-        </p>
-        {!isGroupVariant ? (
+          }}
+        >
+          <div
+            className={variant === 'fillable' ? 'upload-icon upload-icon--template' : 'upload-icon upload-icon--pdf'}
+            aria-hidden="true"
+          />
+          <h3>{heading}</h3>
+          <p>
+            {sub} {variant !== 'fillable' && <span className="upload-link">click to browse</span>}
+          </p>
+          <p className="upload-requirements">Supports PDF files up to 50MB</p>
           <input
             ref={fileInputRef}
             id={inputId}
@@ -424,8 +451,8 @@ const UploadComponent: React.FC<UploadComponentProps> = ({
             className="upload-input"
             aria-label={heading || 'Upload PDF'}
           />
-        ) : null}
-      </label>
+        </label>
+      )}
     </div>
   );
 };

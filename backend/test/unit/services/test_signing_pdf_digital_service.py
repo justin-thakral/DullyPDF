@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 from io import BytesIO
 import tempfile
+from types import SimpleNamespace
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
@@ -97,6 +98,8 @@ def test_apply_digital_pdf_signature_uses_bundled_dev_identity_by_default(monkey
     assert validation.present is True
     assert validation.valid is True
     assert validation.intact is True
+    assert validation.trusted is True
+    assert "TRUSTED" in validation.summary
 
 
 def test_apply_digital_pdf_signature_is_noop_when_bundled_dev_identity_is_disabled(monkeypatch) -> None:
@@ -147,8 +150,43 @@ def test_apply_digital_pdf_signature_signs_and_validates_pkcs12(monkeypatch) -> 
     assert validation.present is True
     assert validation.valid is True
     assert validation.intact is True
+    assert validation.trusted is True
     assert validation.expected_sha256_matches is True
     assert validation.subfilter == "/ETSI.CAdES.detached"
+
+
+def test_resolve_kms_key_version_uses_latest_enabled_version_for_crypto_key() -> None:
+    class _FakeKmsClient:
+        def get_crypto_key(self, *, name: str):
+            return SimpleNamespace(primary=None)
+
+        def list_crypto_key_versions(self, *, request):
+            assert request == {
+                "parent": "projects/demo/locations/us/keyRings/signing/cryptoKeys/pdf"
+            }
+            return [
+                SimpleNamespace(
+                    name="projects/demo/locations/us/keyRings/signing/cryptoKeys/pdf/cryptoKeyVersions/2",
+                    algorithm="EC_SIGN_P256_SHA256",
+                    state=SimpleNamespace(name="DISABLED"),
+                ),
+                SimpleNamespace(
+                    name="projects/demo/locations/us/keyRings/signing/cryptoKeys/pdf/cryptoKeyVersions/9",
+                    algorithm=SimpleNamespace(name="EC_SIGN_P256_SHA256"),
+                    state=SimpleNamespace(name="ENABLED"),
+                ),
+            ]
+
+        def get_crypto_key_version(self, *, name: str):
+            return SimpleNamespace(name=name, algorithm=SimpleNamespace(name="EC_SIGN_P256_SHA256"))
+
+    key_version_name, algorithm = signing_pdf_digital_service._resolve_kms_key_version(
+        _FakeKmsClient(),
+        "projects/demo/locations/us/keyRings/signing/cryptoKeys/pdf",
+    )
+
+    assert key_version_name.endswith("/cryptoKeyVersions/9")
+    assert algorithm == "EC_SIGN_P256_SHA256"
 
 
 def test_async_validate_digital_pdf_signature_matches_sync_path(monkeypatch) -> None:

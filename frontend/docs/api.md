@@ -327,14 +327,19 @@ Suggested dialog sections:
    - revoke endpoint
 
 4. Usage examples
+   - one selectable example view instead of three cramped side-by-side panels
    - `curl`
    - Node
    - Python
+   - copy action for the currently selected example
+   - examples should read a saved `payload.json` request file instead of embedding a large JSON object inline
 
 5. Schema
    - field list
    - radio option keys
    - checkbox guidance
+   - copyable `payload.json` request template that matches the examples below
+   - preview can start collapsed to the first 20 fields when a schema is very large, while copy still returns the full payload file
 
 6. Notes
    - keys are for server use only
@@ -374,7 +379,8 @@ Playwright integration tests:
 - open `API Fill`
 - publish endpoint
 - reveal/copy secret
-- verify example payload is shown
+- verify the payload file template is shown and copyable
+- verify the example picker switches languages and copies the selected snippet
 - rotate key
 - revoke endpoint
 

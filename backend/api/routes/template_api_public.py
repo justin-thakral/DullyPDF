@@ -27,6 +27,7 @@ from backend.firebaseDB.user_database import get_user_profile, normalize_role
 from backend.security.rate_limit import check_rate_limit
 from backend.services.app_config import resolve_stream_cors_headers
 from backend.services.contact_service import resolve_client_ip
+from backend.services.downgrade_retention_service import is_user_retention_template_locked
 from backend.services.pdf_service import cleanup_paths
 from backend.services.limits_service import (
     resolve_template_api_active_limit,
@@ -406,6 +407,8 @@ def _resolve_authenticated_endpoint(endpoint_id: str, authorization: Optional[st
         raise HTTPException(status_code=404, detail="API Fill endpoint not found.")
     if record.status != "active":
         raise HTTPException(status_code=404, detail="API Fill endpoint not found.")
+    if is_user_retention_template_locked(record.user_id, record.template_id):
+        raise HTTPException(status_code=403, detail="API Fill endpoint is unavailable on this account's current plan.")
     snapshot = dict(record.snapshot or {})
     if not snapshot:
         raise HTTPException(status_code=404, detail="API Fill snapshot is missing.")

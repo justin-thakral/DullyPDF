@@ -47,6 +47,7 @@ export function mapDetectionFields(payload: any): PdfField[] {
       const rect = rectToBox(field?.rect || field?.bbox);
       if (!rect) return null;
       const fieldConfidence = parseConfidence(field?.isItAfieldConfidence ?? field?.confidence);
+      const mappingConfidence = parseConfidence(field?.mappingConfidence ?? field?.mapping_confidence);
       const renameConfidence = parseConfidence(field?.renameConfidence ?? field?.rename_confidence);
       return {
         id: makeId(),
@@ -55,11 +56,20 @@ export function mapDetectionFields(payload: any): PdfField[] {
         page: Number(field?.page) || 1,
         rect,
         fieldConfidence,
+        mappingConfidence,
         renameConfidence,
+        value: field?.value ?? null,
         groupKey: field?.groupKey ?? field?.group_key,
         optionKey: field?.optionKey ?? field?.option_key,
         optionLabel: field?.optionLabel ?? field?.option_label,
         groupLabel: field?.groupLabel ?? field?.group_label,
+        radioGroupId: field?.radioGroupId ?? field?.radio_group_id,
+        radioGroupKey: field?.radioGroupKey ?? field?.radio_group_key,
+        radioGroupLabel: field?.radioGroupLabel ?? field?.radio_group_label,
+        radioOptionKey: field?.radioOptionKey ?? field?.radio_option_key,
+        radioOptionLabel: field?.radioOptionLabel ?? field?.radio_option_label,
+        radioOptionOrder: field?.radioOptionOrder ?? field?.radio_option_order,
+        radioGroupSource: field?.radioGroupSource ?? field?.radio_group_source,
       } as PdfField;
     })
     .filter(Boolean) as PdfField[];

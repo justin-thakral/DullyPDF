@@ -65,8 +65,12 @@ def test_contact_request_and_recaptcha_request_validators(app_main) -> None:
 
 def test_resolve_client_ip_and_is_public_ip(app_main, mocker, scope_builder) -> None:
     mocker.patch.object(app_main, "_trust_proxy_headers", return_value=True)
-    request = Request(scope_builder(headers={"x-forwarded-for": "198.51.100.9, 10.0.0.1"}, client_ip="10.0.0.9"))
+    mocker.patch.object(app_main, "_resolve_trusted_proxy_depth", return_value=1)
+    request = Request(scope_builder(headers={"x-forwarded-for": "203.0.113.77, 198.51.100.9, 10.0.0.1"}, client_ip="10.0.0.9"))
     assert app_main._resolve_client_ip(request) == "198.51.100.9"
+
+    mocker.patch.object(app_main, "_resolve_trusted_proxy_depth", return_value=0)
+    assert app_main._resolve_client_ip(request) == "10.0.0.9"
 
     mocker.patch.object(app_main, "_trust_proxy_headers", return_value=False)
     assert app_main._resolve_client_ip(request) == "10.0.0.9"

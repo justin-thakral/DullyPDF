@@ -102,6 +102,49 @@ describe('UploadComponent', () => {
     expect(onDeleteSavedForm).toHaveBeenCalledWith('b');
   });
 
+  it('shows locked saved forms and groups without allowing open or delete actions', async () => {
+    const user = userEvent.setup();
+    const onSelectSavedForm = vi.fn();
+    const onDeleteSavedForm = vi.fn();
+    const onOpenGroup = vi.fn();
+    const onDeleteGroup = vi.fn();
+
+    render(
+      <UploadComponent
+        variant="saved"
+        savedForms={[
+          { id: 'locked-form', name: 'Locked Packet', createdAt: '2025-01-01T00:00:00.000Z', accessStatus: 'locked', locked: true },
+        ]}
+        groups={[
+          {
+            id: 'locked-group',
+            name: 'Locked Group',
+            templateIds: ['locked-form'],
+            templateCount: 1,
+            templates: [],
+            accessStatus: 'locked',
+            locked: true,
+            lockedTemplateIds: ['locked-form'],
+          },
+        ]}
+        onSelectSavedForm={onSelectSavedForm}
+        onDeleteSavedForm={onDeleteSavedForm}
+        onOpenGroup={onOpenGroup}
+        onDeleteGroup={onDeleteGroup}
+      />,
+    );
+
+    expect(screen.getByText((content) => content.includes('Locked on base'))).toBeTruthy();
+    const lockedFormButton = screen.getByRole('button', { name: /^Locked Packet/i }) as HTMLButtonElement;
+    expect(lockedFormButton.disabled).toBe(true);
+    expect(screen.queryByRole('button', { name: 'Delete saved form Locked Packet' })).toBeNull();
+
+    await user.click(screen.getByRole('checkbox', { name: /Switch to groups/i }));
+    const lockedGroupButton = screen.getByRole('button', { name: /^Locked Group/i }) as HTMLButtonElement;
+    expect(lockedGroupButton.disabled).toBe(true);
+    expect(screen.queryByRole('button', { name: 'Delete group Locked Group' })).toBeNull();
+  });
+
   it('supports group filtering, opening and deleting groups, and launching create group from saved forms', async () => {
     const user = userEvent.setup();
     const onSelectGroupFilter = vi.fn();

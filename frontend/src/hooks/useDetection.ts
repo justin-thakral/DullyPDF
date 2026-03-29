@@ -50,6 +50,14 @@ export type SavedFormSessionResume = {
   pageCount: number | null;
 };
 
+export type WorkspaceSessionRestoreSnapshot = {
+  sessionId: string;
+  detectionStatus: string | null;
+  fields: PdfField[];
+  checkboxRules: CheckboxRule[];
+  textTransformRules: TextTransformRule[];
+};
+
 export interface UseDetectionDeps {
   verifiedUser: User | null;
   profileLimits: { detectMaxPages: number; fillableMaxPages: number };
@@ -108,6 +116,18 @@ function clonePdfFields(fields: PdfField[]): PdfField[] {
     ...field,
     rect: { ...field.rect },
   }));
+}
+
+function hasMappedSchemaState(
+  fields: PdfField[],
+  checkboxRules: CheckboxRule[],
+  textTransformRules: TextTransformRule[],
+): boolean {
+  return (
+    fields.some((field) => typeof field.mappingConfidence === 'number')
+    || checkboxRules.length > 0
+    || textTransformRules.length > 0
+  );
 }
 
 export function useDetection(deps: UseDetectionDeps) {
@@ -201,6 +221,8 @@ export function useDetection(deps: UseDetectionDeps) {
           detectionRetryRef.current.delete(sessionId);
           const nextFields = mapDetectionFields(payload);
           if (!nextFields.length) {
+            setIsProcessing(false);
+            setProcessingMode(null);
             deps.setBannerNotice({ tone: 'info', message: 'Detection finished but no fields were found.', autoDismissMs: 8000 });
             return;
           }
@@ -218,6 +240,8 @@ export function useDetection(deps: UseDetectionDeps) {
           deps.setTextTransformRules([]);
           setDetectSessionId(sessionId);
           setMappingSessionId(sessionId);
+          setIsProcessing(false);
+          setProcessingMode(null);
           const pendingAutoActions = pendingAutoActionsRef.current;
           if (
             pendingAutoActions &&
@@ -229,7 +253,13 @@ export function useDetection(deps: UseDetectionDeps) {
               const renamed = await deps.runOpenAiRename({
                 confirm: false, allowDefer: true, sessionId, schemaId: pendingAutoActions.schemaId,
               });
-              if (renamed) deps.handleMappingSuccess();
+              if (renamed && pendingAutoActions.schemaId) {
+                const mapped = await deps.applySchemaMappings({
+                  fieldsOverride: renamed,
+                  schemaIdOverride: pendingAutoActions.schemaId,
+                });
+                if (mapped) deps.handleMappingSuccess();
+              }
             } else if (pendingAutoActions.autoRename) {
               await deps.runOpenAiRename({ confirm: false, allowDefer: true, sessionId });
             } else if (pendingAutoActions.autoMap) {
@@ -251,6 +281,8 @@ export function useDetection(deps: UseDetectionDeps) {
         if (status === 'failed') {
           clearScheduledDetectionRetry(sessionId);
           detectionRetryRef.current.delete(sessionId);
+          setIsProcessing(false);
+          setProcessingMode(null);
           const message = payload?.error || 'Detection failed on the backend.';
           deps.setBannerNotice({ tone: 'error', message: String(message), autoDismissMs: 8000 });
           return;
@@ -308,6 +340,9 @@ export function useDetection(deps: UseDetectionDeps) {
         setScale: (scale: number) => void;
         setPendingPageJump: (page: number | null) => void;
       },
+      options: {
+        keepProcessing?: boolean;
+      } = {},
     ) => {
       if (loadTokenRef.current !== loadToken) return false;
       pdfState.setPdfDoc(doc);
@@ -318,8 +353,10 @@ export function useDetection(deps: UseDetectionDeps) {
       pdfState.setPendingPageJump(null);
       deps.resetFieldHistory(initialFields);
       deps.setSelectedFieldId(null);
-      setIsProcessing(false);
-      setProcessingMode(null);
+      if (!options.keepProcessing) {
+        setIsProcessing(false);
+        setProcessingMode(null);
+      }
       return true;
     },
     [deps],
@@ -595,6 +632,91 @@ export function useDetection(deps: UseDetectionDeps) {
     [commitPdfLoad, deps],
   );
 
+  const restoreSessionWorkspace = useCallback(
+    async (
+      sourceFile: File,
+      snapshot: WorkspaceSessionRestoreSnapshot,
+      pdfState: {
+        setPdfDoc: (doc: PDFDocumentProxy | null) => void;
+        setPageSizes: (sizes: Record<number, PageSize>) => void;
+        setPageCount: (count: number) => void;
+        setCurrentPage: (page: number) => void;
+        setScale: (scale: number) => void;
+        setPendingPageJump: (page: number | null) => void;
+      },
+    ) => {
+      cancelAllDetectionPolling();
+      const loadToken = loadTokenRef.current + 1;
+      loadTokenRef.current = loadToken;
+      pendingAutoActionsRef.current = null;
+      detectionRetryRef.current.clear();
+      deps.setShowSearchFill(false);
+      deps.setSearchFillSessionId((prev) => prev + 1);
+      deps.setLoadError(null);
+      deps.setShowHomepage(false);
+      setMappingSessionId(null);
+      setDetectSessionId(null);
+      deps.setHasRenamedFields(false);
+      deps.setHasMappedSchema(false);
+      deps.setCheckboxRules([]);
+      deps.setRadioGroupSuggestions([]);
+      deps.setTextTransformRules([]);
+      deps.setSchemaError(null);
+      deps.setOpenAiError(null);
+      deps.setSourceFile(sourceFile);
+      deps.setSourceFileName(sourceFile.name);
+      deps.setSourceFileIsDemo(false);
+      deps.setActiveSavedFormId(null);
+      deps.setActiveSavedFormName(null);
+
+      const waitingForRemoteDetection =
+        (snapshot.detectionStatus === 'queued' || snapshot.detectionStatus === 'running')
+        && snapshot.fields.length === 0;
+
+      if (waitingForRemoteDetection) {
+        setIsProcessing(true);
+        setProcessingMode('detect');
+        setProcessingVariant('detect');
+        setProcessingDetail('Detection is still running on the backend. Opening the editor once fields are ready.');
+      }
+
+      try {
+        const doc = await loadPdfFromFile(sourceFile);
+        const sizes = await loadPageSizes(doc);
+        const nextFields = clonePdfFields(snapshot.fields);
+        if (!commitPdfLoad(doc, sizes, nextFields, loadToken, pdfState, {
+          keepProcessing: waitingForRemoteDetection,
+        })) {
+          return false;
+        }
+        setDetectSessionId(snapshot.sessionId);
+        setMappingSessionId(snapshot.sessionId);
+        deps.setCheckboxRules(snapshot.checkboxRules.map((rule) => ({
+          ...rule,
+          valueMap: rule.valueMap ? { ...rule.valueMap } : undefined,
+        })));
+        deps.setRadioGroupSuggestions([]);
+        deps.setTextTransformRules(snapshot.textTransformRules.map((rule) => ({
+          ...rule,
+          sources: Array.isArray(rule.sources) ? [...rule.sources] : [],
+        })));
+        deps.setHasRenamedFields(nextFields.some((field) => typeof field.renameConfidence === 'number'));
+        deps.setHasMappedSchema(hasMappedSchemaState(nextFields, snapshot.checkboxRules, snapshot.textTransformRules));
+        if (waitingForRemoteDetection) {
+          void resumeDetectionPolling(snapshot.sessionId, loadToken);
+        }
+        return true;
+      } catch (error) {
+        if (loadTokenRef.current !== loadToken) return false;
+        setIsProcessing(false);
+        setProcessingMode(null);
+        debugLog('Failed to restore session workspace', snapshot.sessionId, error);
+        return false;
+      }
+    },
+    [cancelAllDetectionPolling, commitPdfLoad, resumeDetectionPolling, deps],
+  );
+
   const runDetectUpload = useCallback(
     async (
       file: File,
@@ -760,21 +882,29 @@ export function useDetection(deps: UseDetectionDeps) {
             autoDismissMs: 10000,
           });
         }
-        if (detectionTimedOut) {
+        const waitingForRemoteDetection = detectionTimedOut && !detectedFields.length && Boolean(detectedSessionId);
+        if (waitingForRemoteDetection) {
+          setIsProcessing(true);
+          setProcessingMode('detect');
+          setProcessingDetail('Detection is still running on the backend. Opening the editor once fields are ready.');
+        } else if (detectionTimedOut) {
           deps.setBannerNotice({
             tone: 'info',
-            message: 'Detection is still running on the backend. Using embedded form fields for now.',
+            message: 'Detection is still running on the backend. Continuing with the fields available so far.',
             autoDismissMs: 8000,
           });
-          if (detectedSessionId) {
-            void resumeDetectionPolling(detectedSessionId, loadToken);
-          }
         }
 
-        if (!commitPdfLoad(doc, sizes, detectedFields, loadToken, pdfState)) return;
+        if (!commitPdfLoad(doc, sizes, detectedFields, loadToken, pdfState, {
+          keepProcessing: waitingForRemoteDetection,
+        })) return;
         setDetectSessionId(detectedSessionId);
         if (detectedSessionId) setMappingSessionId(detectedSessionId);
         debugLog('Loaded PDF', { name: file.name, pages: doc.numPages, fields: detectedFields.length });
+
+        if (detectionTimedOut && detectedSessionId) {
+          void resumeDetectionPolling(detectedSessionId, loadToken);
+        }
 
         if (loadTokenRef.current !== loadToken) return;
         if (!options.autoRename && !options.autoMap) return;
@@ -800,7 +930,13 @@ export function useDetection(deps: UseDetectionDeps) {
           const renamed = await deps.runOpenAiRename({
             confirm: false, allowDefer: true, sessionId: detectedSessionId, schemaId: activeSchemaId,
           });
-          if (renamed) deps.handleMappingSuccess();
+          if (renamed && activeSchemaId) {
+            const mapped = await deps.applySchemaMappings({
+              fieldsOverride: renamed,
+              schemaIdOverride: activeSchemaId,
+            });
+            if (mapped) deps.handleMappingSuccess();
+          }
           return;
         }
         if (options.autoRename) {
@@ -876,9 +1012,11 @@ export function useDetection(deps: UseDetectionDeps) {
     commitPdfLoad,
     handleFillableUpload,
     handleSelectSavedForm,
+    restoreSessionWorkspace,
     runDetectUpload,
     resumeDetectionPolling,
     scheduleDetectionRetry,
     reset,
+    setProcessingDetail,
   };
 }

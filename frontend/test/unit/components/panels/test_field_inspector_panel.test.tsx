@@ -31,6 +31,7 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
     onSetFieldType: vi.fn(),
     onUpdateFieldDraft: vi.fn(),
     onDeleteField: vi.fn(),
+    onDeleteAllFields: vi.fn(),
     onCreateToolChange: vi.fn(),
     onArrowKeyMoveEnabledChange: vi.fn(),
     onArrowKeyMoveStepChange: vi.fn(),
@@ -160,6 +161,7 @@ describe('FieldInspectorPanel', () => {
     const user = userEvent.setup();
     const onCreateToolChange = vi.fn();
     const onDeleteField = vi.fn();
+    const onDeleteAllFields = vi.fn();
     const onUndo = vi.fn();
     const onRedo = vi.fn();
     const { rerender } = render(
@@ -167,6 +169,7 @@ describe('FieldInspectorPanel', () => {
         {...createProps({
           onCreateToolChange,
           onDeleteField,
+          onDeleteAllFields,
           onUndo,
           onRedo,
           canUndo: false,
@@ -177,6 +180,17 @@ describe('FieldInspectorPanel', () => {
 
     await user.click(screen.getByRole('button', { name: 'Delete field' }));
     expect(onDeleteField).toHaveBeenCalledWith('field-1');
+
+    await user.click(screen.getByRole('button', { name: 'Delete all fields' }));
+    expect(screen.getByText('Are you sure you want to delete all fields?')).toBeTruthy();
+    expect(onDeleteAllFields).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('button', { name: 'No' }));
+    expect(onDeleteAllFields).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('button', { name: 'Delete all fields' }));
+    await user.click(screen.getByRole('button', { name: 'Yes' }));
+    expect(onDeleteAllFields).toHaveBeenCalledTimes(1);
 
     await user.click(screen.getByRole('button', { name: 'Text' }));
     await user.click(screen.getByRole('button', { name: 'Date' }));
@@ -201,6 +215,7 @@ describe('FieldInspectorPanel', () => {
         {...createProps({
           onCreateToolChange,
           onDeleteField,
+          onDeleteAllFields,
           onUndo,
           onRedo,
           canUndo: true,

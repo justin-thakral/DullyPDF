@@ -129,13 +129,39 @@
 }
 
 .demo-tour__close {
-  border: none;
-  background: transparent;
-  color: #1d4ed8;
-  font-weight: 600;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  border-radius: 999px;
+  background: rgba(254, 226, 226, 0.92);
+  color: #b91c1c;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
-  font-size: 0.85rem;
-  padding: 0.2rem 0.35rem;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+.demo-tour__close:hover {
+  background: rgba(254, 202, 202, 0.98);
+  border-color: rgba(220, 38, 38, 0.34);
+  color: #991b1b;
+  transform: scale(1.03);
+}
+
+.demo-tour__close:focus-visible {
+  outline: 2px solid rgba(220, 38, 38, 0.32);
+  outline-offset: 2px;
 }
 
 .demo-tour__title {

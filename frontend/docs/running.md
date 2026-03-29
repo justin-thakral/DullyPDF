@@ -48,6 +48,16 @@ npm run dev:stack:stop
 - `config/public/frontend.stack.env` (frontend committed public settings)
 - optional `env/frontend.stack.local.env` for local-only overrides
 
+## Internal stats launcher
+
+```bash
+npm run stats
+```
+
+This starts a standalone FastAPI server on `http://127.0.0.1:5174` and opens the local dashboard in your browser. The tool is intentionally outside the deployed frontend/backend route trees, reads the `dullypdf` Firestore project directly, and does not require DullyPDF app sign-in.
+
+Use `gcloud auth application-default login` if your local Google credentials are not already configured for Firestore access.
+
 ## Build and test scripts
 
 From repo root:
@@ -75,12 +85,13 @@ follow-up requests do not get blocked after `gtag.js` loads.
 
 - Vite proxies `/api/*` to `VITE_API_URL` (`frontend/vite.config.ts`).
 - Detection requests use `VITE_DETECTION_API_URL` when set, otherwise `VITE_SANDBOX_API_URL`, then fallback to `http://localhost:8000`.
+- In dev builds, Rename/Map log the active backend session diagnostic to the browser console right before the OpenAI request is sent. The UI no longer renders raw `sessionId` or `source_pdf` values.
 - See `frontend/docs/api-routing.md` for the full same-origin vs direct-call split.
 
 ## Public routes worth checking during local dev
 
 - `http://localhost:5173/usage-docs` and child `/usage-docs/*` routes for public documentation copy.
-- `http://localhost:5173/free-features` and `http://localhost:5173/premium-features` for public plan messaging and signed-in premium purchase CTA behavior.
+- `http://localhost:5173/free-features` and `http://localhost:5173/premium-features` for public plan messaging, including saved-form, Fill By Link, API Fill, signing, and credit limits plus the signed-in premium purchase CTA behavior.
 - Intent/SEO routes such as `/pdf-to-fillable-form`, `/fill-pdf-from-csv`, and `/fill-pdf-by-link`.
 - Fill By Link respondent routes under `/respond/:token`. The route shell is public and mobile-friendly; live submissions still depend on the backend being available.
 - Signing routes under `/sign/:token`. The route is public and mobile-friendly; milestone 3 now includes the signer ceremony for `Sign` mode with session bootstrap, immutable PDF review, consumer e-consent gating, signature adoption, manual fallback recording, and an explicit final sign action. The adopt-signature step now supports typed-name, default legal-name, drawn, and uploaded-image signature marks before completion. Consumer previews now stay locked until consent, Fill By Link sourced requests now show an email-OTP verification step before the immutable PDF or manual fallback action is revealed, signer links expire after the configured request TTL, and public ceremony actions require the same client fingerprint that bootstrapped the session. Completed signer downloads now reuse that same bound session too, so reopening a finished request still needs the current signing session instead of a naked artifact URL. When a PDF signing identity is configured, the completed signed PDF also carries an embedded cryptographic PDF signature in addition to the rendered signature mark and audit artifacts.
@@ -103,6 +114,12 @@ Owner-side signing smoke from repo root:
 
 ```bash
 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 node frontend/test/playwright/run_signing_owner_smoke.mjs
+```
+
+OpenAI rename smoke from repo root:
+
+```bash
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run test:playwright:openai-rename
 ```
 
 The owner smoke signs into the workspace with a Firebase custom token, opens a real fillable PDF in the editor, adds a signature anchor, saves a signing draft, and sends the immutable request with mocked signing endpoints. Both smoke scripts write screenshots and JSON summaries under `frontend/output/playwright/`.

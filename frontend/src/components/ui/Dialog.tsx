@@ -21,6 +21,32 @@ function isTopmostDialog(dialogId: string) {
   return OPEN_DIALOG_STACK[OPEN_DIALOG_STACK.length - 1] === dialogId;
 }
 
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'area[href]',
+  'button:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  '[tabindex]:not([tabindex="-1"])',
+  '[contenteditable="true"]',
+].join(', ');
+
+function isVisibleElement(element: HTMLElement) {
+  if (element.hasAttribute('hidden') || element.getAttribute('aria-hidden') === 'true') return false;
+  if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') return true;
+  const style = window.getComputedStyle(element);
+  return style.display !== 'none' && style.visibility !== 'hidden';
+}
+
+function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
+  if (!container) return [];
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter((element) => {
+    return isVisibleElement(element);
+  });
+}
+
 type DialogShellProps = {
   open: boolean;
   title: string;
@@ -29,6 +55,9 @@ type DialogShellProps = {
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  showCloseButton?: boolean;
+  closeOnBackdrop?: boolean;
+  closeOnEscape?: boolean;
 };
 
 type DialogFrameProps = {
@@ -38,6 +67,14 @@ type DialogFrameProps = {
   labelledBy?: string;
   describedBy?: string;
   children: React.ReactNode;
+  closeOnBackdrop?: boolean;
+  closeOnEscape?: boolean;
+};
+
+type DialogCloseButtonProps = {
+  onClick: () => void;
+  label?: string;
+  className?: string;
 };
 
 function useDialogBodyLock(open: boolean) {
@@ -67,40 +104,106 @@ export function DialogFrame({
   labelledBy,
   describedBy,
   children,
+  closeOnBackdrop = true,
+  closeOnEscape = true,
 }: DialogFrameProps) {
   const dialogId = useId();
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
   useDialogBodyLock(open);
 
   useEffect(() => {
     if (!open) return undefined;
+    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     addOpenDialog(dialogId);
     return () => removeOpenDialog(dialogId);
   }, [dialogId, open]);
 
   useEffect(() => {
     if (!open) return undefined;
+    const dialogElement = dialogRef.current;
+    const frame = window.requestAnimationFrame(() => {
+      if (!dialogElement) return;
+      if (dialogElement.contains(document.activeElement)) return;
+      dialogElement.focus();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [open]);
+
+  useEffect(() => {
+    if (open) return undefined;
+    const target = restoreFocusRef.current;
+    if (!target || !target.isConnected) return undefined;
+    target.focus();
+    restoreFocusRef.current = null;
+    return undefined;
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
       if (!isTopmostDialog(dialogId)) return;
-      event.preventDefault();
-      onClose?.();
+      if (event.key === 'Escape' && closeOnEscape) {
+        event.preventDefault();
+        onClose?.();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const dialogElement = dialogRef.current;
+      if (!dialogElement) return;
+      const focusable = getFocusableElements(dialogElement);
+      if (focusable.length === 0) {
+        event.preventDefault();
+        dialogElement.focus();
+        return;
+      }
+
+      const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      const activeInsideDialog = active ? dialogElement.contains(active) : false;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (!activeInsideDialog) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+        return;
+      }
+
+      if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+        return;
+      }
+
+      if (event.shiftKey && (active === first || active === dialogElement)) {
+        event.preventDefault();
+        last.focus();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [dialogId, onClose, open]);
+  }, [closeOnEscape, dialogId, onClose, open]);
 
   if (!open) return null;
 
   const dialogClassName = ['ui-dialog', className].filter(Boolean).join(' ');
   const dialogContent = (
-    <div className="ui-dialog-backdrop" role="presentation" onClick={onClose}>
+    <div
+      className="ui-dialog-backdrop"
+      role="presentation"
+      onClick={closeOnBackdrop ? onClose : undefined}
+    >
       <div
+        ref={dialogRef}
         className={dialogClassName}
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}
         aria-describedby={describedBy}
+        tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
       >
         {children}
@@ -115,7 +218,32 @@ export function DialogFrame({
   return createPortal(dialogContent, document.body);
 }
 
-function DialogShell({ open, title, description, onClose, children, footer, className }: DialogShellProps) {
+export function DialogCloseButton({
+  onClick,
+  label = 'Close dialog',
+  className,
+}: DialogCloseButtonProps) {
+  const buttonClassName = ['ui-dialog__close', className].filter(Boolean).join(' ');
+
+  return (
+    <button type="button" className={buttonClassName} onClick={onClick} aria-label={label}>
+      ×
+    </button>
+  );
+}
+
+function DialogShell({
+  open,
+  title,
+  description,
+  onClose,
+  children,
+  footer,
+  className,
+  showCloseButton = true,
+  closeOnBackdrop = true,
+  closeOnEscape = true,
+}: DialogShellProps) {
   const titleId = useId();
   const descId = useId();
 
@@ -126,11 +254,16 @@ function DialogShell({ open, title, description, onClose, children, footer, clas
       className={className}
       labelledBy={titleId}
       describedBy={description ? descId : undefined}
+      closeOnBackdrop={closeOnBackdrop}
+      closeOnEscape={closeOnEscape}
     >
       <header className="ui-dialog__header">
         <h2 className="ui-dialog__title" id={titleId}>
           {title}
         </h2>
+        {showCloseButton && onClose ? (
+          <DialogCloseButton onClick={onClose} label={`Close ${title} dialog`} />
+        ) : null}
       </header>
       {description ? (
         <div className="ui-dialog__message" id={descId}>

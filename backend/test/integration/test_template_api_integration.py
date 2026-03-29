@@ -12,10 +12,14 @@ import backend.main as main
 import backend.api.middleware.security as security_middleware
 import backend.api.routes.template_api as template_api_routes
 import backend.api.routes.template_api_public as template_api_public_routes
+import backend.firebaseDB.fill_link_database as fill_link_database
+import backend.firebaseDB.group_database as group_database
 import backend.firebaseDB.template_api_endpoint_database as template_api_endpoint_database
 import backend.firebaseDB.template_database as template_database
+import backend.firebaseDB.user_database as user_database
 import backend.services.template_api_service as template_api_service
 from backend.firebaseDB.firebase_service import RequestUser
+from backend.test.integration.downgrade_test_support import seed_saved_form_inventory
 from backend.test.unit.firebase._fakes import FakeFirestoreClient
 
 
@@ -68,6 +72,43 @@ def _seed_template(
     return mock_fields
 
 
+def _seed_owner_profile(
+    firestore_client: FakeFirestoreClient,
+    qa_user: RequestUser,
+    *,
+    role: str = user_database.ROLE_BASE,
+) -> None:
+    firestore_client.collection(user_database.USERS_COLLECTION).document(qa_user.app_user_id).seed(
+        {
+            "email": qa_user.email,
+            "displayName": qa_user.display_name,
+            user_database.ROLE_FIELD: role,
+            user_database.OPENAI_CREDITS_FIELD: 10,
+            user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD: "2026-03",
+            "created_at": "2026-03-28T00:00:00+00:00",
+            "updated_at": "2026-03-28T00:00:00+00:00",
+        }
+    )
+
+
+def _seed_locked_template_inventory(
+    firestore_client: FakeFirestoreClient,
+    qa_user: RequestUser,
+    *,
+    total_templates: int = 7,
+) -> None:
+    seed_saved_form_inventory(
+        firestore_client,
+        user_id=qa_user.app_user_id,
+        total_templates=total_templates,
+        metadata_builder=lambda template_number: {
+            "name": f"Saved Form {template_number}",
+            "fillRules": {"checkboxRules": []},
+            "editorSnapshot": {"path": f"gs://snapshots/form-{template_number}.json"},
+        },
+    )
+
+
 def _patch_template_api_runtime(
     mocker,
     qa_user: RequestUser,
@@ -79,6 +120,9 @@ def _patch_template_api_runtime(
     mocker.patch.object(template_api_routes, "require_user", return_value=qa_user)
     mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(template_api_endpoint_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(user_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(group_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(template_api_service, "load_saved_form_editor_snapshot", return_value=editor_snapshot)
     mocker.patch.object(template_api_public_routes, "check_rate_limit", return_value=True)
 
@@ -498,6 +542,354 @@ def test_template_api_public_fill_preserves_blank_scalar_values_end_to_end(
         .to_dict()
     )
     assert monthly_usage_doc["request_count"] == 1
+
+
+def test_template_api_public_fill_enforces_real_base_monthly_quota_and_records_block_event(
+    client: TestClient,
+    mocker,
+    qa_user: RequestUser,
+    tmp_path,
+) -> None:
+    firestore_client = FakeFirestoreClient()
+    editor_snapshot = _seed_template(
+        firestore_client,
+        qa_user,
+        fields=[
+            {
+                "id": "field-1",
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": {"x": 1, "y": 2, "width": 100, "height": 20},
+            }
+        ],
+    )
+    _seed_owner_profile(firestore_client, qa_user, role=user_database.ROLE_BASE)
+    _patch_template_api_runtime(
+        mocker,
+        qa_user,
+        firestore_client,
+        editor_snapshot=editor_snapshot,
+    )
+    mocker.patch.object(template_api_public_routes, "_current_usage_month_key", return_value="2026-03")
+    firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION).document(
+        f"{qa_user.app_user_id}__2026-03"
+    ).seed(
+        {
+            "user_id": qa_user.app_user_id,
+            "month_key": "2026-03",
+            "request_count": 249,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-27T00:00:00+00:00",
+        }
+    )
+
+    publish_response = client.post(
+        "/api/template-api-endpoints",
+        json={"templateId": "tpl-1", "exportMode": "flat"},
+        headers=AUTH_HEADERS,
+    )
+    assert publish_response.status_code == 200
+    publish_payload = publish_response.json()
+    endpoint_id = publish_payload["endpoint"]["id"]
+    secret = publish_payload["secret"]
+    basic_headers = {
+        "Authorization": "Basic " + base64.b64encode(f"{secret}:".encode("utf-8")).decode("ascii")
+    }
+
+    materialized_count = {"value": 0}
+
+    def _materialize_snapshot(*_args, **_kwargs):
+        materialized_count["value"] += 1
+        output_path = tmp_path / f"quota-fill-{materialized_count['value']}.pdf"
+        output_path.write_bytes(b"%PDF-1.4\n%quota\n")
+        return output_path, [output_path], "patient-intake.pdf"
+
+    mocker.patch.object(
+        template_api_public_routes,
+        "materialize_template_api_snapshot",
+        side_effect=_materialize_snapshot,
+    )
+
+    accepted_response = client.post(
+        f"/api/v1/fill/{endpoint_id}.pdf",
+        json={"data": {"full_name": "Ada Lovelace"}, "strict": True},
+        headers=basic_headers,
+    )
+    blocked_response = client.post(
+        f"/api/v1/fill/{endpoint_id}.pdf",
+        json={"data": {"full_name": "Grace Hopper"}, "strict": True},
+        headers=basic_headers,
+    )
+
+    assert accepted_response.status_code == 200
+    assert blocked_response.status_code == 429
+    assert "monthly api fill request limit" in blocked_response.text.lower()
+
+    endpoint_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_ENDPOINTS_COLLECTION)
+        .document(endpoint_id)
+        .get()
+        .to_dict()
+    )
+    assert endpoint_doc["usage_count"] == 1
+    assert endpoint_doc["current_month_usage_count"] == 1
+    assert endpoint_doc["current_usage_month"] == "2026-03"
+
+    monthly_usage_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION)
+        .document(f"{qa_user.app_user_id}__2026-03")
+        .get()
+        .to_dict()
+    )
+    assert monthly_usage_doc["request_count"] == 250
+
+    events = template_api_endpoint_database.list_template_api_endpoint_events(endpoint_id, user_id=qa_user.app_user_id)
+    assert any(event.event_type == "fill_succeeded" for event in events)
+    assert any(event.event_type == "fill_quota_blocked" for event in events)
+
+
+def test_template_api_publish_blocks_locked_saved_forms_after_downgrade(
+    client: TestClient,
+    mocker,
+    qa_user: RequestUser,
+) -> None:
+    firestore_client = FakeFirestoreClient()
+    _seed_owner_profile(firestore_client, qa_user, role=user_database.ROLE_BASE)
+    _seed_locked_template_inventory(firestore_client, qa_user)
+
+    mocker.patch.object(security_middleware, "verify_token", return_value={"uid": qa_user.uid})
+    mocker.patch.object(template_api_routes, "require_user", return_value=qa_user)
+    for module in (
+        template_database,
+        template_api_endpoint_database,
+        user_database,
+        fill_link_database,
+        group_database,
+    ):
+        mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
+
+    response = client.post(
+        "/api/template-api-endpoints",
+        json={"templateId": "form-6", "exportMode": "flat"},
+        headers=AUTH_HEADERS,
+    )
+
+    assert response.status_code == 409
+    assert "locked on the base plan" in response.text.lower()
+    assert (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_ENDPOINTS_COLLECTION)
+        .where("user_id", "==", qa_user.app_user_id)
+        .get()
+        == []
+    )
+
+
+def test_template_api_public_fill_starts_new_month_usage_bucket_after_prior_month_exhaustion(
+    client: TestClient,
+    mocker,
+    qa_user: RequestUser,
+    tmp_path,
+) -> None:
+    firestore_client = FakeFirestoreClient()
+    editor_snapshot = _seed_template(
+        firestore_client,
+        qa_user,
+        fields=[
+            {
+                "id": "field-1",
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": {"x": 1, "y": 2, "width": 100, "height": 20},
+            }
+        ],
+    )
+    _seed_owner_profile(firestore_client, qa_user, role=user_database.ROLE_BASE)
+    _patch_template_api_runtime(
+        mocker,
+        qa_user,
+        firestore_client,
+        editor_snapshot=editor_snapshot,
+    )
+    mocker.patch.object(template_api_public_routes, "_current_usage_month_key", return_value="2026-04")
+    firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION).document(
+        f"{qa_user.app_user_id}__2026-03"
+    ).seed(
+        {
+            "user_id": qa_user.app_user_id,
+            "month_key": "2026-03",
+            "request_count": 250,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-31T00:00:00+00:00",
+        }
+    )
+
+    publish_response = client.post(
+        "/api/template-api-endpoints",
+        json={"templateId": "tpl-1", "exportMode": "flat"},
+        headers=AUTH_HEADERS,
+    )
+    assert publish_response.status_code == 200
+    publish_payload = publish_response.json()
+    endpoint_id = publish_payload["endpoint"]["id"]
+    secret = publish_payload["secret"]
+    basic_headers = {
+        "Authorization": "Basic " + base64.b64encode(f"{secret}:".encode("utf-8")).decode("ascii")
+    }
+
+    output_path = tmp_path / "rolled-over-filled.pdf"
+    output_path.write_bytes(b"%PDF-1.4\n%rollover\n")
+    cleanup_targets = [output_path]
+    mocker.patch.object(
+        template_api_public_routes,
+        "materialize_template_api_snapshot",
+        return_value=(output_path, cleanup_targets, "patient-intake.pdf"),
+    )
+
+    fill_response = client.post(
+        f"/api/v1/fill/{endpoint_id}.pdf",
+        json={"data": {"full_name": "Ada Lovelace"}, "strict": True},
+        headers=basic_headers,
+    )
+
+    assert fill_response.status_code == 200
+    previous_month_usage_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION)
+        .document(f"{qa_user.app_user_id}__2026-03")
+        .get()
+        .to_dict()
+    )
+    current_month_usage_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION)
+        .document(f"{qa_user.app_user_id}__2026-04")
+        .get()
+        .to_dict()
+    )
+    assert previous_month_usage_doc["request_count"] == 250
+    assert current_month_usage_doc["request_count"] == 1
+
+    endpoint_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_ENDPOINTS_COLLECTION)
+        .document(endpoint_id)
+        .get()
+        .to_dict()
+    )
+    assert endpoint_doc["current_usage_month"] == "2026-04"
+    assert endpoint_doc["current_month_usage_count"] == 1
+
+
+def test_template_api_public_fill_allows_only_one_new_month_request_after_rollover_from_exhausted_base_quota(
+    client: TestClient,
+    mocker,
+    qa_user: RequestUser,
+    tmp_path,
+) -> None:
+    firestore_client = FakeFirestoreClient()
+    editor_snapshot = _seed_template(
+        firestore_client,
+        qa_user,
+        fields=[
+            {
+                "id": "field-1",
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": {"x": 1, "y": 2, "width": 100, "height": 20},
+            }
+        ],
+    )
+    _seed_owner_profile(firestore_client, qa_user, role=user_database.ROLE_BASE)
+    _patch_template_api_runtime(
+        mocker,
+        qa_user,
+        firestore_client,
+        editor_snapshot=editor_snapshot,
+    )
+    mocker.patch.object(template_api_public_routes, "_current_usage_month_key", return_value="2026-04")
+    mocker.patch.object(template_api_public_routes, "resolve_template_api_requests_monthly_limit", return_value=1)
+    firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION).document(
+        f"{qa_user.app_user_id}__2026-03"
+    ).seed(
+        {
+            "user_id": qa_user.app_user_id,
+            "month_key": "2026-03",
+            "request_count": 250,
+            "created_at": "2026-03-01T00:00:00+00:00",
+            "updated_at": "2026-03-31T00:00:00+00:00",
+        }
+    )
+
+    publish_response = client.post(
+        "/api/template-api-endpoints",
+        json={"templateId": "tpl-1", "exportMode": "flat"},
+        headers=AUTH_HEADERS,
+    )
+    assert publish_response.status_code == 200
+    publish_payload = publish_response.json()
+    endpoint_id = publish_payload["endpoint"]["id"]
+    secret = publish_payload["secret"]
+    basic_headers = {
+        "Authorization": "Basic " + base64.b64encode(f"{secret}:".encode("utf-8")).decode("ascii")
+    }
+
+    materialized_count = {"value": 0}
+
+    def _materialize_snapshot(*_args, **_kwargs):
+        materialized_count["value"] += 1
+        output_path = tmp_path / f"rollover-boundary-{materialized_count['value']}.pdf"
+        output_path.write_bytes(b"%PDF-1.4\n%rollover-boundary\n")
+        return output_path, [output_path], "patient-intake.pdf"
+
+    mocker.patch.object(
+        template_api_public_routes,
+        "materialize_template_api_snapshot",
+        side_effect=_materialize_snapshot,
+    )
+
+    first = client.post(
+        f"/api/v1/fill/{endpoint_id}.pdf",
+        json={"data": {"full_name": "Ada Lovelace"}, "strict": True},
+        headers=basic_headers,
+    )
+    second = client.post(
+        f"/api/v1/fill/{endpoint_id}.pdf",
+        json={"data": {"full_name": "Grace Hopper"}, "strict": True},
+        headers=basic_headers,
+    )
+
+    assert first.status_code == 200
+    assert second.status_code == 429
+    assert "monthly api fill request limit" in second.text.lower()
+
+    previous_month_usage_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION)
+        .document(f"{qa_user.app_user_id}__2026-03")
+        .get()
+        .to_dict()
+    )
+    current_month_usage_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_USAGE_COUNTERS_COLLECTION)
+        .document(f"{qa_user.app_user_id}__2026-04")
+        .get()
+        .to_dict()
+    )
+    assert previous_month_usage_doc["request_count"] == 250
+    assert current_month_usage_doc["request_count"] == 1
+
+    endpoint_doc = (
+        firestore_client.collection(template_api_endpoint_database.TEMPLATE_API_ENDPOINTS_COLLECTION)
+        .document(endpoint_id)
+        .get()
+        .to_dict()
+    )
+    assert endpoint_doc["usage_count"] == 1
+    assert endpoint_doc["current_usage_month"] == "2026-04"
+    assert endpoint_doc["current_month_usage_count"] == 1
+
+    events = template_api_endpoint_database.list_template_api_endpoint_events(endpoint_id, user_id=qa_user.app_user_id)
+    assert any(event.event_type == "fill_succeeded" for event in events)
+    assert any(event.event_type == "fill_quota_blocked" for event in events)
 
 
 def test_template_api_public_runtime_failures_do_not_consume_usage_or_monthly_quota(

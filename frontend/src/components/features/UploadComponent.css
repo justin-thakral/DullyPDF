@@ -380,6 +380,11 @@
   box-shadow: 0 12px 24px rgba(59, 130, 246, 0.16);
 }
 
+.saved-chip--locked {
+  border-color: rgba(245, 158, 11, 0.34);
+  background: linear-gradient(180deg, rgba(255, 251, 235, 0.98) 0%, rgba(255, 255, 255, 0.94) 100%);
+}
+
 .saved-chip__content {
   display: inline-flex;
   align-items: center;
@@ -418,6 +423,26 @@
   color: #64748b;
   font-size: 0.8rem;
   white-space: nowrap;
+}
+
+.saved-chip__status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0.4rem 0.78rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  color: #334155;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.saved-chip__status--locked {
+  background: rgba(245, 158, 11, 0.16);
+  color: #92400e;
 }
 
 .saved-chip__action {

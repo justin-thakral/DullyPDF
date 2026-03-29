@@ -13,7 +13,9 @@ from typing import Any, Dict
 from backend.firebaseDB.signing_database import mark_signing_request_consumer_disclosure_presented
 
 from .signing_consumer_consent_service import (
+    persist_business_disclosure_artifact,
     persist_consumer_disclosure_artifact,
+    resolve_business_disclosure_artifact,
     resolve_consumer_disclosure_artifact,
 )
 from .signing_service import (
@@ -51,12 +53,17 @@ def serialize_public_signing_disclosure(record, *, public_token: str) -> Dict[st
             "accessDemonstratedAt": getattr(record, "consumer_access_demonstrated_at", None),
             "accessDemonstrationMethod": getattr(record, "consumer_access_demonstration_method", None),
         }
-    return resolve_signing_disclosure_payload_for_record(record)
+    artifact = resolve_business_disclosure_artifact(record)
+    return {
+        **dict(artifact.get("payload") or resolve_signing_disclosure_payload_for_record(record)),
+        "sha256": artifact.get("sha256"),
+        "presentedAt": getattr(record, "opened_at", None),
+    }
 
 
 def ensure_public_signing_consumer_disclosure_state(record, *, client=None):
     if str(getattr(record, "signature_mode", "") or "").strip() != SIGNATURE_MODE_CONSUMER:
-        return record
+        return persist_business_disclosure_artifact(record, client=client) or record
     updated_record = persist_consumer_disclosure_artifact(record, client=client) or record
     if str(getattr(updated_record, "status", "") or "").strip() != SIGNING_STATUS_SENT:
         return updated_record

@@ -87,6 +87,7 @@ describe('FeaturePlanPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Free DullyPDF Features for PDF-to-Form Setup' })).toBeTruthy();
     expect(screen.getAllByRole('link', { name: 'Premium Features' }).some((link) => link.getAttribute('href') === '/premium-features')).toBe(true);
     expect(screen.getByText('Unlimited PDF-to-form setup and access to the form builder.')).toBeTruthy();
+    expect(screen.getByText(/no active-link cap, 25 accepted fill by link responses per month, 1 active endpoint, 250 fills per month/i)).toBeTruthy();
   });
 
   it('shows a sign-in CTA on the premium page when signed out', async () => {
@@ -111,8 +112,7 @@ describe('FeaturePlanPage', () => {
         detectMaxPages: 10,
         fillableMaxPages: 20,
         savedFormsMax: 5,
-        fillLinksActiveMax: 1,
-        fillLinkResponsesMax: 5,
+        fillLinkResponsesMonthlyMax: 25,
       },
     });
     billingCheckoutMocks.createTrustedBillingCheckoutForUser.mockRejectedValue(new Error('Checkout unavailable.'));
@@ -143,14 +143,14 @@ describe('FeaturePlanPage', () => {
         detectMaxPages: 10,
         fillableMaxPages: 20,
         savedFormsMax: 5,
-        fillLinksActiveMax: 10,
-        fillLinkResponsesMax: 10000,
+        fillLinkResponsesMonthlyMax: 10000,
       },
     });
 
     render(<FeaturePlanPage pageKey="premium-features" />);
 
     expect(await screen.findByText('This account already has premium access. Use Profile in the workspace to manage cancellation or refills.')).toBeTruthy();
+    expect(screen.getByText(/20 active API Fill endpoints, 10,000 successful fills per month, and 250 pages per request/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Buy Pro Monthly/ })).toBeNull();
   });
 });

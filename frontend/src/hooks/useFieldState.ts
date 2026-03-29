@@ -46,6 +46,13 @@ function updateSingleField(
   return next;
 }
 
+function deleteFieldsByIds(fields: PdfField[], fieldIds: Iterable<string>): PdfField[] {
+  const deleteIds = new Set(fieldIds);
+  if (deleteIds.size === 0) return fields;
+  const next = fields.filter((field) => !deleteIds.has(field.id));
+  return next.length === fields.length ? fields : next;
+}
+
 export function useFieldState(
   fieldsRef: React.MutableRefObject<PdfField[]>,
   fields: PdfField[],
@@ -90,9 +97,15 @@ export function useFieldState(
   );
 
   const handleDeleteField = useCallback((fieldId: string) => {
-    updateFieldsWith((prev) => prev.filter((field) => field.id !== fieldId));
+    updateFieldsWith((prev) => deleteFieldsByIds(prev, [fieldId]));
     setSelectedFieldId((prev) => (prev === fieldId ? null : prev));
     debugLog('Deleted field', fieldId);
+  }, [updateFieldsWith]);
+
+  const handleDeleteAllFields = useCallback(() => {
+    updateFieldsWith((prev) => deleteFieldsByIds(prev, prev.map((field) => field.id)));
+    setSelectedFieldId(null);
+    debugLog('Deleted all fields');
   }, [updateFieldsWith]);
 
   const handleCreateField = useCallback(
@@ -212,6 +225,7 @@ export function useFieldState(
     handleUpdateFieldDraft,
     handleUpdateFieldGeometry,
     handleDeleteField,
+    handleDeleteAllFields,
     handleCreateField,
     handleClearFieldValues,
     handleConfidenceFilterChange,

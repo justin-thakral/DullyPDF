@@ -77,26 +77,19 @@ describe('ApiService', () => {
     });
   });
 
-  it('wires downgrade retention update and delete endpoints', async () => {
-    apiConfigMocks.apiFetch
-      .mockResolvedValueOnce({ id: 'retention-update-response' })
-      .mockResolvedValueOnce({ id: 'retention-delete-response' });
-    apiConfigMocks.apiJsonFetch
-      .mockResolvedValueOnce({ retention: { status: 'grace_period', keptTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3'] } })
-      .mockResolvedValueOnce({ success: true, deletedTemplateIds: ['tpl-4'], deletedLinkIds: ['link-4'] });
+  it('wires downgrade retention update endpoint', async () => {
+    apiConfigMocks.apiFetch.mockResolvedValueOnce({ id: 'retention-update-response' });
+    apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
+      retention: { status: 'grace_period', keptTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3'] },
+    });
 
     const retention = await ApiService.updateDowngradeRetention(['tpl-1', 'tpl-2', 'tpl-3']);
-    const deleted = await ApiService.deleteDowngradeRetentionNow();
 
     expect(retention?.keptTemplateIds).toEqual(['tpl-1', 'tpl-2', 'tpl-3']);
-    expect(deleted.deletedTemplateIds).toEqual(['tpl-4']);
-    expect(deleted.deletedLinkIds).toEqual(['link-4']);
-
-    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(1, 'PATCH', '/api/profile/downgrade-retention', {
+    expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith('PATCH', '/api/profile/downgrade-retention', {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ keptTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3'] }),
     });
-    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(2, 'POST', '/api/profile/downgrade-retention/delete-now');
   });
 
   it('wires targeted billing reconciliation payloads', async () => {
@@ -664,6 +657,7 @@ describe('ApiService', () => {
       title: 'Bravo Packet Signature Request',
       mode: 'sign',
       signatureMode: 'business',
+      companyBindingEnabled: false,
       sourceType: 'workspace',
       sourceId: 'form-1',
       sourceLinkId: 'link-1',
@@ -742,7 +736,7 @@ describe('ApiService', () => {
         'Content-Type': 'application/json',
         'X-Signing-Session': 'session-token-1',
       },
-      body: JSON.stringify({ intentConfirmed: true }),
+      body: undefined,
     });
     const sendForm = apiConfigMocks.apiFetch.mock.calls[5][2]?.body as FormData;
     expect(sendForm.get('sourcePdfSha256')).toBe('def');
@@ -753,6 +747,7 @@ describe('ApiService', () => {
 
   it('issues and downloads protected public signing files with the session header', async () => {
     const contentDispositionHeader = 'attachment; filename="signed-document.pdf"';
+    const accessBlob = new Blob(['consumer-access']);
     const documentBlob = new Blob(['document']);
     const artifactBlob = new Blob(['artifact']);
     apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
@@ -761,6 +756,17 @@ describe('ApiService', () => {
       expiresAt: '2026-03-28T12:05:00Z',
     });
     apiConfigMocks.apiFetch
+      .mockResolvedValueOnce({
+        headers: {
+          get: vi.fn((name: string) => {
+            const normalized = name.toLowerCase();
+            if (normalized === 'content-disposition') return 'attachment; filename="consumer-access-check.pdf"';
+            if (normalized === 'content-type') return 'application/pdf';
+            return null;
+          }),
+        },
+        blob: vi.fn().mockResolvedValue(accessBlob),
+      })
       .mockResolvedValueOnce({
         headers: {
           get: vi.fn((name: string) => {
@@ -785,6 +791,7 @@ describe('ApiService', () => {
         blob: vi.fn().mockResolvedValue(artifactBlob),
       });
 
+    const accessResult = await ApiService.getPublicSigningConsumerAccessBlob('token-1', 'session-token-1');
     const documentResult = await ApiService.getPublicSigningDocumentBlob('token-1', 'session-token-1');
     const issueResult = await ApiService.issuePublicSigningArtifactDownload('token-1', 'session-token-1', 'signed_pdf');
     await ApiService.downloadPublicSigningFile(
@@ -793,22 +800,31 @@ describe('ApiService', () => {
       'signed-document.pdf',
     );
 
+    expect(accessResult.blob).toBe(accessBlob);
+    expect(accessResult.filename).toBe('consumer-access-check.pdf');
+    expect(accessResult.contentType).toBe('application/pdf');
     expect(documentResult.blob).toBe(documentBlob);
     expect(documentResult.filename).toBe('signed-document.pdf');
     expect(documentResult.contentType).toBe('application/pdf');
-    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(1, 'GET', '/api/signing/public/token-1/document', {
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(1, 'GET', '/api/signing/public/token-1/consumer-access-pdf', {
       authMode: 'anonymous',
       headers: {
         'X-Signing-Session': 'session-token-1',
       },
     });
-    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(2, 'POST', '/api/signing/public/token-1/artifacts/signed_pdf/issue', {
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(2, 'GET', '/api/signing/public/token-1/document', {
       authMode: 'anonymous',
       headers: {
         'X-Signing-Session': 'session-token-1',
       },
     });
-    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(3, 'GET', '/api/signing/public/artifacts/artifact-token-1', {
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(3, 'POST', '/api/signing/public/token-1/artifacts/signed_pdf/issue', {
+      authMode: 'anonymous',
+      headers: {
+        'X-Signing-Session': 'session-token-1',
+      },
+    });
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(4, 'GET', '/api/signing/public/artifacts/artifact-token-1', {
       authMode: 'anonymous',
       headers: {
         'X-Signing-Session': 'session-token-1',
@@ -1058,6 +1074,7 @@ describe('ApiService', () => {
     await ApiService.renameFields({
       sessionId: 'sess-1',
       schemaId: 'schema-1',
+      sourcePdfSha256: 'a'.repeat(64),
       templateFields: [{ name: 'First Name', type: 'text' }],
     });
 
@@ -1066,6 +1083,8 @@ describe('ApiService', () => {
       [{ name: 'First Name', type: 'text' }],
       'template-1',
       'sess-1',
+      undefined,
+      'b'.repeat(64),
     );
 
     expect(apiConfigMocks.buildApiUrl).toHaveBeenCalledWith('api', 'renames', 'ai');
@@ -1086,6 +1105,7 @@ describe('ApiService', () => {
     expect(renameBody).toMatchObject({
       sessionId: 'sess-1',
       schemaId: 'schema-1',
+      sourcePdfSha256: 'a'.repeat(64),
       templateFields: [{ name: 'First Name', type: 'text' }],
     });
     expect(renameBody.requestId).toEqual(expect.any(String));
@@ -1094,6 +1114,7 @@ describe('ApiService', () => {
       templateId: 'template-1',
       templateFields: [{ name: 'First Name', type: 'text' }],
       sessionId: 'sess-1',
+      sourcePdfSha256: 'b'.repeat(64),
     });
     expect(mapBody.requestId).toEqual(expect.any(String));
     expect(mapBody.requestId).not.toBe(renameBody.requestId);
@@ -1250,6 +1271,7 @@ describe('ApiService', () => {
       .mockResolvedValueOnce({ ok: true, blob: vi.fn().mockResolvedValue(new Blob(['pdf'])) })
       .mockResolvedValueOnce({ status: 200, id: 'create-saved-session' })
       .mockResolvedValueOnce({ status: 200, id: 'touch-session' })
+      .mockResolvedValueOnce({ ok: true, blob: vi.fn().mockResolvedValue(new Blob(['session-pdf'])) })
       .mockResolvedValueOnce({ status: 200, id: 'update-saved-editor-snapshot' })
       .mockResolvedValueOnce({ status: 200, id: 'delete-saved' });
 
@@ -1281,6 +1303,7 @@ describe('ApiService', () => {
       pageCount: 2,
     });
     const touched = await ApiService.touchSession('session / id');
+    const sessionPdf = await ApiService.downloadSessionPdf('session / id');
     const updatedSnapshot = await ApiService.updateSavedFormEditorSnapshot('form id/with spaces', {
       version: 1,
       pageCount: 1,
@@ -1296,6 +1319,7 @@ describe('ApiService', () => {
     expect(blob).toBeInstanceOf(Blob);
     expect(session.sessionId).toBe('sess-1');
     expect(touched.success).toBe(true);
+    expect(sessionPdf).toBeInstanceOf(Blob);
     expect(updatedSnapshot.success).toBe(true);
     expect(deleted.success).toBe(true);
 
@@ -1337,6 +1361,15 @@ describe('ApiService', () => {
     );
     expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(
       6,
+      'GET',
+      '/api/sessions/session%20%2F%20id/pdf',
+      {
+        signal: undefined,
+        timeoutMs: undefined,
+      },
+    );
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(
+      7,
       'PATCH',
       '/api/saved-forms/form%20id%2Fwith%20spaces/editor-snapshot',
       {
@@ -1354,7 +1387,7 @@ describe('ApiService', () => {
       },
     );
     expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(
-      7,
+      8,
       'DELETE',
       '/api/saved-forms/form%20id%2Fwith%20spaces',
     );

@@ -4,10 +4,10 @@ React + TypeScript UI for viewing PDFs, editing detected fields, organizing save
 Public product usage documentation is available at canonical `/usage-docs/*` URLs. Legacy `/docs/*` URLs permanently redirect to matching canonical docs routes.
 Public intent landing pages are also available for search-oriented entry routes (for example `/pdf-to-fillable-form`, `/pdf-fill-api`, `/pdf-radio-button-editor`, `/pdf-signature-workflow`, and `/fill-pdf-from-csv`) and industry-focused routes (for example `/healthcare-pdf-automation` and `/acord-form-automation`).
 Public plan explainer pages are available at `/free-features` and `/premium-features`, and the premium page can launch Stripe Checkout for signed-in users when billing is available.
-Native Fill By Link marketing surfaces advertise the current tiering: free users get 1 active link with 5 responses, premium users can publish a shareable link for every saved template with up to 10,000 responses per link, and signing caps one immutable document version at 10 signer requests on free or 1,000 on premium by default.
-Completed signing flows now also expose a public `/verify-signing/:token` validation page, and audit receipts point there with a QR-backed validation link so recipients can re-check the retained record later without opening the signer ceremony again.
+Profile and public plan messaging now audit the full enforced tier set instead of only Fill By Link copy. Current defaults are: free = 5 saved forms, 5 detect pages, 50 fillable pages, unlimited active Fill By Links with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 fills/month and 25 pages/request, 25 sent signing requests/month, and a base OpenAI pool that tops back up to 10 each month when the balance is below 10; premium = 100 saved forms, 100 detect pages, 1,000 fillable pages, unlimited active Fill By Links with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 fills/month and 250 pages/request, 10,000 sent signing requests/month, and a 500-credit monthly pool before refill packs.
+Completed signing flows now also expose a public `/verify-signing/:token` validation page, and audit receipts point there with a QR-backed validation link so recipients can re-check the retained record later without opening the signer ceremony again. The owner-side audit evidence is broader than the public receipt: it preserves immutable source/signed hashes, sender and signer identity fields, invite delivery metadata, OTP/access-check state, ceremony timestamps, disclosure evidence, retained artifact metadata, and, for company-binding requests, the authority-attestation text/version/hash plus the signer-provided representative title and company name so the owner can export a dispute package later. That evidence model is intended to support the core E-SIGN mechanics around signer intent, association with the exact record, consumer consent where required, and later-reference retention, but it is not a blanket legal determination for every workflow or an independent proof of corporate authority. When no production PKCS#12 or Cloud KMS PDF signing identity is configured, DullyPDF can self-sign the finalized PDF for tamper evidence, but standard PDF viewers may still show that embedded certificate as untrusted because it is not chained to a public CA. In that configuration, the intended verification path is the audit receipt plus the retained validation page rather than a viewer trust badge.
 Search & Fill keeps selected row data in the browser. API Fill is different: published API requests send JSON record data to the backend and are governed by server-side rate limits, monthly request caps, and audit logging.
-If a paid account downgrades below the saved-form limit, the frontend shows a downgrade-retention dialog on each site visit, lets the owner choose which saved forms stay within the free cap, and exposes delete-now/reactivate-Pro actions during the 30-day grace period.
+If a paid account downgrades below the saved-form limit, the frontend keeps every saved form visible but only the oldest-created forms inside the base cap stay accessible. The remaining templates are locked in place until the owner upgrades again, and any Fill By Link, signing, group, or API Fill flow tied to a locked template is blocked without deleting the underlying records.
 
 ## Quick start
 
@@ -45,6 +45,14 @@ Stop the dev stack cleanly:
 npm run dev:stack:stop
 ```
 
+To open the internal production stats dashboard locally:
+
+```bash
+npm run stats
+```
+
+This starts a standalone local server on `http://127.0.0.1:5174`. The dashboard is intentionally outside the shipped frontend/backend bundles, reads the production Firestore project directly, and does not use DullyPDF app sign-in. Use `gcloud auth application-default login` if your local Google credentials are not already configured.
+
 ## Environment
 
 The dev scripts source env vars via `scripts/use-frontend-env.sh`. Common entries:
@@ -81,7 +89,14 @@ prod-like testing.
 - `/ui/profile` opens the profile view.
 - `/ui/forms/:formId` reopens a saved form directly.
 - `/ui/groups/:groupId?template=:formId` reopens a saved group and, when present, prefers the requested template.
-- Refresh restore is session-scoped. The browser stores a small resume manifest in `sessionStorage` for the active saved form or group route so page/zoom and live session ids can be restored, but it does not persist PDF bytes, unsaved uploads, or unsaved field edits locally.
+- Refresh restore is session-scoped. The browser stores a small resume manifest in `sessionStorage` and uses backend session state for recovery. Saved forms/groups still rehydrate from backend data plus the saved editor snapshot. Ad hoc `/ui` workspaces can also recover after reload when they already have a live detect/mapping session because the runtime re-downloads the source PDF from the backend session and reapplies the server-side field/rule snapshot.
+- The resume manifest is not a full offline cache. It still does not persist PDF bytes or unsaved field edits locally, and ad hoc `/ui` recovery only works while the backing session is still alive.
+
+## Detection timeout behavior
+
+- `VITE_DETECTION_POLL_TIMEOUT_MS` only caps how long the foreground upload flow waits before yielding control back to the runtime.
+- If backend detection is still running when that timeout expires and there are no usable embedded fields yet, the editor stays in the processing state and continues polling in the background instead of opening a false-empty workspace.
+- If usable embedded fields already exist, the runtime can open with those fields while detection continues in the background.
 
 Builds should use an explicit env target so the generated bundle never depends
 on whatever stale `.env.local` happens to be in the workspace:

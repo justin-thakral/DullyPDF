@@ -145,7 +145,10 @@ function PdfPageComponent({
         renderTask = page.render({
           canvasContext: context,
           viewport,
-          annotationMode: AnnotationMode.ENABLE_FORMS,
+          // The editor overlay is the only field source-of-truth in the workspace.
+          // Source-PDF annotations, including embedded AcroForm widgets, must stay off
+          // the canvas or they visually stack with editor fields and look duplicated.
+          annotationMode: AnnotationMode.DISABLE,
           transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : undefined,
         });
         await renderTask.promise;

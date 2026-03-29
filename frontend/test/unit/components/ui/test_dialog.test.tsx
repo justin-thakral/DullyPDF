@@ -49,6 +49,20 @@ describe('Dialog', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it('renders the shared top-right close button', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    render(
+      <Dialog open title="Dialog title" onClose={onClose}>
+        <p>Close me</p>
+      </Dialog>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Close Dialog title dialog' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   it('only closes the topmost dialog on Escape when dialogs are stacked', async () => {
     const user = userEvent.setup();
     const onCloseBase = vi.fn();
@@ -71,6 +85,69 @@ describe('Dialog', () => {
 
     expect(onCloseTop).toHaveBeenCalledTimes(1);
     expect(onCloseBase).not.toHaveBeenCalled();
+  });
+
+  it('moves focus into the dialog, traps tab navigation, and restores focus on close', async () => {
+    const user = userEvent.setup();
+    const triggerLabel = 'Open dialog';
+    const outsideAfterLabel = 'Outside after';
+    const { rerender } = render(
+      <>
+        <button type="button">{triggerLabel}</button>
+        <Dialog open={false} title="Focus dialog" onClose={vi.fn()}>
+          <button type="button">First action</button>
+          <button type="button">Second action</button>
+        </Dialog>
+        <button type="button">{outsideAfterLabel}</button>
+      </>,
+    );
+
+    const trigger = screen.getByRole('button', { name: triggerLabel });
+    trigger.focus();
+    expect(document.activeElement).toBe(trigger);
+
+    rerender(
+      <>
+        <button type="button">{triggerLabel}</button>
+        <Dialog open title="Focus dialog" onClose={vi.fn()}>
+          <button type="button">First action</button>
+          <button type="button">Second action</button>
+        </Dialog>
+        <button type="button">{outsideAfterLabel}</button>
+      </>,
+    );
+
+    const dialog = screen.getByRole('dialog');
+    const closeButton = screen.getByRole('button', { name: 'Close Focus dialog dialog' });
+    const lastAction = screen.getByRole('button', { name: 'Second action' });
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(dialog);
+    });
+
+    closeButton.focus();
+    expect(document.activeElement).toBe(closeButton);
+
+    await user.tab({ shift: true });
+    expect(document.activeElement).toBe(lastAction);
+
+    await user.tab();
+    expect(document.activeElement).toBe(closeButton);
+
+    rerender(
+      <>
+        <button type="button">{triggerLabel}</button>
+        <Dialog open={false} title="Focus dialog" onClose={vi.fn()}>
+          <button type="button">First action</button>
+          <button type="button">Second action</button>
+        </Dialog>
+        <button type="button">{outsideAfterLabel}</button>
+      </>,
+    );
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: triggerLabel }));
+    });
   });
 
   it('focuses the confirm button and applies tone classes', async () => {

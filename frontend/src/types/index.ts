@@ -193,6 +193,16 @@ export type PendingAutoActions = {
   autoMap: boolean;
 };
 
+// Dev-only session metadata displayed in the workspace header and logs so
+// rename/map requests can be traced back to the exact backend session.
+export type WorkspaceSessionDiagnostic = {
+  sessionId: string;
+  sourcePdf: string | null;
+  pageCount: number | null;
+  status: string | null;
+  sourcePdfResolved: boolean;
+};
+
 // Search preset passed to SearchFillModal for demos and respondent jumps.
 export type SearchFillPreset = {
   query: string;

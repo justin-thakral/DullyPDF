@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { PdfField } from '../../../src/types';
 import {
+  buildFillLinkTemplateFields,
   buildFillLinkPublishFingerprint,
   buildFillLinkResponseRows,
   FILL_LINK_RESPONSE_ID_KEY,
@@ -79,6 +80,55 @@ describe('fillLinks utils', () => {
 
     expect(firstFingerprint).toBe(secondFingerprint);
     expect(changedFingerprint).not.toBe(firstFingerprint);
+  });
+
+  it('preserves explicit radio metadata in fill link template fields', () => {
+    const [radioField] = buildFillLinkTemplateFields([
+      {
+        id: 'preferred-contact-email',
+        name: 'preferred_contact_email',
+        type: 'radio',
+        page: 1,
+        rect: { x: 10, y: 10, width: 14, height: 14 },
+        radioGroupId: 'preferred_contact',
+        radioGroupKey: 'preferred_contact',
+        radioGroupLabel: 'Preferred Contact',
+        radioOptionKey: 'email',
+        radioOptionLabel: 'Email',
+      },
+    ]);
+
+    expect(radioField).toMatchObject({
+      radioGroupId: 'preferred_contact',
+      radioGroupKey: 'preferred_contact',
+      radioGroupLabel: 'Preferred Contact',
+      radioOptionKey: 'email',
+      radioOptionLabel: 'Email',
+    });
+  });
+
+  it('changes the publish fingerprint when radio grouping metadata changes', () => {
+    const baseField: PdfField = {
+      id: 'preferred-contact-email',
+      name: 'preferred_contact_email',
+      type: 'radio',
+      page: 1,
+      rect: { x: 10, y: 10, width: 14, height: 14 },
+      radioGroupId: 'preferred_contact',
+      radioGroupKey: 'preferred_contact',
+      radioGroupLabel: 'Preferred Contact',
+      radioOptionKey: 'email',
+      radioOptionLabel: 'Email',
+      value: null,
+    };
+
+    const firstFingerprint = buildFillLinkPublishFingerprint([baseField], []);
+    const secondFingerprint = buildFillLinkPublishFingerprint(
+      [{ ...baseField, radioGroupKey: 'preferred_contact_method' }],
+      [],
+    );
+
+    expect(secondFingerprint).not.toBe(firstFingerprint);
   });
 
   it('normalizes respondent download availability from link and submit payload fallbacks', () => {

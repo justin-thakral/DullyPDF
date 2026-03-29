@@ -31,6 +31,16 @@ You can still run frontend/backend separately with `npm run backend:dev` and `np
 
 Open the UI at `http://localhost:5173`.
 
+### Run the internal stats dashboard
+
+From the repo root:
+
+```bash
+npm run stats
+```
+
+This starts a standalone local dashboard on `http://127.0.0.1:5174`. It is intentionally not part of the deployed frontend or backend app, and it reads the production Firestore project directly with your local Google credentials instead of using DullyPDF app sign-in.
+
 ### Run the prod-like stack
 
 From the repo root:
@@ -71,10 +81,10 @@ Optional local frontend overrides can be added in ignored files:
 
 Rename and schema mapping require `OPENAI_API_KEY`. If the key is missing, those actions fail while CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)) detection still works.
 
-### Fill By Link product messaging
+### Plan limit messaging
 
-- Free users can publish 1 active Fill By Link with up to 5 accepted responses.
-- Premium users can publish a shareable link for every saved template with up to 10,000 accepted responses per link.
+- Free defaults are 5 saved forms, 5 detect pages, 50 fillable pages, no active Fill By Link cap with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 successful fills/month and 25 pages/request, 25 sent signing requests/month, and 10 starter credits.
+- Premium defaults are 100 saved forms, 100 detect pages, 1,000 fillable pages, no active Fill By Link cap with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 successful fills/month and 250 pages/request, 10,000 sent signing requests/month, and a 500-credit monthly pool before refill packs.
 - Respondents fill a DullyPDF-hosted HTML form. The final PDF is generated later when the owner selects a respondent inside the workspace.
 - Public plan summaries are available at `/free-features` and `/premium-features`.
 

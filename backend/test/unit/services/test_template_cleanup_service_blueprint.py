@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 from backend.firebaseDB.template_database import TemplateRecord
 from backend.services import template_cleanup_service
 
@@ -109,3 +111,60 @@ def test_delete_saved_form_assets_hard_delete_removes_link_records_before_templa
         "delete_group_links",
         "delete_template",
     ]
+
+
+def test_delete_saved_form_assets_invalidates_draft_signing_requests_after_template_delete(mocker) -> None:
+    mocker.patch.object(template_cleanup_service, "get_template", return_value=_template_record())
+    mocker.patch.object(template_cleanup_service, "delete_pdf", return_value=None)
+    call_order: list[str] = []
+
+    mocker.patch.object(
+        template_cleanup_service,
+        "close_fill_links_for_template",
+        side_effect=lambda *args, **kwargs: call_order.append("close_template_links"),
+    )
+    mocker.patch.object(
+        template_cleanup_service,
+        "close_group_fill_links_for_template",
+        side_effect=lambda *args, **kwargs: call_order.append("close_group_links"),
+    )
+    mocker.patch.object(
+        template_cleanup_service,
+        "delete_template",
+        side_effect=lambda *args, **kwargs: call_order.append("delete_template") or True,
+    )
+    mocker.patch.object(
+        template_cleanup_service,
+        "list_signing_requests",
+        return_value=[
+            SimpleNamespace(id="sign-draft", status="draft", source_template_id="tpl-1"),
+            SimpleNamespace(id="sign-sent", status="sent", source_template_id="tpl-1"),
+            SimpleNamespace(id="sign-other", status="draft", source_template_id="tpl-9"),
+        ],
+    )
+    invalidate_mock = mocker.patch.object(
+        template_cleanup_service,
+        "invalidate_signing_request",
+        side_effect=lambda *args, **kwargs: call_order.append("invalidate_draft") or SimpleNamespace(id="sign-draft"),
+    )
+    mocker.patch.object(
+        template_cleanup_service,
+        "remove_template_from_all_groups",
+        side_effect=lambda *args, **kwargs: call_order.append("remove_from_groups"),
+    )
+
+    deleted = template_cleanup_service.delete_saved_form_assets("tpl-1", "user-1")
+
+    assert deleted is True
+    assert call_order == [
+        "close_template_links",
+        "close_group_links",
+        "delete_template",
+        "invalidate_draft",
+        "remove_from_groups",
+    ]
+    invalidate_mock.assert_called_once_with(
+        "sign-draft",
+        "user-1",
+        reason="This signing draft can no longer be sent because its saved form was deleted.",
+    )

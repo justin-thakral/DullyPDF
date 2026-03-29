@@ -58,6 +58,7 @@ _FILL_LINK_WEB_FORM_SCHEMA_VERSION = 2
 _FILL_LINK_TEXT_TYPES = frozenset({"text", "textarea", "date", "email", "phone"})
 _FILL_LINK_OPTION_TYPES = frozenset({"radio", "multi_select", "select"})
 _FILL_LINK_BOOLEAN_TYPES = frozenset({"boolean", "checkbox"})
+_GENERIC_RADIO_OPTION_KEY_RE = re.compile(r"^option_\d+(?:_\d+)?$")
 logger = get_logger(__name__)
 _DEV_FILL_LINK_TOKEN_SECRET = secrets.token_urlsafe(48)
 _WARNED_DEV_FILL_LINK_TOKEN_SECRET = False
@@ -202,6 +203,21 @@ def humanize_fill_link_label(value: Optional[str], *, fallback: str = "Field") -
     return " ".join(formatted)
 
 
+def _resolve_fill_link_radio_option_label(field: Dict[str, Any], *, fallback: str = "Option") -> str:
+    explicit_label = str(field.get("radioOptionLabel") or field.get("optionLabel") or "").strip()
+    option_key = str(field.get("radioOptionKey") or field.get("optionKey") or "").strip()
+    normalized_option_key = normalize_fill_link_key(option_key)
+    if normalized_option_key and not _GENERIC_RADIO_OPTION_KEY_RE.fullmatch(normalized_option_key):
+        if normalize_fill_link_key(explicit_label) == normalized_option_key:
+            return explicit_label
+        return option_key
+    if explicit_label:
+        return explicit_label
+    if option_key:
+        return option_key
+    return humanize_fill_link_label(field.get("name"), fallback=fallback)
+
+
 def resolve_fill_link_submit_rate_limits() -> Tuple[int, int, int]:
     window_seconds = _env_int("FILL_LINK_SUBMIT_RATE_WINDOW_SECONDS", 300, minimum=1)
     per_ip = _env_int("FILL_LINK_SUBMIT_RATE_PER_IP", 20, minimum=1)
@@ -320,14 +336,11 @@ def _field_sort_key(field: Dict[str, Any]) -> Tuple[int, float, float, str]:
 
 def _resolve_checkbox_question_type(
     option_count: int,
-    operation: Optional[str],
 ) -> str:
-    normalized_operation = normalize_fill_link_key(operation)
-    if normalized_operation == "list":
-        return "multi_select"
+    # Respondent-facing radio controls should only come from explicit radio widgets.
     if option_count <= 1:
         return "boolean"
-    return "radio"
+    return "multi_select"
 
 
 def _question_supports_text_limits(question_type: Optional[str]) -> bool:
@@ -452,6 +465,7 @@ def build_fill_link_questions(
         if field_type == "radio":
             raw_group_key = (
                 _coerce_text_answer(field.get("radioGroupKey"))
+                or _coerce_text_answer(field.get("radioGroupId"))
                 or _coerce_text_answer(field.get("radioGroupLabel"))
                 or _coerce_text_answer(field.get("group"))
                 or _coerce_text_answer(field.get("name"))
@@ -479,14 +493,11 @@ def build_fill_link_questions(
 
             option_key = (
                 _coerce_text_answer(field.get("radioOptionKey"))
+                or _coerce_text_answer(field.get("optionKey"))
                 or _coerce_text_answer(field.get("exportValue"))
                 or _coerce_text_answer(field.get("name"))
             )
-            option_label = (
-                _coerce_text_answer(field.get("radioOptionLabel"))
-                or _coerce_text_answer(field.get("optionLabel"))
-                or option_key
-            )
+            option_label = _resolve_fill_link_radio_option_label(field, fallback="Option")
             normalized_option_key = normalize_fill_link_key(option_key or option_label)
             if not normalized_option_key:
                 continue
@@ -539,7 +550,6 @@ def build_fill_link_questions(
                 "sourceType": "checkbox_group",
                 "groupKey": raw_group_key,
                 "options": [],
-                "operation": rule.get("operation") if isinstance(rule, dict) else None,
                 "visible": True,
                 "required": False,
                 "order": len(questions),
@@ -562,9 +572,9 @@ def build_fill_link_questions(
         )
 
     for question in questions:
-        if question.get("groupKey"):
+        if question.get("sourceType") == "checkbox_group":
             options = question.get("options") if isinstance(question.get("options"), list) else []
-            question["type"] = _resolve_checkbox_question_type(len(options), question.get("operation"))
+            question["type"] = _resolve_checkbox_question_type(len(options))
             if question["type"] == "boolean":
                 question.pop("options", None)
     return _ensure_fill_link_identifier_question(questions)
@@ -997,6 +1007,20 @@ def _resolve_allowed_option_keys(question: Dict[str, Any]) -> List[str]:
     return allowed
 
 
+def _resolve_fill_link_option_label(question: Dict[str, Any], option_key: str) -> str:
+    normalized_option_key = normalize_fill_link_key(option_key)
+    options = question.get("options")
+    if isinstance(options, list):
+        for option in options:
+            if not isinstance(option, dict):
+                continue
+            candidate_key = _coerce_text_answer(option.get("key"))
+            if normalize_fill_link_key(candidate_key) != normalized_option_key:
+                continue
+            return humanize_fill_link_label(option.get("label") or candidate_key, fallback=option_key)
+    return humanize_fill_link_label(option_key, fallback=option_key)
+
+
 def _answer_size_error(label: str, *, max_chars: int) -> ValueError:
     return ValueError(f"{label} is too long. Limit {max_chars} characters.")
 
@@ -1122,7 +1146,10 @@ def format_missing_fill_link_questions_message(labels: Iterable[str]) -> str:
     return f"All fields are required. Missing: {', '.join(deduped[:3])}, and {len(deduped) - 3} more."
 
 
-def derive_fill_link_respondent_label(answers: Dict[str, Any]) -> Tuple[str, Optional[str]]:
+def derive_fill_link_respondent_label(
+    answers: Dict[str, Any],
+    questions: Optional[Iterable[Dict[str, Any]]] = None,
+) -> Tuple[str, Optional[str]]:
     preferred_keys = [
         _RESPONDENT_IDENTIFIER_KEY,
         "full_name",
@@ -1146,9 +1173,37 @@ def derive_fill_link_respondent_label(answers: Dict[str, Any]) -> Tuple[str, Opt
     phone = _coerce_text_answer(answers.get("phone") or answers.get("mobile_phone"))
     if phone:
         return phone, None
+    question_by_key: Dict[str, Dict[str, Any]] = {}
+    if questions is not None:
+        for question in questions:
+            if not isinstance(question, dict):
+                continue
+            key = _coerce_text_answer(question.get("key"))
+            normalized_key = normalize_fill_link_key(key)
+            if not normalized_key or normalized_key in question_by_key:
+                continue
+            question_by_key[normalized_key] = question
     keys = list(answers.keys())
     if keys:
-        preview = _coerce_text_answer(answers.get(keys[0]))
+        first_key = keys[0]
+        question = question_by_key.get(normalize_fill_link_key(first_key))
+        if question is not None:
+            label = humanize_fill_link_label(question.get("label") or first_key, fallback="Response")
+            question_type = _normalize_question_type(question.get("type"))
+            raw_value = answers.get(first_key)
+            if question_type in {"radio", "select"}:
+                selected_key = _coerce_text_answer(raw_value)
+                if selected_key:
+                    return label, _resolve_fill_link_option_label(question, selected_key)
+            if question_type == "multi_select":
+                selected_keys = _coerce_multi_value_answer(raw_value)
+                if selected_keys:
+                    return label, ", ".join(_resolve_fill_link_option_label(question, entry) for entry in selected_keys)
+            if question_type == "boolean":
+                selected = _coerce_boolean_answer(raw_value)
+                if selected is not None:
+                    return label, "Yes" if selected else "No"
+        preview = _coerce_text_answer(answers.get(first_key))
         if preview:
             return preview, None
     return "Response", None
@@ -1199,9 +1254,11 @@ def fill_link_public_status_message(status: Optional[str], closed_reason: Option
     if normalized_status == "active":
         return None
     if normalized_reason == "response_limit":
-        return "This link has reached its response limit."
+        return "This account has reached its monthly Fill By Link response limit."
     if normalized_reason == "downgrade_retention":
-        return "This link is no longer available because its saved form is queued for deletion after the owner's downgrade."
+        return "This link is unavailable because one or more source saved forms are locked on the owner's current plan."
+    if normalized_reason == "template_access_locked":
+        return "This link is unavailable because one or more source saved forms are locked on the owner's current plan."
     if normalized_reason == "downgrade_link_limit":
         return "This link is no longer active because free accounts can keep only one active Fill By Link."
     if normalized_reason == "template_deleted":

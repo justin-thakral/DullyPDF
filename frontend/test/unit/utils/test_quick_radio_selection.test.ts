@@ -68,6 +68,23 @@ describe('quickRadioSelection utils', () => {
     ).toEqual(['inside']);
   });
 
+  it('returns matched checkbox ids in page order instead of source array order', () => {
+    const fields = [
+      makeCheckbox('right', { x: 60, y: 10, width: 14, height: 14 }),
+      makeCheckbox('left', { x: 10, y: 10, width: 14, height: 14 }),
+      makeCheckbox('lower', { x: 20, y: 40, width: 14, height: 14 }),
+    ];
+
+    expect(
+      collectQuickRadioSelection(
+        fields,
+        { x: 0, y: 0, width: 120, height: 80 },
+        { x: 80, y: 50 },
+        'precise',
+      ),
+    ).toEqual(['left', 'right', 'lower']);
+  });
+
   it('supports single-click selection when the pointer lands inside a checkbox', () => {
     const fields = [
       makeCheckbox('inside', { x: 10, y: 10, width: 14, height: 14 }),

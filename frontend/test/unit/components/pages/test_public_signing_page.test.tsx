@@ -11,6 +11,7 @@ vi.mock('../../../../src/services/api', () => ({
     startPublicSigningSession: vi.fn(),
     sendPublicSigningVerificationCode: vi.fn(),
     verifyPublicSigningVerificationCode: vi.fn(),
+    getPublicSigningConsumerAccessBlob: vi.fn(),
     getPublicSigningDocumentBlob: vi.fn(),
     issuePublicSigningArtifactDownload: vi.fn(),
     downloadPublicSigningFile: vi.fn(),
@@ -75,6 +76,11 @@ describe('PublicSigningPage', () => {
     vi.stubGlobal('open', vi.fn());
     URL.createObjectURL = vi.fn(() => 'blob:signing-document');
     URL.revokeObjectURL = vi.fn();
+    vi.mocked(ApiService.getPublicSigningConsumerAccessBlob).mockResolvedValue({
+      blob: new Blob(['consumer-access']),
+      filename: 'consumer-access-check.pdf',
+      contentType: 'application/pdf',
+    });
     vi.mocked(ApiService.getPublicSigningDocumentBlob).mockResolvedValue({
       blob: new Blob(['pdf']),
       filename: 'signing-document.pdf',
@@ -169,7 +175,9 @@ describe('PublicSigningPage', () => {
     await user.click(screen.getByLabelText('I adopt this signature and sign this exact record electronically.'));
     await user.click(screen.getByRole('button', { name: 'Finish Signing' }));
     await waitFor(() => {
-      expect(ApiService.completePublicSigningRequest).toHaveBeenCalledWith('token-1', 'session-token-1');
+      expect(ApiService.completePublicSigningRequest).toHaveBeenCalledWith('token-1', 'session-token-1', {
+        intentConfirmed: true,
+      });
     });
 
     expect(await screen.findByText(/This signing request was completed/i)).toBeTruthy();
@@ -258,6 +266,90 @@ describe('PublicSigningPage', () => {
     });
     expect(ApiService.downloadPublicSigningFile).not.toHaveBeenCalled();
     expect(await screen.findByText('Artifact download expired. Reload the page and try again.')).toBeTruthy();
+  });
+
+  it('collects company authority fields before completing a company-binding request', async () => {
+    const user = userEvent.setup();
+    const readyForComplete = buildRequest({
+      companyBindingEnabled: true,
+      authorityAttestationVersion: 'dullypdf-company-authority-v1',
+      authorityAttestationText: (
+        'I represent that I am authorized to sign this document on behalf of the named company or organization '
+        + 'and to bind that entity to this electronic record.'
+      ),
+      reviewedAt: '2026-03-24T12:03:00Z',
+      signatureAdoptedAt: '2026-03-24T12:04:00Z',
+      signatureAdoptedName: 'Alex Signer',
+    });
+    vi.mocked(ApiService.getPublicSigningRequest).mockResolvedValue(readyForComplete);
+    vi.mocked(ApiService.startPublicSigningSession).mockResolvedValue({
+      request: readyForComplete,
+      session: { id: 'session-1', token: 'session-token-1', expiresAt: '2026-03-24T13:02:00Z' },
+    });
+    vi.mocked(ApiService.completePublicSigningRequest).mockResolvedValue(
+      buildRequest({
+        companyBindingEnabled: true,
+        reviewedAt: '2026-03-24T12:03:00Z',
+        signatureAdoptedAt: '2026-03-24T12:04:00Z',
+        signatureAdoptedName: 'Alex Signer',
+        representativeTitle: 'General Counsel',
+        representativeCompanyName: 'Acme, Inc.',
+        authorityAttestedAt: '2026-03-24T12:05:00Z',
+        status: 'completed',
+        statusMessage: 'This signing request has already been completed.',
+        completedAt: '2026-03-24T12:05:00Z',
+      }),
+    );
+
+    render(<PublicSigningPage token="token-company" />);
+
+    expect(await screen.findByLabelText('Representative title')).toBeTruthy();
+    const finishButton = screen.getByRole('button', { name: 'Finish Signing' }) as HTMLButtonElement;
+    expect(finishButton.disabled).toBe(true);
+
+    await user.type(screen.getByLabelText('Representative title'), 'General Counsel');
+    await user.type(screen.getByLabelText('Company or organization name'), 'Acme, Inc.');
+    await user.click(screen.getByRole('checkbox', { name: /authorized to sign this document on behalf of the named company/i }));
+    await user.click(screen.getByLabelText('I adopt this signature and sign this exact record electronically.'));
+
+    expect(finishButton.disabled).toBe(false);
+    await user.click(finishButton);
+
+    await waitFor(() => {
+      expect(ApiService.completePublicSigningRequest).toHaveBeenCalledWith('token-company', 'session-token-1', {
+        intentConfirmed: true,
+        authorityConfirmed: true,
+        representativeTitle: 'General Counsel',
+        representativeCompanyName: 'Acme, Inc.',
+      });
+    });
+  });
+
+  it('falls back to the current tab when popup blocking prevents opening the immutable PDF', async () => {
+    const user = userEvent.setup();
+    vi.mocked(window.open)
+      .mockReturnValueOnce(null)
+      .mockReturnValueOnce({} as Window);
+    vi.mocked(ApiService.getPublicSigningRequest).mockResolvedValue(buildRequest());
+    vi.mocked(ApiService.startPublicSigningSession).mockResolvedValue({
+      request: buildRequest({ openedAt: '2026-03-24T12:02:00Z' }),
+      session: { id: 'session-1', token: 'session-token-1', expiresAt: '2026-03-24T13:02:00Z' },
+    });
+
+    render(<PublicSigningPage token="token-popup-blocked" />);
+
+    const openButton = await screen.findByRole('button', { name: 'Open document in new tab' });
+    await waitFor(() => {
+      expect((openButton as HTMLButtonElement).disabled).toBe(false);
+    });
+
+    await user.click(openButton);
+
+    await waitFor(() => {
+      expect(window.open).toHaveBeenNthCalledWith(1, 'blob:signing-document', '_blank', 'noopener,noreferrer');
+      expect(window.open).toHaveBeenNthCalledWith(2, 'blob:signing-document', '_self');
+    });
+    expect(screen.queryByText(/Browser popup blocking prevented opening the PDF/i)).toBeNull();
   });
 
   it('allows adopting the recorded signer name as the default signature style', async () => {
@@ -517,7 +609,7 @@ describe('PublicSigningPage', () => {
 
     const consentButton = await screen.findByRole('button', { name: 'I consent to electronic records' });
     expect((consentButton as HTMLButtonElement).disabled).toBe(true);
-    expect(screen.getByTitle('Consumer access check PDF')).toBeTruthy();
+    expect(await screen.findByTitle('Consumer access check PDF')).toBeTruthy();
     expect(screen.getByText(/Use the paper\/manual fallback option on this page/i)).toBeTruthy();
     expect(screen.getByText(/Withdraw before completion to stop the electronic process/i)).toBeTruthy();
     expect(screen.getByText(/Manual follow-up is required after withdrawal/i)).toBeTruthy();
@@ -528,6 +620,12 @@ describe('PublicSigningPage', () => {
     const accessCodeInput = screen.getByLabelText('Access code');
     expect(accessCodeInput.getAttribute('id')).toBe('public-signing-access-code');
     expect(accessCodeInput.getAttribute('name')).toBe('accessCode');
+    await waitFor(() => {
+      expect(ApiService.getPublicSigningConsumerAccessBlob).toHaveBeenCalledWith(
+        'token-consumer',
+        'session-token-consumer',
+      );
+    });
 
     await user.type(accessCodeInput, 'abc123');
     expect((screen.getByRole('button', { name: 'I consent to electronic records' }) as HTMLButtonElement).disabled).toBe(false);

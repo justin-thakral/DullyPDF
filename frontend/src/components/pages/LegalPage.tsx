@@ -142,14 +142,14 @@ const PRIVACY_COPY: LegalCopy = {
           <p>
             Session data and request logs are retained only for limited periods configured for performance and
             troubleshooting. Contact messages are retained as needed to respond to you. Saved forms normally remain
-            stored until you delete them, but subscription downgrades can trigger a grace-period delete queue when an
-            account holds more saved forms than the free tier allows.
+            stored until you delete them. If a subscription downgrade leaves an account above the base saved-form cap,
+            DullyPDF can lock access to some saved forms while still preserving the stored records.
           </p>
           <p>
-            During that downgrade grace period, DullyPDF keeps the free-tier allotment of saved forms, keeps the
-            queued remainder for 30 days, and shows an in-product warning so the account owner can swap which saved
-            forms stay, delete the queued set immediately, or reactivate Pro. If Pro is reactivated before the grace
-            period ends, the pending delete queue is cleared.
+            Under the current base-plan policy, DullyPDF keeps the earliest-created saved forms up to the base limit
+            accessible and marks the remainder locked in place until the account upgrades again. Related Fill By Link,
+            group, API Fill, and signing draft flows can be blocked while a source template is locked, but the stored
+            records are preserved instead of being purged as part of the downgrade itself.
           </p>
         </>
       ),

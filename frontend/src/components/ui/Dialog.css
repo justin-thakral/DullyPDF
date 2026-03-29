@@ -28,15 +28,54 @@ body.ui-dialog-open {
 
 .ui-dialog__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 0.85rem;
 }
 
 .ui-dialog__title {
   margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
   font-family: var(--font-display);
   font-size: 1.2rem;
   color: var(--ink-900);
+}
+
+.ui-dialog__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  border-radius: 999px;
+  background: rgba(254, 226, 226, 0.92);
+  color: #b91c1c;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+.ui-dialog__close:hover {
+  background: rgba(254, 202, 202, 0.98);
+  border-color: rgba(220, 38, 38, 0.34);
+  color: #991b1b;
+  transform: scale(1.03);
+}
+
+.ui-dialog__close:focus-visible {
+  outline: 2px solid rgba(220, 38, 38, 0.32);
+  outline-offset: 2px;
 }
 
 .ui-dialog__message {

@@ -130,6 +130,7 @@ async def prepare_public_signing_completion(
     source_pdf_bytes: bytes,
     existing_events: Iterable[Any],
     build_bucket_uri,
+    completion_updates: Optional[Dict[str, Any]] = None,
 ) -> PreparedPublicSigningCompletion:
     completed_verification_method = record.verification_method if session.verification_completed_at else None
     completed_verification_completed_at = session.verification_completed_at if session.verification_completed_at else None
@@ -166,6 +167,7 @@ async def prepare_public_signing_completion(
     )
     audit_receipt_bucket_path = build_bucket_uri(audit_receipt_object_path)
     signed_pdf_sha256 = sha256_hex_for_bytes(digitally_signed_pdf.pdf_bytes)
+    normalized_completion_updates = dict(completion_updates or {})
 
     completed_record = replace(
         record,
@@ -191,6 +193,7 @@ async def prepare_public_signing_completion(
         audit_manifest_bucket_path=audit_manifest_bucket_path,
         audit_receipt_bucket_path=audit_receipt_bucket_path,
         artifacts_generated_at=completed_at,
+        **normalized_completion_updates,
     )
     synthetic_completed_event = {
         "eventType": SIGNING_EVENT_COMPLETED,
@@ -204,6 +207,9 @@ async def prepare_public_signing_completion(
             "sourceVersion": record.source_version,
             "adoptedName": record.signature_adopted_name,
             "adoptedMode": getattr(record, "signature_adopted_mode", None),
+            "representativeTitle": normalized_completion_updates.get("representative_title"),
+            "representativeCompanyName": normalized_completion_updates.get("representative_company_name"),
+            "authorityAttestedAt": normalized_completion_updates.get("authority_attested_at"),
             "signatureImageSha256": getattr(record, "signature_adopted_image_sha256", None),
             "signedPdfSha256": signed_pdf_sha256,
             "pdfDigitalSignatureMethod": digitally_signed_pdf.signature_info.signature_method,
@@ -246,6 +252,7 @@ async def prepare_public_signing_completion(
         "completed_verification_method": completed_verification_method,
         "completed_verification_completed_at": completed_verification_completed_at,
         "completed_verification_session_id": completed_verification_session_id,
+        **normalized_completion_updates,
     }
     return PreparedPublicSigningCompletion(
         completed_at=completed_at,

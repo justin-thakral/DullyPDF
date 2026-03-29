@@ -193,6 +193,11 @@ export function buildPublicSigningFacts(
       className: 'public-signing-page__fact',
     },
     {
+      label: 'Company binding',
+      value: request.companyBindingEnabled ? 'Attestation required' : 'Not requested',
+      className: 'public-signing-page__fact',
+    },
+    {
       label: 'Anchors',
       value: String(request.anchors.length),
       className: 'public-signing-page__fact',

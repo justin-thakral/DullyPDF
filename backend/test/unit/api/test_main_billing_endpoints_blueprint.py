@@ -2359,9 +2359,10 @@ def test_billing_webhook_pro_checkout_card_outcomes_only_promote_paid_sessions(
     mocker.patch.object(app_main, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2376,13 +2377,16 @@ def test_billing_webhook_pro_checkout_card_outcomes_only_promote_paid_sessions(
     if expect_pro_activation:
         activate_mock.assert_called_once()
         assert activate_mock.call_args.kwargs["stripe_event_id"] == "checkout_session:cs_test_123"
-        assert activate_mock.call_args.kwargs["subscription_id"] == "sub_123"
-        assert activate_mock.call_args.kwargs["subscription_status"] == "active"
-        assert activate_mock.call_args.kwargs["cancel_at_period_end"] is False
-        assert activate_mock.call_args.kwargs["cancel_at"] is None
-        assert activate_mock.call_args.kwargs["current_period_end"] is None
+        assert activate_mock.call_args.kwargs["reset_monthly_credits"] is True
+        set_subscription_mock.assert_called_once()
+        assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
+        assert set_subscription_mock.call_args.kwargs["subscription_status"] == "active"
+        assert set_subscription_mock.call_args.kwargs["cancel_at_period_end"] is False
+        assert set_subscription_mock.call_args.kwargs["cancel_at"] is None
+        assert set_subscription_mock.call_args.kwargs["current_period_end"] is None
     else:
         activate_mock.assert_not_called()
+        set_subscription_mock.assert_not_called()
     complete_mock.assert_called_once_with(event_id)
     clear_mock.assert_not_called()
 
@@ -2410,9 +2414,10 @@ def test_billing_webhook_pro_checkout_uses_client_reference_user_when_metadata_m
     mocker.patch.object(app_main, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2426,6 +2431,47 @@ def test_billing_webhook_pro_checkout_uses_client_reference_user_when_metadata_m
     assert response.json() == {"received": True}
     activate_mock.assert_called_once()
     assert activate_mock.call_args.args[0] == "user-1"
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
+    complete_mock.assert_called_once_with(event_id)
+    clear_mock.assert_not_called()
+
+
+def test_billing_webhook_pro_checkout_restores_downgrade_managed_links_after_activation(client, app_main, mocker) -> None:
+    event_id = "evt_pro_restore_links"
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value=_build_checkout_session_completed_event(
+            event_id=event_id,
+            checkout_kind="pro_monthly",
+            payment_status="paid",
+            card_number=STRIPE_TEST_CARD_SUCCESS,
+        ),
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
+    activate_mock = mocker.patch.object(
+        app_main,
+        "activate_pro_membership",
+        return_value=True,
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    restore_links_mock = mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=["link-1"])
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+    clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"received": True}
+    activate_mock.assert_called_once()
+    set_subscription_mock.assert_called_once()
+    restore_links_mock.assert_called_once_with("user-1")
     complete_mock.assert_called_once_with(event_id)
     clear_mock.assert_not_called()
 
@@ -2501,8 +2547,7 @@ def test_billing_webhook_subscription_updated_cancel_at_period_end_keeps_pro_rol
     mocker.patch.object(app_main, "start_billing_event", return_value=True)
     mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
     set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
-    set_role_mock = mocker.patch.object(app_main, "set_user_role", return_value=None)
-    clear_retention_mock = mocker.patch.object(app_main, "clear_user_downgrade_retention", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
     downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
@@ -2517,10 +2562,57 @@ def test_billing_webhook_subscription_updated_cancel_at_period_end_keeps_pro_rol
     assert response.json() == {"received": True}
     set_subscription_mock.assert_called_once()
     assert set_subscription_mock.call_args.kwargs["cancel_at_period_end"] is True
-    set_role_mock.assert_called_once_with("user-1", "pro")
-    clear_retention_mock.assert_called_once_with("user-1")
+    activate_mock.assert_called_once()
+    assert activate_mock.call_args.args[0] == "user-1"
+    assert activate_mock.call_args.kwargs["stripe_event_id"] == "evt_3b"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
     downgrade_mock.assert_not_called()
     complete_mock.assert_called_once_with("evt_3b")
+    clear_mock.assert_not_called()
+
+
+def test_billing_webhook_subscription_updated_active_restores_downgrade_managed_links(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_3b_restore",
+            "type": "customer.subscription.updated",
+            "data": {
+                "object": {
+                    "id": "sub_1",
+                    "status": "active",
+                    "cancel_at_period_end": False,
+                    "metadata": {"userId": "user-1"},
+                    "customer": "cus_1",
+                    "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    restore_links_mock = mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=["link-1"])
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+    clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"received": True}
+    set_subscription_mock.assert_called_once()
+    activate_mock.assert_called_once()
+    assert activate_mock.call_args.args[0] == "user-1"
+    assert activate_mock.call_args.kwargs["stripe_event_id"] == "evt_3b_restore"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
+    restore_links_mock.assert_called_once_with("user-1")
+    complete_mock.assert_called_once_with("evt_3b_restore")
     clear_mock.assert_not_called()
 
 
@@ -2546,7 +2638,7 @@ def test_billing_webhook_subscription_lifecycle_ignores_non_pro_subscription_eve
     mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
     mocker.patch.object(app_main, "is_pro_price_id", return_value=False)
     set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
-    set_role_mock = mocker.patch.object(app_main, "set_user_role", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
     downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
@@ -2560,7 +2652,7 @@ def test_billing_webhook_subscription_lifecycle_ignores_non_pro_subscription_eve
     assert response.status_code == 200
     assert response.json() == {"received": True}
     set_subscription_mock.assert_not_called()
-    set_role_mock.assert_not_called()
+    activate_mock.assert_not_called()
     downgrade_mock.assert_not_called()
     complete_mock.assert_called_once_with("evt_3c")
     clear_mock.assert_not_called()
@@ -2605,7 +2697,7 @@ def test_billing_webhook_subscription_lifecycle_uses_stored_pro_record_when_even
     )
     mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
     set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
-    set_role_mock = mocker.patch.object(app_main, "set_user_role", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
     downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
@@ -2619,7 +2711,7 @@ def test_billing_webhook_subscription_lifecycle_uses_stored_pro_record_when_even
     assert response.status_code == 200
     assert response.json() == {"received": True}
     set_subscription_mock.assert_called_once()
-    set_role_mock.assert_not_called()
+    activate_mock.assert_not_called()
     downgrade_mock.assert_called_once_with("user-1")
     complete_mock.assert_called_once_with("evt_3_non_pro_with_pro_record")
     clear_mock.assert_not_called()
@@ -2647,7 +2739,7 @@ def test_billing_webhook_subscription_lifecycle_missing_user_returns_retryable(c
     mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value=None)
     mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
     set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
-    set_role_mock = mocker.patch.object(app_main, "set_user_role", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
     downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
@@ -2661,7 +2753,7 @@ def test_billing_webhook_subscription_lifecycle_missing_user_returns_retryable(c
     assert response.status_code == 503
     assert "awaiting subscription linkage" in response.text
     set_subscription_mock.assert_not_called()
-    set_role_mock.assert_not_called()
+    activate_mock.assert_not_called()
     downgrade_mock.assert_not_called()
     complete_mock.assert_not_called()
     clear_mock.assert_called_once_with("evt_3_missing_user")
@@ -2778,7 +2870,7 @@ def test_billing_webhook_subscription_lifecycle_non_pro_missing_user_is_noop(cli
     clear_mock.assert_not_called()
 
 
-def test_billing_webhook_invoice_paid_resets_pro_monthly_pool(client, app_main, mocker) -> None:
+def test_billing_webhook_invoice_paid_syncs_pro_membership_without_forcing_pool_reset(client, app_main, mocker) -> None:
     mocker.patch.object(
         app_main,
         "construct_webhook_event",
@@ -2801,9 +2893,10 @@ def test_billing_webhook_invoice_paid_resets_pro_monthly_pool(client, app_main, 
     mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2816,7 +2909,56 @@ def test_billing_webhook_invoice_paid_resets_pro_monthly_pool(client, app_main, 
     assert response.status_code == 200
     activate_mock.assert_called_once()
     assert activate_mock.call_args.kwargs["stripe_event_id"] == "evt_4"
-    assert activate_mock.call_args.kwargs["subscription_id"] == "sub_123"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
+    assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+
+
+def test_billing_webhook_invoice_paid_restores_downgrade_managed_links(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_4_restore_links",
+            "type": "invoice.paid",
+            "data": {
+                "object": {
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value="user-1")
+    mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    activate_mock = mocker.patch.object(
+        app_main,
+        "activate_pro_membership",
+        return_value=True,
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    restore_links_mock = mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=["link-1"])
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+    clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"received": True}
+    activate_mock.assert_called_once()
+    set_subscription_mock.assert_called_once()
+    restore_links_mock.assert_called_once_with("user-1")
+    complete_mock.assert_called_once_with("evt_4_restore_links")
+    clear_mock.assert_not_called()
 
 
 def test_billing_webhook_invoice_paid_missing_prices_is_noop(client, app_main, mocker) -> None:
@@ -2852,9 +2994,10 @@ def test_billing_webhook_invoice_paid_missing_prices_is_noop(client, app_main, m
     mocker.patch.object(app_main, "is_pro_price_id", return_value=False)
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2867,6 +3010,7 @@ def test_billing_webhook_invoice_paid_missing_prices_is_noop(client, app_main, m
     assert response.status_code == 200
     assert response.json() == {"received": True}
     activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
     complete_mock.assert_called_once_with("evt_4_no_prices")
     clear_mock.assert_not_called()
 
@@ -2904,9 +3048,10 @@ def test_billing_webhook_invoice_paid_uses_stored_pro_price_when_lines_missing(c
     mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2919,7 +3064,9 @@ def test_billing_webhook_invoice_paid_uses_stored_pro_price_when_lines_missing(c
     assert response.status_code == 200
     activate_mock.assert_called_once()
     assert activate_mock.call_args.kwargs["stripe_event_id"] == "evt_4_fallback"
-    assert activate_mock.call_args.kwargs["subscription_id"] == "sub_789"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_789"
     complete_mock.assert_called_once_with("evt_4_fallback")
     clear_mock.assert_not_called()
 
@@ -2947,9 +3094,10 @@ def test_billing_webhook_invoice_paid_selects_pro_price_from_mixed_invoice_lines
     mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2962,7 +3110,8 @@ def test_billing_webhook_invoice_paid_selects_pro_price_from_mixed_invoice_lines
     assert response.status_code == 200
     assert response.json() == {"received": True}
     activate_mock.assert_called_once()
-    assert activate_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
     complete_mock.assert_called_once_with("evt_4_mixed")
     clear_mock.assert_not_called()
 
@@ -2989,9 +3138,10 @@ def test_billing_webhook_invoice_paid_missing_user_returns_retryable(client, app
     mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value=None)
     activate_mock = mocker.patch.object(
         app_main,
-        "activate_pro_membership_with_subscription",
+        "activate_pro_membership",
         return_value=True,
     )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
     complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -3004,6 +3154,7 @@ def test_billing_webhook_invoice_paid_missing_user_returns_retryable(client, app
     assert response.status_code == 503
     assert "awaiting subscription linkage" in response.text
     activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
     complete_mock.assert_not_called()
     clear_mock.assert_called_once_with("evt_4_missing_user")
 

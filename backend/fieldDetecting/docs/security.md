@@ -128,6 +128,11 @@ Repo hygiene:
 - Revocation checks are enabled in prod by default (`FIREBASE_CHECK_REVOKED` or `ENV=prod`).
 - Password-based logins are blocked until the email is verified; OAuth providers are treated as verified.
 - Schema metadata is stored without CSV/Excel/JSON rows or field values.
+- OpenAI rename/remap now fail closed on same-user stale-session mistakes: the client sends the
+  active PDF SHA-256, sessions persist the original uploaded source-PDF SHA-256, and the backend
+  rejects Rename/Map with `409` before rate limits, credits, or OpenAI work when those hashes do
+  not match. This stays stable even when detection preflight decrypts an empty-password PDF into a
+  normalized byte stream for backend processing.
 - Template Fill By Link can store a publish-time respondent-download snapshot containing the saved-form PDF storage path, normalized field payload, and deterministic fill rules (`checkboxRules`, `radioGroups`, `textTransformRules`). Public respondent downloads materialize from that frozen snapshot plus the stored respondent answer record; group links do not expose public PDF downloads.
 - Storage paths are allowlisted and validated in `backend/firebaseDB/storage_service.py`.
 

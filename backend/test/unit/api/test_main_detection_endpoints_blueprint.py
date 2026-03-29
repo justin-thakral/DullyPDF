@@ -1,9 +1,11 @@
 import io
+import hashlib
 
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 import pytest
 
+import backend.services.detection_service as detection_service
 from backend.detection.status import (
     DETECTION_STATUS_COMPLETE,
     DETECTION_STATUS_FAILED,
@@ -144,6 +146,41 @@ def test_detect_fields_tasks_mode_enqueue_path(client, app_main, base_user, mock
     )
     assert response.status_code == 200
     assert response.json()["status"] == DETECTION_STATUS_QUEUED
+
+
+def test_detect_fields_passes_original_upload_hash_when_preflight_decrypts_pdf(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_detect_auth(mocker, app_main, base_user)
+    original_pdf_bytes = b"%PDF-1.4\nencrypted-upload\n"
+    decrypted_pdf_bytes = b"%PDF-1.4\ndecrypted-upload\n"
+    mocker.patch.object(app_main, "_read_upload_bytes", return_value=original_pdf_bytes)
+    mocker.patch.object(
+        app_main,
+        "_validate_pdf_for_detection",
+        return_value=PdfValidationResult(pdf_bytes=decrypted_pdf_bytes, page_count=1, was_decrypted=True),
+    )
+    mocker.patch.object(app_main, "_resolve_detect_max_pages", return_value=10)
+    mocker.patch.object(app_main, "_resolve_detection_mode", return_value="tasks")
+    enqueue_mock = mocker.patch.object(
+        app_main,
+        "_enqueue_detection_job",
+        return_value={"sessionId": "sess-q", "status": DETECTION_STATUS_QUEUED, "pipeline": "commonforms"},
+    )
+
+    response = client.post(
+        "/detect-fields",
+        files={"file": ("x.pdf", original_pdf_bytes, "application/pdf")},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    assert enqueue_mock.call_args.args[0] == decrypted_pdf_bytes
+    assert enqueue_mock.call_args.kwargs["source_pdf_sha256"] == hashlib.sha256(original_pdf_bytes).hexdigest()
 
 
 def test_detect_fields_passes_openai_prewarm_flags_to_enqueue(client, app_main, base_user, mocker, auth_headers) -> None:
@@ -295,12 +332,14 @@ def test_enqueue_detection_job_failure_marks_session_failed(app_main, base_user,
     mocker.patch.object(app_main, "_store_session_entry", side_effect=_store)
     mocker.patch.object(app_main, "record_detection_request", return_value=None)
     mocker.patch.object(app_main, "enqueue_detection_task", side_effect=RuntimeError("queue down"))
+    logger_exception_mock = mocker.patch.object(detection_service.logger, "exception", return_value=None)
     update_session_mock = mocker.patch.object(app_main, "_update_session_entry", return_value=None)
     update_req_mock = mocker.patch.object(app_main, "update_detection_request", return_value=None)
 
     with pytest.raises(HTTPException) as ctx:
         app_main._enqueue_detection_job(b"%PDF", "sample.pdf", base_user, page_count=1)
     assert ctx.value.status_code == 500
+    logger_exception_mock.assert_called_once()
     assert update_session_mock.called
     assert update_req_mock.call_args.kwargs["status"] == DETECTION_STATUS_FAILED
 
@@ -351,15 +390,30 @@ def test_get_detection_status_ownership_and_transitions(client, app_main, base_u
         return_value={
             "user_id": base_user.app_user_id,
             "detection_status": DETECTION_STATUS_COMPLETE,
+            "source_pdf_sha256": "a" * 64,
             "fields_path": "gs://bucket/fields.json",
             "result_path": "gs://bucket/result.json",
+            "checkbox_rules_path": "gs://bucket/checkbox-rules.json",
+            "text_transform_rules_path": "gs://bucket/text-rules.json",
         },
     )
-    mocker.patch.object(app_main, "download_session_json", side_effect=[[{"name": "f1"}], {"pipeline": "commonforms"}])
+    mocker.patch.object(
+        app_main,
+        "download_session_json",
+        side_effect=[
+            [{"name": "f1"}],
+            {"pipeline": "commonforms"},
+            [{"databaseField": "consent", "groupKey": "consent_group"}],
+            [{"targetField": "f1", "operation": "copy", "sources": ["first_name"]}],
+        ],
+    )
     response = client.get("/detect-fields/sess-1", headers=auth_headers)
     assert response.status_code == 200
+    assert response.json()["sourcePdfSha256"] == "a" * 64
     assert response.json()["fieldCount"] == 1
     assert response.json()["fields"] == [{"name": "f1"}]
+    assert response.json()["checkboxRules"] == [{"databaseField": "consent", "groupKey": "consent_group"}]
+    assert response.json()["textTransformRules"] == [{"targetField": "f1", "operation": "copy", "sources": ["first_name"]}]
 
 
 def test_legacy_detection_routes_and_hidden_when_disabled(client, app_main, base_user, mocker, auth_headers) -> None:

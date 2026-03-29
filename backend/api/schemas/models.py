@@ -6,6 +6,8 @@ from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from backend.services.pdf_service import normalize_optional_pdf_sha256
+
 
 CONTACT_ISSUE_LABELS = {
     "bug_report": "Bug report",
@@ -109,7 +111,13 @@ class SchemaMappingRequest(BaseModel):
     templateId: Optional[str] = None
     templateFields: List[TemplateOverlayField]
     sessionId: Optional[str] = None
+    sourcePdfSha256: Optional[str] = None
     requestId: Optional[str] = Field(default=None, min_length=1, max_length=120)
+
+    @field_validator("sourcePdfSha256", mode="before")
+    @classmethod
+    def _normalize_source_pdf_sha256(cls, value: Any) -> Optional[str]:
+        return normalize_optional_pdf_sha256(value)
 
 
 class RenameFieldsRequest(BaseModel):
@@ -118,7 +126,13 @@ class RenameFieldsRequest(BaseModel):
     sessionId: str = Field(..., min_length=1)
     schemaId: Optional[str] = None
     templateFields: Optional[List[TemplateOverlayField]] = None
+    sourcePdfSha256: Optional[str] = None
     requestId: Optional[str] = Field(default=None, min_length=1, max_length=120)
+
+    @field_validator("sourcePdfSha256", mode="before")
+    @classmethod
+    def _normalize_source_pdf_sha256(cls, value: Any) -> Optional[str]:
+        return normalize_optional_pdf_sha256(value)
 
 
 class SavedFormSessionRequest(BaseModel):
@@ -252,6 +266,7 @@ class SigningRequestCreateRequest(BaseModel):
     sourcePdfSha256: Optional[str] = Field(default=None, max_length=64)
     documentCategory: str = Field(..., min_length=1, max_length=160)
     esignEligibilityConfirmed: bool = False
+    companyBindingEnabled: bool = False
     manualFallbackEnabled: bool = True
     consumerPaperCopyProcedure: Optional[str] = Field(default=None, max_length=500)
     consumerPaperCopyFeeDescription: Optional[str] = Field(default=None, max_length=300)
@@ -370,8 +385,21 @@ class PublicSigningCompleteRequest(BaseModel):
     """Final signer attestation used to complete the ceremony."""
 
     intentConfirmed: bool = Field(..., description="Signer explicitly confirmed the final sign action.")
+    authorityConfirmed: bool = Field(default=False, description="Signer explicitly attested to company authority when required.")
+    representativeTitle: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    representativeCompanyName: Optional[str] = Field(default=None, min_length=1, max_length=200)
 
     model_config = {"extra": "ignore"}
+
+    @field_validator("representativeTitle", "representativeCompanyName", mode="before")
+    @classmethod
+    def _trim_company_authority_text(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            trimmed = " ".join(value.strip().split())
+            return trimmed if trimmed else None
+        return value
 
 
 class PublicSigningConsentWithdrawRequest(BaseModel):
@@ -483,6 +511,7 @@ class FillLinkSigningConfig(BaseModel):
     signatureMode: Optional[Literal["business", "consumer"]] = "business"
     documentCategory: Optional[str] = Field(default=None, min_length=1, max_length=160)
     esignEligibilityConfirmed: bool = False
+    companyBindingEnabled: bool = False
     manualFallbackEnabled: bool = True
     consumerPaperCopyProcedure: Optional[str] = Field(default=None, max_length=500)
     consumerPaperCopyFeeDescription: Optional[str] = Field(default=None, max_length=300)

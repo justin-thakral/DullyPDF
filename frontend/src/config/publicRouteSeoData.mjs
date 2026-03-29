@@ -3,6 +3,13 @@
  * generators. Keep user-facing public content in this module whenever it must
  * be reused by route metadata, sitemap generation, or static HTML rendering.
  */
+import {
+  FREE_PLAN_CREDITS,
+  FREE_PLAN_LIMITS,
+  PREMIUM_PLAN_CREDITS,
+  PREMIUM_PLAN_LIMITS,
+  formatPlanLimitCount,
+} from './planLimits.mjs';
 
 export const SITE_ORIGIN = 'https://dullypdf.com';
 export const DEFAULT_SOCIAL_IMAGE_PATH = '/DullyPDFLogoImproved.png';
@@ -337,8 +344,8 @@ const INTENT_PAGES = [
       'Pick a respondent later in the workspace and fill the source PDF on demand.',
     ],
     proofPoints: [
-      'Free includes 1 active published link and up to 5 accepted responses.',
-      'Premium unlocks a shareable link for every saved template with up to 10,000 responses per link.',
+      'Base includes monthly Fill By Link collection with 25 accepted responses across the account.',
+      'Premium unlocks high-volume Fill By Link collection with up to 10,000 accepted responses per month across the account.',
       'Respondent records can be reused through the same Search & Fill workflow before download.',
     ],
     articleSections: [
@@ -406,7 +413,7 @@ const INTENT_PAGES = [
       {
         question: 'How many Fill By Link responses are allowed on free and premium?',
         answer:
-          'Free includes 1 active link with 5 accepted responses. Premium supports a shareable link on every saved template and up to 10,000 accepted responses per link.',
+          'Base includes 25 accepted Fill By Link responses per month across the account. Premium supports up to 10,000 accepted responses per month across the account.',
       },
       {
         question: 'Can I publish one link for every template?',
@@ -2508,30 +2515,41 @@ const FEATURE_PLAN_PAGES = [
     navLabel: 'Free Features',
     heroTitle: 'Free DullyPDF Features for PDF-to-Form Setup',
     heroSummary:
-      'Start with unlimited PDF-to-form setup and the form builder, then use the free tier to validate your template workflow before upgrading for higher usage.',
+      `Start with unlimited PDF-to-form setup and validate one repeat workflow under the free account limits: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
     seoTitle: 'Free PDF Form Builder Features | DullyPDF',
     seoDescription:
-      'Review the free DullyPDF feature set, including unlimited PDF-to-form setup, form builder access, and the free Fill By Link limits before upgrading.',
+      `Review the free DullyPDF feature set, including unlimited PDF-to-form setup plus ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
     seoKeywords: ['free pdf form builder', 'free pdf to form tool', 'free fillable pdf builder', 'free pdf workflow software'],
     valuePoints: [
       'Unlimited PDF-to-form setup and access to the form builder.',
-      'A practical free tier for validating field detection, cleanup, and saved-template workflows.',
-      'Native Fill By Link support with 1 active published link and up to 5 accepted responses.',
-      'Signing stays available on free, with up to 10 signer requests per immutable document version.',
+      `Up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} pages when reopening an already-fillable PDF.`,
+      `Native Fill By Link plus API Fill on free: no active-link cap, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} fills per month, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} API pages per request.`,
+      `Signing stays available on free with ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
     ],
     detailSections: [
-      { title: 'Best fit for', items: ['Teams validating one workflow before rolling out larger intake or packet automation.', 'Owners who want to test field detection, editor cleanup, and mapping quality on real documents.', 'Users who need one live respondent link instead of a larger link portfolio.'] },
+      { title: 'Best fit for', items: ['Teams validating one workflow before rolling out larger intake or packet automation.', 'Owners who want to test field detection, editor cleanup, and mapping quality on real documents.', 'Users who need modest monthly respondent volume rather than high-throughput collection.'] },
       { title: 'Included workflow access', items: ['Upload PDFs up to 50MB and convert them into editable templates.', 'Use the form builder, field inspector, list panel, and saved-template workflow.', 'Run Search & Fill with local CSV, Excel, JSON, or stored respondent records once your template is mapped.'] },
-      { title: 'Free-tier limits that stay visible', items: ['Fill By Link: 1 active published link and 5 accepted responses per link.', 'Signing: up to 10 signer requests for one immutable document version.', 'OpenAI credits and some effective profile limits are enforced server-side and shown in Profile.', 'When you need higher usage, premium expands link capacity and monthly OpenAI credit access.'] },
+      {
+        title: 'Free-tier enforced limits',
+        items: [
+          `Saved forms: up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved templates.`,
+          `PDF processing: up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detection pages per PDF and ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} pages for already-fillable template uploads.`,
+          `Fill By Link: no active-link cap and ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account.`,
+          `API Fill: ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} pages per request.`,
+          `Signing: up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month.`,
+          `Credits: base OpenAI credits top back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when the balance is below that floor.`,
+        ],
+      },
       { title: 'How to validate the free tier properly', items: ['Build one recurring template and test it with a real document before judging the product.', 'Use the free tier to verify detection quality, editor cleanup, schema mapping readiness, and one complete fill loop.', 'Treat free as a workflow-validation tier, not as the final benchmark for high-volume operations.'] },
-      { title: 'When free is enough and when it is not', items: ['Free is enough when you are proving one workflow, training on a representative document, or running light respondent traffic.', 'Free becomes limiting when multiple templates need live links at once, response volume rises, or teams need a larger recurring credit budget.', 'The right upgrade moment is when the workflow is already validated and usage, not uncertainty, becomes the bottleneck.'] },
+      { title: 'When free is enough and when it is not', items: ['Free is enough when you are proving one workflow, training on a representative document, or running light respondent/API traffic.', 'Free becomes limiting when several templates need to stay saved, monthly response/API volume rises, or teams need a recurring credit budget.', 'The right upgrade moment is when the workflow is already validated and usage, not uncertainty, becomes the bottleneck.'] },
       { title: 'Free tier rollout path', items: ['Start with one canonical document instead of uploading every packet variation on day one.', 'Run detection, cleanup, rename or map if needed, then verify one representative fill before you judge the result.', 'Only after the template passes that QA loop should you publish a link, group related forms, or invite teammates into the workflow.'] },
-      { title: 'What stays free versus what consumes credits', items: ['Detection, editor cleanup, and the general template-building workflow remain the right place to learn the product before spending on AI steps.', 'Rename, map, and Rename + Map consume OpenAI credits according to the page-bucket formula shown in Profile.', 'Fill By Link response capacity, signer volume, and recurring credit access are the main reasons the free tier eventually stops being enough for production traffic.'] },
-      { title: 'Upgrade triggers worth watching', items: ['You need more than one live respondent workflow at a time.', 'Response volume is high enough that the five-response cap blocks normal operations.', 'Several templates are already validated and the team now needs recurring credits or higher publishing capacity rather than more experimentation.'] },
+      { title: 'What stays free versus what consumes credits', items: ['Detection, editor cleanup, saving, Fill By Link publishing, API Fill publishing, and the general template-building workflow stay available on free within the account caps above.', 'Rename, map, and Rename + Map consume OpenAI credits according to the page-bucket formula shown in Profile.', 'Saved-form count, live Fill By Link/API Fill capacity, signer volume, and credit pool size are the main reasons the free tier eventually stops being enough for production traffic.'] },
+      { title: 'Upgrade triggers worth watching', items: ['You need more than one live respondent workflow or more than one live API Fill endpoint at a time.', 'Response or API volume is high enough that the free caps block normal operations.', 'Several templates are already validated and the team now needs more saved-template capacity, recurring credits, or higher signing/publishing throughput rather than more experimentation.'] },
     ],
     faqs: [
       { question: 'Does free still let me convert PDFs into fillable templates?', answer: 'Yes. Free includes unlimited PDF-to-form setup plus the form builder so you can detect, clean up, and save reusable templates.' },
-      { question: 'What is the main free-tier Fill By Link limit?', answer: 'Free supports 1 active published link at a time, and each link accepts up to 5 responses before it closes.' },
+      { question: 'What is the main free-tier Fill By Link limit?', answer: `Free supports account-level Fill By Link collection with up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month.` },
+      { question: 'What are the main free API Fill and signing limits?', answer: `Free keeps API Fill at ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} pages per request, while signing stays at ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month.` },
       { question: 'Where do I confirm my current limits?', answer: 'The signed-in Profile view shows your effective account limits, billing status, and remaining credits.' },
       { question: 'Should I stay on free while I build my first workflow?', answer: 'Usually yes. The free tier is best used to validate one recurring template and one end-to-end process before deciding whether higher usage is justified.' },
     ],
@@ -2547,32 +2565,44 @@ const FEATURE_PLAN_PAGES = [
     navLabel: 'Premium Features',
     heroTitle: 'Premium DullyPDF Features for Higher-Usage Workflows',
     heroSummary:
-      'Premium is the higher-usage tier for teams running repeat PDF automation, larger Fill By Link traffic, and Stripe-backed account billing.',
+      `Premium is the higher-usage tier for teams running repeat PDF automation across more saved templates, more live links, higher API traffic, larger signing volume, and a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool.`,
     seoTitle: 'Premium PDF Automation Features and Billing | DullyPDF',
     seoDescription:
-      'Review premium DullyPDF features, including higher usage across the platform, expanded Fill By Link capacity, monthly OpenAI credits, and sign-in purchase options.',
+      `Review premium DullyPDF features, including ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly credits.`,
     seoKeywords: ['premium pdf automation software', 'pdf form builder subscription', 'fill by link premium plan', 'stripe pdf software billing'],
     valuePoints: [
-      'Higher usage across DullyPDF workflows instead of the lighter free-tier guardrails.',
-      'A shareable Fill By Link on every saved template with up to 10,000 accepted responses per link.',
-      'Signing scales to 1,000 signer requests for one immutable document version by default.',
+      `Up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} pages for already-fillable template uploads.`,
+      `No active Fill By Link cap and up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account.`,
+      `Up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active API Fill endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} pages per request.`,
+      `Signing scales to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, plus a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool.`,
       'Stripe-backed monthly or yearly purchase options when you are signed in.',
     ],
     detailSections: [
-      { title: 'Premium unlocks', items: ['Higher-usage access across PDF detection, template reuse, mapping, and Fill By Link workflows.', 'One shareable Fill By Link per saved template instead of the free single-link cap.', 'Up to 10,000 accepted responses per link for respondent-driven workflows.', 'Up to 1,000 signer requests for one immutable document version before the backend blocks more.'] },
-      { title: 'OpenAI and billing', items: ['Pro billing actions run through Stripe Checkout with monthly and yearly subscriptions.', 'Premium profiles receive a monthly OpenAI credit pool, and refill packs remain available from Profile.', 'Cancellation is managed from the signed-in profile billing section and is scheduled for period end.'] },
+      {
+        title: 'Premium plan limits',
+        items: [
+          `Saved forms: up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved templates.`,
+          `PDF processing: up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detection pages per PDF and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} pages for already-fillable template uploads.`,
+          `Fill By Link: no active-link cap and up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account.`,
+          `API Fill: up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} pages per request.`,
+          `Signing: up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month.`,
+          `Credits: ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} recurring monthly credits, with ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs available from Profile.`,
+        ],
+      },
+      { title: 'OpenAI and billing', items: ['Pro billing actions run through Stripe Checkout with monthly and yearly subscriptions.', `Premium profiles receive a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs remain available from Profile.`, 'Cancellation is managed from the signed-in profile billing section and is scheduled for period end.'] },
       { title: 'Best fit for', items: ['Teams operating repeat intake or packet workflows across many saved templates.', 'Owners publishing multiple public respondent links at once.', 'Accounts that need higher sustained usage instead of one-off free-tier validation.'] },
-      { title: 'Operational gains premium is meant to unlock', items: ['Premium is about removing usage friction after the workflow already works, not about replacing setup discipline.', 'The biggest gains usually come from running multiple live templates, larger respondent volume, recurring credits, and fewer publish-capacity constraints.', 'It is best for teams that already know which templates matter and need higher throughput rather than more experimentation.'] },
+      { title: 'Operational gains premium is meant to unlock', items: ['Premium is about removing usage friction after the workflow already works, not about replacing setup discipline.', 'The biggest gains usually come from running more saved templates, more live links and endpoints, larger respondent/API volume, recurring credits, and fewer publish-capacity constraints.', 'It is best for teams that already know which templates matter and need higher throughput rather than more experimentation.'] },
       { title: 'How to decide between monthly and yearly billing', items: ['Choose monthly when the workflow is recent, seasonal, or still being proven across the team.', 'Choose yearly when the template library is already part of ongoing operations and usage is expected to remain steady.', 'Billing decisions should follow proven recurring usage, not just interest in the feature list.'] },
-      { title: 'When premium is justified', items: ['Premium makes sense when the team already trusts several templates and the real bottleneck is usage capacity rather than setup uncertainty.', 'It is a better fit for multi-template operations, repeat respondent collection, and teams that need predictable monthly credit access instead of occasional AI runs.', 'If the workflow is still unproven, free remains the better evaluation tier. Premium should follow validated demand, not replace validation.'] },
-      { title: 'What changes operationally after upgrade', items: ['Owners can keep multiple respondent workflows live without juggling one active link at a time.', 'Teams can absorb higher response and signer volume without hitting free-tier guardrails in the middle of active work.', 'Recurring credits and Stripe-backed billing make the template library easier to support as an ongoing operational system instead of a one-off experiment.'] },
+      { title: 'When premium is justified', items: ['Premium makes sense when the team already trusts several templates and the real bottleneck is usage capacity rather than setup uncertainty.', 'It is a better fit for multi-template operations, repeat respondent collection, higher API throughput, and teams that need predictable monthly credit access instead of occasional AI runs.', 'If the workflow is still unproven, free remains the better evaluation tier. Premium should follow validated demand, not replace validation.'] },
+      { title: 'What changes operationally after upgrade', items: ['Owners can keep more saved templates, more respondent workflows, and more API endpoints live at the same time.', 'Teams can absorb higher response, API, and signer volume without hitting free-tier guardrails in the middle of active work.', 'Recurring credits and Stripe-backed billing make the template library easier to support as an ongoing operational system instead of a one-off experiment.'] },
       { title: 'Monthly versus yearly by workflow maturity', items: ['Monthly is safer when the rollout is recent, seasonal, or still concentrated in one department.', 'Yearly becomes more rational once the template library is part of ordinary operations and several teams or recurring workflows depend on it.', 'The right subscription horizon should follow workflow maturity, not just a pricing preference.'] },
     ],
     faqs: [
-      { question: 'What is the biggest premium Fill By Link difference?', answer: 'Premium removes the single-link cap by allowing a shareable link on every saved template and raises response capacity to 10,000 per link.' },
+      { question: 'What is the biggest premium Fill By Link difference?', answer: `Premium keeps the same no-active-link model as free but raises account-level Fill By Link capacity to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month.` },
+      { question: 'How much API Fill capacity comes with premium?', answer: `Premium supports up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} pages per request.` },
       { question: 'Can I buy premium from this page?', answer: 'Yes. When you are signed in and billing is available, this page can launch the Stripe Checkout flow for monthly or yearly premium.' },
       { question: 'What if I already have premium?', answer: 'The page will show that the current account already has premium access instead of offering another upgrade button.' },
-      { question: 'When is premium worth the upgrade?', answer: 'Premium is usually worth it once the workflow is already validated and the limiting factor becomes response volume, link capacity, recurring credits, or the need to operate many saved templates in parallel.' },
+      { question: 'When is premium worth the upgrade?', answer: 'Premium is usually worth it once the workflow is already validated and the limiting factor becomes saved-template capacity, live link or endpoint count, response volume, signing volume, recurring credits, or the need to operate many workflows in parallel.' },
     ],
     relatedLinks: [
       { label: 'Free Features', href: '/free-features' },
@@ -3085,13 +3115,13 @@ for (const page of FEATURE_PLAN_PAGES) {
   const planBodyParagraphs = page.key === 'free-features'
     ? [
         page.heroSummary,
-        'The free tier is best used as a workflow-validation path: one recurring document, one saved template, one fill loop, and one deliberate decision about whether higher usage is actually justified.',
-        'That makes the page more than a pricing summary. It explains when free is strategically enough and when usage demand, not setup uncertainty, is what should trigger an upgrade.',
+        `Free keeps the workflow surface broad but the account caps deliberate: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} live API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
+        'That makes the page more than a pricing summary. It explains when free is strategically enough and when saved-template capacity, publish limits, signer volume, or credit pool size, not setup uncertainty, should trigger an upgrade.',
       ]
     : [
         page.heroSummary,
-        'Premium is most valuable after the template workflow already works and the team now needs more publish capacity, higher respondent volume, recurring credits, or more stable billing operations.',
-        'That means the page should help buyers self-qualify operationally, not just compare labels. The key question is whether the workflow is already proven and ready for higher-usage execution.',
+        `Premium raises the working ceiling across the product: ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly credits before refill packs.`,
+        'That means the page should help buyers self-qualify operationally, not just compare labels. The key question is whether the workflow is already proven and ready for higher-usage execution across saved templates, live links, API traffic, and signing volume.',
       ];
   FEATURE_PLAN_ROUTE_SEO[page.key] = {
     title: page.seoTitle,

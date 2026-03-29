@@ -126,7 +126,14 @@ def test_build_prompt_includes_option_hint_and_commonforms_guidance(monkeypatch:
             "labelHintText": "Smoker",
         }
     ]
-    page_candidates = {"pageWidth": 100, "pageHeight": 100, "labels": [{"bbox": [22, 10, 60, 20], "text": "Smoker"}]}
+    page_candidates = {
+        "pageWidth": 100,
+        "pageHeight": 100,
+        "labels": [{"bbox": [22, 10, 60, 20], "text": "Smoker"}],
+        "lineCandidates": [{"bbox": [10, 21, 60, 23]}],
+        "boxCandidates": [{"bbox": [8, 8, 22, 22]}],
+        "checkboxCandidates": [{"bbox": [10, 10, 20, 20]}],
+    }
 
     system_message, user_message = rr._build_prompt(
         1,
@@ -138,7 +145,11 @@ def test_build_prompt_includes_option_hint_and_commonforms_guidance(monkeypatch:
 
     assert "CommonForms confidence guidance" in system_message
     assert "Green >= 0.91" in system_message
+    assert "analysis overlay" in system_message
     assert 'option_hint="Smoker"' in user_message
+    assert "nearest_line_below=1" in user_message
+    assert "inside_box_candidate=1" in user_message
+    assert "checkbox_cluster_size=1" in user_message
     assert "DATABASE_FIELDS" in user_message
     assert "- patient_smoker" in user_message
 

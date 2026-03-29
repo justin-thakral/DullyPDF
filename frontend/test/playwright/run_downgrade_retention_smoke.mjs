@@ -9,30 +9,44 @@ const eventsPath = path.join(artifactDir, 'downgrade-retention-smoke-events.json
 
 const retentionSummary = {
   status: 'grace_period',
-  policyVersion: 1,
+  policyVersion: 2,
   downgradedAt: '2026-03-01T00:00:00Z',
-  graceEndsAt: '2026-03-31T00:00:00Z',
-  daysRemaining: 21,
-  savedFormsLimit: 3,
-  fillLinksActiveLimit: 1,
-  keptTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3'],
-  pendingDeleteTemplateIds: ['tpl-4'],
-  pendingDeleteLinkIds: ['link-4'],
+  graceEndsAt: null,
+  daysRemaining: 0,
+  savedFormsLimit: 5,
+  keptTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3', 'tpl-4', 'tpl-5'],
+  pendingDeleteTemplateIds: ['tpl-6', 'tpl-7'],
+  pendingDeleteLinkIds: ['link-6'],
+  accessibleTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3', 'tpl-4', 'tpl-5'],
+  lockedTemplateIds: ['tpl-6', 'tpl-7'],
+  lockedLinkIds: ['link-6'],
+  selectionMode: 'oldest_created',
+  manualSelectionAllowed: false,
   counts: {
-    keptTemplates: 3,
-    pendingTemplates: 1,
+    keptTemplates: 5,
+    pendingTemplates: 2,
+    accessibleTemplates: 5,
+    lockedTemplates: 2,
     affectedGroups: 1,
     pendingLinks: 1,
     closedLinks: 1,
+    lockedLinks: 1,
+    affectedSigningRequests: 3,
+    affectedSigningDrafts: 1,
+    retainedSigningRequests: 2,
+    completedSigningRequests: 1,
   },
   templates: [
-    { id: 'tpl-1', name: 'Template One', createdAt: '2026-01-01T00:00:00Z', status: 'kept' },
-    { id: 'tpl-2', name: 'Template Two', createdAt: '2026-01-02T00:00:00Z', status: 'kept' },
-    { id: 'tpl-3', name: 'Template Three', createdAt: '2026-01-03T00:00:00Z', status: 'kept' },
-    { id: 'tpl-4', name: 'Template Four', createdAt: '2026-01-04T00:00:00Z', status: 'pending_delete' },
+    { id: 'tpl-1', name: 'Template One', createdAt: '2026-01-01T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'tpl-2', name: 'Template Two', createdAt: '2026-01-02T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'tpl-3', name: 'Template Three', createdAt: '2026-01-03T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'tpl-4', name: 'Template Four', createdAt: '2026-01-04T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'tpl-5', name: 'Template Five', createdAt: '2026-01-05T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'tpl-6', name: 'Template Six', createdAt: '2026-01-06T00:00:00Z', status: 'pending_delete', accessStatus: 'locked', locked: true },
+    { id: 'tpl-7', name: 'Template Seven', createdAt: '2026-01-07T00:00:00Z', status: 'pending_delete', accessStatus: 'locked', locked: true },
   ],
-  groups: [{ id: 'group-1', name: 'Admissions Packet', templateCount: 4, pendingTemplateCount: 1, willDelete: false }],
-  links: [{ id: 'link-4', title: 'Template Four Link', scopeType: 'template', status: 'closed', templateId: 'tpl-4', pendingDeleteReason: 'template_pending_delete' }],
+  groups: [{ id: 'group-1', name: 'Admissions Packet', templateCount: 7, pendingTemplateCount: 2, willDelete: false, accessStatus: 'locked', locked: true, lockedTemplateIds: ['tpl-6', 'tpl-7'] }],
+  links: [{ id: 'link-6', title: 'Template Six Link', scopeType: 'template', status: 'closed', templateId: 'tpl-6', pendingDeleteReason: 'template_pending_delete', accessStatus: 'locked', locked: true }],
 };
 
 async function main() {
@@ -44,32 +58,31 @@ async function main() {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.evaluate(async (summary) => {
       window.__PW_RETENTION_SUMMARY__ = summary;
+      window.__PW_RETENTION_LIMITS__ = {
+        savedFormsMax: 5,
+        fillLinkResponsesMonthlyMax: 25,
+        templateApiRequestsMonthlyMax: 250,
+      };
+      window.__PW_RETENTION_PROFILE__ = {
+        creditsRemaining: 10,
+        availableCredits: 10,
+      };
       await import('/src/testSupport/playwrightDowngradeRetentionHarness.tsx');
     }, retentionSummary);
 
-    await page.getByText('Downgraded account retention').waitFor({ timeout: 10000 });
+    await page.getByRole('dialog', { name: 'Base plan template access' }).waitFor({ timeout: 10000 });
+    await page.getByText('5 accessible').waitFor({ timeout: 10000 });
+    await page.getByText('2 locked').waitFor({ timeout: 10000 });
     await page.screenshot({ path: screenshotPath, fullPage: true });
 
-    await page.locator('.retention-dialog__template-name', { hasText: 'Template Three' }).click();
-    await page.locator('.retention-dialog__template-name', { hasText: 'Template Four' }).click();
-    await page.getByRole('button', { name: 'Save kept forms' }).click();
-    await page.getByRole('button', { name: 'Keep free plan' }).click();
-    await page.getByRole('button', { name: 'Review retention queue' }).click();
-    await page.getByRole('button', { name: 'Delete now' }).click();
+    await page.getByRole('button', { name: 'Keep base plan' }).click();
+    await page.getByRole('button', { name: 'Review locked templates' }).click();
     await page.getByRole('button', { name: 'Reactivate Pro Monthly' }).click();
 
     const events = await page.evaluate(() => window.__PW_RETENTION_EVENTS__ || []);
     fs.writeFileSync(eventsPath, JSON.stringify(events, null, 2));
 
-    const saveEvent = events.find((event) => event.type === 'save');
-    if (!saveEvent) {
-      throw new Error('Missing save event from downgrade retention dialog.');
-    }
-    const keptTemplateIds = Array.isArray(saveEvent.keptTemplateIds) ? saveEvent.keptTemplateIds : [];
-    if (keptTemplateIds.join('|') !== 'tpl-1|tpl-2|tpl-4') {
-      throw new Error(`Unexpected keptTemplateIds payload: ${JSON.stringify(keptTemplateIds)}`);
-    }
-    for (const eventType of ['close', 'profile-open', 'delete', 'reactivate']) {
+    for (const eventType of ['close', 'profile-open', 'reactivate']) {
       if (!events.some((event) => event.type === eventType)) {
         throw new Error(`Missing ${eventType} event from downgrade retention harness.`);
       }

@@ -173,6 +173,9 @@ export type SavedFormSummary = {
   id: string;
   name: string;
   createdAt: string;
+  accessStatus?: 'accessible' | 'locked' | string;
+  locked?: boolean;
+  lockReason?: string | null;
 };
 
 export type TemplateApiEndpointSummary = {
@@ -277,18 +280,20 @@ export type TemplateGroupSummary = {
   templates: SavedFormSummary[];
   createdAt?: string | null;
   updatedAt?: string | null;
+  accessStatus?: 'accessible' | 'locked' | string;
+  locked?: boolean;
+  lockedTemplateIds?: string[];
 };
 
 export type ProfileLimits = {
   detectMaxPages: number;
   fillableMaxPages: number;
   savedFormsMax: number;
-  fillLinksActiveMax: number;
-  fillLinkResponsesMax: number;
+  fillLinkResponsesMonthlyMax: number;
   templateApiActiveMax?: number;
   templateApiRequestsMonthlyMax?: number;
   templateApiMaxPages?: number;
-  signingRequestsPerDocumentMax?: number;
+  signingRequestsMonthlyMax?: number;
 };
 
 export type BillingCheckoutKind = 'pro_monthly' | 'pro_yearly' | 'refill_500';
@@ -327,6 +332,9 @@ export type DowngradeRetentionTemplateSummary = {
   createdAt?: string | null;
   updatedAt?: string | null;
   status: 'kept' | 'pending_delete' | string;
+  accessStatus?: 'accessible' | 'locked' | string;
+  locked?: boolean;
+  lockReason?: string | null;
 };
 
 export type DowngradeRetentionGroupSummary = {
@@ -335,6 +343,9 @@ export type DowngradeRetentionGroupSummary = {
   templateCount: number;
   pendingTemplateCount: number;
   willDelete: boolean;
+  accessStatus?: 'accessible' | 'locked' | string;
+  locked?: boolean;
+  lockedTemplateIds?: string[];
 };
 
 export type DowngradeRetentionLinkSummary = {
@@ -349,6 +360,9 @@ export type DowngradeRetentionLinkSummary = {
   createdAt?: string | null;
   updatedAt?: string | null;
   pendingDeleteReason?: string | null;
+  accessStatus?: 'accessible' | 'locked' | string;
+  locked?: boolean;
+  lockReason?: string | null;
 };
 
 export type DowngradeRetentionSummary = {
@@ -358,16 +372,27 @@ export type DowngradeRetentionSummary = {
   graceEndsAt?: string | null;
   daysRemaining: number;
   savedFormsLimit: number;
-  fillLinksActiveLimit: number;
   keptTemplateIds: string[];
   pendingDeleteTemplateIds: string[];
   pendingDeleteLinkIds: string[];
+  accessibleTemplateIds?: string[];
+  lockedTemplateIds?: string[];
+  lockedLinkIds?: string[];
+  selectionMode?: 'oldest_created' | string;
+  manualSelectionAllowed?: boolean;
   counts: {
     keptTemplates: number;
     pendingTemplates: number;
+    accessibleTemplates?: number;
+    lockedTemplates?: number;
     affectedGroups: number;
     pendingLinks: number;
     closedLinks?: number;
+    lockedLinks?: number;
+    affectedSigningRequests?: number;
+    affectedSigningDrafts?: number;
+    retainedSigningRequests?: number;
+    completedSigningRequests?: number;
   };
   templates: DowngradeRetentionTemplateSummary[];
   groups: DowngradeRetentionGroupSummary[];
@@ -445,6 +470,7 @@ export type SigningArtifactCollection = {
   signedPdf: SigningArtifactDescriptor;
   auditManifest?: SigningArtifactDescriptor;
   auditReceipt: SigningArtifactDescriptor;
+  disputePackage?: SigningArtifactDescriptor;
 };
 
 export type SigningRequestSummary = {
@@ -466,6 +492,10 @@ export type SigningRequestSummary = {
   documentCategoryLabel: string;
   esignEligibilityConfirmedAt?: string | null;
   esignEligibilityConfirmedSource?: string | null;
+  companyBindingEnabled?: boolean;
+  authorityAttestationVersion?: string | null;
+  authorityAttestationText?: string | null;
+  authorityAttestationSha256?: string | null;
   manualFallbackEnabled: boolean;
   signerName: string;
   signerEmail: string;
@@ -519,6 +549,9 @@ export type SigningRequestSummary = {
   signatureAdoptedName?: string | null;
   signatureAdoptedMode?: SigningAdoptedMode | null;
   signatureAdoptedImageDataUrl?: string | null;
+  representativeTitle?: string | null;
+  representativeCompanyName?: string | null;
+  authorityAttestedAt?: string | null;
   manualFallbackRequestedAt?: string | null;
   invalidatedAt?: string | null;
   invalidationReason?: string | null;
@@ -538,6 +571,10 @@ export type PublicSigningRequest = {
   documentCategory: string;
   documentCategoryLabel: string;
   manualFallbackEnabled: boolean;
+  companyBindingEnabled?: boolean;
+  authorityAttestationVersion?: string | null;
+  authorityAttestationText?: string | null;
+  authorityAttestationSha256?: string | null;
   senderDisplayName?: string | null;
   senderContactEmail?: string | null;
   signerName: string;
@@ -602,6 +639,9 @@ export type PublicSigningRequest = {
   signatureAdoptedName?: string | null;
   signatureAdoptedMode?: SigningAdoptedMode | null;
   signatureAdoptedImageDataUrl?: string | null;
+  representativeTitle?: string | null;
+  representativeCompanyName?: string | null;
+  authorityAttestedAt?: string | null;
   manualFallbackRequestedAt?: string | null;
   invalidatedAt?: string | null;
   invalidationReason?: string | null;
@@ -663,9 +703,11 @@ export type PublicSigningValidation = {
   sourcePdfSha256?: string | null;
   signedPdfSha256?: string | null;
   auditManifestSha256?: string | null;
+  auditEnvelopeSha256?: string | null;
   auditReceiptSha256?: string | null;
   checks: PublicSigningValidationCheck[];
   eventCount?: number | null;
+  warnings?: string[];
   signature?: {
     method?: string | null;
     algorithm?: string | null;
@@ -707,6 +749,7 @@ export type CreateSigningRequestPayload = {
   sourcePdfSha256?: string;
   documentCategory: string;
   esignEligibilityConfirmed?: boolean;
+  companyBindingEnabled?: boolean;
   manualFallbackEnabled: boolean;
   consumerPaperCopyProcedure?: string;
   consumerPaperCopyFeeDescription?: string;
@@ -717,6 +760,13 @@ export type CreateSigningRequestPayload = {
   signerName: string;
   signerEmail: string;
   anchors: SigningAnchorPayload[];
+};
+
+export type CompletePublicSigningRequestPayload = {
+  intentConfirmed: true;
+  authorityConfirmed?: boolean;
+  representativeTitle?: string;
+  representativeCompanyName?: string;
 };
 
 export type SendSigningRequestPayload = {
@@ -792,7 +842,8 @@ export class ApiService {
   }
 
   /**
-   * Update which saved forms remain outside the downgrade delete queue.
+   * Update which saved forms stay accessible on base for legacy/manual access
+   * selection policies.
    */
   static async updateDowngradeRetention(
     keptTemplateIds: string[],
@@ -805,18 +856,6 @@ export class ApiService {
     });
     const payload = await apiJsonFetch<{ retention?: DowngradeRetentionSummary | null }>(response);
     return payload?.retention ?? null;
-  }
-
-  /**
-   * Delete all saved forms and dependent links currently queued by downgrade retention.
-   */
-  static async deleteDowngradeRetentionNow(): Promise<{
-    success: boolean;
-    deletedTemplateIds: string[];
-    deletedLinkIds: string[];
-  }> {
-    const response = await apiFetch('POST', '/api/profile/downgrade-retention/delete-now');
-    return apiJsonFetch(response);
   }
 
   // -- Fill By Link delegations (canonical implementation in FillLinksApiService) --
@@ -861,6 +900,7 @@ export class ApiService {
         sourcePdfSha256: payload.sourcePdfSha256,
         documentCategory: payload.documentCategory,
         esignEligibilityConfirmed: Boolean(payload.esignEligibilityConfirmed),
+        companyBindingEnabled: Boolean(payload.companyBindingEnabled),
         manualFallbackEnabled: payload.manualFallbackEnabled,
         consumerPaperCopyProcedure: payload.consumerPaperCopyProcedure,
         consumerPaperCopyFeeDescription: payload.consumerPaperCopyFeeDescription,
@@ -1026,6 +1066,16 @@ export class ApiService {
     );
   }
 
+  static async getPublicSigningConsumerAccessBlob(
+    token: string,
+    sessionToken: string,
+  ): Promise<PublicSigningFileResult> {
+    return ApiService.fetchPublicSigningFile(
+      `/api/signing/public/${encodeURIComponent(token)}/consumer-access-pdf`,
+      sessionToken,
+    );
+  }
+
   static async issuePublicSigningArtifactDownload(
     token: string,
     sessionToken: string,
@@ -1129,14 +1179,18 @@ export class ApiService {
     return result.request;
   }
 
-  static async completePublicSigningRequest(token: string, sessionToken: string): Promise<PublicSigningRequest> {
+  static async completePublicSigningRequest(
+    token: string,
+    sessionToken: string,
+    payload: CompletePublicSigningRequestPayload,
+  ): Promise<PublicSigningRequest> {
     const response = await apiFetch('POST', `/api/signing/public/${encodeURIComponent(token)}/complete`, {
       authMode: 'anonymous',
       headers: {
         'Content-Type': 'application/json',
         'X-Signing-Session': sessionToken,
       },
-      body: JSON.stringify({ intentConfirmed: true }),
+      body: JSON.stringify(payload),
     });
     const responsePayload = await apiJsonFetch<{ request: PublicSigningRequest }>(response);
     return responsePayload.request;
@@ -1316,12 +1370,14 @@ export class ApiService {
     templateId?: string,
     sessionId?: string,
     options?: AbortableRequestOptions,
+    sourcePdfSha256?: string,
   ): Promise<any> {
     const requestPayload = {
       schemaId,
       templateId,
       templateFields,
       sessionId,
+      sourcePdfSha256,
     };
     const requestCacheKey = `schema-mappings:${stableStringify(requestPayload)}`;
     const requestId = getOrCreateOpenAiRequestId(requestCacheKey);
@@ -1359,6 +1415,7 @@ export class ApiService {
   static async renameFields(payload: {
     sessionId: string;
     schemaId?: string;
+    sourcePdfSha256?: string;
     templateFields?: Array<{
       name: string;
       type?: string;
@@ -1691,6 +1748,24 @@ export class ApiService {
     const encoded = encodeURIComponent(sessionId);
     const response = await apiFetch('POST', `/api/sessions/${encoded}/touch`);
     return apiJsonFetch(response);
+  }
+
+  /**
+   * Download the source PDF for a session-backed workspace restore.
+   */
+  static async downloadSessionPdf(
+    sessionId: string,
+    options?: { signal?: AbortSignal; timeoutMs?: number },
+  ): Promise<Blob> {
+    const encoded = encodeURIComponent(sessionId);
+    const response = await apiFetch('GET', `/api/sessions/${encoded}/pdf`, {
+      signal: options?.signal,
+      timeoutMs: options?.timeoutMs,
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to download session PDF: ${response.statusText}`);
+    }
+    return response.blob();
   }
 
   /**

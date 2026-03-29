@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DullyPDF Internal Stats</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="stats-page">
+      <section class="stats-shell">
+        <header class="hero">
+          <div>
+            <p class="eyebrow">Internal Dashboard</p>
+            <h1>Production usage stats</h1>
+            <p class="hero-copy">
+              Local-only dashboard served from <code>127.0.0.1:5174</code>. This reads the
+              production Firestore project directly with your local Google credentials and is not
+              part of the deployed frontend or backend app.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button id="refreshButton" class="button" type="button">Refresh</button>
+            <p id="statusText" class="status-text">Loading snapshot…</p>
+          </div>
+        </header>
+
+        <section id="errorBanner" class="error-banner hidden" aria-live="polite"></section>
+
+        <section id="metaStrip" class="meta-strip" aria-label="Snapshot metadata"></section>
+        <section id="roleStrip" class="role-strip" aria-label="Role breakdown"></section>
+        <section id="metricCards" class="card-grid" aria-label="Global metrics"></section>
+
+        <section class="panel-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">User Chart</p>
+                <h2>Top users by metric</h2>
+              </div>
+              <label class="field">
+                <span>Metric</span>
+                <select id="metricSelect"></select>
+              </label>
+            </div>
+            <div id="chartRows" class="chart-rows" role="list"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">User Breakdown</p>
+                <h2>Searchable usage table</h2>
+              </div>
+              <label class="field">
+                <span>Search</span>
+                <input id="searchInput" type="search" placeholder="Name, email, role, or user id" />
+              </label>
+            </div>
+            <div class="table-wrap">
+              <table class="stats-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Detections</th>
+                    <th>Templates</th>
+                    <th>Credits</th>
+                    <th>Fill links</th>
+                    <th>API fills</th>
+                    <th>Signing</th>
+                    <th>Last activity</th>
+                  </tr>
+                </thead>
+                <tbody id="userRows"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>

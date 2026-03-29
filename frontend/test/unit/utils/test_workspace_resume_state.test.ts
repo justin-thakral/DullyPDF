@@ -44,6 +44,34 @@ describe('workspaceResumeState', () => {
     });
   });
 
+  it('round-trips a ui-root resume payload', () => {
+    writeWorkspaceResumeState({
+      version: 1,
+      userId: 'user-1',
+      route: { kind: 'ui-root' },
+      currentPage: 3,
+      scale: 1.1,
+      detectSessionId: 'session-ui-1',
+      mappingSessionId: 'session-ui-1',
+      fieldCount: 12,
+      pageCount: 4,
+      updatedAtMs: 456,
+    });
+
+    expect(readWorkspaceResumeState()).toEqual({
+      version: 1,
+      userId: 'user-1',
+      route: { kind: 'ui-root' },
+      currentPage: 3,
+      scale: 1.1,
+      detectSessionId: 'session-ui-1',
+      mappingSessionId: 'session-ui-1',
+      fieldCount: 12,
+      pageCount: 4,
+      updatedAtMs: 456,
+    });
+  });
+
   it('matches only the same route and user id', () => {
     writeWorkspaceResumeState({
       version: 1,

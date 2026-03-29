@@ -61,28 +61,30 @@ describe('ContactDialog', () => {
     expect((screen.getByLabelText('Add contact to subject') as HTMLInputElement).checked).toBe(true);
   });
 
-  it('enforces summary/message/contact/recaptcha validation rules', async () => {
+  it('enforces summary/message/contact validation and shows missing recaptcha config', async () => {
     const user = userEvent.setup();
     vi.stubEnv('VITE_CONTACT_REQUIRE_RECAPTCHA', 'true');
-    vi.stubEnv('VITE_RECAPTCHA_SITE_KEY', '');
+    vi.stubEnv('VITE_RECAPTCHA_SITE_KEY', 'site-key-live');
 
-    const { container } = render(<ContactDialog open onClose={vi.fn()} />);
-    const form = container.querySelector('form') as HTMLFormElement;
+    const { unmount } = render(<ContactDialog open onClose={vi.fn()} />);
 
-    fireEvent.submit(form);
+    fireEvent.click(screen.getByRole('button', { name: 'Send message' }));
     expect(screen.getByText('Add a short summary so we can triage quickly.')).toBeTruthy();
 
     await user.type(screen.getByLabelText('Short summary'), 'Broken form submit');
-    fireEvent.submit(form);
+    fireEvent.click(screen.getByRole('button', { name: 'Send message' }));
     expect(screen.getByText('Add details about the issue or question.')).toBeTruthy();
 
     await user.type(screen.getByLabelText('Message'), 'Details for support triage.');
-    fireEvent.submit(form);
+    fireEvent.click(screen.getByRole('button', { name: 'Send message' }));
     expect(screen.getByText('Provide at least one contact method (email or phone).')).toBeTruthy();
 
-    await user.type(screen.getByLabelText('Email'), 'contact@example.com');
-    fireEvent.submit(form);
-    expect(screen.getByText('reCAPTCHA is not configured yet.')).toBeTruthy();
+    unmount();
+
+    vi.stubEnv('VITE_RECAPTCHA_SITE_KEY', '');
+    render(<ContactDialog open onClose={vi.fn()} />);
+    expect(screen.getByText('reCAPTCHA is required but not configured for this environment.')).toBeTruthy();
+    expect((screen.getByRole('button', { name: 'Send message' }) as HTMLButtonElement).disabled).toBe(true);
   });
 
   it('loads recaptcha, requests tokens on submit, and manages badge/body lifecycle', async () => {

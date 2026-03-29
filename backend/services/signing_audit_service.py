@@ -25,14 +25,18 @@ from backend.services.cloud_kms_service import (
     sign_audit_manifest_bytes,
     verify_audit_manifest_signature,
 )
-from backend.services.signing_consumer_consent_service import resolve_consumer_disclosure_artifact
+from backend.services.signing_consumer_consent_service import (
+    resolve_business_disclosure_artifact,
+    resolve_consumer_disclosure_artifact,
+)
 from backend.services.signing_service import (
     SIGNATURE_MODE_CONSUMER,
     resolve_disclosure_text,
     resolve_document_category_label,
-    resolve_signing_disclosure_payload_for_record,
+    resolve_signing_company_authority_attestation,
     resolve_signing_retention_until,
     serialize_signing_sender_provenance,
+    signing_record_requires_company_authority_attestation,
 )
 
 
@@ -116,10 +120,14 @@ def build_signing_audit_manifest(
             "consentWithdrawnAt": getattr(record, "consent_withdrawn_at", None),
         }
     else:
-        disclosure_payload = resolve_signing_disclosure_payload_for_record(record)
-        disclosure_version = record.disclosure_version
-        disclosure_payload_sha256 = None
+        disclosure_artifact = resolve_business_disclosure_artifact(record)
+        disclosure_payload = dict(disclosure_artifact.get("payload") or {})
+        disclosure_version = disclosure_artifact.get("version") or record.disclosure_version
+        disclosure_payload_sha256 = disclosure_artifact.get("sha256")
         consumer_consent_payload = {}
+    authority_artifact = resolve_signing_company_authority_attestation(
+        signing_record_requires_company_authority_attestation(record)
+    )
     return {
         "schemaVersion": AUDIT_MANIFEST_SCHEMA_VERSION,
         "request": {
@@ -131,6 +139,8 @@ def build_signing_audit_manifest(
             "status": record.status,
             "sourceType": record.source_type,
             "sourceId": record.source_id,
+            "sourceLinkId": getattr(record, "source_link_id", None),
+            "sourceRecordLabel": getattr(record, "source_record_label", None),
             "sourceTemplateId": record.source_template_id,
             "sourceTemplateName": record.source_template_name,
             "sourceDocumentName": record.source_document_name,
@@ -150,6 +160,7 @@ def build_signing_audit_manifest(
             "publicLinkVersion": getattr(record, "public_link_version", None),
             "publicLinkRevokedAt": getattr(record, "public_link_revoked_at", None),
             "publicLinkLastReissuedAt": getattr(record, "public_link_last_reissued_at", None),
+            "publicAppOrigin": getattr(record, "public_app_origin", None),
             "verificationRequired": bool(getattr(record, "verification_required", False)),
             "verificationMethod": getattr(record, "verification_method", None),
             "verificationCompletedAt": getattr(record, "verification_completed_at", None),
@@ -166,6 +177,7 @@ def build_signing_audit_manifest(
             "signatureImageSha256": getattr(record, "signature_adopted_image_sha256", None),
         },
         "ceremony": {
+            "ownerReviewConfirmedAt": getattr(record, "owner_review_confirmed_at", None),
             "manualFallbackEnabled": bool(record.manual_fallback_enabled),
             "manualFallbackRequestedAt": record.manual_fallback_requested_at,
             "manualFallbackNote": record.manual_fallback_note,
@@ -185,6 +197,22 @@ def build_signing_audit_manifest(
             "completedSessionId": record.completed_session_id,
             "completedIpAddress": record.completed_ip_address,
             "completedUserAgent": record.completed_user_agent,
+        },
+        "authority": {
+            "companyBindingEnabled": signing_record_requires_company_authority_attestation(record),
+            "attestationVersion": getattr(record, "authority_attestation_version", None) or (
+                authority_artifact.get("version") if authority_artifact else None
+            ),
+            "attestationText": getattr(record, "authority_attestation_text", None) or (
+                authority_artifact.get("text") if authority_artifact else None
+            ),
+            "attestationSha256": getattr(record, "authority_attestation_sha256", None) or (
+                authority_artifact.get("sha256") if authority_artifact else None
+            ),
+            "independentlyVerified": False,
+            "representativeTitle": getattr(record, "representative_title", None),
+            "representativeCompanyName": getattr(record, "representative_company_name", None),
+            "attestedAt": getattr(record, "authority_attested_at", None),
         },
         "disclosure": {
             "version": disclosure_version,
@@ -301,11 +329,20 @@ def _receipt_lines(envelope_payload: Dict[str, Any]) -> List[str]:
     sender = dict(manifest.get("sender") or {})
     signer = dict(manifest.get("signer") or {})
     ceremony = dict(manifest.get("ceremony") or {})
+    authority = dict(manifest.get("authority") or {})
     consumer_consent = dict(manifest.get("consumerConsent") or {})
     document_evidence = dict(manifest.get("documentEvidence") or {})
     signature = dict((envelope_payload or {}).get("signature") or {})
     request_id = str(request.get("id") or "").strip()
-    validation_url = build_signing_validation_url(request_id) if request_id else ""
+    validation_url = (
+        build_signing_validation_url(
+            request_id,
+            public_app_origin=request.get("publicAppOrigin"),
+        )
+        if request_id
+        else ""
+    )
+    envelope_sha256 = hashlib.sha256(_canonicalize_json_bytes(envelope_payload)).hexdigest()
     lines = [
         "DullyPDF Signature Audit Receipt",
         "",
@@ -317,9 +354,14 @@ def _receipt_lines(envelope_payload: Dict[str, Any]) -> List[str]:
         f"Delivery Status: {sender.get('inviteDeliveryStatus') or 'not recorded'}",
         f"Delivery Attempted At: {sender.get('inviteLastAttemptAt') or ''}",
         f"Manual Link Shared At: {sender.get('manualLinkSharedAt') or ''}",
+        f"Owner Review Confirmed At: {ceremony.get('ownerReviewConfirmedAt') or ''}",
         f"Signer: {signer.get('name') or ''}",
         f"Adopted Signature: {signer.get('adoptedName') or ''}",
         f"Adopted Signature Mode: {signer.get('adoptedMode') or ''}",
+        f"Company Binding Requested: {'yes' if authority.get('companyBindingEnabled') else 'no'}",
+        f"Representative Title: {authority.get('representativeTitle') or ''}",
+        f"Representative Company: {authority.get('representativeCompanyName') or ''}",
+        f"Authority Attested At: {authority.get('attestedAt') or ''}",
         f"Completed At: {ceremony.get('completedAt') or ''}",
         "Detailed signer email, IP address, and user-agent evidence remain in the owner audit manifest.",
         "",
@@ -332,7 +374,8 @@ def _receipt_lines(envelope_payload: Dict[str, Any]) -> List[str]:
         f"PDF Signature Issuer: {document_evidence.get('pdfDigitalCertificateIssuer') or ''}",
         f"PDF Signature Serial: {document_evidence.get('pdfDigitalCertificateSerialNumber') or ''}",
         f"PDF Signature Fingerprint SHA-256: {document_evidence.get('pdfDigitalCertificateFingerprintSha256') or ''}",
-        f"Manifest SHA-256: {envelope_payload.get('manifestSha256') or ''}",
+        f"Manifest Payload SHA-256: {envelope_payload.get('manifestSha256') or ''}",
+        f"Envelope SHA-256: {envelope_sha256}",
         f"Retention Until: {document_evidence.get('retentionUntil') or ''}",
         f"Validation URL: {validation_url}",
         "",
@@ -344,6 +387,15 @@ def _receipt_lines(envelope_payload: Dict[str, Any]) -> List[str]:
         "",
         "Event Timeline:",
     ]
+    if authority.get("companyBindingEnabled"):
+        authority_lines = [
+            f"Authority Attestation Version: {authority.get('attestationVersion') or ''}",
+            f"Authority Attestation SHA-256: {authority.get('attestationSha256') or ''}",
+            "Authority note: DullyPDF records the signer's authority attestation but does not independently verify corporate authority.",
+            "",
+        ]
+        insert_at = lines.index("Detailed signer email, IP address, and user-agent evidence remain in the owner audit manifest.")
+        lines[insert_at:insert_at] = authority_lines
     if any(consumer_consent.get(field) for field in ("disclosureVersion", "consentAcceptedAt", "accessDemonstratedAt")):
         consumer_lines = [
             f"Consumer Disclosure Version: {consumer_consent.get('disclosureVersion') or ''}",
@@ -357,6 +409,12 @@ def _receipt_lines(envelope_payload: Dict[str, Any]) -> List[str]:
         ]
         insert_at = lines.index("Detailed signer email, IP address, and user-agent evidence remain in the owner audit manifest.")
         lines[insert_at:insert_at] = consumer_lines
+    if str(document_evidence.get("pdfDigitalSignatureMethod") or "").strip().lower() == "dev_pem":
+        insert_at = lines.index("Detailed signer email, IP address, and user-agent evidence remain in the owner audit manifest.")
+        lines[insert_at:insert_at] = [
+            "Development signature note: this receipt was generated with DullyPDF's local self-signed development certificate and is not a publicly trusted production signing identity.",
+            "",
+        ]
     for event in list(manifest.get("events") or []):
         event_type = event.get("eventType") or ""
         occurred_at = event.get("occurredAt") or ""
@@ -508,7 +566,10 @@ def render_signing_audit_receipt_pdf(envelope_payload: Dict[str, Any]) -> bytes:
     request = dict(manifest.get("request") or {})
     request_id = str(request.get("id") or "").strip()
     if request_id:
-        validation_url = build_signing_validation_url(request_id)
+        validation_url = build_signing_validation_url(
+            request_id,
+            public_app_origin=request.get("publicAppOrigin"),
+        )
         qr_header_font_name = "Helvetica-Bold"
         qr_header_font_size = 11
         qr_body_font_name = "Helvetica"

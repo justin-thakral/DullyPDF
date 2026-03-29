@@ -6,7 +6,9 @@ from types import SimpleNamespace
 
 from backend.services.signing_consumer_consent_service import (
     build_consumer_disclosure_artifact,
+    persist_business_disclosure_artifact,
     persist_consumer_disclosure_artifact,
+    resolve_business_disclosure_artifact,
     resolve_consumer_disclosure_artifact,
 )
 from backend.services.signing_service import build_signing_public_token
@@ -208,3 +210,70 @@ def test_persist_consumer_disclosure_artifact_keeps_completed_records_immutable(
 
     assert result is record
     assert store_called["value"] is False
+
+
+def test_resolve_business_disclosure_artifact_prefers_persisted_payload() -> None:
+    stored_payload = {
+        "version": "us-esign-business-v1",
+        "summaryLines": ["Stored business disclosure line."],
+    }
+    record = SimpleNamespace(
+        id="req-business-1",
+        signature_mode="business",
+        disclosure_version="us-esign-business-v1",
+        business_disclosure_payload=stored_payload,
+        business_disclosure_sha256="d" * 64,
+    )
+
+    artifact = resolve_business_disclosure_artifact(record)
+
+    assert artifact["version"] == "us-esign-business-v1"
+    assert artifact["payload"] == stored_payload
+    assert artifact["sha256"] == "d" * 64
+
+
+def test_persist_business_disclosure_artifact_stores_generated_payload_when_missing(monkeypatch) -> None:
+    persisted = {}
+
+    monkeypatch.setattr(
+        "backend.services.signing_consumer_consent_service.resolve_business_disclosure_artifact",
+        lambda record: {
+            "version": "us-esign-business-v1",
+            "payload": {
+                "version": "us-esign-business-v1",
+                "summaryLines": ["Business disclosure line."],
+            },
+            "sha256": "e" * 64,
+        },
+    )
+
+    def _fake_store(request_id, *, disclosure_payload, disclosure_sha256, client=None):
+        persisted.update(
+            {
+                "request_id": request_id,
+                "disclosure_payload": disclosure_payload,
+                "disclosure_sha256": disclosure_sha256,
+                "client": client,
+            }
+        )
+        return SimpleNamespace(id=request_id, business_disclosure_payload=disclosure_payload)
+
+    monkeypatch.setattr(
+        "backend.services.signing_consumer_consent_service.store_signing_request_business_disclosure",
+        _fake_store,
+    )
+
+    result = persist_business_disclosure_artifact(
+        SimpleNamespace(
+            id="req-business-1",
+            signature_mode="business",
+            status="sent",
+            business_disclosure_payload=None,
+            business_disclosure_sha256=None,
+        )
+    )
+
+    assert persisted["request_id"] == "req-business-1"
+    assert persisted["disclosure_payload"]["summaryLines"] == ["Business disclosure line."]
+    assert persisted["disclosure_sha256"] == "e" * 64
+    assert result.business_disclosure_payload == persisted["disclosure_payload"]

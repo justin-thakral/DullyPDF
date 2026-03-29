@@ -1,4 +1,5 @@
 import io
+import hashlib
 from pathlib import Path
 
 from fastapi import HTTPException
@@ -130,6 +131,38 @@ def test_template_session_success_coerces_fields(
     assert response.json()["fieldCount"] == 1
     stored_entry = store_mock.call_args.args[1]
     assert stored_entry["fields"][0]["rect"] == [1.0, 2.0, 4.0, 6.0]
+
+
+def test_template_session_uses_original_upload_hash_when_preflight_decrypts_pdf(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    original_pdf_bytes = b"%PDF-1.4\nencrypted-template\n"
+    decrypted_pdf_bytes = b"%PDF-1.4\ndecrypted-template\n"
+    mocker.patch.object(app_main, "_read_upload_bytes", return_value=original_pdf_bytes)
+    mocker.patch.object(
+        app_main,
+        "_validate_pdf_for_detection",
+        return_value=PdfValidationResult(pdf_bytes=decrypted_pdf_bytes, page_count=1, was_decrypted=True),
+    )
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=5)
+    store_mock = mocker.patch.object(app_main, "_store_session_entry", return_value=None)
+
+    response = client.post(
+        "/api/templates/session",
+        files={"pdf": ("x.pdf", original_pdf_bytes, "application/pdf")},
+        data={"fields": '[{"name":"f","x":1,"y":2,"width":3,"height":4}]'},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    stored_entry = store_mock.call_args.args[1]
+    assert stored_entry["pdf_bytes"] == decrypted_pdf_bytes
+    assert stored_entry["source_pdf_sha256"] == hashlib.sha256(original_pdf_bytes).hexdigest()
 
 
 def test_materialize_empty_fields_fast_path_and_invalid_upload(

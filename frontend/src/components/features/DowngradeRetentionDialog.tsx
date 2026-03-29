@@ -8,12 +8,10 @@ type DowngradeRetentionDialogProps = {
   retention: DowngradeRetentionSummary | null;
   billingEnabled: boolean;
   savingSelection?: boolean;
-  deletingNow?: boolean;
   checkoutInProgress?: boolean;
   reactivateLabel?: string;
   onClose: () => void;
   onSaveSelection: (keptTemplateIds: string[]) => void;
-  onDeleteNow: () => void;
   onReactivatePremium: () => void;
 };
 
@@ -32,17 +30,25 @@ function buildTemplateSelectionKey(templateIds: string[]): string {
   return [...new Set(templateIds)].sort().join('|');
 }
 
+function resolveTemplateAccessStatus(
+  status: string | null | undefined,
+  locked: boolean | null | undefined,
+): 'accessible' | 'locked' {
+  if (locked || status === 'locked' || status === 'pending_delete') {
+    return 'locked';
+  }
+  return 'accessible';
+}
+
 export function DowngradeRetentionDialog({
   open,
   retention,
   billingEnabled,
   savingSelection = false,
-  deletingNow = false,
   checkoutInProgress = false,
   reactivateLabel = 'Reactivate Pro Monthly',
   onClose,
   onSaveSelection,
-  onDeleteNow,
   onReactivatePremium,
 }: DowngradeRetentionDialogProps) {
   const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>([]);
@@ -53,18 +59,26 @@ export function DowngradeRetentionDialog({
   }, [open, retention]);
 
   const keepLimit = Math.max(0, retention?.savedFormsLimit ?? 0);
-  const pendingTemplateCount = retention?.counts.pendingTemplates ?? 0;
+  const accessibleTemplateIds = retention?.accessibleTemplateIds ?? retention?.keptTemplateIds ?? [];
+  const lockedTemplateIds = retention?.lockedTemplateIds ?? retention?.pendingDeleteTemplateIds ?? [];
+  const accessibleTemplateCount = accessibleTemplateIds.length || retention?.counts.keptTemplates || 0;
+  const lockedTemplateCount = lockedTemplateIds.length || retention?.counts.pendingTemplates || 0;
+  const lockedLinkCount = retention?.lockedLinkIds?.length || retention?.counts.pendingLinks || 0;
+  const affectedSigningRequestCount = retention?.counts.affectedSigningRequests ?? 0;
+  const affectedSigningDraftCount = retention?.counts.affectedSigningDrafts ?? 0;
+  const retainedSigningRequestCount = retention?.counts.retainedSigningRequests ?? 0;
+  const manualSelectionAllowed = retention?.manualSelectionAllowed === true;
   const selectedCount = selectedTemplateIds.length;
-  const actionsBusy = savingSelection || deletingNow || checkoutInProgress;
+  const actionsBusy = savingSelection || checkoutInProgress;
   const initialSelectionKey = buildTemplateSelectionKey(retention?.keptTemplateIds ?? []);
   const selectedSelectionKey = buildTemplateSelectionKey(selectedTemplateIds);
   const canSaveSelection = Boolean(
     retention &&
+    manualSelectionAllowed &&
     !actionsBusy &&
     selectedCount === keepLimit &&
     initialSelectionKey !== selectedSelectionKey,
   );
-  const deadlineLabel = formatRetentionDate(retention?.graceEndsAt);
 
   const templateRows = useMemo(() => retention?.templates ?? [], [retention]);
 
@@ -85,18 +99,35 @@ export function DowngradeRetentionDialog({
   return (
     <Dialog
       open={open}
-      title="Downgraded account retention"
+      title="Base plan template access"
       description={(
         <div className="retention-dialog__description">
           <p>
-            Your account is back on the free tier. Saved forms outside your free limit stay available until{' '}
-            <strong>{deadlineLabel}</strong>, then they are deleted unless you reactivate Pro.
+            Your account is on the base plan. The first <strong>{keepLimit}</strong> created saved form
+            {keepLimit === 1 ? '' : 's'} stay accessible, and the remaining <strong>{lockedTemplateCount}</strong>{' '}
+            saved form{lockedTemplateCount === 1 ? '' : 's'} stay stored but locked until you upgrade.
           </p>
           <p>
-            Choose which {keepLimit} saved form{keepLimit === 1 ? '' : 's'} to keep. The remaining{' '}
-            {pendingTemplateCount} saved form{pendingTemplateCount === 1 ? '' : 's'} and dependent Fill By Link
-            records stay in the delete queue during the grace period.
+            Locked templates are preserved in place. Fill By Link, API Fill, group, and signing draft or new-send flows
+            tied to those templates stay blocked instead of being deleted.
           </p>
+          {affectedSigningRequestCount ? (
+            <p>
+              {affectedSigningDraftCount ? (
+                <>
+                  {affectedSigningDraftCount} signing draft{affectedSigningDraftCount === 1 ? '' : 's'} tied to locked
+                  saved forms cannot be sent until those templates are accessible again.
+                </>
+              ) : null}
+              {retainedSigningRequestCount ? (
+                <>
+                  {' '}
+                  {retainedSigningRequestCount} already sent or completed signing request
+                  {retainedSigningRequestCount === 1 ? '' : 's'} stay retained.
+                </>
+              ) : null}
+            </p>
+          ) : null}
         </div>
       )}
       onClose={onClose}
@@ -104,10 +135,7 @@ export function DowngradeRetentionDialog({
       footer={(
         <div className="retention-dialog__footer">
           <button type="button" className="ui-button ui-button--ghost" onClick={onClose} disabled={actionsBusy}>
-            Keep free plan
-          </button>
-          <button type="button" className="ui-button ui-button--danger" onClick={onDeleteNow} disabled={actionsBusy}>
-            {deletingNow ? 'Deleting queued data...' : 'Delete now'}
+            Keep base plan
           </button>
           <button
             type="button"
@@ -122,68 +150,101 @@ export function DowngradeRetentionDialog({
     >
       <div className="retention-dialog__meta">
         <div className="retention-dialog__stat">
-          <span>Days left</span>
-          <strong>{retention.daysRemaining}</strong>
+          <span>Accessible</span>
+          <strong>{accessibleTemplateCount}</strong>
         </div>
         <div className="retention-dialog__stat">
-          <span>Groups affected</span>
-          <strong>{retention.counts.affectedGroups}</strong>
+          <span>Locked templates</span>
+          <strong>{lockedTemplateCount}</strong>
         </div>
         <div className="retention-dialog__stat">
-          <span>Links pending delete</span>
-          <strong>{retention.counts.pendingLinks}</strong>
+          <span>Locked links</span>
+          <strong>{lockedLinkCount}</strong>
+        </div>
+        <div className="retention-dialog__stat">
+          <span>Signing requests affected</span>
+          <strong>{affectedSigningRequestCount}</strong>
         </div>
       </div>
 
       <div className="retention-dialog__selection">
         <div className="retention-dialog__selection-header">
           <div>
-            <h3>Keep these saved forms</h3>
-            <p>
-              Select exactly {keepLimit}. Oldest-first is the default, but you can swap them before the grace period ends.
-            </p>
+            <h3>{manualSelectionAllowed ? 'Keep these saved forms' : 'Accessible and locked saved forms'}</h3>
+            {manualSelectionAllowed ? (
+              <p>
+                Select exactly {keepLimit}. Oldest-first is the default, but this legacy policy still allows you to
+                choose which saved forms stay accessible.
+              </p>
+            ) : (
+              <p>
+                Access is pinned to the earliest-created saved forms on base. Manual swapping is not available in this
+                policy version.
+              </p>
+            )}
           </div>
-          <button
-            type="button"
-            className="ui-button ui-button--primary"
-            onClick={() => onSaveSelection(selectedTemplateIds)}
-            disabled={!canSaveSelection}
-          >
-            {savingSelection ? 'Saving selection...' : 'Save kept forms'}
-          </button>
+          {manualSelectionAllowed ? (
+            <button
+              type="button"
+              className="ui-button ui-button--primary"
+              onClick={() => onSaveSelection(selectedTemplateIds)}
+              disabled={!canSaveSelection}
+            >
+              {savingSelection ? 'Saving selection...' : 'Save kept forms'}
+            </button>
+          ) : null}
         </div>
-        <p className="retention-dialog__selection-count">
-          {selectedCount} of {keepLimit} selected
-        </p>
+        {manualSelectionAllowed ? (
+          <p className="retention-dialog__selection-count">
+            {selectedCount} of {keepLimit} selected
+          </p>
+        ) : null}
         <div className="retention-dialog__template-list" role="list">
           {templateRows.map((template) => {
-            const checked = selectedTemplateIds.includes(template.id);
+            const accessStatus = resolveTemplateAccessStatus(template.accessStatus, template.locked);
+            const checked = manualSelectionAllowed
+              ? selectedTemplateIds.includes(template.id)
+              : accessStatus === 'accessible';
             const createdAtLabel = formatRetentionDate(template.createdAt);
             return (
-              <label
+              <div
                 key={template.id}
-                className={`retention-dialog__template ${checked ? 'retention-dialog__template--checked' : ''}`}
+                className={[
+                  'retention-dialog__template',
+                  checked ? 'retention-dialog__template--checked' : '',
+                  !manualSelectionAllowed ? 'retention-dialog__template--readonly' : '',
+                ].filter(Boolean).join(' ')}
               >
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => handleToggleTemplate(template.id)}
-                  disabled={actionsBusy}
-                />
+                {manualSelectionAllowed ? (
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => handleToggleTemplate(template.id)}
+                    disabled={actionsBusy}
+                  />
+                ) : (
+                  <span
+                    className={`retention-dialog__template-indicator retention-dialog__template-indicator--${accessStatus}`}
+                    aria-hidden="true"
+                  />
+                )}
                 <div className="retention-dialog__template-body">
                   <span className="retention-dialog__template-name">{template.name}</span>
                   <span className="retention-dialog__template-date">Created {createdAtLabel}</span>
                 </div>
-                <span className={`retention-dialog__template-status retention-dialog__template-status--${checked ? 'kept' : 'queued'}`}>
-                  {checked ? 'Keep' : 'Delete later'}
+                <span
+                  className={`retention-dialog__template-status retention-dialog__template-status--${accessStatus}`}
+                >
+                  {accessStatus === 'accessible' ? 'Accessible' : 'Locked'}
                 </span>
-              </label>
+              </div>
             );
           })}
         </div>
-        {retention.counts.closedLinks ? (
+        {affectedSigningRequestCount ? (
           <p className="retention-dialog__note">
-            Extra active Fill By Link records above the free limit were closed automatically. They are not in the delete queue unless their saved form is queued.
+            Sent and completed signing requests keep their retained records. Drafts tied to locked forms are blocked
+            from send until you upgrade and restore access.
           </p>
         ) : null}
         {!billingEnabled ? (

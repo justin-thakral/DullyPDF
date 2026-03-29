@@ -17,6 +17,13 @@ export function buildFillLinkTemplateFields(fields: PdfField[]) {
     optionKey: field.optionKey,
     optionLabel: field.optionLabel,
     groupLabel: field.groupLabel,
+    // Keep explicit radio metadata so backend publish can preserve one
+    // respondent-facing question per radio group instead of splitting by field.
+    radioGroupId: field.radioGroupId,
+    radioGroupKey: field.radioGroupKey,
+    radioGroupLabel: field.radioGroupLabel,
+    radioOptionKey: field.radioOptionKey,
+    radioOptionLabel: field.radioOptionLabel,
   }));
 }
 
@@ -81,6 +88,11 @@ export function buildFillLinkPublishFingerprint(fields: PdfField[], checkboxRule
       optionKey: field.optionKey || '',
       optionLabel: field.optionLabel || '',
       groupLabel: field.groupLabel || '',
+      radioGroupId: field.radioGroupId || '',
+      radioGroupKey: field.radioGroupKey || '',
+      radioGroupLabel: field.radioGroupLabel || '',
+      radioOptionKey: field.radioOptionKey || '',
+      radioOptionLabel: field.radioOptionLabel || '',
     }))
     .sort((left, right) => {
       if (left.page !== right.page) return left.page - right.page;

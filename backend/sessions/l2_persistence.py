@@ -108,7 +108,9 @@ def _hydrate_from_l2(
         return None
     entry: SessionEntry = {
         "user_id": metadata.get("user_id"),
+        "source_template_id": metadata.get("source_template_id"),
         "source_pdf": metadata.get("source_pdf"),
+        "source_pdf_sha256": metadata.get("source_pdf_sha256"),
         "pdf_path": metadata.get("pdf_path"),
         "fields_path": metadata.get("fields_path"),
         "result_path": metadata.get("result_path"),
@@ -197,6 +199,10 @@ def _persist_session_entry(
         "version": _SESSION_VERSION,
         "last_access_at": now_iso(),
     }
+    if "source_template_id" in entry and entry.get("source_template_id") is not None:
+        metadata["source_template_id"] = entry.get("source_template_id")
+    if "source_pdf_sha256" in entry and entry.get("source_pdf_sha256") is not None:
+        metadata["source_pdf_sha256"] = entry.get("source_pdf_sha256")
     for key in (
         "detection_status",
         "detection_error",

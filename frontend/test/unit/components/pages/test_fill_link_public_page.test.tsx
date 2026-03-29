@@ -105,6 +105,42 @@ describe('FillLinkPublicPage', () => {
     expect(await screen.findByText('Thanks, Ada Lovelace. Your response was submitted.')).toBeTruthy();
   });
 
+  it('replaces the form with a completion state after submit until the respondent starts another response', async () => {
+    const user = userEvent.setup();
+    apiMocks.getPublicFillLink.mockResolvedValue({
+      status: 'active',
+      requireAllFields: false,
+      questions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+      ],
+    });
+    apiMocks.submitPublicFillLink.mockResolvedValue({
+      success: true,
+      responseId: 'resp-1',
+      respondentLabel: 'Ada Lovelace',
+      link: {
+        status: 'active',
+        requireAllFields: false,
+        questions: [
+          { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+        ],
+      },
+    });
+
+    render(<FillLinkPublicPage token="token-1" />);
+
+    await user.type(await screen.findByLabelText('Full Name'), 'Ada Lovelace');
+    await user.click(screen.getByRole('button', { name: 'Submit response' }));
+
+    expect(await screen.findByRole('heading', { name: 'Response complete' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Submit response' })).toBeNull();
+
+    await user.click(screen.getByRole('button', { name: 'Start another response' }));
+
+    expect(await screen.findByRole('button', { name: 'Submit response' })).toBeTruthy();
+    expect((screen.getByLabelText('Full Name') as HTMLInputElement).value).toBe('');
+  });
+
   it('shows signing email delivery state when the public submit returns a signing result', async () => {
     const user = userEvent.setup();
     apiMocks.getPublicFillLink.mockResolvedValue({
@@ -206,6 +242,7 @@ describe('FillLinkPublicPage', () => {
         { downloadPath: '/api/fill-links/public/token-1/responses/resp-10/download' },
       );
     });
+    expect(URL.revokeObjectURL).not.toHaveBeenCalled();
   });
 
   it('lets the respondent retry the signing handoff after a temporary failure', async () => {
@@ -341,6 +378,27 @@ describe('FillLinkPublicPage', () => {
     expect(apiMocks.submitPublicFillLink).not.toHaveBeenCalled();
   });
 
+  it('requires a required checkbox to be checked before submit', async () => {
+    const user = userEvent.setup();
+    apiMocks.getPublicFillLink.mockResolvedValue({
+      status: 'active',
+      requireAllFields: false,
+      questions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+        { key: 'consent_confirmed', label: 'Consent Confirmed', type: 'boolean', required: true },
+      ],
+    });
+
+    render(<FillLinkPublicPage token="token-required-checkbox" />);
+
+    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
+    await user.click(screen.getByRole('button', { name: 'Submit response' }));
+
+    expect(await screen.findByText('Required questions are missing: Consent Confirmed.')).toBeTruthy();
+    expect(apiMocks.submitPublicFillLink).not.toHaveBeenCalled();
+  });
+
   it('allows any one identity field to satisfy the respondent requirement', async () => {
     const user = userEvent.setup();
     const questions = [
@@ -400,12 +458,12 @@ describe('FillLinkPublicPage', () => {
       .mockResolvedValueOnce({
         status: 'closed',
         closedReason: 'response_limit',
-        statusMessage: 'This link has reached its response limit.',
+        statusMessage: 'This account has reached its monthly Fill By Link response limit.',
         requireAllFields: false,
         questions: [],
       });
     apiMocks.submitPublicFillLink.mockRejectedValue(
-      new ApiError('This link has reached its response limit.', 409),
+      new ApiError('This account has reached its monthly Fill By Link response limit.', 409),
     );
 
     render(<FillLinkPublicPage token="token-1" />);
@@ -415,7 +473,7 @@ describe('FillLinkPublicPage', () => {
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
     expect(await screen.findByText('This form is closed')).toBeTruthy();
-    expect(screen.getAllByText('This link has reached its response limit.')).toHaveLength(2);
+    expect(screen.getAllByText('This account has reached its monthly Fill By Link response limit.')).toHaveLength(2);
     expect(apiMocks.getPublicFillLink).toHaveBeenCalledTimes(2);
   });
 
@@ -563,6 +621,33 @@ describe('FillLinkPublicPage', () => {
         }),
       );
     });
+  });
+
+  it('renders grouped radio questions with one legend and individually labeled choices', async () => {
+    apiMocks.getPublicFillLink.mockResolvedValue({
+      status: 'active',
+      requireAllFields: false,
+      questions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+        {
+          key: 'marital_status',
+          label: 'Marital Status',
+          type: 'radio',
+          options: [
+            { key: 'single', label: 'Single' },
+            { key: 'married', label: 'Married' },
+          ],
+        },
+      ],
+    });
+
+    const { container } = render(<FillLinkPublicPage token="token-radio-group" />);
+
+    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    const legend = container.querySelector('legend.fill-link-public-page__field-label');
+    expect(legend?.textContent).toContain('Marital Status');
+    expect(screen.getByRole('radio', { name: 'Single' })).toBeTruthy();
+    expect(screen.getByRole('radio', { name: 'Married' })).toBeTruthy();
   });
 
   it('renders a closed state when the link is no longer active', async () => {

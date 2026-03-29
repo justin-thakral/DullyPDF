@@ -42,6 +42,7 @@ CSS imports. Keep `display=swap` so text paints immediately.
 - Alert colors come from `--alert-*` tokens in `frontend/src/index.css`.
 - Dialogs reuse shared button tokens/styles for visual consistency.
 - The shared `DialogFrame` shell portals every modal/backdrop pair to `document.body`, applies the blur/opaque backdrop from `Dialog.css`, and toggles body scroll lock while any dialog is open. Feature dialogs should attach their root styles to `.ui-dialog...` selectors so they inherit the shared layering behavior instead of creating local stacking contexts.
+- Standard `Dialog` headers include the shared red top-right close affordance automatically. `DialogFrame` consumers should reuse `DialogCloseButton` so custom modal headers and callouts keep the same close treatment across the site.
 
 ## Full-screen workspace views
 

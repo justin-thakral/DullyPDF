@@ -28,24 +28,6 @@
   line-height: 1.45;
 }
 
-.group-upload-modal__close {
-  border: 1px solid rgba(148, 163, 184, 0.45);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.96);
-  color: var(--ink-800);
-  font: inherit;
-  font-weight: 600;
-  line-height: 1;
-  padding: 0.62rem 0.95rem;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
-}
-
-.group-upload-modal__close:hover {
-  border-color: rgba(59, 130, 246, 0.45);
-  box-shadow: 0 14px 26px rgba(59, 130, 246, 0.14);
-}
-
 .group-upload-modal__body {
   flex: 1 1 auto;
   display: grid;
@@ -429,7 +411,7 @@
     align-items: stretch;
   }
 
-  .group-upload-modal__close {
+  .group-upload-modal__header .ui-dialog__close {
     align-self: flex-end;
   }
 

@@ -48,6 +48,21 @@ def log_pdf_label(name: str) -> str:
     return f"pdf{suffix}#{digest}"
 
 
+def sha256_hex_for_bytes(raw_bytes: bytes) -> str:
+    """Return the SHA-256 digest for a PDF byte stream as lowercase hex."""
+    return hashlib.sha256(raw_bytes or b"").hexdigest()
+
+
+def normalize_optional_pdf_sha256(value: Optional[str]) -> Optional[str]:
+    """Validate and normalize an optional PDF SHA-256 fingerprint."""
+    normalized = str(value or "").strip().lower()
+    if not normalized:
+        return None
+    if not re.fullmatch(r"[0-9a-f]{64}", normalized):
+        raise ValueError("sourcePdfSha256 must be a 64-character lowercase hex string")
+    return normalized
+
+
 def cleanup_paths(paths: List[Path]) -> None:
     """Best-effort cleanup for temp files."""
     for path in paths:

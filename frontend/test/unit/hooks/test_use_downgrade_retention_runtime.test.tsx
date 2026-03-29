@@ -10,7 +10,6 @@ import {
 const createBillingCheckoutSessionMock = vi.hoisted(() => vi.fn());
 const cancelBillingSubscriptionMock = vi.hoisted(() => vi.fn());
 const updateDowngradeRetentionMock = vi.hoisted(() => vi.fn());
-const deleteDowngradeRetentionNowMock = vi.hoisted(() => vi.fn());
 const reconcileBillingCheckoutFulfillmentMock = vi.hoisted(() => vi.fn());
 const trackGoogleAdsBillingPurchaseMock = vi.hoisted(() => vi.fn());
 
@@ -19,7 +18,6 @@ vi.mock('../../../src/services/api', () => ({
     createBillingCheckoutSession: createBillingCheckoutSessionMock,
     cancelBillingSubscription: cancelBillingSubscriptionMock,
     updateDowngradeRetention: updateDowngradeRetentionMock,
-    deleteDowngradeRetentionNow: deleteDowngradeRetentionNowMock,
     reconcileBillingCheckoutFulfillment: reconcileBillingCheckoutFulfillmentMock,
   },
 }));
@@ -59,15 +57,19 @@ function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
     },
     retention: {
       status: 'grace_period',
-      policyVersion: 1,
+      policyVersion: 2,
       downgradedAt: '2026-03-01T00:00:00Z',
-      graceEndsAt: '2026-03-15T00:00:00Z',
-      daysRemaining: 5,
+      graceEndsAt: null,
+      daysRemaining: 0,
       savedFormsLimit: 2,
-      fillLinksActiveLimit: 2,
       keptTemplateIds: ['tpl-1', 'tpl-2'],
       pendingDeleteTemplateIds: ['tpl-3'],
       pendingDeleteLinkIds: ['link-3'],
+      accessibleTemplateIds: ['tpl-1', 'tpl-2'],
+      lockedTemplateIds: ['tpl-3'],
+      lockedLinkIds: ['link-3'],
+      selectionMode: 'oldest_created',
+      manualSelectionAllowed: false,
       counts: {
         keptTemplates: 2,
         pendingTemplates: 1,
@@ -75,9 +77,9 @@ function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
         pendingLinks: 1,
       },
       templates: [
-        { id: 'tpl-1', name: 'Packet Alpha', status: 'kept' },
-        { id: 'tpl-2', name: 'Packet Beta', status: 'kept' },
-        { id: 'tpl-3', name: 'Packet Gamma', status: 'pending_delete' },
+        { id: 'tpl-1', name: 'Packet Alpha', status: 'kept', accessStatus: 'accessible' },
+        { id: 'tpl-2', name: 'Packet Beta', status: 'kept', accessStatus: 'accessible' },
+        { id: 'tpl-3', name: 'Packet Gamma', status: 'pending_delete', accessStatus: 'locked', locked: true },
       ],
       groups: [],
       links: [],
@@ -86,8 +88,7 @@ function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
       detectMaxPages: 10,
       fillableMaxPages: 20,
       savedFormsMax: 5,
-      fillLinksActiveMax: 2,
-      fillLinkResponsesMax: 100,
+      fillLinkResponsesMonthlyMax: 25,
     },
     ...overrides,
   };
@@ -101,12 +102,8 @@ function createDeps(overrides: Partial<HarnessDeps> = {}): HarnessDeps {
     initialUserProfile: makeProfile(),
     loadUserProfile: vi.fn().mockResolvedValue(makeProfile()),
     setBannerNotice: vi.fn(),
-    requestConfirm: vi.fn().mockResolvedValue(true),
     refreshSavedForms: vi.fn().mockResolvedValue([]),
     refreshGroups: vi.fn().mockResolvedValue([]),
-    activeSavedFormId: 'tpl-2',
-    activeGroupTemplates: [],
-    clearWorkspace: vi.fn(),
     ...overrides,
   };
 }
@@ -131,12 +128,8 @@ function renderHookHarness(initialDeps: HarnessDeps) {
         setUserProfile((previous) => updater(previous));
       },
       setBannerNotice: deps.setBannerNotice,
-      requestConfirm: deps.requestConfirm,
       refreshSavedForms: deps.refreshSavedForms,
       refreshGroups: deps.refreshGroups,
-      activeSavedFormId: deps.activeSavedFormId,
-      activeGroupTemplates: deps.activeGroupTemplates,
-      clearWorkspace: deps.clearWorkspace,
     });
 
     return null;
@@ -164,7 +157,6 @@ describe('useDowngradeRetentionRuntime', () => {
     createBillingCheckoutSessionMock.mockReset();
     cancelBillingSubscriptionMock.mockReset();
     updateDowngradeRetentionMock.mockReset();
-    deleteDowngradeRetentionNowMock.mockReset();
     reconcileBillingCheckoutFulfillmentMock.mockReset();
     trackGoogleAdsBillingPurchaseMock.mockReset();
   });
@@ -191,7 +183,10 @@ describe('useDowngradeRetentionRuntime', () => {
       initialUserProfile: makeProfile({
         retention: {
           ...makeProfile().retention!,
-          graceEndsAt: '2026-03-20T00:00:00Z',
+          accessibleTemplateIds: ['tpl-1'],
+          lockedTemplateIds: ['tpl-2', 'tpl-3'],
+          keptTemplateIds: ['tpl-1'],
+          pendingDeleteTemplateIds: ['tpl-2', 'tpl-3'],
         },
       }),
     });
@@ -205,12 +200,21 @@ describe('useDowngradeRetentionRuntime', () => {
   it('updates local retention immediately and shows an info banner when refreshes partially fail', async () => {
     const nextRetention = {
       ...makeProfile().retention!,
+      manualSelectionAllowed: true,
       keptTemplateIds: ['tpl-1', 'tpl-4'],
       pendingDeleteTemplateIds: ['tpl-2', 'tpl-3'],
+      accessibleTemplateIds: ['tpl-1', 'tpl-4'],
+      lockedTemplateIds: ['tpl-2', 'tpl-3'],
     };
     updateDowngradeRetentionMock.mockResolvedValue(nextRetention);
 
     const deps = createDeps({
+      initialUserProfile: makeProfile({
+        retention: {
+          ...makeProfile().retention!,
+          manualSelectionAllowed: true,
+        },
+      }),
       loadUserProfile: vi.fn().mockResolvedValue(null),
       refreshSavedForms: vi.fn().mockRejectedValue(new Error('saved forms refresh failed')),
       refreshGroups: vi.fn().mockResolvedValue([]),
@@ -226,35 +230,6 @@ describe('useDowngradeRetentionRuntime', () => {
     expect(deps.setBannerNotice).toHaveBeenLastCalledWith(expect.objectContaining({
       tone: 'info',
       message: expect.stringContaining('some views may need a refresh'),
-    }));
-  });
-
-  it('clears retention locally, closes the dialog, and resets the workspace when delete-now removes the active template', async () => {
-    deleteDowngradeRetentionNowMock.mockResolvedValue({
-      success: true,
-      deletedTemplateIds: ['tpl-2'],
-      deletedLinkIds: ['link-2'],
-    });
-
-    const deps = createDeps();
-    const hook = renderHookHarness(deps);
-
-    await waitFor(() => {
-      expect(hook.current.showDowngradeRetentionDialog).toBe(true);
-    });
-
-    await act(async () => {
-      await hook.current.handleDeleteDowngradeRetentionNow();
-    });
-
-    expect(deps.requestConfirm).toHaveBeenCalledTimes(1);
-    expect(deleteDowngradeRetentionNowMock).toHaveBeenCalledTimes(1);
-    expect(deps.clearWorkspace).toHaveBeenCalledTimes(1);
-    expect(hook.current.currentDowngradeRetention).toBeNull();
-    expect(hook.current.showDowngradeRetentionDialog).toBe(false);
-    expect(deps.setBannerNotice).toHaveBeenLastCalledWith(expect.objectContaining({
-      tone: 'success',
-      message: expect.stringContaining('dependent Fill By Link records were deleted'),
     }));
   });
 
@@ -336,12 +311,8 @@ describe('useDowngradeRetentionRuntime', () => {
       initialUserProfile: profile,
       loadUserProfile: initialDeps.loadUserProfile,
       setBannerNotice: initialDeps.setBannerNotice,
-      requestConfirm: initialDeps.requestConfirm,
       refreshSavedForms: initialDeps.refreshSavedForms,
       refreshGroups: initialDeps.refreshGroups,
-      activeSavedFormId: initialDeps.activeSavedFormId,
-      activeGroupTemplates: initialDeps.activeGroupTemplates,
-      clearWorkspace: initialDeps.clearWorkspace,
     }));
 
     await waitFor(() => {

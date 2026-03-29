@@ -18,8 +18,12 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 
 ## Creating and selecting fields
 
-- Use inspector create tools (`Text`, `Date`, `Signature`, `Checkbox`) to draw fields directly on the PDF.
+- Use inspector create tools (`Text`, `Date`, `Signature`, `Checkbox`, `Radio`, `Quick Radio`) to draw fields directly on the PDF.
+- Activating a create tool exits `Transform` and `Info` so drawing does not compete with drag handles or inline inputs.
+- Turning the create tool off restores the previous viewer display mode/toggles.
 - New fields are added to the current page.
+- Click without dragging to place a default-size field at the pointer location, or drag past the click threshold to size the field from the gesture.
+- `Quick Radio` lets you marquee-select checkbox fields on the active page and convert them into one radio group.
 - Press `Esc` to exit an active create tool.
 - Select fields from the overlay or the left field list.
 - Selecting a field in the list can jump pages when needed.
@@ -41,11 +45,13 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 ## Inspector editing
 
 - Rename fields and change type/page assignment.
+- Radio `Group key` is the persisted single-choice identifier used by exported PDFs, Search & Fill, and Fill By Link.
+- When a new or AI-suggested radio group key collides with a different existing radio group, the editor auto-suffixes the key to keep those groups separate downstream.
 - The inspector header shows the selected field name and calls out that `Enter` confirms edits.
-- Delete the selected field.
+- Delete the selected field, or remove every field from the current workspace after confirming the bulk delete dialog.
 - The `Create field` section includes an `Arrow keys` movement toggle with a configurable point step for keyboard nudging.
 - Undo/redo field edits with keyboard shortcuts (history depth: 10 snapshots).
-
+- Workspace edits only change the editor overlay state; the underlying PDF bytes are rewritten later when you save or download.
 ## Confidence labels
 
 - The field list supports high/medium/low confidence filtering.
@@ -63,6 +69,13 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - Rename, Map, and Rename+Map require explicit confirmation dialogs.
 - The dialogs warn users before sending PDF/schema content to OpenAI.
 - Row data and field input values are not included in OpenAI rename/map requests.
+- Rename and Map now send a SHA-256 fingerprint of the active PDF, and the backend rejects the
+  request if that document no longer matches the active backend session.
+- Rename now derives radio-group suggestions from returned `checkboxRules` plus high-signal renamed checkbox layouts such as compact `yes/no`, `male/female`, and single-row enum groups. `Rename + Map` now performs the full rename pass followed by a real remap pass instead of stopping after rename.
+- OpenAI-derived radio-group suggestions now auto-apply only when their confidence lands in the high tier (`>= 0.60`).
+- Medium/low-confidence radio suggestions stay review-only, and their source fields keep checkbox behavior until you explicitly convert them.
+- Fill By Link web forms only render radio questions for explicit radio widgets. Unconverted checkbox clusters stay checkbox-style (`boolean` or grouped multi-select) in the public form.
+- Legacy checkbox-rule-derived radio suggestions still stay review-only when reopening older saved forms.
 - Header action buttons now expose inline prerequisite hints when disabled (for example missing schema source for mapping).
 
 ## Search & Fill transform rules
@@ -81,7 +94,7 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - `Ctrl/Cmd+Z`: undo
 - `Ctrl/Cmd+Shift+Z` or `Ctrl/Cmd+Y`: redo
 - `Ctrl/Cmd+X`, `Delete`, or `Backspace`: delete selected field
-- `T` / `D` / `S` / `C`: set active create tool (`Text` / `Date` / `Signature` / `Checkbox`)
+- `T` / `D` / `S` / `C` / `R` / `Q`: set active create tool (`Text` / `Date` / `Signature` / `Checkbox` / `Radio` / `Quick Radio`)
 - `Esc`: clear active create tool
 - `Ctrl/Cmd+F` or `/`: focus field search
 - `[` and `]`: previous/next page

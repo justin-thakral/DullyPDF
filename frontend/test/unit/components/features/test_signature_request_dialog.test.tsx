@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignatureRequestDialog } from '../../../../src/components/features/SignatureRequestDialog';
 import type { SigningOptions } from '../../../../src/services/api';
@@ -67,6 +67,7 @@ describe('SignatureRequestDialog', () => {
       sourceTemplateName: 'Bravo Packet',
       documentCategory: 'ordinary_business_form',
       esignEligibilityConfirmed: true,
+      companyBindingEnabled: false,
       manualFallbackEnabled: true,
       signerName: 'Alex Signer',
       signerEmail: 'alex@example.com',
@@ -100,8 +101,28 @@ describe('SignatureRequestDialog', () => {
     const blockedOption = screen.getByRole('option', { name: 'Court document (Blocked)' }) as HTMLOptionElement;
     expect(categorySelect.value).toBe('ordinary_business_form');
     expect(blockedOption.disabled).toBe(true);
-    const saveButton = screen.getByRole('button', { name: 'Save Signing Draft' }) as HTMLButtonElement;
-    expect(saveButton.disabled).toBe(true);
+  });
+
+  it('shows why saving is blocked when the draft is not ready', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <SignatureRequestDialog
+        open
+        onClose={vi.fn()}
+        hasDocument
+        sourceDocumentName="Bravo Packet"
+        options={SIGNING_OPTIONS}
+        onCreateDraft={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Save Signing Draft' }));
+    expect(screen.getByText('Add at least one recipient before saving a signing draft.')).toBeTruthy();
+
+    await user.type(screen.getByLabelText('Signer email'), 'alex@example.com');
+    await user.click(screen.getByRole('button', { name: 'Save Signing Draft' }));
+    expect(screen.getByText('Confirm the U.S. e-sign eligibility attestation before saving a signing draft.')).toBeTruthy();
   });
 
   it('shows review-and-send details for a created draft', () => {
@@ -229,11 +250,12 @@ describe('SignatureRequestDialog', () => {
     }));
 
     const sendButton = screen.getByRole('button', { name: 'Review and Send' }) as HTMLButtonElement;
-    expect(sendButton.disabled).toBe(true);
+    expect(sendButton.disabled).toBe(false);
+
+    await user.click(sendButton);
+    expect(screen.getByText('Review the filled PDF and confirm that DullyPDF should freeze this exact version before sending.')).toBeTruthy();
 
     await user.click(screen.getByLabelText('I reviewed the filled PDF and want to freeze this exact version for signature.'));
-    await waitFor(() => expect(sendButton.disabled).toBe(false));
-
     await user.click(sendButton);
     expect(onSendRequest).toHaveBeenCalledWith({ ownerReviewConfirmed: true });
   });

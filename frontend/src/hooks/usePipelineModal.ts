@@ -72,9 +72,11 @@ export function usePipelineModal(deps: UsePipelineModalDeps) {
         pdfDoc = await loadPdfFromFile(pendingDetectFile);
         if (cancelled) return;
         setPendingDetectPageCount(Math.max(1, Number(pdfDoc.numPages) || 1));
+        setPipelineError(null);
       } catch {
         if (!cancelled) {
           setPendingDetectPageCount(null);
+          setPipelineError('Unable to inspect this PDF page count. Detection can continue without OpenAI actions, but Rename or Map requires a readable page count.');
         }
       } finally {
         if (pdfDoc && typeof pdfDoc.destroy === 'function') {
@@ -138,6 +140,10 @@ export function usePipelineModal(deps: UsePipelineModalDeps) {
     const wantsRename = uploadWantsRename;
     const wantsMap = uploadWantsMap;
     if (wantsRename || wantsMap) {
+      if (!pendingDetectPageCount) {
+        setPipelineError('Unable to inspect this PDF page count. Detection can continue without OpenAI actions, but Rename or Map requires a readable page count.');
+        return;
+      }
       if (!deps.verifiedUser) {
         setPipelineError('Sign in to use OpenAI actions.');
         return;
@@ -147,17 +153,14 @@ export function usePipelineModal(deps: UsePipelineModalDeps) {
         setPipelineError('Unable to check OpenAI credits. Try signing out and signing in again.');
         return;
       }
-      const role = String(profile.role || '').toLowerCase();
-      if (role !== 'god') {
-        const operation = wantsRename && wantsMap ? 'rename_remap' : (wantsRename ? 'rename' : 'remap');
-        const pricing = resolveClientCreditPricing(profile.creditPricing);
-        const fallbackEstimate = estimateCreditsForPageCount(operation, 1, pricing);
-        const requiredCredits = pendingDetectPageCount
-          ? estimateCreditsForPageCount(operation, pendingDetectPageCount, pricing).totalCredits
-          : fallbackEstimate.totalCredits;
-        const remaining = typeof profile.availableCredits === 'number'
-          ? profile.availableCredits
-          : (typeof profile.creditsRemaining === 'number' ? profile.creditsRemaining : 0);
+        const role = String(profile.role || '').toLowerCase();
+        if (role !== 'god') {
+          const operation = wantsRename && wantsMap ? 'rename_remap' : (wantsRename ? 'rename' : 'remap');
+          const pricing = resolveClientCreditPricing(profile.creditPricing);
+          const requiredCredits = estimateCreditsForPageCount(operation, pendingDetectPageCount, pricing).totalCredits;
+          const remaining = typeof profile.availableCredits === 'number'
+            ? profile.availableCredits
+            : (typeof profile.creditsRemaining === 'number' ? profile.creditsRemaining : 0);
         if (remaining < requiredCredits) {
           if (role === 'pro') {
             setPipelineError(

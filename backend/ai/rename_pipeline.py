@@ -20,6 +20,7 @@ logger = get_logger(__name__)
 def _build_candidates(
     rendered_pages: List[Dict[str, Any]],
     labels_by_page: Dict[int, List[Dict[str, Any]]],
+    detector_candidates_by_page: Dict[int, Dict[str, Any]] | None = None,
 ) -> List[Dict[str, Any]]:
     """
     Build per-page candidate payloads for overlay rendering.
@@ -27,6 +28,7 @@ def _build_candidates(
     candidates: List[Dict[str, Any]] = []
     for page in rendered_pages:
         page_idx = int(page.get("page_index") or 1)
+        page_detector_candidates = (detector_candidates_by_page or {}).get(page_idx) or {}
         candidates.append(
             {
                 "page": page_idx,
@@ -36,9 +38,31 @@ def _build_candidates(
                 "imageWidthPx": int(page.get("image_width_px") or 0),
                 "imageHeightPx": int(page.get("image_height_px") or 0),
                 "labels": labels_by_page.get(page_idx, []),
+                "lineCandidates": list(page_detector_candidates.get("lineCandidates") or []),
+                "boxCandidates": list(page_detector_candidates.get("boxCandidates") or []),
+                "checkboxCandidates": list(page_detector_candidates.get("checkboxCandidates") or []),
             }
         )
     return candidates
+
+
+def _coerce_detector_candidates_by_page(
+    raw: Dict[Any, Any] | None,
+) -> Dict[int, Dict[str, Any]]:
+    normalized: Dict[int, Dict[str, Any]] = {}
+    for page_key, payload in (raw or {}).items():
+        try:
+            page_idx = int(page_key)
+        except (TypeError, ValueError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        normalized[page_idx] = {
+            "lineCandidates": list(payload.get("lineCandidates") or []),
+            "boxCandidates": list(payload.get("boxCandidates") or []),
+            "checkboxCandidates": list(payload.get("checkboxCandidates") or []),
+        }
+    return normalized
 
 
 def _write_json(path: Path, payload: Dict[str, Any]) -> None:
@@ -56,6 +80,7 @@ def run_openai_rename_on_pdf(
     pdf_name: str,
     fields: List[Dict[str, Any]],
     database_fields: List[str] | None = None,
+    detector_candidates_by_page: Dict[Any, Any] | None = None,
     openai_max_retries: int | None = None,
 ) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
     """
@@ -66,7 +91,11 @@ def run_openai_rename_on_pdf(
     # Step 2: Extract text labels from each page to help align field boxes to nearby prompts.
     labels_by_page = extract_labels(pdf_bytes, rendered_pages)
     # Step 3: Build per-page candidate metadata consumed by overlay + prompt generation.
-    candidates = _build_candidates(rendered_pages, labels_by_page)
+    candidates = _build_candidates(
+        rendered_pages,
+        labels_by_page,
+        detector_candidates_by_page=_coerce_detector_candidates_by_page(detector_candidates_by_page),
+    )
     rename_report: Dict[str, Any]
     renamed_fields: List[Dict[str, Any]]
 

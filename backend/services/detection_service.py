@@ -32,7 +32,7 @@ from backend.firebaseDB.firebase_service import RequestUser
 from backend.sessions.session_store import store_session_entry as _store_session_entry, update_session_entry as _update_session_entry
 from backend.time_utils import now_iso
 
-from .pdf_service import get_pdf_page_count
+from .pdf_service import get_pdf_page_count, sha256_hex_for_bytes
 
 logger = get_logger(__name__)
 _LOCAL_DETECTION_EXECUTOR = ThreadPoolExecutor(
@@ -172,6 +172,7 @@ def enqueue_local_detection_job(
     user: Optional[RequestUser],
     *,
     page_count: Optional[int] = None,
+    source_pdf_sha256: Optional[str] = None,
     prewarm_rename: bool = False,
     prewarm_remap: bool = False,
 ) -> Dict[str, Any]:
@@ -181,6 +182,7 @@ def enqueue_local_detection_job(
         "pdf_bytes": pdf_bytes,
         "fields": [],
         "source_pdf": source_pdf,
+        "source_pdf_sha256": source_pdf_sha256 or sha256_hex_for_bytes(pdf_bytes),
         "result": {},
         "page_count": resolved_page_count,
         "user_id": user.app_user_id if user else None,
@@ -230,6 +232,7 @@ def enqueue_detection_job(
     user: Optional[RequestUser],
     *,
     page_count: Optional[int] = None,
+    source_pdf_sha256: Optional[str] = None,
     prewarm_rename: bool = False,
     prewarm_remap: bool = False,
 ) -> Dict[str, Any]:
@@ -242,6 +245,7 @@ def enqueue_detection_job(
         "pdf_bytes": pdf_bytes,
         "fields": [],
         "source_pdf": source_pdf,
+        "source_pdf_sha256": source_pdf_sha256 or sha256_hex_for_bytes(pdf_bytes),
         "result": {},
         "page_count": resolved_page_count,
         "user_id": user.app_user_id if user else None,
@@ -291,6 +295,15 @@ def enqueue_detection_job(
             target=task_config["target"],
         )
     except Exception as exc:
+        logger.exception(
+            "Detection enqueue failed for session %s (profile=%s target=%s queue=%s service=%s): %s",
+            session_id,
+            task_config["profile"],
+            task_config["target"],
+            task_config["queue"],
+            task_config["service_url"],
+            exc,
+        )
         entry["detection_status"] = DETECTION_STATUS_FAILED
         entry["detection_completed_at"] = now_iso()
         entry["detection_error"] = str(exc)

@@ -106,6 +106,72 @@ function joinRejectedRecipients(rejected: string[]): string | null {
   return `These rows could not be read: ${rejected.join(' | ')}`;
 }
 
+function resolveCreateBlockedReason(params: {
+  hasDocument: boolean;
+  sourceDocumentName: string | null;
+  options: SigningOptions | null;
+  optionsLoading: boolean;
+  plannedRecipientCount: number;
+  hasPendingRecipientDraft: boolean;
+  documentCategory: string;
+  blockedCategory: boolean;
+  blockedCategoryReason: string | null;
+  esignEligibilityConfirmed: boolean;
+  consumerDisclosureError: string | null;
+  fillAndSignNeedsValues: boolean;
+}): string | null {
+  const {
+    hasDocument,
+    sourceDocumentName,
+    options,
+    optionsLoading,
+    plannedRecipientCount,
+    hasPendingRecipientDraft,
+    documentCategory,
+    blockedCategory,
+    blockedCategoryReason,
+    esignEligibilityConfirmed,
+    consumerDisclosureError,
+    fillAndSignNeedsValues,
+  } = params;
+  if (!hasDocument) return 'Load a PDF in the workspace before starting a signing request.';
+  if (optionsLoading || !options) return 'Signing options are still loading. Try again in a moment.';
+  if (!String(sourceDocumentName || '').trim()) return 'Reload the active PDF before saving a signing draft.';
+  if (!plannedRecipientCount) {
+    return hasPendingRecipientDraft
+      ? 'Enter a valid signer email before saving a signing draft.'
+      : 'Add at least one recipient before saving a signing draft.';
+  }
+  if (!String(documentCategory || '').trim()) return 'Choose a document category before saving a signing draft.';
+  if (blockedCategory) return blockedCategoryReason || 'This document category is blocked for DullyPDF signing.';
+  if (!esignEligibilityConfirmed) return 'Confirm the U.S. e-sign eligibility attestation before saving a signing draft.';
+  if (consumerDisclosureError) return consumerDisclosureError;
+  if (fillAndSignNeedsValues) {
+    return 'Fill and Sign needs reviewed field values in the workspace. Fill the PDF first, then create the signing draft.';
+  }
+  return null;
+}
+
+function resolveSendBlockedReason(options: {
+  sendDisabledReason: string | null;
+  batchNeedsOwnerReview: boolean;
+  ownerReviewConfirmed: boolean;
+  hasSendHandler: boolean;
+}): string | null {
+  const {
+    sendDisabledReason,
+    batchNeedsOwnerReview,
+    ownerReviewConfirmed,
+    hasSendHandler,
+  } = options;
+  if (!hasSendHandler) return 'Sending is unavailable right now. Close the dialog and try again.';
+  if (sendDisabledReason) return sendDisabledReason;
+  if (batchNeedsOwnerReview && !ownerReviewConfirmed) {
+    return 'Review the filled PDF and confirm that DullyPDF should freeze this exact version before sending.';
+  }
+  return null;
+}
+
 export function SignatureRequestDialog({
   open,
   onClose,
@@ -143,6 +209,7 @@ export function SignatureRequestDialog({
   const [signatureMode, setSignatureMode] = useState<WorkspaceSigningDraftPayload['signatureMode']>(DEFAULT_SIGNATURE_MODE);
   const [documentCategory, setDocumentCategory] = useState<string>(firstAllowedCategory(options));
   const [esignEligibilityConfirmed, setEsignEligibilityConfirmed] = useState(false);
+  const [companyBindingEnabled, setCompanyBindingEnabled] = useState(false);
   const [manualFallbackEnabled, setManualFallbackEnabled] = useState(true);
   const [consumerPaperCopyProcedure, setConsumerPaperCopyProcedure] = useState('');
   const [consumerPaperCopyFeeDescription, setConsumerPaperCopyFeeDescription] = useState('');
@@ -156,6 +223,11 @@ export function SignatureRequestDialog({
   const [recipientImportError, setRecipientImportError] = useState<string | null>(null);
   const [recipients, setRecipients] = useState<SigningRecipientInput[]>([]);
   const [ownerReviewConfirmed, setOwnerReviewConfirmed] = useState(false);
+  const [actionValidationMessage, setActionValidationMessage] = useState<string | null>(null);
+
+  function clearActionValidationMessage() {
+    setActionValidationMessage(null);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -168,6 +240,7 @@ export function SignatureRequestDialog({
     setMode(DEFAULT_MODE);
     setSignatureMode(DEFAULT_SIGNATURE_MODE);
     setEsignEligibilityConfirmed(false);
+    setCompanyBindingEnabled(false);
     setManualFallbackEnabled(true);
     setConsumerPaperCopyProcedure('');
     setConsumerPaperCopyFeeDescription('');
@@ -181,6 +254,7 @@ export function SignatureRequestDialog({
     setRecipientImportError(null);
     setRecipients([]);
     setOwnerReviewConfirmed(false);
+    setActionValidationMessage(null);
   }, [open, sourceDocumentName]);
 
   const effectiveCreatedRequests = useMemo(
@@ -200,6 +274,7 @@ export function SignatureRequestDialog({
   useEffect(() => {
     if (!open) return;
     setOwnerReviewConfirmed(false);
+    setActionValidationMessage(null);
   }, [createdRequestResetKey, open]);
 
   const pendingManualRecipient = useMemo(
@@ -231,25 +306,38 @@ export function SignatureRequestDialog({
   const anchorCount = defaultAnchors.length;
   const workflowLabel = mode === 'fill_and_sign' ? 'Fill and Sign' : 'Sign';
   const defaultTitle = buildDefaultTitle(sourceDocumentName, mode);
+  const hasPendingRecipientDraft = Boolean(draftSignerName.trim() || draftSignerEmail.trim());
   const plannedRecipients = resolveRecipientsForSubmit();
   const plannedRecipientCount = plannedRecipients.length;
   const pendingDraftCount = effectiveCreatedRequests.filter((entry) => entry.status === 'draft').length;
   const batchNeedsOwnerReview = effectiveCreatedRequests.some((entry) => entry.mode === 'fill_and_sign');
-  const sendReady = Boolean(
-    effectiveCreatedRequests.length
-    && pendingDraftCount > 0
-    && !sendDisabledReason
-    && !saving
-    && !sending
-    && (onSendRequests || onSendRequest)
-    && (!batchNeedsOwnerReview || ownerReviewConfirmed),
-  );
+  const createBlockedReason = resolveCreateBlockedReason({
+    hasDocument,
+    sourceDocumentName,
+    options,
+    optionsLoading,
+    plannedRecipientCount,
+    hasPendingRecipientDraft,
+    documentCategory,
+    blockedCategory,
+    blockedCategoryReason: selectedCategory?.reason || null,
+    esignEligibilityConfirmed,
+    consumerDisclosureError,
+    fillAndSignNeedsValues,
+  });
+  const sendBlockedReason = resolveSendBlockedReason({
+    sendDisabledReason,
+    batchNeedsOwnerReview,
+    ownerReviewConfirmed,
+    hasSendHandler: Boolean(onSendRequests || onSendRequest),
+  });
 
   const readinessItems = [
     { label: 'PDF loaded', ready: hasDocument },
     { label: 'Recipients queued', ready: recipients.length > 0 || Boolean(pendingManualRecipient) },
     { label: 'Allowed category', ready: Boolean(documentCategory && !blockedCategory) },
     { label: 'Eligibility attested', ready: esignEligibilityConfirmed },
+    { label: 'Company binding', ready: true },
     ...(signatureMode === 'consumer'
       ? [{ label: 'Consumer disclosures', ready: !consumerDisclosureError }]
       : []),
@@ -259,24 +347,12 @@ export function SignatureRequestDialog({
     },
   ];
 
-  const canSubmit = Boolean(
-    hasDocument
-    && sourceDocumentName
-    && plannedRecipientCount > 0
-    && documentCategory
-    && !blockedCategory
-    && esignEligibilityConfirmed
-    && !consumerDisclosureError
-    && !fillAndSignNeedsValues
-    && !optionsLoading
-    && options,
-  );
-
   function pushRecipient(recipient: SigningRecipientInput | null) {
     if (!recipient) {
       setRecipientImportError('Enter a valid signer email before adding the recipient.');
       return;
     }
+    clearActionValidationMessage();
     setRecipients((current) => mergeSigningRecipients(current, [recipient]));
     setDraftSignerName('');
     setDraftSignerEmail('');
@@ -298,6 +374,7 @@ export function SignatureRequestDialog({
       setRecipientImportError('Paste at least one email address, `Name <email>`, or CSV row before importing.');
       return;
     }
+    clearActionValidationMessage();
     setRecipients((current) => mergeSigningRecipients(current, result.recipients));
     setRecipientImportError(joinRejectedRecipients(result.rejected));
     setRecipientImportText('');
@@ -307,15 +384,24 @@ export function SignatureRequestDialog({
     const [file] = Array.from(event.target.files || []);
     event.target.value = '';
     if (!file) return;
-    const result = await parseSigningRecipientsFromFile(file);
-    setRecipients((current) => mergeSigningRecipients(current, result.recipients));
-    setRecipientImportError(joinRejectedRecipients(result.rejected));
+    try {
+      const result = await parseSigningRecipientsFromFile(file);
+      clearActionValidationMessage();
+      setRecipients((current) => mergeSigningRecipients(current, result.recipients));
+      setRecipientImportError(joinRejectedRecipients(result.rejected));
+    } catch (error) {
+      setRecipientImportError(error instanceof Error ? error.message : 'Unable to read the recipient file. Try a UTF-8 `.txt` or `.csv` file.');
+    }
   }
 
   async function handleCreate() {
     const nextRecipients = resolveRecipientsForSubmit();
     setRecipients(nextRecipients);
-    if (!canSubmit || !sourceDocumentName || !nextRecipients.length) return;
+    if (createBlockedReason || !sourceDocumentName || !nextRecipients.length) {
+      setActionValidationMessage(createBlockedReason || 'Add at least one recipient before saving a signing draft.');
+      return;
+    }
+    setActionValidationMessage(null);
     if (onCreateDraft && nextRecipients.length === 1) {
       const [recipient] = nextRecipients;
       await onCreateDraft({
@@ -333,6 +419,7 @@ export function SignatureRequestDialog({
         sourceTemplateName: sourceTemplateName || undefined,
         documentCategory,
         esignEligibilityConfirmed,
+        companyBindingEnabled,
         manualFallbackEnabled,
         consumerPaperCopyProcedure: consumerPaperCopyProcedure.trim() || undefined,
         consumerPaperCopyFeeDescription: consumerPaperCopyFeeDescription.trim() || undefined,
@@ -361,6 +448,7 @@ export function SignatureRequestDialog({
       sourceTemplateName: sourceTemplateName || undefined,
       documentCategory,
       esignEligibilityConfirmed,
+      companyBindingEnabled,
       manualFallbackEnabled,
       consumerPaperCopyProcedure: consumerPaperCopyProcedure.trim() || undefined,
       consumerPaperCopyFeeDescription: consumerPaperCopyFeeDescription.trim() || undefined,
@@ -371,6 +459,15 @@ export function SignatureRequestDialog({
       anchors: defaultAnchors,
       recipients: nextRecipients,
     });
+  }
+
+  async function handleSend() {
+    if (sendBlockedReason) {
+      setActionValidationMessage(sendBlockedReason);
+      return;
+    }
+    setActionValidationMessage(null);
+    await (onSendRequests || onSendRequest)?.({ ownerReviewConfirmed });
   }
 
   return (
@@ -384,6 +481,7 @@ export function SignatureRequestDialog({
         </span>
       )}
       className="signature-request-dialog"
+      closeOnBackdrop={false}
     >
       <div className="signature-request-dialog__body">
         <div className="signature-request-dialog__topbar">
@@ -409,6 +507,7 @@ export function SignatureRequestDialog({
           <Alert tone="error" variant="inline" message="Load a PDF in the workspace before starting a signing request." />
         ) : null}
         {error ? <Alert tone="error" variant="inline" message={error} /> : null}
+        {actionValidationMessage ? <Alert tone="warning" variant="inline" message={actionValidationMessage} /> : null}
         {notice ? <Alert tone="success" variant="inline" message={notice} /> : null}
         {!notice && effectiveCreatedRequests.length ? (
           <Alert
@@ -474,14 +573,20 @@ export function SignatureRequestDialog({
                     <button
                       type="button"
                       className={mode === 'sign' ? 'ui-button ui-button--primary' : 'ui-button ui-button--ghost'}
-                      onClick={() => setMode('sign')}
+                      onClick={() => {
+                        clearActionValidationMessage();
+                        setMode('sign');
+                      }}
                     >
                       Sign
                     </button>
                     <button
                       type="button"
                       className={mode === 'fill_and_sign' ? 'ui-button ui-button--primary' : 'ui-button ui-button--ghost'}
-                      onClick={() => setMode('fill_and_sign')}
+                      onClick={() => {
+                        clearActionValidationMessage();
+                        setMode('fill_and_sign');
+                      }}
                     >
                       Fill and Sign
                     </button>
@@ -526,8 +631,12 @@ export function SignatureRequestDialog({
                     <label className="signature-request-dialog__field">
                       <span>Signature mode</span>
                       <select
+                        name="signature_mode"
                         value={signatureMode}
-                        onChange={(event) => setSignatureMode(event.target.value as WorkspaceSigningDraftPayload['signatureMode'])}
+                        onChange={(event) => {
+                          clearActionValidationMessage();
+                          setSignatureMode(event.target.value as WorkspaceSigningDraftPayload['signatureMode']);
+                        }}
                       >
                         {(options?.signatureModes || []).map((entry) => (
                           <option key={entry.key} value={entry.key}>{entry.label}</option>
@@ -536,7 +645,14 @@ export function SignatureRequestDialog({
                     </label>
                     <label className="signature-request-dialog__field">
                       <span>Document category</span>
-                      <select value={documentCategory} onChange={(event) => setDocumentCategory(event.target.value)}>
+                      <select
+                        name="document_category"
+                        value={documentCategory}
+                        onChange={(event) => {
+                          clearActionValidationMessage();
+                          setDocumentCategory(event.target.value);
+                        }}
+                      >
                         {(options?.categories || []).map((entry: SigningCategoryOption) => (
                           <option key={entry.key} value={entry.key} disabled={entry.blocked}>
                             {entry.blocked ? `${entry.label} (Blocked)` : entry.label}
@@ -550,22 +666,43 @@ export function SignatureRequestDialog({
                   ) : null}
                   <label className="signature-request-dialog__checkbox">
                     <input
+                      name="esign_eligibility_confirmed"
                       type="checkbox"
                       checked={esignEligibilityConfirmed}
-                      onChange={(event) => setEsignEligibilityConfirmed(event.target.checked)}
+                      onChange={(event) => {
+                        clearActionValidationMessage();
+                        setEsignEligibilityConfirmed(event.target.checked);
+                      }}
                     />
                     <span>
-                      I reviewed the blocked-category list, including court, family-law, UCC-excluded, recall/safety, and primary-residence notice categories, and confirm this document is eligible for DullyPDF&apos;s U.S. e-sign flow.
+                      DullyPDF does not auto-classify legal document types. I reviewed the blocked-category list, including court, family-law, UCC-excluded, recall/safety, and primary-residence notice categories, and confirm this document is eligible for DullyPDF&apos;s U.S. e-sign flow.
                     </span>
                   </label>
                   <label className="signature-request-dialog__checkbox">
                     <input
+                      name="manual_fallback_enabled"
                       type="checkbox"
                       checked={manualFallbackEnabled}
                       onChange={(event) => setManualFallbackEnabled(event.target.checked)}
                     />
                     <span>Allow a paper/manual fallback path for this request</span>
                   </label>
+                  <label className="signature-request-dialog__checkbox">
+                    <input
+                      name="company_binding_enabled"
+                      type="checkbox"
+                      checked={companyBindingEnabled}
+                      onChange={(event) => setCompanyBindingEnabled(event.target.checked)}
+                    />
+                    <span>Require a signer authority attestation because this request is intended to bind a company or organization</span>
+                  </label>
+                  {companyBindingEnabled ? (
+                    <Alert
+                      tone="info"
+                      variant="inline"
+                      message="At final signing, DullyPDF will require the signer to enter their title and company name and attest that they are authorized to bind that entity. DullyPDF records that attestation but does not independently verify corporate authority."
+                    />
+                  ) : null}
                   {signatureMode === 'consumer' ? (
                     <>
                       {consumerDisclosureError ? (
@@ -575,48 +712,72 @@ export function SignatureRequestDialog({
                         <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                           <span>Paper-copy or offline procedure</span>
                           <textarea
+                            name="consumer_paper_copy_procedure"
                             value={consumerPaperCopyProcedure}
-                            onChange={(event) => setConsumerPaperCopyProcedure(event.target.value)}
+                            onChange={(event) => {
+                              clearActionValidationMessage();
+                              setConsumerPaperCopyProcedure(event.target.value);
+                            }}
                             placeholder="Explain exactly how the signer can request paper delivery or offline processing for this request."
                           />
                         </label>
                         <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                           <span>Paper-copy fee disclosure</span>
                           <textarea
+                            name="consumer_paper_copy_fee_description"
                             value={consumerPaperCopyFeeDescription}
-                            onChange={(event) => setConsumerPaperCopyFeeDescription(event.target.value)}
+                            onChange={(event) => {
+                              clearActionValidationMessage();
+                              setConsumerPaperCopyFeeDescription(event.target.value);
+                            }}
                             placeholder="State any paper-copy, courier, or handling fee, or say no fee is charged."
                           />
                         </label>
                         <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                           <span>Withdrawal procedure</span>
                           <textarea
+                            name="consumer_withdrawal_procedure"
                             value={consumerWithdrawalProcedure}
-                            onChange={(event) => setConsumerWithdrawalProcedure(event.target.value)}
+                            onChange={(event) => {
+                              clearActionValidationMessage();
+                              setConsumerWithdrawalProcedure(event.target.value);
+                            }}
                             placeholder="Explain how the signer withdraws e-consent before completion."
                           />
                         </label>
                         <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                           <span>Withdrawal consequences</span>
                           <textarea
+                            name="consumer_withdrawal_consequences"
                             value={consumerWithdrawalConsequences}
-                            onChange={(event) => setConsumerWithdrawalConsequences(event.target.value)}
+                            onChange={(event) => {
+                              clearActionValidationMessage();
+                              setConsumerWithdrawalConsequences(event.target.value);
+                            }}
                             placeholder="Explain what happens to this request after consent is withdrawn."
                           />
                         </label>
                         <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                           <span>Contact-update procedure</span>
                           <textarea
+                            name="consumer_contact_update_procedure"
                             value={consumerContactUpdateProcedure}
-                            onChange={(event) => setConsumerContactUpdateProcedure(event.target.value)}
+                            onChange={(event) => {
+                              clearActionValidationMessage();
+                              setConsumerContactUpdateProcedure(event.target.value);
+                            }}
                             placeholder="Explain how the signer updates email or contact information before completion."
                           />
                         </label>
                         <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                           <span>Consent scope override (optional)</span>
                           <textarea
+                            name="consumer_consent_scope_description"
                             value={consumerConsentScopeDescription}
-                            onChange={(event) => setConsumerConsentScopeDescription(event.target.value)}
+                            onChange={(event) => {
+                              clearActionValidationMessage();
+                              setConsumerConsentScopeDescription(event.target.value);
+                            }}
                             placeholder="Leave blank to scope consent to this signing request only."
                           />
                         </label>
@@ -640,11 +801,26 @@ export function SignatureRequestDialog({
                     <div className="signature-request-dialog__field-grid">
                       <label className="signature-request-dialog__field">
                         <span>Signer name</span>
-                        <input value={draftSignerName} onChange={(event) => setDraftSignerName(event.target.value)} />
+                        <input
+                          name="draft_signer_name"
+                          value={draftSignerName}
+                          onChange={(event) => {
+                            clearActionValidationMessage();
+                            setDraftSignerName(event.target.value);
+                          }}
+                        />
                       </label>
                       <label className="signature-request-dialog__field">
                         <span>Signer email</span>
-                        <input type="email" value={draftSignerEmail} onChange={(event) => setDraftSignerEmail(event.target.value)} />
+                        <input
+                          name="draft_signer_email"
+                          type="email"
+                          value={draftSignerEmail}
+                          onChange={(event) => {
+                            clearActionValidationMessage();
+                            setDraftSignerEmail(event.target.value);
+                          }}
+                        />
                       </label>
                     </div>
                     <div className="signature-request-dialog__recipient-builder-actions">
@@ -667,8 +843,12 @@ export function SignatureRequestDialog({
                     <label className="signature-request-dialog__field signature-request-dialog__field--textarea">
                       <span>Paste TXT or CSV rows</span>
                       <textarea
+                        name="recipient_import_text"
                         value={recipientImportText}
-                        onChange={(event) => setRecipientImportText(event.target.value)}
+                        onChange={(event) => {
+                          clearActionValidationMessage();
+                          setRecipientImportText(event.target.value);
+                        }}
                         placeholder={'alex@example.com\nTaylor Example,taylor@example.com\nJordan Example <jordan@example.com>'}
                       />
                     </label>
@@ -682,7 +862,12 @@ export function SignatureRequestDialog({
                       </button>
                       <label className="ui-button ui-button--ghost signature-request-dialog__file-button">
                         Upload .txt or .csv
-                        <input type="file" accept=".txt,.csv,text/plain,text/csv" onChange={(event) => { void handleImportFile(event); }} />
+                        <input
+                          name="recipient_import_file"
+                          type="file"
+                          accept=".txt,.csv,text/plain,text/csv"
+                          onChange={(event) => { void handleImportFile(event); }}
+                        />
                       </label>
                       <p className="signature-request-dialog__supporting-copy">
                         If a row only includes an email address, DullyPDF will derive the display name from the email local part.
@@ -706,7 +891,10 @@ export function SignatureRequestDialog({
                           <button
                             type="button"
                             className="ui-button ui-button--ghost"
-                            onClick={() => setRecipients((current) => current.filter((entry) => entry.email !== recipient.email))}
+                            onClick={() => {
+                              clearActionValidationMessage();
+                              setRecipients((current) => current.filter((entry) => entry.email !== recipient.email));
+                            }}
                           >
                             Remove
                           </button>
@@ -783,9 +971,13 @@ export function SignatureRequestDialog({
                     {(mode === 'fill_and_sign' || batchNeedsOwnerReview) ? (
                       <label className="signature-request-dialog__checkbox">
                         <input
+                          name="owner_review_confirmed"
                           type="checkbox"
                           checked={ownerReviewConfirmed}
-                          onChange={(event) => setOwnerReviewConfirmed(event.target.checked)}
+                          onChange={(event) => {
+                            clearActionValidationMessage();
+                            setOwnerReviewConfirmed(event.target.checked);
+                          }}
                         />
                         <span>I reviewed the filled PDF and want to freeze this exact version for signature.</span>
                       </label>
@@ -803,17 +995,12 @@ export function SignatureRequestDialog({
       </div>
 
       <div className="ui-dialog__actions signature-request-dialog__actions">
-        <button className="ui-button ui-button--ghost" type="button" onClick={onClose}>
-          Close
-        </button>
         {activeTab === 'prepare' && effectiveCreatedRequests.length ? (
           <button
             className="ui-button ui-button--ghost"
             type="button"
-            onClick={() => {
-              void (onSendRequests || onSendRequest)?.({ ownerReviewConfirmed });
-            }}
-            disabled={!sendReady}
+            onClick={() => { void handleSend(); }}
+            disabled={sending}
           >
             {sending ? 'Sending requests…' : 'Review and Send'}
           </button>
@@ -823,7 +1010,7 @@ export function SignatureRequestDialog({
             className="ui-button ui-button--primary"
             type="button"
             onClick={() => { void handleCreate(); }}
-            disabled={!canSubmit || saving}
+            disabled={saving}
           >
             {saving ? 'Saving drafts…' : plannedRecipientCount <= 1 ? 'Save Signing Draft' : 'Save Signing Drafts'}
           </button>

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
@@ -53,6 +55,35 @@ def test_require_internal_auth_rejects_invalid_rename_token(mocker, monkeypatch)
     assert exc_info.value.detail == "Invalid rename worker auth token"
 
 
+@pytest.mark.parametrize(
+    ("status_code", "detail"),
+    [
+        (401, "Missing rename worker auth token"),
+        (403, "Rename worker caller not allowed"),
+    ],
+)
+def test_rename_worker_auth_failures_do_not_mutate_job_state(mocker, status_code: int, detail: str) -> None:
+    client = TestClient(rename_worker.app)
+    mocker.patch.object(
+        rename_worker,
+        "_require_internal_auth",
+        side_effect=HTTPException(status_code=status_code, detail=detail),
+    )
+    reject_mock = mocker.patch.object(rename_worker, "_reject_job_request")
+    get_job_mock = mocker.patch.object(rename_worker, "get_openai_job")
+    update_job_mock = mocker.patch.object(rename_worker, "update_openai_job")
+    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+
+    response = client.post("/internal/rename", json=_payload())
+
+    assert response.status_code == status_code
+    assert response.json() == {"detail": detail}
+    reject_mock.assert_not_called()
+    get_job_mock.assert_not_called()
+    update_job_mock.assert_not_called()
+    refund_mock.assert_not_called()
+
+
 def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> None:
     client = TestClient(rename_worker.app)
     mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
@@ -74,9 +105,14 @@ def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> Non
             "fields": [{"name": "field_a", "type": "text", "page": 1, "rect": [1, 2, 3, 4]}],
             "source_pdf": "sample.pdf",
             "page_count": 1,
+            "result": {
+                "detectorCandidatesByPage": {
+                    "1": {"checkboxCandidates": [{"id": "cb1", "bbox": [1, 2, 3, 4]}]}
+                }
+            },
         },
     )
-    mocker.patch.object(
+    rename_mock = mocker.patch.object(
         rename_worker,
         "run_openai_rename_on_pdf",
         return_value=(
@@ -91,6 +127,9 @@ def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> Non
     assert response.status_code == 200
     assert response.json()["status"] == "complete"
     assert update_session_mock.called
+    assert rename_mock.call_args.kwargs["detector_candidates_by_page"] == {
+        "1": {"checkboxCandidates": [{"id": "cb1", "bbox": [1, 2, 3, 4]}]}
+    }
     statuses = [call.kwargs.get("status") for call in update_job_mock.call_args_list if "status" in call.kwargs]
     assert "running" in statuses
     assert "complete" in statuses
@@ -117,6 +156,57 @@ def test_rename_worker_refunds_credits_on_terminal_failure(mocker) -> None:
     assert response.status_code == 200
     assert response.json()["status"] == "failed"
     assert "Session PDF not found" in response.json()["error"]
+    refund_mock.assert_called_once_with(
+        user_id="user-1",
+        role="base",
+        credits=1,
+        source="rename.worker",
+        request_id="job-1",
+        job_id="job-1",
+        credit_breakdown=None,
+    )
+
+
+def test_rename_worker_rejects_locked_saved_form_sessions_after_downgrade(mocker) -> None:
+    client = TestClient(rename_worker.app)
+    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    mocker.patch.object(
+        rename_worker,
+        "get_openai_job",
+        return_value={
+            "status": "queued",
+            "user_id": "user-1",
+            "request_id": "job-1",
+        },
+    )
+    mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
+    mocker.patch.object(
+        rename_worker,
+        "_get_session_entry",
+        return_value={
+            "pdf_bytes": b"%PDF-1.4\n",
+            "pdf_path": "gs://saved-forms/form-6/source.pdf",
+            "fields": [{"name": "field_a", "type": "text", "page": 1, "rect": [1, 2, 3, 4]}],
+            "source_pdf": "sample.pdf",
+        },
+    )
+    mocker.patch.object(
+        rename_worker,
+        "list_templates",
+        return_value=[SimpleNamespace(id="form-6", pdf_bucket_path="gs://saved-forms/form-6/source.pdf")],
+    )
+    mocker.patch.object(rename_worker, "is_user_retention_template_locked", return_value=True)
+    update_session_mock = mocker.patch.object(rename_worker, "_update_session_entry", return_value=None)
+    rename_mock = mocker.patch.object(rename_worker, "run_openai_rename_on_pdf")
+    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+
+    response = client.post("/internal/rename", json=_payload())
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "failed"
+    assert "locked on the base plan" in response.json()["error"]
+    update_session_mock.assert_called_once()
+    rename_mock.assert_not_called()
     refund_mock.assert_called_once_with(
         user_id="user-1",
         role="base",

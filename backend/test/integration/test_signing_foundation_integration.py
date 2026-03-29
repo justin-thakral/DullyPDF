@@ -11,29 +11,37 @@ from types import SimpleNamespace
 from asn1crypto import pem as asn1_pem
 from asn1crypto import x509 as asn1_x509
 from fastapi.testclient import TestClient
+import fitz
 import pytest
 from PIL import Image, ImageDraw
 from pypdf import PdfReader
 from pyhanko.pdf_utils.reader import PdfFileReader
 from pyhanko.sign.validation import validate_pdf_signature
 from pyhanko_certvalidator import ValidationContext
+from reportlab.pdfgen import canvas
 
 import backend.main as main
 import backend.api.middleware.security as security_middleware
 import backend.api.routes.signing as signing_routes
 import backend.api.routes.signing_public as signing_public_routes
+import backend.firebaseDB.fill_link_database as fill_link_database
+import backend.firebaseDB.group_database as group_database
 import backend.firebaseDB.signing_database as signing_database
+import backend.firebaseDB.template_database as template_database
 import backend.firebaseDB.user_database as user_database
 import backend.services.signing_provenance_service as signing_provenance_service
 from backend.services.signing_audit_service import verify_signing_audit_envelope
+from backend.services.pdf_export_service import build_immutable_signing_source_pdf
 import backend.services.signing_pdf_digital_service as signing_pdf_digital_service
 from backend.services.signing_pdf_digital_service import export_pdf_signing_certificate_pem
 from backend.services.signing_service import (
     build_signing_consumer_access_code,
     build_signing_public_token,
+    parse_signing_public_session_token,
     sha256_hex_for_bytes,
 )
 from backend.services.signing_verification_service import SigningVerificationDeliveryResult
+from backend.test.integration.downgrade_test_support import seed_saved_form_inventory
 from backend.test.integration.signing_test_support import (
     AUTH_HEADERS,
     InMemorySigningStorage,
@@ -88,7 +96,7 @@ def _owner_signing_create_payload(source_pdf_bytes: bytes, **overrides) -> dict:
         "sourceDocumentName": "Bravo Packet",
         "sourceTemplateId": "form-alpha",
         "sourceTemplateName": "Bravo Packet",
-        "sourcePdfSha256": sha256_hex_for_bytes(source_pdf_bytes),
+        "sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes),
         "documentCategory": "ordinary_business_form",
         "esignEligibilityConfirmed": True,
         "manualFallbackEnabled": True,
@@ -104,6 +112,26 @@ def _owner_signing_create_payload(source_pdf_bytes: bytes, **overrides) -> dict:
     }
     payload.update(overrides)
     return payload
+
+
+def _immutable_source_pdf_sha256(source_pdf_bytes: bytes) -> str:
+    return sha256_hex_for_bytes(build_immutable_signing_source_pdf(source_pdf_bytes))
+
+
+def _fillable_pdf_bytes(*, width: float = 200, height: float = 200) -> bytes:
+    output = BytesIO()
+    pdf_canvas = canvas.Canvas(output, pagesize=(width, height))
+    pdf_canvas.drawString(20, 180, "Client intake")
+    pdf_canvas.acroForm.textfield(
+        name="client_name",
+        x=20,
+        y=130,
+        width=120,
+        height=24,
+        value="Jordan Example",
+    )
+    pdf_canvas.save()
+    return output.getvalue()
 
 
 def _signature_image_data_url() -> str:
@@ -155,6 +183,19 @@ def _seed_openai_credit_profile(
     )
 
 
+def _seed_locked_template_inventory(
+    firestore_client: FakeFirestoreClient,
+    request_user,
+    *,
+    total_templates: int = 7,
+) -> None:
+    seed_saved_form_inventory(
+        firestore_client,
+        user_id=request_user.app_user_id,
+        total_templates=total_templates,
+    )
+
+
 def test_signing_owner_endpoints_require_authentication(client: TestClient) -> None:
     for method, path in (
         ("get", "/api/signing/options"),
@@ -199,7 +240,7 @@ def test_signing_foundation_creates_lists_and_exposes_public_shell(client: TestC
             "sourceDocumentName": "Bravo Packet",
             "sourceTemplateId": "form-alpha",
             "sourceTemplateName": "Bravo Packet",
-            "sourcePdfSha256": sha256_hex_for_bytes(source_pdf_bytes),
+            "sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes),
             "documentCategory": "ordinary_business_form",
             "esignEligibilityConfirmed": True,
             "manualFallbackEnabled": True,
@@ -253,7 +294,7 @@ def test_signing_foundation_creates_lists_and_exposes_public_shell(client: TestC
     assert public_payload["anchors"][0]["fieldName"] == "signature_primary"
 
 
-def test_signing_owner_create_enforces_per_document_limit_and_revoked_drafts_release_slots(
+def test_signing_owner_drafts_do_not_consume_monthly_quota_before_send(
     client: TestClient,
     mocker,
     monkeypatch,
@@ -261,10 +302,12 @@ def test_signing_owner_create_enforces_per_document_limit_and_revoked_drafts_rel
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
+    storage = InMemorySigningStorage()
 
-    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_PER_DOCUMENT_MAX_BASE", "1")
+    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_BASE", "1")
     mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
     patch_signing_authenticated_owner(mocker, request_user)
+    patch_signing_artifact_storage(mocker, storage)
 
     first_response = client.post(
         "/api/signing/requests",
@@ -275,7 +318,7 @@ def test_signing_owner_create_enforces_per_document_limit_and_revoked_drafts_rel
     assert first_response.status_code == 201
     first_request_id = first_response.json()["request"]["id"]
 
-    blocked_response = client.post(
+    second_response = client.post(
         "/api/signing/requests",
         headers=AUTH_HEADERS,
         json=_owner_signing_create_payload(
@@ -285,8 +328,8 @@ def test_signing_owner_create_enforces_per_document_limit_and_revoked_drafts_rel
         ),
     )
 
-    assert blocked_response.status_code == 403
-    assert "1 signature request limit" in blocked_response.json()["detail"]
+    assert second_response.status_code == 201
+    second_request_id = second_response.json()["request"]["id"]
 
     revoke_response = client.post(
         f"/api/signing/requests/{first_request_id}/revoke",
@@ -296,20 +339,18 @@ def test_signing_owner_create_enforces_per_document_limit_and_revoked_drafts_rel
     assert revoke_response.status_code == 200
     assert revoke_response.json()["request"]["status"] == "invalidated"
 
-    replacement_response = client.post(
-        "/api/signing/requests",
+    send_response = client.post(
+        f"/api/signing/requests/{second_request_id}/send",
         headers=AUTH_HEADERS,
-        json=_owner_signing_create_payload(
-            source_pdf_bytes,
-            signerEmail="jamie@example.com",
-            signerName="Jamie Signer",
-        ),
+        files={"pdf": ("bravo.pdf", source_pdf_bytes, "application/pdf")},
+        data={"sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes)},
     )
 
-    assert replacement_response.status_code == 201
+    assert send_response.status_code == 200
+    assert send_response.json()["request"]["status"] == "sent"
 
 
-def test_signing_owner_create_keeps_sent_request_slots_consumed_after_revoke(
+def test_signing_owner_send_enforces_monthly_quota_even_after_revoke(
     client: TestClient,
     mocker,
     monkeypatch,
@@ -319,7 +360,7 @@ def test_signing_owner_create_keeps_sent_request_slots_consumed_after_revoke(
     source_pdf_bytes = _pdf_bytes()
     storage = InMemorySigningStorage()
 
-    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_PER_DOCUMENT_MAX_BASE", "1")
+    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_BASE", "1")
     mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
     patch_signing_authenticated_owner(mocker, request_user)
     patch_signing_artifact_storage(mocker, storage)
@@ -337,7 +378,7 @@ def test_signing_owner_create_keeps_sent_request_slots_consumed_after_revoke(
         f"/api/signing/requests/{request_id}/send",
         headers=AUTH_HEADERS,
         files={"pdf": ("bravo.pdf", source_pdf_bytes, "application/pdf")},
-        data={"sourcePdfSha256": sha256_hex_for_bytes(source_pdf_bytes)},
+        data={"sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes)},
     )
 
     assert send_response.status_code == 200
@@ -351,7 +392,7 @@ def test_signing_owner_create_keeps_sent_request_slots_consumed_after_revoke(
     assert revoke_response.status_code == 200
     assert revoke_response.json()["request"]["status"] == "invalidated"
 
-    blocked_response = client.post(
+    replacement_response = client.post(
         "/api/signing/requests",
         headers=AUTH_HEADERS,
         json=_owner_signing_create_payload(
@@ -361,8 +402,116 @@ def test_signing_owner_create_keeps_sent_request_slots_consumed_after_revoke(
         ),
     )
 
+    assert replacement_response.status_code == 201
+    replacement_request_id = replacement_response.json()["request"]["id"]
+
+    blocked_response = client.post(
+        f"/api/signing/requests/{replacement_request_id}/send",
+        headers=AUTH_HEADERS,
+        files={"pdf": ("bravo.pdf", source_pdf_bytes, "application/pdf")},
+        data={"sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes)},
+    )
+
     assert blocked_response.status_code == 403
-    assert "1 signature request limit" in blocked_response.json()["detail"]
+    assert "1 sent signing request limit" in blocked_response.json()["detail"]
+
+
+def test_signing_owner_send_works_again_after_month_rollover(
+    client: TestClient,
+    mocker,
+    monkeypatch,
+) -> None:
+    firestore_client = FakeFirestoreClient()
+    request_user = _signing_user()
+    source_pdf_bytes = _pdf_bytes()
+    storage = InMemorySigningStorage()
+
+    monkeypatch.setenv("SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_BASE", "1")
+    mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
+    patch_signing_authenticated_owner(mocker, request_user)
+    patch_signing_artifact_storage(mocker, storage)
+    mocker.patch.object(signing_database, "_current_month_key", return_value="2026-03")
+
+    march_draft = client.post(
+        "/api/signing/requests",
+        headers=AUTH_HEADERS,
+        json=_owner_signing_create_payload(source_pdf_bytes),
+    )
+    assert march_draft.status_code == 201
+
+    march_request_id = march_draft.json()["request"]["id"]
+    march_send = client.post(
+        f"/api/signing/requests/{march_request_id}/send",
+        headers=AUTH_HEADERS,
+        files={"pdf": ("bravo.pdf", source_pdf_bytes, "application/pdf")},
+        data={"sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes)},
+    )
+    assert march_send.status_code == 200
+
+    mocker.patch.object(signing_database, "_current_month_key", return_value="2026-04")
+
+    april_draft = client.post(
+        "/api/signing/requests",
+        headers=AUTH_HEADERS,
+        json=_owner_signing_create_payload(
+            source_pdf_bytes,
+            signerEmail="jamie@example.com",
+            signerName="Jamie Signer",
+        ),
+    )
+    assert april_draft.status_code == 201
+
+    april_request_id = april_draft.json()["request"]["id"]
+    april_send = client.post(
+        f"/api/signing/requests/{april_request_id}/send",
+        headers=AUTH_HEADERS,
+        files={"pdf": ("bravo.pdf", source_pdf_bytes, "application/pdf")},
+        data={"sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes)},
+    )
+    assert april_send.status_code == 200
+    assert april_send.json()["request"]["status"] == "sent"
+
+    march_usage = signing_database.get_signing_monthly_usage("user-signing", month_key="2026-03", client=firestore_client)
+    april_usage = signing_database.get_signing_monthly_usage("user-signing", month_key="2026-04", client=firestore_client)
+    assert march_usage is not None
+    assert march_usage.request_count == 1
+    assert april_usage is not None
+    assert april_usage.request_count == 1
+
+
+def test_signing_owner_create_blocks_locked_saved_forms_after_downgrade(
+    client: TestClient,
+    mocker,
+) -> None:
+    firestore_client = FakeFirestoreClient()
+    request_user = _signing_user()
+    _seed_openai_credit_profile(firestore_client, request_user, credits=7)
+    _seed_locked_template_inventory(firestore_client, request_user)
+
+    for module in (signing_database, user_database, template_database, fill_link_database, group_database):
+        mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
+    patch_signing_authenticated_owner(mocker, request_user)
+
+    response = client.post(
+        "/api/signing/requests",
+        headers=AUTH_HEADERS,
+        json=_owner_signing_create_payload(
+            _pdf_bytes(),
+            sourceId="form-6",
+            sourceTemplateId="form-6",
+            sourceTemplateName="Saved Form 6",
+            sourceDocumentName="Saved Form 6",
+        ),
+    )
+
+    assert response.status_code == 409
+    assert "locked on the base plan" in response.json()["detail"]
+    assert (
+        firestore_client.collection(signing_database.SIGNING_REQUESTS_COLLECTION)
+        .where("user_id", "==", request_user.app_user_id)
+        .get()
+        == []
+    )
 
 
 def test_signing_owner_create_and_send_do_not_debit_openai_credits(
@@ -398,7 +547,7 @@ def test_signing_owner_create_and_send_do_not_debit_openai_credits(
         f"/api/signing/requests/{request_id}/send",
         headers=AUTH_HEADERS,
         files={"pdf": ("bravo.pdf", source_pdf_bytes, "application/pdf")},
-        data={"sourcePdfSha256": sha256_hex_for_bytes(source_pdf_bytes)},
+        data={"sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes)},
     )
 
     assert send_response.status_code == 200
@@ -488,7 +637,7 @@ def test_signing_send_transitions_draft_to_sent_with_immutable_snapshot(client: 
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
@@ -552,11 +701,74 @@ def test_signing_send_transitions_draft_to_sent_with_immutable_snapshot(client: 
     assert sent_payload["verificationMethod"] == "email_otp"
 
 
+def test_signing_send_flattens_fillable_source_pdf_before_storage(client: TestClient, mocker) -> None:
+    firestore_client = FakeFirestoreClient()
+    request_user = _signing_user()
+    source_pdf_bytes = _fillable_pdf_bytes()
+    immutable_source_pdf_bytes = build_immutable_signing_source_pdf(source_pdf_bytes)
+    source_sha256 = sha256_hex_for_bytes(immutable_source_pdf_bytes)
+    storage = InMemorySigningStorage()
+
+    mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
+    patch_signing_authenticated_owner(mocker, request_user)
+    patch_signing_artifact_storage(mocker, storage)
+
+    create_response = client.post(
+        "/api/signing/requests",
+        headers=AUTH_HEADERS,
+        json={
+            "title": "Fillable Packet Signature Request",
+            "mode": "sign",
+            "signatureMode": "business",
+            "sourceType": "workspace",
+            "sourceId": "form-alpha",
+            "sourceDocumentName": "Fillable Packet",
+            "sourceTemplateId": "form-alpha",
+            "sourceTemplateName": "Fillable Packet",
+            "sourcePdfSha256": source_sha256,
+            "documentCategory": "ordinary_business_form",
+            "esignEligibilityConfirmed": True,
+            "manualFallbackEnabled": True,
+            "signerName": "Alex Signer",
+            "signerEmail": "alex@example.com",
+            "anchors": [
+                {
+                    "kind": "signature",
+                    "page": 1,
+                    "rect": {"x": 20, "y": 20, "width": 120, "height": 24},
+                }
+            ],
+        },
+    )
+    request_id = create_response.json()["request"]["id"]
+
+    send_response = client.post(
+        f"/api/signing/requests/{request_id}/send",
+        headers=AUTH_HEADERS,
+        files={"pdf": ("fillable.pdf", immutable_source_pdf_bytes, "application/pdf")},
+        data={"sourcePdfSha256": source_sha256},
+    )
+
+    assert send_response.status_code == 200
+    sent_payload = send_response.json()["request"]
+    stored_source_pdf = storage.download_storage_bytes(sent_payload["sourcePdfPath"])
+    stored_document = fitz.open(stream=stored_source_pdf, filetype="pdf")
+    try:
+        assert stored_document.is_form_pdf is False
+        assert list(stored_document[0].widgets() or []) == []
+        page_text = stored_document[0].get_text("text")
+    finally:
+        stored_document.close()
+
+    assert sent_payload["sourcePdfSha256"] == source_sha256
+    assert "Jordan Example" in page_text
+
+
 def test_owner_manual_share_records_provenance_event(client: TestClient, mocker) -> None:
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     _patch_owner_signing_environment(mocker, firestore_client, request_user)
 
     create_response = client.post(
@@ -619,7 +831,7 @@ def test_signing_send_cleans_up_uploaded_source_when_transition_turns_stale(clie
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     deleted_paths: list[str] = []
 
     storage = _patch_owner_signing_environment(mocker, firestore_client, request_user)
@@ -750,7 +962,7 @@ def test_signing_send_rejects_malformed_client_sha256_with_400(client: TestClien
             "sourceDocumentName": "Bravo Packet",
             "sourceTemplateId": "form-alpha",
             "sourceTemplateName": "Bravo Packet",
-            "sourcePdfSha256": sha256_hex_for_bytes(source_pdf_bytes),
+            "sourcePdfSha256": _immutable_source_pdf_sha256(source_pdf_bytes),
             "documentCategory": "ordinary_business_form",
             "esignEligibilityConfirmed": True,
             "manualFallbackEnabled": True,
@@ -781,8 +993,9 @@ def test_signing_send_rejects_malformed_client_sha256_with_400(client: TestClien
 def test_fill_and_sign_send_requires_owner_review_and_persists_response_provenance(client: TestClient, mocker) -> None:
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
-    source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_pdf_bytes = _fillable_pdf_bytes()
+    immutable_source_pdf_bytes = build_immutable_signing_source_pdf(source_pdf_bytes)
+    source_sha256 = sha256_hex_for_bytes(immutable_source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
@@ -829,7 +1042,7 @@ def test_fill_and_sign_send_requires_owner_review_and_persists_response_provenan
     blocked_send = client.post(
         f"/api/signing/requests/{request_id}/send",
         headers=AUTH_HEADERS,
-        files={"pdf": ("bravo-fill.pdf", source_pdf_bytes, "application/pdf")},
+        files={"pdf": ("bravo-fill.pdf", immutable_source_pdf_bytes, "application/pdf")},
         data={"sourcePdfSha256": source_sha256},
     )
     assert blocked_send.status_code == 400
@@ -838,7 +1051,7 @@ def test_fill_and_sign_send_requires_owner_review_and_persists_response_provenan
     send_response = client.post(
         f"/api/signing/requests/{request_id}/send",
         headers=AUTH_HEADERS,
-        files={"pdf": ("bravo-fill.pdf", source_pdf_bytes, "application/pdf")},
+        files={"pdf": ("bravo-fill.pdf", immutable_source_pdf_bytes, "application/pdf")},
         data={"sourcePdfSha256": source_sha256, "ownerReviewConfirmed": "true"},
     )
     assert send_response.status_code == 200
@@ -848,7 +1061,15 @@ def test_fill_and_sign_send_requires_owner_review_and_persists_response_provenan
         f"gs://signing-bucket/users/user-signing/signing/{request_id}/source/"
     )
     assert sent_payload["sourcePdfPath"].endswith(".pdf")
-    assert storage.download_storage_bytes(sent_payload["sourcePdfPath"]) == source_pdf_bytes
+    stored_source_pdf = storage.download_storage_bytes(sent_payload["sourcePdfPath"])
+    stored_document = fitz.open(stream=stored_source_pdf, filetype="pdf")
+    try:
+        assert stored_document.is_form_pdf is False
+        assert list(stored_document[0].widgets() or []) == []
+        page_text = stored_document[0].get_text("text")
+    finally:
+        stored_document.close()
+    assert "Jordan Example" in page_text
     assert sent_payload["ownerReviewConfirmedAt"]
 
 
@@ -856,7 +1077,7 @@ def test_public_signing_happy_path_records_ceremony_evidence(client: TestClient,
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -1050,7 +1271,7 @@ def test_public_signing_happy_path_records_ceremony_evidence(client: TestClient,
     assert all(check["passed"] for check in validation_payload["checks"])
 
     event_types = [event.event_type for event in signing_database.list_signing_events_for_request(request_id, client=firestore_client)]
-    assert event_types == [
+    assert event_types[:11] == [
         "request_created",
         "request_sent",
         "invite_skipped",
@@ -1063,12 +1284,18 @@ def test_public_signing_happy_path_records_ceremony_evidence(client: TestClient,
         "signature_adopted",
         "completed",
     ]
-    assert [call.kwargs["event_type"] for call in owner_webhook_mock.call_args_list] == [
+    assert event_types.count("owner_artifact_downloaded") == 2
+    assert event_types.count("artifact_issued") == 2
+    assert event_types.count("artifact_downloaded") == 2
+    owner_webhook_events = [call.kwargs["event_type"] for call in owner_webhook_mock.call_args_list]
+    assert owner_webhook_events[:3] == [
         "request_created",
         "request_sent",
         "invite_skipped",
     ]
-    assert [call.kwargs["event_type"] for call in public_webhook_mock.call_args_list] == [
+    assert owner_webhook_events.count("owner_artifact_downloaded") == 2
+    public_webhook_events = [call.kwargs["event_type"] for call in public_webhook_mock.call_args_list]
+    assert public_webhook_events[:8] == [
         "session_started",
         "opened",
         "verification_started",
@@ -1078,13 +1305,15 @@ def test_public_signing_happy_path_records_ceremony_evidence(client: TestClient,
         "signature_adopted",
         "completed",
     ]
+    assert public_webhook_events.count("artifact_issued") == 2
+    assert public_webhook_events.count("artifact_downloaded") == 2
 
 
 def test_public_signing_completion_embeds_valid_pdf_signature(client: TestClient, mocker, monkeypatch) -> None:
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _configure_bundled_pdf_signing_identity(monkeypatch)
@@ -1196,7 +1425,7 @@ def test_public_signing_issued_artifact_links_require_the_same_completed_session
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -1307,7 +1536,7 @@ def test_public_signing_completion_rolls_back_when_final_artifact_promotion_fail
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -1409,7 +1638,7 @@ def test_public_signing_fill_link_requests_require_email_otp_before_document_rev
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
     verification_attempted_at = signing_public_routes.now_iso()
     verification_sent_at = signing_public_routes.now_iso()
@@ -1592,7 +1821,7 @@ def test_public_signing_fill_link_requests_require_email_otp_before_document_rev
     assert envelope_payload["manifest"]["sender"]["inviteDeliveryStatus"] == "skipped"
 
     event_types = [event.event_type for event in signing_database.list_signing_events_for_request(request_id, client=firestore_client)]
-    assert event_types == [
+    assert event_types[:12] == [
         "request_created",
         "request_sent",
         "invite_skipped",
@@ -1606,13 +1835,14 @@ def test_public_signing_fill_link_requests_require_email_otp_before_document_rev
         "signature_adopted",
         "completed",
     ]
+    assert event_types.count("owner_artifact_downloaded") == 1
 
 
 def test_public_signing_consumer_requires_consent_and_records_manual_fallback(client: TestClient, mocker) -> None:
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -1660,9 +1890,14 @@ def test_public_signing_consumer_requires_consent_and_records_manual_fallback(cl
     assert send_response.status_code == 200
 
     session_token = _bootstrap_and_verify_public_signing_session(client, public_token)
-    access_code = build_signing_consumer_access_code(request_id)
+    parsed_session = parse_signing_public_session_token(session_token)
+    assert parsed_session is not None
+    access_code = build_signing_consumer_access_code(request_id, session_id=parsed_session[1])
 
-    access_pdf_response = client.get(f"/api/signing/public/{public_token}/consumer-access-pdf")
+    access_pdf_response = client.get(
+        f"/api/signing/public/{public_token}/consumer-access-pdf",
+        headers={"X-Signing-Session": session_token},
+    )
     assert access_pdf_response.status_code == 200
     assert access_pdf_response.headers["content-type"] == "application/pdf"
 
@@ -1728,7 +1963,7 @@ def test_public_signing_consumer_access_check_allows_consent_then_withdrawal(cli
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -1767,7 +2002,6 @@ def test_public_signing_consumer_access_check_allows_consent_then_withdrawal(cli
     )
     request_id = create_response.json()["request"]["id"]
     public_token = build_signing_public_token(request_id)
-    access_code = build_signing_consumer_access_code(request_id)
 
     send_response = client.post(
         f"/api/signing/requests/{request_id}/send",
@@ -1796,12 +2030,18 @@ def test_public_signing_consumer_access_check_allows_consent_then_withdrawal(cli
         public_token,
         browser_headers=browser_headers,
     )
+    parsed_session = parse_signing_public_session_token(session_token)
+    assert parsed_session is not None
+    access_code = build_signing_consumer_access_code(request_id, session_id=parsed_session[1])
     bootstrap_preview = client.get(f"/api/signing/public/{public_token}")
     assert bootstrap_preview.status_code == 200
     assert bootstrap_preview.json()["request"]["consumerDisclosurePresentedAt"]
     assert bootstrap_preview.json()["request"]["disclosure"]["presentedAt"]
 
-    access_pdf_response = client.get(f"/api/signing/public/{public_token}/consumer-access-pdf")
+    access_pdf_response = client.get(
+        f"/api/signing/public/{public_token}/consumer-access-pdf",
+        headers={"X-Signing-Session": session_token, **browser_headers},
+    )
     assert access_pdf_response.status_code == 200
     assert access_pdf_response.headers["content-type"] == "application/pdf"
 
@@ -1862,7 +2102,7 @@ def test_public_signing_consumer_completion_seals_disclosure_evidence_in_audit_m
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -1901,7 +2141,6 @@ def test_public_signing_consumer_completion_seals_disclosure_evidence_in_audit_m
     )
     request_id = create_response.json()["request"]["id"]
     public_token = build_signing_public_token(request_id)
-    access_code = build_signing_consumer_access_code(request_id)
 
     send_response = client.post(
         f"/api/signing/requests/{request_id}/send",
@@ -1920,6 +2159,9 @@ def test_public_signing_consumer_completion_seals_disclosure_evidence_in_audit_m
         public_token,
         browser_headers=browser_headers,
     )
+    parsed_session = parse_signing_public_session_token(session_token)
+    assert parsed_session is not None
+    access_code = build_signing_consumer_access_code(request_id, session_id=parsed_session[1])
 
     consent_response = client.post(
         f"/api/signing/public/{public_token}/consent",
@@ -1987,7 +2229,7 @@ def test_owner_can_revoke_sent_signing_request(client: TestClient, mocker) -> No
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     _patch_owner_signing_environment(mocker, firestore_client, request_user)
 
     create_response = client.post(
@@ -2055,7 +2297,7 @@ def test_owner_can_reissue_sent_signing_request_and_invalidate_previous_token(cl
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
@@ -2166,7 +2408,7 @@ def test_public_signing_rejects_changed_session_user_agent(client: TestClient, m
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -2226,7 +2468,7 @@ def test_public_signing_marks_expired_requests_as_inactive(client: TestClient, m
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     _patch_owner_signing_environment(mocker, firestore_client, request_user)
 
     create_response = client.post(
@@ -2293,7 +2535,7 @@ def test_public_signing_review_rejects_stale_transition_without_logging_event(cl
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)
@@ -2363,7 +2605,7 @@ def test_public_signing_bootstrap_rejects_stale_open_transition_without_logging_
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     _patch_owner_signing_environment(mocker, firestore_client, request_user)
 
     create_response = client.post(
@@ -2424,7 +2666,7 @@ def test_public_signing_complete_cleans_up_uploaded_artifacts_on_stale_completio
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
-    source_sha256 = sha256_hex_for_bytes(source_pdf_bytes)
+    source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
     _mock_signing_verification_delivery(mocker)

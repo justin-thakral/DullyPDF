@@ -324,6 +324,7 @@ def test_detect_commonforms_fields_routes_to_ffdnet(tmp_path: Path, mocker) -> N
     detect_ffdnet.assert_called_once()
     detect_ffdetr.assert_not_called()
     assert result["fields"] == [{"name": "field_1"}]
+    assert result["detectorCandidatesByPage"] == {}
     assert result["meta"]["model"] == "FFDNet-L"
 
 
@@ -342,6 +343,7 @@ def test_detect_commonforms_fields_routes_to_ffdetr(tmp_path: Path, mocker) -> N
     detect_ffdnet.assert_not_called()
     detect_ffdetr.assert_called_once()
     assert result["fields"] == []
+    assert result["detectorCandidatesByPage"] == {}
     assert result["meta"]["model"] == "FFDetr"
 
 
@@ -400,3 +402,4 @@ def test_detect_commonforms_fields_returns_empty_fields_when_no_detections(
 
     assert result["fields"] == []
     assert result["coordinateSystem"] == "originTop"
+    assert result["detectorCandidatesByPage"] == {}

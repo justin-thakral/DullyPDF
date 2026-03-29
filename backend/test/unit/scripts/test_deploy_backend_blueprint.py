@@ -163,6 +163,7 @@ def test_backend_prod_env_example_documents_adc_only_and_fill_link_placeholder_r
     assert "# FIREBASE_CREDENTIALS_SECRET=" in text
     assert "GOOGLE_APPLICATION_CREDENTIALS unset" in text
     assert "SANDBOX_TRUST_PROXY_HEADERS=true" in text
+    assert "SANDBOX_TRUSTED_PROXY_DEPTH=2" in text
     assert "FILL_LINK_TOKEN_SECRET_SECRET=dullypdf-prod-fill-link-token-secret" in text
 
 

@@ -48,6 +48,16 @@ async function runSearch(query: string) {
 }
 
 describe('SearchFillModal', () => {
+  it('renders the shared close button and wires onClose', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    render(<SearchFillModal {...buildProps({ onClose })} />);
+
+    await user.click(screen.getByRole('button', { name: 'Close Search, Fill & Clear dialog' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   it('validates missing source, rows, query, and search key', async () => {
     const user = userEvent.setup();
 
@@ -212,6 +222,63 @@ describe('SearchFillModal', () => {
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('preserves the live search query and results when the active group target changes', async () => {
+    const user = userEvent.setup();
+    const props = buildProps({
+      rows: [{ mrn: '100', full_name: 'Ada Lovelace' }],
+      fillTargets: [
+        { id: 'tpl-a', name: 'Admissions Packet' },
+        { id: 'tpl-b', name: 'Consent Form' },
+      ],
+      activeFillTargetId: 'tpl-a',
+      onFillTargets: vi.fn(),
+    });
+    const { rerender } = render(<SearchFillModal {...props} />);
+
+    await user.click(screen.getByRole('button', { name: 'All PDFs' }));
+    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+
+    await runSearch('100');
+    expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
+
+    rerender(<SearchFillModal {...props} activeFillTargetId="tpl-b" />);
+
+    expect((screen.getByLabelText('Search') as HTMLInputElement).value).toBe('100');
+    expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
+    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+  });
+
+  it('drops removed group targets without clearing the current search session', async () => {
+    const user = userEvent.setup();
+    const props = buildProps({
+      rows: [{ mrn: '100', full_name: 'Ada Lovelace' }],
+      fillTargets: [
+        { id: 'tpl-a', name: 'Admissions Packet' },
+        { id: 'tpl-b', name: 'Consent Form' },
+      ],
+      activeFillTargetId: 'tpl-a',
+      onFillTargets: vi.fn(),
+    });
+    const { rerender } = render(<SearchFillModal {...props} />);
+
+    await user.click(screen.getByRole('button', { name: 'All PDFs' }));
+    await runSearch('100');
+    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+    expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
+
+    rerender(
+      <SearchFillModal
+        {...props}
+        fillTargets={[{ id: 'tpl-a', name: 'Admissions Packet' }]}
+      />,
+    );
+
+    expect((screen.getByLabelText('Search') as HTMLInputElement).value).toBe('100');
+    expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
+    expect(screen.queryByText('Select which PDFs receive the row')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Fill PDF' })).toBeTruthy();
   });
 
   it('clears stale field values before applying a respondent record', async () => {
@@ -522,7 +589,7 @@ describe('SearchFillModal', () => {
     await user.click(screen.getByText('Search, Fill & Clear'));
     expect(onClose).not.toHaveBeenCalled();
 
-    await user.click(screen.getByLabelText('Close'));
+    await user.click(screen.getByRole('button', { name: 'Close Search, Fill & Clear dialog' }));
     expect(onClose).toHaveBeenCalledTimes(1);
 
     await user.click(screen.getByRole('dialog'));

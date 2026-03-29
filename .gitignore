@@ -79,6 +79,9 @@ mcp/.env.*.local
 !/test/bugs/README.md
 !/test/bugs/BUG_TEMPLATE.md
 
+# Local security audit artifacts
+/security_full_audit_report_*.md
+
 # Local run artifacts (keep cleanup scripts/README tracked)
 /output/
 /runs/*

@@ -151,7 +151,9 @@ describe('AccountActionPage', () => {
 
   it('surfaces verification failures from Firebase and preserves the stored clean route on refresh', async () => {
     window.history.replaceState({}, '', '/account-action?mode=verifyEmail&oobCode=expired-code');
-    verifyEmailActionMocks.applyEmailVerificationCode.mockRejectedValueOnce(new Error('expired'));
+    verifyEmailActionMocks.applyEmailVerificationCode.mockRejectedValueOnce(
+      Object.assign(new Error('expired'), { code: 'auth/expired-action-code' }),
+    );
 
     const { unmount } = render(<AccountActionPage />);
 
@@ -167,6 +169,57 @@ describe('AccountActionPage', () => {
     });
     expect(window.location.pathname).toBe('/account-action');
     expect(window.location.search).toBe('');
+  });
+
+  it('does not mislabel transient verification failures as invalid links', async () => {
+    window.history.replaceState({}, '', '/account-action?mode=verifyEmail&oobCode=network-code');
+    verifyEmailActionMocks.applyEmailVerificationCode.mockRejectedValueOnce(
+      Object.assign(new Error('network failed'), { code: 'auth/network-request-failed' }),
+    );
+
+    const { unmount } = render(<AccountActionPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText(
+        'Unable to verify this email right now because the network request failed. Try the link again shortly.',
+      )).toBeTruthy();
+    });
+    unmount();
+
+    render(<AccountActionPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText(
+        'Unable to verify this email right now because the network request failed. Try the link again shortly.',
+      )).toBeTruthy();
+    });
+    expect(window.location.pathname).toBe('/account-action');
+    expect(window.location.search).toBe('');
+  });
+
+  it('shows a retryable reset-password error instead of an invalid-link message for transient submit failures', async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, '', '/account-action?mode=resetPassword&oobCode=reset-code');
+    verifyEmailActionMocks.confirmPasswordReset.mockRejectedValueOnce(
+      Object.assign(new Error('network failed'), { code: 'auth/network-request-failed' }),
+    );
+
+    render(<AccountActionPage />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'Choose a new password' })).toBeTruthy();
+    });
+
+    await user.type(screen.getByLabelText('New password'), 'new-secret-123');
+    await user.type(screen.getByLabelText('Confirm new password'), 'new-secret-123');
+    await user.click(screen.getByRole('button', { name: 'Reset password' }));
+
+    await waitFor(() => {
+      expect(screen.getByText(
+        'Unable to reset your password right now because the network request failed. Please try again or request a fresh reset email.',
+      )).toBeTruthy();
+    });
+    expect(screen.queryByText('This verification link is invalid, expired, or has already been used.')).toBeNull();
   });
 
   it('normalizes legacy /verify-email links onto /account-action before rendering the clean route', async () => {

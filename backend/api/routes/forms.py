@@ -27,6 +27,7 @@ from backend.services.pdf_service import (
     read_upload_bytes,
     resolve_upload_limit,
     safe_pdf_download_filename,
+    sha256_hex_for_bytes,
     validate_pdf_for_detection,
     write_upload_to_temp,
 )
@@ -239,6 +240,7 @@ async def create_template_session(
     )
     if not pdf_bytes:
         raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    source_pdf_sha256 = sha256_hex_for_bytes(pdf_bytes)
 
     validation = validate_pdf_for_detection(pdf_bytes)
     max_pages = resolve_fillable_max_pages(user.role)
@@ -251,6 +253,7 @@ async def create_template_session(
     entry: Dict[str, Any] = {
         "user_id": user.app_user_id,
         "source_pdf": source_pdf,
+        "source_pdf_sha256": source_pdf_sha256,
         "pdf_bytes": validation.pdf_bytes,
         "fields": template_fields,
         "page_count": validation.page_count,

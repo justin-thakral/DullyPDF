@@ -411,3 +411,28 @@ def test_enqueue_detection_task_with_explicit_profile_kwarg(
     )
     request = created_requests[0]
     assert "heavy-q" in request["parent"]
+
+
+def test_enqueue_detection_task_honors_explicit_target_kwarg(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("DETECTOR_ROUTING_MODE", "gpu")
+    monkeypatch.setenv("DETECTOR_TASKS_PROJECT", "p")
+    monkeypatch.setenv("DETECTOR_TASKS_LOCATION", "loc")
+    monkeypatch.setenv("DETECTOR_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("DETECTOR_TASKS_QUEUE_LIGHT", "gpu-light")
+    monkeypatch.setenv("DETECTOR_SERVICE_URL_LIGHT", "https://gpu.example.com")
+    monkeypatch.setenv("DETECTOR_TASKS_QUEUE_LIGHT_CPU", "cpu-light")
+    monkeypatch.setenv("DETECTOR_SERVICE_URL_LIGHT_CPU", "https://cpu.example.com/")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    detection_tasks.enqueue_detection_task(
+        {"jobId": "j1"},
+        profile=detection_tasks.DETECTOR_PROFILE_LIGHT,
+        target=detection_tasks.DETECTOR_TARGET_CPU,
+    )
+
+    request = created_requests[0]
+    assert request["parent"] == "projects/p/locations/loc/queues/cpu-light"
+    assert request["task"]["http_request"]["url"] == "https://cpu.example.com/internal/detect"

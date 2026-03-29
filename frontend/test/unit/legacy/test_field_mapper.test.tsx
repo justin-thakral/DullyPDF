@@ -187,9 +187,9 @@ describe('FieldMapper', () => {
     const overallConfidence = screen.getByText('72%') as HTMLElement;
 
     expect(highBadge.style.backgroundColor).toBe('rgb(16, 185, 129)');
-    expect(mediumBadge.style.backgroundColor).toBe('rgb(245, 158, 11)');
-    expect(lowBadge.style.backgroundColor).toBe('rgb(239, 68, 68)');
-    expect(overallConfidence.style.color).toBe('rgb(245, 158, 11)');
+    expect(mediumBadge.style.backgroundColor).toBe('rgb(16, 185, 129)');
+    expect(lowBadge.style.backgroundColor).toBe('rgb(245, 158, 11)');
+    expect(overallConfidence.style.color).toBe('rgb(16, 185, 129)');
   });
 
   it('shows mapping errors when generation fails', async () => {

@@ -1,6 +1,8 @@
-import type { PageSize, PdfField, RadioGroup, RadioToolDraft } from '../types';
+import type { FieldRect, PageSize, PdfField, RadioGroup, RadioToolDraft } from '../types';
 import { normaliseDataKey } from './dataSource';
-import { ensureUniqueFieldName, makeId, normalizeRectForFieldType } from './fields';
+import { ensureUniqueFieldName, getDefaultFieldRect, makeId, normalizeRectForFieldType } from './fields';
+
+const GENERIC_RADIO_OPTION_KEY_RE = /^option_\d+(?:_\d+)?$/;
 
 function compareRadioFields(left: PdfField, right: PdfField) {
   const leftOrder = Number.isFinite(left.radioOptionOrder) ? Number(left.radioOptionOrder) : Number.MAX_SAFE_INTEGER;
@@ -22,6 +24,107 @@ function fallbackRadioOptionLabel(index: number) {
 
 export function normalizeRadioKey(raw: string, fallback: string) {
   return normaliseDataKey(raw) || fallback;
+}
+
+function humanizeRadioOptionText(raw: string, fallback: string) {
+  const candidate = String(raw || '').trim();
+  const base = candidate || fallback;
+  return base
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function shouldPreferRadioOptionKey(params: {
+  name?: string;
+  groupLabel?: string;
+  explicitLabel: string;
+  optionKey: string;
+}) {
+  const { name, groupLabel, explicitLabel, optionKey } = params;
+  const normalizedKey = normalizeRadioKey(optionKey, '');
+  if (!normalizedKey || GENERIC_RADIO_OPTION_KEY_RE.test(normalizedKey)) {
+    return false;
+  }
+  if (!explicitLabel) {
+    return true;
+  }
+  const normalizedLabel = normalizeRadioKey(explicitLabel, '');
+  if (!normalizedLabel) {
+    return true;
+  }
+  const normalizedFieldName = normalizeRadioKey(String(name || '').trim(), '');
+  if (normalizedFieldName && normalizedLabel === normalizedFieldName) {
+    return true;
+  }
+  const normalizedGroupLabel = normalizeRadioKey(String(groupLabel || '').trim(), '');
+  if (normalizedGroupLabel && normalizedLabel.startsWith(normalizedGroupLabel)) {
+    return true;
+  }
+  if (explicitLabel.includes('…')) {
+    return true;
+  }
+  return false;
+}
+
+export function resolveRadioOptionDisplayLabel(
+  field: Pick<PdfField, 'name' | 'optionKey' | 'optionLabel' | 'groupLabel' | 'radioGroupKey' | 'radioGroupLabel' | 'radioOptionKey' | 'radioOptionLabel'>,
+  fallback = 'Option',
+) {
+  const explicitLabel = String(field.radioOptionLabel || field.optionLabel || '').trim();
+  const optionKey = String(field.radioOptionKey || field.optionKey || '').trim();
+  const groupLabel = String(field.radioGroupLabel || field.groupLabel || field.radioGroupKey || '').trim();
+  if (shouldPreferRadioOptionKey({
+    name: field.name,
+    groupLabel,
+    explicitLabel,
+    optionKey,
+  })) {
+    return humanizeRadioOptionText(optionKey, fallback);
+  }
+  if (explicitLabel) {
+    return explicitLabel;
+  }
+  if (optionKey) {
+    return humanizeRadioOptionText(optionKey, fallback);
+  }
+  return humanizeRadioOptionText(String(field.name || '').trim(), fallback);
+}
+
+export function resolveUniqueRadioGroupKey(
+  fields: PdfField[],
+  rawKey: string,
+  fallback: string,
+  options?: { groupId?: string | null },
+) {
+  const baseKey = normalizeRadioKey(rawKey, fallback);
+  const activeGroupId = String(options?.groupId || '').trim();
+  const usedKeys = new Set<string>();
+
+  for (const field of fields) {
+    if (field.type !== 'radio') continue;
+    const fieldGroupId = String(field.radioGroupId || '').trim();
+    if (activeGroupId && fieldGroupId === activeGroupId) {
+      continue;
+    }
+    const normalizedKey = normalizeRadioKey(String(field.radioGroupKey || '').trim(), '');
+    if (normalizedKey) {
+      usedKeys.add(normalizedKey);
+    }
+  }
+
+  if (!usedKeys.has(baseKey)) {
+    return baseKey;
+  }
+
+  let suffix = 2;
+  let candidate = `${baseKey}_${suffix}`;
+  while (usedKeys.has(candidate)) {
+    suffix += 1;
+    candidate = `${baseKey}_${suffix}`;
+  }
+  return candidate;
 }
 
 export function buildRadioGroups(fields: PdfField[]): RadioGroup[] {
@@ -46,7 +149,7 @@ export function buildRadioGroups(fields: PdfField[]): RadioGroup[] {
       const options = sorted.map((field) => ({
         fieldId: field.id,
         optionKey: String(field.radioOptionKey || field.name || field.id),
-        optionLabel: String(field.radioOptionLabel || field.name || field.radioOptionKey || field.id),
+        optionLabel: resolveRadioOptionDisplayLabel(field, field.id),
       }));
       const singlePage = sorted.every((field) => field.page === first.page) ? first.page : undefined;
       return {
@@ -89,6 +192,28 @@ export function buildRadioToolDraftForExistingGroup(
     nextOptionKey: `option_${nextIndex}`,
     nextOptionLabel: fallbackRadioOptionLabel(nextIndex),
   };
+}
+
+function resolveRadioGroupIdentity(
+  fields: PdfField[],
+  draft: RadioToolDraft,
+): { groupKey: string; groupLabel: string } {
+  const existingMember = fields.find((field) => field.type === 'radio' && field.radioGroupId === draft.groupId);
+  const nextIndex = buildRadioGroups(fields).length + 1;
+  const fallbackLabel = fallbackRadioGroupLabel(nextIndex);
+  const groupLabel = String(
+    draft.groupLabel ||
+    existingMember?.radioGroupLabel ||
+    existingMember?.radioGroupKey ||
+    '',
+  ).trim() || fallbackLabel;
+  const groupKey = resolveUniqueRadioGroupKey(
+    fields,
+    String(draft.groupKey || existingMember?.radioGroupKey || groupLabel).trim(),
+    `radio_group_${nextIndex}`,
+    { groupId: draft.groupId },
+  );
+  return { groupKey, groupLabel };
 }
 
 function nextRadioOptionIdentity(
@@ -150,9 +275,10 @@ export function createRadioFieldFromRect(
   draft: RadioToolDraft,
 ): PdfField {
   const normalizedRect = normalizeRectForFieldType(rect, 'radio', pageSize);
+  const groupIdentity = resolveRadioGroupIdentity(fields, draft);
   const option = nextRadioOptionIdentity(fields, draft);
   const existingNames = new Set(fields.map((field) => field.name));
-  const name = ensureUniqueFieldName(`${draft.groupKey}_${option.optionKey}`, existingNames);
+  const name = ensureUniqueFieldName(`${groupIdentity.groupKey}_${option.optionKey}`, existingNames);
   return {
     id: makeId(),
     name,
@@ -160,8 +286,8 @@ export function createRadioFieldFromRect(
     page,
     rect: normalizedRect,
     radioGroupId: draft.groupId,
-    radioGroupKey: draft.groupKey,
-    radioGroupLabel: draft.groupLabel,
+    radioGroupKey: groupIdentity.groupKey,
+    radioGroupLabel: groupIdentity.groupLabel,
     radioOptionKey: option.optionKey,
     radioOptionLabel: option.optionLabel,
     radioOptionOrder: option.optionOrder,
@@ -198,8 +324,10 @@ export function convertFieldsToRadioGroup(
   fields: PdfField[],
   fieldIds: string[],
   draft: RadioToolDraft,
+  pageSizesByPage?: Record<number, PageSize>,
 ): PdfField[] {
   if (!fieldIds.length) return fields;
+  const groupIdentity = resolveRadioGroupIdentity(fields, draft);
   const targetSet = new Set(fieldIds);
   const existingGroupMembers = fields
     .filter((field) => field.type === 'radio' && field.radioGroupId === draft.groupId && !targetSet.has(field.id))
@@ -207,33 +335,61 @@ export function convertFieldsToRadioGroup(
   const usedOptionKeys = new Set(
     existingGroupMembers.map((field) => String(field.radioOptionKey || '').trim()).filter(Boolean),
   );
+  const targetMetadata = new Map<string, {
+    rect: FieldRect;
+    optionLabel: string;
+    optionKey: string;
+    optionOrder: number;
+  }>();
 
   let nextOrder = existingGroupMembers.length + 1;
+  fields
+    .filter((field) => targetSet.has(field.id))
+    .sort(compareRadioFields)
+    .forEach((field) => {
+      const pageSize = pageSizesByPage?.[field.page];
+      const rect = pageSize
+        ? normalizeRectForFieldType(field.rect, 'radio', pageSize)
+        : {
+            ...field.rect,
+            width: Math.max(field.rect.width, field.rect.height, getDefaultFieldRect('radio').width),
+            height: Math.max(field.rect.width, field.rect.height, getDefaultFieldRect('radio').height),
+          };
+      const optionLabel = deriveConvertedOptionLabel(field, nextOrder);
+      const baseOptionKey = deriveConvertedOptionKey(field, optionLabel, nextOrder);
+      let optionKey = baseOptionKey;
+      let suffix = 2;
+      while (usedOptionKeys.has(optionKey)) {
+        optionKey = `${baseOptionKey}_${suffix}`;
+        suffix += 1;
+      }
+      usedOptionKeys.add(optionKey);
+      targetMetadata.set(field.id, {
+        rect,
+        optionLabel,
+        optionKey,
+        optionOrder: nextOrder,
+      });
+      nextOrder += 1;
+    });
+
   return fields.map((field) => {
     if (!targetSet.has(field.id)) return field;
-    const optionLabel = deriveConvertedOptionLabel(field, nextOrder);
-    const baseOptionKey = deriveConvertedOptionKey(field, optionLabel, nextOrder);
-    let optionKey = baseOptionKey;
-    let suffix = 2;
-    while (usedOptionKeys.has(optionKey)) {
-      optionKey = `${baseOptionKey}_${suffix}`;
-      suffix += 1;
-    }
-    usedOptionKeys.add(optionKey);
+    const metadata = targetMetadata.get(field.id);
+    if (!metadata) return field;
     const nextField = clearCheckboxMetadata({
       ...field,
       type: 'radio',
-      rect: { ...field.rect },
+      rect: metadata.rect,
       radioGroupId: draft.groupId,
-      radioGroupKey: draft.groupKey,
-      radioGroupLabel: draft.groupLabel,
-      radioOptionKey: optionKey,
-      radioOptionLabel: optionLabel,
-      radioOptionOrder: nextOrder,
+      radioGroupKey: groupIdentity.groupKey,
+      radioGroupLabel: groupIdentity.groupLabel,
+      radioOptionKey: metadata.optionKey,
+      radioOptionLabel: metadata.optionLabel,
+      radioOptionOrder: metadata.optionOrder,
       radioGroupSource: 'manual',
       value: null,
     });
-    nextOrder += 1;
     return nextField;
   });
 }
@@ -243,12 +399,24 @@ export function renameRadioGroup(
   groupId: string,
   updates: { label?: string; key?: string },
 ): PdfField[] {
+  const targetFields = fields.filter((field) => field.type === 'radio' && field.radioGroupId === groupId);
+  if (!targetFields.length) {
+    return fields;
+  }
+  const firstTarget = targetFields[0];
+  const nextLabel = updates.label ?? firstTarget.radioGroupLabel;
+  const nextKey = resolveUniqueRadioGroupKey(
+    fields,
+    updates.key ?? firstTarget.radioGroupKey ?? nextLabel ?? '',
+    String(firstTarget.radioGroupKey || firstTarget.radioGroupLabel || groupId).trim() || groupId,
+    { groupId },
+  );
   return fields.map((field) => {
     if (field.type !== 'radio' || field.radioGroupId !== groupId) return field;
     return {
       ...field,
-      radioGroupLabel: updates.label ?? field.radioGroupLabel,
-      radioGroupKey: updates.key ?? field.radioGroupKey,
+      radioGroupLabel: nextLabel ?? field.radioGroupLabel,
+      radioGroupKey: nextKey,
     };
   });
 }
@@ -282,7 +450,7 @@ export function moveRadioFieldToGroup(
   const nextOrder = targetGroup.options.length + 1;
   return fields.map((field) => {
     if (field.id !== fieldId || field.type !== 'radio') return field;
-    const optionLabel = String(field.radioOptionLabel || field.name || fallbackRadioOptionLabel(nextOrder));
+    const optionLabel = resolveRadioOptionDisplayLabel(field, fallbackRadioOptionLabel(nextOrder));
     const optionKey = normalizeRadioKey(String(field.radioOptionKey || optionLabel), `option_${nextOrder}`);
     return {
       ...field,

@@ -13,6 +13,13 @@ import {
   type SupportedEmailActionMode,
   writeStoredEmailActionState,
 } from '../../utils/emailActions';
+import {
+  INVALID_LINK_MESSAGE,
+  RESET_LINK_REFRESH_MESSAGE,
+  resolveEmailActionFailureMessage,
+  resolveResetPasswordSubmitFailureMessage,
+  UNSUPPORTED_LINK_MESSAGE,
+} from '../../utils/emailActionErrors';
 import AuthActionShell from './AuthActionShell';
 
 type AccountActionState =
@@ -34,10 +41,6 @@ type ActionLink = {
 };
 
 const VERIFY_EMAIL_SUCCESS_MESSAGE = 'Your email address has been verified. You can continue to DullyPDF now.';
-const INVALID_LINK_MESSAGE = 'This verification link is invalid, expired, or has already been used.';
-const UNSUPPORTED_LINK_MESSAGE = 'This email link is not supported by this page.';
-const RESET_LINK_REFRESH_MESSAGE =
-  'For security, password reset links are kept only in this tab after they open. Request a fresh reset email to continue.';
 const HELP_ACTION: ActionLink = {
   href: '/usage-docs/getting-started',
   label: 'Open setup guide',
@@ -82,7 +85,7 @@ const AccountActionPage = () => {
           : {
               kind: 'error',
               continuePath: storedAction.continuePath,
-              message: INVALID_LINK_MESSAGE,
+              message: storedAction.message || INVALID_LINK_MESSAGE,
               mode: storedAction.mode,
             },
       );
@@ -122,18 +125,20 @@ const AccountActionPage = () => {
             continuePath,
           });
           setState({ kind: 'verify-email-success', continuePath });
-        } catch {
+        } catch (error) {
           if (cancelled) return;
+          const message = resolveEmailActionFailureMessage(mode, error);
           writeStoredEmailActionState({
             kind: 'result',
             mode,
             status: 'error',
             continuePath,
+            message,
           });
           setState({
             kind: 'error',
             continuePath,
-            message: INVALID_LINK_MESSAGE,
+            message,
             mode,
           });
         }
@@ -157,18 +162,20 @@ const AccountActionPage = () => {
           email,
           oobCode,
         });
-      } catch {
+      } catch (error) {
         if (cancelled) return;
+        const message = resolveEmailActionFailureMessage(mode, error);
         writeStoredEmailActionState({
           kind: 'result',
           mode,
           status: 'error',
           continuePath,
+          message,
         });
         setState({
           kind: 'error',
           continuePath,
-          message: INVALID_LINK_MESSAGE,
+          message,
           mode,
         });
       }
@@ -288,17 +295,19 @@ const AccountActionPage = () => {
       });
       setPassword('');
       setConfirmPassword('');
-    } catch {
+    } catch (error) {
+      const message = resolveResetPasswordSubmitFailureMessage(error);
       writeStoredEmailActionState({
         kind: 'result',
         mode: 'resetPassword',
         status: 'error',
         continuePath: state.continuePath,
+        message,
       });
       setState({
         kind: 'error',
         continuePath: state.continuePath,
-        message: INVALID_LINK_MESSAGE,
+        message,
         mode: 'resetPassword',
       });
     }

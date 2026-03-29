@@ -1,16 +1,21 @@
-"""Downgrade retention planning, summarization, and purge helpers."""
+"""Downgrade retention planning and access-lock helpers.
+
+The current product policy preserves saved forms on base downgrade and locks
+access to every template beyond the oldest ``saved_forms_limit`` records. The
+legacy field/function names still mention "retention" and "pending delete" for
+frontend compatibility, but the runtime semantics in this module are now
+lock-based rather than delete-based.
+"""
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Dict, Iterable, List, Optional
 
-from backend.firebaseDB.fill_link_database import close_fill_link, delete_fill_link, list_fill_links, update_fill_link
-from backend.firebaseDB.firebase_service import get_firestore_client
-from backend.firebaseDB.firestore_query_utils import where_equals
+from backend.firebaseDB.fill_link_database import close_fill_link, list_fill_links, update_fill_link
 from backend.firebaseDB.group_database import list_groups
+from backend.firebaseDB.signing_database import list_signing_requests
 from backend.firebaseDB.template_database import list_templates
 from backend.firebaseDB.user_database import (
     DOWNGRADE_RETENTION_FIELD,
@@ -24,13 +29,20 @@ from backend.firebaseDB.user_database import (
     set_user_downgrade_retention,
 )
 from backend.services.billing_service import is_subscription_active
-from backend.services.limits_service import resolve_fill_links_active_limit, resolve_saved_forms_limit
-from backend.services.template_cleanup_service import delete_saved_form_assets
+from backend.services.fill_link_scope_service import validate_fill_link_scope
+from backend.services.limits_service import resolve_saved_forms_limit
+from backend.services.signing_service import (
+    SIGNING_STATUS_COMPLETED,
+    SIGNING_STATUS_DRAFT,
+    SIGNING_STATUS_INVALIDATED,
+    SIGNING_STATUS_SENT,
+)
 from backend.time_utils import now_iso
 
-DOWNGRADE_RETENTION_POLICY_VERSION = 1
+# Phase 2 keeps the persisted field names stable but changes the semantics from
+# purge-after-grace to deterministic access locking on the base plan.
+DOWNGRADE_RETENTION_POLICY_VERSION = 2
 DOWNGRADE_RETENTION_STATUS = "grace_period"
-DOWNGRADE_RETENTION_GRACE_DAYS = max(1, int(os.getenv("SANDBOX_DOWNGRADE_RETENTION_GRACE_DAYS", "30")))
 _HIGH_TIMESTAMP = "9999-12-31T23:59:59+00:00"
 
 
@@ -40,8 +52,8 @@ class DowngradeRetentionComputation:
     templates: list
     groups: list
     links: list
+    affected_signing_requests: list
     pending_link_reasons: Dict[str, str]
-    active_limit_close_link_ids: List[str]
 
 
 @dataclass(frozen=True)
@@ -85,12 +97,10 @@ def _dedupe_ids(values: Iterable[str]) -> List[str]:
     return deduped
 
 
-def _resolve_retention_deadline(existing: Optional[UserDowngradeRetentionRecord]) -> tuple[str, str]:
-    if existing and existing.downgraded_at and existing.grace_ends_at:
-        return existing.downgraded_at, existing.grace_ends_at
-    downgraded_at = now_iso()
-    grace_ends_at = (datetime.now(timezone.utc) + timedelta(days=DOWNGRADE_RETENTION_GRACE_DAYS)).isoformat()
-    return downgraded_at, grace_ends_at
+def _resolve_retention_timestamps(existing: Optional[UserDowngradeRetentionRecord]) -> tuple[str, Optional[str]]:
+    if existing and existing.downgraded_at:
+        return existing.downgraded_at, None
+    return now_iso(), None
 
 
 def _parse_iso_timestamp(value: Optional[str]) -> Optional[datetime]:
@@ -107,6 +117,8 @@ def _parse_iso_timestamp(value: Optional[str]) -> Optional[datetime]:
 
 
 def _resolve_days_remaining(grace_ends_at: Optional[str]) -> int:
+    if not str(grace_ends_at or "").strip():
+        return 0
     deadline = _parse_iso_timestamp(grace_ends_at)
     if deadline is None:
         return 0
@@ -114,6 +126,15 @@ def _resolve_days_remaining(grace_ends_at: Optional[str]) -> int:
     if remaining_seconds <= 0:
         return 0
     return max(1, int((remaining_seconds + 86399) // 86400))
+
+
+def _retention_grace_has_expired(grace_ends_at: Optional[str]) -> bool:
+    if not str(grace_ends_at or "").strip():
+        return False
+    deadline = _parse_iso_timestamp(grace_ends_at)
+    if deadline is None:
+        return False
+    return deadline <= datetime.now(timezone.utc)
 
 
 def _resolve_kept_template_ids(
@@ -146,6 +167,7 @@ def _link_depends_on_pending_template(record, pending_template_ids: set[str]) ->
 def _is_downgrade_managed_link(record) -> bool:
     return str(getattr(record, "closed_reason", "") or "").strip().lower() in {
         "downgrade_retention",
+        "template_access_locked",
         "downgrade_link_limit",
     }
 
@@ -153,29 +175,30 @@ def _is_downgrade_managed_link(record) -> bool:
 def _resolve_link_plan(
     ordered_links: List[object],
     pending_template_ids: set[str],
-    active_limit: int,
-) -> tuple[List[str], List[str], Dict[str, str]]:
+) -> tuple[List[str], Dict[str, str]]:
     pending_link_ids: List[str] = []
-    active_limit_close_link_ids: List[str] = []
     reasons: Dict[str, str] = {}
-    active_candidates: List[object] = []
     for record in ordered_links:
         if _link_depends_on_pending_template(record, pending_template_ids):
             pending_link_ids.append(record.id)
-            reasons[record.id] = "template_pending_delete"
-            continue
-        if record.status == "active" or _is_downgrade_managed_link(record):
-            active_candidates.append(record)
-    for record in active_candidates[active_limit:]:
-        active_limit_close_link_ids.append(record.id)
-    return _dedupe_ids(pending_link_ids), _dedupe_ids(active_limit_close_link_ids), reasons
+            reasons[record.id] = "template_access_locked"
+    return _dedupe_ids(pending_link_ids), reasons
 
 
-def _resolve_current_base_retention_limits() -> tuple[int, int]:
-    return (
-        max(1, resolve_saved_forms_limit(ROLE_BASE)),
-        max(1, resolve_fill_links_active_limit(ROLE_BASE)),
-    )
+def _resolve_current_base_saved_forms_limit() -> int:
+    return max(1, resolve_saved_forms_limit(ROLE_BASE))
+
+
+def _list_affected_signing_requests(user_id: str, pending_template_ids: Iterable[str]) -> List[object]:
+    pending_template_id_set = {str(template_id or "").strip() for template_id in pending_template_ids if str(template_id or "").strip()}
+    if not pending_template_id_set:
+        return []
+    return [
+        record
+        for record in list_signing_requests(user_id)
+        if record.status != SIGNING_STATUS_INVALIDATED
+        and record.source_template_id in pending_template_id_set
+    ]
 
 
 def _has_confirmed_active_subscription(
@@ -200,7 +223,7 @@ def _compute_retention(
     ordered_groups = list_groups(user_id)
     ordered_links = _sort_oldest_first(list_fill_links(user_id))
 
-    saved_forms_limit, active_links_limit = _resolve_current_base_retention_limits()
+    saved_forms_limit = _resolve_current_base_saved_forms_limit()
 
     ordered_template_ids = [template.id for template in ordered_templates]
     keep_limit = min(saved_forms_limit, len(ordered_template_ids))
@@ -211,10 +234,9 @@ def _compute_retention(
         for template_id in ordered_template_ids
         if template_id not in set(kept_template_ids)
     ]
-    pending_link_ids, active_limit_close_link_ids, pending_link_reasons = _resolve_link_plan(
+    pending_link_ids, pending_link_reasons = _resolve_link_plan(
         ordered_links,
         set(pending_delete_template_ids),
-        max(1, active_links_limit),
     )
 
     if not pending_delete_template_ids and not pending_link_ids:
@@ -223,18 +245,18 @@ def _compute_retention(
             templates=ordered_templates,
             groups=ordered_groups,
             links=ordered_links,
+            affected_signing_requests=[],
             pending_link_reasons=pending_link_reasons,
-            active_limit_close_link_ids=active_limit_close_link_ids,
         )
 
-    downgraded_at, grace_ends_at = _resolve_retention_deadline(existing)
+    affected_signing_requests = _list_affected_signing_requests(user_id, pending_delete_template_ids)
+    downgraded_at, grace_ends_at = _resolve_retention_timestamps(existing)
     state = UserDowngradeRetentionRecord(
         status=DOWNGRADE_RETENTION_STATUS,
         policy_version=DOWNGRADE_RETENTION_POLICY_VERSION,
         downgraded_at=downgraded_at,
         grace_ends_at=grace_ends_at,
         saved_forms_limit=max(1, saved_forms_limit),
-        fill_links_active_limit=max(1, active_links_limit),
         kept_template_ids=kept_template_ids,
         pending_delete_template_ids=pending_delete_template_ids,
         pending_delete_link_ids=pending_link_ids,
@@ -246,8 +268,8 @@ def _compute_retention(
         templates=ordered_templates,
         groups=ordered_groups,
         links=ordered_links,
+        affected_signing_requests=affected_signing_requests,
         pending_link_reasons=pending_link_reasons,
-        active_limit_close_link_ids=active_limit_close_link_ids,
     )
 
 
@@ -281,7 +303,6 @@ def _persist_retention_state(user_id: str, state: Optional[UserDowngradeRetentio
         downgraded_at=state.downgraded_at,
         grace_ends_at=state.grace_ends_at,
         saved_forms_limit=state.saved_forms_limit,
-        fill_links_active_limit=state.fill_links_active_limit,
         kept_template_ids=state.kept_template_ids,
         pending_delete_template_ids=state.pending_delete_template_ids,
         pending_delete_link_ids=state.pending_delete_link_ids,
@@ -375,7 +396,6 @@ def _retention_state_from_user_doc_data(user_doc_data: Optional[Dict[str, object
         downgraded_at=str(raw.get("downgraded_at") or "").strip() or None,
         grace_ends_at=str(raw.get("grace_ends_at") or "").strip() or None,
         saved_forms_limit=_coerce_positive_int(raw.get("saved_forms_limit"), default=1),
-        fill_links_active_limit=_coerce_positive_int(raw.get("fill_links_active_limit"), default=1),
         kept_template_ids=_dedupe_ids(raw.get("kept_template_ids") or []),
         pending_delete_template_ids=_dedupe_ids(raw.get("pending_delete_template_ids") or []),
         pending_delete_link_ids=_dedupe_ids(raw.get("pending_delete_link_ids") or []),
@@ -386,25 +406,10 @@ def _retention_state_from_user_doc_data(user_doc_data: Optional[Dict[str, object
 
 def _plan_retention_link_mutations(computation: DowngradeRetentionComputation) -> List[_RetentionLinkMutation]:
     pending_link_ids = set(computation.state.pending_delete_link_ids if computation.state else [])
-    active_limit_close_link_ids = set(computation.active_limit_close_link_ids)
     mutations: List[_RetentionLinkMutation] = []
     for record in computation.links:
         if record.id in pending_link_ids:
             desired_reason = "downgrade_retention"
-            if record.status != "closed" or getattr(record, "closed_reason", None) != desired_reason:
-                mutations.append(
-                    _RetentionLinkMutation(
-                        link_id=record.id,
-                        user_id=record.user_id,
-                        desired_status="closed",
-                        desired_closed_reason=desired_reason,
-                        original_status=record.status,
-                        original_closed_reason=getattr(record, "closed_reason", None),
-                    )
-                )
-            continue
-        if record.id in active_limit_close_link_ids:
-            desired_reason = "downgrade_link_limit"
             if record.status != "closed" or getattr(record, "closed_reason", None) != desired_reason:
                 mutations.append(
                     _RetentionLinkMutation(
@@ -477,25 +482,42 @@ def _serialize_summary(computation: DowngradeRetentionComputation) -> Optional[D
     state = computation.state
     if state is None:
         return None
+    affected_signing_drafts = [
+        record for record in computation.affected_signing_requests if record.status == SIGNING_STATUS_DRAFT
+    ]
+    retained_signing_requests = [
+        record
+        for record in computation.affected_signing_requests
+        if record.status in {SIGNING_STATUS_SENT, SIGNING_STATUS_COMPLETED}
+    ]
+    completed_signing_requests = [
+        record for record in computation.affected_signing_requests if record.status == SIGNING_STATUS_COMPLETED
+    ]
     pending_template_id_set = set(state.pending_delete_template_ids)
     pending_link_id_set = set(state.pending_delete_link_ids)
-    active_limit_close_link_id_set = set(computation.active_limit_close_link_ids)
     effective_closed_link_ids = {
         record.id
         for record in computation.links
         if record.status == "active"
-        and (record.id in pending_link_id_set or record.id in active_limit_close_link_id_set)
+        and record.id in pending_link_id_set
     }
     template_lookup = {template.id: template for template in computation.templates}
+    accessible_template_ids = list(state.kept_template_ids)
+    locked_template_ids = list(state.pending_delete_template_ids)
+    locked_link_ids = list(state.pending_delete_link_ids)
     templates_payload: List[Dict[str, object]] = []
     for template in computation.templates:
+        locked = template.id in pending_template_id_set
         templates_payload.append(
             {
                 "id": template.id,
                 "name": template.name or template.pdf_bucket_path or "Saved form",
                 "createdAt": template.created_at,
                 "updatedAt": template.updated_at,
-                "status": "pending_delete" if template.id in pending_template_id_set else "kept",
+                "status": "pending_delete" if locked else "kept",
+                "accessStatus": "locked" if locked else "accessible",
+                "locked": locked,
+                "lockReason": "plan_locked" if locked else None,
             }
         )
 
@@ -510,7 +532,10 @@ def _serialize_summary(computation: DowngradeRetentionComputation) -> Optional[D
                 "name": group.name,
                 "templateCount": len(group.template_ids),
                 "pendingTemplateCount": len(pending_group_templates),
-                "willDelete": len(pending_group_templates) == len(group.template_ids),
+                "willDelete": False,
+                "lockedTemplateIds": pending_group_templates,
+                "accessStatus": "locked" if pending_group_templates else "accessible",
+                "locked": bool(pending_group_templates),
             }
         )
 
@@ -531,7 +556,10 @@ def _serialize_summary(computation: DowngradeRetentionComputation) -> Optional[D
                 "groupName": link.group_name,
                 "createdAt": link.created_at,
                 "updatedAt": link.updated_at,
-                "pendingDeleteReason": computation.pending_link_reasons.get(link.id) or "template_pending_delete",
+                "pendingDeleteReason": computation.pending_link_reasons.get(link.id) or "template_access_locked",
+                "accessStatus": "locked",
+                "locked": True,
+                "lockReason": "template_access_locked",
             }
         )
 
@@ -539,24 +567,73 @@ def _serialize_summary(computation: DowngradeRetentionComputation) -> Optional[D
         "status": state.status,
         "policyVersion": state.policy_version,
         "downgradedAt": state.downgraded_at,
-        "graceEndsAt": state.grace_ends_at,
-        "daysRemaining": _resolve_days_remaining(state.grace_ends_at),
+        "graceEndsAt": None,
+        "daysRemaining": 0,
         "savedFormsLimit": state.saved_forms_limit,
-        "fillLinksActiveLimit": state.fill_links_active_limit,
         "keptTemplateIds": state.kept_template_ids,
         "pendingDeleteTemplateIds": state.pending_delete_template_ids,
         "pendingDeleteLinkIds": state.pending_delete_link_ids,
+        "accessibleTemplateIds": accessible_template_ids,
+        "lockedTemplateIds": locked_template_ids,
+        "lockedLinkIds": locked_link_ids,
+        "selectionMode": "oldest_created",
+        "manualSelectionAllowed": False,
         "counts": {
             "keptTemplates": len(state.kept_template_ids),
             "pendingTemplates": len(state.pending_delete_template_ids),
+            "accessibleTemplates": len(accessible_template_ids),
+            "lockedTemplates": len(locked_template_ids),
             "affectedGroups": len(groups_payload),
             "pendingLinks": len(state.pending_delete_link_ids),
-            "closedLinks": len(computation.active_limit_close_link_ids),
+            "closedLinks": len(state.pending_delete_link_ids),
+            "lockedLinks": len(locked_link_ids),
+            "affectedSigningRequests": len(computation.affected_signing_requests),
+            "affectedSigningDrafts": len(affected_signing_drafts),
+            "retainedSigningRequests": len(retained_signing_requests),
+            "completedSigningRequests": len(completed_signing_requests),
         },
         "templates": templates_payload,
         "groups": groups_payload,
         "links": links_payload,
     }
+
+
+def restore_user_downgrade_managed_links(user_id: str) -> List[str]:
+    """Reopen links that were auto-closed only because of downgrade retention.
+
+    This is linear in the number of stored Fill By Link records for the user.
+    Each candidate link is revalidated against its live scope before reopening
+    so stale template/group references do not get reactivated.
+    """
+    restored_link_ids: List[str] = []
+    for record in list_fill_links(user_id):
+        if record.status == "active" or not _is_downgrade_managed_link(record):
+            continue
+        validation = validate_fill_link_scope(
+            user_id,
+            scope_type=record.scope_type,
+            template_id=record.template_id,
+            group_id=record.group_id,
+            template_ids=record.template_ids,
+        )
+        if not validation.valid:
+            continue
+        updated = update_fill_link(
+            record.id,
+            user_id,
+            status="active",
+            closed_reason=None,
+        )
+        if updated is not None and updated.status == "active":
+            restored_link_ids.append(record.id)
+    return restored_link_ids
+
+
+def _clear_stale_retention_state(user_id: str, existing_state: Optional[UserDowngradeRetentionRecord]) -> None:
+    if existing_state is None:
+        return
+    restore_user_downgrade_managed_links(user_id)
+    clear_user_downgrade_retention(user_id)
 
 
 def apply_user_downgrade_retention(
@@ -571,8 +648,7 @@ def apply_user_downgrade_retention(
         eligibility_override=eligibility_override,
         existing_state=existing,
     ):
-        if existing is not None:
-            clear_user_downgrade_retention(user_id)
+        _clear_stale_retention_state(user_id, existing)
         return None
     computation = _compute_retention(
         user_id,
@@ -594,8 +670,7 @@ def sync_user_downgrade_retention(
 ) -> Optional[Dict[str, object]]:
     existing = get_user_downgrade_retention(user_id)
     if _retention_is_blocked_by_current_account_state(user_id, existing_state=existing):
-        if existing is not None:
-            clear_user_downgrade_retention(user_id)
+        _clear_stale_retention_state(user_id, existing)
         return None
     if not existing and not create_if_missing:
         return None
@@ -608,107 +683,69 @@ def sync_user_downgrade_retention(
     return _serialize_summary(computation)
 
 
+def get_user_retention_locked_template_ids(user_id: str) -> set[str]:
+    retention_summary = sync_user_downgrade_retention(user_id, create_if_missing=True)
+    pending_ids = retention_summary.get("pendingDeleteTemplateIds") if isinstance(retention_summary, dict) else None
+    if not isinstance(pending_ids, list):
+        return set()
+    return {
+        str(template_id).strip()
+        for template_id in pending_ids
+        if str(template_id or "").strip()
+    }
+
+
+def get_user_retention_pending_template_ids(user_id: str) -> set[str]:
+    return get_user_retention_locked_template_ids(user_id)
+
+
+def get_user_retention_accessible_template_ids(user_id: str) -> set[str]:
+    retention_summary = sync_user_downgrade_retention(user_id, create_if_missing=True)
+    kept_ids = retention_summary.get("keptTemplateIds") if isinstance(retention_summary, dict) else None
+    if not isinstance(kept_ids, list):
+        return set()
+    return {
+        str(template_id).strip()
+        for template_id in kept_ids
+        if str(template_id or "").strip()
+    }
+
+
+def is_user_retention_template_locked(user_id: str, template_id: Optional[str]) -> bool:
+    normalized_template_id = str(template_id or "").strip()
+    if not normalized_template_id:
+        return False
+    return normalized_template_id in get_user_retention_locked_template_ids(user_id)
+
+
 def select_user_retained_templates(user_id: str, kept_template_ids: List[str]) -> Dict[str, object]:
     existing = get_user_downgrade_retention(user_id)
     if not existing:
-        raise ValueError("No downgrade retention plan exists for this user.")
+        summary = sync_user_downgrade_retention(user_id, create_if_missing=True)
+        return summary or {}
     if _retention_is_blocked_by_current_account_state(user_id, existing_state=existing):
-        clear_user_downgrade_retention(user_id)
+        _clear_stale_retention_state(user_id, existing)
         raise DowngradeRetentionInactiveError(
             "Downgrade retention is no longer active for this account."
         )
-
-    ordered_templates = _sort_oldest_first(list_templates(user_id))
-    ordered_template_ids = [template.id for template in ordered_templates]
-    requested_keep_ids = _dedupe_ids(kept_template_ids)
-    current_saved_forms_limit, _ = _resolve_current_base_retention_limits()
-    expected_keep_count = min(current_saved_forms_limit, len(ordered_template_ids))
-    if len(requested_keep_ids) != expected_keep_count:
-        raise ValueError(f"Select exactly {expected_keep_count} saved forms to keep.")
-    if any(template_id not in ordered_template_ids for template_id in requested_keep_ids):
-        raise ValueError("One or more selected saved forms no longer exist.")
-
-    computation = _compute_retention(
-        user_id,
-        existing=existing,
-        override_keep_ids=requested_keep_ids,
-        billing_state_deferred=_resolve_next_billing_state_deferred(user_id, existing=existing),
-    )
-    if computation.state is None:
-        clear_user_downgrade_retention(user_id)
-        return {}
-    _commit_retention_state(user_id, computation)
-    return _serialize_summary(computation) or {}
+    summary = sync_user_downgrade_retention(user_id, create_if_missing=True)
+    return summary or {}
 
 
 def delete_user_downgrade_retention_now(user_id: str) -> Dict[str, object]:
     existing = get_user_downgrade_retention(user_id)
     if _retention_is_blocked_by_current_account_state(user_id, existing_state=existing):
-        if existing is not None:
-            clear_user_downgrade_retention(user_id)
+        _clear_stale_retention_state(user_id, existing)
         return {
             "deletedTemplateIds": [],
             "deletedLinkIds": [],
         }
-
-    computation = _compute_retention(user_id, existing=existing)
-    state = computation.state
-    if state is None:
-        clear_user_downgrade_retention(user_id)
-        return {
-            "deletedTemplateIds": [],
-            "deletedLinkIds": [],
-        }
-
-    deleted_template_ids: List[str] = []
-    deleted_link_ids: List[str] = []
-    deleted_template_id_set: set[str] = set()
-    pending_link_lookup = {record.id: record for record in computation.links}
-    for template_id in state.pending_delete_template_ids:
-        if delete_saved_form_assets(template_id, user_id, hard_delete_link_records=True):
-            deleted_template_ids.append(template_id)
-            deleted_template_id_set.add(template_id)
-    for link_id in state.pending_delete_link_ids:
-        pending_link = pending_link_lookup.get(link_id)
-        deleted_by_template_cascade = bool(
-            pending_link
-            and (
-                (pending_link.template_id and pending_link.template_id in deleted_template_id_set)
-                or any(template_id in deleted_template_id_set for template_id in pending_link.template_ids)
-            )
-        )
-        if delete_fill_link(link_id, user_id) or deleted_by_template_cascade:
-            deleted_link_ids.append(link_id)
-
-    sync_user_downgrade_retention(user_id, create_if_missing=existing is None)
+    sync_user_downgrade_retention(user_id, create_if_missing=True)
     return {
-        "deletedTemplateIds": deleted_template_ids,
-        "deletedLinkIds": _dedupe_ids(deleted_link_ids),
+        "deletedTemplateIds": [],
+        "deletedLinkIds": [],
     }
 
 
 def list_users_with_expired_downgrade_retention(*, as_of: Optional[datetime] = None) -> List[str]:
-    now_dt = (as_of or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    client = get_firestore_client()
-    snapshot = where_equals(
-        client.collection("app_users"),
-        f"{DOWNGRADE_RETENTION_FIELD}.status",
-        DOWNGRADE_RETENTION_STATUS,
-    ).get()
-    expired_user_ids: List[str] = []
-    for doc in snapshot:
-        data = doc.to_dict() or {}
-        retention = data.get(DOWNGRADE_RETENTION_FIELD)
-        grace_ends_at = retention.get("grace_ends_at") if isinstance(retention, dict) else None
-        deadline = _parse_iso_timestamp(grace_ends_at)
-        if deadline is None or deadline > now_dt:
-            continue
-        existing = _retention_state_from_user_doc_data(data)
-        if _retention_is_blocked_by_current_account_state(
-            doc.id,
-            user_doc_data=data,
-            existing_state=existing,
-        ):
-            continue
-        expired_user_ids.append(doc.id)
-    return expired_user_ids
+    return []

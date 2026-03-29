@@ -32,6 +32,9 @@ def test_build_candidates_maps_page_metadata_and_label_collation() -> None:
             "imageWidthPx": 1600,
             "imageHeightPx": 2000,
             "labels": [{"text": "Patient Name"}],
+            "lineCandidates": [],
+            "boxCandidates": [],
+            "checkboxCandidates": [],
         }
     ]
 
@@ -50,8 +53,54 @@ def test_build_candidates_defaults_missing_metadata_and_empty_labels() -> None:
             "imageWidthPx": 0,
             "imageHeightPx": 0,
             "labels": [],
+            "lineCandidates": [],
+            "boxCandidates": [],
+            "checkboxCandidates": [],
         }
     ]
+
+
+def test_build_candidates_merges_detector_primitives_by_page() -> None:
+    rendered_pages = [{"page_index": 1, "width_points": 100, "height_points": 100}]
+    labels_by_page = {1: [{"text": "Patient Name"}]}
+    detector_candidates_by_page = {
+        1: {
+            "lineCandidates": [{"id": "ln1", "bbox": [10, 20, 50, 22]}],
+            "boxCandidates": [{"id": "bx1", "bbox": [10, 30, 40, 50]}],
+            "checkboxCandidates": [{"id": "cb1", "bbox": [10, 60, 20, 70]}],
+        }
+    }
+
+    candidates = rename_pipeline._build_candidates(
+        rendered_pages,
+        labels_by_page,
+        detector_candidates_by_page=detector_candidates_by_page,
+    )
+
+    assert candidates[0]["lineCandidates"] == [{"id": "ln1", "bbox": [10, 20, 50, 22]}]
+    assert candidates[0]["boxCandidates"] == [{"id": "bx1", "bbox": [10, 30, 40, 50]}]
+    assert candidates[0]["checkboxCandidates"] == [{"id": "cb1", "bbox": [10, 60, 20, 70]}]
+
+
+def test_coerce_detector_candidates_by_page_normalizes_string_keys() -> None:
+    raw = {
+        "1": {
+            "lineCandidates": [{"id": "ln1"}],
+            "boxCandidates": [{"id": "bx1"}],
+            "checkboxCandidates": [{"id": "cb1"}],
+        },
+        "bad": {"lineCandidates": [{"id": "skip"}]},
+    }
+
+    normalized = rename_pipeline._coerce_detector_candidates_by_page(raw)
+
+    assert normalized == {
+        1: {
+            "lineCandidates": [{"id": "ln1"}],
+            "boxCandidates": [{"id": "bx1"}],
+            "checkboxCandidates": [{"id": "cb1"}],
+        }
+    }
 
 
 def test_write_json_creates_parent_and_writes_payload(tmp_path: Path) -> None:
@@ -84,10 +133,13 @@ def test_run_openai_rename_on_pdf_orchestrates_pipeline_calls_in_order(mocker) -
         assert pages == rendered_pages
         return labels_by_page
 
-    def _build(pages, labels):
+    def _build(pages, labels, detector_candidates_by_page=None):
         call_order.append("build")
         assert pages == rendered_pages
         assert labels == labels_by_page
+        assert detector_candidates_by_page == {
+            1: {"lineCandidates": [], "boxCandidates": [], "checkboxCandidates": [{"id": "cb1"}]}
+        }
         return candidates
 
     def _resolve(
@@ -125,6 +177,7 @@ def test_run_openai_rename_on_pdf_orchestrates_pipeline_calls_in_order(mocker) -
         pdf_name="sample.pdf",
         fields=fields,
         database_fields=["first_name", "last_name"],
+        detector_candidates_by_page={"1": {"checkboxCandidates": [{"id": "cb1"}]}},
     )
 
     assert report == rename_report

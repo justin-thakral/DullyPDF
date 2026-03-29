@@ -171,6 +171,7 @@ def promote_signing_staged_object(
     stage_bucket_path = resolve_signing_stage_bucket_path(final_bucket_path)
     final_exists = storage_object_exists(final_bucket_path)
     stage_exists = storage_object_exists(stage_bucket_path)
+    copied_to_final = False
 
     if not final_exists and not stage_exists:
         raise FileNotFoundError("Signing artifact is not available in final or staging storage.")
@@ -181,10 +182,23 @@ def promote_signing_staged_object(
         except Exception as exc:
             if not storage_object_exists(final_bucket_path):
                 raise exc
+        else:
+            copied_to_final = True
         final_exists = True
 
     if final_exists:
-        enforce_signing_object_retention(final_bucket_path, retain_until=retain_until)
+        try:
+            enforce_signing_object_retention(final_bucket_path, retain_until=retain_until)
+        except Exception:
+            if copied_to_final:
+                try:
+                    delete_storage_object(final_bucket_path)
+                except Exception:
+                    logger.warning(
+                        "Failed to delete copied signing object after retention enforcement failed: %s",
+                        final_bucket_path,
+                    )
+            raise
         if delete_stage and stage_exists:
             try:
                 delete_storage_object(stage_bucket_path)

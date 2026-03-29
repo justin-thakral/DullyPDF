@@ -54,7 +54,7 @@ from backend.firebaseDB.user_database import (
     ensure_user,
     normalize_role,
 )
-from backend.firebaseDB.template_database import get_template
+from backend.firebaseDB.template_database import get_template, list_templates
 from backend.firebaseDB.schema_database import (
     get_schema,
     record_openai_rename_request,
@@ -71,9 +71,18 @@ from backend.services.app_config import (
 )
 from backend.services.auth_service import require_user
 from backend.services.credit_refund_service import attempt_credit_refund
+from backend.services.downgrade_retention_service import is_user_retention_template_locked
 from backend.logging_config import get_logger
-from backend.services.mapping_service import build_schema_mapping_payload, template_fields_to_rename_fields
-from backend.services.pdf_service import get_pdf_page_count
+from backend.services.mapping_service import (
+    apply_mapping_results_to_fields,
+    build_schema_mapping_payload,
+    template_fields_to_rename_fields,
+)
+from backend.services.pdf_service import (
+    get_pdf_page_count,
+    normalize_optional_pdf_sha256,
+    sha256_hex_for_bytes,
+)
 from backend.time_utils import now_iso
 
 router = APIRouter()
@@ -99,6 +108,57 @@ def _safe_positive_int_env(name: str, default: int) -> int:
     except ValueError:
         return default
     return value if value > 0 else default
+
+
+def _ensure_template_ai_accessible(user_id: str, template_id: Optional[str]) -> None:
+    normalized_template_id = str(template_id or "").strip()
+    if not normalized_template_id:
+        return
+    if is_user_retention_template_locked(user_id, normalized_template_id):
+        raise HTTPException(
+            status_code=409,
+            detail="This saved form is locked on the base plan. Upgrade to access it again.",
+        )
+
+
+def _resolve_session_source_template_id(
+    *,
+    user_id: str,
+    session_id: str,
+    session_entry: Dict[str, Any],
+) -> Optional[str]:
+    normalized_template_id = str(session_entry.get("source_template_id") or "").strip()
+    if normalized_template_id:
+        return normalized_template_id
+    pdf_path = str(session_entry.get("pdf_path") or "").strip()
+    if not pdf_path:
+        return None
+    matching_template_ids = [
+        template.id
+        for template in list_templates(user_id)
+        if str(getattr(template, "pdf_bucket_path", "") or "").strip() == pdf_path
+    ]
+    if len(matching_template_ids) != 1:
+        return None
+    resolved_template_id = matching_template_ids[0]
+    session_entry["source_template_id"] = resolved_template_id
+    _update_session_entry(session_id, session_entry)
+    return resolved_template_id
+
+
+def _ensure_session_ai_accessible(
+    *,
+    user_id: str,
+    session_id: str,
+    session_entry: Dict[str, Any],
+) -> None:
+    source_template_id = _resolve_session_source_template_id(
+        user_id=user_id,
+        session_id=session_id,
+        session_entry=session_entry,
+    )
+    if source_template_id:
+        _ensure_template_ai_accessible(user_id, source_template_id)
 
 
 def _normalize_credit_breakdown(raw: Any) -> Dict[str, int]:
@@ -174,6 +234,45 @@ def _coerce_positive_int(value: Any) -> Optional[int]:
     except (TypeError, ValueError):
         return None
     return resolved if resolved > 0 else None
+
+
+def _resolve_session_source_pdf_sha256(
+    *,
+    session_id: str,
+    session_entry: Dict[str, Any],
+) -> Optional[str]:
+    try:
+        stored_hash = normalize_optional_pdf_sha256(session_entry.get("source_pdf_sha256"))
+    except ValueError:
+        stored_hash = None
+    if stored_hash:
+        return stored_hash
+    pdf_bytes = session_entry.get("pdf_bytes")
+    if not pdf_bytes:
+        return None
+    computed_hash = sha256_hex_for_bytes(pdf_bytes)
+    session_entry["source_pdf_sha256"] = computed_hash
+    _update_session_entry(session_id, session_entry)
+    return computed_hash
+
+
+def _validate_session_source_pdf_fingerprint(
+    *,
+    session_id: str,
+    session_entry: Dict[str, Any],
+    source_pdf_sha256: Optional[str],
+) -> None:
+    expected_hash = normalize_optional_pdf_sha256(source_pdf_sha256)
+    if not expected_hash:
+        return
+    session_hash = _resolve_session_source_pdf_sha256(
+        session_id=session_id,
+        session_entry=session_entry,
+    )
+    if not session_hash:
+        raise HTTPException(status_code=409, detail="Unable to verify the active PDF for this session. Reload the document and try again.")
+    if session_hash != expected_hash:
+        raise HTTPException(status_code=409, detail="The active PDF no longer matches this session. Reload the document and try again.")
 
 
 def _resolve_template_metadata_page_count(template: Any) -> Optional[int]:
@@ -510,7 +609,7 @@ async def rename_fields_ai(
     entry = _get_session_entry(
         payload.sessionId,
         user,
-        include_result=False,
+        include_result=True,
         include_renames=False,
         include_checkbox_rules=False,
         force_l2=True,
@@ -518,6 +617,16 @@ async def rename_fields_ai(
     pdf_bytes = entry.get("pdf_bytes")
     if not pdf_bytes:
         raise HTTPException(status_code=404, detail="Session PDF not found")
+    _ensure_session_ai_accessible(
+        user_id=user.app_user_id,
+        session_id=payload.sessionId,
+        session_entry=entry,
+    )
+    _validate_session_source_pdf_fingerprint(
+        session_id=payload.sessionId,
+        session_entry=entry,
+        source_pdf_sha256=payload.sourcePdfSha256,
+    )
 
     rename_fields: List[Dict[str, Any]]
     if payload.templateFields:
@@ -710,6 +819,7 @@ async def rename_fields_ai(
             pdf_name=entry.get("source_pdf") or "document.pdf",
             fields=rename_fields,
             database_fields=database_fields,
+            detector_candidates_by_page=(entry.get("result") or {}).get("detectorCandidatesByPage"),
         )
     except Exception as exc:
         _refund_credits_if_charged(
@@ -808,6 +918,7 @@ async def map_schema_ai(
 
     template = None
     if payload.templateId:
+        _ensure_template_ai_accessible(user.app_user_id, payload.templateId)
         template = get_template(payload.templateId, user.app_user_id)
         if not template:
             raise HTTPException(status_code=403, detail="Template access denied")
@@ -822,6 +933,29 @@ async def map_schema_ai(
     template_tags = allowlist_payload.get("templateTags") or []
     if not template_tags:
         raise HTTPException(status_code=400, detail="No valid template tags provided")
+
+    session_entry = None
+    if payload.sessionId:
+        session_entry = _get_session_entry(
+            payload.sessionId,
+            user,
+            include_pdf_bytes=bool(payload.sourcePdfSha256),
+            include_fields=True,
+            include_result=False,
+            include_renames=False,
+            include_checkbox_rules=False,
+        )
+        _ensure_session_ai_accessible(
+            user_id=user.app_user_id,
+            session_id=payload.sessionId,
+            session_entry=session_entry,
+        )
+        _validate_session_source_pdf_fingerprint(
+            session_id=payload.sessionId,
+            session_entry=session_entry,
+            source_pdf_sha256=payload.sourcePdfSha256,
+        )
+
     window_seconds = _safe_positive_int_env("OPENAI_SCHEMA_RATE_LIMIT_WINDOW_SECONDS", 60)
     user_rate = _safe_positive_int_env("OPENAI_SCHEMA_RATE_LIMIT_PER_USER", 10)
 
@@ -832,18 +966,6 @@ async def map_schema_ai(
         fail_closed=True,
     ):
         raise HTTPException(status_code=429, detail="Rate limit exceeded for user")
-
-    session_entry = None
-    if payload.sessionId:
-        session_entry = _get_session_entry(
-            payload.sessionId,
-            user,
-            include_pdf_bytes=False,
-            include_fields=False,
-            include_result=False,
-            include_renames=False,
-            include_checkbox_rules=False,
-        )
 
     page_count = _coerce_positive_int((session_entry or {}).get("page_count"))
     if page_count is None:
@@ -1037,9 +1159,16 @@ async def map_schema_ai(
         ai_response,
     )
     if session_entry and payload.sessionId:
+        if isinstance(mapping_results, dict):
+            session_entry["fields"] = apply_mapping_results_to_fields(
+                list(session_entry.get("fields") or []),
+                mapping_results,
+            )
         persist_rules = False
         persist_text_rules = False
+        persist_fields = False
         if isinstance(mapping_results, dict):
+            persist_fields = True
             # Persist explicit arrays (including empty arrays) so newer mapping results
             # can clear stale checkbox behavior from prior runs.
             checkbox_rules = list(mapping_results.get("checkboxRules") or [])
@@ -1052,6 +1181,7 @@ async def map_schema_ai(
         _update_session_entry(
             payload.sessionId,
             session_entry,
+            persist_fields=persist_fields,
             persist_checkbox_rules=persist_rules,
             persist_text_transform_rules=persist_text_rules,
         )

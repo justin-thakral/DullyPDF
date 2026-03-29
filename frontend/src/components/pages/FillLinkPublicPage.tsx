@@ -125,7 +125,7 @@ function reconcileAnswers(
 function isQuestionAnswered(question: FillLinkQuestion, value: unknown): boolean {
   const normalizedType = normalizeFillLinkQuestionType(question.type);
   if (fillLinkQuestionIsBoolean(normalizedType)) {
-    return typeof value === 'boolean';
+    return value === true;
   }
   if (normalizedType === 'multi_select') {
     return Array.isArray(value) && value.length > 0;
@@ -187,6 +187,21 @@ function resolveTextInputType(question: FillLinkQuestion): string {
   return 'text';
 }
 
+function sanitizeQuestionKeyForDom(questionKey: string): string {
+  const normalized = questionKey.trim().replace(/[^a-zA-Z0-9_-]+/g, '-');
+  return normalized || 'question';
+}
+
+function buildQuestionFieldId(question: FillLinkQuestion, suffix?: string): string {
+  const baseId = `fill-link-public-${sanitizeQuestionKeyForDom(question.key)}`;
+  return suffix ? `${baseId}-${suffix}` : baseId;
+}
+
+function buildQuestionFieldName(question: FillLinkQuestion, suffix?: string): string {
+  const baseName = `fill_link_${sanitizeQuestionKeyForDom(question.key)}`;
+  return suffix ? `${baseName}_${suffix}` : baseName;
+}
+
 export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
   const [link, setLink] = useState<FillLinkSummary | null>(null);
   const [answers, setAnswers] = useState<Record<string, unknown>>({});
@@ -200,6 +215,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
   const [submittedDownloadAvailable, setSubmittedDownloadAvailable] = useState(false);
   const [signingResult, setSigningResult] = useState<PublicFillLinkSubmitResult['signing'] | null>(null);
   const [retryingSigning, setRetryingSigning] = useState(false);
+  const [submissionComplete, setSubmissionComplete] = useState(false);
   const alertRef = useRef<HTMLDivElement | null>(null);
   const submitAttemptIdRef = useRef<string | null>(null);
 
@@ -228,6 +244,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
     setSubmittedDownloadAvailable(false);
     setSigningResult(null);
     setRetryingSigning(false);
+    setSubmissionComplete(false);
     ApiService.getPublicFillLink(token)
       .then((payload) => {
         if (!isMounted) return;
@@ -347,6 +364,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
       setSubmittedDownloadPath(submitResult.responseDownloadPath?.trim() || null);
       setSubmittedDownloadAvailable(fillLinkResponseDownloadEnabled(submitResult));
       setSigningResult(submitResult.signing || null);
+      setSubmissionComplete(true);
       setSuccess(
         payload.respondentLabel
           ? `Thanks, ${payload.respondentLabel}. Your response was submitted.`
@@ -389,7 +407,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
       document.body.append(linkNode);
       linkNode.click();
       linkNode.remove();
-      URL.revokeObjectURL(objectUrl);
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
     } catch (downloadError) {
       setError(downloadError instanceof Error ? downloadError.message : 'Unable to download the submitted PDF.');
     } finally {
@@ -414,6 +432,15 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
     }
   }, [submittedResponseId, token]);
 
+  const handleStartAnotherResponse = useCallback(() => {
+    if (!link) return;
+    clearSubmitFeedback();
+    setError(null);
+    setAnswers(seedAnswers(link.questions));
+    setSubmissionComplete(false);
+    submitAttemptIdRef.current = null;
+  }, [clearSubmitFeedback, link]);
+
   return (
     <div className="fill-link-public-page">
       <div className="fill-link-public-page__shell">
@@ -434,9 +461,9 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
                   : 'Complete this DullyPDF-hosted form. If the owner enabled it, you can download a flat PDF copy after you submit.'
                 : 'Complete this DullyPDF-hosted form. The owner will review your answers in the workspace and generate the final PDF later.'}
           </p>
-          {!linkClosed ? (
-            <div className="fill-link-public-page__hero-meta">
-              <span>A respondent name or ID is required on every submission.</span>
+            {!linkClosed ? (
+              <div className="fill-link-public-page__hero-meta">
+                <span>A respondent name or ID is required on every submission.</span>
               {link?.requireAllFields ? <span>Every question must be answered</span> : null}
               {!link?.requireAllFields && requiredQuestionCount > 0 ? (
                 <span>{requiredQuestionCount} required question{requiredQuestionCount === 1 ? '' : 's'}</span>
@@ -541,7 +568,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
                 <p>{link.introText}</p>
               </div>
             ) : null}
-            {!linkClosed ? (
+            {!linkClosed && !submissionComplete ? (
               link.requireAllFields ? (
                 <div className="fill-link-public-page__required-note">
                   Every question on this form must be answered before DullyPDF accepts the submission.
@@ -560,107 +587,174 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
             {linkClosed ? (
               <div className="fill-link-public-page__closed">
                 <h2>This form is closed</h2>
-                <p>{link.statusMessage || (link.closedReason === 'response_limit' ? 'This link already reached its response limit.' : 'This link is no longer accepting responses.')}</p>
+                <p>{link.statusMessage || 'This link is no longer accepting responses.'}</p>
               </div>
+            ) : submissionComplete ? (
+              <section className="fill-link-public-page__completion" aria-label="Response complete">
+                <div className="fill-link-public-page__completion-copy">
+                  <h2>Response complete</h2>
+                  <p>
+                    The submitted PDF and signing status stay available above. Start another response only if you need to submit this form again.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="ui-button ui-button--ghost fill-link-public-page__download"
+                  onClick={handleStartAnotherResponse}
+                >
+                  Start another response
+                </button>
+              </section>
             ) : (
               <form className="fill-link-public-page__form" onSubmit={handleSubmit}>
-                {(link.questions || []).map((question) => (
-                  <label key={question.key} className="fill-link-public-page__field">
-                    <span className="fill-link-public-page__field-label">
-                      {renderQuestionLabel(question)}
+                {(link.questions || []).map((question) => {
+                  const normalizedType = normalizeFillLinkQuestionType(question.type);
+                  const questionLabel = renderQuestionLabel(question);
+                  const fieldId = buildQuestionFieldId(question);
+                  const fieldName = buildQuestionFieldName(question);
+                  const labelId = `${fieldId}-label`;
+                  const helpId = question.helpText ? `${fieldId}-help` : undefined;
+                  const charCountId = fillLinkQuestionSupportsTextLimit(question.type) && question.maxLength
+                    ? `${fieldId}-count`
+                    : undefined;
+                  const describedBy = [helpId, charCountId].filter(Boolean).join(' ') || undefined;
+                  const questionLabelContent = (
+                    <>
+                      {questionLabel}
                       {isQuestionRequired(link, question) ? <em>Required</em> : null}
-                    </span>
-                    {question.helpText ? (
-                      <span className="fill-link-public-page__field-help">{question.helpText}</span>
-                    ) : null}
-                    {normalizeFillLinkQuestionType(question.type) === 'date' ? (
-                      <input
-                        type="date"
-                        aria-label={renderQuestionLabel(question)}
-                        aria-required={isQuestionRequired(link, question)}
-                        value={toFieldValue(answers[question.key])}
-                        onChange={(event) => handleAnswerChange(question, event.target.value)}
-                      />
-                    ) : fillLinkQuestionIsBoolean(question.type) ? (
-                      <div className="fill-link-public-page__boolean">
-                        <input
-                          type="checkbox"
-                          aria-label={renderQuestionLabel(question)}
-                          checked={Boolean(answers[question.key])}
-                          onChange={(event) => handleAnswerChange(question, event.target.checked)}
-                        />
-                        <span>Check if yes</span>
-                      </div>
-                    ) : normalizeFillLinkQuestionType(question.type) === 'radio' ? (
-                      <div className="fill-link-public-page__options">
-                        {(question.options || []).map((option) => (
-                          <label key={option.key} className="fill-link-public-page__option">
+                    </>
+                  );
+
+                  return (
+                    <div key={question.key} className="fill-link-public-page__field">
+                      {(normalizedType === 'radio' || normalizedType === 'multi_select') ? (
+                        <fieldset className="fill-link-public-page__field-group" aria-describedby={describedBy}>
+                          <legend id={labelId} className="fill-link-public-page__field-label">
+                            {questionLabelContent}
+                          </legend>
+                          {question.helpText ? (
+                            <span id={helpId} className="fill-link-public-page__field-help">{question.helpText}</span>
+                          ) : null}
+                          <div className="fill-link-public-page__options">
+                            {(question.options || []).map((option) => {
+                              const optionId = buildQuestionFieldId(question, option.key);
+                              return (
+                                <label key={option.key} htmlFor={optionId} className="fill-link-public-page__option">
+                                  <input
+                                    id={optionId}
+                                    type={normalizedType === 'multi_select' ? 'checkbox' : 'radio'}
+                                    name={normalizedType === 'multi_select' ? buildQuestionFieldName(question, option.key) : fieldName}
+                                    aria-required={normalizedType === 'radio' ? isQuestionRequired(link, question) : undefined}
+                                    checked={
+                                      normalizedType === 'multi_select'
+                                        ? Array.isArray(answers[question.key]) && (answers[question.key] as string[]).includes(option.key)
+                                        : answers[question.key] === option.key
+                                    }
+                                    onChange={
+                                      normalizedType === 'multi_select'
+                                        ? (event) => handleMultiSelectChange(question, option.key, event.target.checked)
+                                        : () => handleAnswerChange(question, option.key)
+                                    }
+                                  />
+                                  <span>{option.label}</span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </fieldset>
+                      ) : fillLinkQuestionIsBoolean(normalizedType) ? (
+                        <>
+                          <div id={labelId} className="fill-link-public-page__field-label">
+                            {questionLabelContent}
+                          </div>
+                          {question.helpText ? (
+                            <span id={helpId} className="fill-link-public-page__field-help">{question.helpText}</span>
+                          ) : null}
+                          <label className="fill-link-public-page__boolean" htmlFor={fieldId}>
                             <input
-                              type="radio"
-                              name={question.key}
-                              aria-required={isQuestionRequired(link, question)}
-                              checked={answers[question.key] === option.key}
-                              onChange={() => handleAnswerChange(question, option.key)}
-                            />
-                            <span>{option.label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    ) : normalizeFillLinkQuestionType(question.type) === 'multi_select' ? (
-                      <div className="fill-link-public-page__options">
-                        {(question.options || []).map((option) => (
-                          <label key={option.key} className="fill-link-public-page__option">
-                            <input
+                              id={fieldId}
+                              name={fieldName}
                               type="checkbox"
-                              checked={Array.isArray(answers[question.key]) && (answers[question.key] as string[]).includes(option.key)}
-                              onChange={(event) => handleMultiSelectChange(question, option.key, event.target.checked)}
+                              aria-label={questionLabel}
+                              aria-describedby={describedBy}
+                              checked={Boolean(answers[question.key])}
+                              onChange={(event) => handleAnswerChange(question, event.target.checked)}
                             />
-                            <span>{option.label}</span>
+                            <span>Check if yes</span>
                           </label>
-                        ))}
-                      </div>
-                    ) : normalizeFillLinkQuestionType(question.type) === 'select' ? (
-                      <select
-                        aria-label={renderQuestionLabel(question)}
-                        aria-required={isQuestionRequired(link, question)}
-                        value={toFieldValue(answers[question.key])}
-                        onChange={(event) => handleAnswerChange(question, event.target.value)}
-                      >
-                        <option value="">Select one</option>
-                        {(question.options || []).map((option) => (
-                          <option key={option.key} value={option.key}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    ) : normalizeFillLinkQuestionType(question.type) === 'textarea' ? (
-                      <textarea
-                        rows={4}
-                        aria-label={renderQuestionLabel(question)}
-                        aria-required={isQuestionRequired(link, question)}
-                        value={toFieldValue(answers[question.key])}
-                        onChange={(event) => handleAnswerChange(question, event.target.value)}
-                        placeholder={question.placeholder || ''}
-                        maxLength={question.maxLength ?? undefined}
-                      />
-                    ) : (
-                      <input
-                        type={resolveTextInputType(question)}
-                        aria-label={renderQuestionLabel(question)}
-                        aria-required={isQuestionRequired(link, question)}
-                        value={toFieldValue(answers[question.key])}
-                        onChange={(event) => handleAnswerChange(question, event.target.value)}
-                        placeholder={question.placeholder || ''}
-                        maxLength={question.maxLength ?? undefined}
-                      />
-                    )}
-                    {fillLinkQuestionSupportsTextLimit(question.type) && question.maxLength ? (
-                      <span className="fill-link-public-page__char-count">
-                        {toFieldValue(answers[question.key]).length} / {question.maxLength}
-                      </span>
-                    ) : null}
-                  </label>
-                ))}
+                        </>
+                      ) : (
+                        <label htmlFor={fieldId} id={labelId} className="fill-link-public-page__field-label">
+                          {questionLabelContent}
+                        </label>
+                      )}
+                      {question.helpText && !(normalizedType === 'radio' || normalizedType === 'multi_select' || fillLinkQuestionIsBoolean(normalizedType)) ? (
+                        <span id={helpId} className="fill-link-public-page__field-help">{question.helpText}</span>
+                      ) : null}
+                      {normalizedType === 'date' ? (
+                        <input
+                          id={fieldId}
+                          name={fieldName}
+                          type="date"
+                          aria-label={questionLabel}
+                          aria-required={isQuestionRequired(link, question)}
+                          aria-describedby={describedBy}
+                          value={toFieldValue(answers[question.key])}
+                          onChange={(event) => handleAnswerChange(question, event.target.value)}
+                        />
+                      ) : normalizedType === 'radio' || normalizedType === 'multi_select' || fillLinkQuestionIsBoolean(normalizedType) ? null
+                      : normalizedType === 'select' ? (
+                        <select
+                          id={fieldId}
+                          name={fieldName}
+                          aria-label={questionLabel}
+                          aria-required={isQuestionRequired(link, question)}
+                          aria-describedby={describedBy}
+                          value={toFieldValue(answers[question.key])}
+                          onChange={(event) => handleAnswerChange(question, event.target.value)}
+                        >
+                          <option value="">Select one</option>
+                          {(question.options || []).map((option) => (
+                            <option key={option.key} value={option.key}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      ) : normalizedType === 'textarea' ? (
+                        <textarea
+                          id={fieldId}
+                          name={fieldName}
+                          rows={4}
+                          aria-label={questionLabel}
+                          aria-required={isQuestionRequired(link, question)}
+                          aria-describedby={describedBy}
+                          value={toFieldValue(answers[question.key])}
+                          onChange={(event) => handleAnswerChange(question, event.target.value)}
+                          placeholder={question.placeholder || ''}
+                          maxLength={question.maxLength ?? undefined}
+                        />
+                      ) : (
+                        <input
+                          id={fieldId}
+                          name={fieldName}
+                          type={resolveTextInputType(question)}
+                          aria-label={questionLabel}
+                          aria-required={isQuestionRequired(link, question)}
+                          aria-describedby={describedBy}
+                          value={toFieldValue(answers[question.key])}
+                          onChange={(event) => handleAnswerChange(question, event.target.value)}
+                          placeholder={question.placeholder || ''}
+                          maxLength={question.maxLength ?? undefined}
+                        />
+                      )}
+                      {fillLinkQuestionSupportsTextLimit(question.type) && question.maxLength ? (
+                        <span id={charCountId} className="fill-link-public-page__char-count">
+                          {toFieldValue(answers[question.key]).length} / {question.maxLength}
+                        </span>
+                      ) : null}
+                    </div>
+                  );
+                })}
 
                 <button className="ui-button ui-button--primary fill-link-public-page__submit" type="submit" disabled={submitting}>
                   {submitting ? 'Submitting…' : 'Submit response'}

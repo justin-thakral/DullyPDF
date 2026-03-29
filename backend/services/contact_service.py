@@ -44,14 +44,40 @@ def trust_proxy_headers() -> bool:
     return False
 
 
-def resolve_client_ip(request: Request) -> str:
+def resolve_trusted_proxy_depth() -> int:
+    depth = _int_env("SANDBOX_TRUSTED_PROXY_DEPTH", 0)
+    if depth <= 0:
+        return 0
+    return depth
+
+
+def _normalize_ip_literal(value: str) -> str:
+    try:
+        return str(ipaddress.ip_address(str(value or "").strip()))
+    except ValueError:
+        return ""
+
+
+def _forwarded_ip_chain(request: Request) -> list[str]:
     forwarded_for = request.headers.get("x-forwarded-for") or ""
-    if forwarded_for and trust_proxy_headers():
-        first = forwarded_for.split(",")[0].strip()
-        if first:
-            return first
+    if not forwarded_for:
+        return []
+    chain: list[str] = []
+    for raw_part in forwarded_for.split(","):
+        normalized = _normalize_ip_literal(raw_part)
+        if normalized:
+            chain.append(normalized)
+    return chain
+
+
+def resolve_client_ip(request: Request) -> str:
+    if trust_proxy_headers():
+        trusted_proxy_depth = resolve_trusted_proxy_depth()
+        forwarded_chain = _forwarded_ip_chain(request)
+        if trusted_proxy_depth > 0 and len(forwarded_chain) > trusted_proxy_depth:
+            return forwarded_chain[-(trusted_proxy_depth + 1)]
     if request.client and request.client.host:
-        return request.client.host
+        return str(request.client.host).strip() or "unknown"
     return "unknown"
 
 

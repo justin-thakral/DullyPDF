@@ -1,6 +1,6 @@
 /** React entrypoint that mounts the application shell. */
 import { StrictMode, Suspense, lazy } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, type Root } from 'react-dom/client';
 import './index.css';
 import {
   ACCOUNT_ACTION_ROUTE_PATH,
@@ -33,6 +33,7 @@ const IntentHubPage = lazy(() => import('./components/pages/IntentHubPage'));
 const FeaturePlanPage = lazy(() => import('./components/pages/FeaturePlanPage'));
 const BlogIndexPage = lazy(() => import('./components/pages/BlogIndexPage'));
 const BlogPostPage = lazy(() => import('./components/pages/BlogPostPage'));
+const SeoLayoutPreviewPage = lazy(() => import('./components/pages/SeoLayoutPreviewPage'));
 
 type AppRoute =
   | { kind: 'app'; browserRoute: WorkspaceBrowserRoute }
@@ -47,8 +48,16 @@ type AppRoute =
   | { kind: 'usage-docs'; pageKey: UsageDocsPageKey }
   | { kind: 'usage-docs-not-found'; requestedPath: string }
   | { kind: 'blog-index' }
+  | { kind: 'seo-layout-preview' }
   | { kind: 'blog-post'; slug: string }
   | { kind: 'not-found'; requestedPath: string };
+
+declare global {
+  interface Window {
+    __dullyPdfRoot?: Root;
+    __dullyPdfRootElement?: HTMLElement | null;
+  }
+}
 
 const replaceBrowserPath = (targetPath: string): void => {
   if (typeof window === 'undefined') return;
@@ -111,6 +120,10 @@ const resolveRoute = (): AppRoute => {
   if (normalizedPath === '/blog') {
     if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
     return { kind: 'blog-index' };
+  }
+  if (normalizedPath === '/blog/layout-preview') {
+    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
+    return { kind: 'seo-layout-preview' };
   }
   if (normalizedPath.startsWith('/blog/')) {
     const slug = normalizedPath.slice('/blog/'.length);
@@ -198,6 +211,8 @@ const renderRoute = (route: AppRoute) => {
       return <UsageDocsNotFoundPage requestedPath={route.requestedPath} />;
     case 'blog-index':
       return <BlogIndexPage />;
+    case 'seo-layout-preview':
+      return <SeoLayoutPreviewPage />;
     case 'blog-post':
       return <BlogPostPage slug={route.slug} />;
     case 'not-found':
@@ -216,7 +231,23 @@ if (typeof window !== 'undefined' && route.kind === 'app') {
   initializeGoogleAds();
 }
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error('Missing #root element for DullyPDF.');
+}
+
+const existingRoot = typeof window !== 'undefined' && window.__dullyPdfRootElement === rootElement
+  ? window.__dullyPdfRoot
+  : undefined;
+const root = existingRoot || createRoot(rootElement);
+
+if (typeof window !== 'undefined') {
+  window.__dullyPdfRoot = root;
+  window.__dullyPdfRootElement = rootElement;
+}
+
+root.render(
   <StrictMode>
     <Suspense fallback={null}>
       {renderRoute(route)}

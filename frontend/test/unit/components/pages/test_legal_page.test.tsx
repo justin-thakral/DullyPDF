@@ -7,7 +7,7 @@ describe('LegalPage', () => {
     render(<LegalPage kind="privacy" />);
 
     expect(screen.getByRole('heading', { name: 'Privacy Policy' })).toBeTruthy();
-    expect(screen.getByText('Last updated: February 24, 2026')).toBeTruthy();
+    expect(screen.getByText('Last updated: March 9, 2026')).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Billing and payments' })).toBeTruthy();
 
     const privacyLink = screen.getByRole('link', { name: 'Privacy' });

@@ -24,6 +24,7 @@ RENAME_COUNT_FIELD = "rename_count"
 BASE_RENAME_LIMIT = int(os.getenv("BASE_RENAME_LIMIT", "10"))
 OPENAI_CREDITS_FIELD = "openai_credits_remaining"
 BASE_OPENAI_CREDITS = int(os.getenv("BASE_OPENAI_CREDITS", "10"))
+OPENAI_CREDITS_BASE_CYCLE_FIELD = "openai_credits_base_cycle_key"
 OPENAI_CREDITS_MONTHLY_FIELD = "openai_credits_monthly_remaining"
 OPENAI_CREDITS_REFILL_FIELD = "openai_credits_refill_remaining"
 OPENAI_CREDITS_MONTHLY_CYCLE_FIELD = "openai_credits_monthly_cycle_key"
@@ -84,7 +85,6 @@ class UserDowngradeRetentionRecord:
     downgraded_at: Optional[str]
     grace_ends_at: Optional[str]
     saved_forms_limit: int
-    fill_links_active_limit: int
     kept_template_ids: List[str]
     pending_delete_template_ids: List[str]
     pending_delete_link_ids: List[str]
@@ -158,6 +158,18 @@ def _current_month_cycle_key() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m")
 
 
+def _resolve_base_monthly_pool(data: Dict[str, Any]) -> tuple[int, str, bool]:
+    current_cycle = _current_month_cycle_key()
+    stored_cycle = str(data.get(OPENAI_CREDITS_BASE_CYCLE_FIELD) or "").strip()
+    remaining = _resolve_openai_credits_remaining(data)
+    if not stored_cycle:
+        return remaining, current_cycle, True
+    needs_reset = stored_cycle != current_cycle
+    if not needs_reset:
+        return remaining, current_cycle, False
+    return max(remaining, BASE_OPENAI_CREDITS), current_cycle, True
+
+
 def _resolve_pro_monthly_credits_remaining(data: Dict[str, Any]) -> int:
     raw = data.get(OPENAI_CREDITS_MONTHLY_FIELD)
     if raw is None:
@@ -224,7 +236,6 @@ def _normalize_downgrade_retention(raw: Any) -> Optional[UserDowngradeRetentionR
         downgraded_at=str(raw.get("downgraded_at") or "").strip() or None,
         grace_ends_at=str(raw.get("grace_ends_at") or "").strip() or None,
         saved_forms_limit=_coerce_positive_int(raw.get("saved_forms_limit"), default=1),
-        fill_links_active_limit=_coerce_positive_int(raw.get("fill_links_active_limit"), default=1),
         kept_template_ids=_coerce_string_list(raw.get("kept_template_ids")),
         pending_delete_template_ids=_coerce_string_list(raw.get("pending_delete_template_ids")),
         pending_delete_link_ids=_coerce_string_list(raw.get("pending_delete_link_ids")),
@@ -240,6 +251,34 @@ def _resolve_pro_monthly_pool(data: Dict[str, Any]) -> Tuple[int, str, bool]:
     if cycle_key != current_cycle:
         return PRO_MONTHLY_OPENAI_CREDITS, current_cycle, True
     return monthly_remaining, cycle_key, False
+
+
+def _should_reset_pro_monthly_pool_on_activation(
+    data: Dict[str, Any],
+    *,
+    reset_monthly_credits: bool,
+) -> bool:
+    """Decide whether a Pro activation should rewrite the monthly pool.
+
+    Checkout completion should grant the fresh monthly pool immediately. Later
+    subscription syncs such as ``invoice.paid`` must preserve the current-cycle
+    balance so a delayed invoice webhook cannot silently top the user back up
+    after they already spent credits from the same purchase.
+    """
+    if reset_monthly_credits:
+        return True
+    if normalize_role(data.get(ROLE_FIELD)) != ROLE_PRO:
+        return True
+    if OPENAI_CREDITS_MONTHLY_FIELD not in data:
+        return True
+    try:
+        int(data.get(OPENAI_CREDITS_MONTHLY_FIELD))
+    except (TypeError, ValueError):
+        return True
+    stored_cycle = str(data.get(OPENAI_CREDITS_MONTHLY_CYCLE_FIELD) or "").strip()
+    if not stored_cycle:
+        return True
+    return stored_cycle != _current_month_cycle_key()
 
 
 def _apply_subscription_updates(
@@ -319,6 +358,8 @@ def ensure_user(decoded: Dict[str, Any]) -> RequestUser:
             updates[RENAME_COUNT_FIELD] = 0
         if role == ROLE_BASE and OPENAI_CREDITS_FIELD not in data:
             updates[OPENAI_CREDITS_FIELD] = BASE_OPENAI_CREDITS
+        if role == ROLE_BASE and OPENAI_CREDITS_BASE_CYCLE_FIELD not in data:
+            updates[OPENAI_CREDITS_BASE_CYCLE_FIELD] = _current_month_cycle_key()
         if role == ROLE_PRO:
             monthly_remaining, cycle_key, monthly_reset = _resolve_pro_monthly_pool(data)
             if monthly_reset or OPENAI_CREDITS_MONTHLY_FIELD not in data:
@@ -351,6 +392,7 @@ def ensure_user(decoded: Dict[str, Any]) -> RequestUser:
     }
     if role == ROLE_BASE:
         payload[OPENAI_CREDITS_FIELD] = BASE_OPENAI_CREDITS
+        payload[OPENAI_CREDITS_BASE_CYCLE_FIELD] = _current_month_cycle_key()
     if role == ROLE_PRO:
         payload[OPENAI_CREDITS_MONTHLY_FIELD] = PRO_MONTHLY_OPENAI_CREDITS
         payload[OPENAI_CREDITS_REFILL_FIELD] = 0
@@ -443,7 +485,7 @@ def consume_openai_credits(
                 "refill": consume_refill,
             }
 
-        remaining = _resolve_openai_credits_remaining(data)
+        remaining, cycle_key, reset_applied = _resolve_base_monthly_pool(data)
         if remaining < credits_required:
             return remaining, False, {"base": 0, "monthly": 0, "refill": 0}
         new_remaining = remaining - credits_required
@@ -451,6 +493,8 @@ def consume_openai_credits(
             OPENAI_CREDITS_FIELD: new_remaining,
             "updated_at": now_iso(),
         }
+        if reset_applied or data.get(OPENAI_CREDITS_BASE_CYCLE_FIELD) != cycle_key:
+            updates[OPENAI_CREDITS_BASE_CYCLE_FIELD] = cycle_key
         txn.set(doc_ref, updates, merge=True)
         return new_remaining, True, {
             "base": credits_required,
@@ -503,9 +547,10 @@ def refund_openai_credits(
             total_available = 0
 
             if base_refund > 0:
-                current_base = _resolve_openai_credits_remaining(data)
+                current_base, base_cycle_key, _ = _resolve_base_monthly_pool(data)
                 current_base += base_refund
                 updates[OPENAI_CREDITS_FIELD] = current_base
+                updates[OPENAI_CREDITS_BASE_CYCLE_FIELD] = base_cycle_key
                 total_available += current_base
 
             if monthly_refund > 0 or refill_refund > 0:
@@ -520,7 +565,9 @@ def refund_openai_credits(
                 monthly_remaining, _, _ = _resolve_pro_monthly_pool(data)
                 total_available += monthly_remaining + _resolve_pro_refill_credits_remaining(data)
             elif total_available == 0:
-                total_available = _resolve_openai_credits_remaining(data)
+                total_available, base_cycle_key, needs_reset = _resolve_base_monthly_pool(data)
+                if needs_reset:
+                    updates[OPENAI_CREDITS_BASE_CYCLE_FIELD] = base_cycle_key
 
             txn.set(doc_ref, updates, merge=True)
             return total_available
@@ -548,10 +595,11 @@ def refund_openai_credits(
             )
             return next_monthly + next_refill
 
-        remaining = _resolve_openai_credits_remaining(data)
+        remaining, base_cycle_key, _ = _resolve_base_monthly_pool(data)
         new_remaining = remaining + credits_refund
         updates = {
             OPENAI_CREDITS_FIELD: new_remaining,
+            OPENAI_CREDITS_BASE_CYCLE_FIELD: base_cycle_key,
             "updated_at": now_iso(),
         }
         txn.set(doc_ref, updates, merge=True)
@@ -577,78 +625,79 @@ def set_user_role(uid: str, role: str) -> None:
     )
 
 
-def activate_pro_membership_with_subscription(
+def activate_pro_membership(
     uid: str,
     *,
     stripe_event_id: Optional[str] = None,
-    customer_id: Optional[str] = None,
-    subscription_id: Optional[str] = None,
-    subscription_status: Optional[str] = None,
-    subscription_price_id: Optional[str] = None,
-    cancel_at_period_end: Any = _UNSET,
-    cancel_at: Any = _UNSET,
-    current_period_end: Any = _UNSET,
+    reset_monthly_credits: bool = True,
 ) -> bool:
-    """Promote a user to pro and atomically persist subscription metadata.
+    """Promote a user to Pro without mutating Stripe subscription metadata.
 
-    Returns True when the promotion was applied for this call. When a Stripe
-    event id is supplied and has already been processed for the user, this is a
-    no-op for membership reset and returns False. Subscription metadata updates
-    are still applied when provided, which allows retries to heal partial
-    records from older releases.
+    Billing sync now happens through ``set_user_billing_subscription`` so the
+    calling code has to state explicitly whether it is activating entitlement,
+    syncing Stripe state, or both. This separation keeps ``invoice.paid`` from
+    looking like a fresh purchase that should always reset the monthly pool.
     """
     if not uid:
         raise ValueError("Missing firebase uid")
     client = get_firestore_client()
     doc_ref = client.collection(USERS_COLLECTION).document(uid)
-    transaction = client.transaction()
 
-    @firebase_firestore.transactional
-    def _update(txn: firebase_firestore.Transaction) -> bool:
-        snapshot = doc_ref.get(transaction=txn)
+    def _apply(
+        txn: Optional[firebase_firestore.Transaction],
+        snapshot,
+    ) -> bool:
         data = snapshot.to_dict() or {}
         processed_ids = _resolve_processed_stripe_event_ids(data)
         next_processed_ids, already_applied = _apply_processed_stripe_event_id(processed_ids, stripe_event_id)
         updates: Dict[str, Any] = {}
         if not already_applied:
-            updates.update(
-                {
-                    ROLE_FIELD: ROLE_PRO,
-                    OPENAI_CREDITS_MONTHLY_FIELD: PRO_MONTHLY_OPENAI_CREDITS,
-                    OPENAI_CREDITS_MONTHLY_CYCLE_FIELD: _current_month_cycle_key(),
-                    OPENAI_CREDITS_REFILL_FIELD: _resolve_pro_refill_credits_remaining(data),
-                }
-            )
+            updates[ROLE_FIELD] = ROLE_PRO
+            if _should_reset_pro_monthly_pool_on_activation(
+                data,
+                reset_monthly_credits=reset_monthly_credits,
+            ):
+                updates[OPENAI_CREDITS_MONTHLY_FIELD] = PRO_MONTHLY_OPENAI_CREDITS
+                updates[OPENAI_CREDITS_MONTHLY_CYCLE_FIELD] = _current_month_cycle_key()
+            if OPENAI_CREDITS_REFILL_FIELD not in data:
+                updates[OPENAI_CREDITS_REFILL_FIELD] = _resolve_pro_refill_credits_remaining(data)
         updates[DOWNGRADE_RETENTION_FIELD] = firebase_firestore.DELETE_FIELD
-        _apply_subscription_updates(
-            updates,
-            customer_id=customer_id,
-            subscription_id=subscription_id,
-            subscription_status=subscription_status,
-            subscription_price_id=subscription_price_id,
-            cancel_at_period_end=cancel_at_period_end,
-            cancel_at=cancel_at,
-            current_period_end=current_period_end,
-        )
         if _normalize_stripe_event_id(stripe_event_id) and not already_applied:
             updates[STRIPE_PROCESSED_EVENT_IDS_FIELD] = next_processed_ids
         if not updates:
             return False
         updates["updated_at"] = now_iso()
-        txn.set(doc_ref, updates, merge=True)
+        if txn is None:
+            doc_ref.set(updates, merge=True)
+        else:
+            txn.set(doc_ref, updates, merge=True)
         return not already_applied
+
+    transaction = client.transaction()
+    if not isinstance(transaction, firebase_firestore.Transaction):
+        return _apply(None, doc_ref.get())
+
+    @firebase_firestore.transactional
+    def _update(txn: firebase_firestore.Transaction) -> bool:
+        snapshot = doc_ref.get(transaction=txn)
+        return _apply(txn, snapshot)
 
     return _update(transaction)
 
 
-def activate_pro_membership(uid: str, *, stripe_event_id: Optional[str] = None) -> bool:
-    """Promote a user to pro and reset their monthly credit pool."""
-    return activate_pro_membership_with_subscription(uid, stripe_event_id=stripe_event_id)
-
-
 def downgrade_to_base_membership(uid: str) -> None:
     """Downgrade a user to base while retaining refill balance for future pro upgrades."""
-    set_user_role(uid, ROLE_BASE)
+    if not uid:
+        raise ValueError("Missing firebase uid")
+    client = get_firestore_client()
+    client.collection(USERS_COLLECTION).document(uid).set(
+        {
+            ROLE_FIELD: ROLE_BASE,
+            OPENAI_CREDITS_BASE_CYCLE_FIELD: _current_month_cycle_key(),
+            "updated_at": now_iso(),
+        },
+        merge=True,
+    )
 
 
 def add_refill_openai_credits(
@@ -744,7 +793,6 @@ def set_user_downgrade_retention(
     downgraded_at: Optional[str],
     grace_ends_at: Optional[str],
     saved_forms_limit: int,
-    fill_links_active_limit: int,
     kept_template_ids: List[str],
     pending_delete_template_ids: List[str],
     pending_delete_link_ids: List[str],
@@ -759,7 +807,6 @@ def set_user_downgrade_retention(
             "downgraded_at": (downgraded_at or "").strip() or None,
             "grace_ends_at": (grace_ends_at or "").strip() or None,
             "saved_forms_limit": max(1, int(saved_forms_limit)),
-            "fill_links_active_limit": max(1, int(fill_links_active_limit)),
             "kept_template_ids": _coerce_string_list(kept_template_ids),
             "pending_delete_template_ids": _coerce_string_list(pending_delete_template_ids),
             "pending_delete_link_ids": _coerce_string_list(pending_delete_link_ids),
@@ -921,10 +968,36 @@ def get_user_profile(uid: str) -> Optional[UserProfileRecord]:
                 # Non-critical: the reset will be retried on the next profile load.
                 pass
     else:
-        credits = _resolve_openai_credits_remaining(data)
+        credits, cycle_key, reset_applied = _resolve_base_monthly_pool(data)
         refill_credits = _resolve_pro_refill_credits_remaining(data)
         available_credits = credits
         refill_locked = refill_credits > 0
+        if reset_applied:
+            transaction = client.transaction()
+
+            @firebase_firestore.transactional
+            def _apply_base_reset(txn: firebase_firestore.Transaction) -> None:
+                live_snapshot = doc_ref.get(transaction=txn)
+                live_data = live_snapshot.to_dict() or {}
+                live_remaining, live_cycle, still_needs_reset = _resolve_base_monthly_pool(live_data)
+                if not still_needs_reset and str(live_data.get(OPENAI_CREDITS_BASE_CYCLE_FIELD) or "").strip() == live_cycle:
+                    return
+                txn.set(
+                    doc_ref,
+                    {
+                        OPENAI_CREDITS_FIELD: live_remaining,
+                        OPENAI_CREDITS_BASE_CYCLE_FIELD: live_cycle,
+                        "updated_at": now_iso(),
+                    },
+                    merge=True,
+                )
+
+            try:
+                _apply_base_reset(transaction)
+            except Exception:
+                # Non-critical: the reset will be retried on the next profile load
+                # or credit consumption call.
+                pass
     return UserProfileRecord(
         uid=uid,
         email=email,

@@ -39,44 +39,19 @@ async function retry(label, attempts, fn) {
 
 async function waitForRetentionDialog(page) {
   await retry('wait for retention dialog', 3, async () => {
-    await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.getByText('Downgraded account retention').waitFor({ timeout: 30000 });
-    await page.getByText('3 of 3 selected').waitFor({ timeout: 10000 });
+    await page.goto(`${baseUrl}/ui/profile`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.getByRole('dialog', { name: 'Base plan template access' }).waitFor({ timeout: 30000 });
+    await page.getByText('Accessible and locked saved forms').waitFor({ timeout: 10000 });
   });
 }
 
 function retentionDialog(page) {
-  return page.getByLabel('Downgraded account retention');
-}
-
-async function setTemplateChecked(page, templateName, checked) {
-  await page.evaluate(({ name, nextChecked }) => {
-    const rows = Array.from(document.querySelectorAll('.retention-dialog__template'));
-    const row = rows.find((entry) => entry.textContent?.includes(name));
-    if (!(row instanceof HTMLLabelElement)) {
-      throw new Error(`Missing retention template row for ${name}`);
-    }
-    const checkbox = row.querySelector('input[type="checkbox"]');
-    if (!(checkbox instanceof HTMLInputElement)) {
-      throw new Error(`Missing checkbox for ${name}`);
-    }
-    if (checkbox.checked !== nextChecked) {
-      row.click();
-    }
-  }, { name: templateName, nextChecked: checked });
-}
-
-async function waitForEnabled(locator, label) {
-  await retry(`wait for enabled ${label}`, 10, async () => {
-    if (!(await locator.isEnabled())) {
-      throw new Error(`${label} is still disabled.`);
-    }
-  });
+  return page.getByRole('dialog', { name: 'Base plan template access' });
 }
 
 async function assertNoRetentionDialog(page) {
   await sleep(2500);
-  if (await page.getByText('Downgraded account retention').isVisible().catch(() => false)) {
+  if (await page.getByRole('dialog', { name: 'Base plan template access' }).isVisible().catch(() => false)) {
     throw new Error('Retention dialog should not be visible.');
   }
 }
@@ -99,62 +74,47 @@ async function main() {
     await signInWithCustomTokenHarness(page, customToken);
     await waitForRetentionDialog(page);
 
-    await page.getByText('Days left').waitFor({ timeout: 10000 });
-    await page.getByText('Groups affected').waitFor({ timeout: 10000 });
-    await page.getByText('Links pending delete').waitFor({ timeout: 10000 });
-
     const dialog = retentionDialog(page);
-    await setTemplateChecked(page, 'Referral Gamma', false);
-    await setTemplateChecked(page, 'Follow Up Delta', true);
-    const saveButton = dialog.getByRole('button', { name: 'Save kept forms' });
-    await waitForEnabled(saveButton, 'Save kept forms');
-    await saveButton.click();
+    await dialog.getByText('Locked templates', { exact: true }).waitFor({ timeout: 10000 });
+    await dialog.getByText('Locked links', { exact: true }).waitFor({ timeout: 10000 });
+    await dialog.getByText('Manual swapping is not available in this policy version.').waitFor({ timeout: 10000 });
 
-    const afterSave = await retry('verify saved retention selection', 10, async () => {
+    const accessibleCount = await dialog.getByText('Accessible', { exact: true }).count();
+    const lockedCount = await dialog.getByText('Locked', { exact: true }).count();
+    if (accessibleCount < 4) {
+      throw new Error(`Expected multiple accessible markers, found ${accessibleCount}`);
+    }
+    if (lockedCount < 1) {
+      throw new Error(`Expected at least one locked marker, found ${lockedCount}`);
+    }
+
+    const initialState = await retry('verify locked access state', 10, async () => {
       const state = readFixtureState(fixtureUid);
-      const keptAfterSave = state.retention?.kept_template_ids || [];
-      const pendingAfterSave = state.retention?.pending_delete_template_ids || [];
-      if (!keptAfterSave.includes(`${fixtureUid}-tpl-delta`) || keptAfterSave.includes(`${fixtureUid}-tpl-gamma`)) {
-        throw new Error(`Unexpected kept template ids after save: ${JSON.stringify(keptAfterSave)}`);
+      const accessibleTemplateIds = state.retention?.kept_template_ids || [];
+      const lockedTemplateIds = state.retention?.pending_delete_template_ids || [];
+      if (accessibleTemplateIds.join('|') !== [
+        `${fixtureUid}-tpl-alpha`,
+        `${fixtureUid}-tpl-beta`,
+        `${fixtureUid}-tpl-gamma`,
+      ].join('|')) {
+        throw new Error(`Unexpected accessible template ids: ${JSON.stringify(accessibleTemplateIds)}`);
       }
-      if (pendingAfterSave.join('|') !== `${fixtureUid}-tpl-gamma`) {
-        throw new Error(`Unexpected pending template ids after save: ${JSON.stringify(pendingAfterSave)}`);
+      if (lockedTemplateIds.join('|') !== `${fixtureUid}-tpl-delta`) {
+        throw new Error(`Unexpected locked template ids: ${JSON.stringify(lockedTemplateIds)}`);
       }
-      if ((state.retention?.pending_delete_link_ids || []).includes(`${fixtureUid}-link-delta`)) {
-        throw new Error(`Delta link should not stay in the pending delete queue: ${JSON.stringify(state.retention?.pending_delete_link_ids || [])}`);
+      if (state.templates.length !== 4) {
+        throw new Error(`Templates should remain preserved on downgrade. Found ${state.templates.length}.`);
       }
-      const deltaLink = state.links.find((link) => link.id === `${fixtureUid}-link-delta`);
-      if (!deltaLink || deltaLink.status !== 'closed' || deltaLink.closedReason !== 'downgrade_link_limit') {
-        throw new Error(`Expected delta link to stay closed under the free active-link limit after being kept: ${JSON.stringify(deltaLink)}`);
+      if (!state.templates.some((template) => template.id === `${fixtureUid}-tpl-delta`)) {
+        throw new Error('Locked template should still exist after downgrade.');
       }
       return state;
     });
 
-    await dialog.getByRole('button', { name: 'Delete now' }).click();
-    await page.getByRole('button', { name: 'Delete queued data' }).click();
-
-    const afterDelete = await retry('verify delete-now retention purge', 10, async () => {
-      const state = readFixtureState(fixtureUid);
-      if (state.retention !== null && state.retention !== undefined) {
-        throw new Error(`Retention should be cleared after delete-now: ${JSON.stringify(state.retention)}`);
-      }
-      if (state.templates.length !== 3) {
-        throw new Error(`Expected 3 templates after delete-now, found ${state.templates.length}`);
-      }
-      if (state.templates.some((template) => template.id === `${fixtureUid}-tpl-gamma`)) {
-        throw new Error('Queued template still exists after delete-now.');
-      }
-      const linkLimitClosure = state.links.find((link) => link.id === `${fixtureUid}-link-beta`);
-      if (!linkLimitClosure || linkLimitClosure.status !== 'closed' || linkLimitClosure.closedReason !== 'downgrade_link_limit') {
-        throw new Error(`Expected beta link to stay closed for the free active-link limit: ${JSON.stringify(linkLimitClosure)}`);
-      }
-      const keptDeltaLink = state.links.find((link) => link.id === `${fixtureUid}-link-delta`);
-      if (!keptDeltaLink || keptDeltaLink.status !== 'closed' || keptDeltaLink.closedReason !== 'downgrade_link_limit') {
-        throw new Error(`Expected kept delta link to remain closed for the free active-link limit: ${JSON.stringify(keptDeltaLink)}`);
-      }
-      return state;
-    });
+    await dialog.getByRole('button', { name: 'Keep base plan' }).click();
     await assertNoRetentionDialog(page);
+    await page.getByRole('button', { name: 'Review locked templates' }).click();
+    await page.getByRole('dialog', { name: 'Base plan template access' }).waitFor({ timeout: 10000 });
 
     await page.screenshot({ path: screenshotPath, fullPage: true });
 
@@ -163,8 +123,7 @@ async function main() {
       uid: fixtureUid,
       email: userFixture.email,
       initialRetention: seeded.summary,
-      afterSave,
-      afterDelete,
+      lockedAccessState: initialState,
       screenshotPath,
     };
     fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2));

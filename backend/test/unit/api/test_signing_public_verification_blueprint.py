@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+from fastapi import HTTPException
+
 from backend.services.signing_verification_service import SigningVerificationDeliveryResult
 
 
@@ -44,6 +46,7 @@ def test_public_signing_verification_send_issues_email_otp_challenge(client, app
     )
 
     mocker.patch.object(app_main, "_check_public_rate_limits", return_value=True)
+    mocker.patch.object(app_main, "_check_request_scoped_rate_limit", return_value=True)
     mocker.patch.object(
         app_main,
         "_require_public_signing_session",
@@ -88,6 +91,34 @@ def test_public_signing_verification_send_issues_email_otp_challenge(client, app
     assert challenge_mock.call_args.kwargs["code_hash"] == "otp-hash-1"
     assert challenge_mock.call_args.kwargs["verification_message_id"] == "gmail-message-1"
     assert event_mock.call_args.kwargs["event_type"] == app_main.SIGNING_EVENT_VERIFICATION_STARTED
+
+
+def test_public_signing_verification_send_rejects_request_scoped_resend_bypass(client, app_main, mocker) -> None:
+    record = _record()
+    session = _session(verification_code_hash=None, verification_expires_at=None)
+
+    mocker.patch.object(app_main, "_check_public_rate_limits", return_value=True)
+    mocker.patch.object(app_main, "_check_request_scoped_rate_limit", return_value=False)
+    mocker.patch.object(
+        app_main,
+        "_require_public_signing_session",
+        return_value=(record, session, "203.0.113.5", "browser/1.0"),
+    )
+    mocker.patch.object(app_main, "signing_record_requires_verification", return_value=True)
+    send_mock = mocker.patch.object(
+        app_main,
+        "send_signing_verification_email",
+        mocker.AsyncMock(),
+    )
+
+    response = client.post(
+        "/api/signing/public/token-1/verification/send",
+        headers={"X-Signing-Session": "session-token-1"},
+    )
+
+    assert response.status_code == 429
+    assert "wait before requesting another verification code" in response.json()["detail"].lower()
+    send_mock.assert_not_called()
 
 
 def test_public_signing_verification_verify_rejects_expired_code(client, app_main, mocker) -> None:
@@ -227,3 +258,39 @@ def test_public_signing_consumer_consent_throttles_after_max_failed_access_code_
 
     assert response.status_code == 429
     assert "failed consumer access code attempts" in response.json()["detail"].lower()
+
+
+def test_public_signing_consumer_access_pdf_requires_verified_session(client, app_main, mocker) -> None:
+    record = _record(
+        signature_mode="consumer",
+        status="sent",
+        source_document_name="Consumer Packet",
+        source_pdf_sha256="a" * 64,
+        source_version="workspace:form-alpha:abc123",
+        retention_until=None,
+    )
+    session = _session()
+
+    mocker.patch.object(app_main, "_check_public_rate_limits", return_value=True)
+    mocker.patch.object(app_main, "ensure_signing_storage_configuration", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "_require_public_signing_session",
+        return_value=(record, session, "203.0.113.5", "browser/1.0"),
+    )
+    require_verified_mock = mocker.patch.object(
+        app_main,
+        "_require_public_signing_session_verified",
+        side_effect=HTTPException(status_code=403, detail="Verify the email code before opening this PDF."),
+    )
+    render_mock = mocker.patch.object(app_main, "render_consumer_access_pdf")
+
+    response = client.get(
+        "/api/signing/public/token-1/consumer-access-pdf",
+        headers={"X-Signing-Session": "session-token-1"},
+    )
+
+    assert response.status_code == 403
+    assert "verify the email code" in response.json()["detail"].lower()
+    require_verified_mock.assert_called_once()
+    render_mock.assert_not_called()

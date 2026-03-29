@@ -1,10 +1,20 @@
-import type { PdfField, RadioGroupSuggestion } from '../types';
-import { normalizeRadioKey } from './radioGroups';
+import type { ConfidenceTier, PdfField, RadioGroupSuggestion } from '../types';
+import { CONFIDENCE_THRESHOLDS, confidenceTierForConfidence, parseConfidence } from './confidence';
+import {
+  normalizeRadioKey,
+  resolveRadioOptionDisplayLabel,
+  resolveUniqueRadioGroupKey,
+} from './radioGroups';
 
 type ResolvedRadioSuggestionTarget = {
   field: PdfField;
   optionKey: string;
   optionLabel: string;
+};
+
+type ApplyRadioGroupSuggestionsResult = {
+  fields: PdfField[];
+  appliedSuggestionIds: string[];
 };
 
 function compareFields(left: PdfField, right: PdfField) {
@@ -44,14 +54,28 @@ export function resolveRadioGroupSuggestionTargets(
       continue;
     }
     consumed.add(field.id);
-    const optionLabel = String(entry.optionLabel || field.optionLabel || field.radioOptionLabel || field.name).trim();
+    const rawOptionKey = String(
+      entry.optionKey
+      || field.optionKey
+      || field.radioOptionKey
+      || entry.optionLabel
+      || field.optionLabel
+      || field.radioOptionLabel
+      || '',
+    ).trim();
+    const optionKey = normalizeRadioKey(rawOptionKey, `option_${resolved.length + 1}`);
+    const optionLabel = resolveRadioOptionDisplayLabel({
+      ...field,
+      optionKey: String(entry.optionKey || field.optionKey || '').trim() || field.optionKey,
+      optionLabel: String(entry.optionLabel || field.optionLabel || '').trim() || field.optionLabel,
+      radioOptionKey: optionKey,
+      radioOptionLabel: String(entry.optionLabel || field.radioOptionLabel || '').trim() || field.radioOptionLabel,
+      radioGroupKey: suggestion.sourceField || suggestion.groupKey || field.radioGroupKey,
+      radioGroupLabel: suggestion.groupLabel || field.radioGroupLabel,
+    }, `Option ${resolved.length + 1}`);
     if (!optionLabel) {
       continue;
     }
-    const optionKey = normalizeRadioKey(
-      String(entry.optionKey || field.optionKey || field.radioOptionKey || optionLabel).trim(),
-      `option_${resolved.length + 1}`,
-    );
     resolved.push({
       field,
       optionKey,
@@ -80,6 +104,22 @@ export function buildRadioSuggestionFieldMap(
   return nextMap;
 }
 
+export function radioGroupSuggestionConfidence(
+  suggestion: RadioGroupSuggestion,
+): number | undefined {
+  return parseConfidence(suggestion.confidence);
+}
+
+export function radioGroupSuggestionConfidenceTier(
+  suggestion: RadioGroupSuggestion,
+): ConfidenceTier | null {
+  const confidence = radioGroupSuggestionConfidence(suggestion);
+  if (confidence === undefined) {
+    return null;
+  }
+  return confidenceTierForConfidence(confidence);
+}
+
 export function isRadioGroupSuggestionApplied(
   fields: PdfField[],
   suggestion: RadioGroupSuggestion,
@@ -88,9 +128,11 @@ export function isRadioGroupSuggestionApplied(
   if (targets.length < 2) {
     return false;
   }
-  const expectedGroupKey = normalizeRadioKey(
+  const expectedGroupKey = resolveUniqueRadioGroupKey(
+    fields,
     suggestion.sourceField || suggestion.groupKey,
     suggestion.sourceField || suggestion.groupKey,
+    { groupId: suggestion.id },
   );
   const groupId = targets[0].field.radioGroupId;
   if (!groupId) {
@@ -113,7 +155,12 @@ export function applyRadioGroupSuggestion(
     return fields;
   }
   const targetById = new Map(targets.map((target) => [target.field.id, target] as const));
-  const persistedGroupKey = suggestion.sourceField || suggestion.groupKey;
+  const persistedGroupKey = resolveUniqueRadioGroupKey(
+    fields,
+    suggestion.sourceField || suggestion.groupKey,
+    suggestion.sourceField || suggestion.groupKey,
+    { groupId: suggestion.id },
+  );
   return fields.map((field) => {
     const target = targetById.get(field.id);
     if (!target) {
@@ -139,4 +186,43 @@ export function applyRadioGroupSuggestion(
       radioGroupSource: 'ai_suggestion',
     };
   });
+}
+
+export function isLegacyRadioGroupSuggestion(suggestion: RadioGroupSuggestion): boolean {
+  return String(suggestion.id || '').trim().startsWith('legacy_');
+}
+
+export function shouldAutoApplyRadioGroupSuggestion(
+  suggestion: RadioGroupSuggestion,
+): boolean {
+  if (isLegacyRadioGroupSuggestion(suggestion)) {
+    return false;
+  }
+  const confidence = radioGroupSuggestionConfidence(suggestion);
+  return typeof confidence === 'number' && confidence >= CONFIDENCE_THRESHOLDS.high;
+}
+
+export function applyRadioGroupSuggestions(
+  fields: PdfField[],
+  suggestions: RadioGroupSuggestion[],
+): ApplyRadioGroupSuggestionsResult {
+  let nextFields = fields;
+  const appliedSuggestionIds: string[] = [];
+
+  for (const suggestion of suggestions) {
+    if (isRadioGroupSuggestionApplied(nextFields, suggestion)) {
+      continue;
+    }
+    const updatedFields = applyRadioGroupSuggestion(nextFields, suggestion);
+    if (updatedFields === nextFields) {
+      continue;
+    }
+    nextFields = updatedFields;
+    appliedSuggestionIds.push(suggestion.id);
+  }
+
+  return {
+    fields: nextFields,
+    appliedSuggestionIds,
+  };
 }

@@ -23,12 +23,35 @@ from backend.firebaseDB.fill_link_database import (
 )
 from backend.firebaseDB.template_database import list_templates
 from backend.services.auth_service import require_user
+from backend.services.downgrade_retention_service import sync_user_downgrade_retention
 
 router = APIRouter()
 
 
-def _serialize_group(record, template_lookup: Dict[str, Any]) -> Dict[str, Any]:
+def _locked_template_ids_from_summary(retention_summary: Optional[Dict[str, Any]]) -> set[str]:
+    pending_ids = retention_summary.get("pendingDeleteTemplateIds") if isinstance(retention_summary, dict) else None
+    if not isinstance(pending_ids, list):
+        return set()
+    return {
+        str(template_id or "").strip()
+        for template_id in pending_ids
+        if str(template_id or "").strip()
+    }
+
+
+def _group_locked_template_ids(record, locked_template_ids: set[str]) -> List[str]:
+    return [template_id for template_id in record.template_ids if template_id in locked_template_ids]
+
+
+def _ensure_group_is_accessible(record, *, locked_template_ids: set[str], detail: str) -> None:
+    if not _group_locked_template_ids(record, locked_template_ids):
+        return
+    raise HTTPException(status_code=409, detail=detail)
+
+
+def _serialize_group(record, template_lookup: Dict[str, Any], *, locked_template_ids: set[str]) -> Dict[str, Any]:
     templates: List[Dict[str, Any]] = []
+    group_locked_template_ids = _group_locked_template_ids(record, locked_template_ids)
     for template_id in record.template_ids:
         template = template_lookup.get(template_id)
         if not template:
@@ -38,6 +61,8 @@ def _serialize_group(record, template_lookup: Dict[str, Any]) -> Dict[str, Any]:
                 "id": template.id,
                 "name": template.name or template.pdf_bucket_path or "Saved form",
                 "createdAt": template.created_at,
+                "accessStatus": "locked" if template.id in locked_template_ids else "accessible",
+                "locked": template.id in locked_template_ids,
             }
         )
     templates.sort(key=lambda entry: (entry["name"].lower(), entry["id"]))
@@ -49,6 +74,9 @@ def _serialize_group(record, template_lookup: Dict[str, Any]) -> Dict[str, Any]:
         "templates": templates,
         "createdAt": record.created_at,
         "updatedAt": record.updated_at,
+        "accessStatus": "locked" if group_locked_template_ids else "accessible",
+        "locked": bool(group_locked_template_ids),
+        "lockedTemplateIds": group_locked_template_ids,
     }
 
 
@@ -77,10 +105,12 @@ def _sync_group_fill_link_after_update(previous_group, next_group, user_id: str)
 @router.get("/api/groups")
 async def list_owner_groups(authorization: Optional[str] = Header(default=None)) -> Dict[str, Any]:
     user = require_user(authorization)
+    retention_summary = sync_user_downgrade_retention(user.app_user_id, create_if_missing=True)
+    locked_template_ids = _locked_template_ids_from_summary(retention_summary)
     templates = list_templates(user.app_user_id)
     template_lookup = {template.id: template for template in templates}
     groups = list_groups(user.app_user_id)
-    return {"groups": [_serialize_group(group, template_lookup) for group in groups]}
+    return {"groups": [_serialize_group(group, template_lookup, locked_template_ids=locked_template_ids) for group in groups]}
 
 
 @router.post("/api/groups")
@@ -89,11 +119,19 @@ async def create_owner_group(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     user = require_user(authorization)
+    retention_summary = sync_user_downgrade_retention(user.app_user_id, create_if_missing=True)
+    locked_template_ids = _locked_template_ids_from_summary(retention_summary)
     templates = list_templates(user.app_user_id)
     template_lookup = {template.id: template for template in templates}
     missing = [template_id for template_id in payload.templateIds if template_id not in template_lookup]
     if missing:
         raise HTTPException(status_code=404, detail="One or more saved forms were not found")
+    locked = [template_id for template_id in payload.templateIds if template_id in locked_template_ids]
+    if locked:
+        raise HTTPException(
+            status_code=409,
+            detail="This workflow group cannot include saved forms that are locked on the base plan.",
+        )
 
     normalized_name = normalize_group_name(payload.name)
     existing = list_groups(user.app_user_id)
@@ -107,7 +145,7 @@ async def create_owner_group(
     )
     return {
         "success": True,
-        "group": _serialize_group(group, template_lookup),
+        "group": _serialize_group(group, template_lookup, locked_template_ids=locked_template_ids),
     }
 
 
@@ -117,12 +155,19 @@ async def get_owner_group(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     user = require_user(authorization)
+    retention_summary = sync_user_downgrade_retention(user.app_user_id, create_if_missing=True)
+    locked_template_ids = _locked_template_ids_from_summary(retention_summary)
     group = get_group(group_id, user.app_user_id)
     if not group:
         raise HTTPException(status_code=404, detail="Group not found")
+    _ensure_group_is_accessible(
+        group,
+        locked_template_ids=locked_template_ids,
+        detail="This workflow group is locked because one or more saved forms are unavailable on the base plan.",
+    )
     templates = list_templates(user.app_user_id)
     template_lookup = {template.id: template for template in templates}
-    return {"group": _serialize_group(group, template_lookup)}
+    return {"group": _serialize_group(group, template_lookup, locked_template_ids=locked_template_ids)}
 
 
 @router.patch("/api/groups/{group_id}")
@@ -132,15 +177,28 @@ async def update_owner_group(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     user = require_user(authorization)
+    retention_summary = sync_user_downgrade_retention(user.app_user_id, create_if_missing=True)
+    locked_template_ids = _locked_template_ids_from_summary(retention_summary)
     existing_group = get_group(group_id, user.app_user_id)
     if not existing_group:
         raise HTTPException(status_code=404, detail="Group not found")
+    _ensure_group_is_accessible(
+        existing_group,
+        locked_template_ids=locked_template_ids,
+        detail="This workflow group is locked because one or more saved forms are unavailable on the base plan.",
+    )
 
     templates = list_templates(user.app_user_id)
     template_lookup = {template.id: template for template in templates}
     missing = [template_id for template_id in payload.templateIds if template_id not in template_lookup]
     if missing:
         raise HTTPException(status_code=404, detail="One or more saved forms were not found")
+    locked = [template_id for template_id in payload.templateIds if template_id in locked_template_ids]
+    if locked:
+        raise HTTPException(
+            status_code=409,
+            detail="This workflow group cannot include saved forms that are locked on the base plan.",
+        )
 
     normalized_name = normalize_group_name(payload.name)
     existing = list_groups(user.app_user_id)
@@ -158,7 +216,7 @@ async def update_owner_group(
     _sync_group_fill_link_after_update(existing_group, group, user.app_user_id)
     return {
         "success": True,
-        "group": _serialize_group(group, template_lookup),
+        "group": _serialize_group(group, template_lookup, locked_template_ids=locked_template_ids),
     }
 
 
@@ -168,9 +226,16 @@ async def delete_owner_group(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     user = require_user(authorization)
+    retention_summary = sync_user_downgrade_retention(user.app_user_id, create_if_missing=True)
+    locked_template_ids = _locked_template_ids_from_summary(retention_summary)
     existing_group = get_group(group_id, user.app_user_id)
     if not existing_group:
         raise HTTPException(status_code=404, detail="Group not found")
+    _ensure_group_is_accessible(
+        existing_group,
+        locked_template_ids=locked_template_ids,
+        detail="This workflow group is locked because one or more saved forms are unavailable on the base plan.",
+    )
     close_fill_links_for_group(existing_group.id, user.app_user_id, closed_reason="group_deleted")
     deleted = delete_group(group_id, user.app_user_id)
     if not deleted:

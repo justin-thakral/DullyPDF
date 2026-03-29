@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ApiService, type SigningRequestSummary } from '../../services/api';
+import { Alert } from '../ui/Alert';
 import '../../styles/ui-buttons.css';
 
 type SigningResponsesPanelProps = {
@@ -51,6 +52,13 @@ function resolveInviteMethodSummary(request: SigningRequestSummary): string {
 
 function resolveSenderSummary(request: SigningRequestSummary): string {
   return request.senderEmail || 'Owner account';
+}
+
+function resolveCompanyBindingStatus(request: SigningRequestSummary): string {
+  if (!request.companyBindingEnabled) return 'Not requested';
+  if (request.authorityAttestedAt) return 'Attested';
+  if (request.status === 'completed') return 'Recorded without signer fields';
+  return 'Required at signing';
 }
 
 function canCopySignerLink(request: SigningRequestSummary): boolean {
@@ -105,12 +113,32 @@ export function SigningResponsesPanel({
   onRefresh,
 }: SigningResponsesPanelProps) {
   const [copiedRequestId, setCopiedRequestId] = useState<string | null>(null);
-  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [panelError, setPanelError] = useState<string | null>(null);
   const [downloadingPath, setDownloadingPath] = useState<string | null>(null);
+  const copiedResetTimerRef = useRef<number | null>(null);
   const scopedRequests = useMemo(
     () => requests.filter((entry) => buildRequestScopeMatches(entry, { sourceDocumentName, sourceTemplateId })),
     [requests, sourceDocumentName, sourceTemplateId],
   );
+
+  useEffect(() => {
+    setPanelError(null);
+    setCopiedRequestId(null);
+  }, [sourceDocumentName, sourceTemplateId]);
+
+  useEffect(() => {
+    setCopiedRequestId((current) => (
+      current && scopedRequests.some((request) => request.id === current) ? current : null
+    ));
+  }, [scopedRequests]);
+
+  useEffect(() => {
+    return () => {
+      if (copiedResetTimerRef.current !== null) {
+        window.clearTimeout(copiedResetTimerRef.current);
+      }
+    };
+  }, []);
   const totals = useMemo(() => ({
     waiting: scopedRequests.filter((entry) => entry.status === 'sent' && !entry.isExpired).length,
     signed: scopedRequests.filter((entry) => entry.status === 'completed').length,
@@ -125,9 +153,22 @@ export function SigningResponsesPanel({
   }), [scopedRequests]);
 
   async function handleCopyLink(request: SigningRequestSummary) {
-    if (!request.publicPath) return;
+    setPanelError(null);
+    if (!request.publicPath) {
+      setPanelError('Signer link is not available for this request.');
+      return;
+    }
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      setPanelError('Clipboard copy is unavailable in this browser. Open the signer link and copy it manually.');
+      return;
+    }
     const signingUrl = `${window.location.origin}${request.publicPath}`;
-    await navigator.clipboard.writeText(signingUrl);
+    try {
+      await navigator.clipboard.writeText(signingUrl);
+    } catch {
+      setPanelError('Copy failed. Open the signer link and copy it manually.');
+      return;
+    }
     try {
       await ApiService.recordSigningManualShare(request.id);
       await onRefresh?.();
@@ -135,18 +176,22 @@ export function SigningResponsesPanel({
       // Copying the signer link should still succeed even if audit recording is temporarily unavailable.
     }
     setCopiedRequestId(request.id);
-    window.setTimeout(() => {
+    if (copiedResetTimerRef.current !== null) {
+      window.clearTimeout(copiedResetTimerRef.current);
+    }
+    copiedResetTimerRef.current = window.setTimeout(() => {
       setCopiedRequestId((current) => (current === request.id ? null : current));
+      copiedResetTimerRef.current = null;
     }, 2000);
   }
 
   async function handleArtifactDownload(downloadPath: string, fallbackFilename: string) {
-    setDownloadError(null);
+    setPanelError(null);
     setDownloadingPath(downloadPath);
     try {
       await ApiService.downloadAuthenticatedFile(downloadPath, { filename: fallbackFilename });
     } catch (error) {
-      setDownloadError(error instanceof Error ? error.message : 'Failed to download file.');
+      setPanelError(error instanceof Error ? error.message : 'Failed to download file.');
     } finally {
       setDownloadingPath((current) => (current === downloadPath ? null : current));
     }
@@ -223,9 +268,9 @@ export function SigningResponsesPanel({
         </div>
       ) : null}
 
-      {downloadError ? (
+      {panelError ? (
         <div className="signature-request-dialog__section">
-          <p className="signature-request-dialog__response-note">{downloadError}</p>
+          <Alert tone="error" variant="inline" message={panelError} />
         </div>
       ) : null}
 
@@ -291,6 +336,27 @@ export function SigningResponsesPanel({
               <strong>{request.sourceVersion || 'Pending'}</strong>
             </div>
           </div>
+
+          {request.companyBindingEnabled ? (
+            <div className="signature-request-dialog__response-grid">
+              <div>
+                <span className="signature-request-dialog__label">Company binding</span>
+                <strong>{resolveCompanyBindingStatus(request)}</strong>
+              </div>
+              <div>
+                <span className="signature-request-dialog__label">Representative title</span>
+                <strong>{request.representativeTitle || '—'}</strong>
+              </div>
+              <div>
+                <span className="signature-request-dialog__label">Representative company</span>
+                <strong>{request.representativeCompanyName || '—'}</strong>
+              </div>
+              <div>
+                <span className="signature-request-dialog__label">Authority attested</span>
+                <strong>{formatTimestamp(request.authorityAttestedAt)}</strong>
+              </div>
+            </div>
+          ) : null}
 
           {request.inviteDeliveryError ? (
             <p className="signature-request-dialog__response-note">
@@ -393,6 +459,23 @@ export function SigningResponsesPanel({
                 disabled={downloadingPath === request.artifacts.auditReceipt.downloadPath}
               >
                 {downloadingPath === request.artifacts.auditReceipt.downloadPath ? 'Downloading…' : 'Download audit receipt'}
+              </button>
+            ) : null}
+            {request.artifacts?.disputePackage?.downloadPath ? (
+              <button
+                type="button"
+                className="ui-button ui-button--ghost"
+                onClick={() => {
+                  void handleArtifactDownload(
+                    request.artifacts!.disputePackage!.downloadPath!,
+                    `${request.sourceDocumentName || 'signing-request'}-dispute-package.zip`,
+                  );
+                }}
+                disabled={downloadingPath === request.artifacts.disputePackage.downloadPath}
+              >
+                {downloadingPath === request.artifacts.disputePackage.downloadPath
+                  ? 'Downloading…'
+                  : 'Download full package'}
               </button>
             ) : null}
           </div>

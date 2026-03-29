@@ -1,5 +1,6 @@
 import type { PdfField } from '../types';
 import type { SigningAnchorPayload, SigningRequestSourceType } from '../services/api';
+export { clonePdfBytes, hashSourcePdfSha256 } from './pdfFingerprint';
 
 export type ReviewedFillContext = {
   sourceType: SigningRequestSourceType;
@@ -53,18 +54,4 @@ function fieldValueIsMeaningful(field: PdfField): boolean {
 
 export function hasMeaningfulFillValues(fields: PdfField[]): boolean {
   return fields.some((field) => fieldValueIsMeaningful(field));
-}
-
-export async function hashSourcePdfSha256(bytes: Uint8Array | ArrayBuffer): Promise<string> {
-  const sourceBytes = bytes instanceof Uint8Array
-    ? new Uint8Array(bytes)
-    : new Uint8Array(bytes);
-  const subtle = globalThis.crypto?.subtle;
-  if (!subtle) {
-    throw new Error('Web Crypto is unavailable in this browser context.');
-  }
-  const digest = await subtle.digest('SHA-256', sourceBytes);
-  return Array.from(new Uint8Array(digest))
-    .map((value) => value.toString(16).padStart(2, '0'))
-    .join('');
 }

@@ -71,3 +71,198 @@ def test_build_fill_link_web_form_schema_excludes_signature_questions_for_post_s
     assert "signature" in [question["key"] for question in stored_config["questions"]]
     assert "signature" not in [question["key"] for question in published_questions]
     assert "full_name" in [question["key"] for question in published_questions]
+
+
+def test_build_fill_link_questions_keeps_checkbox_groups_as_multi_select_until_converted() -> None:
+    questions = fls.build_fill_link_questions(
+        [
+            {
+                "id": "field-1",
+                "name": "i_marital_status_single",
+                "type": "checkbox",
+                "page": 1,
+                "rect": {"x": 10, "y": 10, "width": 14, "height": 14},
+                "groupKey": "marital_status",
+                "groupLabel": "Marital Status",
+                "optionKey": "single",
+                "optionLabel": "Single",
+            },
+            {
+                "id": "field-2",
+                "name": "i_marital_status_married",
+                "type": "checkbox",
+                "page": 1,
+                "rect": {"x": 30, "y": 10, "width": 14, "height": 14},
+                "groupKey": "marital_status",
+                "groupLabel": "Marital Status",
+                "optionKey": "married",
+                "optionLabel": "Married",
+            },
+        ],
+        [
+            {
+                "databaseField": "marital_status",
+                "groupKey": "marital_status",
+                "operation": "enum",
+            }
+        ],
+    )
+
+    marital_status = next(question for question in questions if question.get("key") == "marital_status")
+
+    assert marital_status["sourceType"] == "checkbox_group"
+    assert marital_status["type"] == "multi_select"
+    assert marital_status["options"] == [
+        {"key": "single", "label": "Single"},
+        {"key": "married", "label": "Married"},
+    ]
+
+
+def test_build_fill_link_questions_preserves_explicit_radio_groups() -> None:
+    questions = fls.build_fill_link_questions(
+        [
+            {
+                "id": "field-1",
+                "name": "preferred_contact_email",
+                "type": "radio",
+                "page": 1,
+                "rect": {"x": 10, "y": 10, "width": 14, "height": 14},
+                "radioGroupId": "preferred_contact",
+                "radioGroupKey": "preferred_contact",
+                "radioGroupLabel": "Preferred Contact",
+                "radioOptionKey": "email",
+                "radioOptionLabel": "Email",
+            },
+            {
+                "id": "field-2",
+                "name": "preferred_contact_sms",
+                "type": "radio",
+                "page": 1,
+                "rect": {"x": 30, "y": 10, "width": 14, "height": 14},
+                "radioGroupId": "preferred_contact",
+                "radioGroupKey": "preferred_contact",
+                "radioGroupLabel": "Preferred Contact",
+                "radioOptionKey": "sms",
+                "radioOptionLabel": "SMS",
+            },
+        ]
+    )
+
+    preferred_contact = next(question for question in questions if question.get("key") == "preferred_contact")
+
+    assert preferred_contact["sourceType"] == "radio_group"
+    assert preferred_contact["type"] == "radio"
+    assert preferred_contact["options"] == [
+        {"key": "email", "label": "Email"},
+        {"key": "sms", "label": "SMS"},
+    ]
+
+
+def test_build_fill_link_questions_groups_radio_fields_by_group_id_when_key_is_missing() -> None:
+    questions = fls.build_fill_link_questions(
+        [
+            {
+                "id": "field-1",
+                "name": "preferred_contact_email",
+                "type": "radio",
+                "page": 1,
+                "rect": {"x": 10, "y": 10, "width": 14, "height": 14},
+                "radioGroupId": "preferred_contact",
+                "radioOptionKey": "email",
+                "radioOptionLabel": "Email",
+            },
+            {
+                "id": "field-2",
+                "name": "preferred_contact_sms",
+                "type": "radio",
+                "page": 1,
+                "rect": {"x": 30, "y": 10, "width": 14, "height": 14},
+                "radioGroupId": "preferred_contact",
+                "radioOptionKey": "sms",
+                "radioOptionLabel": "SMS",
+            },
+        ]
+    )
+
+    preferred_contact = next(question for question in questions if question.get("key") == "preferred_contact")
+
+    assert preferred_contact["sourceType"] == "radio_group"
+    assert preferred_contact["type"] == "radio"
+    assert preferred_contact["options"] == [
+        {"key": "email", "label": "Email"},
+        {"key": "sms", "label": "SMS"},
+    ]
+
+
+def test_build_fill_link_questions_prefers_radio_option_key_when_label_matches_collapsed_field_text() -> None:
+    questions = fls.build_fill_link_questions(
+        [
+            {
+                "id": "field-1",
+                "name": "Marital Status: Single Married Divorced Separat…",
+                "type": "radio",
+                "page": 1,
+                "rect": {"x": 10, "y": 10, "width": 14, "height": 14},
+                "radioGroupId": "marital_status",
+                "radioGroupKey": "marital_status",
+                "radioGroupLabel": "Marital Status",
+                "radioOptionKey": "single",
+                "radioOptionLabel": "Marital Status: Single Married Divorced Separat…",
+            },
+            {
+                "id": "field-2",
+                "name": "Marital Status: Single Married Divorced Separat…",
+                "type": "radio",
+                "page": 1,
+                "rect": {"x": 30, "y": 10, "width": 14, "height": 14},
+                "radioGroupId": "marital_status",
+                "radioGroupKey": "marital_status",
+                "radioGroupLabel": "Marital Status",
+                "radioOptionKey": "married",
+                "radioOptionLabel": "Marital Status: Single Married Divorced Separat…",
+            },
+        ]
+    )
+
+    marital_status = next(question for question in questions if question.get("key") == "marital_status")
+
+    assert marital_status["options"] == [
+        {"key": "single", "label": "Single"},
+        {"key": "married", "label": "Married"},
+    ]
+
+
+def test_derive_fill_link_respondent_label_uses_question_label_and_selected_option_for_radio_fallback() -> None:
+    label, secondary = fls.derive_fill_link_respondent_label(
+        {"marital_status": "single"},
+        [
+            {
+                "key": "marital_status",
+                "label": "Marital Status",
+                "type": "radio",
+                "options": [
+                    {"key": "single", "label": "Single"},
+                    {"key": "married", "label": "Married"},
+                ],
+            }
+        ],
+    )
+
+    assert label == "Marital Status"
+    assert secondary == "Single"
+
+
+def test_derive_fill_link_respondent_label_keeps_text_preview_behavior_for_plain_text_fallback() -> None:
+    label, secondary = fls.derive_fill_link_respondent_label(
+        {"notes": "Call after 5pm"},
+        [
+            {
+                "key": "notes",
+                "label": "Notes",
+                "type": "text",
+            }
+        ],
+    )
+
+    assert label == "Call after 5pm"
+    assert secondary is None

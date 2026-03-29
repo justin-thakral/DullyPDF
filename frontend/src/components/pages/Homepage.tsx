@@ -561,7 +561,10 @@ const Homepage: React.FC<HomepageProps> = ({
           {/* Left Panel - Project Description */}
           <div className="description-panel" ref={descriptionPanelRef}>
             <div className="description-content" ref={descriptionContentRef}>
-              <h1 className="homepage-main-title">Automatic PDF Templates, Fill By Link, and Database Mapping</h1>
+              <h1 className="homepage-main-title">
+                <span className="homepage-main-title-line">Automatic PDF to Fillable Forms, Fill By Link or API,</span>
+                <span className="homepage-main-title-line">Database Map Fields and U.S. E-Sign Workflows</span>
+              </h1>
 
               <div className="description-text">
                 <p className="lead-description">
@@ -571,10 +574,11 @@ const Homepage: React.FC<HomepageProps> = ({
                   {' '}
                   for field detections with writable areas at input fields.
                   It supports text fields, checkbox groups, radio groups, dates, and signatures in the editor.
-                  Once your form is ready, you can upload a CSV, Excel, JSON, or TXT schema file and map
-                  field names to the PDF, or publish a native DullyPDF Fill By Link from a saved template so up to 10,000 respondents can
-                  submit data through a mobile-friendly HTML form to be filled in on your PDF. Database rows stay in browser for Search
-                  &amp; Fill.
+                  Once your form is ready, you can upload a CSV, Excel, JSON, or TXT schema file, map PDF fields to
+                  database headers, and fill the PDF from matching database rows in Search &amp; Fill; publish a DullyPDF
+                  Fill By Link web form for clients to answer so their responses can fill the PDF later; expose a
+                  template-scoped API Fill endpoint; or route eligible records into DullyPDF&apos;s supported U.S. e-sign
+                  workflow. Database rows stay in browser for Search &amp; Fill.
                 </p>
 
                 <div className="features-section">
@@ -607,10 +611,11 @@ const Homepage: React.FC<HomepageProps> = ({
                     <div className="feature-item">
                       <span className="feature-number">3</span>
                       <div className="feature-content">
-                        <h4>Publish Native Fill By Link or Connect Local Data</h4>
+                        <h4>Publish Fill By Link, API Fill, or Connect Local Data</h4>
                         <p>
-                          Save the template, then either publish a DullyPDF-hosted HTML form link or upload a
-                          CSV/Excel/JSON/TXT schema file locally for Search &amp; Fill preparation.
+                          Save the template, then either publish a DullyPDF Fill By Link web form for clients to answer,
+                          expose a template-scoped API Fill endpoint, or upload a CSV/Excel/JSON/TXT schema file to map
+                          PDF fields to database headers for Search &amp; Fill.
                         </p>
                       </div>
                     </div>
@@ -618,10 +623,11 @@ const Homepage: React.FC<HomepageProps> = ({
                     <div className="feature-item">
                       <span className="feature-number">4</span>
                       <div className="feature-content">
-                        <h4>Search, Select, and Generate the Final PDF</h4>
+                        <h4>Search, Generate, or Route Into U.S. E-Sign</h4>
                         <p>
-                          Choose a local row or a stored respondent submission in the workspace. DullyPDF fills the
-                          template and creates the PDF only when you download it.
+                          Choose a matching database row or a stored respondent submission in the workspace. DullyPDF
+                          fills the mapped template, generates the PDF only when you download it, or routes eligible
+                          records into DullyPDF&apos;s supported U.S. e-sign workflow.
                         </p>
                       </div>
                     </div>
@@ -636,10 +642,10 @@ const Homepage: React.FC<HomepageProps> = ({
           <div className="action-panel" ref={actionPanelRef}>
             <div className="action-content" ref={actionContentRef}>
               <div className="cta-section">
-                <h3>Build, Share, and Fill Faster</h3>
+                <h3>Build, Share, Fill and Sign</h3>
                 <p className="cta-description">
                   Click <strong>Try Now</strong> to upload your PDF document and use AI-driven form field detection,
-                  the form builder, native Fill By Link, and database mapping. 
+                  the form builder, native Fill By Link, API Fill, database field mapping, and supported U.S. e-sign workflows.
                   The <strong>Demo</strong> is interactive and live. Use <strong>Contact</strong> to send me a
                   message.
                 </p>

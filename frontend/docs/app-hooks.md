@@ -18,6 +18,7 @@
 - Detection and OpenAI pipeline:
   - `useDetection` (detection upload state, status polling, source-aware processing copy for detect/fill-able upload/saved form/saved group entry points, and cancellation of stale/background pollers when the active document changes)
   - `useOpenAiPipeline` (includes lazy saved-form session recreation when Rename starts before the initial saved-form session prewarm succeeds)
+  - `useWorkspaceSessionDiagnostic` (pre-Rename/Map session logging and session metadata resolution so backend session context stays out of `WorkspaceRuntime.tsx` and raw `sessionId` / `source_pdf` values stay out of the visible UI)
   - `useDataSource`
   - `usePipelineModal`
 - Output and demo:

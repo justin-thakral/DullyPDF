@@ -106,6 +106,15 @@ function normalizeQuestionOptions(options: FillLinkQuestionOption[] | undefined)
   return Array.from(deduped.values());
 }
 
+function normalizeRadioOptionLabelFromKey(field: PdfField, optionKey: string): string {
+  const normalizedKey = normalizeFillLinkKey(optionKey);
+  const explicitLabel = String(field.radioOptionLabel ?? field.optionLabel ?? '').trim();
+  if (normalizedKey && normalizeFillLinkKey(explicitLabel) === normalizedKey) {
+    return explicitLabel;
+  }
+  return optionKey;
+}
+
 function normalizePositiveInteger(value: unknown): number | null {
   if (value === null || value === undefined || value === '') return null;
   const numeric = Number(value);
@@ -317,14 +326,12 @@ function ensureIdentityQuestion(questions: FillLinkQuestion[]): FillLinkQuestion
   return sortQuestions([createSyntheticIdentityQuestion(0), ...normalized]);
 }
 
-function resolveCheckboxQuestionType(optionCount: number, operation: string | null | undefined): FillLinkQuestion['type'] {
-  if (normalizeFillLinkKey(operation) === 'list') {
-    return 'multi_select';
-  }
+function resolveCheckboxQuestionType(optionCount: number): FillLinkQuestion['type'] {
+  // Respondent-facing radio controls should only come from explicit radio widgets.
   if (optionCount <= 1) {
     return 'boolean';
   }
-  return 'radio';
+  return 'multi_select';
 }
 
 export function buildFillLinkQuestionsFromFields(
@@ -347,9 +354,55 @@ export function buildFillLinkQuestionsFromFields(
   const questions: FillLinkQuestion[] = [];
   const seenTextKeys = new Set<string>();
   const checkboxGroups = new Map<string, FillLinkQuestion>();
+  const radioGroups = new Map<string, FillLinkQuestion>();
 
   for (const field of orderedFields) {
     const fieldType = normalizeFillLinkKey(field.type) || 'text';
+    if (fieldType === 'signature') {
+      continue;
+    }
+
+    if (fieldType === 'radio') {
+      const rawGroupKey = String(field.radioGroupKey ?? field.radioGroupId ?? field.name ?? '').trim();
+      const normalizedGroupKey = normalizeFillLinkKey(rawGroupKey);
+      if (!rawGroupKey || !normalizedGroupKey) continue;
+
+      const answerKey = String(field.radioGroupKey ?? rawGroupKey).trim();
+      const existingGroup = radioGroups.get(normalizedGroupKey);
+      if (!existingGroup) {
+        const labelSource = String(field.radioGroupLabel ?? field.radioGroupKey ?? rawGroupKey).trim();
+        const nextGroup = normalizeQuestion({
+          id: defaultQuestionId(answerKey, 'radio_group'),
+          key: answerKey,
+          label: humanizeFillLinkLabel(labelSource, 'Choice'),
+          type: 'radio',
+          sourceType: 'radio_group',
+          groupKey: rawGroupKey,
+          required: false,
+          visible: true,
+          order: questions.length,
+        }, questions.length);
+        nextGroup.options = [];
+        radioGroups.set(normalizedGroupKey, nextGroup);
+        questions.push(nextGroup);
+      }
+
+      const group = radioGroups.get(normalizedGroupKey);
+      if (!group) continue;
+      const optionKey = String(field.radioOptionKey ?? field.optionKey ?? field.name ?? '').trim();
+      const optionLabel = normalizeRadioOptionLabelFromKey(field, optionKey || 'Option');
+      const normalizedOptionKey = normalizeFillLinkKey(optionKey || optionLabel);
+      if (!normalizedOptionKey) continue;
+      group.options = normalizeQuestionOptions([
+        ...(group.options || []),
+        {
+          key: optionKey || normalizedOptionKey,
+          label: humanizeFillLinkLabel(optionLabel, 'Option'),
+        },
+      ]);
+      continue;
+    }
+
     if (fieldType !== 'checkbox') {
       const sourceField = String(field.name ?? '').trim();
       const normalizedKey = normalizeFillLinkKey(sourceField);
@@ -389,7 +442,6 @@ export function buildFillLinkQuestionsFromFields(
         order: questions.length,
       }, questions.length);
       nextGroup.options = [];
-      (nextGroup as FillLinkQuestion & { operation?: string }).operation = rule?.operation;
       checkboxGroups.set(normalizedGroupKey, nextGroup);
       questions.push(nextGroup);
     }
@@ -411,8 +463,7 @@ export function buildFillLinkQuestionsFromFields(
 
   for (const question of questions) {
     if (question.sourceType === 'checkbox_group') {
-      const operation = (question as FillLinkQuestion & { operation?: string }).operation;
-      question.type = resolveCheckboxQuestionType(question.options?.length ?? 0, operation);
+      question.type = resolveCheckboxQuestionType(question.options?.length ?? 0);
       if (question.type === 'boolean') {
         delete question.options;
       }

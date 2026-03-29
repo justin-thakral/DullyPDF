@@ -24,6 +24,8 @@ def _record(**overrides):
         "status": "completed",
         "source_type": "workspace",
         "source_id": "form-alpha",
+        "source_link_id": "link-1",
+        "source_record_label": "Ada Lovelace",
         "source_template_id": "form-alpha",
         "source_template_name": "Bravo Packet",
         "source_document_name": "Bravo Packet",
@@ -44,6 +46,8 @@ def _record(**overrides):
         "public_link_version": 2,
         "public_link_revoked_at": None,
         "public_link_last_reissued_at": "2026-03-24T12:01:30+00:00",
+        "public_app_origin": None,
+        "owner_review_confirmed_at": "2026-03-24T12:01:45+00:00",
         "verification_required": False,
         "verification_method": None,
         "verification_completed_at": None,
@@ -85,7 +89,7 @@ def test_build_signing_audit_bundle_is_reproducible_and_verifiable(monkeypatch) 
     monkeypatch.setenv("SIGNING_AUDIT_DEV_SECRET", "dev-audit-secret-1234567890")
 
     bundle = build_signing_audit_bundle(
-        record=_record(),
+        record=_record(public_app_origin="http://127.0.0.1:5173"),
         events=[
             {
                 "eventType": "opened",
@@ -117,9 +121,13 @@ def test_build_signing_audit_bundle_is_reproducible_and_verifiable(monkeypatch) 
     assert bundle.manifest_payload["request"]["publicLinkVersion"] == 2
     assert bundle.manifest_payload["request"]["signerContactMethod"] == "email"
     assert bundle.manifest_payload["request"]["signerAuthMethod"] == "email_otp"
+    assert bundle.manifest_payload["request"]["sourceLinkId"] == "link-1"
+    assert bundle.manifest_payload["request"]["sourceRecordLabel"] == "Ada Lovelace"
     assert bundle.manifest_payload["sender"]["ownerUserId"] == "user-1"
     assert bundle.manifest_payload["sender"]["senderEmail"] == "owner@example.com"
     assert bundle.manifest_payload["sender"]["inviteProviderMessageId"] == "gmail-message-1"
+    assert bundle.manifest_payload["ceremony"]["ownerReviewConfirmedAt"] == "2026-03-24T12:01:45+00:00"
+    assert bundle.manifest_payload["disclosure"]["payloadSha256"]
     assert bundle.signature["method"] == "dev_hmac_sha256"
     assert verify_signing_audit_envelope(bundle.envelope_payload) is True
 
@@ -129,7 +137,8 @@ def test_build_signing_audit_bundle_is_reproducible_and_verifiable(monkeypatch) 
     assert "Request ID: req-1" in receipt_text
     assert "Sender: owner@example.com" in receipt_text
     assert "Delivery Method: email" in receipt_text
-    assert "Validation URL: http://localhost:5173/verify-signing/" in receipt_text
+    assert "Validation URL: http://127.0.0.1:5173/verify-signing/" in receipt_text
+    assert "Owner Review Confirmed At: 2026-03-24T12:01:45+00:00" in receipt_text
     assert "Signed PDF SHA-256" in receipt_text
     assert "PDF Signature Method: pkcs12" in receipt_text
     assert "PDF Timestamped: yes" in receipt_text
@@ -202,6 +211,70 @@ def test_build_signing_audit_bundle_includes_consumer_consent_evidence(monkeypat
     receipt_text = "\n".join(page.extract_text() or "" for page in receipt_reader.pages)
     assert "Consumer Disclosure Version: us-esign-consumer-v1" in receipt_text
     assert "Access Method: consumer_access_pdf_code" in receipt_text
+
+
+def test_build_signing_audit_bundle_marks_dev_signature_receipts_as_non_production(monkeypatch) -> None:
+    monkeypatch.setenv("SIGNING_AUDIT_DEV_SECRET", "dev-audit-secret-1234567890")
+
+    bundle = build_signing_audit_bundle(
+        record=_record(
+            public_app_origin="http://127.0.0.1:5173",
+            signed_pdf_digital_signature_method="dev_pem",
+            signed_pdf_digital_signature_algorithm="rsa_sha256",
+            signed_pdf_digital_certificate_subject="CN=DullyPDF Development PDF Signer",
+            signed_pdf_digital_certificate_issuer="CN=DullyPDF Development PDF Signer",
+        ),
+        events=[],
+        signed_pdf_sha256="b" * 64,
+        signed_pdf_bucket_path="gs://signing-bucket/users/user-1/signing/req-1/artifacts/signed_pdf/final.pdf",
+        source_pdf_bucket_path="gs://signing-bucket/users/user-1/signing/req-1/source/source.pdf",
+        signed_pdf_page_count=1,
+        applied_anchor_count=1,
+    )
+
+    receipt_reader = PdfReader(BytesIO(bundle.receipt_pdf_bytes))
+    receipt_text = "\n".join(page.extract_text() or "" for page in receipt_reader.pages)
+    assert "Development signature note:" in receipt_text
+    assert "not a publicly trusted production signing identity" in receipt_text
+
+
+def test_build_signing_audit_bundle_includes_company_authority_attestation(monkeypatch) -> None:
+    monkeypatch.setenv("SIGNING_AUDIT_DEV_SECRET", "dev-audit-secret-1234567890")
+
+    bundle = build_signing_audit_bundle(
+        record=_record(
+            company_binding_enabled=True,
+            authority_attestation_version="dullypdf-company-authority-v1",
+            authority_attestation_text=(
+                "I represent that I am authorized to sign this document on behalf of the named company or organization "
+                "and to bind that entity to this electronic record."
+            ),
+            authority_attestation_sha256="d" * 64,
+            representative_title="General Counsel",
+            representative_company_name="Acme, Inc.",
+            authority_attested_at="2026-03-24T12:05:00+00:00",
+        ),
+        events=[],
+        signed_pdf_sha256="b" * 64,
+        signed_pdf_bucket_path="gs://signing-bucket/users/user-1/signing/req-1/artifacts/signed_pdf/final.pdf",
+        source_pdf_bucket_path="gs://signing-bucket/users/user-1/signing/req-1/source/source.pdf",
+        signed_pdf_page_count=1,
+        applied_anchor_count=1,
+    )
+
+    authority = bundle.manifest_payload["authority"]
+    assert authority["companyBindingEnabled"] is True
+    assert authority["representativeTitle"] == "General Counsel"
+    assert authority["representativeCompanyName"] == "Acme, Inc."
+    assert authority["attestedAt"] == "2026-03-24T12:05:00+00:00"
+    assert authority["independentlyVerified"] is False
+
+    receipt_reader = PdfReader(BytesIO(bundle.receipt_pdf_bytes))
+    receipt_text = "\n".join(page.extract_text() or "" for page in receipt_reader.pages)
+    assert "Company Binding Requested: yes" in receipt_text
+    assert "Representative Title: General Counsel" in receipt_text
+    assert "Representative Company: Acme, Inc." in receipt_text
+    assert "Authority note: DullyPDF records the signer's authority attestation" in receipt_text
 
 
 def test_wrap_receipt_line_keeps_long_values_inside_printable_width() -> None:

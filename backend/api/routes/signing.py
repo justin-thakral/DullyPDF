@@ -17,26 +17,34 @@ from backend.firebaseDB.signing_database import (
     mark_signing_request_sent,
     record_signing_event,
     reissue_signing_request,
+    rollback_signing_request_sent,
 )
 from backend.firebaseDB.storage_service import (
     build_signing_bucket_uri,
     delete_storage_object,
     download_storage_bytes,
 )
+from backend.firebaseDB.template_database import get_template
 from backend.services.app_config import resolve_stream_cors_headers
 from backend.services.auth_service import require_user
+from backend.services.downgrade_retention_service import get_user_retention_pending_template_ids
 from backend.logging_config import get_logger
-from backend.services.signing_consumer_consent_service import persist_consumer_disclosure_artifact
+from backend.services.contact_service import resolve_client_ip
+from backend.services.signing_consumer_consent_service import (
+    persist_business_disclosure_artifact,
+    persist_consumer_disclosure_artifact,
+)
 from backend.services.signing_invite_service import (
     deliver_signing_invite_for_request,
     resolve_signing_invite_event_type,
+    resolve_signing_invite_origin,
 )
 from backend.services.signing_provenance_service import record_signing_provenance_event
-from backend.services.signing_webhook_service import dispatch_signing_webhook_event
-from backend.services.signing_request_limit_service import (
-    SigningRequestDocumentLimitError,
-    ensure_signing_request_limit_available,
+from backend.services.signing_dispute_package_service import (
+    build_owner_dispute_package,
+    owner_dispute_package_available,
 )
+from backend.services.signing_webhook_service import dispatch_signing_webhook_event
 from backend.services.signing_storage_service import (
     ensure_signing_storage_configuration,
     is_signing_storage_not_found_error,
@@ -45,7 +53,11 @@ from backend.services.signing_storage_service import (
     resolve_signing_storage_read_bucket_path,
     upload_signing_staging_pdf_bytes_for_final,
 )
-from backend.services.limits_service import resolve_fillable_max_pages
+from backend.services.limits_service import (
+    resolve_fillable_max_pages,
+    resolve_signing_requests_monthly_limit,
+)
+from backend.services.pdf_export_service import pdf_has_form_widgets
 from backend.services.pdf_service import (
     read_upload_bytes,
     resolve_upload_limit,
@@ -58,6 +70,7 @@ from backend.services.signing_service import (
     SIGNING_ARTIFACT_SOURCE_PDF,
     SIGNING_ARTIFACT_AUDIT_MANIFEST,
     SIGNING_ARTIFACT_AUDIT_RECEIPT,
+    SIGNING_ARTIFACT_DISPUTE_PACKAGE,
     SIGNING_ARTIFACT_SIGNED_PDF,
     SIGNING_MODE_FILL_AND_SIGN,
     SIGNING_MODE_SIGN,
@@ -70,6 +83,7 @@ from backend.services.signing_service import (
     SIGNING_EVENT_LINK_REISSUED,
     SIGNING_EVENT_LINK_REVOKED,
     SIGNING_EVENT_MANUAL_LINK_SHARED,
+    SIGNING_EVENT_OWNER_ARTIFACT_DOWNLOADED,
     SIGNING_EVENT_REQUEST_CREATED,
     SIGNING_EVENT_REQUEST_SENT,
     build_signing_public_path,
@@ -88,6 +102,7 @@ from backend.services.signing_service import (
     normalize_signature_mode,
     normalize_signing_mode,
     resolve_signing_consumer_disclosure_fields,
+    resolve_signing_company_authority_attestation,
     sha256_hex_for_bytes,
     resolve_document_category_label,
     resolve_signing_disclosure_version,
@@ -105,6 +120,7 @@ from backend.services.signing_service import (
     validate_signer_name,
     validate_source_document_name,
 )
+from backend.services.signing_quota_service import SigningRequestMonthlyLimitError
 
 
 router = APIRouter()
@@ -119,6 +135,40 @@ def upload_signing_pdf_bytes(pdf_bytes: bytes, destination_path: str) -> str:
 
 def _is_storage_not_found_error(exc: Exception) -> bool:
     return is_signing_storage_not_found_error(exc)
+
+
+def _ensure_signing_template_is_accessible(user_id: str, source_template_id: Optional[str]) -> None:
+    normalized_template_id = str(source_template_id or "").strip()
+    if not normalized_template_id:
+        return
+    locked_template_ids = get_user_retention_pending_template_ids(user_id)
+    if normalized_template_id in locked_template_ids:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This signing request cannot proceed because its saved form is locked on the base plan. Upgrade "
+                "to reactivate that saved form before creating or sending signing drafts."
+            ),
+        )
+
+
+def _ensure_signing_send_source_template_exists(user, record) -> None:
+    normalized_template_id = str(record.source_template_id or "").strip()
+    if not normalized_template_id:
+        return
+    if get_template(normalized_template_id, user.app_user_id) is not None:
+        return
+    invalidated = invalidate_signing_request(
+        record.id,
+        user.app_user_id,
+        reason="This signing draft can no longer be sent because its saved form was deleted.",
+    )
+    detail = (
+        invalidated.invalidation_reason
+        if invalidated is not None and getattr(invalidated, "invalidation_reason", None)
+        else "This signing draft can no longer be sent because its saved form was deleted."
+    )
+    raise HTTPException(status_code=409, detail=detail)
 
 
 def _require_send_transition_applied(record, *, staged_source_path: str, expected_source_path: str):
@@ -143,6 +193,7 @@ def _require_send_transition_applied(record, *, staged_source_path: str, expecte
 def _serialize_owner_artifacts(record) -> Dict[str, Any]:
     generated_at = record.artifacts_generated_at
     retention_until = record.retention_until
+    dispute_package_available = owner_dispute_package_available(record)
     return {
         "sourcePdf": {
             "available": bool(record.source_pdf_bucket_path),
@@ -212,6 +263,16 @@ def _serialize_owner_artifacts(record) -> Dict[str, Any]:
             "generatedAt": generated_at,
             "retentionUntil": retention_until,
         },
+        "disputePackage": {
+            "available": dispute_package_available,
+            "downloadPath": (
+                f"/api/signing/requests/{record.id}/artifacts/{SIGNING_ARTIFACT_DISPUTE_PACKAGE}"
+                if dispute_package_available
+                else None
+            ),
+            "generatedAt": generated_at,
+            "retentionUntil": retention_until,
+        },
     }
 
 
@@ -237,6 +298,10 @@ def _serialize_owner_request(record) -> Dict[str, Any]:
         "documentCategoryLabel": resolve_document_category_label(record.document_category),
         "esignEligibilityConfirmedAt": getattr(record, "esign_eligibility_confirmed_at", None),
         "esignEligibilityConfirmedSource": getattr(record, "esign_eligibility_confirmed_source", None),
+        "companyBindingEnabled": bool(getattr(record, "company_binding_enabled", False)),
+        "authorityAttestationVersion": getattr(record, "authority_attestation_version", None),
+        "authorityAttestationText": getattr(record, "authority_attestation_text", None),
+        "authorityAttestationSha256": getattr(record, "authority_attestation_sha256", None),
         "manualFallbackEnabled": record.manual_fallback_enabled,
         "signerName": record.signer_name,
         "signerEmail": record.signer_email,
@@ -288,6 +353,7 @@ def _record_owner_request_created_event(
     record,
     *,
     sender_email: Optional[str],
+    client_ip: Optional[str],
     user_agent: Optional[str],
     source: str,
 ) -> None:
@@ -297,6 +363,7 @@ def _record_owner_request_created_event(
         sender_email=sender_email,
         invite_method=SIGNING_INVITE_METHOD_EMAIL,
         source=source,
+        client_ip=client_ip,
         user_agent=user_agent,
         include_link_token=False,
         extra={
@@ -312,6 +379,7 @@ def _record_owner_request_sent_event(
     record,
     *,
     sender_email: Optional[str],
+    client_ip: Optional[str],
     user_agent: Optional[str],
     source: str,
 ) -> None:
@@ -321,6 +389,7 @@ def _record_owner_request_sent_event(
         sender_email=sender_email,
         invite_method=SIGNING_INVITE_METHOD_EMAIL,
         source=source,
+        client_ip=client_ip,
         user_agent=user_agent,
         extra={
             "statusBefore": SIGNING_STATUS_DRAFT,
@@ -337,6 +406,7 @@ def _record_owner_invite_delivery_event(
     *,
     delivery,
     sender_email: Optional[str],
+    client_ip: Optional[str],
     user_agent: Optional[str],
     source: str,
 ) -> None:
@@ -349,6 +419,7 @@ def _record_owner_invite_delivery_event(
         sender_email=sender_email,
         invite_method=SIGNING_INVITE_METHOD_EMAIL,
         source=source,
+        client_ip=client_ip,
         user_agent=user_agent,
         extra={
             "provider": getattr(delivery, "provider", None),
@@ -442,22 +513,51 @@ async def download_owner_signing_artifact(
     record = get_signing_request_for_user(request_id, user.app_user_id)
     if record is None:
         raise HTTPException(status_code=404, detail="Signing request not found")
-    bucket_path, media_type, filename = _resolve_owner_artifact(record, artifact_key)
-    try:
-        readable_bucket_path = resolve_signing_storage_read_bucket_path(
-            bucket_path,
-            retain_until=record.retention_until,
-        )
-        body = download_storage_bytes(readable_bucket_path)
-    except Exception as exc:
-        if _is_storage_not_found_error(exc):
-            raise HTTPException(status_code=404, detail="Signing artifact is not available") from exc
-        raise HTTPException(status_code=500, detail="Failed to load signing artifact") from exc
+    normalized_key = normalize_signing_artifact_key(artifact_key)
+    bucket_path: Optional[str] = None
+    media_type: str
+    filename: str
+    body: bytes
+    if normalized_key == SIGNING_ARTIFACT_DISPUTE_PACKAGE:
+        try:
+            package = await build_owner_dispute_package(record)
+        except Exception as exc:
+            if _is_storage_not_found_error(exc):
+                raise HTTPException(status_code=404, detail="Signing artifact is not available") from exc
+            raise HTTPException(status_code=500, detail="Failed to load signing artifact") from exc
+        media_type = package.media_type
+        filename = package.filename
+        body = package.body
+    else:
+        bucket_path, media_type, filename = _resolve_owner_artifact(record, normalized_key)
+        try:
+            readable_bucket_path = resolve_signing_storage_read_bucket_path(
+                bucket_path,
+                retain_until=record.retention_until,
+            )
+            body = download_storage_bytes(readable_bucket_path)
+        except Exception as exc:
+            if _is_storage_not_found_error(exc):
+                raise HTTPException(status_code=404, detail="Signing artifact is not available") from exc
+            raise HTTPException(status_code=500, detail="Failed to load signing artifact") from exc
     headers = {
         "Content-Disposition": f'attachment; filename="{filename}"',
         "Cache-Control": "private, no-store",
     }
     headers.update(resolve_stream_cors_headers(request.headers.get("origin")))
+    record_signing_provenance_event(
+        record,
+        event_type=SIGNING_EVENT_OWNER_ARTIFACT_DOWNLOADED,
+        sender_email=user.email,
+        source="owner_artifact_download",
+        client_ip=resolve_client_ip(request),
+        user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
+        extra={
+            "artifactKey": normalized_key,
+            "bucketPath": bucket_path,
+            "mediaType": media_type,
+        },
+    )
     if media_type == "application/json":
         return Response(content=body, media_type=media_type, headers=headers)
     return StreamingResponse(
@@ -470,6 +570,7 @@ async def download_owner_signing_artifact(
 @router.post("/api/signing/requests", status_code=201)
 async def create_owner_signing_request(
     payload: SigningRequestCreateRequest,
+    request: Request,
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     user = require_user(authorization)
@@ -487,6 +588,7 @@ async def create_owner_signing_request(
         signer_email = validate_signer_email(payload.signerEmail)
         source_document_name = validate_source_document_name(payload.sourceDocumentName)
         disclosure_version = resolve_signing_disclosure_version(signature_mode)
+        authority_attestation = resolve_signing_company_authority_attestation(payload.companyBindingEnabled)
         consumer_disclosure_fields = resolve_signing_consumer_disclosure_fields(
             signature_mode=signature_mode,
             sender_display_name=user.display_name,
@@ -506,21 +608,16 @@ async def create_owner_signing_request(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     anchors = [anchor.model_dump(exclude_none=True) for anchor in payload.anchors]
+    _ensure_signing_template_is_accessible(
+        user.app_user_id,
+        normalize_optional_text(payload.sourceTemplateId, maximum_length=160),
+    )
     source_version = build_signing_source_version(
         source_type=source_type,
         source_id=normalize_optional_text(payload.sourceId, maximum_length=160),
         source_template_id=normalize_optional_text(payload.sourceTemplateId, maximum_length=160),
         source_pdf_sha256=source_pdf_sha256,
     )
-    try:
-        ensure_signing_request_limit_available(
-            user_id=user.app_user_id,
-            role=user.role,
-            source_version=source_version,
-            source_document_name=source_document_name,
-        )
-    except SigningRequestDocumentLimitError as exc:
-        raise HTTPException(status_code=403, detail=str(exc)) from exc
     record = create_signing_request(
         user_id=user.app_user_id,
         title=normalize_optional_text(payload.title),
@@ -536,6 +633,10 @@ async def create_owner_signing_request(
         source_pdf_sha256=source_pdf_sha256,
         source_version=source_version,
         document_category=document_category,
+        company_binding_enabled=bool(payload.companyBindingEnabled),
+        authority_attestation_version=authority_attestation.get("version") if authority_attestation else None,
+        authority_attestation_text=authority_attestation.get("text") if authority_attestation else None,
+        authority_attestation_sha256=authority_attestation.get("sha256") if authority_attestation else None,
         manual_fallback_enabled=bool(payload.manualFallbackEnabled),
         signer_name=signer_name,
         signer_email=signer_email,
@@ -556,7 +657,8 @@ async def create_owner_signing_request(
     _record_owner_request_created_event(
         record,
         sender_email=user.email,
-        user_agent=normalize_signing_user_agent(None),
+        client_ip=resolve_client_ip(request),
+        user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
         source="owner_ui",
     )
     return {"request": _serialize_owner_request(record)}
@@ -597,7 +699,7 @@ async def revoke_owner_signing_request(
             event_type=SIGNING_EVENT_LINK_REVOKED,
             session_id=None,
             link_token_id=build_signing_link_token_id(link_token),
-            client_ip=None,
+            client_ip=resolve_client_ip(request),
             user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
             details={
                 "publicLinkVersion": public_link_version,
@@ -638,6 +740,8 @@ async def send_owner_signing_request(
     except ValueError as exc:
         status_code = 409 if record.status == SIGNING_STATUS_INVALIDATED else 400
         raise HTTPException(status_code=status_code, detail=str(exc)) from exc
+    _ensure_signing_template_is_accessible(user.app_user_id, record.source_template_id)
+    _ensure_signing_send_source_template_exists(user, record)
 
     if not pdf:
         raise HTTPException(status_code=400, detail="Missing PDF upload")
@@ -660,6 +764,12 @@ async def send_owner_signing_request(
         raise HTTPException(
             status_code=403,
             detail=f"Signing upload limited to {max_pages} pages for your tier (got {validation.page_count}).",
+        )
+
+    if pdf_has_form_widgets(validation.pdf_bytes):
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded signing source PDF must already be flattened before send. Refresh the workspace and try again.",
         )
 
     current_sha256 = sha256_hex_for_bytes(validation.pdf_bytes)
@@ -694,22 +804,40 @@ async def send_owner_signing_request(
         validation.pdf_bytes,
         source_pdf_object_path,
     )
+    public_app_origin = resolve_signing_invite_origin(
+        request_origin=request.headers.get("origin") or request.headers.get("referer"),
+    )
+    normalized_client_ip = resolve_client_ip(request)
+    owner_user_agent = normalize_signing_user_agent(request.headers.get("user-agent"))
     try:
         staged_source_pdf_bucket_path = resolve_signing_stage_bucket_path(source_pdf_bucket_path)
     except ValueError:
         staged_source_pdf_bucket_path = source_pdf_bucket_path
-    sent_record = mark_signing_request_sent(
-        record.id,
-        user.app_user_id,
-        source_pdf_bucket_path=source_pdf_bucket_path,
-        source_pdf_sha256=current_sha256,
-        source_version=source_version,
-        owner_review_confirmed_at=(
-            now_iso()
-            if record.mode == SIGNING_MODE_FILL_AND_SIGN and bool(ownerReviewConfirmed)
-            else record.owner_review_confirmed_at
-        ),
-    )
+    try:
+        sent_record = mark_signing_request_sent(
+            record.id,
+            user.app_user_id,
+            source_pdf_bucket_path=source_pdf_bucket_path,
+            source_pdf_sha256=current_sha256,
+            source_version=source_version,
+            monthly_limit=resolve_signing_requests_monthly_limit(user.role),
+            owner_review_confirmed_at=(
+                now_iso()
+                if record.mode == SIGNING_MODE_FILL_AND_SIGN and bool(ownerReviewConfirmed)
+                else record.owner_review_confirmed_at
+            ),
+            public_app_origin=public_app_origin,
+        )
+    except SigningRequestMonthlyLimitError as exc:
+        try:
+            delete_storage_object(staged_source_pdf_bucket_path)
+        except Exception:
+            logger.warning(
+                "Failed to delete staged signing source PDF after quota rejection for request %s: %s",
+                record.id,
+                staged_source_pdf_bucket_path,
+            )
+        raise HTTPException(status_code=403, detail=str(exc)) from exc
     sent_record = _require_send_transition_applied(
         sent_record,
         staged_source_path=staged_source_pdf_bucket_path,
@@ -721,16 +849,30 @@ async def send_owner_signing_request(
             retain_until=sent_record.retention_until,
         )
     except Exception as exc:
-        logger.warning(
-            "Source PDF promotion to finalized signing storage failed for request %s: %s",
-            record.id,
-            exc,
+        rollback_signing_request_sent(
+            sent_record.id,
+            user.app_user_id,
+            expected_source_pdf_bucket_path=source_pdf_bucket_path,
+            expected_source_pdf_sha256=current_sha256,
         )
+        try:
+            delete_storage_object(staged_source_pdf_bucket_path)
+        except Exception:
+            logger.warning(
+                "Failed to delete staged signing source PDF after promotion failure for request %s: %s",
+                record.id,
+                staged_source_pdf_bucket_path,
+            )
+        raise HTTPException(
+            status_code=503,
+            detail="Failed to finalize the retained source PDF for this signing request. Please try again.",
+        ) from exc
+    sent_record = persist_business_disclosure_artifact(sent_record) or sent_record
     sent_record = persist_consumer_disclosure_artifact(sent_record) or sent_record
-    owner_user_agent = normalize_signing_user_agent(request.headers.get("user-agent"))
     _record_owner_request_sent_event(
         sent_record,
         sender_email=user.email,
+        client_ip=normalized_client_ip,
         user_agent=owner_user_agent,
         source="owner_ui",
     )
@@ -744,6 +886,7 @@ async def send_owner_signing_request(
         invite_attempt.record,
         delivery=invite_attempt.delivery,
         sender_email=user.email,
+        client_ip=normalized_client_ip,
         user_agent=owner_user_agent,
         source="owner_ui",
     )
@@ -767,7 +910,13 @@ async def reissue_owner_signing_request(
 
     previous_public_link_version = resolve_signing_public_link_version(record)
     previous_public_token = build_signing_public_token(record.id, previous_public_link_version)
-    reissued_record = reissue_signing_request(record.id, user.app_user_id)
+    reissued_record = reissue_signing_request(
+        record.id,
+        user.app_user_id,
+        public_app_origin=resolve_signing_invite_origin(
+            request_origin=request.headers.get("origin") or request.headers.get("referer"),
+        ),
+    )
     if reissued_record is None:
         raise HTTPException(status_code=500, detail="Failed to reissue the signing link.")
     next_public_link_version = resolve_signing_public_link_version(reissued_record)
@@ -776,7 +925,10 @@ async def reissue_owner_signing_request(
             status_code=409,
             detail=resolve_signing_public_status_message(reissued_record.status, reissued_record.invalidation_reason),
         )
+    reissued_record = persist_business_disclosure_artifact(reissued_record) or reissued_record
     reissued_record = persist_consumer_disclosure_artifact(reissued_record) or reissued_record
+    client_ip = resolve_client_ip(request)
+    user_agent = normalize_signing_user_agent(request.headers.get("user-agent"))
 
     next_public_token = build_signing_public_token(reissued_record.id, next_public_link_version)
     record_signing_event(
@@ -784,8 +936,8 @@ async def reissue_owner_signing_request(
         event_type=SIGNING_EVENT_LINK_REISSUED,
         session_id=None,
         link_token_id=build_signing_link_token_id(next_public_token),
-        client_ip=None,
-        user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
+        client_ip=client_ip,
+        user_agent=user_agent,
         details={
             "previousPublicLinkVersion": previous_public_link_version,
             "publicLinkVersion": next_public_link_version,
@@ -821,7 +973,8 @@ async def reissue_owner_signing_request(
         invite_attempt.record,
         delivery=invite_attempt.delivery,
         sender_email=user.email,
-        user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
+        client_ip=client_ip,
+        user_agent=user_agent,
         source="owner_reissue",
     )
     return {"request": _serialize_owner_request(invite_attempt.record)}
@@ -855,6 +1008,7 @@ async def record_owner_signing_manual_share(
         sender_email=user.email,
         invite_method=SIGNING_INVITE_METHOD_MANUAL_LINK,
         source="owner_manual_share",
+        client_ip=resolve_client_ip(request),
         user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
         extra={
             "publicLinkVersion": resolve_signing_public_link_version(shared_record),

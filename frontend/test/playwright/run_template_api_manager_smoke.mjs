@@ -241,20 +241,85 @@ async function main() {
     });
     const expectedFillUrl = `${apiBaseUrl}/api/v1/fill/tep_live_patient_intake.pdf`;
     const expectedSchemaUrl = `${apiBaseUrl}/api/v1/fill/tep_live_patient_intake/schema`;
+    const expectedPayloadFile = JSON.stringify(
+      {
+        data: activeScenario.schema.exampleData,
+        exportMode: 'flat',
+        strict: true,
+      },
+      null,
+      2,
+    );
 
     await mountHarness(page, activeScenario);
     await page.getByRole('heading', { name: 'API Fill' }).waitFor({ timeout: 15000 });
     await page.getByText('Limits and activity').waitFor({ timeout: 15000 });
     await page.getByText('Recent activity').waitFor({ timeout: 15000 });
-    await page.locator('code').filter({ hasText: expectedFillUrl }).first().waitFor({ timeout: 15000 });
-    await page.locator('code').filter({ hasText: expectedSchemaUrl }).first().waitFor({ timeout: 15000 });
-    await page.getByText(/"agree_to_terms": True/).waitFor({ timeout: 15000 });
-    await page.getByText(/"middle_name": None/).waitFor({ timeout: 15000 });
+    await page.getByText(expectedFillUrl).first().waitFor({ timeout: 15000 });
+    await page.getByText(expectedSchemaUrl).first().waitFor({ timeout: 15000 });
+    await page.getByText(/"agree_to_terms": true/).waitFor({ timeout: 15000 });
+    await page.getByText(/"middle_name": null/).waitFor({ timeout: 15000 });
     await page.getByText(/"strict": true/).waitFor({ timeout: 15000 });
+    await page.getByText(/--data "@\.\/payload\.json"/).waitFor({ timeout: 15000 });
 
     await assertClipboardCopy(page, 'Copy key', 'dpa_live_secret_value', 'API key copied.');
     await assertClipboardCopy(page, 'Copy URL', expectedFillUrl, 'Endpoint URL copied.');
     await assertClipboardCopy(page, 'Copy schema URL', expectedSchemaUrl, 'Schema URL copied.');
+    await assertClipboardCopy(page, 'Copy payload file', expectedPayloadFile, 'Payload file copied.');
+    await assertClipboardCopy(page, 'Copy cURL', [
+      `curl -X POST "${expectedFillUrl}" \\`,
+      '  -H "Authorization: Basic $(printf \'%s:\' \"$API_KEY\" | base64)" \\',
+      '  -H "Content-Type: application/json" \\',
+      '  --data "@./payload.json" \\',
+      '  --output "./filled.pdf"',
+    ].join('\n'), 'cURL example copied.');
+
+    await page.getByLabel('Example language').selectOption('node');
+    await page.getByText('const payloadPath = "./payload.json";').waitFor({ timeout: 15000 });
+    await assertClipboardCopy(page, 'Copy Node', [
+      "import { readFile, writeFile } from 'node:fs/promises';",
+      '',
+      'const apiKey = process.env.DULLYPDF_API_KEY;',
+      'const payloadPath = "./payload.json";',
+      "const payload = JSON.parse(await readFile(payloadPath, 'utf8'));",
+      '',
+      `const response = await fetch("${expectedFillUrl}", {`,
+      "  method: 'POST',",
+      '  headers: {',
+      "    'Content-Type': 'application/json',",
+      "    Authorization: `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`,",
+      '  },',
+      '  body: JSON.stringify(payload),',
+      '});',
+      '',
+      "if (!response.ok) throw new Error(await response.text());",
+      'const pdf = Buffer.from(await response.arrayBuffer());',
+      'await writeFile("./filled.pdf", pdf);',
+    ].join('\n'), 'Node example copied.');
+
+    await page.getByLabel('Example language').selectOption('python');
+    await page.getByText('payload_path = "./payload.json"').waitFor({ timeout: 15000 });
+    await assertClipboardCopy(page, 'Copy Python', [
+      'import base64',
+      'import json',
+      'import os',
+      'import requests',
+      '',
+      "api_key = os.environ['DULLYPDF_API_KEY']",
+      `url = "${expectedFillUrl}"`,
+      'payload_path = "./payload.json"',
+      "with open(payload_path, 'r', encoding='utf-8') as payload_file:",
+      '    payload = json.load(payload_file)',
+      '',
+      "auth = base64.b64encode(f'{api_key}:'.encode('utf-8')).decode('ascii')",
+      'response = requests.post(url, json=payload, headers={',
+      "    'Authorization': f'Basic {auth}',",
+      "    'Content-Type': 'application/json',",
+      '})',
+      'response.raise_for_status()',
+      'with open("./filled.pdf", \'wb\') as output_file:',
+      '    output_file.write(response.content)',
+    ].join('\n'), 'Python example copied.');
     const clipboardState = (await getHarnessState(page)).clipboard;
 
     await resetHarnessActions(page);
@@ -284,8 +349,8 @@ async function main() {
 
     const revokedCopyUrlCount = await page.getByRole('button', { name: 'Copy URL' }).count();
     const revokedCopySchemaCount = await page.getByRole('button', { name: 'Copy schema URL' }).count();
-    const revokedCurlHeadingCount = await page.getByText('cURL').count();
-    if (revokedCopyUrlCount !== 0 || revokedCopySchemaCount !== 0 || revokedCurlHeadingCount !== 0) {
+    const revokedExampleSelectorCount = await page.getByLabel('Example language').count();
+    if (revokedCopyUrlCount !== 0 || revokedCopySchemaCount !== 0 || revokedExampleSelectorCount !== 0) {
       throw new Error('Revoked scenario still exposed active endpoint controls.');
     }
 

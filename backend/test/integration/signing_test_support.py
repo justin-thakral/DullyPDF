@@ -161,6 +161,15 @@ def patch_signing_authenticated_owner(mocker, request_user: Optional[RequestUser
     resolved_user = request_user or signing_user()
     mocker.patch.object(signing_routes, "require_user", return_value=resolved_user)
     mocker.patch.object(
+        signing_routes,
+        "get_template",
+        side_effect=lambda template_id, user_id: (
+            {"id": template_id, "user_id": user_id}
+            if str(template_id or "").strip()
+            else None
+        ),
+    )
+    mocker.patch.object(
         security_middleware,
         "verify_token",
         return_value={

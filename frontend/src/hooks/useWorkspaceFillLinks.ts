@@ -31,6 +31,7 @@ import {
   buildFillLinkQuestionsFromFields,
   mergeFillLinkQuestionSets,
 } from '../utils/fillLinkWebForm';
+import { buildSigningAnchorsFromFields, hasMeaningfulFillValues } from '../utils/signing';
 
 type SearchFillPresetState = {
   query: string;
@@ -174,6 +175,14 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
   const templateSourceQuestions = useMemo(
     () => buildFillLinkQuestionsFromFields(fields, checkboxRules),
     [checkboxRules, fields],
+  );
+  const templateHasSigningAnchors = useMemo(
+    () => buildSigningAnchorsFromFields(fields).length > 0,
+    [fields],
+  );
+  const templateHasPrefilledValues = useMemo(
+    () => hasMeaningfulFillValues(fields),
+    [fields],
   );
 
   const fillLinkSchemaDirty = useMemo(() => {
@@ -631,8 +640,9 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
       link.responseCount ?? existingResponses.length,
       1,
     );
-    return loadAllResponses(Math.min(requestedLimit, profileLimits.fillLinkResponsesMax));
-  }, [profileLimits.fillLinkResponsesMax]);
+    const responseLimit = profileLimits.fillLinkResponsesMonthlyMax;
+    return loadAllResponses(Math.min(requestedLimit, responseLimit));
+  }, [profileLimits.fillLinkResponsesMonthlyMax]);
 
   const openResponsesInSearchFill = useCallback(async (
     response: FillLinkResponse | null,
@@ -700,6 +710,8 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     onClose: () => setManagerOpen(false),
     templateName: activeTemplateName,
     hasActiveTemplate: hasActiveTemplateScope,
+    templateHasSigningAnchors,
+    templateHasPrefilledValues,
     groupName: activeGroupName,
     hasActiveGroup: hasActiveGroupScope,
     templateSourceQuestions,
@@ -770,6 +782,8 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     templatePublishing,
     templateResponses,
     templateResponsesLoading,
+    templateHasSigningAnchors,
+    templateHasPrefilledValues,
   ]);
 
   return {

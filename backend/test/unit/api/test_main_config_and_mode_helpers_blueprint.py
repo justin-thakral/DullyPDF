@@ -74,10 +74,52 @@ def test_require_prod_env_reports_missing_keys(app_main, mocker) -> None:
     assert "FILL_LINK_TOKEN_SECRET" in message
 
 
+def test_require_prod_env_requires_trusted_proxy_depth_when_proxy_headers_are_enabled(app_main, mocker) -> None:
+    values = {
+        "SANDBOX_CORS_ORIGINS": "https://app.example.com",
+        "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "FIREBASE_PROJECT_ID": "proj",
+        "FIREBASE_USE_ADC": "true",
+        "FORMS_BUCKET": "forms",
+        "TEMPLATES_BUCKET": "templates",
+        "FILL_LINK_TOKEN_SECRET": "fill-link-secret-0123456789abcdef",
+        "CONTACT_TO_EMAIL": "to@example.com",
+        "CONTACT_FROM_EMAIL": "from@example.com",
+        "GMAIL_CLIENT_ID": "cid",
+        "GMAIL_CLIENT_SECRET": "secret",
+        "GMAIL_REFRESH_TOKEN": "refresh",
+        "STRIPE_SECRET_KEY": "sk_live_abc",
+        "STRIPE_WEBHOOK_SECRET": "whsec_abc",
+        "STRIPE_PRICE_PRO_MONTHLY": "price_monthly",
+        "STRIPE_PRICE_PRO_YEARLY": "price_yearly",
+        "STRIPE_PRICE_REFILL_500": "price_refill",
+        "STRIPE_CHECKOUT_SUCCESS_URL": "https://dullypdf.com/account?billing=success",
+        "STRIPE_CHECKOUT_CANCEL_URL": "https://dullypdf.com/account?billing=cancel",
+        "STRIPE_MAX_PROCESSED_EVENTS": "256",
+        "RECAPTCHA_SITE_KEY": "site",
+        "RECAPTCHA_PROJECT_ID": "proj",
+        "RECAPTCHA_ALLOWED_HOSTNAMES": "dullypdf.com",
+        "DETECTOR_TASKS_PROJECT": "proj",
+        "DETECTOR_TASKS_LOCATION": "us-central1",
+        "DETECTOR_TASKS_QUEUE": "queue",
+        "DETECTOR_SERVICE_URL": "https://detector",
+        "DETECTOR_TASKS_SERVICE_ACCOUNT": "sa@example.com",
+    }
+    mocker.patch.object(app_main, "_is_prod", return_value=True)
+    mocker.patch.object(app_main, "_recaptcha_required_any", return_value=True)
+    mocker.patch.object(app_main, "_resolve_detection_mode", return_value="tasks")
+    mocker.patch.object(app_main, "_env_truthy", return_value=True)
+    mocker.patch.object(app_main, "_env_value", side_effect=lambda key: values.get(key, ""))
+    with pytest.raises(RuntimeError) as ctx:
+        app_main._require_prod_env()
+    assert "SANDBOX_TRUSTED_PROXY_DEPTH (must be a positive integer in prod)" in str(ctx.value)
+
+
 def test_require_prod_env_rejects_wildcard_cors(monkeypatch, app_main, mocker) -> None:
     values = {
         "SANDBOX_CORS_ORIGINS": "*",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -119,6 +161,7 @@ def test_require_prod_env_rejects_wildcard_trusted_hosts(app_main, mocker) -> No
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "*",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -160,6 +203,7 @@ def test_require_prod_env_accepts_complete_matrix(app_main, mocker) -> None:
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -199,6 +243,7 @@ def test_require_prod_env_rejects_non_https_checkout_urls(app_main, mocker) -> N
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -241,6 +286,7 @@ def test_require_prod_env_rejects_positive_stripe_processed_event_cap(app_main, 
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -282,6 +328,7 @@ def test_require_prod_env_rejects_disabled_fill_link_recaptcha(app_main, mocker)
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -323,6 +370,7 @@ def test_require_prod_env_rejects_placeholder_fill_link_token_secret(app_main, m
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -363,6 +411,7 @@ def test_require_prod_env_rejects_short_fill_link_token_secret(app_main, mocker)
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",
@@ -403,6 +452,7 @@ def test_require_prod_env_rejects_explicit_firebase_credentials_in_prod(app_main
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FIREBASE_CREDENTIALS": '{"type":"service_account"}',
@@ -447,6 +497,7 @@ def test_require_prod_env_rejects_missing_recaptcha_allowed_hostnames(app_main, 
     values = {
         "SANDBOX_CORS_ORIGINS": "https://app.example.com",
         "SANDBOX_TRUSTED_HOSTS": "app.example.com",
+        "SANDBOX_TRUSTED_PROXY_DEPTH": "2",
         "FIREBASE_PROJECT_ID": "proj",
         "FIREBASE_USE_ADC": "true",
         "FORMS_BUCKET": "forms",

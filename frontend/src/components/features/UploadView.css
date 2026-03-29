@@ -27,8 +27,13 @@
 
 .pipeline-modal__header {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pipeline-modal__header > div {
+  min-width: 0;
 }
 
 .pipeline-modal__title {

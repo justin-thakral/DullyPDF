@@ -29,9 +29,15 @@ import {
 import {
   applyMappingPayloadToFields,
   applyRenamePayloadToFields,
+  deriveCombinedRadioGroupSuggestions,
 } from '../utils/openAiFields';
+import { hashSourcePdfSha256 } from '../utils/pdfFingerprint';
 import { debugLog } from '../utils/debug';
 import { extractFieldsFromPdf, loadPdfFromFile } from '../utils/pdf';
+import {
+  applyRadioGroupSuggestions,
+  shouldAutoApplyRadioGroupSuggestion,
+} from '../utils/radioGroupSuggestions';
 
 const PDF_PAGE_COUNT_TIMEOUT_MS = 15000;
 
@@ -549,12 +555,16 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
           let nextFields = fields;
           let checkboxRules: CheckboxRule[] = [];
           let textTransformRules: TextTransformRule[] = [];
+          const sourcePdfSha256 = (wantsRename || wantsMap)
+            ? await hashSourcePdfSha256(item.file)
+            : null;
 
           if (wantsRename && wantsMap) {
             setItemState(item.id, { detail: 'Running Rename + Map…' });
             const renameResult = await ApiService.renameFields({
               sessionId,
               schemaId: resolvedSchemaId || undefined,
+              sourcePdfSha256: sourcePdfSha256 || undefined,
               templateFields: buildTemplateFields(nextFields),
             }, {
               signal: controller.signal,
@@ -567,11 +577,38 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
               throw new Error(renameResult?.error || 'Rename + Map returned no updated fields.');
             }
             nextFields = renamedFields;
-            checkboxRules = Array.isArray(renameResult?.checkboxRules) ? renameResult.checkboxRules : [];
+            const mappingResult = await ApiService.mapSchema(
+              resolvedSchemaId || '',
+              buildTemplateFields(nextFields),
+              undefined,
+              sessionId,
+              {
+                signal: controller.signal,
+              },
+              sourcePdfSha256 || undefined,
+            );
+            if (!mappingResult?.success) {
+              throw new Error(mappingResult?.error || 'Rename + Map schema mapping failed.');
+            }
+            const mapped = applyMappingPayloadToFields(
+              nextFields,
+              mappingResult.mappingResults,
+              deps.dataColumns,
+            );
+            nextFields = mapped.fields;
+            checkboxRules = mapped.checkboxRules;
+            textTransformRules = mapped.textTransformRules;
+            const autoApplicableSuggestions = mapped.radioGroupSuggestions.filter(
+              (suggestion) => shouldAutoApplyRadioGroupSuggestion(suggestion),
+            );
+            if (autoApplicableSuggestions.length) {
+              nextFields = applyRadioGroupSuggestions(nextFields, autoApplicableSuggestions).fields;
+            }
           } else if (wantsRename) {
             setItemState(item.id, { detail: 'Renaming fields…' });
             const renameResult = await ApiService.renameFields({
               sessionId,
+              sourcePdfSha256: sourcePdfSha256 || undefined,
               templateFields: buildTemplateFields(nextFields),
             }, {
               signal: controller.signal,
@@ -585,6 +622,13 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
             }
             nextFields = renamedFields;
             checkboxRules = Array.isArray(renameResult?.checkboxRules) ? renameResult.checkboxRules : [];
+            const renameSuggestions = deriveCombinedRadioGroupSuggestions(nextFields, [], checkboxRules);
+            const autoApplicableSuggestions = renameSuggestions.filter(
+              (suggestion) => shouldAutoApplyRadioGroupSuggestion(suggestion),
+            );
+            if (autoApplicableSuggestions.length) {
+              nextFields = applyRadioGroupSuggestions(nextFields, autoApplicableSuggestions).fields;
+            }
           } else if (wantsMap) {
             setItemState(item.id, { detail: 'Mapping schema…' });
             const mappingResult = await ApiService.mapSchema(
@@ -595,6 +639,7 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
               {
                 signal: controller.signal,
               },
+              sourcePdfSha256 || undefined,
             );
             if (!mappingResult?.success) {
               throw new Error(mappingResult?.error || 'Schema mapping failed.');
@@ -607,6 +652,12 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
             nextFields = mapped.fields;
             checkboxRules = mapped.checkboxRules;
             textTransformRules = mapped.textTransformRules;
+            const autoApplicableSuggestions = mapped.radioGroupSuggestions.filter(
+              (suggestion) => shouldAutoApplyRadioGroupSuggestion(suggestion),
+            );
+            if (autoApplicableSuggestions.length) {
+              nextFields = applyRadioGroupSuggestions(nextFields, autoApplicableSuggestions).fields;
+            }
           }
 
           if (cancelRequestedRef.current) {

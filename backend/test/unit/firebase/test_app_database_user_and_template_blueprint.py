@@ -24,6 +24,7 @@ def test_ensure_user_raises_for_missing_uid() -> None:
 def test_ensure_user_creates_new_user_with_defaults(mocker) -> None:
     client = FakeFirestoreClient()
     mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-03")
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-created")
 
     request_user = adb.ensure_user({"uid": "u-1", "email": "user@example.com", "name": "User"})
@@ -41,6 +42,7 @@ def test_ensure_user_creates_new_user_with_defaults(mocker) -> None:
     assert stored[adb.ROLE_FIELD] == adb.ROLE_BASE
     assert stored[adb.RENAME_COUNT_FIELD] == 0
     assert stored[adb.OPENAI_CREDITS_FIELD] == adb.BASE_OPENAI_CREDITS
+    assert stored[adb.OPENAI_CREDITS_BASE_CYCLE_FIELD] == "2026-03"
     assert stored["created_at"] == "ts-created"
     assert stored["updated_at"] == "ts-created"
 
@@ -56,6 +58,7 @@ def test_ensure_user_updates_existing_doc_and_backfills_missing_defaults(mocker)
         }
     )
     mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-03")
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-updated")
 
     request_user = adb.ensure_user({"uid": "u-1", "email": "new@example.com", "displayName": "New Name"})
@@ -71,6 +74,7 @@ def test_ensure_user_updates_existing_doc_and_backfills_missing_defaults(mocker)
     assert updates[adb.ROLE_FIELD] == adb.ROLE_BASE
     assert updates[adb.RENAME_COUNT_FIELD] == 0
     assert updates[adb.OPENAI_CREDITS_FIELD] == adb.BASE_OPENAI_CREDITS
+    assert updates[adb.OPENAI_CREDITS_BASE_CYCLE_FIELD] == "2026-03"
     assert updates["updated_at"] == "ts-updated"
 
 
@@ -352,11 +356,13 @@ def test_ensure_user_skips_update_when_no_fields_change(mocker) -> None:
             adb.ROLE_FIELD: adb.ROLE_BASE,
             adb.RENAME_COUNT_FIELD: 0,
             adb.OPENAI_CREDITS_FIELD: adb.BASE_OPENAI_CREDITS,
+            adb.OPENAI_CREDITS_BASE_CYCLE_FIELD: "2026-03",
             "created_at": "old-created",
             "updated_at": "old-updated",
         }
     )
     mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-03")
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-new")
 
     request_user = adb.ensure_user({
@@ -407,10 +413,12 @@ def test_ensure_user_does_not_re_elevate_existing_base_user_from_pro_claim(mocke
             "displayName": "Base User",
             adb.ROLE_FIELD: adb.ROLE_BASE,
             adb.OPENAI_CREDITS_FIELD: adb.BASE_OPENAI_CREDITS,
+            adb.OPENAI_CREDITS_BASE_CYCLE_FIELD: "2026-03",
             adb.RENAME_COUNT_FIELD: 0,
         }
     )
     mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-03")
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-updated")
 
     request_user = adb.ensure_user(
@@ -429,6 +437,7 @@ def test_ensure_user_does_not_re_elevate_existing_base_user_from_pro_claim(mocke
 def test_ensure_user_new_doc_with_pro_claim_bootstraps_as_base(mocker) -> None:
     client = FakeFirestoreClient()
     mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-03")
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-created")
 
     request_user = adb.ensure_user(
@@ -444,7 +453,28 @@ def test_ensure_user_new_doc_with_pro_claim_bootstraps_as_base(mocker) -> None:
     assert request_user.role == adb.ROLE_BASE
     assert stored[adb.ROLE_FIELD] == adb.ROLE_BASE
     assert stored[adb.OPENAI_CREDITS_FIELD] == adb.BASE_OPENAI_CREDITS
+    assert stored[adb.OPENAI_CREDITS_BASE_CYCLE_FIELD] == "2026-03"
     assert adb.OPENAI_CREDITS_MONTHLY_FIELD not in stored
+
+
+def test_downgrade_to_base_membership_sets_base_cycle_key(mocker) -> None:
+    client = FakeFirestoreClient()
+    doc = client.collection(adb.USERS_COLLECTION).document("uid-base").seed(
+        {
+            adb.ROLE_FIELD: adb.ROLE_PRO,
+            adb.OPENAI_CREDITS_MONTHLY_FIELD: adb.PRO_MONTHLY_OPENAI_CREDITS,
+        }
+    )
+    mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-04")
+    mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-downgraded")
+
+    adb.downgrade_to_base_membership("uid-base")
+
+    stored = doc.get().to_dict()
+    assert stored[adb.ROLE_FIELD] == adb.ROLE_BASE
+    assert stored[adb.OPENAI_CREDITS_BASE_CYCLE_FIELD] == "2026-04"
+    assert stored["updated_at"] == "ts-downgraded"
 
 
 def test_ensure_user_allows_god_claim_for_privileged_access(mocker) -> None:

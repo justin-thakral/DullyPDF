@@ -56,6 +56,22 @@ print(auth.create_custom_token(uid).decode())
   return output.split('\n').pop();
 }
 
+export function verifyEmailUser(uid) {
+  runBackendPython(
+    `
+from firebase_admin import auth
+from backend.firebaseDB.firebase_service import init_firebase
+import os
+
+uid = os.environ["PW_UID"]
+init_firebase()
+auth.update_user(uid, email_verified=True)
+print("ok")
+`,
+    { PW_UID: uid },
+  );
+}
+
 export async function createHybridEmailUser(page) {
   const apiKey = readFrontendEnvValue('VITE_FIREBASE_API_KEY');
   const email = `codex-downgrade-${Date.now()}@example.com`;
@@ -73,6 +89,11 @@ export async function createHybridEmailUser(page) {
   if (!result.ok) {
     throw new Error(`Failed to create Firebase test user: ${JSON.stringify(result.data)}`);
   }
+
+  // Real workspace bootstrap now blocks unverified accounts. Mark the seeded
+  // Firebase user as verified so browser-based smoke flows can reach the
+  // authenticated workspace/profile paths they are meant to exercise.
+  verifyEmailUser(result.data.localId);
 
   return {
     apiKey,
@@ -125,7 +146,7 @@ from backend.firebaseDB.firebase_service import get_firestore_client, init_fireb
 from backend.firebaseDB.group_database import GROUPS_COLLECTION
 from backend.firebaseDB.template_database import TEMPLATES_COLLECTION
 from backend.firebaseDB.user_database import (
-    activate_pro_membership_with_subscription,
+    activate_pro_membership,
     downgrade_to_base_membership,
     set_user_billing_subscription,
 )
@@ -199,7 +220,6 @@ for suffix, template_id, title, created_at in link_payloads:
             "public_token": f"{link_id}-token",
             "status": "active",
             "closed_reason": None,
-            "max_responses": 10000,
             "response_count": 0,
             "questions": questions,
             "require_all_fields": False,
@@ -210,7 +230,8 @@ for suffix, template_id, title, created_at in link_payloads:
         }
     )
 
-activate_pro_membership_with_subscription(
+activate_pro_membership(uid, stripe_event_id=f"evt_seed_upgrade_{uid}", reset_monthly_credits=True)
+set_user_billing_subscription(
     uid,
     customer_id=f"cus_{uid}",
     subscription_id=f"sub_{uid}",
@@ -304,7 +325,6 @@ client.collection("app_users").document(uid).set(
             "downgraded_at": "2026-03-01T00:00:00+00:00",
             "grace_ends_at": "2026-03-31T00:00:00+00:00",
             "saved_forms_limit": 3,
-            "fill_links_active_limit": 1,
             "kept_template_ids": template_ids[:3],
             "pending_delete_template_ids": [template_ids[3]],
             "pending_delete_link_ids": [f"{uid}-link-delta"],

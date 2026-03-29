@@ -24,6 +24,10 @@ function sleep(durationMs) {
   });
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 async function retry(label, attempts, fn) {
   let lastError = null;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
@@ -271,25 +275,40 @@ async function waitForFieldListName(page, fieldName) {
   });
 }
 
-async function waitForGroupTemplateOptionReady(page, templateId) {
-  const selector = page.locator('select.ui-group-select');
-  await retry(`wait for group template option ${templateId}`, 20, async () => {
-    const optionState = await selector.evaluate((element, expectedTemplateId) => {
-      if (!(element instanceof HTMLSelectElement)) {
-        throw new Error('Expected group select element.');
-      }
-      const option = Array.from(element.options).find((entry) => entry.value === expectedTemplateId) ?? null;
-      if (!option) {
-        return { exists: false, disabled: true, label: '' };
-      }
-      return {
-        exists: true,
-        disabled: option.disabled,
-        label: option.textContent?.trim() || '',
-      };
-    }, templateId);
+function getGroupTemplateTrigger(page, groupName) {
+  return page.getByRole('button', {
+    name: new RegExp(`^${escapeRegExp(`Open template in ${groupName}`)}$`, 'i'),
+  });
+}
 
-    if (!optionState.exists || optionState.disabled || optionState.label.includes('Preparing')) {
+function getGroupTemplateListbox(page, groupName) {
+  return page.getByRole('listbox', {
+    name: new RegExp(`^${escapeRegExp(`Templates in ${groupName}`)}$`, 'i'),
+  });
+}
+
+async function readGroupTemplateTriggerLabel(page, groupName) {
+  const label = await getGroupTemplateTrigger(page, groupName).locator('.ui-group-select__value').textContent();
+  return String(label || '').trim();
+}
+
+async function waitForGroupTemplateOptionReady(page, groupName, templateName) {
+  const trigger = getGroupTemplateTrigger(page, groupName);
+  const listbox = getGroupTemplateListbox(page, groupName);
+  const optionName = new RegExp(`^${escapeRegExp(templateName)}`, 'i');
+  await retry(`wait for group template option ${templateName}`, 20, async () => {
+    const listboxVisible = await listbox.isVisible().catch(() => false);
+    if (!listboxVisible) {
+      await trigger.click();
+      await listbox.waitFor({ timeout: 5000 });
+    }
+    const option = listbox.getByRole('option', { name: optionName }).first();
+    await option.waitFor({ timeout: 5000 });
+    const optionState = {
+      disabled: await option.isDisabled(),
+      label: String(await option.textContent() || '').trim(),
+    };
+    if (optionState.disabled || optionState.label.includes('Preparing')) {
       throw new Error(`Template option not ready yet: ${JSON.stringify(optionState)}`);
     }
   });
@@ -377,23 +396,25 @@ async function main() {
     const groupOpenMs = Date.now() - groupOpenStart;
 
     await waitForFieldListName(page, seeded.templates[0].fieldName);
-    const groupSelector = page.locator('select.ui-group-select');
+    const groupSelector = getGroupTemplateTrigger(page, seeded.groupName);
     await groupSelector.waitFor({ timeout: 30000 });
 
-    const initialGroupTemplateLabel = await readSelectedOptionText(groupSelector);
+    const initialGroupTemplateLabel = await readGroupTemplateTriggerLabel(page, seeded.groupName);
     if (!initialGroupTemplateLabel.startsWith(seeded.templates[0].name)) {
       throw new Error(`Expected the group to open on ${seeded.templates[0].name}, found ${initialGroupTemplateLabel}`);
     }
 
     logStep(`waiting for ${seeded.templates[1].name} to finish preparing`);
-    await waitForGroupTemplateOptionReady(page, seeded.templates[1].id);
+    await waitForGroupTemplateOptionReady(page, seeded.groupName, seeded.templates[1].name);
     logStep(`switching group template to ${seeded.templates[1].name}`);
     const switchTemplateStart = Date.now();
-    await groupSelector.selectOption(seeded.templates[1].id);
+    await getGroupTemplateListbox(page, seeded.groupName).getByRole('option', {
+      name: new RegExp(`^${escapeRegExp(seeded.templates[1].name)}`, 'i'),
+    }).first().click();
     await waitForFieldListName(page, seeded.templates[1].fieldName);
     const switchTemplateMs = Date.now() - switchTemplateStart;
 
-    const switchedTemplateLabel = await readSelectedOptionText(groupSelector);
+    const switchedTemplateLabel = await readGroupTemplateTriggerLabel(page, seeded.groupName);
     if (!switchedTemplateLabel.startsWith(seeded.templates[1].name)) {
       throw new Error(`Expected the group selector to switch to ${seeded.templates[1].name}, found ${switchedTemplateLabel}`);
     }

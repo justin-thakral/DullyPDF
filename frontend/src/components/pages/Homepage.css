@@ -45,31 +45,39 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
   overflow: hidden;
 }
 
 .description-content {
   max-width: 720px;
+  width: min(100%, 720px);
+  margin: 0 auto;
 }
 
 .homepage-main-title {
   color: #000000;
-  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+  font-size: clamp(1.34rem, 1rem + 0.82vw, 1.72rem);
   font-weight: 700;
   margin-top: 0.5rem;
   margin-bottom: clamp(0.75rem, 1.2vw, 1rem);
-  line-height: 1.2;
+  line-height: 1.14;
   border-bottom: 3px solid #3b82f6;
   padding-bottom: 0.5rem;
 }
 
+.homepage-main-title-line {
+  display: block;
+}
+
 .lead-description {
-  font-size: clamp(1rem, 0.92rem + 0.4vw, 1.125rem);
+  font-size: clamp(0.94rem, 0.9rem + 0.24vw, 1rem);
   color: #374151;
   line-height: 1.5;
   margin-bottom: clamp(1rem, 1.5vw, 1.5rem);
   font-weight: 500;
-  max-width: 62ch;
+  width: 100%;
+  max-width: none;
 }
 
 .homepage-credit {
@@ -96,13 +104,17 @@
 .feature-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.62rem, 0.86vw, 0.84rem);
+  gap: clamp(0.5rem, 0.72vw, 0.72rem);
 }
 
 .feature-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.62rem;
+  gap: 0.56rem;
+}
+
+.feature-content {
+  min-width: 0;
 }
 
 .feature-number {
@@ -122,16 +134,19 @@
 
 .feature-content h4 {
   color: #000000;
-  font-size: clamp(0.95rem, 0.9rem + 0.22vw, 1.04rem);
+  font-size: clamp(0.91rem, 0.87rem + 0.18vw, 0.99rem);
   font-weight: 600;
-  margin-bottom: 0.14rem;
+  margin-bottom: 0.12rem;
+  line-height: 1.22;
+  text-wrap: pretty;
 }
 
 .feature-content p {
   color: #4b5563;
-  line-height: 1.34;
+  line-height: 1.3;
   margin: 0;
-  font-size: clamp(0.86rem, 0.83rem + 0.18vw, 0.92rem);
+  font-size: clamp(0.82rem, 0.8rem + 0.14vw, 0.88rem);
+  text-wrap: pretty;
 }
 
 /* Right Panel - Call to Action */
@@ -150,7 +165,7 @@
 .action-content {
   max-width: 420px;
   width: min(100%, 420px);
-  margin-top: 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -159,7 +174,7 @@
 @media (min-width: 1021px) {
   .description-content {
     transform: scale(var(--homepage-fit-scale));
-    transform-origin: top left;
+    transform-origin: top center;
     will-change: transform;
   }
 
@@ -210,11 +225,13 @@
 
 .cta-section h3 {
   color: #000000;
-  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.3rem);
+  font-size: clamp(1.34rem, 1rem + 0.82vw, 1.72rem);
   font-weight: 700;
   margin-bottom: 0.75rem;
   margin-top: 0.5rem;
   line-height: 1.2;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .cta-description {
@@ -854,12 +871,12 @@
   }
 
   .feature-content h4 {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 
   .feature-content p {
-    font-size: 0.85rem;
-    line-height: 1.32;
+    font-size: 0.82rem;
+    line-height: 1.28;
   }
 
   .cta-section {
@@ -900,14 +917,15 @@
 
   .description-content {
     max-width: 760px;
+    width: min(100%, 760px);
   }
 
   .homepage-main-title {
-    font-size: clamp(1.8rem, 1.3rem + 1.8vw, 2.6rem);
+    font-size: clamp(1.44rem, 1.12rem + 0.72vw, 1.82rem);
   }
 
   .lead-description {
-    font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.25rem);
+    font-size: clamp(0.98rem, 0.92rem + 0.28vw, 1.08rem);
   }
 
   .homepage-credit {
@@ -925,11 +943,11 @@
   }
 
   .feature-content h4 {
-    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.2rem);
+    font-size: clamp(0.98rem, 0.94rem + 0.24vw, 1.08rem);
   }
 
   .feature-content p {
-    font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.05rem);
+    font-size: clamp(0.88rem, 0.85rem + 0.18vw, 0.95rem);
   }
 
   .action-content {
@@ -938,7 +956,7 @@
   }
 
   .cta-section h3 {
-    font-size: clamp(1.85rem, 1.3rem + 2vw, 2.7rem);
+    font-size: clamp(1.44rem, 1.12rem + 0.72vw, 1.82rem);
   }
 
   .cta-description {
@@ -1050,7 +1068,7 @@
   }
 
   .feature-content p {
-    line-height: 1.32;
+    line-height: 1.28;
   }
 
   .cta-section {
@@ -1103,7 +1121,7 @@
   }
 
   .feature-content p {
-    line-height: 1.35;
+    line-height: 1.3;
   }
 
   .cta-section {
@@ -1140,15 +1158,15 @@
   }
 
   .feature-content h4 {
-    font-size: 0.98rem;
+    font-size: 0.94rem;
   }
 
   .feature-content p {
-    font-size: 0.88rem;
+    font-size: 0.84rem;
   }
 
   .cta-section h3 {
-    font-size: clamp(1.45rem, 1.15rem + 0.8vw, 1.75rem);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
   }
 
   .cta-description {

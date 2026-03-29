@@ -41,4 +41,52 @@ describe('GroupCreateDialog', () => {
       (screen.getByPlaceholderText('New hire packet') as HTMLInputElement).value,
     ).toBe('Hiring Packet');
   });
+
+  it('surfaces submit failures inside the dialog instead of failing silently', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn().mockRejectedValue(new Error('Group service unavailable.'));
+
+    render(
+      <GroupCreateDialog
+        open
+        savedForms={[
+          { id: 'form-1', name: 'Alpha Intake', createdAt: '2026-03-10T12:00:00.000Z' },
+        ]}
+        onClose={vi.fn()}
+        onSubmit={onSubmit}
+      />,
+    );
+
+    await user.type(screen.getByPlaceholderText('New hire packet'), 'Hiring Packet');
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: 'Create group' }));
+
+    expect(onSubmit).toHaveBeenCalledWith({
+      name: 'Hiring Packet',
+      templateIds: ['form-1'],
+    });
+    expect(await screen.findByText('Group service unavailable.')).toBeTruthy();
+  });
+
+  it('renders locked saved forms as disabled options after accessible templates', () => {
+    render(
+      <GroupCreateDialog
+        open
+        savedForms={[
+          { id: 'form-locked', name: 'Locked Packet', createdAt: '2026-03-10T12:00:00.000Z', accessStatus: 'locked', locked: true },
+          { id: 'form-open', name: 'Alpha Intake', createdAt: '2026-03-10T12:00:00.000Z' },
+        ]}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+    expect(checkboxes).toHaveLength(2);
+    expect(screen.getByText('Locked Packet (Locked on base)')).toBeTruthy();
+    expect(checkboxes[0].checked).toBe(false);
+    expect(checkboxes[0].disabled).toBe(false);
+    expect(checkboxes[1].checked).toBe(false);
+    expect(checkboxes[1].disabled).toBe(true);
+  });
 });

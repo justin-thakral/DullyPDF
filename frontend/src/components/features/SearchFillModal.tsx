@@ -10,7 +10,7 @@ import './SearchFillModal.css';
 import type { CheckboxRule, TextTransformRule } from '../../types';
 import { applySearchFillRowToFields } from '../../utils/searchFillApply';
 import { Alert } from '../ui/Alert';
-import { DialogFrame } from '../ui/Dialog';
+import { DialogCloseButton, DialogFrame } from '../ui/Dialog';
 
 type SearchMode = 'contains' | 'equals';
 
@@ -192,6 +192,13 @@ export default function SearchFillModal({
     () => resolvedFillTargets.map((target) => target.id).join('|'),
     [resolvedFillTargets],
   );
+  const fillTargetDefaultsRef = useRef<{ defaultTargetId: string | null }>({ defaultTargetId: null });
+  fillTargetDefaultsRef.current = {
+    defaultTargetId:
+      activeFillTargetId && fillTargetLookup.has(activeFillTargetId)
+        ? activeFillTargetId
+        : resolvedFillTargets[0]?.id ?? null,
+  };
   const autoRunSignature = useMemo(() => {
     if (!resolvedSearchPreset?.autoRun) return null;
     const defaultKey = identifierKey || availableKeys[0] || '';
@@ -378,9 +385,7 @@ export default function SearchFillModal({
     setLocalError(null);
     setSearchMode(presetMode);
     setHasSearched(false);
-    const defaultTargetId = activeFillTargetId && fillTargetLookup.has(activeFillTargetId)
-      ? activeFillTargetId
-      : resolvedFillTargets[0]?.id;
+    const defaultTargetId = fillTargetDefaultsRef.current.defaultTargetId;
     const nextTargetIds = defaultTargetId ? [defaultTargetId] : [];
     setSelectedFillTargetIds((prev) => (areStringArraysEqual(prev, nextTargetIds) ? prev : nextTargetIds));
   }, [
@@ -391,10 +396,20 @@ export default function SearchFillModal({
     resolvedSearchPreset?.searchKey,
     resolvedSearchPreset?.searchMode,
     sessionId,
-    activeFillTargetId,
-    fillTargetIdsKey,
-    fillTargetLookup,
   ]);
+
+  useEffect(() => {
+    if (!open) return;
+    const defaultTargetId = fillTargetDefaultsRef.current.defaultTargetId;
+    setSelectedFillTargetIds((prev) => {
+      const validTargetIds = prev.filter((targetId) => fillTargetLookup.has(targetId));
+      if (validTargetIds.length > 0) {
+        return areStringArraysEqual(prev, validTargetIds) ? prev : validTargetIds;
+      }
+      const nextTargetIds = defaultTargetId ? [defaultTargetId] : [];
+      return areStringArraysEqual(prev, nextTargetIds) ? prev : nextTargetIds;
+    });
+  }, [fillTargetIdsKey, fillTargetLookup, open]);
 
   useEffect(() => {
     if (!open) {
@@ -484,14 +499,7 @@ export default function SearchFillModal({
               : 'Find a record locally and populate the current PDF.'}
           </p>
         </div>
-        <button
-          className="searchfill-modal__close"
-          onClick={onClose}
-          type="button"
-          aria-label="Close"
-        >
-          ×
-        </button>
+        <DialogCloseButton onClick={onClose} label="Close Search, Fill & Clear dialog" />
       </div>
       <div className="searchfill-modal__body">
         <div className="searchfill-meta">

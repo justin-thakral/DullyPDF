@@ -13,6 +13,10 @@ Recommended execution order:
 5. [Phase 4: Consumer Consent Rebuild](./phase-4-consumer-consent-rebuild.md)
 6. [Phase 5: Storage Retention Enforcement And Artifact Isolation](./phase-5-storage-retention-enforcement-and-artifact-isolation.md)
 
+Additional planning documents:
+
+- [Signing Monthly Quota Migration Plan](./signing-monthly-quota-migration-plan.md)
+
 Cross-reference:
 - Signing audit report: [`signing_security_audit_report.md`](../signing_security_audit_report.md)
 - Existing signing milestone tracker: [`signaturetask.md`](../signaturetask.md)

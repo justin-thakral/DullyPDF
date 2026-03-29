@@ -22,6 +22,7 @@ function buildRequest(overrides: Record<string, unknown> = {}) {
     sourceVersion: 'fill_link_response:resp-1:aaaaaaaaaaaa',
     documentCategory: 'client_intake_form',
     documentCategoryLabel: 'Client intake form',
+    companyBindingEnabled: false,
     manualFallbackEnabled: true,
     signerName: 'Ada Lovelace',
     signerEmail: 'ada@example.com',
@@ -61,6 +62,10 @@ function buildRequest(overrides: Record<string, unknown> = {}) {
         available: true,
         downloadPath: '/api/signing/requests/req-1/artifacts/audit_receipt',
       },
+      disputePackage: {
+        available: true,
+        downloadPath: '/api/signing/requests/req-1/artifacts/dispute_package',
+      },
     },
     ...overrides,
   };
@@ -88,7 +93,12 @@ describe('SigningResponsesPanel', () => {
       <SigningResponsesPanel
         sourceTemplateId="tpl-1"
         requests={[
-          buildRequest(),
+          buildRequest({
+            companyBindingEnabled: true,
+            representativeTitle: 'General Counsel',
+            representativeCompanyName: 'Acme, Inc.',
+            authorityAttestedAt: '2026-03-24T12:05:00Z',
+          }),
           buildRequest({
             id: 'req-2',
             signerName: 'Grace Hopper',
@@ -105,6 +115,10 @@ describe('SigningResponsesPanel', () => {
                 downloadPath: null,
               },
               auditReceipt: {
+                available: false,
+                downloadPath: null,
+              },
+              disputePackage: {
                 available: false,
                 downloadPath: null,
               },
@@ -127,6 +141,10 @@ describe('SigningResponsesPanel', () => {
     expect(screen.getAllByText('Email invite via Gmail API').length).toBeGreaterThan(0);
     expect(screen.getAllByText('owner@example.com').length).toBeGreaterThan(0);
     expect(screen.queryByText('Ignored Recipient')).toBeNull();
+    expect(screen.getByText('Company binding')).toBeTruthy();
+    expect(screen.getByText('Attested')).toBeTruthy();
+    expect(screen.getByText('General Counsel')).toBeTruthy();
+    expect(screen.getByText('Acme, Inc.')).toBeTruthy();
     await user.click(screen.getAllByRole('button', { name: 'Download respondent form' })[0]);
     expect(downloadSpy).toHaveBeenCalledWith(
       '/api/signing/requests/req-1/artifacts/source_pdf',
@@ -136,6 +154,11 @@ describe('SigningResponsesPanel', () => {
     expect(downloadSpy).toHaveBeenCalledWith(
       '/api/signing/requests/req-1/artifacts/signed_pdf',
       expect.objectContaining({ filename: 'signed-form.pdf' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Download full package' }));
+    expect(downloadSpy).toHaveBeenCalledWith(
+      '/api/signing/requests/req-1/artifacts/dispute_package',
+      expect.objectContaining({ filename: 'Bravo Packet-dispute-package.zip' }),
     );
 
     await user.click(screen.getAllByRole('button', { name: 'Copy signer link' })[0]);
@@ -173,6 +196,7 @@ describe('SigningResponsesPanel', () => {
               sourcePdf: { available: false, downloadPath: null },
               signedPdf: { available: false, downloadPath: null },
               auditReceipt: { available: false, downloadPath: null },
+              disputePackage: { available: false, downloadPath: null },
             },
           }),
           buildRequest({
@@ -186,6 +210,7 @@ describe('SigningResponsesPanel', () => {
               sourcePdf: { available: false, downloadPath: null },
               signedPdf: { available: false, downloadPath: null },
               auditReceipt: { available: false, downloadPath: null },
+              disputePackage: { available: false, downloadPath: null },
             },
           }),
           buildRequest({
@@ -197,6 +222,7 @@ describe('SigningResponsesPanel', () => {
               sourcePdf: { available: true, downloadPath: '/api/signing/requests/req-expired/artifacts/source_pdf' },
               signedPdf: { available: false, downloadPath: null },
               auditReceipt: { available: false, downloadPath: null },
+              disputePackage: { available: false, downloadPath: null },
             },
           }),
         ]}
@@ -226,6 +252,65 @@ describe('SigningResponsesPanel', () => {
 
     expect(window.confirm).toHaveBeenCalled();
     expect(onRevoke).toHaveBeenCalledWith('req-1');
+  });
+
+  it('shows a visible error when signer-link copy is unavailable', async () => {
+    const user = userEvent.setup();
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    });
+
+    render(
+      <SigningResponsesPanel
+        sourceTemplateId="tpl-1"
+        requests={[buildRequest({ status: 'sent', completedAt: null })]}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Copy signer link' }));
+    expect(screen.getByText('Clipboard copy is unavailable in this browser. Open the signer link and copy it manually.')).toBeTruthy();
+  });
+
+  it('clears copy and error feedback when the response scope changes', async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(
+      <SigningResponsesPanel
+        sourceTemplateId="tpl-1"
+        requests={[buildRequest({ status: 'sent', completedAt: null })]}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Copy signer link' }));
+    expect(screen.getByRole('button', { name: 'Copied signer link' })).toBeTruthy();
+
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: undefined,
+    });
+    await user.click(screen.getByRole('button', { name: 'Copied signer link' }));
+    expect(screen.getByText('Clipboard copy is unavailable in this browser. Open the signer link and copy it manually.')).toBeTruthy();
+
+    rerender(
+      <SigningResponsesPanel
+        sourceTemplateId="tpl-2"
+        requests={[
+          buildRequest({
+            id: 'req-2',
+            sourceTemplateId: 'tpl-2',
+            signerName: 'Grace Hopper',
+            signerEmail: 'grace@example.com',
+            status: 'sent',
+            completedAt: null,
+            publicPath: '/sign/token-2',
+            publicToken: 'token-2',
+          }),
+        ]}
+      />,
+    );
+
+    expect(screen.queryByRole('button', { name: 'Copied signer link' })).toBeNull();
+    expect(screen.queryByText('Clipboard copy is unavailable in this browser. Open the signer link and copy it manually.')).toBeNull();
   });
 
   it('lets the owner reissue an expired or revoked signer link', async () => {

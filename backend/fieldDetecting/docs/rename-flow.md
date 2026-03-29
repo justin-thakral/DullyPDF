@@ -11,6 +11,9 @@ and the raw page image as context.
 Compliance note: OpenAI rename receives PDF page images plus overlay tags. When the combined
 rename+map flow is used, schema headers are sent in the same request. No row data or field
 values are ever sent. The UI warns users before sending PDF pages or schema headers to OpenAI.
+Rename and map requests now also carry a SHA-256 fingerprint of the active source PDF. The
+backend stores the session's source-PDF hash at session creation and rejects later OpenAI calls
+with `409` when the active document fingerprint no longer matches that session.
 
 ## When to use it
 
@@ -50,6 +53,7 @@ API response note:
 - `POST /api/schema-mappings/ai` can return `status=queued` + `jobId` in task mode.
 - `GET /api/schema-mappings/ai/{jobId}` returns queued/running/failed/complete status for async remap jobs.
 - Mapping responses include `mappings` plus deterministic rule payloads (`checkboxRules`, `radioGroupSuggestions`, `textTransformRules`, `fillRules`) used by Search & Fill.
+- Frontend behavior: rename-only derives editor `radioGroupSuggestions` from returned `checkboxRules` and from high-signal renamed checkbox layouts (for example compact yes/no or single-row enum groups), while `Rename + Map` runs rename first and then executes the schema-mapping call so explicit mapping suggestions are available.
 - The original name is preserved in `originalName` so the UI can reconcile edits.
 - Template overlay `rect` values may be sent as `{x,y,width,height}` or `[x1,y1,x2,y2]` (originTop points). The backend normalizes to a consistent numeric shape before use: schema mapping allowlists use `{x,y,width,height}`, while rename geometry uses `[x1,y1,x2,y2]`.
 
@@ -145,11 +149,23 @@ The prompt provides three inputs per page:
 2) The overlay image with the field IDs.
 3) Optional bottom slice of the previous page if fields appear near the top edge.
 
+When payload budget allows, rename also sends a second deterministic analysis overlay:
+
+- `overlay_clean`: field boxes + IDs only.
+- `overlay_analysis`: field boxes + IDs + nearby OCR labels + detector primitives + checkbox label arrows.
+
+Tiny checkbox widgets may use an external badge plus leader line when drawing the ID inside the
+checkbox would make the tag unreadable. Badge placement is deterministic and avoids overlapping
+other field/tag regions when possible.
+
 Each field in the prompt includes metadata derived from candidate context:
 
 - `label_dist`: minimum distance to the nearest label bounding box.
 - `overlaps_label`: whether the field intersects a label bbox.
 - `w_ratio` / `h_ratio`: width and height relative to page size.
+- `nearest_line_below`: whether a detector line candidate sits directly below the field.
+- `inside_box_candidate`: whether the field substantially overlaps a detector box candidate.
+- `checkbox_cluster_size`: count of nearby checkbox candidates aligned in the same row/column cluster.
 - `option_hint` (checkboxes only): a nearby label text hint.
 
 These values steer the model away from paragraph text, long rules, or decorative boxes.
@@ -189,6 +205,7 @@ Rename uses separate image profiles for model input:
 
 - Clean page image profile (`SANDBOX_RENAME_CLEAN_*`) for lower-cost visual context.
 - Overlay image profile (`SANDBOX_RENAME_OVERLAY_*`) for tag fidelity.
+- Analysis overlay image profile (`SANDBOX_RENAME_ANALYSIS_OVERLAY_*`) for label and detector-primitive context.
 
 Default intent:
 - Clean image is sent with lower detail (`low`) unless overridden.
@@ -201,8 +218,9 @@ Per-page preflight budgets:
 Fallback ladder when above budget:
 1. Tighten clean image settings (`SANDBOX_RENAME_BUDGET_CLEAN_*`) and force clean/prev detail to low.
 2. Drop previous-page crop context.
-3. Reduce overlay max dimension down toward `SANDBOX_RENAME_OVERLAY_MIN_DIM`.
-4. If still above budget, continue with best-effort payload and log a warning.
+3. Reduce the analysis overlay footprint and drop it entirely if it still does not fit.
+4. Reduce overlay max dimension down toward `SANDBOX_RENAME_OVERLAY_MIN_DIM`.
+5. If still above budget, continue with best-effort payload and log a warning.
 
 ## Previous-page context
 
@@ -288,6 +306,11 @@ Common rename settings (all optional):
 - `SANDBOX_RENAME_OVERLAY_FORMAT`: `png`, `jpg`, or `webp`
 - `SANDBOX_RENAME_OVERLAY_DETAIL`: OpenAI image detail for overlay (`high`, `low`, `auto`)
 - `SANDBOX_RENAME_OVERLAY_MIN_DIM`: minimum overlay max-dim during budget fallback
+- `SANDBOX_RENAME_ANALYSIS_OVERLAY_QUALITY`: analysis-overlay image quality
+- `SANDBOX_RENAME_ANALYSIS_OVERLAY_MAX_DIM`: analysis-overlay max dimension
+- `SANDBOX_RENAME_ANALYSIS_OVERLAY_FORMAT`: `png`, `jpg`, or `webp`
+- `SANDBOX_RENAME_ANALYSIS_OVERLAY_DETAIL`: OpenAI image detail for the analysis overlay
+- `SANDBOX_RENAME_ANALYSIS_OVERLAY_MIN_DIM`: minimum analysis-overlay max-dim during budget fallback
 - `SANDBOX_RENAME_CLEAN_QUALITY`: clean image quality
 - `SANDBOX_RENAME_CLEAN_MAX_DIM`: clean image max dimension
 - `SANDBOX_RENAME_CLEAN_FORMAT`: `png`, `jpg`, or `webp`

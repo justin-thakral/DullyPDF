@@ -69,6 +69,110 @@ def normalize_data_key(value: str) -> str:
     return normalized
 
 
+def parse_confidence(value: Any) -> float | None:
+    """Normalize a confidence score into the 0..1 range."""
+    if value is None:
+        return None
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    if parsed >= 2:
+        parsed = parsed / 100.0
+    return min(max(parsed, 0.0), 1.0)
+
+
+def derive_mapping_confidence(original_name: str, next_name: str) -> float:
+    """Estimate a fallback mapping confidence from name similarity."""
+    left = re.sub(r"[^a-z0-9]+", " ", str(original_name or "").lower()).strip()
+    right = re.sub(r"[^a-z0-9]+", " ", str(next_name or "").lower()).strip()
+    if not left or not right:
+        return 0.7
+    if left == right:
+        return 0.95
+    if left in right or right in left:
+        return 0.85
+    return 0.7
+
+
+def ensure_unique_field_name(base_name: str, existing_names: set[str]) -> str:
+    """Reserve a unique field name by appending a numeric suffix when needed."""
+    normalized = str(base_name or "").strip() or "field"
+    if normalized not in existing_names:
+        existing_names.add(normalized)
+        return normalized
+    index = 1
+    while f"{normalized}_{index}" in existing_names:
+        index += 1
+    unique_name = f"{normalized}_{index}"
+    existing_names.add(unique_name)
+    return unique_name
+
+
+def apply_mapping_results_to_fields(
+    fields: List[Dict[str, Any]],
+    mapping_results: Dict[str, Any] | None,
+) -> List[Dict[str, Any]]:
+    """Apply mapping name updates to session fields in O(n) time."""
+    if not fields:
+        return fields
+    mappings = mapping_results.get("mappings") if isinstance(mapping_results, dict) else None
+    if not isinstance(mappings, list) or not mappings:
+        return fields
+
+    mapping_queue: Dict[str, List[Dict[str, Any]]] = {}
+    mapping_indices: Dict[str, int] = {}
+    for raw_mapping in mappings:
+        if not isinstance(raw_mapping, dict):
+            continue
+        desired_name = str(raw_mapping.get("pdfField") or "").strip()
+        if not desired_name:
+            continue
+        current_name = str(raw_mapping.get("originalPdfField") or raw_mapping.get("pdfField") or "").strip()
+        if not current_name:
+            continue
+        mapping_queue.setdefault(current_name, []).append(raw_mapping)
+
+    if not mapping_queue:
+        return fields
+
+    existing_names = {
+        str(field.get("name") or "").strip()
+        for field in fields
+        if isinstance(field, dict) and str(field.get("name") or "").strip()
+    }
+    updated_fields: List[Dict[str, Any]] = []
+    for field in fields:
+        if not isinstance(field, dict):
+            updated_fields.append(field)
+            continue
+        current_name = str(field.get("name") or "").strip()
+        queued_mappings = mapping_queue.get(current_name)
+        if not queued_mappings:
+            updated_fields.append(field)
+            continue
+
+        next_index = mapping_indices.get(current_name, 0)
+        if next_index >= len(queued_mappings):
+            updated_fields.append(field)
+            continue
+        mapping_indices[current_name] = next_index + 1
+        mapping = queued_mappings[next_index]
+        desired_name = str(mapping.get("pdfField") or current_name).strip() or current_name
+        mapping_confidence = parse_confidence(mapping.get("confidence"))
+        if mapping_confidence is None:
+            mapping_confidence = derive_mapping_confidence(current_name, desired_name)
+
+        existing_names.discard(current_name)
+        unique_name = ensure_unique_field_name(desired_name, existing_names)
+        updated_field = dict(field)
+        updated_field["name"] = unique_name
+        updated_field["mappingConfidence"] = mapping_confidence
+        updated_fields.append(updated_field)
+
+    return updated_fields
+
+
 def _coerce_optional_bool(value: Any) -> bool | None:
     if isinstance(value, bool):
         return value

@@ -1,7 +1,6 @@
 /**
  * Application-level constants extracted from App.tsx.
  */
-import type { ProfileLimits } from '../services/api';
 import type { DemoStep } from '../components/demo/DemoTour';
 import { CommonFormsAttribution } from '../components/ui/CommonFormsAttribution';
 
@@ -105,15 +104,3 @@ export const DETECTION_BACKGROUND_POLL_TIMEOUT_MS = (() => {
 export const DETECTION_BACKGROUND_RETRY_BASE_MS = 5000;
 export const DETECTION_BACKGROUND_RETRY_MAX_MS = 30000;
 export const DETECTION_BACKGROUND_MAX_RETRIES = 5;
-
-export const DEFAULT_PROFILE_LIMITS: ProfileLimits = {
-  detectMaxPages: 5,
-  fillableMaxPages: 50,
-  savedFormsMax: 3,
-  fillLinksActiveMax: 1,
-  fillLinkResponsesMax: 5,
-  templateApiActiveMax: 1,
-  templateApiRequestsMonthlyMax: 250,
-  templateApiMaxPages: 25,
-  signingRequestsPerDocumentMax: 10,
-};

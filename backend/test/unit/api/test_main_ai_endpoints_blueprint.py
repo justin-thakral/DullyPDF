@@ -1,3 +1,5 @@
+import hashlib
+
 import pytest
 
 from backend.firebaseDB.schema_database import SchemaRecord
@@ -26,11 +28,20 @@ def _template_field_payload() -> dict:
 
 
 def _session_entry() -> dict:
+    pdf_bytes = b"%PDF-1.4\nfake\n"
     return {
-        "pdf_bytes": b"%PDF-1.4\nfake\n",
+        "pdf_bytes": pdf_bytes,
         "fields": [{"name": "fallback", "type": "text", "page": 1, "rect": [1, 2, 3, 4]}],
         "source_pdf": "sample.pdf",
+        "source_pdf_sha256": hashlib.sha256(pdf_bytes).hexdigest(),
         "page_count": 1,
+        "result": {
+            "detectorCandidatesByPage": {
+                "1": {
+                    "checkboxCandidates": [{"id": "cb1", "bbox": [1, 2, 3, 4]}],
+                }
+            }
+        },
         "user_id": "user_base",
     }
 
@@ -204,6 +215,36 @@ def test_rename_endpoint_credit_exhaustion_returns_402(client, app_main, base_us
     run_mock.assert_not_called()
 
 
+def test_rename_endpoint_rejects_source_pdf_sha256_mismatch_before_credit_charge(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_get_session_entry", return_value=_session_entry())
+    rate_limit_mock = mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    consume_mock = mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
+    run_mock = mocker.patch.object(app_main, "run_openai_rename_on_pdf")
+
+    response = client.post(
+        "/api/renames/ai",
+        json={
+            "sessionId": "sess-1",
+            "sourcePdfSha256": "b" * 64,
+            "templateFields": [_template_field_payload()],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 409
+    assert "active PDF no longer matches this session" in response.text
+    rate_limit_mock.assert_not_called()
+    consume_mock.assert_not_called()
+    run_mock.assert_not_called()
+
+
 def test_rename_endpoint_preserves_openai_error_when_refund_fails(
     client,
     app_main,
@@ -344,6 +385,11 @@ def test_mapping_endpoint_validation_rate_limit_and_template_ownership(
         app_main,
         "build_allowlist_payload",
         return_value={"schemaFields": [{"name": "first_name"}], "templateTags": [{"tag": "A1"}]},
+    )
+    mocker.patch.object(
+        app_main,
+        "_get_session_entry",
+        return_value={"page_count": 1, "user_id": "user_base"},
     )
     response = client.post(
         "/api/schema-mappings/ai",
@@ -505,10 +551,15 @@ def test_mapping_endpoint_persists_checkbox_and_text_rules_and_passes_response_e
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
     mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
     mocker.patch.object(app_main, "record_openai_request", return_value=None)
-    mocker.patch.object(app_main, "_get_session_entry", return_value={"session": "entry", "page_count": 1})
+    session_entry = {
+        "session": "entry",
+        "page_count": 1,
+        "fields": [{"name": "A1", "type": "text", "page": 1, "rect": [0, 0, 10, 10]}],
+    }
+    mocker.patch.object(app_main, "_get_session_entry", return_value=session_entry)
     mocker.patch.object(app_main, "call_openai_schema_mapping_chunked", return_value={"raw": True})
     mapping_payload = {
-        "mappings": [],
+        "mappings": [{"originalPdfField": "A1", "pdfField": "first_name", "confidence": 0.91}],
         "checkboxRules": [{"databaseField": "consent", "groupKey": "consent_group"}],
         "textTransformRules": [{"targetField": "A1", "operation": "copy", "sources": ["first_name"]}],
     }
@@ -524,6 +575,9 @@ def test_mapping_endpoint_persists_checkbox_and_text_rules_and_passes_response_e
     body = response.json()
     assert body["mappingResults"] == mapping_payload
     assert "requestId" in body
+    assert session_entry["fields"][0]["name"] == "first_name"
+    assert session_entry["fields"][0]["mappingConfidence"] == 0.91
+    assert update_mock.call_args.kwargs["persist_fields"] is True
     assert update_mock.call_args.kwargs["persist_checkbox_rules"] is True
     assert update_mock.call_args.kwargs["persist_text_transform_rules"] is True
 
@@ -546,6 +600,7 @@ def test_mapping_endpoint_persists_empty_checkbox_and_text_rules_to_clear_stale_
     mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
     mocker.patch.object(app_main, "record_openai_request", return_value=None)
     session_entry = {
+        "fields": [{"name": "legacy_field", "type": "text", "page": 1, "rect": [0, 0, 10, 10]}],
         "checkboxRules": [{"databaseField": "legacy", "groupKey": "legacy_group"}],
         "checkboxHints": [{"databaseField": "legacy", "groupKey": "legacy_group"}],
         "textTransformRules": [{"targetField": "legacy", "operation": "copy", "sources": ["legacy"]}],
@@ -566,9 +621,11 @@ def test_mapping_endpoint_persists_empty_checkbox_and_text_rules_to_clear_stale_
         headers=auth_headers,
     )
     assert response.status_code == 200
+    assert session_entry["fields"][0]["name"] == "legacy_field"
     assert session_entry["checkboxRules"] == []
     assert "checkboxHints" not in session_entry
     assert session_entry["textTransformRules"] == []
+    assert update_mock.call_args.kwargs["persist_fields"] is True
     assert update_mock.call_args.kwargs["persist_checkbox_rules"] is True
     assert update_mock.call_args.kwargs["persist_text_transform_rules"] is True
 
@@ -612,6 +669,7 @@ def test_rename_endpoint_falls_back_to_session_fields_when_template_fields_none(
     # The run_openai_rename_on_pdf should have been called with session fields.
     called_fields = run_mock.call_args.kwargs["fields"]
     assert called_fields == expected_fields
+    assert run_mock.call_args.kwargs["detector_candidates_by_page"] == entry["result"]["detectorCandidatesByPage"]
 
 
 # ---------------------------------------------------------------------------
@@ -1350,6 +1408,51 @@ def test_mapping_rejects_when_page_count_missing_for_credit_pricing(
     assert "Unable to determine document page count for credit pricing" in response.text
     consume_mock.assert_not_called()
     request_log_mock.assert_not_called()
+
+
+def test_mapping_rejects_source_pdf_sha256_mismatch_before_credit_charge(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "get_schema", return_value=_schema_record())
+    mocker.patch.object(
+        app_main,
+        "build_allowlist_payload",
+        return_value={"schemaFields": [{"name": "first_name"}], "templateTags": [{"tag": "A1"}]},
+    )
+    mocker.patch.object(
+        app_main,
+        "_get_session_entry",
+        return_value={
+            "page_count": 2,
+            "source_pdf_sha256": "a" * 64,
+            "user_id": "user_base",
+        },
+    )
+    rate_limit_mock = mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    consume_mock = mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
+    openai_mock = mocker.patch.object(app_main, "call_openai_schema_mapping_chunked")
+
+    response = client.post(
+        "/api/schema-mappings/ai",
+        json={
+            "schemaId": "schema_1",
+            "sessionId": "sess-1",
+            "sourcePdfSha256": "b" * 64,
+            "templateFields": [_template_field_payload()],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 409
+    assert "active PDF no longer matches this session" in response.text
+    rate_limit_mock.assert_not_called()
+    consume_mock.assert_not_called()
+    openai_mock.assert_not_called()
 
 
 def test_rename_uses_pdf_page_count_fallback_when_session_page_count_missing(

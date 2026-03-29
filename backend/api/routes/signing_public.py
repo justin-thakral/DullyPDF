@@ -90,6 +90,8 @@ from backend.services.signing_service import (
     SIGNING_ARTIFACT_AUDIT_RECEIPT,
     SIGNING_ARTIFACT_SIGNED_PDF,
     SIGNATURE_MODE_CONSUMER,
+    SIGNING_EVENT_ARTIFACT_DOWNLOADED,
+    SIGNING_EVENT_ARTIFACT_ISSUED,
     SIGNING_EVENT_COMPLETED,
     SIGNING_EVENT_CONSUMER_ACCESS_FAILED,
     SIGNING_EVENT_CONSENT_ACCEPTED,
@@ -124,11 +126,13 @@ from backend.services.signing_service import (
     resolve_document_category_label,
     resolve_signing_action_rate_limits,
     resolve_signing_artifact_token_ttl_seconds,
+    resolve_company_authority_completion_payload,
     resolve_signing_consumer_access_max_attempts,
     resolve_signing_consumer_access_rate_limits,
     resolve_signing_document_rate_limits,
     resolve_signing_verification_code_ttl_seconds,
     resolve_signing_verification_max_attempts,
+    resolve_signing_verification_resend_cooldown_seconds,
     resolve_signing_public_status_message,
     resolve_signing_session_ttl_seconds,
     resolve_signing_verification_send_rate_limits,
@@ -183,6 +187,15 @@ def _check_public_rate_limits(
     )
 
 
+def _check_request_scoped_rate_limit(*, scope: str, request_id: str, limit: int, window_seconds: int) -> bool:
+    return check_rate_limit(
+        f"{scope}:request:{str(request_id or '').strip()}",
+        limit=limit,
+        window_seconds=window_seconds,
+        fail_closed=True,
+    )
+
+
 def _serialize_public_request(record, *, token: str) -> Dict[str, Any]:
     disclosure_payload = serialize_public_signing_disclosure(record, public_token=token)
     return {
@@ -202,6 +215,10 @@ def _serialize_public_request(record, *, token: str) -> Dict[str, Any]:
         "documentCategory": record.document_category,
         "documentCategoryLabel": resolve_document_category_label(record.document_category),
         "manualFallbackEnabled": record.manual_fallback_enabled,
+        "companyBindingEnabled": bool(getattr(record, "company_binding_enabled", False)),
+        "authorityAttestationVersion": getattr(record, "authority_attestation_version", None),
+        "authorityAttestationText": getattr(record, "authority_attestation_text", None),
+        "authorityAttestationSha256": getattr(record, "authority_attestation_sha256", None),
         "senderDisplayName": getattr(record, "sender_display_name", None),
         "senderContactEmail": getattr(record, "sender_contact_email", None) or getattr(record, "sender_email", None),
         "signerName": record.signer_name,
@@ -583,6 +600,16 @@ async def send_public_signing_verification_code(
             status_code=429,
             detail="Wait before requesting another verification code.",
         )
+    if not _check_request_scoped_rate_limit(
+        scope="signing_verification_send",
+        request_id=record.id,
+        limit=1,
+        window_seconds=resolve_signing_verification_resend_cooldown_seconds(),
+    ):
+        raise HTTPException(
+            status_code=429,
+            detail="Wait before requesting another verification code.",
+        )
 
     verification_code = generate_signing_email_otp_code()
     expires_at = (current_time + timedelta(seconds=resolve_signing_verification_code_ttl_seconds())).isoformat()
@@ -734,7 +761,11 @@ async def verify_public_signing_verification_code(
 
 
 @router.get("/api/signing/public/{token}/consumer-access-pdf")
-async def get_public_signing_consumer_access_pdf(token: str, request: Request):
+async def get_public_signing_consumer_access_pdf(
+    token: str,
+    request: Request,
+    x_signing_session: Optional[str] = Header(default=None),
+):
     client_ip = resolve_client_ip(request)
     window_seconds, per_ip, global_limit = resolve_signing_document_rate_limits()
     allowed = _check_public_rate_limits(
@@ -748,7 +779,13 @@ async def get_public_signing_consumer_access_pdf(token: str, request: Request):
         raise HTTPException(status_code=429, detail="Too many document loads. Please wait and try again.")
     ensure_signing_storage_configuration(validate_remote=False)
 
-    record = _get_public_record_or_404(token)
+    record, session, _client_ip, _user_agent = _require_public_signing_session(
+        token=token,
+        x_signing_session=x_signing_session,
+        request=request,
+        allow_completed=True,
+    )
+    _require_public_signing_session_verified(record, session)
     if record.signature_mode != SIGNATURE_MODE_CONSUMER:
         raise HTTPException(status_code=400, detail="Consumer access proof is only available for consumer signing requests.")
     if record.status not in {SIGNING_STATUS_SENT, SIGNING_STATUS_COMPLETED}:
@@ -761,7 +798,7 @@ async def get_public_signing_consumer_access_pdf(token: str, request: Request):
 
     disclosure_payload = resolve_consumer_disclosure_artifact(record, public_token=token)["payload"]
     pdf_bytes = render_consumer_access_pdf(
-        request_id=record.id,
+        access_code=build_signing_consumer_access_code(record.id, session_id=session.id),
         source_document_name=record.source_document_name or "DullyPDF document",
         disclosure_payload=disclosure_payload,
     )
@@ -861,7 +898,7 @@ async def issue_public_signing_artifact_download(
     if not allowed:
         raise HTTPException(status_code=429, detail="Too many artifact download requests. Please wait and try again.")
     ensure_signing_storage_configuration(validate_remote=False)
-    record, session, _client_ip, _user_agent = _require_public_signing_session(
+    record, session, client_ip, user_agent = _require_public_signing_session(
         token=token,
         x_signing_session=x_signing_session,
         request=request,
@@ -893,6 +930,19 @@ async def issue_public_signing_artifact_download(
         artifact_key,
         int(expires_at.timestamp()),
     )
+    _record_public_signing_event(
+        record,
+        event_type=SIGNING_EVENT_ARTIFACT_ISSUED,
+        session_id=session.id,
+        link_token_id=session.link_token_id,
+        client_ip=client_ip,
+        user_agent=user_agent,
+        details={
+            "artifactKey": artifact_key,
+            "mediaType": artifact.media_type,
+            "expiresAt": expires_at.isoformat(),
+        },
+    )
     return {
         "artifactKey": artifact_key,
         "downloadPath": f"/api/signing/public/artifacts/{artifact_token}",
@@ -923,7 +973,7 @@ async def get_public_signing_artifact(
         raise HTTPException(status_code=401, detail="Artifact download expired. Reload the page and try again.")
     request_id, session_id, artifact_key, _expires_at_epoch = parsed
     ensure_signing_storage_configuration(validate_remote=False)
-    record, session, _client_ip, _user_agent = _require_public_signing_artifact_session(
+    record, session, client_ip, user_agent = _require_public_signing_artifact_session(
         request_id=request_id,
         expected_session_id=session_id,
         x_signing_session=x_signing_session,
@@ -958,6 +1008,19 @@ async def get_public_signing_artifact(
         if is_public_signing_storage_not_found_error(exc):
             raise HTTPException(status_code=404, detail="Signing artifact is not available.") from exc
         raise HTTPException(status_code=500, detail="Failed to load signing artifact.") from exc
+    _record_public_signing_event(
+        record,
+        event_type=SIGNING_EVENT_ARTIFACT_DOWNLOADED,
+        session_id=session.id,
+        link_token_id=session.link_token_id,
+        client_ip=client_ip,
+        user_agent=user_agent,
+        details={
+            "artifactKey": artifact_key,
+            "mediaType": artifact.media_type,
+            "storagePath": readable_bucket_path,
+        },
+    )
     headers = build_public_signing_stream_headers(
         request.headers.get("origin"),
         content_disposition=f'attachment; filename="{artifact.filename}"',
@@ -1055,7 +1118,7 @@ async def consent_public_signing_request(
     max_attempts = resolve_signing_consumer_access_max_attempts()
     if getattr(session, "consumer_access_attempt_count", 0) >= max_attempts:
         raise HTTPException(status_code=429, detail="Too many failed consumer access code attempts. Reload the page to try again.")
-    expected_access_code = build_signing_consumer_access_code(record.id)
+    expected_access_code = build_signing_consumer_access_code(record.id, session_id=session.id)
     if payload.accessCode != expected_access_code:
         updated_session = increment_signing_session_consumer_access_attempt(session.id, record.id) or session
         attempts_used = getattr(updated_session, "consumer_access_attempt_count", getattr(session, "consumer_access_attempt_count", 0) + 1)
@@ -1286,6 +1349,12 @@ async def complete_public_signing_request(
     _require_public_signing_session_verified(record, session)
     try:
         validate_public_signing_completable_record(record)
+        authority_completion_payload = resolve_company_authority_completion_payload(
+            record,
+            authority_confirmed=bool(payload.authorityConfirmed),
+            representative_title=payload.representativeTitle,
+            representative_company_name=payload.representativeCompanyName,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     if not record.source_pdf_bucket_path or not is_gcs_path(record.source_pdf_bucket_path):
@@ -1302,6 +1371,11 @@ async def complete_public_signing_request(
         raise HTTPException(status_code=500, detail="Failed to load the immutable source PDF.") from exc
 
     completed_at = now_iso()
+    completion_updates = {
+        "representative_title": authority_completion_payload["representative_title"],
+        "representative_company_name": authority_completion_payload["representative_company_name"],
+        "authority_attested_at": completed_at if authority_completion_payload["representative_title"] else None,
+    }
     existing_events = list_signing_events_for_request(record.id)
     prepared_completion = await prepare_public_signing_completion(
         record=record,
@@ -1312,6 +1386,7 @@ async def complete_public_signing_request(
         source_pdf_bytes=source_pdf_bytes,
         existing_events=existing_events,
         build_bucket_uri=build_signing_bucket_uri,
+        completion_updates=completion_updates,
     )
 
     uploaded_bucket_paths: list[str] = []
@@ -1412,6 +1487,9 @@ async def complete_public_signing_request(
             "sourceVersion": updated_record.source_version,
             "adoptedName": updated_record.signature_adopted_name,
             "adoptedMode": getattr(updated_record, "signature_adopted_mode", None),
+            "representativeTitle": getattr(updated_record, "representative_title", None),
+            "representativeCompanyName": getattr(updated_record, "representative_company_name", None),
+            "authorityAttestedAt": getattr(updated_record, "authority_attested_at", None),
             "signatureImageSha256": getattr(updated_record, "signature_adopted_image_sha256", None),
             "signedPdfSha256": updated_record.signed_pdf_sha256,
             "pdfDigitalCertificateFingerprintSha256": getattr(

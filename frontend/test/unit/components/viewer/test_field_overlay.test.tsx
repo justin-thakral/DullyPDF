@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import type { PdfField } from '../../../../src/types';
+import type { PdfField, RadioGroupSuggestion } from '../../../../src/types';
 import { FieldOverlay } from '../../../../src/components/viewer/FieldOverlay';
 
 function makeField(overrides: Partial<PdfField> & Pick<PdfField, 'id' | 'name' | 'type'>): PdfField {
@@ -17,11 +17,11 @@ function makeField(overrides: Partial<PdfField> & Pick<PdfField, 'id' | 'name' |
 }
 
 function pointerMove(clientX: number, clientY: number, pointerId = 1, shiftKey = false) {
-  window.dispatchEvent(new PointerEvent('pointermove', { clientX, clientY, pointerId, shiftKey }));
+  fireEvent.pointerMove(window, { clientX, clientY, pointerId, shiftKey });
 }
 
 function pointerUp(pointerId = 1) {
-  window.dispatchEvent(new PointerEvent('pointerup', { pointerId }));
+  fireEvent.pointerUp(window, { pointerId });
 }
 
 describe('FieldOverlay', () => {
@@ -179,6 +179,96 @@ describe('FieldOverlay', () => {
     expect(onCommitFieldChange).not.toHaveBeenCalled();
   });
 
+  it('creates a default-sized field on click without rendering a draft preview', () => {
+    const onCreateFieldWithRect = vi.fn();
+    const { container } = render(
+      <FieldOverlay
+        fields={[]}
+        pageSize={{ width: 300, height: 200 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled
+        activeCreateTool="text"
+        showFieldNames={false}
+        selectedFieldId={null}
+        pendingQuickRadioFieldIds={[]}
+        radioSuggestionByFieldId={new Map()}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={onCreateFieldWithRect}
+        onQuickRadioSelect={vi.fn()}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const surface = container.querySelector('.field-create-surface') as HTMLDivElement;
+    fireEvent.pointerDown(surface, { clientX: 150, clientY: 60, pointerId: 1 });
+
+    expect(container.querySelector('.field-create-draft')).toBeNull();
+
+    pointerMove(151, 61, 1);
+    expect(container.querySelector('.field-create-draft')).toBeNull();
+
+    pointerUp(1);
+
+    expect(onCreateFieldWithRect).toHaveBeenCalledWith('text', {
+      x: 60,
+      y: 49,
+      width: 180,
+      height: 22,
+    });
+  });
+
+  it('waits to show the create preview until drag movement clears the click threshold', () => {
+    const onCreateFieldWithRect = vi.fn();
+    const { container } = render(
+      <FieldOverlay
+        fields={[]}
+        pageSize={{ width: 300, height: 200 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled
+        activeCreateTool="text"
+        showFieldNames={false}
+        selectedFieldId={null}
+        pendingQuickRadioFieldIds={[]}
+        radioSuggestionByFieldId={new Map()}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={onCreateFieldWithRect}
+        onQuickRadioSelect={vi.fn()}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const surface = container.querySelector('.field-create-surface') as HTMLDivElement;
+    fireEvent.pointerDown(surface, { clientX: 100, clientY: 40, pointerId: 1 });
+
+    pointerMove(101, 41, 1);
+    expect(container.querySelector('.field-create-draft')).toBeNull();
+
+    pointerMove(170, 95, 1);
+    const draft = container.querySelector('.field-create-draft') as HTMLDivElement;
+    expect(draft).toBeTruthy();
+    expect(draft.style.left).toBe('100px');
+    expect(draft.style.top).toBe('40px');
+    expect(draft.style.width).toBe('70px');
+    expect(draft.style.height).toBe('55px');
+
+    pointerUp(1);
+
+    expect(onCreateFieldWithRect).toHaveBeenCalledWith('text', {
+      x: 100,
+      y: 40,
+      width: 70,
+      height: 55,
+    });
+  });
+
   it('updates geometry for each resize handle and enforces minimum size', () => {
     const testCases: Array<{
       handleClass: string;
@@ -251,5 +341,59 @@ describe('FieldOverlay', () => {
       expect(onCommitFieldChange).toHaveBeenCalledTimes(1);
       unmount();
     }
+  });
+
+  it('marks low-confidence radio suggestions with a review class', () => {
+    const suggestedField = makeField({
+      id: 'checkbox-field',
+      name: 'i_marital_status_single',
+      type: 'checkbox',
+    });
+    const suggestion: RadioGroupSuggestion = {
+      id: 'marital-status',
+      suggestedType: 'radio_group',
+      groupKey: 'marital_status',
+      groupLabel: 'Marital Status',
+      confidence: 0.2,
+      suggestedFields: [
+        {
+          fieldId: 'checkbox-field',
+          fieldName: 'i_marital_status_single',
+          optionKey: 'single',
+          optionLabel: 'Single',
+        },
+        {
+          fieldId: 'checkbox-field-2',
+          fieldName: 'i_marital_status_married',
+          optionKey: 'married',
+          optionLabel: 'Married',
+        },
+      ],
+    };
+
+    const { container } = render(
+      <FieldOverlay
+        fields={[suggestedField]}
+        pageSize={{ width: 200, height: 120 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled={false}
+        activeCreateTool={null}
+        showFieldNames={false}
+        selectedFieldId={null}
+        radioSuggestionByFieldId={new Map([[suggestedField.id, suggestion]])}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={vi.fn()}
+        onQuickRadioSelect={vi.fn()}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const box = container.querySelector('[data-field-id="checkbox-field"]') as HTMLDivElement;
+    expect(box.className).toContain('field-box--radio-suggestion');
+    expect(box.className).toContain('field-box--radio-suggestion--low');
   });
 });

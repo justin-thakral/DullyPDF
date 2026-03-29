@@ -69,7 +69,6 @@ const apiServiceMocks = vi.hoisted(() => ({
   getGroup: vi.fn(),
   getProfile: vi.fn().mockResolvedValue(null),
   updateDowngradeRetention: vi.fn(),
-  deleteDowngradeRetentionNow: vi.fn(),
   createBillingCheckoutSession: vi.fn(),
   reconcileBillingCheckoutFulfillment: vi.fn().mockResolvedValue({
     success: true,
@@ -98,6 +97,7 @@ const apiServiceMocks = vi.hoisted(() => ({
   updateSavedFormEditorSnapshot: vi.fn(),
   loadSavedForm: vi.fn(),
   downloadSavedForm: vi.fn(),
+  downloadSessionPdf: vi.fn(),
   deleteSavedForm: vi.fn(),
   touchSession: vi.fn(),
 }));
@@ -127,12 +127,35 @@ const uiMocks = vi.hoisted(() => ({
     </div>
   )),
   fieldListPanel: vi.fn((props: any) => (
-    <div data-testid="field-list">{props.fields.map((field: any) => field.name).join('|')}</div>
+    <div data-testid="field-list-panel">
+      <div data-testid="field-list">{props.fields.map((field: any) => field.name).join('|')}</div>
+      <div data-testid="display-preset">{props.displayPreset}</div>
+      <button data-testid="apply-review-preset" type="button" onClick={() => props.onApplyDisplayPreset?.('review')}>
+        Review
+      </button>
+      <button data-testid="apply-fill-preset" type="button" onClick={() => props.onApplyDisplayPreset?.('fill')}>
+        Fill
+      </button>
+      <button data-testid="toggle-transform" type="button" onClick={() => props.onTransformModeChange?.(true)}>
+        Transform
+      </button>
+      <button data-testid="toggle-fields-off" type="button" onClick={() => props.onShowFieldsChange?.(false)}>
+        Fields off
+      </button>
+    </div>
   )),
   fieldInspector: vi.fn((props: any) => {
     const first = props.fields[0];
     return (
       <div data-testid="field-inspector">
+        <div data-testid="active-create-tool">{props.activeCreateTool ?? 'off'}</div>
+        <button
+          data-testid="activate-text-create-tool"
+          type="button"
+          onClick={() => props.onCreateToolChange?.('text')}
+        >
+          Activate text create tool
+        </button>
         <button
           data-testid="rename-first"
           type="button"
@@ -140,6 +163,9 @@ const uiMocks = vi.hoisted(() => ({
           disabled={!first}
         >
           Rename first
+        </button>
+        <button data-testid="delete-all" type="button" onClick={() => props.onDeleteAllFields?.()}>
+          Delete all
         </button>
         <button data-testid="undo" type="button" onClick={() => props.onUndo()} disabled={!props.canUndo}>
           Undo
@@ -291,11 +317,8 @@ vi.mock('../../../src/components/features/DowngradeRetentionDialog', () => ({
         <button data-testid="retention-save" type="button" onClick={() => props.onSaveSelection?.(['tpl-1', 'tpl-2', 'tpl-4'])}>
           Save kept forms
         </button>
-        <button data-testid="retention-delete" type="button" onClick={() => props.onDeleteNow?.()}>
-          Delete now
-        </button>
         <button data-testid="retention-close" type="button" onClick={() => props.onClose?.()}>
-          Keep free plan
+          Keep base plan
         </button>
       </div>
     ) : null
@@ -333,6 +356,11 @@ vi.mock('../../../src/components/ui/Alert', () => ({
 vi.mock('../../../src/components/ui/Dialog', () => ({
   DialogFrame: ({ open, children }: { open: boolean; children?: any }) => (open ? <div>{children}</div> : null),
   Dialog: ({ open, children }: { open: boolean; children?: any }) => (open ? <div>{children}</div> : null),
+  DialogCloseButton: ({ onClick, label = 'Close dialog' }: { onClick?: () => void; label?: string }) => (
+    <button type="button" aria-label={label} onClick={() => onClick?.()}>
+      Close
+    </button>
+  ),
   ConfirmDialog: ({ open, confirmLabel = 'Confirm', cancelLabel = 'Cancel', onConfirm, onCancel }: any) => (
     open ? (
       <div data-testid="confirm-dialog">
@@ -447,15 +475,19 @@ const makeRetentionProfile = (overrides: Record<string, unknown> = {}) => ({
   },
   retention: {
     status: 'grace_period',
-    policyVersion: 1,
+    policyVersion: 2,
     downgradedAt: '2026-03-01T00:00:00Z',
-    graceEndsAt: '2026-03-31T00:00:00Z',
-    daysRemaining: 21,
+    graceEndsAt: null,
+    daysRemaining: 0,
     savedFormsLimit: 3,
-    fillLinksActiveLimit: 1,
     keptTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3'],
     pendingDeleteTemplateIds: ['tpl-4'],
     pendingDeleteLinkIds: ['link-4'],
+    accessibleTemplateIds: ['tpl-1', 'tpl-2', 'tpl-3'],
+    lockedTemplateIds: ['tpl-4'],
+    lockedLinkIds: ['link-4'],
+    selectionMode: 'oldest_created',
+    manualSelectionAllowed: false,
     counts: {
       keptTemplates: 3,
       pendingTemplates: 1,
@@ -464,10 +496,10 @@ const makeRetentionProfile = (overrides: Record<string, unknown> = {}) => ({
       closedLinks: 1,
     },
     templates: [
-      { id: 'tpl-1', name: 'Template One', createdAt: '2026-01-01T00:00:00Z', status: 'kept' },
-      { id: 'tpl-2', name: 'Template Two', createdAt: '2026-01-02T00:00:00Z', status: 'kept' },
-      { id: 'tpl-3', name: 'Template Three', createdAt: '2026-01-03T00:00:00Z', status: 'kept' },
-      { id: 'tpl-4', name: 'Template Four', createdAt: '2026-01-04T00:00:00Z', status: 'pending_delete' },
+      { id: 'tpl-1', name: 'Template One', createdAt: '2026-01-01T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+      { id: 'tpl-2', name: 'Template Two', createdAt: '2026-01-02T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+      { id: 'tpl-3', name: 'Template Three', createdAt: '2026-01-03T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+      { id: 'tpl-4', name: 'Template Four', createdAt: '2026-01-04T00:00:00Z', status: 'pending_delete', accessStatus: 'locked', locked: true },
     ],
     groups: [
       {
@@ -476,6 +508,9 @@ const makeRetentionProfile = (overrides: Record<string, unknown> = {}) => ({
         templateCount: 4,
         pendingTemplateCount: 1,
         willDelete: false,
+        accessStatus: 'locked',
+        locked: true,
+        lockedTemplateIds: ['tpl-4'],
       },
     ],
     links: [
@@ -486,6 +521,8 @@ const makeRetentionProfile = (overrides: Record<string, unknown> = {}) => ({
         status: 'closed',
         templateId: 'tpl-4',
         pendingDeleteReason: 'template_pending_delete',
+        accessStatus: 'locked',
+        locked: true,
       },
     ],
   },
@@ -493,8 +530,7 @@ const makeRetentionProfile = (overrides: Record<string, unknown> = {}) => ({
     detectMaxPages: 10,
     fillableMaxPages: 20,
     savedFormsMax: 3,
-    fillLinksActiveMax: 1,
-    fillLinkResponsesMax: 100,
+    fillLinkResponsesMonthlyMax: 25,
   },
   ...overrides,
 });
@@ -526,6 +562,12 @@ const settleAuthAsSignedIn = async () => {
   });
 };
 
+const openFillableWorkspace = async () => {
+  fireEvent.click(await screen.findByTestId('start-workflow'));
+  await screen.findByTestId('upload-detect', {}, { timeout: 10_000 });
+  fireEvent.click(await screen.findByTestId('upload-fillable'));
+};
+
 describe('App', () => {
   beforeEach(() => {
     installMatchMedia({
@@ -547,7 +589,6 @@ describe('App', () => {
     apiServiceMocks.getGroup.mockReset();
     apiServiceMocks.getProfile.mockReset().mockResolvedValue(null);
     apiServiceMocks.updateDowngradeRetention.mockReset();
-    apiServiceMocks.deleteDowngradeRetentionNow.mockReset();
     apiServiceMocks.createBillingCheckoutSession.mockReset();
     apiServiceMocks.reconcileBillingCheckoutFulfillment.mockReset().mockResolvedValue(defaultBillingReconcilePayload);
     apiServiceMocks.cancelBillingSubscription.mockReset();
@@ -561,6 +602,7 @@ describe('App', () => {
     apiServiceMocks.updateSavedFormEditorSnapshot.mockReset();
     apiServiceMocks.loadSavedForm.mockReset();
     apiServiceMocks.downloadSavedForm.mockReset();
+    apiServiceMocks.downloadSessionPdf.mockReset();
     apiServiceMocks.deleteSavedForm.mockReset();
     apiServiceMocks.touchSession.mockReset();
     for (const mock of Object.values(detectionApiMocks)) {
@@ -717,6 +759,56 @@ describe('App', () => {
     expect(await screen.findByTestId('field-list')).toBeTruthy();
   });
 
+  it('restores a session-backed /ui workspace after reload instead of dropping back to /upload', async () => {
+    window.history.replaceState({}, '', '/ui');
+    window.sessionStorage.setItem(
+      'dullypdf.workspaceResumeState',
+      JSON.stringify({
+        version: 1,
+        userId: 'user-1',
+        route: { kind: 'ui-root' },
+        currentPage: 1,
+        scale: 1.2,
+        detectSessionId: 'resume-ui-session-1',
+        mappingSessionId: 'resume-ui-session-1',
+        fieldCount: 1,
+        pageCount: 1,
+        updatedAtMs: Date.now(),
+      }),
+    );
+    detectionApiMocks.fetchDetectionStatus.mockResolvedValue({
+      sessionId: 'resume-ui-session-1',
+      status: 'complete',
+      sourcePdf: 'Recovered Upload.pdf',
+      pageCount: 1,
+      fields: [{
+        name: 'mapped_name',
+        type: 'text',
+        page: 1,
+        rect: [10, 10, 90, 22],
+        mappingConfidence: 0.9,
+      }],
+      checkboxRules: [{ databaseField: 'accept_terms', groupKey: 'accept_terms' }],
+      textTransformRules: [{ targetField: 'mapped_name', operation: 'copy', sources: ['full_name'] }],
+    });
+    apiServiceMocks.downloadSessionPdf.mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' }));
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'ui-root' }} />);
+
+    await settleAuthAsSignedIn();
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+
+    await waitFor(() => {
+      expect(detectionApiMocks.fetchDetectionStatus).toHaveBeenCalledWith('resume-ui-session-1');
+    });
+    await waitFor(() => {
+      expect(apiServiceMocks.downloadSessionPdf).toHaveBeenCalledWith('resume-ui-session-1');
+    });
+    expect(window.location.pathname).toBe('/ui');
+    expect(screen.getByTestId('field-list').textContent).toContain('mapped_name');
+  });
+
   it('restores a saved group directly from a /ui/groups route and opens the requested template first', async () => {
     window.history.replaceState({}, '', '/ui/groups/group-1?template=saved-2');
     window.sessionStorage.setItem(
@@ -786,6 +878,34 @@ describe('App', () => {
     fireEvent.click(await screen.findByTestId('start-workflow'));
 
     expect(await screen.findByText('Loading workspace…')).toBeTruthy();
+    expect(screen.queryByTestId('legacy-header')).toBeNull();
+    expect(screen.queryByTestId('header-bar')).toBeNull();
+    expect(screen.queryByTestId('upload-detect')).toBeNull();
+
+    await act(async () => {
+      releaseBackendStartup?.();
+    });
+
+    expect(await screen.findByTestId('upload-detect', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(apiServiceMocks.ensureBackendReady).toHaveBeenCalledTimes(1);
+  }, 15_000);
+
+  it('keeps direct workspace routes on the loading screen until the runtime is ready', async () => {
+    let releaseBackendStartup: (() => void) | null = null;
+    apiServiceMocks.ensureBackendReady.mockImplementationOnce(() => new Promise<void>((resolve) => {
+      releaseBackendStartup = resolve;
+    }));
+    window.history.replaceState({}, '', '/upload');
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'upload-root' }} />);
+
+    await settleAuthAsSignedIn();
+
+    expect(await screen.findByText('Loading workspace…')).toBeTruthy();
+    expect(screen.queryByTestId('legacy-header')).toBeNull();
+    expect(screen.queryByTestId('header-bar')).toBeNull();
+    expect(screen.queryByTestId('homepage')).toBeNull();
     expect(screen.queryByTestId('upload-detect')).toBeNull();
 
     await act(async () => {
@@ -930,33 +1050,6 @@ describe('App', () => {
     await waitFor(() => {
       expect(screen.getByTestId('retention-kept').textContent).toBe('tpl-1|tpl-2|tpl-4');
       expect(screen.getByTestId('retention-pending').textContent).toBe('tpl-3');
-    });
-  }, 15_000);
-
-  it('clears the retention dialog locally after delete-now removes queued forms', async () => {
-    const initialProfile = makeRetentionProfile();
-    apiServiceMocks.getProfile.mockResolvedValue(initialProfile);
-    apiServiceMocks.deleteDowngradeRetentionNow.mockResolvedValue({
-      success: true,
-      deletedTemplateIds: ['tpl-4'],
-      deletedLinkIds: ['link-4'],
-    });
-
-    const App = await importApp();
-    render(<App />);
-
-    await settleAuthAsSignedIn();
-    fireEvent.click(await screen.findByTestId('start-workflow'));
-    expect(await screen.findByTestId('retention-dialog', {}, { timeout: 10_000 })).toBeTruthy();
-
-    fireEvent.click(screen.getByTestId('retention-delete'));
-    fireEvent.click(await screen.findByTestId('confirm-action'));
-
-    await waitFor(() => {
-      expect(apiServiceMocks.deleteDowngradeRetentionNow).toHaveBeenCalledTimes(1);
-    });
-    await waitFor(() => {
-      expect(screen.queryByTestId('retention-dialog')).toBeNull();
     });
   }, 15_000);
 
@@ -1482,24 +1575,24 @@ describe('App', () => {
     render(<App />);
 
     await settleAuthAsSignedIn();
-    fireEvent.click(await screen.findByTestId('start-workflow'));
-    fireEvent.click(await screen.findByTestId('upload-fillable'));
+    await openFillableWorkspace();
 
     expect(await screen.findByTestId('header-bar')).toBeTruthy();
     await settleAuthAsSignedOut();
-    fireEvent.click(screen.getByTestId('save-profile'));
-
-    expect((await screen.findByRole('alert')).textContent).toContain('Sign in to save this form to your profile.');
+    expect(screen.queryByTestId('save-profile')).toBeNull();
+    expect(document.querySelector('.auth-loading-screen')?.textContent).toContain('Loading workspace');
     expect(apiServiceMocks.saveFormToProfile).not.toHaveBeenCalled();
   });
 
   it('supports undo/redo for field edits in editor history', async () => {
+    window.history.replaceState({}, '', '/ui/forms/saved-1');
+    apiServiceMocks.loadSavedForm.mockResolvedValue(makeSavedFormMeta());
+    apiServiceMocks.downloadSavedForm.mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' }));
+
     const App = await importApp();
-    render(<App />);
+    render(<App initialBrowserRoute={{ kind: 'saved-form', formId: 'saved-1' }} />);
 
     await settleAuthAsSignedIn();
-    fireEvent.click(await screen.findByTestId('start-workflow'));
-    fireEvent.click(await screen.findByTestId('upload-fillable'));
 
     await waitFor(() => {
       expect(screen.getByTestId('field-list').textContent).toContain('First Name');
@@ -1518,6 +1611,118 @@ describe('App', () => {
     fireEvent.click(screen.getByTestId('redo'));
     await waitFor(() => {
       expect(screen.getByTestId('field-list').textContent).toContain('Renamed Name');
+    });
+  });
+
+  it('supports bulk field deletion as one undoable editor history action', async () => {
+    window.history.replaceState({}, '', '/ui/forms/saved-1');
+    apiServiceMocks.loadSavedForm.mockResolvedValue(makeSavedFormMeta());
+    apiServiceMocks.downloadSavedForm.mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' }));
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'saved-form', formId: 'saved-1' }} />);
+
+    await settleAuthAsSignedIn();
+
+    await waitFor(() => {
+      expect(screen.getByTestId('field-list').textContent).toContain('First Name');
+    });
+
+    fireEvent.click(screen.getByTestId('delete-all'));
+    await waitFor(() => {
+      expect(screen.getByTestId('field-list').textContent).toBe('');
+    });
+
+    fireEvent.click(screen.getByTestId('undo'));
+    await waitFor(() => {
+      expect(screen.getByTestId('field-list').textContent).toContain('First Name');
+    });
+  });
+
+  it('clears the active create tool when transform mode is enabled', async () => {
+    const App = await importApp();
+    render(<App />);
+
+    await settleAuthAsSignedIn();
+    await openFillableWorkspace();
+
+    await waitFor(() => {
+      expect(screen.getByTestId('display-preset').textContent).toBe('edit');
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    fireEvent.click(await screen.findByTestId('apply-review-preset'));
+    await waitFor(() => {
+      expect(screen.getByTestId('display-preset').textContent).toBe('review');
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+
+    fireEvent.keyDown(window, { key: 't' });
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('text');
+    });
+
+    fireEvent.click(await screen.findByTestId('toggle-transform'));
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+  });
+
+  it('clears the active create tool when review or fill modes replace editor creation state', async () => {
+    const App = await importApp();
+    render(<App />);
+
+    await settleAuthAsSignedIn();
+    await openFillableWorkspace();
+    await waitFor(() => {
+      expect(screen.getByTestId('display-preset').textContent).toBe('edit');
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+
+    fireEvent.keyDown(window, { key: 't' });
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('text');
+    });
+
+    fireEvent.click(await screen.findByTestId('apply-review-preset'));
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+
+    fireEvent.click(await screen.findByTestId('activate-text-create-tool'));
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('text');
+    });
+
+    fireEvent.click(await screen.findByTestId('apply-fill-preset'));
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+  });
+
+  it('clears the active create tool when field overlays are hidden', async () => {
+    const App = await importApp();
+    render(<App />);
+
+    await settleAuthAsSignedIn();
+    await openFillableWorkspace();
+    await waitFor(() => {
+      expect(screen.getByTestId('display-preset').textContent).toBe('edit');
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
+    });
+
+    fireEvent.keyDown(window, { key: 't' });
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('text');
+    });
+
+    fireEvent.click(await screen.findByTestId('toggle-fields-off'));
+    await waitFor(() => {
+      expect(screen.getByTestId('active-create-tool').textContent).toBe('off');
     });
   });
 
@@ -1549,7 +1754,12 @@ describe('App', () => {
       fireEvent.click(await screen.findByTestId('upload-detect'));
       fireEvent.click(await screen.findByRole('button', { name: 'Continue' }));
 
-      expect(await screen.findByText('Waiting for standard CPU to start...')).toBeTruthy();
+      await waitFor(() => {
+        expect(
+          screen.queryByText('Waiting for standard CPU to start...') ||
+          screen.queryByText('Detecting fields on the standard CPU...')
+        ).toBeTruthy();
+      });
       await act(async () => {
         await new Promise((resolve) => setTimeout(resolve, 250));
       });

@@ -305,4 +305,12 @@ describe('main entrypoint', () => {
     expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
     expect(await screen.findByTestId('app-view')).toBeTruthy();
   });
+
+  it('reuses the existing React root when the entrypoint reloads in the same container', async () => {
+    await importEntrypoint('/');
+    await importEntrypoint('/respond/token-1');
+
+    expect(entrypointMocks.createRoot).toHaveBeenCalledTimes(1);
+    expect(entrypointMocks.renderSpy).toHaveBeenCalledTimes(2);
+  });
 });

@@ -52,7 +52,10 @@ import { useSaveDownload } from './hooks/useSaveDownload';
 import { useDemo } from './hooks/useDemo';
 import { useUploadBrowserViewModel } from './hooks/useUploadBrowserViewModel';
 import { useWorkspaceSigning } from './hooks/useWorkspaceSigning';
+import { useWorkspaceSessionDiagnostic } from './hooks/useWorkspaceSessionDiagnostic';
 import { ApiService } from './services/api';
+import { fetchDetectionStatus } from './services/detectionApi';
+import { debugLog } from './utils/debug';
 import { applyRouteSeo } from './utils/seo';
 import {
   LazyDemoTour,
@@ -91,15 +94,18 @@ import {
   updateRadioFieldOption,
 } from './utils/radioGroups';
 import {
+  applyRadioGroupSuggestions,
   applyRadioGroupSuggestion,
   buildRadioSuggestionFieldMap,
   isRadioGroupSuggestionApplied,
+  shouldAutoApplyRadioGroupSuggestion,
 } from './utils/radioGroupSuggestions';
 import {
   DEFAULT_ARROW_KEY_MOVE_STEP,
   getFieldNudgeCommandFromKey,
   sanitizeArrowKeyMoveStep,
 } from './utils/fieldMovement';
+import { mapDetectionFields } from './utils/detection';
 import {
   buildFillLinkPublishFingerprint,
   FILL_LINK_LINK_ID_KEY,
@@ -113,10 +119,17 @@ import {
   writeWorkspaceResumeState,
 } from './utils/workspaceResumeState';
 import {
+  prunePendingQuickRadioSelection,
+  resolvePendingQuickRadioFields,
+  resolveRadioToolDraftForToolChange,
+  type PendingQuickRadioSelection,
+} from './utils/createToolState';
+import {
   areWorkspaceBrowserRoutesEqual,
   getWorkspaceBrowserRouteKey,
   type WorkspaceBrowserRoute,
 } from './utils/workspaceRoutes';
+import { shouldIgnoreWorkspaceHotkeys } from './utils/workspaceShortcuts';
 
 /**
  * Launch actions that can be requested by the lightweight homepage shell.
@@ -143,10 +156,14 @@ type SearchFillPresetState = {
   token: number;
 } | null;
 
-type PendingQuickRadioSelection = {
-  fieldIds: string[];
-  page: number;
-} | null;
+type CreateToolDisplayState = {
+  showFields: boolean;
+  showFieldNames: boolean;
+  showFieldInfo: boolean;
+  transformMode: boolean;
+};
+
+const WORKSPACE_ERROR_AUTO_DISMISS_MS = 5000;
 
 /**
  * Main workspace runtime component that coordinates auth, detection, and editing.
@@ -257,6 +274,7 @@ function WorkspaceRuntime({
     browserRoute.kind === 'homepage' ? null : browserRouteKey,
   );
   const routeRestoreInFlightKeyRef = useRef<string | null>(null);
+  const createToolDisplayStateRef = useRef<CreateToolDisplayState | null>(null);
 
   useEffect(() => {
     applyRouteSeo({ kind: 'app' });
@@ -329,6 +347,30 @@ function WorkspaceRuntime({
     sourceFileName,
     demoStateRef: demoBridgeRef,
   });
+  const workspaceSessionDiagnostic = useWorkspaceSessionDiagnostic({
+    detectSessionId: detection.detectSessionId,
+    pageCount,
+    activeSavedFormId: savedForms.activeSavedFormId,
+    activeSavedFormName: savedForms.activeSavedFormName,
+    sourceFileName,
+  });
+  const [reviewedFillContext, setReviewedFillContext] = useState<ReviewedFillContext | null>(null);
+  const resolveWorkspaceSourcePdfBytes = useCallback(async (): Promise<Uint8Array> => {
+    if (sourceFile) {
+      return new Uint8Array(await sourceFile.arrayBuffer());
+    }
+    if (pdfDoc) {
+      return pdfDoc.getData();
+    }
+    throw new Error('Load a PDF before preparing a signing request.');
+  }, [pdfDoc, sourceFile]);
+  const resolveWorkspaceImmutableSourcePdfBytes = useCallback(async (): Promise<Uint8Array> => {
+    const sourcePdfBytes = await resolveWorkspaceSourcePdfBytes();
+    const sourceBlob = new Blob([Uint8Array.from(sourcePdfBytes)], { type: 'application/pdf' });
+    const materializedFields = prepareFieldsForMaterialize(fieldHistory.fields);
+    const materializedBlob = await ApiService.materializeFormPdf(sourceBlob, materializedFields, { exportMode: 'flat' });
+    return new Uint8Array(await materializedBlob.arrayBuffer());
+  }, [fieldHistory.fields, resolveWorkspaceSourcePdfBytes]);
 
   // ── OpenAI pipeline (uses detection state directly) ────────────────
   const openAi = useOpenAiPipeline({
@@ -345,10 +387,12 @@ function WorkspaceRuntime({
     pendingAutoActionsRef: detection.pendingAutoActionsRef,
     setBannerNotice: dialog.setBannerNotice,
     requestConfirm: dialog.requestConfirm,
+    resolveSourcePdfBytes: resolveWorkspaceSourcePdfBytes,
     loadUserProfile: auth.loadUserProfile,
     resetFieldHistory: fieldHistory.resetFieldHistory,
     updateFieldsWith: fieldHistory.updateFieldsWith,
     setIdentifierKey: dataSource.setIdentifierKey,
+    onBeforeOpenAiAction: workspaceSessionDiagnostic.onBeforeOpenAiAction,
     // For computed canRename/canMapSchema
     hasDocument: !!pdfDoc,
     fieldsCount: fieldHistory.fields.length,
@@ -571,6 +615,43 @@ function WorkspaceRuntime({
     }
   }, [detection, fieldHistory.fields.length, pageCount, resolvePreferredSessionResume]);
 
+  const restoreUiWorkspaceFromResume = useCallback(async (
+    resumeState: ReturnType<typeof findMatchingWorkspaceResumeState>,
+  ) => {
+    const preferredSession = resolvePreferredSessionResume(resumeState);
+    if (!preferredSession?.sessionId) {
+      return false;
+    }
+
+    try {
+      const [sessionStatus, sessionPdf] = await Promise.all([
+        fetchDetectionStatus(preferredSession.sessionId),
+        ApiService.downloadSessionPdf(preferredSession.sessionId),
+      ]);
+      const sourcePdfName = String(sessionStatus?.sourcePdf || 'document.pdf').trim() || 'document.pdf';
+      const sourceFile = new File([sessionPdf], sourcePdfName, { type: 'application/pdf' });
+      const restored = await detection.restoreSessionWorkspace(
+        sourceFile,
+        {
+          sessionId: preferredSession.sessionId,
+          detectionStatus: String(sessionStatus?.status || '').trim().toLowerCase() || null,
+          fields: mapDetectionFields(sessionStatus),
+          checkboxRules: Array.isArray(sessionStatus?.checkboxRules) ? sessionStatus.checkboxRules : [],
+          textTransformRules: Array.isArray(sessionStatus?.textTransformRules) ? sessionStatus.textTransformRules : [],
+        },
+        pdfState,
+      );
+      if (!restored) {
+        return false;
+      }
+      restoreViewportFromResume(resumeState);
+      return true;
+    } catch (error) {
+      debugLog('Failed to restore ui-root workspace session', preferredSession.sessionId, error);
+      return false;
+    }
+  }, [detection, pdfState, resolvePreferredSessionResume, restoreViewportFromResume]);
+
   const headerActiveGroupTemplateId =
     pendingGroupTemplateId || groupSwitchingTemplateId || savedForms.activeSavedFormId;
   const headerGroupTemplateStatuses = useMemo(() => {
@@ -583,23 +664,6 @@ function WorkspaceRuntime({
   }, [groupSwitchingTemplateId, groupTemplateStatusById, pendingGroupTemplateId]);
 
   const activeTemplateName = savedForms.activeSavedFormName || sourceFileName || null;
-  const [reviewedFillContext, setReviewedFillContext] = useState<ReviewedFillContext | null>(null);
-  const resolveWorkspaceSourcePdfBytes = useCallback(async (): Promise<Uint8Array> => {
-    if (sourceFile) {
-      return new Uint8Array(await sourceFile.arrayBuffer());
-    }
-    if (pdfDoc) {
-      return pdfDoc.getData();
-    }
-    throw new Error('Load a PDF before preparing a signing request.');
-  }, [pdfDoc, sourceFile]);
-  const resolveWorkspaceImmutableSourcePdfBytes = useCallback(async (): Promise<Uint8Array> => {
-    const sourcePdfBytes = await resolveWorkspaceSourcePdfBytes();
-    const sourceBlob = new Blob([Uint8Array.from(sourcePdfBytes)], { type: 'application/pdf' });
-    const materializedFields = prepareFieldsForMaterialize(fieldHistory.fields);
-    const materializedBlob = await ApiService.materializeFormPdf(sourceBlob, materializedFields);
-    return new Uint8Array(await materializedBlob.arrayBuffer());
-  }, [fieldHistory.fields, resolveWorkspaceSourcePdfBytes]);
   const signing = useWorkspaceSigning({
     verifiedUser: auth.verifiedUser,
     hasDocument: Boolean(pdfDoc),
@@ -700,6 +764,7 @@ function WorkspaceRuntime({
     // App-level UI state
     setShowSearchFill(false); setSearchFillSessionId((prev) => prev + 1);
     setSearchFillPreset(null); setShowFillLinkManager(false); setShowTemplateApiManager(false);
+    createToolDisplayStateRef.current = null;
     setTransformMode(false); setActiveCreateTool(null);
     setManualRadioToolDraft(null); setQuickRadioToolDraft(null);
     setPendingQuickRadioSelection(null); setDismissedRadioSuggestionIds([]);
@@ -851,38 +916,86 @@ function WorkspaceRuntime({
 
   const handlePageJumpComplete = useCallback(() => { setPendingPageJump(null); }, []);
 
+  const resetCreateToolState = useCallback(() => {
+    setActiveCreateTool(null);
+    setPendingQuickRadioSelection(null);
+    setManualRadioToolDraft(null);
+    setQuickRadioToolDraft(null);
+  }, []);
+
+  const clearCreateToolState = useCallback(() => {
+    createToolDisplayStateRef.current = null;
+    resetCreateToolState();
+  }, [resetCreateToolState]);
+
+  const applyCreateToolDisplayState = useCallback((state: CreateToolDisplayState) => {
+    setTransformMode(state.transformMode);
+    fieldState.setShowFields(state.showFields);
+    fieldState.setShowFieldNames(state.showFieldNames);
+    fieldState.setShowFieldInfo(state.showFieldInfo);
+  }, [fieldState]);
+
   const handleSetTransformMode = useCallback(
     (enabled: boolean) => {
       setTransformMode(enabled);
       if (enabled) {
+        clearCreateToolState();
         fieldState.setShowFields(true);
         fieldState.setShowFieldInfo(false);
       }
     },
-    [fieldState],
+    [clearCreateToolState, fieldState],
   );
 
   const handleSetCreateTool = useCallback(
     (type: CreateTool | null) => {
+      const currentFields = fieldHistory.fieldsRef.current;
+      if (!type) {
+        const previousDisplayState = activeCreateTool ? createToolDisplayStateRef.current : null;
+        createToolDisplayStateRef.current = null;
+        resetCreateToolState();
+        if (previousDisplayState) {
+          applyCreateToolDisplayState(previousDisplayState);
+        }
+        return;
+      }
+      if (!activeCreateTool) {
+        createToolDisplayStateRef.current = {
+          showFields: fieldState.showFields,
+          showFieldNames: fieldState.showFieldNames,
+          showFieldInfo: fieldState.showFieldInfo,
+          transformMode,
+        };
+      }
       setActiveCreateTool(type);
       setPendingQuickRadioSelection(null);
-      if (type === 'radio') {
-        setManualRadioToolDraft((prev) => prev ?? buildNextRadioToolDraft(fieldHistory.fieldsRef.current));
-      } else if (type === 'quick-radio') {
-        setQuickRadioToolDraft((prev) => prev ?? buildNextRadioToolDraft(fieldHistory.fieldsRef.current));
-      }
+      setManualRadioToolDraft((prev) => (
+        resolveRadioToolDraftForToolChange('radio', type, activeCreateTool, prev, currentFields)
+      ));
+      setQuickRadioToolDraft((prev) => (
+        resolveRadioToolDraftForToolChange('quick-radio', type, activeCreateTool, prev, currentFields)
+      ));
       if (type) {
+        setTransformMode(false);
         fieldState.setShowFields(true);
+        fieldState.setShowFieldNames(false);
         fieldState.setShowFieldInfo(false);
       }
     },
-    [fieldHistory.fieldsRef, fieldState],
+    [
+      activeCreateTool,
+      applyCreateToolDisplayState,
+      fieldHistory.fieldsRef,
+      fieldState,
+      resetCreateToolState,
+      transformMode,
+    ],
   );
 
   const handleAfterSearchFill = useCallback((payload: { row: Record<string, unknown>; dataSourceKind: DataSourceKind }) => {
     setSearchFillPreset(null);
     handleSetTransformMode(false);
-    setActiveCreateTool(null);
+    clearCreateToolState();
     fieldState.setShowFieldInfo(true);
     fieldState.setShowFieldNames(false);
     fieldState.setShowFields(true);
@@ -922,6 +1035,7 @@ function WorkspaceRuntime({
     dataSource.dataSourceLabel,
     demo,
     fieldState,
+    clearCreateToolState,
     handleSetTransformMode,
     savedForms.activeSavedFormId,
   ]);
@@ -977,6 +1091,7 @@ function WorkspaceRuntime({
             )),
             [fieldId],
             baseDraft,
+            pageSizes,
           );
           nextDraft = advanceRadioToolDraft(nextFields, baseDraft);
           return nextFields;
@@ -1039,20 +1154,26 @@ function WorkspaceRuntime({
   }, []);
 
   const handleApplyPendingQuickRadioSelection = useCallback(() => {
-    if (!quickRadioToolDraft || !pendingQuickRadioSelection?.fieldIds.length) {
+    const validSelection = prunePendingQuickRadioSelection(
+      pendingQuickRadioSelection,
+      fieldHistory.fieldsRef.current,
+      currentPage,
+    );
+    if (!quickRadioToolDraft || !validSelection?.fieldIds.length) {
+      setPendingQuickRadioSelection(null);
       return;
     }
-    const selectedIds = pendingQuickRadioSelection.fieldIds;
+    const selectedIds = validSelection.fieldIds;
     let nextFieldsSnapshot = fieldHistory.fieldsRef.current;
     fieldHistory.updateFieldsWith((prev) => {
-      const nextFields = convertFieldsToRadioGroup(prev, selectedIds, quickRadioToolDraft);
+      const nextFields = convertFieldsToRadioGroup(prev, selectedIds, quickRadioToolDraft, pageSizes);
       nextFieldsSnapshot = nextFields;
       return nextFields;
     });
     fieldState.setSelectedFieldId(selectedIds[0] || null);
     setPendingQuickRadioSelection(null);
     setQuickRadioToolDraft(buildNextRadioToolDraft(nextFieldsSnapshot));
-  }, [fieldHistory, fieldState, pendingQuickRadioSelection, quickRadioToolDraft]);
+  }, [currentPage, fieldHistory, fieldState, pageSizes, pendingQuickRadioSelection, quickRadioToolDraft]);
 
   const handleRenameSelectedRadioGroup = useCallback(
     (groupId: string, updates: { label?: string; key?: string }) => {
@@ -1128,16 +1249,14 @@ function WorkspaceRuntime({
     setDismissedRadioSuggestionIds((prev) => (
       prev.includes(suggestion.id) ? prev : [...prev, suggestion.id]
     ));
-    setActiveCreateTool(null);
-    setPendingQuickRadioSelection(null);
-    setManualRadioToolDraft(null);
-    setQuickRadioToolDraft(null);
-  }, [fieldHistory, fieldState]);
+    clearCreateToolState();
+  }, [clearCreateToolState, fieldHistory, fieldState]);
 
   const handleApplyDisplayPreset = useCallback(
     (preset: Exclude<FieldListDisplayPreset, 'custom'>) => {
       if (preset === 'review') {
         handleSetTransformMode(false);
+        clearCreateToolState();
         fieldState.setShowFields(true);
         fieldState.setShowFieldNames(true);
         fieldState.setShowFieldInfo(false);
@@ -1151,22 +1270,33 @@ function WorkspaceRuntime({
         return;
       }
       handleSetTransformMode(false);
+      clearCreateToolState();
       fieldState.setShowFields(true);
       fieldState.setShowFieldNames(false);
       fieldState.setShowFieldInfo(true);
     },
-    [fieldState, handleSetTransformMode],
+    [clearCreateToolState, fieldState, handleSetTransformMode],
+  );
+
+  const handleShowFieldsChange = useCallback(
+    (enabled: boolean) => {
+      if (!enabled) {
+        clearCreateToolState();
+      }
+      fieldState.handleShowFieldsChange(enabled);
+    },
+    [clearCreateToolState, fieldState],
   );
 
   const handleShowFieldInfoChange = useCallback(
     (enabled: boolean) => {
       if (enabled) {
         handleSetTransformMode(false);
-        setActiveCreateTool(null);
+        clearCreateToolState();
       }
       fieldState.handleShowFieldInfoChange(enabled);
     },
-    [fieldState, handleSetTransformMode],
+    [clearCreateToolState, fieldState, handleSetTransformMode],
   );
 
   const handleResetConfidenceFilters = useCallback(() => {
@@ -1199,8 +1329,23 @@ function WorkspaceRuntime({
     if (activeGroupId) {
       return;
     }
+    if (fieldState.showFields && !fieldState.showFieldNames && !fieldState.showFieldInfo && transformMode) {
+      return;
+    }
+    if (activeCreateTool) {
+      return;
+    }
     handleApplyDisplayPreset('edit');
-  }, [activeGroupId, handleApplyDisplayPreset, pdfDoc]);
+  }, [
+    activeCreateTool,
+    activeGroupId,
+    fieldState.showFieldInfo,
+    fieldState.showFieldNames,
+    fieldState.showFields,
+    handleApplyDisplayPreset,
+    pdfDoc,
+    transformMode,
+  ]);
 
   const handleDismissBanner = useCallback(() => {
     if (openAi.openAiError || dataSource.schemaError) {
@@ -1267,10 +1412,34 @@ function WorkspaceRuntime({
   }, [dataSource.schemaError, dialog, openAi.openAiError]);
 
   useEffect(() => {
-    if (!dialog.bannerNotice?.autoDismissMs) return undefined;
-    const timer = setTimeout(() => dialog.setBannerNotice(null), dialog.bannerNotice.autoDismissMs);
+    if (!dialog.bannerNotice) return undefined;
+    const dismissMs = dialog.bannerNotice.tone === 'error'
+      ? WORKSPACE_ERROR_AUTO_DISMISS_MS
+      : dialog.bannerNotice.autoDismissMs;
+    if (!dismissMs) return undefined;
+    const timer = setTimeout(() => dialog.setBannerNotice(null), dismissMs);
     return () => clearTimeout(timer);
-  }, [dialog, dialog.bannerNotice]);
+  }, [dialog.bannerNotice, dialog.setBannerNotice]);
+
+  useEffect(() => {
+    if (!openAi.openAiError && !dataSource.schemaError) return undefined;
+    const timer = setTimeout(() => {
+      openAi.setOpenAiError(null);
+      dataSource.setSchemaError(null);
+    }, WORKSPACE_ERROR_AUTO_DISMISS_MS);
+    return () => clearTimeout(timer);
+  }, [
+    dataSource.schemaError,
+    dataSource.setSchemaError,
+    openAi.openAiError,
+    openAi.setOpenAiError,
+  ]);
+
+  useEffect(() => {
+    if (!loadError) return undefined;
+    const timer = setTimeout(() => setLoadError(null), WORKSPACE_ERROR_AUTO_DISMISS_MS);
+    return () => clearTimeout(timer);
+  }, [loadError]);
 
   const focusFieldSearch = useCallback(() => {
     if (typeof document === 'undefined') return;
@@ -1307,13 +1476,7 @@ function WorkspaceRuntime({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!pdfDoc || event.defaultPrevented) return;
       const target = event.target as HTMLElement | null;
-      if (
-        target &&
-        (target.isContentEditable ||
-          target.tagName === 'INPUT' ||
-          target.tagName === 'TEXTAREA' ||
-          target.tagName === 'SELECT')
-      ) {
+      if (shouldIgnoreWorkspaceHotkeys(target)) {
         return;
       }
       const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform);
@@ -1476,7 +1639,6 @@ function WorkspaceRuntime({
     billingCancelInProgress,
     showDowngradeRetentionDialog,
     downgradeRetentionSaveInProgress,
-    downgradeRetentionDeleteInProgress,
     currentDowngradeRetention,
     downgradeRetentionReactivateLabel,
     closeDowngradeRetentionDialog,
@@ -1484,7 +1646,6 @@ function WorkspaceRuntime({
     handleStartBillingCheckout,
     handleCancelBillingSubscription,
     handleSaveDowngradeRetentionSelection,
-    handleDeleteDowngradeRetentionNow,
     handleReactivateDowngradedAccount,
   } = useDowngradeRetentionRuntime({
     authReady,
@@ -1494,23 +1655,15 @@ function WorkspaceRuntime({
     loadUserProfile: auth.loadUserProfile,
     mutateUserProfile: auth.mutateUserProfile,
     setBannerNotice: dialog.setBannerNotice,
-    requestConfirm: dialog.requestConfirm,
     refreshSavedForms: savedForms.refreshSavedForms,
     refreshGroups: groups.refreshGroups,
-    activeSavedFormId: savedForms.activeSavedFormId,
-    activeGroupTemplates,
-    clearWorkspace,
   });
   const selectedField = useMemo(
     () => fields.find((field) => field.id === selectedFieldId) || null,
     [fields, selectedFieldId],
   );
   const pendingQuickRadioFields = useMemo(() => {
-    if (!pendingQuickRadioSelection?.fieldIds.length) {
-      return [] as PdfField[];
-    }
-    const idSet = new Set(pendingQuickRadioSelection.fieldIds);
-    return fields.filter((field) => idSet.has(field.id));
+    return resolvePendingQuickRadioFields(pendingQuickRadioSelection, fields);
   }, [fields, pendingQuickRadioSelection]);
   const activeRadioToolDraft = activeCreateTool === 'radio'
     ? manualRadioToolDraft
@@ -1549,7 +1702,30 @@ function WorkspaceRuntime({
     : null;
 
   useEffect(() => {
+    const autoApplicableSuggestions = visibleRadioGroupSuggestions.filter(
+      (suggestion) => shouldAutoApplyRadioGroupSuggestion(suggestion),
+    );
+    if (!autoApplicableSuggestions.length) {
+      return;
+    }
+    const result = applyRadioGroupSuggestions(fieldHistory.fieldsRef.current, autoApplicableSuggestions);
+    if (result.fields === fieldHistory.fieldsRef.current || !result.appliedSuggestionIds.length) {
+      return;
+    }
+    fieldHistory.beginFieldHistory();
+    fieldHistory.updateFields(result.fields, { trackHistory: false });
+    fieldHistory.commitFieldHistory();
+  }, [
+    fieldHistory.beginFieldHistory,
+    fieldHistory.commitFieldHistory,
+    fieldHistory.fieldsRef,
+    fieldHistory.updateFields,
+    visibleRadioGroupSuggestions,
+  ]);
+
+  useEffect(() => {
     if (activeCreateTool !== 'radio') {
+      setManualRadioToolDraft(null);
       return;
     }
     setManualRadioToolDraft((prev) => prev ?? buildNextRadioToolDraft(fieldHistory.fieldsRef.current));
@@ -1557,31 +1733,22 @@ function WorkspaceRuntime({
 
   useEffect(() => {
     if (activeCreateTool !== 'quick-radio') {
+      setQuickRadioToolDraft(null);
       return;
     }
     setQuickRadioToolDraft((prev) => prev ?? buildNextRadioToolDraft(fieldHistory.fieldsRef.current));
   }, [activeCreateTool, fieldHistory.fieldsRef]);
 
   useEffect(() => {
-    setPendingQuickRadioSelection((prev) => {
-      if (!prev?.fieldIds.length) {
-        return prev;
-      }
-      const allowedIds = new Set(
-        fields
-          .filter((field) => field.type === 'checkbox' || field.type === 'radio')
-          .map((field) => field.id),
-      );
-      const nextFieldIds = prev.fieldIds.filter((fieldId) => allowedIds.has(fieldId));
-      if (nextFieldIds.length === prev.fieldIds.length) {
-        return prev;
-      }
-      if (!nextFieldIds.length) {
-        return null;
-      }
-      return { ...prev, fieldIds: nextFieldIds };
-    });
-  }, [fields]);
+    if (activeCreateTool === 'quick-radio') {
+      return;
+    }
+    setPendingQuickRadioSelection(null);
+  }, [activeCreateTool]);
+
+  useEffect(() => {
+    setPendingQuickRadioSelection((prev) => prunePendingQuickRadioSelection(prev, fields, currentPage));
+  }, [currentPage, fields]);
 
   useEffect(() => {
     if (!manualRadioToolDraft) {
@@ -1685,7 +1852,14 @@ function WorkspaceRuntime({
     if (pendingBrowserRouteKey !== null) {
       return;
     }
-    if (activeWorkspaceBrowserRoute.kind !== 'saved-form' && activeWorkspaceBrowserRoute.kind !== 'group') {
+    const canPersistUiWorkspaceRoute =
+      activeWorkspaceBrowserRoute.kind === 'ui-root'
+      && Boolean(detection.detectSessionId || detection.mappingSessionId);
+    if (
+      activeWorkspaceBrowserRoute.kind !== 'saved-form'
+      && activeWorkspaceBrowserRoute.kind !== 'group'
+      && !canPersistUiWorkspaceRoute
+    ) {
       clearWorkspaceResumeState();
       return;
     }
@@ -1749,8 +1923,9 @@ function WorkspaceRuntime({
         });
       }
       clearWorkspaceResumeState();
-      onBrowserRouteChange?.({ kind: 'upload-root' }, { replace: true });
-      setPendingBrowserRouteKey(null);
+      const fallbackRoute: WorkspaceBrowserRoute = { kind: 'upload-root' };
+      setPendingBrowserRouteKey(getWorkspaceBrowserRouteKey(fallbackRoute));
+      onBrowserRouteChange?.(fallbackRoute, { replace: true });
     };
     const restoreRequestedRoute = async () => {
       if (browserRoute.kind === 'profile') {
@@ -1787,6 +1962,19 @@ function WorkspaceRuntime({
         }
         if (showHomepage) {
           setShowHomepage(false);
+          return;
+        }
+        if (!verifiedUser) {
+          return;
+        }
+        const resumeState = findMatchingWorkspaceResumeState(browserRoute, verifiedUser.uid);
+        if (!resumeState) {
+          finishRouteRestore();
+          return;
+        }
+        const restored = await restoreUiWorkspaceFromResume(resumeState);
+        if (!restored) {
+          failRouteRestore('Failed to reopen the active workspace.');
           return;
         }
         finishRouteRestore();
@@ -1886,6 +2074,7 @@ function WorkspaceRuntime({
     pendingBrowserRouteKey,
     resolvePreferredSessionResume,
     restoreViewportFromResume,
+    restoreUiWorkspaceFromResume,
     savedForms.activeSavedFormId,
     showHomepage,
     tryReuseResumedSession,
@@ -1994,12 +2183,10 @@ function WorkspaceRuntime({
         retention={currentDowngradeRetention}
         billingEnabled={userProfile?.billing?.enabled === true}
         savingSelection={downgradeRetentionSaveInProgress}
-        deletingNow={downgradeRetentionDeleteInProgress}
         checkoutInProgress={billingCheckoutInProgressKind !== null}
         reactivateLabel={downgradeRetentionReactivateLabel}
         onClose={closeDowngradeRetentionDialog}
         onSaveSelection={handleSaveDowngradeRetentionSelection}
-        onDeleteNow={handleDeleteDowngradeRetentionNow}
         onReactivatePremium={handleReactivateDowngradedAccount}
       />
     </Suspense>
@@ -2166,17 +2353,19 @@ function WorkspaceRuntime({
 
   if (currentView !== 'editor') {
     return (
-      <div className="homepage-shell">
-        {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
-        {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{demoCompletionDialog}{dialogContent}
-        <LegacyHeader currentView={currentView} onNavigateHome={handleNavigateHome}
-          showBackButton={!showHomepage} userEmail={userEmail ?? null}
-          onOpenProfile={verifiedUser ? auth.handleOpenProfile : undefined}
-          onSignOut={verifiedUser ? handleSignOut : undefined}
-          onSignIn={!verifiedUser ? () => auth.setShowLogin(true) : undefined} />
-        <main className="landing-main">
-          {currentView === 'homepage' && (
-            <Suspense fallback={runtimeLoadingFallback}>
+      <Suspense fallback={runtimeLoadingFallback}>
+        {/* Keep the legacy header and the active runtime screen in one suspense boundary
+            so startup fallback replaces the whole shell instead of painting the header first. */}
+        <div className="homepage-shell">
+          {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
+          {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{demoCompletionDialog}{dialogContent}
+          <LegacyHeader currentView={currentView} onNavigateHome={handleNavigateHome}
+            showBackButton={!showHomepage} userEmail={userEmail ?? null}
+            onOpenProfile={verifiedUser ? auth.handleOpenProfile : undefined}
+            onSignOut={verifiedUser ? handleSignOut : undefined}
+            onSignIn={!verifiedUser ? () => auth.setShowLogin(true) : undefined} />
+          <main className="landing-main">
+            {currentView === 'homepage' ? (
               <LazyHomepage
                 onStartWorkflow={() => {
                   if (verifiedUser) {
@@ -2188,22 +2377,18 @@ function WorkspaceRuntime({
                 onStartDemo={demo.startDemo}
                 userEmail={userEmail ?? null} onSignIn={!verifiedUser ? () => auth.setShowLogin(true) : undefined}
                 onOpenProfile={verifiedUser ? auth.handleOpenProfile : undefined} />
-            </Suspense>
-          )}
-          {currentView === 'upload' && (
-            <Suspense fallback={runtimeLoadingFallback}>
+            ) : null}
+            {currentView === 'upload' ? (
               <LazyUploadView {...uploadBrowserViewModel} />
-            </Suspense>
-          )}
-          {currentView === 'processing' && (
-            <Suspense fallback={runtimeLoadingFallback}>
+            ) : null}
+            {currentView === 'processing' ? (
               <LazyProcessingView heading={processingHeading} detail={processingDetail} showAd={shouldShowProcessingAd}
                 adVideoUrl={PROCESSING_AD_VIDEO_URL} adPosterUrl={PROCESSING_AD_POSTER_URL} />
-            </Suspense>
-          )}
-        </main>
-        {dataSourceInputs}
-      </div>
+            ) : null}
+          </main>
+          {dataSourceInputs}
+        </div>
+      </Suspense>
     );
   }
 
@@ -2279,7 +2464,7 @@ function WorkspaceRuntime({
           showFieldNames={showFieldNames} showFieldInfo={showFieldInfo}
           transformMode={transformMode}
           displayPreset={displayPreset} onApplyDisplayPreset={handleApplyDisplayPreset}
-          onShowFieldsChange={fieldState.handleShowFieldsChange}
+          onShowFieldsChange={handleShowFieldsChange}
           onShowFieldNamesChange={fieldState.handleShowFieldNamesChange}
           onShowFieldInfoChange={handleShowFieldInfoChange}
           onTransformModeChange={handleSetTransformMode}
@@ -2330,6 +2515,7 @@ function WorkspaceRuntime({
           onSetFieldType={handleSetFieldType}
           onUpdateFieldDraft={fieldState.handleUpdateFieldDraft}
           onDeleteField={fieldState.handleDeleteField}
+          onDeleteAllFields={fieldState.handleDeleteAllFields}
           onCreateToolChange={handleSetCreateTool}
           onUpdateRadioToolDraft={handleUpdateRadioToolDraft}
           onApplyPendingQuickRadioSelection={handleApplyPendingQuickRadioSelection}

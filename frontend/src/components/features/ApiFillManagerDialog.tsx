@@ -5,6 +5,12 @@ import { resolveApiUrl } from '../../services/apiConfig';
 import type { ApiFillManagerDialogProps } from '../../hooks/useWorkspaceTemplateApi';
 import './ApiFillManagerDialog.css';
 
+type ApiExampleId = 'curl' | 'node' | 'python';
+
+const EXAMPLE_PAYLOAD_PATH = './payload.json';
+const EXAMPLE_OUTPUT_PATH = './filled.pdf';
+const DEFAULT_SCHEMA_PREVIEW_FIELD_LIMIT = 20;
+
 function formatDateLabel(value?: string | null): string {
   if (!value) return 'Never';
   const parsed = new Date(value);
@@ -35,77 +41,94 @@ function formatMonthLabel(value?: string | null): string {
   }).format(new Date(Date.UTC(year, monthIndex, 1)));
 }
 
-function buildPayloadSnippet(schema: TemplateApiSchema | null): string {
-  return JSON.stringify(schema?.exampleData || {}, null, 2);
+function buildPayloadSnippet(schema: TemplateApiSchema | null, exportMode: MaterializePdfExportMode): string {
+  return JSON.stringify(
+    {
+      data: schema?.exampleData || {},
+      exportMode,
+      strict: true,
+    },
+    null,
+    2,
+  );
 }
 
-function buildPythonLiteral(value: unknown): string {
-  if (value === null || value === undefined) {
-    return 'None';
-  }
-  if (typeof value === 'boolean') {
-    return value ? 'True' : 'False';
-  }
-  if (typeof value === 'number') {
-    return Number.isFinite(value) ? String(value) : 'None';
-  }
-  if (typeof value === 'string') {
-    return JSON.stringify(value);
-  }
-  if (Array.isArray(value)) {
-    return `[${value.map((entry) => buildPythonLiteral(entry)).join(', ')}]`;
-  }
-  if (typeof value === 'object') {
-    const entries = Object.entries(value as Record<string, unknown>).map(
-      ([key, entry]) => `${JSON.stringify(key)}: ${buildPythonLiteral(entry)}`,
-    );
-    return `{${entries.join(', ')}}`;
-  }
-  return JSON.stringify(String(value));
+function buildSchemaPreviewSnippet(
+  schema: TemplateApiSchema | null,
+  exportMode: MaterializePdfExportMode,
+  maxFieldCount?: number,
+): string {
+  const sourceData = schema?.exampleData || {};
+  const entries = Object.entries(sourceData);
+  const previewData = maxFieldCount && entries.length > maxFieldCount
+    ? Object.fromEntries(entries.slice(0, maxFieldCount))
+    : sourceData;
+
+  return JSON.stringify(
+    {
+      data: previewData,
+      exportMode,
+      strict: true,
+    },
+    null,
+    2,
+  );
 }
 
-function buildCurlSnippet(fillUrl: string, payload: string, exportMode: MaterializePdfExportMode): string {
+function buildCurlSnippet(fillUrl: string): string {
   return [
     `curl -X POST "${fillUrl}" \\`,
     '  -H "Authorization: Basic $(printf \'%s:\' \"$API_KEY\" | base64)" \\',
     '  -H "Content-Type: application/json" \\',
-    `  -d '${JSON.stringify({ data: JSON.parse(payload), exportMode, strict: true }, null, 2)}'`,
+    `  --data "@${EXAMPLE_PAYLOAD_PATH}" \\`,
+    `  --output "${EXAMPLE_OUTPUT_PATH}"`,
   ].join('\n');
 }
 
-function buildNodeSnippet(fillUrl: string, payload: string, exportMode: MaterializePdfExportMode): string {
+function buildNodeSnippet(fillUrl: string): string {
   return [
+    "import { readFile, writeFile } from 'node:fs/promises';",
+    '',
     "const apiKey = process.env.DULLYPDF_API_KEY;",
+    `const payloadPath = ${JSON.stringify(EXAMPLE_PAYLOAD_PATH)};`,
+    "const payload = JSON.parse(await readFile(payloadPath, 'utf8'));",
+    '',
     `const response = await fetch(${JSON.stringify(fillUrl)}, {`,
     "  method: 'POST',",
     '  headers: {',
     "    'Content-Type': 'application/json',",
     "    Authorization: `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`,",
     '  },',
-    `  body: JSON.stringify({ data: ${payload}, exportMode: ${JSON.stringify(exportMode)}, strict: true }),`,
+    '  body: JSON.stringify(payload),',
     '});',
     '',
     "if (!response.ok) throw new Error(await response.text());",
     "const pdf = Buffer.from(await response.arrayBuffer());",
+    `await writeFile(${JSON.stringify(EXAMPLE_OUTPUT_PATH)}, pdf);`,
   ].join('\n');
 }
 
-function buildPythonSnippet(fillUrl: string, payloadLiteral: string, exportMode: MaterializePdfExportMode): string {
+function buildPythonSnippet(fillUrl: string): string {
   return [
     'import base64',
+    'import json',
     'import os',
     'import requests',
     '',
     "api_key = os.environ['DULLYPDF_API_KEY']",
     `url = ${JSON.stringify(fillUrl)}`,
-    `payload = {"data": ${payloadLiteral}, "exportMode": ${JSON.stringify(exportMode)}, "strict": True}`,
+    `payload_path = ${JSON.stringify(EXAMPLE_PAYLOAD_PATH)}`,
+    "with open(payload_path, 'r', encoding='utf-8') as payload_file:",
+    '    payload = json.load(payload_file)',
+    '',
     "auth = base64.b64encode(f'{api_key}:'.encode('utf-8')).decode('ascii')",
     "response = requests.post(url, json=payload, headers={",
     "    'Authorization': f'Basic {auth}',",
     "    'Content-Type': 'application/json',",
     '})',
     'response.raise_for_status()',
-    "open('filled.pdf', 'wb').write(response.content)",
+    `with open(${JSON.stringify(EXAMPLE_OUTPUT_PATH)}, 'wb') as output_file:`,
+    '    output_file.write(response.content)',
   ].join('\n');
 }
 
@@ -164,40 +187,87 @@ export default function ApiFillManagerDialog({
 }: ApiFillManagerDialogProps) {
   const [exportMode, setExportMode] = useState<MaterializePdfExportMode>('flat');
   const [copyNotice, setCopyNotice] = useState<string | null>(null);
+  const [selectedExampleId, setSelectedExampleId] = useState<ApiExampleId>('curl');
+  const [schemaPreviewExpanded, setSchemaPreviewExpanded] = useState(false);
 
   useEffect(() => {
     const nextMode = schema?.defaultExportMode === 'editable' ? 'editable' : 'flat';
     setExportMode(nextMode);
   }, [schema?.defaultExportMode, endpoint?.id]);
 
-  const payloadSnippet = useMemo(() => buildPayloadSnippet(schema), [schema]);
-  const pythonPayloadLiteral = useMemo(
-    () => buildPythonLiteral(schema?.exampleData || {}),
-    [schema],
-  );
+  useEffect(() => {
+    setCopyNotice(null);
+  }, [endpoint?.id, latestSecret, open, schema?.snapshotVersion]);
+
+  useEffect(() => {
+    setSchemaPreviewExpanded(false);
+  }, [endpoint?.id, schema?.snapshotVersion]);
+
   const fillUrl = useMemo(() => resolveApiUrl(String(endpoint?.fillPath || '').trim()), [endpoint?.fillPath]);
   const schemaUrl = useMemo(
     () => resolveApiUrl(endpoint?.id ? `/api/v1/fill/${encodeURIComponent(endpoint.id)}/schema` : ''),
     [endpoint?.id],
   );
-  const snippetExportMode = schema?.defaultExportMode === 'editable' ? 'editable' : 'flat';
+  const schemaFieldCount = useMemo(
+    () => Object.keys(schema?.exampleData || {}).length,
+    [schema?.exampleData],
+  );
+  const schemaPreviewLimit = schemaPreviewExpanded ? undefined : DEFAULT_SCHEMA_PREVIEW_FIELD_LIMIT;
+  const payloadSnippet = useMemo(
+    () => buildPayloadSnippet(schema, exportMode),
+    [exportMode, schema],
+  );
+  const schemaPreviewSnippet = useMemo(
+    () => buildSchemaPreviewSnippet(schema, exportMode, schemaPreviewLimit),
+    [exportMode, schema, schemaPreviewLimit],
+  );
+  const schemaPreviewIsTruncated = schemaFieldCount > DEFAULT_SCHEMA_PREVIEW_FIELD_LIMIT;
   const curlSnippet = useMemo(
-    () => buildCurlSnippet(fillUrl, payloadSnippet, snippetExportMode),
-    [fillUrl, payloadSnippet, snippetExportMode],
+    () => buildCurlSnippet(fillUrl),
+    [fillUrl],
   );
   const nodeSnippet = useMemo(
-    () => buildNodeSnippet(fillUrl, payloadSnippet, snippetExportMode),
-    [fillUrl, payloadSnippet, snippetExportMode],
+    () => buildNodeSnippet(fillUrl),
+    [fillUrl],
   );
   const pythonSnippet = useMemo(
-    () => buildPythonSnippet(fillUrl, pythonPayloadLiteral, snippetExportMode),
-    [fillUrl, pythonPayloadLiteral, snippetExportMode],
+    () => buildPythonSnippet(fillUrl),
+    [fillUrl],
   );
+  const examples = useMemo(
+    () => [
+      {
+        id: 'curl' as const,
+        label: 'cURL',
+        description: `Save the request body above as ${EXAMPLE_PAYLOAD_PATH}, then run a strict server-side smoke test.`,
+        snippet: curlSnippet,
+      },
+      {
+        id: 'node' as const,
+        label: 'Node',
+        description: `Uses native fetch, reads ${EXAMPLE_PAYLOAD_PATH}, and writes ${EXAMPLE_OUTPUT_PATH}.`,
+        snippet: nodeSnippet,
+      },
+      {
+        id: 'python' as const,
+        label: 'Python',
+        description: `Uses requests, reads ${EXAMPLE_PAYLOAD_PATH}, and writes ${EXAMPLE_OUTPUT_PATH}.`,
+        snippet: pythonSnippet,
+      },
+    ],
+    [curlSnippet, nodeSnippet, pythonSnippet],
+  );
+  const selectedExample = examples.find((example) => example.id === selectedExampleId) || examples[0];
 
   const endpointStatusLabel = endpoint?.status === 'revoked' ? 'Revoked' : endpoint ? 'Active' : 'Not published';
   const publishButtonLabel = !endpoint || endpoint.status === 'revoked' ? 'Generate key' : 'Republish snapshot';
   const isActiveEndpoint = endpoint?.status === 'active';
   const trackedFailureCount = (endpoint?.authFailureCount || 0) + (endpoint?.validationFailureCount || 0) + (endpoint?.runtimeFailureCount || 0);
+
+  const handleCopy = async (value: string, successNotice: string, failureNotice: string) => {
+    const copied = await copyText(value);
+    setCopyNotice(copied ? successNotice : failureNotice);
+  };
 
   return (
     <Dialog
@@ -301,14 +371,13 @@ export default function ApiFillManagerDialog({
               <p>Store this key on your server. DullyPDF only stores a hash after publish or rotation.</p>
             </div>
             <div className="template-api-dialog__secret-row">
-              <code>{latestSecret}</code>
+              <span className="template-api-dialog__secret-value" aria-label="API key">
+                {latestSecret}
+              </span>
               <button
                 type="button"
                 className="ui-button ui-button--ghost ui-button--compact"
-                onClick={async () => {
-                  const copied = await copyText(latestSecret);
-                  setCopyNotice(copied ? 'API key copied.' : 'Copy failed. Copy the key manually.');
-                }}
+                onClick={() => void handleCopy(latestSecret, 'API key copied.', 'Copy failed. Copy the key manually.')}
               >
                 Copy key
               </button>
@@ -332,33 +401,27 @@ export default function ApiFillManagerDialog({
               {isActiveEndpoint ? (
                 <>
                   <div className="template-api-dialog__endpoint-row">
-                    <div>
+                    <div className="template-api-dialog__endpoint-copy-target">
                       <span className="template-api-dialog__meta-label">URL</span>
-                      <code>{fillUrl}</code>
+                      <span className="template-api-dialog__endpoint-value">{fillUrl}</span>
                     </div>
                     <button
                       type="button"
                       className="ui-button ui-button--ghost ui-button--compact"
-                      onClick={async () => {
-                        const copied = await copyText(fillUrl);
-                        setCopyNotice(copied ? 'Endpoint URL copied.' : 'Copy failed. Copy the URL manually.');
-                      }}
+                      onClick={() => void handleCopy(fillUrl, 'Endpoint URL copied.', 'Copy failed. Copy the URL manually.')}
                     >
                       Copy URL
                     </button>
                   </div>
                   <div className="template-api-dialog__endpoint-row">
-                    <div>
+                    <div className="template-api-dialog__endpoint-copy-target">
                       <span className="template-api-dialog__meta-label">Schema URL</span>
-                      <code>{schemaUrl}</code>
+                      <span className="template-api-dialog__endpoint-value">{schemaUrl}</span>
                     </div>
                     <button
                       type="button"
                       className="ui-button ui-button--ghost ui-button--compact"
-                      onClick={async () => {
-                        const copied = await copyText(schemaUrl);
-                        setCopyNotice(copied ? 'Schema URL copied.' : 'Copy failed. Copy the schema URL manually.');
-                      }}
+                      onClick={() => void handleCopy(schemaUrl, 'Schema URL copied.', 'Copy failed. Copy the schema URL manually.')}
                     >
                       Copy schema URL
                     </button>
@@ -458,42 +521,70 @@ export default function ApiFillManagerDialog({
               <div className="template-api-dialog__card-header">
                 <div>
                   <h4>Schema</h4>
-                  <p>These are the JSON keys the published endpoint currently accepts.</p>
+                  <p>These are the JSON keys the published endpoint currently accepts. Save the request template below as <code>{EXAMPLE_PAYLOAD_PATH}</code> before running the examples.</p>
                 </div>
+                <button
+                  type="button"
+                  className="ui-button ui-button--ghost ui-button--compact"
+                  onClick={() => void handleCopy(payloadSnippet, 'Payload file copied.', 'Copy failed. Copy the payload file manually.')}
+                >
+                  Copy payload file
+                </button>
               </div>
               <EndpointSchemaSummary schema={schema} />
-              <pre className="template-api-dialog__code-block">{payloadSnippet}</pre>
+              {schemaPreviewIsTruncated ? (
+                <div className="template-api-dialog__schema-preview-actions">
+                  <span className="template-api-dialog__meta-support">
+                    Showing {schemaPreviewExpanded ? schemaFieldCount : DEFAULT_SCHEMA_PREVIEW_FIELD_LIMIT} of {schemaFieldCount} fields in the preview.
+                  </span>
+                  <button
+                    type="button"
+                    className="ui-button ui-button--ghost ui-button--compact"
+                    onClick={() => setSchemaPreviewExpanded((current) => !current)}
+                  >
+                    {schemaPreviewExpanded ? 'Show first 20 fields' : 'Show all fields'}
+                  </button>
+                </div>
+              ) : null}
+              <pre className="template-api-dialog__code-block">{schemaPreviewSnippet}</pre>
             </section>
 
             {isActiveEndpoint ? (
-              <section className="template-api-dialog__examples">
-                <article className="template-api-dialog__example">
-                  <div className="template-api-dialog__card-header">
-                    <div>
-                      <h4>cURL</h4>
-                      <p>Quick server-side smoke test with <code>strict=true</code>.</p>
-                    </div>
+              <section className="template-api-dialog__example">
+                <div className="template-api-dialog__card-header">
+                  <div>
+                    <h4>Examples</h4>
+                    <p>{selectedExample.description}</p>
                   </div>
-                  <pre className="template-api-dialog__code-block">{curlSnippet}</pre>
-                </article>
-                <article className="template-api-dialog__example">
-                  <div className="template-api-dialog__card-header">
-                    <div>
-                      <h4>Node</h4>
-                      <p>Uses native `fetch`, returns PDF bytes, and fails closed on unknown keys.</p>
-                    </div>
+                  <div className="template-api-dialog__example-controls">
+                    <label className="template-api-dialog__example-select">
+                      <span className="template-api-dialog__meta-label">Language</span>
+                      <select
+                        aria-label="Example language"
+                        value={selectedExampleId}
+                        onChange={(event) => setSelectedExampleId(event.target.value as ApiExampleId)}
+                      >
+                        {examples.map((example) => (
+                          <option key={example.id} value={example.id}>
+                            {example.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <button
+                      type="button"
+                      className="ui-button ui-button--ghost ui-button--compact"
+                      onClick={() => void handleCopy(
+                        selectedExample.snippet,
+                        `${selectedExample.label} example copied.`,
+                        `Copy failed. Copy the ${selectedExample.label} example manually.`,
+                      )}
+                    >
+                      Copy {selectedExample.label}
+                    </button>
                   </div>
-                  <pre className="template-api-dialog__code-block">{nodeSnippet}</pre>
-                </article>
-                <article className="template-api-dialog__example">
-                  <div className="template-api-dialog__card-header">
-                    <div>
-                      <h4>Python</h4>
-                      <p>Basic `requests` example for backend jobs with schema-checked smoke-test defaults.</p>
-                    </div>
-                  </div>
-                  <pre className="template-api-dialog__code-block">{pythonSnippet}</pre>
-                </article>
+                </div>
+                <pre className="template-api-dialog__code-block">{selectedExample.snippet}</pre>
               </section>
             ) : null}
           </>

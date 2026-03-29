@@ -516,7 +516,6 @@ def test_get_user_profile_includes_downgrade_retention(mocker) -> None:
                 "downgraded_at": "2026-03-01T00:00:00+00:00",
                 "grace_ends_at": "2026-03-31T00:00:00+00:00",
                 "saved_forms_limit": 3,
-                "fill_links_active_limit": 1,
                 "kept_template_ids": ["tpl-1", "tpl-2", "tpl-3"],
                 "pending_delete_template_ids": ["tpl-4"],
                 "pending_delete_link_ids": ["link-4"],
@@ -671,7 +670,7 @@ def test_activate_pro_membership_is_idempotent_for_same_stripe_event_id(mocker) 
     assert stored[adb.STRIPE_PROCESSED_EVENT_IDS_FIELD] == ["evt_pro_1"]
 
 
-def test_activate_pro_membership_with_subscription_writes_membership_and_billing_metadata(mocker) -> None:
+def test_activate_pro_membership_clears_retention_and_resets_monthly_pool(mocker) -> None:
     client = FakeFirestoreClient()
     doc = client.collection(adb.USERS_COLLECTION).document("uid-pro").seed(
         {
@@ -687,35 +686,28 @@ def test_activate_pro_membership_with_subscription_writes_membership_and_billing
     mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-02")
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-pro-subscription")
 
-    applied = adb.activate_pro_membership_with_subscription(
+    applied = adb.activate_pro_membership(
         "uid-pro",
         stripe_event_id="evt_pro_checkout_1",
-        customer_id="cus_123",
-        subscription_id="sub_123",
-        subscription_status="active",
-        subscription_price_id="price_monthly",
     )
 
     assert applied is True
     stored = doc.get().to_dict()
     assert stored[adb.ROLE_FIELD] == adb.ROLE_PRO
     assert stored[adb.OPENAI_CREDITS_MONTHLY_FIELD] == adb.PRO_MONTHLY_OPENAI_CREDITS
+    assert stored[adb.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD] == "2026-02"
     assert stored[adb.OPENAI_CREDITS_REFILL_FIELD] == 9
-    assert stored[adb.STRIPE_CUSTOMER_ID_FIELD] == "cus_123"
-    assert stored[adb.STRIPE_SUBSCRIPTION_ID_FIELD] == "sub_123"
-    assert stored[adb.STRIPE_SUBSCRIPTION_STATUS_FIELD] == "active"
-    assert stored[adb.STRIPE_SUBSCRIPTION_PRICE_ID_FIELD] == "price_monthly"
     assert stored[adb.STRIPE_PROCESSED_EVENT_IDS_FIELD] == ["evt_pro_checkout_1"]
     assert adb.DOWNGRADE_RETENTION_FIELD not in stored
 
 
-def test_activate_pro_membership_with_subscription_can_backfill_metadata_for_duplicate_event(mocker) -> None:
+def test_set_user_billing_subscription_backfills_metadata_without_touching_membership_state(mocker) -> None:
     client = FakeFirestoreClient()
     doc = client.collection(adb.USERS_COLLECTION).document("uid-pro").seed(
         {
             adb.ROLE_FIELD: adb.ROLE_PRO,
-            adb.OPENAI_CREDITS_MONTHLY_FIELD: adb.PRO_MONTHLY_OPENAI_CREDITS,
-            adb.OPENAI_CREDITS_REFILL_FIELD: 0,
+            adb.OPENAI_CREDITS_MONTHLY_FIELD: 321,
+            adb.OPENAI_CREDITS_REFILL_FIELD: 12,
             adb.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD: "2026-02",
             adb.STRIPE_PROCESSED_EVENT_IDS_FIELD: ["evt_repeat"],
         }
@@ -723,22 +715,52 @@ def test_activate_pro_membership_with_subscription_can_backfill_metadata_for_dup
     mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
     mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-backfill")
 
-    applied = adb.activate_pro_membership_with_subscription(
+    adb.set_user_billing_subscription(
         "uid-pro",
-        stripe_event_id="evt_repeat",
         customer_id="cus_backfill",
         subscription_id="sub_backfill",
         subscription_status="active",
         subscription_price_id="price_backfill",
     )
 
-    assert applied is False
     stored = doc.get().to_dict()
+    assert stored[adb.ROLE_FIELD] == adb.ROLE_PRO
+    assert stored[adb.OPENAI_CREDITS_MONTHLY_FIELD] == 321
+    assert stored[adb.OPENAI_CREDITS_REFILL_FIELD] == 12
     assert stored[adb.STRIPE_CUSTOMER_ID_FIELD] == "cus_backfill"
     assert stored[adb.STRIPE_SUBSCRIPTION_ID_FIELD] == "sub_backfill"
     assert stored[adb.STRIPE_SUBSCRIPTION_STATUS_FIELD] == "active"
     assert stored[adb.STRIPE_SUBSCRIPTION_PRICE_ID_FIELD] == "price_backfill"
     assert stored[adb.STRIPE_PROCESSED_EVENT_IDS_FIELD] == ["evt_repeat"]
+
+
+def test_activate_pro_membership_preserves_current_cycle_balance_when_reset_disabled(mocker) -> None:
+    client = FakeFirestoreClient()
+    doc = client.collection(adb.USERS_COLLECTION).document("uid-pro").seed(
+        {
+            adb.ROLE_FIELD: adb.ROLE_PRO,
+            adb.OPENAI_CREDITS_MONTHLY_FIELD: 363,
+            adb.OPENAI_CREDITS_REFILL_FIELD: 9,
+            adb.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD: "2026-03",
+        }
+    )
+    mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database._current_month_cycle_key", return_value="2026-03")
+    mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-pro-invoice")
+
+    applied = adb.activate_pro_membership(
+        "uid-pro",
+        stripe_event_id="evt_invoice_sync",
+        reset_monthly_credits=False,
+    )
+
+    assert applied is True
+    stored = doc.get().to_dict()
+    assert stored[adb.ROLE_FIELD] == adb.ROLE_PRO
+    assert stored[adb.OPENAI_CREDITS_MONTHLY_FIELD] == 363
+    assert stored[adb.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD] == "2026-03"
+    assert stored[adb.OPENAI_CREDITS_REFILL_FIELD] == 9
+    assert stored[adb.STRIPE_PROCESSED_EVENT_IDS_FIELD] == ["evt_invoice_sync"]
 
 
 def test_set_and_clear_user_downgrade_retention_round_trip(mocker) -> None:
@@ -753,7 +775,6 @@ def test_set_and_clear_user_downgrade_retention_round_trip(mocker) -> None:
         downgraded_at="2026-03-01T00:00:00+00:00",
         grace_ends_at="2026-03-31T00:00:00+00:00",
         saved_forms_limit=3,
-        fill_links_active_limit=1,
         kept_template_ids=["tpl-1", "tpl-2", "tpl-3"],
         pending_delete_template_ids=["tpl-4"],
         pending_delete_link_ids=["link-4"],

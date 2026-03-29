@@ -47,8 +47,8 @@ function makeProfile(email) {
       detectMaxPages: 100,
       fillableMaxPages: 1000,
       savedFormsMax: 20,
-      fillLinksActiveMax: 10,
-      fillLinkResponsesMax: 1000,
+      fillLinkResponsesMonthlyMax: 10000,
+      signingRequestsMonthlyMax: 10000,
     },
   };
 }
@@ -422,6 +422,9 @@ async function main() {
     logStep('saving signing draft');
     await page.locator('label:has-text("Signer name") input').fill('Alex Signer');
     await page.locator('label:has-text("Signer email") input').fill('alex.signer@example.com');
+    await page.getByRole('checkbox', {
+      name: /I reviewed the blocked-category list.*confirm this document is eligible/i,
+    }).check();
     await page.waitForFunction(() => {
       const buttons = Array.from(document.querySelectorAll('button'));
       const saveButton = buttons.find((button) => button.textContent?.trim() === 'Save Signing Draft');
@@ -442,11 +445,6 @@ async function main() {
       const sendButton = buttons.find((button) => button.textContent?.trim() === 'Review and Send');
       return sendButton instanceof HTMLButtonElement && !sendButton.disabled;
     }, { timeout: 15000 });
-    const materializeResponse = page.waitForResponse((response) => {
-      return response.url().includes('/api/forms/materialize')
-        && response.request().method() === 'POST'
-        && response.ok();
-    }, { timeout: 15000 });
     const sendDraftResponse = page.waitForResponse((response) => {
       return response.url().includes('/api/signing/requests/signing-owner-verify-req/send')
         && response.request().method() === 'POST'
@@ -458,7 +456,6 @@ async function main() {
       }
       button.click();
     });
-    await materializeResponse;
     await sendDraftResponse;
     await page.getByText(/Sent 1 signing request\./i).waitFor({ timeout: 10000 });
 

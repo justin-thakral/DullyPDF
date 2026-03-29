@@ -53,6 +53,7 @@ from backend.services.pdf_service import (
     parse_json_list_form_field,
     resolve_upload_limit,
     safe_pdf_download_filename,
+    sha256_hex_for_bytes,
     validate_pdf_for_detection,
     write_upload_to_temp,
 )
@@ -81,16 +82,56 @@ def _cleanup_uploaded_paths(paths: List[str]) -> None:
             pass
 
 
+def _sync_saved_form_retention(user_id: str) -> Optional[Dict[str, Any]]:
+    # Saved-form endpoints must participate in downgrade retention so direct
+    # navigation outside Profile still computes the current access-lock state
+    # before reads or writes continue.
+    return sync_user_downgrade_retention(user_id, create_if_missing=True)
+
+
+def _locked_template_ids_from_summary(retention_summary: Optional[Dict[str, Any]]) -> set[str]:
+    pending_ids = retention_summary.get("pendingDeleteTemplateIds") if isinstance(retention_summary, dict) else None
+    if not isinstance(pending_ids, list):
+        return set()
+    return {
+        str(template_id or "").strip()
+        for template_id in pending_ids
+        if str(template_id or "").strip()
+    }
+
+
+def _ensure_saved_form_is_accessible(
+    form_id: str,
+    *,
+    retention_summary: Optional[Dict[str, Any]],
+    detail: str | None = None,
+) -> None:
+    if not form_id:
+        return
+    if form_id not in _locked_template_ids_from_summary(retention_summary):
+        return
+    raise HTTPException(
+        status_code=409,
+        detail=detail
+        or "This saved form is locked on the base plan. Upgrade to access it again.",
+    )
+
+
 @router.get("/api/saved-forms")
 async def list_saved_forms(authorization: Optional[str] = Header(default=None)) -> Dict[str, Any]:
     """List saved form metadata for the current user."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
+    locked_template_ids = _locked_template_ids_from_summary(retention_summary)
     templates = list_templates(user.app_user_id)
     forms = [
         {
             "id": tpl.id,
             "name": tpl.name or tpl.pdf_bucket_path or "Saved form",
             "createdAt": tpl.created_at,
+            "accessStatus": "locked" if tpl.id in locked_template_ids else "accessible",
+            "locked": tpl.id in locked_template_ids,
+            "lockReason": "plan_locked" if tpl.id in locked_template_ids else None,
         }
         for tpl in templates
     ]
@@ -101,8 +142,10 @@ async def list_saved_forms(authorization: Optional[str] = Header(default=None)) 
 async def get_saved_form(form_id: str, authorization: Optional[str] = Header(default=None)) -> Dict[str, Any]:
     """Return metadata for a saved form."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
     if not form_id:
         raise HTTPException(status_code=400, detail="Missing form id")
+    _ensure_saved_form_is_accessible(form_id, retention_summary=retention_summary)
     template = get_template(form_id, user.app_user_id)
     if not template:
         raise HTTPException(status_code=404, detail="Form not found")
@@ -155,8 +198,10 @@ async def download_saved_form(
 ):
     """Stream a saved form PDF from storage."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
     if not form_id:
         raise HTTPException(status_code=400, detail="Missing form id")
+    _ensure_saved_form_is_accessible(form_id, retention_summary=retention_summary)
     template = get_template(form_id, user.app_user_id)
     if not template:
         raise HTTPException(status_code=404, detail="Form not found")
@@ -188,8 +233,10 @@ async def create_saved_form_session(
 ) -> Dict[str, Any]:
     """Create a detection session for a saved form using extracted fields."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
     if not form_id:
         raise HTTPException(status_code=400, detail="Missing form id")
+    _ensure_saved_form_is_accessible(form_id, retention_summary=retention_summary)
     template = get_template(form_id, user.app_user_id)
     if not template:
         raise HTTPException(status_code=404, detail="Form not found")
@@ -211,7 +258,9 @@ async def create_saved_form_session(
     session_id = str(uuid.uuid4())
     entry: Dict[str, Any] = {
         "user_id": user.app_user_id,
+        "source_template_id": template.id,
         "source_pdf": template.name or template.pdf_bucket_path or "saved-form.pdf",
+        "source_pdf_sha256": sha256_hex_for_bytes(pdf_bytes),
         "pdf_path": template.pdf_bucket_path,
         "fields": fields,
         "page_count": page_count,
@@ -242,6 +291,7 @@ async def save_form(
 ) -> Dict[str, Any]:
     """Upload a PDF and persist it as a saved form + template for the user."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
     if not pdf:
         raise HTTPException(status_code=400, detail="No PDF file uploaded")
 
@@ -253,6 +303,11 @@ async def save_form(
     overwrite_form_id = overwriteFormId.strip() if overwriteFormId else ""
     overwrite_template = None
     if overwrite_form_id:
+        _ensure_saved_form_is_accessible(
+            overwrite_form_id,
+            retention_summary=retention_summary,
+            detail="This saved form is locked on the base plan. Upgrade to overwrite it again.",
+        )
         overwrite_template = get_template(overwrite_form_id, user.app_user_id)
         if not overwrite_template:
             raise HTTPException(status_code=404, detail="Form not found")
@@ -454,8 +509,14 @@ async def save_form(
 async def delete_saved_form(form_id: str, authorization: Optional[str] = Header(default=None)) -> Dict[str, Any]:
     """Delete a saved form and its storage objects."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
     if not form_id:
         raise HTTPException(status_code=400, detail="Missing form id")
+    _ensure_saved_form_is_accessible(
+        form_id,
+        retention_summary=retention_summary,
+        detail="This saved form is locked on the base plan. Upgrade to delete it again.",
+    )
     try:
         removed = delete_saved_form_assets(form_id, user.app_user_id, hard_delete_link_records=False)
     except Exception as exc:
@@ -474,8 +535,14 @@ async def update_saved_form_editor_snapshot(
 ) -> Dict[str, Any]:
     """Persist a ready-to-hydrate editor snapshot for an existing saved form."""
     user = require_user(authorization)
+    retention_summary = _sync_saved_form_retention(user.app_user_id)
     if not form_id:
         raise HTTPException(status_code=400, detail="Missing form id")
+    _ensure_saved_form_is_accessible(
+        form_id,
+        retention_summary=retention_summary,
+        detail="This saved form is locked on the base plan. Upgrade to edit it again.",
+    )
     template = get_template(form_id, user.app_user_id)
     if not template:
         raise HTTPException(status_code=404, detail="Form not found")

@@ -13,9 +13,11 @@ const limits: ProfileLimits = {
   detectMaxPages: 10,
   fillableMaxPages: 20,
   savedFormsMax: 5,
-  fillLinksActiveMax: 1,
-  fillLinkResponsesMax: 5,
-  signingRequestsPerDocumentMax: 12,
+  fillLinkResponsesMonthlyMax: 25,
+  templateApiActiveMax: 2,
+  templateApiRequestsMonthlyMax: 250,
+  templateApiMaxPages: 25,
+  signingRequestsMonthlyMax: 12,
 };
 
 const savedForms: SavedFormSummary[] = [
@@ -63,30 +65,38 @@ const billingConfig: BillingProfileConfig = {
 
 const retentionSummary: DowngradeRetentionSummary = {
   status: 'grace_period',
-  policyVersion: 1,
+  policyVersion: 2,
   downgradedAt: '2026-03-01T00:00:00Z',
-  graceEndsAt: '2026-03-31T00:00:00Z',
-  daysRemaining: 21,
+  graceEndsAt: null,
+  daysRemaining: 0,
   savedFormsLimit: 3,
-  fillLinksActiveLimit: 1,
   keptTemplateIds: ['form-alpha', 'form-beta', 'form-gamma'],
   pendingDeleteTemplateIds: ['form-delta'],
   pendingDeleteLinkIds: ['link-delta'],
+  accessibleTemplateIds: ['form-alpha', 'form-beta', 'form-gamma'],
+  lockedTemplateIds: ['form-delta'],
+  lockedLinkIds: ['link-delta'],
+  selectionMode: 'oldest_created',
+  manualSelectionAllowed: false,
   counts: {
     keptTemplates: 3,
     pendingTemplates: 1,
     affectedGroups: 1,
     pendingLinks: 1,
     closedLinks: 1,
+    affectedSigningRequests: 3,
+    affectedSigningDrafts: 1,
+    retainedSigningRequests: 2,
+    completedSigningRequests: 1,
   },
   templates: [
-    { id: 'form-alpha', name: 'Intake Form Alpha', createdAt: '2026-01-01T00:00:00Z', status: 'kept' },
-    { id: 'form-beta', name: 'Consent Form Beta', createdAt: '2026-01-02T00:00:00Z', status: 'kept' },
-    { id: 'form-gamma', name: 'Referral Gamma', createdAt: '2026-01-03T00:00:00Z', status: 'kept' },
-    { id: 'form-delta', name: 'Follow Up Delta', createdAt: '2026-01-04T00:00:00Z', status: 'pending_delete' },
+    { id: 'form-alpha', name: 'Intake Form Alpha', createdAt: '2026-01-01T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'form-beta', name: 'Consent Form Beta', createdAt: '2026-01-02T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'form-gamma', name: 'Referral Gamma', createdAt: '2026-01-03T00:00:00Z', status: 'kept', accessStatus: 'accessible' },
+    { id: 'form-delta', name: 'Follow Up Delta', createdAt: '2026-01-04T00:00:00Z', status: 'pending_delete', accessStatus: 'locked', locked: true },
   ],
-  groups: [{ id: 'group-1', name: 'Admissions', templateCount: 4, pendingTemplateCount: 1, willDelete: false }],
-  links: [{ id: 'link-delta', title: 'Delta Link', scopeType: 'template', status: 'closed', templateId: 'form-delta', pendingDeleteReason: 'template_pending_delete' }],
+  groups: [{ id: 'group-1', name: 'Admissions', templateCount: 4, pendingTemplateCount: 1, willDelete: false, accessStatus: 'locked', locked: true, lockedTemplateIds: ['form-delta'] }],
+  links: [{ id: 'link-delta', title: 'Delta Link', scopeType: 'template', status: 'closed', templateId: 'form-delta', pendingDeleteReason: 'template_pending_delete', accessStatus: 'locked', locked: true }],
 };
 
 describe('ProfilePage', () => {
@@ -111,13 +121,18 @@ describe('ProfilePage', () => {
     );
 
     expect(screen.getAllByText('Basic tier').length).toBeGreaterThan(0);
-    expect(screen.getByText('8')).toBeTruthy();
+    expect(screen.getAllByText('8').length).toBeGreaterThan(0);
     expect(screen.getByText(String(limits.detectMaxPages))).toBeTruthy();
     expect(screen.getByText(String(limits.fillableMaxPages))).toBeTruthy();
-    expect(screen.getAllByText(String(limits.savedFormsMax)).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(String(limits.fillLinksActiveMax)).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(String(limits.fillLinkResponsesMax)).length).toBeGreaterThan(0);
-    expect(screen.getByText(String(limits.signingRequestsPerDocumentMax))).toBeTruthy();
+    expect(screen.getAllByText(new RegExp(String(limits.savedFormsMax))).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(String(limits.fillLinkResponsesMonthlyMax)).length).toBeGreaterThan(0);
+    expect(screen.getByText('No plan cap')).toBeTruthy();
+    expect(screen.getAllByText(String(limits.templateApiActiveMax)).length).toBeGreaterThan(0);
+    expect(screen.getByText(String(limits.templateApiRequestsMonthlyMax))).toBeTruthy();
+    expect(screen.getAllByText(String(limits.templateApiMaxPages)).length).toBeGreaterThan(0);
+    expect(screen.getByText('Signing requests / month')).toBeTruthy();
+    expect(screen.getAllByText(String(limits.signingRequestsMonthlyMax)).length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: 'All enforced limits' })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Upgrade to Pro Monthly/ })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Upgrade to Pro Yearly/ })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Refill 500 Credits/ })).toBeTruthy();
@@ -142,6 +157,10 @@ describe('ProfilePage', () => {
     );
 
     expect(screen.getAllByText('God tier').length).toBeGreaterThan(0);
+    expect(screen.getAllByText(String(limits.fillLinkResponsesMonthlyMax)).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(String(limits.templateApiActiveMax)).length).toBeGreaterThan(0);
+    expect(screen.getByText(String(limits.templateApiRequestsMonthlyMax))).toBeTruthy();
+    expect(screen.getByText(String(limits.signingRequestsMonthlyMax))).toBeTruthy();
     expect(screen.getAllByText('Unlimited').length).toBeGreaterThan(0);
     expect(screen.queryByRole('heading', { name: 'Stripe billing controls' })).toBeNull();
   });
@@ -434,7 +453,7 @@ describe('ProfilePage', () => {
     ).toBeTruthy();
   });
 
-  it('shows downgrade retention summary and re-open action', async () => {
+  it('shows locked-template summary and review action', async () => {
     const user = userEvent.setup();
     const onOpenDowngradeRetention = vi.fn();
 
@@ -457,14 +476,17 @@ describe('ProfilePage', () => {
       />,
     );
 
-    expect(screen.getByRole('heading', { name: 'Downgrade retention queue' })).toBeTruthy();
-    expect(screen.getByText(/queued for deletion on/)).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Review retention queue' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Follow Up Delta' })).toBeTruthy();
-    expect(screen.getByText('Queued for deletion')).toBeTruthy();
-    expect(screen.getAllByText('Kept').length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: 'Base plan access locks' })).toBeTruthy();
+    expect(screen.getByText(/stay preserved but locked until you upgrade/)).toBeTruthy();
+    expect(
+      screen.getByText((content) => content.includes('cannot be sent until you upgrade and restore access')),
+    ).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Review locked templates' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Review lock' })).toBeTruthy();
+    expect(screen.getByText('Locked on base')).toBeTruthy();
+    expect(screen.getAllByText('Accessible on base').length).toBeGreaterThan(0);
 
-    await user.click(screen.getByRole('button', { name: 'Review retention queue' }));
+    await user.click(screen.getByRole('button', { name: 'Review locked templates' }));
     expect(onOpenDowngradeRetention).toHaveBeenCalledTimes(1);
   });
 

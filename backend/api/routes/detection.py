@@ -31,6 +31,7 @@ from backend.services.pdf_service import (
     get_pdf_page_count,
     log_pdf_label,
     read_upload_bytes,
+    sha256_hex_for_bytes,
     validate_pdf_for_detection,
     resolve_upload_limit,
 )
@@ -155,6 +156,7 @@ async def detect_fields(
     )
     if not pdf_bytes:
         raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    source_pdf_sha256 = sha256_hex_for_bytes(pdf_bytes)
     validation = validate_pdf_for_detection(pdf_bytes)
     pdf_bytes = validation.pdf_bytes
     page_count = validation.page_count
@@ -186,6 +188,7 @@ async def detect_fields(
             source_pdf,
             user,
             page_count=page_count,
+            source_pdf_sha256=source_pdf_sha256,
             prewarm_rename=prewarm_rename,
             prewarm_remap=prewarm_remap,
         )
@@ -198,6 +201,7 @@ async def detect_fields(
             source_pdf,
             user,
             page_count=page_count,
+            source_pdf_sha256=source_pdf_sha256,
             prewarm_rename=prewarm_rename,
             prewarm_remap=prewarm_remap,
         )
@@ -248,6 +252,7 @@ async def get_detection_status(
         "status": status,
         "pipeline": "commonforms",
         "sourcePdf": metadata.get("source_pdf"),
+        "sourcePdfSha256": metadata.get("source_pdf_sha256"),
         "pageCount": metadata.get("page_count"),
         "detectionQueuedAt": metadata.get("detection_queued_at"),
         "detectionStartedAt": metadata.get("detection_started_at"),
@@ -276,6 +281,22 @@ async def get_detection_status(
     if result_path:
         try:
             response["result"] = download_session_json(result_path) or {}
+        except Exception as exc:
+            if _is_storage_not_found_error(exc):
+                raise HTTPException(status_code=404, detail="Session data not found") from exc
+            raise HTTPException(status_code=500, detail="Failed to load session data") from exc
+    checkbox_rules_path = metadata.get("checkbox_rules_path")
+    if checkbox_rules_path:
+        try:
+            response["checkboxRules"] = download_session_json(checkbox_rules_path) or []
+        except Exception as exc:
+            if _is_storage_not_found_error(exc):
+                raise HTTPException(status_code=404, detail="Session data not found") from exc
+            raise HTTPException(status_code=500, detail="Failed to load session data") from exc
+    text_transform_rules_path = metadata.get("text_transform_rules_path")
+    if text_transform_rules_path:
+        try:
+            response["textTransformRules"] = download_session_json(text_transform_rules_path) or []
         except Exception as exc:
             if _is_storage_not_found_error(exc):
                 raise HTTPException(status_code=404, detail="Session data not found") from exc
