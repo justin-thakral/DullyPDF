@@ -60,3 +60,12 @@
   transform: translateY(-1px);
 }
 
+.ui-button:disabled,
+.ui-button[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: auto;
+  transform: none;
+  box-shadow: none;
+}
+

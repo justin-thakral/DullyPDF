@@ -71,15 +71,15 @@ def resolve_recaptcha_project_id() -> str:
 def resolve_recaptcha_min_score() -> float:
     raw = _env_value("RECAPTCHA_MIN_SCORE")
     if not raw:
-        return 0.5
+        return 0.2
     try:
         value = float(raw)
     except ValueError:
-        return 0.5
+        return 0.2
     if not math.isfinite(value):
-        return 0.5
+        return 0.2
     if value < 0.0 or value > 1.0:
-        return 0.5
+        return 0.2
     return value
 
 
@@ -169,11 +169,21 @@ async def verify_recaptcha_token(
 
     min_score = resolve_recaptcha_min_score()
     risk = data.get("riskAnalysis", {}) if isinstance(data, dict) else {}
+    raw_score = risk.get("score")
+    if raw_score is None:
+        logger.warning(
+            "reCAPTCHA assessment returned no score (riskAnalysis=%r); treating as 0.0",
+            risk,
+        )
     try:
-        score = float(risk.get("score", 0))
+        score = float(raw_score) if raw_score is not None else 0.0
     except (TypeError, ValueError):
         score = 0.0
     if score < min_score:
+        logger.warning(
+            "reCAPTCHA score %.2f below threshold %.2f (action=%s, ip=%s)",
+            score, min_score, expected_action, resolve_client_ip(request),
+        )
         raise HTTPException(status_code=400, detail="Recaptcha score too low")
 
 

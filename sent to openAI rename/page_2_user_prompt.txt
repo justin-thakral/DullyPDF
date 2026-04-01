@@ -79,4 +79,26 @@ x84	(type=text, label_dist=14, overlaps_label=0, w_ratio=0.44, h_ratio=0.02)
 8z2	(type=text, label_dist=5, overlaps_label=0, w_ratio=0.22, h_ratio=0.02)
 END_FIELD_LIST
 
+CHECKBOX_ROW_ORDER_HINTS (use these to resolve left-to-right option assignment):
+- Same-row checkboxes left→right: 3gj="“fen-phen”? Yes No", 72y="“fen-phen”? Yes No". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: xqn="operations? Yes No", fr4="operations? Yes No". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 9jf="transfusion? Yes No", yqt="transfusion? Yes No". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 2ej="pregnant? Yes No", ueu="pregnant? Yes No". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: s6q="Are nursing? Yes No", vqw="Are nursing? Yes No". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: k9s="control? Yes No", z2r="control? Yes No". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: r5n="Anemia", p4s="Fainting", h9q="Radiation". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: khd="Arthritis,", nwn="Glaucoma", cjt="Respiratory". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: yhe="Artificial", mxc="Headaches", s4t="Rheumatic". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: vpv="Artificial joints, pins, etc.", jzx="Heart", sgu="Scarlet". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 65w="Asthma", z7w="Heart", wh9="Sexually". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: um2="Bleeding", rkw="Hemophilia", 757="Stroke". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: zue="Blood", y3w="Hepatitis", aac="Swelling". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: j3r="Cancer", at9="High", 8fw="Thyroid". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: cys="Chemical", su3="HIV AIDS", a6b="Tobacco". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 4k4="Chemotherapy", 65k="Jaw", zgq="Tonsillitis". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: z55="Circulatory", 3ck="Kidney", 8dn="Tuberculosis". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 8e7="Congenital", a42="Liver", xtq="Ulcer". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 7cx="Diabetes", hbc="Mitral". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: u7a="Epilepsy", skc="Pacemaker". The leftmost field maps to the first option in the label text.
+
 Return the rename output lines now.

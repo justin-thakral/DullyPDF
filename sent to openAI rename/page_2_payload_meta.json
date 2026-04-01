@@ -26,9 +26,9 @@
       "format": "jpg"
     }
   },
-  "system_prompt_chars": 8225,
-  "user_prompt_chars": 7612,
-  "total_prompt_chars": 15837,
+  "system_prompt_chars": 8647,
+  "user_prompt_chars": 10592,
+  "total_prompt_chars": 19239,
   "overlay_map": {
     "39c": 91,
     "bcu": 90,

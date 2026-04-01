@@ -37,6 +37,9 @@ from fieldDetecting.rename_pipeline.combinedSrc.checkbox_label_hints import (
 )
 from fieldDetecting.rename_pipeline.combinedSrc.field_overlay import draw_overlay
 from fieldDetecting.rename_pipeline.combinedSrc.prompt_builder import build_prompt
+from fieldDetecting.rename_pipeline.combinedSrc.rename_resolver import (
+    _attach_checkbox_label_hints as _attach_checkbox_label_hints_real,
+)
 from fieldDetecting.rename_pipeline.combinedSrc.vision_utils import image_bgr_to_data_url
 from fieldDetecting.rename_pipeline.combinedSrc.coords import PageBox
 
@@ -104,28 +107,7 @@ def _attach_checkbox_label_hints(
     *,
     page_candidates: Dict[str, Any],
 ) -> List[Dict[str, Any]]:
-    labels = [
-        entry
-        for entry in (page_candidates.get("labels") or [])
-        if isinstance(entry, dict)
-        and isinstance(entry.get("bbox"), list)
-        and len(entry.get("bbox")) == 4
-        and str(entry.get("text") or "").strip()
-    ]
-    if not labels:
-        return overlay_fields
-    for field in overlay_fields:
-        if str(field.get("type") or "").lower() != "checkbox":
-            continue
-        rect = field.get("rect")
-        if not isinstance(rect, list) or len(rect) != 4:
-            continue
-        best = pick_best_checkbox_label([float(v) for v in rect], labels)
-        if best:
-            hint_text = normalize_checkbox_hint_text(str(best.get("text") or ""), max_chars=48)
-            field["labelHintText"] = hint_text
-            field["labelHintBbox"] = best.get("bbox")
-    return overlay_fields
+    return _attach_checkbox_label_hints_real(overlay_fields, page_candidates=page_candidates)
 
 
 def _build_candidates(

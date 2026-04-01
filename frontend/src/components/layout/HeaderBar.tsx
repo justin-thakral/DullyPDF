@@ -73,6 +73,7 @@ type HeaderBarProps = {
   onDemoLockedAction?: () => void;
   demoFillLinkDocsHref?: string;
   demoCreateGroupDocsHref?: string;
+  onBlockedAction?: (message: string) => void;
 };
 
 function isSchemaPrerequisiteHint(reason: string | null | undefined): boolean {
@@ -107,6 +108,25 @@ function formatGroupTemplateOptionLabel(
     return `${baseName} (Reload needed)`;
   }
   return baseName;
+}
+
+function getOperationBusyReason(flags: {
+  mappingInProgress?: boolean;
+  mapSchemaInProgress?: boolean;
+  renameInProgress?: boolean;
+  renameAndMapGroupInProgress?: boolean;
+  downloadInProgress?: boolean;
+  downloadGroupInProgress?: boolean;
+  saveInProgress?: boolean;
+  groupTemplateSwitchInProgress?: boolean;
+}): string | null {
+  if (flags.mappingInProgress || flags.mapSchemaInProgress) return 'Please wait — a mapping operation is still running.';
+  if (flags.renameInProgress) return 'Please wait — rename is still running.';
+  if (flags.renameAndMapGroupInProgress) return 'Please wait — group rename + map is still running.';
+  if (flags.downloadInProgress || flags.downloadGroupInProgress) return 'Please wait — a download is in progress.';
+  if (flags.saveInProgress) return 'Please wait — save is in progress.';
+  if (flags.groupTemplateSwitchInProgress) return 'Please wait — switching group template.';
+  return null;
 }
 
 /**
@@ -172,6 +192,7 @@ export function HeaderBar({
   onDemoLockedAction,
   demoFillLinkDocsHref,
   demoCreateGroupDocsHref,
+  onBlockedAction,
 }: HeaderBarProps) {
   const hasMappingControls = Boolean(
     onChooseDataSource || onMapSchema || onRename || onRenameAndMap || onRenameAndMapGroup || onOpenSearchFill || onOpenFillLink,
@@ -234,6 +255,16 @@ export function HeaderBar({
   const disableDownloadGroup = demoOverride ? false : !canDownloadGroup || downloadGroupInProgress;
   const disableSave = demoOverride ? true : !canSave || saveInProgress;
   const disableDataSource = mappingInProgress || demoOverride;
+  const busyReason = getOperationBusyReason({
+    mappingInProgress, mapSchemaInProgress, renameInProgress,
+    renameAndMapGroupInProgress, downloadInProgress, downloadGroupInProgress,
+    saveInProgress, groupTemplateSwitchInProgress,
+  });
+  const guardClick = (blocked: boolean, reason: string | null, action: () => void) => {
+    if (demoOverride) { onDemoLockedAction?.(); return; }
+    if (blocked) { if (reason) onBlockedAction?.(reason); return; }
+    action();
+  };
   const activeGroupTemplate =
     groupTemplates.find((template) => template.id === activeGroupTemplateId) ||
     groupTemplates[0] ||
@@ -397,6 +428,8 @@ export function HeaderBar({
                 className="ui-group-select ui-group-select--disabled"
                 aria-live="polite"
                 title={activeGroupTemplateFullLabel}
+                onClick={() => { if (busyReason) onBlockedAction?.(busyReason); }}
+                style={{ cursor: 'not-allowed' }}
               >
                 {activeGroupTemplateDisplayLabel}
               </div>
@@ -523,15 +556,11 @@ export function HeaderBar({
                   className="ui-button ui-button--ghost ui-button--compact data-source__button"
                   type="button"
                   data-demo-target="data-source"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
+                  onClick={() => guardClick(disableDataSource, busyReason || 'Data source is unavailable right now.', () => {
                     setShowGroupMenu(false);
                     setShowDataMenu((prev) => !prev);
-                  }}
-                  disabled={disableDataSource}
+                  })}
+                  aria-disabled={disableDataSource}
                   aria-haspopup="menu"
                   aria-expanded={showDataMenu}
                 >
@@ -640,14 +669,8 @@ export function HeaderBar({
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
                   data-demo-target="openai-rename"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onRename?.();
-                  }}
-                  disabled={disableRename}
+                  onClick={() => guardClick(disableRename, busyReason || renameTooltip, () => onRename?.())}
+                  aria-disabled={disableRename}
                   title={renameTooltip}
                 >
                   {renameLabel}
@@ -659,14 +682,7 @@ export function HeaderBar({
                   type="button"
                   data-demo-target="openai-remap"
                   aria-disabled={disableMapSchema}
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onMapSchema?.();
-                  }}
-                  disabled={disableMapSchema}
+                  onClick={() => guardClick(disableMapSchema, busyReason || mapSchemaTooltip, () => onMapSchema?.())}
                   title={mapSchemaTooltip}
                 >
                   {mapSchemaLabel}
@@ -676,14 +692,8 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onRenameAndMap?.();
-                  }}
-                  disabled={disableRenameAndMap}
+                  onClick={() => guardClick(disableRenameAndMap, busyReason || renameAndMapTooltip, () => onRenameAndMap?.())}
+                  aria-disabled={disableRenameAndMap}
                   title={renameAndMapTooltip}
                 >
                   {renameAndMapLabel}
@@ -693,14 +703,8 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onRenameAndMapGroup?.();
-                  }}
-                  disabled={disableRenameAndMapGroup}
+                  onClick={() => guardClick(disableRenameAndMapGroup, busyReason || renameAndMapGroupTooltip, () => onRenameAndMapGroup?.())}
+                  aria-disabled={disableRenameAndMapGroup}
                   title={renameAndMapGroupTooltip}
                 >
                   {renameAndMapGroupLabel}
@@ -712,8 +716,8 @@ export function HeaderBar({
                     className="ui-button ui-button--ghost ui-button--compact"
                     type="button"
                     data-demo-target="search-fill"
-                    onClick={onOpenSearchFill}
-                    disabled={disableSearch}
+                    onClick={() => guardClick(disableSearch, busyReason || 'Search requires a connected data source.', () => onOpenSearchFill?.())}
+                    aria-disabled={disableSearch}
                   >
                     Search, Fill &amp; Clear
                   </button>
@@ -742,14 +746,8 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onOpenFillLink();
-                  }}
-                  disabled={disableFillLink}
+                  onClick={() => guardClick(disableFillLink, busyReason || 'Load a saved template to use Fill By Web Form Link + Sign.', () => onOpenFillLink())}
+                  aria-disabled={disableFillLink}
                   title={canFillLink ? 'Publish or manage a DullyPDF web form link.' : 'Load a saved template to use Fill By Web Form Link + Sign.'}
                 >
                   Fill By Web Form Link + Sign
@@ -759,14 +757,8 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onOpenSignatureRequest();
-                  }}
-                  disabled={disableSendForSignature}
+                  onClick={() => guardClick(disableSendForSignature, busyReason || 'Load a PDF to prepare a signing request.', () => onOpenSignatureRequest())}
+                  aria-disabled={disableSendForSignature}
                   title={canSendForSignature ? 'Create a signing request draft and email it to recipients.' : 'Load a PDF to prepare a signing request.'}
                 >
                   Send PDF for Signature by email
@@ -781,15 +773,9 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--primary ui-button--compact ui-header__save"
                   type="button"
-                  onClick={() => {
-                    if (demoOverride) {
-                      onDemoLockedAction?.();
-                      return;
-                    }
-                    onOpenTemplateApi();
-                  }}
-                  disabled={disableTemplateApi}
-                  title={canOpenTemplateApi ? 'Publish or manage a template-scoped PDF Fill API endpoint.' : 'Save a template to enable API Fill.'}
+                  onClick={() => guardClick(disableTemplateApi, busyReason || 'Save your form first to enable API Fill.', () => onOpenTemplateApi())}
+                  aria-disabled={disableTemplateApi}
+                  title={canOpenTemplateApi ? 'Publish or manage a template-scoped PDF Fill API endpoint.' : 'Save your form first to enable API Fill.'}
                 >
                   API Fill
                 </button>
@@ -801,15 +787,12 @@ export function HeaderBar({
                     type="button"
                     aria-haspopup="menu"
                     aria-expanded={showDownloadMenu}
-                    onClick={() => {
-                      if (disableDownload) {
-                        return;
-                      }
+                    onClick={() => guardClick(disableDownload, busyReason || 'Download is unavailable right now.', () => {
                       setShowDataMenu(false);
                       setShowGroupMenu(false);
                       setShowDownloadMenu((previous) => !previous);
-                    }}
-                    disabled={disableDownload}
+                    })}
+                    aria-disabled={disableDownload}
                   >
                     <span>{downloadInProgress ? 'Downloading...' : 'Download'}</span>
                     {!downloadInProgress ? <span className="ui-header__download-caret" aria-hidden="true">▾</span> : null}
@@ -848,10 +831,8 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--primary ui-button--compact ui-header__save"
                   type="button"
-                  onClick={() => {
-                    onDownloadGroup?.();
-                  }}
-                  disabled={disableDownloadGroup}
+                  onClick={() => guardClick(disableDownloadGroup, busyReason || 'Group download is unavailable right now.', () => onDownloadGroup?.())}
+                  aria-disabled={disableDownloadGroup}
                 >
                   {downloadGroupInProgress ? 'Downloading Group...' : 'Download Group'}
                 </button>
@@ -859,14 +840,8 @@ export function HeaderBar({
               <button
                 className="ui-button ui-button--primary ui-button--compact ui-header__save"
                 type="button"
-                onClick={() => {
-                  if (demoOverride) {
-                    onDemoLockedAction?.();
-                    return;
-                  }
-                  onSaveToProfile?.();
-                }}
-                disabled={disableSave}
+                onClick={() => guardClick(disableSave, busyReason || 'Save is unavailable right now.', () => onSaveToProfile?.())}
+                aria-disabled={disableSave}
               >
                 {saveInProgress ? 'Saving...' : 'Save'}
               </button>

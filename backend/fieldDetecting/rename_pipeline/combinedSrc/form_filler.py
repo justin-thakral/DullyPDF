@@ -1034,8 +1034,8 @@ def inject_fields_from_template(
                 confidence_tag=confidence_tag,
             )
         elif field_type == "radio":
-            group_name = str(field.get("group") or name)
-            export_value = str(field.get("exportValue") or name)
+            group_name = str(field.get("radioGroupKey") or field.get("group") or name)
+            export_value = str(field.get("radioOptionKey") or field.get("exportValue") or name)
             _add_radio_field(
                 writer,
                 page,

@@ -26,6 +26,81 @@ def _rect_distance(a: List[float], b: List[float]) -> float:
     return (dx * dx + dy * dy) ** 0.5
 
 
+def _build_checkbox_row_order_hints(
+    overlay_fields: List[Dict[str, Any]],
+    labels: List[Dict[str, Any]],
+) -> str:
+    """Build a text block that tells the model the left-to-right assignment
+    order for same-row checkbox groups.
+
+    Each checkbox already has an ``option_hint`` from the nearest-label matcher.
+    For rows with 2+ checkboxes we list the field IDs in left-to-right spatial
+    order so the model can resolve any ambiguity about which ID gets which
+    option — the leftmost field gets the first option in the label, etc.
+    """
+    # Collect checkbox fields with valid rects.
+    cb_fields: List[Dict[str, Any]] = []
+    for f in overlay_fields:
+        if str(f.get("type") or "").lower() != "checkbox":
+            continue
+        rect = f.get("rect")
+        if not isinstance(rect, list) or len(rect) != 4:
+            continue
+        cb_fields.append(f)
+
+    if len(cb_fields) < 2:
+        return ""
+
+    # Group checkboxes into rows by y-center proximity.
+    rows: List[List[Dict[str, Any]]] = []
+    assigned: set[int] = set()
+    for i, field in enumerate(cb_fields):
+        if i in assigned:
+            continue
+        rect = field["rect"]
+        h = max(1.0, float(rect[3]) - float(rect[1]))
+        cy = (float(rect[1]) + float(rect[3])) / 2.0
+        row_tol = max(8.0, h * 1.5)
+        row = [field]
+        assigned.add(i)
+        for j, other in enumerate(cb_fields):
+            if j in assigned:
+                continue
+            orect = other["rect"]
+            ocy = (float(orect[1]) + float(orect[3])) / 2.0
+            if abs(ocy - cy) <= row_tol:
+                row.append(other)
+                assigned.add(j)
+        if len(row) >= 2:
+            rows.append(row)
+
+    if not rows:
+        return ""
+
+    hint_lines: List[str] = []
+    for row in rows:
+        # Sort left-to-right by x1.
+        row.sort(key=lambda f: float(f["rect"][0]))
+        parts: List[str] = []
+        for f in row:
+            fid = f.get("name") or "?"
+            hint = str(f.get("labelHintText") or "").strip()
+            if hint:
+                parts.append(f'{fid}="{hint}"')
+            else:
+                parts.append(fid)
+        hint_lines.append(
+            f"Same-row checkboxes left→right: {', '.join(parts)}. "
+            f"The leftmost field maps to the first option in the label text."
+        )
+
+    return (
+        "\nCHECKBOX_ROW_ORDER_HINTS (use these to resolve left-to-right option assignment):\n"
+        + "\n".join(f"- {line}" for line in hint_lines)
+        + "\n"
+    )
+
+
 def label_context(rect: List[float], label_bboxes: List[List[float]]) -> Tuple[float | None, bool]:
     """
     Return (min_distance_to_label, overlaps_label).
@@ -221,7 +296,12 @@ def build_prompt(
         "- Do not swap IDs between neighboring fields. The ID inside each box is authoritative.\n"
         "- If a tight cluster makes the label ambiguous, still provide your best-guess suggestedRename "
         "and set renameConfidence to 0.0.\n"
-        "- Do not shift label associations downward because of labels from the previous page.\n\n"
+        "- Do not shift label associations downward because of labels from the previous page.\n"
+        "- For Yes/No checkbox pairs on the same row, the Yes box is ALWAYS on the left and the No box is ALWAYS on the right.\n"
+        "- CHECKBOX_ROW_ORDER_HINTS (if present) list same-row checkbox groups with their label text. "
+        "The leftmost checkbox in the row maps to the first option word in the label, the next checkbox "
+        "maps to the next option, and so on left-to-right. Use these hints to resolve which field ID "
+        "gets which option name.\n\n"
         "Row alignment (CRITICAL, highest priority):\n"
         "- For text fields, the correct label is directly to the left on the same horizontal line.\n"
         "- Never assign a label below/above a field if a same-row label exists for the neighboring field.\n"
@@ -345,11 +425,24 @@ def build_prompt(
         )
     field_block = "\n".join(field_lines)
 
+    # Build left-to-right ordering hints for same-row checkbox groups so the
+    # model knows which checkbox maps to which option in a multi-option label.
+    all_labels = [
+        entry
+        for entry in (page_candidates.get("labels") or [])
+        if isinstance(entry, dict)
+        and isinstance(entry.get("bbox"), list)
+        and len(entry.get("bbox")) == 4
+        and str(entry.get("text") or "").strip()
+    ]
+    row_order_hints = _build_checkbox_row_order_hints(overlay_fields, all_labels)
+
     user_message = (
         f"Page {page_idx} field IDs (originalFieldName list). Return one output line per entry in the same order.\n"
         "BEGIN_FIELD_LIST\n"
         f"{field_block}\n"
         "END_FIELD_LIST\n"
+        f"{row_order_hints}"
     )
     if database_fields:
         context_fields = _dedupe_non_empty_strings(database_fields)

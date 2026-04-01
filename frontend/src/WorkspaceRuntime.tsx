@@ -2513,6 +2513,7 @@ function WorkspaceRuntime({
         onDemoLockedAction={handleDemoLockedAction}
         demoFillLinkDocsHref="/usage-docs/fill-by-link"
         demoCreateGroupDocsHref="/usage-docs/create-group"
+        onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}
       />
       <div className="app-shell">
         <FieldListPanel fields={visibleFields} totalFieldCount={fields.length}

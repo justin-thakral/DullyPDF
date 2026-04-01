@@ -481,13 +481,13 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             )
             continue
         if field_type == "radio":
-            group_key = normalize_data_key(str(field.get("groupKey") or field_name))
-            option_key = normalize_data_key(str(field.get("optionKey") or field_name))
+            group_key = normalize_data_key(str(field.get("radioGroupKey") or field.get("groupKey") or field_name))
+            option_key = normalize_data_key(str(field.get("radioOptionKey") or field.get("optionKey") or field_name))
             if not group_key or not option_key:
                 continue
             option_payload = {
                 "optionKey": option_key,
-                "optionLabel": str(field.get("optionLabel") or option_key),
+                "optionLabel": str(field.get("radioOptionLabel") or field.get("optionLabel") or option_key),
                 "fieldName": field_name,
             }
             group = direct_radio_groups.setdefault(

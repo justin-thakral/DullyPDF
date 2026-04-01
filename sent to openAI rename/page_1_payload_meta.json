@@ -21,9 +21,9 @@
       "size_bytes": 2519348
     }
   },
-  "system_prompt_chars": 8225,
-  "user_prompt_chars": 7741,
-  "total_prompt_chars": 15966,
+  "system_prompt_chars": 8647,
+  "user_prompt_chars": 8927,
+  "total_prompt_chars": 17574,
   "overlay_map": {
     "mfe": 1,
     "yqz": 0,

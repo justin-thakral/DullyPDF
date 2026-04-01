@@ -92,4 +92,12 @@ kyc	(type=text, label_dist=2, overlaps_label=0, w_ratio=0.25, h_ratio=0.02)
 m2e	(type=text, label_dist=2, overlaps_label=0, w_ratio=0.30, h_ratio=0.02)
 END_FIELD_LIST
 
+CHECKBOX_ROW_ORDER_HINTS (use these to resolve left-to-right option assignment):
+- Same-row checkboxes left→right: 84e="Sex: M F", p5p="Sex: M F", e99="Marital status: Single Married Divorced Separat…", kx2="Marital status: Single Married Divorced Separat…", akq="Marital status: Single Married Divorced Separat…", upg="Marital status: Single Married Divorced Separat…", njb="Marital status: Single Married Divorced Separat…", 8ss="Marital status: Single Married Divorced Separat…". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 4dy="Bad", 8h7="Loose". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: myn="Bleeding", 2py="Periodontal". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: 5hk="Clicking", gcj="Sensitivity". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: pph="Food", 2ry="Sensitivity". The leftmost field maps to the first option in the label text.
+- Same-row checkboxes left→right: crh="Grinding", jde="Sores". The leftmost field maps to the first option in the label text.
+
 Return the rename output lines now.

@@ -143,7 +143,7 @@ After deploying indexes, verify TTL enablement with `gcloud firestore fields ttl
 - `RECAPTCHA_CONTACT_ACTION` (default `contact`; overrides legacy `RECAPTCHA_EXPECTED_ACTION`)
 - `RECAPTCHA_SIGNUP_ACTION` (default `signup`; overrides legacy `RECAPTCHA_EXPECTED_ACTION`)
 - `RECAPTCHA_ALLOWED_HOSTNAMES` (comma-separated allowlist; supports `*.example.com`; required in prod when reCAPTCHA is enabled)
-- `RECAPTCHA_MIN_SCORE` (default 0.5)
+- `RECAPTCHA_MIN_SCORE` (default 0.2)
 - `CONTACT_REQUIRE_RECAPTCHA` (default true)
 - `CONTACT_RATE_LIMIT_WINDOW_SECONDS`, `CONTACT_RATE_LIMIT_PER_IP`
 - `CONTACT_RATE_LIMIT_GLOBAL` (optional; global cap for `/api/contact` regardless of caller IP)

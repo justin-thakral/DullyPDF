@@ -245,9 +245,9 @@ def _build_radio_groups(
     groups: Dict[str, Dict[str, List[Dict[str, Any]]]] = {}
     for field in fields:
         field_type = str(field.get("type") or "text").strip().lower()
-        raw_group_key = str(field.get("groupKey") or field.get("group") or field.get("name") or "").strip()
+        raw_group_key = str(field.get("radioGroupKey") or field.get("groupKey") or field.get("group") or field.get("name") or "").strip()
         group_key = normalize_data_key(raw_group_key)
-        raw_option_key = str(field.get("optionKey") or field.get("exportValue") or field.get("name") or "").strip()
+        raw_option_key = str(field.get("radioOptionKey") or field.get("optionKey") or field.get("exportValue") or field.get("name") or "").strip()
         option_key = normalize_data_key(raw_option_key)
         if not group_key or not option_key:
             continue

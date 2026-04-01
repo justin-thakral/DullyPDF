@@ -130,6 +130,9 @@ allowed_exact = {
     "BASE_OPENAI_CREDITS",
     "PRO_MONTHLY_OPENAI_CREDITS",
     "SANDBOX_RENAME_MODEL",
+    "FORMS_BUCKET",
+    "TEMPLATES_BUCKET",
+    "SIGNING_BUCKET",
 }
 allowed_prefixes = (
     "OPENAI_RENAME_REMAP_",
@@ -290,6 +293,8 @@ PY
     --project "$PROJECT_ID" \
     --service-account "$runtime_service_account" \
     --no-allow-unauthenticated \
+    --memory "${OPENAI_RENAME_REMAP_MEMORY:-2Gi}" \
+    --cpu "${OPENAI_RENAME_REMAP_CPU:-1}" \
     --env-vars-file "$TMP_ENV_FILE" \
     "${SECRET_ARGS[@]}"
 

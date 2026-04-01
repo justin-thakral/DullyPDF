@@ -212,7 +212,7 @@ async def test_verify_recaptcha_token_error_paths(app_main, mocker, scope_builde
     client_4 = _FakeAsyncClient(
         _FakeResponse(
             200,
-            payload={"tokenProperties": {"valid": True, "action": "signup"}, "riskAnalysis": {"score": 0.2}},
+            payload={"tokenProperties": {"valid": True, "action": "signup"}, "riskAnalysis": {"score": 0.1}},
         )
     )
     mocker.patch.object(app_main.httpx, "AsyncClient", return_value=client_4)
@@ -357,7 +357,7 @@ def test_resolve_recaptcha_min_score_rejects_non_finite_env_values(
     value = app_main._resolve_recaptcha_min_score()
 
     assert math.isfinite(value)
-    assert value == 0.5
+    assert value == 0.2
 
 
 # ---------------------------------------------------------------------------
@@ -375,4 +375,4 @@ def test_resolve_recaptcha_min_score_rejects_out_of_range_values(
 
     value = app_main._resolve_recaptcha_min_score()
 
-    assert value == 0.5
+    assert value == 0.2

@@ -29,6 +29,8 @@ Swap avoidance:
 - Do not swap IDs between neighboring fields. The ID inside each box is authoritative.
 - If a tight cluster makes the label ambiguous, still provide your best-guess suggestedRename and set renameConfidence to 0.0.
 - Do not shift label associations downward because of labels from the previous page.
+- For Yes/No checkbox pairs on the same row, the Yes box is ALWAYS on the left and the No box is ALWAYS on the right.
+- CHECKBOX_ROW_ORDER_HINTS (if present) list same-row checkbox groups with their label text. The leftmost checkbox in the row maps to the first option word in the label, the next checkbox maps to the next option, and so on left-to-right. Use these hints to resolve which field ID gets which option name.
 
 Row alignment (CRITICAL, highest priority):
 - For text fields, the correct label is directly to the left on the same horizontal line.
