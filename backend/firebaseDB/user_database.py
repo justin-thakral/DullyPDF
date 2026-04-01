@@ -47,6 +47,7 @@ except ValueError:
 if STRIPE_MAX_PROCESSED_EVENTS <= 0:
     STRIPE_MAX_PROCESSED_EVENTS = 256
 DOWNGRADE_RETENTION_FIELD = "downgrade_retention"
+TRIAL_USED_FIELD = "trial_used"
 
 CreditBreakdown = Dict[str, int]
 _UNSET = object()
@@ -63,6 +64,7 @@ class UserProfileRecord:
     openai_credits_refill_remaining: Optional[int] = None
     openai_credits_available: Optional[int] = None
     refill_credits_locked: bool = False
+    trial_used: bool = False
     downgrade_retention: Optional["UserDowngradeRetentionRecord"] = None
 
 
@@ -625,6 +627,29 @@ def set_user_role(uid: str, role: str) -> None:
     )
 
 
+def mark_trial_used(uid: str) -> None:
+    """Permanently record that the user has consumed their free trial."""
+    if not uid:
+        raise ValueError("Missing firebase uid")
+    client = get_firestore_client()
+    client.collection(USERS_COLLECTION).document(uid).set(
+        {TRIAL_USED_FIELD: True, "updated_at": now_iso()},
+        merge=True,
+    )
+
+
+def get_trial_used(uid: str) -> bool:
+    """Check whether the user has ever consumed a free trial."""
+    if not uid:
+        return False
+    client = get_firestore_client()
+    snapshot = client.collection(USERS_COLLECTION).document(uid).get()
+    if not snapshot.exists:
+        return False
+    data = snapshot.to_dict() or {}
+    return bool(data.get(TRIAL_USED_FIELD, False))
+
+
 def activate_pro_membership(
     uid: str,
     *,
@@ -653,6 +678,7 @@ def activate_pro_membership(
         updates: Dict[str, Any] = {}
         if not already_applied:
             updates[ROLE_FIELD] = ROLE_PRO
+            updates[TRIAL_USED_FIELD] = True
             if _should_reset_pro_monthly_pool_on_activation(
                 data,
                 reset_monthly_credits=reset_monthly_credits,
@@ -926,6 +952,7 @@ def get_user_profile(uid: str) -> Optional[UserProfileRecord]:
     data = snapshot.to_dict() or {}
     role = normalize_role(data.get(ROLE_FIELD))
     downgrade_retention = _normalize_downgrade_retention(data.get(DOWNGRADE_RETENTION_FIELD))
+    trial_used = bool(data.get(TRIAL_USED_FIELD, False))
     email = data.get("email")
     display_name = data.get("displayName")
     credits: Optional[int]
@@ -1008,5 +1035,6 @@ def get_user_profile(uid: str) -> Optional[UserProfileRecord]:
         openai_credits_refill_remaining=refill_credits,
         openai_credits_available=available_credits,
         refill_credits_locked=refill_locked,
+        trial_used=trial_used,
         downgrade_retention=downgrade_retention,
     )

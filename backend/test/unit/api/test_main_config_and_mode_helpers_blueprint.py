@@ -647,23 +647,17 @@ def test_resolve_detection_mode_local_falls_back_to_tasks_with_light_queue_only(
     assert app_main._resolve_detection_mode() == "tasks"
 
 
-def test_resolve_openai_modes_default_to_local_and_promote_to_tasks(monkeypatch, app_main) -> None:
-    monkeypatch.delenv("OPENAI_RENAME_MODE", raising=False)
-    monkeypatch.delenv("OPENAI_REMAP_MODE", raising=False)
-    monkeypatch.delenv("OPENAI_RENAME_TASKS_QUEUE", raising=False)
-    monkeypatch.delenv("OPENAI_REMAP_TASKS_QUEUE", raising=False)
-    monkeypatch.delenv("OPENAI_RENAME_TASKS_QUEUE_LIGHT", raising=False)
-    monkeypatch.delenv("OPENAI_REMAP_TASKS_QUEUE_LIGHT", raising=False)
+def test_resolve_openai_rename_remap_mode_default_to_local_and_promote_to_tasks(monkeypatch, app_main) -> None:
+    monkeypatch.delenv("OPENAI_RENAME_REMAP_MODE", raising=False)
+    monkeypatch.delenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", raising=False)
 
-    assert app_main.resolve_openai_rename_mode() == "local"
-    assert app_main.resolve_openai_remap_mode() == "local"
+    assert app_main.resolve_openai_rename_remap_mode() == "local"
 
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_QUEUE_LIGHT", "rename-light")
-    monkeypatch.setenv("OPENAI_REMAP_TASKS_QUEUE_LIGHT", "remap-light")
-    assert app_main.resolve_openai_rename_mode() == "tasks"
-    assert app_main.resolve_openai_remap_mode() == "tasks"
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "rename-remap-queue")
+    assert app_main.resolve_openai_rename_remap_mode() == "tasks"
 
-    monkeypatch.setenv("OPENAI_RENAME_MODE", "local")
-    monkeypatch.setenv("OPENAI_REMAP_MODE", "tasks")
-    assert app_main.resolve_openai_rename_mode() == "local"
-    assert app_main.resolve_openai_remap_mode() == "tasks"
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_MODE", "local")
+    assert app_main.resolve_openai_rename_remap_mode() == "local"
+
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_MODE", "tasks")
+    assert app_main.resolve_openai_rename_remap_mode() == "tasks"

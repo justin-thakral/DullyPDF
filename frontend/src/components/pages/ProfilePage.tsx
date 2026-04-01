@@ -36,6 +36,7 @@ interface ProfilePageProps {
   billingCancelAtPeriodEnd?: boolean | null;
   billingCancelAt?: number | null;
   billingCurrentPeriodEnd?: number | null;
+  billingTrialUsed?: boolean | null;
   billingPlans?: Partial<Record<BillingCheckoutKind, BillingPlanCatalogItem>>;
   retention?: DowngradeRetentionSummary | null;
   profileError?: string | null;
@@ -189,6 +190,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   billingCancelAtPeriodEnd = null,
   billingCancelAt = null,
   billingCurrentPeriodEnd = null,
+  billingTrialUsed = null,
   billingPlans,
   retention = null,
   profileError = null,
@@ -236,6 +238,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const monthlyPlanLabel = formatPlanLabel(monthlyPlan, 'Pro Monthly');
   const yearlyPlanLabel = formatPlanLabel(yearlyPlan, 'Pro Yearly');
   const refillPlanLabel = formatPlanLabel(refillPlan, 'Refill 500 Credits');
+  const isTrialEligible = !isGod && !isPro && !hasBillingSubscription && billingTrialUsed !== true;
   const cancelEffectiveDateLabel = useMemo(() => {
     if (!cancelEffectiveAt) return null;
     try {
@@ -503,6 +506,18 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                   </div>
                 </div>
                 <div className="profile-billing-actions">
+                  {isTrialEligible ? (
+                    <button
+                      type="button"
+                      className="profile-button profile-button--trial"
+                      onClick={() => onStartBillingCheckout?.('free_trial')}
+                      disabled={!onStartBillingCheckout || billingBusy}
+                    >
+                      {billingCheckoutInProgressKind === 'free_trial'
+                        ? 'Starting trial...'
+                        : 'Start 7-Day Free Trial'}
+                    </button>
+                  ) : null}
                   <button
                     type="button"
                     className="profile-button"
@@ -551,6 +566,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                   </button>
                 </div>
                 <div className="profile-note-stack">
+                  {isTrialEligible ? (
+                    <p className="profile-note">
+                      Try Premium free for 7 days. Your card is charged automatically after the trial unless you cancel.
+                    </p>
+                  ) : null}
                   {!isPro ? (
                     <p className="profile-note">
                       Credit refills are available only with an active Pro subscription.

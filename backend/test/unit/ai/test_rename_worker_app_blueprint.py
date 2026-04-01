@@ -1,4 +1,4 @@
-"""Unit tests for backend.ai.rename_worker_app."""
+"""Unit tests for backend.ai.rename_remap_worker_app (rename route)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
-import backend.ai.rename_worker_app as rename_worker
+import backend.ai.rename_remap_worker_app as worker
 
 
 def _payload(**overrides):
@@ -25,54 +25,53 @@ def _payload(**overrides):
     return payload
 
 
-def test_require_internal_auth_accepts_profile_specific_rename_audience(mocker, monkeypatch) -> None:
-    rename_worker._ALLOW_UNAUTHENTICATED = False
-    monkeypatch.delenv("OPENAI_RENAME_TASKS_AUDIENCE", raising=False)
-    monkeypatch.delenv("OPENAI_RENAME_SERVICE_URL", raising=False)
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_AUDIENCE_HEAVY", "rename-heavy-audience")
-    monkeypatch.setenv("OPENAI_RENAME_CALLER_SERVICE_ACCOUNT", "allowed@example.com")
+def test_require_internal_auth_accepts_configured_audience(mocker, monkeypatch) -> None:
+    worker._ALLOW_UNAUTHENTICATED = False
+    monkeypatch.delenv("OPENAI_RENAME_REMAP_SERVICE_URL", raising=False)
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_AUDIENCE", "rename-remap-audience")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_CALLER_SERVICE_ACCOUNT", "allowed@example.com")
     payload = {"email": "allowed@example.com", "sub": "rename-task"}
     verify = mocker.patch(
         "backend.services.task_auth_service.id_token.verify_oauth2_token",
         return_value=payload,
     )
 
-    assert rename_worker._require_internal_auth("Bearer token") == payload
-    assert verify.call_args.kwargs["audience"] == "rename-heavy-audience"
+    assert worker._require_internal_auth("Bearer token") == payload
+    assert verify.call_args.kwargs["audience"] == "rename-remap-audience"
 
 
 def test_require_internal_auth_rejects_invalid_rename_token(mocker, monkeypatch) -> None:
-    rename_worker._ALLOW_UNAUTHENTICATED = False
-    monkeypatch.setenv("OPENAI_RENAME_SERVICE_URL", "https://rename.example.com")
+    worker._ALLOW_UNAUTHENTICATED = False
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://rename.example.com")
     mocker.patch(
         "backend.services.task_auth_service.id_token.verify_oauth2_token",
         side_effect=ValueError("bad token"),
     )
 
     with pytest.raises(HTTPException) as exc_info:
-        rename_worker._require_internal_auth("Bearer token")
+        worker._require_internal_auth("Bearer token")
     assert exc_info.value.status_code == 401
-    assert exc_info.value.detail == "Invalid rename worker auth token"
+    assert exc_info.value.detail == "Invalid rename/remap worker auth token"
 
 
 @pytest.mark.parametrize(
     ("status_code", "detail"),
     [
-        (401, "Missing rename worker auth token"),
-        (403, "Rename worker caller not allowed"),
+        (401, "Missing rename/remap worker auth token"),
+        (403, "Rename/remap worker caller not allowed"),
     ],
 )
 def test_rename_worker_auth_failures_do_not_mutate_job_state(mocker, status_code: int, detail: str) -> None:
-    client = TestClient(rename_worker.app)
+    client = TestClient(worker.app)
     mocker.patch.object(
-        rename_worker,
+        worker,
         "_require_internal_auth",
         side_effect=HTTPException(status_code=status_code, detail=detail),
     )
-    reject_mock = mocker.patch.object(rename_worker, "_reject_job_request")
-    get_job_mock = mocker.patch.object(rename_worker, "get_openai_job")
-    update_job_mock = mocker.patch.object(rename_worker, "update_openai_job")
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    reject_mock = mocker.patch.object(worker, "_reject_job_request")
+    get_job_mock = mocker.patch.object(worker, "get_openai_job")
+    update_job_mock = mocker.patch.object(worker, "update_openai_job")
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post("/internal/rename", json=_payload())
 
@@ -85,10 +84,10 @@ def test_rename_worker_auth_failures_do_not_mutate_job_state(mocker, status_code
 
 
 def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> None:
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
     mocker.patch.object(
-        rename_worker,
+        worker,
         "get_openai_job",
         return_value={
             "status": "queued",
@@ -96,9 +95,9 @@ def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> Non
             "request_id": "job-1",
         },
     )
-    update_job_mock = mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
+    update_job_mock = mocker.patch.object(worker, "update_openai_job", return_value=None)
     mocker.patch.object(
-        rename_worker,
+        worker,
         "_get_session_entry",
         return_value={
             "pdf_bytes": b"%PDF-1.4\n",
@@ -113,14 +112,14 @@ def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> Non
         },
     )
     rename_mock = mocker.patch.object(
-        rename_worker,
+        worker,
         "run_openai_rename_on_pdf",
         return_value=(
             {"checkboxRules": []},
             [{"name": "first_name", "type": "text", "page": 1, "rect": [1, 2, 3, 4]}],
         ),
     )
-    update_session_mock = mocker.patch.object(rename_worker, "_update_session_entry", return_value=None)
+    update_session_mock = mocker.patch.object(worker, "_update_session_entry", return_value=None)
 
     response = client.post("/internal/rename", json=_payload())
 
@@ -136,10 +135,10 @@ def test_rename_worker_completes_job_and_persists_session_updates(mocker) -> Non
 
 
 def test_rename_worker_refunds_credits_on_terminal_failure(mocker) -> None:
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
     mocker.patch.object(
-        rename_worker,
+        worker,
         "get_openai_job",
         return_value={
             "status": "queued",
@@ -147,9 +146,9 @@ def test_rename_worker_refunds_credits_on_terminal_failure(mocker) -> None:
             "request_id": "job-1",
         },
     )
-    mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
-    mocker.patch.object(rename_worker, "_get_session_entry", return_value={"pdf_bytes": None})
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    mocker.patch.object(worker, "update_openai_job", return_value=None)
+    mocker.patch.object(worker, "_get_session_entry", return_value={"pdf_bytes": None})
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post("/internal/rename", json=_payload())
 
@@ -168,10 +167,10 @@ def test_rename_worker_refunds_credits_on_terminal_failure(mocker) -> None:
 
 
 def test_rename_worker_rejects_locked_saved_form_sessions_after_downgrade(mocker) -> None:
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
     mocker.patch.object(
-        rename_worker,
+        worker,
         "get_openai_job",
         return_value={
             "status": "queued",
@@ -179,9 +178,9 @@ def test_rename_worker_rejects_locked_saved_form_sessions_after_downgrade(mocker
             "request_id": "job-1",
         },
     )
-    mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
+    mocker.patch.object(worker, "update_openai_job", return_value=None)
     mocker.patch.object(
-        rename_worker,
+        worker,
         "_get_session_entry",
         return_value={
             "pdf_bytes": b"%PDF-1.4\n",
@@ -191,14 +190,14 @@ def test_rename_worker_rejects_locked_saved_form_sessions_after_downgrade(mocker
         },
     )
     mocker.patch.object(
-        rename_worker,
+        worker,
         "list_templates",
         return_value=[SimpleNamespace(id="form-6", pdf_bucket_path="gs://saved-forms/form-6/source.pdf")],
     )
-    mocker.patch.object(rename_worker, "is_user_retention_template_locked", return_value=True)
-    update_session_mock = mocker.patch.object(rename_worker, "_update_session_entry", return_value=None)
-    rename_mock = mocker.patch.object(rename_worker, "run_openai_rename_on_pdf")
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    mocker.patch.object(worker, "is_user_retention_template_locked", return_value=True)
+    update_session_mock = mocker.patch.object(worker, "_update_session_entry", return_value=None)
+    rename_mock = mocker.patch.object(worker, "run_openai_rename_on_pdf")
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post("/internal/rename", json=_payload())
 
@@ -222,10 +221,10 @@ def test_rename_worker_treats_insufficient_quota_as_terminal_failure(mocker) -> 
     class _QuotaError(Exception):
         code = "insufficient_quota"
 
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
     mocker.patch.object(
-        rename_worker,
+        worker,
         "get_openai_job",
         return_value={
             "status": "queued",
@@ -234,7 +233,7 @@ def test_rename_worker_treats_insufficient_quota_as_terminal_failure(mocker) -> 
         },
     )
     mocker.patch.object(
-        rename_worker,
+        worker,
         "_get_session_entry",
         return_value={
             "pdf_bytes": b"%PDF-1.4\n",
@@ -243,8 +242,8 @@ def test_rename_worker_treats_insufficient_quota_as_terminal_failure(mocker) -> 
             "page_count": 1,
         },
     )
-    mocker.patch.object(rename_worker, "run_openai_rename_on_pdf", side_effect=_QuotaError("quota"))
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    mocker.patch.object(worker, "run_openai_rename_on_pdf", side_effect=_QuotaError("quota"))
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post("/internal/rename", json=_payload())
 
@@ -263,11 +262,11 @@ def test_rename_worker_treats_insufficient_quota_as_terminal_failure(mocker) -> 
 
 
 def test_rename_worker_rejects_missing_job_without_refund_or_upsert(mocker) -> None:
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
-    mocker.patch.object(rename_worker, "get_openai_job", return_value=None)
-    update_job_mock = mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
+    mocker.patch.object(worker, "get_openai_job", return_value=None)
+    update_job_mock = mocker.patch.object(worker, "update_openai_job", return_value=None)
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post("/internal/rename", json=_payload())
 
@@ -282,10 +281,10 @@ def test_rename_worker_rejects_missing_job_without_refund_or_upsert(mocker) -> N
 
 
 def test_rename_worker_uses_stored_job_identity_for_refunds(mocker) -> None:
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
     mocker.patch.object(
-        rename_worker,
+        worker,
         "get_openai_job",
         return_value={
             "status": "queued",
@@ -297,9 +296,9 @@ def test_rename_worker_uses_stored_job_identity_for_refunds(mocker) -> None:
             "credit_breakdown": {"proMonthly": 7},
         },
     )
-    mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
-    mocker.patch.object(rename_worker, "_get_session_entry", return_value={"pdf_bytes": None})
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    mocker.patch.object(worker, "update_openai_job", return_value=None)
+    mocker.patch.object(worker, "_get_session_entry", return_value={"pdf_bytes": None})
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post(
         "/internal/rename",
@@ -325,10 +324,10 @@ def test_rename_worker_uses_stored_job_identity_for_refunds(mocker) -> None:
 
 
 def test_rename_worker_rejects_payload_user_mismatch_without_mutation(mocker) -> None:
-    client = TestClient(rename_worker.app)
-    mocker.patch.object(rename_worker, "_require_internal_auth", return_value={"sub": "task"})
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
     mocker.patch.object(
-        rename_worker,
+        worker,
         "get_openai_job",
         return_value={
             "status": "queued",
@@ -336,8 +335,8 @@ def test_rename_worker_rejects_payload_user_mismatch_without_mutation(mocker) ->
             "request_id": "job-1",
         },
     )
-    update_job_mock = mocker.patch.object(rename_worker, "update_openai_job", return_value=None)
-    refund_mock = mocker.patch.object(rename_worker, "attempt_credit_refund", return_value=True)
+    update_job_mock = mocker.patch.object(worker, "update_openai_job", return_value=None)
+    refund_mock = mocker.patch.object(worker, "attempt_credit_refund", return_value=True)
 
     response = client.post("/internal/rename", json=_payload(userId="user-2"))
 

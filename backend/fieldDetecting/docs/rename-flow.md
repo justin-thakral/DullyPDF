@@ -241,11 +241,10 @@ are sent. The UI warns users before sending schema headers to OpenAI.
 
 ## Async worker mode
 
-When `OPENAI_RENAME_MODE=tasks` / `OPENAI_REMAP_MODE=tasks`, the main API enqueues Cloud Tasks jobs
+When `OPENAI_RENAME_REMAP_MODE=tasks`, the main API enqueues Cloud Tasks jobs
 instead of waiting for OpenAI calls inline. Dedicated worker services execute the heavy steps:
 
-- Rename worker: `backend/ai/rename_worker_app.py`
-- Remap worker: `backend/ai/remap_worker_app.py`
+- Rename+Remap worker: `backend/ai/rename_remap_worker_app.py`
 
 This avoids long request/response windows on the main API and makes frontend polling explicit.
 

@@ -14,31 +14,26 @@ def _script_text() -> str:
 
 def test_deploy_openai_workers_requires_dedicated_runtime_service_accounts_in_prod() -> None:
     text = _script_text()
-    assert 'REGION="${REGION:-${OPENAI_RENAME_TASKS_LOCATION:-${OPENAI_REMAP_TASKS_LOCATION:-us-east4}}}"' in text
+    assert 'REGION="${REGION:-${OPENAI_RENAME_REMAP_TASKS_LOCATION:-us-east4}}"' in text
     assert 'source "${SCRIPT_DIR}/_artifact_registry_guard.sh"' in text
     assert 'ARTIFACT_REGISTRY_LOCATION="${ARTIFACT_REGISTRY_LOCATION:-us-east4}"' in text
     assert 'require_prod_artifact_registry_location "OpenAI worker Artifact Registry location" "$ARTIFACT_REGISTRY_LOCATION"' in text
     assert 'require_prod_artifact_registry_repo "WORKER_ARTIFACT_REPO" "$ARTIFACT_REPO"' in text
-    assert 'RENAME_IMAGE="${OPENAI_RENAME_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/openai-rename-worker:${TAG}}"' in text
-    assert 'REMAP_IMAGE="${OPENAI_REMAP_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/openai-remap-worker:${TAG}}"' in text
-    assert 'require_prod_artifact_registry_image "OPENAI_RENAME_WORKER_IMAGE" "$RENAME_IMAGE" "$ARTIFACT_REPO"' in text
-    assert 'require_prod_artifact_registry_image "OPENAI_REMAP_WORKER_IMAGE" "$REMAP_IMAGE" "$ARTIFACT_REPO"' in text
+    assert 'WORKER_IMAGE="${OPENAI_RENAME_REMAP_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/openai-rename-remap-worker:${TAG}}"' in text
+    assert 'require_prod_artifact_registry_image "OPENAI_RENAME_REMAP_WORKER_IMAGE" "$WORKER_IMAGE" "$ARTIFACT_REPO"' in text
     assert 'require_exact FIREBASE_USE_ADC "true"' in text
     assert "require_empty FIREBASE_CREDENTIALS" in text
     assert "require_empty FIREBASE_CREDENTIALS_SECRET" in text
     assert "require_empty GOOGLE_APPLICATION_CREDENTIALS" in text
-    assert 'RENAME_RUNTIME_SA="${OPENAI_RENAME_RUNTIME_SERVICE_ACCOUNT:-}"' in text
-    assert 'REMAP_RUNTIME_SA="${OPENAI_REMAP_RUNTIME_SERVICE_ACCOUNT:-}"' in text
-    assert "OPENAI_*_RUNTIME_SERVICE_ACCOUNT must differ from the matching worker caller service account in prod." in text
-    assert "OPENAI_RENAME_RUNTIME_SERVICE_ACCOUNT and OPENAI_REMAP_RUNTIME_SERVICE_ACCOUNT must be distinct in prod." in text
+    assert 'RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-}"' in text
+    assert "OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT must differ from OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT in prod." in text
 
 
 def test_deploy_openai_workers_filters_env_to_a_worker_allowlist() -> None:
     text = _script_text()
     assert "allowed_exact = {" in text
     assert '"OPENAI_API_KEY",' in text
-    assert '"OPENAI_RENAME_",' in text
-    assert '"OPENAI_REMAP_",' in text
+    assert '"OPENAI_RENAME_REMAP_",' in text
     assert '"OPENAI_TASKS_",' in text
     assert '"OPENAI_PREWARM_",' in text
     assert '"SANDBOX_SESSION_",' in text

@@ -100,12 +100,8 @@ DETECTOR_CPU_REGION="$(detector_cpu_region)"
 DETECTOR_SERVICE_NAME_LIGHT_CPU="$(detector_service_name_for_target "cpu" "light")"
 DETECTOR_SERVICE_NAME_HEAVY_CPU="$(detector_service_name_for_target "cpu" "heavy")"
 
-OPENAI_RENAME_REGION="${OPENAI_RENAME_TASKS_LOCATION:-${REGION:-us-east4}}"
-OPENAI_REMAP_REGION="${OPENAI_REMAP_TASKS_LOCATION:-${REGION:-us-east4}}"
-OPENAI_RENAME_SERVICE_NAME_LIGHT="${OPENAI_RENAME_SERVICE_NAME_LIGHT:-dullypdf-openai-rename-light}"
-OPENAI_RENAME_SERVICE_NAME_HEAVY="${OPENAI_RENAME_SERVICE_NAME_HEAVY:-dullypdf-openai-rename-heavy}"
-OPENAI_REMAP_SERVICE_NAME_LIGHT="${OPENAI_REMAP_SERVICE_NAME_LIGHT:-dullypdf-openai-remap-light}"
-OPENAI_REMAP_SERVICE_NAME_HEAVY="${OPENAI_REMAP_SERVICE_NAME_HEAVY:-dullypdf-openai-remap-heavy}"
+OPENAI_RENAME_REMAP_REGION="${OPENAI_RENAME_REMAP_TASKS_LOCATION:-${REGION:-us-east4}}"
+OPENAI_RENAME_REMAP_SERVICE_NAME="${OPENAI_RENAME_REMAP_SERVICE_NAME:-dullypdf-openai-rename-remap}"
 
 prune_duplicate_regions_for_service \
   "$DETECTOR_SERVICE_NAME_LIGHT_CPU" \
@@ -116,21 +112,9 @@ prune_duplicate_regions_for_service \
   "$DETECTOR_CPU_REGION" \
   "detector heavy CPU region should match the active routing plan"
 prune_duplicate_regions_for_service \
-  "$OPENAI_RENAME_SERVICE_NAME_LIGHT" \
-  "$OPENAI_RENAME_REGION" \
-  "OpenAI rename light worker should only exist in the configured task region"
-prune_duplicate_regions_for_service \
-  "$OPENAI_RENAME_SERVICE_NAME_HEAVY" \
-  "$OPENAI_RENAME_REGION" \
-  "OpenAI rename heavy worker should only exist in the configured task region"
-prune_duplicate_regions_for_service \
-  "$OPENAI_REMAP_SERVICE_NAME_LIGHT" \
-  "$OPENAI_REMAP_REGION" \
-  "OpenAI remap light worker should only exist in the configured task region"
-prune_duplicate_regions_for_service \
-  "$OPENAI_REMAP_SERVICE_NAME_HEAVY" \
-  "$OPENAI_REMAP_REGION" \
-  "OpenAI remap heavy worker should only exist in the configured task region"
+  "$OPENAI_RENAME_REMAP_SERVICE_NAME" \
+  "$OPENAI_RENAME_REMAP_REGION" \
+  "OpenAI rename-remap worker should only exist in the configured task region"
 
 for retired_service in \
   "dullypdf-detector" \
@@ -138,7 +122,11 @@ for retired_service in \
   "dullypdf-detector-light-bench-cpu" \
   "dullypdf-detector-heavy-bench-cpu" \
   "dullypdf-detector-light-bench-gpu" \
-  "dullypdf-detector-heavy-bench-gpu"
+  "dullypdf-detector-heavy-bench-gpu" \
+  "dullypdf-openai-rename-light" \
+  "dullypdf-openai-rename-heavy" \
+  "dullypdf-openai-remap-light" \
+  "dullypdf-openai-remap-heavy"
 do
   for region in "${REGION_CANDIDATES[@]}"; do
     if [[ -z "$region" ]]; then

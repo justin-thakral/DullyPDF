@@ -296,7 +296,7 @@ export type ProfileLimits = {
   signingRequestsMonthlyMax?: number;
 };
 
-export type BillingCheckoutKind = 'pro_monthly' | 'pro_yearly' | 'refill_500';
+export type BillingCheckoutKind = 'pro_monthly' | 'pro_yearly' | 'refill_500' | 'free_trial';
 
 export type CreditPricingConfig = {
   pageBucketSize: number;
@@ -324,6 +324,7 @@ export type BillingProfileConfig = {
   cancelAtPeriodEnd?: boolean | null;
   cancelAt?: number | null;
   currentPeriodEnd?: number | null;
+  trialUsed?: boolean;
 };
 
 export type DowngradeRetentionTemplateSummary = {

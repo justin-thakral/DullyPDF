@@ -37,9 +37,7 @@ from backend.ai.status import (
 from backend.ai.tasks import (
     enqueue_openai_remap_task,
     enqueue_openai_rename_task,
-    resolve_openai_remap_profile,
-    resolve_openai_rename_profile,
-    resolve_openai_task_config,
+    resolve_openai_rename_remap_task_config,
 )
 from backend.api.schemas import RenameFieldsRequest, SchemaMappingRequest
 from backend.firebaseDB.openai_job_database import (
@@ -65,10 +63,7 @@ from backend.sessions.session_store import (
     get_session_entry as _get_session_entry,
     update_session_entry as _update_session_entry,
 )
-from backend.services.app_config import (
-    resolve_openai_remap_mode,
-    resolve_openai_rename_mode,
-)
+from backend.services.app_config import resolve_openai_rename_remap_mode
 from backend.services.auth_service import require_user
 from backend.services.credit_refund_service import attempt_credit_refund
 from backend.services.downgrade_retention_service import is_user_retention_template_locked
@@ -674,7 +669,7 @@ async def rename_fields_ai(
     credit_pricing = compute_credit_pricing(credit_operation, page_count=page_count)
     credits_required = credit_pricing.total_credits
     credits_charged = normalize_role(user.role) != ROLE_GOD
-    task_mode = _task_mode_enabled(resolve_openai_rename_mode())
+    task_mode = _task_mode_enabled(resolve_openai_rename_remap_mode())
     provided_request_id = _normalize_request_id(payload.requestId)
     tracking = _resolve_openai_request_tracking(
         kind="rename",
@@ -688,7 +683,6 @@ async def rename_fields_ai(
             "databaseFields": list(database_fields or []),
         },
     )
-    profile: Optional[str] = None
     task_config: Optional[Dict[str, str]] = None
     serialized_template_fields = _serialize_template_fields(payload.templateFields)
 
@@ -702,8 +696,7 @@ async def rename_fields_ai(
     if existing_response is not None:
         return existing_response
     if task_mode:
-        profile = resolve_openai_rename_profile(page_count)
-        task_config = resolve_openai_task_config("rename", profile)
+        task_config = resolve_openai_rename_remap_task_config()
     existing_response = _create_tracked_openai_job(
         tracking=tracking,
         job_type=OPENAI_JOB_TYPE_RENAME,
@@ -782,7 +775,6 @@ async def rename_fields_ai(
                     "creditsCharged": credits_charged,
                     "creditBreakdown": credit_breakdown,
                 },
-                profile=profile,
             )
             update_openai_job(job_id=tracking.request_id, task_name=task_name)
         except Exception as exc:
@@ -979,7 +971,7 @@ async def map_schema_ai(
     )
     credits_required = credit_pricing.total_credits
     credits_charged = normalize_role(user.role) != ROLE_GOD
-    task_mode = _task_mode_enabled(resolve_openai_remap_mode())
+    task_mode = _task_mode_enabled(resolve_openai_rename_remap_mode())
     provided_request_id = _normalize_request_id(payload.requestId)
     tracking = _resolve_openai_request_tracking(
         kind="remap",
@@ -994,7 +986,6 @@ async def map_schema_ai(
             "templateTags": allowlist_payload.get("templateTags") or [],
         },
     )
-    profile: Optional[str] = None
     task_config: Optional[Dict[str, str]] = None
 
     existing_response = _maybe_reuse_tracked_openai_job(
@@ -1008,8 +999,7 @@ async def map_schema_ai(
     if existing_response is not None:
         return existing_response
     if task_mode:
-        profile = resolve_openai_remap_profile(len(template_fields))
-        task_config = resolve_openai_task_config("remap", profile)
+        task_config = resolve_openai_rename_remap_task_config()
     existing_response = _create_tracked_openai_job(
         tracking=tracking,
         job_type=OPENAI_JOB_TYPE_REMAP,
@@ -1090,7 +1080,6 @@ async def map_schema_ai(
                     "creditsCharged": credits_charged,
                     "creditBreakdown": credit_breakdown,
                 },
-                profile=profile,
             )
             update_openai_job(job_id=tracking.request_id, task_name=task_name)
         except Exception as exc:

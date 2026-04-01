@@ -116,18 +116,14 @@ def test_deploy_backend_defaults_to_east4_public_service_without_changing_detect
 def test_deploy_backend_resolves_openai_worker_urls_from_cloud_run_before_deploy() -> None:
     text = _script_text()
     assert 'resolve_cloud_run_service_url()' in text
-    assert 'OPENAI_RENAME_SERVICE_REGION="${OPENAI_RENAME_SERVICE_REGION:-${OPENAI_RENAME_TASKS_LOCATION:-${REGION:-us-east4}}}"' in text
-    assert 'OPENAI_REMAP_SERVICE_REGION="${OPENAI_REMAP_SERVICE_REGION:-${OPENAI_REMAP_TASKS_LOCATION:-${REGION:-us-east4}}}"' in text
-    assert 'OPENAI_RENAME_SERVICE_NAME_LIGHT="${OPENAI_RENAME_SERVICE_NAME_LIGHT:-dullypdf-openai-rename-light}"' in text
-    assert 'OPENAI_REMAP_SERVICE_NAME_HEAVY="${OPENAI_REMAP_SERVICE_NAME_HEAVY:-dullypdf-openai-remap-heavy}"' in text
-    assert 'OPENAI_RENAME_SERVICE_URL_LIGHT_ACTIVE="$(' in text
-    assert 'OPENAI_REMAP_SERVICE_URL_HEAVY_ACTIVE="$(' in text
-    assert 'OPENAI_RENAME_TASKS_AUDIENCE_LIGHT_ACTIVE="$OPENAI_RENAME_SERVICE_URL_LIGHT_ACTIVE"' in text
-    assert 'OPENAI_REMAP_TASKS_AUDIENCE_HEAVY_ACTIVE="$OPENAI_REMAP_SERVICE_URL_HEAVY_ACTIVE"' in text
-    assert '"OPENAI_RENAME_SERVICE_URL_LIGHT"' in text
-    assert '"OPENAI_REMAP_TASKS_AUDIENCE_HEAVY"' in text
-    assert 'OPENAI_RENAME_SERVICE_URL: {json.dumps(rename_light_url)}' in text
-    assert 'OPENAI_REMAP_TASKS_AUDIENCE_HEAVY: {json.dumps(remap_heavy_audience)}' in text
+    assert 'OPENAI_RENAME_REMAP_SERVICE_REGION="${OPENAI_RENAME_REMAP_SERVICE_REGION:-${OPENAI_RENAME_REMAP_TASKS_LOCATION:-${REGION:-us-east4}}}"' in text
+    assert 'OPENAI_RENAME_REMAP_SERVICE_NAME="${OPENAI_RENAME_REMAP_SERVICE_NAME:-dullypdf-openai-rename-remap}"' in text
+    assert 'OPENAI_RENAME_REMAP_SERVICE_URL_ACTIVE="$(' in text
+    assert 'OPENAI_RENAME_REMAP_TASKS_AUDIENCE_ACTIVE="$OPENAI_RENAME_REMAP_SERVICE_URL_ACTIVE"' in text
+    assert '"OPENAI_RENAME_REMAP_SERVICE_URL"' in text
+    assert '"OPENAI_RENAME_REMAP_TASKS_AUDIENCE"' in text
+    assert 'OPENAI_RENAME_REMAP_SERVICE_URL: {json.dumps(rename_remap_url)}' in text
+    assert 'OPENAI_RENAME_REMAP_TASKS_AUDIENCE: {json.dumps(rename_remap_audience)}' in text
 
 
 def test_backend_prod_env_example_documents_stripe_as_required() -> None:

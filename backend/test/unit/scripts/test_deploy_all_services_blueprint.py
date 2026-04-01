@@ -22,7 +22,7 @@ def test_deploy_all_services_deploys_session_cleanup_job_from_same_backend_image
     assert 'require_prod_artifact_registry_repo "BACKEND_ARTIFACT_REPO" "$BACKEND_ARTIFACT_REPO"' in text
     assert 'BACKEND_IMAGE="${BACKEND_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${BACKEND_ARTIFACT_REPO}/backend:$(date +%Y%m%d-%H%M%S)}"' in text
     assert 'require_prod_artifact_registry_image "BACKEND_IMAGE" "$BACKEND_IMAGE" "$BACKEND_ARTIFACT_REPO"' in text
-    assert 'REGION="${REGION:-${DETECTOR_TASKS_LOCATION:-${OPENAI_RENAME_TASKS_LOCATION:-us-east4}}}"' in text
+    assert 'REGION="${REGION:-${DETECTOR_TASKS_LOCATION:-${OPENAI_RENAME_REMAP_TASKS_LOCATION:-us-east4}}}"' in text
     assert 'BACKEND_REGION="${BACKEND_REGION:-us-east4}"' in text
     assert 'BACKEND_SERVICE="${BACKEND_SERVICE:-dullypdf-backend-east4}"' in text
     assert 'Refusing to deploy all services with retired prod backend service name dullypdf-backend.' in text

@@ -13,6 +13,7 @@ import { ApiService } from './services/api';
 import { Auth } from './services/auth';
 import { setAuthToken } from './services/authTokenStore';
 import { clearExpiredPendingBillingCheckout, hasFreshPendingBillingCheckout } from './utils/billingCheckoutState';
+import { hasOnboardingPending } from './utils/onboardingState';
 import { debugLog } from './utils/debug';
 import { applyRouteSeo } from './utils/seo';
 import { clearWorkspaceResumeState } from './utils/workspaceResumeState';
@@ -231,6 +232,12 @@ function App({
   useEffect(() => {
     if (!authReady) return;
     if (browserRoute.kind === 'homepage') {
+      // Auto-launch the workspace when a verified user returns to the homepage
+      // with a pending onboarding (e.g. after clicking the email verification link).
+      if (verifiedUser && hasOnboardingPending(verifiedUser.uid)) {
+        launchWorkspace('workflow');
+        return;
+      }
       runtimeAutoStartKeyRef.current = null;
       return;
     }
@@ -302,12 +309,14 @@ function App({
 
   const handleSignOut = useCallback(async () => {
     try {
+      // Unmount the runtime BEFORE clearing auth state so WorkspaceRuntime
+      // never renders with a null user while still mounted (white screen).
+      navigateBrowserRoute({ kind: 'homepage' }, { replace: true });
       await Auth.signOut();
       clearWorkspaceResumeState();
       setAuthToken(null);
       setAuthUser(null);
       setAuthSignInProvider(null);
-      navigateBrowserRoute({ kind: 'homepage' }, { replace: true });
     } catch (error) {
       debugLog('Failed to sign out from lightweight shell', error);
     }

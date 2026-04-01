@@ -15,12 +15,16 @@ from backend.env_utils import env_value
 CHECKOUT_KIND_PRO_MONTHLY = "pro_monthly"
 CHECKOUT_KIND_PRO_YEARLY = "pro_yearly"
 CHECKOUT_KIND_REFILL_500 = "refill_500"
+CHECKOUT_KIND_FREE_TRIAL = "free_trial"
 
 SUPPORTED_CHECKOUT_KINDS = {
     CHECKOUT_KIND_PRO_MONTHLY,
     CHECKOUT_KIND_PRO_YEARLY,
     CHECKOUT_KIND_REFILL_500,
+    CHECKOUT_KIND_FREE_TRIAL,
 }
+
+DEFAULT_TRIAL_PERIOD_DAYS = 7
 
 ACTIVE_SUBSCRIPTION_STATUSES = {"active", "trialing", "past_due"}
 REFILL_PRICE_CREDIT_ENV_MAP: tuple[tuple[str, str], ...] = (
@@ -201,6 +205,11 @@ def _resolve_plan(kind: str) -> CheckoutPlan:
         if not price_id:
             raise BillingConfigError("Missing STRIPE_PRICE_REFILL_500.")
         return CheckoutPlan(kind=normalized_kind, mode="payment", price_id=price_id)
+    if normalized_kind == CHECKOUT_KIND_FREE_TRIAL:
+        price_id = env_value("STRIPE_PRICE_PRO_MONTHLY")
+        if not price_id:
+            raise BillingConfigError("Missing STRIPE_PRICE_PRO_MONTHLY for free trial.")
+        return CheckoutPlan(kind=normalized_kind, mode="subscription", price_id=price_id)
     raise BillingConfigError("Unsupported checkout kind.")
 
 
@@ -212,6 +221,8 @@ def _resolve_checkout_label(kind: str) -> str:
         return "Pro Yearly"
     if normalized_kind == CHECKOUT_KIND_REFILL_500:
         return "Refill 500 Credits"
+    if normalized_kind == CHECKOUT_KIND_FREE_TRIAL:
+        return "Free Trial"
     return "Checkout Plan"
 
 
@@ -526,6 +537,7 @@ def _build_checkout_catalog_payload() -> Dict[str, Dict[str, Any]]:
         CHECKOUT_KIND_PRO_MONTHLY,
         CHECKOUT_KIND_PRO_YEARLY,
         CHECKOUT_KIND_REFILL_500,
+        CHECKOUT_KIND_FREE_TRIAL,
     ):
         try:
             plan = _resolve_plan(kind)
@@ -1099,7 +1111,11 @@ def create_checkout_session(
         "metadata": metadata,
     }
     if plan.mode == "subscription":
-        create_payload["subscription_data"] = {"metadata": metadata}
+        subscription_data: Dict[str, Any] = {"metadata": metadata}
+        if plan.kind == CHECKOUT_KIND_FREE_TRIAL:
+            trial_days = _safe_positive_int_env("STRIPE_TRIAL_PERIOD_DAYS", DEFAULT_TRIAL_PERIOD_DAYS)
+            subscription_data["trial_period_days"] = trial_days
+        create_payload["subscription_data"] = subscription_data
         if resolved_customer_id:
             create_payload["customer"] = resolved_customer_id
         elif user_email:

@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { DEMO_DISABLED_MESSAGE } from '../../config/appConstants';
 import type { DataSourceKind } from '../../types';
+import { Alert } from '../ui/Alert';
 
 const HEADER_GROUP_TEMPLATE_TRIGGER_MAX_CHARS = 22;
 const HEADER_GROUP_TEMPLATE_MENU_MAX_CHARS = 24;
@@ -717,7 +718,7 @@ export function HeaderBar({
                     Search, Fill &amp; Clear
                   </button>
                   {showSearchHint ? (
-                    <span className="ui-header__search-hint">Requires CSV/Excel/JSON/respondent rows</span>
+                    <Alert tone="info" variant="banner" message="Requires CSV/Excel/JSON/respondent rows" />
                   ) : null}
                 </div>
               ) : null}
@@ -773,7 +774,7 @@ export function HeaderBar({
               ) : null}
             </div>
           ) : null}
-          {actionHint ? <span className="ui-header__action-hint">{actionHint}</span> : null}
+          {actionHint ? <Alert tone="info" variant="banner" message={actionHint} /> : null}
           {onSaveToProfile ? (
             <div className="ui-header__save-row ui-header__save-row--inline">
               {onOpenTemplateApi ? (

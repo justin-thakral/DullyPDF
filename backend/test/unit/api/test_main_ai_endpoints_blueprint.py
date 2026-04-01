@@ -807,12 +807,11 @@ def test_rename_endpoint_tasks_mode_enqueues_job_and_skips_inline_openai_call(
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
     mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True, {"base": 1, "monthly": 0, "refill": 0}))
     mocker.patch.object(app_main, "record_openai_rename_request", return_value=None)
-    mocker.patch.object(app_main, "resolve_openai_rename_mode", return_value="tasks")
-    mocker.patch.object(app_main, "resolve_openai_rename_profile", return_value="light")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
     mocker.patch.object(
         app_main,
-        "resolve_openai_task_config",
-        return_value={"profile": "light", "queue": "openai-rename-light", "service_url": "https://rename"},
+        "resolve_openai_rename_remap_task_config",
+        return_value={"queue": "openai-rename-remap", "service_url": "https://rename"},
     )
     create_job_mock = mocker.patch.object(app_main, "create_openai_job", return_value=None)
     enqueue_mock = mocker.patch.object(app_main, "enqueue_openai_rename_task", return_value="tasks/rename-1")
@@ -847,7 +846,7 @@ def test_rename_endpoint_tasks_mode_reuses_existing_idempotent_job_without_recha
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "_get_session_entry", return_value=_session_entry())
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
-    mocker.patch.object(app_main, "resolve_openai_rename_mode", return_value="tasks")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
     mocker.patch.object(app_main, "_build_openai_request_id", return_value="rename-idem-1")
     mocker.patch.object(
         app_main,
@@ -892,7 +891,7 @@ def test_rename_endpoint_reuses_request_id_for_sync_retry_without_recharging(
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "_get_session_entry", return_value=_session_entry())
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
-    mocker.patch.object(app_main, "resolve_openai_rename_mode", return_value="sync")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="sync")
     mocker.patch.object(
         app_main,
         "get_openai_job",
@@ -950,12 +949,11 @@ def test_mapping_endpoint_tasks_mode_enqueues_job(
     mocker.patch.object(app_main, "_get_session_entry", return_value={"session": "entry", "page_count": 1})
     mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True, {"base": 1, "monthly": 0, "refill": 0}))
     mocker.patch.object(app_main, "record_openai_request", return_value=None)
-    mocker.patch.object(app_main, "resolve_openai_remap_mode", return_value="tasks")
-    mocker.patch.object(app_main, "resolve_openai_remap_profile", return_value="light")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
     mocker.patch.object(
         app_main,
-        "resolve_openai_task_config",
-        return_value={"profile": "light", "queue": "openai-remap-light", "service_url": "https://remap"},
+        "resolve_openai_rename_remap_task_config",
+        return_value={"queue": "openai-rename-remap", "service_url": "https://remap"},
     )
     create_job_mock = mocker.patch.object(app_main, "create_openai_job", return_value=None)
     enqueue_mock = mocker.patch.object(app_main, "enqueue_openai_remap_task", return_value="tasks/remap-1")
@@ -996,7 +994,7 @@ def test_mapping_endpoint_tasks_mode_reuses_existing_idempotent_job_without_rech
     )
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
     mocker.patch.object(app_main, "_get_session_entry", return_value={"session": "entry", "page_count": 1})
-    mocker.patch.object(app_main, "resolve_openai_remap_mode", return_value="tasks")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
     mocker.patch.object(app_main, "_build_openai_request_id", return_value="remap-idem-1")
     mocker.patch.object(
         app_main,
@@ -1041,12 +1039,11 @@ def test_rename_endpoint_lost_create_race_reuses_existing_job_without_recharging
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "_get_session_entry", return_value=_session_entry())
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
-    mocker.patch.object(app_main, "resolve_openai_rename_mode", return_value="tasks")
-    mocker.patch.object(app_main, "resolve_openai_rename_profile", return_value="light")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
     mocker.patch.object(
         app_main,
-        "resolve_openai_task_config",
-        return_value={"profile": "light", "queue": "openai-rename-light", "service_url": "https://rename"},
+        "resolve_openai_rename_remap_task_config",
+        return_value={"queue": "openai-rename-remap", "service_url": "https://rename"},
     )
     mocker.patch.object(app_main, "_build_openai_request_id", return_value="rename-race-1")
     get_job_mock = mocker.patch.object(
@@ -1106,7 +1103,7 @@ def test_mapping_endpoint_reuses_request_id_for_sync_retry_without_recharging(
     )
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)
     mocker.patch.object(app_main, "_get_session_entry", return_value={"session": "entry", "page_count": 1})
-    mocker.patch.object(app_main, "resolve_openai_remap_mode", return_value="sync")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="sync")
     mocker.patch.object(
         app_main,
         "get_openai_job",
@@ -1504,12 +1501,11 @@ def test_rename_task_mode_uses_bucketed_credit_costs_for_twelve_pages(
     mocker.patch.object(app_main, "consume_openai_credits", return_value=(90, True))
     mocker.patch.object(app_main, "get_schema", return_value=_schema_record())
     mocker.patch.object(app_main, "record_openai_rename_request", return_value=None)
-    mocker.patch.object(app_main, "resolve_openai_rename_mode", return_value="tasks")
-    mocker.patch.object(app_main, "resolve_openai_rename_profile", return_value="light")
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
     mocker.patch.object(
         app_main,
-        "resolve_openai_task_config",
-        return_value={"profile": "light", "queue": "openai-rename-light", "service_url": "https://rename"},
+        "resolve_openai_rename_remap_task_config",
+        return_value={"queue": "openai-rename-remap", "service_url": "https://rename"},
     )
     create_job_mock = mocker.patch.object(app_main, "create_openai_job", return_value=None)
     enqueue_mock = mocker.patch.object(app_main, "enqueue_openai_rename_task", return_value="tasks/rename-12")

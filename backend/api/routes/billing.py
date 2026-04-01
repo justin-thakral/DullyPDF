@@ -26,8 +26,10 @@ from backend.firebaseDB.user_database import (
     downgrade_to_base_membership,
     ensure_user,
     find_user_id_by_subscription_id,
+    get_trial_used,
     get_user_billing_record,
     get_user_profile,
+    mark_trial_used,
     normalize_role,
     set_user_billing_subscription,
 )
@@ -37,6 +39,7 @@ from backend.services.billing_service import (
     BillingCheckoutConflictError,
     BillingConfigError,
     BillingCheckoutSessionNotFoundError,
+    CHECKOUT_KIND_FREE_TRIAL,
     CHECKOUT_KIND_PRO_MONTHLY,
     CHECKOUT_KIND_PRO_YEARLY,
     CHECKOUT_KIND_REFILL_500,
@@ -263,7 +266,7 @@ def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_ev
         )
         return
     checkout_kind = (metadata_dict.get("checkoutKind") or "").strip().lower()
-    if checkout_kind in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY}:
+    if checkout_kind in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY, CHECKOUT_KIND_FREE_TRIAL}:
         payment_status = str(session_obj.get("payment_status") or "").strip().lower()
         if payment_status not in {"paid", "no_payment_required"}:
             return
@@ -652,7 +655,7 @@ async def create_checkout(
         _enforce_billing_route_rate_limit(scope="checkout", user_id=user.app_user_id)
     checkout_kind = payload.kind
     billing_record = None
-    if checkout_kind in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY}:
+    if checkout_kind in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY, CHECKOUT_KIND_FREE_TRIAL}:
         billing_record = get_user_billing_record(user.app_user_id)
         if (
             billing_record
@@ -663,6 +666,12 @@ async def create_checkout(
                 status_code=409,
                 detail="An active Pro subscription already exists for this user.",
             )
+    if checkout_kind == CHECKOUT_KIND_FREE_TRIAL:
+        if role in {ROLE_PRO, ROLE_GOD}:
+            raise HTTPException(status_code=409, detail="Free trial is not available for active Pro or God users.")
+        if get_trial_used(user.app_user_id):
+            raise HTTPException(status_code=409, detail="Free trial has already been used.")
+        mark_trial_used(user.app_user_id)
     if checkout_kind == CHECKOUT_KIND_REFILL_500:
         if role != ROLE_PRO:
             raise HTTPException(status_code=403, detail="Credit refill is available to Pro users only.")
@@ -687,7 +696,7 @@ async def create_checkout(
     except Exception as exc:
         raise HTTPException(status_code=500, detail="Failed to create Stripe Checkout session.") from exc
 
-    if checkout_kind in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY}:
+    if checkout_kind in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY, CHECKOUT_KIND_FREE_TRIAL}:
         resolved_customer_id = first_nonempty(
             [
                 str(session.get("customerId") or ""),

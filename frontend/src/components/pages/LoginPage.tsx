@@ -23,10 +23,11 @@ import {
   loadRecaptcha,
 } from '../../utils/recaptcha';
 import { trackGoogleAdsSignup } from '../../utils/googleAds';
+import { markOnboardingPending } from '../../utils/onboardingState';
 import { Alert } from '../ui/Alert';
 
 interface LoginPageProps {
-  onAuthenticated?: () => void;
+  onAuthenticated?: (options?: { isNewUser?: boolean }) => void;
   onCancel?: () => void;
 }
 
@@ -87,8 +88,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
     return true;
   })();
   const signupRecaptchaBlocked = mode === 'signup' && signupRecaptchaRequired && !recaptchaSiteKey;
-  const handleAuthenticated = useEffectEvent(() => {
-    onAuthenticated?.();
+  const handleAuthenticated = useEffectEvent((options?: { isNewUser?: boolean }) => {
+    onAuthenticated?.(options);
   });
 
   useEffect(() => {
@@ -110,12 +111,21 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
         signInSuccessWithAuthResult: (authResult: UserCredential) => {
           setError(null);
           setInfo(null);
-          const additionalInfo = getAdditionalUserInfo(authResult);
-          if (additionalInfo?.isNewUser) {
+          // FirebaseUI passes a compat UserCredential; the modular
+          // getAdditionalUserInfo may return null for compat objects.
+          // Fall back to the compat `.additionalUserInfo` property.
+          const additionalInfo =
+            getAdditionalUserInfo(authResult)
+            ?? (authResult as unknown as { additionalUserInfo?: { isNewUser?: boolean } }).additionalUserInfo;
+          const isNewUser = additionalInfo?.isNewUser === true;
+          if (isNewUser) {
             trackGoogleAdsSignup(authResult.user?.uid);
+            if (authResult.user?.uid) {
+              markOnboardingPending(authResult.user.uid);
+            }
           }
           startTransition(() => {
-            handleAuthenticated();
+            handleAuthenticated({ isNewUser });
           });
           return false;
         },
@@ -187,7 +197,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
       } else {
         const user = await Auth.signUp(email, password);
         trackGoogleAdsSignup(user.uid);
+        markOnboardingPending(user.uid);
         setInfo('Verification email sent. Check your inbox before continuing.');
+        return;
       }
       startTransition(() => {
         handleAuthenticated();

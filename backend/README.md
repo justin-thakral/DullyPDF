@@ -78,8 +78,7 @@ After deploying indexes, verify TTL enablement with `gcloud firestore fields ttl
 
 - Main API: Cloud Tasks client + Firebase Admin + OpenAI (optional).
 - Detector service: CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)) + PyTorch for detection.
-- Rename worker service: OpenAI rename execution (`backend/ai/rename_worker_app.py`).
-- Remap worker service: OpenAI schema mapping execution (`backend/ai/remap_worker_app.py`).
+- Rename+Remap worker service: Combined OpenAI rename and schema mapping execution (`backend/ai/rename_remap_worker_app.py`).
 - OpenAI API key for rename + schema mapping (schema metadata only).
 - Firebase Admin for auth and role claims.
 - GCS buckets for saved forms and templates.
@@ -193,24 +192,16 @@ After deploying indexes, verify TTL enablement with `gcloud firestore fields ttl
 - `DETECTOR_TASKS_AUDIENCE_LIGHT_GPU`, `DETECTOR_TASKS_AUDIENCE_HEAVY_GPU` (optional)
 - `DETECTOR_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT`, `DETECTOR_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY` (optional)
 - `DETECTOR_TASKS_FORCE_IMMEDIATE` (optional; schedule tasks in the past to bypass host clock skew)
-- `OPENAI_RENAME_MODE` (`tasks` for production async rename workers)
-- `OPENAI_RENAME_TASKS_PROJECT`, `OPENAI_RENAME_TASKS_LOCATION`
-- `OPENAI_RENAME_TASKS_QUEUE` or `OPENAI_RENAME_TASKS_QUEUE_LIGHT`
-- `OPENAI_RENAME_SERVICE_URL` or `OPENAI_RENAME_SERVICE_URL_LIGHT`
-- `OPENAI_RENAME_TASKS_QUEUE_HEAVY`, `OPENAI_RENAME_SERVICE_URL_HEAVY` (optional; for larger PDFs)
-- `OPENAI_RENAME_TASKS_HEAVY_PAGE_THRESHOLD` (default 10)
-- `OPENAI_RENAME_TASKS_SERVICE_ACCOUNT`
-- `OPENAI_RENAME_TASKS_AUDIENCE`, `OPENAI_RENAME_TASKS_AUDIENCE_LIGHT`, `OPENAI_RENAME_TASKS_AUDIENCE_HEAVY` (optional)
-- `OPENAI_RENAME_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT`, `OPENAI_RENAME_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY` (optional)
-- `OPENAI_REMAP_MODE` (`tasks` for production async remap workers)
-- `OPENAI_REMAP_TASKS_PROJECT`, `OPENAI_REMAP_TASKS_LOCATION`
-- `OPENAI_REMAP_TASKS_QUEUE` or `OPENAI_REMAP_TASKS_QUEUE_LIGHT`
-- `OPENAI_REMAP_SERVICE_URL` or `OPENAI_REMAP_SERVICE_URL_LIGHT`
-- `OPENAI_REMAP_TASKS_QUEUE_HEAVY`, `OPENAI_REMAP_SERVICE_URL_HEAVY` (optional; for large template tag sets)
-- `OPENAI_REMAP_TASKS_HEAVY_TAG_THRESHOLD` (default 120)
-- `OPENAI_REMAP_TASKS_SERVICE_ACCOUNT`
-- `OPENAI_REMAP_TASKS_AUDIENCE`, `OPENAI_REMAP_TASKS_AUDIENCE_LIGHT`, `OPENAI_REMAP_TASKS_AUDIENCE_HEAVY` (optional)
-- `OPENAI_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT`, `OPENAI_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY` (optional)
+- `OPENAI_RENAME_REMAP_MODE` (`tasks` for production async rename+remap worker)
+- `OPENAI_RENAME_REMAP_TASKS_PROJECT`, `OPENAI_RENAME_REMAP_TASKS_LOCATION`
+- `OPENAI_RENAME_REMAP_TASKS_QUEUE` or `OPENAI_RENAME_REMAP_TASKS_QUEUE_LIGHT`
+- `OPENAI_RENAME_REMAP_SERVICE_URL` or `OPENAI_RENAME_REMAP_SERVICE_URL_LIGHT`
+- `OPENAI_RENAME_REMAP_TASKS_QUEUE_HEAVY`, `OPENAI_RENAME_REMAP_SERVICE_URL_HEAVY` (optional; for larger PDFs or large template tag sets)
+- `OPENAI_RENAME_REMAP_TASKS_HEAVY_PAGE_THRESHOLD` (default 10)
+- `OPENAI_RENAME_REMAP_TASKS_HEAVY_TAG_THRESHOLD` (default 120)
+- `OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT`
+- `OPENAI_RENAME_REMAP_TASKS_AUDIENCE`, `OPENAI_RENAME_REMAP_TASKS_AUDIENCE_LIGHT`, `OPENAI_RENAME_REMAP_TASKS_AUDIENCE_HEAVY` (optional)
+- `OPENAI_RENAME_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT`, `OPENAI_RENAME_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY` (optional)
 - `OPENAI_REQUEST_TIMEOUT_SECONDS` (default 75; bounds each OpenAI request to avoid long UI stalls)
 - `OPENAI_MAX_RETRIES` (default 1; OpenAI SDK retry count for rename/remap calls)
 - `OPENAI_WORKER_MAX_RETRIES` (default 0; worker-only OpenAI SDK retries to avoid multiplying Cloud Tasks retries)
@@ -406,16 +397,10 @@ Detector service entrypoint (for Cloud Run or local dev):
 uvicorn backend.detection.detector_app:app --host 0.0.0.0 --port 8000
 ```
 
-Rename worker service entrypoint:
+Rename+Remap worker service entrypoint:
 
 ```
-uvicorn backend.ai.rename_worker_app:app --host 0.0.0.0 --port 8000
-```
-
-Remap worker service entrypoint:
-
-```
-uvicorn backend.ai.remap_worker_app:app --host 0.0.0.0 --port 8000
+uvicorn backend.ai.rename_remap_worker_app:app --host 0.0.0.0 --port 8000
 ```
 
 ### Billing testing (dev)
@@ -509,8 +494,7 @@ When Stripe webhooks misbehave in production, use this sequence:
 Docker images:
 - `Dockerfile` (main API)
 - `Dockerfile.detector` (detector service)
-- `Dockerfile.ai-rename` (rename worker service)
-- `Dockerfile.ai-remap` (remap worker service)
+- `Dockerfile.ai-rename-remap` (combined rename+remap worker service)
 - `backend/requirements.txt` is main API deps; `backend/requirements-detector.txt` adds CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)).
 
 Worker deploy script (Cloud Run):

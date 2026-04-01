@@ -272,11 +272,10 @@ export function FieldInspectorPanel({
     onCommitFieldChange();
   };
 
-  const handleNumberInputKeyDown = (commit: () => void) => (event: ReactKeyboardEvent<HTMLInputElement>) => {
+  const handleNumberInputKeyDown = (_commit: () => void) => (event: ReactKeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') return;
     event.preventDefault();
-    commitFieldEdit(commit);
-    event.currentTarget.blur();
+    event.currentTarget.blur(); // onBlur handler will commitFieldEdit
   };
 
   const commitArrowKeyMoveStep = () => {

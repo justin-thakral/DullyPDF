@@ -57,8 +57,8 @@ require_empty() {
   fi
 }
 
-PROJECT_ID="${PROJECT_ID:-${OPENAI_RENAME_TASKS_PROJECT:-${OPENAI_REMAP_TASKS_PROJECT:-${FIREBASE_PROJECT_ID:-dullypdf-dev}}}}"
-REGION="${REGION:-${OPENAI_RENAME_TASKS_LOCATION:-${OPENAI_REMAP_TASKS_LOCATION:-us-east4}}}"
+PROJECT_ID="${PROJECT_ID:-${OPENAI_RENAME_REMAP_TASKS_PROJECT:-${FIREBASE_PROJECT_ID:-dullypdf-dev}}}"
+REGION="${REGION:-${OPENAI_RENAME_REMAP_TASKS_LOCATION:-us-east4}}"
 ARTIFACT_REGISTRY_LOCATION="${ARTIFACT_REGISTRY_LOCATION:-us-east4}"
 ARTIFACT_REPO="${WORKER_ARTIFACT_REPO:-dullypdf-backend}"
 TAG="${WORKER_IMAGE_TAG:-$(date +%Y%m%d-%H%M%S)}"
@@ -66,48 +66,34 @@ TAG="${WORKER_IMAGE_TAG:-$(date +%Y%m%d-%H%M%S)}"
 require_prod_artifact_registry_location "OpenAI worker Artifact Registry location" "$ARTIFACT_REGISTRY_LOCATION"
 require_prod_artifact_registry_repo "WORKER_ARTIFACT_REPO" "$ARTIFACT_REPO"
 
-RENAME_IMAGE="${OPENAI_RENAME_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/openai-rename-worker:${TAG}}"
-REMAP_IMAGE="${OPENAI_REMAP_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/openai-remap-worker:${TAG}}"
-require_prod_artifact_registry_image "OPENAI_RENAME_WORKER_IMAGE" "$RENAME_IMAGE" "$ARTIFACT_REPO"
-require_prod_artifact_registry_image "OPENAI_REMAP_WORKER_IMAGE" "$REMAP_IMAGE" "$ARTIFACT_REPO"
+WORKER_IMAGE="${OPENAI_RENAME_REMAP_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/openai-rename-remap-worker:${TAG}}"
+require_prod_artifact_registry_image "OPENAI_RENAME_REMAP_WORKER_IMAGE" "$WORKER_IMAGE" "$ARTIFACT_REPO"
 
-RENAME_SERVICE_LIGHT="${OPENAI_RENAME_SERVICE_NAME_LIGHT:-dullypdf-openai-rename-light}"
-RENAME_SERVICE_HEAVY="${OPENAI_RENAME_SERVICE_NAME_HEAVY:-dullypdf-openai-rename-heavy}"
-REMAP_SERVICE_LIGHT="${OPENAI_REMAP_SERVICE_NAME_LIGHT:-dullypdf-openai-remap-light}"
-REMAP_SERVICE_HEAVY="${OPENAI_REMAP_SERVICE_NAME_HEAVY:-dullypdf-openai-remap-heavy}"
+SERVICE_NAME="${OPENAI_RENAME_REMAP_SERVICE_NAME:-dullypdf-openai-rename-remap}"
 
-RENAME_CALLER_SA="${OPENAI_RENAME_TASKS_SERVICE_ACCOUNT:-}"
-REMAP_CALLER_SA="${OPENAI_REMAP_TASKS_SERVICE_ACCOUNT:-}"
-RENAME_RUNTIME_SA="${OPENAI_RENAME_RUNTIME_SERVICE_ACCOUNT:-}"
-REMAP_RUNTIME_SA="${OPENAI_REMAP_RUNTIME_SERVICE_ACCOUNT:-}"
+CALLER_SA="${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT:-}"
+RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-}"
 
 require_nonempty PROJECT_ID
 require_nonempty REGION
 require_nonempty FIREBASE_PROJECT_ID
 require_nonempty SANDBOX_SESSION_BUCKET
-require_nonempty OPENAI_RENAME_TASKS_SERVICE_ACCOUNT
-require_nonempty OPENAI_REMAP_TASKS_SERVICE_ACCOUNT
-require_nonempty RENAME_RUNTIME_SA
-require_nonempty REMAP_RUNTIME_SA
+require_nonempty OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT
+require_nonempty RUNTIME_SA
 
 if [[ "${ENV:-}" == "prod" || "${ENV:-}" == "production" ]]; then
   require_exact FIREBASE_USE_ADC "true"
   require_empty FIREBASE_CREDENTIALS
   require_empty FIREBASE_CREDENTIALS_SECRET
   require_empty GOOGLE_APPLICATION_CREDENTIALS
-  if [[ "$RENAME_RUNTIME_SA" == "$RENAME_CALLER_SA" || "$REMAP_RUNTIME_SA" == "$REMAP_CALLER_SA" ]]; then
-    echo "OPENAI_*_RUNTIME_SERVICE_ACCOUNT must differ from the matching worker caller service account in prod." >&2
-    exit 1
-  fi
-  if [[ "$RENAME_RUNTIME_SA" == "$REMAP_RUNTIME_SA" ]]; then
-    echo "OPENAI_RENAME_RUNTIME_SERVICE_ACCOUNT and OPENAI_REMAP_RUNTIME_SERVICE_ACCOUNT must be distinct in prod." >&2
+  if [[ "$RUNTIME_SA" == "$CALLER_SA" ]]; then
+    echo "OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT must differ from OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT in prod." >&2
     exit 1
   fi
 fi
 
 TMP_ENV_FILE="$(mktemp)"
-TMP_RENAME_BUILD_CONFIG="$(mktemp)"
-TMP_REMAP_BUILD_CONFIG="$(mktemp)"
+TMP_BUILD_CONFIG="$(mktemp)"
 python3 - <<'PY' "$ENV_FILE" "$TMP_ENV_FILE"
 import json
 import sys
@@ -146,8 +132,7 @@ allowed_exact = {
     "SANDBOX_RENAME_MODEL",
 }
 allowed_prefixes = (
-    "OPENAI_RENAME_",
-    "OPENAI_REMAP_",
+    "OPENAI_RENAME_REMAP_",
     "OPENAI_TASKS_",
     "OPENAI_PREWARM_",
     "SANDBOX_SESSION_",
@@ -197,8 +182,7 @@ PY
 
 cleanup() {
   rm -f "$TMP_ENV_FILE" || true
-  rm -f "$TMP_RENAME_BUILD_CONFIG" || true
-  rm -f "$TMP_REMAP_BUILD_CONFIG" || true
+  rm -f "$TMP_BUILD_CONFIG" || true
 }
 trap cleanup EXIT
 
@@ -236,30 +220,18 @@ if [[ "${#SECRET_FLAGS[@]}" -gt 0 ]]; then
   SECRET_ARGS+=("--update-secrets" "$(IFS=,; echo "${SECRET_FLAGS[*]}")")
 fi
 
-echo "Building worker images in project ${PROJECT_ID}..."
-cat > "$TMP_RENAME_BUILD_CONFIG" <<EOF
+echo "Building worker image in project ${PROJECT_ID}..."
+cat > "$TMP_BUILD_CONFIG" <<EOF
 steps:
   - name: gcr.io/cloud-builders/docker
-    args: ['build', '-f', 'Dockerfile.ai-rename', '-t', '${RENAME_IMAGE}', '.']
+    args: ['build', '-f', 'Dockerfile.ai-rename-remap', '-t', '${WORKER_IMAGE}', '.']
 images:
-  - '${RENAME_IMAGE}'
-EOF
-
-cat > "$TMP_REMAP_BUILD_CONFIG" <<EOF
-steps:
-  - name: gcr.io/cloud-builders/docker
-    args: ['build', '-f', 'Dockerfile.ai-remap', '-t', '${REMAP_IMAGE}', '.']
-images:
-  - '${REMAP_IMAGE}'
+  - '${WORKER_IMAGE}'
 EOF
 
 gcloud builds submit \
   --project "$PROJECT_ID" \
-  --config "$TMP_RENAME_BUILD_CONFIG" \
-  .
-gcloud builds submit \
-  --project "$PROJECT_ID" \
-  --config "$TMP_REMAP_BUILD_CONFIG" \
+  --config "$TMP_BUILD_CONFIG" \
   .
 
 deploy_worker() {
@@ -267,10 +239,6 @@ deploy_worker() {
   local image="$2"
   local caller_service_account="$3"
   local runtime_service_account="$4"
-  local allow_var="$5"
-  local caller_var="$6"
-  local service_url_var="$7"
-  local audience_var="$8"
 
   reset_invoker_policy() {
     local allowed_member="$1"
@@ -340,7 +308,7 @@ PY
   gcloud run services update "$service_name" \
     --region "$REGION" \
     --project "$PROJECT_ID" \
-    --update-env-vars "${allow_var}=false,${caller_var}=${caller_service_account},${service_url_var}=${service_url},${audience_var}=${service_url}" >/dev/null
+    --update-env-vars "OPENAI_RENAME_REMAP_ALLOW_UNAUTHENTICATED=false,OPENAI_RENAME_REMAP_CALLER_SERVICE_ACCOUNT=${caller_service_account},OPENAI_RENAME_REMAP_SERVICE_URL=${service_url},OPENAI_RENAME_REMAP_TASKS_AUDIENCE=${service_url}" >/dev/null
 
   # Reset the invoker binding instead of patching members one at a time so
   # stale principals from older deploys do not survive a hardened redeploy.
@@ -348,56 +316,15 @@ PY
 }
 
 deploy_worker \
-  "$RENAME_SERVICE_LIGHT" \
-  "$RENAME_IMAGE" \
-  "$RENAME_CALLER_SA" \
-  "$RENAME_RUNTIME_SA" \
-  "OPENAI_RENAME_ALLOW_UNAUTHENTICATED" \
-  "OPENAI_RENAME_CALLER_SERVICE_ACCOUNT" \
-  "OPENAI_RENAME_SERVICE_URL" \
-  "OPENAI_RENAME_TASKS_AUDIENCE"
-
-deploy_worker \
-  "$RENAME_SERVICE_HEAVY" \
-  "$RENAME_IMAGE" \
-  "$RENAME_CALLER_SA" \
-  "$RENAME_RUNTIME_SA" \
-  "OPENAI_RENAME_ALLOW_UNAUTHENTICATED" \
-  "OPENAI_RENAME_CALLER_SERVICE_ACCOUNT" \
-  "OPENAI_RENAME_SERVICE_URL" \
-  "OPENAI_RENAME_TASKS_AUDIENCE"
-
-deploy_worker \
-  "$REMAP_SERVICE_LIGHT" \
-  "$REMAP_IMAGE" \
-  "$REMAP_CALLER_SA" \
-  "$REMAP_RUNTIME_SA" \
-  "OPENAI_REMAP_ALLOW_UNAUTHENTICATED" \
-  "OPENAI_REMAP_CALLER_SERVICE_ACCOUNT" \
-  "OPENAI_REMAP_SERVICE_URL" \
-  "OPENAI_REMAP_TASKS_AUDIENCE"
-
-deploy_worker \
-  "$REMAP_SERVICE_HEAVY" \
-  "$REMAP_IMAGE" \
-  "$REMAP_CALLER_SA" \
-  "$REMAP_RUNTIME_SA" \
-  "OPENAI_REMAP_ALLOW_UNAUTHENTICATED" \
-  "OPENAI_REMAP_CALLER_SERVICE_ACCOUNT" \
-  "OPENAI_REMAP_SERVICE_URL" \
-  "OPENAI_REMAP_TASKS_AUDIENCE"
+  "$SERVICE_NAME" \
+  "$WORKER_IMAGE" \
+  "$CALLER_SA" \
+  "$RUNTIME_SA"
 
 echo
 echo "Worker deploy complete. Current invoker bindings:"
-for service in \
-  "$RENAME_SERVICE_LIGHT" \
-  "$RENAME_SERVICE_HEAVY" \
-  "$REMAP_SERVICE_LIGHT" \
-  "$REMAP_SERVICE_HEAVY"
-do
-  echo "=== ${service}"
-  gcloud run services get-iam-policy "$service" \
-    --region "$REGION" \
-    --project "$PROJECT_ID" \
-    --format='yaml(bindings)'
-done
+echo "=== ${SERVICE_NAME}"
+gcloud run services get-iam-policy "$SERVICE_NAME" \
+  --region "$REGION" \
+  --project "$PROJECT_ID" \
+  --format='yaml(bindings)'

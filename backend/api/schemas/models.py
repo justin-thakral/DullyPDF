@@ -783,7 +783,7 @@ class RecaptchaAssessmentRequest(BaseModel):
         return value
 
 
-BillingCheckoutKind = Literal["pro_monthly", "pro_yearly", "refill_500"]
+BillingCheckoutKind = Literal["pro_monthly", "pro_yearly", "refill_500", "free_trial"]
 
 
 class BillingCheckoutRequest(BaseModel):
@@ -800,7 +800,7 @@ class BillingCheckoutRequest(BaseModel):
         if value is None:
             raise ValueError("Checkout kind is required")
         resolved = str(value).strip().lower()
-        if resolved not in {"pro_monthly", "pro_yearly", "refill_500"}:
+        if resolved not in {"pro_monthly", "pro_yearly", "refill_500", "free_trial"}:
             raise ValueError("Unsupported checkout kind")
         return resolved
 

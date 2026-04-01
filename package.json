@@ -35,6 +35,7 @@
     "test:playwright:template-api:ui": "node frontend/test/playwright/run_template_api_manager_real_user_flow.mjs",
     "test:playwright:template-api": "npm run test:playwright:template-api:smoke && npm run test:playwright:template-api:ui",
     "test:playwright:openai-rename": "node frontend/test/playwright/run_openai_rename_smoke.mjs",
+    "test:playwright:openai-rename-remap": "node frontend/test/playwright/run_openai_rename_remap_smoke.mjs",
     "test:playwright:signing-quota": "node frontend/test/playwright/run_signing_monthly_quota_smoke.mjs",
     "test:playwright:signing-public": "node frontend/test/playwright/run_signing_public_smoke.mjs",
     "test:qa:template-api": "npm run test:backend:template-api && npm run test:frontend:template-api && npm run test:playwright:template-api",

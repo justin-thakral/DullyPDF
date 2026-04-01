@@ -65,6 +65,7 @@ import {
   LazyGroupUploadDialog,
   LazyHomepage,
   LazyLoginPage,
+  LazyOnboardingPage,
   LazyProcessingView,
   LazyProfilePage,
   LazySearchFillModal,
@@ -130,6 +131,7 @@ import {
   type WorkspaceBrowserRoute,
 } from './utils/workspaceRoutes';
 import { shouldIgnoreWorkspaceHotkeys } from './utils/workspaceShortcuts';
+import { consumeOnboardingPending, clearOnboardingPending } from './utils/onboardingState';
 
 /**
  * Launch actions that can be requested by the lightweight homepage shell.
@@ -249,6 +251,7 @@ function WorkspaceRuntime({
   const [scale, setScale] = useState(1);
   const [pendingPageJump, setPendingPageJump] = useState<number | null>(null);
   const [showHomepage, setShowHomepage] = useState(initialShowHomepage);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [showSearchFill, setShowSearchFill] = useState(false);
   const [showFillLinkManager, setShowFillLinkManager] = useState(false);
@@ -275,6 +278,7 @@ function WorkspaceRuntime({
   );
   const routeRestoreInFlightKeyRef = useRef<string | null>(null);
   const createToolDisplayStateRef = useRef<CreateToolDisplayState | null>(null);
+  const fieldClickPageChangeRef = useRef(false);
 
   useEffect(() => {
     applyRouteSeo({ kind: 'app' });
@@ -799,7 +803,8 @@ function WorkspaceRuntime({
   const handleSignOut = useCallback(async () => {
     const confirmed = await confirmDiscardDirtyGroupChanges('signing out');
     if (!confirmed) return;
-    await auth.handleSignOut();
+    // Tear down workspace state and unmount the runtime BEFORE clearing auth
+    // so the component never renders with a null user (white screen).
     clearWorkspaceResumeState();
     clearWorkspace();
     savedForms.clearSavedForms();
@@ -810,6 +815,7 @@ function WorkspaceRuntime({
     demo.setDemoCompletionOpen(false);
     demo.setDemoSearchPreset(null);
     onBrowserRouteChange?.({ kind: 'homepage' }, { replace: true });
+    await auth.handleSignOut();
   }, [auth, clearWorkspace, confirmDiscardDirtyGroupChanges, demo, onBrowserRouteChange, savedForms]);
 
   const handleNavigateHome = useCallback(async () => {
@@ -889,7 +895,10 @@ function WorkspaceRuntime({
       fieldState.setSelectedFieldId(fieldId);
       const field = fieldHistory.fieldsRef.current.find((entry) => entry.id === fieldId);
       if (!field) return;
-      if (field.page && field.page !== currentPage) setCurrentPage(field.page);
+      if (field.page && field.page !== currentPage) {
+        fieldClickPageChangeRef.current = true;
+        setCurrentPage(field.page);
+      }
     },
     [currentPage, fieldHistory.fieldsRef, fieldState],
   );
@@ -906,6 +915,10 @@ function WorkspaceRuntime({
 
   const handlePageScroll = useCallback((page: number) => {
     setCurrentPage(page);
+    if (fieldClickPageChangeRef.current) {
+      fieldClickPageChangeRef.current = false;
+      return;
+    }
     fieldState.setSelectedFieldId((prev: string | null) => {
       if (!prev) return prev;
       const field = fieldHistory.fieldsRef.current.find((entry) => entry.id === prev);
@@ -1845,6 +1858,16 @@ function WorkspaceRuntime({
     verifiedUser,
   ]);
 
+  // Check for pending onboarding after email verification completes.
+  const onboardingCheckedRef = useRef(false);
+  useEffect(() => {
+    if (!verifiedUser?.uid || onboardingCheckedRef.current || showOnboarding) return;
+    onboardingCheckedRef.current = true;
+    if (consumeOnboardingPending(verifiedUser.uid)) {
+      setShowOnboarding(true);
+    }
+  }, [verifiedUser, showOnboarding]);
+
   useEffect(() => {
     if (!verifiedUser?.uid || launchIntent === 'demo') {
       return;
@@ -2307,8 +2330,31 @@ function WorkspaceRuntime({
     return (
       <Suspense fallback={runtimeLoadingFallback}>
         <LazyLoginPage
-          onAuthenticated={() => auth.setShowLogin(false)}
+          onAuthenticated={(options) => {
+            auth.setShowLogin(false);
+            if (options?.isNewUser) {
+              setShowOnboarding(true);
+            }
+          }}
           onCancel={handleCancelLogin}
+        />
+      </Suspense>
+    );
+  }
+  if (showOnboarding) {
+    return (
+      <Suspense fallback={runtimeLoadingFallback}>
+        <LazyOnboardingPage
+          onStartTrial={() => {
+            clearOnboardingPending();
+            setShowOnboarding(false);
+            handleStartBillingCheckout('free_trial');
+          }}
+          onSkipToFree={() => {
+            clearOnboardingPending();
+            setShowOnboarding(false);
+          }}
+          checkoutInProgress={billingCheckoutInProgressKind === 'free_trial'}
         />
       </Suspense>
     );
@@ -2331,6 +2377,7 @@ function WorkspaceRuntime({
             billingCancelAtPeriodEnd={userProfile?.billing?.cancelAtPeriodEnd ?? null}
             billingCancelAt={userProfile?.billing?.cancelAt ?? null}
             billingCurrentPeriodEnd={userProfile?.billing?.currentPeriodEnd ?? null}
+            billingTrialUsed={userProfile?.billing?.trialUsed ?? null}
             billingPlans={userProfile?.billing?.plans}
             retention={currentDowngradeRetention}
             profileError={auth.profileLoadError}
@@ -2348,6 +2395,16 @@ function WorkspaceRuntime({
             onClose={auth.handleCloseProfile} onSignOut={handleSignOut} />
         </Suspense>
       </>
+    );
+  }
+
+  // Safety net: if auth was lost while the runtime is still mounted (e.g.
+  // sign-out race), force the homepage view instead of rendering an empty editor.
+  if (!verifiedUser && !showLogin && !showOnboarding && currentView === 'editor') {
+    return (
+      <div className="auth-loading-screen">
+        <div className="auth-loading-card">Redirecting…</div>
+      </div>
     );
   }
 

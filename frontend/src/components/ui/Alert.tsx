@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
 import './Alert.css';
 
 export type AlertTone = 'error' | 'warning' | 'info' | 'success';
 export type AlertVariant = 'inline' | 'banner' | 'pill';
 export type AlertSize = 'md' | 'sm';
+
+const BANNER_AUTO_DISMISS_MS = 5000;
 
 type AlertProps = {
   tone?: AlertTone;
@@ -13,6 +16,7 @@ type AlertProps = {
   onDismiss?: () => void;
   dismissLabel?: string;
   className?: string;
+  autoDismissMs?: number;
 };
 
 /**
@@ -27,7 +31,29 @@ export function Alert({
   onDismiss,
   dismissLabel = 'Dismiss',
   className,
+  autoDismissMs,
 }: AlertProps) {
+  const effectiveAutoDismiss = autoDismissMs ?? (variant === 'banner' ? BANNER_AUTO_DISMISS_MS : undefined);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    setDismissed(false);
+  }, [message]);
+
+  useEffect(() => {
+    if (!effectiveAutoDismiss) return;
+    const timer = setTimeout(() => {
+      if (onDismiss) {
+        onDismiss();
+      } else {
+        setDismissed(true);
+      }
+    }, effectiveAutoDismiss);
+    return () => clearTimeout(timer);
+  }, [effectiveAutoDismiss, message, onDismiss]);
+
+  if (dismissed) return null;
+
   const role = tone === 'error' || tone === 'warning' ? 'alert' : 'status';
   const ariaLive = tone === 'error' || tone === 'warning' ? 'assertive' : 'polite';
   const classes = [

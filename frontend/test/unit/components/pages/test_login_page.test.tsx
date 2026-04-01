@@ -160,7 +160,9 @@ describe('LoginPage', () => {
     });
 
     expect(screen.getByText('Verification email sent. Check your inbox before continuing.')).toBeTruthy();
-    expect(onAuthenticated).toHaveBeenCalledTimes(1);
+    // Email signup does NOT call onAuthenticated — the user must verify their
+    // email first.  Onboarding is deferred via markOnboardingPending instead.
+    expect(onAuthenticated).not.toHaveBeenCalled();
   });
 
   it('blocks signup submit when reCAPTCHA is required but site key is missing', async () => {

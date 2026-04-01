@@ -12,6 +12,7 @@ from backend.api.schemas import DowngradeRetentionUpdateRequest
 from backend.firebaseDB.user_database import (
     ROLE_BASE,
     ROLE_GOD,
+    ROLE_PRO,
     clear_user_downgrade_retention,
     get_user_billing_record,
     get_user_profile,
@@ -84,6 +85,7 @@ async def get_profile(authorization: Optional[str] = Header(default=None)) -> Di
             "cancelAtPeriodEnd": billing_record.cancel_at_period_end if billing_record else None,
             "cancelAt": billing_record.cancel_at if billing_record else None,
             "currentPeriodEnd": billing_record.current_period_end if billing_record else None,
+            "trialUsed": bool(profile and profile.trial_used) or role in {ROLE_PRO, ROLE_GOD},
         },
         "retention": retention_summary,
         "limits": resolve_role_limits(role),

@@ -249,8 +249,7 @@ require_empty FIREBASE_CREDENTIALS
 require_empty FIREBASE_CREDENTIALS_SECRET
 require_empty GOOGLE_APPLICATION_CREDENTIALS
 require_exact DETECTOR_MODE "tasks"
-require_exact OPENAI_RENAME_MODE "tasks"
-require_exact OPENAI_REMAP_MODE "tasks"
+require_exact OPENAI_RENAME_REMAP_MODE "tasks"
 require_nonempty FIREBASE_PROJECT_ID
 require_nonempty BACKEND_RUNTIME_SERVICE_ACCOUNT
 require_nonempty FORMS_BUCKET
@@ -263,16 +262,10 @@ require_nonempty SANDBOX_CORS_ORIGINS
 require_nonempty CONTACT_TO_EMAIL
 require_nonempty CONTACT_FROM_EMAIL
 require_nonempty GMAIL_CLIENT_ID
-require_nonempty OPENAI_RENAME_TASKS_PROJECT
-require_nonempty OPENAI_RENAME_TASKS_LOCATION
-require_nonempty OPENAI_RENAME_TASKS_QUEUE_LIGHT
-require_nonempty OPENAI_RENAME_TASKS_QUEUE_HEAVY
-require_nonempty OPENAI_RENAME_TASKS_SERVICE_ACCOUNT
-require_nonempty OPENAI_REMAP_TASKS_PROJECT
-require_nonempty OPENAI_REMAP_TASKS_LOCATION
-require_nonempty OPENAI_REMAP_TASKS_QUEUE_LIGHT
-require_nonempty OPENAI_REMAP_TASKS_QUEUE_HEAVY
-require_nonempty OPENAI_REMAP_TASKS_SERVICE_ACCOUNT
+require_nonempty OPENAI_RENAME_REMAP_TASKS_PROJECT
+require_nonempty OPENAI_RENAME_REMAP_TASKS_LOCATION
+require_nonempty OPENAI_RENAME_REMAP_TASKS_QUEUE
+require_nonempty OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT
 require_integer_ge SIGNING_RETENTION_DAYS 2555
 require_integer_ge SIGNING_SESSION_TTL_SECONDS 300
 require_integer_ge SIGNING_VIEW_RATE_WINDOW_SECONDS 1
@@ -313,46 +306,18 @@ require_value_or_secret FILL_LINK_TOKEN_SECRET FILL_LINK_TOKEN_SECRET_SECRET
 require_value_or_secret STRIPE_SECRET_KEY STRIPE_SECRET_KEY_SECRET
 require_value_or_secret STRIPE_WEBHOOK_SECRET STRIPE_WEBHOOK_SECRET_SECRET
 
-OPENAI_RENAME_SERVICE_REGION="${OPENAI_RENAME_SERVICE_REGION:-${OPENAI_RENAME_TASKS_LOCATION:-${REGION:-us-east4}}}"
-OPENAI_REMAP_SERVICE_REGION="${OPENAI_REMAP_SERVICE_REGION:-${OPENAI_REMAP_TASKS_LOCATION:-${REGION:-us-east4}}}"
-OPENAI_RENAME_SERVICE_NAME_LIGHT="${OPENAI_RENAME_SERVICE_NAME_LIGHT:-dullypdf-openai-rename-light}"
-OPENAI_RENAME_SERVICE_NAME_HEAVY="${OPENAI_RENAME_SERVICE_NAME_HEAVY:-dullypdf-openai-rename-heavy}"
-OPENAI_REMAP_SERVICE_NAME_LIGHT="${OPENAI_REMAP_SERVICE_NAME_LIGHT:-dullypdf-openai-remap-light}"
-OPENAI_REMAP_SERVICE_NAME_HEAVY="${OPENAI_REMAP_SERVICE_NAME_HEAVY:-dullypdf-openai-remap-heavy}"
+OPENAI_RENAME_REMAP_SERVICE_REGION="${OPENAI_RENAME_REMAP_SERVICE_REGION:-${OPENAI_RENAME_REMAP_TASKS_LOCATION:-${REGION:-us-east4}}}"
+OPENAI_RENAME_REMAP_SERVICE_NAME="${OPENAI_RENAME_REMAP_SERVICE_NAME:-dullypdf-openai-rename-remap}"
 
-OPENAI_RENAME_SERVICE_URL_LIGHT_ACTIVE="$(
+OPENAI_RENAME_REMAP_SERVICE_URL_ACTIVE="$(
   resolve_cloud_run_service_url \
-    "$OPENAI_RENAME_TASKS_PROJECT" \
-    "$OPENAI_RENAME_SERVICE_REGION" \
-    "$OPENAI_RENAME_SERVICE_NAME_LIGHT" \
-    "OPENAI_RENAME_SERVICE_URL_LIGHT"
-)"
-OPENAI_RENAME_SERVICE_URL_HEAVY_ACTIVE="$(
-  resolve_cloud_run_service_url \
-    "$OPENAI_RENAME_TASKS_PROJECT" \
-    "$OPENAI_RENAME_SERVICE_REGION" \
-    "$OPENAI_RENAME_SERVICE_NAME_HEAVY" \
-    "OPENAI_RENAME_SERVICE_URL_HEAVY"
-)"
-OPENAI_REMAP_SERVICE_URL_LIGHT_ACTIVE="$(
-  resolve_cloud_run_service_url \
-    "$OPENAI_REMAP_TASKS_PROJECT" \
-    "$OPENAI_REMAP_SERVICE_REGION" \
-    "$OPENAI_REMAP_SERVICE_NAME_LIGHT" \
-    "OPENAI_REMAP_SERVICE_URL_LIGHT"
-)"
-OPENAI_REMAP_SERVICE_URL_HEAVY_ACTIVE="$(
-  resolve_cloud_run_service_url \
-    "$OPENAI_REMAP_TASKS_PROJECT" \
-    "$OPENAI_REMAP_SERVICE_REGION" \
-    "$OPENAI_REMAP_SERVICE_NAME_HEAVY" \
-    "OPENAI_REMAP_SERVICE_URL_HEAVY"
+    "$OPENAI_RENAME_REMAP_TASKS_PROJECT" \
+    "$OPENAI_RENAME_REMAP_SERVICE_REGION" \
+    "$OPENAI_RENAME_REMAP_SERVICE_NAME" \
+    "OPENAI_RENAME_REMAP_SERVICE_URL"
 )"
 
-OPENAI_RENAME_TASKS_AUDIENCE_LIGHT_ACTIVE="$OPENAI_RENAME_SERVICE_URL_LIGHT_ACTIVE"
-OPENAI_RENAME_TASKS_AUDIENCE_HEAVY_ACTIVE="$OPENAI_RENAME_SERVICE_URL_HEAVY_ACTIVE"
-OPENAI_REMAP_TASKS_AUDIENCE_LIGHT_ACTIVE="$OPENAI_REMAP_SERVICE_URL_LIGHT_ACTIVE"
-OPENAI_REMAP_TASKS_AUDIENCE_HEAVY_ACTIVE="$OPENAI_REMAP_SERVICE_URL_HEAVY_ACTIVE"
+OPENAI_RENAME_REMAP_TASKS_AUDIENCE_ACTIVE="$OPENAI_RENAME_REMAP_SERVICE_URL_ACTIVE"
 
 require_nonempty DETECTOR_SERVICE_URL_LIGHT_ACTIVE
 require_nonempty DETECTOR_SERVICE_URL_HEAVY_ACTIVE
@@ -419,18 +384,8 @@ script_only = {
     "DETECTOR_TASKS_AUDIENCE",
     "DETECTOR_TASKS_AUDIENCE_LIGHT",
     "DETECTOR_TASKS_AUDIENCE_HEAVY",
-    "OPENAI_RENAME_SERVICE_URL",
-    "OPENAI_RENAME_SERVICE_URL_LIGHT",
-    "OPENAI_RENAME_SERVICE_URL_HEAVY",
-    "OPENAI_RENAME_TASKS_AUDIENCE",
-    "OPENAI_RENAME_TASKS_AUDIENCE_LIGHT",
-    "OPENAI_RENAME_TASKS_AUDIENCE_HEAVY",
-    "OPENAI_REMAP_SERVICE_URL",
-    "OPENAI_REMAP_SERVICE_URL_LIGHT",
-    "OPENAI_REMAP_SERVICE_URL_HEAVY",
-    "OPENAI_REMAP_TASKS_AUDIENCE",
-    "OPENAI_REMAP_TASKS_AUDIENCE_LIGHT",
-    "OPENAI_REMAP_TASKS_AUDIENCE_HEAVY",
+    "OPENAI_RENAME_REMAP_SERVICE_URL",
+    "OPENAI_RENAME_REMAP_TASKS_AUDIENCE",
 }
 
 # If a Secret Manager binding is configured, do not also emit the literal env var
@@ -495,14 +450,8 @@ python3 - "$TMP_ENV_FILE" \
   "$DETECTOR_SERVICE_URL_HEAVY_ACTIVE" \
   "$DETECTOR_TASKS_AUDIENCE_LIGHT_ACTIVE" \
   "$DETECTOR_TASKS_AUDIENCE_HEAVY_ACTIVE" \
-  "$OPENAI_RENAME_SERVICE_URL_LIGHT_ACTIVE" \
-  "$OPENAI_RENAME_SERVICE_URL_HEAVY_ACTIVE" \
-  "$OPENAI_RENAME_TASKS_AUDIENCE_LIGHT_ACTIVE" \
-  "$OPENAI_RENAME_TASKS_AUDIENCE_HEAVY_ACTIVE" \
-  "$OPENAI_REMAP_SERVICE_URL_LIGHT_ACTIVE" \
-  "$OPENAI_REMAP_SERVICE_URL_HEAVY_ACTIVE" \
-  "$OPENAI_REMAP_TASKS_AUDIENCE_LIGHT_ACTIVE" \
-  "$OPENAI_REMAP_TASKS_AUDIENCE_HEAVY_ACTIVE" <<'PY'
+  "$OPENAI_RENAME_REMAP_SERVICE_URL_ACTIVE" \
+  "$OPENAI_RENAME_REMAP_TASKS_AUDIENCE_ACTIVE" <<'PY'
 import json
 import sys
 
@@ -512,14 +461,8 @@ light_url = sys.argv[3]
 heavy_url = sys.argv[4]
 light_audience = sys.argv[5]
 heavy_audience = sys.argv[6]
-rename_light_url = sys.argv[7]
-rename_heavy_url = sys.argv[8]
-rename_light_audience = sys.argv[9]
-rename_heavy_audience = sys.argv[10]
-remap_light_url = sys.argv[11]
-remap_heavy_url = sys.argv[12]
-remap_light_audience = sys.argv[13]
-remap_heavy_audience = sys.argv[14]
+rename_remap_url = sys.argv[7]
+rename_remap_audience = sys.argv[8]
 
 with open(out_path, "a", encoding="utf-8") as handle:
     handle.write(f"DETECTOR_ROUTING_MODE: {json.dumps(routing_mode)}\n")
@@ -529,18 +472,8 @@ with open(out_path, "a", encoding="utf-8") as handle:
     handle.write(f"DETECTOR_TASKS_AUDIENCE: {json.dumps(light_audience)}\n")
     handle.write(f"DETECTOR_TASKS_AUDIENCE_LIGHT: {json.dumps(light_audience)}\n")
     handle.write(f"DETECTOR_TASKS_AUDIENCE_HEAVY: {json.dumps(heavy_audience)}\n")
-    handle.write(f"OPENAI_RENAME_SERVICE_URL: {json.dumps(rename_light_url)}\n")
-    handle.write(f"OPENAI_RENAME_SERVICE_URL_LIGHT: {json.dumps(rename_light_url)}\n")
-    handle.write(f"OPENAI_RENAME_SERVICE_URL_HEAVY: {json.dumps(rename_heavy_url)}\n")
-    handle.write(f"OPENAI_RENAME_TASKS_AUDIENCE: {json.dumps(rename_light_audience)}\n")
-    handle.write(f"OPENAI_RENAME_TASKS_AUDIENCE_LIGHT: {json.dumps(rename_light_audience)}\n")
-    handle.write(f"OPENAI_RENAME_TASKS_AUDIENCE_HEAVY: {json.dumps(rename_heavy_audience)}\n")
-    handle.write(f"OPENAI_REMAP_SERVICE_URL: {json.dumps(remap_light_url)}\n")
-    handle.write(f"OPENAI_REMAP_SERVICE_URL_LIGHT: {json.dumps(remap_light_url)}\n")
-    handle.write(f"OPENAI_REMAP_SERVICE_URL_HEAVY: {json.dumps(remap_heavy_url)}\n")
-    handle.write(f"OPENAI_REMAP_TASKS_AUDIENCE: {json.dumps(remap_light_audience)}\n")
-    handle.write(f"OPENAI_REMAP_TASKS_AUDIENCE_LIGHT: {json.dumps(remap_light_audience)}\n")
-    handle.write(f"OPENAI_REMAP_TASKS_AUDIENCE_HEAVY: {json.dumps(remap_heavy_audience)}\n")
+    handle.write(f"OPENAI_RENAME_REMAP_SERVICE_URL: {json.dumps(rename_remap_url)}\n")
+    handle.write(f"OPENAI_RENAME_REMAP_TASKS_AUDIENCE: {json.dumps(rename_remap_audience)}\n")
 PY
 
 TAG="$(date +%Y%m%d-%H%M%S)"

@@ -1,4 +1,4 @@
-"""Unit tests for backend.ai.tasks."""
+"""Unit tests for backend.ai.tasks (unified rename+remap worker)."""
 
 from __future__ import annotations
 
@@ -15,40 +15,14 @@ from backend.ai import tasks as openai_tasks
 def _clear_openai_task_env(monkeypatch: pytest.MonkeyPatch) -> None:
     for key in [
         "GCP_PROJECT_ID",
-        "OPENAI_RENAME_TASKS_PROJECT",
-        "OPENAI_RENAME_TASKS_LOCATION",
-        "OPENAI_RENAME_TASKS_SERVICE_ACCOUNT",
-        "OPENAI_RENAME_TASKS_QUEUE",
-        "OPENAI_RENAME_TASKS_QUEUE_LIGHT",
-        "OPENAI_RENAME_TASKS_QUEUE_HEAVY",
-        "OPENAI_RENAME_SERVICE_URL",
-        "OPENAI_RENAME_SERVICE_URL_LIGHT",
-        "OPENAI_RENAME_SERVICE_URL_HEAVY",
-        "OPENAI_RENAME_TASKS_AUDIENCE",
-        "OPENAI_RENAME_TASKS_AUDIENCE_LIGHT",
-        "OPENAI_RENAME_TASKS_AUDIENCE_HEAVY",
-        "OPENAI_RENAME_TASKS_HEAVY_PAGE_THRESHOLD",
-        "OPENAI_RENAME_TASKS_DISPATCH_DEADLINE_SECONDS",
-        "OPENAI_RENAME_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT",
-        "OPENAI_RENAME_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY",
-        "OPENAI_RENAME_TASKS_FORCE_IMMEDIATE",
-        "OPENAI_REMAP_TASKS_PROJECT",
-        "OPENAI_REMAP_TASKS_LOCATION",
-        "OPENAI_REMAP_TASKS_SERVICE_ACCOUNT",
-        "OPENAI_REMAP_TASKS_QUEUE",
-        "OPENAI_REMAP_TASKS_QUEUE_LIGHT",
-        "OPENAI_REMAP_TASKS_QUEUE_HEAVY",
-        "OPENAI_REMAP_SERVICE_URL",
-        "OPENAI_REMAP_SERVICE_URL_LIGHT",
-        "OPENAI_REMAP_SERVICE_URL_HEAVY",
-        "OPENAI_REMAP_TASKS_AUDIENCE",
-        "OPENAI_REMAP_TASKS_AUDIENCE_LIGHT",
-        "OPENAI_REMAP_TASKS_AUDIENCE_HEAVY",
-        "OPENAI_REMAP_TASKS_HEAVY_TAG_THRESHOLD",
-        "OPENAI_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS",
-        "OPENAI_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT",
-        "OPENAI_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY",
-        "OPENAI_REMAP_TASKS_FORCE_IMMEDIATE",
+        "OPENAI_RENAME_REMAP_TASKS_PROJECT",
+        "OPENAI_RENAME_REMAP_TASKS_LOCATION",
+        "OPENAI_RENAME_REMAP_TASKS_QUEUE",
+        "OPENAI_RENAME_REMAP_SERVICE_URL",
+        "OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT",
+        "OPENAI_RENAME_REMAP_TASKS_AUDIENCE",
+        "OPENAI_RENAME_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS",
+        "OPENAI_RENAME_REMAP_TASKS_FORCE_IMMEDIATE",
         "OPENAI_TASKS_FORCE_IMMEDIATE",
     ]:
         monkeypatch.delenv(key, raising=False)
@@ -84,72 +58,196 @@ def _install_fake_tasks_v2(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
     return created_requests
 
 
-def test_resolve_openai_profiles_require_heavy_config(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_HEAVY_PAGE_THRESHOLD", "5")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_QUEUE_HEAVY", "rename-heavy")
-    assert openai_tasks.resolve_openai_rename_profile(5) == openai_tasks.OPENAI_TASK_PROFILE_HEAVY
-    assert openai_tasks.resolve_openai_rename_profile(4) == openai_tasks.OPENAI_TASK_PROFILE_LIGHT
-
-    monkeypatch.delenv("OPENAI_RENAME_TASKS_QUEUE_HEAVY", raising=False)
-    assert openai_tasks.resolve_openai_rename_profile(100) == openai_tasks.OPENAI_TASK_PROFILE_LIGHT
-
-    monkeypatch.setenv("OPENAI_REMAP_TASKS_HEAVY_TAG_THRESHOLD", "2")
-    monkeypatch.setenv("OPENAI_REMAP_SERVICE_URL_HEAVY", "https://remap-heavy")
-    assert openai_tasks.resolve_openai_remap_profile(2) == openai_tasks.OPENAI_TASK_PROFILE_HEAVY
+# -- resolve_openai_rename_remap_task_config -----------------------------------
 
 
-def test_resolve_openai_task_config_raises_for_missing_matrix() -> None:
-    with pytest.raises(RuntimeError, match="Missing OpenAI task config:") as excinfo:
-        openai_tasks.resolve_openai_task_config("rename", "light")
+def test_resolve_config_raises_for_missing_env_vars() -> None:
+    with pytest.raises(RuntimeError, match="Missing OpenAI rename/remap task config:") as excinfo:
+        openai_tasks.resolve_openai_rename_remap_task_config()
     message = str(excinfo.value)
-    assert "OPENAI_RENAME_TASKS_PROJECT" in message
-    assert "OPENAI_RENAME_TASKS_LOCATION" in message
+    assert "OPENAI_RENAME_REMAP_TASKS_PROJECT" in message
+    assert "OPENAI_RENAME_REMAP_TASKS_LOCATION" in message
+    assert "OPENAI_RENAME_REMAP_TASKS_QUEUE" in message
+    assert "OPENAI_RENAME_REMAP_SERVICE_URL" in message
+    assert "OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT" in message
 
 
-def test_enqueue_openai_rename_task_builds_expected_request(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_PROJECT", "project-a")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_LOCATION", "us-central1")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_SERVICE_ACCOUNT", "svc@example.com")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_QUEUE_LIGHT", "openai-rename-light")
-    monkeypatch.setenv("OPENAI_RENAME_SERVICE_URL_LIGHT", "https://rename.example.com/")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_AUDIENCE_LIGHT", "rename-audience")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT", "25")
-    monkeypatch.setenv("OPENAI_RENAME_TASKS_FORCE_IMMEDIATE", "true")
+def test_resolve_config_returns_correct_values(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "my-project")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "rename-remap-q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com/")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_AUDIENCE", "custom-audience")
+
+    config = openai_tasks.resolve_openai_rename_remap_task_config()
+
+    assert config == {
+        "project": "my-project",
+        "location": "us-central1",
+        "queue": "rename-remap-q",
+        "service_url": "https://worker.example.com",
+        "service_account": "svc@example.com",
+        "audience": "custom-audience",
+    }
+
+
+def test_resolve_config_falls_back_to_gcp_project_id(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GCP_PROJECT_ID", "fallback-project")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-east1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+
+    config = openai_tasks.resolve_openai_rename_remap_task_config()
+
+    assert config["project"] == "fallback-project"
+
+
+def test_resolve_config_audience_falls_back_to_service_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "my-project")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com///")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+
+    config = openai_tasks.resolve_openai_rename_remap_task_config()
+
+    # Trailing slashes stripped, audience falls back to service_url
+    assert config["service_url"] == "https://worker.example.com"
+    assert config["audience"] == "https://worker.example.com"
+
+
+# -- enqueue_openai_rename_task ------------------------------------------------
+
+
+def test_enqueue_openai_rename_task_builds_correct_request(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "openai-rename-remap")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com/")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_AUDIENCE", "rename-remap-audience")
 
     created_requests = _install_fake_tasks_v2(monkeypatch)
     payload = {"jobId": "job-1", "sessionId": "sess-1"}
 
-    task_name = openai_tasks.enqueue_openai_rename_task(payload, profile="light")
+    task_name = openai_tasks.enqueue_openai_rename_task(payload)
 
     assert task_name == "tasks/fake-openai-task"
     request = created_requests[0]
-    assert request["parent"] == "projects/project-a/locations/us-central1/queues/openai-rename-light"
+    assert request["parent"] == "projects/project-a/locations/us-central1/queues/openai-rename-remap"
     task = request["task"]
     http_request = task["http_request"]
-    assert http_request["url"] == "https://rename.example.com/internal/rename"
+    assert http_request["url"] == "https://worker.example.com/internal/rename"
     assert http_request["body"] == json.dumps(payload, ensure_ascii=True).encode("utf-8")
     assert http_request["oidc_token"] == {
         "service_account_email": "svc@example.com",
-        "audience": "rename-audience",
+        "audience": "rename-remap-audience",
     }
-    assert task["dispatch_deadline"].seconds == 25
-    assert task["schedule_time"].seconds == 0
 
 
-def test_enqueue_openai_remap_task_uses_profile_specific_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("OPENAI_REMAP_TASKS_PROJECT", "project-a")
-    monkeypatch.setenv("OPENAI_REMAP_TASKS_LOCATION", "us-central1")
-    monkeypatch.setenv("OPENAI_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
-    monkeypatch.setenv("OPENAI_REMAP_TASKS_QUEUE_HEAVY", "openai-remap-heavy")
-    monkeypatch.setenv("OPENAI_REMAP_SERVICE_URL_HEAVY", "https://remap.example.com///")
+# -- enqueue_openai_remap_task ------------------------------------------------
+
+
+def test_enqueue_openai_remap_task_builds_correct_request(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "openai-rename-remap")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com///")
 
     created_requests = _install_fake_tasks_v2(monkeypatch)
 
-    openai_tasks.enqueue_openai_remap_task({"jobId": "job-2"}, profile="heavy")
+    openai_tasks.enqueue_openai_remap_task({"jobId": "job-2"})
 
     request = created_requests[0]
     task = request["task"]
-    assert request["parent"] == "projects/project-a/locations/us-central1/queues/openai-remap-heavy"
-    assert task["http_request"]["url"] == "https://remap.example.com/internal/remap"
+    assert request["parent"] == "projects/project-a/locations/us-central1/queues/openai-rename-remap"
+    assert task["http_request"]["url"] == "https://worker.example.com/internal/remap"
     # With no explicit audience env var, it falls back to service URL.
-    assert task["http_request"]["oidc_token"]["audience"] == "https://remap.example.com"
+    assert task["http_request"]["oidc_token"]["audience"] == "https://worker.example.com"
+
+
+# -- dispatch deadline ---------------------------------------------------------
+
+
+def test_dispatch_deadline_is_applied_when_set(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS", "45")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    openai_tasks.enqueue_openai_rename_task({"jobId": "job-3"})
+
+    task = created_requests[0]["task"]
+    assert task["dispatch_deadline"].seconds == 45
+
+
+def test_dispatch_deadline_ignored_when_not_set(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    openai_tasks.enqueue_openai_rename_task({"jobId": "job-4"})
+
+    task = created_requests[0]["task"]
+    assert "dispatch_deadline" not in task
+
+
+# -- force immediate scheduling ------------------------------------------------
+
+
+def test_force_immediate_via_rename_remap_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_FORCE_IMMEDIATE", "true")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    openai_tasks.enqueue_openai_remap_task({"jobId": "job-5"})
+
+    task = created_requests[0]["task"]
+    assert task["schedule_time"].seconds == 0
+
+
+def test_force_immediate_via_global_fallback_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+    monkeypatch.setenv("OPENAI_TASKS_FORCE_IMMEDIATE", "1")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    openai_tasks.enqueue_openai_rename_task({"jobId": "job-6"})
+
+    task = created_requests[0]["task"]
+    assert task["schedule_time"].seconds == 0
+
+
+def test_schedule_time_absent_when_force_immediate_not_set(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "q")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    openai_tasks.enqueue_openai_rename_task({"jobId": "job-7"})
+
+    task = created_requests[0]["task"]
+    assert "schedule_time" not in task

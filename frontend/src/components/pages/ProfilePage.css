@@ -381,6 +381,15 @@
   color: var(--ink-700);
 }
 
+.profile-button--trial {
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 14px 24px rgba(5, 150, 105, 0.2);
+}
+
+.profile-button--trial:hover:not(:disabled) {
+  box-shadow: 0 18px 28px rgba(5, 150, 105, 0.28);
+}
+
 .profile-button--danger {
   border-color: rgba(248, 113, 113, 0.26);
   background: linear-gradient(135deg, #ef4444, #b91c1c);

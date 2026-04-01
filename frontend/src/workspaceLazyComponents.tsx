@@ -9,6 +9,7 @@ export const LazyHomepage = lazy(() => import('./components/pages/Homepage'));
 export const LazyLoginPage = lazy(() => import('./components/pages/LoginPage'));
 export const LazyProfilePage = lazy(() => import('./components/pages/ProfilePage'));
 export const LazyVerifyEmailPage = lazy(() => import('./components/pages/VerifyEmailPage'));
+export const LazyOnboardingPage = lazy(() => import('./components/pages/OnboardingPage'));
 export const LazySearchFillModal = lazy(() => import('./components/features/SearchFillModal'));
 export const LazyFillLinkManagerDialog = lazy(() => import('./components/features/FillLinkManagerDialog'));
 export const LazyApiFillManagerDialog = lazy(() => import('./components/features/ApiFillManagerDialog'));

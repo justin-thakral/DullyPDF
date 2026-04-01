@@ -200,7 +200,7 @@ def _integration_state(mocker, qa_user: RequestUser):
     mocker.patch.object(detection_routes, "resolve_detection_mode", return_value="tasks")
 
     mocker.patch.object(ai_routes, "_resolve_user_from_request", return_value=qa_user)
-    mocker.patch.object(ai_routes, "resolve_openai_rename_mode", return_value="local")
+    mocker.patch.object(ai_routes, "resolve_openai_rename_remap_mode", return_value="local")
     mocker.patch.object(ai_routes, "check_rate_limit", return_value=True)
     mocker.patch.object(
         ai_routes,
