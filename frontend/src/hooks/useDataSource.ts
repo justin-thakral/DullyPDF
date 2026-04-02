@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import type { User } from 'firebase/auth';
 import type { BannerNotice, DataSourceKind, SchemaPayload } from '../types';
