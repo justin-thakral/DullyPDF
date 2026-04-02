@@ -27,8 +27,6 @@ export type ImageFillState = {
   creditEstimate: ImageFillCreditEstimate;
 };
 
-const IMAGE_FILL_DOC_BUCKET_SIZE = 5;
-
 function isPdfFile(file: File): boolean {
   return file.name.toLowerCase().endsWith('.pdf');
 }

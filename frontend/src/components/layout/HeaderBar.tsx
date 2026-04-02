@@ -53,7 +53,6 @@ type HeaderBarProps = {
   renameAndMapGroupInProgress?: boolean;
   renameAndMapGroupButtonLabel?: string;
   onOpenSearchFill?: () => void;
-  canSearchFill?: boolean;
   onOpenImageFill?: () => void;
   onOpenFillLink?: () => void;
   canFillLink?: boolean;
@@ -173,7 +172,6 @@ export function HeaderBar({
   renameAndMapGroupInProgress = false,
   renameAndMapGroupButtonLabel,
   onOpenSearchFill,
-  canSearchFill = false,
   onOpenImageFill,
   onOpenFillLink,
   canFillLink = false,
