@@ -565,6 +565,8 @@ if [[ ${#SECRETS_TO_REMOVE[@]} -gt 0 ]]; then
   SECRET_FLAGS+=("--remove-secrets" "$(IFS=,; echo "${SECRETS_TO_REMOVE[*]}")")
 fi
 
+BACKEND_REQUEST_TIMEOUT="${BACKEND_REQUEST_TIMEOUT:-900}"
+
 DEPLOY_ARGS=(
   --image "$BACKEND_IMAGE"
   --region "$BACKEND_REGION"
@@ -572,6 +574,7 @@ DEPLOY_ARGS=(
   --service-account "$BACKEND_RUNTIME_SERVICE_ACCOUNT"
   --allow-unauthenticated
   --env-vars-file "$TMP_ENV_FILE"
+  --timeout "$BACKEND_REQUEST_TIMEOUT"
 )
 
 if [[ -n "$BACKEND_MIN_INSTANCES" ]]; then
