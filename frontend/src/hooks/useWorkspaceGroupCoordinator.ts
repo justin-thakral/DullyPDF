@@ -975,14 +975,16 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
     if (!activeGroupId || activeGroupTemplates.length === 0) return 'Open a group first.';
     if (
       deps.dataSource.dataSourceKind !== 'csv' &&
+      deps.dataSource.dataSourceKind !== 'sql' &&
       deps.dataSource.dataSourceKind !== 'excel' &&
       deps.dataSource.dataSourceKind !== 'json' &&
       deps.dataSource.dataSourceKind !== 'txt'
     ) {
-      return 'Connect a CSV, Excel, JSON, or TXT schema source first.';
+      return 'Connect a CSV, SQL, Excel, JSON, or TXT schema source first.';
     }
     if (
       (deps.dataSource.dataSourceKind === 'csv' ||
+        deps.dataSource.dataSourceKind === 'sql' ||
         deps.dataSource.dataSourceKind === 'excel' ||
         deps.dataSource.dataSourceKind === 'json' ||
         deps.dataSource.dataSourceKind === 'txt') &&

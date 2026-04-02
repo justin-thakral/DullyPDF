@@ -144,6 +144,19 @@ STACK_WEBHOOK_ENDPOINT_URL="${STRIPE_WEBHOOK_ENDPOINT_URL:-${FORWARD_TO}}"
 
 LISTENER_PID=""
 LISTENER_LOG=""
+BACKEND_PID=""
+
+DEV_STACK_NO_DOCKER_RAW="${DEV_STACK_NO_DOCKER:-true}"
+DEV_STACK_NO_DOCKER="$(printf '%s' "$DEV_STACK_NO_DOCKER_RAW" | tr '[:upper:]' '[:lower:]')"
+
+HAS_DOCKER=true
+if [[ "$DEV_STACK_NO_DOCKER" == "true" || "$DEV_STACK_NO_DOCKER" == "1" || "$DEV_STACK_NO_DOCKER" == "yes" ]]; then
+  HAS_DOCKER=false
+  echo "Running backend locally via uvicorn (DEV_STACK_NO_DOCKER=true)."
+elif ! docker version >/dev/null 2>&1; then
+  HAS_DOCKER=false
+  echo "Docker not available; will run backend locally via uvicorn."
+fi
 
 cleanup() {
   if [[ -n "$LISTENER_PID" ]] && kill -0 "$LISTENER_PID" >/dev/null 2>&1; then
@@ -153,7 +166,11 @@ cleanup() {
   if [[ -n "$LISTENER_LOG" && -f "$LISTENER_LOG" ]]; then
     rm -f "$LISTENER_LOG" || true
   fi
-  if docker ps -a --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"; then
+  if [[ -n "$BACKEND_PID" ]] && kill -0 "$BACKEND_PID" >/dev/null 2>&1; then
+    kill "$BACKEND_PID" >/dev/null 2>&1 || true
+    wait "$BACKEND_PID" >/dev/null 2>&1 || true
+  fi
+  if [[ "$HAS_DOCKER" == "true" ]] && docker ps -a --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"; then
     docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
   fi
   if [[ -n "${CREDS_FILE_TEMP:-}" && -f "${CREDS_FILE_TEMP:-}" ]]; then
@@ -163,38 +180,40 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
-if [[ "${DEV_STACK_BUILD:-}" == "1" ]] || ! docker image inspect "$IMAGE_TAG" >/dev/null 2>&1; then
-  docker build -t "$IMAGE_TAG" -f Dockerfile .
-fi
-
-if [[ "${DEV_STACK_BUILD:-}" == "1" ]]; then
-  if [[ "${DETECTOR_MODE}" == "tasks" ]]; then
-    echo "DEV_STACK_BUILD=1 -> deploying detector Cloud Run services (${DETECTOR_SERVICE_NAME_LIGHT_ACTIVE}, ${DETECTOR_SERVICE_NAME_HEAVY_ACTIVE}) to keep stack config in sync..."
-    DETECTOR_ROUTING_MODE="$DETECTOR_ROUTING_MODE" \
-    DETECTOR_SERVICE_REGION="$DETECTOR_SERVICE_REGION" \
-    DETECTOR_GPU_REGION="${DETECTOR_GPU_REGION:-$(detector_gpu_region)}" \
-      bash scripts/deploy-detector-services.sh "$ENV_FILE"
+if [[ "$HAS_DOCKER" == "true" ]]; then
+  if [[ "${DEV_STACK_BUILD:-}" == "1" ]] || ! docker image inspect "$IMAGE_TAG" >/dev/null 2>&1; then
+    docker build -t "$IMAGE_TAG" -f Dockerfile .
   fi
-  if [[ "${OPENAI_RENAME_REMAP_MODE}" == "tasks" ]]; then
-    echo "DEV_STACK_BUILD=1 -> deploying OpenAI worker Cloud Run service to keep stack config in sync..."
-    bash scripts/deploy-openai-workers.sh "$ENV_FILE"
+
+  if [[ "${DEV_STACK_BUILD:-}" == "1" ]]; then
+    if [[ "${DETECTOR_MODE}" == "tasks" ]]; then
+      echo "DEV_STACK_BUILD=1 -> deploying detector Cloud Run services (${DETECTOR_SERVICE_NAME_LIGHT_ACTIVE}, ${DETECTOR_SERVICE_NAME_HEAVY_ACTIVE}) to keep stack config in sync..."
+      DETECTOR_ROUTING_MODE="$DETECTOR_ROUTING_MODE" \
+      DETECTOR_SERVICE_REGION="$DETECTOR_SERVICE_REGION" \
+      DETECTOR_GPU_REGION="${DETECTOR_GPU_REGION:-$(detector_gpu_region)}" \
+        bash scripts/deploy-detector-services.sh "$ENV_FILE"
+    fi
+    if [[ "${OPENAI_RENAME_REMAP_MODE}" == "tasks" ]]; then
+      echo "DEV_STACK_BUILD=1 -> deploying OpenAI worker Cloud Run service to keep stack config in sync..."
+      bash scripts/deploy-openai-workers.sh "$ENV_FILE"
+    fi
   fi
-fi
 
-if [[ -n "${FIREBASE_CREDENTIALS:-}" ]]; then
-  CREDS_FILE_TEMP="$(mktemp -t dullypdf-firebase-XXXX.json)"
-  printf '%s' "$FIREBASE_CREDENTIALS" > "$CREDS_FILE_TEMP"
-  chmod 600 "$CREDS_FILE_TEMP"
-  CREDS_FILE="$CREDS_FILE_TEMP"
-elif [[ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" && -f "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; then
-  CREDS_FILE="$GOOGLE_APPLICATION_CREDENTIALS"
-else
-  echo "Missing Firebase credentials. Set FIREBASE_CREDENTIALS_SECRET or GOOGLE_APPLICATION_CREDENTIALS." >&2
-  exit 1
-fi
+  if [[ -n "${FIREBASE_CREDENTIALS:-}" ]]; then
+    CREDS_FILE_TEMP="$(mktemp -t dullypdf-firebase-XXXX.json)"
+    printf '%s' "$FIREBASE_CREDENTIALS" > "$CREDS_FILE_TEMP"
+    chmod 600 "$CREDS_FILE_TEMP"
+    CREDS_FILE="$CREDS_FILE_TEMP"
+  elif [[ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" && -f "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; then
+    CREDS_FILE="$GOOGLE_APPLICATION_CREDENTIALS"
+  else
+    echo "Missing Firebase credentials. Set FIREBASE_CREDENTIALS_SECRET or GOOGLE_APPLICATION_CREDENTIALS." >&2
+    exit 1
+  fi
 
-if docker ps -a --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"; then
-  docker rm -f "$CONTAINER_NAME" >/dev/null
+  if docker ps -a --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"; then
+    docker rm -f "$CONTAINER_NAME" >/dev/null
+  fi
 fi
 
 if [[ "$ENABLE_LISTENER" != "false" && "$ENABLE_LISTENER" != "0" && "$ENABLE_LISTENER" != "no" ]]; then
@@ -239,59 +258,72 @@ if [[ "$ENABLE_LISTENER" != "false" && "$ENABLE_LISTENER" != "0" && "$ENABLE_LIS
   fi
 fi
 
-ENV_ARGS=(
-  "-e" "FIREBASE_CREDENTIALS=/var/secrets/firebase-admin.json"
-  "-e" "GOOGLE_APPLICATION_CREDENTIALS=/var/secrets/firebase-admin.json"
-  "-e" "ENV=prod"
-  "-e" "FIREBASE_CHECK_REVOKED=true"
-  "-e" "DETECTOR_MODE=tasks"
-  "-e" "DETECTOR_TASKS_PROJECT=${DETECTOR_TASKS_PROJECT}"
-  "-e" "DETECTOR_TASKS_LOCATION=${DETECTOR_TASKS_LOCATION}"
-  "-e" "DETECTOR_TASKS_QUEUE=${DETECTOR_TASKS_QUEUE}"
-  "-e" "DETECTOR_SERVICE_URL=${DETECTOR_SERVICE_URL}"
-  "-e" "DETECTOR_TASKS_QUEUE_LIGHT=${DETECTOR_TASKS_QUEUE_LIGHT}"
-  "-e" "DETECTOR_TASKS_QUEUE_HEAVY=${DETECTOR_TASKS_QUEUE_HEAVY}"
-  "-e" "DETECTOR_SERVICE_URL_LIGHT=${DETECTOR_SERVICE_URL_LIGHT}"
-  "-e" "DETECTOR_SERVICE_URL_HEAVY=${DETECTOR_SERVICE_URL_HEAVY}"
-  "-e" "DETECTOR_TASKS_SERVICE_ACCOUNT=${DETECTOR_TASKS_SERVICE_ACCOUNT}"
-  "-e" "DETECTOR_TASKS_AUDIENCE=${DETECTOR_TASKS_AUDIENCE}"
-  "-e" "DETECTOR_TASKS_AUDIENCE_LIGHT=${DETECTOR_TASKS_AUDIENCE_LIGHT}"
-  "-e" "DETECTOR_TASKS_AUDIENCE_HEAVY=${DETECTOR_TASKS_AUDIENCE_HEAVY}"
-  "-e" "OPENAI_RENAME_REMAP_MODE=${OPENAI_RENAME_REMAP_MODE}"
-  "-e" "OPENAI_RENAME_REMAP_TASKS_PROJECT=${OPENAI_RENAME_REMAP_TASKS_PROJECT}"
-  "-e" "OPENAI_RENAME_REMAP_TASKS_LOCATION=${OPENAI_RENAME_REMAP_TASKS_LOCATION}"
-  "-e" "OPENAI_RENAME_REMAP_TASKS_QUEUE=${OPENAI_RENAME_REMAP_TASKS_QUEUE}"
-  "-e" "OPENAI_RENAME_REMAP_SERVICE_URL=${OPENAI_RENAME_REMAP_SERVICE_URL:-}"
-  "-e" "OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT=${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT}"
-  "-e" "OPENAI_RENAME_REMAP_TASKS_AUDIENCE=${OPENAI_RENAME_REMAP_TASKS_AUDIENCE:-}"
-  "-e" "OPENAI_PREWARM_ENABLED=${OPENAI_PREWARM_ENABLED:-true}"
-  "-e" "OPENAI_PREWARM_REMAINING_PAGES=${OPENAI_PREWARM_REMAINING_PAGES:-3}"
-  "-e" "OPENAI_PREWARM_TIMEOUT_SECONDS=${OPENAI_PREWARM_TIMEOUT_SECONDS:-2}"
-  "-e" "SANDBOX_ENABLE_LEGACY_ENDPOINTS=false"
-  "-e" "STRIPE_WEBHOOK_ENDPOINT_URL=${STRIPE_WEBHOOK_ENDPOINT_URL:-${STACK_WEBHOOK_ENDPOINT_URL}}"
-  "-e" "ADMIN_TOKEN="
-  "-e" "SANDBOX_DEBUG=false"
-  "-e" "SANDBOX_DEBUG_FORCE=false"
-  "-e" "SANDBOX_DEBUG_PASSWORD="
-)
+if [[ "$HAS_DOCKER" == "true" ]]; then
+  ENV_ARGS=(
+    "-e" "FIREBASE_CREDENTIALS=/var/secrets/firebase-admin.json"
+    "-e" "GOOGLE_APPLICATION_CREDENTIALS=/var/secrets/firebase-admin.json"
+    "-e" "ENV=prod"
+    "-e" "FIREBASE_CHECK_REVOKED=true"
+    "-e" "DETECTOR_MODE=tasks"
+    "-e" "DETECTOR_TASKS_PROJECT=${DETECTOR_TASKS_PROJECT}"
+    "-e" "DETECTOR_TASKS_LOCATION=${DETECTOR_TASKS_LOCATION}"
+    "-e" "DETECTOR_TASKS_QUEUE=${DETECTOR_TASKS_QUEUE}"
+    "-e" "DETECTOR_SERVICE_URL=${DETECTOR_SERVICE_URL}"
+    "-e" "DETECTOR_TASKS_QUEUE_LIGHT=${DETECTOR_TASKS_QUEUE_LIGHT}"
+    "-e" "DETECTOR_TASKS_QUEUE_HEAVY=${DETECTOR_TASKS_QUEUE_HEAVY}"
+    "-e" "DETECTOR_SERVICE_URL_LIGHT=${DETECTOR_SERVICE_URL_LIGHT}"
+    "-e" "DETECTOR_SERVICE_URL_HEAVY=${DETECTOR_SERVICE_URL_HEAVY}"
+    "-e" "DETECTOR_TASKS_SERVICE_ACCOUNT=${DETECTOR_TASKS_SERVICE_ACCOUNT}"
+    "-e" "DETECTOR_TASKS_AUDIENCE=${DETECTOR_TASKS_AUDIENCE}"
+    "-e" "DETECTOR_TASKS_AUDIENCE_LIGHT=${DETECTOR_TASKS_AUDIENCE_LIGHT}"
+    "-e" "DETECTOR_TASKS_AUDIENCE_HEAVY=${DETECTOR_TASKS_AUDIENCE_HEAVY}"
+    "-e" "OPENAI_RENAME_REMAP_MODE=${OPENAI_RENAME_REMAP_MODE}"
+    "-e" "OPENAI_RENAME_REMAP_TASKS_PROJECT=${OPENAI_RENAME_REMAP_TASKS_PROJECT}"
+    "-e" "OPENAI_RENAME_REMAP_TASKS_LOCATION=${OPENAI_RENAME_REMAP_TASKS_LOCATION}"
+    "-e" "OPENAI_RENAME_REMAP_TASKS_QUEUE=${OPENAI_RENAME_REMAP_TASKS_QUEUE}"
+    "-e" "OPENAI_RENAME_REMAP_SERVICE_URL=${OPENAI_RENAME_REMAP_SERVICE_URL:-}"
+    "-e" "OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT=${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT}"
+    "-e" "OPENAI_RENAME_REMAP_TASKS_AUDIENCE=${OPENAI_RENAME_REMAP_TASKS_AUDIENCE:-}"
+    "-e" "OPENAI_PREWARM_ENABLED=${OPENAI_PREWARM_ENABLED:-true}"
+    "-e" "OPENAI_PREWARM_REMAINING_PAGES=${OPENAI_PREWARM_REMAINING_PAGES:-3}"
+    "-e" "OPENAI_PREWARM_TIMEOUT_SECONDS=${OPENAI_PREWARM_TIMEOUT_SECONDS:-2}"
+    "-e" "SANDBOX_ENABLE_LEGACY_ENDPOINTS=false"
+    "-e" "STRIPE_WEBHOOK_ENDPOINT_URL=${STRIPE_WEBHOOK_ENDPOINT_URL:-${STACK_WEBHOOK_ENDPOINT_URL}}"
+    "-e" "ADMIN_TOKEN="
+    "-e" "SANDBOX_DEBUG=false"
+    "-e" "SANDBOX_DEBUG_FORCE=false"
+    "-e" "SANDBOX_DEBUG_PASSWORD="
+  )
 
-if [[ -n "${OPENAI_API_KEY:-}" ]]; then
-  ENV_ARGS+=("-e" "OPENAI_API_KEY=${OPENAI_API_KEY}")
-fi
-if [[ -n "${STRIPE_WEBHOOK_SECRET:-}" ]]; then
-  ENV_ARGS+=("-e" "STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}")
-fi
-if [[ -n "${STRIPE_ENFORCE_WEBHOOK_HEALTH:-}" ]]; then
-  ENV_ARGS+=("-e" "STRIPE_ENFORCE_WEBHOOK_HEALTH=${STRIPE_ENFORCE_WEBHOOK_HEALTH}")
-fi
+  if [[ -n "${OPENAI_API_KEY:-}" ]]; then
+    ENV_ARGS+=("-e" "OPENAI_API_KEY=${OPENAI_API_KEY}")
+  fi
+  if [[ -n "${STRIPE_WEBHOOK_SECRET:-}" ]]; then
+    ENV_ARGS+=("-e" "STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}")
+  fi
+  if [[ -n "${STRIPE_ENFORCE_WEBHOOK_HEALTH:-}" ]]; then
+    ENV_ARGS+=("-e" "STRIPE_ENFORCE_WEBHOOK_HEALTH=${STRIPE_ENFORCE_WEBHOOK_HEALTH}")
+  fi
 
-docker run --rm -d \
-  --name "$CONTAINER_NAME" \
-  -p "${BACKEND_BIND}:${BACKEND_PORT}:8000" \
-  --env-file "$ENV_FILE" \
-  "${ENV_ARGS[@]}" \
-  -v "${CREDS_FILE}:/var/secrets/firebase-admin.json:ro" \
-  "$IMAGE_TAG" >/dev/null
+  docker run --rm -d \
+    --name "$CONTAINER_NAME" \
+    -p "${BACKEND_BIND}:${BACKEND_PORT}:8000" \
+    --env-file "$ENV_FILE" \
+    "${ENV_ARGS[@]}" \
+    -v "${CREDS_FILE}:/var/secrets/firebase-admin.json:ro" \
+    "$IMAGE_TAG" >/dev/null
+else
+  # No Docker: run backend locally via uvicorn
+  export PORT="${BACKEND_PORT}"
+  VENV_UVICORN="backend/.venv/bin/uvicorn"
+  if [[ -x "$VENV_UVICORN" ]]; then
+    "$VENV_UVICORN" backend.main:app --host "${BACKEND_BIND}" --port "${BACKEND_PORT}" --reload --reload-dir backend &
+  else
+    echo "Warning: backend/.venv not found. Using system python." >&2
+    uvicorn backend.main:app --host "${BACKEND_BIND}" --port "${BACKEND_PORT}" --reload --reload-dir backend &
+  fi
+  BACKEND_PID="$!"
+fi
 
 wait_for_backend_health() {
   local deadline current_time
@@ -317,8 +349,10 @@ wait_for_backend_health() {
     current_time=${SECONDS}
     if (( current_time >= deadline )); then
       echo "Backend did not become ready within ${BACKEND_READY_TIMEOUT_SECONDS}s." >&2
-      echo "Last backend logs:" >&2
-      docker logs --tail 120 "${CONTAINER_NAME}" >&2 || true
+      if [[ "$HAS_DOCKER" == "true" ]]; then
+        echo "Last backend logs:" >&2
+        docker logs --tail 120 "${CONTAINER_NAME}" >&2 || true
+      fi
       return 1
     fi
     sleep "${BACKEND_READY_INTERVAL_SECONDS}"
@@ -327,7 +361,7 @@ wait_for_backend_health() {
 
 wait_for_backend_health
 
-echo "Backend (dev stack) running at http://localhost:${BACKEND_PORT}"
+echo "Backend (dev stack) running at http://${BACKEND_BIND}:${BACKEND_PORT}"
 echo "Frontend starting at http://localhost:${FRONTEND_PORT}"
 
 bash scripts/use-frontend-env.sh "${FRONTEND_ENV_MODE}"

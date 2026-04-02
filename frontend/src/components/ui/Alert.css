@@ -56,7 +56,7 @@
   border-color: var(--alert-banner-border);
   color: var(--alert-banner-ink);
   box-shadow: var(--alert-shadow);
-  z-index: 10000;
+  z-index: 12000;
 }
 
 .ui-alert--banner .ui-alert__message,

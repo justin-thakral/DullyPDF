@@ -551,6 +551,11 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         group_key = normalize_data_key(str(rule.get("groupKey") or ""))
         if not database_field or not group_key:
             continue
+        if group_key in direct_radio_groups or database_field in direct_radio_groups:
+            # A radio group supersedes this checkbox rule (e.g. after OpenAI
+            # converts a checkbox cluster to a radio group).
+            explicit_checkbox_group_keys.add(group_key)
+            continue
         explicit_checkbox_group_keys.add(group_key)
         operation = normalize_data_key(str(rule.get("operation") or "yes_no")) or "yes_no"
         group = checkbox_groups.get(group_key) or {"groupKey": group_key, "type": "checkbox_group", "options": []}
@@ -578,6 +583,10 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
 
     for group_key, group in sorted(checkbox_groups.items()):
         if group_key in explicit_checkbox_group_keys:
+            continue
+        if group_key in direct_radio_groups:
+            # A radio group with the same key supersedes the checkbox group
+            # (e.g. when OpenAI converts a checkbox cluster to a radio group).
             continue
         options = list(group.get("options") or [])
         if not options:

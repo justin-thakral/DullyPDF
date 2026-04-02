@@ -27,7 +27,8 @@ export type IntentPageKey =
   | 'pdf-radio-button-editor'
   | 'pdf-field-detection-tool'
   | 'construction-pdf-automation'
-  | 'accounting-tax-pdf-automation';
+  | 'accounting-tax-pdf-automation'
+  | 'invoice-pdf-processing';
 
 export type IntentPageCategory = 'workflow' | 'industry';
 

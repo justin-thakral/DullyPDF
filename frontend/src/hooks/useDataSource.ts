@@ -8,6 +8,7 @@ import { parseCsv } from '../utils/csv';
 import { parseExcel } from '../utils/excel';
 import { parseJsonDataSource } from '../utils/json';
 import { inferSchemaFromRows, parseSchemaText } from '../utils/schema';
+import { parseSql } from '../utils/sql';
 import { ALERT_MESSAGES, buildImportFileBeforeMapping } from '../utils/alertMessages';
 import { ApiService } from '../services/api';
 
@@ -37,6 +38,7 @@ export function useDataSource(deps: {
   const csvInputRef = useRef<HTMLInputElement>(null);
   const excelInputRef = useRef<HTMLInputElement>(null);
   const jsonInputRef = useRef<HTMLInputElement>(null);
+  const sqlInputRef = useRef<HTMLInputElement>(null);
   const txtInputRef = useRef<HTMLInputElement>(null);
   const schemaPersistPromiseRef = useRef<Promise<string | null> | null>(null);
   const schemaPersistFingerprintRef = useRef<string | null>(null);
@@ -45,6 +47,7 @@ export function useDataSource(deps: {
     (kind: Exclude<DataSourceKind, 'none'>) => {
       setSchemaError(null);
       if (kind === 'csv') { csvInputRef.current?.click(); return; }
+      if (kind === 'sql') { sqlInputRef.current?.click(); return; }
       if (kind === 'excel') { excelInputRef.current?.click(); return; }
       if (kind === 'json') { jsonInputRef.current?.click(); return; }
       if (kind === 'txt') { txtInputRef.current?.click(); }
@@ -130,6 +133,7 @@ export function useDataSource(deps: {
       }
       if (
         (dataSourceKind === 'csv' ||
+          dataSourceKind === 'sql' ||
           dataSourceKind === 'excel' ||
           dataSourceKind === 'json' ||
           dataSourceKind === 'txt') &&
@@ -174,7 +178,7 @@ export function useDataSource(deps: {
       schema: { fields: Array<{ name: string; type?: string }>; sampleCount: number };
       rows?: Array<Record<string, unknown>>;
       fileName: string;
-      source: 'csv' | 'excel' | 'json' | 'txt';
+      source: 'csv' | 'sql' | 'excel' | 'json' | 'txt';
       skipPersist?: boolean;
     }) => {
       const columns = schema.fields.map((field) => field.name);
@@ -214,7 +218,7 @@ export function useDataSource(deps: {
       columns: string[];
       rows: Array<Record<string, unknown>>;
       fileName: string;
-      source: 'csv' | 'excel';
+      source: 'csv' | 'sql' | 'excel';
       skipPersist?: boolean;
     }) => {
       const schema = inferSchemaFromRows(columns, rows);
@@ -374,9 +378,35 @@ export function useDataSource(deps: {
     );
   }, [applySchemaMetadata, runSchemaUpload]);
 
+  const handleSqlFileSelected = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    validateSchemaImportFileSize(file);
+    await runSchemaUpload(
+      async () => {
+        const text = await file.text();
+        const parsed = parseSql(text);
+        if (!parsed.schema.fields.length) throw new Error('SQL file contains no CREATE TABLE columns.');
+        if (parsed.rows.length > 0) {
+          await applyParsedDataSource({
+            kind: 'sql', label: `SQL: ${file.name}`, columns: parsed.columns, rows: parsed.rows,
+            fileName: file.name, source: 'sql',
+          });
+        } else {
+          await applySchemaMetadata({
+            kind: 'sql', label: `SQL: ${file.name}`, schema: parsed.schema, rows: [],
+            fileName: file.name, source: 'sql',
+          });
+        }
+      },
+      'Failed to import SQL file.',
+    );
+  }, [applyParsedDataSource, applySchemaMetadata, runSchemaUpload]);
+
   const canSearchFill = useMemo(() => {
     if (!deps.hasDocument || dataSourceKind === 'none') return false;
-    if (!['csv', 'excel', 'json', 'respondent'].includes(dataSourceKind)) return false;
+    if (!['csv', 'sql', 'excel', 'json', 'respondent'].includes(dataSourceKind)) return false;
     return dataRows.length > 0;
   }, [dataRows.length, dataSourceKind, deps.hasDocument]);
 
@@ -402,7 +432,7 @@ export function useDataSource(deps: {
     dataRows, setDataRows,
     identifierKey, setIdentifierKey,
     schemaError, setSchemaError,
-    csvInputRef, excelInputRef, jsonInputRef, txtInputRef,
+    csvInputRef, sqlInputRef, excelInputRef, jsonInputRef, txtInputRef,
     handleChooseDataSource,
     handleClearDataSource,
     persistSchemaPayload,
@@ -415,6 +445,7 @@ export function useDataSource(deps: {
     handleExcelFileSelected,
     handleJsonFileSelected,
     handleTxtFileSelected,
+    handleSqlFileSelected,
     canSearchFill,
     reset,
   };

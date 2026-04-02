@@ -184,7 +184,12 @@ export default function ApiFillManagerDialog({
   onRotate,
   onRevoke,
   onRefresh,
+  onBlockedAction,
 }: ApiFillManagerDialogProps) {
+  const guardClick = (blocked: boolean, reason: string, action: () => void) => {
+    if (blocked) { onBlockedAction?.(reason); return; }
+    action();
+  };
   const [exportMode, setExportMode] = useState<MaterializePdfExportMode>('flat');
   const [copyNotice, setCopyNotice] = useState<string | null>(null);
   const [selectedExampleId, setSelectedExampleId] = useState<ApiExampleId>('curl');
@@ -310,8 +315,8 @@ export default function ApiFillManagerDialog({
               <button
                 type="button"
                 className="ui-button ui-button--ghost ui-button--compact"
-                onClick={() => void onRefresh()}
-                disabled={loading}
+                onClick={() => guardClick(loading, 'Please wait — data is refreshing.', () => void onRefresh())}
+                aria-disabled={loading}
               >
                 {loading ? 'Refreshing...' : 'Refresh'}
               </button>
@@ -338,24 +343,32 @@ export default function ApiFillManagerDialog({
               <button
                 type="button"
                 className="ui-button ui-button--primary"
-                onClick={() => void onPublish(exportMode)}
-                disabled={publishing}
+                onClick={() => guardClick(publishing, 'Please wait — publishing is in progress.', () => void onPublish(exportMode))}
+                aria-disabled={publishing}
               >
                 {publishing ? 'Publishing...' : publishButtonLabel}
               </button>
               <button
                 type="button"
                 className="ui-button ui-button--ghost"
-                onClick={() => void onRotate()}
-                disabled={!endpoint || endpoint.status !== 'active' || rotating}
+                onClick={() => guardClick(
+                  !endpoint || endpoint.status !== 'active' || rotating,
+                  rotating ? 'Please wait — key rotation is in progress.' : !endpoint ? 'No API endpoint exists yet. Publish first.' : 'Endpoint is not active. Generate a new key first.',
+                  () => void onRotate(),
+                )}
+                aria-disabled={!endpoint || endpoint.status !== 'active' || rotating}
               >
                 {rotating ? 'Rotating...' : 'Rotate key'}
               </button>
               <button
                 type="button"
                 className="ui-button ui-button--ghost"
-                onClick={() => void onRevoke()}
-                disabled={!endpoint || endpoint.status !== 'active' || revoking}
+                onClick={() => guardClick(
+                  !endpoint || endpoint.status !== 'active' || revoking,
+                  revoking ? 'Please wait — revoke is in progress.' : !endpoint ? 'No API endpoint exists yet.' : 'Endpoint is already revoked.',
+                  () => void onRevoke(),
+                )}
+                aria-disabled={!endpoint || endpoint.status !== 'active' || revoking}
               >
                 {revoking ? 'Revoking...' : 'Revoke'}
               </button>

@@ -415,7 +415,11 @@ export function useDetection(deps: UseDetectionDeps) {
           ? null
           : (async () => {
               try { return await extractFieldsFromPdf(doc); }
-              catch (error) { debugLog('Failed to extract existing fields', error); return []; }
+              catch (error) {
+                debugLog('Failed to extract existing fields', error);
+                deps.setBannerNotice({ tone: 'warning', message: 'Could not extract existing PDF fields. Fields may need to be re-created.', autoDismissMs: 8000 });
+                return [];
+              }
             })();
         const sizes = await sizesPromise;
         if (!commitPdfLoad(doc, sizes, [], loadToken, pdfState)) return;
@@ -517,7 +521,11 @@ export function useDetection(deps: UseDetectionDeps) {
           ? Promise.resolve(clonePdfFields(hydratedSnapshot.fields))
           : (async () => {
               try { return await extractFieldsFromPdf(doc); }
-              catch (error) { debugLog('Failed to extract saved form fields', error); return []; }
+              catch (error) {
+                debugLog('Failed to extract saved form fields', error);
+                deps.setBannerNotice({ tone: 'warning', message: 'Could not extract saved form fields. Some fields may be missing.', autoDismissMs: 8000 });
+                return [];
+              }
             })();
         const sizes = await sizesPromise;
         const initialFields = hydratedSnapshot ? clonePdfFields(hydratedSnapshot.fields) : [];

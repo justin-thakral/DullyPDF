@@ -452,11 +452,12 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     }
     if (
       deps.dataSourceKind !== 'csv' &&
+      deps.dataSourceKind !== 'sql' &&
       deps.dataSourceKind !== 'excel' &&
       deps.dataSourceKind !== 'json' &&
       deps.dataSourceKind !== 'txt'
     ) {
-      return 'Connect a CSV, Excel, JSON, or TXT schema source first.';
+      return 'Connect a CSV, SQL, Excel, JSON, or TXT schema source first.';
     }
     if (deps.dataColumns.length === 0) {
       return 'Upload schema headers before mapping.';

@@ -1,5 +1,5 @@
 /**
- * Schema inference utilities for CSV/Excel/JSON/TXT uploads.
+ * Schema inference utilities for CSV/SQL/Excel/JSON/TXT uploads.
  */
 
 export type SchemaFieldType = 'string' | 'int' | 'date' | 'bool';

@@ -16,6 +16,7 @@ export type UsageDocsPageKey =
   | 'rename-mapping'
   | 'editor-workflow'
   | 'search-fill'
+  | 'fill-from-images'
   | 'fill-by-link'
   | 'signature-workflow'
   | 'api-fill'
@@ -107,10 +108,11 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
           <ul>
             <li>PDF upload limit is 50MB (`UploadComponent` validation).</li>
             <li>Desktop is required for full editor usage. Mobile is walkthrough-only.</li>
-            <li>Search &amp; Fill record rows can come from CSV, XLSX, JSON, or stored Fill By Link respondents. TXT is schema-only.</li>
+            <li>Search &amp; Fill record rows can come from CSV, XLSX, JSON, or stored Fill By Link respondents. SQL and TXT are schema-only.</li>
             <li>Fill By Link can be published from the active saved form or from an open group. Owners now use a larger builder dialog with global settings, searchable questions, and live preview before publishing.</li>
-            <li>OpenAI actions require sign-in and credits. Pricing is bucketed by page count (default 5 pages per bucket).</li>
-            <li>Credits formula: total = baseCost x ceil(pageCount / bucketSize). Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
+            <li>OpenAI actions require sign-in and credits. Rename and Map pricing is bucketed by page count (default 5 pages per bucket).</li>
+            <li>Rename/Map credits formula: total = baseCost x ceil(pageCount / bucketSize). Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
+            <li>Fill from Images and Documents credits: each image costs 1 credit; each PDF document costs 1 credit per 5 pages.</li>
             <li>Billing runs through Stripe from Profile: Pro Monthly, Pro Yearly, and a Pro-only 500-credit refill pack.</li>
             <li>Public plan explainers live at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a>.</li>
           </ul>
@@ -175,7 +177,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         body: (
           <ul>
             <li>Template setup: start with <a href="/usage-docs/getting-started">Getting Started</a> when you need one recurring PDF to reach its first safe fill quickly.</li>
-            <li>Row-based filling: start with <a href="/usage-docs/search-fill">Search &amp; Fill</a> when the record already exists in CSV, XLSX, JSON, or a stored respondent submission.</li>
+            <li>Row-based filling: start with <a href="/usage-docs/search-fill">Search &amp; Fill</a> when the record already exists in CSV, SQL, XLSX, JSON, or a stored respondent submission.</li>
             <li>Respondent collection: start with <a href="/usage-docs/fill-by-link">Fill By Link</a> when the row does not exist yet and someone must submit it first.</li>
           </ul>
         ),
@@ -623,18 +625,215 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('search-fill'),
     sections: [
       {
+        id: 'toolbar-buttons-overview',
+        title: 'Toolbar buttons overview',
+        body: (
+          <>
+            <p>
+              The workspace toolbar exposes five action buttons once a document is loaded. Each serves a different stage
+              of the template-to-filled-PDF pipeline:
+            </p>
+            <ul>
+              <li>
+                <strong>Connected SQL (Search &amp; Fill)</strong> — the data source dropdown. Click it to load a CSV, Excel, JSON, SQL, or TXT
+                file as your schema and record source. Once loaded, the button label updates to show the connected source type
+                (for example &quot;Connected CSV&quot;). The dropdown also contains <em>Search, Fill &amp; Clear</em> (opens the Search &amp; Fill
+                modal when rows are available) and <em>Clear data source</em> (disconnects the current source).
+              </li>
+              <li>
+                <strong>Rename or Remap</strong> — the OpenAI actions dropdown. Options include <em>Rename</em> (standardize field names),{' '}
+                <em>Map Schema</em> (align field names to your loaded schema columns), <em>Rename + Map</em> (both in one step),
+                and <em>Rename + Map Group</em> (batch across all templates in an open group). Requires a loaded document and
+                available credits. A schema source must be connected before Map or Rename + Map can run.
+              </li>
+              <li>
+                <strong>Fill From Images + Documents</strong> — upload photos or scanned documents (IDs, invoices, pay stubs) and
+                extract matching field values using OpenAI vision. See the <a href="/usage-docs/fill-from-images">Fill from Images and Documents</a> docs page.
+              </li>
+              <li>
+                <strong>Fill By Web Form Link + Sign</strong> — publish a DullyPDF-hosted web form from a saved template or open group,
+                collect respondent answers, and optionally require a signing ceremony after submit. See the{' '}
+                <a href="/usage-docs/fill-by-link">Fill By Link</a> docs page.
+              </li>
+              <li>
+                <strong>Send PDF for Signature by email</strong> — freeze the current PDF and email it to one or more signers.
+                See the <a href="/usage-docs/signature-workflow">Signature Workflow</a> docs page.
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
         id: 'data-source-support',
         title: 'Data source support',
         body: (
-          <ul>
-            <li>CSV, XLS, and JSON include headers and rows for record-based filling.</li>
-            <li>Fill By Link respondent submissions are stored as structured records and can be selected from the workspace.</li>
-            <li>TXT is schema-only and supports mapping but not row-based fill.</li>
-            <li>CSV/XLSX/JSON parsers cap records at 5000 rows per import.</li>
-            <li>Duplicate headers are auto-renamed (`name`, `name_2`, `name_3`, ...).</li>
-            <li>Header normalization converts spaces/hyphens to underscores and removes punctuation.</li>
-            <li>TXT schema format is one field per line: <code>field_name[:type]</code> with types `string|int|date|bool`.</li>
-          </ul>
+          <>
+            <p>
+              The data source dropdown accepts five file types. CSV, Excel, and JSON provide both schema headers and record
+              rows for Search &amp; Fill. SQL and TXT provide schema columns only (for mapping) — they do not include row data
+              unless the SQL file also contains <code>INSERT INTO</code> statements.
+            </p>
+            <ul>
+              <li>Fill By Link respondent submissions are stored as structured records and can be selected from the workspace just like local rows.</li>
+              <li>CSV/XLSX/JSON/SQL parsers cap records at 5,000 rows per import.</li>
+              <li>Duplicate headers are auto-renamed with numeric suffixes (<code>name</code>, <code>name_2</code>, <code>name_3</code>, ...).</li>
+              <li>Header normalization trims whitespace, converts to lowercase, replaces spaces and hyphens with underscores, and removes other punctuation.</li>
+              <li>Schema type inference samples up to 200 rows when detecting column types automatically.</li>
+              <li>Allowed column types across all formats: <code>string</code>, <code>int</code>, <code>date</code>, <code>bool</code>.</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'csv-file-format',
+        title: 'CSV file format',
+        body: (
+          <>
+            <p>
+              CSV files follow the RFC 4180 standard. The first row is treated as the header row. All subsequent rows
+              become searchable records.
+            </p>
+            <p><strong>Example CSV:</strong></p>
+            <pre>{`first_name,last_name,dob,email,phone
+John,Smith,1990-05-14,john@example.com,555-0100
+Jane,Doe,1985-11-02,jane@example.com,555-0200
+Bob,Johnson,1978-03-21,bob@example.com,555-0300`}</pre>
+            <ul>
+              <li>Default delimiter is comma. Quoted fields with escaped double-quotes are handled.</li>
+              <li>Both <code>\r\n</code> and <code>\n</code> line endings are supported.</li>
+              <li>BOM (byte-order mark) is stripped automatically.</li>
+              <li>Empty headers are filtered out. Empty rows (all cells blank) are skipped.</li>
+              <li>Maximum 5,000 rows per import. All values are stored as strings.</li>
+              <li>Column types (string, int, date, bool) are inferred automatically from the first 200 rows of data.</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'json-file-format',
+        title: 'JSON file format',
+        body: (
+          <>
+            <p>
+              JSON files can use several structures. DullyPDF auto-detects the layout and extracts headers and rows.
+            </p>
+            <p><strong>Simplest format — array of objects (recommended):</strong></p>
+            <pre>{`[
+  { "first_name": "John", "last_name": "Smith", "dob": "1990-05-14" },
+  { "first_name": "Jane", "last_name": "Doe", "dob": "1985-11-02" }
+]`}</pre>
+            <p><strong>Nested structure with explicit schema:</strong></p>
+            <pre>{`{
+  "fields": [
+    { "name": "first_name", "type": "string" },
+    { "name": "dob", "type": "date" }
+  ],
+  "rows": [
+    { "first_name": "John", "dob": "1990-05-14" }
+  ]
+}`}</pre>
+            <ul>
+              <li>Accepted top-level array keys for rows: <code>rows</code>, <code>records</code>, <code>data</code>, <code>items</code>, <code>entries</code>.</li>
+              <li>Accepted schema keys: <code>schema.fields</code>, <code>fields</code>, <code>columns</code>, <code>headers</code>.</li>
+              <li>Each field entry can be a string name or an object with <code>name</code>, <code>field</code>, <code>column</code>, or <code>id</code> property.</li>
+              <li>Nested objects are flattened with underscore separators (for example <code>address.city</code> becomes <code>address_city</code>) up to 6 levels deep.</li>
+              <li>A single top-level object (not an array) is treated as one record row.</li>
+              <li>JSONL format (one JSON object per line) is also supported.</li>
+              <li>Maximum 5,000 rows. Type inference works the same as CSV when no explicit schema types are provided.</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'sql-file-format',
+        title: 'SQL file format',
+        body: (
+          <>
+            <p>
+              SQL files are parsed for <code>CREATE TABLE</code> statements to extract column names and types.
+              If the file also contains <code>INSERT INTO</code> statements, those rows are extracted as searchable records.
+            </p>
+            <p><strong>Schema-only example:</strong></p>
+            <pre>{`CREATE TABLE patients (
+  mrn VARCHAR(20) NOT NULL,
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  date_of_birth DATE,
+  is_active BOOLEAN DEFAULT true,
+  age INT
+);`}</pre>
+            <p><strong>Schema with data rows:</strong></p>
+            <pre>{`CREATE TABLE patients (
+  mrn VARCHAR(20),
+  first_name VARCHAR(100),
+  last_name VARCHAR(100)
+);
+
+INSERT INTO patients VALUES
+  ('MRN001', 'John', 'Smith'),
+  ('MRN002', 'Jane', 'Doe');`}</pre>
+            <ul>
+              <li>
+                SQL type mapping: <code>VARCHAR</code>, <code>CHAR</code>, <code>TEXT</code>, <code>UUID</code>, <code>JSON</code>, <code>ENUM</code> → <code>string</code>;{' '}
+                <code>INT</code>, <code>INTEGER</code>, <code>SMALLINT</code>, <code>BIGINT</code>, <code>SERIAL</code>, <code>NUMERIC</code>, <code>DECIMAL</code>, <code>FLOAT</code>, <code>DOUBLE</code> → <code>int</code>;{' '}
+                <code>DATE</code>, <code>DATETIME</code>, <code>TIMESTAMP</code>, <code>TIME</code> → <code>date</code>;{' '}
+                <code>BOOLEAN</code>, <code>BOOL</code>, <code>BIT</code> → <code>bool</code>.
+              </li>
+              <li>Precision and length qualifiers are stripped (<code>VARCHAR(255)</code> → <code>VARCHAR</code>).</li>
+              <li>Quoted identifiers (backtick or double-quote) are handled.</li>
+              <li>Constraint lines (<code>PRIMARY KEY</code>, <code>UNIQUE</code>, <code>INDEX</code>, <code>FOREIGN KEY</code>, <code>CHECK</code>) are filtered out.</li>
+              <li>SQL comments (<code>-- line</code> and <code>/* block */</code>) are stripped before parsing.</li>
+              <li>Multiple <code>CREATE TABLE</code> statements are merged; duplicate column names are dropped.</li>
+              <li><code>INSERT INTO</code> rows are capped at 5,000. Without <code>INSERT</code> statements, the file is schema-only (mapping but no Search &amp; Fill rows).</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'txt-schema-file-format',
+        title: 'TXT schema file format',
+        body: (
+          <>
+            <p>
+              TXT files define schema columns only — one field per line. They do not contain record rows,
+              so they support mapping but not Search &amp; Fill.
+            </p>
+            <p><strong>Example TXT schema:</strong></p>
+            <pre>{`# Patient intake schema
+first_name:string
+last_name:string
+date_of_birth:date
+mrn:string
+is_active:bool
+age:int
+email`}</pre>
+            <ul>
+              <li>Format: <code>field_name</code> or <code>field_name:type</code>. Fields without a type default to <code>string</code>.</li>
+              <li>Allowed types: <code>string</code>, <code>int</code>, <code>date</code>, <code>bool</code> (case-insensitive).</li>
+              <li>Lines starting with <code>#</code> are comments and ignored.</li>
+              <li>Blank lines are ignored.</li>
+              <li>Duplicate field names are skipped.</li>
+              <li>Whitespace is trimmed from both name and type.</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'excel-file-format',
+        title: 'Excel file format',
+        body: (
+          <>
+            <p>
+              Excel files (<code>.xlsx</code>, <code>.xls</code>) are read from the first sheet by default.
+              The first row is treated as the header row, and all subsequent rows become searchable records.
+            </p>
+            <ul>
+              <li>Same header deduplication and normalization rules as CSV.</li>
+              <li>Empty rows are skipped. All values are stored as strings.</li>
+              <li>Maximum 5,000 rows per import.</li>
+              <li>Column types are inferred automatically from the data, same as CSV and JSON.</li>
+            </ul>
+          </>
         ),
       },
       {
@@ -658,7 +857,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>If mapping is incomplete, fill coverage will be partial.</li>
             <li>Clear and refill when testing mapping revisions.</li>
             <li>Validate at least one full record before saving templates for teams.</li>
-            <li>Search &amp; Fill is enabled only for CSV/XLSX/JSON with at least one row, stored respondent records, and a loaded document.</li>
+            <li>Search &amp; Fill is enabled only for CSV/XLSX/JSON with at least one row, stored respondent records, and a loaded document. SQL and TXT are schema-only sources.</li>
             <li>Fill By Link submissions consume an account-level monthly quota instead of closing one link at a fixed per-link cap: base allows 25 accepted responses per month and premium allows 10,000.</li>
           </ul>
         ),
@@ -714,6 +913,95 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>Date or checkbox values need normalization rules that the current row does not satisfy.</li>
             <li>The template was updated but the operator is still validating stale output without clearing and refilling.</li>
             <li>Alias fallbacks help, but they do not replace explicit mapping on important production templates.</li>
+          </ul>
+        ),
+      },
+    ],
+  },
+  {
+    ...getUsageDocsPageMetadata('fill-from-images'),
+    sections: [
+      {
+        id: 'what-fill-from-images-does',
+        title: 'What Fill from Images and Documents does',
+        body: (
+          <>
+            <p>
+              Fill from Images and Documents lets you upload photos or scanned documents (IDs, invoices, pay stubs, utility bills, medical records)
+              and have DullyPDF extract matching information into your template fields automatically using OpenAI vision.
+            </p>
+            <p>
+              The pipeline sends your uploaded images alongside the template field schema (including nearby label text extracted from the
+              PDF) to OpenAI. The model reads the uploaded documents, matches extracted data to your form fields by semantic meaning,
+              and returns values with confidence scores.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: 'fill-from-images-pipeline',
+        title: 'Pipeline details',
+        body: (
+          <ol>
+            <li>Click <strong>Fill from Images and Documents</strong> in the toolbar (requires named fields and an active session).</li>
+            <li>Click <strong>Upload</strong> to select one or more images or PDF documents. Multiple files can be uploaded at once.</li>
+            <li>Review the uploaded file list. Remove files with the x button if needed.</li>
+            <li>Check the credit cost in the footer: each image = 1 credit, each PDF document = 1 credit per 5 pages.</li>
+            <li>Click <strong>Send</strong> to run extraction. DullyPDF renders the template PDF to extract label context for each field, encodes your uploaded files, and calls OpenAI vision.</li>
+            <li>Review extracted fields: each shows the matched field name, the extracted value (editable), a confidence percentage, and a Reject button.</li>
+            <li>Edit values inline or reject fields you do not want applied.</li>
+            <li>Click <strong>Fill</strong> to write accepted values into your template fields.</li>
+          </ol>
+        ),
+      },
+      {
+        id: 'fill-from-images-what-gets-sent',
+        title: 'What gets sent to OpenAI',
+        body: (
+          <ul>
+            <li>Your uploaded images and documents (encoded as base64).</li>
+            <li>The template field schema: field names, types, and the label text printed next to each field on the PDF.</li>
+            <li>A system prompt instructing the model to extract matching information.</li>
+            <li>Your PDF template page images are <strong>not</strong> sent. Only the text labels near each field are included for context.</li>
+            <li>Field values, row data, and respondent information are never sent.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'fill-from-images-credit-cost',
+        title: 'Credit cost',
+        body: (
+          <ul>
+            <li>Each uploaded image (JPG, PNG, etc.) costs <strong>1 credit</strong>.</li>
+            <li>Each uploaded PDF document costs <strong>1 credit per 5 pages</strong> (bucketed per document, rounded up).</li>
+            <li>The dialog footer shows the estimated cost before you click Send.</li>
+            <li>Credits are deducted from the same OpenAI credit pool used by Rename and Map operations.</li>
+            <li>If the extraction fails, credits are refunded automatically.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'fill-from-images-best-practices',
+        title: 'Best practices',
+        body: (
+          <ul>
+            <li>Name and rename your fields before using Fill from Images and Documents. The AI matches by field name and label context.</li>
+            <li>Upload clear, well-lit photos. Blurry or partially cropped documents reduce extraction accuracy.</li>
+            <li>For multi-page documents like invoices or medical records, upload as PDF rather than photographing each page separately.</li>
+            <li>Review confidence scores. High confidence (80%+) values are usually correct. Low confidence values should be verified.</li>
+            <li>Use Reject to exclude fields you want to fill manually.</li>
+            <li>Fill from Images and Documents works best for structured documents: IDs, invoices, tax forms, insurance cards, pay stubs, and similar.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'fill-from-images-supported-formats',
+        title: 'Supported file types',
+        body: (
+          <ul>
+            <li>Images: JPG, JPEG, PNG, GIF, WebP, BMP, and other browser-supported image formats.</li>
+            <li>Documents: PDF (rendered page-by-page for the AI model).</li>
+            <li>Maximum file size: 20 MB per file. Maximum 10 files per extraction.</li>
           </ul>
         ),
       },
@@ -1135,11 +1423,10 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         title: 'Limits and credits',
         body: (
           <>
-            <p>OpenAI credit usage is page-bucketed:</p>
+            <p>OpenAI credit usage varies by operation:</p>
             <ul>
-              <li>Formula: total credits = baseCost x ceil(pageCount / bucketSize).</li>
-              <li>Current default bucket size is 5 pages.</li>
-              <li>Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
+              <li>Rename/Map formula: total credits = baseCost x ceil(pageCount / bucketSize). Default bucket size is 5 pages. Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
+              <li>Fill from Images and Documents formula: each uploaded image = 1 credit. Each uploaded PDF document = 1 credit per 5 pages (bucketed per document). The dialog footer shows estimated cost before sending.</li>
               <li>Base users top back up to 10 credits each month when their balance is below that floor. Premium users get a 500 monthly pool plus refill credits.</li>
               <li>Refill credits do not expire and are consumed after monthly credits.</li>
               <li>Signing uses a monthly sent-request quota. Saving a draft does not consume quota; the first successful send does.</li>
@@ -1268,7 +1555,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         title: 'Common validation and runtime messages',
         body: (
           <ul>
-            <li>`Choose a CSV, Excel, or JSON source first.`</li>
+            <li>`Choose a CSV, SQL, Excel, or JSON source first.`</li>
             <li>`No record rows are available to search.`</li>
             <li>`Enter a search value.`</li>
             <li>`Choose a column to search.`</li>

@@ -575,7 +575,7 @@ export default function SearchFillModal({
               size="sm"
               message={
                 hasSource
-                  ? 'The connected source has no record rows to search.'
+                  ? 'The connected source is schema-only (no row data). Upload a CSV, Excel, or JSON file with rows to search and fill.'
                   : 'No record rows are loaded yet. Upload a CSV, Excel, or JSON file to search and fill.'
               }
             />

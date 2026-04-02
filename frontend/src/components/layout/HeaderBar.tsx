@@ -54,6 +54,7 @@ type HeaderBarProps = {
   renameAndMapGroupButtonLabel?: string;
   onOpenSearchFill?: () => void;
   canSearchFill?: boolean;
+  onOpenImageFill?: () => void;
   onOpenFillLink?: () => void;
   canFillLink?: boolean;
   onOpenSignatureRequest?: () => void;
@@ -77,7 +78,7 @@ type HeaderBarProps = {
 };
 
 function isSchemaPrerequisiteHint(reason: string | null | undefined): boolean {
-  return reason === 'Connect a CSV, Excel, JSON, or TXT schema source first.' ||
+  return reason === 'Connect a CSV, SQL, Excel, JSON, or TXT schema source first.' ||
     reason === 'Upload schema headers before mapping.' ||
     reason === 'Schema metadata is required before mapping.';
 }
@@ -173,6 +174,7 @@ export function HeaderBar({
   renameAndMapGroupButtonLabel,
   onOpenSearchFill,
   canSearchFill = false,
+  onOpenImageFill,
   onOpenFillLink,
   canFillLink = false,
   onOpenSignatureRequest,
@@ -217,14 +219,12 @@ export function HeaderBar({
     demoOverride ? true : !canRenameAndMap || mappingInProgress || renameInProgress || mapSchemaInProgress;
   const disableRenameAndMapGroup =
     demoOverride ? true : !canRenameAndMapGroup || mappingInProgress || renameInProgress || mapSchemaInProgress || renameAndMapGroupInProgress;
-  const disableSearch = !canSearchFill || mappingInProgress;
   const disableFillLink = demoOverride ? true : !canFillLink || mappingInProgress;
   const disableSendForSignature = !canSendForSignature || mappingInProgress;
   const disableTemplateApi = demoOverride ? true : !canOpenTemplateApi;
   const showDemoFillLinkDocs = demoLocked && Boolean(demoFillLinkDocsHref);
   const showDemoCreateGroupDocs = demoLocked && Boolean(demoCreateGroupDocsHref);
   const showDemoDocs = showDemoFillLinkDocs || showDemoCreateGroupDocs;
-  const showSearchHint = !canSearchFill;
   const rawActionHint = demoOverride
     ? (showDemoDocs ? null : demoLockedHint)
     : hasGroupContext && disableRenameAndMapGroup
@@ -286,6 +286,7 @@ export function HeaderBar({
   const [showDataMenu, setShowDataMenu] = useState(false);
   const [showGroupMenu, setShowGroupMenu] = useState(false);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [showRenameMenu, setShowRenameMenu] = useState(false);
   const [zoomPercentInput, setZoomPercentInput] = useState(String(Math.round(scale * 100)));
   const isConnected = dataSourceKind !== 'none';
   const connectedKind =
@@ -297,10 +298,11 @@ export function HeaderBar({
         ? 'TXT'
         : dataSourceKind.toUpperCase();
   const dataSourceTitle = isConnected ? `Connected ${connectedKind}` : 'Schema';
-  const dataSourceSubtitle = isConnected ? null : 'CSV/XLS/JSON/TXT';
+  const dataSourceSubtitle = isConnected ? '(Search & Fill)' : 'CSV/SQL/JSON/XLS/TXT';
   const dataSourceMenuRef = useRef<HTMLDivElement | null>(null);
   const groupMenuRef = useRef<HTMLDivElement | null>(null);
   const downloadMenuRef = useRef<HTMLDivElement | null>(null);
+  const renameMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -309,6 +311,7 @@ export function HeaderBar({
       const clickedInsideDataSource = dataSourceMenuRef.current?.contains(target) ?? false;
       const clickedInsideGroupMenu = groupMenuRef.current?.contains(target) ?? false;
       const clickedInsideDownloadMenu = downloadMenuRef.current?.contains(target) ?? false;
+      const clickedInsideRenameMenu = renameMenuRef.current?.contains(target) ?? false;
       if (!clickedInsideDataSource) {
         setShowDataMenu(false);
       }
@@ -318,14 +321,18 @@ export function HeaderBar({
       if (!clickedInsideDownloadMenu) {
         setShowDownloadMenu(false);
       }
+      if (!clickedInsideRenameMenu) {
+        setShowRenameMenu(false);
+      }
     };
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
       setShowDataMenu(false);
       setShowGroupMenu(false);
       setShowDownloadMenu(false);
+      setShowRenameMenu(false);
     };
-    if (showDataMenu || showGroupMenu || showDownloadMenu) {
+    if (showDataMenu || showGroupMenu || showDownloadMenu || showRenameMenu) {
       window.addEventListener('mousedown', handleClick);
       window.addEventListener('keydown', handleEscape);
     }
@@ -333,7 +340,7 @@ export function HeaderBar({
       window.removeEventListener('mousedown', handleClick);
       window.removeEventListener('keydown', handleEscape);
     };
-  }, [showDataMenu, showGroupMenu, showDownloadMenu]);
+  }, [showDataMenu, showGroupMenu, showDownloadMenu, showRenameMenu]);
 
   useEffect(() => {
     setShowGroupMenu(false);
@@ -558,6 +565,7 @@ export function HeaderBar({
                   data-demo-target="data-source"
                   onClick={() => guardClick(disableDataSource, busyReason || 'Data source is unavailable right now.', () => {
                     setShowGroupMenu(false);
+                    setShowRenameMenu(false);
                     setShowDataMenu((prev) => !prev);
                   })}
                   aria-disabled={disableDataSource}
@@ -606,11 +614,11 @@ export function HeaderBar({
                           return;
                         }
                         setShowDataMenu(false);
-                        onChooseDataSource?.('excel');
+                        onChooseDataSource?.('sql');
                       }}
                     >
-                      <span className="data-source__badge">XLS</span>
-                      <span>Excel file…</span>
+                      <span className="data-source__badge">SQL</span>
+                      <span>SQL file…</span>
                     </button>
                     <button
                       type="button"
@@ -638,12 +646,45 @@ export function HeaderBar({
                           return;
                         }
                         setShowDataMenu(false);
+                        onChooseDataSource?.('excel');
+                      }}
+                    >
+                      <span className="data-source__badge">XLS</span>
+                      <span>Excel file…</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="data-source__item"
+                      role="menuitem"
+                      onClick={() => {
+                        if (demoOverride) {
+                          onDemoLockedAction?.();
+                          return;
+                        }
+                        setShowDataMenu(false);
                         onChooseDataSource?.('txt');
                       }}
                     >
                       <span className="data-source__badge">TXT</span>
                       <span>TXT schema…</span>
                     </button>
+                    {dataSourceKind !== 'none' && onOpenSearchFill ? (
+                      <button
+                        type="button"
+                        className="data-source__item"
+                        role="menuitem"
+                        onClick={() => {
+                          if (demoOverride) {
+                            onDemoLockedAction?.();
+                            return;
+                          }
+                          setShowDataMenu(false);
+                          onOpenSearchFill?.();
+                        }}
+                      >
+                        Search, Fill &amp; Clear
+                      </button>
+                    ) : null}
                     {dataSourceKind !== 'none' && onClearDataSource ? (
                       <button
                         type="button"
@@ -664,67 +705,96 @@ export function HeaderBar({
                   </div>
                 ) : null}
               </div>
-              {!hasGroupContext && onRename ? (
+              <div className="data-source data-source--compact" ref={renameMenuRef}>
                 <button
-                  className="ui-button ui-button--ghost ui-button--compact"
+                  className="ui-button ui-button--ghost ui-button--compact data-source__button"
                   type="button"
                   data-demo-target="openai-rename"
-                  onClick={() => guardClick(disableRename, busyReason || renameTooltip, () => onRename?.())}
-                  aria-disabled={disableRename}
-                  title={renameTooltip}
+                  onClick={() => guardClick(Boolean(busyReason) || demoOverride, busyReason || 'Rename or Remap is unavailable right now.', () => {
+                    setShowDataMenu(false);
+                    setShowGroupMenu(false);
+                    setShowDownloadMenu(false);
+                    setShowRenameMenu((prev) => !prev);
+                  })}
+                  aria-disabled={Boolean(busyReason) || demoOverride}
+                  aria-haspopup="menu"
+                  aria-expanded={showRenameMenu}
                 >
-                  {renameLabel}
+                  <span className="data-source__title">Rename or Remap</span>
+                  <span className="data-source__caret" aria-hidden="true">
+                    ▾
+                  </span>
                 </button>
-              ) : null}
-              {!hasGroupContext ? (
+                {showRenameMenu ? (
+                  <div className="data-source__menu" role="menu" aria-label="Rename or remap options">
+                    {!hasGroupContext && onRename ? (
+                      <button
+                        type="button"
+                        className="data-source__item"
+                        role="menuitem"
+                        onClick={() => guardClick(disableRename, busyReason || renameTooltip, () => {
+                          setShowRenameMenu(false);
+                          onRename?.();
+                        })}
+                        aria-disabled={disableRename}
+                      >
+                        {renameLabel}
+                      </button>
+                    ) : null}
+                    {!hasGroupContext ? (
+                      <button
+                        type="button"
+                        className="data-source__item"
+                        role="menuitem"
+                        data-demo-target="openai-remap"
+                        onClick={() => guardClick(disableMapSchema, busyReason || mapSchemaTooltip, () => {
+                          setShowRenameMenu(false);
+                          onMapSchema?.();
+                        })}
+                        aria-disabled={disableMapSchema}
+                      >
+                        {mapSchemaLabel}
+                      </button>
+                    ) : null}
+                    {!hasGroupContext && onRenameAndMap ? (
+                      <button
+                        type="button"
+                        className="data-source__item"
+                        role="menuitem"
+                        onClick={() => guardClick(disableRenameAndMap, busyReason || renameAndMapTooltip, () => {
+                          setShowRenameMenu(false);
+                          onRenameAndMap?.();
+                        })}
+                        aria-disabled={disableRenameAndMap}
+                      >
+                        {renameAndMapLabel}
+                      </button>
+                    ) : null}
+                    {hasGroupContext && onRenameAndMapGroup ? (
+                      <button
+                        type="button"
+                        className="data-source__item"
+                        role="menuitem"
+                        onClick={() => guardClick(disableRenameAndMapGroup, busyReason || renameAndMapGroupTooltip, () => {
+                          setShowRenameMenu(false);
+                          onRenameAndMapGroup?.();
+                        })}
+                        aria-disabled={disableRenameAndMapGroup}
+                      >
+                        {renameAndMapGroupLabel}
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+              {onOpenImageFill ? (
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  data-demo-target="openai-remap"
-                  aria-disabled={disableMapSchema}
-                  onClick={() => guardClick(disableMapSchema, busyReason || mapSchemaTooltip, () => onMapSchema?.())}
-                  title={mapSchemaTooltip}
+                  onClick={() => onOpenImageFill()}
                 >
-                  {mapSchemaLabel}
+                  Fill From Images + Documents
                 </button>
-              ) : null}
-              {!hasGroupContext && onRenameAndMap ? (
-                <button
-                  className="ui-button ui-button--ghost ui-button--compact"
-                  type="button"
-                  onClick={() => guardClick(disableRenameAndMap, busyReason || renameAndMapTooltip, () => onRenameAndMap?.())}
-                  aria-disabled={disableRenameAndMap}
-                  title={renameAndMapTooltip}
-                >
-                  {renameAndMapLabel}
-                </button>
-              ) : null}
-              {hasGroupContext && onRenameAndMapGroup ? (
-                <button
-                  className="ui-button ui-button--ghost ui-button--compact"
-                  type="button"
-                  onClick={() => guardClick(disableRenameAndMapGroup, busyReason || renameAndMapGroupTooltip, () => onRenameAndMapGroup?.())}
-                  aria-disabled={disableRenameAndMapGroup}
-                  title={renameAndMapGroupTooltip}
-                >
-                  {renameAndMapGroupLabel}
-                </button>
-              ) : null}
-              {onOpenSearchFill ? (
-                <div className="ui-header__search-fill">
-                  <button
-                    className="ui-button ui-button--ghost ui-button--compact"
-                    type="button"
-                    data-demo-target="search-fill"
-                    onClick={() => guardClick(disableSearch, busyReason || 'Search requires a connected data source.', () => onOpenSearchFill?.())}
-                    aria-disabled={disableSearch}
-                  >
-                    Search, Fill &amp; Clear
-                  </button>
-                  {showSearchHint ? (
-                    <Alert tone="info" variant="banner" message="Requires CSV/Excel/JSON/respondent rows" />
-                  ) : null}
-                </div>
               ) : null}
               {showDemoFillLinkDocs ? (
                 <a
@@ -790,6 +860,7 @@ export function HeaderBar({
                     onClick={() => guardClick(disableDownload, busyReason || 'Download is unavailable right now.', () => {
                       setShowDataMenu(false);
                       setShowGroupMenu(false);
+                      setShowRenameMenu(false);
                       setShowDownloadMenu((previous) => !previous);
                     })}
                     aria-disabled={disableDownload}

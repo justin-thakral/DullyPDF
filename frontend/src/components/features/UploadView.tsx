@@ -164,7 +164,7 @@ export default function UploadView({
             <label className="pipeline-modal__choice">
               <input type="checkbox" id="pipeline-map" name="pipeline-map" checked={uploadWantsMap}
                 onChange={(event) => { onSetPipelineError(null); onSetUploadWantsMap(event.target.checked); }} />
-              Map to schema (CSV/Excel/JSON/TXT)
+              Map to schema (CSV/Excel/JSON/TXT/SQL)
             </label>
             {uploadWantsRename || uploadWantsMap ? (
               <p className="pipeline-modal__hint">
@@ -177,8 +177,9 @@ export default function UploadView({
               <div className="pipeline-modal__schema-block">
                 <div className="pipeline-modal__source-row">
                   <button type="button" className="ui-button ui-button--ghost ui-button--compact" onClick={() => onChooseDataSource('csv')}>CSV</button>
-                  <button type="button" className="ui-button ui-button--ghost ui-button--compact" onClick={() => onChooseDataSource('excel')}>Excel</button>
+                  <button type="button" className="ui-button ui-button--ghost ui-button--compact" onClick={() => onChooseDataSource('sql')}>SQL</button>
                   <button type="button" className="ui-button ui-button--ghost ui-button--compact" onClick={() => onChooseDataSource('json')}>JSON</button>
+                  <button type="button" className="ui-button ui-button--ghost ui-button--compact" onClick={() => onChooseDataSource('excel')}>XLS</button>
                   <button type="button" className="ui-button ui-button--ghost ui-button--compact" onClick={() => onChooseDataSource('txt')}>TXT</button>
                 </div>
                 <span className="pipeline-modal__status pipeline-modal__status--center">

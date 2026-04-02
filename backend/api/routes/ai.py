@@ -11,14 +11,16 @@ import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Header, HTTPException, Request
+from fastapi import APIRouter, File, Form, Header, HTTPException, Request, UploadFile
 
 from backend.ai.credit_pricing import (
     OPENAI_CREDIT_OPERATION_REMAP,
     OPENAI_CREDIT_OPERATION_RENAME,
     OPENAI_CREDIT_OPERATION_RENAME_REMAP,
     compute_credit_pricing,
+    compute_image_fill_credits,
 )
+from backend.ai.image_fill_pipeline import run_image_fill
 from backend.ai.rename_pipeline import run_openai_rename_on_pdf
 from backend.ai.openai_usage import build_openai_usage_summary
 from backend.ai.schema_mapping import (
@@ -1223,3 +1225,128 @@ async def get_schema_mapping_job_status(
     if str(job.get("user_id") or "") != user.app_user_id:
         raise HTTPException(status_code=403, detail="Schema mapping job access denied")
     return _build_openai_job_response(job_id=job_id, job=job)
+
+
+@router.post("/api/ai/extract-from-documents")
+async def extract_from_documents(
+    request: Request,
+    files: List[UploadFile] = File(...),
+    session_id: str = Form(...),
+    fields_json: str = Form(...),
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    """Extract field values from uploaded images/documents using OpenAI vision."""
+    user = _resolve_user_from_request(request, authorization)
+
+    # Fetch session to get template PDF bytes
+    entry = _get_session_entry(
+        session_id,
+        user,
+        include_result=True,
+        include_renames=False,
+        include_checkbox_rules=False,
+        force_l2=True,
+    )
+    pdf_bytes = entry.get("pdf_bytes")
+    if not pdf_bytes:
+        raise HTTPException(status_code=404, detail="Session PDF not found")
+
+    _ensure_session_ai_accessible(
+        user_id=user.app_user_id,
+        session_id=session_id,
+        session_entry=entry,
+    )
+
+    # Parse fields from JSON
+    try:
+        fields = json.loads(fields_json)
+    except (json.JSONDecodeError, TypeError) as exc:
+        raise HTTPException(status_code=400, detail="Invalid fields JSON") from exc
+    if not isinstance(fields, list) or not fields:
+        raise HTTPException(status_code=400, detail="No fields provided")
+
+    # Rate limit
+    window_seconds = _safe_positive_int_env("OPENAI_IMAGE_FILL_RATE_LIMIT_WINDOW_SECONDS", 60)
+    user_rate = _safe_positive_int_env("OPENAI_IMAGE_FILL_RATE_LIMIT_PER_USER", 6)
+    if not check_rate_limit(
+        f"image_fill:user:{user.app_user_id}",
+        limit=user_rate,
+        window_seconds=window_seconds,
+        fail_closed=True,
+    ):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded for user")
+
+    # Read and validate uploaded files first (needed to compute credits)
+    max_files = 10
+    if len(files) > max_files:
+        raise HTTPException(status_code=400, detail=f"Maximum {max_files} files allowed")
+
+    max_file_size = 20 * 1024 * 1024  # 20 MB per file
+    uploaded_files: List[Dict[str, Any]] = []
+    image_count = 0
+    doc_page_counts: List[int] = []
+    for f in files:
+        file_bytes = await f.read()
+        if len(file_bytes) > max_file_size:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File {f.filename} exceeds maximum size of 20 MB",
+            )
+        filename = f.filename or "file"
+        uploaded_files.append({"filename": filename, "bytes": file_bytes})
+
+        if filename.lower().endswith(".pdf"):
+            page_count = get_pdf_page_count(file_bytes)
+            doc_page_counts.append(page_count if page_count and page_count > 0 else 1)
+        else:
+            image_count += 1
+
+    # Compute credits based on uploaded file types
+    credit_pricing = compute_image_fill_credits(
+        image_count=image_count,
+        doc_page_counts=doc_page_counts,
+    )
+    credits_required = credit_pricing.total_credits
+    if credits_required < 1:
+        credits_required = 1
+    credits_charged = normalize_role(user.role) != ROLE_GOD
+
+    remaining, allowed, credit_breakdown = _coerce_consume_result(
+        consume_openai_credits(
+            user.app_user_id,
+            credits=credits_required,
+            role=user.role,
+            include_breakdown=True,
+        )
+    )
+    if not allowed:
+        raise HTTPException(
+            status_code=402,
+            detail=f"OpenAI credits exhausted (remaining={remaining}, required={credits_required})",
+        )
+
+    # Run the pipeline
+    try:
+        result = run_image_fill(
+            uploaded_files=uploaded_files,
+            template_pdf_bytes=pdf_bytes,
+            fields=fields,
+        )
+    except Exception as exc:
+        _refund_credits_if_charged(
+            user_id=user.app_user_id,
+            role=user.role,
+            credits=credits_required,
+            charged=credits_charged,
+            source="image_fill.pipeline",
+            credit_breakdown=credit_breakdown,
+        )
+        logger.exception("Image fill pipeline failed")
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    return {
+        "success": True,
+        "fields": result.get("fields", []),
+        "usage": result.get("usage", {}),
+        "creditPricing": credit_pricing.to_dict(),
+    }

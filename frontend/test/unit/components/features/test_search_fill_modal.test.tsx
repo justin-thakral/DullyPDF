@@ -769,4 +769,86 @@ describe('SearchFillModal', () => {
     expect(byId.get('notes')?.value).toBeNull();
     expect(byId.get('valid-field')?.value).toBe('Valid Name');
   });
+
+  it('searches and fills from SQL data source kind', async () => {
+    const user = userEvent.setup();
+    const onFieldsChange = vi.fn();
+    const onAfterFill = vi.fn();
+    const onClose = vi.fn();
+    const fields = [
+      makeField({ id: 'name', name: 'patient_name', type: 'text', page: 1 }),
+      makeField({ id: 'city', name: 'patient_city', type: 'text', page: 1 }),
+      makeField({ id: 'med', name: 'medication_1', type: 'text', page: 2 }),
+    ];
+    const props = buildProps({
+      dataSourceKind: 'sql',
+      dataSourceLabel: 'SQL: new_patient_forms_mock.sql',
+      columns: ['patient_name', 'patient_city', 'medication_1'],
+      identifierKey: 'patient_name',
+      rows: [
+        { patient_name: 'Justin Thakral', patient_city: 'San Francisco', medication_1: 'Lisinopril 10mg' },
+      ],
+      fields,
+      onFieldsChange,
+      onAfterFill,
+      onClose,
+    });
+    render(<SearchFillModal {...props} />);
+
+    await runSearch('Justin');
+    expect(screen.getByText('Justin Thakral')).toBeTruthy();
+
+    await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+    await waitFor(() => {
+      expect(onFieldsChange).toHaveBeenCalledTimes(1);
+      expect(onAfterFill).toHaveBeenCalledWith({
+        row: { patient_name: 'Justin Thakral', patient_city: 'San Francisco', medication_1: 'Lisinopril 10mg' },
+        dataSourceKind: 'sql',
+      });
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    const filledFields = onFieldsChange.mock.calls[0][0] as PdfField[];
+    const byId = new Map(filledFields.map((f) => [f.id, f]));
+    expect(byId.get('name')?.value).toBe('Justin Thakral');
+    expect(byId.get('city')?.value).toBe('San Francisco');
+    expect(byId.get('med')?.value).toBe('Lisinopril 10mg');
+  });
+
+  it('shows schema-only message for TXT source with no rows', () => {
+    render(
+      <SearchFillModal
+        {...buildProps({
+          dataSourceKind: 'txt',
+          dataSourceLabel: 'TXT: schema.txt',
+          columns: ['patient_name', 'patient_city'],
+          identifierKey: 'patient_name',
+          rows: [],
+        })}
+      />,
+    );
+
+    expect(
+      screen.getByText('The connected source is schema-only (no row data). Upload a CSV, Excel, or JSON file with rows to search and fill.'),
+    ).toBeTruthy();
+  });
+
+  it('shows schema-only message for SQL source with no INSERT rows', () => {
+    render(
+      <SearchFillModal
+        {...buildProps({
+          dataSourceKind: 'sql',
+          dataSourceLabel: 'SQL: schema_only.sql',
+          columns: ['patient_name'],
+          identifierKey: 'patient_name',
+          rows: [],
+        })}
+      />,
+    );
+
+    expect(
+      screen.getByText('The connected source is schema-only (no row data). Upload a CSV, Excel, or JSON file with rows to search and fill.'),
+    ).toBeTruthy();
+  });
 });

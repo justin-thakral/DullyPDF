@@ -56,6 +56,7 @@ type FieldListPanelProps = {
   onResetConfidenceFilters: () => void;
   onSelectField: (fieldId: string) => void;
   onPageChange: (page: number) => void;
+  onBlockedAction?: (message: string) => void;
 };
 
 /**
@@ -232,7 +233,12 @@ export function FieldListPanel({
   onResetConfidenceFilters,
   onSelectField,
   onPageChange,
+  onBlockedAction,
 }: FieldListPanelProps) {
+  const guardClick = (blocked: boolean, reason: string, action: () => void) => {
+    if (blocked) { onBlockedAction?.(reason); return; }
+    action();
+  };
   const [query, setQuery] = useState('');
   const [filterType, setFilterType] = useState<FieldType | 'all'>('all');
   const [sortMode, setSortMode] = useState<SortMode>('page');
@@ -354,8 +360,8 @@ export function FieldListPanel({
             <button
               className="page-bar__button"
               type="button"
-              onClick={handlePrev}
-              disabled={isNavDisabled || !canGoBack}
+              onClick={() => guardClick(isNavDisabled || !canGoBack, isNavDisabled ? 'Page navigation is unavailable right now.' : 'Already on the first page.', handlePrev)}
+              aria-disabled={isNavDisabled || !canGoBack}
               aria-label="Previous page"
             >
               {'<'}
@@ -378,8 +384,8 @@ export function FieldListPanel({
             <button
               className="page-bar__button"
               type="button"
-              onClick={handleNext}
-              disabled={isNavDisabled || !canGoForward}
+              onClick={() => guardClick(isNavDisabled || !canGoForward, isNavDisabled ? 'Page navigation is unavailable right now.' : 'Already on the last page.', handleNext)}
+              aria-disabled={isNavDisabled || !canGoForward}
               aria-label="Next page"
             >
               {'>'}
@@ -480,8 +486,8 @@ export function FieldListPanel({
             <button
               className="panel-pill-toggle panel-pill-toggle--action"
               type="button"
-              onClick={onClearInputs}
-              disabled={!canClearInputs}
+              onClick={() => guardClick(!canClearInputs, 'No field values to clear.', onClearInputs)}
+              aria-disabled={!canClearInputs}
               title="Clear all field inputs"
             >
               Clear

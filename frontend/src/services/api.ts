@@ -1843,4 +1843,39 @@ export class ApiService {
 
     return response.blob();
   }
+
+  /**
+   * Extract field values from uploaded images/documents using OpenAI vision.
+   */
+  static async extractFromDocuments(payload: {
+    sessionId: string;
+    files: File[];
+    fields: Array<{
+      name: string;
+      type?: string;
+      page?: number;
+      rect?: number[];
+      groupKey?: string;
+      optionKey?: string;
+    }>;
+  }, options?: AbortableRequestOptions): Promise<{
+    success: boolean;
+    fields: Array<{ fieldName: string; value: string; confidence: number }>;
+    usage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number };
+    creditPricing?: any;
+  }> {
+    const formData = new FormData();
+    formData.append('session_id', payload.sessionId);
+    formData.append('fields_json', JSON.stringify(payload.fields));
+    for (const file of payload.files) {
+      formData.append('files', file);
+    }
+
+    const response = await apiFetch('POST', buildApiUrl('api', 'ai', 'extract-from-documents'), {
+      body: formData,
+      ...buildAbortOptions(options?.signal),
+    });
+
+    return apiJsonFetch<any>(response);
+  }
 }

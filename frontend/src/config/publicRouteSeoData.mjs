@@ -150,7 +150,7 @@ const INTENT_PAGES = [
       'pdf schema mapping workflow',
     ],
     valuePoints: [
-      'Map detected fields to CSV/XLSX/JSON schema headers.',
+      'Map detected fields to CSV/SQL/XLSX/JSON schema headers.',
       'Use OpenAI rename + mapping for faster standardization.',
       'Keep checkbox groups and option keys aligned to data columns.',
     ],
@@ -226,16 +226,17 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/fill-pdf-from-csv',
     navLabel: 'Fill PDF From CSV',
-    heroTitle: 'Fill PDF From CSV, Excel, or JSON Data',
+    heroTitle: 'Fill PDF From CSV, SQL, Excel, or JSON Data',
     heroSummary:
       'Search your records, pick a row, and fill mapped PDF templates in seconds for repeat data-entry workflows.',
-    seoTitle: 'Fill PDF Forms From CSV, Excel, or JSON — Map Fields in Minutes',
+    seoTitle: 'Fill PDF Forms From CSV, SQL, Excel, or JSON — Map Fields in Minutes',
     seoDescription:
       'Upload a PDF and a spreadsheet, map columns to form fields, and batch-fill hundreds of PDFs in one click. Works with CSV, Excel, JSON, and SQL. Free tier available.',
     seoKeywords: [
       'fill pdf from csv',
       'free pdf fill from csv',
       'automatic pdf fill from csv',
+      'fill pdf from sql',
       'fill pdf from excel',
       'fill pdf from json',
     ],
@@ -299,9 +300,9 @@ const INTENT_PAGES = [
           'Yes. After mapping, select a row in Search & Fill and DullyPDF writes matching values into PDF fields.',
       },
       {
-        question: 'Does DullyPDF support Excel files too?',
+        question: 'Does DullyPDF support Excel and SQL files too?',
         answer:
-          'Yes. XLSX is supported alongside CSV and JSON for row-based Search & Fill workflows.',
+          'Yes. XLSX is supported alongside CSV and JSON for row-based Search & Fill workflows. SQL files (CREATE TABLE definitions) are supported for schema-only mapping without row data.',
       },
       {
         question: 'What if some fields do not fill correctly?',
@@ -989,8 +990,8 @@ const INTENT_PAGES = [
           'Yes. DullyPDF Fill By Link lets the template owner collect respondent answers first, then select that respondent inside the workspace when generating the PDF.',
       },
     ],
-    relatedIntentPages: ['fill-pdf-from-csv', 'fill-pdf-by-link', 'pdf-to-database-template'],
-    relatedDocs: ['search-fill', 'fill-by-link', 'rename-mapping'],
+    relatedIntentPages: ['fill-pdf-from-csv', 'fill-pdf-by-link', 'pdf-to-database-template', 'invoice-pdf-processing'],
+    relatedDocs: ['search-fill', 'fill-from-images', 'fill-by-link', 'rename-mapping'],
   },
   {
     key: 'fillable-form-field-name',
@@ -1149,6 +1150,7 @@ const INTENT_PAGES = [
           'Yes. Teams can publish a DullyPDF Fill By Link, collect patient responses through a mobile-friendly form, and then generate the final PDF from the response list later.',
       },
     ],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'acord-form-automation',
@@ -1263,7 +1265,7 @@ const INTENT_PAGES = [
       },
     ],
     relatedIntentPages: ['insurance-pdf-automation', 'fill-pdf-from-csv', 'pdf-to-database-template'],
-    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill'],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-from-images'],
   },
   {
     key: 'insurance-pdf-automation',
@@ -1364,8 +1366,8 @@ const INTENT_PAGES = [
           'Yes. Reusable mapped templates reduce manual retyping and help teams produce certificates faster with fewer entry errors.',
       },
     ],
-    relatedIntentPages: ['acord-form-automation', 'pdf-to-database-template', 'fill-pdf-from-csv'],
-    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill'],
+    relatedIntentPages: ['acord-form-automation', 'pdf-to-database-template', 'fill-pdf-from-csv', 'invoice-pdf-processing'],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-from-images'],
   },
   {
     key: 'real-estate-pdf-automation',
@@ -1435,6 +1437,7 @@ const INTENT_PAGES = [
           'Yes. Saved templates can be reloaded and reused for recurring packet types.',
       },
     ],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'government-form-automation',
@@ -1504,6 +1507,7 @@ const INTENT_PAGES = [
           'Yes. Saved template workflows support a canonical setup per recurring government form.',
       },
     ],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'finance-loan-pdf-automation',
@@ -1573,6 +1577,8 @@ const INTENT_PAGES = [
           'Yes. Mapped template workflows can support recurring compliance document preparation.',
       },
     ],
+    relatedIntentPages: ['invoice-pdf-processing'],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'hr-pdf-automation',
@@ -1678,7 +1684,7 @@ const INTENT_PAGES = [
       },
     ],
     relatedIntentPages: ['pdf-to-database-template', 'fill-pdf-from-csv', 'fill-pdf-by-link'],
-    relatedDocs: ['getting-started', 'search-fill', 'create-group'],
+    relatedDocs: ['getting-started', 'search-fill', 'create-group', 'fill-from-images'],
   },
   {
     key: 'legal-pdf-workflow-automation',
@@ -1748,6 +1754,7 @@ const INTENT_PAGES = [
           'Yes. Rename plus mapping workflows are designed to normalize inconsistent field labels.',
       },
     ],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'education-form-automation',
@@ -1817,6 +1824,7 @@ const INTENT_PAGES = [
           'Yes. Saved templates can be reused and adjusted as forms evolve.',
       },
     ],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'nonprofit-pdf-form-automation',
@@ -1886,6 +1894,7 @@ const INTENT_PAGES = [
           'Yes. Template reuse reduces repetitive manual entry and improves consistency.',
       },
     ],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'logistics-pdf-automation',
@@ -1955,6 +1964,8 @@ const INTENT_PAGES = [
           'Yes. Saved template workflows support canonical forms for recurring logistics tasks.',
       },
     ],
+    relatedIntentPages: ['invoice-pdf-processing'],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'batch-fill-pdf-forms',
@@ -2309,6 +2320,8 @@ const INTENT_PAGES = [
           'Yes. Saved templates can be reused for recurring form types across projects.',
       },
     ],
+    relatedIntentPages: ['invoice-pdf-processing'],
+    relatedDocs: ['getting-started', 'fill-from-images'],
   },
   {
     key: 'accounting-tax-pdf-automation',
@@ -2378,6 +2391,99 @@ const INTENT_PAGES = [
           'Yes. Saved templates support repeat filling from client data exports for high-volume processing.',
       },
     ],
+    relatedIntentPages: ['invoice-pdf-processing'],
+    relatedDocs: ['getting-started', 'fill-from-images'],
+  },
+  {
+    key: 'invoice-pdf-processing',
+    category: 'industry',
+    path: '/invoice-pdf-processing',
+    navLabel: 'Invoice PDF Processing',
+    heroTitle: 'Extract Invoice Data Into PDF Forms Automatically',
+    heroSummary:
+      'Upload invoice images or scanned PDFs and let DullyPDF extract vendor names, amounts, dates, and line items into your form fields using AI vision.',
+    seoTitle: 'Invoice PDF Processing — Extract Data from Invoices to Fill Forms',
+    seoDescription:
+      'Automate invoice data entry into PDF forms. Upload photos or scans of invoices and extract vendor, amount, date, and line-item data into mapped template fields with AI vision.',
+    seoKeywords: [
+      'invoice pdf processing',
+      'extract data from invoice',
+      'invoice to pdf form',
+      'automated invoice data entry',
+      'invoice ocr pdf fill',
+      'scan invoice fill form',
+      'invoice data extraction tool',
+      'invoice automation pdf',
+    ],
+    valuePoints: [
+      'Upload photos or scans of invoices and extract vendor, date, and amount data automatically.',
+      'Map extracted values to your PDF form fields with confidence-scored review before applying.',
+      'Eliminate manual data entry for recurring invoice-to-form workflows across AP, accounting, and procurement.',
+    ],
+    proofPoints: [
+      'AI vision reads invoices semantically — it matches by meaning, not exact position.',
+      'Each extraction shows per-field confidence scores so operators can verify before committing.',
+      'Credits are transparent: 1 credit per image, 1 credit per 5 pages for PDF documents.',
+    ],
+    articleSections: [
+      {
+        title: 'Why invoice data entry into PDF forms is still painful',
+        paragraphs: [
+          'Most businesses receive invoices as images, email attachments, or scanned PDFs. When that data needs to land in a structured PDF form — whether for purchase orders, expense reports, payment authorization, or tax documentation — someone has to read the invoice and type the values manually.',
+          'That manual step is where errors happen, time is lost, and scaling becomes impossible. DullyPDF Fill from Images and Documents removes that bottleneck by letting the AI read the invoice and suggest the matching values for each form field.',
+        ],
+      },
+      {
+        title: 'How Fill from Images and Documents works for invoices',
+        paragraphs: [
+          'Set up your PDF form template in DullyPDF with named fields (vendor name, invoice number, date, total amount, line items). Upload one or more invoice images or scanned PDFs. The AI vision model reads each invoice, matches extracted data to your form fields using both field names and nearby label context, and returns values with confidence scores.',
+          'You review the results, edit any values that need correction, reject fields you want to fill manually, and apply the rest. The entire process takes seconds instead of minutes per invoice.',
+        ],
+      },
+      {
+        title: 'Common invoice processing scenarios',
+        paragraphs: [
+          'Accounts payable teams processing vendor invoices into payment authorization forms. Construction companies extracting subcontractor invoice data into project cost tracking PDFs. Healthcare organizations filling insurance claim forms from provider invoices. Accounting firms pulling client invoice data into tax preparation worksheets.',
+          'In each case, the source is an unstructured invoice and the destination is a structured PDF form. Fill from Images and Documents bridges that gap without requiring custom OCR pipelines or enterprise software.',
+        ],
+      },
+      {
+        title: 'Credit cost for invoice processing',
+        paragraphs: [
+          'Each uploaded invoice image costs 1 credit. Scanned PDF invoices cost 1 credit per 5 pages (rounded up per document). The dialog shows the exact cost before extraction runs. Credits come from the same OpenAI pool used by Rename and Map operations.',
+          'For high-volume invoice processing, Premium plan users get 500 monthly credits with optional 500-credit refill packs. Most single-page invoice extractions cost just 1 credit.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I extract data from a photo of an invoice?',
+        answer:
+          'Yes. Upload a photo (JPG, PNG) of the invoice and Fill from Images and Documents will extract matching values into your template fields.',
+      },
+      {
+        question: 'Does this work with multi-page scanned invoices?',
+        answer:
+          'Yes. Upload the invoice as a PDF and each page is rendered and analyzed. Costs 1 credit per 5 pages.',
+      },
+      {
+        question: 'How accurate is the extraction?',
+        answer:
+          'Each extracted value shows a confidence score. Clear, well-lit documents typically achieve 80-95% confidence. You can edit or reject any value before applying.',
+      },
+      {
+        question: 'What invoice fields can be extracted?',
+        answer:
+          'Any field on your template: vendor name, invoice number, date, amounts, line items, tax ID, addresses, and more. The AI matches by semantic meaning, not fixed positions.',
+      },
+      {
+        question: 'How many credits does invoice processing cost?',
+        answer:
+          'Each image costs 1 credit. Each PDF document costs 1 credit per 5 pages. The dialog shows the cost before you click Send.',
+      },
+    ],
+    relatedIntentPages: ['accounting-tax-pdf-automation', 'fill-information-in-pdf', 'finance-loan-pdf-automation'],
+    relatedDocs: ['fill-from-images', 'search-fill', 'rename-mapping'],
   },
 ];
 
@@ -2444,7 +2550,17 @@ const USAGE_DOCS_PAGES = [
     title: 'Search & Fill',
     summary: 'Connect local data sources or Fill By Link respondent records, search a record, and populate mapped fields with predictable behavior.',
     relatedWorkflowKeys: ['fill-pdf-from-csv', 'batch-fill-pdf-forms'],
-    sectionTitles: ['Data source support', 'Fill flow', 'Guardrails', 'Search & Fill versus Fill By Link versus API Fill', 'Field resolution heuristics (non-checkbox)', 'Checkbox groups and aliases', 'Why partial fills happen'],
+    sectionTitles: ['Toolbar buttons overview', 'Data source support', 'CSV file format', 'JSON file format', 'SQL file format', 'TXT schema file format', 'Excel file format', 'Fill flow', 'Guardrails', 'Search & Fill versus Fill By Link versus API Fill', 'Field resolution heuristics (non-checkbox)', 'Checkbox groups and aliases', 'Why partial fills happen'],
+  },
+  {
+    key: 'fill-from-images',
+    slug: 'fill-from-images',
+    path: '/usage-docs/fill-from-images',
+    navLabel: 'Fill from Images and Documents',
+    title: 'Fill from Images and Documents and Documents',
+    summary: 'Upload photos of IDs, invoices, pay stubs, or scanned documents and let OpenAI vision extract matching values into your template fields automatically.',
+    relatedWorkflowKeys: ['fill-information-in-pdf', 'pdf-to-fillable-form'],
+    sectionTitles: ['What Fill from Images and Documents does', 'Pipeline details', 'What gets sent to OpenAI', 'Credit cost', 'Best practices', 'Supported file types'],
   },
   {
     key: 'fill-by-link',
@@ -2543,7 +2659,7 @@ const FEATURE_PLAN_PAGES = [
       { title: 'How to validate the free tier properly', items: ['Build one recurring template and test it with a real document before judging the product.', 'Use the free tier to verify detection quality, editor cleanup, schema mapping readiness, and one complete fill loop.', 'Treat free as a workflow-validation tier, not as the final benchmark for high-volume operations.'] },
       { title: 'When free is enough and when it is not', items: ['Free is enough when you are proving one workflow, training on a representative document, or running light respondent/API traffic.', 'Free becomes limiting when several templates need to stay saved, monthly response/API volume rises, or teams need a recurring credit budget.', 'The right upgrade moment is when the workflow is already validated and usage, not uncertainty, becomes the bottleneck.'] },
       { title: 'Free tier rollout path', items: ['Start with one canonical document instead of uploading every packet variation on day one.', 'Run detection, cleanup, rename or map if needed, then verify one representative fill before you judge the result.', 'Only after the template passes that QA loop should you publish a link, group related forms, or invite teammates into the workflow.'] },
-      { title: 'What stays free versus what consumes credits', items: ['Detection, editor cleanup, saving, Fill By Link publishing, API Fill publishing, and the general template-building workflow stay available on free within the account caps above.', 'Rename, map, and Rename + Map consume OpenAI credits according to the page-bucket formula shown in Profile.', 'Saved-form count, live Fill By Link/API Fill capacity, signer volume, and credit pool size are the main reasons the free tier eventually stops being enough for production traffic.'] },
+      { title: 'What stays free versus what consumes credits', items: ['Detection, editor cleanup, saving, Fill By Link publishing, API Fill publishing, and the general template-building workflow stay available on free within the account caps above.', 'Rename, Map, and Rename + Map consume OpenAI credits according to the page-bucket formula shown in Profile.', 'Fill from Images and Documents consumes credits per uploaded file: 1 credit per image, 1 credit per 5 pages for PDF documents.', 'Saved-form count, live Fill By Link/API Fill capacity, signer volume, and credit pool size are the main reasons the free tier eventually stops being enough for production traffic.'] },
       { title: 'Upgrade triggers worth watching', items: ['You need more than one live respondent workflow or more than one live API Fill endpoint at a time.', 'Response or API volume is high enough that the free caps block normal operations.', 'Several templates are already validated and the team now needs more saved-template capacity, recurring credits, or higher signing/publishing throughput rather than more experimentation.'] },
     ],
     faqs: [
@@ -2589,7 +2705,7 @@ const FEATURE_PLAN_PAGES = [
           `Credits: ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} recurring monthly credits, with ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs available from Profile.`,
         ],
       },
-      { title: 'OpenAI and billing', items: ['Pro billing actions run through Stripe Checkout with monthly and yearly subscriptions.', `Premium profiles receive a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs remain available from Profile.`, 'Cancellation is managed from the signed-in profile billing section and is scheduled for period end.'] },
+      { title: 'OpenAI and billing', items: ['Pro billing actions run through Stripe Checkout with monthly and yearly subscriptions.', `Premium profiles receive a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs remain available from Profile.`, 'Credits are shared across Rename, Map, Rename + Map, and Fill from Images and Documents operations.', 'Fill from Images and Documents costs 1 credit per uploaded image and 1 credit per 5 pages for uploaded PDF documents.', 'Cancellation is managed from the signed-in profile billing section and is scheduled for period end.'] },
       { title: 'Best fit for', items: ['Teams operating repeat intake or packet workflows across many saved templates.', 'Owners publishing multiple public respondent links at once.', 'Accounts that need higher sustained usage instead of one-off free-tier validation.'] },
       { title: 'Operational gains premium is meant to unlock', items: ['Premium is about removing usage friction after the workflow already works, not about replacing setup discipline.', 'The biggest gains usually come from running more saved templates, more live links and endpoints, larger respondent/API volume, recurring credits, and fewer publish-capacity constraints.', 'It is best for teams that already know which templates matter and need higher throughput rather than more experimentation.'] },
       { title: 'How to decide between monthly and yearly billing', items: ['Choose monthly when the workflow is recent, seasonal, or still being proven across the team.', 'Choose yearly when the template library is already part of ongoing operations and usage is expected to remain steady.', 'Billing decisions should follow proven recurring usage, not just interest in the feature list.'] },
@@ -2687,7 +2803,7 @@ const HOME_ROUTE_SEO = {
       url: 'https://dullypdf.com/',
       description: 'DullyPDF turns existing PDFs into fillable forms with AI field detection. It maps fields to database headers, fills row data automatically, publishes template-scoped JSON-to-PDF endpoints, and lets teams send web forms to collect answers or route immutable PDFs into email-based signature workflows.',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      featureList: ['Free PDF form builder for existing PDFs', 'Automatic AI field detection', 'Fillable form template editing', 'Radio group editing and deterministic radio fill behavior', 'Template-scoped JSON-to-PDF API Fill endpoints', 'Email-based PDF signature requests with immutable record freeze', 'Web-form-to-sign handoff for collected respondent data', 'Schema mapping for CSV/XLSX/JSON', 'Search and fill workflows'],
+      featureList: ['Free PDF form builder for existing PDFs', 'Automatic AI field detection', 'Fillable form template editing', 'Radio group editing and deterministic radio fill behavior', 'Template-scoped JSON-to-PDF API Fill endpoints', 'Email-based PDF signature requests with immutable record freeze', 'Web-form-to-sign handoff for collected respondent data', 'Schema mapping for CSV/SQL/XLSX/JSON', 'Search and fill workflows'],
     },
     {
       '@context': 'https://schema.org',
@@ -2712,7 +2828,7 @@ const HOME_ROUTE_SEO = {
       { title: 'Upload the Existing PDF', description: 'Start from the real document your team already uses instead of rebuilding the form from scratch.' },
       { title: 'Review AI Field Detection', description: 'The detection pipeline identifies likely inputs with confidence cues so cleanup starts from a draft rather than a blank canvas.' },
       { title: 'Clean Geometry and Field Types', description: 'Resize, rename, reposition, and normalize text, checkbox, radio, date, and signature fields before anyone relies on the template.' },
-      { title: 'Map to Structured Data', description: 'Align the field set to CSV, Excel, JSON, or application-style schema headers so the document can be filled predictably later.' },
+      { title: 'Map to Structured Data', description: 'Align the field set to CSV, SQL, Excel, JSON, or application-style schema headers so the document can be filled predictably later.' },
       { title: 'Fill From Rows or Respondents', description: 'Use Search & Fill for local records or Fill By Link when the record needs to be collected from a respondent first.' },
       { title: 'Publish or Route the Final Output', description: 'Once the template is stable, turn it into a repeat fill workflow, a hosted API endpoint, or a supported signature-ready record path.' },
       { title: 'Who DullyPDF Is For', description: 'Best fit: operations teams handling recurring packets, intake forms, certificates, permits, acknowledgments, and other PDFs that repeat under the same layout.' },
@@ -2780,7 +2896,7 @@ const USAGE_DOCS_FAQ_SCHEMAS = {
     '@type': 'FAQPage',
     mainEntity: [
       { '@type': 'Question', name: 'Can DullyPDF fill PDF fields from CSV rows?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. After mapping, Search and Fill lets you select a row and populate mapped PDF fields from CSV, XLSX, or JSON data.' } },
-      { '@type': 'Question', name: 'What data sources are supported for row-based fill?', acceptedAnswer: { '@type': 'Answer', text: 'CSV, XLSX, and JSON support row-based fill. TXT is schema-only and does not provide row data for filling.' } },
+      { '@type': 'Question', name: 'What data sources are supported for row-based fill?', acceptedAnswer: { '@type': 'Answer', text: 'CSV, XLSX, and JSON support row-based fill. SQL and TXT are schema-only and do not provide row data for filling.' } },
     ],
   }],
   'fill-by-link': [{
@@ -2887,6 +3003,16 @@ for (const page of USAGE_DOCS_PAGES) {
         page.summary,
         'This page is about operator-controlled output. It explains how to choose one record, inspect the filled PDF, and avoid turning row-based filling into a blind batch process.',
         'Search & Fill should stay distinct from respondent collection and API publication. The page is strongest when it explains the browser-based record-selection workflow clearly instead of trying to be a generic data-ingestion guide.',
+      ],
+    },
+    'fill-from-images': {
+      title: 'Fill PDF Forms from Photos, Invoices, and Scanned Documents | DullyPDF Docs',
+      description: 'Upload images of IDs, invoices, pay stubs, or scanned documents and extract matching information into PDF form fields using AI vision.',
+      keywords: ['fill pdf from image', 'extract data from photo to pdf', 'invoice to pdf form', 'ocr pdf form fill', 'auto fill pdf from document', 'extract invoice data pdf'],
+      bodyParagraphs: [
+        page.summary,
+        'Fill from Images and Documents bridges the gap between unstructured source documents and structured PDF templates. Instead of manually reading an ID or invoice and typing values into form fields, the AI vision model reads the document and suggests field values with confidence scores.',
+        'This feature is most valuable for industries that process high volumes of intake documents: healthcare patient registration from insurance cards, accounting from invoices, HR onboarding from government IDs, insurance from ACORD submissions, and logistics from shipping documents.',
       ],
     },
     'fill-by-link': {
@@ -3309,7 +3435,7 @@ const BLOG_POSTS = [
       {
         id: 'supported-formats',
         title: 'Supported data formats',
-        body: 'DullyPDF supports CSV, XLSX (Excel), and JSON for row-based filling. TXT files work for schema-only mapping without row data. CSV and Excel files can contain up to 5,000 rows. Duplicate column headers are automatically renamed to prevent conflicts.',
+        body: 'DullyPDF supports CSV, XLSX (Excel), and JSON for row-based filling. SQL and TXT files work for schema-only mapping without row data — SQL parses CREATE TABLE definitions to extract column names and types automatically. CSV and Excel files can contain up to 5,000 rows. Duplicate column headers are automatically renamed to prevent conflicts.',
       },
       {
         id: 'commercial-route-vs-guide',

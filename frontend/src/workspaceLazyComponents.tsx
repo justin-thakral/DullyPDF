@@ -24,6 +24,12 @@ export const LazyGroupUploadDialog = lazy(() =>
   })),
 );
 
+export const LazyImageFillDialog = lazy(() =>
+  import('./components/features/ImageFillDialog').then((module) => ({
+    default: module.ImageFillDialog,
+  })),
+);
+
 export const LazyDemoTour = lazy(() =>
   import('./components/demo/DemoTour').then((module) => ({
     default: module.DemoTour,

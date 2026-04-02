@@ -71,6 +71,7 @@ type FieldInspectorPanelProps = {
   canRedo: boolean;
   onBeginFieldChange: () => void;
   onCommitFieldChange: () => void;
+  onBlockedAction?: (message: string) => void;
 };
 
 /**
@@ -111,7 +112,12 @@ export function FieldInspectorPanel({
   canRedo,
   onBeginFieldChange,
   onCommitFieldChange,
+  onBlockedAction,
 }: FieldInspectorPanelProps) {
+  const guardClick = (blocked: boolean, reason: string, action: () => void) => {
+    if (blocked) { onBlockedAction?.(reason); return; }
+    action();
+  };
   const selected = selectedField ?? fields.find((field) => field.id === selectedFieldId) ?? null;
   const selectedMinSize = selected ? getMinFieldSize(selected.type) : getMinFieldSize('text');
   const selectedId = selected?.id ?? null;
@@ -575,16 +581,16 @@ export function FieldInspectorPanel({
                       <button
                         className="ui-button ui-button--ghost ui-button--compact"
                         type="button"
-                        onClick={() => onReorderRadioField(selected.id, 'up')}
-                        disabled={selectedRadioIndex <= 0}
+                        onClick={() => guardClick(selectedRadioIndex <= 0, 'This option is already at the top of the group.', () => onReorderRadioField(selected.id, 'up'))}
+                        aria-disabled={selectedRadioIndex <= 0}
                       >
                         Move up
                       </button>
                       <button
                         className="ui-button ui-button--ghost ui-button--compact"
                         type="button"
-                        onClick={() => onReorderRadioField(selected.id, 'down')}
-                        disabled={selectedRadioIndex < 0 || selectedRadioIndex >= selectedRadioGroup.options.length - 1}
+                        onClick={() => guardClick(selectedRadioIndex < 0 || selectedRadioIndex >= selectedRadioGroup.options.length - 1, 'This option is already at the bottom of the group.', () => onReorderRadioField(selected.id, 'down'))}
+                        aria-disabled={selectedRadioIndex < 0 || selectedRadioIndex >= selectedRadioGroup.options.length - 1}
                       >
                         Move down
                       </button>
@@ -760,16 +766,16 @@ export function FieldInspectorPanel({
                       <button
                         className="ui-button ui-button--ghost ui-button--compact"
                         type="button"
-                        onClick={onCancelPendingQuickRadioSelection}
-                        disabled={pendingQuickRadioFields.length === 0}
+                        onClick={() => guardClick(pendingQuickRadioFields.length === 0, 'No checkbox fields selected to clear.', onCancelPendingQuickRadioSelection)}
+                        aria-disabled={pendingQuickRadioFields.length === 0}
                       >
                         Clear selection
                       </button>
                       <button
                         className="ui-button ui-button--primary ui-button--compact"
                         type="button"
-                        onClick={onApplyPendingQuickRadioSelection}
-                        disabled={pendingQuickRadioFields.length === 0}
+                        onClick={() => guardClick(pendingQuickRadioFields.length === 0, 'Select checkbox fields on the page first before converting.', onApplyPendingQuickRadioSelection)}
+                        aria-disabled={pendingQuickRadioFields.length === 0}
                       >
                         Convert selection
                       </button>
@@ -823,16 +829,16 @@ export function FieldInspectorPanel({
               <button
                 className="ui-button ui-button--ghost ui-button--compact"
                 type="button"
-                onClick={onUndo}
-                disabled={!canUndo}
+                onClick={() => guardClick(!canUndo, 'Nothing to undo.', onUndo)}
+                aria-disabled={!canUndo}
               >
                 Undo
               </button>
               <button
                 className="ui-button ui-button--ghost ui-button--compact"
                 type="button"
-                onClick={onRedo}
-                disabled={!canRedo}
+                onClick={() => guardClick(!canRedo, 'Nothing to redo.', onRedo)}
+                aria-disabled={!canRedo}
               >
                 Redo
               </button>
@@ -844,8 +850,8 @@ export function FieldInspectorPanel({
             <button
               className="ui-button ui-button--danger ui-button--compact"
               type="button"
-              onClick={() => setDeleteAllDialogOpen(true)}
-              disabled={fields.length === 0}
+              onClick={() => guardClick(fields.length === 0, 'No fields to delete.', () => setDeleteAllDialogOpen(true))}
+              aria-disabled={fields.length === 0}
             >
               Delete all fields
             </button>

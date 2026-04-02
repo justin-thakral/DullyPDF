@@ -39,6 +39,7 @@ export type ApiFillManagerDialogProps = {
   onRotate: () => Promise<void>;
   onRevoke: () => Promise<void>;
   onRefresh: () => Promise<void>;
+  onBlockedAction?: (message: string) => void;
 };
 
 export function useWorkspaceTemplateApi(deps: UseWorkspaceTemplateApiDeps) {
@@ -173,6 +174,7 @@ export function useWorkspaceTemplateApi(deps: UseWorkspaceTemplateApiDeps) {
 
   const rotate = useCallback(async () => {
     if (!endpoint?.id) {
+      deps.setBannerNotice({ tone: 'error', message: 'No active API endpoint to rotate.' });
       return;
     }
     setRotating(true);
@@ -199,6 +201,7 @@ export function useWorkspaceTemplateApi(deps: UseWorkspaceTemplateApiDeps) {
 
   const revoke = useCallback(async () => {
     if (!endpoint?.id) {
+      deps.setBannerNotice({ tone: 'error', message: 'No active API endpoint to revoke.' });
       return;
     }
     setRevoking(true);
@@ -249,6 +252,7 @@ export function useWorkspaceTemplateApi(deps: UseWorkspaceTemplateApiDeps) {
       onRotate: rotate,
       onRevoke: revoke,
       onRefresh: refresh,
+      onBlockedAction: (message: string) => deps.setBannerNotice({ tone: 'error', message }),
     } satisfies ApiFillManagerDialogProps,
   };
 }

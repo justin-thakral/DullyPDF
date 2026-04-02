@@ -290,6 +290,121 @@ def test_build_template_api_schema_rejects_duplicate_normalized_direct_checkbox_
         )
 
 
+def test_build_template_api_schema_radio_group_supersedes_checkbox_group_with_same_key() -> None:
+    """When OpenAI converts a checkbox cluster to a radio group the snapshot
+    still contains the original checkbox fields alongside the new radioGroups
+    entry.  The radio group should win and the checkbox group should be
+    silently suppressed so that no key conflict is raised."""
+    schema = template_api_service.build_template_api_schema(
+        {
+            "version": 1,
+            "defaultExportMode": "flat",
+            "fields": [
+                {"name": "full_name", "type": "text", "page": 1, "rect": [1, 2, 3, 4]},
+                {
+                    "name": "i_marital_status_single",
+                    "type": "checkbox",
+                    "page": 1,
+                    "rect": [1, 2, 3, 4],
+                    "groupKey": "i_marital_status_single",
+                    "optionKey": "single",
+                    "optionLabel": "Single",
+                },
+                {
+                    "name": "i_marital_status_married",
+                    "type": "checkbox",
+                    "page": 1,
+                    "rect": [1, 2, 3, 4],
+                    "groupKey": "i_marital_status_single",
+                    "optionKey": "married",
+                    "optionLabel": "Married",
+                },
+            ],
+            "checkboxRules": [],
+            "radioGroups": [
+                {
+                    "groupKey": "i_marital_status_single",
+                    "options": [
+                        {"optionKey": "single", "optionLabel": "Single"},
+                        {"optionKey": "married", "optionLabel": "Married"},
+                    ],
+                }
+            ],
+        }
+    )
+
+    # Radio group should be present; no checkbox group for the same key.
+    assert schema["radioGroups"] == [
+        {
+            "groupKey": "i_marital_status_single",
+            "type": "radio",
+            "options": [
+                {"optionKey": "single", "optionLabel": "Single"},
+                {"optionKey": "married", "optionLabel": "Married"},
+            ],
+        }
+    ]
+    assert schema["checkboxGroups"] == []
+    assert schema["exampleData"]["i_marital_status_single"] == "single"
+
+
+def test_build_template_api_schema_radio_group_supersedes_explicit_checkbox_rule_with_same_key() -> None:
+    """Same scenario as above but the snapshot also contains an explicit
+    checkboxRule whose databaseField matches the radio group key."""
+    schema = template_api_service.build_template_api_schema(
+        {
+            "version": 1,
+            "defaultExportMode": "flat",
+            "fields": [
+                {"name": "full_name", "type": "text", "page": 1, "rect": [1, 2, 3, 4]},
+                {
+                    "name": "i_sex_m",
+                    "type": "checkbox",
+                    "page": 1,
+                    "rect": [1, 2, 3, 4],
+                    "groupKey": "i_sex_m",
+                    "optionKey": "m",
+                    "optionLabel": "Male",
+                },
+                {
+                    "name": "i_sex_f",
+                    "type": "checkbox",
+                    "page": 1,
+                    "rect": [1, 2, 3, 4],
+                    "groupKey": "i_sex_m",
+                    "optionKey": "f",
+                    "optionLabel": "Female",
+                },
+            ],
+            "checkboxRules": [
+                {"databaseField": "i_sex_m", "groupKey": "i_sex_m", "operation": "enum"},
+            ],
+            "radioGroups": [
+                {
+                    "groupKey": "i_sex_m",
+                    "options": [
+                        {"optionKey": "m", "optionLabel": "Male"},
+                        {"optionKey": "f", "optionLabel": "Female"},
+                    ],
+                }
+            ],
+        }
+    )
+
+    assert schema["radioGroups"] == [
+        {
+            "groupKey": "i_sex_m",
+            "type": "radio",
+            "options": [
+                {"optionKey": "m", "optionLabel": "Male"},
+                {"optionKey": "f", "optionLabel": "Female"},
+            ],
+        }
+    ]
+    assert schema["checkboxGroups"] == []
+    assert schema["exampleData"]["i_sex_m"] == "m"
+
+
 def test_build_template_api_schema_excludes_signature_widgets_from_public_contract() -> None:
     schema = template_api_service.build_template_api_schema(
         {

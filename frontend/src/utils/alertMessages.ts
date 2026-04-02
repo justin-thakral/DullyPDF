@@ -5,9 +5,9 @@ export const ALERT_MESSAGES = {
   uploadPdfForRename: 'Upload a PDF to create a session before renaming.',
   noPdfFieldsToRename: 'No PDF fields available to rename.',
   noPdfFieldsToMap: 'No PDF fields available to map.',
-  schemaRequiredForMapping: 'Import a CSV, Excel, JSON, or TXT file to create a schema first.',
-  chooseSchemaFileForMapping: 'Connect a CSV, Excel, JSON, or TXT file before running AI mapping.',
-  chooseSchemaFileForRenameAndMap: 'Connect a CSV, Excel, JSON, or TXT schema file before running mapping.',
+  schemaRequiredForMapping: 'Import a CSV, SQL, Excel, JSON, or TXT file to create a schema first.',
+  chooseSchemaFileForMapping: 'Connect a CSV, SQL, Excel, JSON, or TXT file before running AI mapping.',
+  chooseSchemaFileForRenameAndMap: 'Connect a CSV, SQL, Excel, JSON, or TXT schema file before running mapping.',
   mappingDone: 'Field mapping is done.',
 } as const;
 

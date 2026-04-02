@@ -45,6 +45,7 @@ import { useWorkspaceTemplateApi } from './hooks/useWorkspaceTemplateApi';
 import { useDataSource } from './hooks/useDataSource';
 import { useOpenAiPipeline } from './hooks/useOpenAiPipeline';
 import { useDetection, type SavedFormSessionResume } from './hooks/useDetection';
+import { useImageFill } from './hooks/useImageFill';
 import { usePipelineModal } from './hooks/usePipelineModal';
 import { useGroupDownload } from './hooks/useGroupDownload';
 import { useDowngradeRetentionRuntime } from './hooks/useDowngradeRetentionRuntime';
@@ -64,6 +65,7 @@ import {
   LazyApiFillManagerDialog,
   LazyGroupUploadDialog,
   LazyHomepage,
+  LazyImageFillDialog,
   LazyLoginPage,
   LazyOnboardingPage,
   LazyProcessingView,
@@ -402,6 +404,14 @@ function WorkspaceRuntime({
     fieldsCount: fieldHistory.fields.length,
     dataSourceKind: dataSource.dataSourceKind,
     hasSchemaOrPending: Boolean(dataSource.schemaId || dataSource.pendingSchemaPayload),
+  });
+
+  // ── Image fill (extract from uploaded images/documents) ───────────
+  const imageFill = useImageFill({
+    fieldsRef: fieldHistory.fieldsRef,
+    sessionId: detection.detectSessionId,
+    onUpdateField: fieldState.handleUpdateField,
+    onLoadUserProfile: auth.loadUserProfile,
   });
 
   // Update bridges
@@ -2252,6 +2262,7 @@ function WorkspaceRuntime({
       <input ref={dataSource.csvInputRef} id="csv-file-input" name="csv-file" type="file" accept=".csv,text/csv" aria-label="Upload CSV schema file" style={{ display: 'none' }} onChange={dataSource.handleCsvFileSelected} />
       <input ref={dataSource.excelInputRef} id="excel-file-input" name="excel-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Upload Excel schema file" style={{ display: 'none' }} onChange={dataSource.handleExcelFileSelected} />
       <input ref={dataSource.jsonInputRef} id="json-file-input" name="json-file" type="file" accept=".json,application/json" aria-label="Upload JSON schema file" style={{ display: 'none' }} onChange={dataSource.handleJsonFileSelected} />
+      <input ref={dataSource.sqlInputRef} id="sql-file-input" name="sql-file" type="file" accept=".sql,text/x-sql,application/sql" aria-label="Upload SQL schema file" style={{ display: 'none' }} onChange={dataSource.handleSqlFileSelected} />
       <input ref={dataSource.txtInputRef} id="txt-file-input" name="txt-file" type="file" accept=".txt,text/plain" aria-label="Upload TXT schema file" style={{ display: 'none' }} onChange={dataSource.handleTxtFileSelected} />
     </>
   );
@@ -2480,8 +2491,9 @@ function WorkspaceRuntime({
         renameAndMapGroupDisabledReason={demoActive ? null : groupRenameMapDisabledReason}
         renameAndMapGroupInProgress={groupRenameMapInProgress}
         renameAndMapGroupButtonLabel={groupRenameMapLabel}
-        onOpenSearchFill={canSearchFill ? handleOpenSearchFill : undefined}
+        onOpenSearchFill={handleOpenSearchFill}
         canSearchFill={canSearchFill}
+        onOpenImageFill={!demoActive && detection.detectSessionId && fieldHistory.fields.length > 0 ? imageFill.openDialog : undefined}
         onDownload={saveDownload.handleDownload}
         onDownloadGroup={activeGroupId ? groupDownload.handleDownloadGroup : undefined}
         onSaveToProfile={saveDownload.handleSaveToProfile}
@@ -2519,6 +2531,7 @@ function WorkspaceRuntime({
         <FieldListPanel fields={visibleFields} totalFieldCount={fields.length}
           selectedFieldId={selectedFieldId} selectedField={selectedField}
           currentPage={currentPage} pageCount={pageCount} showFields={showFields}
+          onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}
           showFieldNames={showFieldNames} showFieldInfo={showFieldInfo}
           transformMode={transformMode}
           displayPreset={displayPreset} onApplyDisplayPreset={handleApplyDisplayPreset}
@@ -2593,7 +2606,8 @@ function WorkspaceRuntime({
           canUndo={fieldHistory.canUndo}
           canRedo={fieldHistory.canRedo}
           onBeginFieldChange={fieldHistory.beginFieldHistory}
-          onCommitFieldChange={fieldHistory.commitFieldHistory} />
+          onCommitFieldChange={fieldHistory.commitFieldHistory}
+          onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })} />
       </div>
       {showSearchFill ? (
         <Suspense fallback={null}>
@@ -2612,6 +2626,25 @@ function WorkspaceRuntime({
             onError={(message) => dataSource.setSchemaError(message)}
             onRequestDataSource={(kind) => dataSource.handleChooseDataSource(kind)}
             demoSearch={demoActive ? demoSearchPreset : null} />
+        </Suspense>
+      ) : null}
+      {imageFill.open ? (
+        <Suspense fallback={null}>
+          <LazyImageFillDialog
+            open={imageFill.open}
+            onClose={imageFill.closeDialog}
+            files={imageFill.files}
+            extractedFields={imageFill.extractedFields}
+            loading={imageFill.loading}
+            error={imageFill.error}
+            creditEstimate={imageFill.creditEstimate}
+            onAddFiles={imageFill.addFiles}
+            onRemoveFile={imageFill.removeFile}
+            onRunExtraction={imageFill.runExtraction}
+            onUpdateFieldValue={imageFill.updateFieldValue}
+            onRejectField={imageFill.rejectField}
+            onApplyFields={imageFill.applyFields}
+          />
         </Suspense>
       ) : null}
       {dataSourceInputs}

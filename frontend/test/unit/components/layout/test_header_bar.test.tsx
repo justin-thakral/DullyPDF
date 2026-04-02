@@ -127,12 +127,10 @@ describe('HeaderBar', () => {
     const mapButton = screen.getByRole('button', { name: 'Map Schema' }) as HTMLButtonElement;
     const renameButton = screen.getByRole('button', { name: 'Rename' }) as HTMLButtonElement;
     const renameMapButton = screen.getByRole('button', { name: 'Rename + Map' }) as HTMLButtonElement;
-    const searchButton = screen.getByRole('button', { name: 'Search, Fill & Clear' }) as HTMLButtonElement;
 
     expect(mapButton.disabled).toBe(false);
     expect(renameButton.disabled).toBe(false);
     expect(renameMapButton.disabled).toBe(false);
-    expect(searchButton.disabled).toBe(false);
 
     rerender(
       <HeaderBar
@@ -145,8 +143,6 @@ describe('HeaderBar', () => {
     expect((screen.getByRole('button', { name: 'Map Schema' }) as HTMLButtonElement).disabled).toBe(true);
     expect((screen.getByRole('button', { name: 'Rename' }) as HTMLButtonElement).disabled).toBe(true);
     expect((screen.getByRole('button', { name: 'Rename + Map' }) as HTMLButtonElement).disabled).toBe(true);
-    expect((screen.getByRole('button', { name: 'Search, Fill & Clear' }) as HTMLButtonElement).disabled).toBe(true);
-    expect(screen.getByText('Requires CSV/Excel/JSON/respondent rows')).toBeTruthy();
   });
 
   it('keeps Fill By Web Form Link + Sign clickable when the workspace needs to surface a banner guard', async () => {

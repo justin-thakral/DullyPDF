@@ -171,7 +171,7 @@ export type SavedFormEditorSnapshot = {
 };
 
 // Data source selector options.
-export type DataSourceKind = 'csv' | 'excel' | 'json' | 'txt' | 'respondent' | 'none';
+export type DataSourceKind = 'csv' | 'sql' | 'excel' | 'json' | 'txt' | 'respondent' | 'none';
 
 // Processing pipeline mode.
 export type ProcessingMode = 'detect' | 'fillable' | 'saved' | null;

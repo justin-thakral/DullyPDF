@@ -76,7 +76,7 @@ describe('routeSeo config', () => {
 
   it('uses the hero copy for intent titles and appends breadcrumb schema', () => {
     const metadata = resolveRouteSeo({ kind: 'intent', intentKey: 'fill-pdf-from-csv' });
-    expect(metadata.title).toBe('Fill PDF From CSV, Excel, or JSON Data | DullyPDF');
+    expect(metadata.title).toBe('Fill PDF From CSV, SQL, Excel, or JSON Data | DullyPDF');
     expect(
       metadata.structuredData?.some(
         (entry) => entry['@type'] === 'BreadcrumbList',
