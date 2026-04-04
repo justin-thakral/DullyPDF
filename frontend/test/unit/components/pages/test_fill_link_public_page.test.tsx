@@ -33,6 +33,13 @@ vi.mock('../../../../src/utils/recaptcha', () => ({
 
 import FillLinkPublicPage from '../../../../src/components/pages/FillLinkPublicPage';
 
+async function waitForPublicFillLinkReady() {
+  expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+  await waitFor(() => {
+    expect(screen.queryByText('Loading form…')).toBeNull();
+  });
+}
+
 describe('FillLinkPublicPage', () => {
   beforeEach(() => {
     vi.stubEnv('VITE_RECAPTCHA_SITE_KEY', 'test-recaptcha-site-key');
@@ -88,7 +95,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     expect(screen.getByText('A respondent name or ID is required on every submission.')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Submit response' }).className).toContain('ui-button--primary');
 
@@ -229,7 +236,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     expect(screen.getByText('Flat PDF copy available after submit')).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Download submitted PDF' })).toBeNull();
 
@@ -306,7 +313,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
@@ -335,7 +342,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
@@ -356,7 +363,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
     expect(await screen.findByText('Enter a respondent name or ID before submitting.')).toBeTruthy();
@@ -376,7 +383,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.click(screen.getByLabelText('Employee ID Confirmed'));
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
@@ -397,7 +404,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-required-checkbox" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
@@ -430,7 +437,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     expect(screen.queryAllByText('Required')).toHaveLength(0);
 
     await user.type(screen.getByLabelText('First Name'), 'Ada');
@@ -474,7 +481,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
 
@@ -519,7 +526,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.type(screen.getByLabelText('DOB'), '1990-01-01');
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
@@ -603,7 +610,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.click(screen.getByLabelText('Alpha'));
     await user.click(screen.getByLabelText('Beta'));
@@ -649,7 +656,7 @@ describe('FillLinkPublicPage', () => {
 
     const { container } = render(<FillLinkPublicPage token="token-radio-group" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     const legend = container.querySelector('legend.fill-link-public-page__field-label');
     expect(legend?.textContent).toContain('Marital Status');
     expect(screen.getByRole('radio', { name: 'Single' })).toBeTruthy();
@@ -696,7 +703,7 @@ describe('FillLinkPublicPage', () => {
 
     render(<FillLinkPublicPage token="token-1" />);
 
-    expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
+    await waitForPublicFillLinkReady();
     await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
     await user.click(screen.getByRole('button', { name: 'Submit response' }));
     expect(await screen.findByText('Network lost response.')).toBeTruthy();
