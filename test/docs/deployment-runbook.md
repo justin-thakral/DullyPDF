@@ -113,6 +113,54 @@ Manual dispatch inputs:
 - `backend_image`
 - `dry_run`
 
+Manual dispatch examples:
+
+```bash
+gh workflow run controlled-deploy.yml \
+  -f environment=dev \
+  -f component=frontend \
+  -f dry_run=false
+```
+
+```bash
+gh workflow run controlled-deploy.yml \
+  -f environment=dev \
+  -f component=backend \
+  -f backend_image=us-east4-docker.pkg.dev/dullypdf-dev/dullypdf-backend/backend:20260404-024357 \
+  -f dry_run=false
+```
+
+```bash
+gh workflow run controlled-deploy.yml \
+  -f environment=dev \
+  -f component=all \
+  -f backend_image=us-east4-docker.pkg.dev/dullypdf-dev/dullypdf-backend/backend:20260404-024357 \
+  -f dry_run=false
+```
+
+```bash
+gh workflow run controlled-deploy.yml \
+  -f environment=prod \
+  -f component=frontend \
+  -f dry_run=false
+```
+
+```bash
+gh workflow run controlled-deploy.yml \
+  -f environment=prod \
+  -f component=backend \
+  -f backend_image=us-east4-docker.pkg.dev/dullypdf/dullypdf-backend/backend:20260401-223101 \
+  -f dry_run=false
+```
+
+```bash
+gh workflow run controlled-deploy.yml \
+  -f environment=prod \
+  -f component=all \
+  -f backend_image=us-east4-docker.pkg.dev/dullypdf/dullypdf-backend/backend:20260401-223101 \
+  -f dry_run=false
+```
+
 ## Verification Checklist
 
 For a dev deploy, verify all of the following:
@@ -137,6 +185,65 @@ RUN_TEMPLATE_API=true RUN_WORKSPACE=true RUN_SHARED_RUNTIME=true bash scripts/ci
 ```bash
 RUN_TEMPLATE_API=true RUN_WORKSPACE=true RUN_SHARED_RUNTIME=true RUN_PLAYWRIGHT_SAFE=true bash scripts/ci/run_targeted_playwright_suites.sh
 ```
+
+## Required Pre-Prod Baseline Smoke
+
+Before any prod deploy, run a manual baseline smoke against the local dev stack.
+This is intentionally smaller than full regression coverage. The baseline proves
+the primary operator path still works. Every other smoke should be targeted to
+the feature area changed in the release.
+
+Required setup:
+
+1. Start `npm run dev:stack`
+2. Start Chrome for MCP using `mcp/devtools.md`
+3. Load operator smoke credentials from env only. Do not commit them.
+
+Recommended local env names:
+
+- `SMOKE_LOGIN_EMAIL`
+- `SMOKE_LOGIN_PASSWORD`
+
+Current operator smoke account:
+
+- set `SMOKE_LOGIN_EMAIL=justin@ttcommercial.com` outside git
+- keep `SMOKE_LOGIN_PASSWORD` outside git as well
+
+Recommended storage:
+
+- `mcp/.env.local`
+- a shell session export
+- a local non-committed env file sourced before the smoke
+
+The manual baseline smoke is:
+
+1. Sign in with `SMOKE_LOGIN_EMAIL` / `SMOKE_LOGIN_PASSWORD`
+2. Open `/ui/profile` and verify the profile page loads successfully
+3. Upload `quickTestFiles/new_patient_forms_1915ccb015.pdf`
+4. Verify field detection completes and the field list populates
+5. Attach `quickTestFiles/new_patient_forms_1915ccb015_mock.csv`
+6. Run OpenAI Rename + Map and verify the mapped state appears
+7. Verify API Fill works from the same template flow
+
+Chrome DevTools baseline expectations:
+
+- Login succeeds and the workspace opens
+- Profile data loads without auth or fetch errors
+- Detection completes on `new_patient_forms_1915ccb015.pdf`
+- Rename + Map succeeds using `new_patient_forms_1915ccb015_mock.csv`
+- API Fill publishes and a sample fill succeeds
+
+Important constraint:
+
+- This baseline is required before prod deploys.
+- All other smoke should be targeted to the changed feature only.
+- Do not expand the baseline into a full exploratory pass every release.
+
+Reference docs for the operator smoke:
+
+- `mcp/devtools.md`
+- `mcp/debugger.md`
+- `mcp/security-debugger.md`
 
 ## Important Real Browser Coverage
 
