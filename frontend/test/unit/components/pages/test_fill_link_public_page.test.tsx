@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiError } from '../../../../src/services/apiConfig';
 
 const apiMocks = vi.hoisted(() => ({
@@ -35,6 +35,8 @@ import FillLinkPublicPage from '../../../../src/components/pages/FillLinkPublicP
 
 describe('FillLinkPublicPage', () => {
   beforeEach(() => {
+    vi.stubEnv('VITE_RECAPTCHA_SITE_KEY', 'test-recaptcha-site-key');
+    vi.stubEnv('VITE_FILL_LINK_REQUIRE_RECAPTCHA', 'true');
     apiMocks.getPublicFillLink.mockReset();
     apiMocks.submitPublicFillLink.mockReset();
     apiMocks.retryPublicFillLinkSigning.mockReset();
@@ -54,6 +56,10 @@ describe('FillLinkPublicPage', () => {
       createObjectURL: vi.fn(() => 'blob:submitted-pdf'),
       revokeObjectURL: vi.fn(),
     });
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it('loads a public link and submits a respondent response', async () => {

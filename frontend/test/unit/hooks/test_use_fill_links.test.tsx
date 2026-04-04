@@ -193,6 +193,55 @@ describe('useFillLinks', () => {
     });
   });
 
+  it('coalesces duplicate in-flight scope loads for the same scope', async () => {
+    const link = createLink('link-1', 1);
+    const slowScope = deferred<ReturnType<typeof createLink>[]>();
+    const slowResponses = deferred<{
+      link: ReturnType<typeof createLink>;
+      responses: ReturnType<typeof createResponse>[];
+    }>();
+
+    apiMocks.getFillLinks.mockImplementationOnce(() => slowScope.promise);
+    apiMocks.getFillLinkResponses.mockImplementationOnce(() => slowResponses.promise);
+
+    const harness = renderHarness();
+
+    let firstLoad: Promise<ReturnType<typeof createLink> | null> | null = null;
+    let secondLoad: Promise<ReturnType<typeof createLink> | null> | null = null;
+    act(() => {
+      firstLoad = harness.hook.refreshForScope();
+      secondLoad = harness.hook.refreshForScope();
+    });
+
+    expect(firstLoad).toBeTruthy();
+    expect(secondLoad).toBeTruthy();
+    expect(apiMocks.getFillLinks).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      slowScope.resolve([link]);
+      await Promise.resolve();
+    });
+
+    expect(apiMocks.getFillLinkResponses).toHaveBeenCalledTimes(1);
+    expect(apiMocks.getFillLinkResponses).toHaveBeenCalledWith('link-1', {
+      search: undefined,
+      limit: 100,
+    });
+
+    await act(async () => {
+      slowResponses.resolve({
+        link,
+        responses: [createResponse('resp-1', 'Ada Lovelace')],
+      });
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(harness.hook.currentLink?.id).toBe('link-1');
+      expect(harness.hook.responses.map((entry) => entry.respondentLabel)).toEqual(['Ada Lovelace']);
+    });
+  });
+
   it('exposes link metadata before respondent loading finishes', async () => {
     const link = createLink('link-1', 2);
     const slowResponses = deferred<{

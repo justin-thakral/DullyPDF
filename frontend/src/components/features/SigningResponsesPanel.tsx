@@ -15,10 +15,20 @@ type SigningResponsesPanelProps = {
   onRefresh?: () => Promise<void> | void;
 };
 
+function isSequentialWaitingForTurn(request: SigningRequestSummary): boolean {
+  return Boolean(
+    request.status === 'sent'
+    && request.envelopeId
+    && !request.completedAt
+    && !request.turnActivatedAt,
+  );
+}
+
 function resolveLifecycleLabel(request: SigningRequestSummary): string {
   if (request.status === 'completed') return 'Signed';
   if (request.status === 'invalidated' && request.publicLinkRevokedAt) return 'Revoked';
   if (request.status === 'sent' && request.isExpired) return 'Expired';
+  if (isSequentialWaitingForTurn(request)) return 'Waiting turn';
   if (request.status === 'sent' && (request.publicLinkVersion || 1) > 1) return 'Reissued';
   if (request.status === 'sent') return 'Active';
   if (request.status === 'invalidated') return 'Invalidated';
@@ -29,6 +39,7 @@ function resolveInviteLabel(request: SigningRequestSummary): string {
   const isReplacementLink = (request.publicLinkVersion || 1) > 1;
   if (request.status === 'invalidated' && request.publicLinkRevokedAt) return 'Link revoked';
   if (request.status === 'sent' && request.isExpired) return 'Link expired';
+  if (request.inviteDeliveryStatus === 'queued' || isSequentialWaitingForTurn(request)) return 'Waiting for turn';
   if (request.inviteMethod === 'manual_link' || request.manualLinkSharedAt) return 'Manual link shared';
   if (request.inviteDeliveryStatus === 'sent') return isReplacementLink ? 'Replacement emailed' : 'Invite emailed';
   if (request.inviteDeliveryStatus === 'failed') return isReplacementLink ? 'Replacement failed' : 'Invite failed';
@@ -40,6 +51,9 @@ function resolveInviteLabel(request: SigningRequestSummary): string {
 function resolveInviteMethodSummary(request: SigningRequestSummary): string {
   if (request.inviteMethod === 'manual_link' || request.manualLinkSharedAt) {
     return request.manualLinkSharedAt ? `Manual link shared ${formatTimestamp(request.manualLinkSharedAt)}` : 'Manual link shared';
+  }
+  if (request.inviteDeliveryStatus === 'queued' || isSequentialWaitingForTurn(request)) {
+    return 'Email invite queued until prior signer finishes';
   }
   if (request.inviteDeliveryStatus === 'sent') {
     return request.inviteProvider === 'gmail_api' ? 'Email invite via Gmail API' : 'Email invite';
@@ -62,7 +76,11 @@ function resolveCompanyBindingStatus(request: SigningRequestSummary): string {
 }
 
 function canCopySignerLink(request: SigningRequestSummary): boolean {
-  return Boolean(request.publicPath) && (request.status === 'completed' || (request.status === 'sent' && !request.isExpired));
+  return Boolean(request.publicPath)
+    && (
+      request.status === 'completed'
+      || (request.status === 'sent' && !request.isExpired && !isSequentialWaitingForTurn(request))
+    );
 }
 
 function canRevokeRequest(request: SigningRequestSummary): boolean {
@@ -72,7 +90,7 @@ function canRevokeRequest(request: SigningRequestSummary): boolean {
 function canReissueRequest(request: SigningRequestSummary): boolean {
   const hasImmutableSource = Boolean(request.artifacts?.sourcePdf?.available);
   if (!hasImmutableSource) return false;
-  if (request.status === 'sent') return true;
+  if (request.status === 'sent') return !isSequentialWaitingForTurn(request);
   return request.status === 'invalidated' && Boolean(request.publicLinkRevokedAt);
 }
 
@@ -139,6 +157,27 @@ export function SigningResponsesPanel({
       }
     };
   }, []);
+  const { envelopeGroups, standaloneRequests } = useMemo(() => {
+    const envelopeMap = new Map<string, SigningRequestSummary[]>();
+    const standalone: SigningRequestSummary[] = [];
+    for (const r of scopedRequests) {
+      if (r.envelopeId) {
+        const group = envelopeMap.get(r.envelopeId) || [];
+        group.push(r);
+        envelopeMap.set(r.envelopeId, group);
+      } else {
+        standalone.push(r);
+      }
+    }
+    const groups = Array.from(envelopeMap.entries()).map(([envelopeId, reqs]) => ({
+      envelopeId,
+      requests: reqs.sort((a, b) => (a.signerOrder ?? 1) - (b.signerOrder ?? 1)),
+      signedCount: reqs.filter((r) => r.status === 'completed').length,
+      totalCount: reqs.length,
+    }));
+    return { envelopeGroups: groups, standaloneRequests: standalone };
+  }, [scopedRequests]);
+
   const totals = useMemo(() => ({
     waiting: scopedRequests.filter((entry) => entry.status === 'sent' && !entry.isExpired).length,
     signed: scopedRequests.filter((entry) => entry.status === 'completed').length,
@@ -283,7 +322,140 @@ export function SigningResponsesPanel({
         </div>
       ) : null}
 
-      {scopedRequests.map((request) => (
+      {envelopeGroups.map((group) => {
+        const allSigned = group.signedCount === group.totalCount;
+        const remaining = group.totalCount - group.signedCount;
+        const firstRequest = group.requests[0];
+        const completedRequest = group.requests.find((r) => r.status === 'completed');
+        const sourceRequest = group.requests.find((r) => r.artifacts?.sourcePdf?.downloadPath) || firstRequest;
+        const artifactRequest = completedRequest || firstRequest;
+
+        return (
+          <article key={group.envelopeId} className="signature-request-dialog__section signature-request-dialog__response-card">
+            <div className="signature-request-dialog__response-header">
+              <div className="signature-request-dialog__response-identity">
+                <strong>{firstRequest?.sourceDocumentName || 'Signing envelope'}</strong>
+                <span>{firstRequest?.documentCategoryLabel}</span>
+              </div>
+              <div className="signature-request-dialog__response-badges">
+                <span className="signature-request-dialog__response-badge">
+                  {allSigned ? 'Completed' : `${group.signedCount}/${group.totalCount} Signed`}
+                </span>
+                <span className="signature-request-dialog__response-badge signature-request-dialog__response-badge--muted">
+                  Envelope
+                </span>
+              </div>
+            </div>
+
+            <div className="signature-request-dialog__recipient-list">
+              {group.requests.map((request) => (
+                <div key={request.id} className="signature-request-dialog__recipient-card signature-request-dialog__recipient-card--sequential">
+                  {request.signerOrder != null && (
+                    <span className="signature-request-dialog__recipient-order">{request.signerOrder}</span>
+                  )}
+                  <div>
+                    <strong>{request.signerName}</strong>
+                    <span>{request.signerEmail}</span>
+                  </div>
+                  <div className="signature-request-dialog__recipient-card-actions">
+                    <span className="signature-request-dialog__response-badge">
+                      {resolveLifecycleLabel(request)}
+                    </span>
+                    {request.completedAt && (
+                      <span className="signature-request-dialog__response-badge signature-request-dialog__response-badge--muted">
+                        {new Date(request.completedAt).toLocaleDateString()}
+                      </span>
+                    )}
+                    {request.sentAt && !request.completedAt && (
+                      <span className="signature-request-dialog__response-badge signature-request-dialog__response-badge--muted">
+                        Sent {new Date(request.sentAt).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {!allSigned && remaining > 0 && (
+              <p className="signature-request-dialog__response-note">
+                {remaining} {remaining === 1 ? 'signer' : 'signers'} still {remaining === 1 ? 'needs' : 'need'} to sign before the final signed PDF is available.
+              </p>
+            )}
+
+            <div className="signature-request-dialog__response-actions">
+              {sourceRequest?.artifacts?.sourcePdf?.downloadPath ? (
+                <button
+                  type="button"
+                  className="ui-button ui-button--ghost"
+                  onClick={() => {
+                    void handleArtifactDownload(
+                      sourceRequest.artifacts!.sourcePdf!.downloadPath!,
+                      sourceRequest.mode === 'fill_and_sign' ? 'respondent-form.pdf' : 'source.pdf',
+                    );
+                  }}
+                  disabled={downloadingPath === sourceRequest.artifacts.sourcePdf.downloadPath}
+                >
+                  {downloadingPath === sourceRequest.artifacts.sourcePdf.downloadPath
+                    ? 'Downloading…'
+                    : sourceRequest.mode === 'fill_and_sign' ? 'Download respondent form' : 'Download source PDF'}
+                </button>
+              ) : null}
+              {allSigned && artifactRequest?.artifacts?.signedPdf?.downloadPath ? (
+                <button
+                  type="button"
+                  className="ui-button ui-button--primary"
+                  onClick={() => {
+                    void handleArtifactDownload(artifactRequest.artifacts!.signedPdf!.downloadPath!, 'signed-form.pdf');
+                  }}
+                  disabled={downloadingPath === artifactRequest.artifacts.signedPdf.downloadPath}
+                >
+                  {downloadingPath === artifactRequest.artifacts.signedPdf.downloadPath ? 'Downloading…' : 'Download signed form'}
+                </button>
+              ) : !allSigned ? (
+                <button
+                  type="button"
+                  className="ui-button ui-button--ghost"
+                  disabled
+                  title={`${remaining} ${remaining === 1 ? 'signer' : 'signers'} still ${remaining === 1 ? 'needs' : 'need'} to sign`}
+                >
+                  Signed PDF pending ({remaining} remaining)
+                </button>
+              ) : null}
+              {allSigned && artifactRequest?.artifacts?.auditReceipt?.downloadPath ? (
+                <button
+                  type="button"
+                  className="ui-button ui-button--ghost"
+                  onClick={() => {
+                    void handleArtifactDownload(artifactRequest.artifacts!.auditReceipt!.downloadPath!, 'audit-receipt.pdf');
+                  }}
+                  disabled={downloadingPath === artifactRequest.artifacts.auditReceipt.downloadPath}
+                >
+                  {downloadingPath === artifactRequest.artifacts.auditReceipt.downloadPath ? 'Downloading…' : 'Download audit receipt'}
+                </button>
+              ) : null}
+              {allSigned && artifactRequest?.artifacts?.disputePackage?.downloadPath ? (
+                <button
+                  type="button"
+                  className="ui-button ui-button--ghost"
+                  onClick={() => {
+                    void handleArtifactDownload(
+                      artifactRequest.artifacts!.disputePackage!.downloadPath!,
+                      `${firstRequest?.sourceDocumentName || 'signing-envelope'}-dispute-package.zip`,
+                    );
+                  }}
+                  disabled={downloadingPath === artifactRequest.artifacts.disputePackage.downloadPath}
+                >
+                  {downloadingPath === artifactRequest.artifacts.disputePackage.downloadPath
+                    ? 'Downloading…'
+                    : 'Download full package'}
+                </button>
+              ) : null}
+            </div>
+          </article>
+        );
+      })}
+
+      {standaloneRequests.map((request) => (
         <article key={request.id} className="signature-request-dialog__section signature-request-dialog__response-card">
           <div className="signature-request-dialog__response-header">
             <div className="signature-request-dialog__response-identity">

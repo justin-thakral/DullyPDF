@@ -22,6 +22,7 @@ from backend.logging_config import get_logger
 from backend.firebaseDB.signing_database import (
     complete_signing_request_transactional,
     create_signing_session,
+    get_signing_envelope,
     get_signing_request,
     get_signing_request_by_public_token,
     get_signing_request_by_validation_token,
@@ -198,6 +199,18 @@ def _check_request_scoped_rate_limit(*, scope: str, request_id: str, limit: int,
 
 def _serialize_public_request(record, *, token: str) -> Dict[str, Any]:
     disclosure_payload = serialize_public_signing_disclosure(record, public_token=token)
+    envelope_payload = None
+    envelope_id = getattr(record, "envelope_id", None)
+    if envelope_id:
+        envelope = get_signing_envelope(envelope_id)
+        if envelope is not None:
+            envelope_payload = {
+                "id": envelope.id,
+                "signingMode": envelope.signing_mode,
+                "signerCount": envelope.signer_count,
+                "completedSignerCount": envelope.completed_signer_count,
+                "status": envelope.status,
+            }
     return {
         "id": record.id,
         "title": record.title,
@@ -227,6 +240,9 @@ def _serialize_public_request(record, *, token: str) -> Dict[str, Any]:
         "disclosureVersion": record.disclosure_version,
         "disclosure": disclosure_payload,
         "documentPath": f"/api/signing/public/{token}/document",
+        "envelopeId": envelope_id,
+        "signerOrder": getattr(record, "signer_order", 1),
+        "envelope": envelope_payload,
         "artifacts": {
             "signedPdf": {
                 "available": bool(record.signed_pdf_bucket_path),
@@ -496,6 +512,14 @@ async def start_public_signing_session(token: str, request: Request) -> Dict[str
             validate_public_signing_actionable_record(record)
         except ValueError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    if record.status == SIGNING_STATUS_SENT and getattr(record, "envelope_id", None):
+        envelope = get_signing_envelope(record.envelope_id)
+        if envelope and envelope.signing_mode == "sequential" and not getattr(record, "turn_activated_at", None):
+            raise HTTPException(
+                status_code=403,
+                detail="It's not your turn to sign yet. You'll be notified when it's your turn.",
+            )
 
     ttl_seconds = resolve_signing_session_ttl_seconds()
     expires_at = datetime.now(timezone.utc) + timedelta(seconds=ttl_seconds)
@@ -1376,6 +1400,63 @@ async def complete_public_signing_request(
         "representative_company_name": authority_completion_payload["representative_company_name"],
         "authority_attested_at": completed_at if authority_completion_payload["representative_title"] else None,
     }
+
+    # ---------------------------------------------------------------
+    # Envelope-aware completion: defer artifact generation until all
+    # signers in the envelope have completed their ceremonies.
+    # ---------------------------------------------------------------
+    is_envelope_request = bool(getattr(record, "envelope_id", None))
+
+    if is_envelope_request:
+        updated_record = complete_signing_request_transactional(
+            record.id,
+            session_id=session.id,
+            client_ip=client_ip,
+            user_agent=user_agent,
+            completed_at=completed_at,
+            artifact_updates=completion_updates,
+            required_present_fields=("reviewed_at", "signature_adopted_at", "signature_adopted_name"),
+            required_absent_fields=("manual_fallback_requested_at", "consent_withdrawn_at"),
+        )
+        if updated_record is None or updated_record.status != SIGNING_STATUS_COMPLETED:
+            raise HTTPException(
+                status_code=409,
+                detail="Signing completion could not be applied. The request may have already been completed or revoked.",
+            )
+        touch_signing_session(session.id, client_ip=client_ip, user_agent=user_agent, completed=True)
+        _record_public_signing_event(
+            updated_record,
+            event_type=SIGNING_EVENT_COMPLETED,
+            session_id=session.id,
+            link_token_id=session.link_token_id,
+            client_ip=client_ip,
+            user_agent=user_agent,
+            occurred_at=completed_at,
+            details={
+                "sourcePdfSha256": updated_record.source_pdf_sha256,
+                "sourceVersion": updated_record.source_version,
+                "adoptedName": updated_record.signature_adopted_name,
+                "adoptedMode": getattr(updated_record, "signature_adopted_mode", None),
+                "envelopeId": updated_record.envelope_id,
+                "signerOrder": updated_record.signer_order,
+            },
+        )
+        try:
+            from backend.services.signing_envelope_service import async_advance_envelope_after_signer_completion
+            await async_advance_envelope_after_signer_completion(updated_record)
+        except Exception as envelope_exc:
+            logger.warning(
+                "Envelope advancement failed for request %s (envelope %s): %s",
+                updated_record.id,
+                updated_record.envelope_id,
+                envelope_exc,
+            )
+        refreshed_record = get_signing_request(updated_record.id) or updated_record
+        return {"request": _serialize_public_request(refreshed_record, token=token)}
+
+    # ---------------------------------------------------------------
+    # Standard single-signer completion: render PDF, sign, upload
+    # ---------------------------------------------------------------
     existing_events = list_signing_events_for_request(record.id)
     prepared_completion = await prepare_public_signing_completion(
         record=record,
@@ -1502,4 +1583,5 @@ async def complete_public_signing_request(
             "retentionUntil": updated_record.retention_until,
         },
     )
+
     return {"request": _serialize_public_request(updated_record, token=token)}

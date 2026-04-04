@@ -279,6 +279,14 @@ function WorkspaceRuntime({
     browserRoute.kind === 'homepage' ? null : browserRouteKey,
   );
   const routeRestoreInFlightKeyRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (
+      routeRestoreInFlightKeyRef.current !== null &&
+      routeRestoreInFlightKeyRef.current !== pendingBrowserRouteKey
+    ) {
+      routeRestoreInFlightKeyRef.current = null;
+    }
+  }, [pendingBrowserRouteKey]);
   const createToolDisplayStateRef = useRef<CreateToolDisplayState | null>(null);
   const fieldClickPageChangeRef = useRef(false);
 
@@ -1401,26 +1409,52 @@ function WorkspaceRuntime({
     const wasMobile = mobileViewTransitionRef.current;
     mobileViewTransitionRef.current = isMobileView;
 
-    if (!isMobileView || showHomepage) return;
-    if (pdfDoc || detection.isProcessing) {
-      const transitionedToMobile = !wasMobile && isMobileView;
-      if (
-        transitionedToMobile &&
-        !dialog.bannerNotice &&
-        !openAi.openAiError &&
-        !dataSource.schemaError
-      ) {
-        dialog.setBannerNotice({
-          tone: 'info',
-          message:
-            'The full editor is optimized for desktop. Increase window width above 900px for the best editing workflow.',
-          autoDismissMs: 8000,
-        });
-      }
+    if (
+      !isMobileView ||
+      auth.showLogin ||
+      auth.showProfile ||
+      showOnboarding ||
+      auth.requiresEmailVerification
+    ) {
       return;
     }
-    setShowHomepage(true);
-  }, [dataSource.schemaError, detection.isProcessing, dialog, isMobileView, openAi.openAiError, pdfDoc, showHomepage]);
+    const transitionedToMobile = !wasMobile && isMobileView;
+    const hadWorkflowView = !showHomepage || browserRoute.kind !== 'homepage';
+    if (
+      transitionedToMobile &&
+      hadWorkflowView &&
+      !dialog.bannerNotice &&
+      !openAi.openAiError &&
+      !dataSource.schemaError
+    ) {
+      dialog.setBannerNotice({
+        tone: 'info',
+        message:
+          'Mobile keeps the marketing shell only. Increase window width above 900px to reopen the full editor.',
+        autoDismissMs: 8000,
+      });
+    }
+    if (!showHomepage) {
+      setShowHomepage(true);
+    }
+    if (browserRoute.kind !== 'homepage') {
+      clearWorkspaceResumeState();
+      setPendingBrowserRouteKey(null);
+      onBrowserRouteChange?.({ kind: 'homepage' }, { replace: true });
+    }
+  }, [
+    browserRoute.kind,
+    dataSource.schemaError,
+    dialog,
+    isMobileView,
+    onBrowserRouteChange,
+    openAi.openAiError,
+    showHomepage,
+    showOnboarding,
+    auth.requiresEmailVerification,
+    auth.showLogin,
+    auth.showProfile,
+  ]);
 
   useEffect(() => {
     if (!fieldState.showFields) return;
@@ -1944,10 +1978,16 @@ function WorkspaceRuntime({
     let cancelled = false;
     const finishRouteRestore = () => {
       if (cancelled) return;
+      if (routeRestoreInFlightKeyRef.current === browserRouteKey) {
+        routeRestoreInFlightKeyRef.current = null;
+      }
       setPendingBrowserRouteKey((current) => (current === browserRouteKey ? null : current));
     };
     const failRouteRestore = (message?: string) => {
       if (cancelled) return;
+      if (routeRestoreInFlightKeyRef.current === browserRouteKey) {
+        routeRestoreInFlightKeyRef.current = null;
+      }
       if (message) {
         dialog.setBannerNotice({
           tone: 'error',
@@ -1997,7 +2037,15 @@ function WorkspaceRuntime({
           setShowHomepage(false);
           return;
         }
+        if (!verifiedUser && !bootstrapHasVerifiedUser) {
+          auth.setShowLogin(true);
+          return;
+        }
         if (!verifiedUser) {
+          return;
+        }
+        if (pdfDoc || detection.isProcessing) {
+          finishRouteRestore();
           return;
         }
         const resumeState = findMatchingWorkspaceResumeState(browserRoute, verifiedUser.uid);
@@ -2005,6 +2053,10 @@ function WorkspaceRuntime({
           finishRouteRestore();
           return;
         }
+        if (routeRestoreInFlightKeyRef.current === browserRouteKey) {
+          return;
+        }
+        routeRestoreInFlightKeyRef.current = browserRouteKey;
         const restored = await restoreUiWorkspaceFromResume(resumeState);
         if (!restored) {
           failRouteRestore('Failed to reopen the active workspace.');
@@ -2032,16 +2084,9 @@ function WorkspaceRuntime({
         }
         if (activeGroupId || savedForms.activeSavedFormId !== browserRoute.formId) {
           routeRestoreInFlightKeyRef.current = browserRouteKey;
-          let opened = false;
-          try {
-            opened = await handleSelectSavedForm(browserRoute.formId, {
-              preferredSession: resolvePreferredSessionResume(resumeState),
-            });
-          } finally {
-            if (routeRestoreInFlightKeyRef.current === browserRouteKey) {
-              routeRestoreInFlightKeyRef.current = null;
-            }
-          }
+          const opened = await handleSelectSavedForm(browserRoute.formId, {
+            preferredSession: resolvePreferredSessionResume(resumeState),
+          });
           if (!opened) {
             failRouteRestore('Failed to reopen the saved form.');
             return;
@@ -2064,17 +2109,10 @@ function WorkspaceRuntime({
           return;
         }
         routeRestoreInFlightKeyRef.current = browserRouteKey;
-        let opened = false;
-        try {
-          opened = await handleOpenGroup(browserRoute.groupId, {
-            preferredTemplateId: browserRoute.templateId,
-            preferredSession: resolvePreferredSessionResume(resumeState),
-          });
-        } finally {
-          if (routeRestoreInFlightKeyRef.current === browserRouteKey) {
-            routeRestoreInFlightKeyRef.current = null;
-          }
-        }
+        const opened = await handleOpenGroup(browserRoute.groupId, {
+          preferredTemplateId: browserRoute.templateId,
+          preferredSession: resolvePreferredSessionResume(resumeState),
+        });
         if (!opened) {
           failRouteRestore('Failed to reopen the saved group.');
           return;
@@ -2099,6 +2137,7 @@ function WorkspaceRuntime({
     bootstrapHasVerifiedUser,
     browserRoute,
     browserRouteKey,
+    detection.isProcessing,
     dialog,
     handleOpenGroup,
     handleSelectSavedForm,
@@ -2110,15 +2149,17 @@ function WorkspaceRuntime({
     restoreUiWorkspaceFromResume,
     savedForms.activeSavedFormId,
     showHomepage,
+    pdfDoc,
     tryReuseResumedSession,
     verifiedUser,
   ]);
 
   const hasDocument = !!pdfDoc;
   const canSaveToProfile = Boolean(pdfDoc && verifiedUser);
-  const canDownload = Boolean(pdfDoc && verifiedUser);
+  const canDownload = Boolean(pdfDoc && (verifiedUser || sourceFileIsDemo));
 
   const isDemoAsset = Boolean(sourceFileIsDemo && sourceFileName && DEMO_ASSET_NAME_SET.has(sourceFileName));
+  const allowAnonymousDemoEditor = demoActive || isDemoAsset;
   const demoUiLocked = demoCompletionOpen || (!demoActive && isDemoAsset);
 
   const activeErrorMessage = openAiError ?? schemaError;
@@ -2411,7 +2452,8 @@ function WorkspaceRuntime({
 
   // Safety net: if auth was lost while the runtime is still mounted (e.g.
   // sign-out race), force the homepage view instead of rendering an empty editor.
-  if (!verifiedUser && !showLogin && !showOnboarding && currentView === 'editor') {
+  // Demo sessions are the one supported anonymous editor mode.
+  if (!verifiedUser && !showLogin && !showOnboarding && currentView === 'editor' && !allowAnonymousDemoEditor) {
     return (
       <div className="auth-loading-screen">
         <div className="auth-loading-card">Redirecting…</div>
@@ -2524,6 +2566,7 @@ function WorkspaceRuntime({
         onDemoLockedAction={handleDemoLockedAction}
         demoFillLinkDocsHref="/usage-docs/fill-by-link"
         demoCreateGroupDocsHref="/usage-docs/create-group"
+        demoSignatureDocsHref="/usage-docs/signature-workflow"
         onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}
       />
       <div className="app-shell">

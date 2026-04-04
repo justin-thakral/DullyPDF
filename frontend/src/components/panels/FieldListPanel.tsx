@@ -361,6 +361,7 @@ export function FieldListPanel({
               className="page-bar__button"
               type="button"
               onClick={() => guardClick(isNavDisabled || !canGoBack, isNavDisabled ? 'Page navigation is unavailable right now.' : 'Already on the first page.', handlePrev)}
+              disabled={isNavDisabled || !canGoBack}
               aria-disabled={isNavDisabled || !canGoBack}
               aria-label="Previous page"
             >
@@ -385,6 +386,7 @@ export function FieldListPanel({
               className="page-bar__button"
               type="button"
               onClick={() => guardClick(isNavDisabled || !canGoForward, isNavDisabled ? 'Page navigation is unavailable right now.' : 'Already on the last page.', handleNext)}
+              disabled={isNavDisabled || !canGoForward}
               aria-disabled={isNavDisabled || !canGoForward}
               aria-label="Next page"
             >
@@ -487,6 +489,7 @@ export function FieldListPanel({
               className="panel-pill-toggle panel-pill-toggle--action"
               type="button"
               onClick={() => guardClick(!canClearInputs, 'No field values to clear.', onClearInputs)}
+              disabled={!canClearInputs}
               aria-disabled={!canClearInputs}
               title="Clear all field inputs"
             >

@@ -496,6 +496,7 @@ Docker images:
 - `Dockerfile.detector` (detector service)
 - `Dockerfile.ai-rename-remap` (combined rename+remap worker service)
 - `backend/requirements.txt` is main API deps; `backend/requirements-detector.txt` adds CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)).
+- Root `.gcloudignore` now includes `.dockerignore` so `gcloud builds submit` and local `docker build` share the same filters for normal app files. Cloud Build also excludes `backend/services/dev_assets/` so deployed Cloud Run images do not carry the bundled local signing cert/key pair.
 
 Worker deploy script (Cloud Run):
 

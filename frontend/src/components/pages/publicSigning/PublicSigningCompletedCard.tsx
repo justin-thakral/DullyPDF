@@ -10,7 +10,34 @@ export function PublicSigningCompletedCard({ flow }: PublicSigningCompletedCardP
     return null;
   }
 
+  const envelope = flow.request.envelope || null;
+  const signerCount = Math.max(0, Number(envelope?.signerCount) || 0);
+  const completedSignerCount = Math.max(0, Number(envelope?.completedSignerCount) || 0);
+  const artifactsLockedByEnvelope = signerCount > 1 && completedSignerCount < signerCount;
+  const progressLabel = artifactsLockedByEnvelope ? `${completedSignerCount}/${signerCount} signers completed` : null;
   const digitalSignature = flow.request.artifacts?.signedPdf?.digitalSignature;
+
+  const showSignedPdfAction = Boolean(flow.request.artifacts?.signedPdf?.available || artifactsLockedByEnvelope);
+  const showAuditReceiptAction = Boolean(flow.request.artifacts?.auditReceipt?.available || artifactsLockedByEnvelope);
+  const showValidationAction = Boolean(flow.request.validationPath || artifactsLockedByEnvelope);
+
+  function renderLockedArtifactAction(label: string, style: 'primary' | 'ghost') {
+    return (
+      <div className="public-signing-page__artifact-action public-signing-page__artifact-action--locked">
+        <button
+          className={`ui-button ${style === 'primary' ? 'ui-button--primary' : 'ui-button--ghost'}`}
+          type="button"
+          disabled
+          aria-disabled="true"
+        >
+          {label}
+        </button>
+        {progressLabel ? (
+          <span className="public-signing-page__artifact-lock-label">{progressLabel}</span>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div className="public-signing-page__card">
@@ -34,32 +61,45 @@ export function PublicSigningCompletedCard({ flow }: PublicSigningCompletedCardP
           {digitalSignature.certificateSubject ? ` Certificate subject: ${digitalSignature.certificateSubject}.` : ''}
         </div>
       ) : null}
+      {flow.verificationComplete && artifactsLockedByEnvelope ? (
+        <Alert
+          tone="info"
+          variant="inline"
+          message={`Completed artifacts unlock after every signer finishes this envelope. ${progressLabel}.`}
+        />
+      ) : null}
       {flow.verificationComplete ? (
         <div className="public-signing-page__button-group">
-          {flow.request.artifacts?.signedPdf?.available ? (
-            <button
-              className="ui-button ui-button--primary"
-              type="button"
-              disabled={flow.artifactBusyKey !== null || !flow.sessionToken}
-              onClick={flow.handleDownloadSignedPdf}
-            >
-              {flow.artifactBusyKey === 'signedPdf' ? 'Downloading signed PDF…' : 'Download signed PDF'}
-            </button>
+          {showSignedPdfAction ? (
+            artifactsLockedByEnvelope ? renderLockedArtifactAction('Download signed PDF', 'primary') : (
+              <button
+                className="ui-button ui-button--primary"
+                type="button"
+                disabled={flow.artifactBusyKey !== null || !flow.sessionToken}
+                onClick={flow.handleDownloadSignedPdf}
+              >
+                {flow.artifactBusyKey === 'signedPdf' ? 'Downloading signed PDF…' : 'Download signed PDF'}
+              </button>
+            )
           ) : null}
-          {flow.request.artifacts?.auditReceipt?.available ? (
-            <button
-              className="ui-button ui-button--ghost"
-              type="button"
-              disabled={flow.artifactBusyKey !== null || !flow.sessionToken}
-              onClick={flow.handleDownloadAuditReceipt}
-            >
-              {flow.artifactBusyKey === 'auditReceipt' ? 'Downloading audit receipt…' : 'Download audit receipt'}
-            </button>
+          {showAuditReceiptAction ? (
+            artifactsLockedByEnvelope ? renderLockedArtifactAction('Download audit receipt', 'ghost') : (
+              <button
+                className="ui-button ui-button--ghost"
+                type="button"
+                disabled={flow.artifactBusyKey !== null || !flow.sessionToken}
+                onClick={flow.handleDownloadAuditReceipt}
+              >
+                {flow.artifactBusyKey === 'auditReceipt' ? 'Downloading audit receipt…' : 'Download audit receipt'}
+              </button>
+            )
           ) : null}
-          {flow.request.validationPath ? (
-            <a className="ui-button ui-button--ghost" href={flow.request.validationPath}>
-              Validate retained record
-            </a>
+          {showValidationAction ? (
+            artifactsLockedByEnvelope ? renderLockedArtifactAction('Validate retained record', 'ghost') : (
+              <a className="ui-button ui-button--ghost" href={flow.request.validationPath || undefined}>
+                Validate retained record
+              </a>
+            )
           ) : null}
           <button
             className="ui-button ui-button--ghost"

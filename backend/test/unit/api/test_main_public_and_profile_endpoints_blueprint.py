@@ -122,6 +122,7 @@ def test_profile_response_shape_for_base_and_god(
         "cancelAtPeriodEnd": None,
         "cancelAt": None,
         "currentPeriodEnd": None,
+        "trialUsed": False,
     }
     assert response.json()["creditPricing"]["pageBucketSize"] >= 1
     sync_mock.assert_called_once_with(base_user.app_user_id, create_if_missing=True)

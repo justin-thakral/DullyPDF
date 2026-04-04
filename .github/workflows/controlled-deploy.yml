@@ -1,0 +1,304 @@
+name: Controlled Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deploy target environment
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - prod
+      component:
+        description: Deploy scope
+        required: true
+        default: frontend
+        type: choice
+        options:
+          - frontend
+          - backend
+          - detectors
+          - workers
+          - all
+      backend_image:
+        description: Optional backend image override for backend/all deploys
+        required: false
+        type: string
+      dry_run:
+        description: Validate the deploy plan without authenticating or deploying
+        required: true
+        default: false
+        type: boolean
+  push:
+    tags:
+      - 'deploy-dev-frontend-*'
+      - 'deploy-dev-backend-*'
+      - 'deploy-dev-detectors-*'
+      - 'deploy-dev-workers-*'
+      - 'deploy-dev-all-*'
+      - 'deploy-prod-frontend-*'
+      - 'deploy-prod-backend-*'
+      - 'deploy-prod-detectors-*'
+      - 'deploy-prod-workers-*'
+      - 'deploy-prod-all-*'
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: controlled-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_environment: ${{ steps.resolve.outputs.deploy_environment }}
+      component: ${{ steps.resolve.outputs.component }}
+      backend_image: ${{ steps.resolve.outputs.backend_image }}
+      dry_run: ${{ steps.resolve.outputs.dry_run }}
+      github_environment: ${{ steps.resolve.outputs.github_environment }}
+    steps:
+      - name: Resolve deploy request
+        id: resolve
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_ENVIRONMENT: ${{ github.event.inputs.environment || '' }}
+          INPUT_COMPONENT: ${{ github.event.inputs.component || '' }}
+          INPUT_BACKEND_IMAGE: ${{ github.event.inputs.backend_image || '' }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+        run: |
+          set -euo pipefail
+
+          deploy_environment=""
+          component=""
+          backend_image=""
+          dry_run="false"
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            deploy_environment="$INPUT_ENVIRONMENT"
+            component="$INPUT_COMPONENT"
+            backend_image="$INPUT_BACKEND_IMAGE"
+            dry_run="${INPUT_DRY_RUN,,}"
+          else
+            if [[ ! "$REF_NAME" =~ ^deploy-(dev|prod)-(frontend|backend|detectors|workers|all)-((dryrun)-)?(.+)$ ]]; then
+              echo "Unsupported deploy tag: ${REF_NAME}" >&2
+              exit 1
+            fi
+            deploy_environment="${BASH_REMATCH[1]}"
+            component="${BASH_REMATCH[2]}"
+            if [[ -n "${BASH_REMATCH[4]}" ]]; then
+              dry_run="true"
+            fi
+          fi
+
+          case "$deploy_environment" in
+            dev|prod) ;;
+            *)
+              echo "Unsupported deploy environment: ${deploy_environment}" >&2
+              exit 1
+              ;;
+          esac
+
+          case "$component" in
+            frontend|backend|detectors|workers|all) ;;
+            *)
+              echo "Unsupported deploy component: ${component}" >&2
+              exit 1
+              ;;
+          esac
+
+          if [[ -n "$backend_image" && "$component" != "backend" && "$component" != "all" ]]; then
+            echo "backend_image is only supported for component=backend|all." >&2
+            exit 1
+          fi
+
+          github_environment="development"
+          if [[ "$deploy_environment" == "prod" ]]; then
+            github_environment="production"
+          fi
+
+          {
+            echo "deploy_environment=${deploy_environment}"
+            echo "component=${component}"
+            echo "backend_image=${backend_image}"
+            echo "dry_run=${dry_run}"
+            echo "github_environment=${github_environment}"
+          } >> "$GITHUB_OUTPUT"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: resolve
+    environment: ${{ needs.resolve.outputs.github_environment }}
+    timeout-minutes: 60
+    env:
+      HAS_WIF_DEV: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV != '' && secrets.GCP_SERVICE_ACCOUNT_DEV != '') && 'true' || 'false' }}
+      HAS_WIF_PROD: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_PROD != '' && secrets.GCP_SERVICE_ACCOUNT_PROD != '') && 'true' || 'false' }}
+      HAS_KEY_DEV: ${{ secrets.GCP_CREDENTIALS_JSON_DEV != '' && 'true' || 'false' }}
+      HAS_KEY_PROD: ${{ secrets.GCP_CREDENTIALS_JSON_PROD != '' && 'true' || 'false' }}
+      HAS_FRONTEND_OVERRIDE_DEV: ${{ secrets.FRONTEND_ENV_OVERRIDE_B64_DEV != '' && 'true' || 'false' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        if: needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all'
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install root dependencies
+        if: needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all'
+        run: npm ci
+
+      - name: Install frontend dependencies
+        if: needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all'
+        run: npm --prefix frontend ci
+
+      - name: Authenticate to Google Cloud with Workload Identity Federation (dev)
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && env.HAS_WIF_DEV == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
+
+      - name: Authenticate to Google Cloud with Workload Identity Federation (prod)
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && env.HAS_WIF_PROD == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_PROD }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_PROD }}
+
+      - name: Authenticate to Google Cloud with a service-account key (dev fallback)
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && env.HAS_WIF_DEV != 'true' && env.HAS_KEY_DEV == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
+
+      - name: Authenticate to Google Cloud with a service-account key (prod fallback)
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && env.HAS_WIF_PROD != 'true' && env.HAS_KEY_PROD == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_PROD }}
+
+      - name: Set up gcloud
+        if: needs.resolve.outputs.dry_run != 'true'
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Verify deploy auth exists
+        if: needs.resolve.outputs.dry_run != 'true'
+        run: |
+          set -euo pipefail
+          active_account="$(gcloud auth list --filter=status:ACTIVE --format='value(account)' | head -n 1)"
+          if [[ -z "$active_account" ]]; then
+            echo "Missing Google Cloud auth. Configure WIF or service-account key secrets for this environment." >&2
+            exit 1
+          fi
+          echo "Authenticated as ${active_account}"
+
+      - name: Install Firebase CLI
+        if: needs.resolve.outputs.dry_run != 'true' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
+        run: npm install --global firebase-tools
+
+      - name: Materialize backend env file from dev secret
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && needs.resolve.outputs.component != 'frontend'
+        run: |
+          set -euo pipefail
+          if [[ -z "${{ secrets.BACKEND_ENV_FILE_B64_DEV }}" ]]; then
+            echo "Missing BACKEND_ENV_FILE_B64_DEV secret." >&2
+            exit 1
+          fi
+          printf '%s' '${{ secrets.BACKEND_ENV_FILE_B64_DEV }}' | base64 --decode > "$RUNNER_TEMP/backend.env"
+
+      - name: Materialize backend env file from prod secret
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && needs.resolve.outputs.component != 'frontend'
+        run: |
+          set -euo pipefail
+          if [[ -z "${{ secrets.BACKEND_ENV_FILE_B64_PROD }}" ]]; then
+            echo "Missing BACKEND_ENV_FILE_B64_PROD secret." >&2
+            exit 1
+          fi
+          printf '%s' '${{ secrets.BACKEND_ENV_FILE_B64_PROD }}' | base64 --decode > "$RUNNER_TEMP/backend.env"
+
+      - name: Materialize optional dev frontend override
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all') && env.HAS_FRONTEND_OVERRIDE_DEV == 'true'
+        run: |
+          set -euo pipefail
+          printf '%s' '${{ secrets.FRONTEND_ENV_OVERRIDE_B64_DEV }}' | base64 --decode > "$RUNNER_TEMP/frontend.env"
+
+      - name: Materialize optional prod frontend override
+        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
+        run: |
+          set -euo pipefail
+          if [[ -z "${{ secrets.FRONTEND_ENV_OVERRIDE_B64_PROD }}" ]]; then
+            echo "Missing FRONTEND_ENV_OVERRIDE_B64_PROD secret for prod frontend deploys." >&2
+            exit 1
+          fi
+          printf '%s' '${{ secrets.FRONTEND_ENV_OVERRIDE_B64_PROD }}' | base64 --decode > "$RUNNER_TEMP/frontend.env"
+
+      - name: Run deploy target
+        env:
+          DEPLOY_ENVIRONMENT: ${{ needs.resolve.outputs.deploy_environment }}
+          DEPLOY_COMPONENT: ${{ needs.resolve.outputs.component }}
+          BACKEND_IMAGE: ${{ needs.resolve.outputs.backend_image }}
+          DRY_RUN: ${{ needs.resolve.outputs.dry_run }}
+        run: |
+          set -euo pipefail
+          args=(
+            --environment "$DEPLOY_ENVIRONMENT"
+            --component "$DEPLOY_COMPONENT"
+          )
+          if [[ -f "$RUNNER_TEMP/backend.env" ]]; then
+            args+=(--backend-env-file "$RUNNER_TEMP/backend.env")
+          fi
+          if [[ -f "$RUNNER_TEMP/frontend.env" ]]; then
+            args+=(--frontend-env-file "$RUNNER_TEMP/frontend.env")
+          fi
+          if [[ -n "$BACKEND_IMAGE" ]]; then
+            args+=(--backend-image "$BACKEND_IMAGE")
+          fi
+          if [[ "$DRY_RUN" == "true" ]]; then
+            args+=(--dry-run)
+          fi
+
+          bash scripts/ci/deploy_target.sh "${args[@]}"
+
+      - name: Install Chromium for Playwright deploy smoke
+        if: needs.resolve.outputs.dry_run != 'true' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
+        run: npx playwright install --with-deps chromium
+
+      - name: Run deployed frontend Playwright smoke
+        if: needs.resolve.outputs.dry_run != 'true' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
+        env:
+          DEPLOY_ENVIRONMENT: ${{ needs.resolve.outputs.deploy_environment }}
+          DEPLOY_COMPONENT: ${{ needs.resolve.outputs.component }}
+        run: |
+          set -euo pipefail
+          if [[ "$DEPLOY_ENVIRONMENT" == "prod" ]]; then
+            base_url="https://dullypdf.web.app"
+          else
+            base_url="https://dullypdf-dev.web.app"
+          fi
+
+          check_api_health="false"
+          if [[ "$DEPLOY_COMPONENT" == "all" ]]; then
+            check_api_health="true"
+          fi
+
+          PLAYWRIGHT_BASE_URL="$base_url" \
+          PLAYWRIGHT_API_URL="$base_url" \
+          PLAYWRIGHT_CHECK_API_HEALTH="$check_api_health" \
+          npm run test:playwright:deployed-frontend:real

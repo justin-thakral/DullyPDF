@@ -40,6 +40,7 @@ set +a
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/_artifact_registry_guard.sh"
+source "${SCRIPT_DIR}/_cloud_run_invoker_policy.sh"
 source "${SCRIPT_DIR}/_detector_routing.sh"
 
 require_nonempty() {
@@ -157,6 +158,11 @@ else
   DETECTOR_DEPLOY_ALLOW_UNAUTHENTICATED=false
 fi
 
+ALLOW_POLICY_FALLBACK="${DETECTOR_ALLOW_POLICY_PERMISSION_DENIED_FALLBACK:-false}"
+if [[ "${ENV:-}" != "prod" && "${ENV:-}" != "production" ]]; then
+  ALLOW_POLICY_FALLBACK="true"
+fi
+
 run_single_deploy_phase() {
   local target="$1"
   local service_region="$2"
@@ -236,7 +242,9 @@ else
 fi
 
 CALLER_SA="${DETECTOR_TASKS_SERVICE_ACCOUNT:-}"
-RUNTIME_SA="${DETECTOR_RUNTIME_SERVICE_ACCOUNT:-}"
+# Dev stacks historically only configured the caller service account. Reuse it as
+# the runtime identity when no dedicated detector runtime service account is set.
+RUNTIME_SA="${DETECTOR_RUNTIME_SERVICE_ACCOUNT:-${DETECTOR_TASKS_SERVICE_ACCOUNT:-}}"
 
 DETECTOR_TIMEOUT_SECONDS_LIGHT="${DETECTOR_TIMEOUT_SECONDS_LIGHT:-900}"
 DETECTOR_TIMEOUT_SECONDS_HEAVY="${DETECTOR_TIMEOUT_SECONDS_HEAVY:-1200}"
@@ -244,6 +252,7 @@ DETECTOR_MAX_INSTANCES_LIGHT="${DETECTOR_MAX_INSTANCES_LIGHT:-5}"
 DETECTOR_MAX_INSTANCES_HEAVY="${DETECTOR_MAX_INSTANCES_HEAVY:-2}"
 DETECTOR_GPU_MAX_INSTANCES_LIGHT="${DETECTOR_GPU_MAX_INSTANCES_LIGHT:-1}"
 DETECTOR_GPU_MAX_INSTANCES_HEAVY="${DETECTOR_GPU_MAX_INSTANCES_HEAVY:-1}"
+DETECTOR_TASKS_MAX_ATTEMPTS="${DETECTOR_TASKS_MAX_ATTEMPTS:-5}"
 DETECTOR_CPU_LIGHT="${DETECTOR_CPU_LIGHT:-2}"
 DETECTOR_MEMORY_LIGHT="${DETECTOR_MEMORY_LIGHT:-4Gi}"
 DETECTOR_CPU_HEAVY="${DETECTOR_CPU_HEAVY:-4}"
@@ -460,37 +469,12 @@ deploy_detector() {
 
   reset_invoker_policy() {
     local allowed_member="$1"
-    local tmp_policy
-    tmp_policy="$(mktemp)"
-
-    gcloud run services get-iam-policy "$service_name" \
-      --region "$DEPLOY_REGION" \
-      --project "$PROJECT_ID" \
-      --format=json > "$tmp_policy"
-
-    python3 - <<'PY' "$tmp_policy" "$allowed_member"
-import json
-import sys
-
-policy_path = sys.argv[1]
-allowed_member = sys.argv[2]
-
-with open(policy_path, "r", encoding="utf-8") as handle:
-    policy = json.load(handle)
-
-bindings = [binding for binding in policy.get("bindings", []) if binding.get("role") != "roles/run.invoker"]
-bindings.append({"role": "roles/run.invoker", "members": [allowed_member]})
-policy["bindings"] = bindings
-
-with open(policy_path, "w", encoding="utf-8") as handle:
-    json.dump(policy, handle)
-PY
-
-    gcloud run services set-iam-policy "$service_name" "$tmp_policy" \
-      --region "$DEPLOY_REGION" \
-      --project "$PROJECT_ID" \
-      --quiet >/dev/null
-    rm -f "$tmp_policy"
+    cloud_run_reset_invoker_policy \
+      "$service_name" \
+      "$DEPLOY_REGION" \
+      "$PROJECT_ID" \
+      "$allowed_member" \
+      "$ALLOW_POLICY_FALLBACK"
   }
   local profile_upper=""
   local sync_env_vars=""

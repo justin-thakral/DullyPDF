@@ -3,6 +3,7 @@ import { Dialog } from '../ui/Dialog';
 import type { MaterializePdfExportMode, TemplateApiSchema } from '../../services/api';
 import { resolveApiUrl } from '../../services/apiConfig';
 import type { ApiFillManagerDialogProps } from '../../hooks/useWorkspaceTemplateApi';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 import './ApiFillManagerDialog.css';
 
 type ApiExampleId = 'curl' | 'node' | 'python';
@@ -281,6 +282,16 @@ export default function ApiFillManagerDialog({
       title="API Fill"
       description="Publish a saved template as a scoped PDF fill endpoint. The generated key is server-side only and authenticates one template snapshot at a time."
       className="template-api-dialog"
+      headerActions={(
+        <button
+          type="button"
+          className="ui-button ui-button--ghost ui-button--compact"
+          onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.apiFill)}
+          title="Open API Fill usage docs in a new window"
+        >
+          Usage Docs
+        </button>
+      )}
     >
       <div className="template-api-dialog__body">
         <section className="template-api-dialog__hero">

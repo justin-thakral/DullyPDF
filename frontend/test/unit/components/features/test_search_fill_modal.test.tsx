@@ -5,6 +5,7 @@ import type { ComponentProps } from 'react';
 
 import type { CheckboxRule, PdfField, TextTransformRule } from '../../../../src/types';
 import SearchFillModal from '../../../../src/components/features/SearchFillModal';
+import { SEARCH_FILL_NO_MATCH_MESSAGE } from '../../../../src/utils/searchFillApply';
 
 function makeField(overrides: Partial<PdfField> & Pick<PdfField, 'id' | 'name' | 'type' | 'page'>): PdfField {
   return {
@@ -178,6 +179,38 @@ describe('SearchFillModal', () => {
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('keeps the dialog open when the selected record does not match any PDF field names', async () => {
+    const user = userEvent.setup();
+    const onFieldsChange = vi.fn();
+    const onAfterFill = vi.fn();
+    const onClose = vi.fn();
+    const onError = vi.fn();
+
+    render(
+      <SearchFillModal
+        {...buildProps({
+          fields: [
+            makeField({ id: 'legacy-name', name: 'commonforms_text_p1_1', type: 'text', page: 1 }),
+          ],
+          onFieldsChange,
+          onAfterFill,
+          onClose,
+          onError,
+        })}
+      />,
+    );
+
+    await runSearch('001');
+    await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+    expect(screen.getByText(SEARCH_FILL_NO_MATCH_MESSAGE)).toBeTruthy();
+    expect(onFieldsChange).not.toHaveBeenCalled();
+    expect(onAfterFill).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+    expect(screen.getByText('001 • Ada Lovelace')).toBeTruthy();
   });
 
   it('supports selecting multiple group PDF targets before filling', async () => {

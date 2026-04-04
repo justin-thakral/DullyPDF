@@ -9,6 +9,7 @@ export const ALERT_MESSAGES = {
   chooseSchemaFileForMapping: 'Connect a CSV, SQL, Excel, JSON, or TXT file before running AI mapping.',
   chooseSchemaFileForRenameAndMap: 'Connect a CSV, SQL, Excel, JSON, or TXT schema file before running mapping.',
   mappingDone: 'Field mapping is done.',
+  templateInputsCleared: 'Current field inputs were cleared because the template definition changed. Run Search & Fill again to validate the updated template.',
 } as const;
 
 export const buildImportFileBeforeMapping = (dataSourceKind: string) =>

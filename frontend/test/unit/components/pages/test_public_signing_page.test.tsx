@@ -210,6 +210,49 @@ describe('PublicSigningPage', () => {
     });
   });
 
+  it('verifies using the live input value so OTP autofill-style fills still submit', async () => {
+    const user = userEvent.setup();
+    vi.mocked(ApiService.getPublicSigningRequest).mockResolvedValue(
+      buildRequest({
+        verificationRequired: true,
+      }),
+    );
+    vi.mocked(ApiService.startPublicSigningSession).mockResolvedValue({
+      request: buildRequest({
+        verificationRequired: true,
+      }),
+      session: { id: 'session-verify', token: 'session-token-verify', expiresAt: '2026-03-24T13:02:00Z' },
+    });
+    vi.mocked(ApiService.verifyPublicSigningVerificationCode).mockResolvedValue({
+      request: buildRequest({
+        verificationRequired: true,
+        openedAt: '2026-03-24T12:02:00Z',
+      }),
+      session: {
+        id: 'session-verify',
+        token: 'session-token-verify',
+        expiresAt: '2026-03-24T13:02:00Z',
+        verifiedAt: '2026-03-24T12:01:30Z',
+      },
+    });
+
+    render(<PublicSigningPage token="token-verify-autofill" />);
+
+    const verificationInput = await screen.findByLabelText('Verification code') as HTMLInputElement;
+    verificationInput.value = '654321';
+
+    await user.click(screen.getByRole('button', { name: 'Verify code' }));
+
+    await waitFor(() => {
+      expect(ApiService.verifyPublicSigningVerificationCode).toHaveBeenCalledWith(
+        'token-verify-autofill',
+        'session-token-verify',
+        '654321',
+      );
+    });
+    expect(await screen.findByText('Review the exact record')).toBeTruthy();
+  });
+
   it('shows an error and skips download when issuing a short-lived artifact link fails', async () => {
     const user = userEvent.setup();
     vi.mocked(ApiService.getPublicSigningRequest).mockResolvedValue(
@@ -266,6 +309,48 @@ describe('PublicSigningPage', () => {
     });
     expect(ApiService.downloadPublicSigningFile).not.toHaveBeenCalled();
     expect(await screen.findByText('Artifact download expired. Reload the page and try again.')).toBeTruthy();
+  });
+
+  it('shows locked artifact actions while a parallel envelope is still waiting on other signers', async () => {
+    const completedRequest = buildRequest({
+      status: 'completed',
+      statusMessage: 'This signing request has already been completed.',
+      completedAt: '2026-03-24T12:05:00Z',
+      validationPath: '/verify-signing/validation-token-1',
+      envelopeId: 'env-1',
+      envelope: {
+        id: 'env-1',
+        signingMode: 'parallel',
+        signerCount: 2,
+        completedSignerCount: 1,
+        status: 'partial',
+      },
+      artifacts: {
+        signedPdf: {
+          available: false,
+          downloadPath: null,
+        },
+        auditReceipt: {
+          available: false,
+          downloadPath: null,
+        },
+      },
+    });
+    vi.mocked(ApiService.getPublicSigningRequest).mockResolvedValue(completedRequest);
+    vi.mocked(ApiService.startPublicSigningSession).mockResolvedValue({
+      request: completedRequest,
+      session: { id: 'session-1', token: 'session-token-1', expiresAt: '2026-03-24T13:02:00Z' },
+    });
+
+    render(<PublicSigningPage token="token-envelope-pending" />);
+
+    expect(await screen.findByText(/Completed artifacts unlock after every signer finishes this envelope/i)).toBeTruthy();
+    expect(screen.getAllByText('1/2 signers completed')).toHaveLength(3);
+
+    expect((screen.getByRole('button', { name: 'Download signed PDF' }) as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole('button', { name: 'Download audit receipt' }) as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole('button', { name: 'Validate retained record' }) as HTMLButtonElement).disabled).toBe(true);
+    expect(screen.getByRole('button', { name: 'Open original immutable source' })).toBeTruthy();
   });
 
   it('collects company authority fields before completing a company-binding request', async () => {

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { FillLinkManagerDialog } from '../../../../src/components/features/FillLinkManagerDialog';
 import { ApiService } from '../../../../src/services/api';
@@ -141,6 +142,16 @@ describe('FillLinkManagerDialog', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Close Fill By Web Form Link + Sign dialog' }));
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens fill-by-link usage docs in a new window and removes the old topbar subtitle copy', async () => {
+    renderGroupDialog();
+
+    expect(screen.queryByText('Build a DullyPDF-hosted web form, collect respondent answers, and optionally route them into signature.')).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Usage Docs' }));
+
+    expect(window.open).toHaveBeenCalledWith('/usage-docs/fill-by-link', '_blank', 'noopener,noreferrer');
   });
 
   it('shows visible feedback after copying the public link', async () => {

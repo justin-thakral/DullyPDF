@@ -29,6 +29,7 @@ export interface UseWorkspaceSigningDeps {
 
 export type WorkspaceSigningDraftPayload = Omit<CreateSigningRequestPayload, 'signerName' | 'signerEmail'> & {
   recipients: SigningRecipientInput[];
+  signingMode?: 'separate' | 'parallel' | 'sequential';
 };
 
 type PreparedSigningSource = {
@@ -63,6 +64,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
   const [signingError, setSigningError] = useState<string | null>(null);
   const [signingNotice, setSigningNotice] = useState<string | null>(null);
   const [createdSigningRequests, setCreatedSigningRequests] = useState<SigningRequestSummary[]>([]);
+  const [createdEnvelopeId, setCreatedEnvelopeId] = useState<string | null>(null);
   const [preparedSigningSource, setPreparedSigningSource] = useState<PreparedSigningSource | null>(null);
 
   const defaultAnchors = useMemo(
@@ -78,6 +80,7 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
     setSigningError(null);
     setSigningNotice(null);
     setCreatedSigningRequests([]);
+    setCreatedEnvelopeId(null);
     setPreparedSigningSource(null);
     if (!signingOptions) {
       setSigningOptionsRequested(true);
@@ -155,45 +158,67 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
       }
       const nextPreparedSigningSource = await prepareSigningSource(payload.mode);
       const fillContext = payload.mode === 'fill_and_sign' ? deps.reviewedFillContext ?? null : null;
-      const created: SigningRequestSummary[] = [];
-      const failed: string[] = [];
-      for (const recipient of recipients) {
-        try {
-          const request = await ApiService.createSigningRequest({
-            ...payload,
-            title: buildRecipientSpecificTitle(payload.title, recipient, recipients.length),
-            sourceType: fillContext?.sourceType || payload.sourceType,
-            sourceId: fillContext?.sourceId || payload.sourceId,
-            sourceLinkId: fillContext?.sourceLinkId || undefined,
-            sourceRecordLabel: fillContext?.sourceRecordLabel || undefined,
-            sourcePdfSha256: nextPreparedSigningSource.sourcePdfSha256,
-            signerName: recipient.name,
-            signerEmail: recipient.email,
-          });
-          created.push(request);
-        } catch (error) {
-          const detail = error instanceof Error ? error.message : 'Unable to save draft';
-          failed.push(`${recipient.email}: ${detail}`);
+
+      const useEnvelope = payload.signingMode === 'parallel' || payload.signingMode === 'sequential';
+
+      if (useEnvelope) {
+        const result = await ApiService.createSigningEnvelope({
+          ...payload,
+          signingMode: payload.signingMode || 'parallel',
+          sourceType: fillContext?.sourceType || payload.sourceType,
+          sourceId: fillContext?.sourceId || payload.sourceId,
+          sourceLinkId: fillContext?.sourceLinkId || undefined,
+          sourceRecordLabel: fillContext?.sourceRecordLabel || undefined,
+          sourcePdfSha256: nextPreparedSigningSource.sourcePdfSha256,
+          recipients: recipients.map((r, i) => ({ name: r.name, email: r.email, order: i + 1 })),
+        });
+        setCreatedEnvelopeId(result.envelope.id);
+        setCreatedSigningRequests(result.requests);
+        setPreparedSigningSource(nextPreparedSigningSource);
+        await refreshResponses();
+        setSigningNotice(`Saved signing envelope with ${result.requests.length} signers.`);
+      } else {
+        const created: SigningRequestSummary[] = [];
+        const failed: string[] = [];
+        for (const recipient of recipients) {
+          try {
+            const request = await ApiService.createSigningRequest({
+              ...payload,
+              title: buildRecipientSpecificTitle(payload.title, recipient, recipients.length),
+              sourceType: fillContext?.sourceType || payload.sourceType,
+              sourceId: fillContext?.sourceId || payload.sourceId,
+              sourceLinkId: fillContext?.sourceLinkId || undefined,
+              sourceRecordLabel: fillContext?.sourceRecordLabel || undefined,
+              sourcePdfSha256: nextPreparedSigningSource.sourcePdfSha256,
+              signerName: recipient.name,
+              signerEmail: recipient.email,
+            });
+            created.push(request);
+          } catch (error) {
+            const detail = error instanceof Error ? error.message : 'Unable to save draft';
+            failed.push(`${recipient.email}: ${detail}`);
+          }
         }
-      }
-      setCreatedSigningRequests(created);
-      setPreparedSigningSource(created.length ? nextPreparedSigningSource : null);
-      await refreshResponses();
-      if (created.length) {
-        setSigningNotice(
-          created.length === 1
-            ? `Saved 1 signing draft for ${created[0].signerEmail}.`
-            : `Saved ${created.length} signing drafts.`,
-        );
-      }
-      if (failed.length) {
-        setSigningError(
-          failed.length === 1 && created.length <= 1
-            ? failed[0].replace(/^[^:]+:\s*/, '')
-            : created.length
-              ? `Some drafts failed: ${failed.join(' | ')}`
-              : failed.join(' | '),
-        );
+        setCreatedEnvelopeId(null);
+        setCreatedSigningRequests(created);
+        setPreparedSigningSource(created.length ? nextPreparedSigningSource : null);
+        await refreshResponses();
+        if (created.length) {
+          setSigningNotice(
+            created.length === 1
+              ? `Saved 1 signing draft for ${created[0].signerEmail}.`
+              : `Saved ${created.length} signing drafts.`,
+          );
+        }
+        if (failed.length) {
+          setSigningError(
+            failed.length === 1 && created.length <= 1
+              ? failed[0].replace(/^[^:]+:\s*/, '')
+              : created.length
+                ? `Some drafts failed: ${failed.join(' | ')}`
+                : failed.join(' | '),
+          );
+        }
       }
     } catch (error) {
       setSigningError(error instanceof Error ? error.message : 'Unable to save signing draft.');
@@ -230,57 +255,72 @@ export function useWorkspaceSigning(deps: UseWorkspaceSigningDeps) {
       if (!preparedSigningSource || preparedSigningSource.mode !== activePreparedSigningSource.mode) {
         setPreparedSigningSource(activePreparedSigningSource);
       }
-      const nextRequests: SigningRequestSummary[] = [];
-      const failed: string[] = [];
-      for (const request of createdSigningRequests) {
-        if (request.status !== 'draft') {
-          nextRequests.push(request);
-          continue;
-        }
-        try {
-          const sentRequest = await ApiService.sendSigningRequest(request.id, {
-            pdf: new Blob([activePreparedSigningSource.pdfBytes], { type: 'application/pdf' }),
-            filename: activePreparedSigningSource.filename,
-            sourcePdfSha256: activePreparedSigningSource.sourcePdfSha256,
-            ownerReviewConfirmed: options?.ownerReviewConfirmed,
-          });
-          nextRequests.push(sentRequest);
-        } catch (error) {
-          try {
-            const refreshed = await ApiService.getSigningRequest(request.id);
-            nextRequests.push(refreshed);
-          } catch {
-            nextRequests.push(request);
-          }
-          const detail = error instanceof Error ? error.message : 'Unable to send signing request.';
-          failed.push(`${request.signerEmail}: ${detail}`);
-        }
-      }
-      setCreatedSigningRequests(nextRequests);
-      await refreshResponses();
-      const sentCount = nextRequests.filter((entry) => entry.status === 'sent').length;
-      if (sentCount) {
+
+      const sendPayload = {
+        pdf: new Blob([activePreparedSigningSource.pdfBytes], { type: 'application/pdf' }),
+        filename: activePreparedSigningSource.filename,
+        sourcePdfSha256: activePreparedSigningSource.sourcePdfSha256,
+        ownerReviewConfirmed: options?.ownerReviewConfirmed,
+      };
+
+      if (createdEnvelopeId) {
+        const result = await ApiService.sendSigningEnvelope(createdEnvelopeId, sendPayload);
+        setCreatedSigningRequests(result.requests);
+        await refreshResponses();
+        const sentCount = result.requests.filter((r) => r.status === 'sent').length;
         setSigningNotice(
           sentCount === 1
             ? `Sent 1 signing request.`
             : `Sent ${sentCount} signing requests.`,
         );
-      }
-      if (failed.length) {
-        setSigningError(
-          failed.length === 1 && nextRequests.length <= 1
-            ? failed[0].replace(/^[^:]+:\s*/, '')
-            : sentCount
-              ? `Some requests failed to send: ${failed.join(' | ')}`
-              : failed.join(' | '),
-        );
+      } else {
+        const nextRequests: SigningRequestSummary[] = [];
+        const failed: string[] = [];
+        for (const request of createdSigningRequests) {
+          if (request.status !== 'draft') {
+            nextRequests.push(request);
+            continue;
+          }
+          try {
+            const sentRequest = await ApiService.sendSigningRequest(request.id, sendPayload);
+            nextRequests.push(sentRequest);
+          } catch (error) {
+            try {
+              const refreshed = await ApiService.getSigningRequest(request.id);
+              nextRequests.push(refreshed);
+            } catch {
+              nextRequests.push(request);
+            }
+            const detail = error instanceof Error ? error.message : 'Unable to send signing request.';
+            failed.push(`${request.signerEmail}: ${detail}`);
+          }
+        }
+        setCreatedSigningRequests(nextRequests);
+        await refreshResponses();
+        const sentCount = nextRequests.filter((entry) => entry.status === 'sent').length;
+        if (sentCount) {
+          setSigningNotice(
+            sentCount === 1
+              ? `Sent 1 signing request.`
+              : `Sent ${sentCount} signing requests.`,
+          );
+        }
+        if (failed.length) {
+          setSigningError(
+            failed.length === 1 && nextRequests.length <= 1
+              ? failed[0].replace(/^[^:]+:\s*/, '')
+              : sentCount
+                ? `Some requests failed to send: ${failed.join(' | ')}`
+                : failed.join(' | '),
+          );
+        }
       }
     } catch (error) {
       setSigningError(error instanceof Error ? error.message : 'Unable to send signing request.');
     } finally {
       setSigningSendInProgress(false);
     }
-  }, [createdSigningRequests, prepareSigningSource, preparedSigningSource, refreshResponses]);
+  }, [createdEnvelopeId, createdSigningRequests, prepareSigningSource, preparedSigningSource, refreshResponses]);
 
   const sendDisabledReason = useMemo(() => {
     if (!createdSigningRequests.length) return null;

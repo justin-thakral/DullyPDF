@@ -30,10 +30,6 @@
   color: #64748b;
 }
 
-.fill-link-dialog__intro {
-  font-weight: 400;
-}
-
 .fill-link-dialog__body {
   display: flex;
   flex-direction: column;
@@ -141,16 +137,6 @@
   font-weight: 500;
   color: #0f172a;
   white-space: nowrap;
-}
-
-.fill-link-dialog__headline-copy {
-  min-width: 0;
-  font-size: 0.84rem;
-  line-height: 1.35;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .fill-link-dialog__topbar .fill-link-dialog__tabs,

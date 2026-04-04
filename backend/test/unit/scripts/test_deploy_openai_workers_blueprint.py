@@ -16,6 +16,7 @@ def test_deploy_openai_workers_requires_dedicated_runtime_service_accounts_in_pr
     text = _script_text()
     assert 'REGION="${REGION:-${OPENAI_RENAME_REMAP_TASKS_LOCATION:-us-east4}}"' in text
     assert 'source "${SCRIPT_DIR}/_artifact_registry_guard.sh"' in text
+    assert 'source "${SCRIPT_DIR}/_cloud_run_invoker_policy.sh"' in text
     assert 'ARTIFACT_REGISTRY_LOCATION="${ARTIFACT_REGISTRY_LOCATION:-us-east4}"' in text
     assert 'require_prod_artifact_registry_location "OpenAI worker Artifact Registry location" "$ARTIFACT_REGISTRY_LOCATION"' in text
     assert 'require_prod_artifact_registry_repo "WORKER_ARTIFACT_REPO" "$ARTIFACT_REPO"' in text
@@ -25,7 +26,7 @@ def test_deploy_openai_workers_requires_dedicated_runtime_service_accounts_in_pr
     assert "require_empty FIREBASE_CREDENTIALS" in text
     assert "require_empty FIREBASE_CREDENTIALS_SECRET" in text
     assert "require_empty GOOGLE_APPLICATION_CREDENTIALS" in text
-    assert 'RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-}"' in text
+    assert 'RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT:-}}"' in text
     assert "OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT must differ from OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT in prod." in text
 
 
@@ -55,7 +56,8 @@ def test_deploy_openai_workers_only_binds_the_openai_api_secret() -> None:
 
 def test_deploy_openai_workers_resets_invoker_policy_to_only_the_expected_caller() -> None:
     text = _script_text()
-    assert 'gcloud run services get-iam-policy "$service_name"' in text
-    assert 'binding.get("role") != "roles/run.invoker"' in text
-    assert 'bindings.append({"role": "roles/run.invoker", "members": [allowed_member]})' in text
-    assert 'gcloud run services set-iam-policy "$service_name" "$tmp_policy"' in text
+    assert 'ALLOW_POLICY_FALLBACK="${OPENAI_RENAME_REMAP_ALLOW_POLICY_PERMISSION_DENIED_FALLBACK:-false}"' in text
+    assert 'if [[ "${ENV:-}" != "prod" && "${ENV:-}" != "production" ]]; then' in text
+    assert 'cloud_run_reset_invoker_policy \\' in text
+    assert '"$ALLOW_POLICY_FALLBACK"' in text
+    assert '"true"' in text

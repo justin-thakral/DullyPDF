@@ -44,6 +44,10 @@ export function useFillLinks(deps: UseFillLinksDeps) {
   const scopeKeyRef = useRef(`${deps.scopeType}:${deps.scopeId ?? ''}`);
   const currentLinkRef = useRef<FillLinkSummary | null>(null);
   const responsesRef = useRef<FillLinkResponse[]>([]);
+  const scopeLoadInFlightRef = useRef<{
+    key: string;
+    promise: Promise<FillLinkSummary | null>;
+  } | null>(null);
   const scopeRequestVersionRef = useRef(0);
   const responsesRequestVersionRef = useRef(0);
   const mountedRef = useRef(true);
@@ -65,12 +69,14 @@ export function useFillLinks(deps: UseFillLinksDeps) {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
+      scopeLoadInFlightRef.current = null;
       scopeRequestVersionRef.current += 1;
       responsesRequestVersionRef.current += 1;
     };
   }, []);
 
   const reset = useCallback(() => {
+    scopeLoadInFlightRef.current = null;
     scopeRequestVersionRef.current += 1;
     responsesRequestVersionRef.current += 1;
     currentLinkRef.current = null;
@@ -131,58 +137,75 @@ export function useFillLinks(deps: UseFillLinksDeps) {
   );
 
   const loadCurrentScopeLink = useCallback(async () => {
-    if (!deps.verifiedUser || !deps.scopeId) {
+    const scopeId = deps.scopeId;
+    if (!deps.verifiedUser || !scopeId) {
       reset();
       return null;
     }
-    const requestVersion = scopeRequestVersionRef.current + 1;
-    scopeRequestVersionRef.current = requestVersion;
-    setLoadingLink(true);
-    setError(null);
-    try {
-      const links = await ApiService.getFillLinks(
-        deps.scopeType === 'group'
-          ? { groupId: deps.scopeId, scopeType: 'group' }
-          : { templateId: deps.scopeId, scopeType: 'template' },
-      );
-      if (!mountedRef.current || scopeRequestVersionRef.current !== requestVersion) {
-        return currentLinkRef.current;
-      }
-      const nextLink = links[0] ?? null;
-      currentLinkRef.current = nextLink;
-      setCurrentLink(nextLink);
-      if (!nextLink) {
-        responsesRef.current = [];
-        setResponses([]);
-        return null;
-      }
-      if (nextLink.id) {
-        void fetchResponsesForLink(nextLink.id).catch((responseError) => {
-          if (!mountedRef.current || scopeRequestVersionRef.current !== requestVersion) {
-            return;
-          }
-          const message = responseError instanceof Error ? responseError.message : 'Failed to load respondent responses.';
-          setError(message);
-          deps.setBannerNotice({ tone: 'error', message });
-        });
-      }
-      return nextLink;
-    } catch (nextError) {
-      if (!mountedRef.current || scopeRequestVersionRef.current !== requestVersion) {
-        return currentLinkRef.current;
-      }
-      const message = nextError instanceof Error ? nextError.message : `Failed to load ${scopeLabel} Fill By Link.`;
-      setError(message);
-      deps.setBannerNotice({ tone: 'error', message });
-      return null;
-    } finally {
-      if (mountedRef.current && scopeRequestVersionRef.current === requestVersion) {
-        setLoadingLink(false);
-      }
+    const inFlightKey = `${deps.scopeType}:${scopeId}`;
+    if (scopeLoadInFlightRef.current?.key === inFlightKey) {
+      return scopeLoadInFlightRef.current.promise;
     }
+    const loadPromise = (async () => {
+      const requestVersion = scopeRequestVersionRef.current + 1;
+      scopeRequestVersionRef.current = requestVersion;
+      setLoadingLink(true);
+      setError(null);
+      try {
+        const links = await ApiService.getFillLinks(
+          deps.scopeType === 'group'
+            ? { groupId: scopeId, scopeType: 'group' }
+            : { templateId: scopeId, scopeType: 'template' },
+        );
+        if (!mountedRef.current || scopeRequestVersionRef.current !== requestVersion) {
+          return currentLinkRef.current;
+        }
+        const nextLink = links[0] ?? null;
+        currentLinkRef.current = nextLink;
+        setCurrentLink(nextLink);
+        if (!nextLink) {
+          responsesRef.current = [];
+          setResponses([]);
+          return null;
+        }
+        if (nextLink.id) {
+          void fetchResponsesForLink(nextLink.id).catch((responseError) => {
+            if (!mountedRef.current || scopeRequestVersionRef.current !== requestVersion) {
+              return;
+            }
+            const message = responseError instanceof Error ? responseError.message : 'Failed to load respondent responses.';
+            setError(message);
+            deps.setBannerNotice({ tone: 'error', message });
+          });
+        }
+        return nextLink;
+      } catch (nextError) {
+        if (!mountedRef.current || scopeRequestVersionRef.current !== requestVersion) {
+          return currentLinkRef.current;
+        }
+        const message = nextError instanceof Error ? nextError.message : `Failed to load ${scopeLabel} Fill By Link.`;
+        setError(message);
+        deps.setBannerNotice({ tone: 'error', message });
+        return null;
+      } finally {
+        if (mountedRef.current && scopeRequestVersionRef.current === requestVersion) {
+          setLoadingLink(false);
+        }
+      }
+    })();
+    const trackedPromise = loadPromise.finally(() => {
+      if (scopeLoadInFlightRef.current?.promise === trackedPromise) {
+        scopeLoadInFlightRef.current = null;
+      }
+    });
+    scopeLoadInFlightRef.current = {
+      key: inFlightKey,
+      promise: trackedPromise,
+    };
+    return trackedPromise;
   }, [deps.scopeId, deps.scopeType, deps.setBannerNotice, deps.verifiedUser, fetchResponsesForLink, reset, scopeLabel]);
 
-  const refreshForScope = useCallback(async () => {
+  const refreshForScope = useCallback(() => {
     return loadCurrentScopeLink();
   }, [loadCurrentScopeLink]);
 

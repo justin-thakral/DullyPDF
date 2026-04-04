@@ -25,6 +25,11 @@ def _payload(**overrides):
     return payload
 
 
+@pytest.fixture(autouse=True)
+def _stub_job_updates(mocker) -> None:
+    mocker.patch.object(worker, "update_openai_job", return_value=None)
+
+
 def test_require_internal_auth_accepts_configured_audience(mocker, monkeypatch) -> None:
     worker._ALLOW_UNAUTHENTICATED = False
     monkeypatch.delenv("OPENAI_RENAME_REMAP_SERVICE_URL", raising=False)

@@ -35,6 +35,20 @@ SIGNING_REQUESTS_COLLECTION = "signing_requests"
 SIGNING_EVENTS_COLLECTION = "signing_events"
 SIGNING_SESSIONS_COLLECTION = "signing_sessions"
 SIGNING_USAGE_COUNTERS_COLLECTION = "signing_usage_counters"
+SIGNING_ENVELOPES_COLLECTION = "signing_envelopes"
+
+SIGNING_MODE_SEPARATE = "separate"
+SIGNING_MODE_PARALLEL = "parallel"
+SIGNING_MODE_SEQUENTIAL = "sequential"
+# Backward-compatible aliases
+SIGNING_ORDER_PARALLEL = SIGNING_MODE_PARALLEL
+SIGNING_ORDER_SEQUENTIAL = SIGNING_MODE_SEQUENTIAL
+
+ENVELOPE_STATUS_DRAFT = "draft"
+ENVELOPE_STATUS_SENT = "sent"
+ENVELOPE_STATUS_PARTIAL = "partial"
+ENVELOPE_STATUS_COMPLETED = "completed"
+ENVELOPE_STATUS_INVALIDATED = "invalidated"
 
 
 def _supports_firestore_transaction(transaction: Any) -> bool:
@@ -188,6 +202,54 @@ class SigningRequestRecord:
     invalidated_at: Optional[str]
     invalidation_reason: Optional[str]
     public_app_origin: Optional[str] = None
+    envelope_id: Optional[str] = None
+    signer_order: int = 1
+    turn_activated_at: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class SigningEnvelopeRecord:
+    id: str
+    user_id: str
+    title: Optional[str]
+    mode: str
+    signature_mode: str
+    signing_mode: str
+    signer_count: int
+    completed_signer_count: int
+    status: str
+    source_document_name: str
+    source_type: str
+    source_id: Optional[str]
+    source_link_id: Optional[str]
+    source_record_label: Optional[str]
+    source_template_id: Optional[str]
+    source_template_name: Optional[str]
+    source_pdf_sha256: Optional[str]
+    source_pdf_bucket_path: Optional[str]
+    source_version: Optional[str]
+    document_category: str
+    esign_eligibility_confirmed_at: Optional[str]
+    company_binding_enabled: bool
+    manual_fallback_enabled: bool
+    consumer_paper_copy_procedure: Optional[str]
+    consumer_paper_copy_fee_description: Optional[str]
+    consumer_withdrawal_procedure: Optional[str]
+    consumer_withdrawal_consequences: Optional[str]
+    consumer_contact_update_procedure: Optional[str]
+    consumer_consent_scope_override: Optional[str]
+    anchors: List[Dict[str, Any]]
+    signed_pdf_bucket_path: Optional[str]
+    signed_pdf_sha256: Optional[str]
+    audit_manifest_bucket_path: Optional[str]
+    audit_manifest_sha256: Optional[str]
+    audit_receipt_bucket_path: Optional[str]
+    audit_receipt_sha256: Optional[str]
+    created_at: Optional[str]
+    updated_at: Optional[str]
+    completed_at: Optional[str]
+    expires_at: Optional[str]
+    public_app_origin: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -391,6 +453,9 @@ def _serialize_signing_request(doc) -> SigningRequestRecord:
         invalidated_at=_coerce_optional_text(data.get("invalidated_at")),
         invalidation_reason=_coerce_optional_text(data.get("invalidation_reason")),
         public_app_origin=_coerce_optional_text(data.get("public_app_origin")),
+        envelope_id=_coerce_optional_text(data.get("envelope_id")),
+        signer_order=_coerce_nonnegative_int(data.get("signer_order")) or 1,
+        turn_activated_at=_coerce_optional_text(data.get("turn_activated_at")),
     )
 
 
@@ -447,6 +512,53 @@ def _serialize_signing_session(doc) -> SigningSessionRecord:
     )
 
 
+def _serialize_signing_envelope(doc) -> SigningEnvelopeRecord:
+    data = doc.to_dict() or {}
+    return SigningEnvelopeRecord(
+        id=doc.id,
+        user_id=str(data.get("user_id") or "").strip(),
+        title=_coerce_optional_text(data.get("title")),
+        mode=str(data.get("mode") or "sign").strip() or "sign",
+        signature_mode=str(data.get("signature_mode") or "business").strip() or "business",
+        signing_mode=str(data.get("signing_mode") or data.get("signing_order") or SIGNING_MODE_PARALLEL).strip() or SIGNING_MODE_PARALLEL,
+        signer_count=_coerce_nonnegative_int(data.get("signer_count")),
+        completed_signer_count=_coerce_nonnegative_int(data.get("completed_signer_count")),
+        status=str(data.get("status") or ENVELOPE_STATUS_DRAFT).strip() or ENVELOPE_STATUS_DRAFT,
+        source_document_name=str(data.get("source_document_name") or "").strip(),
+        source_type=str(data.get("source_type") or "workspace").strip() or "workspace",
+        source_id=_coerce_optional_text(data.get("source_id")),
+        source_link_id=_coerce_optional_text(data.get("source_link_id")),
+        source_record_label=_coerce_optional_text(data.get("source_record_label")),
+        source_template_id=_coerce_optional_text(data.get("source_template_id")),
+        source_template_name=_coerce_optional_text(data.get("source_template_name")),
+        source_pdf_sha256=_coerce_optional_text(data.get("source_pdf_sha256")),
+        source_pdf_bucket_path=_coerce_optional_text(data.get("source_pdf_bucket_path")),
+        source_version=_coerce_optional_text(data.get("source_version")),
+        document_category=str(data.get("document_category") or "").strip(),
+        esign_eligibility_confirmed_at=_coerce_optional_text(data.get("esign_eligibility_confirmed_at")),
+        company_binding_enabled=bool(data.get("company_binding_enabled")),
+        manual_fallback_enabled=bool(data.get("manual_fallback_enabled")),
+        consumer_paper_copy_procedure=_coerce_optional_text(data.get("consumer_paper_copy_procedure")),
+        consumer_paper_copy_fee_description=_coerce_optional_text(data.get("consumer_paper_copy_fee_description")),
+        consumer_withdrawal_procedure=_coerce_optional_text(data.get("consumer_withdrawal_procedure")),
+        consumer_withdrawal_consequences=_coerce_optional_text(data.get("consumer_withdrawal_consequences")),
+        consumer_contact_update_procedure=_coerce_optional_text(data.get("consumer_contact_update_procedure")),
+        consumer_consent_scope_override=_coerce_optional_text(data.get("consumer_consent_scope_override")),
+        anchors=_coerce_dict_list(data.get("anchors")),
+        signed_pdf_bucket_path=_coerce_optional_text(data.get("signed_pdf_bucket_path")),
+        signed_pdf_sha256=_coerce_optional_text(data.get("signed_pdf_sha256")),
+        audit_manifest_bucket_path=_coerce_optional_text(data.get("audit_manifest_bucket_path")),
+        audit_manifest_sha256=_coerce_optional_text(data.get("audit_manifest_sha256")),
+        audit_receipt_bucket_path=_coerce_optional_text(data.get("audit_receipt_bucket_path")),
+        audit_receipt_sha256=_coerce_optional_text(data.get("audit_receipt_sha256")),
+        created_at=_coerce_optional_text(data.get("created_at")),
+        updated_at=_coerce_optional_text(data.get("updated_at")),
+        completed_at=_coerce_optional_text(data.get("completed_at")),
+        expires_at=_coerce_optional_text(data.get("expires_at")),
+        public_app_origin=_coerce_optional_text(data.get("public_app_origin")),
+    )
+
+
 class _MergedSnapshot:
     """Lightweight stand-in that satisfies _serialize_signing_request(doc)."""
 
@@ -499,6 +611,8 @@ def create_signing_request(
     consumer_contact_update_procedure: Optional[str] = None,
     consumer_consent_scope_override: Optional[str] = None,
     invite_method: Optional[str] = None,
+    envelope_id: Optional[str] = None,
+    signer_order: int = 1,
     client=None,
 ) -> SigningRequestRecord:
     firestore_client = client or get_firestore_client()
@@ -620,6 +734,9 @@ def create_signing_request(
         "invalidated_at": None,
         "invalidation_reason": None,
         "public_app_origin": None,
+        "envelope_id": _coerce_optional_text(envelope_id),
+        "signer_order": max(1, int(signer_order or 1)),
+        "turn_activated_at": None,
     }
     doc_ref = firestore_client.collection(SIGNING_REQUESTS_COLLECTION).document(request_id)
     doc_ref.set(payload)
@@ -1068,6 +1185,7 @@ def mark_signing_request_sent(
     source_pdf_bucket_path: str,
     source_pdf_sha256: str,
     source_version: Optional[str],
+    invite_delivery_status: Optional[str] = None,
     monthly_limit: Optional[int] = None,
     owner_review_confirmed_at: Optional[str] = None,
     public_app_origin: Optional[str] = None,
@@ -1080,6 +1198,7 @@ def mark_signing_request_sent(
     firestore_client = client or get_firestore_client()
     doc_ref = firestore_client.collection(SIGNING_REQUESTS_COLLECTION).document(normalized_request_id)
     normalized_monthly_limit = None if monthly_limit is None else max(0, int(monthly_limit))
+    normalized_invite_delivery_status = _coerce_optional_text(invite_delivery_status) or "pending"
 
     def _build_sent_payload(data: Dict[str, Any], *, now_value: str, quota_month_key: Optional[str]) -> Dict[str, Any]:
         request_expires_at = resolve_signing_request_expires_at(sent_at=now_value)
@@ -1095,7 +1214,7 @@ def mark_signing_request_sent(
             "source_version": str(source_version or "").strip() or None,
             "signer_contact_method": transport.signer_contact_method,
             "signer_auth_method": transport.signer_auth_method,
-            "invite_delivery_status": "pending",
+            "invite_delivery_status": normalized_invite_delivery_status,
             "invite_last_attempt_at": None,
             "invite_sent_at": None,
             "invite_delivery_error": None,
@@ -2007,6 +2126,7 @@ def reissue_signing_request(
     user_id: str,
     *,
     public_app_origin: Optional[str] = None,
+    invite_delivery_status: Optional[str] = None,
     client=None,
 ) -> Optional[SigningRequestRecord]:
     normalized_request_id = str(request_id or "").strip()
@@ -2024,6 +2144,7 @@ def reissue_signing_request(
     current_status = str(data.get("status") or "").strip()
     current_revoked_at = _coerce_optional_text(data.get("public_link_revoked_at"))
     source_pdf_bucket_path = _coerce_optional_text(data.get("source_pdf_bucket_path"))
+    normalized_invite_delivery_status = _coerce_optional_text(invite_delivery_status) or "pending"
     if not source_pdf_bucket_path:
         return _serialize_signing_request(snapshot)
     if current_status == SIGNING_STATUS_INVALIDATED and not current_revoked_at:
@@ -2047,7 +2168,7 @@ def reissue_signing_request(
             "public_link_last_reissued_at": now_value,
             "signer_contact_method": transport.signer_contact_method,
             "signer_auth_method": transport.signer_auth_method,
-            "invite_delivery_status": "pending",
+            "invite_delivery_status": normalized_invite_delivery_status,
             "invite_last_attempt_at": None,
             "invite_sent_at": None,
             "invite_delivery_error": None,
@@ -2115,3 +2236,208 @@ def reissue_signing_request(
         merge=True,
     )
     return _serialize_signing_request(doc_ref.get())
+
+
+# ---------------------------------------------------------------------------
+# Signing envelope CRUD
+# ---------------------------------------------------------------------------
+
+
+def create_signing_envelope(
+    *,
+    user_id: str,
+    title: Optional[str],
+    mode: str,
+    signature_mode: str,
+    signing_mode: str,
+    signer_count: int,
+    source_type: str,
+    source_document_name: str,
+    document_category: str,
+    manual_fallback_enabled: bool,
+    anchors: List[Dict[str, Any]],
+    source_id: Optional[str] = None,
+    source_link_id: Optional[str] = None,
+    source_record_label: Optional[str] = None,
+    source_template_id: Optional[str] = None,
+    source_template_name: Optional[str] = None,
+    source_pdf_sha256: Optional[str] = None,
+    source_version: Optional[str] = None,
+    company_binding_enabled: bool = False,
+    esign_eligibility_confirmed_at: Optional[str] = None,
+    consumer_paper_copy_procedure: Optional[str] = None,
+    consumer_paper_copy_fee_description: Optional[str] = None,
+    consumer_withdrawal_procedure: Optional[str] = None,
+    consumer_withdrawal_consequences: Optional[str] = None,
+    consumer_contact_update_procedure: Optional[str] = None,
+    consumer_consent_scope_override: Optional[str] = None,
+    client=None,
+) -> SigningEnvelopeRecord:
+    firestore_client = client or get_firestore_client()
+    now_value = now_iso()
+    envelope_id = uuid4().hex
+    payload = {
+        "user_id": str(user_id or "").strip(),
+        "title": _coerce_optional_text(title),
+        "mode": mode,
+        "signature_mode": signature_mode,
+        "signing_mode": signing_mode if signing_mode in (SIGNING_MODE_PARALLEL, SIGNING_MODE_SEQUENTIAL) else SIGNING_MODE_PARALLEL,
+        "signer_count": max(1, int(signer_count or 1)),
+        "completed_signer_count": 0,
+        "status": ENVELOPE_STATUS_DRAFT,
+        "source_type": source_type,
+        "source_document_name": source_document_name,
+        "source_id": _coerce_optional_text(source_id),
+        "source_link_id": _coerce_optional_text(source_link_id),
+        "source_record_label": _coerce_optional_text(source_record_label),
+        "source_template_id": _coerce_optional_text(source_template_id),
+        "source_template_name": _coerce_optional_text(source_template_name),
+        "source_pdf_sha256": _coerce_optional_text(source_pdf_sha256),
+        "source_pdf_bucket_path": None,
+        "source_version": _coerce_optional_text(source_version),
+        "document_category": document_category,
+        "esign_eligibility_confirmed_at": _coerce_optional_text(esign_eligibility_confirmed_at) or now_value,
+        "company_binding_enabled": bool(company_binding_enabled),
+        "manual_fallback_enabled": bool(manual_fallback_enabled),
+        "consumer_paper_copy_procedure": _coerce_optional_text(consumer_paper_copy_procedure),
+        "consumer_paper_copy_fee_description": _coerce_optional_text(consumer_paper_copy_fee_description),
+        "consumer_withdrawal_procedure": _coerce_optional_text(consumer_withdrawal_procedure),
+        "consumer_withdrawal_consequences": _coerce_optional_text(consumer_withdrawal_consequences),
+        "consumer_contact_update_procedure": _coerce_optional_text(consumer_contact_update_procedure),
+        "consumer_consent_scope_override": _coerce_optional_text(consumer_consent_scope_override),
+        "anchors": list(anchors or []),
+        "signed_pdf_bucket_path": None,
+        "signed_pdf_sha256": None,
+        "audit_manifest_bucket_path": None,
+        "audit_manifest_sha256": None,
+        "audit_receipt_bucket_path": None,
+        "audit_receipt_sha256": None,
+        "created_at": now_value,
+        "updated_at": now_value,
+        "completed_at": None,
+        "expires_at": None,
+        "public_app_origin": None,
+    }
+    doc_ref = firestore_client.collection(SIGNING_ENVELOPES_COLLECTION).document(envelope_id)
+    doc_ref.set(payload)
+    return _serialize_signing_envelope(doc_ref.get())
+
+
+def get_signing_envelope(envelope_id: str, *, client=None) -> Optional[SigningEnvelopeRecord]:
+    normalized = str(envelope_id or "").strip()
+    if not normalized:
+        return None
+    firestore_client = client or get_firestore_client()
+    snapshot = firestore_client.collection(SIGNING_ENVELOPES_COLLECTION).document(normalized).get()
+    if not snapshot.exists:
+        return None
+    return _serialize_signing_envelope(snapshot)
+
+
+def get_signing_envelope_for_user(
+    envelope_id: str,
+    user_id: str,
+    *,
+    client=None,
+) -> Optional[SigningEnvelopeRecord]:
+    record = get_signing_envelope(envelope_id, client=client)
+    if record is None or record.user_id != str(user_id or "").strip():
+        return None
+    return record
+
+
+def list_signing_envelopes(user_id: str, *, client=None) -> List[SigningEnvelopeRecord]:
+    normalized_user_id = str(user_id or "").strip()
+    if not normalized_user_id:
+        return []
+    firestore_client = client or get_firestore_client()
+    snapshot = where_equals(
+        firestore_client.collection(SIGNING_ENVELOPES_COLLECTION),
+        "user_id",
+        normalized_user_id,
+    ).get()
+    records = [_serialize_signing_envelope(doc) for doc in snapshot]
+    return sorted(
+        records,
+        key=lambda entry: (entry.updated_at or "", entry.created_at or "", entry.id),
+        reverse=True,
+    )
+
+
+def list_signing_requests_for_envelope(
+    envelope_id: str,
+    *,
+    client=None,
+) -> List[SigningRequestRecord]:
+    normalized = str(envelope_id or "").strip()
+    if not normalized:
+        return []
+    firestore_client = client or get_firestore_client()
+    snapshot = where_equals(
+        firestore_client.collection(SIGNING_REQUESTS_COLLECTION),
+        "envelope_id",
+        normalized,
+    ).get()
+    records = [_serialize_signing_request(doc) for doc in snapshot]
+    return sorted(records, key=lambda entry: (entry.signer_order, entry.id))
+
+
+def update_signing_envelope(
+    envelope_id: str,
+    updates: Dict[str, Any],
+    *,
+    client=None,
+) -> Optional[SigningEnvelopeRecord]:
+    normalized = str(envelope_id or "").strip()
+    if not normalized:
+        return None
+    firestore_client = client or get_firestore_client()
+    doc_ref = firestore_client.collection(SIGNING_ENVELOPES_COLLECTION).document(normalized)
+    snapshot = doc_ref.get()
+    if not snapshot.exists:
+        return None
+    payload = dict(updates or {})
+    payload["updated_at"] = _coerce_optional_text(payload.get("updated_at")) or now_iso()
+    doc_ref.set(payload, merge=True)
+    return _serialize_signing_envelope(doc_ref.get())
+
+
+def increment_envelope_completed_count(
+    envelope_id: str,
+    *,
+    client=None,
+) -> int:
+    """Atomically increment completed_signer_count. Returns the new count."""
+    normalized = str(envelope_id or "").strip()
+    if not normalized:
+        return 0
+    firestore_client = client or get_firestore_client()
+    doc_ref = firestore_client.collection(SIGNING_ENVELOPES_COLLECTION).document(normalized)
+
+    transaction = firestore_client.transaction()
+    if _supports_firestore_transaction(transaction):
+        @firebase_firestore.transactional
+        def _run(txn):
+            snapshot = doc_ref.get(transaction=txn)
+            if not snapshot.exists:
+                return 0
+            data = snapshot.to_dict() or {}
+            new_count = _coerce_nonnegative_int(data.get("completed_signer_count")) + 1
+            txn.set(doc_ref, {
+                "completed_signer_count": new_count,
+                "updated_at": now_iso(),
+            }, merge=True)
+            return new_count
+
+        return _run(transaction)
+
+    snapshot = doc_ref.get()
+    if not snapshot.exists:
+        return 0
+    data = snapshot.to_dict() or {}
+    new_count = _coerce_nonnegative_int(data.get("completed_signer_count")) + 1
+    doc_ref.set({
+        "completed_signer_count": new_count,
+        "updated_at": now_iso(),
+    }, merge=True)
+    return new_count

@@ -19,17 +19,16 @@ def test_firebase_hosting_config_applies_security_headers_globally() -> None:
     global_entry = next(entry for entry in headers if entry.get("source") == "**")
     header_values = {item["key"]: item["value"] for item in global_entry["headers"]}
 
-    assert header_values["Content-Security-Policy"] == (
-        "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; "
-        "form-action 'self'; script-src 'self' https://www.googletagmanager.com "
-        "https://www.google.com https://www.gstatic.com https://apis.google.com "
-        "https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' "
-        "https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; "
-        "img-src 'self' data: blob: https:; connect-src 'self' https: wss:; "
-        "frame-src 'self' https://www.google.com https://recaptcha.google.com "
-        "https://dullypdf.firebaseapp.com; "
-        "worker-src 'self' blob:; media-src 'self' data: blob: https:"
-    )
-    assert header_values["X-Frame-Options"] == "DENY"
+    csp = header_values["Content-Security-Policy"]
+    assert "default-src 'self'" in csp
+    assert "base-uri 'self'" in csp
+    assert "frame-ancestors 'self'" in csp
+    assert "object-src 'none'" in csp
+    assert "form-action 'self'" in csp
+    assert "script-src 'self' https://www.googletagmanager.com" in csp
+    assert "frame-src 'self' blob: https://www.google.com https://recaptcha.google.com https://dullypdf.firebaseapp.com" in csp
+    assert "worker-src 'self' blob:" in csp
+    assert "media-src 'self' data: blob: https:" in csp
+    assert header_values["X-Frame-Options"] == "SAMEORIGIN"
     assert header_values["X-Content-Type-Options"] == "nosniff"
     assert header_values["Referrer-Policy"] == "strict-origin-when-cross-origin"

@@ -34,6 +34,7 @@ import backend.services.email_service as email_service
 import backend.services.fill_link_scope_service as fill_link_scope_service
 import backend.services.fill_link_download_service as fill_link_download_service
 import backend.services.fill_links_service as fill_links_service
+import backend.services.downgrade_retention_service as downgrade_retention_service
 import backend.services.recaptcha_service as recaptcha_service
 import backend.services.detection_service as detection_service
 import backend.services.limits_service as limits_service
@@ -144,6 +145,7 @@ def app_main():
         fill_link_scope_service,
         fill_link_download_service,
         fill_links_service,
+        downgrade_retention_service,
         recaptcha_service,
         detection_service,
         limits_service,
@@ -193,6 +195,28 @@ def auth_headers() -> dict[str, str]:
 def reset_gmail_token_cache(app_main) -> None:
     app_main._GMAIL_TOKEN_CACHE.clear()
     app_main._GMAIL_TOKEN_CACHE.update({"access_token": None, "expires_at": 0.0})
+
+
+@pytest.fixture(autouse=True)
+def stub_retention_defaults(mocker, app_main) -> None:
+    """Keep API unit tests isolated from Firebase-backed retention state.
+
+    Most route tests are validating request/response behavior, not the retention
+    planner itself. Defaulting these helpers to no-op/false prevents accidental
+    Firestore lookups in CI while still letting individual tests override the
+    return values when they explicitly care about locked-state behavior.
+    """
+
+    mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    mocker.patch.object(app_main, "get_user_retention_locked_template_ids", return_value=set())
+    mocker.patch.object(app_main, "is_user_retention_template_locked", return_value=False)
+    mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=[])
+    mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value={"status": "grace_period"})
+    mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    mocker.patch.object(app_main, "get_openai_job", return_value=None)
+    mocker.patch.object(app_main, "close_fill_link_if_scope_invalid", side_effect=lambda record: record)
+    mocker.patch.object(app_main, "preview_fill_link_if_scope_invalid", side_effect=lambda record: record)
+    mocker.patch.object(app_main, "get_fill_link_for_group", return_value=None)
 
 
 def make_scope(path: str = "/", headers: dict[str, str] | None = None, client_ip: str | None = "203.0.113.5") -> dict[str, Any]:

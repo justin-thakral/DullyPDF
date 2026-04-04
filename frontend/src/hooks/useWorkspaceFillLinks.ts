@@ -143,7 +143,6 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     responsesLoading: templateResponsesLoading,
     error: templateError,
     clear: clearTemplateFillLinks,
-    refreshForScope: refreshTemplateLinkScope,
     publish: publishTemplateLink,
     closeLink: closeTemplateLink,
     reopenLink: reopenTemplateLink,
@@ -160,7 +159,6 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     responsesLoading: groupResponsesLoading,
     error: groupError,
     clear: clearGroupFillLinks,
-    refreshForScope: refreshGroupLinkScope,
     publish: publishGroupLink,
     closeLink: closeGroupLink,
     reopenLink: reopenGroupLink,
@@ -209,19 +207,12 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     }
     if (!activeTemplateId) {
       clearTemplateFillLinks();
-      return;
     }
-    void refreshTemplateLinkScope().catch((error) => {
-      const message = error instanceof Error ? error.message : 'Failed to load Fill By Link details.';
-      setBannerNotice({ tone: 'error', message });
-    });
   }, [
     activeTemplateId,
     clearTemplateFillLinks,
     hasActiveGroupScope,
     managerOpen,
-    refreshTemplateLinkScope,
-    setBannerNotice,
     setManagerOpen,
     verifiedUser,
   ]);
@@ -233,18 +224,11 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     }
     if (!verifiedUser || !activeGroupId) {
       clearGroupFillLinks();
-      return;
     }
-    void refreshGroupLinkScope().catch((error) => {
-      const message = error instanceof Error ? error.message : 'Failed to load group Fill By Link details.';
-      setBannerNotice({ tone: 'error', message });
-    });
   }, [
     activeGroupId,
     clearGroupFillLinks,
     managerOpen,
-    refreshGroupLinkScope,
-    setBannerNotice,
     verifiedUser,
   ]);
 

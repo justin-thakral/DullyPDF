@@ -19,13 +19,13 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
           const isLast = index === items.length - 1;
           return (
             <li key={item.label} className="breadcrumbs__item">
-              {isLast || !item.href ? (
-                <span className="breadcrumbs__current" aria-current="page">{item.label}</span>
+              {item.href && !isLast ? (
+                <a href={item.href} className="breadcrumbs__link">{item.label}</a>
               ) : (
-                <>
-                  <a href={item.href} className="breadcrumbs__link">{item.label}</a>
-                  <span className="breadcrumbs__separator" aria-hidden="true">/</span>
-                </>
+                <span className={isLast ? 'breadcrumbs__current' : undefined} aria-current={isLast ? 'page' : undefined}>{item.label}</span>
+              )}
+              {!isLast && (
+                <span className="breadcrumbs__separator" aria-hidden="true">/</span>
               )}
             </li>
           );

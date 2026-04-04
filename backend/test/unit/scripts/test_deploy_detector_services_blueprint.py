@@ -59,17 +59,19 @@ def test_deploy_detector_services_requires_a_dedicated_runtime_service_account_i
     text = _script_text()
     assert 'REGION="${REGION:-${DETECTOR_TASKS_LOCATION:-us-east4}}"' in text
     assert 'source "${SCRIPT_DIR}/_artifact_registry_guard.sh"' in text
+    assert 'source "${SCRIPT_DIR}/_cloud_run_invoker_policy.sh"' in text
     assert 'ARTIFACT_REGISTRY_LOCATION="${ARTIFACT_REGISTRY_LOCATION:-us-east4}"' in text
     assert 'require_prod_artifact_registry_location "detector Artifact Registry location" "$ARTIFACT_REGISTRY_LOCATION"' in text
     assert 'require_prod_artifact_registry_repo "DETECTOR_ARTIFACT_REPO" "$ARTIFACT_REPO"' in text
     assert 'DETECTOR_IMAGE="${DETECTOR_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REPO}/detector-service:${TAG}}"' in text
     assert 'require_prod_artifact_registry_image "DETECTOR_IMAGE" "$DETECTOR_IMAGE" "$ARTIFACT_REPO"' in text
+    assert 'DETECTOR_TASKS_MAX_ATTEMPTS="${DETECTOR_TASKS_MAX_ATTEMPTS:-5}"' in text
     assert 'require_exact FIREBASE_USE_ADC "true"' in text
     assert "require_empty FIREBASE_CREDENTIALS" in text
     assert "require_empty FIREBASE_CREDENTIALS_SECRET" in text
     assert "require_empty GOOGLE_APPLICATION_CREDENTIALS" in text
     assert "require_integer_ge DETECTOR_TASKS_MAX_ATTEMPTS 1" in text
-    assert 'RUNTIME_SA="${DETECTOR_RUNTIME_SERVICE_ACCOUNT:-}"' in text
+    assert 'RUNTIME_SA="${DETECTOR_RUNTIME_SERVICE_ACCOUNT:-${DETECTOR_TASKS_SERVICE_ACCOUNT:-}}"' in text
     assert "DETECTOR_RUNTIME_SERVICE_ACCOUNT must differ from DETECTOR_TASKS_SERVICE_ACCOUNT in prod." in text
 
 
@@ -89,9 +91,10 @@ def test_deploy_detector_services_filters_env_to_a_detector_allowlist() -> None:
 
 def test_deploy_detector_services_resets_invoker_policy_instead_of_patch_adding_members() -> None:
     text = _script_text()
-    assert 'gcloud run services get-iam-policy "$service_name"' in text
-    assert 'binding.get("role") != "roles/run.invoker"' in text
-    assert 'gcloud run services set-iam-policy "$service_name" "$tmp_policy"' in text
+    assert 'ALLOW_POLICY_FALLBACK="${DETECTOR_ALLOW_POLICY_PERMISSION_DENIED_FALLBACK:-false}"' in text
+    assert 'if [[ "${ENV:-}" != "prod" && "${ENV:-}" != "production" ]]; then' in text
+    assert 'cloud_run_reset_invoker_policy \\' in text
+    assert '"$ALLOW_POLICY_FALLBACK"' in text
 
 
 def test_deploy_detector_services_skips_second_gpu_service_in_single_gpu_serialized_mode() -> None:

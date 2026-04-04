@@ -28,6 +28,7 @@ set +a
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/_artifact_registry_guard.sh"
+source "${SCRIPT_DIR}/_cloud_run_invoker_policy.sh"
 
 require_nonempty() {
   local name="$1"
@@ -72,7 +73,9 @@ require_prod_artifact_registry_image "OPENAI_RENAME_REMAP_WORKER_IMAGE" "$WORKER
 SERVICE_NAME="${OPENAI_RENAME_REMAP_SERVICE_NAME:-dullypdf-openai-rename-remap}"
 
 CALLER_SA="${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT:-}"
-RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-}"
+# Dev deploys can reuse the caller identity when no separate runtime account is
+# configured. Prod still rejects this fallback below.
+RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT:-}}"
 
 require_nonempty PROJECT_ID
 require_nonempty REGION
@@ -80,6 +83,11 @@ require_nonempty FIREBASE_PROJECT_ID
 require_nonempty SANDBOX_SESSION_BUCKET
 require_nonempty OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT
 require_nonempty RUNTIME_SA
+
+ALLOW_POLICY_FALLBACK="${OPENAI_RENAME_REMAP_ALLOW_POLICY_PERMISSION_DENIED_FALLBACK:-false}"
+if [[ "${ENV:-}" != "prod" && "${ENV:-}" != "production" ]]; then
+  ALLOW_POLICY_FALLBACK="true"
+fi
 
 if [[ "${ENV:-}" == "prod" || "${ENV:-}" == "production" ]]; then
   require_exact FIREBASE_USE_ADC "true"
@@ -130,9 +138,6 @@ allowed_exact = {
     "BASE_OPENAI_CREDITS",
     "PRO_MONTHLY_OPENAI_CREDITS",
     "SANDBOX_RENAME_MODEL",
-    "FORMS_BUCKET",
-    "TEMPLATES_BUCKET",
-    "SIGNING_BUCKET",
 }
 allowed_prefixes = (
     "OPENAI_RENAME_REMAP_",
@@ -245,36 +250,13 @@ deploy_worker() {
 
   reset_invoker_policy() {
     local allowed_member="$1"
-    local tmp_policy
-    tmp_policy="$(mktemp)"
-
-    gcloud run services get-iam-policy "$service_name" \
-      --region "$REGION" \
-      --project "$PROJECT_ID" \
-      --format=json > "$tmp_policy"
-
-    python3 - <<'PY' "$tmp_policy" "$allowed_member"
-import json
-import sys
-
-policy_path = sys.argv[1]
-allowed_member = sys.argv[2]
-
-with open(policy_path, "r", encoding="utf-8") as handle:
-    policy = json.load(handle)
-
-bindings = [binding for binding in policy.get("bindings", []) if binding.get("role") != "roles/run.invoker"]
-bindings.append({"role": "roles/run.invoker", "members": [allowed_member]})
-policy["bindings"] = bindings
-
-with open(policy_path, "w", encoding="utf-8") as handle:
-    json.dump(policy, handle)
-PY
-
-    gcloud run services set-iam-policy "$service_name" "$tmp_policy" \
-      --region "$REGION" \
-      --project "$PROJECT_ID" >/dev/null
-    rm -f "$tmp_policy"
+    cloud_run_reset_invoker_policy \
+      "$service_name" \
+      "$REGION" \
+      "$PROJECT_ID" \
+      "$allowed_member" \
+      "$ALLOW_POLICY_FALLBACK" \
+      "true"
   }
 
   # Cloud Run rejects secret->literal type changes in a single deploy call.

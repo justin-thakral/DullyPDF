@@ -1,6 +1,7 @@
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent, type FormEvent, useMemo, useRef } from 'react';
 import { Alert } from '../../ui/Alert';
 import type { SigningAdoptedMode } from '../../../services/api';
+import { PublicSigningDocumentPreview } from './PublicSigningDocumentPreview';
 import { PublicSigningSignaturePad } from './PublicSigningSignaturePad';
 import { getSigningStepLabel } from './publicSigningHelpers';
 import type { PublicSigningFlowState } from './usePublicSigningFlow';
@@ -43,8 +44,38 @@ type PublicSigningCeremonyProps = {
 };
 
 export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
-  if (!flow.request || !flow.showInteractiveCeremony) {
+  const request = flow.request;
+  const verificationCodeInputRef = useRef<HTMLInputElement | null>(null);
+  const signatureAnchors = useMemo(
+    () => (request?.anchors || []).filter((anchor) => anchor.kind === 'signature'),
+    [request?.anchors],
+  );
+
+  if (!request || !flow.showInteractiveCeremony) {
     return null;
+  }
+
+  const signerDisplayLabel = [request.senderDisplayName, request.senderContactEmail]
+    .filter(Boolean)
+    .join(' · ');
+
+  function buildSignatureAnchorLabel(index: number, total: number): string {
+    return total > 1 ? `Sign here ${index + 1}` : 'Sign here';
+  }
+
+  function readVisibleVerificationCode(): string {
+    const normalizedCode = String(verificationCodeInputRef.current?.value || flow.verificationCode || '')
+      .replace(/\D/g, '')
+      .slice(0, 6);
+    if (normalizedCode !== flow.verificationCode) {
+      flow.setVerificationCode(normalizedCode);
+    }
+    return normalizedCode;
+  }
+
+  function handleVerifyCodeSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    flow.handleVerifyCode(readVisibleVerificationCode());
   }
 
   async function handleSignatureUpload(event: ChangeEvent<HTMLInputElement>) {
@@ -112,7 +143,7 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
         )}
 
         <div className="public-signing-page__button-group public-signing-page__button-group--secondary">
-          {flow.request.status !== 'completed' && flow.request.signatureMode === 'consumer' && flow.request.consentedAt && !flow.request.consentWithdrawnAt && !flow.request.completedAt ? (
+          {request.status !== 'completed' && request.signatureMode === 'consumer' && request.consentedAt && !request.consentWithdrawnAt && !request.completedAt ? (
             <button
               className="ui-button ui-button--ghost"
               type="button"
@@ -123,8 +154,8 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
             </button>
           ) : null}
 
-          {flow.request.status !== 'completed' && flow.request.manualFallbackEnabled ? (
-            flow.request.manualFallbackRequestedAt ? null : (
+          {request.status !== 'completed' && request.manualFallbackEnabled ? (
+            request.manualFallbackRequestedAt ? null : (
               <button
                 className="ui-button ui-button--ghost"
                 type="button"
@@ -157,54 +188,56 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
           <h2>Verify your email</h2>
           <p className="public-signing-page__support">
             Before DullyPDF reveals the frozen signing record, verify the signer inbox on file.
-            {flow.request.signerEmailHint ? ` The code will be sent to ${flow.request.signerEmailHint}.` : ''}
+            {request.signerEmailHint ? ` The code will be sent to ${request.signerEmailHint}.` : ''}
           </p>
-          {flow.session?.verificationSentAt ? (
-            <p className="public-signing-page__support">
-              A 6-digit code was sent{flow.verificationExpiresLabel ? ` and expires at ${flow.verificationExpiresLabel}` : ''}.
-              {flow.resendBlocked && flow.resendAvailableLabel ? ` You can request another code after ${flow.resendAvailableLabel}.` : ''}
-            </p>
-          ) : (
-            <p className="public-signing-page__support">
-              Request a one-time 6-digit code, then enter it below to continue into the signing ceremony.
-            </p>
-          )}
-          <label className="public-signing-page__field">
-            <span>Verification code</span>
-            <input
-              id={VERIFICATION_CODE_INPUT_ID}
-              name="verificationCode"
-              value={flow.verificationCode}
-              onChange={(event) => flow.setVerificationCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
-              placeholder="Enter the 6-digit code"
-              autoComplete="one-time-code"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              maxLength={6}
-            />
-          </label>
-          <div className="public-signing-page__button-group">
-            <button
-              className="ui-button ui-button--ghost"
-              type="button"
-              disabled={flow.busyAction !== null || flow.missingSession || flow.resendBlocked}
-              onClick={flow.handleSendCode}
-            >
-              {flow.busyAction === 'sendCode'
-                ? 'Sending code…'
-                : flow.session?.verificationSentAt
-                  ? 'Resend code'
-                  : 'Send code'}
-            </button>
-            <button
-              className="ui-button ui-button--primary"
-              type="button"
-              disabled={flow.busyAction !== null || flow.missingSession || flow.verificationCodeTrimmed.length !== 6}
-              onClick={flow.handleVerifyCode}
-            >
-              {flow.busyAction === 'verifyCode' ? 'Verifying…' : 'Verify code'}
-            </button>
-          </div>
+          <form className="public-signing-page__verification-form" onSubmit={handleVerifyCodeSubmit}>
+            {flow.session?.verificationSentAt ? (
+              <p className="public-signing-page__support">
+                A 6-digit code was sent{flow.verificationExpiresLabel ? ` and expires at ${flow.verificationExpiresLabel}` : ''}.
+                {flow.resendBlocked && flow.resendAvailableLabel ? ` You can request another code after ${flow.resendAvailableLabel}.` : ''}
+              </p>
+            ) : (
+              <p className="public-signing-page__support">
+                Request a one-time 6-digit code, then enter it below to continue into the signing ceremony.
+              </p>
+            )}
+            <label className="public-signing-page__field">
+              <span>Verification code</span>
+              <input
+                ref={verificationCodeInputRef}
+                id={VERIFICATION_CODE_INPUT_ID}
+                name="verificationCode"
+                value={flow.verificationCode}
+                onChange={(event) => flow.setVerificationCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="Enter the 6-digit code"
+                autoComplete="one-time-code"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={6}
+              />
+            </label>
+            <div className="public-signing-page__button-group">
+              <button
+                className="ui-button ui-button--ghost"
+                type="button"
+                disabled={flow.busyAction !== null || flow.missingSession || flow.resendBlocked}
+                onClick={flow.handleSendCode}
+              >
+                {flow.busyAction === 'sendCode'
+                  ? 'Sending code…'
+                  : flow.session?.verificationSentAt
+                    ? 'Resend code'
+                    : 'Send code'}
+              </button>
+              <button
+                className="ui-button ui-button--primary"
+                type="submit"
+                disabled={flow.busyAction !== null || flow.missingSession}
+              >
+                {flow.busyAction === 'verifyCode' ? 'Verifying…' : 'Verify code'}
+              </button>
+            </div>
+          </form>
         </div>
       ) : null}
 
@@ -214,10 +247,10 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
           <p className="public-signing-page__support">
             Consumer signing requests require a separate electronic-records consent before DullyPDF continues to the immutable document review.
           </p>
-          {flow.request.senderDisplayName || flow.request.senderContactEmail ? (
+          {signerDisplayLabel ? (
             <p className="public-signing-page__support">
               <strong>Sender:</strong>{' '}
-              {[flow.request.senderDisplayName, flow.request.senderContactEmail].filter(Boolean).join(' · ')}
+              {signerDisplayLabel}
             </p>
           ) : null}
           <ul className="public-signing-page__list">
@@ -324,12 +357,30 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
           <p className="public-signing-page__support">
             Review the immutable PDF below. Your signature will be tied to this exact source hash and version.
           </p>
+          {signatureAnchors.length > 0 ? (
+            <div className="public-signing-page__sign-here-indicators">
+              <p className="public-signing-page__sign-here-label">Your signature will be applied at:</p>
+              {signatureAnchors.map((anchor, i) => (
+                <div key={`anchor-${i}`} className="public-signing-page__sign-here-item">
+                  <span className="public-signing-page__sign-here-marker">
+                    {buildSignatureAnchorLabel(i, signatureAnchors.length)}
+                  </span>
+                  <span>
+                    Signature on page {anchor.page}
+                    {anchor.fieldName ? ` ("${anchor.fieldName}")` : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : null}
           {flow.documentError ? <Alert tone="error" variant="inline" message={flow.documentError} /> : null}
           {flow.documentLoading ? <p className="public-signing-page__support">Loading the immutable signing document…</p> : null}
-          {flow.documentObjectUrl ? (
-            <div className="public-signing-page__document-frame">
-              <iframe title="Signing document preview" src={flow.documentObjectUrl} />
-            </div>
+          {flow.documentBlob || flow.documentObjectUrl ? (
+            <PublicSigningDocumentPreview
+              anchors={signatureAnchors}
+              documentBlob={flow.documentBlob}
+              documentObjectUrl={flow.documentObjectUrl}
+            />
           ) : null}
           <button
             className="ui-button ui-button--primary"
@@ -374,7 +425,7 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
                 name="adoptedSignatureName"
                 value={flow.adoptedName}
                 onChange={(event) => flow.setAdoptedName(event.target.value)}
-                placeholder={flow.request.signerName}
+                placeholder={request.signerName}
                 autoComplete="name"
                 maxLength={200}
               />
@@ -382,7 +433,7 @@ export function PublicSigningCeremony({ flow }: PublicSigningCeremonyProps) {
           ) : null}
           {flow.signatureType === 'default' ? (
             <div className="public-signing-page__signature-helper">
-              DullyPDF will use the signer name on this request: <strong>{flow.request.signerName}</strong>.
+              DullyPDF will use the signer name on this request: <strong>{request.signerName}</strong>.
             </div>
           ) : null}
           {flow.signatureType === 'drawn' ? (

@@ -18,7 +18,10 @@ import type {
 } from '../types';
 import { debugLog } from '../utils/debug';
 import { extractFieldsFromPdf, loadPageSizes, loadPdfFromFile } from '../utils/pdf';
-import { applySearchFillRowToFields } from '../utils/searchFillApply';
+import {
+  applySearchFillRowToFieldsWithStats,
+  SEARCH_FILL_NO_MATCH_MESSAGE,
+} from '../utils/searchFillApply';
 import {
   buildSavedFormEditorSnapshot,
   extractSavedFormFillRuleState,
@@ -103,6 +106,7 @@ type SavedFormsRuntimeState = {
   savedForms: SavedFormSummary[];
   activeSavedFormId: string | null;
   activeSavedFormName: string | null;
+  pendingSavedFormId: string | null;
   setActiveSavedFormId: Dispatch<SetStateAction<string | null>>;
   setActiveSavedFormName: Dispatch<SetStateAction<string | null>>;
   openSavedFormWithinGroup: (
@@ -743,35 +747,45 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
       throw new Error('Select at least one PDF target before filling.');
     }
 
-    const updatedTemplateNames: string[] = [];
+    const matchedTemplateNames: string[] = [];
+    let unmatchedTargetCount = 0;
     const uniqueTargetIds = Array.from(new Set(targetIds));
     for (const targetId of uniqueTargetIds) {
       const template = activeGroupTemplates.find((entry) => entry.id === targetId) ?? null;
       if (!template) continue;
-      updatedTemplateNames.push(template.name);
       if (targetId === savedForms.activeSavedFormId) {
-        const nextFields = applySearchFillRowToFields({
+        const searchFillResult = applySearchFillRowToFieldsWithStats({
           row,
           fields: fieldHistory.fields,
           checkboxRules: openAi.checkboxRules,
           textTransformRules: openAi.textTransformRules,
           dataSourceKind: searchFill.dataSourceKind,
         });
-        fieldSelection.handleFieldsChange(nextFields);
+        if (searchFillResult.matchedFieldCount === 0) {
+          unmatchedTargetCount += 1;
+          continue;
+        }
+        matchedTemplateNames.push(template.name);
+        fieldSelection.handleFieldsChange(searchFillResult.fields);
         continue;
       }
 
       const snapshot = await ensureGroupTemplateSnapshot(targetId, template.name);
-      const nextFields = applySearchFillRowToFields({
+      const searchFillResult = applySearchFillRowToFieldsWithStats({
         row,
         fields: snapshot.fields,
         checkboxRules: snapshot.checkboxRules,
         textTransformRules: snapshot.textTransformRules,
         dataSourceKind: searchFill.dataSourceKind,
       });
+      if (searchFillResult.matchedFieldCount === 0) {
+        unmatchedTargetCount += 1;
+        continue;
+      }
+      matchedTemplateNames.push(template.name);
       const nextSnapshot: GroupTemplateWorkspaceSnapshot = {
         ...snapshot,
-        fields: clonePdfFields(nextFields),
+        fields: clonePdfFields(searchFillResult.fields),
         history: {
           undo: [...snapshot.history.undo, clonePdfFields(snapshot.fields)].slice(-MAX_FIELD_HISTORY),
           redo: [],
@@ -780,16 +794,26 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
       setReadyGroupTemplateSnapshot(nextSnapshot, groupCacheTokenRef.current);
     }
 
+    if (matchedTemplateNames.length === 0) {
+      throw new Error(SEARCH_FILL_NO_MATCH_MESSAGE);
+    }
+
     if (uniqueTargetIds.length > 1) {
+      const unmatchedMessage = unmatchedTargetCount > 0
+        ? ` ${unmatchedTargetCount} ${unmatchedTargetCount === 1 ? 'PDF had' : 'PDFs had'} no matching fields.`
+        : '';
       setBannerNotice({
         tone: 'success',
-        message: `Filled ${uniqueTargetIds.length} PDFs in ${group.activeGroupName ? `"${group.activeGroupName}"` : 'the open group'}.`,
+        message:
+          `Filled ${matchedTemplateNames.length} of ${uniqueTargetIds.length} PDFs in ${
+            group.activeGroupName ? `"${group.activeGroupName}"` : 'the open group'
+          }.${unmatchedMessage}`,
         autoDismissMs: 6000,
       });
-    } else if (updatedTemplateNames[0] && uniqueTargetIds[0] !== savedForms.activeSavedFormId) {
+    } else if (matchedTemplateNames[0] && uniqueTargetIds[0] !== savedForms.activeSavedFormId) {
       setBannerNotice({
         tone: 'success',
-        message: `Filled "${updatedTemplateNames[0]}".`,
+        message: `Filled "${matchedTemplateNames[0]}".`,
         autoDismissMs: 5000,
       });
     }
@@ -869,8 +893,9 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
     let cancelled = false;
     let idleCallbackId: number | null = null;
     let startTimerId: number | null = null;
+    const activeOrPendingTemplateId = savedForms.pendingSavedFormId ?? savedForms.activeSavedFormId;
     const templateQueue = activeGroupTemplates
-      .filter((template) => template.id !== savedForms.activeSavedFormId)
+      .filter((template) => template.id !== activeOrPendingTemplateId)
       .map((template) => ({ id: template.id, name: template.name }));
 
     const prefetch = async () => {
@@ -912,7 +937,13 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
         window.cancelIdleCallback(idleCallbackId);
       }
     };
-  }, [activeGroupTemplates, ensureGroupTemplateSnapshot, group.activeGroupId, savedForms.activeSavedFormId]);
+  }, [
+    activeGroupTemplates,
+    ensureGroupTemplateSnapshot,
+    group.activeGroupId,
+    savedForms.activeSavedFormId,
+    savedForms.pendingSavedFormId,
+  ]);
 
   useEffect(() => {
     if (!verifiedUser || !group.activeGroupId) return;

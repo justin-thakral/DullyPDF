@@ -1,0 +1,5 @@
+.gcloudignore
+.git
+.gitignore
+#!include:.dockerignore
+backend/services/dev_assets

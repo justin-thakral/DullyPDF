@@ -278,12 +278,19 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
     setPendingGroupTemplateId(null);
   }, []);
 
+  useEffect(() => {
+    if (!pendingGroupTemplateId) return;
+    if (deps.savedForms.activeSavedFormId !== pendingGroupTemplateId) return;
+    setPendingGroupTemplateId(null);
+  }, [deps.savedForms.activeSavedFormId, pendingGroupTemplateId]);
+
   const handleSelectSavedFormWithinGroup = useCallback(
     async (
       formId: string,
       groupContext?: GroupContext | null,
       options?: { preferredSession?: SavedFormSessionResume | null },
     ) => {
+      let opened = false;
       if (groupContext) {
         setActiveGroupId(groupContext.id);
         setActiveGroupName(groupContext.name);
@@ -293,12 +300,13 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
         clearActiveGroupSelection();
       }
       try {
-        return await deps.detection.handleSelectSavedForm(formId, deps.pdfState, {
+        opened = await deps.detection.handleSelectSavedForm(formId, deps.pdfState, {
           source: groupContext ? 'saved-group' : 'saved-form',
           preferredSession: options?.preferredSession ?? null,
         });
+        return opened;
       } finally {
-        if (groupContext) {
+        if (groupContext && !opened) {
           setPendingGroupTemplateId((current) => (current === formId ? null : current));
         }
       }
@@ -336,6 +344,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
       savedForms: deps.savedForms.savedForms,
       activeSavedFormId: deps.savedForms.activeSavedFormId,
       activeSavedFormName: deps.savedForms.activeSavedFormName,
+      pendingSavedFormId: pendingGroupTemplateId,
       setActiveSavedFormId: deps.savedForms.setActiveSavedFormId,
       setActiveSavedFormName: deps.savedForms.setActiveSavedFormName,
       openSavedFormWithinGroup: handleSelectSavedFormWithinGroup,
@@ -679,8 +688,10 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
         }
         if (
           activeGroupId === group.id &&
-          deps.savedForms.activeSavedFormId &&
-          templates.some((entry) => entry.id === deps.savedForms.activeSavedFormId)
+          (deps.savedForms.activeSavedFormId || pendingGroupTemplateId) &&
+          templates.some(
+            (entry) => entry.id === (deps.savedForms.activeSavedFormId ?? pendingGroupTemplateId),
+          )
         ) {
           return true;
         }
@@ -712,6 +723,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
       deps.savedForms.activeSavedFormId,
       deps.savedForms.savedForms,
       handleSelectSavedFormWithinGroup,
+      pendingGroupTemplateId,
     ],
   );
 

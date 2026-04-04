@@ -8,7 +8,10 @@ import type {
 } from '../../types';
 import './SearchFillModal.css';
 import type { CheckboxRule, TextTransformRule } from '../../types';
-import { applySearchFillRowToFields } from '../../utils/searchFillApply';
+import {
+  applySearchFillRowToFieldsWithStats,
+  SEARCH_FILL_NO_MATCH_MESSAGE,
+} from '../../utils/searchFillApply';
 import { Alert } from '../ui/Alert';
 import { DialogCloseButton, DialogFrame } from '../ui/Dialog';
 
@@ -246,32 +249,38 @@ export default function SearchFillModal({
    * Apply a selected row to all fields, including checkbox rules.
    */
   const handleFill = useCallback(
-    async (row: Record<string, unknown>) => {
+    async (row: Record<string, unknown>): Promise<boolean> => {
       setLocalError(null);
       try {
         if (hasGroupFillTargets && onFillTargets) {
           const targetIds = selectedFillTargetIds.filter((targetId) => fillTargetLookup.has(targetId));
           if (targetIds.length === 0) {
             setLocalError('Select at least one PDF target before filling.');
-            return;
+            return false;
           }
           await onFillTargets(row, targetIds);
         } else {
-          const nextFields = applySearchFillRowToFields({
+          const searchFillResult = applySearchFillRowToFieldsWithStats({
             row,
             fields,
             checkboxRules,
             textTransformRules,
             dataSourceKind,
           });
-          onFieldsChange(nextFields);
+          if (searchFillResult.matchedFieldCount === 0) {
+            setLocalError(SEARCH_FILL_NO_MATCH_MESSAGE);
+            return false;
+          }
+          onFieldsChange(searchFillResult.fields);
         }
         onAfterFill({ row, dataSourceKind });
         onClose();
+        return true;
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to fill PDF.';
         onError(message);
         setLocalError(message);
+        return false;
       }
     },
     [
@@ -348,7 +357,10 @@ export default function SearchFillModal({
           if (matched.length >= 25) break;
         }
         if (resolvedSearchPreset?.autoFillOnSearch && matched.length > 0) {
-          await handleFill(matched[0].row);
+          const filled = await handleFill(matched[0].row);
+          if (!filled) {
+            setResults(matched);
+          }
           return;
         }
         setResults(matched);

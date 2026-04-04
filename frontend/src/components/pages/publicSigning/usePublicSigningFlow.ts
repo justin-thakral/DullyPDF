@@ -56,6 +56,7 @@ export function usePublicSigningFlow(token: string) {
   const [representativeCompanyName, setRepresentativeCompanyName] = useState('');
   const [artifactBusyKey, setArtifactBusyKey] = useState<ArtifactActionKey>(null);
   const [documentObjectUrl, setDocumentObjectUrl] = useState<string | null>(null);
+  const [documentBlob, setDocumentBlob] = useState<Blob | null>(null);
   const [documentError, setDocumentError] = useState<string | null>(null);
   const [documentLoading, setDocumentLoading] = useState(false);
   const [consumerAccessObjectUrl, setConsumerAccessObjectUrl] = useState<string | null>(null);
@@ -104,6 +105,7 @@ export function usePublicSigningFlow(token: string) {
     setVerificationCode('');
     setDocumentError(null);
     setDocumentLoading(false);
+    setDocumentBlob(null);
     setDocumentObjectUrl((current) => {
       if (current) URL.revokeObjectURL(current);
       return null;
@@ -273,6 +275,7 @@ export function usePublicSigningFlow(token: string) {
     if (!request || !sessionToken || !documentPath) {
       setDocumentLoading(false);
       setDocumentError(null);
+      setDocumentBlob(null);
       setDocumentObjectUrl((current) => {
         if (current) URL.revokeObjectURL(current);
         return null;
@@ -289,6 +292,7 @@ export function usePublicSigningFlow(token: string) {
     if (!allowedToLoadDocument) {
       setDocumentLoading(false);
       setDocumentError(null);
+      setDocumentBlob(null);
       setDocumentObjectUrl((current) => {
         if (current) URL.revokeObjectURL(current);
         return null;
@@ -314,11 +318,13 @@ export function usePublicSigningFlow(token: string) {
           if (current) URL.revokeObjectURL(current);
           return resolvedObjectUrl;
         });
+        setDocumentBlob(file.blob);
         pendingObjectUrl = null;
         setDocumentLoading(false);
       })
       .catch((nextError) => {
         if (!active) return;
+        setDocumentBlob(null);
         setDocumentObjectUrl((current) => {
           if (current) URL.revokeObjectURL(current);
           return null;
@@ -437,13 +443,24 @@ export function usePublicSigningFlow(token: string) {
     void runVerificationAction('sendCode', () => ApiService.sendPublicSigningVerificationCode(token, sessionToken!));
   }
 
-  function handleVerifyCode() {
+  function handleVerifyCode(codeOverride?: string) {
     if (!sessionToken && !requireSession()) {
+      return;
+    }
+    const normalizedCode = String(codeOverride ?? verificationCode)
+      .replace(/\D/g, '')
+      .slice(0, 6)
+      .trim();
+    if (normalizedCode !== verificationCode) {
+      setVerificationCode(normalizedCode);
+    }
+    if (normalizedCode.length !== 6) {
+      setActionError('Enter the 6-digit code from the email before verifying.');
       return;
     }
     void runVerificationAction(
       'verifyCode',
-      () => ApiService.verifyPublicSigningVerificationCode(token, sessionToken!, verificationCodeTrimmed),
+      () => ApiService.verifyPublicSigningVerificationCode(token, sessionToken!, normalizedCode),
     );
   }
 
@@ -564,6 +581,7 @@ export function usePublicSigningFlow(token: string) {
     representativeCompanyName,
     artifactBusyKey,
     documentObjectUrl,
+    documentBlob,
     documentError,
     documentLoading,
     consumerAccessObjectUrl,

@@ -45,7 +45,11 @@ backend/.venv-*/
 
 # Backend output artifacts + temp files
 backend/fieldDetecting/outputArtifacts/
-backend/fieldDetecting/logs/
+backend/fieldDetecting/logs/**
+!backend/fieldDetecting/logs/
+!backend/fieldDetecting/logs/README.md
+!backend/fieldDetecting/logs/cleanOutput.py
+!backend/fieldDetecting/logs/__init__.py
 backend/uploads/
 backend/temp/
 
@@ -66,6 +70,7 @@ backend/fieldDetecting/sandbox/ML/data/raw/
 
 # Local generated assets
 /collaborators/
+/.playwright-mcp/
 /mcp/debugging/
 mcp/codexBugs/
 /mcpDebugging/

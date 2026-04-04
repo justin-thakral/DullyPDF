@@ -1282,6 +1282,11 @@ def test_fill_links_public_submit_returns_non_retryable_signing_limit_error(clie
         "materialize_fill_link_response_download",
         return_value=(output_path, ["tmp-path"], "template-one-response.pdf"),
     )
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=SimpleNamespace(email="owner@example.com", display_name=None),
+    )
     ensure_signing_mock = mocker.patch.object(
         app_main,
         "ensure_fill_link_response_signing_request",
@@ -1616,8 +1621,16 @@ def test_fill_links_public_submit_rejects_invalid_signer_email_before_storing_re
 
 def test_fill_links_public_get_previews_closed_state_without_mutating_link_when_template_is_deleted(client, app_main, mocker) -> None:
     record = _fill_link_record(status="active")
+    closed_preview = FillLinkRecord(
+        **{
+            **record.__dict__,
+            "status": "closed",
+            "closed_reason": "template_deleted",
+        }
+    )
     mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
     mocker.patch.object(app_main, "get_template", return_value=None)
+    mocker.patch.object(app_main, "preview_fill_link_if_scope_invalid", return_value=closed_preview)
     close_mock = mocker.patch.object(app_main, "close_fill_link", return_value=None)
     mocker.patch.object(app_main, "_resolve_fill_link_view_rate_limits", return_value=(60, 60, 0))
     mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
@@ -1647,6 +1660,11 @@ def test_fill_links_public_submit_rejects_group_link_when_workflow_group_was_del
     mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
     mocker.patch.object(app_main, "get_group", return_value=None)
     close_mock = mocker.patch.object(app_main, "close_fill_link", return_value=closed_record)
+    mocker.patch.object(
+        app_main,
+        "close_fill_link_if_scope_invalid",
+        side_effect=lambda link: close_mock(link.id, link.user_id, closed_reason="group_deleted"),
+    )
     mocker.patch.object(app_main, "_resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
     mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
     mocker.patch.object(app_main, "check_rate_limit", return_value=True)

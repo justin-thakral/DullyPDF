@@ -22,6 +22,28 @@ const SIGNING_OPTIONS: SigningOptions = {
 
 
 describe('SignatureRequestDialog', () => {
+  it('opens signature usage docs in a new window from the dialog header', async () => {
+    const user = userEvent.setup();
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(
+      <SignatureRequestDialog
+        open
+        onClose={vi.fn()}
+        hasDocument
+        sourceDocumentName="Bravo Packet"
+        options={SIGNING_OPTIONS}
+        onCreateDraft={vi.fn()}
+        onCreateDrafts={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
+
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/signature-workflow', '_blank', 'noopener,noreferrer');
+    openSpy.mockRestore();
+  });
+
   it('creates a draft payload with sign mode defaults', async () => {
     const user = userEvent.setup();
     const onCreateDraft = vi.fn().mockResolvedValue(undefined);
@@ -45,6 +67,7 @@ describe('SignatureRequestDialog', () => {
           },
         ]}
         onCreateDraft={onCreateDraft}
+        onCreateDrafts={vi.fn()}
       />,
     );
 
@@ -94,6 +117,7 @@ describe('SignatureRequestDialog', () => {
         sourceDocumentName="Bravo Packet"
         options={SIGNING_OPTIONS}
         onCreateDraft={onCreateDraft}
+        onCreateDrafts={vi.fn()}
       />,
     );
 
@@ -114,6 +138,7 @@ describe('SignatureRequestDialog', () => {
         sourceDocumentName="Bravo Packet"
         options={SIGNING_OPTIONS}
         onCreateDraft={vi.fn()}
+        onCreateDrafts={vi.fn()}
       />,
     );
 
@@ -162,6 +187,7 @@ describe('SignatureRequestDialog', () => {
           publicPath: '/sign/token-1',
         }}
         onCreateDraft={vi.fn()}
+        onCreateDrafts={vi.fn()}
         onSendRequest={onSendRequest}
       />,
     );
@@ -230,6 +256,7 @@ describe('SignatureRequestDialog', () => {
           },
         }}
         onCreateDraft={onCreateDraft}
+        onCreateDrafts={vi.fn()}
         onSendRequest={onSendRequest}
       />,
     );

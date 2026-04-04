@@ -181,6 +181,58 @@ describe('SigningResponsesPanel', () => {
     expect(screen.getByText(/Once you create and send signing requests/i)).toBeTruthy();
   });
 
+  it('shows sequential envelope recipients as waiting for turn until activated', () => {
+    render(
+      <SigningResponsesPanel
+        sourceTemplateId="tpl-1"
+        requests={[
+          buildRequest({
+            id: 'req-envelope-1',
+            signerName: 'Alice First',
+            signerEmail: 'alice@example.com',
+            envelopeId: 'env-1',
+            signerOrder: 1,
+            turnActivatedAt: '2026-03-24T12:02:00Z',
+            status: 'completed',
+          }),
+          buildRequest({
+            id: 'req-envelope-2',
+            signerName: 'Bob Second',
+            signerEmail: 'bob@example.com',
+            envelopeId: 'env-1',
+            signerOrder: 2,
+            status: 'sent',
+            completedAt: null,
+            inviteDeliveryStatus: 'queued',
+            turnActivatedAt: null,
+            artifacts: {
+              sourcePdf: {
+                available: true,
+                downloadPath: '/api/signing/requests/req-envelope-2/artifacts/source_pdf',
+              },
+              signedPdf: {
+                available: false,
+                downloadPath: null,
+              },
+              auditReceipt: {
+                available: false,
+                downloadPath: null,
+              },
+              disputePackage: {
+                available: false,
+                downloadPath: null,
+              },
+            },
+          }),
+        ]}
+      />,
+    );
+
+    expect(screen.getByText('Waiting turn')).toBeTruthy();
+    expect(screen.getByText(/1 signer still needs to sign before the final signed PDF is available/i)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Copy signer link' })).toBeNull();
+  });
+
   it('does not expose signer links for drafts or invalidated requests', () => {
     render(
       <SigningResponsesPanel
@@ -410,7 +462,12 @@ describe('SigningResponsesPanel', () => {
     );
 
     expect(screen.getByText('Manual link shared')).toBeTruthy();
-    expect(screen.getByText(/Manual link shared .*AM/i)).toBeTruthy();
+    expect(
+      screen.getByText((content) => (
+        content.startsWith('Manual link shared ')
+        && content.trim() !== 'Manual link shared'
+      )),
+    ).toBeTruthy();
     expect(screen.getByText('owner@example.com')).toBeTruthy();
   });
 

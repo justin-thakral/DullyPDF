@@ -8,6 +8,8 @@ import type { CreateTool, FieldRect, FieldType, PageSize, PdfField, RadioGroupSu
 import { FieldOverlay } from './FieldOverlay';
 import { FieldInputOverlay } from './FieldInputOverlay';
 import { Alert } from '../ui/Alert';
+import '../../styles/pdf-viewer.css';
+import '../../styles/field-overlays.css';
 
 const EMPTY_SIZE: PageSize = { width: 0, height: 0 };
 const EMPTY_FIELDS: PdfField[] = [];

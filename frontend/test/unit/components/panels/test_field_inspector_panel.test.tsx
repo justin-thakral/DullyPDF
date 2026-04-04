@@ -46,6 +46,18 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
 }
 
 describe('FieldInspectorPanel', () => {
+  it('opens editor workflow usage docs in a new window from the inspector header', async () => {
+    const user = userEvent.setup();
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<FieldInspectorPanel {...createProps()} />);
+
+    await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
+
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/editor-workflow', '_blank', 'noopener,noreferrer');
+    openSpy.mockRestore();
+  });
+
   it('renders empty state when no field is selected', () => {
     render(<FieldInspectorPanel {...createProps({ selectedFieldId: null })} />);
 
@@ -207,8 +219,8 @@ describe('FieldInspectorPanel', () => {
 
     const undoButtonBefore = screen.getByRole('button', { name: 'Undo' }) as HTMLButtonElement;
     const redoButtonBefore = screen.getByRole('button', { name: 'Redo' }) as HTMLButtonElement;
-    expect(undoButtonBefore.disabled).toBe(true);
-    expect(redoButtonBefore.disabled).toBe(true);
+    expect(undoButtonBefore.getAttribute('aria-disabled')).toBe('true');
+    expect(redoButtonBefore.getAttribute('aria-disabled')).toBe('true');
 
     rerender(
       <FieldInspectorPanel

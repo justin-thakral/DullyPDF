@@ -133,6 +133,24 @@
   min-height: 2.85rem;
 }
 
+.public-signing-page__artifact-action {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.public-signing-page__artifact-action--locked > .ui-button {
+  filter: blur(0.9px);
+  opacity: 0.64;
+  cursor: not-allowed;
+}
+
+.public-signing-page__artifact-lock-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  text-align: center;
+}
+
 .public-signing-page__button-group--secondary {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
@@ -205,9 +223,115 @@
   background: #fff;
 }
 
+.public-signing-page__document-frame--viewer {
+  display: flex;
+  min-height: 0;
+  height: clamp(420px, 78vh, 960px);
+  padding: 0;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.92), rgba(226, 232, 240, 0.85)),
+    linear-gradient(180deg, rgba(241, 245, 249, 0.9), rgba(226, 232, 240, 0.75));
+}
+
+.public-signing-page__document-frame--viewer .viewer {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  padding: 1rem;
+  border: 0;
+  border-radius: 18px;
+  box-shadow: none;
+  background: transparent;
+  animation: none;
+}
+
+.public-signing-page__document-frame--viewer .viewer__document {
+  min-width: 100%;
+  padding-bottom: 0.5rem;
+}
+
+.public-signing-page__document-frame--viewer .field-box {
+  pointer-events: none;
+  cursor: default;
+  box-shadow: none;
+}
+
+.public-signing-page__document-frame--viewer .field-box:hover {
+  transform: none;
+}
+
+.public-signing-page__document-frame--viewer .field-box--signature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(37, 99, 235, 0.72);
+  background:
+    linear-gradient(180deg, rgba(219, 234, 254, 0.76), rgba(191, 219, 254, 0.56)),
+    rgba(59, 130, 246, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.public-signing-page__document-frame--viewer .field-label--signature {
+  inset: 0;
+  max-width: none;
+  max-height: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.6rem;
+  border-radius: 12px;
+  background: transparent;
+  color: rgba(29, 78, 216, 0.96);
+  font-size: clamp(0.78rem, 0.86vw, 0.94rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: normal;
+  line-height: 1.1;
+  transform: none;
+}
+
+.public-signing-page__document-frame--viewer .field-box--date,
+.public-signing-page__document-frame--viewer .field-box--initials {
+  border: 1.5px solid rgba(15, 118, 110, 0.58);
+  background: rgba(20, 184, 166, 0.09);
+  border-radius: 10px;
+}
+
+.public-signing-page__document-frame--viewer .field-label--date,
+.public-signing-page__document-frame--viewer .field-label--initials {
+  left: 8px;
+  top: 8px;
+  transform: none;
+  padding: 0.14rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.92);
+  color: #ecfeff;
+  font-size: clamp(0.68rem, 0.74vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.public-signing-page__document-preview-placeholder {
+  min-height: 540px;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: #475569;
+}
+
 .public-signing-page__field {
   display: grid;
   gap: 0.5rem;
+}
+
+.public-signing-page__verification-form {
+  display: grid;
+  gap: 1rem;
 }
 
 .public-signing-page__field span {
@@ -408,6 +532,15 @@
     min-height: 360px;
   }
 
+  .public-signing-page__document-frame--viewer .viewer,
+  .public-signing-page__document-preview-placeholder {
+    min-height: 0;
+  }
+
+  .public-signing-page__document-frame--viewer {
+    height: 360px;
+  }
+
   .public-signing-page__checkbox {
     gap: 0.6rem;
   }
@@ -440,4 +573,51 @@
   .public-signing-page__document-frame iframe {
     min-height: 320px;
   }
+
+  .public-signing-page__document-frame--viewer .viewer,
+  .public-signing-page__document-preview-placeholder {
+    min-height: 0;
+  }
+
+  .public-signing-page__document-frame--viewer {
+    height: 320px;
+  }
+}
+
+.public-signing-page__sign-here-indicators {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 12px;
+  background: rgba(239, 246, 255, 0.7);
+}
+
+.public-signing-page__sign-here-label {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1d4ed8;
+}
+
+.public-signing-page__sign-here-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+.public-signing-page__sign-here-marker {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
 }

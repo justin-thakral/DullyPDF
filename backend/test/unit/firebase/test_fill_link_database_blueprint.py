@@ -13,6 +13,7 @@ def _no_transaction_wrapper(mocker):
         "backend.firebaseDB.fill_link_database.firebase_firestore.transactional",
         side_effect=lambda fn: fn,
     )
+    mocker.patch("backend.firebaseDB.fill_link_database.get_user_profile", return_value=None)
 
 
 def test_create_or_update_fill_link_creates_and_updates_owned_record(mocker) -> None:

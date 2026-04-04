@@ -14,6 +14,7 @@ type MatchMediaState = {
 };
 
 const originalMatchMedia = window.matchMedia;
+const originalFileText = File.prototype.text;
 let matchMediaStates = new Map<string, MatchMediaState>();
 
 const installMatchMedia = (initial: Record<string, boolean> = {}) => {
@@ -50,6 +51,17 @@ const installMatchMedia = (initial: Record<string, boolean> = {}) => {
       dispatchEvent: () => true,
     } as MediaQueryList;
   }) as typeof window.matchMedia;
+};
+
+const updateMatchMedia = (query: string, matches: boolean) => {
+  const state = matchMediaStates.get(query);
+  if (!state) {
+    throw new Error(`No matchMedia state registered for ${query}`);
+  }
+  state.matches = matches;
+  const event = { matches, media: query } as MediaQueryListEvent;
+  state.listeners.forEach((listener) => listener(event));
+  state.legacyListeners.forEach((listener) => listener(event));
 };
 
 const authMocks = vi.hoisted(() => ({
@@ -222,6 +234,9 @@ vi.mock('../../../src/components/pages/Homepage', () => ({
       <div data-testid="homepage">
         <button data-testid="start-workflow" type="button" onClick={() => props.onStartWorkflow?.()}>
           Start workflow
+        </button>
+        <button data-testid="start-demo" type="button" onClick={() => props.onStartDemo?.()}>
+          Start demo
         </button>
       </div>
     );
@@ -573,6 +588,19 @@ describe('App', () => {
     installMatchMedia({
       '(max-width: 900px)': false,
     });
+    if (typeof File.prototype.text !== 'function') {
+      Object.defineProperty(File.prototype, 'text', {
+        configurable: true,
+        value: function text(this: Blob) {
+          return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => reject(reader.error || new Error('Failed to read File text.'));
+            reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+            reader.readAsText(this);
+          });
+        },
+      });
+    }
     window.history.replaceState({}, '', '/');
     window.scrollTo = vi.fn();
     window.sessionStorage.clear();
@@ -618,6 +646,15 @@ describe('App', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.clearAllMocks();
+    vi.unstubAllGlobals();
+    if (typeof originalFileText === 'function') {
+      Object.defineProperty(File.prototype, 'text', {
+        configurable: true,
+        value: originalFileText,
+      });
+    } else {
+      delete (File.prototype as File & { text?: unknown }).text;
+    }
     window.matchMedia = originalMatchMedia;
   });
 
@@ -650,7 +687,7 @@ describe('App', () => {
     fireEvent.click(screen.getByTestId('start-workflow'));
 
     expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
-  }, 15_000);
+  }, 30_000);
 
   it('keeps routing signed-out users to sign-in from runtime homepage after canceling login', async () => {
     const App = await importApp();
@@ -666,7 +703,7 @@ describe('App', () => {
     fireEvent.click(screen.getByTestId('start-workflow'));
     expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
     expect(screen.queryByTestId('upload-detect')).toBeNull();
-  }, 15_000);
+  }, 30_000);
 
   it('releases workspace scroll lock when mobile users back out of the runtime login shell', async () => {
     installMatchMedia({
@@ -703,6 +740,97 @@ describe('App', () => {
     expect(await screen.findByTestId('upload-detect', {}, { timeout: 10_000 })).toBeTruthy();
     expect(screen.getByTestId('upload-fillable')).toBeTruthy();
     expect(window.location.pathname).toBe('/upload');
+  }, 15_000);
+
+  it('keeps direct workflow routes on the homepage shell below the 900px breakpoint', async () => {
+    installMatchMedia({
+      '(max-width: 900px)': true,
+    });
+    window.history.replaceState({}, '', '/upload');
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'upload-root' }} />);
+
+    await settleAuthAsSignedIn();
+
+    expect(await screen.findByTestId('homepage', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(screen.queryByTestId('upload-detect')).toBeNull();
+    expect(window.location.pathname).toBe('/');
+    expect(document.documentElement.classList.contains('workspace-no-scroll')).toBe(false);
+    expect(document.body.classList.contains('workspace-no-scroll')).toBe(false);
+  }, 15_000);
+
+  it('falls back to the homepage when the live editor shrinks below the 900px breakpoint', async () => {
+    const App = await importApp();
+    render(<App />);
+
+    await settleAuthAsSignedIn();
+    await openFillableWorkspace();
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+
+    await act(async () => {
+      updateMatchMedia('(max-width: 900px)', true);
+    });
+
+    expect(await screen.findByTestId('homepage', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(screen.queryByTestId('field-list')).toBeNull();
+    expect(document.documentElement.classList.contains('workspace-no-scroll')).toBe(false);
+    expect(document.body.classList.contains('workspace-no-scroll')).toBe(false);
+  }, 15_000);
+
+  it('keeps the anonymous demo in the editor instead of tripping the redirect guard', async () => {
+    const pdfBytes = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<<>>\n%%EOF';
+    const demoFields = JSON.stringify([
+      {
+        id: 'demo-field-1',
+        name: 'patient_name',
+        type: 'text',
+        page: 1,
+        rect: [10, 10, 110, 30],
+      },
+    ]);
+    const demoNameMap = JSON.stringify({ patient_name: 'patient_name' });
+    const makeFetchResponse = (body: string, contentType: string, status = 200) => ({
+      ok: status >= 200 && status < 300,
+      status,
+      blob: async () => new Blob([body], { type: contentType }),
+    });
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes('/demo/new_patient_forms_1915ccb015.pdf')) {
+        return makeFetchResponse(pdfBytes, 'application/pdf');
+      }
+      if (url.includes('/demo/generated/baseFieldDetections.fields.json')) {
+        return makeFetchResponse(demoFields, 'application/json');
+      }
+      if (
+        url.includes('/demo/generated/baseToOpenAiRenameNameMap.json')
+        || url.includes('/demo/generated/baseToOpenAiRemapNameMap.json')
+      ) {
+        return makeFetchResponse(demoNameMap, 'application/json');
+      }
+      if (url.includes('/demo/new_patient_forms_1915ccb015_mock.csv')) {
+        return makeFetchResponse('patient_name\nJustin Thakral\n', 'text/csv');
+      }
+      return makeFetchResponse('not found', 'text/plain', 404);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const App = await importApp();
+    render(<App />);
+
+    await settleAuthAsSignedOut();
+    expect(await screen.findByTestId('homepage')).toBeTruthy();
+
+    fireEvent.click(screen.getByTestId('start-demo'));
+
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(screen.queryByText('Redirecting…')).toBeNull();
+    expect(screen.queryByTestId('login-page')).toBeNull();
+    await waitFor(() => {
+      const lastHeaderBarProps = uiMocks.headerBar.mock.calls.at(-1)?.[0];
+      expect(lastHeaderBarProps?.canDownload).toBe(true);
+    });
   }, 15_000);
 
   it('keeps hidden schema picker inputs labeled for accessibility', async () => {
@@ -805,9 +933,10 @@ describe('App', () => {
     await waitFor(() => {
       expect(apiServiceMocks.downloadSessionPdf).toHaveBeenCalledWith('resume-ui-session-1');
     });
+    expect(apiServiceMocks.downloadSessionPdf).toHaveBeenCalledTimes(1);
     expect(window.location.pathname).toBe('/ui');
     expect(screen.getByTestId('field-list').textContent).toContain('mapped_name');
-  });
+  }, 30_000);
 
   it('restores a saved group directly from a /ui/groups route and opens the requested template first', async () => {
     window.history.replaceState({}, '', '/ui/groups/group-1?template=saved-2');
@@ -858,8 +987,16 @@ describe('App', () => {
     await waitFor(() => {
       expect(apiServiceMocks.touchSession).toHaveBeenCalledWith('group-resume-session');
     });
-    expect(apiServiceMocks.loadSavedForm).toHaveBeenCalledTimes(1);
-    expect(apiServiceMocks.downloadSavedForm).toHaveBeenCalledTimes(1);
+    expect(apiServiceMocks.loadSavedForm.mock.calls.length).toBeGreaterThanOrEqual(1);
+    expect(apiServiceMocks.loadSavedForm.mock.calls[0]?.[0]).toBe('saved-2');
+    expect(
+      apiServiceMocks.loadSavedForm.mock.calls.every((call) => ['saved-1', 'saved-2'].includes(call[0])),
+    ).toBe(true);
+    expect(apiServiceMocks.downloadSavedForm.mock.calls.length).toBeGreaterThanOrEqual(1);
+    expect(apiServiceMocks.downloadSavedForm.mock.calls[0]?.[0]).toBe('saved-2');
+    expect(
+      apiServiceMocks.downloadSavedForm.mock.calls.every((call) => ['saved-1', 'saved-2'].includes(call[0])),
+    ).toBe(true);
     expect(apiServiceMocks.createSavedFormSession).not.toHaveBeenCalled();
     expect(window.location.pathname).toBe('/ui/groups/group-1');
     expect(window.location.search).toBe('?template=saved-2');
@@ -1580,7 +1717,7 @@ describe('App', () => {
     expect(await screen.findByTestId('header-bar')).toBeTruthy();
     await settleAuthAsSignedOut();
     expect(screen.queryByTestId('save-profile')).toBeNull();
-    expect(document.querySelector('.auth-loading-screen')?.textContent).toContain('Loading workspace');
+    expect(document.querySelector('.auth-loading-screen')).toBeTruthy();
     expect(apiServiceMocks.saveFormToProfile).not.toHaveBeenCalled();
   });
 

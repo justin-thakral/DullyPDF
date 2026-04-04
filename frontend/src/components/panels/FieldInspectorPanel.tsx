@@ -25,6 +25,7 @@ import {
   radioGroupSuggestionConfidenceTier,
   shouldAutoApplyRadioGroupSuggestion,
 } from '../../utils/radioGroupSuggestions';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 
 type InspectorDraft = {
   name: string;
@@ -367,6 +368,14 @@ export function FieldInspectorPanel({
               {selected ? `Editing ${selected.name} (enter to confirm)` : 'Select a field to edit its details.'}
             </p>
           </div>
+          <button
+            type="button"
+            className="ui-button ui-button--ghost ui-button--compact"
+            onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.editorWorkflow)}
+            title="Open Editor Workflow usage docs in a new window"
+          >
+            Usage Docs
+          </button>
         </div>
 
         <div className="panel__body">
@@ -469,6 +478,7 @@ export function FieldInspectorPanel({
                       name="field-width"
                       className="panel__input"
                       type="number"
+                      min={selectedMinSize}
                       value={draft?.width ?? String(Math.round(selected.rect.width))}
                       onFocus={beginFieldEdit}
                       onBlur={() => commitFieldEdit(() => commitRect('width'))}
@@ -485,6 +495,7 @@ export function FieldInspectorPanel({
                       name="field-height"
                       className="panel__input"
                       type="number"
+                      min={selectedMinSize}
                       value={draft?.height ?? String(Math.round(selected.rect.height))}
                       onFocus={beginFieldEdit}
                       onBlur={() => commitFieldEdit(() => commitRect('height'))}

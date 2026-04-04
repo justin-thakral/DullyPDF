@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { DEMO_DISABLED_MESSAGE } from '../../config/appConstants';
 import type { DataSourceKind } from '../../types';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 import { Alert } from '../ui/Alert';
 
 const HEADER_GROUP_TEMPLATE_TRIGGER_MAX_CHARS = 22;
@@ -73,6 +74,7 @@ type HeaderBarProps = {
   onDemoLockedAction?: () => void;
   demoFillLinkDocsHref?: string;
   demoCreateGroupDocsHref?: string;
+  demoSignatureDocsHref?: string;
   onBlockedAction?: (message: string) => void;
 };
 
@@ -192,6 +194,7 @@ export function HeaderBar({
   onDemoLockedAction,
   demoFillLinkDocsHref,
   demoCreateGroupDocsHref,
+  demoSignatureDocsHref,
   onBlockedAction,
 }: HeaderBarProps) {
   const hasMappingControls = Boolean(
@@ -222,6 +225,7 @@ export function HeaderBar({
   const disableTemplateApi = demoOverride ? true : !canOpenTemplateApi;
   const showDemoFillLinkDocs = demoLocked && Boolean(demoFillLinkDocsHref);
   const showDemoCreateGroupDocs = demoLocked && Boolean(demoCreateGroupDocsHref);
+  const showDemoSignatureDocs = demoLocked && Boolean(demoSignatureDocsHref);
   const showDemoDocs = showDemoFillLinkDocs || showDemoCreateGroupDocs;
   const rawActionHint = demoOverride
     ? (showDemoDocs ? null : demoLockedHint)
@@ -700,6 +704,17 @@ export function HeaderBar({
                         Clear data source
                       </button>
                     ) : null}
+                    <button
+                      type="button"
+                      className="data-source__item"
+                      role="menuitem"
+                      onClick={() => {
+                        setShowDataMenu(false);
+                        openUsageDocsWindow(USAGE_DOCS_ROUTES.schemaSearchFill);
+                      }}
+                    >
+                      Usage Docs
+                    </button>
                   </div>
                 ) : null}
               </div>
@@ -782,6 +797,17 @@ export function HeaderBar({
                         {renameAndMapGroupLabel}
                       </button>
                     ) : null}
+                    <button
+                      type="button"
+                      className="data-source__item"
+                      role="menuitem"
+                      onClick={() => {
+                        setShowRenameMenu(false);
+                        openUsageDocsWindow(USAGE_DOCS_ROUTES.renameMapping);
+                      }}
+                    >
+                      Usage Docs
+                    </button>
                   </div>
                 ) : null}
               </div>
@@ -798,6 +824,8 @@ export function HeaderBar({
                 <a
                   className="ui-button ui-button--ghost ui-button--compact"
                   href={demoFillLinkDocsHref}
+                  target="_blank"
+                  rel="noreferrer noopener"
                 >
                   Fill By Link docs
                 </a>
@@ -806,8 +834,20 @@ export function HeaderBar({
                 <a
                   className="ui-button ui-button--ghost ui-button--compact"
                   href={demoCreateGroupDocsHref}
+                  target="_blank"
+                  rel="noreferrer noopener"
                 >
                   Create Group docs
+                </a>
+              ) : null}
+              {showDemoSignatureDocs ? (
+                <a
+                  className="ui-button ui-button--ghost ui-button--compact"
+                  href={demoSignatureDocsHref}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Signature docs
                 </a>
               ) : null}
               {!showDemoFillLinkDocs && !showDemoCreateGroupDocs && onOpenFillLink ? (
@@ -821,7 +861,7 @@ export function HeaderBar({
                   Fill By Web Form Link + Sign
                 </button>
               ) : null}
-              {onOpenSignatureRequest ? (
+              {!showDemoSignatureDocs && onOpenSignatureRequest ? (
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"

@@ -222,11 +222,13 @@ describe('UploadComponent', () => {
   it('applies default headings/subtitles for detect, fillable, and saved variants', () => {
     const { rerender } = render(<UploadComponent variant="detect" />);
     expect(screen.getByText('Upload PDF Document')).toBeTruthy();
-    expect(screen.getByText(/Drag and drop your PDF file here, or click to browse/i)).toBeTruthy();
+    expect(
+      screen.getByText('Upload a PDF to auto-detect fields, then edit, fill, sign, and search in the form builder'),
+    ).toBeTruthy();
 
     rerender(<UploadComponent variant="fillable" />);
     expect(screen.getByText('Upload Fillable PDF Template')).toBeTruthy();
-    expect(screen.getByText('Open your existing fillable PDF directly in the editor')).toBeTruthy();
+    expect(screen.getByText('Open a fillable PDF directly in the editor to fill, sign, and search fields')).toBeTruthy();
     expect(screen.queryByText('click to browse')).toBeNull();
 
     rerender(<UploadComponent variant="saved" savedForms={[]} />);
@@ -242,7 +244,7 @@ describe('UploadComponent', () => {
     render(<UploadComponent variant="group" onOpenDialog={onOpenDialog} />);
 
     expect(screen.getByText('Upload PDF Group')).toBeTruthy();
-    expect(screen.getByText('Detect, rename, map, and group multiple PDFs in one batch')).toBeTruthy();
+    expect(screen.getByText('Upload multiple PDFs in one batch to detect, rename, and map fields across a workflow')).toBeTruthy();
 
     await user.click(screen.getByRole('button', { name: /Upload PDF Group/i }));
     expect(onOpenDialog).toHaveBeenCalledTimes(1);

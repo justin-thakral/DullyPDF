@@ -1,6 +1,26 @@
 import { afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 
+const requiredFirebaseTestEnv: Record<string, string> = {
+  VITE_FIREBASE_API_KEY: 'test-api-key',
+  VITE_FIREBASE_AUTH_DOMAIN: 'test-project.firebaseapp.com',
+  VITE_FIREBASE_PROJECT_ID: 'test-project',
+  VITE_FIREBASE_APP_ID: '1:1234567890:web:testapp',
+  VITE_FIREBASE_STORAGE_BUCKET: 'test-project.appspot.com',
+  VITE_FIREBASE_MESSAGING_SENDER_ID: '1234567890',
+};
+
+for (const [key, value] of Object.entries(requiredFirebaseTestEnv)) {
+  const currentValue = process.env[key];
+  if (typeof currentValue !== 'string' || !currentValue.trim()) {
+    process.env[key] = value;
+  }
+  const metaEnv = import.meta.env as Record<string, string | undefined>;
+  if (typeof metaEnv[key] !== 'string' || !metaEnv[key]?.trim()) {
+    metaEnv[key] = process.env[key];
+  }
+}
+
 afterEach(() => {
   cleanup();
 });

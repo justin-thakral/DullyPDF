@@ -31,7 +31,7 @@ def _parse_int_env(name: str, default: int, *, minimum: int) -> int:
 
 def resolve_openai_timeout_seconds() -> float:
     """Return request timeout in seconds for OpenAI SDK calls."""
-    return _parse_float_env("OPENAI_REQUEST_TIMEOUT_SECONDS", 900.0, minimum=1.0)
+    return _parse_float_env("OPENAI_REQUEST_TIMEOUT_SECONDS", 75.0, minimum=1.0)
 
 
 def resolve_openai_max_retries() -> int:

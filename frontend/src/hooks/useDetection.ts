@@ -145,10 +145,19 @@ export function useDetection(deps: UseDetectionDeps) {
   const detectionRetryRef = useRef<Map<string, number>>(new Map());
   const resumeDetectionPollingRef = useRef<((sessionId: string, loadToken: number) => void) | null>(null);
   const pendingAutoActionsRef = useRef<PendingAutoActions | null>(null);
+  const savedFormLoadInFlightRef = useRef<{
+    key: string;
+    promise: Promise<boolean>;
+  } | null>(null);
   const activeDetectionAbortRef = useRef<AbortController | null>(null);
+  const keepAliveBootstrapRef = useRef<{
+    sessionId: string;
+    startedAt: number;
+  } | null>(null);
   const backgroundDetectionAbortRefs = useRef<Map<string, AbortController>>(new Map());
   const detectionRetryTimeoutsRef = useRef<Map<string, number>>(new Map());
   const detectionPipeline: 'commonforms' = 'commonforms';
+  const activeSessionId = detectSessionId || mappingSessionId;
 
   const clearScheduledDetectionRetry = useCallback((sessionId?: string) => {
     if (sessionId) {
@@ -481,163 +490,181 @@ export function useDetection(deps: UseDetectionDeps) {
         preferredSession?: SavedFormSessionResume | null;
       } = {},
     ) => {
-      cancelAllDetectionPolling();
-      const loadToken = loadTokenRef.current + 1;
-      loadTokenRef.current = loadToken;
-      deps.setShowSearchFill(false);
-      deps.setSearchFillSessionId((prev) => prev + 1);
-      setProcessingMode('saved');
-      setIsProcessing(true);
       const savedSource = options.source === 'saved-group' ? 'saved-group' : 'saved-form';
-      setProcessingVariant(savedSource);
-      setProcessingDetail(resolveProcessingCopy(savedSource).detail);
-      deps.setLoadError(null);
-      deps.setShowHomepage(false);
-      setMappingSessionId(null);
-      setDetectSessionId(null);
-      deps.setHasRenamedFields(false);
-      deps.setHasMappedSchema(false);
-      deps.setSchemaError(null);
-      deps.setOpenAiError(null);
+      const inFlightKey = `${savedSource}:${formId}`;
+      if (savedFormLoadInFlightRef.current?.key === inFlightKey) {
+        return savedFormLoadInFlightRef.current.promise;
+      }
 
-      try {
-        const [savedMeta, blob] = await Promise.all([
-          ApiService.loadSavedForm(formId),
-          ApiService.downloadSavedForm(formId),
-        ]);
-        const name = savedMeta?.name || 'saved-form.pdf';
-        const file = new File([blob], name, { type: 'application/pdf' });
-        deps.setSourceFile(file);
-        deps.setSourceFileName(name);
-        deps.setSourceFileIsDemo(false);
-        const doc = await loadPdfFromFile(file);
-        const hydratedSnapshot = normalizeSavedFormEditorSnapshot(savedMeta?.editorSnapshot, {
-          expectedPageCount: doc.numPages,
-        });
-        const sizesPromise = hydratedSnapshot
-          ? Promise.resolve(hydratedSnapshot.pageSizes)
-          : loadPageSizes(doc);
-        const existingFieldsPromise = hydratedSnapshot
-          ? Promise.resolve(clonePdfFields(hydratedSnapshot.fields))
-          : (async () => {
-              try { return await extractFieldsFromPdf(doc); }
-              catch (error) {
-                debugLog('Failed to extract saved form fields', error);
-                deps.setBannerNotice({ tone: 'warning', message: 'Could not extract saved form fields. Some fields may be missing.', autoDismissMs: 8000 });
-                return [];
+      const loadPromise = (async () => {
+        cancelAllDetectionPolling();
+        const loadToken = loadTokenRef.current + 1;
+        loadTokenRef.current = loadToken;
+        deps.setShowSearchFill(false);
+        deps.setSearchFillSessionId((prev) => prev + 1);
+        setProcessingMode('saved');
+        setIsProcessing(true);
+        setProcessingVariant(savedSource);
+        setProcessingDetail(resolveProcessingCopy(savedSource).detail);
+        deps.setLoadError(null);
+        deps.setShowHomepage(false);
+        setMappingSessionId(null);
+        setDetectSessionId(null);
+        deps.setHasRenamedFields(false);
+        deps.setHasMappedSchema(false);
+        deps.setSchemaError(null);
+        deps.setOpenAiError(null);
+
+        try {
+          const [savedMeta, blob] = await Promise.all([
+            ApiService.loadSavedForm(formId),
+            ApiService.downloadSavedForm(formId),
+          ]);
+          const name = savedMeta?.name || 'saved-form.pdf';
+          const file = new File([blob], name, { type: 'application/pdf' });
+          deps.setSourceFile(file);
+          deps.setSourceFileName(name);
+          deps.setSourceFileIsDemo(false);
+          const doc = await loadPdfFromFile(file);
+          const hydratedSnapshot = normalizeSavedFormEditorSnapshot(savedMeta?.editorSnapshot, {
+            expectedPageCount: doc.numPages,
+          });
+          const sizesPromise = hydratedSnapshot
+            ? Promise.resolve(hydratedSnapshot.pageSizes)
+            : loadPageSizes(doc);
+          const existingFieldsPromise = hydratedSnapshot
+            ? Promise.resolve(clonePdfFields(hydratedSnapshot.fields))
+            : (async () => {
+                try { return await extractFieldsFromPdf(doc); }
+                catch (error) {
+                  debugLog('Failed to extract saved form fields', error);
+                  deps.setBannerNotice({ tone: 'warning', message: 'Could not extract saved form fields. Some fields may be missing.', autoDismissMs: 8000 });
+                  return [];
+                }
+              })();
+          const sizes = await sizesPromise;
+          const initialFields = hydratedSnapshot ? clonePdfFields(hydratedSnapshot.fields) : [];
+          if (!commitPdfLoad(doc, sizes, initialFields, loadToken, pdfState)) return false;
+          deps.setActiveSavedFormId(formId);
+          deps.setActiveSavedFormName(savedMeta?.name || null);
+          const {
+            checkboxRules: savedCheckboxRules,
+            legacyRadioGroupSuggestions,
+            textTransformRules: savedTextTransformRules,
+          } = extractSavedFormFillRuleState(savedMeta, { fields: initialFields });
+          deps.setCheckboxRules(savedCheckboxRules);
+          deps.setRadioGroupSuggestions(legacyRadioGroupSuggestions);
+          deps.setTextTransformRules(savedTextTransformRules);
+          const derivedHasMappedSchema = Boolean(
+            savedCheckboxRules.length ||
+            savedTextTransformRules.length
+          );
+          deps.setHasRenamedFields(Boolean(hydratedSnapshot?.hasRenamedFields));
+          deps.setHasMappedSchema(hydratedSnapshot?.hasMappedSchema ?? derivedHasMappedSchema);
+
+          const registerSavedFormSession = async (fieldsForSession: PdfField[]) => {
+            if (!fieldsForSession.length) {
+              deps.setBannerNotice({ tone: 'info', message: 'No fields found in this saved form. Rename is unavailable.', autoDismissMs: 8000 });
+              return true;
+            }
+            const preferredSession = options.preferredSession;
+            if (
+              preferredSession?.sessionId &&
+              (preferredSession.fieldCount === null || preferredSession.fieldCount === fieldsForSession.length) &&
+              (preferredSession.pageCount === null || preferredSession.pageCount === doc.numPages)
+            ) {
+              try {
+                await ApiService.touchSession(preferredSession.sessionId);
+                if (loadTokenRef.current !== loadToken) return false;
+                setDetectSessionId(preferredSession.sessionId);
+                setMappingSessionId(preferredSession.sessionId);
+                return true;
+              } catch (error) {
+                debugLog('Failed to reuse saved form session, creating a fresh session instead', preferredSession.sessionId, error);
               }
-            })();
-        const sizes = await sizesPromise;
-        const initialFields = hydratedSnapshot ? clonePdfFields(hydratedSnapshot.fields) : [];
-        if (!commitPdfLoad(doc, sizes, initialFields, loadToken, pdfState)) return false;
-        deps.setActiveSavedFormId(formId);
-        deps.setActiveSavedFormName(savedMeta?.name || null);
-        const {
-          checkboxRules: savedCheckboxRules,
-          legacyRadioGroupSuggestions,
-          textTransformRules: savedTextTransformRules,
-        } = extractSavedFormFillRuleState(savedMeta, { fields: initialFields });
-        deps.setCheckboxRules(savedCheckboxRules);
-        deps.setRadioGroupSuggestions(legacyRadioGroupSuggestions);
-        deps.setTextTransformRules(savedTextTransformRules);
-        const derivedHasMappedSchema = Boolean(
-          savedCheckboxRules.length ||
-          savedTextTransformRules.length
-        );
-        deps.setHasRenamedFields(Boolean(hydratedSnapshot?.hasRenamedFields));
-        deps.setHasMappedSchema(hydratedSnapshot?.hasMappedSchema ?? derivedHasMappedSchema);
-
-        const registerSavedFormSession = async (fieldsForSession: PdfField[]) => {
-          if (!fieldsForSession.length) {
-            deps.setBannerNotice({ tone: 'info', message: 'No fields found in this saved form. Rename is unavailable.', autoDismissMs: 8000 });
-            return true;
-          }
-          const preferredSession = options.preferredSession;
-          if (
-            preferredSession?.sessionId &&
-            (preferredSession.fieldCount === null || preferredSession.fieldCount === fieldsForSession.length) &&
-            (preferredSession.pageCount === null || preferredSession.pageCount === doc.numPages)
-          ) {
+            }
             try {
-              await ApiService.touchSession(preferredSession.sessionId);
+              const sessionPayload = await ApiService.createSavedFormSession(formId, {
+                fields: buildTemplateFields(fieldsForSession),
+                pageCount: doc.numPages,
+              });
               if (loadTokenRef.current !== loadToken) return false;
-              setDetectSessionId(preferredSession.sessionId);
-              setMappingSessionId(preferredSession.sessionId);
+              if (!sessionPayload?.sessionId) {
+                throw new Error('Saved form session creation returned no session id.');
+              }
+              setDetectSessionId(sessionPayload.sessionId);
+              setMappingSessionId(sessionPayload.sessionId);
               return true;
             } catch (error) {
-              debugLog('Failed to reuse saved form session, creating a fresh session instead', preferredSession.sessionId, error);
+              if (loadTokenRef.current !== loadToken) return false;
+              deps.setBannerNotice({ tone: 'info', message: 'Rename is unavailable for this saved form.', autoDismissMs: 8000 });
+              debugLog('Failed to register saved form session', error);
+              return false;
             }
-          }
-          try {
-            const sessionPayload = await ApiService.createSavedFormSession(formId, {
-              fields: buildTemplateFields(fieldsForSession),
-              pageCount: doc.numPages,
-            });
-            if (loadTokenRef.current !== loadToken) return;
-            setDetectSessionId(sessionPayload.sessionId);
-            setMappingSessionId(sessionPayload.sessionId);
+          };
+
+          if (hydratedSnapshot) {
+            deps.markSavedFillLinkSnapshot(initialFields, savedCheckboxRules);
+            debugLog('Loaded saved form from editor snapshot', { name, pages: doc.numPages, fields: initialFields.length });
+            if (deps.verifiedUser) {
+              void registerSavedFormSession(initialFields);
+            }
             return true;
-          } catch (error) {
+          }
+
+          void (async () => {
+            const existingFields = await existingFieldsPromise;
             if (loadTokenRef.current !== loadToken) return;
-            deps.setBannerNotice({ tone: 'info', message: 'Rename is unavailable for this saved form.', autoDismissMs: 8000 });
-            debugLog('Failed to register saved form session', error);
-            return false;
-          }
-        };
-
-        if (hydratedSnapshot) {
-          deps.markSavedFillLinkSnapshot(initialFields, savedCheckboxRules);
-          debugLog('Loaded saved form from editor snapshot', { name, pages: doc.numPages, fields: initialFields.length });
-          if (deps.verifiedUser) {
-            void registerSavedFormSession(initialFields);
-          }
+            const {
+              legacyRadioGroupSuggestions: extractedLegacyRadioSuggestions,
+            } = extractSavedFormFillRuleState(savedMeta, { fields: existingFields });
+            deps.resetFieldHistory(existingFields);
+            deps.setSelectedFieldId(null);
+            deps.setRadioGroupSuggestions(extractedLegacyRadioSuggestions);
+            deps.markSavedFillLinkSnapshot(existingFields, savedCheckboxRules);
+            debugLog('Extracted saved form fields', { total: existingFields.length });
+            debugLog('Loaded saved form', { name, pages: doc.numPages, fields: existingFields.length });
+            if (deps.verifiedUser && existingFields.length) {
+              void Promise.resolve(
+                ApiService.updateSavedFormEditorSnapshot(
+                  formId,
+                  buildSavedFormEditorSnapshot({
+                    pageCount: doc.numPages,
+                    pageSizes: sizes,
+                    fields: existingFields,
+                    hasRenamedFields: false,
+                    hasMappedSchema: derivedHasMappedSchema,
+                  }),
+                ),
+              ).catch((error) => {
+                debugLog('Failed to backfill saved form editor snapshot', formId, error);
+              });
+            }
+            if (!deps.verifiedUser) return;
+            await registerSavedFormSession(existingFields);
+          })();
           return true;
+        } catch (error) {
+          if (loadTokenRef.current !== loadToken) return false;
+          const message = error instanceof Error ? error.message : 'Unable to load saved form.';
+          deps.clearWorkspace();
+          setIsProcessing(false);
+          setProcessingMode(null);
+          deps.setLoadError(message);
+          debugLog('Failed to load saved form', message);
+          return false;
         }
+      })();
 
-        void (async () => {
-          const existingFields = await existingFieldsPromise;
-          if (loadTokenRef.current !== loadToken) return;
-          const {
-            legacyRadioGroupSuggestions: extractedLegacyRadioSuggestions,
-          } = extractSavedFormFillRuleState(savedMeta, { fields: existingFields });
-          deps.resetFieldHistory(existingFields);
-          deps.setSelectedFieldId(null);
-          deps.setRadioGroupSuggestions(extractedLegacyRadioSuggestions);
-          deps.markSavedFillLinkSnapshot(existingFields, savedCheckboxRules);
-          debugLog('Extracted saved form fields', { total: existingFields.length });
-          debugLog('Loaded saved form', { name, pages: doc.numPages, fields: existingFields.length });
-          if (deps.verifiedUser && existingFields.length) {
-            void Promise.resolve(
-              ApiService.updateSavedFormEditorSnapshot(
-                formId,
-                buildSavedFormEditorSnapshot({
-                  pageCount: doc.numPages,
-                  pageSizes: sizes,
-                  fields: existingFields,
-                  hasRenamedFields: false,
-                  hasMappedSchema: derivedHasMappedSchema,
-                }),
-              ),
-            ).catch((error) => {
-              debugLog('Failed to backfill saved form editor snapshot', formId, error);
-            });
-          }
-          if (!deps.verifiedUser) return;
-          await registerSavedFormSession(existingFields);
-        })();
-        return true;
-      } catch (error) {
-        if (loadTokenRef.current !== loadToken) return false;
-        const message = error instanceof Error ? error.message : 'Unable to load saved form.';
-        deps.clearWorkspace();
-        setIsProcessing(false);
-        setProcessingMode(null);
-        deps.setLoadError(message);
-        debugLog('Failed to load saved form', message);
-        return false;
-      }
+      const trackedPromise = loadPromise.finally(() => {
+        if (savedFormLoadInFlightRef.current?.promise === trackedPromise) {
+          savedFormLoadInFlightRef.current = null;
+        }
+      });
+      savedFormLoadInFlightRef.current = { key: inFlightKey, promise: trackedPromise };
+      return trackedPromise;
     },
-    [commitPdfLoad, deps],
+    [cancelAllDetectionPolling, commitPdfLoad, deps],
   );
 
   const restoreSessionWorkspace = useCallback(
@@ -971,33 +998,50 @@ export function useDetection(deps: UseDetectionDeps) {
 
   // ── Session keep-alive ────────────────────────────────────────────
   useEffect(() => {
-    const sessionId = detectSessionId || mappingSessionId;
     const isDemoAsset = Boolean(deps.sourceFileIsDemo && deps.sourceFileName && DEMO_ASSET_NAME_SET.has(deps.sourceFileName));
     const { demoActive, demoCompletionOpen } = deps.demoStateRef.current;
     const demoSessionSuppressed = demoActive || demoCompletionOpen || isDemoAsset;
-    if (!sessionId || !deps.verifiedUser || !deps.pdfDoc || demoSessionSuppressed) return;
+    if (!activeSessionId || !deps.verifiedUser || !deps.pdfDoc || demoSessionSuppressed) return;
     let cancelled = false;
     let intervalId: number | null = null;
     const intervalMs = 60_000;
+    const shouldSkipImmediatePing = (() => {
+      const lastBootstrap = keepAliveBootstrapRef.current;
+      if (!lastBootstrap || lastBootstrap.sessionId !== activeSessionId) {
+        return false;
+      }
+      return Date.now() - lastBootstrap.startedAt < 5_000;
+    })();
     const reportExpired = () => {
       deps.setBannerNotice({ tone: 'info', message: 'This session expired. Re-upload the PDF to run Rename or Map again.', autoDismissMs: 8000 });
       setDetectSessionId(null); setMappingSessionId(null);
     };
     const ping = async () => {
-      try { await ApiService.touchSession(sessionId); }
+      try { await ApiService.touchSession(activeSessionId); }
       catch (error) {
         if (cancelled) return;
         if (error instanceof ApiError && (error.status === 403 || error.status === 404)) { reportExpired(); return; }
         debugLog('Failed to refresh session TTL', error);
       }
     };
-    const start = () => { if (intervalId !== null) return; intervalId = window.setInterval(() => { if (!document.hidden) void ping(); }, intervalMs); void ping(); };
+    const start = () => {
+      if (intervalId !== null) return;
+      intervalId = window.setInterval(() => { if (!document.hidden) void ping(); }, intervalMs);
+      if (shouldSkipImmediatePing) {
+        return;
+      }
+      keepAliveBootstrapRef.current = {
+        sessionId: activeSessionId,
+        startedAt: Date.now(),
+      };
+      void ping();
+    };
     const stop = () => { if (intervalId === null) return; window.clearInterval(intervalId); intervalId = null; };
     const handleVisibility = () => { if (document.hidden) stop(); else start(); };
     document.addEventListener('visibilitychange', handleVisibility);
     if (!document.hidden) start();
     return () => { cancelled = true; stop(); document.removeEventListener('visibilitychange', handleVisibility); };
-  }, [deps.verifiedUser, deps.pdfDoc, deps.sourceFileIsDemo, deps.sourceFileName, deps.setBannerNotice, deps.demoStateRef, detectSessionId, mappingSessionId]);
+  }, [activeSessionId, deps.verifiedUser, deps.pdfDoc, deps.sourceFileIsDemo, deps.sourceFileName, deps.setBannerNotice, deps.demoStateRef]);
 
   const reset = useCallback(() => {
     cancelAllDetectionPolling();

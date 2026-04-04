@@ -173,6 +173,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
     setInfo(null);
   };
 
+  const handleInvalid = (event: React.InvalidEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const el = event.target;
+    if (el.validity.typeMismatch || el.validity.valueMissing) {
+      setError(el.validationMessage || 'Please enter a valid email address.');
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
@@ -266,6 +274,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={handleChange('email')}
+                onInvalid={handleInvalid}
                 required
               />
             </div>

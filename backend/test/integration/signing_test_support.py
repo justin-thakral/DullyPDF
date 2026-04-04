@@ -13,8 +13,12 @@ from pypdf import PdfWriter
 import backend.api.middleware.security as security_middleware
 import backend.api.routes.signing as signing_routes
 import backend.api.routes.signing_public as signing_public_routes
+import backend.firebaseDB.storage_service as storage_service
 import backend.services.fill_link_signing_service as fill_link_signing_service
+import backend.services.signing_dispute_package_service as signing_dispute_package_service
 import backend.services.signing_public_artifact_service as signing_public_artifact_service
+import backend.services.signing_pdf_digital_service as signing_pdf_digital_service
+import backend.services.signing_storage_service as signing_storage_service
 import backend.services.signing_validation_service as signing_validation_service
 import backend.firebaseDB.user_database as user_database
 from backend.firebaseDB.firebase_service import RequestUser
@@ -196,6 +200,12 @@ def patch_signing_artifact_storage(
     mocker.patch.object(signing_routes, "promote_signing_staged_object", side_effect=storage.promote_staged_object)
     mocker.patch.object(signing_routes, "resolve_signing_storage_read_bucket_path", side_effect=storage.resolve_read_bucket_path)
     mocker.patch.object(signing_routes, "download_storage_bytes", side_effect=storage.download_storage_bytes)
+    mocker.patch.object(storage_service, "build_signing_bucket_uri", side_effect=storage.build_bucket_uri)
+    mocker.patch.object(storage_service, "download_storage_bytes", side_effect=storage.download_storage_bytes)
+    mocker.patch.object(signing_storage_service, "resolve_signing_storage_read_bucket_path", side_effect=storage.resolve_read_bucket_path)
+    mocker.patch.object(signing_storage_service, "upload_signing_staging_pdf_bytes_for_final", side_effect=storage.upload_staging_pdf_for_final)
+    mocker.patch.object(signing_storage_service, "upload_signing_staging_json_for_final", side_effect=storage.upload_staging_json_for_final)
+    mocker.patch.object(signing_storage_service, "promote_signing_staged_object", side_effect=storage.promote_staged_object)
     mocker.patch.object(fill_link_signing_service, "ensure_signing_storage_configuration", return_value=None)
     mocker.patch.object(fill_link_signing_service, "build_signing_bucket_uri", side_effect=storage.build_bucket_uri)
     mocker.patch.object(fill_link_signing_service, "upload_signing_staging_pdf_bytes_for_final", side_effect=storage.upload_staging_pdf_for_final)
@@ -217,27 +227,43 @@ def patch_signing_artifact_storage(
     mocker.patch.object(signing_public_routes, "resolve_signing_storage_read_bucket_path", side_effect=storage.resolve_read_bucket_path)
     mocker.patch.object(signing_public_routes, "download_storage_bytes", side_effect=storage.download_storage_bytes)
     mocker.patch.object(signing_public_routes, "build_signing_bucket_uri", side_effect=storage.build_bucket_uri)
+    mocker.patch.object(
+        signing_dispute_package_service,
+        "resolve_signing_storage_read_bucket_path",
+        side_effect=storage.resolve_read_bucket_path,
+    )
+    mocker.patch.object(
+        signing_dispute_package_service,
+        "download_storage_bytes",
+        side_effect=storage.download_storage_bytes,
+    )
     mocker.patch.object(signing_validation_service, "download_storage_bytes", side_effect=storage.download_storage_bytes)
     if mock_digital_signing:
+        mock_digital_signing_impl = mocker.AsyncMock(
+            side_effect=lambda *, pdf_bytes, signer_name, source_document_name: SimpleNamespace(
+                pdf_bytes=bytes(pdf_bytes),
+                signature_info=SimpleNamespace(
+                    signature_method="pkcs12",
+                    signature_algorithm="sha256_rsa",
+                    field_name="DullyPDFDigitalSignature",
+                    subfilter="/ETSI.CAdES.detached",
+                    timestamped=False,
+                    certificate_subject="CN=DullyPDF Test Signer",
+                    certificate_issuer="CN=DullyPDF Test Issuer",
+                    certificate_serial_number="01",
+                    certificate_fingerprint_sha256="f" * 64,
+                ),
+            )
+        )
         mocker.patch.object(
             signing_public_artifact_service,
             "_apply_digital_pdf_signature",
-            new=mocker.AsyncMock(
-                side_effect=lambda *, pdf_bytes, signer_name, source_document_name: SimpleNamespace(
-                    pdf_bytes=bytes(pdf_bytes),
-                    signature_info=SimpleNamespace(
-                        signature_method="pkcs12",
-                        signature_algorithm="sha256_rsa",
-                        field_name="DullyPDFDigitalSignature",
-                        subfilter="/ETSI.CAdES.detached",
-                        timestamped=False,
-                        certificate_subject="CN=DullyPDF Test Signer",
-                        certificate_issuer="CN=DullyPDF Test Issuer",
-                        certificate_serial_number="01",
-                        certificate_fingerprint_sha256="f" * 64,
-                    ),
-                )
-            ),
+            new=mock_digital_signing_impl,
+        )
+        mocker.patch.object(
+            signing_pdf_digital_service,
+            "async_apply_digital_pdf_signature",
+            new=mock_digital_signing_impl,
         )
     if patch_delete:
         mocker.patch.object(signing_routes, "delete_storage_object", side_effect=storage.delete_storage_object)

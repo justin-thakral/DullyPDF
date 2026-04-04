@@ -45,6 +45,7 @@ function renderHookHarness(
 ) {
   let latest: ReturnType<typeof useOpenAiPipeline> | null = null;
   const onBeforeOpenAiAction = vi.fn().mockResolvedValue(undefined);
+  const setBannerNotice = vi.fn();
   let resetFieldHistory = vi.fn();
   let updateFieldsWith = vi.fn();
 
@@ -82,7 +83,7 @@ function renderHookHarness(
       dataColumns: ['first_name'],
       schemaId: 'schema-1',
       pendingAutoActionsRef: overridePendingAutoActionsRef ?? pendingAutoActionsRef,
-      setBannerNotice: vi.fn(),
+      setBannerNotice,
       requestConfirm: vi.fn().mockResolvedValue(true),
       resolveSourcePdfBytes: vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3])),
       loadUserProfile: vi.fn().mockResolvedValue(null),
@@ -106,6 +107,7 @@ function renderHookHarness(
     resetFieldHistory,
     updateFieldsWith,
     onBeforeOpenAiAction,
+    setBannerNotice,
     get current() {
       if (!latest) {
         throw new Error('hook not initialized');
@@ -113,6 +115,16 @@ function renderHookHarness(
       return latest;
     },
   };
+}
+
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+  let reject!: (error?: unknown) => void;
+  const promise = new Promise<T>((innerResolve, innerReject) => {
+    resolve = innerResolve;
+    reject = innerReject;
+  });
+  return { promise, resolve, reject };
 }
 
 describe('useOpenAiPipeline', () => {
@@ -257,6 +269,61 @@ describe('useOpenAiPipeline', () => {
     ]);
   });
 
+  it('reports rename as the active OpenAI action while the first rename request is running', async () => {
+    const renameDeferred = createDeferred<any>();
+    createSavedFormSessionMock.mockResolvedValue({ sessionId: 'saved-session-1' });
+    renameFieldsMock.mockImplementation(() => renameDeferred.promise);
+
+    const hook = renderHookHarness();
+
+    let renamePromise: Promise<PdfField[] | null> | null = null;
+    await act(async () => {
+      renamePromise = hook.current.runOpenAiRename({ confirm: false });
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(hook.current.renameDisabledReason).toBe('Rename is already running.');
+    expect(hook.current.mapSchemaDisabledReason).toBe('Rename is already running.');
+
+    await act(async () => {
+      renameDeferred.resolve({
+        success: true,
+        fields: [{ originalName: 'Field 1', name: 'Renamed Field' }],
+        checkboxRules: [],
+      });
+      await renamePromise;
+    });
+  });
+
+  it('reports mapping as the active OpenAI action while the first mapping request is running', async () => {
+    const mappingDeferred = createDeferred<any>();
+    mapSchemaMock.mockImplementation(() => mappingDeferred.promise);
+
+    const hook = renderHookHarness({
+      detectSessionId: 'detect-session-1',
+      activeSavedFormId: null,
+    });
+
+    let mappingPromise: Promise<void> | null = null;
+    await act(async () => {
+      mappingPromise = hook.current.handleMapSchema(async () => 'schema-1');
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(hook.current.renameDisabledReason).toBe('Mapping is already running.');
+    expect(hook.current.mapSchemaDisabledReason).toBe('Mapping is already running.');
+
+    await act(async () => {
+      mappingDeferred.resolve({
+        success: true,
+        mappingResults: { mappings: [] },
+      });
+      await mappingPromise;
+    });
+  });
+
   it('runs schema mapping after rename in the combined flow', async () => {
     createSavedFormSessionMock.mockResolvedValue({ sessionId: 'saved-session-1' });
     renameFieldsMock.mockResolvedValue({
@@ -296,6 +363,59 @@ describe('useOpenAiPipeline', () => {
     );
     expect(hook.resetFieldHistory).toHaveBeenLastCalledWith([
       expect.objectContaining({ name: 'mapped_name' }),
+    ]);
+  });
+
+  it('clears existing field values when rename changes the template definition', async () => {
+    createSavedFormSessionMock.mockResolvedValue({ sessionId: 'saved-session-1' });
+    renameFieldsMock.mockResolvedValue({
+      success: true,
+      fields: [{ originalName: 'Field 1', name: 'Renamed Field' }],
+      checkboxRules: [],
+    });
+
+    const hook = renderHookHarness({}, {
+      initialFields: [createField('Field 1', { value: 'Justin Example' })],
+    });
+
+    await act(async () => {
+      await hook.current.runOpenAiRename({ confirm: false });
+    });
+
+    expect(hook.resetFieldHistory).toHaveBeenCalledWith([
+      expect.objectContaining({ name: 'Renamed Field', value: null }),
+    ]);
+    expect(hook.setBannerNotice).toHaveBeenCalledWith(expect.objectContaining({
+      tone: 'info',
+      message: expect.stringContaining('Current field inputs were cleared because the template definition changed.'),
+    }));
+  });
+
+  it('clears existing field values when mapping changes the template definition', async () => {
+    mapSchemaMock.mockResolvedValue({
+      success: true,
+      mappingResults: {
+        mappings: [{ originalPdfField: 'Field 1', pdfField: 'mapped_name', confidence: 0.91 }],
+        checkboxRules: [],
+        radioGroupSuggestions: [],
+        textTransformRules: [],
+      },
+    });
+
+    const hook = renderHookHarness({
+      detectSessionId: 'detect-session-1',
+      activeSavedFormId: null,
+    }, {
+      initialFields: [createField('Field 1', { value: 'Justin Example' })],
+    });
+
+    await act(async () => {
+      const mapped = await hook.current.applySchemaMappings();
+      expect(mapped).toBe(true);
+    });
+
+    expect(hook.resetFieldHistory).toHaveBeenCalledWith([
+      expect.objectContaining({ name: 'mapped_name', value: null }),
     ]);
   });
 

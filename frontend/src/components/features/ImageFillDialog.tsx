@@ -1,6 +1,7 @@
 import { useCallback, useId, useRef } from 'react';
 import { DialogFrame, DialogCloseButton } from '../ui/Dialog';
 import type { ExtractedField, ImageFillCreditEstimate } from '../../hooks/useImageFill';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 import './ImageFillDialog.css';
 
 type ImageFillDialogProps = {
@@ -107,6 +108,14 @@ export function ImageFillDialog({
           disabled={!canFill}
         >
           Fill ({acceptedCount})
+        </button>
+        <button
+          className="ui-button ui-button--ghost ui-button--compact"
+          type="button"
+          onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.fillFromImages)}
+          title="Open Fill from Images and Documents usage docs in a new window"
+        >
+          Usage Docs
         </button>
         <DialogCloseButton onClick={onClose} label="Close image fill dialog" />
         <input

@@ -11,6 +11,9 @@ from backend.services.signing_quota_service import SigningRequestMonthlyLimitErr
 def _default_available_template(mocker) -> None:
     mocker.patch.object(service, "get_template", return_value=SimpleNamespace(id="tpl-1"))
     mocker.patch.object(service, "get_user_retention_pending_template_ids", return_value=set())
+    mocker.patch.object(service, "get_user_profile", return_value=None)
+    mocker.patch.object(service, "get_signing_monthly_usage", return_value=None)
+    mocker.patch.object(service, "attach_fill_link_response_signing_request", return_value=None)
     mocker.patch.object(service, "persist_business_disclosure_artifact", side_effect=lambda record, **_: record)
     mocker.patch.object(service, "persist_consumer_disclosure_artifact", side_effect=lambda record, **_: record)
     mocker.patch.object(service, "promote_signing_staged_object", return_value=None)

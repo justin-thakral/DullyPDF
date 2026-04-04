@@ -6,6 +6,7 @@ import asyncio
 from datetime import datetime, timedelta, timezone
 import hashlib
 from io import BytesIO
+from pathlib import Path
 import tempfile
 from types import SimpleNamespace
 
@@ -49,7 +50,7 @@ def _sample_pdf_bytes() -> bytes:
     return output.getvalue()
 
 
-def _write_test_pkcs12() -> str:
+def _build_test_signing_identity() -> tuple[rsa.RSAPrivateKey, x509.Certificate]:
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     subject = issuer = x509.Name(
         [
@@ -68,6 +69,26 @@ def _write_test_pkcs12() -> str:
         .not_valid_after(datetime.now(timezone.utc) + timedelta(days=365))
         .sign(key, hashes.SHA256())
     )
+    return key, cert
+
+
+def _write_test_pem_identity(tmp_path: Path) -> tuple[str, str]:
+    key, cert = _build_test_signing_identity()
+    cert_path = tmp_path / "signing_pdf_dev_cert.pem"
+    key_path = tmp_path / "signing_pdf_dev_key.pem"
+    cert_path.write_bytes(cert.public_bytes(serialization.Encoding.PEM))
+    key_path.write_bytes(
+        key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+    )
+    return str(cert_path), str(key_path)
+
+
+def _write_test_pkcs12() -> str:
+    key, cert = _build_test_signing_identity()
     bundle = pkcs12.serialize_key_and_certificates(
         name=b"dullypdf-test",
         key=key,
@@ -80,8 +101,13 @@ def _write_test_pkcs12() -> str:
         return handle.name
 
 
-def test_apply_digital_pdf_signature_uses_bundled_dev_identity_by_default(monkeypatch) -> None:
+def test_apply_digital_pdf_signature_uses_bundled_dev_identity_by_default(monkeypatch, tmp_path) -> None:
     _clear_signing_identity_env(monkeypatch)
+    monkeypatch.setenv("ENV", "development")
+    cert_path, key_path = _write_test_pem_identity(tmp_path)
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_CERT_PATH", Path(cert_path))
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_KEY_PATH", Path(key_path))
+    signing_pdf_digital_service._resolve_pdf_signing_identity.cache_clear()
 
     result = signing_pdf_digital_service.apply_digital_pdf_signature(
         pdf_bytes=_sample_pdf_bytes(),
@@ -102,8 +128,12 @@ def test_apply_digital_pdf_signature_uses_bundled_dev_identity_by_default(monkey
     assert "TRUSTED" in validation.summary
 
 
-def test_apply_digital_pdf_signature_is_noop_when_bundled_dev_identity_is_disabled(monkeypatch) -> None:
+def test_apply_digital_pdf_signature_is_noop_when_bundled_dev_identity_is_disabled(monkeypatch, tmp_path) -> None:
     _clear_signing_identity_env(monkeypatch)
+    monkeypatch.setenv("ENV", "development")
+    cert_path, key_path = _write_test_pem_identity(tmp_path)
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_CERT_PATH", Path(cert_path))
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_KEY_PATH", Path(key_path))
     monkeypatch.setenv("SIGNING_PDF_USE_BUNDLED_DEV_CERT", "false")
     signing_pdf_digital_service._resolve_pdf_signing_identity.cache_clear()
 
@@ -141,6 +171,7 @@ def test_apply_digital_pdf_signature_is_noop_in_prod_without_identity(monkeypatc
 
 def test_apply_digital_pdf_signature_signs_and_validates_pkcs12(monkeypatch) -> None:
     _clear_signing_identity_env(monkeypatch)
+    monkeypatch.setenv("ENV", "development")
     pkcs12_path = _write_test_pkcs12()
     monkeypatch.setenv("SIGNING_PDF_P12_PATH", pkcs12_path)
     monkeypatch.setenv("SIGNING_PDF_P12_PASSWORD", "secret123")
@@ -205,8 +236,13 @@ def test_resolve_kms_key_version_uses_latest_enabled_version_for_crypto_key() ->
     assert algorithm == "EC_SIGN_P256_SHA256"
 
 
-def test_async_validate_digital_pdf_signature_matches_sync_path(monkeypatch) -> None:
+def test_async_validate_digital_pdf_signature_matches_sync_path(monkeypatch, tmp_path) -> None:
     _clear_signing_identity_env(monkeypatch)
+    monkeypatch.setenv("ENV", "development")
+    cert_path, key_path = _write_test_pem_identity(tmp_path)
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_CERT_PATH", Path(cert_path))
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_KEY_PATH", Path(key_path))
+    signing_pdf_digital_service._resolve_pdf_signing_identity.cache_clear()
 
     result = signing_pdf_digital_service.apply_digital_pdf_signature(
         pdf_bytes=_sample_pdf_bytes(),

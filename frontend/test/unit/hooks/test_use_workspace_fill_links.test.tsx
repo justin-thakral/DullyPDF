@@ -282,6 +282,29 @@ describe('useWorkspaceFillLinks', () => {
     expect(groupState.refreshForScope).not.toHaveBeenCalled();
   });
 
+  it('does not imperatively refresh Fill By Link scopes from the workspace wrapper on open', () => {
+    const templateState = createTemplateFillLinkState();
+    const groupState = createGroupFillLinkState();
+    useFillLinksMock.mockImplementation(({ scopeType }: { scopeType: 'template' | 'group' }) => (
+      scopeType === 'template' ? templateState : groupState
+    ));
+
+    renderHarness({
+      activeGroupId: 'group-1',
+      activeGroupName: 'Hiring Packet',
+      activeGroupTemplates: [
+        {
+          id: 'tpl-group-1',
+          name: 'Offer Letter',
+          createdAt: '2026-03-10T12:00:00.000Z',
+        },
+      ],
+    });
+
+    expect(templateState.refreshForScope).not.toHaveBeenCalled();
+    expect(groupState.refreshForScope).not.toHaveBeenCalled();
+  });
+
   it('keeps the manager open for group-only scopes when no template is active', () => {
     const templateState = createTemplateFillLinkState();
     const groupState = createGroupFillLinkState();
@@ -304,7 +327,7 @@ describe('useWorkspaceFillLinks', () => {
     });
 
     expect(templateState.refreshForScope).not.toHaveBeenCalled();
-    expect(groupState.refreshForScope).toHaveBeenCalledTimes(1);
+    expect(groupState.refreshForScope).not.toHaveBeenCalled();
     expect(harness.setManagerOpen).not.toHaveBeenCalled();
     expect(harness.hook.dialogProps.open).toBe(true);
   });

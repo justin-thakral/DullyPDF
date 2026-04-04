@@ -55,6 +55,7 @@ type DialogShellProps = {
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  headerActions?: React.ReactNode;
   showCloseButton?: boolean;
   closeOnBackdrop?: boolean;
   closeOnEscape?: boolean;
@@ -240,6 +241,7 @@ function DialogShell({
   children,
   footer,
   className,
+  headerActions,
   showCloseButton = true,
   closeOnBackdrop = true,
   closeOnEscape = true,
@@ -261,8 +263,13 @@ function DialogShell({
         <h2 className="ui-dialog__title" id={titleId}>
           {title}
         </h2>
-        {showCloseButton && onClose ? (
-          <DialogCloseButton onClick={onClose} label={`Close ${title} dialog`} />
+        {headerActions || (showCloseButton && onClose) ? (
+          <div className="ui-dialog__header-actions">
+            {headerActions}
+            {showCloseButton && onClose ? (
+              <DialogCloseButton onClick={onClose} label={`Close ${title} dialog`} />
+            ) : null}
+          </div>
         ) : null}
       </header>
       {description ? (

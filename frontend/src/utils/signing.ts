@@ -11,6 +11,12 @@ export type ReviewedFillContext = {
   sourceLabel?: string | null;
 };
 
+export const SIGNER_COLORS = ['#3b82f6', '#22c55e', '#f97316', '#a855f7', '#ef4444', '#06b6d4'];
+
+export function signerColorForOrder(order: number): string {
+  return SIGNER_COLORS[(order - 1) % SIGNER_COLORS.length];
+}
+
 function looksLikeSignedDateField(field: PdfField): boolean {
   const normalizedName = String(field.name || '').trim().toLowerCase();
   if (field.type !== 'date') return false;

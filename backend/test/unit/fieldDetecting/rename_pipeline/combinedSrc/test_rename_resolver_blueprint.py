@@ -253,7 +253,7 @@ def test_run_openai_rename_pipeline_includes_prev_page_context_for_top_fields(
     assert captured_messages
     user_content = captured_messages[0][1]["content"]
     image_items = [item for item in user_content if item.get("type") == "input_image"]
-    assert len(image_items) == 4
+    assert len(image_items) == 3
     assert any(item.get("detail") == "low" for item in image_items)
 
 

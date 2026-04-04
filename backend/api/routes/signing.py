@@ -7,17 +7,27 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.responses import Response, StreamingResponse
 
-from backend.api.schemas import SigningRequestCreateRequest
+from backend.api.schemas import SigningRequestCreateRequest, SigningEnvelopeCreateRequest
 from backend.firebaseDB.signing_database import (
+    create_signing_envelope,
     create_signing_request,
+    get_signing_envelope,
+    get_signing_envelope_for_user,
     invalidate_signing_request,
     get_signing_request_for_user,
+    list_signing_envelopes,
     list_signing_requests,
+    list_signing_requests_for_envelope,
     mark_signing_request_manual_link_shared,
     mark_signing_request_sent,
     record_signing_event,
     reissue_signing_request,
     rollback_signing_request_sent,
+    update_signing_envelope,
+    ENVELOPE_STATUS_DRAFT,
+    ENVELOPE_STATUS_SENT,
+    SIGNING_MODE_PARALLEL,
+    SIGNING_MODE_SEQUENTIAL,
 )
 from backend.firebaseDB.storage_service import (
     build_signing_bucket_uri,
@@ -347,6 +357,9 @@ def _serialize_owner_request(record) -> Dict[str, Any]:
         **serialize_signing_ceremony_state(record),
         "publicToken": build_signing_public_token(record.id, public_link_version) if public_link_available else None,
         "publicPath": build_signing_public_path(record.id, public_link_version) if public_link_available else None,
+        "envelopeId": getattr(record, "envelope_id", None),
+        "signerOrder": getattr(record, "signer_order", 1),
+        "turnActivatedAt": getattr(record, "turn_activated_at", None),
     }
 
 def _record_owner_request_created_event(
@@ -514,6 +527,19 @@ async def download_owner_signing_artifact(
     if record is None:
         raise HTTPException(status_code=404, detail="Signing request not found")
     normalized_key = normalize_signing_artifact_key(artifact_key)
+    if getattr(record, "envelope_id", None) and normalized_key in {
+        SIGNING_ARTIFACT_SIGNED_PDF,
+        SIGNING_ARTIFACT_AUDIT_RECEIPT,
+        SIGNING_ARTIFACT_AUDIT_MANIFEST,
+        SIGNING_ARTIFACT_DISPUTE_PACKAGE,
+    }:
+        envelope = get_signing_envelope_for_user(record.envelope_id, user.app_user_id)
+        if envelope and envelope.completed_signer_count < envelope.signer_count:
+            remaining = envelope.signer_count - envelope.completed_signer_count
+            raise HTTPException(
+                status_code=409,
+                detail=f"{remaining} {'signer' if remaining == 1 else 'signers'} still {'needs' if remaining == 1 else 'need'} to sign before the signed PDF is available.",
+            )
     bucket_path: Optional[str] = None
     media_type: str
     filename: str
@@ -916,12 +942,21 @@ async def reissue_owner_signing_request(
 
     previous_public_link_version = resolve_signing_public_link_version(record)
     previous_public_token = build_signing_public_token(record.id, previous_public_link_version)
+    sequential_waiting_turn = False
+    if getattr(record, "envelope_id", None):
+        envelope = get_signing_envelope(record.envelope_id)
+        sequential_waiting_turn = bool(
+            envelope is not None
+            and envelope.signing_mode == SIGNING_MODE_SEQUENTIAL
+            and not getattr(record, "turn_activated_at", None)
+        )
     reissued_record = reissue_signing_request(
         record.id,
         user.app_user_id,
         public_app_origin=resolve_signing_invite_origin(
             request_origin=request.headers.get("origin") or request.headers.get("referer"),
         ),
+        invite_delivery_status="queued" if sequential_waiting_turn else "pending",
     )
     if reissued_record is None:
         raise HTTPException(status_code=500, detail="Failed to reissue the signing link.")
@@ -969,6 +1004,9 @@ async def reissue_owner_signing_request(
         },
         occurred_at=getattr(reissued_record, "public_link_last_reissued_at", None) or reissued_record.sent_at,
     )
+    if sequential_waiting_turn:
+        return {"request": _serialize_owner_request(reissued_record)}
+
     invite_attempt = await deliver_signing_invite_for_request(
         record=reissued_record,
         user_id=user.app_user_id,
@@ -1023,3 +1061,385 @@ async def record_owner_signing_manual_share(
         occurred_at=getattr(shared_record, "manual_link_shared_at", None),
     )
     return {"request": _serialize_owner_request(shared_record)}
+
+
+# ---------------------------------------------------------------------------
+# Signing envelope endpoints
+# ---------------------------------------------------------------------------
+
+
+def _serialize_owner_envelope(envelope) -> Dict[str, Any]:
+    return {
+        "id": envelope.id,
+        "title": envelope.title,
+        "mode": envelope.mode,
+        "signatureMode": envelope.signature_mode,
+        "signingMode": envelope.signing_mode,
+        "signerCount": envelope.signer_count,
+        "completedSignerCount": envelope.completed_signer_count,
+        "status": envelope.status,
+        "sourceDocumentName": envelope.source_document_name,
+        "sourcePdfSha256": envelope.source_pdf_sha256,
+        "signedPdfSha256": getattr(envelope, "signed_pdf_sha256", None),
+        "createdAt": envelope.created_at,
+        "updatedAt": envelope.updated_at,
+        "completedAt": envelope.completed_at,
+        "expiresAt": envelope.expires_at,
+    }
+
+
+@router.post("/api/signing/envelopes", status_code=201)
+async def create_owner_signing_envelope(
+    payload: SigningEnvelopeCreateRequest,
+    request: Request,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = require_user(authorization)
+    try:
+        mode = normalize_signing_mode(payload.mode)
+        signature_mode = normalize_signature_mode(payload.signatureMode)
+        source_type = validate_signing_source_type(
+            mode=mode,
+            source_type=payload.sourceType,
+            source_id=payload.sourceId,
+        )
+        document_category = validate_document_category(payload.documentCategory)
+        validate_esign_eligibility_confirmation(payload.esignEligibilityConfirmed)
+        source_document_name = validate_source_document_name(payload.sourceDocumentName)
+        disclosure_version = resolve_signing_disclosure_version(signature_mode)
+        authority_attestation = resolve_signing_company_authority_attestation(payload.companyBindingEnabled)
+        consumer_disclosure_fields = resolve_signing_consumer_disclosure_fields(
+            signature_mode=signature_mode,
+            sender_display_name=user.display_name,
+            sender_email=user.email,
+            paper_copy_procedure=payload.consumerPaperCopyProcedure,
+            paper_copy_fee_description=payload.consumerPaperCopyFeeDescription,
+            withdrawal_procedure=payload.consumerWithdrawalProcedure,
+            withdrawal_consequences=payload.consumerWithdrawalConsequences,
+            contact_update_procedure=payload.consumerContactUpdateProcedure,
+            consent_scope_description=payload.consumerConsentScopeDescription,
+            require_complete=True,
+        )
+        source_pdf_sha256 = normalize_optional_sha256(payload.sourcePdfSha256)
+        if not source_pdf_sha256:
+            raise ValueError("Signing envelopes must include the current immutable source PDF SHA-256.")
+        recipients = payload.recipients
+        if not recipients:
+            raise ValueError("At least one recipient is required.")
+        for r in recipients:
+            validate_signer_name(r.name)
+            validate_signer_email(r.email)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    anchors = [anchor.model_dump(exclude_none=True) for anchor in payload.anchors]
+    _ensure_signing_template_is_accessible(
+        user.app_user_id,
+        normalize_optional_text(payload.sourceTemplateId, maximum_length=160),
+    )
+    source_version = build_signing_source_version(
+        source_type=source_type,
+        source_id=normalize_optional_text(payload.sourceId, maximum_length=160),
+        source_template_id=normalize_optional_text(payload.sourceTemplateId, maximum_length=160),
+        source_pdf_sha256=source_pdf_sha256,
+    )
+
+    recipient_orders = {r.order for r in recipients}
+    signature_anchors = [a for a in anchors if a.get("kind") == "signature"]
+    for sa in signature_anchors:
+        assigned = sa.get("assignedSignerOrder")
+        if assigned is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Every signature anchor must be assigned to a signer in Parallel or Sequential mode.",
+            )
+        if assigned not in recipient_orders:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Anchor assigned to signer order {assigned}, but no recipient has that order.",
+            )
+
+    envelope = create_signing_envelope(
+        user_id=user.app_user_id,
+        title=normalize_optional_text(payload.title),
+        mode=mode,
+        signature_mode=signature_mode,
+        signing_mode=payload.signingMode,
+        signer_count=len(recipients),
+        source_type=source_type,
+        source_document_name=source_document_name,
+        document_category=document_category,
+        manual_fallback_enabled=bool(payload.manualFallbackEnabled),
+        anchors=anchors,
+        source_id=normalize_optional_text(payload.sourceId, maximum_length=160),
+        source_link_id=normalize_optional_text(payload.sourceLinkId, maximum_length=160),
+        source_record_label=normalize_optional_text(payload.sourceRecordLabel),
+        source_template_id=normalize_optional_text(payload.sourceTemplateId, maximum_length=160),
+        source_template_name=normalize_optional_text(payload.sourceTemplateName),
+        source_pdf_sha256=source_pdf_sha256,
+        source_version=source_version,
+        company_binding_enabled=bool(payload.companyBindingEnabled),
+        consumer_paper_copy_procedure=consumer_disclosure_fields["paper_copy_procedure"],
+        consumer_paper_copy_fee_description=consumer_disclosure_fields["paper_copy_fee_description"],
+        consumer_withdrawal_procedure=consumer_disclosure_fields["withdrawal_procedure"],
+        consumer_withdrawal_consequences=consumer_disclosure_fields["withdrawal_consequences"],
+        consumer_contact_update_procedure=consumer_disclosure_fields["contact_update_procedure"],
+        consumer_consent_scope_override=consumer_disclosure_fields["consent_scope_description"],
+    )
+
+    created_requests = []
+    for recipient in recipients:
+        signer_anchors = [
+            a for a in anchors
+            if a.get("assignedSignerOrder") == recipient.order
+            or a.get("assignedSignerOrder") is None
+        ]
+        record = create_signing_request(
+            user_id=user.app_user_id,
+            title=normalize_optional_text(payload.title),
+            mode=mode,
+            signature_mode=signature_mode,
+            source_type=source_type,
+            source_id=normalize_optional_text(payload.sourceId, maximum_length=160),
+            source_link_id=normalize_optional_text(payload.sourceLinkId, maximum_length=160),
+            source_record_label=normalize_optional_text(payload.sourceRecordLabel),
+            source_document_name=source_document_name,
+            source_template_id=normalize_optional_text(payload.sourceTemplateId, maximum_length=160),
+            source_template_name=normalize_optional_text(payload.sourceTemplateName),
+            source_pdf_sha256=source_pdf_sha256,
+            source_version=source_version,
+            document_category=document_category,
+            company_binding_enabled=bool(payload.companyBindingEnabled),
+            authority_attestation_version=authority_attestation.get("version") if authority_attestation else None,
+            authority_attestation_text=authority_attestation.get("text") if authority_attestation else None,
+            authority_attestation_sha256=authority_attestation.get("sha256") if authority_attestation else None,
+            manual_fallback_enabled=bool(payload.manualFallbackEnabled),
+            signer_name=recipient.name,
+            signer_email=recipient.email,
+            anchors=signer_anchors,
+            disclosure_version=disclosure_version,
+            sender_display_name=consumer_disclosure_fields["sender_display_name"] or user.display_name,
+            esign_eligibility_confirmed_source="owner_envelope_create",
+            sender_email=user.email,
+            sender_contact_email=consumer_disclosure_fields["sender_contact_email"] or user.email,
+            consumer_paper_copy_procedure=consumer_disclosure_fields["paper_copy_procedure"],
+            consumer_paper_copy_fee_description=consumer_disclosure_fields["paper_copy_fee_description"],
+            consumer_withdrawal_procedure=consumer_disclosure_fields["withdrawal_procedure"],
+            consumer_withdrawal_consequences=consumer_disclosure_fields["withdrawal_consequences"],
+            consumer_contact_update_procedure=consumer_disclosure_fields["contact_update_procedure"],
+            consumer_consent_scope_override=consumer_disclosure_fields["consent_scope_description"],
+            invite_method=SIGNING_INVITE_METHOD_EMAIL,
+            envelope_id=envelope.id,
+            signer_order=recipient.order,
+        )
+        _record_owner_request_created_event(
+            record,
+            sender_email=user.email,
+            client_ip=resolve_client_ip(request),
+            user_agent=normalize_signing_user_agent(request.headers.get("user-agent")),
+            source="owner_envelope_create",
+        )
+        created_requests.append(record)
+
+    return {
+        "envelope": _serialize_owner_envelope(envelope),
+        "requests": [_serialize_owner_request(r) for r in created_requests],
+    }
+
+
+@router.get("/api/signing/envelopes")
+async def list_owner_signing_envelopes(
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = require_user(authorization)
+    envelopes = list_signing_envelopes(user.app_user_id)
+    return {"envelopes": [_serialize_owner_envelope(e) for e in envelopes]}
+
+
+@router.get("/api/signing/envelopes/{envelope_id}")
+async def get_owner_signing_envelope(
+    envelope_id: str,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = require_user(authorization)
+    envelope = get_signing_envelope_for_user(envelope_id, user.app_user_id)
+    if envelope is None:
+        raise HTTPException(status_code=404, detail="Signing envelope not found")
+    child_requests = list_signing_requests_for_envelope(envelope.id)
+    return {
+        "envelope": _serialize_owner_envelope(envelope),
+        "requests": [_serialize_owner_request(r) for r in child_requests],
+    }
+
+
+@router.post("/api/signing/envelopes/{envelope_id}/send")
+async def send_owner_signing_envelope(
+    envelope_id: str,
+    request: Request,
+    pdf: UploadFile = File(...),
+    sourcePdfSha256: Optional[str] = Form(default=None),
+    ownerReviewConfirmed: Optional[bool] = Form(default=None),
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = require_user(authorization)
+    envelope = get_signing_envelope_for_user(envelope_id, user.app_user_id)
+    if envelope is None:
+        raise HTTPException(status_code=404, detail="Signing envelope not found")
+    if envelope.status != ENVELOPE_STATUS_DRAFT:
+        raise HTTPException(status_code=409, detail="Envelope has already been sent or is no longer in draft state.")
+
+    max_mb, max_bytes = resolve_upload_limit()
+    pdf_bytes = await read_upload_bytes(
+        pdf,
+        max_bytes=max_bytes,
+        limit_message=f"PDF exceeds {max_mb}MB upload limit",
+    )
+    if not pdf_bytes:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    validation = validate_pdf_for_detection(pdf_bytes)
+
+    child_requests = list_signing_requests_for_envelope(envelope.id)
+    if not child_requests:
+        raise HTTPException(status_code=409, detail="Envelope has no signers.")
+
+    source_pdf_object_path = build_signing_source_pdf_object_path(
+        user_id=user.app_user_id,
+        request_id=envelope.id,
+        source_document_name=envelope.source_document_name,
+    )
+    source_pdf_bucket_path = upload_signing_pdf_bytes(
+        validation.pdf_bytes,
+        source_pdf_object_path,
+    )
+
+    client_ip = resolve_client_ip(request)
+    user_agent = normalize_signing_user_agent(request.headers.get("user-agent"))
+    source_version = envelope.source_version
+    owner_review_at = now_iso() if ownerReviewConfirmed else None
+    public_app_origin = resolve_signing_invite_origin(
+        request_origin=request.headers.get("origin") or request.headers.get("referer"),
+    )
+    monthly_limit = resolve_signing_requests_monthly_limit(user.role)
+    is_sequential_envelope = envelope.signing_mode == SIGNING_MODE_SEQUENTIAL
+
+    sent_requests = []
+    source_retention_until: Optional[str] = None
+    for child_request in child_requests:
+        if child_request.status != SIGNING_STATUS_DRAFT:
+            sent_requests.append(child_request)
+            continue
+
+        is_first_signer = child_request.signer_order == 1
+        should_deliver_invite = not is_sequential_envelope or is_first_signer
+        invite_delivery_status = "pending" if should_deliver_invite else "queued"
+
+        sent_record = mark_signing_request_sent(
+            child_request.id,
+            user.app_user_id,
+            source_pdf_bucket_path=source_pdf_bucket_path,
+            source_pdf_sha256=normalize_optional_sha256(sourcePdfSha256) or envelope.source_pdf_sha256 or "",
+            source_version=source_version,
+            invite_delivery_status=invite_delivery_status,
+            monthly_limit=monthly_limit,
+            owner_review_confirmed_at=owner_review_at,
+            public_app_origin=public_app_origin,
+        )
+        if sent_record is None or sent_record.status != SIGNING_STATUS_SENT:
+            sent_requests.append(child_request)
+            continue
+
+        if not source_retention_until and sent_record.retention_until:
+            source_retention_until = sent_record.retention_until
+
+        _record_owner_request_sent_event(
+            sent_record,
+            sender_email=user.email,
+            source="owner_envelope_send",
+            client_ip=client_ip,
+            user_agent=user_agent,
+        )
+
+        active_record = sent_record
+        if is_sequential_envelope and is_first_signer:
+            from backend.firebaseDB.signing_database import _update_public_signing_request
+            activated_record = _update_public_signing_request(
+                sent_record.id,
+                allowed_statuses={SIGNING_STATUS_SENT},
+                updates={"turn_activated_at": now_iso()},
+            )
+            if activated_record is not None:
+                active_record = activated_record
+
+        if should_deliver_invite:
+            invite_attempt = await deliver_signing_invite_for_request(
+                record=active_record,
+                user_id=user.app_user_id,
+                sender_email=user.email,
+                request_origin=request.headers.get("origin") or request.headers.get("referer"),
+            )
+            _record_owner_invite_delivery_event(
+                invite_attempt.record,
+                delivery=invite_attempt.delivery,
+                sender_email=user.email,
+                source="owner_envelope_send",
+                client_ip=client_ip,
+                user_agent=user_agent,
+            )
+            sent_requests.append(invite_attempt.record)
+            continue
+
+        sent_requests.append(active_record)
+
+    if source_retention_until:
+        promote_signing_staged_object(source_pdf_bucket_path, retain_until=source_retention_until)
+
+    update_signing_envelope(envelope.id, {
+        "status": ENVELOPE_STATUS_SENT,
+        "source_pdf_bucket_path": source_pdf_bucket_path,
+        "source_pdf_sha256": normalize_optional_sha256(sourcePdfSha256) or envelope.source_pdf_sha256,
+        "source_version": source_version,
+        "public_app_origin": public_app_origin,
+    })
+    updated_envelope = get_signing_envelope_for_user(envelope.id, user.app_user_id)
+    fresh_requests = list_signing_requests_for_envelope(envelope.id)
+
+    return {
+        "envelope": _serialize_owner_envelope(updated_envelope or envelope),
+        "requests": [_serialize_owner_request(r) for r in fresh_requests],
+    }
+
+
+@router.post("/api/signing/envelopes/{envelope_id}/revoke")
+async def revoke_owner_signing_envelope(
+    envelope_id: str,
+    request: Request,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = require_user(authorization)
+    envelope = get_signing_envelope_for_user(envelope_id, user.app_user_id)
+    if envelope is None:
+        raise HTTPException(status_code=404, detail="Signing envelope not found")
+
+    child_requests = list_signing_requests_for_envelope(envelope.id)
+    revoked_requests = []
+    for child_request in child_requests:
+        if child_request.status == "completed":
+            revoked_requests.append(child_request)
+            continue
+        if child_request.status == "invalidated":
+            revoked_requests.append(child_request)
+            continue
+        revoked = invalidate_signing_request(
+            child_request.id,
+            user.app_user_id,
+            reason="revoked by sender (envelope revoke)",
+        )
+        revoked_requests.append(revoked or child_request)
+
+    update_signing_envelope(envelope.id, {"status": "invalidated"})
+    updated_envelope = get_signing_envelope_for_user(envelope.id, user.app_user_id)
+
+    return {
+        "envelope": _serialize_owner_envelope(updated_envelope or envelope),
+        "requests": [_serialize_owner_request(r) for r in revoked_requests],
+    }

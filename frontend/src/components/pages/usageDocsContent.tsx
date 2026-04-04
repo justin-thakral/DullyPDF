@@ -525,7 +525,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
           <ul>
             <li>Overlay is best for spatial review and direct manipulation.</li>
             <li>Field list is best for scanning, filtering, and page jumping.</li>
-            <li>Inspector is best for precise metadata and geometry edits.</li>
+            <li>Inspector is best for precise metadata and geometry edits, and its header now exposes a right-aligned <em>Usage Docs</em> button that opens this Editor Workflow page in a new browser tab/window.</li>
             <li>
               Display presets are <code>Review</code>, <code>Edit</code>, and <code>Fill</code>, with manual toggles for
               <code>Fields</code>, <code>Names</code>, <code>Info</code>, <code>All</code>, and <code>Clear</code>.
@@ -638,26 +638,31 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
                 <strong>Connected SQL (Search &amp; Fill)</strong> — the data source dropdown. Click it to load a CSV, Excel, JSON, SQL, or TXT
                 file as your schema and record source. Once loaded, the button label updates to show the connected source type
                 (for example &quot;Connected CSV&quot;). The dropdown also contains <em>Search, Fill &amp; Clear</em> (opens the Search &amp; Fill
-                modal when rows are available) and <em>Clear data source</em> (disconnects the current source).
+                modal when rows are available), <em>Clear data source</em> (disconnects the current source), and <em>Usage Docs</em>
+                (opens these Search &amp; Fill docs in a new browser tab/window).
               </li>
               <li>
                 <strong>Rename or Remap</strong> — the OpenAI actions dropdown. Options include <em>Rename</em> (standardize field names),{' '}
                 <em>Map Schema</em> (align field names to your loaded schema columns), <em>Rename + Map</em> (both in one step),
-                and <em>Rename + Map Group</em> (batch across all templates in an open group). Requires a loaded document and
-                available credits. A schema source must be connected before Map or Rename + Map can run.
+                and <em>Rename + Map Group</em> (batch across all templates in an open group), plus <em>Usage Docs</em> (opens Rename + Mapping
+                docs in a new browser tab/window). Requires a loaded document and available credits. A schema source must be
+                connected before Map or Rename + Map can run.
               </li>
               <li>
                 <strong>Fill From Images + Documents</strong> — upload photos or scanned documents (IDs, invoices, pay stubs) and
-                extract matching field values using OpenAI vision. See the <a href="/usage-docs/fill-from-images">Fill from Images and Documents</a> docs page.
+                extract matching field values using OpenAI vision. The dialog also includes a top-right <em>Usage Docs</em> button
+                that opens the <a href="/usage-docs/fill-from-images">Fill from Images and Documents</a> docs page in a new browser tab/window.
               </li>
               <li>
                 <strong>Fill By Web Form Link + Sign</strong> — publish a DullyPDF-hosted web form from a saved template or open group,
-                collect respondent answers, and optionally require a signing ceremony after submit. See the{' '}
-                <a href="/usage-docs/fill-by-link">Fill By Link</a> docs page.
+                collect respondent answers, and optionally require a signing ceremony after submit. The dialog includes a
+                top-right <em>Usage Docs</em> button that opens the <a href="/usage-docs/fill-by-link">Fill By Link</a> docs page
+                in a new browser tab/window.
               </li>
               <li>
                 <strong>Send PDF for Signature by email</strong> — freeze the current PDF and email it to one or more signers.
-                See the <a href="/usage-docs/signature-workflow">Signature Workflow</a> docs page.
+                The dialog includes a top-right <em>Usage Docs</em> button that opens the <a href="/usage-docs/signature-workflow">Signature Workflow</a>
+                docs page in a new browser tab/window.
               </li>
             </ul>
           </>
@@ -1249,6 +1254,7 @@ email`}</pre>
           <ol>
             <li>Open a saved template in the workspace.</li>
             <li>Click <code>API Fill</code> to open the endpoint manager.</li>
+            <li>The manager header includes a <code>Usage Docs</code> button immediately left of the red close control so you can open these API Fill docs in a new browser tab/window without leaving the editor.</li>
             <li>Create the endpoint from the current saved-template snapshot, then copy the fill URL, public schema URL, POST example, and active key.</li>
             <li>Rotate or revoke keys from the same manager when credentials need to change.</li>
           </ol>

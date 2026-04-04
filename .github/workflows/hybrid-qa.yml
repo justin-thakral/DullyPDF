@@ -1,0 +1,458 @@
+name: Hybrid QA
+
+on:
+  pull_request:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+  id-token: write
+
+concurrency:
+  group: hybrid-qa-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      template_api: ${{ steps.filter.outputs.template_api }}
+      detection_ai: ${{ steps.filter.outputs.detection_ai }}
+      workspace: ${{ steps.filter.outputs.workspace }}
+      fill_links: ${{ steps.filter.outputs.fill_links }}
+      signing: ${{ steps.filter.outputs.signing }}
+      billing: ${{ steps.filter.outputs.billing }}
+      shared_runtime: ${{ steps.filter.outputs.shared_runtime }}
+      playwright_safe: ${{ steps.filter.outputs.playwright_safe }}
+      frontend_lint: ${{ steps.filter.outputs.frontend_lint }}
+      frontend_lint_files: ${{ steps.filter.outputs.frontend_lint_files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Detect changed areas
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          list-files: shell
+          filters: |
+            template_api:
+              - '.github/workflows/**'
+              - 'backend/api/routes/template_api*.py'
+              - 'backend/firebaseDB/template_api_endpoint_database.py'
+              - 'backend/services/template_api_service.py'
+              - 'backend/test/integration/test_template_api_integration.py'
+              - 'frontend/**/template_api*'
+            detection_ai:
+              - 'backend/api/routes/ai.py'
+              - 'backend/api/routes/detection.py'
+              - 'backend/detection/**'
+              - 'backend/fieldDetecting/**'
+              - 'backend/services/detection_service.py'
+              - 'backend/services/task_auth_service.py'
+              - 'backend/test/integration/test_detection_rename_saved_form_flow.py'
+              - 'frontend/**/rename*'
+              - 'frontend/**/schema*'
+              - 'frontend/**/pipeline*'
+            workspace:
+              - 'backend/api/routes/groups.py'
+              - 'backend/api/routes/profile.py'
+              - 'backend/api/routes/saved_forms.py'
+              - 'backend/api/routes/sessions.py'
+              - 'backend/firebaseDB/group_database.py'
+              - 'backend/firebaseDB/template_database.py'
+              - 'backend/services/saved_form*'
+              - 'backend/test/integration/test_workspace_bootstrap_integration.py'
+              - 'frontend/**/workspace*'
+              - 'frontend/**/saved*'
+              - 'frontend/**/group*'
+            fill_links:
+              - 'backend/**/fill_link*'
+              - 'backend/test/integration/test_fill_links_integration.py'
+              - 'frontend/**/fill_link*'
+            signing:
+              - 'backend/**/signing*'
+              - 'backend/test/integration/test_signing_foundation_integration.py'
+              - 'frontend/**/signing*'
+            billing:
+              - 'backend/**/billing*'
+              - 'backend/test/integration/test_billing_*'
+              - 'frontend/**/billing*'
+              - 'frontend/**/downgrade*'
+            shared_runtime:
+              - 'backend/api/middleware/**'
+              - 'backend/firebaseDB/firebase_service.py'
+              - 'backend/sessions/**'
+              - 'backend/services/app_config.py'
+              - 'frontend/src/App.tsx'
+              - 'frontend/src/services/api.ts'
+              - 'frontend/src/services/apiConfig.ts'
+              - 'package.json'
+              - 'frontend/package.json'
+              - 'scripts/ci/**'
+            playwright_safe:
+              - '.github/workflows/**'
+              - 'frontend/test/playwright/**'
+              - 'frontend/src/testSupport/**'
+            frontend_lint:
+              - 'frontend/src/**/*.js'
+              - 'frontend/src/**/*.jsx'
+              - 'frontend/src/**/*.ts'
+              - 'frontend/src/**/*.tsx'
+              - 'frontend/src/**/*.mjs'
+              - 'frontend/src/**/*.cjs'
+
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    needs:
+      - changes
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+
+      - name: Install backend dependencies
+        run: |
+          python -m venv backend/.venv
+          backend/.venv/bin/pip install --upgrade pip
+          backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+
+      - name: Run baseline unit suites
+        run: npm run test
+
+      - name: Run changed frontend lint
+        if: needs.changes.outputs.frontend_lint == 'true'
+        env:
+          CHANGED_FRONTEND_LINT_FILES: ${{ needs.changes.outputs.frontend_lint_files }}
+        run: bash scripts/ci/run_frontend_changed_lint.sh
+
+      - name: Run frontend production build
+        run: npm run frontend:build:prod
+
+  targeted-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    needs:
+      - changes
+      - baseline
+    env:
+      HAS_WIF_DEV: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV != '' && secrets.GCP_SERVICE_ACCOUNT_DEV != '') && 'true' || 'false' }}
+      HAS_KEY_DEV: ${{ secrets.GCP_CREDENTIALS_JSON_DEV != '' && 'true' || 'false' }}
+    if: |
+      needs.changes.outputs.template_api == 'true' ||
+      needs.changes.outputs.detection_ai == 'true' ||
+      needs.changes.outputs.workspace == 'true' ||
+      needs.changes.outputs.fill_links == 'true' ||
+      needs.changes.outputs.signing == 'true' ||
+      needs.changes.outputs.billing == 'true' ||
+      needs.changes.outputs.shared_runtime == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+
+      - name: Install backend dependencies
+        run: |
+          python -m venv backend/.venv
+          backend/.venv/bin/pip install --upgrade pip
+          backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+
+      - name: Authenticate to Google Cloud with Workload Identity Federation (dev)
+        if: env.HAS_WIF_DEV == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
+
+      - name: Authenticate to Google Cloud with a service-account key (dev fallback)
+        if: env.HAS_WIF_DEV != 'true' && env.HAS_KEY_DEV == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
+
+      - name: Run targeted backend integration suites
+        env:
+          RUN_TEMPLATE_API: ${{ needs.changes.outputs.template_api }}
+          RUN_DETECTION_AI: ${{ needs.changes.outputs.detection_ai }}
+          RUN_WORKSPACE: ${{ needs.changes.outputs.workspace }}
+          RUN_FILL_LINKS: ${{ needs.changes.outputs.fill_links }}
+          RUN_SIGNING: ${{ needs.changes.outputs.signing }}
+          RUN_BILLING: ${{ needs.changes.outputs.billing }}
+          RUN_SHARED_RUNTIME: ${{ needs.changes.outputs.shared_runtime }}
+        run: |
+          set -euo pipefail
+          declare -a commands=()
+          append_unique() {
+            local candidate="$1"
+            local existing
+            for existing in "${commands[@]}"; do
+              if [[ "$existing" == "$candidate" ]]; then
+                return 0
+              fi
+            done
+            commands+=("$candidate")
+          }
+
+          if [[ "$RUN_TEMPLATE_API" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "npm run test:backend:template-api"
+          fi
+          if [[ "$RUN_DETECTION_AI" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_detection_rename_saved_form_flow.py -q"
+          fi
+          if [[ "$RUN_WORKSPACE" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_workspace_bootstrap_integration.py -q"
+          fi
+          if [[ "$RUN_FILL_LINKS" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_fill_links_integration.py -q"
+          fi
+          if [[ "$RUN_SIGNING" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_signing_foundation_integration.py -q"
+          fi
+          if [[ "$RUN_BILLING" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_billing_webhook_integration.py backend/test/integration/test_billing_trial_lifecycle_integration.py backend/test/integration/test_billing_downgrade_lifecycle_integration.py -q"
+          fi
+
+          if [[ "${#commands[@]}" -eq 0 ]]; then
+            echo "No targeted backend suites selected."
+            exit 0
+          fi
+
+          for command in "${commands[@]}"; do
+            echo "+ ${command}"
+            eval "${command}"
+          done
+
+  targeted-playwright:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: development
+    needs:
+      - changes
+      - baseline
+    if: |
+      needs.changes.outputs.template_api == 'true' ||
+      needs.changes.outputs.detection_ai == 'true' ||
+      needs.changes.outputs.workspace == 'true' ||
+      needs.changes.outputs.fill_links == 'true' ||
+      needs.changes.outputs.signing == 'true' ||
+      needs.changes.outputs.shared_runtime == 'true' ||
+      needs.changes.outputs.playwright_safe == 'true'
+    env:
+      HAS_WIF_DEV: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV != '' && secrets.GCP_SERVICE_ACCOUNT_DEV != '') && 'true' || 'false' }}
+      HAS_KEY_DEV: ${{ secrets.GCP_CREDENTIALS_JSON_DEV != '' && 'true' || 'false' }}
+      HAS_BACKEND_ENV_DEV: ${{ secrets.BACKEND_ENV_FILE_B64_DEV != '' && 'true' || 'false' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+
+      - name: Install backend dependencies
+        run: |
+          python -m venv backend/.venv
+          backend/.venv/bin/pip install --upgrade pip
+          backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+
+      - name: Authenticate to Google Cloud with Workload Identity Federation (dev)
+        if: env.HAS_WIF_DEV == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
+
+      - name: Authenticate to Google Cloud with a service-account key (dev fallback)
+        if: env.HAS_WIF_DEV != 'true' && env.HAS_KEY_DEV == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Verify dev auth exists for seeded Playwright fixtures
+        run: |
+          set -euo pipefail
+          active_account="$(gcloud auth list --filter=status:ACTIVE --format='value(account)' | head -n 1)"
+          if [[ -z "$active_account" ]]; then
+            echo "Missing Google Cloud auth for seeded real Playwright fixtures. Configure dev WIF or service-account key secrets." >&2
+            exit 1
+          fi
+          echo "Authenticated as ${active_account}"
+
+      - name: Materialize backend dev env file
+        run: |
+          set -euo pipefail
+          if [[ "${HAS_BACKEND_ENV_DEV}" != "true" ]]; then
+            echo "Missing BACKEND_ENV_FILE_B64_DEV secret in the development environment." >&2
+            exit 1
+          fi
+          mkdir -p env
+          printf '%s' '${{ secrets.BACKEND_ENV_FILE_B64_DEV }}' | base64 --decode > env/backend.dev.env
+          cat <<'EOF' >> env/backend.dev.env
+          FIREBASE_CREDENTIALS_SECRET=
+          FIREBASE_CREDENTIALS_PROJECT=
+          GMAIL_CLIENT_SECRET_SECRET=
+          GMAIL_REFRESH_TOKEN_SECRET=
+          GMAIL_SECRETS_PROJECT=
+          FILL_LINK_REQUIRE_RECAPTCHA=false
+          OPENAI_RENAME_REMAP_MODE=local
+          EOF
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Start backend dev server
+        run: |
+          nohup npm run backend:dev > /tmp/dullypdf-backend.log 2>&1 &
+
+      - name: Wait for backend dev server
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:8000/api/health >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend dev server did not become ready in time." >&2
+          cat /tmp/dullypdf-backend.log >&2 || true
+          exit 1
+
+      - name: Start frontend dev server
+        run: |
+          bash scripts/use-frontend-env.sh dev
+          printf '\nVITE_FILL_LINK_REQUIRE_RECAPTCHA=false\n' >> frontend/.env.local
+          nohup bash -lc 'cd frontend && npm run dev -- --host 127.0.0.1 --strictPort' > /tmp/dullypdf-frontend.log 2>&1 &
+
+      - name: Wait for frontend dev server
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:5173/ >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Frontend dev server did not become ready in time." >&2
+          cat /tmp/dullypdf-frontend.log >&2 || true
+          exit 1
+
+      - name: Run targeted Playwright real suites
+        env:
+          RUN_TEMPLATE_API: ${{ needs.changes.outputs.template_api }}
+          RUN_DETECTION_AI: ${{ needs.changes.outputs.detection_ai }}
+          RUN_WORKSPACE: ${{ needs.changes.outputs.workspace }}
+          RUN_FILL_LINKS: ${{ needs.changes.outputs.fill_links }}
+          RUN_SIGNING: ${{ needs.changes.outputs.signing }}
+          RUN_SHARED_RUNTIME: ${{ needs.changes.outputs.shared_runtime }}
+          RUN_PLAYWRIGHT_SAFE: ${{ needs.changes.outputs.playwright_safe }}
+        run: |
+          set -euo pipefail
+          declare -a commands=()
+          append_unique() {
+            local candidate="$1"
+            local existing
+            for existing in "${commands[@]}"; do
+              if [[ "$existing" == "$candidate" ]]; then
+                return 0
+              fi
+            done
+            commands+=("$candidate")
+          }
+
+          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_TEMPLATE_API" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "npm run test:playwright:template-api:real"
+          fi
+          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_DETECTION_AI" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "npm run test:playwright:openai-rename"
+            append_unique "npm run test:playwright:openai-rename-remap"
+          fi
+          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_WORKSPACE" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "npm run test:playwright:saved-form-snapshot:real"
+          fi
+          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_FILL_LINKS" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
+            append_unique "npm run test:playwright:fill-link-download:real"
+          fi
+          if [[ "$RUN_SIGNING" == "true" ]]; then
+            append_unique "npm run test:playwright:signing-envelope"
+          fi
+
+          if [[ "${#commands[@]}" -eq 0 ]]; then
+            echo "No real targeted Playwright suites selected."
+            exit 0
+          fi
+
+          for command in "${commands[@]}"; do
+            echo "+ ${command}"
+            eval "${command}"
+          done
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: hybrid-qa-playwright-artifacts
+          path: |
+            output/playwright/**
+            /tmp/dullypdf-frontend.log
+            /tmp/dullypdf-backend.log
+          if-no-files-found: ignore

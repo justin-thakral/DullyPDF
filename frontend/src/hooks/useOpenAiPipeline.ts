@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import type { User } from 'firebase/auth';
 import type {
   BannerNotice,
@@ -50,6 +50,31 @@ export interface UseOpenAiPipelineDeps {
   hasSchemaOrPending: boolean;
 }
 
+function fieldHasMeaningfulValue(field: PdfField): boolean {
+  const value = field.value;
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'string') return value.trim().length > 0;
+  if (typeof value === 'boolean') return value;
+  return true;
+}
+
+function clearFieldValuesForTemplateChange(fields: PdfField[]): {
+  fields: PdfField[];
+  clearedValues: boolean;
+} {
+  let nextFields: PdfField[] | null = null;
+  for (let index = 0; index < fields.length; index += 1) {
+    const field = fields[index];
+    if (!fieldHasMeaningfulValue(field)) continue;
+    if (!nextFields) nextFields = [...fields];
+    nextFields[index] = { ...field, value: null };
+  }
+  return {
+    fields: nextFields ?? fields,
+    clearedValues: nextFields !== null,
+  };
+}
+
 export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
   const [renameInProgress, setRenameInProgress] = useState(false);
   const [hasRenamedFields, setHasRenamedFields] = useState(false);
@@ -60,6 +85,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
   const [checkboxRules, setCheckboxRules] = useState<CheckboxRule[]>([]);
   const [radioGroupSuggestions, setRadioGroupSuggestions] = useState<RadioGroupSuggestion[]>([]);
   const [textTransformRules, setTextTransformRules] = useState<TextTransformRule[]>([]);
+  const templateInputsClearedRef = useRef(false);
 
   const resolveCreditExhaustionMessage = useCallback(async (): Promise<string> => {
     try {
@@ -77,6 +103,24 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
   const clearPendingAutoActions = useCallback(() => {
     deps.pendingAutoActionsRef.current = null;
   }, [deps.pendingAutoActionsRef]);
+
+  const resetTemplateInputsClearedFlag = useCallback(() => {
+    templateInputsClearedRef.current = false;
+  }, []);
+
+  const noteTemplateInputsCleared = useCallback((clearedValues: boolean) => {
+    if (clearedValues) {
+      templateInputsClearedRef.current = true;
+    }
+  }, []);
+
+  const consumeTemplateInputsClearedMessage = useCallback((baseMessage: string): string => {
+    if (!templateInputsClearedRef.current) {
+      return baseMessage;
+    }
+    templateInputsClearedRef.current = false;
+    return `${baseMessage} ${ALERT_MESSAGES.templateInputsCleared}`;
+  }, []);
 
   const resolveActiveSourcePdfSha256 = useCallback(async (): Promise<string> => {
     return resolveSourcePdfSha256(deps.resolveSourcePdfBytes, {
@@ -114,9 +158,14 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         mappingResults,
         deps.dataColumns,
       );
-      if (mapped.fields !== deps.fieldsRef.current) {
-        deps.resetFieldHistory(mapped.fields);
-        debugLog('Applied AI mappings', { total: mapped.fields.length });
+      const clearedTemplateInputs = clearFieldValuesForTemplateChange(mapped.fields);
+      noteTemplateInputsCleared(clearedTemplateInputs.clearedValues);
+      if (clearedTemplateInputs.fields !== deps.fieldsRef.current) {
+        deps.resetFieldHistory(clearedTemplateInputs.fields);
+        debugLog('Applied AI mappings', {
+          total: clearedTemplateInputs.fields.length,
+          clearedValues: clearedTemplateInputs.clearedValues,
+        });
       }
       setCheckboxRules(mapped.checkboxRules);
       setRadioGroupSuggestions(mapped.radioGroupSuggestions);
@@ -129,17 +178,19 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         deps.setIdentifierKey(resolvedIdentifier);
       }
     },
-    [deps],
+    [deps, noteTemplateInputsCleared],
   );
 
   const applyRenameResults = useCallback(
     (renamedFieldsPayload?: Array<Record<string, any>>): PdfField[] | null => {
       const updated = applyRenamePayloadToFields(deps.fieldsRef.current, renamedFieldsPayload);
       if (!updated || updated.length === 0) return null;
-      deps.resetFieldHistory(updated);
-      return updated;
+      const clearedTemplateInputs = clearFieldValuesForTemplateChange(updated);
+      noteTemplateInputsCleared(clearedTemplateInputs.clearedValues);
+      deps.resetFieldHistory(clearedTemplateInputs.fields);
+      return clearedTemplateInputs.fields;
     },
-    [deps],
+    [deps, noteTemplateInputsCleared],
   );
 
   const applySchemaMappings = useCallback(
@@ -220,10 +271,10 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     setHasMappedSchema(true);
     deps.setBannerNotice({
       tone: 'success',
-      message: ALERT_MESSAGES.mappingDone,
+      message: consumeTemplateInputsClearedMessage(ALERT_MESSAGES.mappingDone),
       autoDismissMs: 5000,
     });
-  }, [deps]);
+  }, [consumeTemplateInputsClearedMessage, deps]);
 
   const runOpenAiRename = useCallback(
     async ({
@@ -300,6 +351,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         if (!ok) return null;
       }
       setOpenAiError(null);
+      resetTemplateInputsClearedFlag();
       setMappingInProgress(true);
       setRenameInProgress(true);
       if (hasSchemaForMap) setMapSchemaInProgress(true);
@@ -329,7 +381,9 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         if (!hasSchemaForMap) {
           deps.setBannerNotice({
             tone: 'info',
-            message: 'Rename only standardizes field names. Complex checkbox groups and any checkbox columns that do not already match the field names may not fill.',
+            message: consumeTemplateInputsClearedMessage(
+              'Rename only standardizes field names. Complex checkbox groups and any checkbox columns that do not already match the field names may not fill.',
+            ),
             autoDismissMs: 9000,
           });
         }
@@ -350,7 +404,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         if (hasSchemaForMap) setMapSchemaInProgress(false);
       }
     },
-    [applyRenameResults, clearPendingAutoActions, deps, ensureTemplateSessionId, resolveActiveSourcePdfSha256, resolveCreditExhaustionMessage],
+    [applyRenameResults, clearPendingAutoActions, consumeTemplateInputsClearedMessage, deps, ensureTemplateSessionId, resetTemplateInputsClearedFlag, resolveActiveSourcePdfSha256, resolveCreditExhaustionMessage],
   );
 
   const confirmRemap = useCallback(async () => {
@@ -377,6 +431,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       const shouldRemap = await confirmRemap();
       if (!shouldRemap) return;
       setOpenAiError(null);
+      resetTemplateInputsClearedFlag();
       setMappingInProgress(true);
       setMapSchemaInProgress(true);
       try {
@@ -387,7 +442,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         setMappingInProgress(false);
       }
     },
-    [applySchemaMappings, confirmRemap, handleMappingSuccess, deps],
+    [applySchemaMappings, confirmRemap, handleMappingSuccess, resetTemplateInputsClearedFlag, deps],
   );
 
   const handleRename = useCallback(async () => {
@@ -422,7 +477,8 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
   // ── Computed capability flags ──────────────────────────────────────
   const renameDisabledReason = useMemo(() => {
     if (renameInProgress) return 'Rename is already running.';
-    if (mappingInProgress || mapSchemaInProgress) return 'Another OpenAI action is running.';
+    if (mapSchemaInProgress) return 'Mapping is already running.';
+    if (mappingInProgress) return 'Please wait for the current workspace task to finish.';
     if (!deps.verifiedUser) return 'Sign in to run Rename.';
     if (!deps.hasDocument) return 'Upload a PDF first.';
     if (deps.fieldsCount === 0) return 'Detect fields or add at least one field before Rename.';
@@ -443,7 +499,8 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
 
   const mapSchemaDisabledReason = useMemo(() => {
     if (mapSchemaInProgress) return 'Mapping is already running.';
-    if (mappingInProgress || renameInProgress) return 'Another OpenAI action is running.';
+    if (renameInProgress) return 'Rename is already running.';
+    if (mappingInProgress) return 'Please wait for the current workspace task to finish.';
     if (!deps.verifiedUser) return 'Sign in to run Map Schema.';
     if (!deps.hasDocument) return 'Upload a PDF first.';
     if (deps.fieldsCount === 0) return 'Detect fields or add at least one field before mapping.';
@@ -499,7 +556,8 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     setRenameInProgress(false);
     setHasRenamedFields(false);
     setOpenAiError(null);
-  }, []);
+    resetTemplateInputsClearedFlag();
+  }, [resetTemplateInputsClearedFlag]);
 
   return {
     renameInProgress, setRenameInProgress,

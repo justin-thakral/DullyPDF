@@ -6,6 +6,7 @@ import type {
   SigningRequestSummary,
 } from '../../services/api';
 import type { ReviewedFillContext } from '../../utils/signing';
+import { signerColorForOrder } from '../../utils/signing';
 import {
   mergeSigningRecipients,
   normalizeSigningRecipient,
@@ -17,6 +18,7 @@ import type { WorkspaceSigningDraftPayload } from '../../hooks/useWorkspaceSigni
 import { Dialog } from '../ui/Dialog';
 import { Alert } from '../ui/Alert';
 import { SigningResponsesPanel } from './SigningResponsesPanel';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 import '../../styles/ui-buttons.css';
 import './SignatureRequestDialog.css';
 
@@ -222,11 +224,38 @@ export function SignatureRequestDialog({
   const [recipientImportText, setRecipientImportText] = useState('');
   const [recipientImportError, setRecipientImportError] = useState<string | null>(null);
   const [recipients, setRecipients] = useState<SigningRecipientInput[]>([]);
+  const [signingMode, setSigningMode] = useState<'separate' | 'parallel' | 'sequential'>('separate');
+  const [anchorAssignments, setAnchorAssignments] = useState<Map<string, number>>(new Map());
   const [ownerReviewConfirmed, setOwnerReviewConfirmed] = useState(false);
   const [actionValidationMessage, setActionValidationMessage] = useState<string | null>(null);
 
   function clearActionValidationMessage() {
     setActionValidationMessage(null);
+  }
+
+  useEffect(() => {
+    if (signingMode === 'separate') {
+      setAnchorAssignments(new Map());
+      return;
+    }
+    const validOrders = new Set(recipients.map((_, i) => i + 1));
+    setAnchorAssignments((prev) => {
+      const next = new Map<string, number>();
+      for (const [key, order] of prev) {
+        if (validOrders.has(order)) next.set(key, order);
+      }
+      return next.size !== prev.size ? next : prev;
+    });
+  }, [recipients, signingMode]);
+
+  function moveRecipient(index: number, direction: 'up' | 'down') {
+    setRecipients((current) => {
+      const next = [...current];
+      const swapIndex = direction === 'up' ? index - 1 : index + 1;
+      if (swapIndex < 0 || swapIndex >= next.length) return current;
+      [next[index], next[swapIndex]] = [next[swapIndex], next[index]];
+      return next;
+    });
   }
 
   useEffect(() => {
@@ -456,8 +485,14 @@ export function SignatureRequestDialog({
       consumerWithdrawalConsequences: consumerWithdrawalConsequences.trim() || undefined,
       consumerContactUpdateProcedure: consumerContactUpdateProcedure.trim() || undefined,
       consumerConsentScopeDescription: consumerConsentScopeDescription.trim() || undefined,
-      anchors: defaultAnchors,
+      anchors: signingMode === 'separate'
+        ? defaultAnchors
+        : (defaultAnchors || []).map((anchor, i) => ({
+            ...anchor,
+            assignedSignerOrder: anchorAssignments.get(anchor.fieldId || `idx-${i}`),
+          })),
       recipients: nextRecipients,
+      signingMode,
     });
   }
 
@@ -481,6 +516,16 @@ export function SignatureRequestDialog({
         </span>
       )}
       className="signature-request-dialog"
+      headerActions={(
+        <button
+          type="button"
+          className="ui-button ui-button--ghost ui-button--compact"
+          onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.signatureWorkflow)}
+          title="Open Signature Workflow usage docs in a new window"
+        >
+          Usage Docs
+        </button>
+      )}
       closeOnBackdrop={false}
     >
       <div className="signature-request-dialog__body">
@@ -562,6 +607,10 @@ export function SignatureRequestDialog({
                   <span className="signature-request-dialog__label">Anchors</span>
                   <strong>{anchorCount}</strong>
                 </div>
+                <div className="signature-request-dialog__metric">
+                  <span className="signature-request-dialog__label">Signing mode</span>
+                  <strong>{signingMode === 'sequential' ? 'Sequential' : signingMode === 'parallel' ? 'Parallel' : 'Separate'}</strong>
+                </div>
               </div>
             </section>
 
@@ -592,6 +641,50 @@ export function SignatureRequestDialog({
                     </button>
                   </div>
                   <p className="signature-request-dialog__supporting-copy">{describeMode(mode, fillAndSignContext)}</p>
+                </section>
+
+                <section className="signature-request-dialog__section">
+                  <h3>Signing Mode</h3>
+                  <div className="signature-request-dialog__mode-row" role="tablist" aria-label="Signing mode">
+                    <button
+                      type="button"
+                      className={signingMode === 'separate' ? 'ui-button ui-button--primary' : 'ui-button ui-button--ghost'}
+                      onClick={() => {
+                        clearActionValidationMessage();
+                        setSigningMode('separate');
+                        setAnchorAssignments(new Map());
+                      }}
+                    >
+                      Separate
+                    </button>
+                    <button
+                      type="button"
+                      className={signingMode === 'parallel' ? 'ui-button ui-button--primary' : 'ui-button ui-button--ghost'}
+                      onClick={() => {
+                        clearActionValidationMessage();
+                        setSigningMode('parallel');
+                      }}
+                    >
+                      Parallel
+                    </button>
+                    <button
+                      type="button"
+                      className={signingMode === 'sequential' ? 'ui-button ui-button--primary' : 'ui-button ui-button--ghost'}
+                      onClick={() => {
+                        clearActionValidationMessage();
+                        setSigningMode('sequential');
+                      }}
+                    >
+                      Sequential
+                    </button>
+                  </div>
+                  <p className="signature-request-dialog__supporting-copy">
+                    {signingMode === 'separate'
+                      ? 'Each signer gets their own independent copy and signs individually.'
+                      : signingMode === 'parallel'
+                        ? 'All signers share one document and are notified simultaneously. One final signed PDF.'
+                        : 'Signers share one document and go in listed order. Each is notified after the previous one completes.'}
+                  </p>
                 </section>
 
                 <section className="signature-request-dialog__section">
@@ -878,13 +971,41 @@ export function SignatureRequestDialog({
                   {recipientImportError ? <Alert tone="warning" variant="inline" message={recipientImportError} /> : null}
 
                   <div className="signature-request-dialog__recipient-list">
-                    {recipients.length ? recipients.map((recipient) => (
-                      <article key={recipient.email} className="signature-request-dialog__recipient-card">
+                    {recipients.length ? recipients.map((recipient, index) => (
+                      <article
+                        key={recipient.email}
+                        className={`signature-request-dialog__recipient-card${signingMode === 'sequential' ? ' signature-request-dialog__recipient-card--sequential' : ''}`}
+                      >
+                        {signingMode === 'sequential' && (
+                          <span className="signature-request-dialog__recipient-order">{index + 1}</span>
+                        )}
                         <div>
                           <strong>{recipient.name}</strong>
                           <span>{recipient.email}</span>
                         </div>
                         <div className="signature-request-dialog__recipient-card-actions">
+                          {signingMode === 'sequential' && (
+                            <>
+                              <button
+                                type="button"
+                                className="signature-request-dialog__reorder-btn"
+                                disabled={index === 0}
+                                onClick={() => moveRecipient(index, 'up')}
+                                aria-label="Move up"
+                              >
+                                ↑
+                              </button>
+                              <button
+                                type="button"
+                                className="signature-request-dialog__reorder-btn"
+                                disabled={index === recipients.length - 1}
+                                onClick={() => moveRecipient(index, 'down')}
+                                aria-label="Move down"
+                              >
+                                ↓
+                              </button>
+                            </>
+                          )}
                           <span className="signature-request-dialog__response-badge signature-request-dialog__response-badge--muted">
                             {recipient.source}
                           </span>
@@ -907,6 +1028,57 @@ export function SignatureRequestDialog({
                     )}
                   </div>
                 </section>
+
+                {signingMode !== 'separate' && recipients.length > 0 && defaultAnchors && defaultAnchors.length > 0 && (
+                  <section className="signature-request-dialog__section">
+                    <h3>Assign Signature Fields</h3>
+                    <p className="signature-request-dialog__supporting-copy">
+                      Assign each signature field to the signer who should fill it. Multiple fields can be assigned to the same signer.
+                    </p>
+                    <div className="signature-request-dialog__anchor-assignment">
+                      {defaultAnchors.map((anchor, index) => {
+                        const anchorKey = anchor.fieldId || `idx-${index}`;
+                        const assignedOrder = anchorAssignments.get(anchorKey);
+                        return (
+                          <div key={anchorKey} className="signature-request-dialog__anchor-row">
+                            <span>
+                              {anchor.kind === 'signature' ? 'Signature' : anchor.kind === 'signed_date' ? 'Signed Date' : 'Initials'}
+                              {' '}(Page {anchor.page}{anchor.fieldName ? `, "${anchor.fieldName}"` : ''})
+                            </span>
+                            <select
+                              value={assignedOrder ?? ''}
+                              onChange={(e) => {
+                                const value = e.target.value ? Number(e.target.value) : undefined;
+                                setAnchorAssignments((prev) => {
+                                  const next = new Map(prev);
+                                  if (value === undefined) {
+                                    next.delete(anchorKey);
+                                  } else {
+                                    next.set(anchorKey, value);
+                                  }
+                                  return next;
+                                });
+                              }}
+                            >
+                              <option value="">— Select signer —</option>
+                              {recipients.map((r, ri) => (
+                                <option key={r.email} value={ri + 1}>
+                                  {r.name} ({r.email})
+                                </option>
+                              ))}
+                            </select>
+                            {assignedOrder != null && (
+                              <span
+                                className="signature-request-dialog__signer-dot"
+                                style={{ backgroundColor: signerColorForOrder(assignedOrder) }}
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
               </div>
 
               <aside className="signature-request-dialog__column signature-request-dialog__column--side">

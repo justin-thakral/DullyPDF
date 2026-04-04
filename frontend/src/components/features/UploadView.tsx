@@ -237,6 +237,7 @@ export default function UploadView({
         <UploadComponent variant="fillable" title="Upload Fillable PDF Template" subtitle="Open a fillable PDF directly in the editor to fill, sign, and search fields"
           onFileUpload={onFillableUpload} onValidationError={(message) => onSetLoadError(message)} />
       </div>
+      {loadError ? <div className="upload-alert"><Alert tone="error" variant="inline" message={loadError} /></div> : null}
       {verifiedUser && (
         <section className="saved-forms-section" aria-label="Open saved form">
           <UploadComponent variant="saved" title="" subtitle="" savedForms={savedForms}
@@ -257,7 +258,6 @@ export default function UploadView({
             onSelectSavedForm={onSelectSavedForm} onDeleteSavedForm={onDeleteSavedForm} deletingFormId={deletingFormId} />
         </section>
       )}
-      {loadError ? <div className="upload-alert"><Alert tone="error" variant="inline" message={loadError} /></div> : null}
     </div>
   );
 }

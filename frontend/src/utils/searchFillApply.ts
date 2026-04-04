@@ -65,6 +65,15 @@ export type ApplySearchFillRowOptions = {
   dataSourceKind: DataSourceKind;
 };
 
+export type ApplySearchFillRowResult = {
+  fields: PdfField[];
+  matchedFieldCount: number;
+  changedFieldCount: number;
+};
+
+export const SEARCH_FILL_NO_MATCH_MESSAGE =
+  'No matching PDF fields were found for this record. Run Rename + Map or use column names that already match this template.';
+
 function compactCheckboxToken(raw: string): string {
   return normaliseDataKey(raw).replace(/_/g, '');
 }
@@ -75,6 +84,10 @@ function coerceValue(value: unknown): string | number | boolean | null {
   if (typeof value === 'number' || typeof value === 'boolean') return value;
   if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value.toISOString().slice(0, 10);
   return String(value);
+}
+
+function normalizeComparableFieldValue(value: PdfField['value']): string | number | boolean | null {
+  return value === undefined ? null : value;
 }
 
 function parseDateFromUnknown(value: unknown): Date | null {
@@ -313,13 +326,13 @@ function getTextTransformRulesByTarget(
   return textTransformRulesByTarget;
 }
 
-export function applySearchFillRowToFields({
+export function applySearchFillRowToFieldsWithStats({
   row,
   fields,
   checkboxRules,
   textTransformRules,
   dataSourceKind,
-}: ApplySearchFillRowOptions): PdfField[] {
+}: ApplySearchFillRowOptions): ApplySearchFillRowResult {
   const normalizedRow = new Map<string, unknown>();
   for (const [key, value] of Object.entries(row)) {
     normalizedRow.set(normaliseDataKey(key), value);
@@ -1025,18 +1038,39 @@ export function applySearchFillRowToFields({
     return undefined;
   };
 
-  return fields.map((field) => {
+  let matchedFieldCount = 0;
+  let changedFieldCount = 0;
+  const nextFields = fields.map((field) => {
     const matchValue = resolveValueForField(field);
     if (matchValue === undefined) {
       if (dataSourceKind !== 'respondent') return field;
       if (field.value === null || field.value === undefined) return field;
+      changedFieldCount += 1;
       return { ...field, value: null };
     }
     if (field.type === 'date') {
       const dateValue = formatDateValue(matchValue);
       if (dateValue === null) return field;
+      matchedFieldCount += 1;
+      if (!Object.is(normalizeComparableFieldValue(field.value), dateValue)) {
+        changedFieldCount += 1;
+      }
       return { ...field, value: dateValue };
     }
-    return { ...field, value: coerceValue(matchValue) };
+    const nextValue = coerceValue(matchValue);
+    matchedFieldCount += 1;
+    if (!Object.is(normalizeComparableFieldValue(field.value), normalizeComparableFieldValue(nextValue))) {
+      changedFieldCount += 1;
+    }
+    return { ...field, value: nextValue };
   });
+  return {
+    fields: nextFields,
+    matchedFieldCount,
+    changedFieldCount,
+  };
+}
+
+export function applySearchFillRowToFields(options: ApplySearchFillRowOptions): PdfField[] {
+  return applySearchFillRowToFieldsWithStats(options).fields;
 }

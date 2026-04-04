@@ -16,6 +16,8 @@ describe('alertMessages', () => {
       chooseSchemaFileForRenameAndMap:
         'Connect a CSV, SQL, Excel, JSON, or TXT schema file before running mapping.',
       mappingDone: 'Field mapping is done.',
+      templateInputsCleared:
+        'Current field inputs were cleared because the template definition changed. Run Search & Fill again to validate the updated template.',
     });
   });
 

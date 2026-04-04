@@ -426,6 +426,7 @@ export type SigningAnchorPayload = {
   rect: { x: number; y: number; width: number; height: number };
   fieldId?: string;
   fieldName?: string;
+  assignedSignerOrder?: number;
 };
 
 export type SigningCategoryOption = {
@@ -472,6 +473,14 @@ export type SigningArtifactCollection = {
   auditManifest?: SigningArtifactDescriptor;
   auditReceipt: SigningArtifactDescriptor;
   disputePackage?: SigningArtifactDescriptor;
+};
+
+export type SigningEnvelopeProgress = {
+  id: string;
+  signingMode?: string | null;
+  signerCount: number;
+  completedSignerCount: number;
+  status?: string | null;
 };
 
 export type SigningRequestSummary = {
@@ -557,6 +566,9 @@ export type SigningRequestSummary = {
   invalidatedAt?: string | null;
   invalidationReason?: string | null;
   artifacts: SigningArtifactCollection;
+  envelopeId?: string | null;
+  signerOrder?: number;
+  turnActivatedAt?: string | null;
 };
 
 export type PublicSigningRequest = {
@@ -618,6 +630,9 @@ export type PublicSigningRequest = {
     } | null;
   } | null;
   documentPath: string;
+  envelopeId?: string | null;
+  signerOrder?: number;
+  envelope?: SigningEnvelopeProgress | null;
   artifacts: Pick<SigningArtifactCollection, 'signedPdf' | 'auditReceipt'>;
   createdAt?: string | null;
   sentAt?: string | null;
@@ -775,6 +790,58 @@ export type SendSigningRequestPayload = {
   filename?: string;
   sourcePdfSha256?: string;
   ownerReviewConfirmed?: boolean;
+};
+
+export type SigningMode = 'separate' | 'parallel' | 'sequential';
+
+export type SigningEnvelopeSummary = {
+  id: string;
+  title?: string | null;
+  mode: SigningRequestMode;
+  signatureMode: SigningRequestSignatureMode;
+  signingMode: SigningMode;
+  signerCount: number;
+  completedSignerCount: number;
+  status: string;
+  sourceDocumentName: string;
+  sourcePdfSha256?: string | null;
+  signedPdfSha256?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  completedAt?: string | null;
+  expiresAt?: string | null;
+};
+
+export type CreateSigningEnvelopePayload = {
+  title?: string;
+  mode: SigningRequestMode;
+  signatureMode: SigningRequestSignatureMode;
+  signingMode: SigningMode;
+  sourceType: SigningRequestSourceType;
+  sourceId?: string;
+  sourceLinkId?: string;
+  sourceRecordLabel?: string;
+  sourceDocumentName: string;
+  sourceTemplateId?: string;
+  sourceTemplateName?: string;
+  sourcePdfSha256?: string;
+  documentCategory: string;
+  esignEligibilityConfirmed?: boolean;
+  companyBindingEnabled?: boolean;
+  manualFallbackEnabled: boolean;
+  consumerPaperCopyProcedure?: string;
+  consumerPaperCopyFeeDescription?: string;
+  consumerWithdrawalProcedure?: string;
+  consumerWithdrawalConsequences?: string;
+  consumerContactUpdateProcedure?: string;
+  consumerConsentScopeDescription?: string;
+  anchors: SigningAnchorPayload[];
+  recipients: Array<{ name: string; email: string; order: number }>;
+};
+
+export type CreateSigningEnvelopeResult = {
+  envelope: SigningEnvelopeSummary;
+  requests: SigningRequestSummary[];
 };
 
 export type ContactPayload = {
@@ -985,6 +1052,35 @@ export class ApiService {
     const response = await apiFetch('POST', `/api/signing/requests/${encodeURIComponent(requestId)}/manual-share`);
     const payload = await apiJsonFetch<{ request: SigningRequestSummary }>(response);
     return payload.request;
+  }
+
+  static async createSigningEnvelope(payload: CreateSigningEnvelopePayload): Promise<CreateSigningEnvelopeResult> {
+    const response = await apiFetch('POST', '/api/signing/envelopes', {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return apiJsonFetch<CreateSigningEnvelopeResult>(response);
+  }
+
+  static async sendSigningEnvelope(envelopeId: string, payload: SendSigningRequestPayload): Promise<CreateSigningEnvelopeResult> {
+    const formData = new FormData();
+    formData.append('pdf', payload.pdf, payload.filename || 'document.pdf');
+    if (payload.sourcePdfSha256) formData.append('sourcePdfSha256', payload.sourcePdfSha256);
+    if (payload.ownerReviewConfirmed) formData.append('ownerReviewConfirmed', 'true');
+    const response = await apiFetch('POST', `/api/signing/envelopes/${encodeURIComponent(envelopeId)}/send`, {
+      body: formData,
+    });
+    return apiJsonFetch<CreateSigningEnvelopeResult>(response);
+  }
+
+  static async getSigningEnvelope(envelopeId: string): Promise<CreateSigningEnvelopeResult> {
+    const response = await apiFetch('GET', `/api/signing/envelopes/${encodeURIComponent(envelopeId)}`);
+    return apiJsonFetch<CreateSigningEnvelopeResult>(response);
+  }
+
+  static async revokeSigningEnvelope(envelopeId: string): Promise<CreateSigningEnvelopeResult> {
+    const response = await apiFetch('POST', `/api/signing/envelopes/${encodeURIComponent(envelopeId)}/revoke`);
+    return apiJsonFetch<CreateSigningEnvelopeResult>(response);
   }
 
   static async getPublicSigningRequest(token: string): Promise<PublicSigningRequest> {

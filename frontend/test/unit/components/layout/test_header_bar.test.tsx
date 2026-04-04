@@ -45,6 +45,11 @@ function createProps(overrides: Partial<HeaderBarProps> = {}): HeaderBarProps {
   };
 }
 
+async function openRenameMenu(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole('button', { name: 'Rename or Remap' }));
+  return screen.getByRole('menu', { name: 'Rename or remap options' });
+}
+
 describe('HeaderBar', () => {
   it('shows page/zoom metadata and authenticated account controls', async () => {
     const user = userEvent.setup();
@@ -119,17 +124,19 @@ describe('HeaderBar', () => {
     expect(onClearDataSource).toHaveBeenCalledTimes(1);
   });
 
-  it('applies enabled/disabled rules for mapping, rename, and search controls', () => {
+  it('applies enabled/disabled rules for mapping, rename, and search controls', async () => {
+    const user = userEvent.setup();
     const props = createProps();
     const { rerender } = render(<HeaderBar {...props} />);
 
-    const mapButton = screen.getByRole('button', { name: 'Map Schema' }) as HTMLButtonElement;
-    const renameButton = screen.getByRole('button', { name: 'Rename' }) as HTMLButtonElement;
-    const renameMapButton = screen.getByRole('button', { name: 'Rename + Map' }) as HTMLButtonElement;
+    await openRenameMenu(user);
+    const mapButton = screen.getByRole('menuitem', { name: 'Map Schema' });
+    const renameButton = screen.getByRole('menuitem', { name: 'Rename' });
+    const renameMapButton = screen.getByRole('menuitem', { name: 'Rename + Map' });
 
-    expect(mapButton.disabled).toBe(false);
-    expect(renameButton.disabled).toBe(false);
-    expect(renameMapButton.disabled).toBe(false);
+    expect(mapButton.getAttribute('aria-disabled')).toBe('false');
+    expect(renameButton.getAttribute('aria-disabled')).toBe('false');
+    expect(renameMapButton.getAttribute('aria-disabled')).toBe('false');
 
     rerender(
       <HeaderBar
@@ -138,9 +145,9 @@ describe('HeaderBar', () => {
       />,
     );
 
-    expect((screen.getByRole('button', { name: 'Map Schema' }) as HTMLButtonElement).disabled).toBe(true);
-    expect((screen.getByRole('button', { name: 'Rename' }) as HTMLButtonElement).disabled).toBe(true);
-    expect((screen.getByRole('button', { name: 'Rename + Map' }) as HTMLButtonElement).disabled).toBe(true);
+    expect(screen.getByRole('menuitem', { name: 'Map Schema' }).getAttribute('aria-disabled')).toBe('true');
+    expect(screen.getByRole('menuitem', { name: 'Rename' }).getAttribute('aria-disabled')).toBe('true');
+    expect(screen.getByRole('menuitem', { name: 'Rename + Map' }).getAttribute('aria-disabled')).toBe('true');
   });
 
   it('keeps Fill By Web Form Link + Sign clickable when the workspace needs to surface a banner guard', async () => {
@@ -164,7 +171,36 @@ describe('HeaderBar', () => {
     expect(onOpenFillLink).toHaveBeenCalledTimes(1);
   });
 
-  it('truncates long inline action hints so the header row stays compact', () => {
+  it('opens schema usage docs in a new window from the data source menu', async () => {
+    const user = userEvent.setup();
+    const openSpy = vi.fn();
+    vi.stubGlobal('open', openSpy);
+    window.open = openSpy as unknown as typeof window.open;
+
+    render(<HeaderBar {...createProps()} />);
+
+    await user.click(screen.getByRole('button', { name: /^Schema/i }));
+    await user.click(screen.getByRole('menuitem', { name: 'Usage Docs' }));
+
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/search-fill', '_blank', 'noopener,noreferrer');
+  });
+
+  it('opens rename usage docs in a new window from the rename menu', async () => {
+    const user = userEvent.setup();
+    const openSpy = vi.fn();
+    vi.stubGlobal('open', openSpy);
+    window.open = openSpy as unknown as typeof window.open;
+
+    render(<HeaderBar {...createProps()} />);
+
+    await openRenameMenu(user);
+    await user.click(screen.getByRole('menuitem', { name: 'Usage Docs' }));
+
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/rename-mapping', '_blank', 'noopener,noreferrer');
+  });
+
+  it('truncates long inline action hints so the header row stays compact', async () => {
+    const user = userEvent.setup();
     render(
       <HeaderBar
         {...createProps({
@@ -176,9 +212,8 @@ describe('HeaderBar', () => {
 
     const hint = screen.getByText('Detect fields or add at least one field be…');
     expect(hint.textContent?.length).toBeLessThanOrEqual(43);
-    expect(screen.getByRole('button', { name: 'Map Schema' }).getAttribute('title')).toBe(
-      'Detect fields or add at least one field before mapping.',
-    );
+    await openRenameMenu(user);
+    expect(screen.getByRole('menuitem', { name: 'Map Schema' }).getAttribute('aria-disabled')).toBe('true');
   });
 
   it('renders API Fill beside download for saved templates', async () => {
@@ -223,14 +258,16 @@ describe('HeaderBar', () => {
     );
 
     expect(screen.getByRole('button', { name: 'Open template in Admissions' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Rename + Map 1/2' })).toBeTruthy();
-    expect(screen.queryByRole('button', { name: 'Rename' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Map Schema' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Rename + Map' })).toBeNull();
+    await openRenameMenu(user);
+    expect(screen.getByRole('menuitem', { name: 'Rename + Map 1/2' })).toBeTruthy();
+    expect(screen.queryByRole('menuitem', { name: 'Rename' })).toBeNull();
+    expect(screen.queryByRole('menuitem', { name: 'Map Schema' })).toBeNull();
+    expect(screen.queryByRole('menuitem', { name: 'Rename + Map' })).toBeNull();
 
     await user.click(screen.getByRole('button', { name: 'Open template in Admissions' }));
     await user.click(screen.getByRole('option', { name: 'Bravo Intake' }));
-    await user.click(screen.getByRole('button', { name: 'Rename + Map 1/2' }));
+    await openRenameMenu(user);
+    await user.click(screen.getByRole('menuitem', { name: 'Rename + Map 1/2' }));
 
     expect(onSelectGroupTemplate).toHaveBeenCalledWith('tpl-b');
     expect(onRenameAndMapGroup).toHaveBeenCalledTimes(1);
@@ -338,52 +375,54 @@ describe('HeaderBar', () => {
     );
 
     const dataButton = screen.getByRole('button', { name: /^Schema/i });
-    const renameButton = screen.getByRole('button', { name: 'Rename' }) as HTMLButtonElement;
-    const mapButton = screen.getByRole('button', { name: 'Map Schema' }) as HTMLButtonElement;
-    const renameMapButton = screen.getByRole('button', { name: 'Rename + Map' }) as HTMLButtonElement;
+    const renameTrigger = screen.getByRole('button', { name: 'Rename or Remap' });
     const downloadButton = screen.getByRole('button', { name: 'Download' }) as HTMLButtonElement;
     const saveButton = screen.getByRole('button', { name: 'Save' }) as HTMLButtonElement;
 
-    expect((dataButton as HTMLButtonElement).disabled).toBe(true);
-    expect(renameButton.disabled).toBe(true);
-    expect(mapButton.disabled).toBe(true);
-    expect(renameMapButton.disabled).toBe(true);
+    expect(dataButton.getAttribute('aria-disabled')).toBe('true');
+    expect(renameTrigger.getAttribute('aria-disabled')).toBe('true');
     expect(downloadButton.disabled).toBe(false);
-    expect(saveButton.disabled).toBe(true);
-
-    await user.click(downloadButton);
-    await user.click(screen.getByRole('menuitem', { name: /Download editable PDF/i }));
+    expect(saveButton.getAttribute('aria-disabled')).toBe('true');
 
     expect(onDemoLockedAction).not.toHaveBeenCalled();
     expect(screen.queryByRole('menu', { name: 'Choose data source' })).toBeNull();
     expect(onRename).not.toHaveBeenCalled();
     expect(onMapSchema).not.toHaveBeenCalled();
     expect(onRenameAndMap).not.toHaveBeenCalled();
-    expect(onDownload).toHaveBeenCalledTimes(1);
-    expect(onDownload).toHaveBeenCalledWith('editable');
+    expect(onDownload).not.toHaveBeenCalled();
     expect(onSaveToProfile).not.toHaveBeenCalled();
   });
 
-  it('shows docs links instead of the Fill By Web Form Link + Sign action in demo-locked mode', () => {
+  it('shows docs links instead of the Fill By Web Form Link + Sign and signature actions in demo-locked mode', () => {
     render(
       <HeaderBar
         {...createProps({
           demoLocked: true,
           onOpenFillLink: vi.fn(),
           canFillLink: true,
+          onOpenSignatureRequest: vi.fn(),
+          canSendForSignature: true,
           demoFillLinkDocsHref: '/usage-docs/fill-by-link',
           demoCreateGroupDocsHref: '/usage-docs/create-group',
+          demoSignatureDocsHref: '/usage-docs/signature-workflow',
         })}
       />,
     );
 
     expect(screen.queryByRole('button', { name: 'Fill By Web Form Link + Sign' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Send PDF for Signature by email' })).toBeNull();
     expect(screen.getByRole('link', { name: 'Fill By Link docs' }).getAttribute('href')).toBe(
       '/usage-docs/fill-by-link',
     );
+    expect(screen.getByRole('link', { name: 'Fill By Link docs' }).getAttribute('target')).toBe('_blank');
     expect(screen.getByRole('link', { name: 'Create Group docs' }).getAttribute('href')).toBe(
       '/usage-docs/create-group',
     );
+    expect(screen.getByRole('link', { name: 'Create Group docs' }).getAttribute('target')).toBe('_blank');
+    expect(screen.getByRole('link', { name: 'Signature docs' }).getAttribute('href')).toBe(
+      '/usage-docs/signature-workflow',
+    );
+    expect(screen.getByRole('link', { name: 'Signature docs' }).getAttribute('target')).toBe('_blank');
   });
 
   it('opens the download menu and wires format-specific download callbacks', async () => {
@@ -425,8 +464,8 @@ describe('HeaderBar', () => {
     const groupDownloadingButton = screen.getByRole('button', { name: 'Downloading Group...' }) as HTMLButtonElement;
     const savingButton = screen.getByRole('button', { name: 'Saving...' }) as HTMLButtonElement;
 
-    expect(downloadingButton.disabled).toBe(true);
-    expect(groupDownloadingButton.disabled).toBe(true);
-    expect(savingButton.disabled).toBe(true);
+    expect(downloadingButton.getAttribute('aria-disabled')).toBe('true');
+    expect(groupDownloadingButton.getAttribute('aria-disabled')).toBe('true');
+    expect(savingButton.getAttribute('aria-disabled')).toBe('true');
   });
 });

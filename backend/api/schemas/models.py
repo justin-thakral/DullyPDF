@@ -230,6 +230,7 @@ class SigningAnchorInput(BaseModel):
     rect: Dict[str, float]
     fieldId: Optional[str] = Field(default=None, max_length=200)
     fieldName: Optional[str] = Field(default=None, max_length=200)
+    assignedSignerOrder: Optional[int] = Field(default=None, ge=1, le=100)
 
     model_config = {"extra": "ignore"}
 
@@ -298,6 +299,84 @@ class SigningRequestCreateRequest(BaseModel):
         "consumerConsentScopeDescription",
         "signerName",
         "signerEmail",
+        mode="before",
+    )
+    @classmethod
+    def _trim_signing_text(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            trimmed = " ".join(value.strip().split())
+            return trimmed if trimmed else None
+        return value
+
+
+class SigningEnvelopeRecipientInput(BaseModel):
+    """A single recipient within an envelope creation payload."""
+
+    name: str = Field(..., min_length=1, max_length=200)
+    email: str = Field(..., min_length=3, max_length=200)
+    order: int = Field(default=1, ge=1, le=100)
+
+    model_config = {"extra": "ignore"}
+
+    @field_validator("name", "email", mode="before")
+    @classmethod
+    def _trim_text(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            trimmed = " ".join(value.strip().split())
+            return trimmed if trimmed else None
+        return value
+
+
+class SigningEnvelopeCreateRequest(BaseModel):
+    """Create a signing envelope with multiple recipients."""
+
+    title: Optional[str] = Field(default=None, max_length=200)
+    mode: Literal["sign", "fill_and_sign"] = "sign"
+    signatureMode: Optional[Literal["business", "consumer"]] = "business"
+    signingMode: Literal["parallel", "sequential"] = "parallel"
+    sourceType: Literal["workspace", "fill_link_response", "uploaded_pdf"] = "workspace"
+    sourceId: Optional[str] = Field(default=None, max_length=160)
+    sourceLinkId: Optional[str] = Field(default=None, max_length=160)
+    sourceRecordLabel: Optional[str] = Field(default=None, max_length=200)
+    sourceDocumentName: str = Field(..., min_length=1, max_length=200)
+    sourceTemplateId: Optional[str] = Field(default=None, max_length=160)
+    sourceTemplateName: Optional[str] = Field(default=None, max_length=200)
+    sourcePdfSha256: Optional[str] = Field(default=None, max_length=64)
+    documentCategory: str = Field(..., min_length=1, max_length=160)
+    esignEligibilityConfirmed: bool = False
+    companyBindingEnabled: bool = False
+    manualFallbackEnabled: bool = True
+    consumerPaperCopyProcedure: Optional[str] = Field(default=None, max_length=500)
+    consumerPaperCopyFeeDescription: Optional[str] = Field(default=None, max_length=300)
+    consumerWithdrawalProcedure: Optional[str] = Field(default=None, max_length=500)
+    consumerWithdrawalConsequences: Optional[str] = Field(default=None, max_length=500)
+    consumerContactUpdateProcedure: Optional[str] = Field(default=None, max_length=500)
+    consumerConsentScopeDescription: Optional[str] = Field(default=None, max_length=500)
+    anchors: List[SigningAnchorInput] = Field(default_factory=list)
+    recipients: List[SigningEnvelopeRecipientInput] = Field(..., min_length=1, max_length=50)
+
+    model_config = {"extra": "ignore"}
+
+    @field_validator(
+        "title",
+        "sourceId",
+        "sourceLinkId",
+        "sourceRecordLabel",
+        "sourceDocumentName",
+        "sourceTemplateId",
+        "sourceTemplateName",
+        "sourcePdfSha256",
+        "documentCategory",
+        "consumerPaperCopyProcedure",
+        "consumerPaperCopyFeeDescription",
+        "consumerWithdrawalProcedure",
+        "consumerWithdrawalConsequences",
+        "consumerContactUpdateProcedure",
+        "consumerConsentScopeDescription",
         mode="before",
     )
     @classmethod

@@ -53,6 +53,18 @@ describe('ApiFillManagerDialog', () => {
     expect(onPublish).toHaveBeenCalledWith('editable');
   });
 
+  it('opens API Fill usage docs in a new window from the dialog header', async () => {
+    const user = userEvent.setup();
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<ApiFillManagerDialog {...createProps()} />);
+
+    await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
+
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/api-fill', '_blank', 'noopener,noreferrer');
+    openSpy.mockRestore();
+  });
+
   it('uses the published schema export mode when republishing an existing endpoint', async () => {
     const user = userEvent.setup();
     const onPublish = vi.fn().mockResolvedValue(undefined);

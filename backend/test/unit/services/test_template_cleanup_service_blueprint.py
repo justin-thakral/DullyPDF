@@ -4,8 +4,16 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+import pytest
+
 from backend.firebaseDB.template_database import TemplateRecord
 from backend.services import template_cleanup_service
+
+
+@pytest.fixture(autouse=True)
+def _stub_signing_cleanup_defaults(mocker) -> None:
+    mocker.patch.object(template_cleanup_service, "list_signing_requests", return_value=[])
+    mocker.patch.object(template_cleanup_service, "invalidate_signing_request", return_value=None)
 
 
 def _template_record() -> TemplateRecord:

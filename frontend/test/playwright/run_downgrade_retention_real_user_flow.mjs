@@ -40,7 +40,13 @@ async function retry(label, attempts, fn) {
 async function waitForRetentionDialog(page) {
   await retry('wait for retention dialog', 3, async () => {
     await page.goto(`${baseUrl}/ui/profile`, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.getByRole('dialog', { name: 'Base plan template access' }).waitFor({ timeout: 30000 });
+    const dialog = page.getByRole('dialog', { name: 'Base plan template access' });
+    if (!(await dialog.isVisible().catch(() => false))) {
+      const reviewButton = page.getByRole('button', { name: 'Review locked templates' });
+      await reviewButton.waitFor({ timeout: 30000 });
+      await reviewButton.click();
+    }
+    await dialog.waitFor({ timeout: 30000 });
     await page.getByText('Accessible and locked saved forms').waitFor({ timeout: 10000 });
   });
 }

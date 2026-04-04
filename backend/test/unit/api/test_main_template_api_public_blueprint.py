@@ -94,6 +94,7 @@ def test_public_template_api_schema_and_fill_route(
         return_value=(output_path, cleanup_targets, "patient-intake.pdf"),
     )
     record_success_mock = mocker.patch.object(app_main, "record_template_api_endpoint_success", return_value=_endpoint_record())
+    mocker.patch.object(app_main, "_current_usage_month_key", return_value="2026-03")
 
     schema_response = client.get("/api/v1/fill/tep-1/schema", headers=_basic_auth("dpa_live_secret"))
 

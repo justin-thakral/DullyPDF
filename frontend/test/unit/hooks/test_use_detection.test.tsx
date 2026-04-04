@@ -137,10 +137,40 @@ describe('useDetection', () => {
     loadPageSizesMock.mockReset().mockResolvedValue({ 1: { width: 612, height: 792 } });
     extractFieldsFromPdfMock.mockReset().mockResolvedValue([]);
     touchSessionMock.mockReset();
+    Object.defineProperty(document, 'hidden', {
+      configurable: true,
+      value: false,
+    });
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it('does not immediately touch the same session twice when bootstrap assigns detect and mapping ids separately', async () => {
+    const deps = createDeps({
+      pdfDoc: createPdfDoc(),
+    });
+    const hook = renderHookHarness(deps);
+
+    await act(async () => {
+      hook.current.setDetectSessionId('session-1');
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(touchSessionMock).toHaveBeenCalledTimes(1);
+      expect(touchSessionMock).toHaveBeenCalledWith('session-1');
+    });
+
+    await act(async () => {
+      hook.current.setMappingSessionId('session-1');
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(touchSessionMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('keeps the processing view active when detection times out before any real fields are available', async () => {

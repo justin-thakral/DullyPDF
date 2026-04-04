@@ -27,6 +27,7 @@ import {
   fillLinkRespondentPdfDownloadEnabled,
   fillLinkRespondentPdfEditableEnabled,
 } from '../../utils/fillLinks';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 import './FillLinkManagerDialog.css';
 
 export type FillLinkPublishOptions = {
@@ -1486,10 +1487,7 @@ function FillLinkScopePanel({
     <section className="fill-link-dialog__scope">
       <div className="fill-link-dialog__topbar">
         <div className="fill-link-dialog__headline">
-          <strong className="fill-link-dialog__headline-title">Fill By Web Form Link + Sign:</strong>
-          <span className="fill-link-dialog__headline-copy">
-            Build a DullyPDF-hosted web form, collect respondent answers, and optionally route them into signature.
-          </span>
+          <strong className="fill-link-dialog__headline-title">Fill By Web Form Link + Sign</strong>
         </div>
 
         <div className="fill-link-dialog__tabs">
@@ -1571,6 +1569,14 @@ function FillLinkScopePanel({
             </>
           ) : null}
         </div>
+        <button
+          type="button"
+          className="ui-button ui-button--ghost ui-button--compact"
+          onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.fillByLink)}
+          title="Open Fill By Link usage docs in a new window"
+        >
+          Usage Docs
+        </button>
         <DialogCloseButton
           className="fill-link-dialog__close-button"
           onClick={onClose}
@@ -2086,11 +2092,6 @@ export function FillLinkManagerDialog({
       open={open}
       onClose={onClose}
       title="Fill By Web Form Link + Sign"
-      description={(
-        <span className="fill-link-dialog__intro">
-          Build a DullyPDF-hosted web form, collect respondent answers, and optionally route them into signature.
-        </span>
-      )}
       className="fill-link-dialog"
       showCloseButton={false}
       closeOnBackdrop={false}

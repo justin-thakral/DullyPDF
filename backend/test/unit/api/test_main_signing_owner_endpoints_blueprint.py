@@ -203,3 +203,65 @@ def test_owner_signing_send_rolls_back_when_source_promotion_fails(
     delete_mock.assert_called_once_with("gs://staging/_staging/source.pdf")
     persist_business_mock.assert_not_called()
     persist_consumer_mock.assert_not_called()
+
+
+def test_owner_signing_reissue_keeps_sequential_waiting_signer_queued(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    queued_record = SimpleNamespace(
+        id="req-queued",
+        status="sent",
+        envelope_id="env-1",
+        turn_activated_at=None,
+        source_pdf_bucket_path="gs://bucket/source.pdf",
+        public_link_version=1,
+        public_link_revoked_at=None,
+        public_link_last_reissued_at=None,
+        sent_at="2026-04-01T00:00:00+00:00",
+        invalidation_reason=None,
+        expires_at="2026-04-05T00:00:00+00:00",
+    )
+    reissued_payload = dict(queued_record.__dict__)
+    reissued_payload.update({
+        "public_link_version": 2,
+        "invite_delivery_status": "queued",
+    })
+    reissued_record = SimpleNamespace(**reissued_payload)
+
+    mocker.patch.object(app_main, "get_signing_request_for_user", return_value=queued_record)
+    mocker.patch.object(app_main, "validate_signing_reissuable_record", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "get_signing_envelope",
+        return_value=SimpleNamespace(id="env-1", signing_mode="sequential"),
+    )
+    mocker.patch.object(app_main, "resolve_signing_invite_origin", return_value="http://localhost:5173")
+    mocker.patch.object(app_main, "reissue_signing_request", return_value=reissued_record)
+    mocker.patch.object(app_main, "_serialize_owner_request", return_value={"id": "req-queued", "publicLinkVersion": 2})
+    mocker.patch.object(app_main, "record_signing_event", return_value=None)
+    mocker.patch.object(app_main, "dispatch_signing_webhook_event", return_value=None)
+    deliver_mock = mocker.patch.object(app_main, "deliver_signing_invite_for_request", new=mocker.AsyncMock())
+    business_mock = mocker.patch.object(app_main, "persist_business_disclosure_artifact", return_value=reissued_record)
+    consumer_mock = mocker.patch.object(app_main, "persist_consumer_disclosure_artifact", return_value=reissued_record)
+
+    response = client.post(
+        "/api/signing/requests/req-queued/reissue",
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    assert response.json()["request"]["publicLinkVersion"] == 2
+    deliver_mock.assert_not_awaited()
+    business_mock.assert_called_once_with(reissued_record)
+    consumer_mock.assert_called_once_with(reissued_record)
+    app_main.reissue_signing_request.assert_called_once_with(
+        "req-queued",
+        "user_base",
+        public_app_origin="http://localhost:5173",
+        invite_delivery_status="queued",
+    )

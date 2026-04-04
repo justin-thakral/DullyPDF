@@ -1,8 +1,8 @@
 .ui-dialog.signature-request-dialog {
-  width: min(90vw, 1360px);
-  max-width: calc(100vw - 32px);
-  height: min(90vh, 980px);
-  max-height: calc(100vh - 32px);
+  width: min(95vw, 1440px);
+  max-width: calc(100vw - 20px);
+  height: min(95vh, 1060px);
+  max-height: calc(100vh - 20px);
   padding: 1rem 1rem 0;
   gap: 0.9rem;
   overflow: hidden;
@@ -430,7 +430,7 @@
 
 @media (max-width: 1080px) {
   .ui-dialog.signature-request-dialog {
-    width: min(92vw, 1120px);
+    width: min(95vw, 1120px);
   }
 
   .signature-request-dialog__hero,
@@ -487,4 +487,92 @@
   .signature-request-dialog__checklist-item {
     grid-template-columns: 1fr;
   }
+}
+
+.signature-request-dialog__recipient-order {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(219, 234, 254, 0.92);
+  color: #1d4ed8;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.signature-request-dialog__recipient-card--sequential {
+  align-items: center;
+}
+
+.signature-request-dialog__reorder-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #475569;
+  font-size: 0.85rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.signature-request-dialog__reorder-btn:hover:not(:disabled) {
+  background: rgba(219, 234, 254, 0.6);
+  color: #1d4ed8;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.signature-request-dialog__reorder-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.signature-request-dialog__anchor-assignment {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.signature-request-dialog__anchor-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.signature-request-dialog__anchor-row > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.signature-request-dialog__anchor-row select {
+  flex: 0 0 auto;
+  min-width: 180px;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.98);
+  font: inherit;
+  font-size: 0.85rem;
+  color: #0f172a;
+}
+
+.signature-request-dialog__signer-dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
 }
