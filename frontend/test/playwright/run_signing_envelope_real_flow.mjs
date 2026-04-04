@@ -228,11 +228,14 @@ async function main() {
     const saveButton = page.locator('button').filter({ hasText: /Save Signing Draft/i }).first();
     await saveButton.click();
     await createRequestResponse;
-    await page.getByText(/Saved 2 signing drafts\./i).waitFor({ timeout: 15000 });
     await waitForCaptureCount('create responses', () => captured.createResponses.length, 2);
+    await page.getByRole('heading', { name: 'Batch review and send' }).waitFor({ timeout: 10000 });
+    const draftSavedAlert = page.getByText(
+      /(?:Saved 2 signing drafts\.|Drafts saved\. Review the batch summary, then click Review and Send to activate signer links\.)/i,
+    ).first();
+    await draftSavedAlert.waitFor({ timeout: 15000 });
 
     logStep('signing drafts created successfully');
-    await page.getByRole('heading', { name: 'Batch review and send' }).waitFor({ timeout: 10000 });
 
     await page.screenshot({
       path: path.join(artifactDir, 'envelope-real-flow-draft.png'),

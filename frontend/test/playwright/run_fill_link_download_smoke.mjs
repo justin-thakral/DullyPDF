@@ -264,10 +264,10 @@ async function main() {
     // ── Step 3: Verify the download hint text is visible (pre-submit) ──
     logStep('verifying pre-submit download hint is visible');
     await retry('check download hint', 10, async () => {
-      const hintText = page.getByText(/PDF copy available after submit/i);
+      const hintText = page.getByText(/(?:Flat|Editable) PDF copy available after submit/i);
       const visible = await hintText.isVisible().catch(() => false);
       if (!visible) {
-        throw new Error('Expected "PDF copy available after submit" hint to be visible');
+        throw new Error('Expected post-submit PDF download hint to be visible');
       }
     });
 
