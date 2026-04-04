@@ -12,6 +12,7 @@ import {
 } from './helpers/downgradeFixture.mjs';
 import {
   collectFieldNames,
+  pollOpenAiJob,
   repoRoot,
   retry,
   setGodRole,
@@ -36,33 +37,27 @@ function waitForLocalBackend() {
   });
 }
 
+function parseJsonPostData(response) {
+  const postData = response.request().postData();
+  if (!postData) {
+    return null;
+  }
+  try {
+    return JSON.parse(postData);
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   fs.mkdirSync(artifactDir, { recursive: true });
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 1480, height: 1100 } });
   const capture = {
+    renameKickoff: null,
     renameRequest: null,
     renameResult: null,
   };
-
-  page.on('response', async (response) => {
-    if (!response.url().includes('/api/renames/ai')) {
-      return;
-    }
-    if (!response.ok()) {
-      return;
-    }
-    try {
-      const payload = await response.json();
-      if (payload?.success && Array.isArray(payload?.fields) && payload.fields.length > 0) {
-        capture.renameResult = payload;
-        const postData = response.request().postData();
-        capture.renameRequest = postData ? JSON.parse(postData) : null;
-      }
-    } catch {
-      // Ignore polling frames that do not carry JSON bodies.
-    }
-  });
 
   let userFixture = null;
 
@@ -102,12 +97,36 @@ async function main() {
     await page.getByRole('button', { name: /Rename or Remap/i }).click();
     await page.getByRole('menuitem', { name: 'Rename', exact: true }).click();
     await page.getByRole('dialog', { name: 'Send to OpenAI?' }).waitFor({ timeout: 10000 });
+    const renameResponsePromise = page.waitForResponse((response) => {
+      return response.request().method() === 'POST'
+        && response.url().includes('/api/renames/ai')
+        && response.ok();
+    }, { timeout: 120000 });
     await page.getByRole('button', { name: 'Continue' }).click();
-    await retry('capture rename response', 120, async () => {
-      if (!capture.renameResult) {
-        throw new Error('Waiting for rename response payload.');
-      }
-    });
+    const renameResponse = await renameResponsePromise;
+    capture.renameKickoff = await renameResponse.json();
+    capture.renameRequest = parseJsonPostData(renameResponse);
+    if (
+      capture.renameKickoff?.success
+      && Array.isArray(capture.renameKickoff?.fields)
+      && capture.renameKickoff.fields.length > 0
+    ) {
+      capture.renameResult = capture.renameKickoff;
+    }
+
+    if (!capture.renameKickoff?.success || !capture.renameRequest?.sessionId) {
+      throw new Error(`Rename kickoff payload was incomplete: ${JSON.stringify(capture.renameKickoff)}`);
+    }
+    if (!capture.renameResult && capture.renameKickoff?.jobId) {
+      capture.renameResult = await pollOpenAiJob(page, {
+        apiBaseUrl,
+        resource: 'renames',
+        jobId: String(capture.renameKickoff.jobId),
+      });
+    }
+    if (!capture.renameResult) {
+      throw new Error(`Rename did not produce a final payload. Kickoff: ${JSON.stringify(capture.renameKickoff)}`);
+    }
 
     if (!capture.renameRequest?.sessionId) {
       throw new Error(`Rename request should include a sessionId. Payload: ${JSON.stringify(capture.renameRequest)}`);

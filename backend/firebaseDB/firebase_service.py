@@ -28,6 +28,27 @@ def _adc_enabled() -> bool:
     return (os.getenv("FIREBASE_USE_ADC") or "").strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _firebase_service_account_id() -> Optional[str]:
+    """Return an explicit signer identity for ADC-backed custom tokens.
+
+    Workload Identity Federation credentials do not expose a local private key,
+    so Firebase Admin cannot infer the signing service account from certificate
+    data. Supplying the service account email lets the Admin SDK call the IAM
+    signing APIs instead of falling back to the metadata server, which does not
+    exist on GitHub-hosted runners.
+    """
+
+    for env_name in (
+        "FIREBASE_SERVICE_ACCOUNT_ID",
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL",
+        "GCP_SERVICE_ACCOUNT_EMAIL",
+    ):
+        value = str(os.getenv(env_name) or "").strip()
+        if value:
+            return value
+    return None
+
+
 @dataclass(frozen=True)
 class RequestUser:
     uid: str
@@ -42,8 +63,26 @@ def _load_firebase_credentials() -> Tuple[Optional[credentials.Base], Optional[s
     Resolve Firebase Admin credentials from environment.
 
     This supports either a JSON blob in FIREBASE_CREDENTIALS or a filesystem path
-    to a service account file (also via FIREBASE_CREDENTIALS).
+    to a service account file (also via FIREBASE_CREDENTIALS). If the resolved
+    payload is an ADC config such as Workload Identity Federation
+    (`type=external_account`) or a local gcloud authorized-user file, this
+    returns `(None, project_id)` so Firebase Admin falls back to ADC instead of
+    trying to parse the file as a service-account certificate.
     """
+
+    def _project_id_from_payload(payload: Any) -> Optional[str]:
+        if not isinstance(payload, dict):
+            return None
+        value = payload.get("project_id")
+        text = str(value or "").strip()
+        return text or None
+
+    def _is_service_account_payload(payload: Any) -> bool:
+        if not isinstance(payload, dict):
+            return False
+        credential_type = str(payload.get("type") or "").strip().lower()
+        return credential_type == "service_account" or "private_key" in payload
+
     raw = os.getenv("FIREBASE_CREDENTIALS", "").strip()
     if not raw:
         raw = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "").strip()
@@ -51,22 +90,26 @@ def _load_firebase_credentials() -> Tuple[Optional[credentials.Base], Optional[s
         return None, None
     candidate_path = os.path.expanduser(raw)
     if os.path.exists(candidate_path):
-        project_id = None
+        payload = None
         try:
             with open(candidate_path, "r", encoding="utf-8") as handle:
                 payload = json.loads(handle.read())
-            if isinstance(payload, dict):
-                project_id = payload.get("project_id") or None
         except Exception:
-            project_id = None
+            payload = None
+        project_id = _project_id_from_payload(payload)
+        if payload is not None and not _is_service_account_payload(payload):
+            return None, project_id
         return credentials.Certificate(candidate_path), project_id
     try:
         payload = json.loads(raw)
     except json.JSONDecodeError as exc:
         raise RuntimeError("FIREBASE_CREDENTIALS must be JSON or a valid file path") from exc
+    project_id = _project_id_from_payload(payload)
+    if not _is_service_account_payload(payload):
+        return None, project_id
     if isinstance(payload, dict) and "private_key" in payload:
+        payload = dict(payload)
         payload["private_key"] = payload["private_key"].replace("\\n", "\n")
-    project_id = payload.get("project_id") if isinstance(payload, dict) else None
     return credentials.Certificate(payload), project_id
 
 
@@ -147,6 +190,9 @@ def init_firebase() -> None:
         options: Dict[str, Any] = {}
         if project_id:
             options["projectId"] = project_id
+        service_account_id = _firebase_service_account_id()
+        if service_account_id:
+            options["serviceAccountId"] = service_account_id
         if cred:
             _firebase_app = initialize_app(cred, options or None)
         else:

@@ -297,6 +297,7 @@ def test_trial_blocked_after_previous_use(
     mocker.patch.object(billing_routes, "require_user", return_value=request_user)
     mocker.patch.object(billing_routes, "billing_enabled", return_value=True)
     mocker.patch.object(billing_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(billing_routes, "webhook_health_enforced_for_checkout", return_value=False)
     mocker.patch.object(billing_routes, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
     for module in (billing_database, user_database):
         mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
@@ -333,6 +334,7 @@ def test_trial_blocked_for_ex_pro_user(
     mocker.patch.object(billing_routes, "require_user", return_value=request_user)
     mocker.patch.object(billing_routes, "billing_enabled", return_value=True)
     mocker.patch.object(billing_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(billing_routes, "webhook_health_enforced_for_checkout", return_value=False)
     mocker.patch.object(billing_routes, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
     for module in (billing_database, user_database):
         mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)

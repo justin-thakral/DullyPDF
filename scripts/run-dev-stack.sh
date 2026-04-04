@@ -96,15 +96,43 @@ OPENAI_RENAME_REMAP_TASKS_PROJECT="${OPENAI_RENAME_REMAP_TASKS_PROJECT:-${DETECT
 OPENAI_RENAME_REMAP_TASKS_LOCATION="${OPENAI_RENAME_REMAP_TASKS_LOCATION:-${DETECTOR_TASKS_LOCATION:-us-east4}}"
 OPENAI_RENAME_REMAP_TASKS_QUEUE="${OPENAI_RENAME_REMAP_TASKS_QUEUE:-openai-rename-remap}"
 OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT="${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT:-${DETECTOR_TASKS_SERVICE_ACCOUNT}}"
+OPENAI_RENAME_REMAP_TASKS_AUDIENCE="${OPENAI_RENAME_REMAP_TASKS_AUDIENCE:-}"
+OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL="${OPENAI_RENAME_REMAP_SERVICE_URL:-}"
 
 if command -v gcloud >/dev/null 2>&1; then
-  if [[ "${OPENAI_RENAME_REMAP_MODE}" == "tasks" && ("${DEV_STACK_BUILD:-}" == "1" || -z "${OPENAI_RENAME_REMAP_SERVICE_URL:-}") && -n "${OPENAI_RENAME_REMAP_TASKS_PROJECT:-}" ]]; then
-    OPENAI_RENAME_REMAP_SERVICE_URL="$(
+  if [[ "${OPENAI_RENAME_REMAP_MODE}" == "tasks" && -n "${OPENAI_RENAME_REMAP_TASKS_PROJECT:-}" ]]; then
+    RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL="$(
       gcloud run services describe dullypdf-openai-rename-remap \
         --region "$OPENAI_RENAME_REMAP_TASKS_LOCATION" \
         --project "$OPENAI_RENAME_REMAP_TASKS_PROJECT" \
         --format='value(status.url)' 2>/dev/null || true
     )"
+    RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL="${RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL%/}"
+    OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL="${OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL%/}"
+    OPENAI_RENAME_REMAP_TASKS_AUDIENCE="${OPENAI_RENAME_REMAP_TASKS_AUDIENCE%/}"
+
+    if [[ -n "${RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL:-}" ]]; then
+      # The dev Cloud Run URL can change across redeploys. When the tracked env
+      # still points at an older public URL, Cloud Tasks mints a token with the
+      # wrong audience and the worker rejects every request with 401. Refresh the
+      # local stack to the live Cloud Run URL whenever the configured service URL
+      # matches the configured audience or is unset, which keeps the stack
+      # aligned with the current worker revision in O(1) time at startup.
+      if [[ -z "$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL" || "$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL" == "$OPENAI_RENAME_REMAP_TASKS_AUDIENCE" ]]; then
+        if [[ -n "$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL" && "$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL" != "$RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL" ]]; then
+          echo "Refreshing OpenAI worker URL from Cloud Run to avoid stale OIDC audiences."
+        fi
+        OPENAI_RENAME_REMAP_SERVICE_URL="$RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL"
+        OPENAI_RENAME_REMAP_TASKS_AUDIENCE="$RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL"
+      elif [[ "$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL" != "$RESOLVED_OPENAI_RENAME_REMAP_SERVICE_URL" ]]; then
+        echo "Warning: OPENAI_RENAME_REMAP_SERVICE_URL differs from the live Cloud Run URL; using configured value from $ENV_FILE." >&2
+        OPENAI_RENAME_REMAP_SERVICE_URL="$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL"
+      else
+        OPENAI_RENAME_REMAP_SERVICE_URL="$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL"
+      fi
+    else
+      OPENAI_RENAME_REMAP_SERVICE_URL="$OPENAI_RENAME_REMAP_CONFIGURED_SERVICE_URL"
+    fi
   fi
 fi
 

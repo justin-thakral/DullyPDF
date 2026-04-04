@@ -136,17 +136,20 @@ jobs:
     environment: ${{ needs.resolve.outputs.github_environment }}
     timeout-minutes: 60
     env:
-      HAS_WIF_DEV: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV != '' && secrets.GCP_SERVICE_ACCOUNT_DEV != '') && 'true' || 'false' }}
-      HAS_WIF_PROD: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_PROD != '' && secrets.GCP_SERVICE_ACCOUNT_PROD != '') && 'true' || 'false' }}
-      HAS_KEY_DEV: ${{ secrets.GCP_CREDENTIALS_JSON_DEV != '' && 'true' || 'false' }}
-      HAS_KEY_PROD: ${{ secrets.GCP_CREDENTIALS_JSON_PROD != '' && 'true' || 'false' }}
-      HAS_FRONTEND_OVERRIDE_DEV: ${{ secrets.FRONTEND_ENV_OVERRIDE_B64_DEV != '' && 'true' || 'false' }}
+      DEPLOY_ENVIRONMENT: ${{ needs.resolve.outputs.deploy_environment }}
+      DEPLOY_COMPONENT: ${{ needs.resolve.outputs.component }}
+      BACKEND_IMAGE: ${{ needs.resolve.outputs.backend_image }}
+      DRY_RUN: ${{ needs.resolve.outputs.dry_run }}
+      DEPLOY_WIF_PROVIDER: ${{ needs.resolve.outputs.deploy_environment == 'prod' && secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_PROD || secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
+      DEPLOY_SERVICE_ACCOUNT: ${{ needs.resolve.outputs.deploy_environment == 'prod' && secrets.GCP_SERVICE_ACCOUNT_PROD || secrets.GCP_SERVICE_ACCOUNT_DEV }}
+      DEPLOY_CREDENTIALS_JSON: ${{ needs.resolve.outputs.deploy_environment == 'prod' && secrets.GCP_CREDENTIALS_JSON_PROD || secrets.GCP_CREDENTIALS_JSON_DEV }}
+      DEPLOY_BACKEND_ENV_B64: ${{ needs.resolve.outputs.deploy_environment == 'prod' && secrets.BACKEND_ENV_FILE_B64_PROD || secrets.BACKEND_ENV_FILE_B64_DEV }}
+      DEPLOY_FRONTEND_OVERRIDE_B64: ${{ needs.resolve.outputs.deploy_environment == 'prod' && secrets.FRONTEND_ENV_OVERRIDE_B64_PROD || secrets.FRONTEND_ENV_OVERRIDE_B64_DEV }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Set up Node.js
-        if: needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all'
         uses: actions/setup-node@v6
         with:
           node-version: '20'
@@ -161,45 +164,34 @@ jobs:
           python-version: '3.10'
 
       - name: Install root dependencies
-        if: needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all'
-        run: npm ci
+        run: |
+          set -euo pipefail
+          if [[ "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" ]]; then
+            echo "Root frontend dependencies are not needed for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
+          npm ci
 
       - name: Install frontend dependencies
-        if: needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all'
-        run: npm --prefix frontend ci
+        run: |
+          set -euo pipefail
+          if [[ "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" ]]; then
+            echo "Frontend package install is not needed for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
+          npm --prefix frontend ci
 
-      - name: Authenticate to Google Cloud with Workload Identity Federation (dev)
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && env.HAS_WIF_DEV == 'true'
+      - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
-
-      - name: Authenticate to Google Cloud with Workload Identity Federation (prod)
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && env.HAS_WIF_PROD == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_PROD }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_PROD }}
-
-      - name: Authenticate to Google Cloud with a service-account key (dev fallback)
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && env.HAS_WIF_DEV != 'true' && env.HAS_KEY_DEV == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
-
-      - name: Authenticate to Google Cloud with a service-account key (prod fallback)
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && env.HAS_WIF_PROD != 'true' && env.HAS_KEY_PROD == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_PROD }}
+          workload_identity_provider: ${{ env.DEPLOY_WIF_PROVIDER != '' && env.DEPLOY_SERVICE_ACCOUNT != '' && env.DEPLOY_WIF_PROVIDER || '' }}
+          service_account: ${{ env.DEPLOY_WIF_PROVIDER != '' && env.DEPLOY_SERVICE_ACCOUNT != '' && env.DEPLOY_SERVICE_ACCOUNT || '' }}
+          credentials_json: ${{ ((env.DEPLOY_WIF_PROVIDER == '' || env.DEPLOY_SERVICE_ACCOUNT == '') && env.DEPLOY_CREDENTIALS_JSON) || '' }}
 
       - name: Set up gcloud
-        if: needs.resolve.outputs.dry_run != 'true'
         uses: google-github-actions/setup-gcloud@v3
 
       - name: Verify deploy auth exists
-        if: needs.resolve.outputs.dry_run != 'true'
         run: |
           set -euo pipefail
           active_account="$(gcloud auth list --filter=status:ACTIVE --format='value(account)' | head -n 1)"
@@ -207,54 +199,66 @@ jobs:
             echo "Missing Google Cloud auth. Configure WIF or service-account key secrets for this environment." >&2
             exit 1
           fi
-          echo "Authenticated as ${active_account}"
+          if [[ "$DRY_RUN" == "true" ]]; then
+            echo "Dry run validated deploy auth as ${active_account}."
+          else
+            echo "Authenticated as ${active_account}"
+          fi
 
       - name: Install Firebase CLI
-        if: needs.resolve.outputs.dry_run != 'true' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
-        run: npm install --global firebase-tools
-
-      - name: Materialize backend env file from dev secret
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && needs.resolve.outputs.component != 'frontend'
         run: |
           set -euo pipefail
-          if [[ -z "${{ secrets.BACKEND_ENV_FILE_B64_DEV }}" ]]; then
-            echo "Missing BACKEND_ENV_FILE_B64_DEV secret." >&2
+          if [[ "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" && "$DEPLOY_COMPONENT" != "backend" && "$DEPLOY_COMPONENT" != "detectors" && "$DEPLOY_COMPONENT" != "workers" ]]; then
+            echo "Unexpected deploy component: ${DEPLOY_COMPONENT}" >&2
             exit 1
           fi
-          printf '%s' '${{ secrets.BACKEND_ENV_FILE_B64_DEV }}' | base64 --decode > "$RUNNER_TEMP/backend.env"
+          if [[ "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" ]]; then
+            echo "Firebase CLI is not required for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
+          npm install --global firebase-tools
 
-      - name: Materialize backend env file from prod secret
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && needs.resolve.outputs.component != 'frontend'
+      - name: Materialize backend env file
         run: |
           set -euo pipefail
-          if [[ -z "${{ secrets.BACKEND_ENV_FILE_B64_PROD }}" ]]; then
-            echo "Missing BACKEND_ENV_FILE_B64_PROD secret." >&2
+          rm -f "$RUNNER_TEMP/backend.env"
+          if [[ "$DRY_RUN" == "true" ]]; then
+            echo "Dry run does not materialize backend env files."
+            exit 0
+          fi
+          if [[ "$DEPLOY_COMPONENT" == "frontend" ]]; then
+            echo "Backend env file is not required for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
+          if [[ -z "$DEPLOY_BACKEND_ENV_B64" ]]; then
+            echo "Missing backend env secret for environment=${DEPLOY_ENVIRONMENT}." >&2
             exit 1
           fi
-          printf '%s' '${{ secrets.BACKEND_ENV_FILE_B64_PROD }}' | base64 --decode > "$RUNNER_TEMP/backend.env"
+          printf '%s' "$DEPLOY_BACKEND_ENV_B64" | base64 --decode > "$RUNNER_TEMP/backend.env"
 
-      - name: Materialize optional dev frontend override
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'dev' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all') && env.HAS_FRONTEND_OVERRIDE_DEV == 'true'
+      - name: Materialize frontend override env file
         run: |
           set -euo pipefail
-          printf '%s' '${{ secrets.FRONTEND_ENV_OVERRIDE_B64_DEV }}' | base64 --decode > "$RUNNER_TEMP/frontend.env"
-
-      - name: Materialize optional prod frontend override
-        if: needs.resolve.outputs.dry_run != 'true' && needs.resolve.outputs.deploy_environment == 'prod' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
-        run: |
-          set -euo pipefail
-          if [[ -z "${{ secrets.FRONTEND_ENV_OVERRIDE_B64_PROD }}" ]]; then
-            echo "Missing FRONTEND_ENV_OVERRIDE_B64_PROD secret for prod frontend deploys." >&2
-            exit 1
+          rm -f "$RUNNER_TEMP/frontend.env"
+          if [[ "$DRY_RUN" == "true" ]]; then
+            echo "Dry run does not materialize frontend override env files."
+            exit 0
           fi
-          printf '%s' '${{ secrets.FRONTEND_ENV_OVERRIDE_B64_PROD }}' | base64 --decode > "$RUNNER_TEMP/frontend.env"
+          if [[ "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" ]]; then
+            echo "Frontend override env file is not required for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
+          if [[ -z "$DEPLOY_FRONTEND_OVERRIDE_B64" ]]; then
+            if [[ "$DEPLOY_ENVIRONMENT" == "prod" ]]; then
+              echo "Missing prod frontend override env secret." >&2
+              exit 1
+            fi
+            echo "No dev frontend override env file configured; using committed stack defaults."
+            exit 0
+          fi
+          printf '%s' "$DEPLOY_FRONTEND_OVERRIDE_B64" | base64 --decode > "$RUNNER_TEMP/frontend.env"
 
       - name: Run deploy target
-        env:
-          DEPLOY_ENVIRONMENT: ${{ needs.resolve.outputs.deploy_environment }}
-          DEPLOY_COMPONENT: ${{ needs.resolve.outputs.component }}
-          BACKEND_IMAGE: ${{ needs.resolve.outputs.backend_image }}
-          DRY_RUN: ${{ needs.resolve.outputs.dry_run }}
         run: |
           set -euo pipefail
           args=(
@@ -277,16 +281,21 @@ jobs:
           bash scripts/ci/deploy_target.sh "${args[@]}"
 
       - name: Install Chromium for Playwright deploy smoke
-        if: needs.resolve.outputs.dry_run != 'true' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
-        run: npx playwright install --with-deps chromium
-
-      - name: Run deployed frontend Playwright smoke
-        if: needs.resolve.outputs.dry_run != 'true' && (needs.resolve.outputs.component == 'frontend' || needs.resolve.outputs.component == 'all')
-        env:
-          DEPLOY_ENVIRONMENT: ${{ needs.resolve.outputs.deploy_environment }}
-          DEPLOY_COMPONENT: ${{ needs.resolve.outputs.component }}
         run: |
           set -euo pipefail
+          if [[ "$DRY_RUN" == "true" || "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" ]]; then
+            echo "Hosted Playwright smoke is not required for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
+          npx playwright install --with-deps chromium
+
+      - name: Run deployed frontend Playwright smoke
+        run: |
+          set -euo pipefail
+          if [[ "$DRY_RUN" == "true" || "$DEPLOY_COMPONENT" != "frontend" && "$DEPLOY_COMPONENT" != "all" ]]; then
+            echo "Hosted Playwright smoke is not required for component=${DEPLOY_COMPONENT}."
+            exit 0
+          fi
           if [[ "$DEPLOY_ENVIRONMENT" == "prod" ]]; then
             base_url="https://dullypdf.web.app"
           else

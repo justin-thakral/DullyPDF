@@ -34,7 +34,17 @@ def test_load_firebase_credentials_returns_none_when_env_missing(monkeypatch) ->
 
 def test_load_firebase_credentials_from_file_path(monkeypatch, mocker, tmp_path) -> None:
     cred_file = tmp_path / "service-account.json"
-    cred_file.write_text(json.dumps({"project_id": "project-from-file"}), encoding="utf-8")
+    cred_file.write_text(
+        json.dumps(
+            {
+                "type": "service_account",
+                "project_id": "project-from-file",
+                "private_key": "-----BEGIN KEY-----\nline\n-----END KEY-----",
+                "client_email": "firebase-admin@example.com",
+            }
+        ),
+        encoding="utf-8",
+    )
     monkeypatch.setenv("FIREBASE_CREDENTIALS", str(cred_file))
     cert = mocker.patch("backend.firebaseDB.firebase_service.credentials.Certificate", return_value="cert-from-file")
 
@@ -96,6 +106,50 @@ def test_load_firebase_credentials_uses_google_application_credentials_fallback(
     assert project_id == "fallback-project"
 
 
+def test_load_firebase_credentials_uses_adc_for_google_external_account_file(monkeypatch, mocker, tmp_path) -> None:
+    cred_file = tmp_path / "gha-external-account.json"
+    cred_file.write_text(
+        json.dumps(
+            {
+                "type": "external_account",
+                "audience": "//iam.googleapis.com/projects/123/locations/global/workloadIdentityPools/pool/providers/provider",
+                "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+                "token_url": "https://sts.googleapis.com/v1/token",
+                "credential_source": {"file": "/tmp/token"},
+                "project_id": "fallback-project",
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.delenv("FIREBASE_CREDENTIALS", raising=False)
+    monkeypatch.setenv("GOOGLE_APPLICATION_CREDENTIALS", str(cred_file))
+    cert = mocker.patch("backend.firebaseDB.firebase_service.credentials.Certificate")
+
+    cred, project_id = fs._load_firebase_credentials()
+
+    cert.assert_not_called()
+    assert cred is None
+    assert project_id == "fallback-project"
+
+
+def test_load_firebase_credentials_uses_adc_for_authorized_user_json(monkeypatch, mocker) -> None:
+    payload = {
+        "type": "authorized_user",
+        "client_id": "client-id",
+        "client_secret": "client-secret",
+        "refresh_token": "refresh-token",
+        "project_id": "fallback-project",
+    }
+    monkeypatch.setenv("FIREBASE_CREDENTIALS", json.dumps(payload))
+    cert = mocker.patch("backend.firebaseDB.firebase_service.credentials.Certificate")
+
+    cred, project_id = fs._load_firebase_credentials()
+
+    cert.assert_not_called()
+    assert cred is None
+    assert project_id == "fallback-project"
+
+
 def test_check_revoked_enabled_respects_override_and_prod_default(monkeypatch) -> None:
     monkeypatch.setenv("FIREBASE_CHECK_REVOKED", "true")
     assert fs._check_revoked_enabled() is True
@@ -136,6 +190,24 @@ def test_init_firebase_uses_gcp_project_id_fallback(monkeypatch, mocker) -> None
 
     initialize_app.assert_called_once_with(options={"projectId": "project-from-gcp-env"})
     assert fs._firebase_project_id == "project-from-gcp-env"
+
+
+def test_init_firebase_includes_explicit_service_account_id(monkeypatch, mocker) -> None:
+    app_obj = object()
+    monkeypatch.setenv("FIREBASE_PROJECT_ID", "project-explicit")
+    monkeypatch.setenv("FIREBASE_SERVICE_ACCOUNT_ID", "ci-signer@example.iam.gserviceaccount.com")
+    mocker.patch("backend.firebaseDB.firebase_service._load_firebase_credentials", return_value=(None, None))
+    initialize_app = mocker.patch("backend.firebaseDB.firebase_service.initialize_app", return_value=app_obj)
+
+    fs.init_firebase()
+
+    initialize_app.assert_called_once_with(
+        options={
+            "projectId": "project-explicit",
+            "serviceAccountId": "ci-signer@example.iam.gserviceaccount.com",
+        }
+    )
+    assert fs._firebase_project_id == "project-explicit"
 
 
 def test_init_firebase_caches_initialization_error(mocker) -> None:
@@ -347,10 +419,10 @@ def test_verify_id_token_debug_mode_swallow_decode_error_and_reraise_original(mo
 # ---------------------------------------------------------------------------
 # Edge-case: _load_firebase_credentials JSON dict without `private_key` field
 # ---------------------------------------------------------------------------
-# When the JSON payload is a valid dict but has no "private_key" key, the code
-# should skip the newline replacement step and still pass the payload through
-# to credentials.Certificate.
-def test_load_firebase_credentials_json_without_private_key_skips_newline_replacement(
+# When the JSON payload is a valid dict but does not represent a service
+# account, Firebase Admin should fall back to ADC instead of treating it like a
+# certificate.
+def test_load_firebase_credentials_json_without_private_key_uses_adc_fallback(
     monkeypatch, mocker
 ) -> None:
     payload = {
@@ -365,11 +437,8 @@ def test_load_firebase_credentials_json_without_private_key_skips_newline_replac
 
     cred, project_id = fs._load_firebase_credentials()
 
-    cert.assert_called_once()
-    # The returned credential dict should be exactly the original payload
-    # with no private_key manipulation applied.
-    assert isinstance(cred, dict)
-    assert "private_key" not in cred
+    cert.assert_not_called()
+    assert cred is None
     assert project_id == "project-no-pk"
 
 

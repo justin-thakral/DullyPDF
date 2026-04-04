@@ -14,6 +14,7 @@ import backend.api.routes.template_api as template_api_routes
 import backend.api.routes.template_api_public as template_api_public_routes
 import backend.firebaseDB.fill_link_database as fill_link_database
 import backend.firebaseDB.group_database as group_database
+import backend.firebaseDB.signing_database as signing_database
 import backend.firebaseDB.template_api_endpoint_database as template_api_endpoint_database
 import backend.firebaseDB.template_database as template_database
 import backend.firebaseDB.user_database as user_database
@@ -123,6 +124,7 @@ def _patch_template_api_runtime(
     mocker.patch.object(user_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(fill_link_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(group_database, "get_firestore_client", return_value=firestore_client)
+    mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
     mocker.patch.object(template_api_service, "load_saved_form_editor_snapshot", return_value=editor_snapshot)
     mocker.patch.object(template_api_public_routes, "check_rate_limit", return_value=True)
 
@@ -153,15 +155,13 @@ def test_template_api_owner_lifecycle_persists_endpoint_snapshot(client: TestCli
             "updated_at": "2024-01-01T00:00:00+00:00",
         }
     )
+    _seed_owner_profile(firestore_client, qa_user)
 
-    mocker.patch.object(security_middleware, "verify_token", return_value={"uid": qa_user.uid})
-    mocker.patch.object(template_api_routes, "require_user", return_value=qa_user)
-    mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
-    mocker.patch.object(template_api_endpoint_database, "get_firestore_client", return_value=firestore_client)
-    mocker.patch.object(
-        template_api_service,
-        "load_saved_form_editor_snapshot",
-        return_value={
+    _patch_template_api_runtime(
+        mocker,
+        qa_user,
+        firestore_client,
+        editor_snapshot={
             "version": 1,
             "pageCount": 1,
             "pageSizes": {"1": {"width": 612, "height": 792}},
@@ -263,11 +263,21 @@ def test_template_api_republish_updates_existing_active_snapshot_version(
             "updated_at": "2024-01-01T00:00:00+00:00",
         }
     )
+    _seed_owner_profile(firestore_client, qa_user)
 
-    mocker.patch.object(security_middleware, "verify_token", return_value={"uid": qa_user.uid})
-    mocker.patch.object(template_api_routes, "require_user", return_value=qa_user)
-    mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
-    mocker.patch.object(template_api_endpoint_database, "get_firestore_client", return_value=firestore_client)
+    _patch_template_api_runtime(
+        mocker,
+        qa_user,
+        firestore_client,
+        editor_snapshot={
+            "version": 1,
+            "pageCount": 1,
+            "pageSizes": {"1": {"width": 612, "height": 792}},
+            "fields": [
+                {"id": "field-1", "name": "full_name", "type": "text", "page": 1, "rect": {"x": 1, "y": 2, "width": 100, "height": 20}},
+            ],
+        },
+    )
 
     snapshot_loader = mocker.patch.object(
         template_api_service,
@@ -351,15 +361,13 @@ def test_template_api_public_schema_and_fill_use_scoped_basic_auth(
             "updated_at": "2024-01-01T00:00:00+00:00",
         }
     )
+    _seed_owner_profile(firestore_client, qa_user)
 
-    mocker.patch.object(security_middleware, "verify_token", return_value={"uid": qa_user.uid})
-    mocker.patch.object(template_api_routes, "require_user", return_value=qa_user)
-    mocker.patch.object(template_database, "get_firestore_client", return_value=firestore_client)
-    mocker.patch.object(template_api_endpoint_database, "get_firestore_client", return_value=firestore_client)
-    mocker.patch.object(
-        template_api_service,
-        "load_saved_form_editor_snapshot",
-        return_value={
+    _patch_template_api_runtime(
+        mocker,
+        qa_user,
+        firestore_client,
+        editor_snapshot={
             "version": 1,
             "pageCount": 1,
             "pageSizes": {"1": {"width": 612, "height": 792}},
@@ -395,7 +403,6 @@ def test_template_api_public_schema_and_fill_use_scoped_basic_auth(
             ],
         },
     )
-    mocker.patch.object(template_api_public_routes, "check_rate_limit", return_value=True)
 
     publish_response = client.post(
         "/api/template-api-endpoints",
@@ -666,6 +673,7 @@ def test_template_api_publish_blocks_locked_saved_forms_after_downgrade(
         user_database,
         fill_link_database,
         group_database,
+        signing_database,
     ):
         mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
 

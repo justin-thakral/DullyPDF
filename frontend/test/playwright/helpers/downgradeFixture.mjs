@@ -5,17 +5,25 @@ import { fileURLToPath } from 'node:url';
 
 const helperDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(helperDir, '..', '..', '..', '..');
-const frontendEnvPath = path.join(repoRoot, 'env/frontend.dev.env');
+const frontendEnvPaths = [
+  path.join(repoRoot, 'frontend/.env.local'),
+  path.join(repoRoot, 'env/frontend.dev.env'),
+];
 
 function readFrontendEnvValue(key) {
-  const source = fs.readFileSync(frontendEnvPath, 'utf8');
-  const line = source
-    .split('\n')
-    .find((entry) => entry.trim().startsWith(`${key}=`));
-  if (!line) {
-    throw new Error(`Missing ${key} in ${frontendEnvPath}`);
+  for (const frontendEnvPath of frontendEnvPaths) {
+    if (!fs.existsSync(frontendEnvPath)) {
+      continue;
+    }
+    const source = fs.readFileSync(frontendEnvPath, 'utf8');
+    const line = source
+      .split('\n')
+      .find((entry) => entry.trim().startsWith(`${key}=`));
+    if (line) {
+      return line.split('=').slice(1).join('=').trim();
+    }
   }
-  return line.split('=').slice(1).join('=').trim();
+  throw new Error(`Missing ${key} in frontend env files: ${frontendEnvPaths.join(', ')}`);
 }
 
 function runBackendPython(script, extraEnv = {}) {
@@ -38,6 +46,23 @@ PY
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
+}
+
+function runWithTimeout(operation, label, timeoutMs = 10000) {
+  let timeoutId = null;
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error(`${label} timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+  });
+  return Promise.race([
+    operation().finally(() => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+    }),
+    timeoutPromise,
+  ]);
 }
 
 export function createCustomToken(uid) {
@@ -105,34 +130,34 @@ export async function createHybridEmailUser(page) {
 }
 
 export async function signInWithCustomTokenHarness(page, customToken) {
-  return page.evaluate(async (token) => {
+  return runWithTimeout(() => page.evaluate(async (token) => {
     const authHarness = await import('/src/testSupport/playwrightAuthHarness.ts');
     return authHarness.signInWithCustomTokenForPlaywright(token);
-  }, customToken);
+  }, customToken), 'signInWithCustomTokenHarness');
 }
 
 export async function signOutHarness(page) {
-  await page.evaluate(async () => {
+  await runWithTimeout(() => page.evaluate(async () => {
     const authHarness = await import('/src/testSupport/playwrightAuthHarness.ts');
     await authHarness.signOutForPlaywright();
-  });
+  }), 'signOutHarness');
 }
 
 export async function deleteCurrentUserHarness(page) {
-  return page.evaluate(async () => {
+  return runWithTimeout(() => page.evaluate(async () => {
     const authHarness = await import('/src/testSupport/playwrightAuthHarness.ts');
     return authHarness.deleteCurrentUserForPlaywright();
-  });
+  }), 'deleteCurrentUserHarness');
 }
 
 export async function deleteUserByInitialToken(page, apiKey, idToken) {
-  await page.evaluate(async ({ apiKey, idToken }) => {
+  await runWithTimeout(() => page.evaluate(async ({ apiKey, idToken }) => {
     await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idToken }),
     });
-  }, { apiKey, idToken });
+  }, { apiKey, idToken }), 'deleteUserByInitialToken');
 }
 
 export function seedDowngradedAccountFixture({ uid, email }) {

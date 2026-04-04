@@ -3,21 +3,22 @@
 from __future__ import annotations
 
 import base64
+from datetime import datetime, timedelta, timezone
 from dataclasses import replace
 from io import BytesIO
 import json
 from types import SimpleNamespace
 
-from asn1crypto import pem as asn1_pem
-from asn1crypto import x509 as asn1_x509
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.x509.oid import NameOID
 from fastapi.testclient import TestClient
 import fitz
 import pytest
 from PIL import Image, ImageDraw
 from pypdf import PdfReader
 from pyhanko.pdf_utils.reader import PdfFileReader
-from pyhanko.sign.validation import validate_pdf_signature
-from pyhanko_certvalidator import ValidationContext
 from reportlab.pdfgen import canvas
 
 import backend.main as main
@@ -33,7 +34,6 @@ import backend.services.signing_provenance_service as signing_provenance_service
 from backend.services.signing_audit_service import verify_signing_audit_envelope
 from backend.services.pdf_export_service import build_immutable_signing_source_pdf
 import backend.services.signing_pdf_digital_service as signing_pdf_digital_service
-from backend.services.signing_pdf_digital_service import export_pdf_signing_certificate_pem
 from backend.services.signing_service import (
     build_signing_consumer_access_code,
     build_signing_public_token,
@@ -143,7 +143,7 @@ def _signature_image_data_url() -> str:
     return "data:image/png;base64," + base64.b64encode(output.getvalue()).decode("ascii")
 
 
-def _configure_bundled_pdf_signing_identity(monkeypatch) -> None:
+def _configure_bundled_pdf_signing_identity(monkeypatch, tmp_path) -> None:
     for name in (
         "SIGNING_PDF_PKCS12_B64",
         "SIGNING_PDF_PKCS12_PASSWORD",
@@ -160,6 +160,37 @@ def _configure_bundled_pdf_signing_identity(monkeypatch) -> None:
         "SIGNING_AUDIT_KMS_KEY",
     ):
         monkeypatch.delenv(name, raising=False)
+
+    key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    subject = issuer = x509.Name(
+        [
+            x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "DullyPDF Test"),
+            x509.NameAttribute(NameOID.COMMON_NAME, "DullyPDF Integration Signer"),
+        ]
+    )
+    cert = (
+        x509.CertificateBuilder()
+        .subject_name(subject)
+        .issuer_name(issuer)
+        .public_key(key.public_key())
+        .serial_number(x509.random_serial_number())
+        .not_valid_before(datetime.now(timezone.utc) - timedelta(days=1))
+        .not_valid_after(datetime.now(timezone.utc) + timedelta(days=365))
+        .sign(key, hashes.SHA256())
+    )
+    cert_path = tmp_path / "signing_pdf_dev_cert.pem"
+    key_path = tmp_path / "signing_pdf_dev_key.pem"
+    cert_path.write_bytes(cert.public_bytes(serialization.Encoding.PEM))
+    key_path.write_bytes(
+        key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+    )
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_CERT_PATH", cert_path)
+    monkeypatch.setattr(signing_pdf_digital_service, "_DEV_KEY_PATH", key_path)
     monkeypatch.setenv("SIGNING_PDF_USE_BUNDLED_DEV_CERT", "1")
     signing_pdf_digital_service._resolve_pdf_signing_identity.cache_clear()
 
@@ -887,7 +918,9 @@ def test_signing_send_cleans_up_uploaded_source_when_transition_turns_stale(clie
     assert send_response.status_code == 409
     assert "source changed elsewhere" in send_response.json()["detail"].lower()
     assert len(deleted_paths) == 1
-    assert "/_staging/users/user-signing/signing/" in deleted_paths[0]
+    assert deleted_paths[0].startswith("gs://")
+    assert "/users/user-signing/signing/" in deleted_paths[0]
+    assert "/source/" in deleted_paths[0]
     assert deleted_paths[0].endswith(".pdf")
 
 
@@ -1309,14 +1342,14 @@ def test_public_signing_happy_path_records_ceremony_evidence(client: TestClient,
     assert public_webhook_events.count("artifact_downloaded") == 2
 
 
-def test_public_signing_completion_embeds_valid_pdf_signature(client: TestClient, mocker, monkeypatch) -> None:
+def test_public_signing_completion_embeds_valid_pdf_signature(client: TestClient, mocker, monkeypatch, tmp_path) -> None:
     firestore_client = FakeFirestoreClient()
     request_user = _signing_user()
     source_pdf_bytes = _pdf_bytes()
     source_sha256 = _immutable_source_pdf_sha256(source_pdf_bytes)
     storage = InMemorySigningStorage()
 
-    _configure_bundled_pdf_signing_identity(monkeypatch)
+    _configure_bundled_pdf_signing_identity(monkeypatch, tmp_path)
     _mock_signing_verification_delivery(mocker)
     mocker.patch.object(signing_database, "get_firestore_client", return_value=firestore_client)
     patch_signing_authenticated_owner(mocker, request_user)
@@ -1410,15 +1443,14 @@ def test_public_signing_completion_embeds_valid_pdf_signature(client: TestClient
     embedded_signatures = list(pdf_reader.embedded_signatures)
     assert len(embedded_signatures) == 1
 
-    cert_pem = export_pdf_signing_certificate_pem()
-    _, _, cert_der = asn1_pem.unarmor(cert_pem)
-    validation_context = ValidationContext(trust_roots=[asn1_x509.Certificate.load(cert_der)])
-    validation_status = validate_pdf_signature(
-        embedded_signatures[0],
-        signer_validation_context=validation_context,
+    validation_status = signing_pdf_digital_service.validate_digital_pdf_signature(
+        owner_signed_pdf_download.content,
     )
-    assert validation_status.bottom_line is True
-    assert "TRUSTED" in validation_status.summary()
+    assert validation_status.present is True
+    assert validation_status.valid is True
+    assert validation_status.intact is True
+    assert validation_status.trusted is True
+    assert "TRUSTED" in validation_status.summary
 
 
 def test_public_signing_completion_succeeds_without_pdf_signing_identity(client: TestClient, mocker, monkeypatch) -> None:

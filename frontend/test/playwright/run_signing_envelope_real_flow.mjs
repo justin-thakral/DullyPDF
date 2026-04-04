@@ -160,7 +160,7 @@ async function main() {
     // Step 5: Verify workflow/policy defaults
     // ---------------------------------------------------------------
     logStep('verifying workflow defaults');
-    const workflowTabs = page.getByRole('tablist', { name: 'Signing mode' });
+    const workflowTabs = page.locator('.signature-request-dialog__mode-row').filter({ hasText: 'Fill and Sign' }).first();
     await workflowTabs.waitFor({ timeout: 15000 });
     const signButton = workflowTabs.getByRole('button', { name: 'Sign', exact: true });
     const fillAndSignButton = workflowTabs.getByRole('button', { name: 'Fill and Sign', exact: true });

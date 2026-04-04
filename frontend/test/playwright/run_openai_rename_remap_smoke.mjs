@@ -12,6 +12,7 @@ import {
 } from './helpers/downgradeFixture.mjs';
 import {
   collectFieldNames,
+  pollOpenAiJob,
   repoRoot,
   retry,
   setGodRole,
@@ -23,6 +24,10 @@ const apiBaseUrl = (process.env.PLAYWRIGHT_API_URL || 'http://127.0.0.1:8000').r
 const artifactDir = path.resolve(process.cwd(), 'output/playwright');
 const screenshotPath = path.join(artifactDir, 'openai-rename-remap-smoke.png');
 const summaryPath = path.join(artifactDir, 'openai-rename-remap-smoke.json');
+const remapSamplePdfPath = path.join(
+  repoRoot,
+  'quickTestFiles/dentalintakeform_d1c394f594.pdf',
+);
 
 function logStep(message) {
   console.log(`[openai-rename-remap-real-flow] ${message}`);
@@ -41,15 +46,30 @@ function buildSchemaFilePath() {
   fs.writeFileSync(
     schemaPath,
     [
-      'patient_name:string',
-      'date_of_birth:date',
-      'member_id:string',
+      'full_name:string',
+      'date:date',
+      'signature_name:string',
       'phone:string',
       'email:string',
     ].join('\n'),
     'utf8',
   );
   return schemaPath;
+}
+
+function parseJsonPostData(requestOrResponse) {
+  const request = typeof requestOrResponse?.postData === 'function'
+    ? requestOrResponse
+    : requestOrResponse?.request?.();
+  const postData = request?.postData?.();
+  if (!postData) {
+    return null;
+  }
+  try {
+    return JSON.parse(postData);
+  } catch {
+    return null;
+  }
 }
 
 async function main() {
@@ -59,52 +79,13 @@ async function main() {
   const schemaPath = buildSchemaFilePath();
   const capture = {
     schemaCreate: null,
+    renameKickoff: null,
     renameRequest: null,
     renameResult: null,
+    mappingKickoff: null,
     mappingRequest: null,
     mappingResult: null,
   };
-
-  page.on('response', async (response) => {
-    if (!response.ok()) {
-      return;
-    }
-    const url = response.url();
-    try {
-      const payload = await response.json();
-      if (
-        response.request().method() === 'POST'
-        && url.includes('/api/schemas')
-        && payload?.success
-        && payload?.schemaId
-      ) {
-        capture.schemaCreate = payload;
-        return;
-      }
-      if (
-        url.includes('/api/renames/ai')
-        && payload?.success
-        && Array.isArray(payload?.fields)
-        && payload.fields.length > 0
-      ) {
-        capture.renameResult = payload;
-        const postData = response.request().postData();
-        capture.renameRequest = postData ? JSON.parse(postData) : null;
-        return;
-      }
-      if (
-        url.includes('/api/schema-mappings/ai')
-        && payload?.success
-        && payload?.mappingResults
-      ) {
-        capture.mappingResult = payload;
-        const postData = response.request().postData();
-        capture.mappingRequest = postData ? JSON.parse(postData) : capture.mappingRequest;
-      }
-    } catch {
-      // Ignore intermediate polling frames and non-JSON responses.
-    }
-  });
 
   let userFixture = null;
   let results = {};
@@ -118,7 +99,7 @@ async function main() {
     logStep('signing in with custom token');
     await signInWithCustomTokenHarness(page, createCustomToken(userFixture.uid));
     logStep('uploading real fillable PDF template');
-    await uploadFillablePdfAndWaitForEditor(page, baseUrl);
+    await uploadFillablePdfAndWaitForEditor(page, baseUrl, remapSamplePdfPath);
 
     const initialFieldNames = await collectFieldNames(page);
     if (initialFieldNames.length === 0) {
@@ -126,24 +107,83 @@ async function main() {
     }
 
     logStep('uploading real TXT schema');
+    const schemaCreatePromise = page.waitForResponse((response) => {
+      return response.request().method() === 'POST'
+        && response.url().includes('/api/schemas')
+        && response.ok();
+    }, { timeout: 30000 });
     await page.getByLabel('Upload TXT schema file').setInputFiles(schemaPath);
-    await retry('capture schema creation response', 10, async () => {
-      if (!capture.schemaCreate?.schemaId) {
-        throw new Error('Waiting for schema creation response.');
-      }
-    });
+    const schemaCreateResponse = await schemaCreatePromise;
+    capture.schemaCreate = await schemaCreateResponse.json();
+    if (!capture.schemaCreate?.schemaId) {
+      throw new Error(`Schema upload did not return a schemaId: ${JSON.stringify(capture.schemaCreate)}`);
+    }
 
     logStep('running real Rename + Map flow');
     await page.getByRole('button', { name: /Rename or Remap/i }).click();
     await page.getByRole('menuitem', { name: 'Rename + Map', exact: true }).click();
     await page.getByRole('dialog', { name: 'Send to OpenAI?' }).waitFor({ timeout: 10000 });
+    const renameRequestPromise = page.waitForRequest((request) => {
+      return request.method() === 'POST'
+        && request.url().includes('/api/renames/ai');
+    }, { timeout: 120000 });
+    const mappingRequestPromise = page.waitForRequest((request) => {
+      return request.method() === 'POST'
+        && request.url().includes('/api/schema-mappings/ai');
+    }, { timeout: 180000 });
     await page.getByRole('button', { name: 'Continue' }).click();
 
-    await retry('capture rename+map responses', 120, async () => {
-      if (!capture.renameResult || !capture.mappingResult) {
-        throw new Error('Waiting for rename and mapping responses.');
-      }
-    });
+    const renameRequest = await renameRequestPromise;
+    const renameResponse = await renameRequest.response();
+    if (!renameResponse || !renameResponse.ok()) {
+      const responseText = renameResponse ? await renameResponse.text() : 'missing response';
+      throw new Error(`Rename kickoff request did not return a successful response: ${responseText}`);
+    }
+    capture.renameKickoff = await renameResponse.json();
+    capture.renameRequest = parseJsonPostData(renameRequest);
+    if (
+      capture.renameKickoff?.success
+      && Array.isArray(capture.renameKickoff?.fields)
+      && capture.renameKickoff.fields.length > 0
+    ) {
+      capture.renameResult = capture.renameKickoff;
+    }
+    if (!capture.renameKickoff?.success) {
+      throw new Error(`Rename kickoff response was incomplete: ${JSON.stringify(capture.renameKickoff)}`);
+    }
+    if (!capture.renameResult && capture.renameKickoff?.jobId) {
+      capture.renameResult = await pollOpenAiJob(page, {
+        apiBaseUrl,
+        resource: 'renames',
+        jobId: String(capture.renameKickoff.jobId),
+      });
+    }
+    const mappingRequest = await mappingRequestPromise;
+    const mappingResponse = await mappingRequest.response();
+    if (!mappingResponse || !mappingResponse.ok()) {
+      const responseText = mappingResponse ? await mappingResponse.text() : 'missing response';
+      throw new Error(`Mapping kickoff request did not return a successful response: ${responseText}`);
+    }
+    capture.mappingKickoff = await mappingResponse.json();
+    capture.mappingRequest = parseJsonPostData(mappingRequest);
+    if (capture.mappingKickoff?.success && capture.mappingKickoff?.mappingResults) {
+      capture.mappingResult = capture.mappingKickoff;
+    }
+    if (!capture.mappingKickoff?.success) {
+      throw new Error(`Mapping kickoff response was incomplete: ${JSON.stringify(capture.mappingKickoff)}`);
+    }
+    if (!capture.mappingResult && capture.mappingKickoff?.jobId) {
+      capture.mappingResult = await pollOpenAiJob(page, {
+        apiBaseUrl,
+        resource: 'schema-mappings',
+        jobId: String(capture.mappingKickoff.jobId),
+      });
+    }
+    if (!capture.renameResult || !capture.mappingResult) {
+      throw new Error(
+        `Rename + Map did not produce final payloads. Rename kickoff: ${JSON.stringify(capture.renameKickoff)} Mapping kickoff: ${JSON.stringify(capture.mappingKickoff)}`,
+      );
+    }
 
     if (!capture.renameRequest?.sessionId) {
       throw new Error(`Rename request should include a sessionId. Payload: ${JSON.stringify(capture.renameRequest)}`);

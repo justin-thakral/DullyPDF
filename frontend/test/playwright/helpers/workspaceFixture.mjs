@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 export const repoRoot = process.cwd();
 export const defaultFillableSamplePdfPath = path.resolve(
   repoRoot,
-  'samples/fieldDetecting/pdfs/native/intake/new_patient_intake_form_fillable_badc6aa21d.pdf',
+  'quickTestFiles/dentalintakeform_d1c394f594.pdf',
 );
 
 export function sleep(durationMs) {
@@ -73,5 +73,39 @@ export async function collectFieldNames(page) {
     return nodes
       .map((node) => node.textContent?.trim() || '')
       .filter(Boolean);
+  });
+}
+
+export async function getCurrentAuthToken(page) {
+  return page.evaluate(async () => {
+    const { firebaseAuth } = await import('/src/services/firebaseClient.ts');
+    const user = firebaseAuth.currentUser;
+    if (!user) {
+      throw new Error('Expected an authenticated Firebase user for Playwright.');
+    }
+    return user.getIdToken(true);
+  });
+}
+
+export async function pollOpenAiJob(page, { apiBaseUrl, resource, jobId, attempts = 120 }) {
+  return retry(`poll ${resource} job ${jobId}`, attempts, async () => {
+    const token = await getCurrentAuthToken(page);
+    const response = await fetch(`${apiBaseUrl}/api/${resource}/ai/${jobId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(`OpenAI job poll failed (${response.status}): ${JSON.stringify(payload)}`);
+    }
+    const status = String(payload?.status || '').toLowerCase();
+    if (status === 'failed') {
+      throw new Error(`OpenAI job ${jobId} failed: ${JSON.stringify(payload)}`);
+    }
+    if (status !== 'complete' || !payload?.success) {
+      throw new Error(`Waiting for OpenAI job ${jobId} to complete.`);
+    }
+    return payload;
   });
 }

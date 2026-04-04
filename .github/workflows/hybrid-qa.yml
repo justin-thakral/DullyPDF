@@ -106,11 +106,18 @@ jobs:
               - 'frontend/src/**/*.mjs'
               - 'frontend/src/**/*.cjs'
 
-  baseline:
+  qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 90
+    environment: development
     needs:
       - changes
+    env:
+      DEV_WIF_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
+      DEV_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
+      DEV_KEY_JSON: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
+      BACKEND_ENV_FILE_B64_DEV: ${{ secrets.BACKEND_ENV_FILE_B64_DEV }}
+      FIREBASE_SERVICE_ACCOUNT_ID: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -141,80 +148,19 @@ jobs:
           backend/.venv/bin/pip install --upgrade pip
           backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
 
-      - name: Run baseline unit suites
-        run: npm run test
+      - name: Authenticate to Google Cloud for hybrid QA
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ env.DEV_WIF_PROVIDER != '' && env.DEV_SERVICE_ACCOUNT != '' && env.DEV_WIF_PROVIDER || '' }}
+          service_account: ${{ env.DEV_WIF_PROVIDER != '' && env.DEV_SERVICE_ACCOUNT != '' && env.DEV_SERVICE_ACCOUNT || '' }}
+          credentials_json: ${{ ((env.DEV_WIF_PROVIDER == '' || env.DEV_SERVICE_ACCOUNT == '') && env.DEV_KEY_JSON) || '' }}
 
-      - name: Run changed frontend lint
-        if: needs.changes.outputs.frontend_lint == 'true'
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Run hybrid QA pipeline
         env:
           CHANGED_FRONTEND_LINT_FILES: ${{ needs.changes.outputs.frontend_lint_files }}
-        run: bash scripts/ci/run_frontend_changed_lint.sh
-
-      - name: Run frontend production build
-        run: npm run frontend:build:prod
-
-  targeted-backend:
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    needs:
-      - changes
-      - baseline
-    env:
-      HAS_WIF_DEV: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV != '' && secrets.GCP_SERVICE_ACCOUNT_DEV != '') && 'true' || 'false' }}
-      HAS_KEY_DEV: ${{ secrets.GCP_CREDENTIALS_JSON_DEV != '' && 'true' || 'false' }}
-    if: |
-      needs.changes.outputs.template_api == 'true' ||
-      needs.changes.outputs.detection_ai == 'true' ||
-      needs.changes.outputs.workspace == 'true' ||
-      needs.changes.outputs.fill_links == 'true' ||
-      needs.changes.outputs.signing == 'true' ||
-      needs.changes.outputs.billing == 'true' ||
-      needs.changes.outputs.shared_runtime == 'true'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            frontend/package-lock.json
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.10'
-
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: Install frontend dependencies
-        run: npm --prefix frontend ci
-
-      - name: Install backend dependencies
-        run: |
-          python -m venv backend/.venv
-          backend/.venv/bin/pip install --upgrade pip
-          backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
-
-      - name: Authenticate to Google Cloud with Workload Identity Federation (dev)
-        if: env.HAS_WIF_DEV == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
-
-      - name: Authenticate to Google Cloud with a service-account key (dev fallback)
-        if: env.HAS_WIF_DEV != 'true' && env.HAS_KEY_DEV == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
-
-      - name: Run targeted backend integration suites
-        env:
           RUN_TEMPLATE_API: ${{ needs.changes.outputs.template_api }}
           RUN_DETECTION_AI: ${{ needs.changes.outputs.detection_ai }}
           RUN_WORKSPACE: ${{ needs.changes.outputs.workspace }}
@@ -222,117 +168,60 @@ jobs:
           RUN_SIGNING: ${{ needs.changes.outputs.signing }}
           RUN_BILLING: ${{ needs.changes.outputs.billing }}
           RUN_SHARED_RUNTIME: ${{ needs.changes.outputs.shared_runtime }}
+          RUN_PLAYWRIGHT_SAFE: ${{ needs.changes.outputs.playwright_safe }}
         run: |
           set -euo pipefail
-          declare -a commands=()
-          append_unique() {
-            local candidate="$1"
-            local existing
-            for existing in "${commands[@]}"; do
-              if [[ "$existing" == "$candidate" ]]; then
-                return 0
-              fi
-            done
-            commands+=("$candidate")
+
+          restore_var() {
+            local name="$1"
+            local value="$2"
+            if [[ -n "$value" ]]; then
+              export "${name}=${value}"
+            else
+              unset "${name}"
+            fi
           }
 
-          if [[ "$RUN_TEMPLATE_API" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "npm run test:backend:template-api"
-          fi
-          if [[ "$RUN_DETECTION_AI" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_detection_rename_saved_form_flow.py -q"
-          fi
-          if [[ "$RUN_WORKSPACE" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_workspace_bootstrap_integration.py -q"
-          fi
-          if [[ "$RUN_FILL_LINKS" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_fill_links_integration.py -q"
-          fi
-          if [[ "$RUN_SIGNING" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_signing_foundation_integration.py -q"
-          fi
-          if [[ "$RUN_BILLING" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "backend/.venv/bin/python -m pytest backend/test/integration/test_billing_webhook_integration.py backend/test/integration/test_billing_trial_lifecycle_integration.py backend/test/integration/test_billing_downgrade_lifecycle_integration.py -q"
+          saved_cloudsdk_core_project="${CLOUDSDK_CORE_PROJECT-}"
+          saved_cloudsdk_project="${CLOUDSDK_PROJECT-}"
+          saved_gcloud_project="${GCLOUD_PROJECT-}"
+          saved_gcp_project="${GCP_PROJECT-}"
+          saved_google_cloud_project="${GOOGLE_CLOUD_PROJECT-}"
+          saved_google_application_credentials="${GOOGLE_APPLICATION_CREDENTIALS-}"
+          saved_cloudsdk_auth_credential_file_override="${CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE-}"
+          saved_google_gha_creds_path="${GOOGLE_GHA_CREDS_PATH-}"
+          saved_firebase_service_account_id="${FIREBASE_SERVICE_ACCOUNT_ID-}"
+
+          unset CLOUDSDK_CORE_PROJECT CLOUDSDK_PROJECT GCLOUD_PROJECT GCP_PROJECT GOOGLE_CLOUD_PROJECT
+          unset GOOGLE_APPLICATION_CREDENTIALS CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE GOOGLE_GHA_CREDS_PATH
+          unset FIREBASE_SERVICE_ACCOUNT_ID
+
+          npm run test
+
+          restore_var CLOUDSDK_CORE_PROJECT "${saved_cloudsdk_core_project}"
+          restore_var CLOUDSDK_PROJECT "${saved_cloudsdk_project}"
+          restore_var GCLOUD_PROJECT "${saved_gcloud_project}"
+          restore_var GCP_PROJECT "${saved_gcp_project}"
+          restore_var GOOGLE_CLOUD_PROJECT "${saved_google_cloud_project}"
+          restore_var GOOGLE_APPLICATION_CREDENTIALS "${saved_google_application_credentials}"
+          restore_var CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE "${saved_cloudsdk_auth_credential_file_override}"
+          restore_var GOOGLE_GHA_CREDS_PATH "${saved_google_gha_creds_path}"
+          restore_var FIREBASE_SERVICE_ACCOUNT_ID "${saved_firebase_service_account_id}"
+
+          bash scripts/ci/run_frontend_changed_lint.sh
+          npm run frontend:build:prod
+          bash scripts/ci/run_targeted_backend_suites.sh
+
+          run_playwright="false"
+          if [[ "${RUN_PLAYWRIGHT_SAFE}" == "true" || "${RUN_TEMPLATE_API}" == "true" || "${RUN_DETECTION_AI}" == "true" || "${RUN_WORKSPACE}" == "true" || "${RUN_FILL_LINKS}" == "true" || "${RUN_SIGNING}" == "true" || "${RUN_SHARED_RUNTIME}" == "true" ]]; then
+            run_playwright="true"
           fi
 
-          if [[ "${#commands[@]}" -eq 0 ]]; then
-            echo "No targeted backend suites selected."
+          if [[ "${run_playwright}" != "true" ]]; then
+            echo "No real targeted Playwright suites selected for this change set."
             exit 0
           fi
 
-          for command in "${commands[@]}"; do
-            echo "+ ${command}"
-            eval "${command}"
-          done
-
-  targeted-playwright:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    environment: development
-    needs:
-      - changes
-      - baseline
-    if: |
-      needs.changes.outputs.template_api == 'true' ||
-      needs.changes.outputs.detection_ai == 'true' ||
-      needs.changes.outputs.workspace == 'true' ||
-      needs.changes.outputs.fill_links == 'true' ||
-      needs.changes.outputs.signing == 'true' ||
-      needs.changes.outputs.shared_runtime == 'true' ||
-      needs.changes.outputs.playwright_safe == 'true'
-    env:
-      HAS_WIF_DEV: ${{ (secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV != '' && secrets.GCP_SERVICE_ACCOUNT_DEV != '') && 'true' || 'false' }}
-      HAS_KEY_DEV: ${{ secrets.GCP_CREDENTIALS_JSON_DEV != '' && 'true' || 'false' }}
-      HAS_BACKEND_ENV_DEV: ${{ secrets.BACKEND_ENV_FILE_B64_DEV != '' && 'true' || 'false' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            frontend/package-lock.json
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.10'
-
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: Install frontend dependencies
-        run: npm --prefix frontend ci
-
-      - name: Install backend dependencies
-        run: |
-          python -m venv backend/.venv
-          backend/.venv/bin/pip install --upgrade pip
-          backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
-
-      - name: Authenticate to Google Cloud with Workload Identity Federation (dev)
-        if: env.HAS_WIF_DEV == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_DEV }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_DEV }}
-
-      - name: Authenticate to Google Cloud with a service-account key (dev fallback)
-        if: env.HAS_WIF_DEV != 'true' && env.HAS_KEY_DEV == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON_DEV }}
-
-      - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@v3
-
-      - name: Verify dev auth exists for seeded Playwright fixtures
-        run: |
-          set -euo pipefail
           active_account="$(gcloud auth list --filter=status:ACTIVE --format='value(account)' | head -n 1)"
           if [[ -z "$active_account" ]]; then
             echo "Missing Google Cloud auth for seeded real Playwright fixtures. Configure dev WIF or service-account key secrets." >&2
@@ -340,15 +229,12 @@ jobs:
           fi
           echo "Authenticated as ${active_account}"
 
-      - name: Materialize backend dev env file
-        run: |
-          set -euo pipefail
-          if [[ "${HAS_BACKEND_ENV_DEV}" != "true" ]]; then
+          if [[ -z "${BACKEND_ENV_FILE_B64_DEV}" ]]; then
             echo "Missing BACKEND_ENV_FILE_B64_DEV secret in the development environment." >&2
             exit 1
           fi
           mkdir -p env
-          printf '%s' '${{ secrets.BACKEND_ENV_FILE_B64_DEV }}' | base64 --decode > env/backend.dev.env
+          printf '%s' "${BACKEND_ENV_FILE_B64_DEV}" | base64 --decode > env/backend.dev.env
           cat <<'EOF' >> env/backend.dev.env
           FIREBASE_CREDENTIALS_SECRET=
           FIREBASE_CREDENTIALS_PROJECT=
@@ -359,92 +245,37 @@ jobs:
           OPENAI_RENAME_REMAP_MODE=local
           EOF
 
-      - name: Install Chromium for Playwright
-        run: npx playwright install --with-deps chromium
+          npx playwright install --with-deps chromium
 
-      - name: Start backend dev server
-        run: |
           nohup npm run backend:dev > /tmp/dullypdf-backend.log 2>&1 &
-
-      - name: Wait for backend dev server
-        run: |
           for attempt in $(seq 1 60); do
             if curl --silent --fail http://127.0.0.1:8000/api/health >/dev/null; then
-              exit 0
+              break
             fi
             sleep 2
           done
-          echo "Backend dev server did not become ready in time." >&2
-          cat /tmp/dullypdf-backend.log >&2 || true
-          exit 1
+          if ! curl --silent --fail http://127.0.0.1:8000/api/health >/dev/null; then
+            echo "Backend dev server did not become ready in time." >&2
+            cat /tmp/dullypdf-backend.log >&2 || true
+            exit 1
+          fi
 
-      - name: Start frontend dev server
-        run: |
           bash scripts/use-frontend-env.sh dev
           printf '\nVITE_FILL_LINK_REQUIRE_RECAPTCHA=false\n' >> frontend/.env.local
           nohup bash -lc 'cd frontend && npm run dev -- --host 127.0.0.1 --strictPort' > /tmp/dullypdf-frontend.log 2>&1 &
-
-      - name: Wait for frontend dev server
-        run: |
           for attempt in $(seq 1 60); do
             if curl --silent --fail http://127.0.0.1:5173/ >/dev/null; then
-              exit 0
+              break
             fi
             sleep 2
           done
-          echo "Frontend dev server did not become ready in time." >&2
-          cat /tmp/dullypdf-frontend.log >&2 || true
-          exit 1
-
-      - name: Run targeted Playwright real suites
-        env:
-          RUN_TEMPLATE_API: ${{ needs.changes.outputs.template_api }}
-          RUN_DETECTION_AI: ${{ needs.changes.outputs.detection_ai }}
-          RUN_WORKSPACE: ${{ needs.changes.outputs.workspace }}
-          RUN_FILL_LINKS: ${{ needs.changes.outputs.fill_links }}
-          RUN_SIGNING: ${{ needs.changes.outputs.signing }}
-          RUN_SHARED_RUNTIME: ${{ needs.changes.outputs.shared_runtime }}
-          RUN_PLAYWRIGHT_SAFE: ${{ needs.changes.outputs.playwright_safe }}
-        run: |
-          set -euo pipefail
-          declare -a commands=()
-          append_unique() {
-            local candidate="$1"
-            local existing
-            for existing in "${commands[@]}"; do
-              if [[ "$existing" == "$candidate" ]]; then
-                return 0
-              fi
-            done
-            commands+=("$candidate")
-          }
-
-          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_TEMPLATE_API" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "npm run test:playwright:template-api:real"
-          fi
-          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_DETECTION_AI" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "npm run test:playwright:openai-rename"
-            append_unique "npm run test:playwright:openai-rename-remap"
-          fi
-          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_WORKSPACE" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "npm run test:playwright:saved-form-snapshot:real"
-          fi
-          if [[ "$RUN_PLAYWRIGHT_SAFE" == "true" || "$RUN_FILL_LINKS" == "true" || "$RUN_SHARED_RUNTIME" == "true" ]]; then
-            append_unique "npm run test:playwright:fill-link-download:real"
-          fi
-          if [[ "$RUN_SIGNING" == "true" ]]; then
-            append_unique "npm run test:playwright:signing-envelope"
+          if ! curl --silent --fail http://127.0.0.1:5173/ >/dev/null; then
+            echo "Frontend dev server did not become ready in time." >&2
+            cat /tmp/dullypdf-frontend.log >&2 || true
+            exit 1
           fi
 
-          if [[ "${#commands[@]}" -eq 0 ]]; then
-            echo "No real targeted Playwright suites selected."
-            exit 0
-          fi
-
-          for command in "${commands[@]}"; do
-            echo "+ ${command}"
-            eval "${command}"
-          done
+          bash scripts/ci/run_targeted_playwright_suites.sh
 
       - name: Upload Playwright artifacts
         if: always()

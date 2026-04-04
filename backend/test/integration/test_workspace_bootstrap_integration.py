@@ -165,6 +165,7 @@ def test_workspace_bootstrap_endpoints_return_profile_saved_forms_and_groups(
         "cancelAtPeriodEnd": None,
         "cancelAt": None,
         "currentPeriodEnd": None,
+        "trialUsed": False,
     }
     assert profile_payload["retention"] is None
     assert profile_payload["limits"]["savedFormsMax"] >= 1
