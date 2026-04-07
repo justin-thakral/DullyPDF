@@ -2633,6 +2633,7 @@ function WorkspaceRuntime({
         groupTemplateSwitchInProgress={Boolean(pendingGroupTemplateId || groupSwitchingTemplateId)}
         onSelectGroupTemplate={(formId) => { void handleSelectActiveGroupTemplate(formId); }}
         onChooseDataSource={dataSource.handleChooseDataSource} onClearDataSource={dataSource.handleClearDataSource}
+        onClearFieldInformation={fieldState.handleClearFieldValues}
         onRename={demoActive ? demo.handleDemoRename : handleRename}
         onRenameAndMap={demoActive ? demo.handleDemoRenameAndMap : handleRenameAndMap}
         onRenameAndMapGroup={demoActive ? undefined : (activeGroupId ? handleRenameAndMapGroup : undefined)}

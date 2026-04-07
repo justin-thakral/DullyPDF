@@ -637,9 +637,10 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               <li>
                 <strong>Connected SQL (Search &amp; Fill)</strong> — the data source dropdown. Click it to load a CSV, Excel, JSON, SQL, or TXT
                 file as your schema and record source. Once loaded, the button label updates to show the connected source type
-                (for example &quot;Connected CSV&quot;). The dropdown also contains <em>Search, Fill &amp; Clear</em> (opens the Search &amp; Fill
-                modal when rows are available), <em>Clear data source</em> (disconnects the current source), and <em>Usage Docs</em>
-                (opens these Search &amp; Fill docs in a new browser tab/window).
+                (for example &quot;Connected CSV&quot;). The dropdown also contains <em>Search &amp; Fill</em> (opens the Search &amp; Fill
+                modal when rows are available), <em>Clear Field Information</em> (clears the current field values without disconnecting
+                the source), <em>Disconnect Data Source</em> (disconnects the current source), and <em>Usage Docs</em> (opens these
+                Search &amp; Fill docs in a new browser tab/window).
               </li>
               <li>
                 <strong>Rename or Remap</strong> — the OpenAI actions dropdown. Options include <em>Rename</em> (standardize field names),{' '}

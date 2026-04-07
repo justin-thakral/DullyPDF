@@ -28,6 +28,7 @@ type HeaderBarProps = {
   dataSourceLabel?: string | null;
   onChooseDataSource?: (kind: Exclude<DataSourceKind, 'none'>) => void;
   onClearDataSource?: () => void;
+  onClearFieldInformation?: () => void;
   groupName?: string | null;
   groupTemplates?: Array<{ id: string; name: string }>;
   groupTemplateStatuses?: Record<string, 'ready' | 'loading' | 'error'>;
@@ -149,6 +150,7 @@ export function HeaderBar({
   dataSourceLabel,
   onChooseDataSource,
   onClearDataSource,
+  onClearFieldInformation,
   groupName = null,
   groupTemplates = [],
   groupTemplateStatuses = {},
@@ -269,6 +271,16 @@ export function HeaderBar({
     if (demoOverride) { onDemoLockedAction?.(); return; }
     if (blocked) { if (reason) onBlockedAction?.(reason); return; }
     action();
+  };
+  const runDeferredHeaderAction = (action?: (() => void) | null) => {
+    if (!action) return;
+    const activeElement = document.activeElement;
+    if (activeElement instanceof HTMLElement && activeElement !== document.body) {
+      activeElement.blur();
+    }
+    window.setTimeout(() => {
+      action();
+    }, 0);
   };
   const activeGroupTemplate =
     groupTemplates.find((template) => template.id === activeGroupTemplateId) ||
@@ -684,10 +696,27 @@ export function HeaderBar({
                             return;
                           }
                           setShowDataMenu(false);
-                          onOpenSearchFill?.();
+                          runDeferredHeaderAction(onOpenSearchFill);
                         }}
                       >
-                        Search, Fill &amp; Clear
+                        Search &amp; Fill
+                      </button>
+                    ) : null}
+                    {dataSourceKind !== 'none' && onClearFieldInformation ? (
+                      <button
+                        type="button"
+                        className="data-source__item data-source__item--danger"
+                        role="menuitem"
+                        onClick={() => {
+                          if (demoOverride) {
+                            onDemoLockedAction?.();
+                            return;
+                          }
+                          setShowDataMenu(false);
+                          runDeferredHeaderAction(onClearFieldInformation);
+                        }}
+                      >
+                        Clear Field Information
                       </button>
                     ) : null}
                     {dataSourceKind !== 'none' && onClearDataSource ? (
@@ -704,7 +733,7 @@ export function HeaderBar({
                           onClearDataSource?.();
                         }}
                       >
-                        Clear data source
+                        Disconnect Data Source
                       </button>
                     ) : null}
                     <button
@@ -867,7 +896,11 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  onClick={() => guardClick(disableFillLink, busyReason || 'Load a saved template to use Fill By Web Form Link + Sign.', () => onOpenFillLink())}
+                  onClick={() => guardClick(
+                    disableFillLink,
+                    busyReason || 'Load a saved template to use Fill By Web Form Link + Sign.',
+                    () => runDeferredHeaderAction(onOpenFillLink),
+                  )}
                   aria-disabled={disableFillLink}
                   title={canFillLink ? 'Publish or manage a DullyPDF web form link.' : 'Load a saved template to use Fill By Web Form Link + Sign.'}
                 >
@@ -878,7 +911,11 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--ghost ui-button--compact"
                   type="button"
-                  onClick={() => guardClick(disableSendForSignature, busyReason || 'Load a PDF to prepare a signing request.', () => onOpenSignatureRequest())}
+                  onClick={() => guardClick(
+                    disableSendForSignature,
+                    busyReason || 'Load a PDF to prepare a signing request.',
+                    () => runDeferredHeaderAction(onOpenSignatureRequest),
+                  )}
                   aria-disabled={disableSendForSignature}
                   title={canSendForSignature ? 'Create a signing request draft and email it to recipients.' : 'Load a PDF to prepare a signing request.'}
                 >
@@ -894,7 +931,11 @@ export function HeaderBar({
                 <button
                   className="ui-button ui-button--primary ui-button--compact ui-header__save"
                   type="button"
-                  onClick={() => guardClick(disableTemplateApi, busyReason || 'Save your form first to enable API Fill.', () => onOpenTemplateApi())}
+                  onClick={() => guardClick(
+                    disableTemplateApi,
+                    busyReason || 'Save your form first to enable API Fill.',
+                    () => runDeferredHeaderAction(onOpenTemplateApi),
+                  )}
                   aria-disabled={disableTemplateApi}
                   title={canOpenTemplateApi ? 'Publish or manage a template-scoped PDF Fill API endpoint.' : 'Save your form first to enable API Fill.'}
                 >
@@ -962,7 +1003,11 @@ export function HeaderBar({
               <button
                 className="ui-button ui-button--primary ui-button--compact ui-header__save"
                 type="button"
-                onClick={() => guardClick(disableSave, busyReason || 'Save is unavailable right now.', () => onSaveToProfile?.())}
+                onClick={() => guardClick(
+                  disableSave,
+                  busyReason || 'Save is unavailable right now.',
+                  () => runDeferredHeaderAction(onSaveToProfile),
+                )}
                 aria-disabled={disableSave}
               >
                 {saveInProgress ? 'Saving...' : 'Save'}

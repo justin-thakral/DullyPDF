@@ -15,6 +15,7 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - `Transform` and `Info` are mutually exclusive to avoid drag/edit conflicts (enabling one disables the other).
 - `All`: list fields from all pages in the left panel.
 - `Clear`: clear current field values in the session.
+- The schema/source dropdown keeps Search & Fill actions close to the active source: `Search & Fill` opens the modal, `Clear Field Information` clears current field values without disconnecting the source, and `Disconnect Data Source` removes the attached source.
 
 ## Creating and selecting fields
 
@@ -52,6 +53,7 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - The `Create field` section includes an `Arrow keys` movement toggle with a configurable point step for keyboard nudging.
 - Undo/redo field edits with keyboard shortcuts (history depth: 10 snapshots).
 - Workspace edits only change the editor overlay state; the underlying PDF bytes are rewritten later when you save or download.
+- Toolbar actions that depend on the latest editor state now defer until the next tick so blur-committed inspector edits settle before Save, Fill By Web Form, API Fill, or Search & Fill reads the workspace.
 ## Confidence labels
 
 - The field list supports high/medium/low confidence filtering.

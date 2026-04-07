@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HeaderBar } from '../../../../src/components/layout/HeaderBar';
 
@@ -21,6 +21,7 @@ function createProps(overrides: Partial<HeaderBarProps> = {}): HeaderBarProps {
     dataSourceLabel: null,
     onChooseDataSource: vi.fn(),
     onClearDataSource: vi.fn(),
+    onClearFieldInformation: vi.fn(),
     mappingInProgress: false,
     mapSchemaInProgress: false,
     hasMappedSchema: false,
@@ -93,6 +94,7 @@ describe('HeaderBar', () => {
     const user = userEvent.setup();
     const onChooseDataSource = vi.fn();
     const onClearDataSource = vi.fn();
+    const onClearFieldInformation = vi.fn();
 
     render(
       <HeaderBar
@@ -101,6 +103,7 @@ describe('HeaderBar', () => {
           dataSourceLabel: 'rows.xlsx',
           onChooseDataSource,
           onClearDataSource,
+          onClearFieldInformation,
         })}
       />,
     );
@@ -120,7 +123,12 @@ describe('HeaderBar', () => {
     expect(screen.queryByRole('menu', { name: 'Choose data source' })).toBeNull();
 
     await user.click(dataButton);
-    await user.click(screen.getByRole('menuitem', { name: 'Clear data source' }));
+    expect(screen.getByRole('menuitem', { name: 'Search & Fill' })).toBeTruthy();
+    await user.click(screen.getByRole('menuitem', { name: 'Clear Field Information' }));
+    await waitFor(() => expect(onClearFieldInformation).toHaveBeenCalledTimes(1));
+
+    await user.click(dataButton);
+    await user.click(screen.getByRole('menuitem', { name: 'Disconnect Data Source' }));
     expect(onClearDataSource).toHaveBeenCalledTimes(1);
   });
 
@@ -167,8 +175,38 @@ describe('HeaderBar', () => {
     expect(fillLinkButton.disabled).toBe(false);
 
     await user.click(fillLinkButton);
+    await waitFor(() => expect(onOpenFillLink).toHaveBeenCalledTimes(1));
+  });
 
-    expect(onOpenFillLink).toHaveBeenCalledTimes(1);
+  it('defers header save and fill-link actions to the next tick so pending editor updates can settle first', () => {
+    vi.useFakeTimers();
+    try {
+      const onSaveToProfile = vi.fn();
+      const onOpenFillLink = vi.fn();
+
+      render(
+        <HeaderBar
+          {...createProps({
+            onSaveToProfile,
+            onOpenFillLink,
+            canFillLink: true,
+          })}
+        />,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Fill By Web Form Link + Sign' }));
+
+      expect(onSaveToProfile).not.toHaveBeenCalled();
+      expect(onOpenFillLink).not.toHaveBeenCalled();
+
+      vi.runAllTimers();
+
+      expect(onSaveToProfile).toHaveBeenCalledTimes(1);
+      expect(onOpenFillLink).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('opens schema usage docs in a new window from the data source menu', async () => {
@@ -231,7 +269,7 @@ describe('HeaderBar', () => {
 
     await user.click(screen.getByRole('button', { name: 'API Fill' }));
 
-    expect(onOpenTemplateApi).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(onOpenTemplateApi).toHaveBeenCalledTimes(1));
     expect(screen.getByRole('button', { name: 'Download' })).toBeTruthy();
   });
 
@@ -461,7 +499,7 @@ describe('HeaderBar', () => {
     expect(onDownload).toHaveBeenNthCalledWith(1, 'flat');
     expect(onDownload).toHaveBeenNthCalledWith(2, 'editable');
     expect(onDownloadGroup).toHaveBeenCalledTimes(1);
-    expect(onSaveToProfile).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(onSaveToProfile).toHaveBeenCalledTimes(1));
 
     rerender(<HeaderBar {...props} downloadInProgress downloadGroupInProgress saveInProgress />);
 
