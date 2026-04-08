@@ -4,6 +4,51 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/DullyPDFLogoImproved.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style data-homepage-hydration-cover="true">
+      html[data-homepage-hydration-cover="active"] {
+        background: #ffffff;
+      }
+
+      html[data-homepage-hydration-cover="active"]::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        background: #ffffff;
+      }
+
+      html[data-homepage-hydration-cover="active"] body {
+        overflow: hidden;
+      }
+    </style>
+    <script data-homepage-hydration-cover="true">
+      (() => {
+        const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/';
+        if (normalizedPath === '/') {
+          document.documentElement.setAttribute('data-homepage-hydration-cover', 'active');
+        }
+      })();
+    </script>
+    <style data-app-route-hydration-cover="true">
+      html[data-app-route-hydration-cover="active"] {
+        background: #ffffff;
+      }
+
+      html[data-app-route-hydration-cover="active"]::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 2147483646;
+        background: #ffffff;
+      }
+
+      html[data-app-route-hydration-cover="active"] body {
+        overflow: hidden;
+      }
+    </style>
+    <script data-app-route-hydration-cover="true">
+      __DULLY_APP_ROUTE_HYDRATION_COVER_BOOTSTRAP__
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

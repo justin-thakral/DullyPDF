@@ -408,12 +408,14 @@ const Homepage: React.FC<HomepageProps> = ({
       {userInitial ? <span className="homepage-auth-avatar">{userInitial}</span> : null}
       <span className="homepage-auth-label">Profile</span>
     </button>
-  ) : authPending ? (
-    <span className="homepage-auth-button homepage-auth-button--pending" aria-busy="true">
-      Sign in
-    </span>
-  ) : onSignIn ? (
-    <button type="button" className="homepage-auth-button" onClick={onSignIn}>
+  ) : (authPending || onSignIn) ? (
+    <button
+      type="button"
+      className={authPending ? 'homepage-auth-button homepage-auth-button--pending' : 'homepage-auth-button'}
+      onClick={onSignIn}
+      disabled={authPending || !onSignIn}
+      aria-busy={authPending || undefined}
+    >
       Sign in
     </button>
   ) : null;

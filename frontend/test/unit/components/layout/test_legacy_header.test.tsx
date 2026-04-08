@@ -104,7 +104,7 @@ describe('LegacyHeader', () => {
   it('shows Sign in copy while auth is pending', () => {
     render(<LegacyHeader {...createProps({ authPending: true })} />);
 
-    const pendingControl = document.querySelector('.header-auth-pending');
+    const pendingControl = document.querySelector('.signin-button--pending');
     expect(pendingControl?.textContent?.trim()).toBe('Sign in');
     expect(pendingControl?.getAttribute('aria-busy')).toBe('true');
   });

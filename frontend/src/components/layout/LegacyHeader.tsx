@@ -128,17 +128,17 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
                 </button>
               )}
             </div>
-          ) : authPending ? (
-            <span className="header-auth-pending" aria-busy="true">
+          ) : (authPending || onSignIn) ? (
+            <button
+              type="button"
+              className={authPending ? 'signin-button signin-button--pending' : 'signin-button'}
+              onClick={onSignIn}
+              disabled={authPending || !onSignIn}
+              aria-busy={authPending || undefined}
+            >
               Sign in
-            </span>
-          ) : (
-            onSignIn && (
-              <button type="button" className="signin-button" onClick={onSignIn}>
-                Sign in
-              </button>
-            )
-          )}
+            </button>
+          ) : null}
           <div className="header-logo">
             <picture>
               <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />

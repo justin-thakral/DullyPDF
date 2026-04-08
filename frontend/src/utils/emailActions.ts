@@ -1,5 +1,8 @@
-export const ACCOUNT_ACTION_ROUTE_PATH = '/account-action';
-export const LEGACY_ACCOUNT_ACTION_ROUTE_PATH = '/verify-email';
+import {
+  ACCOUNT_ACTION_ROUTE_PATH,
+  LEGACY_ACCOUNT_ACTION_ROUTE_PATH,
+} from '../config/accountActionRoutes';
+
 const ACCOUNT_ACTION_HISTORY_KEY = 'dullypdfAccountAction';
 const LEGACY_ACCOUNT_ACTION_HISTORY_KEY = 'dullypdfVerifyEmailAction';
 

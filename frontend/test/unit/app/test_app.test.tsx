@@ -1760,12 +1760,15 @@ describe('App', () => {
     await openFillableWorkspace();
 
     fireEvent.click(await screen.findByTestId('sign-out'));
+    await waitFor(() => {
+      expect(authMocks.signOut).toHaveBeenCalledTimes(1);
+    });
+    await settleAuthAsSignedOut();
 
-    expect(await screen.findByTestId('homepage')).toBeTruthy();
+    expect(await screen.findByTestId('homepage', {}, { timeout: 10_000 })).toBeTruthy();
     await waitFor(() => {
       expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
-    });
-    expect(authMocks.signOut).toHaveBeenCalledTimes(1);
+    }, { timeout: 10_000 });
   }, 15_000);
 
   it('supports undo/redo for field edits in editor history', async () => {

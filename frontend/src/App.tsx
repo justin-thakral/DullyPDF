@@ -5,8 +5,7 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { User } from 'firebase/auth';
 import './App.css';
-import Homepage from './components/pages/Homepage';
-import LegacyHeader from './components/layout/LegacyHeader';
+import { HomepageShell } from './components/pages/HomepageShell';
 import VerifyEmailPage from './components/pages/VerifyEmailPage';
 import { AUTH_READY_FALLBACK_MS } from './config/appConstants';
 import { ApiService } from './services/api';
@@ -29,17 +28,22 @@ const WorkspaceRuntime = lazy(() => import('./WorkspaceRuntime'));
 
 type AppProps = {
   initialBrowserRoute?: WorkspaceBrowserRoute;
+  initialHomepageReady?: boolean;
+  initialHomepageHydrationCover?: boolean;
 };
 
 function App({
   initialBrowserRoute = { kind: 'homepage' },
+  initialHomepageReady = false,
+  initialHomepageHydrationCover = false,
 }: AppProps) {
   const HOMEPAGE_SPLASH_FALLBACK_MS = 2500;
   const [authReady, setAuthReady] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [authSignInProvider, setAuthSignInProvider] = useState<string | null>(null);
   const [browserRoute, setBrowserRoute] = useState<WorkspaceBrowserRoute>(initialBrowserRoute);
-  const [homepageInitialRenderReady, setHomepageInitialRenderReady] = useState(false);
+  const [homepageInitialRenderReady, setHomepageInitialRenderReady] = useState(initialHomepageReady);
+  const [homepageHydrationCoverActive, setHomepageHydrationCoverActive] = useState(initialHomepageHydrationCover);
 
   const [runtimeMounted, setRuntimeMounted] = useState(false);
   const [launchIntent, setLaunchIntent] = useState<WorkspaceLaunchIntent>(null);
@@ -112,6 +116,13 @@ function App({
     runtimeStartAbortRef.current = null;
   }, []);
 
+  const dismissHomepageHydrationCover = useCallback(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.removeAttribute('data-homepage-hydration-cover');
+    }
+    setHomepageHydrationCoverActive(false);
+  }, []);
+
   const replaceBrowserRoute = useCallback((
     nextRoute: WorkspaceBrowserRoute,
     options?: { replace?: boolean },
@@ -143,13 +154,14 @@ function App({
       setLaunchIntent(null);
       setRuntimeStarting(false);
       setRuntimeStartError(null);
+      dismissHomepageHydrationCover();
       // Keep the homepage visible on in-app returns such as sign-out instead of
       // replaying the cold-start splash overlay, which looks like a blank page.
       setHomepageInitialRenderReady(true);
       return;
     }
     skipNextHomepageSplashRef.current = false;
-  }, [abortRuntimeStart, replaceBrowserRoute]);
+  }, [abortRuntimeStart, dismissHomepageHydrationCover, replaceBrowserRoute]);
 
   const replaceBrowserRouteWithBillingState = useCallback((billingState: 'success' | 'cancel') => {
     if (typeof window !== 'undefined') {
@@ -169,6 +181,7 @@ function App({
     if (browserRoute.kind !== 'homepage' || runtimeMounted) {
       skipNextHomepageSplashRef.current = false;
       setHomepageInitialRenderReady(false);
+      dismissHomepageHydrationCover();
       return;
     }
 
@@ -185,7 +198,28 @@ function App({
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [browserRoute.kind, runtimeMounted]);
+  }, [browserRoute.kind, dismissHomepageHydrationCover, runtimeMounted]);
+
+  useEffect(() => {
+    if (browserRoute.kind !== 'homepage' || !homepageHydrationCoverActive) {
+      if (typeof document !== 'undefined') {
+        document.documentElement.removeAttribute('data-homepage-hydration-cover');
+      }
+      return;
+    }
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-homepage-hydration-cover', 'active');
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      dismissHomepageHydrationCover();
+    }, HOMEPAGE_SPLASH_FALLBACK_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [browserRoute.kind, dismissHomepageHydrationCover, homepageHydrationCoverActive]);
 
   const startRuntime = useCallback(async (
     intent: WorkspaceLaunchIntent,
@@ -419,36 +453,20 @@ function App({
   );
 
   return (
-    <>
-      <div className="homepage-shell" aria-hidden={showHomepageSplash}>
-      <LegacyHeader
-        currentView="homepage"
-        onNavigateHome={() => {}}
-        showBackButton={false}
-        userEmail={userEmail}
-        authPending={!authReady}
-        onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
-        onSignOut={verifiedUser ? handleSignOut : undefined}
-        onSignIn={!verifiedUser ? handleSignIn : undefined}
-      />
-      <main className="landing-main">
-        <Homepage
-          onStartWorkflow={handleStartWorkflow}
-          onStartDemo={handleStartDemo}
-          userEmail={userEmail}
-          authPending={!authReady}
-          onSignIn={!verifiedUser ? handleSignIn : undefined}
-          onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
-          onInitialRenderReady={() => {
-            setHomepageInitialRenderReady(true);
-          }}
-        />
-      </main>
-      </div>
-      {showHomepageSplash ? (
-        <div className="homepage-loading-overlay" aria-hidden="true" />
-      ) : null}
-    </>
+    <HomepageShell
+      userEmail={userEmail}
+      authPending={!authReady}
+      onStartWorkflow={handleStartWorkflow}
+      onStartDemo={handleStartDemo}
+      onSignIn={!verifiedUser ? handleSignIn : undefined}
+      onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
+      onSignOut={verifiedUser ? handleSignOut : undefined}
+      onInitialRenderReady={() => {
+        setHomepageInitialRenderReady(true);
+        dismissHomepageHydrationCover();
+      }}
+      showSplash={showHomepageSplash}
+    />
   );
 }
 

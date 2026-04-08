@@ -156,7 +156,7 @@ describe('routeSeo config', () => {
     const metadata = getBlogPostSeo(post!);
     expect(
       metadata.structuredData?.some(
-        (entry) => entry['@type'] === 'BlogPosting' && entry['dateModified'] === '2026-03-24',
+        (entry) => entry['@type'] === 'BlogPosting' && entry['dateModified'] === '2026-04-08',
       ),
     ).toBe(true);
     expect(

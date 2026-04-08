@@ -34,7 +34,7 @@
 }
 
 .blog-post__main {
-  width: min(1060px, 100%);
+  width: 100%;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -64,7 +64,6 @@
   color: #1e293b;
   margin: 0 0 0.75rem;
   line-height: 1.3;
-  max-width: 17ch;
 }
 
 .blog-post__meta {
@@ -95,7 +94,6 @@
   color: #475569;
   line-height: 1.72;
   margin: 0;
-  max-width: 74ch;
 }
 
 .blog-post__inline-links {
@@ -135,7 +133,6 @@
 
 .blog-post__section {
   margin-bottom: 2rem;
-  max-width: 88ch;
 }
 
 .blog-post__section h2 {
@@ -151,6 +148,38 @@
   color: #475569;
   line-height: 1.78;
   margin: 0 0 0.9rem;
+}
+
+.blog-post__figure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.1rem 0 0;
+}
+
+.blog-post__figure {
+  margin: 0;
+  padding: 0.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.05);
+}
+
+.blog-post__figure-image {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.blog-post__figure figcaption {
+  margin-top: 0.8rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #64748b;
 }
 
 .blog-post__section ul,
@@ -235,13 +264,16 @@
   flex-wrap: wrap;
 }
 
-.blog-post__cta-button {
+.blog-post__panel a.blog-post__cta-button,
+.blog-post__panel a.blog-post__cta-button:visited,
+.blog-post__panel a.blog-post__cta-button:hover,
+.blog-post__panel a.blog-post__cta-button:active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.65rem 1.5rem;
   background: #4f46e5;
-  color: #ffffff;
+  color: #0f172a;
   font-weight: 600;
   font-size: 0.95rem;
   border-radius: 8px;
@@ -249,8 +281,9 @@
   transition: background 0.15s;
 }
 
-.blog-post__cta-button:hover {
+.blog-post__panel a.blog-post__cta-button:hover {
   background: #4338ca;
+  text-decoration: none;
 }
 
 .blog-post__cta-link {
@@ -272,6 +305,10 @@
 
   .blog-post__cta {
     align-items: stretch;
+  }
+
+  .blog-post__figure-grid {
+    grid-template-columns: 1fr;
   }
 }
 

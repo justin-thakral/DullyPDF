@@ -4,9 +4,7 @@ import { getFeaturePlanPage, type FeaturePlanPageKey } from '../../config/featur
 import { applyRouteSeo } from '../../utils/seo';
 import { IntentPageShell } from './IntentPageShell';
 import './FeaturePlanPage.css';
-import { Auth } from '../../services/auth';
 import {
-  ApiService,
   type BillingCheckoutKind,
   type BillingPlanCatalogItem,
   type UserProfile,
@@ -57,43 +55,60 @@ const FeaturePlanPage = ({ pageKey }: FeaturePlanPageProps) => {
   useEffect(() => {
     let isActive = true;
     let syncVersion = 0;
-    const unsubscribe = Auth.onAuthStateChanged((user) => {
-      syncVersion += 1;
-      const currentSyncVersion = syncVersion;
-      if (!isActive) return;
-      setCurrentUser(user);
-      setProfile(null);
-      setProfileError(null);
-      setBillingMessage(null);
-      if (!user) {
-        setProfileLoading(false);
-        setAuthReady(true);
-        return;
-      }
-      setProfileLoading(true);
-      setAuthReady(true);
-      void (async () => {
-        try {
-          const nextProfile = await ApiService.getProfile();
-          if (!isActive || currentSyncVersion !== syncVersion) return;
-          setProfile(nextProfile);
-          if (!nextProfile) {
-            setProfileError('Signed-in billing details are not available yet. Open the workspace profile to confirm account access.');
-          }
-        } catch (error) {
-          if (!isActive || currentSyncVersion !== syncVersion) return;
-          setProfileError(error instanceof Error ? error.message : 'Failed to load billing details.');
-        } finally {
-          if (isActive && currentSyncVersion === syncVersion) {
+    let unsubscribe: (() => void) | undefined;
+
+    void (async () => {
+      try {
+        const [{ Auth }, { ApiService }] = await Promise.all([
+          import('../../services/auth'),
+          import('../../services/api'),
+        ]);
+        if (!isActive) return;
+
+        unsubscribe = Auth.onAuthStateChanged((user) => {
+          syncVersion += 1;
+          const currentSyncVersion = syncVersion;
+          if (!isActive) return;
+          setCurrentUser(user);
+          setProfile(null);
+          setProfileError(null);
+          setBillingMessage(null);
+          if (!user) {
             setProfileLoading(false);
+            setAuthReady(true);
+            return;
           }
-        }
-      })();
-    });
+          setProfileLoading(true);
+          setAuthReady(true);
+          void (async () => {
+            try {
+              const nextProfile = await ApiService.getProfile();
+              if (!isActive || currentSyncVersion !== syncVersion) return;
+              setProfile(nextProfile);
+              if (!nextProfile) {
+                setProfileError('Signed-in billing details are not available yet. Open the workspace profile to confirm account access.');
+              }
+            } catch (error) {
+              if (!isActive || currentSyncVersion !== syncVersion) return;
+              setProfileError(error instanceof Error ? error.message : 'Failed to load billing details.');
+            } finally {
+              if (isActive && currentSyncVersion === syncVersion) {
+                setProfileLoading(false);
+              }
+            }
+          })();
+        });
+      } catch (error) {
+        if (!isActive) return;
+        setAuthReady(true);
+        setProfileLoading(false);
+        setProfileError(error instanceof Error ? error.message : 'Failed to load billing details.');
+      }
+    })();
 
     return () => {
       isActive = false;
-      unsubscribe();
+      unsubscribe?.();
     };
   }, []);
 

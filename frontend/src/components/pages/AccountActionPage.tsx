@@ -3,12 +3,12 @@ import type { FormEvent } from 'react';
 import '../../styles/ui-buttons.css';
 import './VerifyEmailPage.css';
 import './AccountActionPage.css';
+import { ACCOUNT_ACTION_ROUTE_PATH } from '../../config/accountActionRoutes';
 import { Auth } from '../../services/auth';
 import { Alert } from '../ui/Alert';
 import { applyNoIndexSeo } from '../../utils/seo';
 import { markPostVerificationOnboardingPending } from '../../utils/onboardingState';
 import {
-  ACCOUNT_ACTION_ROUTE_PATH,
   parseEmailActionSearch,
   readStoredEmailActionState,
   type StoredEmailActionState,

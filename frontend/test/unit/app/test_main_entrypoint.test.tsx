@@ -17,6 +17,12 @@ const entrypointMocks = vi.hoisted(() => {
     FillLinkPublicPage: vi.fn(({ token }: { token: string }) => (
       <div data-testid="fill-link-public">Fill link {token}</div>
     )),
+    PublicSigningPage: vi.fn(({ token }: { token: string }) => (
+      <div data-testid="public-signing-page">Signing {token}</div>
+    )),
+    PublicSigningValidationPage: vi.fn(({ token }: { token: string }) => (
+      <div data-testid="public-signing-validation-page">Validation {token}</div>
+    )),
     AccountActionPage: vi.fn(() => <div data-testid="account-action-page">Account action</div>),
     IntentHubPage: vi.fn(({ hubKey }: { hubKey: string }) => <div data-testid={`intent-hub-${hubKey}`}>Hub {hubKey}</div>),
     FeaturePlanPage: vi.fn(({ pageKey }: { pageKey: string }) => (
@@ -54,6 +60,14 @@ vi.mock('../../../src/components/pages/PublicNotFoundPage', () => ({
 
 vi.mock('../../../src/components/pages/FillLinkPublicPage', () => ({
   default: entrypointMocks.FillLinkPublicPage,
+}));
+
+vi.mock('../../../src/components/pages/PublicSigningPage', () => ({
+  default: entrypointMocks.PublicSigningPage,
+}));
+
+vi.mock('../../../src/components/pages/PublicSigningValidationPage', () => ({
+  default: entrypointMocks.PublicSigningValidationPage,
 }));
 
 vi.mock('../../../src/components/pages/AccountActionPage', () => ({
@@ -109,6 +123,8 @@ describe('main entrypoint', () => {
     entrypointMocks.LegalPage.mockClear();
     entrypointMocks.PublicNotFoundPage.mockClear();
     entrypointMocks.FillLinkPublicPage.mockClear();
+    entrypointMocks.PublicSigningPage.mockClear();
+    entrypointMocks.PublicSigningValidationPage.mockClear();
     entrypointMocks.AccountActionPage.mockClear();
     entrypointMocks.IntentHubPage.mockClear();
     entrypointMocks.FeaturePlanPage.mockClear();
@@ -196,6 +212,26 @@ describe('main entrypoint', () => {
     expect(entrypointMocks.initializeGoogleAds).not.toHaveBeenCalled();
     expect(await screen.findByTestId('fill-link-public')).toBeTruthy();
     expect(screen.getByText('Fill link token-1')).toBeTruthy();
+  });
+
+  it('renders the public signing route without backend warmup', async () => {
+    await importEntrypoint('/sign/signing-token');
+    await renderCapturedTree();
+
+    expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
+    expect(entrypointMocks.initializeGoogleAds).not.toHaveBeenCalled();
+    expect(await screen.findByTestId('public-signing-page')).toBeTruthy();
+    expect(screen.getByText('Signing signing-token')).toBeTruthy();
+  });
+
+  it('renders the public signing validation route without backend warmup', async () => {
+    await importEntrypoint('/verify-signing/validation-token');
+    await renderCapturedTree();
+
+    expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
+    expect(entrypointMocks.initializeGoogleAds).not.toHaveBeenCalled();
+    expect(await screen.findByTestId('public-signing-validation-page')).toBeTruthy();
+    expect(screen.getByText('Validation validation-token')).toBeTruthy();
   });
 
   it('normalizes legacy /verify-email links to /account-action before rendering', async () => {
@@ -312,5 +348,21 @@ describe('main entrypoint', () => {
 
     expect(entrypointMocks.createRoot).toHaveBeenCalledTimes(1);
     expect(entrypointMocks.renderSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    '/respond/token-1',
+    '/sign/signing-token',
+    '/verify-signing/validation-token',
+    '/upload',
+    '/ui/forms/saved-1',
+  ])('clears prerendered homepage markup before mounting rewrite route %s', async (pathname) => {
+    document.documentElement.setAttribute('data-app-route-hydration-cover', 'active');
+    document.body.innerHTML = '<div id="root"><main>Homepage prerender shell</main></div>';
+
+    await importEntrypoint(pathname);
+
+    expect(document.getElementById('root')?.innerHTML).toBe('');
+    expect(document.documentElement.hasAttribute('data-app-route-hydration-cover')).toBe(false);
   });
 });

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, type ReactNode } from 'react';
 import {
   getIntentPage,
+  getIntentPageArticleFigures,
   getIntentPages,
   type IntentPageKey,
 } from '../../config/intentPages';
@@ -33,6 +34,7 @@ const getFootnoteSuffix = (referenceIndex: number): string => {
 
 const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
   const page = getIntentPage(pageKey);
+  const articleFigures = getIntentPageArticleFigures(pageKey);
   const footnoteNumberById = useMemo(
     () => new Map((page.footnotes ?? []).map((footnote, index) => [footnote.id, index + 1])),
     [page.footnotes],
@@ -160,6 +162,27 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
       heroTitle={page.heroTitle}
       heroSummary={page.heroSummary}
     >
+      {articleFigures.length ? (
+        <section className="intent-page__panel">
+          <h2>Workflow examples</h2>
+          <div className="intent-page__figure-grid">
+            {articleFigures.map((figure) => (
+              <figure key={`${figure.src}-${figure.caption}`} className="intent-page__figure">
+                <img
+                  src={figure.src}
+                  alt={figure.alt}
+                  loading="eager"
+                  decoding="async"
+                  className="intent-page__figure-image"
+                  style={figure.objectPosition ? { objectPosition: figure.objectPosition } : undefined}
+                />
+                <figcaption>{figure.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {page.articleSections?.map((section) => (
         <section key={section.title} className="intent-page__panel intent-page__panel--article">
           <h2>{section.title}</h2>

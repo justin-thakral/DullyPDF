@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  getIntentPageArticleFigures,
   getIntentPage,
   getIntentPages,
   resolveIntentPath,
@@ -41,5 +42,14 @@ describe('intentPages config', () => {
     expect(workflowPage.footnotes?.length ?? 0).toBeGreaterThan(3);
     expect(legalPage.footnotes?.length ?? 0).toBeGreaterThan(6);
     expect(legalPage.footnotes?.some((footnote) => footnote.label.includes('21 CFR Part 11'))).toBe(true);
+  });
+
+  it('keeps industry pages article-shaped and visually grounded', () => {
+    getIntentPages()
+      .filter((page) => page.category === 'industry')
+      .forEach((page) => {
+        expect(page.articleSections?.length ?? 0, `${page.key} should have at least four article sections`).toBeGreaterThanOrEqual(4);
+        expect(getIntentPageArticleFigures(page.key).length, `${page.key} should have supporting figures`).toBeGreaterThan(0);
+      });
   });
 });

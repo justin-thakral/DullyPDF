@@ -1,11 +1,19 @@
 import type { IntentPageKey } from './intentPages';
 import type { UsageDocsPageKey } from '../components/pages/usageDocsContent';
-import { BLOG_POSTS as SHARED_BLOG_POSTS } from './publicRouteSeoData.mjs';
+import { BLOG_POSTS as SHARED_BLOG_POSTS } from './blogContent.mjs';
+
+export type BlogPostFigure = {
+  src: string;
+  alt: string;
+  caption: string;
+};
 
 export type BlogPostSection = {
   id: string;
   title: string;
-  body: string;
+  paragraphs: string[];
+  bullets?: string[];
+  figures?: BlogPostFigure[];
 };
 
 export type BlogPost = {

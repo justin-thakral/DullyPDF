@@ -1,56 +1,43 @@
 /** React entrypoint that mounts the application shell. */
 import { StrictMode, Suspense, lazy } from 'react';
-import { createRoot, type Root } from 'react-dom/client';
+import { createRoot, hydrateRoot, type Root } from 'react-dom/client';
 import './index.css';
+import './styles/public-routes.css';
 import {
   ACCOUNT_ACTION_ROUTE_PATH,
   LEGACY_ACCOUNT_ACTION_ROUTE_PATH,
-} from './utils/emailActions';
-import { PrerenderedSeoShellBoundary } from './components/PrerenderedSeoShellBoundary';
-import type { LegalPageKind } from './components/pages/LegalPage';
+} from './config/accountActionRoutes';
 import {
   resolveUsageDocsPath,
-  type UsageDocsPageKey,
 } from './components/pages/usageDocsContent';
-import { resolveIntentPath, type IntentPageKey } from './config/intentPages';
-import { resolveFeaturePlanPath, type FeaturePlanPageKey } from './config/featurePlanPages';
 import { initializeGoogleAds } from './utils/googleAds';
 import {
   parseWorkspaceBrowserRoute,
   type WorkspaceBrowserRoute,
 } from './utils/workspaceRoutes';
+import { shouldActivateAppRouteHydrationCover } from './utils/appRouteHydrationCover';
+import type { HydratablePublicRoute } from './publicRouteRouting';
+import { resolveHydratablePublicRoute } from './publicRouteRouting';
+import { renderPublicRouteForClient } from './publicRouteClient';
+import App from './App';
 
-const App = lazy(() => import('./App'));
-const LegalPage = lazy(() => import('./components/pages/LegalPage'));
 const PublicNotFoundPage = lazy(() => import('./components/pages/PublicNotFoundPage'));
 const FillLinkPublicPage = lazy(() => import('./components/pages/FillLinkPublicPage'));
 const PublicSigningPage = lazy(() => import('./components/pages/PublicSigningPage'));
 const PublicSigningValidationPage = lazy(() => import('./components/pages/PublicSigningValidationPage'));
 const AccountActionPage = lazy(() => import('./components/pages/AccountActionPage'));
-const UsageDocsPage = lazy(() => import('./components/pages/UsageDocsPage'));
 const UsageDocsNotFoundPage = lazy(() => import('./components/pages/UsageDocsNotFoundPage'));
-const IntentLandingPage = lazy(() => import('./components/pages/IntentLandingPage'));
-const IntentHubPage = lazy(() => import('./components/pages/IntentHubPage'));
-const FeaturePlanPage = lazy(() => import('./components/pages/FeaturePlanPage'));
-const BlogIndexPage = lazy(() => import('./components/pages/BlogIndexPage'));
-const BlogPostPage = lazy(() => import('./components/pages/BlogPostPage'));
 const SeoLayoutPreviewPage = lazy(() => import('./components/pages/SeoLayoutPreviewPage'));
 
 type AppRoute =
+  | HydratablePublicRoute
   | { kind: 'app'; browserRoute: WorkspaceBrowserRoute }
-  | { kind: 'legal'; legalKind: LegalPageKind }
   | { kind: 'fill-link-public'; token: string }
   | { kind: 'signing-public'; token: string }
   | { kind: 'signing-validation'; token: string }
-  | { kind: 'intent'; intentKey: IntentPageKey }
-  | { kind: 'intent-hub'; hubKey: 'workflows' | 'industries' }
-  | { kind: 'feature-plan'; planKey: FeaturePlanPageKey }
   | { kind: 'account-action' }
-  | { kind: 'usage-docs'; pageKey: UsageDocsPageKey }
   | { kind: 'usage-docs-not-found'; requestedPath: string }
-  | { kind: 'blog-index' }
   | { kind: 'seo-layout-preview' }
-  | { kind: 'blog-post'; slug: string }
   | { kind: 'not-found'; requestedPath: string };
 
 declare global {
@@ -60,21 +47,30 @@ declare global {
   }
 }
 
+const APP_ROUTE_HYDRATION_COVER_ATTRIBUTE = 'data-app-route-hydration-cover';
+
 const replaceBrowserPath = (targetPath: string): void => {
   if (typeof window === 'undefined') return;
   if (window.location.pathname === targetPath) return;
   window.history.replaceState({}, '', `${targetPath}${window.location.search}${window.location.hash}`);
 };
 
+const dismissAppRouteHydrationCover = (): void => {
+  if (typeof document === 'undefined') return;
+  document.documentElement.removeAttribute(APP_ROUTE_HYDRATION_COVER_ATTRIBUTE);
+};
+
 const resolveRoute = (): AppRoute => {
   if (typeof window === 'undefined') {
-    return {
-      kind: 'app',
-      browserRoute: { kind: 'homepage' },
-    };
+    return { kind: 'home' };
   }
   const path = window.location.pathname || '/';
   const normalizedPath = path.replace(/\/+$/, '') || '/';
+
+  if (normalizedPath === '/') {
+    return { kind: 'home' };
+  }
+
   const workspaceBrowserRoute = parseWorkspaceBrowserRoute(path, window.location.search);
   if (workspaceBrowserRoute) {
     return {
@@ -126,33 +122,6 @@ const resolveRoute = (): AppRoute => {
     if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
     return { kind: 'seo-layout-preview' };
   }
-  if (normalizedPath.startsWith('/blog/')) {
-    const slug = normalizedPath.slice('/blog/'.length);
-    if (slug && !slug.includes('/')) {
-      if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
-      return { kind: 'blog-post', slug };
-    }
-  }
-
-  if (normalizedPath === '/workflows' || normalizedPath === '/industries') {
-    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
-    return {
-      kind: 'intent-hub',
-      hubKey: normalizedPath === '/workflows' ? 'workflows' : 'industries',
-    };
-  }
-
-  const featurePlanKey = resolveFeaturePlanPath(normalizedPath);
-  if (featurePlanKey) {
-    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
-    return { kind: 'feature-plan', planKey: featurePlanKey };
-  }
-
-  const intentKey = resolveIntentPath(normalizedPath);
-  if (intentKey) {
-    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
-    return { kind: 'intent', intentKey };
-  }
 
   const usageDocsRoute = resolveUsageDocsPath(normalizedPath);
   if (usageDocsRoute) {
@@ -185,13 +154,33 @@ const resolveRoute = (): AppRoute => {
       requestedPath: usageDocsRoute.requestedPath,
     };
   }
+
+  const publicRoute = resolveHydratablePublicRoute(normalizedPath);
+  if (publicRoute) {
+    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
+    return publicRoute;
+  }
+
   return { kind: 'not-found', requestedPath: normalizedPath };
 };
 
+const isHydratablePublicRoute = (route: AppRoute): route is HydratablePublicRoute => (
+  route.kind === 'home' ||
+  route.kind === 'legal' ||
+  route.kind === 'intent' ||
+  route.kind === 'intent-hub' ||
+  route.kind === 'feature-plan' ||
+  route.kind === 'usage-docs' ||
+  route.kind === 'blog-index' ||
+  route.kind === 'blog-post'
+);
+
 const renderRoute = (route: AppRoute) => {
+  if (isHydratablePublicRoute(route)) {
+    return renderPublicRouteForClient(route);
+  }
+
   switch (route.kind) {
-    case 'legal':
-      return <LegalPage kind={route.legalKind} />;
     case 'fill-link-public':
       return <FillLinkPublicPage token={route.token} />;
     case 'signing-public':
@@ -200,22 +189,10 @@ const renderRoute = (route: AppRoute) => {
       return <PublicSigningValidationPage token={route.token} />;
     case 'account-action':
       return <AccountActionPage />;
-    case 'intent-hub':
-      return <IntentHubPage hubKey={route.hubKey} />;
-    case 'feature-plan':
-      return <FeaturePlanPage pageKey={route.planKey} />;
-    case 'intent':
-      return <IntentLandingPage pageKey={route.intentKey} />;
-    case 'usage-docs':
-      return <UsageDocsPage pageKey={route.pageKey} />;
     case 'usage-docs-not-found':
       return <UsageDocsNotFoundPage requestedPath={route.requestedPath} />;
-    case 'blog-index':
-      return <BlogIndexPage />;
     case 'seo-layout-preview':
       return <SeoLayoutPreviewPage />;
-    case 'blog-post':
-      return <BlogPostPage slug={route.slug} />;
     case 'not-found':
       return <PublicNotFoundPage requestedPath={route.requestedPath} />;
     case 'app':
@@ -226,25 +203,9 @@ const renderRoute = (route: AppRoute) => {
   return exhaustiveCheck;
 };
 
-const routeUsesPrerenderedSeoShell = (route: AppRoute): boolean => {
-  if (route.kind === 'app') {
-    return route.browserRoute.kind === 'homepage';
-  }
-
-  return (
-    route.kind === 'legal' ||
-    route.kind === 'intent-hub' ||
-    route.kind === 'feature-plan' ||
-    route.kind === 'intent' ||
-    route.kind === 'usage-docs' ||
-    route.kind === 'blog-index' ||
-    route.kind === 'blog-post'
-  );
-};
-
 const route = resolveRoute();
 
-if (typeof window !== 'undefined' && route.kind === 'app') {
+if (typeof window !== 'undefined' && (route.kind === 'app' || route.kind === 'home')) {
   initializeGoogleAds();
 }
 
@@ -254,22 +215,41 @@ if (!rootElement) {
   throw new Error('Missing #root element for DullyPDF.');
 }
 
-const existingRoot = typeof window !== 'undefined' && window.__dullyPdfRootElement === rootElement
-  ? window.__dullyPdfRoot
-  : undefined;
-const root = existingRoot || createRoot(rootElement);
-
-if (typeof window !== 'undefined') {
-  window.__dullyPdfRoot = root;
-  window.__dullyPdfRootElement = rootElement;
-}
-
-root.render(
-    <StrictMode>
-      <Suspense fallback={null}>
-        <PrerenderedSeoShellBoundary enabled={routeUsesPrerenderedSeoShell(route)}>
-          {renderRoute(route)}
-        </PrerenderedSeoShellBoundary>
-      </Suspense>
-  </StrictMode>,
+const appTree = (
+  <StrictMode>
+    <Suspense fallback={null}>
+      {renderRoute(route)}
+    </Suspense>
+  </StrictMode>
 );
+const shouldHydrate = isHydratablePublicRoute(route) && rootElement.hasChildNodes();
+const shouldResetPrerenderedRoot = (
+  typeof window !== 'undefined'
+  && shouldActivateAppRouteHydrationCover(window.location.pathname, window.location.search)
+);
+
+if (shouldHydrate) {
+  const root = hydrateRoot(rootElement, appTree);
+  if (typeof window !== 'undefined') {
+    window.__dullyPdfRoot = root;
+    window.__dullyPdfRootElement = rootElement;
+  }
+  dismissAppRouteHydrationCover();
+} else {
+  const existingRoot = typeof window !== 'undefined' && window.__dullyPdfRootElement === rootElement
+    ? window.__dullyPdfRoot
+    : undefined;
+  if (!existingRoot && shouldResetPrerenderedRoot && rootElement.hasChildNodes()) {
+    // Firebase Hosting rewrites these routes to the prerendered homepage HTML.
+    // Clear that static shell before createRoot mounts, otherwise users can see
+    // homepage content while the lazy public/app route chunks are still loading.
+    rootElement.innerHTML = '';
+  }
+  const root = existingRoot || createRoot(rootElement);
+  if (typeof window !== 'undefined') {
+    window.__dullyPdfRoot = root;
+    window.__dullyPdfRootElement = rootElement;
+  }
+  root.render(appTree);
+  dismissAppRouteHydrationCover();
+}

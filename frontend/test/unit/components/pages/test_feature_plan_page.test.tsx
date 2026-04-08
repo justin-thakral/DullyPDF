@@ -94,13 +94,14 @@ describe('FeaturePlanPage', () => {
     render(<FeaturePlanPage pageKey="premium-features" />);
 
     expect(await screen.findByRole('link', { name: 'Sign In to Buy' })).toBeTruthy();
-    expect(screen.getByText('Signed out')).toBeTruthy();
+    expect(screen.getByText('Sign in from the homepage to start a premium checkout session.')).toBeTruthy();
+    expect(screen.getByText('Current tier: Unknown')).toBeTruthy();
     expect(apiMocks.getProfile).not.toHaveBeenCalled();
   });
 
   it('renders live purchase buttons for signed-in free users and surfaces checkout errors', async () => {
     const user = userEvent.setup();
-    setAuthUser({ uid: 'user-1', email: 'owner@example.com' });
+    authState.user = { uid: 'user-1', email: 'owner@example.com' };
     apiMocks.getProfile.mockResolvedValue({
       role: 'basic',
       billing: {
@@ -118,8 +119,12 @@ describe('FeaturePlanPage', () => {
     billingCheckoutMocks.createTrustedBillingCheckoutForUser.mockRejectedValue(new Error('Checkout unavailable.'));
 
     render(<FeaturePlanPage pageKey="premium-features" />);
+    await vi.dynamicImportSettled();
 
-    const buyButton = await screen.findByRole('button', { name: /Buy Pro Monthly/ });
+    await waitFor(() => {
+      expect(apiMocks.getProfile).toHaveBeenCalledTimes(1);
+    }, { timeout: 10_000 });
+    const buyButton = await screen.findByRole('button', { name: /Buy Pro Monthly/ }, { timeout: 10_000 });
     expect(screen.getByText('Signed in as owner@example.com')).toBeTruthy();
 
     await user.click(buyButton);
@@ -128,10 +133,10 @@ describe('FeaturePlanPage', () => {
       expect(billingCheckoutMocks.createTrustedBillingCheckoutForUser).toHaveBeenCalledWith('user-1', 'pro_monthly');
     });
     expect(screen.getByText('Checkout unavailable.')).toBeTruthy();
-  });
+  }, 15_000);
 
   it('shows an already-premium message instead of upgrade buttons for premium accounts', async () => {
-    setAuthUser({ uid: 'user-2', email: 'pro@example.com' });
+    authState.user = { uid: 'user-2', email: 'pro@example.com' };
     apiMocks.getProfile.mockResolvedValue({
       role: 'pro',
       billing: {
@@ -148,6 +153,7 @@ describe('FeaturePlanPage', () => {
     });
 
     render(<FeaturePlanPage pageKey="premium-features" />);
+    await vi.dynamicImportSettled();
 
     expect(await screen.findByText('This account already has premium access. Use Profile in the workspace to manage cancellation or refills.')).toBeTruthy();
     expect(screen.getByText(/20 active API Fill endpoints, 10,000 successful fills per month, and 250 pages per request/)).toBeTruthy();

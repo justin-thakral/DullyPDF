@@ -125,7 +125,32 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
             {post.sections.map((section) => (
               <section key={section.id} id={section.id} className="blog-post__section">
                 <h2>{section.title}</h2>
-                <p>{section.body}</p>
+                {section.paragraphs.map((paragraph, index) => (
+                  <p key={`${section.id}-paragraph-${index}`}>{paragraph}</p>
+                ))}
+                {section.figures?.length ? (
+                  <div className="blog-post__figure-grid">
+                    {section.figures.map((figure) => (
+                      <figure key={`${section.id}-${figure.src}-${figure.caption}`} className="blog-post__figure">
+                        <img
+                          src={figure.src}
+                          alt={figure.alt}
+                          loading="lazy"
+                          decoding="async"
+                          className="blog-post__figure-image"
+                        />
+                        <figcaption>{figure.caption}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                ) : null}
+                {section.bullets?.length ? (
+                  <ul>
+                    {section.bullets.map((bullet) => (
+                      <li key={`${section.id}-${bullet}`}>{bullet}</li>
+                    ))}
+                  </ul>
+                ) : null}
               </section>
             ))}
 

@@ -233,16 +233,21 @@ describe('Homepage', () => {
     render(<Homepage onStartWorkflow={vi.fn()} />);
 
     expect(screen.queryByRole('link', { name: 'Try DullyPDF' })).toBeNull();
-    expect(screen.getByRole('link', { name: 'Getting Started' }).getAttribute('href')).toBe(
-      '/usage-docs/getting-started',
-    );
+    const gettingStartedLinks = screen.getAllByRole('link', { name: 'Getting Started' });
+    expect(gettingStartedLinks.length).toBeGreaterThan(0);
+    expect(gettingStartedLinks.every((link) => link.getAttribute('href') === '/usage-docs/getting-started')).toBe(true);
   });
 
   it('renders footer hub links for workflows and industries', () => {
     render(<Homepage onStartWorkflow={vi.fn()} />);
 
-    expect(screen.getByRole('link', { name: 'Workflow Library' }).getAttribute('href')).toBe('/workflows');
-    expect(screen.getByRole('link', { name: 'Industry Solutions' }).getAttribute('href')).toBe('/industries');
+    const workflowLinks = screen.getAllByRole('link', { name: 'Workflow Library' });
+    const industryLinks = screen.getAllByRole('link', { name: 'Industry Solutions' });
+
+    expect(workflowLinks.length).toBeGreaterThan(0);
+    expect(industryLinks.length).toBeGreaterThan(0);
+    expect(workflowLinks.every((link) => link.getAttribute('href') === '/workflows')).toBe(true);
+    expect(industryLinks.every((link) => link.getAttribute('href') === '/industries')).toBe(true);
   });
 
   it('does not render visible SEO intent sections on homepage', () => {

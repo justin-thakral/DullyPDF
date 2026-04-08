@@ -18,6 +18,8 @@ describe('IntentLandingPage', () => {
   it('renders long-form article sections for expanded landing pages', () => {
     render(<IntentLandingPage pageKey="fill-pdf-from-csv" />);
 
+    expect(screen.getByRole('heading', { level: 2, name: 'Workflow examples' })).toBeTruthy();
+    expect(screen.getByAltText('Patient intake PDF preview with fields already filled from structured data.')).toBeTruthy();
     expect(
       screen.getByRole('heading', { level: 2, name: 'How Search and Fill works once the template is mapped' }),
     ).toBeTruthy();
@@ -29,10 +31,18 @@ describe('IntentLandingPage', () => {
   it('uses targeted supporting docs from the shared SEO dataset', () => {
     render(<IntentLandingPage pageKey="pdf-fill-api" />);
 
+    expect(screen.queryByRole('heading', { level: 2, name: 'Workflow examples' })).toBeNull();
     expect(screen.getByRole('link', { name: 'API Fill' }).getAttribute('href')).toBe('/usage-docs/api-fill');
     expect(screen.getByRole('link', { name: 'Rename + Mapping' }).getAttribute('href')).toBe(
       '/usage-docs/rename-mapping',
     );
+  });
+
+  it('renders supporting visuals for industry landing pages', () => {
+    render(<IntentLandingPage pageKey="government-form-automation" />);
+
+    expect(screen.getByRole('heading', { level: 2, name: 'Workflow examples' })).toBeTruthy();
+    expect(screen.getByAltText('Official IRS W-4 form page showing a fixed government layout.')).toBeTruthy();
   });
 
   it('renders inline legal footnotes and the numbered source list for authority-style pages', () => {

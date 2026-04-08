@@ -60,7 +60,6 @@ import { ApiService } from './services/api';
 import { fetchDetectionStatus } from './services/detectionApi';
 import { debugLog } from './utils/debug';
 import { resolveConfirmDialogResult } from './utils/dialogResult';
-import { shouldSuppressTransientBusyBanner } from './utils/transientBusyBanner';
 import { returnWorkspaceToHomepage } from './utils/returnWorkspaceToHomepage';
 import { applyRouteSeo } from './utils/seo';
 import {
@@ -2283,16 +2282,9 @@ function WorkspaceRuntime({
   const demoUiLocked = demoCompletionOpen || (!demoActive && isDemoAsset);
 
   const activeErrorMessage = openAiError ?? schemaError;
-  const suppressBannerNotice = shouldSuppressTransientBusyBanner(bannerNotice?.message, {
-    mappingInProgress,
-    mapSchemaInProgress,
-    renameInProgress,
-  });
   const bannerAlert: BannerNotice | null = activeErrorMessage
     ? { tone: 'error', message: activeErrorMessage }
-    : suppressBannerNotice
-      ? null
-      : bannerNotice;
+    : bannerNotice;
   const shouldShowBannerAlert = Boolean(bannerAlert) && !(demoActive && !isMobileView);
 
   const handleDemoLockedAction = useCallback(() => {

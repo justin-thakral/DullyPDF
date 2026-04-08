@@ -38,6 +38,9 @@ frontend/
 - `frontend/src/config/intentPages.ts`: Content + FAQ + SEO metadata config for public intent and industry landing routes.
 - `frontend/src/config/publicRouteSeoData.mjs`: Shared source of truth for public route metadata and build-time static body content used by the runtime SEO adapter plus the static HTML and sitemap generators.
 - `frontend/src/config/routeSeo.ts`: Typed runtime adapter over the shared public route SEO dataset for all indexable public pages (`/`, legal, `/usage-docs/*`, intent pages, hub pages, and blog routes).
+- `frontend/src/publicRouteRouting.ts`: Shared matcher for indexable public routes that should be prerendered and hydrated instead of mounted as empty client-only shells.
+- `frontend/src/publicRouteClient.tsx`: Client-side renderer for hydratable public routes, including the homepage handoff into `App`.
+- `frontend/src/publicRouteServer.tsx`: Server-side React renderer used by the static HTML generator so the emitted HTML matches the hydrated route tree.
 - `frontend/src/utils/seo.ts`: Head-tag applier for title, description, canonical, Open Graph, and Twitter metadata from the shared SEO map.
 - `frontend/src/components/viewer/PdfViewer.tsx`: PDF canvas rendering and overlay mounting.
 - `frontend/src/components/panels/FieldListPanel.tsx`: Field list, page navigation, filter/search, and display toggles.
@@ -57,5 +60,6 @@ frontend/
 - `frontend/src/styles/*.css` + `frontend/src/components/**/*.css`: Shared shell styles and component-scoped styles.
 - `internal_stats/`: Standalone local-only production stats tool served by `npm run stats` on `127.0.0.1:5174`. It lives outside `frontend/src` specifically so it cannot be bundled into the deployed app.
 - `scripts/seo-route-data.mjs`: Build-time re-export bridge for the shared public route SEO dataset. Existing scripts import this path, but `frontend/src/config/publicRouteSeoData.mjs` is the source of truth.
+- `frontend/src/ssr/publicRouteRenderer.ts` + `frontend/vite.public-ssr.config.ts`: Tiny SSR build entry used by `scripts/generate-static-html.mjs` to prerender the homepage and SEO/public routes from the same React components the browser hydrates.
 
 For the hook interaction map, see `frontend/docs/app-hooks.md`.

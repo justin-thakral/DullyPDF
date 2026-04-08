@@ -10,6 +10,7 @@ describe('BlogPostPage', () => {
     expect(screen.getByText('Published')).toBeTruthy();
     expect(screen.getByText('Last updated')).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'How to validate this workflow in DullyPDF' })).toBeTruthy();
+    expect(screen.getAllByRole('img').length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByRole('link', { name: 'Fill PDF From CSV' }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole('link', { name: 'Search & Fill' }).length).toBeGreaterThan(0);
     expect(
