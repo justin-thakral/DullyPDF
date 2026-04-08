@@ -95,8 +95,9 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             </p>
             <p>
               Route-level behavior: `/detect-fields` creates the detection session, `/api/renames/ai` performs rename,
-              `/api/schema-mappings/ai` performs mapping, and Search &amp; Fill runs over your local rows or stored
-              Fill By Link respondent records.
+              `/api/rename-remap/ai` performs the combined Rename + Map action, `/api/schema-mappings/ai` performs
+              standalone remap, and Search &amp; Fill runs over your local rows or stored Fill By Link respondent
+              records.
             </p>
           </>
         ),

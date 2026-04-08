@@ -68,12 +68,9 @@ async function main() {
   const schemaPath = buildSchemaFilePath();
   const capture = {
     schemaCreate: null,
-    renameKickoff: null,
-    renameRequest: null,
-    renameResult: null,
-    mappingKickoff: null,
-    mappingRequest: null,
-    mappingResult: null,
+    combinedKickoff: null,
+    combinedRequest: null,
+    combinedResult: null,
   };
 
   let userFixture = null;
@@ -113,115 +110,97 @@ async function main() {
     await page.getByRole('menuitem', { name: 'Rename + Map', exact: true }).click();
     await page.getByRole('dialog', { name: 'Send to OpenAI?' }).waitFor({ timeout: 10000 });
     if (mockExpensiveAi) {
-      logStep('mocking expensive OpenAI rename + map requests');
-      await page.route('**/api/renames/ai', async (route) => {
-        const renameRequest = parseJsonPostData(route.request());
-        const templateFields = Array.isArray(renameRequest?.templateFields) ? renameRequest.templateFields : [];
+      logStep('mocking expensive OpenAI rename + map request');
+      await page.route('**/api/rename-remap/ai', async (route) => {
+        const combinedRequest = parseJsonPostData(route.request());
+        const templateFields = Array.isArray(combinedRequest?.templateFields) ? combinedRequest.templateFields : [];
         const renameResult = buildMockRenameResult(templateFields);
-        capture.renameRequest = renameRequest;
-        capture.renameKickoff = renameResult;
-        capture.renameResult = renameResult;
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify(renameResult),
+        const mappingSourceFields = Array.isArray(renameResult?.fields) ? renameResult.fields : templateFields;
+        const mappingResult = buildMockMappingResult(mappingSourceFields);
+        const mappingByOriginalName = new Map(
+          (mappingResult?.mappingResults?.mappings || []).map((mapping) => [
+            String(mapping?.originalPdfField || ''),
+            mapping,
+          ]),
+        );
+        const combinedFields = mappingSourceFields.map((field) => {
+          const mapping = mappingByOriginalName.get(String(field?.name || ''));
+          if (!mapping?.pdfField) return field;
+          return {
+            ...field,
+            name: String(mapping.pdfField),
+            mappingConfidence: Number(mapping.confidence) || 0.97,
+          };
         });
-      }, { times: 1 });
-      await page.route('**/api/schema-mappings/ai', async (route) => {
-        const mappingRequest = parseJsonPostData(route.request());
-        const templateFields = Array.isArray(mappingRequest?.templateFields) ? mappingRequest.templateFields : [];
-        const mappingResult = buildMockMappingResult(templateFields);
-        capture.mappingRequest = mappingRequest;
-        capture.mappingKickoff = mappingResult;
-        capture.mappingResult = mappingResult;
+        const combinedResult = {
+          success: true,
+          status: 'complete',
+          fields: combinedFields,
+          checkboxRules: Array.isArray(renameResult?.checkboxRules) ? renameResult.checkboxRules : [],
+          mappingResults: mappingResult.mappingResults,
+        };
+        capture.combinedRequest = combinedRequest;
+        capture.combinedKickoff = combinedResult;
+        capture.combinedResult = combinedResult;
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify(mappingResult),
+          body: JSON.stringify(combinedResult),
         });
       }, { times: 1 });
     }
-    const renameRequestPromise = page.waitForRequest((request) => {
+    const combinedRequestPromise = page.waitForRequest((request) => {
       return request.method() === 'POST'
-        && request.url().includes('/api/renames/ai');
-    }, { timeout: 120000 });
-    const mappingRequestPromise = page.waitForRequest((request) => {
-      return request.method() === 'POST'
-        && request.url().includes('/api/schema-mappings/ai');
+        && request.url().includes('/api/rename-remap/ai');
     }, { timeout: 180000 });
     await page.getByRole('button', { name: 'Continue' }).click();
 
-    const renameRequest = await renameRequestPromise;
-    const renameResponse = await renameRequest.response();
-    if (!renameResponse || !renameResponse.ok()) {
-      const responseText = renameResponse ? await renameResponse.text() : 'missing response';
-      throw new Error(`Rename kickoff request did not return a successful response: ${responseText}`);
+    const combinedRequest = await combinedRequestPromise;
+    const combinedResponse = await combinedRequest.response();
+    if (!combinedResponse || !combinedResponse.ok()) {
+      const responseText = combinedResponse ? await combinedResponse.text() : 'missing response';
+      throw new Error(`Rename + Map kickoff request did not return a successful response: ${responseText}`);
     }
-    capture.renameKickoff = await renameResponse.json();
-    capture.renameRequest = parseJsonPostData(renameRequest);
-    if (
-      capture.renameKickoff?.success
-      && Array.isArray(capture.renameKickoff?.fields)
-      && capture.renameKickoff.fields.length > 0
-    ) {
-      capture.renameResult = capture.renameKickoff;
+    capture.combinedKickoff = await combinedResponse.json();
+    capture.combinedRequest = parseJsonPostData(combinedRequest);
+    if (capture.combinedKickoff?.success && capture.combinedKickoff?.mappingResults) {
+      capture.combinedResult = capture.combinedKickoff;
     }
-    if (!capture.renameKickoff?.success) {
-      throw new Error(`Rename kickoff response was incomplete: ${JSON.stringify(capture.renameKickoff)}`);
+    if (!capture.combinedKickoff?.success) {
+      throw new Error(`Rename + Map kickoff response was incomplete: ${JSON.stringify(capture.combinedKickoff)}`);
     }
-    if (!capture.renameResult && capture.renameKickoff?.jobId) {
-      capture.renameResult = await pollOpenAiJob(page, {
+    if (!capture.combinedResult && capture.combinedKickoff?.jobId) {
+      capture.combinedResult = await pollOpenAiJob(page, {
         apiBaseUrl,
-        resource: 'renames',
-        jobId: String(capture.renameKickoff.jobId),
+        resource: 'rename-remap',
+        jobId: String(capture.combinedKickoff.jobId),
       });
     }
-    const mappingRequest = await mappingRequestPromise;
-    const mappingResponse = await mappingRequest.response();
-    if (!mappingResponse || !mappingResponse.ok()) {
-      const responseText = mappingResponse ? await mappingResponse.text() : 'missing response';
-      throw new Error(`Mapping kickoff request did not return a successful response: ${responseText}`);
-    }
-    capture.mappingKickoff = await mappingResponse.json();
-    capture.mappingRequest = parseJsonPostData(mappingRequest);
-    if (capture.mappingKickoff?.success && capture.mappingKickoff?.mappingResults) {
-      capture.mappingResult = capture.mappingKickoff;
-    }
-    if (!capture.mappingKickoff?.success) {
-      throw new Error(`Mapping kickoff response was incomplete: ${JSON.stringify(capture.mappingKickoff)}`);
-    }
-    if (!capture.mappingResult && capture.mappingKickoff?.jobId) {
-      capture.mappingResult = await pollOpenAiJob(page, {
-        apiBaseUrl,
-        resource: 'schema-mappings',
-        jobId: String(capture.mappingKickoff.jobId),
-      });
-    }
-    if (!capture.renameResult || !capture.mappingResult) {
+    if (!capture.combinedResult) {
       throw new Error(
-        `Rename + Map did not produce final payloads. Rename kickoff: ${JSON.stringify(capture.renameKickoff)} Mapping kickoff: ${JSON.stringify(capture.mappingKickoff)}`,
+        `Rename + Map did not produce a final payload. Kickoff: ${JSON.stringify(capture.combinedKickoff)}`,
       );
     }
 
-    if (!capture.renameRequest?.sessionId) {
-      throw new Error(`Rename request should include a sessionId. Payload: ${JSON.stringify(capture.renameRequest)}`);
+    if (!capture.combinedRequest?.sessionId) {
+      throw new Error(`Rename + Map request should include a sessionId. Payload: ${JSON.stringify(capture.combinedRequest)}`);
     }
-    if (capture.mappingRequest?.schemaId !== capture.schemaCreate.schemaId) {
+    if (capture.combinedRequest?.schemaId !== capture.schemaCreate.schemaId) {
       throw new Error(
-        `Mapping request should use created schemaId ${capture.schemaCreate.schemaId}. Payload: ${JSON.stringify(capture.mappingRequest)}`,
+        `Rename + Map request should use created schemaId ${capture.schemaCreate.schemaId}. Payload: ${JSON.stringify(capture.combinedRequest)}`,
       );
     }
-    const mappingCount = Array.isArray(capture.mappingResult?.mappingResults?.mappings)
-      ? capture.mappingResult.mappingResults.mappings.length
+    const mappingCount = Array.isArray(capture.combinedResult?.mappingResults?.mappings)
+      ? capture.combinedResult.mappingResults.mappings.length
       : 0;
     if (mappingCount <= 0) {
-      throw new Error(`Expected at least one mapping result. Payload: ${JSON.stringify(capture.mappingResult)}`);
+      throw new Error(`Expected at least one mapping result. Payload: ${JSON.stringify(capture.combinedResult)}`);
     }
-    const mappedFieldNames = (capture.mappingResult?.mappingResults?.mappings || [])
+    const mappedFieldNames = (capture.combinedResult?.mappingResults?.mappings || [])
       .map((mapping) => String(mapping?.pdfField || '').trim())
       .filter(Boolean);
     if (mappedFieldNames.length === 0) {
-      throw new Error(`Expected usable mapped field names. Payload: ${JSON.stringify(capture.mappingResult)}`);
+      throw new Error(`Expected usable mapped field names. Payload: ${JSON.stringify(capture.combinedResult)}`);
     }
 
     const finalFieldNames = await retry('wait for mapped field names in the editor', 40, async () => {
@@ -246,9 +225,9 @@ async function main() {
       schemaId: capture.schemaCreate.schemaId,
       initialFieldCount: initialFieldNames.length,
       finalFieldCount: finalFieldNames.length,
-      renameFieldCount: Array.isArray(capture.renameResult?.fields) ? capture.renameResult.fields.length : 0,
+      renameFieldCount: Array.isArray(capture.combinedResult?.fields) ? capture.combinedResult.fields.length : 0,
       mappingCount,
-      renamedFieldsSample: (capture.renameResult?.fields || []).map((field) => String(field?.name || '')).filter(Boolean).slice(0, 8),
+      renamedFieldsSample: (capture.combinedResult?.fields || []).map((field) => String(field?.name || '')).filter(Boolean).slice(0, 8),
       mappedFieldsSample: finalFieldNames.slice(0, 8),
     };
   } catch (error) {
