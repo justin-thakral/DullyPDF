@@ -220,6 +220,29 @@ class TestSqlSchemaOpenAiRoundTrip:
         assert result["mappings"][0]["schemaField"] == "patient_name"
         assert result["mappings"][1]["schemaField"] == "employer_name"
 
+    def test_schema_mapping_chunks_by_template_tag_count_even_when_payload_fits(
+        self, monkeypatch: pytest.MonkeyPatch, mocker
+    ) -> None:
+        monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+        monkeypatch.setattr(schema_mapping, "MAX_PAYLOAD_BYTES", 10**9)
+        monkeypatch.setattr(schema_mapping, "MAX_TEMPLATE_TAGS_PER_CHUNK", 2)
+
+        effects = [
+            _response_with_content(json.dumps({"mappings": [{"schemaField": "patient_name", "templateTag": "patient_name"}]})),
+            _response_with_content(json.dumps({"mappings": [{"schemaField": "patient_birthdate", "templateTag": "patient_birthdate"}]})),
+            _response_with_content(json.dumps({"mappings": [{"schemaField": "medication_1", "templateTag": "medication_1"}]})),
+        ]
+        client = _FakeOpenAIClient(effects)
+        mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+
+        payload = schema_mapping.build_allowlist_payload(SQL_SCHEMA_FIELDS, TEMPLATE_FIELDS)
+        usage_events = []
+        result = schema_mapping.call_openai_schema_mapping_chunked(payload, usage_collector=usage_events)
+
+        assert len(client.chat.completions.calls) == 3
+        assert len(result["mappings"]) == 3
+        assert [event["chunk"] for event in usage_events] == [1, 2, 3]
+
 
 # ---------------------------------------------------------------------------
 # Schema creation: SQL and TXT source values are accepted

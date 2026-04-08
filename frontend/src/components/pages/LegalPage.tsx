@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import './LegalPage.css';
 import { applyRouteSeo } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
-import { SiteFooter } from '../ui/SiteFooter';
+import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 
 export type LegalPageKind = 'privacy' | 'terms';
 
@@ -386,13 +386,6 @@ const LEGAL_COPY: Record<LegalPageKind, LegalCopy> = {
   terms: TERMS_COPY,
 };
 
-const NAV_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'Usage Docs', href: '/usage-docs' },
-  { label: 'Privacy', href: '/privacy', kind: 'privacy' as LegalPageKind },
-  { label: 'Terms', href: '/terms', kind: 'terms' as LegalPageKind },
-];
-
 type LegalPageProps = {
   kind: LegalPageKind;
 };
@@ -405,36 +398,24 @@ const LegalPage = ({ kind }: LegalPageProps) => {
   }, [kind]);
 
   return (
-    <div className="legal-page">
-      <div className="legal-card">
-        <header className="legal-header">
-          <div className="legal-brand">
-            <picture>
-              <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
-              <img src="/DullyPDFLogoImproved.png" alt="DullyPDF" className="legal-brand__logo" decoding="async" />
-            </picture>
-            <div className="legal-brand__text">
-              <span className="legal-brand__name">DullyPDF</span>
-              <span className="legal-brand__tagline">Automatic PDF to template</span>
-            </div>
-          </div>
-          <nav className="legal-nav">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={
-                  link.kind === kind
-                    ? 'legal-nav__link legal-nav__link--active'
-                    : 'legal-nav__link'
-                }
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </header>
+    <PublicSiteFrame bodyClassName="legal-page">
+      <div className="legal-nav" aria-label="Legal navigation">
+        <a
+          href="/privacy"
+          className={kind === 'privacy' ? 'legal-nav__link legal-nav__link--active' : 'legal-nav__link'}
+        >
+          Privacy Policy
+        </a>
+        <a
+          href="/terms"
+          className={kind === 'terms' ? 'legal-nav__link legal-nav__link--active' : 'legal-nav__link'}
+        >
+          Terms of Service
+        </a>
+        <a href="/usage-docs" className="legal-nav__link">Usage Docs</a>
+      </div>
 
+      <div className="legal-page__surface">
         <section className="legal-hero">
           <Breadcrumbs
             items={[
@@ -448,18 +429,16 @@ const LegalPage = ({ kind }: LegalPageProps) => {
           <p className="legal-summary">{copy.summary}</p>
         </section>
 
-        <section className="legal-content">
+        <article className="legal-content" aria-label={`${copy.title} document`}>
           {copy.sections.map((section) => (
             <section key={section.id} id={section.id} className="legal-section">
               <h2>{section.title}</h2>
               {section.body}
             </section>
           ))}
-        </section>
-
-        <SiteFooter />
+        </article>
       </div>
-    </div>
+    </PublicSiteFrame>
   );
 };
 

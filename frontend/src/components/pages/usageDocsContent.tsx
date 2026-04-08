@@ -1022,6 +1022,7 @@ email`}</pre>
         body: (
           <ul>
             <li>Fill By Link starts from a saved template or an open group. Unsaved work cannot be published.</li>
+            <li>If upload-time Rename or Map is still finishing in the editor, wait for that background run to complete before saving or publishing. DullyPDF keeps those actions blocked until the template stops changing.</li>
             <li>The generated link points to a DullyPDF-hosted HTML form, not the PDF file itself.</li>
             <li>Template links publish one saved form. Group links publish one merged form built from every distinct respondent-facing field in the open group.</li>
             <li>Changing group membership closes the current group link so the next publish reflects the updated schema.</li>
@@ -1405,6 +1406,7 @@ email`}</pre>
         body: (
           <ul>
             <li>Fill By Link requires a saved template or open saved group because the public form belongs to that saved snapshot.</li>
+            <li>If Rename or Map is still running after the editor opens, wait for it to finish before saving that snapshot for Fill By Link or API Fill.</li>
             <li>API Fill publishes one saved-template snapshot, not the unsaved working state in the editor.</li>
             <li>Signature workflows are safest after the template and current record state are both intentionally frozen.</li>
           </ul>

@@ -9,15 +9,18 @@ const EMPTY_VITE_ASSETS = {
 };
 
 describe('generate-static-html', () => {
-  it('renders head-only SEO signals without a visible body shell', () => {
+  it('renders a visible prerendered shell ahead of the React root', () => {
     const route = ALL_ROUTES.find((entry) => entry.path === '/fill-pdf-from-csv');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS);
 
     expect(html).toContain('data-seo-jsonld="true"');
+    expect(html).toContain('data-seo-shell-visible="true"');
+    expect(html).toContain('id="seo-static-shell"');
+    expect(html).toContain('Fill PDF From CSV, SQL, Excel, or JSON Data');
+    expect(html).toContain('Try DullyPDF Now');
     expect(html).toContain('<div id="root"></div>');
-    expect(html).not.toContain('data-seo-shell-visible');
   });
 
   it('includes head SEO signals for usage docs pages', () => {

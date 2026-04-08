@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List
 
+from backend.ai.schema_mapping import build_allowlist_payload
 from backend.api.schemas import TemplateOverlayField
 
 
@@ -23,6 +24,15 @@ ALLOWED_RADIO_SUGGESTION_REASONS = {
 MAX_TRANSFORM_REASONING_LEN = 280
 MAX_TRANSFORM_TOKEN_LEN = 32
 MAX_RADIO_GROUP_SUGGESTION_FIELDS = 12
+IDENTIFIER_KEY_CANDIDATES = {
+    "identifier",
+    "patient_identifier",
+    "patient_id",
+    "member_id",
+    "subscriber_id",
+    "mrn",
+    "medical_record_number",
+}
 
 
 def sanitize_pdf_field_name_candidate(raw_name: str, fallback_base: str = "field") -> str:
@@ -310,6 +320,65 @@ def _sanitize_text_transform_rule(
     return sanitized
 
 
+def _build_allowed_schema_lookup(
+    schema_fields: List[Dict[str, Any]],
+) -> tuple[List[str], set[str], Dict[str, str]]:
+    """Build exact and normalized schema-name lookups used by rename/remap helpers."""
+    allowed_schema = [str(field.get("name") or "").strip() for field in schema_fields]
+    allowed_schema = [field for field in allowed_schema if field]
+    allowed_schema_set = set(allowed_schema)
+    normalized_schema_map: Dict[str, str] = {}
+    for field_name in allowed_schema:
+        normalized = normalize_data_key(field_name)
+        if normalized and normalized not in normalized_schema_map:
+            normalized_schema_map[normalized] = field_name
+    return allowed_schema, allowed_schema_set, normalized_schema_map
+
+
+def _resolve_schema_field_for_tag(
+    tag_name: str,
+    *,
+    allowed_schema_set: set[str],
+    normalized_schema_map: Dict[str, str],
+) -> str | None:
+    """Resolve a template tag to an allowlisted schema field by exact or normalized match."""
+    normalized_tag = normalize_data_key(tag_name)
+    if not normalized_tag:
+        return None
+    if tag_name in allowed_schema_set:
+        return tag_name
+    return normalized_schema_map.get(normalized_tag)
+
+
+def _build_exact_mapping_entry(
+    tag: Dict[str, Any],
+    *,
+    schema_field: str,
+) -> Dict[str, Any]:
+    """Create a mapping-style response entry for an exact local name match."""
+    tag_name = str(tag.get("tag") or "").strip()
+    confidence = (
+        parse_confidence(tag.get("mappingConfidence"))
+        or parse_confidence(tag.get("renameConfidence"))
+        or derive_mapping_confidence(tag_name, schema_field)
+    )
+    return {
+        "databaseField": schema_field,
+        "pdfField": tag_name,
+        "confidence": confidence,
+        "reasoning": "Schema-aware field names already match the schema field name.",
+    }
+
+
+def _resolve_identifier_key_from_mappings(mappings: List[Dict[str, Any]]) -> str | None:
+    """Pick a stable identifier field when one of the mappings targets a known identifier key."""
+    for mapping in mappings:
+        schema_field = str(mapping.get("databaseField") or "").strip()
+        if normalize_data_key(schema_field) in IDENTIFIER_KEY_CANDIDATES:
+            return schema_field
+    return None
+
+
 def template_fields_to_rename_fields(fields: List[TemplateOverlayField]) -> List[Dict[str, Any]]:
     """Convert template overlay fields into rename-friendly payloads."""
     rename_fields: List[Dict[str, Any]] = []
@@ -336,6 +405,204 @@ def template_fields_to_rename_fields(fields: List[TemplateOverlayField]) -> List
             }
         )
     return rename_fields
+
+
+def _rect_to_xywh(rect: Any) -> Dict[str, float] | None:
+    """Normalize rect payloads into x/y/width/height form for allowlist generation."""
+    if isinstance(rect, dict):
+        try:
+            x = float(rect.get("x"))
+            y = float(rect.get("y"))
+            width = float(rect.get("width"))
+            height = float(rect.get("height"))
+        except (TypeError, ValueError):
+            return None
+        if width <= 0 or height <= 0:
+            return None
+        return {"x": x, "y": y, "width": width, "height": height}
+    if isinstance(rect, (list, tuple)) and len(rect) == 4:
+        try:
+            x1 = float(rect[0])
+            y1 = float(rect[1])
+            x2 = float(rect[2])
+            y2 = float(rect[3])
+        except (TypeError, ValueError):
+            return None
+        width = x2 - x1
+        height = y2 - y1
+        if width <= 0 or height <= 0:
+            return None
+        return {"x": x1, "y": y1, "width": width, "height": height}
+    return None
+
+
+def rename_fields_to_template_fields(fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Convert renamed workspace fields into schema-mapping allowlist payload fields."""
+    template_fields: List[Dict[str, Any]] = []
+    for field in fields or []:
+        if not isinstance(field, dict):
+            continue
+        name = str(field.get("name") or "").strip()
+        if not name:
+            continue
+        entry: Dict[str, Any] = {
+            "id": str(field.get("id") or "").strip() or None,
+            "name": name,
+            "type": str(field.get("type") or "text").strip() or "text",
+            "page": int(field.get("page") or 1),
+            "groupKey": field.get("groupKey"),
+            "optionKey": field.get("optionKey"),
+            "optionLabel": field.get("optionLabel"),
+            "groupLabel": field.get("groupLabel"),
+            "radioGroupId": field.get("radioGroupId"),
+            "radioGroupKey": field.get("radioGroupKey"),
+            "radioGroupLabel": field.get("radioGroupLabel"),
+            "radioOptionKey": field.get("radioOptionKey"),
+            "radioOptionLabel": field.get("radioOptionLabel"),
+        }
+        rect = _rect_to_xywh(field.get("rect"))
+        if rect is not None:
+            entry["rect"] = rect
+        template_fields.append(entry)
+    return template_fields
+
+
+def _build_exact_name_mapping_ai_response(
+    schema_fields: List[Dict[str, Any]],
+    template_tags: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Build a minimal mapping-style response from exact normalized name matches."""
+    _, allowed_schema_set, normalized_schema_map = _build_allowed_schema_lookup(schema_fields)
+
+    mappings: List[Dict[str, Any]] = []
+    for tag in template_tags:
+        tag_name = str(tag.get("tag") or "").strip()
+        if not tag_name:
+            continue
+        schema_field = _resolve_schema_field_for_tag(
+            tag_name,
+            allowed_schema_set=allowed_schema_set,
+            normalized_schema_map=normalized_schema_map,
+        )
+        if not schema_field:
+            continue
+        mappings.append(_build_exact_mapping_entry(tag, schema_field=schema_field))
+
+    return {
+        "mappings": mappings,
+        "identifierKey": _resolve_identifier_key_from_mappings(mappings),
+    }
+
+
+def prepare_incremental_remap_ai_payload(
+    schema_fields: List[Dict[str, Any]],
+    template_tags: List[Dict[str, Any]],
+) -> tuple[Dict[str, Any], Dict[str, Any] | None]:
+    """Pre-resolve exact current-name matches locally and shrink the remaining OpenAI prompt.
+
+    Remap-only is intended to be a lightweight second-pass review over the current field names.
+    We resolve deterministic exact/normalized matches in O(S + T) time, then send only the
+    unresolved field names to OpenAI.
+    """
+    _, allowed_schema_set, normalized_schema_map = _build_allowed_schema_lookup(schema_fields)
+
+    local_mappings: List[Dict[str, Any]] = []
+    remaining_template_tags: List[Dict[str, Any]] = []
+
+    for tag in template_tags:
+        if not isinstance(tag, dict):
+            continue
+        tag_name = str(tag.get("tag") or "").strip()
+        if not tag_name:
+            continue
+        schema_field = _resolve_schema_field_for_tag(
+            tag_name,
+            allowed_schema_set=allowed_schema_set,
+            normalized_schema_map=normalized_schema_map,
+        )
+        needs_openai = not schema_field
+        if needs_openai:
+            remaining_template_tags.append(tag)
+            continue
+        local_mappings.append(_build_exact_mapping_entry(tag, schema_field=schema_field))
+
+    seed_response: Dict[str, Any] = {
+        "mappings": local_mappings,
+        "identifierKey": _resolve_identifier_key_from_mappings(local_mappings),
+    }
+    if not remaining_template_tags:
+        return seed_response, None
+    return (
+        seed_response,
+        {
+            "schemaFields": list(schema_fields),
+            "templateTags": remaining_template_tags,
+            "totalSchemaFields": len(schema_fields),
+            "totalTemplateTags": len(remaining_template_tags),
+        },
+    )
+
+
+def merge_schema_mapping_ai_responses(*responses: Dict[str, Any] | None) -> Dict[str, Any]:
+    """Merge local and OpenAI mapping-style responses before final sanitization."""
+    aggregate: Dict[str, Any] = {
+        "mappings": [],
+        "templateRules": [],
+        "textTransformRules": [],
+        "checkboxRules": [],
+        "radioGroupSuggestions": [],
+        "notes": [],
+    }
+    for response in responses:
+        if not isinstance(response, dict):
+            continue
+        mappings = response.get("mappings")
+        if isinstance(mappings, list):
+            aggregate["mappings"].extend(entry for entry in mappings if isinstance(entry, dict))
+        template_rules = response.get("templateRules") or response.get("template_rules")
+        if isinstance(template_rules, list):
+            aggregate["templateRules"].extend(entry for entry in template_rules if isinstance(entry, dict))
+        text_rules = response.get("textTransformRules") or response.get("text_transform_rules")
+        if isinstance(text_rules, list):
+            aggregate["textTransformRules"].extend(entry for entry in text_rules if isinstance(entry, dict))
+        checkbox_rules = response.get("checkboxRules") or response.get("checkbox_rules")
+        if isinstance(checkbox_rules, list):
+            aggregate["checkboxRules"].extend(entry for entry in checkbox_rules if isinstance(entry, dict))
+        radio_suggestions = response.get("radioGroupSuggestions") or response.get("radio_group_suggestions")
+        if isinstance(radio_suggestions, list):
+            aggregate["radioGroupSuggestions"].extend(entry for entry in radio_suggestions if isinstance(entry, dict))
+        identifier_key = response.get("identifierKey") or response.get("patientIdentifierField")
+        if identifier_key and not aggregate.get("identifierKey"):
+            aggregate["identifierKey"] = str(identifier_key)
+        notes = response.get("notes")
+        if notes:
+            aggregate["notes"].append(str(notes))
+
+    aggregate["notes"] = "; ".join(aggregate["notes"]) if aggregate["notes"] else ""
+    return aggregate
+
+
+def build_combined_rename_mapping_payload(
+    schema_fields: List[Dict[str, Any]],
+    renamed_fields: List[Dict[str, Any]],
+    *,
+    checkbox_rules: List[Dict[str, Any]] | None = None,
+) -> Dict[str, Any]:
+    """Derive final mapping results from a schema-aware rename pass without a second OpenAI call."""
+    allowlist_payload = build_allowlist_payload(
+        schema_fields,
+        rename_fields_to_template_fields(renamed_fields),
+    )
+    ai_response = _build_exact_name_mapping_ai_response(
+        allowlist_payload.get("schemaFields") or [],
+        allowlist_payload.get("templateTags") or [],
+    )
+    ai_response["checkboxRules"] = list(checkbox_rules or [])
+    return build_schema_mapping_payload(
+        allowlist_payload.get("schemaFields") or [],
+        allowlist_payload.get("templateTags") or [],
+        ai_response,
+    )
 
 
 def build_schema_mapping_payload(

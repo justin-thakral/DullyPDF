@@ -2,6 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import LegalPage from '../../../../src/components/pages/LegalPage';
 
+function getLegalNavLink(name: string): HTMLAnchorElement {
+  const match = screen
+    .getAllByRole('link', { name })
+    .find((link) => link.className.includes('legal-nav__link'));
+  if (!(match instanceof HTMLAnchorElement)) {
+    throw new Error(`Legal nav link not found for ${name}`);
+  }
+  return match;
+}
+
 describe('LegalPage', () => {
   it('renders privacy copy with active privacy navigation and metadata', () => {
     render(<LegalPage kind="privacy" />);
@@ -10,8 +20,8 @@ describe('LegalPage', () => {
     expect(screen.getByText('Last updated: March 9, 2026')).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Billing and payments' })).toBeTruthy();
 
-    const privacyLink = screen.getByRole('link', { name: 'Privacy' });
-    const termsLink = screen.getByRole('link', { name: 'Terms' });
+    const privacyLink = getLegalNavLink('Privacy Policy');
+    const termsLink = getLegalNavLink('Terms of Service');
     const usageDocsLinks = screen.getAllByRole('link', { name: 'Usage Docs' });
     expect(privacyLink.className.includes('legal-nav__link--active')).toBe(true);
     expect(termsLink.className.includes('legal-nav__link--active')).toBe(false);
@@ -26,8 +36,8 @@ describe('LegalPage', () => {
     expect(screen.getByRole('heading', { name: 'Terms of Service' })).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Billing and subscriptions' })).toBeTruthy();
 
-    const privacyLink = screen.getByRole('link', { name: 'Privacy' });
-    const termsLink = screen.getByRole('link', { name: 'Terms' });
+    const privacyLink = getLegalNavLink('Privacy Policy');
+    const termsLink = getLegalNavLink('Terms of Service');
     const usageDocsLinks = screen.getAllByRole('link', { name: 'Usage Docs' });
     expect(privacyLink.className.includes('legal-nav__link--active')).toBe(false);
     expect(termsLink.className.includes('legal-nav__link--active')).toBe(true);

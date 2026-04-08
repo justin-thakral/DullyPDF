@@ -224,25 +224,39 @@ export function HeaderBar({
     demoOverride ? true : !canRenameAndMap || mappingInProgress || renameInProgress || mapSchemaInProgress;
   const disableRenameAndMapGroup =
     demoOverride ? true : !canRenameAndMapGroup || mappingInProgress || renameInProgress || mapSchemaInProgress || renameAndMapGroupInProgress;
-  const disableFillLink = demoOverride ? true : !canFillLink || mappingInProgress;
-  const disableSendForSignature = !canSendForSignature || mappingInProgress;
-  const disableTemplateApi = demoOverride ? true : !canOpenTemplateApi;
+  const templateStateMutating =
+    mappingInProgress ||
+    mapSchemaInProgress ||
+    renameInProgress ||
+    renameAndMapGroupInProgress ||
+    groupTemplateSwitchInProgress;
+  const outputWorkflowBusy = templateStateMutating || saveInProgress;
+  const disableFillLink = demoOverride ? true : !canFillLink || outputWorkflowBusy;
+  const disableSendForSignature = !canSendForSignature || outputWorkflowBusy;
+  const disableTemplateApi = demoOverride ? true : !canOpenTemplateApi || outputWorkflowBusy;
   const showDemoFillLinkDocs = demoLocked && Boolean(demoFillLinkDocsHref);
   const showDemoCreateGroupDocs = demoLocked && Boolean(demoCreateGroupDocsHref);
   const showDemoFillFromImagesDocs = demoLocked && Boolean(demoFillFromImagesDocsHref);
   const showDemoSignatureDocs = demoLocked && Boolean(demoSignatureDocsHref);
   const showDemoDocs = showDemoFillLinkDocs || showDemoCreateGroupDocs || showDemoFillFromImagesDocs || showDemoSignatureDocs;
-  const rawActionHint = demoOverride
-    ? (showDemoDocs ? null : demoLockedHint)
-    : hasGroupContext && disableRenameAndMapGroup
-      ? renameAndMapGroupDisabledReason
-      : disableMapSchema
-      ? mapSchemaDisabledReason
-      : disableRenameAndMap
-        ? renameAndMapDisabledReason
-        : disableRename
-          ? renameDisabledReason
-          : null;
+  const busyReason = getOperationBusyReason({
+    mappingInProgress, mapSchemaInProgress, renameInProgress,
+    renameAndMapGroupInProgress, downloadInProgress, downloadGroupInProgress,
+    saveInProgress, groupTemplateSwitchInProgress,
+  });
+  const rawActionHint = busyReason
+    ? null
+    : demoOverride
+      ? (showDemoDocs ? null : demoLockedHint)
+      : hasGroupContext && disableRenameAndMapGroup
+        ? renameAndMapGroupDisabledReason
+        : disableMapSchema
+          ? mapSchemaDisabledReason
+          : disableRenameAndMap
+            ? renameAndMapDisabledReason
+            : disableRename
+              ? renameDisabledReason
+              : null;
   const actionHint = isSchemaPrerequisiteHint(rawActionHint) ? null : formatInlineHeaderHint(rawActionHint);
   const mapSchemaTooltip = disableMapSchema
     ? demoLockedHint || mapSchemaDisabledReason || 'Mapping is unavailable right now.'
@@ -260,13 +274,8 @@ export function HeaderBar({
     groupTemplateSwitchInProgress || mappingInProgress || renameInProgress || mapSchemaInProgress || renameAndMapGroupInProgress;
   const disableDownload = demoOverride ? false : !canDownload || downloadInProgress;
   const disableDownloadGroup = demoOverride ? false : !canDownloadGroup || downloadGroupInProgress;
-  const disableSave = demoOverride ? true : !canSave || saveInProgress;
+  const disableSave = demoOverride ? true : !canSave || outputWorkflowBusy;
   const disableDataSource = mappingInProgress || demoOverride;
-  const busyReason = getOperationBusyReason({
-    mappingInProgress, mapSchemaInProgress, renameInProgress,
-    renameAndMapGroupInProgress, downloadInProgress, downloadGroupInProgress,
-    saveInProgress, groupTemplateSwitchInProgress,
-  });
   const guardClick = (blocked: boolean, reason: string | null, action: () => void) => {
     if (demoOverride) { onDemoLockedAction?.(); return; }
     if (blocked) { if (reason) onBlockedAction?.(reason); return; }
@@ -779,7 +788,7 @@ export function HeaderBar({
                         role="menuitem"
                         onClick={() => guardClick(disableRename, busyReason || renameTooltip, () => {
                           setShowRenameMenu(false);
-                          onRename?.();
+                          runDeferredHeaderAction(onRename);
                         })}
                         aria-disabled={disableRename}
                       >
@@ -794,7 +803,7 @@ export function HeaderBar({
                         data-demo-target="openai-remap"
                         onClick={() => guardClick(disableMapSchema, busyReason || mapSchemaTooltip, () => {
                           setShowRenameMenu(false);
-                          onMapSchema?.();
+                          runDeferredHeaderAction(onMapSchema);
                         })}
                         aria-disabled={disableMapSchema}
                       >
@@ -808,7 +817,7 @@ export function HeaderBar({
                         role="menuitem"
                         onClick={() => guardClick(disableRenameAndMap, busyReason || renameAndMapTooltip, () => {
                           setShowRenameMenu(false);
-                          onRenameAndMap?.();
+                          runDeferredHeaderAction(onRenameAndMap);
                         })}
                         aria-disabled={disableRenameAndMap}
                       >
@@ -822,7 +831,7 @@ export function HeaderBar({
                         role="menuitem"
                         onClick={() => guardClick(disableRenameAndMapGroup, busyReason || renameAndMapGroupTooltip, () => {
                           setShowRenameMenu(false);
-                          onRenameAndMapGroup?.();
+                          runDeferredHeaderAction(onRenameAndMapGroup);
                         })}
                         aria-disabled={disableRenameAndMapGroup}
                       >

@@ -39,7 +39,7 @@ export function useWorkspaceSessionDiagnostic(deps: UseWorkspaceSessionDiagnosti
   );
 
   const onBeforeOpenAiAction = useCallback(
-    async (action: 'rename' | 'map', sessionId: string | null) => {
+    async (action: 'rename' | 'map' | 'rename_remap', sessionId: string | null) => {
       if (!isUiDebugEnabled()) return;
       const diagnostic = sessionId
         ? await resolveWorkspaceSessionDiagnostic(sessionId)

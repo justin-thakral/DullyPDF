@@ -156,6 +156,8 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
         { label: page.category === 'industry' ? 'Industries' : 'Workflows' },
         { label: page.navLabel },
       ]}
+      activeNavKey={page.category === 'industry' ? 'industries' : 'workflows'}
+      usePublicChrome
       heroKicker={page.category === 'industry' ? 'Industry workflow page' : 'Commercial workflow page'}
       heroTitle={page.heroTitle}
       heroSummary={page.heroSummary}

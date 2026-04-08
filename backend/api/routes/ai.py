@@ -35,13 +35,15 @@ from backend.ai.status import (
     OPENAI_JOB_STATUS_RUNNING,
     OPENAI_JOB_TYPE_REMAP,
     OPENAI_JOB_TYPE_RENAME,
+    OPENAI_JOB_TYPE_RENAME_REMAP,
 )
 from backend.ai.tasks import (
     enqueue_openai_remap_task,
     enqueue_openai_rename_task,
+    enqueue_openai_rename_remap_task,
     resolve_openai_rename_remap_task_config,
 )
-from backend.api.schemas import RenameFieldsRequest, SchemaMappingRequest
+from backend.api.schemas import RenameFieldsRequest, RenameRemapRequest, SchemaMappingRequest
 from backend.firebaseDB.openai_job_database import (
     OpenAiJobAlreadyExistsError,
     create_openai_job,
@@ -72,7 +74,10 @@ from backend.services.downgrade_retention_service import is_user_retention_templ
 from backend.logging_config import get_logger
 from backend.services.mapping_service import (
     apply_mapping_results_to_fields,
+    build_combined_rename_mapping_payload,
     build_schema_mapping_payload,
+    merge_schema_mapping_ai_responses,
+    prepare_incremental_remap_ai_payload,
     template_fields_to_rename_fields,
 )
 from backend.services.pdf_service import (
@@ -898,6 +903,312 @@ async def get_rename_job_status(
     return _build_openai_job_response(job_id=job_id, job=job)
 
 
+@router.post("/api/rename-remap/ai")
+async def rename_remap_fields_ai(
+    request: Request,
+    payload: RenameRemapRequest,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    """Run one schema-aware OpenAI rename pass and derive mapping results locally."""
+    user = _resolve_user_from_request(request, authorization)
+
+    entry = _get_session_entry(
+        payload.sessionId,
+        user,
+        include_result=True,
+        include_renames=False,
+        include_checkbox_rules=False,
+        force_l2=True,
+    )
+    pdf_bytes = entry.get("pdf_bytes")
+    if not pdf_bytes:
+        raise HTTPException(status_code=404, detail="Session PDF not found")
+    _ensure_session_ai_accessible(
+        user_id=user.app_user_id,
+        session_id=payload.sessionId,
+        session_entry=entry,
+    )
+    _validate_session_source_pdf_fingerprint(
+        session_id=payload.sessionId,
+        session_entry=entry,
+        source_pdf_sha256=payload.sourcePdfSha256,
+    )
+
+    rename_fields: List[Dict[str, Any]]
+    if payload.templateFields:
+        rename_fields = template_fields_to_rename_fields(payload.templateFields)
+    else:
+        rename_fields = list(entry.get("fields") or [])
+    if not rename_fields:
+        raise HTTPException(status_code=400, detail="No fields available for rename")
+
+    schema = get_schema(payload.schemaId, user.app_user_id)
+    if not schema:
+        raise HTTPException(status_code=404, detail="Schema not found")
+    allowlist = build_allowlist_payload(schema.fields, [])
+    schema_fields = allowlist.get("schemaFields") or []
+    if not schema_fields:
+        raise HTTPException(status_code=400, detail="Schema fields are required for rename")
+    try:
+        validate_payload_size(allowlist)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    database_fields = [field.get("name") for field in schema_fields if field.get("name")]
+
+    window_seconds = _safe_positive_int_env("OPENAI_RENAME_RATE_LIMIT_WINDOW_SECONDS", 60)
+    user_rate = _safe_positive_int_env("OPENAI_RENAME_RATE_LIMIT_PER_USER", 6)
+    if not check_rate_limit(
+        f"rename:user:{user.app_user_id}",
+        limit=user_rate,
+        window_seconds=window_seconds,
+        fail_closed=True,
+    ):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded for user")
+
+    page_count = _coerce_positive_int(entry.get("page_count"))
+    if page_count is None:
+        page_count = _coerce_positive_int(get_pdf_page_count(pdf_bytes))
+    if page_count is None:
+        raise HTTPException(status_code=400, detail="Unable to determine document page count for credit pricing")
+
+    credit_pricing = compute_credit_pricing(
+        OPENAI_CREDIT_OPERATION_RENAME_REMAP,
+        page_count=page_count,
+    )
+    credits_required = credit_pricing.total_credits
+    credits_charged = normalize_role(user.role) != ROLE_GOD
+    task_mode = _task_mode_enabled(resolve_openai_rename_remap_mode())
+    provided_request_id = _normalize_request_id(payload.requestId)
+    tracking = _resolve_openai_request_tracking(
+        kind="rename_remap",
+        task_mode=task_mode,
+        provided_request_id=provided_request_id,
+        user_id=user.app_user_id,
+        session_id=payload.sessionId,
+        schema_id=schema.id,
+        fingerprint_payload={
+            "renameFields": rename_fields,
+            "databaseFields": list(database_fields),
+        },
+    )
+    task_config: Optional[Dict[str, str]] = None
+    serialized_template_fields = _serialize_template_fields(payload.templateFields)
+
+    existing_response = _maybe_reuse_tracked_openai_job(
+        tracking=tracking,
+        job_type=OPENAI_JOB_TYPE_RENAME_REMAP,
+        user_id=user.app_user_id,
+        session_id=payload.sessionId,
+        schema_id=schema.id,
+    )
+    if existing_response is not None:
+        return existing_response
+    if task_mode:
+        task_config = resolve_openai_rename_remap_task_config()
+    existing_response = _create_tracked_openai_job(
+        tracking=tracking,
+        job_type=OPENAI_JOB_TYPE_RENAME_REMAP,
+        user_id=user.app_user_id,
+        session_id=payload.sessionId,
+        schema_id=schema.id,
+        task_config=task_config,
+        page_count=page_count,
+        template_field_count=len(rename_fields),
+        credits_required=credits_required,
+        credit_pricing=credit_pricing.to_dict(),
+        credits_charged=credits_charged,
+        user_role=user.role,
+    )
+    if existing_response is not None:
+        return existing_response
+
+    remaining, allowed, credit_breakdown = _coerce_consume_result(
+        consume_openai_credits(
+            user.app_user_id,
+            credits=credits_required,
+            role=user.role,
+            include_breakdown=True,
+        )
+    )
+    if not allowed:
+        _maybe_fail_openai_job(
+            tracking=tracking,
+            error=f"OpenAI credits exhausted (remaining={remaining}, required={credits_required})",
+        )
+        raise HTTPException(
+            status_code=402,
+            detail=f"OpenAI credits exhausted (remaining={remaining}, required={credits_required})",
+        )
+
+    _maybe_record_openai_job_credit_breakdown(
+        tracking=tracking,
+        credit_breakdown=credit_breakdown,
+    )
+
+    try:
+        record_openai_rename_request(
+            request_id=tracking.request_id,
+            user_id=user.app_user_id,
+            session_id=payload.sessionId,
+            schema_id=schema.id,
+        )
+    except Exception as exc:
+        _refund_credits_if_charged(
+            user_id=user.app_user_id,
+            role=user.role,
+            credits=credits_required,
+            charged=credits_charged,
+            source="rename_remap.request_log",
+            request_id=tracking.request_id,
+            credit_breakdown=credit_breakdown,
+        )
+        _maybe_fail_openai_job(tracking=tracking, error=str(exc))
+        status_code = getattr(exc, "status_code", None) or 500
+        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
+
+    if task_mode:
+        try:
+            task_name = enqueue_openai_rename_remap_task(
+                {
+                    "jobId": tracking.request_id,
+                    "requestId": tracking.request_id,
+                    "sessionId": payload.sessionId,
+                    "schemaId": schema.id,
+                    "templateFields": serialized_template_fields,
+                    "userId": user.app_user_id,
+                    "userRole": user.role,
+                    "pageCount": page_count,
+                    "credits": credits_required,
+                    "creditPricing": credit_pricing.to_dict(),
+                    "creditsCharged": credits_charged,
+                    "creditBreakdown": credit_breakdown,
+                },
+            )
+            update_openai_job(job_id=tracking.request_id, task_name=task_name)
+        except Exception as exc:
+            _refund_credits_if_charged(
+                user_id=user.app_user_id,
+                role=user.role,
+                credits=credits_required,
+                charged=credits_charged,
+                source="rename_remap.enqueue",
+                request_id=tracking.request_id,
+                job_id=tracking.request_id,
+                credit_breakdown=credit_breakdown,
+            )
+            _maybe_fail_openai_job(tracking=tracking, error=str(exc))
+            raise HTTPException(status_code=500, detail="Failed to enqueue Rename + Remap job") from exc
+
+        return {
+            "success": True,
+            "requestId": tracking.request_id,
+            "jobId": tracking.request_id,
+            "sessionId": payload.sessionId,
+            "schemaId": schema.id,
+            "status": OPENAI_JOB_STATUS_QUEUED,
+            "pageCount": page_count,
+            "creditPricing": credit_pricing.to_dict(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
+        }
+
+    _maybe_mark_openai_job_running(tracking=tracking)
+
+    try:
+        rename_report, renamed_fields = run_openai_rename_on_pdf(
+            pdf_bytes=pdf_bytes,
+            pdf_name=entry.get("source_pdf") or "document.pdf",
+            fields=rename_fields,
+            database_fields=database_fields,
+            detector_candidates_by_page=(entry.get("result") or {}).get("detectorCandidatesByPage"),
+        )
+        mapping_results = build_combined_rename_mapping_payload(
+            schema.fields,
+            renamed_fields,
+            checkbox_rules=rename_report.get("checkboxRules") or [],
+        )
+        final_fields = apply_mapping_results_to_fields(renamed_fields, mapping_results)
+    except Exception as exc:
+        _refund_credits_if_charged(
+            user_id=user.app_user_id,
+            role=user.role,
+            credits=credits_required,
+            charged=credits_charged,
+            source="rename_remap.sync_openai",
+            request_id=tracking.request_id,
+            credit_breakdown=credit_breakdown,
+        )
+        _maybe_fail_openai_job(tracking=tracking, error=str(exc))
+        status_code = getattr(exc, "status_code", None) or 500
+        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
+
+    checkbox_rules = list(mapping_results.get("checkboxRules") or [])
+    text_transform_rules = list(mapping_results.get("textTransformRules") or [])
+    entry["fields"] = final_fields
+    entry["renames"] = rename_report
+    entry["checkboxRules"] = checkbox_rules
+    entry.pop("checkboxHints", None)
+    entry["textTransformRules"] = text_transform_rules
+    entry["page_count"] = page_count
+    _update_session_entry(
+        payload.sessionId,
+        entry,
+        persist_fields=True,
+        persist_renames=True,
+        persist_checkbox_rules=True,
+        persist_text_transform_rules=True,
+    )
+
+    response_payload = {
+        "success": True,
+        "requestId": tracking.request_id,
+        "sessionId": payload.sessionId,
+        "schemaId": schema.id,
+        "renames": rename_report,
+        "fields": final_fields,
+        "checkboxRules": checkbox_rules,
+        "mappingResults": mapping_results,
+        "pageCount": page_count,
+        "creditPricing": credit_pricing.to_dict(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
+    }
+    _maybe_complete_openai_job(
+        tracking=tracking,
+        result={
+            "success": True,
+            "requestId": tracking.request_id,
+            "sessionId": payload.sessionId,
+            "schemaId": schema.id,
+            "renames": rename_report,
+            "fields": final_fields,
+            "checkboxRules": checkbox_rules,
+            "mappingResults": mapping_results,
+            "pageCount": page_count,
+            "creditPricing": credit_pricing.to_dict(),
+        },
+    )
+    if tracking.track_job:
+        response_payload["jobId"] = tracking.request_id
+        response_payload["status"] = OPENAI_JOB_STATUS_COMPLETE
+    return response_payload
+
+
+@router.get("/api/rename-remap/ai/{job_id}")
+async def get_rename_remap_job_status(
+    request: Request,
+    job_id: str,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = _resolve_user_from_request(request, authorization)
+    job = get_openai_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Rename + Remap job not found")
+    if str(job.get("job_type") or "") != OPENAI_JOB_TYPE_RENAME_REMAP:
+        raise HTTPException(status_code=404, detail="Rename + Remap job not found")
+    if str(job.get("user_id") or "") != user.app_user_id:
+        raise HTTPException(status_code=403, detail="Rename + Remap job access denied")
+    return _build_openai_job_response(job_id=job_id, job=job)
+
+
 @router.post("/api/schema-mappings/ai")
 async def map_schema_ai(
     request: Request,
@@ -1111,12 +1422,34 @@ async def map_schema_ai(
 
     _maybe_mark_openai_job_running(tracking=tracking)
 
+    remap_seed_response, remap_openai_payload = prepare_incremental_remap_ai_payload(
+        allowlist_payload.get("schemaFields") or [],
+        allowlist_payload.get("templateTags") or [],
+    )
+
+    if remap_openai_payload is None:
+        logger.info(
+            "Schema remap resolved locally without OpenAI (schema=%s tags=%s local_matches=%s)",
+            len(allowlist_payload.get("schemaFields") or []),
+            len(allowlist_payload.get("templateTags") or []),
+            len(remap_seed_response.get("mappings") or []),
+        )
+    else:
+        logger.info(
+            "Schema remap pre-resolved %s tags locally and sent %s tags to OpenAI",
+            len(remap_seed_response.get("mappings") or []),
+            len(remap_openai_payload.get("templateTags") or []),
+        )
+
     try:
         openai_usage_events: List[Dict[str, Any]] = []
-        ai_response = call_openai_schema_mapping_chunked(
-            allowlist_payload,
-            usage_collector=openai_usage_events,
-        )
+        openai_response: Dict[str, Any] | None = None
+        if remap_openai_payload is not None:
+            openai_response = call_openai_schema_mapping_chunked(
+                remap_openai_payload,
+                usage_collector=openai_usage_events,
+            )
+        ai_response = merge_schema_mapping_ai_responses(remap_seed_response, openai_response)
         openai_usage_summary = build_openai_usage_summary(openai_usage_events)
     except ValueError as exc:
         _refund_credits_if_charged(

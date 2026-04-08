@@ -59,6 +59,8 @@ import { useWorkspaceSessionDiagnostic } from './hooks/useWorkspaceSessionDiagno
 import { ApiService } from './services/api';
 import { fetchDetectionStatus } from './services/detectionApi';
 import { debugLog } from './utils/debug';
+import { resolveConfirmDialogResult } from './utils/dialogResult';
+import { shouldSuppressTransientBusyBanner } from './utils/transientBusyBanner';
 import { returnWorkspaceToHomepage } from './utils/returnWorkspaceToHomepage';
 import { applyRouteSeo } from './utils/seo';
 import {
@@ -188,10 +190,12 @@ type OpenAiRenameOptions = {
 type ApplySchemaMappingsOptions = {
   fieldsOverride?: PdfField[];
   schemaIdOverride?: string | null;
+  sessionIdOverride?: string | null;
 };
 
 type OpenAiBridge = {
   runOpenAiRename: (opts?: OpenAiRenameOptions) => Promise<PdfField[] | null>;
+  runOpenAiRenameAndRemap: (opts?: OpenAiRenameOptions) => Promise<PdfField[] | null>;
   applySchemaMappings: (opts?: ApplySchemaMappingsOptions) => Promise<boolean>;
   handleMappingSuccess: () => void;
   setHasRenamedFields: (value: boolean) => void;
@@ -227,6 +231,7 @@ function WorkspaceRuntime({
   });
   const openAiBridge = useRef<OpenAiBridge>({
     runOpenAiRename: async () => null,
+    runOpenAiRenameAndRemap: async () => null,
     applySchemaMappings: async () => false,
     handleMappingSuccess: () => {},
     setHasRenamedFields: () => {},
@@ -381,6 +386,7 @@ function WorkspaceRuntime({
     setSchemaError: dataSource.setSchemaError,
     // openAi callbacks via bridge
     runOpenAiRename: (opts) => openAiBridge.current.runOpenAiRename(opts),
+    runOpenAiRenameAndRemap: (opts) => openAiBridge.current.runOpenAiRenameAndRemap(opts),
     applySchemaMappings: (opts) => openAiBridge.current.applySchemaMappings(opts),
     handleMappingSuccess: () => openAiBridge.current.handleMappingSuccess(),
     setHasRenamedFields: (v) => openAiBridge.current.setHasRenamedFields(v),
@@ -459,6 +465,7 @@ function WorkspaceRuntime({
   // Update bridges
   openAiBridge.current = {
     runOpenAiRename: openAi.runOpenAiRename,
+    runOpenAiRenameAndRemap: openAi.runOpenAiRenameAndRemap,
     applySchemaMappings: openAi.applySchemaMappings,
     handleMappingSuccess: openAi.handleMappingSuccess,
     setHasRenamedFields: openAi.setHasRenamedFields,
@@ -2276,9 +2283,16 @@ function WorkspaceRuntime({
   const demoUiLocked = demoCompletionOpen || (!demoActive && isDemoAsset);
 
   const activeErrorMessage = openAiError ?? schemaError;
+  const suppressBannerNotice = shouldSuppressTransientBusyBanner(bannerNotice?.message, {
+    mappingInProgress,
+    mapSchemaInProgress,
+    renameInProgress,
+  });
   const bannerAlert: BannerNotice | null = activeErrorMessage
     ? { tone: 'error', message: activeErrorMessage }
-    : bannerNotice;
+    : suppressBannerNotice
+      ? null
+      : bannerNotice;
   const shouldShowBannerAlert = Boolean(bannerAlert) && !(demoActive && !isMobileView);
 
   const handleDemoLockedAction = useCallback(() => {
@@ -2328,9 +2342,14 @@ function WorkspaceRuntime({
   const dialogContent = (() => {
     if (!dialogRequest) return null;
     if (dialogRequest.kind === 'confirm') {
+      const cancelResult = resolveConfirmDialogResult(dialogRequest, 'cancelResult', false);
+      const dismissResult = resolveConfirmDialogResult(dialogRequest, 'dismissResult', cancelResult);
       return (<ConfirmDialog open title={dialogRequest.title} description={dialogRequest.message}
         confirmLabel={dialogRequest.confirmLabel} cancelLabel={dialogRequest.cancelLabel}
-        tone={dialogRequest.tone} onConfirm={() => dialog.resolveDialog(true)} onCancel={() => dialog.resolveDialog(false)} />);
+        tone={dialogRequest.tone}
+        onConfirm={() => dialog.resolveDialog(true)}
+        onCancel={() => dialog.resolveDialog(cancelResult)}
+        onClose={() => dialog.resolveDialog(dismissResult)} />);
     }
     if (dialogRequest.kind === 'prompt') {
       return (<PromptDialog open title={dialogRequest.title} description={dialogRequest.message}

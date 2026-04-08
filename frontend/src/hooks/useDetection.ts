@@ -91,9 +91,16 @@ export interface UseDetectionDeps {
     sessionId?: string | null;
     schemaId?: string | null;
   }) => Promise<PdfField[] | null>;
+  runOpenAiRenameAndRemap: (options?: {
+    confirm?: boolean;
+    allowDefer?: boolean;
+    sessionId?: string | null;
+    schemaId?: string | null;
+  }) => Promise<PdfField[] | null>;
   applySchemaMappings: (options?: {
     fieldsOverride?: PdfField[];
     schemaIdOverride?: string | null;
+    sessionIdOverride?: string | null;
   }) => Promise<boolean>;
   handleMappingSuccess: () => void;
   schemaId: string | null;
@@ -294,23 +301,19 @@ export function useDetection(deps: UseDetectionDeps) {
               autoMap: pendingAutoActions.autoMap,
             });
             if (pendingAutoActions.autoRename && pendingAutoActions.autoMap) {
-              const renamed = await deps.runOpenAiRename({
+              await deps.runOpenAiRenameAndRemap({
                 confirm: false, allowDefer: true, sessionId, schemaId: pendingAutoActions.schemaId,
               });
-              if (renamed && pendingAutoActions.schemaId) {
-                const mapped = await deps.applySchemaMappings({
-                  fieldsOverride: renamed,
-                  schemaIdOverride: pendingAutoActions.schemaId,
-                });
-                if (mapped) deps.handleMappingSuccess();
-              }
             } else if (pendingAutoActions.autoRename) {
               await deps.runOpenAiRename({ confirm: false, allowDefer: true, sessionId });
             } else if (pendingAutoActions.autoMap) {
               if (!pendingAutoActions.schemaId) {
                 deps.setSchemaError('Upload a schema file before running mapping.');
               } else {
-                const mapped = await deps.applySchemaMappings({ schemaIdOverride: pendingAutoActions.schemaId });
+                const mapped = await deps.applySchemaMappings({
+                  schemaIdOverride: pendingAutoActions.schemaId,
+                  sessionIdOverride: sessionId,
+                });
                 if (mapped) deps.handleMappingSuccess();
               }
             }
@@ -1005,23 +1008,19 @@ export function useDetection(deps: UseDetectionDeps) {
         });
 
         if (options.autoRename && options.autoMap) {
-          const renamed = await deps.runOpenAiRename({
+          await deps.runOpenAiRenameAndRemap({
             confirm: false, allowDefer: true, sessionId: detectedSessionId, schemaId: activeSchemaId,
           });
-          if (renamed && activeSchemaId) {
-            const mapped = await deps.applySchemaMappings({
-              fieldsOverride: renamed,
-              schemaIdOverride: activeSchemaId,
-            });
-            if (mapped) deps.handleMappingSuccess();
-          }
           return;
         }
         if (options.autoRename) {
           await deps.runOpenAiRename({ confirm: false, allowDefer: true, sessionId: detectedSessionId });
         }
         if (options.autoMap) {
-          const mapped = await deps.applySchemaMappings({ schemaIdOverride: activeSchemaId });
+          const mapped = await deps.applySchemaMappings({
+            schemaIdOverride: activeSchemaId,
+            sessionIdOverride: detectedSessionId,
+          });
           if (mapped) deps.handleMappingSuccess();
         }
       } catch (error) {

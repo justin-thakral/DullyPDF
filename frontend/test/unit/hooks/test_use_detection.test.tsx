@@ -102,6 +102,7 @@ function createDeps(overrides: Record<string, unknown> = {}) {
     setSearchFillSessionId,
     setLoadError: vi.fn(),
     runOpenAiRename: vi.fn(),
+    runOpenAiRenameAndRemap: vi.fn(),
     applySchemaMappings: vi.fn(),
     handleMappingSuccess: vi.fn(),
     schemaId: null,
@@ -277,10 +278,10 @@ describe('useDetection', () => {
     );
   });
 
-  it('runs rename and then mapping for auto-rename plus auto-map uploads', async () => {
+  it('runs the combined rename + remap request for auto-rename plus auto-map uploads', async () => {
     const deps = createDeps({
       schemaId: 'schema-1',
-      runOpenAiRename: vi.fn().mockResolvedValue([
+      runOpenAiRenameAndRemap: vi.fn().mockResolvedValue([
         {
           id: 'field-1',
           name: 'Renamed Field',
@@ -290,7 +291,6 @@ describe('useDetection', () => {
           value: null,
         },
       ]),
-      applySchemaMappings: vi.fn().mockResolvedValue(true),
     });
     const hook = renderHookHarness(deps);
     const pdfState = createPdfState();
@@ -314,19 +314,48 @@ describe('useDetection', () => {
       );
     });
 
-    expect(deps.runOpenAiRename).toHaveBeenCalledWith({
+    expect(deps.runOpenAiRenameAndRemap).toHaveBeenCalledWith({
       confirm: false,
       allowDefer: true,
       sessionId: 'session-rename-map',
       schemaId: 'schema-1',
     });
-    expect(deps.applySchemaMappings).toHaveBeenCalledWith({
-      fieldsOverride: [
-        expect.objectContaining({ name: 'Renamed Field' }),
-      ],
-      schemaIdOverride: 'schema-1',
+    expect(deps.runOpenAiRename).not.toHaveBeenCalled();
+    expect(deps.applySchemaMappings).not.toHaveBeenCalled();
+  });
+
+  it('passes the detected session id into auto-map uploads', async () => {
+    const deps = createDeps({
+      schemaId: 'schema-1',
+      applySchemaMappings: vi.fn().mockResolvedValue(true),
     });
-    expect(deps.handleMappingSuccess).toHaveBeenCalledTimes(1);
+    const hook = renderHookHarness(deps);
+    const pdfState = createPdfState();
+
+    detectFieldsMock.mockResolvedValue({
+      sessionId: 'session-map-only',
+      status: 'complete',
+      fields: [{
+        name: 'Original Field',
+        type: 'text',
+        page: 1,
+        rect: [10, 10, 120, 24],
+      }],
+    });
+
+    await act(async () => {
+      await hook.current.runDetectUpload(
+        new File(['pdf'], 'map-only.pdf', { type: 'application/pdf' }),
+        { autoMap: true },
+        pdfState,
+      );
+    });
+
+    expect(deps.applySchemaMappings).toHaveBeenCalledWith({
+      schemaIdOverride: 'schema-1',
+      sessionIdOverride: 'session-map-only',
+    });
+    expect(deps.handleMappingSuccess).toHaveBeenCalled();
   });
 
   it('shows a banner while auto-rename is still running after the editor opens', async () => {

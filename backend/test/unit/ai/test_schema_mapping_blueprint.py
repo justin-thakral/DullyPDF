@@ -262,8 +262,33 @@ def test_call_openai_schema_mapping_uses_json_response_format_and_parses_wrapped
     assert first_call["response_format"] == {"type": "json_object"}
     system_content = first_call["messages"][0]["content"]
     user_content = first_call["messages"][1]["content"]
-    assert "textTransformRules" in system_content
-    assert "textTransformRules.operation" in user_content
+    assert "identifierKey" in system_content
+    assert "Database headers" in user_content
+    assert "Current field names" in user_content
+    assert "checkbox rules" in user_content
+    assert '"rect"' not in user_content
+
+
+def test_build_lightweight_mapping_payload_only_includes_names() -> None:
+    payload = schema_mapping._build_lightweight_mapping_payload(
+        {
+            "schemaFields": [
+                {"name": "patient_name", "type": "string"},
+                {"name": "patient_name", "type": "string"},
+                {"name": "patient_birthdate", "type": "date"},
+            ],
+            "templateTags": [
+                {"tag": "commonforms_text_p1_1", "type": "text", "rect": {"x": 1}},
+                {"tag": "commonforms_text_p1_1", "type": "text"},
+                {"tag": "patient_name", "type": "text", "groupKey": "ignored"},
+            ],
+        }
+    )
+
+    assert payload == {
+        "schemaFields": ["patient_name", "patient_birthdate"],
+        "templateTags": ["commonforms_text_p1_1", "patient_name"],
+    }
 
 
 def test_call_openai_schema_mapping_retries_without_response_format_when_rejected(

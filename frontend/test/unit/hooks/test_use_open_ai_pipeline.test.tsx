@@ -7,6 +7,7 @@ import type { PdfField } from '../../../src/types';
 
 const createSavedFormSessionMock = vi.hoisted(() => vi.fn());
 const renameFieldsMock = vi.hoisted(() => vi.fn());
+const renameAndRemapMock = vi.hoisted(() => vi.fn());
 const mapSchemaMock = vi.hoisted(() => vi.fn());
 const fetchDetectionStatusMock = vi.hoisted(() => vi.fn());
 const resolveSourcePdfSha256Mock = vi.hoisted(() => vi.fn());
@@ -15,6 +16,7 @@ vi.mock('../../../src/services/api', () => ({
   ApiService: {
     createSavedFormSession: createSavedFormSessionMock,
     renameFields: renameFieldsMock,
+    renameAndRemap: renameAndRemapMock,
     mapSchema: mapSchemaMock,
   },
 }));
@@ -131,6 +133,7 @@ describe('useOpenAiPipeline', () => {
   beforeEach(() => {
     createSavedFormSessionMock.mockReset();
     renameFieldsMock.mockReset();
+    renameAndRemapMock.mockReset();
     mapSchemaMock.mockReset();
     fetchDetectionStatusMock.mockReset();
     resolveSourcePdfSha256Mock.mockReset();
@@ -200,6 +203,98 @@ describe('useOpenAiPipeline', () => {
       undefined,
       'a'.repeat(64),
     );
+  });
+
+  it('prefers an explicit session override for schema mapping requests', async () => {
+    mapSchemaMock.mockResolvedValue({
+      success: true,
+      mappingResults: { mappings: [] },
+    });
+
+    const hook = renderHookHarness({
+      detectSessionId: null,
+      activeSavedFormId: null,
+    });
+
+    await act(async () => {
+      const mapped = await hook.current.applySchemaMappings({ sessionIdOverride: 'detect-session-override' });
+      expect(mapped).toBe(true);
+    });
+
+    expect(hook.onBeforeOpenAiAction).toHaveBeenCalledWith('map', 'detect-session-override');
+    expect(mapSchemaMock).toHaveBeenCalledWith(
+      'schema-1',
+      [expect.objectContaining({ name: 'Field 1' })],
+      undefined,
+      'detect-session-override',
+      undefined,
+      'a'.repeat(64),
+    );
+  });
+
+  it('keeps schema mapping busy flags raised until applySchemaMappings settles', async () => {
+    const mappingDeferred = createDeferred<any>();
+    mapSchemaMock.mockReturnValue(mappingDeferred.promise);
+
+    const hook = renderHookHarness({
+      detectSessionId: 'detect-session-1',
+      activeSavedFormId: null,
+    });
+
+    let mappingPromise: Promise<boolean> | null = null;
+    await act(async () => {
+      mappingPromise = hook.current.applySchemaMappings();
+      await Promise.resolve();
+    });
+
+    expect(hook.current.mappingInProgress).toBe(true);
+    expect(hook.current.mapSchemaInProgress).toBe(true);
+
+    mappingDeferred.resolve({
+      success: true,
+      mappingResults: { mappings: [] },
+    });
+
+    await act(async () => {
+      await mappingPromise;
+    });
+
+    expect(hook.current.mappingInProgress).toBe(false);
+    expect(hook.current.mapSchemaInProgress).toBe(false);
+  });
+
+  it('clears schema mapping busy state when reset is called', async () => {
+    const mappingDeferred = createDeferred<any>();
+    mapSchemaMock.mockReturnValue(mappingDeferred.promise);
+
+    const hook = renderHookHarness({
+      detectSessionId: 'detect-session-1',
+      activeSavedFormId: null,
+    });
+
+    let mappingPromise: Promise<boolean> | null = null;
+    await act(async () => {
+      mappingPromise = hook.current.applySchemaMappings();
+      await Promise.resolve();
+    });
+
+    expect(hook.current.mappingInProgress).toBe(true);
+    expect(hook.current.mapSchemaInProgress).toBe(true);
+
+    act(() => {
+      hook.current.reset();
+    });
+
+    expect(hook.current.mappingInProgress).toBe(false);
+    expect(hook.current.mapSchemaInProgress).toBe(false);
+
+    await act(async () => {
+      mappingDeferred.resolve({
+        success: true,
+        mappingResults: { mappings: [] },
+      });
+      await mappingPromise;
+    });
   });
 
   it('derives radio suggestions from rename checkbox rules', async () => {
@@ -324,15 +419,11 @@ describe('useOpenAiPipeline', () => {
     });
   });
 
-  it('runs schema mapping after rename in the combined flow', async () => {
+  it('runs the dedicated combined rename + remap request in the combined flow', async () => {
     createSavedFormSessionMock.mockResolvedValue({ sessionId: 'saved-session-1' });
-    renameFieldsMock.mockResolvedValue({
+    renameAndRemapMock.mockResolvedValue({
       success: true,
       fields: [{ originalName: 'Field 1', name: 'Renamed Field' }],
-      checkboxRules: [],
-    });
-    mapSchemaMock.mockResolvedValue({
-      success: true,
       mappingResults: {
         mappings: [{ originalPdfField: 'Renamed Field', pdfField: 'mapped_name', confidence: 0.91 }],
         checkboxRules: [],
@@ -347,20 +438,14 @@ describe('useOpenAiPipeline', () => {
       await hook.current.handleRenameAndMap(async () => 'schema-1');
     });
 
-    expect(renameFieldsMock).toHaveBeenCalledWith(
+    expect(renameAndRemapMock).toHaveBeenCalledWith(
       expect.objectContaining({
         sessionId: 'saved-session-1',
         schemaId: 'schema-1',
       }),
     );
-    expect(mapSchemaMock).toHaveBeenCalledWith(
-      'schema-1',
-      [expect.objectContaining({ name: 'Renamed Field' })],
-      'saved-form-1',
-      'saved-session-1',
-      undefined,
-      'a'.repeat(64),
-    );
+    expect(renameFieldsMock).not.toHaveBeenCalled();
+    expect(mapSchemaMock).not.toHaveBeenCalled();
     expect(hook.resetFieldHistory).toHaveBeenLastCalledWith([
       expect.objectContaining({ name: 'mapped_name' }),
     ]);

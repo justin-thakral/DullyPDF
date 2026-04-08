@@ -1,0 +1,25 @@
+.public-site-frame {
+  min-height: 100%;
+  background: radial-gradient(circle at 8% -12%, #eff6ff 0%, #f8fafc 45%, #eef2ff 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.public-site-frame__body {
+  width: min(1480px, calc(100% - 3.6rem));
+  margin: 0 auto;
+  padding: clamp(1.25rem, 2.4vw, 2rem) 0 clamp(2.25rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  flex: 1 0 auto;
+}
+
+@media (max-width: 640px) {
+  .public-site-frame__body {
+    width: calc(100% - 1.8rem);
+    padding-top: 1rem;
+    padding-bottom: 1.4rem;
+    gap: 1rem;
+  }
+}

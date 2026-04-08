@@ -37,7 +37,7 @@ export interface UseSaveDownloadDeps {
   verifiedUser: User | null;
   setBannerNotice: (notice: BannerNotice | null) => void;
   setLoadError: (message: string | null) => void;
-  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean>;
+  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean | null>;
   requestPrompt: (options: PromptDialogOptions) => Promise<string | null>;
   refreshSavedForms: (opts?: { allowRetry?: boolean; throwOnError?: boolean }) => Promise<unknown>;
   refreshGroups?: () => Promise<unknown> | void;
@@ -53,6 +53,20 @@ export interface UseSaveDownloadDeps {
 export function useSaveDownload(deps: UseSaveDownloadDeps) {
   const [saveInProgress, setSaveInProgress] = useState(false);
   const [downloadInProgress, setDownloadInProgress] = useState(false);
+
+  const queuePostSaveRefreshes = useCallback(() => {
+    void Promise.allSettled([
+      Promise.resolve().then(() => deps.refreshSavedForms()),
+      Promise.resolve().then(() => deps.refreshGroups?.()),
+      Promise.resolve().then(() => deps.refreshProfile?.()),
+    ]).then((results) => {
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          debugLog('Failed to refresh workspace state after saving form', result.reason);
+        }
+      }
+    });
+  }, [deps]);
 
   const saveFormToProfile = useCallback(
     async ({
@@ -72,6 +86,8 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
           blob = new Blob([new Uint8Array(data)], { type: 'application/pdf' });
         }
         const fieldsForSave = prepareFieldsForMaterialize(deps.fields);
+        const checkboxRulesForSave = deps.checkboxRules;
+        const textTransformRulesForSave = deps.textTransformRules;
         const editorSnapshot = buildSavedFormEditorSnapshot({
           pageCount: deps.pageCount || deps.pdfDoc.numPages,
           pageSizes: deps.pageSizes,
@@ -82,25 +98,24 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
         const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForSave);
         const payload = await ApiService.saveFormToProfile(
           generatedBlob, saveName, deps.mappingSessionId || undefined,
-          overwriteFormId || undefined, deps.checkboxRules, deps.textTransformRules,
+          overwriteFormId || undefined, checkboxRulesForSave, textTransformRulesForSave,
           editorSnapshot,
         );
         deps.setActiveSavedFormId(payload?.id || null);
         deps.setActiveSavedFormName(payload?.name || saveName);
-        const refreshResults = await Promise.allSettled([
-          deps.refreshSavedForms(),
-          Promise.resolve().then(() => deps.refreshGroups?.()),
-          Promise.resolve().then(() => deps.refreshProfile?.()),
-        ]);
-        for (const result of refreshResults) {
-          if (result.status === 'rejected') {
-            debugLog('Failed to refresh workspace state after saving form', result.reason);
+        if (overwriteFormId) {
+          try {
+            deps.markGroupTemplatesPersisted?.([overwriteFormId]);
+          } catch (error) {
+            debugLog('Failed to mark group template persisted after save', error);
           }
         }
-        if (overwriteFormId) {
-          deps.markGroupTemplatesPersisted?.([overwriteFormId]);
+        try {
+          deps.onSaveSuccess?.(fieldsForSave, checkboxRulesForSave);
+        } catch (error) {
+          debugLog('Failed to run post-save workspace sync', error);
         }
-        deps.onSaveSuccess?.(deps.fields, deps.checkboxRules);
+        queuePostSaveRefreshes();
         return { success: true, limitReached: false };
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to save form to profile.';
@@ -113,7 +128,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
         setSaveInProgress(false);
       }
     },
-    [deps],
+    [deps, queuePostSaveRefreshes],
   );
 
   const handleSaveToProfile = useCallback(async () => {
@@ -161,12 +176,17 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
       const overwrite = await deps.requestConfirm({
         title: 'Overwrite saved form?',
         message: 'This form is already saved. Overwrite it or save a new copy with a different name.',
-        confirmLabel: 'Overwrite', cancelLabel: 'Save new copy', tone: 'danger',
+        confirmLabel: 'Overwrite',
+        cancelLabel: 'Save new copy',
+        tone: 'danger',
+        dismissResult: null,
       });
-      if (overwrite) { shouldOverwrite = true; }
-      else {
+      if (overwrite === true) { shouldOverwrite = true; }
+      else if (overwrite === false) {
         if (savedFormsLimitReached) { deps.queueSaveAfterLimit(() => attemptSaveNew({ forceSave: true })); return; }
         await attemptSaveNew(); return;
+      } else {
+        return;
       }
     } else {
       if (savedFormsLimitReached) { deps.queueSaveAfterLimit(() => attemptSaveNew({ forceSave: true })); return; }

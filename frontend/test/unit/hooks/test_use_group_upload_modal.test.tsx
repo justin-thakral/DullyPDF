@@ -10,6 +10,7 @@ const extractFieldsFromPdfMock = vi.hoisted(() => vi.fn());
 const getPdfPageCountMock = vi.hoisted(() => vi.fn());
 const createTemplateSessionMock = vi.hoisted(() => vi.fn());
 const renameFieldsMock = vi.hoisted(() => vi.fn());
+const renameAndRemapMock = vi.hoisted(() => vi.fn());
 const mapSchemaMock = vi.hoisted(() => vi.fn());
 const materializeFormPdfMock = vi.hoisted(() => vi.fn());
 const saveFormToProfileMock = vi.hoisted(() => vi.fn());
@@ -28,6 +29,7 @@ vi.mock('../../../src/services/api', () => ({
     getPdfPageCount: getPdfPageCountMock,
     createTemplateSession: createTemplateSessionMock,
     renameFields: renameFieldsMock,
+    renameAndRemap: renameAndRemapMock,
     mapSchema: mapSchemaMock,
     materializeFormPdf: materializeFormPdfMock,
     saveFormToProfile: saveFormToProfileMock,
@@ -156,6 +158,7 @@ describe('useGroupUploadModal', () => {
     extractFieldsFromPdfMock.mockReset();
     createTemplateSessionMock.mockReset();
     renameFieldsMock.mockReset();
+    renameAndRemapMock.mockReset();
     mapSchemaMock.mockReset();
     materializeFormPdfMock.mockReset();
     saveFormToProfileMock.mockReset();
@@ -495,22 +498,10 @@ describe('useGroupUploadModal', () => {
         sessionId: 'session-2',
         fields: [createDetectionField('Beta Field')],
       });
-    renameFieldsMock
+    renameAndRemapMock
       .mockResolvedValueOnce({
         success: true,
         fields: [{ originalName: 'Alpha Field', name: 'first_name' }],
-        checkboxRules: [],
-        radioGroupSuggestions: [],
-      })
-      .mockResolvedValueOnce({
-        success: true,
-        fields: [{ originalName: 'Beta Field', name: 'first_name' }],
-        checkboxRules: [],
-        radioGroupSuggestions: [],
-      });
-    mapSchemaMock
-      .mockResolvedValueOnce({
-        success: true,
         mappingResults: {
           mappings: [{ originalPdfField: 'first_name', pdfField: 'first_name_mapped', confidence: 0.91 }],
           checkboxRules: [],
@@ -520,6 +511,7 @@ describe('useGroupUploadModal', () => {
       })
       .mockResolvedValueOnce({
         success: true,
+        fields: [{ originalName: 'Beta Field', name: 'first_name' }],
         mappingResults: {
           mappings: [{ originalPdfField: 'first_name', pdfField: 'first_name_mapped', confidence: 0.91 }],
           checkboxRules: [],
@@ -548,8 +540,8 @@ describe('useGroupUploadModal', () => {
       await hook.current.confirm();
     });
 
-    expect(renameFieldsMock).toHaveBeenCalledTimes(2);
-    expect(renameFieldsMock).toHaveBeenNthCalledWith(
+    expect(renameAndRemapMock).toHaveBeenCalledTimes(2);
+    expect(renameAndRemapMock).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         sessionId: 'session-1',
@@ -557,7 +549,7 @@ describe('useGroupUploadModal', () => {
       }),
       expectAbortableOptions(),
     );
-    expect(renameFieldsMock).toHaveBeenNthCalledWith(
+    expect(renameAndRemapMock).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
         sessionId: 'session-2',
@@ -565,25 +557,8 @@ describe('useGroupUploadModal', () => {
       }),
       expectAbortableOptions(),
     );
-    expect(mapSchemaMock).toHaveBeenCalledTimes(2);
-    expect(mapSchemaMock).toHaveBeenNthCalledWith(
-      1,
-      'schema-1',
-      [expect.objectContaining({ name: 'first_name' })],
-      undefined,
-      'session-1',
-      expectAbortableOptions(),
-      expect.any(String),
-    );
-    expect(mapSchemaMock).toHaveBeenNthCalledWith(
-      2,
-      'schema-1',
-      [expect.objectContaining({ name: 'first_name' })],
-      undefined,
-      'session-2',
-      expectAbortableOptions(),
-      expect.any(String),
-    );
+    expect(renameFieldsMock).not.toHaveBeenCalled();
+    expect(mapSchemaMock).not.toHaveBeenCalled();
     expect(saveFormToProfileMock).toHaveBeenCalledTimes(2);
     expect(deps.createGroup).toHaveBeenCalledWith({
       name: 'Packet Group',

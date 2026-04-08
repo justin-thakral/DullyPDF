@@ -169,6 +169,23 @@ def test_enqueue_openai_remap_task_builds_correct_request(monkeypatch: pytest.Mo
     assert task["http_request"]["oidc_token"]["audience"] == "https://worker.example.com"
 
 
+def test_enqueue_openai_rename_remap_task_builds_correct_request(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_PROJECT", "project-a")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_LOCATION", "us-central1")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT", "svc@example.com")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_TASKS_QUEUE", "openai-rename-remap")
+    monkeypatch.setenv("OPENAI_RENAME_REMAP_SERVICE_URL", "https://worker.example.com")
+
+    created_requests = _install_fake_tasks_v2(monkeypatch)
+
+    openai_tasks.enqueue_openai_rename_remap_task({"jobId": "job-3"})
+
+    request = created_requests[0]
+    task = request["task"]
+    assert request["parent"] == "projects/project-a/locations/us-central1/queues/openai-rename-remap"
+    assert task["http_request"]["url"] == "https://worker.example.com/internal/rename-remap"
+
+
 # -- dispatch deadline ---------------------------------------------------------
 
 

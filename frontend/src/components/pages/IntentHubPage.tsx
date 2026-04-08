@@ -27,6 +27,8 @@ const IntentHubPage = ({ hubKey }: IntentHubPageProps) => {
   return (
     <IntentPageShell
       breadcrumbItems={[{ label: 'Home', href: '/' }, { label: HUB_BREADCRUMB_LABEL[hubKey] }]}
+      activeNavKey={hubKey === 'workflows' ? 'workflows' : 'industries'}
+      usePublicChrome
       heroKicker={bodyContent?.heroKicker ?? 'Hub'}
       heroTitle={bodyContent?.heading ?? 'Public route library'}
       heroSummary={bodyContent?.paragraphs?.[0] ?? ''}

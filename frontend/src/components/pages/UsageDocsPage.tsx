@@ -8,20 +8,13 @@ import {
 import './UsageDocsPage.css';
 import { applyRouteSeo } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
-import { SiteFooter } from '../ui/SiteFooter';
+import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import type { IntentPageKey } from '../../config/intentPages';
 import { getIntentPage } from '../../config/intentPages';
 
 type UsageDocsPageProps = {
   pageKey: UsageDocsPageKey;
 };
-
-const HEADER_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'Usage Docs', href: '/usage-docs' },
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
-];
 
 const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
   const page = getUsageDocsPage(pageKey);
@@ -48,32 +41,14 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
     : [{ label: 'Home', href: '/' }, { label: 'Usage Docs', href: '/usage-docs' }, { label: page.title }];
 
   return (
-    <div className="usage-docs-page">
-      <div className="usage-docs-card">
-        <header className="usage-docs-header">
-          <div className="usage-docs-brand">
-            <picture>
-              <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
-              <img src="/DullyPDFLogoImproved.png" alt="DullyPDF" className="usage-docs-brand__logo" decoding="async" />
-            </picture>
-            <div className="usage-docs-brand__text">
-              <span className="usage-docs-brand__name">DullyPDF</span>
-              <span className="usage-docs-brand__tagline">Usage Documentation</span>
-            </div>
-          </div>
-          <nav className="usage-docs-top-nav" aria-label="Primary docs navigation">
-            {HEADER_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={link.href === '/usage-docs' ? 'usage-docs-top-nav__link usage-docs-top-nav__link--active' : 'usage-docs-top-nav__link'}
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </header>
+    <PublicSiteFrame activeNavKey="usage-docs" bodyClassName="usage-docs-page">
+      <div className="usage-docs-page__local-nav" aria-label="Usage docs utility navigation">
+        <a href="/usage-docs" className="usage-docs-page__local-link usage-docs-page__local-link--active">Usage Docs</a>
+        <a href="/privacy" className="usage-docs-page__local-link">Privacy Policy</a>
+        <a href="/terms" className="usage-docs-page__local-link">Terms of Service</a>
+      </div>
 
+      <div className="usage-docs-page__surface">
         <section className="usage-docs-hero">
           <Breadcrumbs items={breadcrumbItems} />
           <span className="usage-docs-kicker">Usage docs</span>
@@ -171,10 +146,8 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
             )}
           </main>
         </div>
-
-        <SiteFooter />
       </div>
-    </div>
+    </PublicSiteFrame>
   );
 };
 

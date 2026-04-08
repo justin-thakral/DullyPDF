@@ -178,6 +178,70 @@ describe('HeaderBar', () => {
     await waitFor(() => expect(onOpenFillLink).toHaveBeenCalledTimes(1));
   });
 
+  it('blocks save while rename or map is still mutating the active template', async () => {
+    const user = userEvent.setup();
+    const onSaveToProfile = vi.fn();
+    const onBlockedAction = vi.fn();
+
+    render(
+      <HeaderBar
+        {...createProps({
+          mappingInProgress: true,
+          onSaveToProfile,
+          onBlockedAction,
+        })}
+      />,
+    );
+
+    const saveButton = screen.getByRole('button', { name: 'Save' }) as HTMLButtonElement;
+    expect(saveButton.getAttribute('aria-disabled')).toBe('true');
+
+    await user.click(saveButton);
+
+    expect(onSaveToProfile).not.toHaveBeenCalled();
+    await waitFor(() => expect(onBlockedAction).toHaveBeenCalledWith(
+      'Please wait — a mapping operation is still running.',
+    ));
+  });
+
+  it('blocks Fill By Web Form Link + Sign while save is still in progress', async () => {
+    const user = userEvent.setup();
+    const onOpenFillLink = vi.fn();
+    const onBlockedAction = vi.fn();
+
+    render(
+      <HeaderBar
+        {...createProps({
+          onOpenFillLink,
+          canFillLink: true,
+          saveInProgress: true,
+          onBlockedAction,
+        })}
+      />,
+    );
+
+    const fillLinkButton = screen.getByRole('button', { name: 'Fill By Web Form Link + Sign' }) as HTMLButtonElement;
+    expect(fillLinkButton.getAttribute('aria-disabled')).toBe('true');
+
+    await user.click(fillLinkButton);
+
+    expect(onOpenFillLink).not.toHaveBeenCalled();
+    await waitFor(() => expect(onBlockedAction).toHaveBeenCalledWith('Please wait — save is in progress.'));
+  });
+
+  it('does not render an inline busy hint while mapping is actively running', () => {
+    render(
+      <HeaderBar
+        {...createProps({
+          mappingInProgress: true,
+          mapSchemaDisabledReason: 'Mapping is already running.',
+        })}
+      />,
+    );
+
+    expect(screen.queryByText('Mapping is already running.')).toBeNull();
+  });
+
   it('defers header save and fill-link actions to the next tick so pending editor updates can settle first', () => {
     vi.useFakeTimers();
     try {
@@ -204,6 +268,44 @@ describe('HeaderBar', () => {
 
       expect(onSaveToProfile).toHaveBeenCalledTimes(1);
       expect(onOpenFillLink).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('defers rename menu actions to the next tick so the dropdown can close before the action runs', () => {
+    vi.useFakeTimers();
+    try {
+      const onRename = vi.fn();
+      const onMapSchema = vi.fn();
+      const onRenameAndMap = vi.fn();
+
+      render(
+        <HeaderBar
+          {...createProps({
+            onRename,
+            onMapSchema,
+            onRenameAndMap,
+          })}
+        />,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: 'Rename or Remap' }));
+      fireEvent.click(screen.getByRole('menuitem', { name: 'Rename' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Rename or Remap' }));
+      fireEvent.click(screen.getByRole('menuitem', { name: 'Map Schema' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Rename or Remap' }));
+      fireEvent.click(screen.getByRole('menuitem', { name: 'Rename + Map' }));
+
+      expect(onRename).not.toHaveBeenCalled();
+      expect(onMapSchema).not.toHaveBeenCalled();
+      expect(onRenameAndMap).not.toHaveBeenCalled();
+
+      vi.runAllTimers();
+
+      expect(onRename).toHaveBeenCalledTimes(1);
+      expect(onMapSchema).toHaveBeenCalledTimes(1);
+      expect(onRenameAndMap).toHaveBeenCalledTimes(1);
     } finally {
       vi.useRealTimers();
     }

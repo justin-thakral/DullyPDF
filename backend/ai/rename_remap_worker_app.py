@@ -35,7 +35,11 @@ from backend.logging_config import get_logger
 from backend.services.credit_refund_service import attempt_credit_refund
 from backend.services.downgrade_retention_service import is_user_retention_template_locked
 from backend.services.mapping_service import (
+    apply_mapping_results_to_fields,
+    build_combined_rename_mapping_payload,
     build_schema_mapping_payload,
+    merge_schema_mapping_ai_responses,
+    prepare_incremental_remap_ai_payload,
     template_fields_to_rename_fields,
 )
 from backend.services.pdf_service import get_pdf_page_count
@@ -51,6 +55,7 @@ from .status import (
     OPENAI_JOB_STATUS_FAILED,
     OPENAI_JOB_STATUS_QUEUED,
     OPENAI_JOB_STATUS_RUNNING,
+    OPENAI_JOB_TYPE_RENAME_REMAP,
 )
 
 
@@ -589,6 +594,283 @@ class RemapJobRequest(BaseModel):
     creditBreakdown: Optional[Dict[str, int]] = None
 
 
+class RenameRemapJobRequest(BaseModel):
+    jobId: str = Field(..., min_length=1)
+    requestId: Optional[str] = None
+    sessionId: str = Field(..., min_length=1)
+    schemaId: str = Field(..., min_length=1)
+    templateFields: Optional[List[Dict[str, Any]]] = None
+    userId: str = Field(..., min_length=1)
+    userRole: Optional[str] = None
+    credits: int = 0
+    creditsCharged: bool = False
+    creditBreakdown: Optional[Dict[str, int]] = None
+
+
+def _bind_rename_remap_payload_to_job(
+    payload: RenameRemapJobRequest,
+    job: Dict[str, Any],
+) -> RenameRemapJobRequest:
+    trusted_user_id = str(job.get("user_id") or "").strip()
+    if not trusted_user_id:
+        raise ValueError("Rename + Remap job metadata is incomplete")
+    if payload.userId != trusted_user_id:
+        raise ValueError("Rename + Remap job user mismatch")
+
+    stored_session_id = str(job.get("session_id") or "").strip()
+    if stored_session_id and payload.sessionId != stored_session_id:
+        raise ValueError("Rename + Remap job session mismatch")
+
+    stored_schema_id = str(job.get("schema_id") or "").strip()
+    if not stored_schema_id:
+        raise ValueError("Rename + Remap job metadata is incomplete")
+    if payload.schemaId != stored_schema_id:
+        raise ValueError("Rename + Remap job schema mismatch")
+
+    stored_credit_breakdown = job.get("credit_breakdown")
+    if not isinstance(stored_credit_breakdown, dict):
+        stored_credit_breakdown = payload.creditBreakdown
+
+    return payload.model_copy(
+        update={
+            "requestId": str(job.get("request_id") or "").strip() or payload.requestId or payload.jobId,
+            "sessionId": stored_session_id or payload.sessionId,
+            "schemaId": stored_schema_id,
+            "userId": trusted_user_id,
+            "userRole": str(job.get("user_role") or "").strip() or payload.userRole,
+            "credits": int(job.get("credits") or payload.credits or 0),
+            "creditsCharged": bool(job.get("credits_charged")) if "credits_charged" in job else payload.creditsCharged,
+            "creditBreakdown": stored_credit_breakdown,
+        }
+    )
+
+
+@app.post("/internal/rename-remap")
+async def run_rename_remap_job(
+    payload: RenameRemapJobRequest,
+    authorization: Optional[str] = Header(default=None),
+    x_cloud_tasks_taskretrycount: Optional[str] = Header(
+        default=None,
+        alias="X-CloudTasks-TaskRetryCount",
+    ),
+) -> Dict[str, Any]:
+    try:
+        _require_internal_auth(authorization)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, str) else "Rename + Remap worker request rejected"
+        logger.warning("Rename + Remap job %s rejected before start: %s", payload.jobId, detail)
+        raise
+
+    job = get_openai_job(payload.jobId)
+    if not job:
+        logger.warning("Rename + Remap job %s rejected: metadata not found", payload.jobId)
+        return _reject_job_request(payload.jobId, "Rename + Remap job metadata not found", source="rename_remap.worker")
+
+    status = str(job.get("status") or "").strip().lower()
+    if status == OPENAI_JOB_STATUS_COMPLETE:
+        return {"jobId": payload.jobId, "status": OPENAI_JOB_STATUS_COMPLETE}
+    if status == OPENAI_JOB_STATUS_FAILED:
+        return {
+            "jobId": payload.jobId,
+            "status": OPENAI_JOB_STATUS_FAILED,
+            "error": job.get("error") or "Rename + Remap job failed",
+        }
+
+    if str(job.get("job_type") or "").strip() != OPENAI_JOB_TYPE_RENAME_REMAP:
+        logger.warning("Rename + Remap job %s rejected: unexpected job type", payload.jobId)
+        return _reject_job_request(payload.jobId, "Rename + Remap job type mismatch", source="rename_remap.worker")
+
+    try:
+        payload = _bind_rename_remap_payload_to_job(payload, job)
+    except ValueError as exc:
+        logger.warning("Rename + Remap job %s rejected: %s", payload.jobId, exc)
+        return _reject_job_request(payload.jobId, str(exc), source="rename_remap.worker")
+
+    retry_count = _parse_retry_count(x_cloud_tasks_taskretrycount)
+    attempt_count = retry_count + 1
+    usage_events = coerce_usage_events(job.get("openai_usage_events"))
+    usage_summary = (
+        dict(job.get("openai_usage_summary"))
+        if isinstance(job.get("openai_usage_summary"), dict)
+        else build_openai_usage_summary(usage_events)
+    )
+
+    update_openai_job(
+        job_id=payload.jobId,
+        status=OPENAI_JOB_STATUS_RUNNING,
+        error="",
+        started_at=now_iso(),
+        openai_usage_summary=usage_summary,
+        openai_usage_events=usage_events,
+        attempt_count=attempt_count,
+    )
+
+    def _fail_rename_remap(message: str) -> Dict[str, Any]:
+        return _finish_failure(
+            job_id=payload.jobId,
+            user_id=payload.userId,
+            user_role=payload.userRole,
+            credits=payload.credits,
+            credits_charged=payload.creditsCharged,
+            request_id=payload.requestId,
+            credit_breakdown=payload.creditBreakdown,
+            message=message,
+            source="rename_remap.worker",
+            openai_usage_events=usage_events,
+            openai_usage_summary=usage_summary,
+            attempt_count=attempt_count,
+        )
+
+    try:
+        user = RequestUser(
+            uid=payload.userId,
+            app_user_id=payload.userId,
+            role=payload.userRole,
+        )
+        entry = _get_session_entry(
+            payload.sessionId,
+            user,
+            include_result=True,
+            include_renames=False,
+            include_checkbox_rules=False,
+            force_l2=True,
+        )
+        _ensure_session_ai_accessible(
+            user_id=payload.userId,
+            session_id=payload.sessionId,
+            session_entry=entry,
+        )
+        pdf_bytes = entry.get("pdf_bytes")
+        if not pdf_bytes:
+            raise HTTPException(status_code=404, detail="Session PDF not found")
+
+        parsed_template_fields = _parse_template_fields(payload.templateFields)
+        rename_fields: List[Dict[str, Any]]
+        if parsed_template_fields:
+            rename_fields = template_fields_to_rename_fields(parsed_template_fields)
+        else:
+            rename_fields = list(entry.get("fields") or [])
+        if not rename_fields:
+            raise HTTPException(status_code=400, detail="No fields available for rename")
+
+        schema = get_schema(payload.schemaId, payload.userId)
+        if not schema:
+            raise HTTPException(status_code=404, detail="Schema not found")
+        allowlist = build_allowlist_payload(schema.fields, [])
+        schema_fields = allowlist.get("schemaFields") or []
+        if not schema_fields:
+            raise HTTPException(status_code=400, detail="Schema fields are required for rename")
+        try:
+            validate_payload_size(allowlist)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        database_fields = [field.get("name") for field in schema_fields if field.get("name")]
+
+        page_count = entry.get("page_count") or get_pdf_page_count(pdf_bytes)
+        rename_report, renamed_fields = run_openai_rename_on_pdf(
+            pdf_bytes=pdf_bytes,
+            pdf_name=entry.get("source_pdf") or "document.pdf",
+            fields=rename_fields,
+            database_fields=database_fields,
+            detector_candidates_by_page=(entry.get("result") or {}).get("detectorCandidatesByPage"),
+            openai_max_retries=_worker_openai_max_retries(),
+        )
+        attempt_usage_events = coerce_usage_events(rename_report.get("usageByPage"))
+        usage_events = merge_usage_events(
+            usage_events,
+            attempt_usage_events,
+            attempt=attempt_count,
+        )
+        report_model = rename_report.get("model")
+        usage_summary = build_openai_usage_summary(
+            usage_events,
+            model=report_model if isinstance(report_model, str) else None,
+        )
+
+        mapping_results = build_combined_rename_mapping_payload(
+            schema.fields,
+            renamed_fields,
+            checkbox_rules=rename_report.get("checkboxRules") or [],
+        )
+        final_fields = apply_mapping_results_to_fields(renamed_fields, mapping_results)
+        checkbox_rules = list(mapping_results.get("checkboxRules") or [])
+        text_transform_rules = list(mapping_results.get("textTransformRules") or [])
+        entry["fields"] = final_fields
+        entry["renames"] = rename_report
+        entry["checkboxRules"] = checkbox_rules
+        entry.pop("checkboxHints", None)
+        entry["textTransformRules"] = text_transform_rules
+        entry["page_count"] = page_count
+        _update_session_entry(
+            payload.sessionId,
+            entry,
+            persist_fields=True,
+            persist_renames=True,
+            persist_checkbox_rules=True,
+            persist_text_transform_rules=True,
+        )
+
+        resolved_request_id = (
+            payload.requestId
+            or str(job.get("request_id") or "").strip()
+            or payload.jobId
+        )
+        result = {
+            "success": True,
+            "requestId": resolved_request_id,
+            "sessionId": payload.sessionId,
+            "schemaId": payload.schemaId,
+            "renames": rename_report,
+            "fields": final_fields,
+            "checkboxRules": checkbox_rules,
+            "mappingResults": mapping_results,
+            "openaiUsage": usage_summary,
+            "openaiUsageEvents": usage_events,
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
+        }
+        update_openai_job(
+            job_id=payload.jobId,
+            status=OPENAI_JOB_STATUS_COMPLETE,
+            error="",
+            result=result,
+            completed_at=now_iso(),
+            openai_usage_summary=usage_summary,
+            openai_usage_events=usage_events,
+            attempt_count=attempt_count,
+        )
+        return {
+            "jobId": payload.jobId,
+            "status": OPENAI_JOB_STATUS_COMPLETE,
+            "fieldCount": len(final_fields),
+            "mappingCount": len(mapping_results.get("mappings") or []),
+            "openaiUsage": usage_summary,
+        }
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, str) else "Rename + Remap job rejected"
+        if exc.status_code < 500 or _should_finalize_failure(retry_count):
+            logger.warning("Rename + Remap job %s failed: %s", payload.jobId, detail)
+            return _fail_rename_remap(str(detail))
+        raise HTTPException(
+            status_code=500,
+            detail="Rename + Remap worker failed; retrying",
+            headers=_retry_headers(),
+        ) from exc
+    except Exception as exc:
+        if is_insufficient_quota_error(exc):
+            message = f"OpenAI insufficient_quota: {exc}"
+            logger.warning("Rename + Remap job %s terminal failure: %s", payload.jobId, message)
+            return _fail_rename_remap(message)
+        logger.exception("Rename + Remap job %s failed: %s", payload.jobId, exc)
+        if _should_finalize_failure(retry_count):
+            message = f"Rename + Remap failed after {retry_count + 1} attempts: {exc}"
+            return _fail_rename_remap(message)
+        raise HTTPException(
+            status_code=500,
+            detail="Rename + Remap worker failed; retrying",
+            headers=_retry_headers(),
+        ) from exc
+
+
 def _bind_remap_payload_to_job(payload: RemapJobRequest, job: Dict[str, Any]) -> RemapJobRequest:
     trusted_user_id = str(job.get("user_id") or "").strip()
     if not trusted_user_id:
@@ -746,12 +1028,35 @@ async def run_remap_job(
                 session_entry=session_entry,
             )
 
-        attempt_usage_events: List[Dict[str, Any]] = []
-        ai_response = call_openai_schema_mapping_chunked(
-            allowlist_payload,
-            usage_collector=attempt_usage_events,
-            openai_max_retries=_worker_openai_max_retries(),
+        remap_seed_response, remap_openai_payload = prepare_incremental_remap_ai_payload(
+            allowlist_payload.get("schemaFields") or [],
+            allowlist_payload.get("templateTags") or [],
         )
+        if remap_openai_payload is None:
+            logger.info(
+                "Schema remap job %s resolved locally without OpenAI (schema=%s tags=%s local_matches=%s)",
+                payload.jobId,
+                len(allowlist_payload.get("schemaFields") or []),
+                len(allowlist_payload.get("templateTags") or []),
+                len(remap_seed_response.get("mappings") or []),
+            )
+        else:
+            logger.info(
+                "Schema remap job %s pre-resolved %s tags locally and sent %s tags to OpenAI",
+                payload.jobId,
+                len(remap_seed_response.get("mappings") or []),
+                len(remap_openai_payload.get("templateTags") or []),
+            )
+
+        attempt_usage_events: List[Dict[str, Any]] = []
+        openai_response: Dict[str, Any] | None = None
+        if remap_openai_payload is not None:
+            openai_response = call_openai_schema_mapping_chunked(
+                remap_openai_payload,
+                usage_collector=attempt_usage_events,
+                openai_max_retries=_worker_openai_max_retries(),
+            )
+        ai_response = merge_schema_mapping_ai_responses(remap_seed_response, openai_response)
         usage_events = merge_usage_events(
             usage_events,
             attempt_usage_events,

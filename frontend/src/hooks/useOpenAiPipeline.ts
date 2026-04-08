@@ -36,13 +36,13 @@ export interface UseOpenAiPipelineDeps {
   schemaId: string | null;
   pendingAutoActionsRef: React.MutableRefObject<PendingAutoActions | null>;
   setBannerNotice: (notice: BannerNotice | null) => void;
-  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean>;
+  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean | null>;
   resolveSourcePdfBytes: () => Promise<Uint8Array>;
   loadUserProfile: () => Promise<any>;
   resetFieldHistory: (fields?: PdfField[]) => void;
   updateFieldsWith: (updater: (prev: PdfField[]) => PdfField[], options?: { trackHistory?: boolean }) => void;
   setIdentifierKey: (key: string | null) => void;
-  onBeforeOpenAiAction?: (action: 'rename' | 'map', sessionId: string | null) => Promise<void> | void;
+  onBeforeOpenAiAction?: (action: 'rename' | 'map' | 'rename_remap', sessionId: string | null) => Promise<void> | void;
   // For computed canRename/canMapSchema
   hasDocument: boolean;
   fieldsCount: number;
@@ -197,7 +197,12 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     async ({
       fieldsOverride,
       schemaIdOverride,
-    }: { fieldsOverride?: PdfField[]; schemaIdOverride?: string | null } = {}): Promise<boolean> => {
+      sessionIdOverride,
+    }: {
+      fieldsOverride?: PdfField[];
+      schemaIdOverride?: string | null;
+      sessionIdOverride?: string | null;
+    } = {}): Promise<boolean> => {
       if (!deps.verifiedUser) {
         setOpenAiError(ALERT_MESSAGES.signInToRunSchemaMapping);
         return false;
@@ -213,7 +218,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         setOpenAiError(ALERT_MESSAGES.noPdfFieldsToMap);
         return false;
       }
-      let activeSessionId = deps.detectSessionId;
+      let activeSessionId = sessionIdOverride ?? deps.detectSessionId;
       if (!activeSessionId && deps.activeSavedFormId) {
         try {
           activeSessionId = await ensureTemplateSessionId();
@@ -230,6 +235,8 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       }
 
       setOpenAiError(null);
+      setMappingInProgress(true);
+      setMapSchemaInProgress(true);
       try {
         const mappingLoadToken = deps.loadTokenRef.current;
         const templateFields = buildTemplateFields(activeFields);
@@ -262,6 +269,9 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
         setOpenAiError(message);
         debugLog('Schema mapping failed', message);
         return false;
+      } finally {
+        setMapSchemaInProgress(false);
+        setMappingInProgress(false);
       }
     },
     [applyMappingResults, clearPendingAutoActions, deps, ensureTemplateSessionId, resolveActiveSourcePdfSha256, resolveCreditExhaustionMessage],
@@ -407,6 +417,139 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     [applyRenameResults, clearPendingAutoActions, consumeTemplateInputsClearedMessage, deps, ensureTemplateSessionId, resetTemplateInputsClearedFlag, resolveActiveSourcePdfSha256, resolveCreditExhaustionMessage],
   );
 
+  const runOpenAiRenameAndRemap = useCallback(
+    async ({
+      confirm = true,
+      allowDefer = false,
+      sessionId,
+      schemaId: combinedSchemaId,
+    }: {
+      confirm?: boolean;
+      allowDefer?: boolean;
+      sessionId?: string | null;
+      schemaId?: string | null;
+    } = {}): Promise<PdfField[] | null> => {
+      if (!deps.verifiedUser) {
+        setOpenAiError(ALERT_MESSAGES.signInToRunOpenAiRename);
+        return null;
+      }
+      clearPendingAutoActions();
+      const activeSchemaId = combinedSchemaId ?? deps.schemaId;
+      if (!activeSchemaId) {
+        setOpenAiError(ALERT_MESSAGES.schemaRequiredForMapping);
+        return null;
+      }
+      let activeSessionId = sessionId || deps.detectSessionId;
+      if (!activeSessionId && deps.activeSavedFormId && deps.fieldsRef.current.length) {
+        try {
+          activeSessionId = await ensureTemplateSessionId();
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Failed to prepare this saved form for Rename + Remap.';
+          setOpenAiError(message);
+          debugLog('Failed to prepare saved form Rename + Remap session', message);
+          return null;
+        }
+      }
+      if (!activeSessionId) {
+        setOpenAiError(ALERT_MESSAGES.uploadPdfForRename);
+        return null;
+      }
+      if (!deps.fieldsRef.current.length) {
+        if (allowDefer) {
+          try {
+            const statusPayload = await fetchDetectionStatus(activeSessionId);
+            const status = String(statusPayload?.status || '').toLowerCase();
+            if (status === 'queued' || status === 'running') {
+              deps.pendingAutoActionsRef.current = {
+                loadToken: deps.loadTokenRef.current,
+                sessionId: activeSessionId,
+                schemaId: activeSchemaId,
+                autoRename: true,
+                autoMap: true,
+              };
+              deps.setBannerNotice({
+                tone: 'info',
+                message: 'Detection is still running. Rename + Remap will start once fields are ready.',
+                autoDismissMs: 8000,
+              });
+              return null;
+            }
+          } catch (error) {
+            debugLog('Failed to fetch detection status for Rename + Remap', error);
+          }
+        }
+        setOpenAiError(ALERT_MESSAGES.noPdfFieldsToRename);
+        return null;
+      }
+      if (confirm) {
+        const ok = await deps.requestConfirm({
+          title: 'Send to OpenAI?',
+          message: 'This PDF and your database field headers will be sent to OpenAI. No row data or field values are sent.',
+          confirmLabel: 'Continue',
+          cancelLabel: 'Cancel',
+        });
+        if (!ok) return null;
+      }
+
+      setOpenAiError(null);
+      resetTemplateInputsClearedFlag();
+      setMappingInProgress(true);
+      setRenameInProgress(true);
+      setMapSchemaInProgress(true);
+      try {
+        const renameLoadToken = deps.loadTokenRef.current;
+        const templateFields = buildTemplateFields(deps.fieldsRef.current);
+        const sourcePdfSha256 = await resolveActiveSourcePdfSha256();
+        try {
+          await deps.onBeforeOpenAiAction?.('rename_remap', activeSessionId);
+        } catch (error) {
+          debugLog('Failed to capture Rename + Remap session diagnostic', error);
+        }
+        const result = await ApiService.renameAndRemap({
+          sessionId: activeSessionId,
+          schemaId: activeSchemaId,
+          sourcePdfSha256,
+          templateFields,
+        });
+        if (deps.loadTokenRef.current !== renameLoadToken) return null;
+        if (!result?.success) throw new Error(result?.error || 'Rename + Remap failed.');
+        if (!result?.mappingResults || typeof result.mappingResults !== 'object') {
+          throw new Error('Rename + Remap returned no mapping results.');
+        }
+        const updated = applyRenameResults(result.fields);
+        if (!updated || updated.length === 0) throw new Error('Rename + Remap returned no fields.');
+        applyMappingResults(result.mappingResults);
+        setHasRenamedFields(true);
+        handleMappingSuccess();
+        void deps.loadUserProfile();
+        return deps.fieldsRef.current;
+      } catch (error) {
+        let message = error instanceof Error ? error.message : 'Rename + Remap failed.';
+        if (error instanceof ApiError && error.status === 402) {
+          message = await resolveCreditExhaustionMessage();
+        }
+        setOpenAiError(message);
+        debugLog('Rename + Remap failed', message);
+        return null;
+      } finally {
+        setMapSchemaInProgress(false);
+        setRenameInProgress(false);
+        setMappingInProgress(false);
+      }
+    },
+    [
+      applyMappingResults,
+      applyRenameResults,
+      clearPendingAutoActions,
+      deps,
+      ensureTemplateSessionId,
+      handleMappingSuccess,
+      resetTemplateInputsClearedFlag,
+      resolveActiveSourcePdfSha256,
+      resolveCreditExhaustionMessage,
+    ],
+  );
+
   const confirmRemap = useCallback(async () => {
     if (!hasMappedSchema) return true;
     return deps.requestConfirm({
@@ -432,15 +575,8 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       if (!shouldRemap) return;
       setOpenAiError(null);
       resetTemplateInputsClearedFlag();
-      setMappingInProgress(true);
-      setMapSchemaInProgress(true);
-      try {
-        const mapped = await applySchemaMappings({ schemaIdOverride: resolvedSchemaId });
-        if (mapped) handleMappingSuccess();
-      } finally {
-        setMapSchemaInProgress(false);
-        setMappingInProgress(false);
-      }
+      const mapped = await applySchemaMappings({ schemaIdOverride: resolvedSchemaId });
+      if (mapped) handleMappingSuccess();
     },
     [applySchemaMappings, confirmRemap, handleMappingSuccess, resetTemplateInputsClearedFlag, deps],
   );
@@ -463,15 +599,9 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
       const shouldRemap = await confirmRemap();
       if (!shouldRemap) return;
       setOpenAiError(null);
-      const renamed = await runOpenAiRename({ confirm: false, schemaId: resolvedSchemaId });
-      if (!renamed) return;
-      const mapped = await applySchemaMappings({
-        fieldsOverride: renamed,
-        schemaIdOverride: resolvedSchemaId,
-      });
-      if (mapped) handleMappingSuccess();
+      await runOpenAiRenameAndRemap({ confirm: false, schemaId: resolvedSchemaId });
     },
-    [applySchemaMappings, confirmRemap, handleMappingSuccess, runOpenAiRename, deps],
+    [confirmRemap, runOpenAiRenameAndRemap, deps],
   );
 
   // ── Computed capability flags ──────────────────────────────────────
@@ -549,6 +679,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
 
   const reset = useCallback(() => {
     setMappingInProgress(false);
+    setMapSchemaInProgress(false);
     setHasMappedSchema(false);
     setCheckboxRules([]);
     setRadioGroupSuggestions([]);
@@ -575,6 +706,7 @@ export function useOpenAiPipeline(deps: UseOpenAiPipelineDeps) {
     applySchemaMappings,
     handleMappingSuccess,
     runOpenAiRename,
+    runOpenAiRenameAndRemap,
     handleMapSchema,
     handleRename,
     handleRenameAndMap,

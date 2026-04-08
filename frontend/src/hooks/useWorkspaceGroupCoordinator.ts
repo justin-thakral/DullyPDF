@@ -62,7 +62,7 @@ type PdfStateBridge = {
 
 type DialogController = {
   setBannerNotice: (notice: BannerNotice | null) => void;
-  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean>;
+  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean | null>;
 };
 
 type GroupsController = {
@@ -870,7 +870,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
             fields: templateFields,
             pageCount: snapshot.pageCount,
           });
-          const renameResult = await ApiService.renameFields({
+          const renameResult = await ApiService.renameAndRemap({
             sessionId: sessionPayload.sessionId,
             schemaId: resolvedSchemaId,
             sourcePdfSha256,
@@ -884,20 +884,12 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
             throw new Error(renameResult?.error || 'Rename + Map did not return updated fields.');
           }
           let nextFields = renamedFields;
-          const mappingResult = await ApiService.mapSchema(
-            resolvedSchemaId,
-            buildTemplateFields(nextFields),
-            template.id,
-            sessionPayload.sessionId,
-            undefined,
-            sourcePdfSha256,
-          );
-          if (!mappingResult?.success) {
-            throw new Error(mappingResult?.error || 'Rename + Map schema mapping failed.');
+          if (!renameResult?.mappingResults || typeof renameResult.mappingResults !== 'object') {
+            throw new Error('Rename + Map returned no mapping results.');
           }
           const mapped = applyMappingPayloadToFields(
             nextFields,
-            mappingResult.mappingResults,
+            renameResult.mappingResults,
             deps.dataSource.dataColumns,
           );
           nextFields = mapped.fields;

@@ -230,6 +230,8 @@ export type ConfirmDialogOptions = {
   confirmLabel?: string;
   cancelLabel?: string;
   tone?: DialogTone;
+  cancelResult?: boolean | null;
+  dismissResult?: boolean | null;
 };
 
 // Options for the prompt dialog.

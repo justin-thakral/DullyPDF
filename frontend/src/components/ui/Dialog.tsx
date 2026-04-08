@@ -296,6 +296,7 @@ export type ConfirmDialogProps = {
   tone?: DialogTone;
   onConfirm: () => void;
   onCancel: () => void;
+  onClose?: () => void;
 };
 
 export function ConfirmDialog({
@@ -307,6 +308,7 @@ export function ConfirmDialog({
   tone = 'default',
   onConfirm,
   onCancel,
+  onClose,
 }: ConfirmDialogProps) {
   const confirmRef = useRef<HTMLButtonElement>(null);
 
@@ -321,7 +323,7 @@ export function ConfirmDialog({
   const resolvedCancelLabel = cancelLabel ?? 'Cancel';
 
   return (
-    <DialogShell open={open} title={title} description={description} onClose={onCancel}>
+    <DialogShell open={open} title={title} description={description} onClose={onClose ?? onCancel}>
       <div className="ui-dialog__actions">
         {cancelLabel === null ? null : (
           <button className="ui-button ui-button--ghost" type="button" onClick={onCancel}>

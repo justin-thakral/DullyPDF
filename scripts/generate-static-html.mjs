@@ -15,21 +15,47 @@ import {
   ALL_ROUTES,
   SITE_ORIGIN,
   DEFAULT_SOCIAL_IMAGE_PATH,
-  FOOTER_LINKS,
   BLOG_POSTS,
   INTENT_PAGES,
   USAGE_DOCS_PAGES,
 } from './seo-route-data.mjs';
+import {
+  PUBLIC_SITE_BRAND_TAGLINE,
+  PUBLIC_SITE_NAV_LINKS,
+} from '../frontend/src/config/publicSiteChrome.mjs';
 
 const DIST_DIR = resolve(process.cwd(), 'frontend/dist');
 
-const TOP_NAV_LINKS = [
+const LEGACY_TOP_NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Workflows', href: '/workflows' },
   { label: 'Industries', href: '/industries' },
   { label: 'Usage Docs', href: '/usage-docs' },
   { label: 'Blog', href: '/blog' },
 ];
+
+const PUBLIC_FOOTER_LINKS = {
+  product: [
+    { label: 'Getting Started', href: '/usage-docs/getting-started' },
+    { label: 'Usage Docs', href: '/usage-docs' },
+  ],
+  resources: [
+    { label: 'Blog', href: '/blog' },
+    { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
+  ],
+  legal: [
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms' },
+  ],
+  solutions: [
+    { label: 'Workflow Library', href: '/workflows' },
+    { label: 'Industry Solutions', href: '/industries' },
+  ],
+  mobileWorkflows: [
+    { label: 'Library', href: '/workflows' },
+    { label: 'Industry Solutions', href: '/industries' },
+  ],
+};
 
 const SEO_SHELL_STYLE = `
       :root {
@@ -43,25 +69,28 @@ const SEO_SHELL_STYLE = `
         --seo-accent: #d7e5ff;
         --seo-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
       }
-      body {
+      body[data-seo-shell-visible="true"] {
         margin: 0;
         background: var(--seo-bg);
         color: var(--seo-text);
         font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
       }
       .seo-shell {
+        width: 100%;
+      }
+      .seo-shell--legacy {
         max-width: 1120px;
         margin: 0 auto;
         padding: 28px 20px 72px;
       }
-      .seo-shell__card {
+      .seo-shell--legacy .seo-shell__card {
         background: var(--seo-card);
         border: 1px solid var(--seo-border);
         border-radius: 24px;
         box-shadow: var(--seo-shadow);
         overflow: hidden;
       }
-      .seo-shell__topbar {
+      .seo-shell--legacy .seo-shell__topbar {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -71,10 +100,37 @@ const SEO_SHELL_STYLE = `
         border-bottom: 1px solid var(--seo-border);
         background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(247,250,255,0.96) 100%);
       }
+      .seo-shell--public {
+        padding-bottom: 28px;
+      }
+      .seo-shell__public-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        background: rgba(248, 250, 252, 0.9);
+        backdrop-filter: blur(16px);
+      }
+      .seo-shell__public-topbar-inner {
+        width: min(1440px, calc(100% - 3.6rem));
+        margin: 0 auto;
+        min-height: 4.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+      .seo-shell__public-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
       .seo-shell__brand {
         display: flex;
         align-items: center;
         gap: 12px;
+        color: inherit !important;
+        text-decoration: none !important;
       }
       .seo-shell__brand-mark {
         width: 42px;
@@ -97,10 +153,50 @@ const SEO_SHELL_STYLE = `
         flex-wrap: wrap;
         gap: 10px 18px;
       }
+      .seo-shell__public-topbar .seo-shell__nav {
+        gap: 0.4rem;
+        align-items: center;
+        justify-content: flex-end;
+      }
       .seo-shell__nav a,
       .seo-shell a {
         color: var(--seo-link);
         text-decoration: none;
+      }
+      .seo-shell__public-topbar .seo-shell__nav a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.4rem;
+        padding: 0 0.9rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        color: #334155;
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+      .seo-shell__public-topbar .seo-shell__nav a:hover {
+        color: #0f4fb8;
+        border-color: rgba(59, 130, 246, 0.28);
+        background: rgba(255, 255, 255, 0.72);
+        text-decoration: none;
+      }
+      .seo-shell__public-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.5rem;
+        padding: 0 1rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #0f4fb8 0%, #11316b 100%);
+        color: #ffffff !important;
+        font-size: 0.9rem;
+        font-weight: 700;
+        box-shadow: 0 14px 28px rgba(15, 79, 184, 0.2);
+      }
+      .seo-shell__public-cta:hover {
+        background: linear-gradient(135deg, #0c418f 0%, #0d2756 100%);
+        text-decoration: none !important;
       }
       .seo-shell__nav a:hover,
       .seo-shell a:hover {
@@ -110,8 +206,22 @@ const SEO_SHELL_STYLE = `
       .seo-shell__main {
         padding: 28px 24px 32px;
       }
+      .seo-shell--public .seo-shell__main {
+        width: min(1480px, calc(100% - 3.6rem));
+        margin: 0 auto;
+        padding: 24px 0 32px;
+      }
       .seo-shell__hero {
         padding-bottom: 16px;
+      }
+      .seo-shell--public .seo-shell__hero {
+        padding: clamp(24px, 3vw, 38px);
+        border: 1px solid rgba(147, 197, 253, 0.42);
+        border-radius: 28px;
+        background:
+          radial-gradient(720px at 0% 0%, rgba(191, 219, 254, 0.72), transparent 64%),
+          linear-gradient(145deg, rgba(255,255,255,0.96) 0%, rgba(239,246,255,0.96) 56%, rgba(248,250,252,0.98) 100%);
+        box-shadow: 0 24px 52px rgba(15, 23, 42, 0.07);
       }
       .seo-shell__eyebrow {
         display: inline-flex;
@@ -137,6 +247,9 @@ const SEO_SHELL_STYLE = `
       .seo-shell h1 {
         font-size: clamp(2rem, 4vw, 3.2rem);
         max-width: 16ch;
+      }
+      .seo-shell--public h1 {
+        font-size: clamp(2.2rem, 4vw, 3.35rem);
       }
       .seo-shell h2 {
         font-size: clamp(1.25rem, 2.4vw, 1.7rem);
@@ -174,6 +287,12 @@ const SEO_SHELL_STYLE = `
         border: 1px solid var(--seo-border);
         background: rgba(255,255,255,0.86);
       }
+      .seo-shell--public .seo-shell__panel,
+      .seo-shell--public .seo-shell__link-card {
+        border-radius: 22px;
+        background: rgba(255,255,255,0.92);
+        box-shadow: 0 18px 38px rgba(15, 23, 42, 0.05);
+      }
       .seo-shell__outline,
       .seo-shell__list {
         padding-left: 20px;
@@ -204,26 +323,257 @@ const SEO_SHELL_STYLE = `
         background: #0f336e;
         text-decoration: none !important;
       }
-      .seo-shell__footer {
+      .seo-shell--legacy .seo-shell__footer {
         padding: 0 24px 28px;
       }
-      .seo-shell__footer-meta {
+      .seo-shell--legacy .seo-shell__footer-meta {
         margin-top: 18px;
         color: var(--seo-muted);
         font-size: 0.94rem;
       }
+      .seo-shell__public-footer {
+        margin-top: 8px;
+        border-top: 1px solid #e2e8f0;
+        background: #f8fafc;
+        padding: 0.34rem 0.78rem;
+      }
+      .seo-shell__footer-bar {
+        display: grid;
+        grid-template-columns:
+          minmax(0, 1fr) max-content
+          minmax(0, 1fr) max-content
+          minmax(0, 1fr) max-content
+          minmax(0, 1fr) max-content
+          minmax(0, 1fr) max-content
+          minmax(0, 1fr);
+        align-items: center;
+        max-width: 1800px;
+        margin: 0 auto;
+      }
+      .seo-shell__footer-group--product {
+        grid-column: 2;
+      }
+      .seo-shell__footer-group--resources {
+        grid-column: 4;
+      }
+      .seo-shell__footer-center {
+        grid-column: 6;
+      }
+      .seo-shell__footer-group--legal {
+        grid-column: 8;
+      }
+      .seo-shell__footer-group--solutions {
+        grid-column: 10;
+      }
+      .seo-shell__footer-link-group {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.3rem;
+        white-space: nowrap;
+      }
+      .seo-shell__footer-label {
+        font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+        font-size: 0.69rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #0f172a;
+      }
+      .seo-shell__footer-links {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0;
+        white-space: nowrap;
+      }
+      .seo-shell__footer-links a {
+        position: relative;
+        color: #64748b;
+        text-decoration: none;
+        font-size: 0.69rem;
+        line-height: 1.15;
+        font-weight: 600;
+      }
+      .seo-shell__footer-links a + a {
+        margin-left: 0.58rem;
+        padding-left: 0.58rem;
+      }
+      .seo-shell__footer-links a + a::before {
+        content: "\\00B7";
+        position: absolute;
+        left: -0.03rem;
+        color: #94a3b8;
+        font-weight: 700;
+      }
+      .seo-shell__footer-links a:hover {
+        color: #1d4ed8;
+        text-decoration: none;
+      }
+      .seo-shell__footer-center {
+        justify-self: center;
+        text-align: center;
+        font-size: 0.69rem;
+        line-height: 1.15;
+        color: #64748b;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+      }
+      .seo-shell__footer-mobile {
+        display: none;
+      }
+      .seo-shell__footer-mobile-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.22rem;
+        margin-bottom: 0.42rem;
+      }
+      .seo-shell__footer-mobile-row {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        gap: 0.32rem;
+      }
+      .seo-shell__footer-mobile-row .seo-shell__footer-link-group {
+        gap: 0.32rem;
+        white-space: normal;
+        min-width: 0;
+      }
+      .seo-shell__footer-mobile-row .seo-shell__footer-label {
+        font-size: 0.82rem;
+        letter-spacing: 0.01em;
+        flex-shrink: 0;
+      }
+      .seo-shell__footer-mobile-row .seo-shell__footer-links {
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        gap: 0;
+        min-width: 0;
+      }
+      .seo-shell__footer-mobile-row .seo-shell__footer-links a {
+        font-size: 0.82rem;
+        line-height: 1.3;
+      }
+      .seo-shell__footer-mobile-row .seo-shell__footer-links a + a {
+        margin-left: 0.38rem;
+        padding-left: 0.38rem;
+      }
+      .seo-shell__footer-mobile-row .seo-shell__footer-links a + a::before {
+        left: -0.02rem;
+      }
+      .seo-shell__footer-mobile-bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 0.38rem;
+        border-top: 1px solid #e2e8f0;
+        font-size: 0.82rem;
+        color: #94a3b8;
+        font-weight: 700;
+        text-align: center;
+      }
+      @media (max-width: 1180px) and (min-width: 901px) {
+        .seo-shell__public-footer {
+          padding: 0.4rem 0.72rem;
+        }
+        .seo-shell__footer-bar {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          column-gap: 1.1rem;
+          row-gap: 0.35rem;
+        }
+        .seo-shell__footer-group--product,
+        .seo-shell__footer-group--resources,
+        .seo-shell__footer-center,
+        .seo-shell__footer-group--legal,
+        .seo-shell__footer-group--solutions {
+          grid-column: auto;
+        }
+      }
+      @media (max-width: 900px) {
+        .seo-shell__public-topbar-inner {
+          min-height: auto;
+          padding: 0.95rem 0;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .seo-shell__public-actions {
+          width: 100%;
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .seo-shell__public-topbar .seo-shell__nav {
+          width: 100%;
+          justify-content: flex-start;
+        }
+        .seo-shell__public-cta {
+          align-self: flex-start;
+        }
+        .seo-shell__public-footer {
+          padding: 0.68rem 0.78rem 0.56rem;
+        }
+        .seo-shell__footer-bar {
+          display: none;
+        }
+        .seo-shell__footer-mobile {
+          display: block;
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+      }
       @media (max-width: 720px) {
-        .seo-shell {
+        .seo-shell--legacy {
           padding: 14px 12px 48px;
         }
-        .seo-shell__topbar,
-        .seo-shell__main,
-        .seo-shell__footer {
+        .seo-shell--legacy .seo-shell__topbar,
+        .seo-shell--legacy .seo-shell__main,
+        .seo-shell--legacy .seo-shell__footer {
           padding-left: 16px;
           padding-right: 16px;
         }
         .seo-shell h1 {
           max-width: none;
+        }
+      }
+      @media (max-width: 640px) {
+        .seo-shell--public .seo-shell__main,
+        .seo-shell__public-topbar-inner {
+          width: calc(100% - 1.8rem);
+        }
+        .seo-shell__public-topbar .seo-shell__nav {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0.45rem;
+        }
+        .seo-shell__public-topbar .seo-shell__nav a {
+          width: 100%;
+          min-height: 2.25rem;
+          padding: 0 0.72rem;
+          text-align: center;
+        }
+        .seo-shell__public-cta {
+          width: 100%;
+        }
+        .seo-shell__public-footer {
+          padding: 0.62rem 0.56rem 0.48rem;
+        }
+        .seo-shell__footer-mobile-rows {
+          gap: 0.18rem;
+        }
+        .seo-shell__footer-mobile-row {
+          gap: 0.28rem;
+        }
+        .seo-shell__footer-mobile-row .seo-shell__footer-link-group {
+          gap: 0.24rem;
+        }
+        .seo-shell__footer-mobile-row .seo-shell__footer-label,
+        .seo-shell__footer-mobile-row .seo-shell__footer-links a,
+        .seo-shell__footer-mobile-bottom {
+          font-size: 0.74rem;
+        }
+        .seo-shell__footer-mobile-row .seo-shell__footer-links a + a {
+          margin-left: 0.32rem;
+          padding-left: 0.32rem;
         }
       }
 `;
@@ -241,6 +591,7 @@ function extractViteAssetTags(indexHtml) {
   let scriptMatch;
   while ((scriptMatch = headScriptRegex.exec(headHtml)) !== null) {
     if (scriptMatch[0].includes('type="module"')) continue;
+    if (scriptMatch[0].includes('data-seo-jsonld="true"')) continue;
     headScriptTags.push(scriptMatch[0]);
   }
 
@@ -302,13 +653,13 @@ function renderLinkCards(title, description, links) {
   return parts.join('\n');
 }
 
-function renderTopNav() {
+function renderLegacyTopNav() {
   return `<nav class="seo-shell__nav" aria-label="Primary site navigation">
-    ${TOP_NAV_LINKS.map((link) => `<a href="${esc(link.href)}">${esc(link.label)}</a>`).join('\n    ')}
+    ${LEGACY_TOP_NAV_LINKS.map((link) => `<a href="${esc(link.href)}">${esc(link.label)}</a>`).join('\n    ')}
   </nav>`;
 }
 
-function renderFooter() {
+function renderLegacyFooter() {
   const renderColumn = (title, links) => `
     <div class="seo-shell__footer-column">
       <strong>${esc(title)}</strong>
@@ -319,15 +670,148 @@ function renderFooter() {
 
   return `<footer class="seo-shell__footer">
     <div class="seo-shell__footer-grid">
-      ${renderColumn('Product', FOOTER_LINKS.product)}
-      ${renderColumn('Workflows', FOOTER_LINKS.workflows)}
-      ${renderColumn('Industries', FOOTER_LINKS.industries)}
-      ${renderColumn('Resources', FOOTER_LINKS.resources)}
-      ${renderColumn('Legal', FOOTER_LINKS.legal)}
+      ${renderColumn('Product', PUBLIC_FOOTER_LINKS.product)}
+      ${renderColumn('Resources', PUBLIC_FOOTER_LINKS.resources)}
+      ${renderColumn('Legal', PUBLIC_FOOTER_LINKS.legal)}
+      ${renderColumn('Workflow Library', PUBLIC_FOOTER_LINKS.solutions)}
     </div>
     <p class="seo-shell__footer-meta">DullyPDF focuses on repeat PDF workflows: detect fields, refine them, map them to structured data, and fill the same document type reliably over time.</p>
     <p class="seo-shell__footer-meta">&copy; ${new Date().getFullYear()} DullyPDF</p>
   </footer>`;
+}
+
+function renderPublicTopNav() {
+  return `<nav class="seo-shell__nav" aria-label="Primary site navigation">
+    ${PUBLIC_SITE_NAV_LINKS.map((link) => `<a href="${esc(link.href)}">${esc(link.label)}</a>`).join('\n    ')}
+  </nav>`;
+}
+
+function renderInlineFooterGroup(title, links, className = '') {
+  return `<div class="seo-shell__footer-link-group${className ? ` ${className}` : ''}">
+    <span class="seo-shell__footer-label">${esc(title)}:</span>
+    <div class="seo-shell__footer-links">
+      ${links.map((link) => `<a href="${esc(link.href)}">${esc(link.label)}</a>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderPublicFooter() {
+  return `<footer class="seo-shell__public-footer">
+    <div class="seo-shell__footer-bar">
+      ${renderInlineFooterGroup('Product', PUBLIC_FOOTER_LINKS.product, 'seo-shell__footer-group--product')}
+      ${renderInlineFooterGroup('Resources', PUBLIC_FOOTER_LINKS.resources, 'seo-shell__footer-group--resources')}
+      <div class="seo-shell__footer-center">&copy; ${new Date().getFullYear()} DullyPDF</div>
+      ${renderInlineFooterGroup('Legal', PUBLIC_FOOTER_LINKS.legal, 'seo-shell__footer-group--legal')}
+      ${renderInlineFooterGroup('Solutions', PUBLIC_FOOTER_LINKS.solutions, 'seo-shell__footer-group--solutions')}
+    </div>
+    <div class="seo-shell__footer-mobile">
+      <div class="seo-shell__footer-mobile-rows">
+        <div class="seo-shell__footer-mobile-row">
+          ${renderInlineFooterGroup('Product', PUBLIC_FOOTER_LINKS.product)}
+        </div>
+        <div class="seo-shell__footer-mobile-row">
+          ${renderInlineFooterGroup('Workflows', PUBLIC_FOOTER_LINKS.mobileWorkflows)}
+        </div>
+        <div class="seo-shell__footer-mobile-row">
+          ${renderInlineFooterGroup('Resources', PUBLIC_FOOTER_LINKS.resources)}
+        </div>
+        <div class="seo-shell__footer-mobile-row">
+          ${renderInlineFooterGroup('Legal', PUBLIC_FOOTER_LINKS.legal)}
+        </div>
+      </div>
+      <div class="seo-shell__footer-mobile-bottom">&copy; ${new Date().getFullYear()} DullyPDF</div>
+    </div>
+  </footer>`;
+}
+
+function usesStandardPublicSeoShell(route) {
+  return (
+    route.kind === 'legal' ||
+    route.kind === 'intent' ||
+    route.kind === 'intent-hub' ||
+    route.kind === 'usage-docs' ||
+    route.kind === 'blog-index' ||
+    route.kind === 'blog-post'
+  );
+}
+
+function renderLegacyStaticShell(route) {
+  const bodyContent = renderBodyContent(route);
+  const fallbackBodyContent = `<main class="seo-shell__main">
+    <section class="seo-shell__hero">
+      <span class="seo-shell__eyebrow">${esc(route.kind.replace(/-/g, ' '))}</span>
+      <h1>${esc(route.seo.title)}</h1>
+      <p>${esc(route.seo.description)}</p>
+    </section>
+  </main>`;
+
+  return `<div id="seo-static-shell" class="seo-shell seo-shell--legacy" data-seo-shell-visible="true">
+    <div class="seo-shell__card">
+      <header class="seo-shell__topbar">
+        <a href="/" class="seo-shell__brand" aria-label="DullyPDF home">
+          <picture>
+            <source srcset="/DullyPDFLogoImproved.webp" type="image/webp" />
+            <img
+              src="/DullyPDFLogoImproved.png"
+              alt=""
+              class="seo-shell__brand-mark"
+              decoding="async"
+            />
+          </picture>
+          <span>
+            <span class="seo-shell__brand-name">DullyPDF</span>
+            <span class="seo-shell__brand-tagline">PDF automation workflows</span>
+          </span>
+        </a>
+        ${renderLegacyTopNav()}
+      </header>
+      ${bodyContent || fallbackBodyContent}
+      ${renderLegacyFooter()}
+    </div>
+  </div>`;
+}
+
+function renderPublicStaticShell(route) {
+  const bodyContent = renderBodyContent(route);
+  const fallbackBodyContent = `<main class="seo-shell__main">
+    <section class="seo-shell__hero">
+      <span class="seo-shell__eyebrow">${esc(route.kind.replace(/-/g, ' '))}</span>
+      <h1>${esc(route.seo.title)}</h1>
+      <p>${esc(route.seo.description)}</p>
+    </section>
+  </main>`;
+
+  return `<div id="seo-static-shell" class="seo-shell seo-shell--public" data-seo-shell-visible="true">
+    <header class="seo-shell__public-topbar">
+      <div class="seo-shell__public-topbar-inner">
+        <a href="/" class="seo-shell__brand" aria-label="DullyPDF home">
+          <picture>
+            <source srcset="/DullyPDFLogoImproved.webp" type="image/webp" />
+            <img
+              src="/DullyPDFLogoImproved.png"
+              alt=""
+              class="seo-shell__brand-mark"
+              decoding="async"
+            />
+          </picture>
+          <span>
+            <span class="seo-shell__brand-name">DullyPDF</span>
+            <span class="seo-shell__brand-tagline">${esc(PUBLIC_SITE_BRAND_TAGLINE)}</span>
+          </span>
+        </a>
+        <div class="seo-shell__public-actions">
+          ${renderPublicTopNav()}
+          <a href="/" class="seo-shell__public-cta">Try DullyPDF</a>
+        </div>
+      </div>
+    </header>
+    ${bodyContent || fallbackBodyContent}
+    ${renderPublicFooter()}
+  </div>`;
+}
+
+function renderStaticShell(route) {
+  return usesStandardPublicSeoShell(route) ? renderPublicStaticShell(route) : renderLegacyStaticShell(route);
 }
 
 function buildSupplementalParagraphs(route) {
@@ -699,8 +1183,7 @@ function generatePageHtml(route, viteAssets) {
     )
     .join('\n    ');
 
-  const bodyContent = renderBodyContent(route);
-  const footerHtml = renderFooter();
+  const staticShellHtml = renderStaticShell(route);
 
   return `<!doctype html>
 <html lang="en">
@@ -729,9 +1212,11 @@ function generatePageHtml(route, viteAssets) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
     ${structuredDataScripts}
+    <style id="seo-static-shell-style" data-seo-shell-visible="true">${SEO_SHELL_STYLE}</style>
     ${viteAssets.linkTags.join('\n    ')}
   </head>
-  <body>
+  <body data-seo-shell-visible="true">
+    ${staticShellHtml}
     <div id="root"></div>
     ${viteAssets.scriptTags.join('\n    ')}
   </body>

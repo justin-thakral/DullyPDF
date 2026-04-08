@@ -561,9 +561,9 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
 
           if (wantsRename && wantsMap) {
             setItemState(item.id, { detail: 'Running Rename + Map…' });
-            const renameResult = await ApiService.renameFields({
+            const renameResult = await ApiService.renameAndRemap({
               sessionId,
-              schemaId: resolvedSchemaId || undefined,
+              schemaId: resolvedSchemaId || '',
               sourcePdfSha256: sourcePdfSha256 || undefined,
               templateFields: buildTemplateFields(nextFields),
             }, {
@@ -577,22 +577,12 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
               throw new Error(renameResult?.error || 'Rename + Map returned no updated fields.');
             }
             nextFields = renamedFields;
-            const mappingResult = await ApiService.mapSchema(
-              resolvedSchemaId || '',
-              buildTemplateFields(nextFields),
-              undefined,
-              sessionId,
-              {
-                signal: controller.signal,
-              },
-              sourcePdfSha256 || undefined,
-            );
-            if (!mappingResult?.success) {
-              throw new Error(mappingResult?.error || 'Rename + Map schema mapping failed.');
+            if (!renameResult?.mappingResults || typeof renameResult.mappingResults !== 'object') {
+              throw new Error('Rename + Map returned no mapping results.');
             }
             const mapped = applyMappingPayloadToFields(
               nextFields,
-              mappingResult.mappingResults,
+              renameResult.mappingResults,
               deps.dataColumns,
             );
             nextFields = mapped.fields;

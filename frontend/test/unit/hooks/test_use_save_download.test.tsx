@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useSaveDownload, type UseSaveDownloadDeps } from '../../../src/hooks/useSaveDownload';
@@ -139,6 +139,91 @@ describe('useSaveDownload', () => {
       }),
     );
     expect(deps.markGroupTemplatesPersisted).toHaveBeenCalledWith(['saved-form-1']);
+  });
+
+  it('keeps a completed save successful when post-save sync throws', async () => {
+    materializeFormPdfMock.mockResolvedValue(new Blob(['generated']));
+    saveFormToProfileMock.mockResolvedValue({ id: 'saved-form-2', name: 'Fresh Save' });
+    const deps = createDeps({
+      activeSavedFormId: null,
+      activeSavedFormName: null,
+      activeGroupId: null,
+      activeGroupName: null,
+      requestPrompt: vi.fn().mockResolvedValue('Fresh Save'),
+      refreshSavedForms: vi.fn(() => { throw new TypeError('Failed to fetch'); }),
+      onSaveSuccess: vi.fn(() => { throw new Error('post-save fingerprint failed'); }),
+    });
+    const hook = renderHookHarness(deps);
+
+    await act(async () => {
+      await hook.current.handleSaveToProfile();
+    });
+
+    expect(saveFormToProfileMock).toHaveBeenCalledWith(
+      expect.any(Blob),
+      'Fresh Save',
+      'mapping-session-1',
+      undefined,
+      [],
+      [],
+      expect.objectContaining({
+        version: 2,
+        pageCount: 1,
+      }),
+    );
+    expect(deps.setActiveSavedFormId).toHaveBeenCalledWith('saved-form-2');
+    expect(deps.setActiveSavedFormName).toHaveBeenCalledWith('Fresh Save');
+    expect(deps.setBannerNotice).not.toHaveBeenCalled();
+    expect(hook.current.saveInProgress).toBe(false);
+  });
+
+  it('does not keep save spinning while follow-up refreshes are still pending', async () => {
+    materializeFormPdfMock.mockResolvedValue(new Blob(['generated']));
+    saveFormToProfileMock.mockResolvedValue({ id: 'saved-form-3', name: 'Fresh Save' });
+    const deps = createDeps({
+      activeSavedFormId: null,
+      activeSavedFormName: null,
+      activeGroupId: null,
+      activeGroupName: null,
+      requestPrompt: vi.fn().mockResolvedValue('Fresh Save'),
+      refreshSavedForms: vi.fn(() => new Promise(() => {})),
+      refreshGroups: vi.fn(() => new Promise(() => {})),
+      refreshProfile: vi.fn(() => new Promise(() => {})),
+    });
+    const hook = renderHookHarness(deps);
+
+    act(() => {
+      void hook.current.handleSaveToProfile();
+    });
+
+    await waitFor(() => {
+      expect(saveFormToProfileMock).toHaveBeenCalledTimes(1);
+      expect(hook.current.saveInProgress).toBe(false);
+    });
+
+    expect(deps.setActiveSavedFormId).toHaveBeenCalledWith('saved-form-3');
+    expect(deps.setActiveSavedFormName).toHaveBeenCalledWith('Fresh Save');
+  });
+
+  it('closes the overwrite dialog without opening save-new-copy when the dialog is dismissed', async () => {
+    const deps = createDeps({
+      activeGroupId: null,
+      activeGroupName: null,
+      requestConfirm: vi.fn().mockResolvedValueOnce(null),
+    });
+    const hook = renderHookHarness(deps);
+
+    await act(async () => {
+      await hook.current.handleSaveToProfile();
+    });
+
+    expect(deps.requestConfirm).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Overwrite saved form?',
+      dismissResult: null,
+    }));
+    expect(deps.requestPrompt).not.toHaveBeenCalled();
+    expect(materializeFormPdfMock).not.toHaveBeenCalled();
+    expect(saveFormToProfileMock).not.toHaveBeenCalled();
   });
 
   it('downloads a flat PDF when requested and names the file accordingly', async () => {

@@ -41,8 +41,8 @@ Unknown slugs (for example `/usage-docs/typo`) are treated as not found:
 
 ## Navigation model
 
-- Header-level nav now uses a single entry button (`Docs & Privacy & Terms`) that lands on `/usage-docs`.
-- In-page top nav on docs/legal pages provides movement between Home, Usage Docs, Privacy, and Terms.
+- Public docs now use the shared public-site header/footer frame used by the blog and workflow routes.
+- Docs keep a small local utility nav for `Usage Docs`, `Privacy Policy`, and `Terms of Service`.
 - Sidebar includes:
   - `Pages`: jump between docs routes.
   - `On this page`: anchor links to section IDs in the active route.

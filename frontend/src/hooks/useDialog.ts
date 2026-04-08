@@ -16,7 +16,7 @@ export function useDialog() {
   }, []);
 
   const requestConfirm = useCallback((options: ConfirmDialogOptions) => {
-    return new Promise<boolean>((resolve) => {
+    return new Promise<boolean | null>((resolve) => {
       dialogResolverRef.current = resolve;
       setDialogRequest({ kind: 'confirm', ...options });
     });

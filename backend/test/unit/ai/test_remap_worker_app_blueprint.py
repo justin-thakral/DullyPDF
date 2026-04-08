@@ -148,6 +148,52 @@ def test_remap_worker_completes_job_and_persists_checkbox_outputs(mocker) -> Non
     assert "complete" in statuses
 
 
+def test_remap_worker_skips_openai_for_exact_text_only_payload(mocker) -> None:
+    client = TestClient(worker.app)
+    mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})
+    mocker.patch.object(
+        worker,
+        "get_openai_job",
+        return_value={
+            "status": "queued",
+            "user_id": "user-1",
+            "schema_id": "schema-1",
+            "session_id": "sess-1",
+            "request_id": "job-1",
+        },
+    )
+    update_job_mock = mocker.patch.object(worker, "update_openai_job", return_value=None)
+    mocker.patch.object(
+        worker,
+        "get_schema",
+        return_value=SimpleNamespace(id="schema-1", fields=[{"name": "patient_name", "type": "string"}]),
+    )
+    mocker.patch.object(worker, "_get_session_entry", return_value={"user_id": "user-1"})
+    openai_mock = mocker.patch.object(worker, "call_openai_schema_mapping_chunked")
+    mocker.patch.object(worker, "_update_session_entry", return_value=None)
+
+    response = client.post(
+        "/internal/remap",
+        json=_payload(
+            templateFields=[
+                {
+                    "name": "patient_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 1, "y": 2, "width": 30, "height": 12},
+                }
+            ]
+        ),
+    )
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "complete"
+    openai_mock.assert_not_called()
+    statuses = [call.kwargs.get("status") for call in update_job_mock.call_args_list if "status" in call.kwargs]
+    assert "running" in statuses
+    assert "complete" in statuses
+
+
 def test_remap_worker_refunds_credits_when_schema_is_missing(mocker) -> None:
     client = TestClient(worker.app)
     mocker.patch.object(worker, "_require_internal_auth", return_value={"sub": "task"})

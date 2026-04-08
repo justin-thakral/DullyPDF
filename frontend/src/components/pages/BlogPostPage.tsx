@@ -5,18 +5,12 @@ import { getIntentPage } from '../../config/intentPages';
 import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
 import { applyNoIndexSeo, applySeoMetadata } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
-import { SiteFooter } from '../ui/SiteFooter';
+import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import './BlogPostPage.css';
 
 type BlogPostPageProps = {
   slug: string;
 };
-
-const HEADER_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Usage Docs', href: '/usage-docs' },
-];
 
 const formatDisplayDate = (date: string): string =>
   new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
@@ -42,17 +36,17 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
 
   if (!post) {
     return (
-      <div className="blog-post">
-        <div className="blog-post__card">
-          <main className="blog-post__content">
+      <PublicSiteFrame activeNavKey="blog" bodyClassName="blog-post__content">
+        <div className="blog-post blog-post--not-found">
+          <section className="blog-post__not-found">
             <p className="blog-post__not-found-code">404</p>
             <h1>Post not found</h1>
             <p>
               No DullyPDF blog post exists at <code>/blog/{slug}</code>. <a href="/blog">Back to blog</a>.
             </p>
-          </main>
+          </section>
         </div>
-      </div>
+      </PublicSiteFrame>
     );
   }
 
@@ -88,29 +82,9 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
   const showUpdatedDate = post.updatedDate !== post.publishedDate;
 
   return (
-    <div className="blog-post">
-      <div className="blog-post__card">
-        <header className="blog-post__header">
-          <div className="blog-post__brand">
-            <picture>
-              <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
-              <img src="/DullyPDFLogoImproved.png" alt="DullyPDF" className="blog-post__logo" decoding="async" />
-            </picture>
-            <div>
-              <div className="blog-post__brand-name">DullyPDF</div>
-              <div className="blog-post__brand-tagline">PDF automation workflows</div>
-            </div>
-          </div>
-          <nav className="blog-post__nav" aria-label="Primary navigation">
-            {HEADER_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className="blog-post__nav-link">
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </header>
-
-        <main className="blog-post__content">
+    <PublicSiteFrame activeNavKey="blog" bodyClassName="blog-post__content">
+      <div className="blog-post">
+        <div className="blog-post__main">
           <Breadcrumbs
             items={[
               { label: 'Home', href: '/' },
@@ -189,7 +163,7 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
           </article>
 
           {(relatedIntentLinks.length > 0 || relatedDocsLinks.length > 0) && (
-            <aside className="blog-post__related">
+            <section className="blog-post__panel">
               <h2>Related resources</h2>
               <div className="blog-post__related-grid">
                 {relatedIntentLinks.length > 0 && (
@@ -217,17 +191,22 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                   </div>
                 )}
               </div>
-            </aside>
+            </section>
           )}
 
-          <div className="blog-post__cta">
-            <a href="/" className="blog-post__cta-button">Try DullyPDF Now</a>
-            <a href="/usage-docs/getting-started" className="blog-post__cta-link">View Getting Started Docs</a>
-          </div>
-        </main>
-        <SiteFooter />
+          <section className="blog-post__panel blog-post__panel--cta">
+            <h2>Continue into the product</h2>
+            <p>
+              Use the article as the starting point, then move into one focused DullyPDF workflow validation pass.
+            </p>
+            <div className="blog-post__cta">
+              <a href="/" className="blog-post__cta-button">Try DullyPDF Now</a>
+              <a href="/usage-docs/getting-started" className="blog-post__cta-link">View Getting Started Docs</a>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </PublicSiteFrame>
   );
 };
 

@@ -76,11 +76,26 @@
   gap: 1.15rem;
 }
 
+.intent-page__content--public {
+  padding: 0;
+  gap: 1.4rem;
+}
+
 .intent-page__hero {
   border: 1px solid #dbe5f4;
   border-radius: 14px;
   background: linear-gradient(135deg, #eef4ff 0%, #f8fbff 48%, #f0f9ff 100%);
   padding: 1.15rem 1.2rem;
+}
+
+.intent-page__content--public .intent-page__hero {
+  border: 1px solid rgba(147, 197, 253, 0.42);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 3.4vw, 2.4rem);
+  background:
+    radial-gradient(720px at 0% 0%, rgba(191, 219, 254, 0.7), transparent 65%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(239, 246, 255, 0.96) 50%, rgba(248, 250, 252, 0.98) 100%);
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.07);
 }
 
 .intent-page__kicker {
@@ -138,11 +153,21 @@
   gap: 0.95rem;
 }
 
+.intent-page__content--public .intent-page__grid {
+  gap: 1.2rem;
+}
+
 .intent-page__panel {
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   background: #ffffff;
   padding: 1rem;
+}
+
+.intent-page__content--public .intent-page__panel {
+  border-radius: 22px;
+  padding: clamp(1.15rem, 2.2vw, 1.55rem);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.05);
 }
 
 .intent-page__panel h2 {
@@ -256,6 +281,14 @@
 
 .intent-page__footnote-link {
   color: #1d4ed8;
+}
+
+@media (max-width: 900px) {
+  .intent-page__content--public .intent-page__grid,
+  .intent-page__faq-list,
+  .intent-page__related-links {
+    grid-template-columns: 1fr;
+  }
 }
 
 .intent-page__footnote-backlink {

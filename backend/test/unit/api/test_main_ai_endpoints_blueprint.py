@@ -1,4 +1,5 @@
 import hashlib
+from dataclasses import replace
 
 import pytest
 
@@ -172,6 +173,85 @@ def test_rename_endpoint_persists_renames_and_checkbox_rules(client, app_main, b
     assert update_mock.call_args.kwargs["persist_renames"] is True
     assert update_mock.call_args.kwargs["persist_checkbox_rules"] is True
     assert update_mock.call_args.kwargs["persist_text_transform_rules"] is True
+    assert entry["textTransformRules"] == []
+
+
+def test_rename_remap_endpoint_uses_single_combined_pass_and_persists_mapping_results(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    entry = _session_entry()
+    schema = SchemaRecord(
+        id="schema_1",
+        name="Schema",
+        fields=[
+            {"name": "first_name", "type": "string"},
+            {"name": "consent", "type": "bool"},
+        ],
+        owner_user_id="user_base",
+        created_at=None,
+        updated_at=None,
+        source=None,
+        sample_count=None,
+    )
+    mocker.patch.object(app_main, "_get_session_entry", return_value=entry)
+    mocker.patch.object(app_main, "get_schema", return_value=schema)
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "consume_openai_credits", return_value=(8, True))
+    mocker.patch.object(app_main, "record_openai_rename_request", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "run_openai_rename_on_pdf",
+        return_value=(
+            {"checkboxRules": [{"databaseField": "consent", "groupKey": "consent_group"}]},
+            [{"name": "first_name", "type": "text", "page": 1, "rect": [1, 2, 101, 32]}],
+        ),
+    )
+    mapping_payload = {
+        "success": True,
+        "mappings": [{"databaseField": "first_name", "pdfField": "first_name", "originalPdfField": "first_name", "confidence": 0.91}],
+        "checkboxRules": [{"databaseField": "consent", "groupKey": "consent_group"}],
+        "textTransformRules": [],
+        "fillRules": {"version": 1, "checkboxRules": [{"databaseField": "consent", "groupKey": "consent_group"}], "textTransformRules": []},
+    }
+    build_mapping_mock = mocker.patch.object(
+        app_main,
+        "build_combined_rename_mapping_payload",
+        return_value=mapping_payload,
+    )
+    apply_mapping_mock = mocker.patch.object(
+        app_main,
+        "apply_mapping_results_to_fields",
+        return_value=[{"name": "first_name", "mappingConfidence": 0.91}],
+    )
+    update_mock = mocker.patch.object(app_main, "_update_session_entry", return_value=None)
+    remap_openai_mock = mocker.patch.object(app_main, "call_openai_schema_mapping_chunked")
+
+    response = client.post(
+        "/api/rename-remap/ai",
+        json={"sessionId": "sess-1", "schemaId": "schema_1", "templateFields": [_template_field_payload()]},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["mappingResults"] == mapping_payload
+    assert body["fields"] == [{"name": "first_name", "mappingConfidence": 0.91}]
+    build_mapping_mock.assert_called_once()
+    apply_mapping_mock.assert_called_once_with(
+        [{"name": "first_name", "type": "text", "page": 1, "rect": [1, 2, 101, 32]}],
+        mapping_payload,
+    )
+    remap_openai_mock.assert_not_called()
+    assert update_mock.call_args.kwargs["persist_fields"] is True
+    assert update_mock.call_args.kwargs["persist_renames"] is True
+    assert update_mock.call_args.kwargs["persist_checkbox_rules"] is True
+    assert update_mock.call_args.kwargs["persist_text_transform_rules"] is True
+    assert entry["checkboxRules"] == [{"databaseField": "consent", "groupKey": "consent_group"}]
     assert entry["textTransformRules"] == []
 
 
@@ -630,6 +710,189 @@ def test_mapping_endpoint_persists_empty_checkbox_and_text_rules_to_clear_stale_
     assert update_mock.call_args.kwargs["persist_text_transform_rules"] is True
 
 
+def test_mapping_endpoint_pre_resolves_exact_text_fields_without_openai(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    schema_record = replace(
+        _schema_record(schema_id="schema_1"),
+        fields=[{"name": "patient_name", "type": "string"}],
+    )
+    mocker.patch.object(
+        app_main,
+        "get_schema",
+        return_value=schema_record,
+    )
+    session_entry = {
+        "fields": [{"name": "patient_name", "type": "text", "page": 1, "rect": [0, 0, 10, 10]}],
+        "page_count": 1,
+    }
+    mocker.patch.object(app_main, "_get_session_entry", return_value=session_entry)
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
+    mocker.patch.object(app_main, "record_openai_request", return_value=None)
+    openai_mock = mocker.patch.object(app_main, "call_openai_schema_mapping_chunked")
+    update_mock = mocker.patch.object(app_main, "_update_session_entry", return_value=None)
+
+    response = client.post(
+        "/api/schema-mappings/ai",
+        json={
+            "schemaId": "schema_1",
+            "sessionId": "sess-1",
+            "templateFields": [
+                {
+                    "name": "patient_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 100, "height": 30},
+                }
+            ],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    openai_mock.assert_not_called()
+    body = response.json()
+    assert body["mappingResults"]["totalMappings"] == 1
+    assert body["mappingResults"]["mappings"] == [
+        {
+            "confidence": 0.95,
+            "databaseField": "patient_name",
+            "id": "patient_name_to_patient_name",
+            "originalPdfField": "patient_name",
+            "pdfField": "patient_name",
+            "reasoning": "Schema-aware field names already match the schema field name.",
+        }
+    ]
+    assert session_entry["fields"][0]["name"] == "patient_name"
+    update_mock.assert_called_once()
+
+
+def test_mapping_endpoint_only_sends_unresolved_and_choice_fields_to_openai(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    schema_record = replace(
+        _schema_record(schema_id="schema_1"),
+        fields=[
+            {"name": "patient_name", "type": "string"},
+            {"name": "patient_sex", "type": "string"},
+        ],
+    )
+    mocker.patch.object(
+        app_main,
+        "get_schema",
+        return_value=schema_record,
+    )
+    mocker.patch.object(
+        app_main,
+        "_get_session_entry",
+        return_value={
+            "fields": [{"name": "patient_name", "type": "text", "page": 1, "rect": [0, 0, 10, 10]}],
+            "page_count": 1,
+        },
+    )
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
+    mocker.patch.object(app_main, "record_openai_request", return_value=None)
+    openai_mock = mocker.patch.object(app_main, "call_openai_schema_mapping_chunked", return_value={"mappings": []})
+    mocker.patch.object(app_main, "_update_session_entry", return_value=None)
+
+    response = client.post(
+        "/api/schema-mappings/ai",
+        json={
+            "schemaId": "schema_1",
+            "sessionId": "sess-1",
+            "templateFields": [
+                {
+                    "name": "patient_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 100, "height": 30},
+                },
+                {
+                    "name": "commonforms_checkbox_p1_10",
+                    "type": "radio",
+                    "page": 1,
+                    "rect": {"x": 30, "y": 40, "width": 12, "height": 12},
+                    "radioGroupKey": "sex",
+                    "radioOptionKey": "f",
+                },
+            ],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    openai_mock.assert_called_once()
+    openai_payload = openai_mock.call_args.args[0]
+    assert [tag["tag"] for tag in openai_payload["templateTags"]] == ["commonforms_checkbox_p1_10"]
+    body = response.json()
+    assert body["mappingResults"]["mappings"][0]["databaseField"] == "patient_name"
+
+
+def test_mapping_endpoint_pre_resolves_exact_checkbox_names_without_openai(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    schema_record = replace(
+        _schema_record(schema_id="schema_1"),
+        fields=[{"name": "i_sex_f", "type": "bool"}],
+    )
+    mocker.patch.object(app_main, "get_schema", return_value=schema_record)
+    mocker.patch.object(
+        app_main,
+        "_get_session_entry",
+        return_value={
+            "fields": [{"name": "i_sex_f", "type": "checkbox", "page": 1, "rect": [0, 0, 10, 10]}],
+            "page_count": 1,
+        },
+    )
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "consume_openai_credits", return_value=(9, True))
+    mocker.patch.object(app_main, "record_openai_request", return_value=None)
+    openai_mock = mocker.patch.object(app_main, "call_openai_schema_mapping_chunked")
+    mocker.patch.object(app_main, "_update_session_entry", return_value=None)
+
+    response = client.post(
+        "/api/schema-mappings/ai",
+        json={
+            "schemaId": "schema_1",
+            "sessionId": "sess-1",
+            "templateFields": [
+                {
+                    "name": "i_sex_f",
+                    "type": "checkbox",
+                    "page": 1,
+                    "rect": {"x": 10, "y": 20, "width": 12, "height": 12},
+                    "groupKey": "sex",
+                    "optionKey": "f",
+                }
+            ],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    openai_mock.assert_not_called()
+    body = response.json()
+    assert body["mappingResults"]["totalMappings"] == 1
+    assert body["mappingResults"]["mappings"][0]["databaseField"] == "i_sex_f"
+
+
 # ---------------------------------------------------------------------------
 # Edge-case: Rename endpoint with templateFields=None falls back to session fields
 # ---------------------------------------------------------------------------
@@ -834,6 +1097,51 @@ def test_rename_endpoint_tasks_mode_enqueues_job_and_skips_inline_openai_call(
     assert any(call.kwargs.get("credit_breakdown") == {"base": 1, "monthly": 0, "refill": 0} for call in update_job_mock.call_args_list)
     assert any(call.kwargs.get("task_name") == "tasks/rename-1" for call in update_job_mock.call_args_list)
     inline_openai_mock.assert_not_called()
+
+
+def test_rename_remap_endpoint_tasks_mode_enqueues_combined_job(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_get_session_entry", return_value=_session_entry())
+    mocker.patch.object(app_main, "get_schema", return_value=_schema_record())
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "consume_openai_credits", return_value=(8, True, {"base": 2, "monthly": 0, "refill": 0}))
+    mocker.patch.object(app_main, "record_openai_rename_request", return_value=None)
+    mocker.patch.object(app_main, "resolve_openai_rename_remap_mode", return_value="tasks")
+    mocker.patch.object(
+        app_main,
+        "resolve_openai_rename_remap_task_config",
+        return_value={"queue": "openai-rename-remap", "service_url": "https://rename-remap"},
+    )
+    create_job_mock = mocker.patch.object(app_main, "create_openai_job", return_value=None)
+    enqueue_mock = mocker.patch.object(app_main, "enqueue_openai_rename_remap_task", return_value="tasks/rename-remap-1")
+    update_job_mock = mocker.patch.object(app_main, "update_openai_job", return_value=None)
+    inline_openai_mock = mocker.patch.object(app_main, "run_openai_rename_on_pdf")
+    build_mapping_mock = mocker.patch.object(app_main, "build_combined_rename_mapping_payload")
+
+    response = client.post(
+        "/api/rename-remap/ai",
+        json={"sessionId": "sess-1", "schemaId": "schema_1", "templateFields": [_template_field_payload()]},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "queued"
+    assert body["jobId"] == body["requestId"]
+    create_job_mock.assert_called_once()
+    enqueue_payload = enqueue_mock.call_args.args[0]
+    assert enqueue_payload["sessionId"] == "sess-1"
+    assert enqueue_payload["schemaId"] == "schema_1"
+    assert any(call.kwargs.get("credit_breakdown") == {"base": 2, "monthly": 0, "refill": 0} for call in update_job_mock.call_args_list)
+    assert any(call.kwargs.get("task_name") == "tasks/rename-remap-1" for call in update_job_mock.call_args_list)
+    inline_openai_mock.assert_not_called()
+    build_mapping_mock.assert_not_called()
 
 
 def test_rename_endpoint_tasks_mode_reuses_existing_idempotent_job_without_recharging(

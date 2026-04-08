@@ -8,6 +8,7 @@ import { useDialog } from '../hooks/useDialog';
 import { useOpenAiPipeline } from '../hooks/useOpenAiPipeline';
 import type { BannerNotice, CheckboxRule, PdfField } from '../types';
 import { ApiService } from '../services/api';
+import { resolveConfirmDialogResult } from '../utils/dialogResult';
 
 type RenameHarnessConfig = {
   renameResponse?: {
@@ -177,6 +178,27 @@ export function RenameHarnessApp() {
     };
   }, [dialog.bannerNotice, pipeline.checkboxRules.length, pipeline.openAiError]);
 
+  const confirmDialog = (() => {
+    if (dialog.dialogRequest?.kind !== 'confirm') {
+      return null;
+    }
+    const cancelResult = resolveConfirmDialogResult(dialog.dialogRequest, 'cancelResult', false);
+    const dismissResult = resolveConfirmDialogResult(dialog.dialogRequest, 'dismissResult', cancelResult);
+    return (
+      <ConfirmDialog
+        open
+        title={dialog.dialogRequest.title}
+        description={dialog.dialogRequest.message}
+        confirmLabel={dialog.dialogRequest.confirmLabel}
+        cancelLabel={dialog.dialogRequest.cancelLabel}
+        tone={dialog.dialogRequest.tone}
+        onConfirm={() => dialog.resolveDialog(true)}
+        onCancel={() => dialog.resolveDialog(cancelResult)}
+        onClose={() => dialog.resolveDialog(dismissResult)}
+      />
+    );
+  })();
+
   return (
     <div style={{ padding: '24px', background: '#eef3f8', minHeight: '100vh' }}>
       <HeaderBar
@@ -213,18 +235,7 @@ export function RenameHarnessApp() {
           </ul>
         </section>
       </main>
-      {dialog.dialogRequest?.kind === 'confirm' ? (
-        <ConfirmDialog
-          open
-          title={dialog.dialogRequest.title}
-          description={dialog.dialogRequest.message}
-          confirmLabel={dialog.dialogRequest.confirmLabel}
-          cancelLabel={dialog.dialogRequest.cancelLabel}
-          tone={dialog.dialogRequest.tone}
-          onConfirm={() => dialog.resolveDialog(true)}
-          onCancel={() => dialog.resolveDialog(false)}
-        />
-      ) : null}
+      {confirmDialog}
     </div>
   );
 }

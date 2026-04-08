@@ -227,6 +227,26 @@ describe('Dialog', () => {
     expect(screen.queryByRole('button', { name: 'Never mind' })).toBeNull();
   });
 
+  it('lets confirm dialog close use a different callback than cancel', async () => {
+    const user = userEvent.setup();
+    const onCancel = vi.fn();
+    const onClose = vi.fn();
+
+    render(
+      <ConfirmDialog
+        open
+        title="Confirm"
+        onConfirm={vi.fn()}
+        onCancel={onCancel}
+        onClose={onClose}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Close Confirm dialog' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onCancel).not.toHaveBeenCalled();
+  });
+
   it('enforces requireValue in prompt dialog and supports Enter-key submit', async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();

@@ -18,7 +18,7 @@ let sharedSavedFormsRequest: {
 export function useSavedForms(deps: {
   authUserRef: React.MutableRefObject<User | null>;
   setBannerNotice: (notice: BannerNotice | null) => void;
-  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean>;
+  requestConfirm: (options: ConfirmDialogOptions) => Promise<boolean | null>;
   refreshGroups?: () => Promise<unknown> | void;
   refreshProfile?: () => Promise<unknown> | void;
 }) {

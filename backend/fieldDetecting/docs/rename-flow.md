@@ -53,7 +53,7 @@ API response note:
 - `POST /api/schema-mappings/ai` can return `status=queued` + `jobId` in task mode.
 - `GET /api/schema-mappings/ai/{jobId}` returns queued/running/failed/complete status for async remap jobs.
 - Mapping responses include `mappings` plus deterministic rule payloads (`checkboxRules`, `radioGroupSuggestions`, `textTransformRules`, `fillRules`) used by Search & Fill.
-- Frontend behavior: rename-only derives editor `radioGroupSuggestions` from returned `checkboxRules` and from high-signal renamed checkbox layouts (for example compact yes/no or single-row enum groups), while `Rename + Map` runs rename first and then executes the schema-mapping call so explicit mapping suggestions are available.
+- Frontend behavior: rename-only derives editor `radioGroupSuggestions` from returned `checkboxRules` and from high-signal renamed checkbox layouts (for example compact yes/no or single-row enum groups). `Rename + Map` now uses the dedicated combined endpoint so one schema-aware OpenAI rename pass can return both renamed fields and final mapping metadata. Mapping-only is now a lightweight second pass: it pre-resolves exact current-name matches locally and only sends schema headers plus unresolved field names to OpenAI.
 - The original name is preserved in `originalName` so the UI can reconcile edits.
 - Template overlay `rect` values may be sent as `{x,y,width,height}` or `[x1,y1,x2,y2]` (originTop points). The backend normalizes to a consistent numeric shape before use: schema mapping allowlists use `{x,y,width,height}`, while rename geometry uses `[x1,y1,x2,y2]`.
 

@@ -135,6 +135,21 @@ class RenameFieldsRequest(BaseModel):
         return normalize_optional_pdf_sha256(value)
 
 
+class RenameRemapRequest(BaseModel):
+    """Combined OpenAI rename+remap request using one schema-aware rename pass."""
+
+    sessionId: str = Field(..., min_length=1)
+    schemaId: str = Field(..., min_length=1)
+    templateFields: Optional[List[TemplateOverlayField]] = None
+    sourcePdfSha256: Optional[str] = None
+    requestId: Optional[str] = Field(default=None, min_length=1, max_length=120)
+
+    @field_validator("sourcePdfSha256", mode="before")
+    @classmethod
+    def _normalize_source_pdf_sha256(cls, value: Any) -> Optional[str]:
+        return normalize_optional_pdf_sha256(value)
+
+
 class SavedFormSessionRequest(BaseModel):
     """Create a detection session from a saved form + extracted fields."""
 

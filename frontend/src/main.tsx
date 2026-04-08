@@ -1,5 +1,5 @@
 /** React entrypoint that mounts the application shell. */
-import { StrictMode, Suspense, lazy } from 'react';
+import { StrictMode, Suspense, lazy, useLayoutEffect, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import './index.css';
 import {
@@ -51,6 +51,11 @@ type AppRoute =
   | { kind: 'seo-layout-preview' }
   | { kind: 'blog-post'; slug: string }
   | { kind: 'not-found'; requestedPath: string };
+
+type PrerenderedSeoShellBoundaryProps = {
+  route: AppRoute;
+  children: ReactNode;
+};
 
 declare global {
   interface Window {
@@ -225,6 +230,35 @@ const renderRoute = (route: AppRoute) => {
   return exhaustiveCheck;
 };
 
+const routeUsesPrerenderedSeoShell = (route: AppRoute): boolean => {
+  if (route.kind === 'app') {
+    return route.browserRoute.kind === 'homepage';
+  }
+
+  return (
+    route.kind === 'legal' ||
+    route.kind === 'intent-hub' ||
+    route.kind === 'feature-plan' ||
+    route.kind === 'intent' ||
+    route.kind === 'usage-docs' ||
+    route.kind === 'blog-index' ||
+    route.kind === 'blog-post'
+  );
+};
+
+const PrerenderedSeoShellBoundary = ({ route, children }: PrerenderedSeoShellBoundaryProps) => {
+  useLayoutEffect(() => {
+    if (!routeUsesPrerenderedSeoShell(route) || typeof document === 'undefined') {
+      return;
+    }
+
+    document.body.removeAttribute('data-seo-shell-visible');
+    document.getElementById('seo-static-shell')?.remove();
+  }, [route]);
+
+  return <>{children}</>;
+};
+
 const route = resolveRoute();
 
 if (typeof window !== 'undefined' && route.kind === 'app') {
@@ -250,7 +284,9 @@ if (typeof window !== 'undefined') {
 root.render(
   <StrictMode>
     <Suspense fallback={null}>
-      {renderRoute(route)}
+      <PrerenderedSeoShellBoundary route={route}>
+        {renderRoute(route)}
+      </PrerenderedSeoShellBoundary>
     </Suspense>
   </StrictMode>,
 );

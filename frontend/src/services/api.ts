@@ -873,7 +873,7 @@ export class ApiService {
   }
 
   private static async pollOpenAiJob(
-    resource: 'renames' | 'schema-mappings',
+    resource: 'renames' | 'schema-mappings' | 'rename-remap',
     jobId: string,
     timeoutMs = OPENAI_JOB_POLL_TIMEOUT_MS,
     options?: AbortableRequestOptions,
@@ -1541,6 +1541,54 @@ export class ApiService {
       const status = String(result?.status || '').toLowerCase();
       if ((status === 'queued' || status === 'running') && result?.jobId) {
         const polled = await ApiService.pollOpenAiJob('renames', String(result.jobId), OPENAI_JOB_POLL_TIMEOUT_MS, options);
+        clearOpenAiRequestId(requestCacheKey);
+        return polled;
+      }
+      clearOpenAiRequestId(requestCacheKey);
+      return result;
+    } catch (error) {
+      if (shouldClearOpenAiRequestId(error)) {
+        clearOpenAiRequestId(requestCacheKey);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Request combined OpenAI rename + remap using one schema-aware rename call.
+   */
+  static async renameAndRemap(payload: {
+    sessionId: string;
+    schemaId: string;
+    sourcePdfSha256?: string;
+    templateFields?: Array<{
+      name: string;
+      type?: string;
+      page?: number;
+      rect?: { x: number; y: number; width: number; height: number };
+      groupKey?: string;
+      optionKey?: string;
+      optionLabel?: string;
+      groupLabel?: string;
+    }>;
+  }, options?: AbortableRequestOptions): Promise<any> {
+    const requestCacheKey = `rename-remap:${stableStringify(payload)}`;
+    const requestId = getOrCreateOpenAiRequestId(requestCacheKey);
+    try {
+      const response = await apiFetch('POST', buildApiUrl('api', 'rename-remap', 'ai'), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...payload,
+          requestId,
+        }),
+        ...buildAbortOptions(options?.signal),
+      });
+      const result = await apiJsonFetch<any>(response);
+      const status = String(result?.status || '').toLowerCase();
+      if ((status === 'queued' || status === 'running') && result?.jobId) {
+        const polled = await ApiService.pollOpenAiJob('rename-remap', String(result.jobId), OPENAI_JOB_POLL_TIMEOUT_MS, options);
         clearOpenAiRequestId(requestCacheKey);
         return polled;
       }

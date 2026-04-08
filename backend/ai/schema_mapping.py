@@ -16,10 +16,41 @@ OPENAI_SCHEMA_MODEL = os.getenv("OPENAI_SCHEMA_MAPPING_MODEL", "gpt-5-mini")
 MAX_SCHEMA_FIELDS = int(os.getenv("OPENAI_SCHEMA_MAX_FIELDS", "200"))
 MAX_TEMPLATE_FIELDS = int(os.getenv("OPENAI_TEMPLATE_MAX_FIELDS", "200"))
 MAX_PAYLOAD_BYTES = int(os.getenv("OPENAI_SCHEMA_MAX_PAYLOAD_BYTES", "80000"))
+MAX_TEMPLATE_TAGS_PER_CHUNK = max(1, int(os.getenv("OPENAI_SCHEMA_MAX_TEMPLATE_TAGS_PER_CHUNK", "48")))
 MAX_FIELD_NAME_LEN = int(os.getenv("OPENAI_SCHEMA_MAX_FIELD_NAME_LEN", "120"))
 
 ALLOWED_SCHEMA_TYPES = {"string", "int", "date", "bool"}
 ALLOWED_TEMPLATE_TYPES = {"text", "checkbox", "radio", "signature", "date"}
+
+
+def _build_lightweight_mapping_payload(payload: Dict[str, Any]) -> Dict[str, List[str]]:
+    """Reduce remap-only prompts to schema headers and current field names only."""
+    schema_names: List[str] = []
+    seen_schema = set()
+    for field in payload.get("schemaFields") or []:
+        if not isinstance(field, dict):
+            continue
+        name = str(field.get("name") or "").strip()
+        if not name or name in seen_schema:
+            continue
+        seen_schema.add(name)
+        schema_names.append(name)
+
+    template_names: List[str] = []
+    seen_template = set()
+    for field in payload.get("templateTags") or []:
+        if not isinstance(field, dict):
+            continue
+        tag = str(field.get("tag") or "").strip()
+        if not tag or tag in seen_template:
+            continue
+        seen_template.add(tag)
+        template_names.append(tag)
+
+    return {
+        "schemaFields": schema_names,
+        "templateTags": template_names,
+    }
 
 def validate_payload_size(payload: Dict[str, Any]) -> None:
     """Reject payloads that exceed the OpenAI request size budget."""
@@ -166,7 +197,10 @@ def _split_template_tags(
         candidate_list_len = _template_tags_list_len(candidate_tag_lens, candidate_sum_len)
         candidate_payload_len = _payload_len(candidate_list_len, len(candidate_tag_lens))
 
-        if candidate_payload_len > MAX_PAYLOAD_BYTES:
+        if (
+            candidate_payload_len > MAX_PAYLOAD_BYTES
+            or len(candidate_tag_lens) > MAX_TEMPLATE_TAGS_PER_CHUNK
+        ):
             if not current:
                 raise ValueError("OpenAI payload too large; reduce schema/template size")
             chunks.append(_assemble_payload(schema_fields, current))
@@ -223,37 +257,29 @@ def call_openai_schema_mapping(
         setattr(err, "status_code", 503)
         raise err
 
+    lightweight_payload = _build_lightweight_mapping_payload(payload)
     system_prompt = (
-        "You map database schema fields to PDF template overlay tags. "
-        "You only see schema field names/types and template tags. "
-        "Return JSON with keys: mappings, templateRules, textTransformRules, checkboxRules, radioGroupSuggestions, "
-        "identifierKey, notes. Each mapping must include schemaField, templateTag, "
-        "confidence (0..1), reasoning. "
-        "radioGroupSuggestions should identify single-choice checkbox clusters that should become "
-        "explicit radio groups in the editor."
+        "You map database header names to current PDF field names when a plausible match exists. "
+        "You only see database header names and current field names. "
+        "Return JSON with keys: mappings, identifierKey, notes. "
+        "Each mapping must include schemaField, templateTag, confidence (0..1), reasoning."
     )
     user_prompt = (
-        "Schema + template overlay payload (no row values):\n"
-        f"{json.dumps(payload, ensure_ascii=True)}\n"
+        "Database headers:\n"
+        f"{json.dumps(lightweight_payload['schemaFields'], ensure_ascii=True)}\n"
+        "\nCurrent field names:\n"
+        f"{json.dumps(lightweight_payload['templateTags'], ensure_ascii=True)}\n"
         "\nRules:\n"
-        "- Only reference schemaField values that appear in schemaFields.\n"
-        "- Only reference templateTag values that appear in templateTags.\n"
-        "- Avoid inventing data; prefer leaving unmapped if unsure.\n"
-        "- textTransformRules are deterministic fill-time transforms for text fields.\n"
-        "- Allowed textTransformRules.operation: copy, concat, split_name_first_rest, split_delimiter.\n"
-        "- textTransformRules entries should use keys: targetField, operation, sources, "
-        "optional separator/delimiter/part/index, confidence, requiresReview, reasoning.\n"
-        "- If split is ambiguous, set requiresReview=true and lower confidence.\n"
-        "- checkboxRules should map one schemaField to one template groupKey when possible.\n"
-        "- radioGroupSuggestions should only describe single-choice groups such as yes/no, enum, "
-        "or binary pairs. Never use them for multi-select lists.\n"
-        "- radioGroupSuggestions should be a list of objects with: suggestedType (radio_group), "
-        "groupKey, groupLabel, suggestedFields, optional sourceField, optional selectionReason "
-        "(yes_no|enum|binary_pair|label_pattern), confidence, reasoning.\n"
-        "- suggestedFields should be a list of at least 2 items. Each item should use: fieldId "
-        "when available, fieldName, optionKey, optionLabel.\n"
-        "- Only suggest radio groups for template tags whose type is checkbox or radio.\n"
-        "- Do not suggest a radio group when the fields already share explicit radio metadata.\n"
+        "- Only reference schemaField values that appear in Database headers.\n"
+        "- Only reference templateTag values that appear in Current field names.\n"
+        "- templateTag must be the exact current field name from the provided list.\n"
+        "- Map only when the names plausibly describe the same field.\n"
+        "- Prefer exact and near-exact semantic matches.\n"
+        "- Do not invent transforms, checkbox rules, or radio rules.\n"
+        "- Leave fields unmapped when the names are unclear.\n"
+        "- Do not map one schemaField to multiple templateTag values.\n"
+        "- Do not map one templateTag to multiple schemaField values.\n"
+        "- If no confident mappings exist, return an empty mappings list.\n"
     )
 
     client = create_openai_client(api_key=key, max_retries_override=openai_max_retries)
@@ -346,7 +372,12 @@ def call_openai_schema_mapping_chunked(
 
     This merges mappings and rules across chunks so the caller sees one unified result.
     """
-    if _payload_size(payload) <= MAX_PAYLOAD_BYTES:
+    template_tags = payload.get("templateTags") or []
+    should_chunk = (
+        _payload_size(payload) > MAX_PAYLOAD_BYTES
+        or len(template_tags) > MAX_TEMPLATE_TAGS_PER_CHUNK
+    )
+    if not should_chunk:
         if usage_collector is None and openai_max_retries is None:
             return call_openai_schema_mapping(payload)
         return call_openai_schema_mapping(
@@ -356,16 +387,16 @@ def call_openai_schema_mapping_chunked(
         )
 
     schema_fields = payload.get("schemaFields") or []
-    template_tags = payload.get("templateTags") or []
     chunks = _split_template_tags(schema_fields, template_tags)
     if not chunks:
         raise ValueError("OpenAI payload too large; reduce schema/template size")
 
     logger.info(
-        "OpenAI schema mapping chunked into %s payloads (schema=%s tags=%s)",
+        "OpenAI schema mapping chunked into %s payloads (schema=%s tags=%s max_tags_per_chunk=%s)",
         len(chunks),
         len(schema_fields),
         len(template_tags),
+        MAX_TEMPLATE_TAGS_PER_CHUNK,
     )
 
     aggregate: Dict[str, Any] = {
