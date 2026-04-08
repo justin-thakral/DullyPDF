@@ -87,22 +87,20 @@ function getHomepageHydrationCoverTags(route) {
   }
 
   return `
-    <script data-homepage-hydration-cover="true">document.documentElement.setAttribute('data-homepage-hydration-cover', 'active');</script>
     <style data-homepage-hydration-cover="true">
-      html[data-homepage-hydration-cover="active"] {
+      html {
         background: #ffffff;
       }
 
-      html[data-homepage-hydration-cover="active"]::before {
-        content: '';
+      body {
+        background: #ffffff;
+      }
+
+      #homepage-hydration-cover {
         position: fixed;
         inset: 0;
         z-index: 2147483647;
         background: #ffffff;
-      }
-
-      html[data-homepage-hydration-cover="active"] body {
-        overflow: hidden;
       }
     </style>`;
 }
@@ -154,6 +152,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     ${viteAssets.linkTags.join('\n    ')}
   </head>
   <body>
+    ${route.kind === 'home' ? '<div id="homepage-hydration-cover" aria-hidden="true"></div>' : ''}
     <div id="root">${prerenderedMarkup}</div>
     ${viteAssets.scriptTags.join('\n    ')}
   </body>

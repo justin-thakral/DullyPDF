@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -223,16 +222,6 @@ vi.mock('../../../src/utils/pdf', () => ({
 
 vi.mock('../../../src/components/pages/Homepage', () => ({
   default: function MockHomepage(props: any) {
-    useEffect(() => {
-      const timeoutId = window.setTimeout(() => {
-        props.onInitialRenderReady?.();
-      }, 0);
-
-      return () => {
-        window.clearTimeout(timeoutId);
-      };
-    }, [props.onInitialRenderReady]);
-
     return (
       <div data-testid="homepage">
         <button data-testid="start-workflow" type="button" onClick={() => props.onStartWorkflow?.()}>
@@ -670,19 +659,16 @@ describe('App', () => {
     const App = await importApp();
     render(<App />);
 
-    expect(document.querySelector('.homepage-loading-overlay')).toBeTruthy();
+    expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
     expect(authMocks.onAuthStateChanged).toHaveBeenCalledTimes(1);
   });
 
-  it('removes the homepage splash once the landing page reports ready', async () => {
+  it('renders the homepage without mounting a secondary React splash overlay', async () => {
     const App = await importApp();
     render(<App />);
 
-    expect(document.querySelector('.homepage-loading-overlay')).toBeTruthy();
     expect(await screen.findByTestId('homepage')).toBeTruthy();
-    await waitFor(() => {
-      expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
-    });
+    expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
   });
 
   it('routes signed-out users to sign-in when they start workflow from homepage', async () => {
@@ -1766,9 +1752,7 @@ describe('App', () => {
     await settleAuthAsSignedOut();
 
     expect(await screen.findByTestId('homepage', {}, { timeout: 10_000 })).toBeTruthy();
-    await waitFor(() => {
-      expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
-    }, { timeout: 10_000 });
+    expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
   }, 15_000);
 
   it('supports undo/redo for field edits in editor history', async () => {

@@ -19,6 +19,7 @@ import { shouldActivateAppRouteHydrationCover } from './utils/appRouteHydrationC
 import type { HydratablePublicRoute } from './publicRouteRouting';
 import { resolveHydratablePublicRoute } from './publicRouteRouting';
 import { renderPublicRouteForClient } from './publicRouteClient';
+import { InitialRouteRevealBoundary } from './components/layout/InitialRouteRevealBoundary';
 import App from './App';
 
 const PublicNotFoundPage = lazy(() => import('./components/pages/PublicNotFoundPage'));
@@ -47,17 +48,10 @@ declare global {
   }
 }
 
-const APP_ROUTE_HYDRATION_COVER_ATTRIBUTE = 'data-app-route-hydration-cover';
-
 const replaceBrowserPath = (targetPath: string): void => {
   if (typeof window === 'undefined') return;
   if (window.location.pathname === targetPath) return;
   window.history.replaceState({}, '', `${targetPath}${window.location.search}${window.location.hash}`);
-};
-
-const dismissAppRouteHydrationCover = (): void => {
-  if (typeof document === 'undefined') return;
-  document.documentElement.removeAttribute(APP_ROUTE_HYDRATION_COVER_ATTRIBUTE);
 };
 
 const resolveRoute = (): AppRoute => {
@@ -218,7 +212,12 @@ if (!rootElement) {
 const appTree = (
   <StrictMode>
     <Suspense fallback={null}>
-      {renderRoute(route)}
+      <InitialRouteRevealBoundary
+        active={shouldActivateAppRouteHydrationCover(window.location.pathname, window.location.search)}
+        rootElement={rootElement}
+      >
+        {renderRoute(route)}
+      </InitialRouteRevealBoundary>
     </Suspense>
   </StrictMode>
 );
@@ -234,7 +233,6 @@ if (shouldHydrate) {
     window.__dullyPdfRoot = root;
     window.__dullyPdfRootElement = rootElement;
   }
-  dismissAppRouteHydrationCover();
 } else {
   const existingRoot = typeof window !== 'undefined' && window.__dullyPdfRootElement === rootElement
     ? window.__dullyPdfRoot
@@ -251,5 +249,4 @@ if (shouldHydrate) {
     window.__dullyPdfRootElement = rootElement;
   }
   root.render(appTree);
-  dismissAppRouteHydrationCover();
 }

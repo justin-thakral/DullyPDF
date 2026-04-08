@@ -18,7 +18,6 @@ interface HomepageProps {
   authPending?: boolean;
   onSignIn?: () => void;
   onOpenProfile?: () => void;
-  onInitialRenderReady?: () => void;
 }
 
 type DemoWalkthroughStep = {
@@ -136,6 +135,10 @@ const DEMO_WALKTHROUGH: DemoWalkthroughStep[] = [
   },
 ];
 
+const HOMEPAGE_LAYOUT_READY_ATTRIBUTE = 'data-homepage-layout-ready';
+const HOMEPAGE_HYDRATION_COVER_ATTRIBUTE = 'data-homepage-hydration-cover';
+const HOMEPAGE_HYDRATION_COVER_ELEMENT_ID = 'homepage-hydration-cover';
+
 /**
  * Landing page describing the end-to-end workflow.
  */
@@ -146,7 +149,6 @@ const Homepage: React.FC<HomepageProps> = ({
   authPending,
   onSignIn,
   onOpenProfile,
-  onInitialRenderReady,
 }) => {
   const demoRef = useRef<HTMLDivElement | null>(null);
   const demoNavRef = useRef<HTMLDivElement | null>(null);
@@ -158,7 +160,6 @@ const Homepage: React.FC<HomepageProps> = ({
   const [demoFocusActive, setDemoFocusActive] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [desktopFitScale, setDesktopFitScale] = useState(1);
-  const initialRenderReadyRef = useRef(false);
   const userInitial = useMemo(() => (userEmail ? userEmail.charAt(0).toUpperCase() : null), [userEmail]);
 
   const activeStep = DEMO_WALKTHROUGH[activeDemoIndex];
@@ -355,7 +356,9 @@ const Homepage: React.FC<HomepageProps> = ({
   }, [computeDesktopFitScale]);
 
   useEffect(() => {
-    if (!onInitialRenderReady || initialRenderReadyRef.current) return;
+    if (typeof document === 'undefined') {
+      return;
+    }
 
     let cancelled = false;
     const waitForNextFrame = () => new Promise<void>((resolve) => {
@@ -366,32 +369,39 @@ const Homepage: React.FC<HomepageProps> = ({
       window.requestAnimationFrame(() => resolve());
     });
 
-    const reportInitialRenderReady = async () => {
-      if (typeof document !== 'undefined' && 'fonts' in document && document.fonts?.ready) {
+    const markInitialLayoutReady = async () => {
+      if ('fonts' in document && document.fonts?.ready) {
         try {
           await document.fonts.ready;
         } catch {
-          // Ignore font readiness errors and continue to the next frame barrier.
+          // Ignore font readiness errors and continue to the frame barrier.
         }
       }
 
-      // The desktop landing page applies a measured fit scale after mount and again
-      // after fonts resolve. Waiting a couple of frames lets those post-mount writes
-      // land before the splash screen is removed.
+      // The desktop homepage applies a measured fit scale after mount and again
+      // after fonts resolve. Waiting a couple of frames keeps the bootstrap cover
+      // active until those post-mount geometry writes land.
       await waitForNextFrame();
       await waitForNextFrame();
 
-      if (cancelled || initialRenderReadyRef.current) return;
-      initialRenderReadyRef.current = true;
-      onInitialRenderReady();
+      if (cancelled) {
+        return;
+      }
+      document.documentElement.setAttribute(HOMEPAGE_LAYOUT_READY_ATTRIBUTE, 'true');
+      document.getElementById(HOMEPAGE_HYDRATION_COVER_ELEMENT_ID)?.remove();
+      document.documentElement.removeAttribute(HOMEPAGE_HYDRATION_COVER_ATTRIBUTE);
     };
 
-    void reportInitialRenderReady();
+    document.documentElement.removeAttribute(HOMEPAGE_LAYOUT_READY_ATTRIBUTE);
+    void markInitialLayoutReady();
 
     return () => {
       cancelled = true;
+      document.documentElement.removeAttribute(HOMEPAGE_LAYOUT_READY_ATTRIBUTE);
+      document.getElementById(HOMEPAGE_HYDRATION_COVER_ELEMENT_ID)?.remove();
+      document.documentElement.removeAttribute(HOMEPAGE_HYDRATION_COVER_ATTRIBUTE);
     };
-  }, [onInitialRenderReady]);
+  }, []);
 
   const homepageStyle = useMemo(
     () => ({ '--homepage-fit-scale': desktopFitScale } as CSSProperties),

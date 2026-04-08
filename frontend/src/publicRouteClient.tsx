@@ -14,8 +14,6 @@ export function renderPublicRouteForClient(route: HydratablePublicRoute) {
       return (
         <App
           initialBrowserRoute={{ kind: 'homepage' }}
-          initialHomepageReady
-          initialHomepageHydrationCover
         />
       );
     case 'legal':

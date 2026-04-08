@@ -54,6 +54,9 @@ frontend/
 - `frontend/src/components/pages/PublicNotFoundPage.tsx`: Generic noindex 404 page for unknown public routes that should never fall back to the editor shell.
 - `frontend/src/components/pages/IntentHubPage.tsx`: Hub directory pages for `/workflows` and `/industries` that aggregate intent routes.
 - `frontend/src/components/pages/IntentPageShell.tsx`: Shared shell for intent marketing pages (global header nav, breadcrumb + hero/CTA block, and footer).
+- `frontend/src/components/pages/PublicProfileLinksPanel.tsx`: Compact text-link panel for official DullyPDF profiles on selected SEO/public routes where those external properties are relevant without pushing them into the homepage.
+- `frontend/src/components/pages/PublicVideoPanel.tsx`: Shared public-route video panel used by usage docs and SEO landing pages when a route should surface a relevant YouTube walkthrough without pushing that content onto the homepage.
+- `frontend/src/config/publicProfiles.ts`: Shared source of truth for official DullyPDF profile links used by public-route components and footer social navigation.
 - `frontend/src/components/pages/SeoLayoutPreviewPage.tsx`: Internal noindex preview route for testing alternate editorial/article-style shells before changing live public intent pages.
 - `frontend/src/config/appConstants.tsx`: Shared app-level constants (history limits, demo assets/steps, processing copy).
 - `frontend/src/utils/pdf.ts`: PDF.js loading, page size extraction, and AcroForm field extraction. On Windows, Excel/Microsoft 365 exports are reopened with embedded-font preference to reduce Office-export render drift.

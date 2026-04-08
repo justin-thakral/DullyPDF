@@ -6,6 +6,12 @@ export type SeoBreadcrumbItem = {
 };
 
 const SITE_ORIGIN = 'https://dullypdf.com';
+const OFFICIAL_PUBLIC_PROFILE_URLS = [
+  'https://www.linkedin.com/company/dullypdf',
+  'https://github.com/justin-thakral/DullyPDF',
+  'https://www.youtube.com/@DullyPDF',
+  'https://x.com/DullyPDF',
+];
 
 export const buildBreadcrumbSchema = (items: SeoBreadcrumbItem[]): SeoStructuredDataEntry => ({
   '@context': 'https://schema.org',
@@ -52,10 +58,12 @@ export const buildTechArticleSchema = (
   author: {
     '@type': 'Organization',
     name: 'DullyPDF',
+    sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
   },
   publisher: {
     '@type': 'Organization',
     name: 'DullyPDF',
+    sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
     logo: {
       '@type': 'ImageObject',
       url: `${SITE_ORIGIN}/DullyPDFLogoImproved.png`,

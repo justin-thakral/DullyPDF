@@ -14,6 +14,12 @@ import { BLOG_POSTS } from './blogContent.mjs';
 
 export const SITE_ORIGIN = 'https://dullypdf.com';
 export const DEFAULT_SOCIAL_IMAGE_PATH = '/DullyPDFLogoImproved.png';
+const OFFICIAL_PUBLIC_PROFILE_URLS = [
+  'https://www.linkedin.com/company/dullypdf',
+  'https://github.com/justin-thakral/DullyPDF',
+  'https://www.youtube.com/@DullyPDF',
+  'https://x.com/DullyPDF',
+];
 
 // ---------------------------------------------------------------------------
 // Intent pages
@@ -2846,10 +2852,12 @@ const buildTechArticleSchema = (headline, description, path) => ({
   author: {
     '@type': 'Organization',
     name: 'DullyPDF',
+    sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
   },
   publisher: {
     '@type': 'Organization',
     name: 'DullyPDF',
+    sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
     logo: {
       '@type': 'ImageObject',
       url: `${SITE_ORIGIN}/DullyPDFLogoImproved.png`,
@@ -2881,6 +2889,7 @@ const HOME_ROUTE_SEO = {
       name: 'DullyPDF',
       url: 'https://dullypdf.com/',
       logo: 'https://dullypdf.com/DullyPDFLogoImproved.png',
+      sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
       contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: 'justin@dullypdf.com' },
     },
   ],
@@ -3503,12 +3512,17 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
         '@type': 'BlogPosting',
         headline: post.title,
         description: post.seoDescription,
-        author: { '@type': 'Organization', name: post.author },
+        author: { '@type': 'Organization', name: post.author, sameAs: OFFICIAL_PUBLIC_PROFILE_URLS },
         datePublished: post.publishedDate,
         dateModified: post.updatedDate,
         url: `https://dullypdf.com/blog/${post.slug}`,
         ...(primaryFigure ? { image: `${SITE_ORIGIN}${primaryFigure.src}` } : {}),
-        publisher: { '@type': 'Organization', name: 'DullyPDF', logo: { '@type': 'ImageObject', url: 'https://dullypdf.com/DullyPDFLogoImproved.png' } },
+        publisher: {
+          '@type': 'Organization',
+          name: 'DullyPDF',
+          sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
+          logo: { '@type': 'ImageObject', url: 'https://dullypdf.com/DullyPDFLogoImproved.png' },
+        },
       }], buildBreadcrumbSchema([
         { label: 'Home', href: '/' },
         { label: 'Blog', href: '/blog' },

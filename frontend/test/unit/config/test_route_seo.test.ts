@@ -24,6 +24,10 @@ describe('routeSeo config', () => {
     expect(metadata.canonicalPath).toBe('/');
     expect(metadata.title).toBe('DullyPDF — Automatic PDF to Fillable Form With Search & Fill');
     expect(metadata.keywords).toContain('pdf automation platform');
+    const organizationEntry = metadata.structuredData?.find((entry) => entry['@type'] === 'Organization');
+    expect(Array.isArray(organizationEntry?.sameAs)).toBe(true);
+    expect(organizationEntry?.sameAs).toContain('https://www.linkedin.com/company/dullypdf');
+    expect(organizationEntry?.sameAs).toContain('https://github.com/justin-thakral/DullyPDF');
   });
 
   it('resolves canonical usage docs metadata by page key', () => {
@@ -104,6 +108,12 @@ describe('routeSeo config', () => {
     expect(
       metadata.structuredData?.some((entry) => entry['@type'] === 'TechArticle'),
     ).toBe(true);
+    const articleEntry = metadata.structuredData?.find((entry) => entry['@type'] === 'TechArticle');
+    expect(articleEntry?.publisher).toMatchObject({
+      '@type': 'Organization',
+      name: 'DullyPDF',
+    });
+    expect(articleEntry?.publisher?.sameAs).toContain('https://www.youtube.com/@DullyPDF');
   });
 
   it('keeps build-time static routes aligned with the runtime indexable route list', () => {

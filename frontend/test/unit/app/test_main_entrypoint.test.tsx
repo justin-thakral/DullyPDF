@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const entrypointMocks = vi.hoisted(() => {
@@ -137,6 +137,7 @@ describe('main entrypoint', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.useRealTimers();
   });
 
   it('renders App on the root route without workspace warmup', async () => {
@@ -351,18 +352,25 @@ describe('main entrypoint', () => {
   });
 
   it.each([
-    '/respond/token-1',
-    '/sign/signing-token',
-    '/verify-signing/validation-token',
-    '/upload',
-    '/ui/forms/saved-1',
-  ])('clears prerendered homepage markup before mounting rewrite route %s', async (pathname) => {
+    ['/respond/token-1', 'fill-link-public'],
+    ['/sign/signing-token', 'public-signing-page'],
+    ['/verify-signing/validation-token', 'public-signing-validation-page'],
+    ['/upload', 'app-view'],
+    ['/ui/forms/saved-1', 'app-view'],
+  ])('clears prerendered homepage markup before mounting rewrite route %s', async (pathname, renderedTestId) => {
     document.documentElement.setAttribute('data-app-route-hydration-cover', 'active');
     document.body.innerHTML = '<div id="root"><main>Homepage prerender shell</main></div>';
 
     await importEntrypoint(pathname);
 
     expect(document.getElementById('root')?.innerHTML).toBe('');
-    expect(document.documentElement.hasAttribute('data-app-route-hydration-cover')).toBe(false);
+    expect(document.documentElement.hasAttribute('data-app-route-hydration-cover')).toBe(true);
+
+    await renderCapturedTree();
+    await vi.dynamicImportSettled();
+    expect(await screen.findByTestId(renderedTestId)).toBeTruthy();
+    await waitFor(() => {
+      expect(document.documentElement.hasAttribute('data-app-route-hydration-cover')).toBe(false);
+    }, { timeout: 2000 });
   });
 });

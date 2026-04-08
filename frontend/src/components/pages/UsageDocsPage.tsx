@@ -11,6 +11,12 @@ import { Breadcrumbs } from '../ui/Breadcrumbs';
 import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import type { IntentPageKey } from '../../config/intentPages';
 import { getIntentPage } from '../../config/intentPages';
+import {
+  FULL_FEATURE_DEMO_VIDEO,
+  PDF_TO_FILLABLE_DEMO_VIDEO,
+} from '../../config/publicVideoContent';
+import PublicVideoPanel from './PublicVideoPanel';
+import PublicProfileLinksPanel from './PublicProfileLinksPanel';
 
 type UsageDocsPageProps = {
   pageKey: UsageDocsPageKey;
@@ -19,6 +25,11 @@ type UsageDocsPageProps = {
 const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
   const page = getUsageDocsPage(pageKey);
   const pages = getUsageDocsPages();
+  const pageVideo = pageKey === 'index'
+    ? FULL_FEATURE_DEMO_VIDEO
+    : pageKey === 'getting-started'
+      ? PDF_TO_FILLABLE_DEMO_VIDEO
+      : null;
 
   const relatedWorkflows = useMemo(() => {
     const keys: IntentPageKey[] = page.relatedWorkflowKeys ?? [];
@@ -103,6 +114,15 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
                 the template easier to trust once you save it for reuse.
               </p>
             </section>
+
+            {pageVideo ? <PublicVideoPanel {...pageVideo} /> : null}
+
+            {pageKey === 'index' ? (
+              <PublicProfileLinksPanel
+                title="Official DullyPDF profiles"
+                description="These links help operators move between the public docs, product demos, company presence, and open-source implementation without falling back to the homepage."
+              />
+            ) : null}
 
             {page.sections.map((section) => (
               <section key={section.id} id={section.id} className="usage-docs-section">

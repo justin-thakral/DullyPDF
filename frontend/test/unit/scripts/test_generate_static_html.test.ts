@@ -32,15 +32,16 @@ describe('generate-static-html', () => {
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, '<main>Homepage prerender</main>');
 
     expect(html).toContain('data-homepage-hydration-cover="true"');
-    expect(html).toContain("data-homepage-hydration-cover', 'active'");
-    expect(html).toContain('html[data-homepage-hydration-cover="active"]::before');
+    expect(html).not.toContain("data-homepage-hydration-cover', 'active'");
+    expect(html).toContain('#homepage-hydration-cover {');
+    expect(html).toContain('<div id="homepage-hydration-cover" aria-hidden="true"></div>');
   });
 
   it('does not leak the dev homepage cover bootstrap into shared Vite head assets', () => {
     const assets = extractViteAssetTags(`<!doctype html>
 <html lang="en">
   <head>
-    <style data-homepage-hydration-cover="true">html[data-homepage-hydration-cover="active"]::before {}</style>
+    <style data-homepage-hydration-cover="true">html[data-homepage-hydration-cover="active"] #homepage-hydration-cover {}</style>
     <script data-homepage-hydration-cover="true">document.documentElement.setAttribute('data-homepage-hydration-cover', 'active');</script>
     <script>window.__otherBootstrap = true;</script>
   </head>

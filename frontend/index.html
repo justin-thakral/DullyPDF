@@ -7,18 +7,24 @@
     <style data-homepage-hydration-cover="true">
       html[data-homepage-hydration-cover="active"] {
         background: #ffffff;
+        overflow: hidden;
       }
 
-      html[data-homepage-hydration-cover="active"]::before {
-        content: '';
+      html[data-homepage-hydration-cover="active"] body {
+        background: #ffffff;
+        overflow: hidden;
+      }
+
+      #homepage-hydration-cover {
+        display: none;
         position: fixed;
         inset: 0;
         z-index: 2147483647;
         background: #ffffff;
       }
 
-      html[data-homepage-hydration-cover="active"] body {
-        overflow: hidden;
+      html[data-homepage-hydration-cover="active"] #homepage-hydration-cover {
+        display: block;
       }
     </style>
     <script data-homepage-hydration-cover="true">
@@ -26,11 +32,23 @@
         const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/';
         if (normalizedPath === '/') {
           document.documentElement.setAttribute('data-homepage-hydration-cover', 'active');
+
+          window.setTimeout(() => {
+            if (document.documentElement.getAttribute('data-homepage-layout-ready') === 'true') {
+              return;
+            }
+            document.documentElement.removeAttribute('data-homepage-hydration-cover');
+            document.getElementById('homepage-hydration-cover')?.remove();
+          }, 4000);
         }
       })();
     </script>
     <style data-app-route-hydration-cover="true">
       html[data-app-route-hydration-cover="active"] {
+        background: #ffffff;
+      }
+
+      html[data-app-route-hydration-cover="active"] body {
         background: #ffffff;
       }
 
@@ -45,6 +63,10 @@
       html[data-app-route-hydration-cover="active"] body {
         overflow: hidden;
       }
+
+      html[data-app-route-hydration-cover="active"] #root {
+        visibility: hidden;
+      }
     </style>
     <script data-app-route-hydration-cover="true">
       __DULLY_APP_ROUTE_HYDRATION_COVER_BOOTSTRAP__
@@ -58,6 +80,7 @@
     <title>DullyPDF</title>
   </head>
   <body>
+    <div id="homepage-hydration-cover" aria-hidden="true"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

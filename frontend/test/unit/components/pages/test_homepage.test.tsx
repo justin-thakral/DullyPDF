@@ -250,6 +250,32 @@ describe('Homepage', () => {
     expect(industryLinks.every((link) => link.getAttribute('href') === '/industries')).toBe(true);
   });
 
+  it('renders footer social links that open in new tabs', () => {
+    render(<Homepage onStartWorkflow={vi.fn()} />);
+
+    const expectedLinks = [
+      { name: 'LinkedIn', href: 'https://www.linkedin.com/company/dullypdf' },
+      { name: 'GitHub', href: 'https://github.com/justin-thakral/DullyPDF' },
+      { name: 'YouTube', href: 'https://www.youtube.com/@DullyPDF' },
+      { name: 'X', href: 'https://x.com/DullyPDF' },
+    ];
+
+    expectedLinks.forEach(({ name, href }) => {
+      const socialLinks = screen.getAllByRole('link', { name });
+
+      expect(socialLinks.length).toBeGreaterThan(0);
+      expect(
+        socialLinks.every(
+          (link) =>
+            link.getAttribute('href') === href &&
+            link.getAttribute('target') === '_blank' &&
+            (link.getAttribute('rel') ?? '').includes('noopener') &&
+            (link.getAttribute('rel') ?? '').includes('noreferrer'),
+        ),
+      ).toBe(true);
+    });
+  });
+
   it('does not render visible SEO intent sections on homepage', () => {
     render(<Homepage onStartWorkflow={vi.fn()} />);
 

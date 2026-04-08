@@ -14,6 +14,16 @@ describe('UsageDocsPage', () => {
     expect(within(sidebar).getByRole('link', { name: 'Detection' }).getAttribute('href')).toBe('/usage-docs/detection');
     expect(document.querySelector('section#pipeline-overview')).toBeTruthy();
     expect(document.querySelector('section#before-you-start')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: '7-minute DullyPDF feature walkthrough' })).toBeTruthy();
+    expect(screen.getByTitle('7-minute DullyPDF feature walkthrough')).toBeTruthy();
+    const profilesPanel = screen.getByRole('heading', { name: 'Official DullyPDF profiles' }).closest('section');
+    expect(profilesPanel).toBeTruthy();
+    if (!profilesPanel) {
+      throw new Error('Official profiles panel not found');
+    }
+    expect(within(profilesPanel).getByRole('link', { name: 'LinkedIn' }).getAttribute('href')).toBe(
+      'https://www.linkedin.com/company/dullypdf',
+    );
   });
 
   it('renders subroute content and marks active page in sidebar', () => {
@@ -59,5 +69,14 @@ describe('UsageDocsPage', () => {
     rerender(<UsageDocsPage pageKey="search-fill" />);
     expect(document.title).toBe('Search & Fill Records and Saved Respondents Into PDFs | DullyPDF Docs');
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/usage-docs/search-fill');
+  });
+
+  it('renders the focused PDF conversion demo on getting started docs', () => {
+    render(<UsageDocsPage pageKey="getting-started" />);
+
+    expect(screen.getByRole('heading', { name: '3-minute PDF to Fillable walkthrough' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
+      'https://youtu.be/JIVx5VrtkAg?si=XsswWbjanIVnY5vp',
+    );
   });
 });

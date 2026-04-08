@@ -1,0 +1,102 @@
+.public-video-panel {
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  border-radius: 22px;
+  padding: clamp(1.1rem, 2.2vw, 1.5rem);
+  background:
+    radial-gradient(580px at 0% 0%, rgba(191, 219, 254, 0.42), transparent 65%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.96) 100%);
+  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.06);
+}
+
+.public-video-panel__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.public-video-panel__copy {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.public-video-panel__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #475569;
+  font-weight: 700;
+}
+
+.public-video-panel__copy h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.42rem);
+}
+
+.public-video-panel__copy p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.62;
+}
+
+.public-video-panel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.public-video-panel__duration {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.26);
+  background: rgba(239, 246, 255, 0.82);
+  color: #1e3a8a;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.public-video-panel__meta a {
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.public-video-panel__frame {
+  min-width: 0;
+}
+
+.public-video-panel__embed {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  background: #020617;
+  aspect-ratio: 16 / 9;
+}
+
+.public-video-panel__embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.public-video-panel__caption {
+  margin: 0.8rem 0 0;
+  color: #475569;
+  line-height: 1.58;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 860px) {
+  .public-video-panel__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

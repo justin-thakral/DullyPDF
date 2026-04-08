@@ -5,9 +5,11 @@ import {
   getIntentPages,
   type IntentPageKey,
 } from '../../config/intentPages';
+import { PDF_TO_FILLABLE_DEMO_VIDEO } from '../../config/publicVideoContent';
 import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
 import { applyRouteSeo } from '../../utils/seo';
 import { IntentPageShell } from './IntentPageShell';
+import PublicVideoPanel from './PublicVideoPanel';
 
 type IntentLandingPageProps = {
   pageKey: IntentPageKey;
@@ -35,6 +37,7 @@ const getFootnoteSuffix = (referenceIndex: number): string => {
 const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
   const page = getIntentPage(pageKey);
   const articleFigures = getIntentPageArticleFigures(pageKey);
+  const pageVideo = pageKey === 'pdf-to-fillable-form' ? PDF_TO_FILLABLE_DEMO_VIDEO : null;
   const footnoteNumberById = useMemo(
     () => new Map((page.footnotes ?? []).map((footnote, index) => [footnote.id, index + 1])),
     [page.footnotes],
@@ -182,6 +185,8 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
           </div>
         </section>
       ) : null}
+
+      {pageVideo ? <PublicVideoPanel {...pageVideo} /> : null}
 
       {page.articleSections?.map((section) => (
         <section key={section.title} className="intent-page__panel intent-page__panel--article">

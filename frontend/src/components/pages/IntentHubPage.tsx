@@ -7,7 +7,10 @@ import {
   getFeaturedIndustryIntentPages,
   getFeaturedWorkflowIntentPages,
 } from '../../config/intentPages';
+import { FULL_FEATURE_DEMO_VIDEO } from '../../config/publicVideoContent';
 import { IntentPageShell } from './IntentPageShell';
+import PublicProfileLinksPanel from './PublicProfileLinksPanel';
+import PublicVideoPanel from './PublicVideoPanel';
 
 type IntentHubKey = 'workflows' | 'industries';
 
@@ -26,6 +29,7 @@ const IntentHubPage = ({ hubKey }: IntentHubPageProps) => {
   const featuredPages = hubKey === 'workflows'
     ? getFeaturedWorkflowIntentPages()
     : getFeaturedIndustryIntentPages();
+  const hubVideo = hubKey === 'workflows' ? FULL_FEATURE_DEMO_VIDEO : null;
   const featuredHrefSet = new Set(featuredPages.map((page) => page.path));
   const supplementalSections = pageSections.filter((section) => !featuredHrefSet.has(section.href ?? ''));
 
@@ -77,6 +81,15 @@ const IntentHubPage = ({ hubKey }: IntentHubPageProps) => {
           </div>
         )}
       </section>
+
+      {hubVideo ? <PublicVideoPanel {...hubVideo} /> : null}
+
+      {hubKey === 'workflows' ? (
+        <PublicProfileLinksPanel
+          title="Follow DullyPDF outside the workflow library"
+          description="Use the official profiles for company updates, public demos, release notes, and the open-source codebase while this route stays focused on search-intent workflow pages."
+        />
+      ) : null}
 
       {supplementalSections.length ? (
         <section className="intent-page__panel">

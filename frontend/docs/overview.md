@@ -64,6 +64,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
   - `/nonprofit-pdf-form-automation`
   - `/logistics-pdf-automation`
 - Each route has unique canonical metadata and FAQ structured data.
+- Selected workflow routes and docs pages can also surface embedded YouTube walkthroughs when a focused demo adds search-intent context without bloating the homepage.
 - Authority-style intent routes can also render inline legal footnotes and explicit source sections when the page needs statute or policy references instead of summary-only marketing copy.
 - Two hub routes aggregate intent pages for cleaner global navigation:
   - `/workflows` lists workflow-intent pages.

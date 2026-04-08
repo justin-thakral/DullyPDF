@@ -28,6 +28,16 @@ describe('IntentLandingPage', () => {
     ).toBeTruthy();
   });
 
+  it('renders the focused PDF conversion demo on the PDF to Fillable route', () => {
+    render(<IntentLandingPage pageKey="pdf-to-fillable-form" />);
+
+    expect(screen.getByRole('heading', { level: 2, name: '3-minute PDF to Fillable walkthrough' })).toBeTruthy();
+    expect(screen.getByTitle('3-minute PDF to Fillable walkthrough')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
+      'https://youtu.be/JIVx5VrtkAg?si=XsswWbjanIVnY5vp',
+    );
+  });
+
   it('uses targeted supporting docs from the shared SEO dataset', () => {
     render(<IntentLandingPage pageKey="pdf-fill-api" />);
 

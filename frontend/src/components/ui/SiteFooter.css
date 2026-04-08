@@ -7,36 +7,30 @@
 
 .site-footer__bar {
   display: grid;
-  grid-template-columns:
-    minmax(0, 1fr) max-content
-    minmax(0, 1fr) max-content
-    minmax(0, 1fr) max-content
-    minmax(0, 1fr) max-content
-    minmax(0, 1fr) max-content
-    minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
+  column-gap: 0.34rem;
   max-width: 1800px;
   margin: 0 auto;
 }
 
-.site-footer__group--product {
-  grid-column: 2;
+.site-footer__section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-width: 0;
 }
 
-.site-footer__group--resources {
-  grid-column: 4;
+.site-footer__section--left {
+  justify-content: space-evenly;
 }
 
-.site-footer__center {
-  grid-column: 6;
+.site-footer__section--center {
+  justify-content: center;
 }
 
-.site-footer__group--legal {
-  grid-column: 8;
-}
-
-.site-footer__group--solutions {
-  grid-column: 10;
+.site-footer__section--right {
+  justify-content: space-evenly;
 }
 
 .site-footer__link-group {
@@ -87,15 +81,67 @@
   color: #1d4ed8;
 }
 
-.site-footer__center {
-  justify-self: center;
-  text-align: center;
+.site-footer__meta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.56rem;
+  white-space: nowrap;
+}
+
+.site-footer__copyright {
   font-size: 0.69rem;
   line-height: 1.15;
   color: #64748b;
   font-weight: 700;
   letter-spacing: 0.01em;
   white-space: nowrap;
+}
+
+.site-footer__social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+}
+
+.site-footer__social-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.site-footer__social-link + .site-footer__social-link {
+  margin-left: 0.58rem;
+  padding-left: 0.58rem;
+}
+
+.site-footer__social-link + .site-footer__social-link::before {
+  content: '\00B7';
+  position: absolute;
+  left: -0.03rem;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.site-footer__social-icon {
+  display: block;
+  width: 0.68rem;
+  height: 0.68rem;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.site-footer__social-link:hover .site-footer__social-icon {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.site-footer__social-link:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+  border-radius: 999px;
 }
 
 .site-footer__mobile {
@@ -108,27 +154,30 @@
   }
 
   .site-footer__bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    column-gap: 1.1rem;
-    row-gap: 0.35rem;
+    column-gap: 0.34rem;
   }
 
-  .site-footer__group--product,
-  .site-footer__group--resources,
-  .site-footer__center,
-  .site-footer__group--legal,
-  .site-footer__group--solutions {
-    grid-column: auto;
+  .site-footer__section {
+    gap: 1rem;
   }
 
   .site-footer__link-group,
-  .site-footer__links {
-    justify-content: flex-start;
-    white-space: nowrap;
-    flex-wrap: nowrap;
+  .site-footer__links,
+  .site-footer__meta {
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+
+  .site-footer__section--left {
+    justify-content: space-evenly;
+  }
+
+  .site-footer__section--right {
+    justify-content: space-evenly;
+  }
+
+  .site-footer__meta {
+    gap: 0.5rem;
   }
 }
 
@@ -196,14 +245,23 @@
 
   .site-footer__mobile-bottom {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
     padding-top: 0.38rem;
     border-top: 1px solid #e2e8f0;
+    text-align: center;
+  }
+
+  .site-footer__mobile-bottom .site-footer__copyright {
     font-size: 0.82rem;
     color: #94a3b8;
-    font-weight: 700;
-    text-align: center;
+  }
+
+  .site-footer__mobile-bottom .site-footer__social-icon {
+    width: 0.74rem;
+    height: 0.74rem;
   }
 }
 
@@ -235,6 +293,19 @@
   }
 
   .site-footer__mobile-bottom {
+    gap: 0.4rem;
+  }
+
+  .site-footer__mobile-bottom .site-footer__social-link + .site-footer__social-link {
+    margin-left: 0.34rem;
+    padding-left: 0.34rem;
+  }
+
+  .site-footer__mobile-bottom {
+    font-size: 0.74rem;
+  }
+
+  .site-footer__mobile-bottom .site-footer__copyright {
     font-size: 0.74rem;
   }
 }

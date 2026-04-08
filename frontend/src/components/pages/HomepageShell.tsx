@@ -9,8 +9,6 @@ type HomepageShellProps = {
   onSignIn?: () => void;
   onOpenProfile?: () => void;
   onSignOut?: () => void;
-  onInitialRenderReady?: () => void;
-  showSplash?: boolean;
 };
 
 export function HomepageShell({
@@ -21,12 +19,10 @@ export function HomepageShell({
   onSignIn,
   onOpenProfile,
   onSignOut,
-  onInitialRenderReady,
-  showSplash = false,
 }: HomepageShellProps) {
   return (
     <>
-      <div className="homepage-shell" aria-hidden={showSplash}>
+      <div className="homepage-shell">
         <LegacyHeader
           currentView="homepage"
           onNavigateHome={() => {}}
@@ -45,11 +41,9 @@ export function HomepageShell({
             authPending={authPending}
             onSignIn={onSignIn}
             onOpenProfile={onOpenProfile}
-            onInitialRenderReady={onInitialRenderReady}
           />
         </main>
       </div>
-      {showSplash ? <div className="homepage-loading-overlay" aria-hidden="true" /> : null}
     </>
   );
 }
