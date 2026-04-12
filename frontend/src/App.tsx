@@ -20,6 +20,7 @@ import {
   areWorkspaceBrowserRoutesEqual,
   buildWorkspaceBrowserHref,
   getWorkspaceBrowserRouteKey,
+  isFormCatalogRoute,
   type WorkspaceBrowserRoute,
 } from './utils/workspaceRoutes';
 import type { WorkspaceLaunchIntent } from './WorkspaceRuntime';
@@ -365,7 +366,11 @@ function App({
         fallback={workspaceLoadingScreen}
       >
         <WorkspaceRuntime
-          initialShowHomepage={launchIntent !== 'workflow' && launchIntent !== 'demo'}
+          initialShowHomepage={
+            launchIntent !== 'workflow'
+            && launchIntent !== 'demo'
+            && !isFormCatalogRoute(browserRoute)
+          }
           launchIntent={launchIntent}
           assumeAuthReady={authReady}
           bootstrapHasVerifiedUser={Boolean(verifiedUser)}

@@ -140,9 +140,25 @@ check_remote_body_not_contains() {
   fi
 }
 
+check_remote_cors_origin() {
+  local url="$1"
+  local origin="$2"
+  local header
+  if ! header="$(curl -fsSI -H "Origin: ${origin}" "$url" | tr -d '\r' | awk -F': ' 'tolower($1)=="access-control-allow-origin"{print $2; exit}')"; then
+    echo "Failed to fetch $url for CORS validation." >&2
+    exit 1
+  fi
+  if [[ "$header" != "$origin" && "$header" != "*" ]]; then
+    echo "Unexpected Access-Control-Allow-Origin for $url: ${header:-<empty>} (expected ${origin} or *)." >&2
+    exit 1
+  fi
+}
+
 require_nonempty VITE_API_URL
 require_nonempty VITE_DETECTION_API_URL
 require_nonempty VITE_FIREBASE_PROJECT_ID
+require_nonempty VITE_FORM_CATALOG_ASSET_BASE
+require_nonempty FORM_CATALOG_BUCKET_URL
 
 if [[ "${VITE_API_URL}" == *"localhost"* || "${VITE_API_URL}" == *"127.0.0.1"* ]]; then
   echo "VITE_API_URL must point to prod backend, not localhost." >&2
@@ -188,6 +204,8 @@ else
   echo "Warning: ImageMagick 'convert' not found; skipping auto-generation and relying on committed WebP assets." >&2
 fi
 
+bash scripts/deploy-form-catalog-assets.sh
+
 (
   cd frontend
   npm run build:prod
@@ -198,6 +216,7 @@ node scripts/generate-static-html.mjs
 
 echo "Generating sitemap..."
 node scripts/generate-sitemap.mjs
+
 
 # Validate key static HTML files exist
 require_file "frontend/dist/index.html"
@@ -223,6 +242,13 @@ check_remote_status "${LIVE_BASE_URL}/fill-pdf-from-csv/" "301"
 check_remote_body_contains "${LIVE_BASE_URL}/fill-pdf-from-csv" 'data-seo-jsonld="true"'
 check_remote_body_not_contains "${LIVE_BASE_URL}/respond/token-1" 'homepage-shell'
 check_remote_body_contains "${LIVE_BASE_URL}/respond/token-1" '<div id="root"></div>'
+check_remote_body_not_contains "${LIVE_BASE_URL}/forms" 'homepage-shell'
+check_remote_body_contains "${LIVE_BASE_URL}/forms" '<div id="root"></div>'
+check_remote_body_not_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" 'homepage-shell'
+check_remote_body_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" '<div id="root"></div>'
+check_remote_content_type "${VITE_FORM_CATALOG_ASSET_BASE}/hr_onboarding/w-9__fw9.pdf" "application/pdf"
+check_remote_content_type "${VITE_FORM_CATALOG_ASSET_BASE}/hr_onboarding/w-9__fw9.webp" "image/webp"
+check_remote_cors_origin "${VITE_FORM_CATALOG_ASSET_BASE}/hr_onboarding/w-9__fw9.pdf" "https://${PROJECT_ID}.web.app"
 check_remote_status_not "${LIVE_BASE_URL}/this-path-should-not-exist" "200"
 
 echo "Frontend deploy checks passed: critical WebP assets are present locally and served remotely as image/webp."

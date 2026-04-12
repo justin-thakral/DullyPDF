@@ -1,10 +1,12 @@
 export type WorkspaceBrowserRoute =
   | { kind: 'homepage' }
-  | { kind: 'upload-root' }
+  | { kind: 'upload-root'; catalogSlug?: string }
   | { kind: 'ui-root' }
   | { kind: 'profile' }
   | { kind: 'saved-form'; formId: string }
-  | { kind: 'group'; groupId: string; templateId: string | null };
+  | { kind: 'group'; groupId: string; templateId: string | null }
+  | { kind: 'form-catalog-index'; category?: string; query?: string; page?: number }
+  | { kind: 'form-catalog-form'; slug: string };
 
 function normalizeRoutePath(pathname: string): string {
   return pathname.replace(/\/+$/, '') || '/';
@@ -19,7 +21,29 @@ export function parseWorkspaceBrowserRoute(
     return { kind: 'homepage' };
   }
   if (normalizedPath === '/upload') {
-    return { kind: 'upload-root' };
+    const params = new URLSearchParams(search);
+    const rawCatalogSlug = params.get('catalogSlug');
+    const catalogSlug = rawCatalogSlug ? decodeURIComponent(rawCatalogSlug) : undefined;
+    return catalogSlug ? { kind: 'upload-root', catalogSlug } : { kind: 'upload-root' };
+  }
+  if (normalizedPath === '/forms') {
+    const params = new URLSearchParams(search);
+    const rawCategory = params.get('category');
+    const rawQuery = params.get('q');
+    const rawPage = params.get('page');
+    const pageNumber = rawPage ? Math.max(0, Number.parseInt(rawPage, 10) || 0) : 0;
+    const next: WorkspaceBrowserRoute = { kind: 'form-catalog-index' };
+    if (rawCategory) next.category = decodeURIComponent(rawCategory);
+    if (rawQuery) next.query = rawQuery;
+    if (pageNumber > 0) next.page = pageNumber;
+    return next;
+  }
+  if (normalizedPath.startsWith('/forms/')) {
+    const rawSlug = normalizedPath.slice('/forms/'.length);
+    if (!rawSlug || rawSlug.includes('/')) {
+      return null;
+    }
+    return { kind: 'form-catalog-form', slug: decodeURIComponent(rawSlug) };
   }
   if (normalizedPath === '/ui') {
     return { kind: 'ui-root' };
@@ -57,8 +81,12 @@ export function buildWorkspaceBrowserHref(route: WorkspaceBrowserRoute): string 
   switch (route.kind) {
     case 'homepage':
       return '/';
-    case 'upload-root':
-      return '/upload';
+    case 'upload-root': {
+      if (!route.catalogSlug) return '/upload';
+      const params = new URLSearchParams();
+      params.set('catalogSlug', route.catalogSlug);
+      return `/upload?${params.toString()}`;
+    }
     case 'ui-root':
       return '/ui';
     case 'profile':
@@ -74,6 +102,16 @@ export function buildWorkspaceBrowserHref(route: WorkspaceBrowserRoute): string 
       params.set('template', route.templateId);
       return `${basePath}?${params.toString()}`;
     }
+    case 'form-catalog-index': {
+      const params = new URLSearchParams();
+      if (route.category) params.set('category', route.category);
+      if (route.query) params.set('q', route.query);
+      if (route.page && route.page > 0) params.set('page', String(route.page));
+      const qs = params.toString();
+      return qs ? `/forms?${qs}` : '/forms';
+    }
+    case 'form-catalog-form':
+      return `/forms/${encodeURIComponent(route.slug)}`;
     default:
       return '/';
   }
@@ -88,8 +126,14 @@ export function isWorkspaceWorkflowRoute(route: WorkspaceBrowserRoute): boolean 
     route.kind === 'upload-root' ||
     route.kind === 'ui-root' ||
     route.kind === 'saved-form' ||
-    route.kind === 'group'
+    route.kind === 'group' ||
+    route.kind === 'form-catalog-index' ||
+    route.kind === 'form-catalog-form'
   );
+}
+
+export function isFormCatalogRoute(route: WorkspaceBrowserRoute): boolean {
+  return route.kind === 'form-catalog-index' || route.kind === 'form-catalog-form';
 }
 
 export function areWorkspaceBrowserRoutesEqual(

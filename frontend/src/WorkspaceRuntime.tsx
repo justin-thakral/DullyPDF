@@ -67,6 +67,8 @@ import {
   LazyDowngradeRetentionDialog,
   LazyFillLinkManagerDialog,
   LazyApiFillManagerDialog,
+  LazyFormCatalogIndexPage,
+  LazyFormCatalogFormPage,
   LazyGroupUploadDialog,
   LazyHomepage,
   LazyImageFillDialog,
@@ -134,6 +136,7 @@ import {
 import {
   areWorkspaceBrowserRoutesEqual,
   getWorkspaceBrowserRouteKey,
+  isFormCatalogRoute,
   type WorkspaceBrowserRoute,
 } from './utils/workspaceRoutes';
 import { shouldIgnoreWorkspaceHotkeys } from './utils/workspaceShortcuts';
@@ -603,6 +606,11 @@ function WorkspaceRuntime({
     if (showHomepage && browserRoute.kind === 'homepage') {
       return { kind: 'homepage' };
     }
+    // Form-catalog routes are UI-state-free: render what the URL asks for and
+    // keep history in lock-step with the user's filter/detail choices.
+    if (isFormCatalogRoute(browserRoute) && !pdfDoc && !detection.isProcessing) {
+      return browserRoute;
+    }
     if (auth.showProfile) {
       return { kind: 'profile' };
     }
@@ -623,7 +631,7 @@ function WorkspaceRuntime({
       return { kind: 'ui-root' };
     }
     return { kind: 'upload-root' };
-  }, [activeGroupId, auth.showProfile, browserRoute.kind, detection.isProcessing, pdfDoc, savedForms.activeSavedFormId, showHomepage]);
+  }, [activeGroupId, auth.showProfile, browserRoute, detection.isProcessing, pdfDoc, savedForms.activeSavedFormId, showHomepage]);
 
   const restoreViewportFromResume = useCallback((resumeState: ReturnType<typeof findMatchingWorkspaceResumeState>) => {
     if (!resumeState) {
@@ -1914,7 +1922,13 @@ function WorkspaceRuntime({
     void auth.syncAuthSession(bootstrapAuthUser, { forceTokenRefresh: true, deferSavedForms: true });
   }, [auth, bootstrapAuthUser]);
 
-  const shouldLockWorkspaceScroll = !showHomepage && !showLogin && !showProfile && !requiresEmailVerification;
+  const shouldLockWorkspaceScroll = (
+    !showHomepage
+    && !showLogin
+    && !showProfile
+    && !requiresEmailVerification
+    && !isFormCatalogRoute(browserRoute)
+  );
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
@@ -2149,6 +2163,19 @@ function WorkspaceRuntime({
         return;
       }
 
+      if (browserRoute.kind === 'form-catalog-index' || browserRoute.kind === 'form-catalog-form') {
+        if (auth.showProfile) {
+          auth.setShowProfile(false);
+          return;
+        }
+        if (showHomepage) {
+          setShowHomepage(false);
+          return;
+        }
+        finishRouteRestore();
+        return;
+      }
+
       if (browserRoute.kind === 'ui-root') {
         if (auth.showProfile) {
           auth.setShowProfile(false);
@@ -2275,6 +2302,72 @@ function WorkspaceRuntime({
     verifiedUser,
   ]);
 
+  // Auto-fetch a catalog PDF when the user navigates to /upload?catalogSlug=<slug>
+  // via the "Open in DullyPDF" button on a form-catalog detail page.
+  //
+  // This is intentionally fire-and-forget with a ref guard: if we stored the
+  // in-flight fetch inside a useEffect cleanup path, the very first thing the
+  // handler does (clearing the slug from the URL) would re-run the effect and
+  // cancel the still-running fetch, leaving the user on a blank upload screen.
+  const handledCatalogSlugRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (browserRoute.kind !== 'upload-root' || !browserRoute.catalogSlug) {
+      return;
+    }
+    if (!verifiedUser) {
+      return;
+    }
+    const slug = browserRoute.catalogSlug;
+    if (handledCatalogSlugRef.current === slug) {
+      return;
+    }
+    handledCatalogSlugRef.current = slug;
+    // Swap the URL back to /upload right away so the effect does not see the
+    // slug again and the user sees "Uploading…" instead of ?catalogSlug= in the
+    // address bar while the fetch runs.
+    onBrowserRouteChange?.({ kind: 'upload-root' }, { replace: true });
+    setShowHomepage(false);
+
+    const loadCatalogForm = async () => {
+      try {
+        const { getFormCatalogEntryBySlug } = await import('./config/formCatalogData.mjs');
+        const entry = getFormCatalogEntryBySlug(slug);
+        if (!entry) {
+          dialog.setBannerNotice({
+            tone: 'error',
+            message: `Unknown catalog form: ${slug}`,
+            autoDismissMs: 6000,
+          });
+          return;
+        }
+        const response = await fetch(entry.pdfUrl);
+        if (!response.ok) {
+          throw new Error(`Fetch failed (HTTP ${response.status})`);
+        }
+        const blob = await response.blob();
+        const file = new File([blob], entry.filename, { type: 'application/pdf' });
+        await handleFillableUpload(file);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to load catalog form';
+        dialog.setBannerNotice({
+          tone: 'error',
+          message: `Could not open catalog form: ${message}`,
+          autoDismissMs: 8000,
+        });
+        handledCatalogSlugRef.current = null;
+        onBrowserRouteChange?.({ kind: 'form-catalog-form', slug }, { replace: true });
+      }
+    };
+    void loadCatalogForm();
+  }, [
+    browserRoute,
+    dialog,
+    handleFillableUpload,
+    onBrowserRouteChange,
+    pdfState,
+    verifiedUser,
+  ]);
+
   const hasDocument = !!pdfDoc;
   const canSaveToProfile = Boolean(pdfDoc && verifiedUser);
   const canDownload = Boolean(pdfDoc && (verifiedUser || sourceFileIsDemo));
@@ -2297,7 +2390,8 @@ function WorkspaceRuntime({
     pendingBrowserRouteKey !== null &&
     !isProcessing &&
     browserRoute.kind !== 'saved-form' &&
-    browserRoute.kind !== 'group'
+    browserRoute.kind !== 'group' &&
+    !isFormCatalogRoute(browserRoute)
   );
   const activeDemoStep = demoStepIndex !== null ? DEMO_STEPS[demoStepIndex] : null;
   const showDemoTour = demoActive && currentView === 'editor' && activeDemoStep?.id !== 'search-fill';
@@ -2582,6 +2676,62 @@ function WorkspaceRuntime({
       <div className="auth-loading-screen">
         <div className="auth-loading-card">Redirecting…</div>
       </div>
+    );
+  }
+
+  // Form catalog index + detail — render directly against the current browser
+  // route. Auth gating is handled inside the page (verified user = full catalog,
+  // unverified = sign-in prompt that routes through auth.setShowLogin).
+  if (
+    isFormCatalogRoute(browserRoute)
+    && !showOnboarding
+    && !pdfDoc
+    && !isProcessing
+  ) {
+    const navigateToRoute = (
+      nextRoute: WorkspaceBrowserRoute,
+      options?: { replace?: boolean },
+    ) => {
+      onBrowserRouteChange?.(nextRoute, options);
+    };
+    const requestCatalogSignIn = () => auth.setShowLogin(true);
+    if (browserRoute.kind === 'form-catalog-form') {
+      return (
+        <>
+          {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
+          {dialogContent}
+          <Suspense fallback={runtimeLoadingFallback}>
+            <LazyFormCatalogFormPage
+              slug={browserRoute.slug}
+              verifiedUser={verifiedUser}
+              onRequestSignIn={requestCatalogSignIn}
+              onNavigate={navigateToRoute}
+              onOpenInWorkspace={async (entry) => {
+                navigateToRoute({ kind: 'upload-root', catalogSlug: entry.slug });
+              }}
+            />
+          </Suspense>
+        </>
+      );
+    }
+    if (browserRoute.kind !== 'form-catalog-index') {
+      return null;
+    }
+    return (
+      <>
+        {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
+        {dialogContent}
+        <Suspense fallback={runtimeLoadingFallback}>
+          <LazyFormCatalogIndexPage
+            verifiedUser={verifiedUser}
+            initialCategory={browserRoute.category}
+            initialQuery={browserRoute.query}
+            initialPage={browserRoute.page}
+            onRequestSignIn={requestCatalogSignIn}
+            onNavigate={navigateToRoute}
+          />
+        </Suspense>
+      </>
     );
   }
 

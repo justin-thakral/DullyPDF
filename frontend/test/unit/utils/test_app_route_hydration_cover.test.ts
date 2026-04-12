@@ -6,6 +6,7 @@ import { shouldActivateAppRouteHydrationCover } from '../../../src/utils/appRout
 
 function samplePathForRewriteSource(source: string): string {
   return source
+    .replace(':slug', 'sample-slug')
     .replace(':formId', 'sample-form')
     .replace(':groupId', 'sample-group')
     .replace(':token', 'sample-token');
@@ -16,6 +17,8 @@ describe('appRouteHydrationCover', () => {
     ['/account-action', '', true],
     ['/verify-email', '', true],
     ['/upload', '', true],
+    ['/forms', '', true],
+    ['/forms/w-9-w-9-fw9', '', true],
     ['/ui', '', true],
     ['/ui/profile', '', true],
     ['/ui/forms/saved-1', '', true],

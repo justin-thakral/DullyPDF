@@ -279,6 +279,7 @@ describe('main entrypoint', () => {
   it.each([
     ['/pdf-to-fillable-form', 'pdf-to-fillable-form'],
     ['/pdf-to-database-template', 'pdf-to-database-template'],
+    ['/pdf-form-catalog', 'pdf-form-catalog'],
     ['/fill-pdf-from-csv', 'fill-pdf-from-csv'],
     ['/pdf-fill-api', 'pdf-fill-api'],
     ['/esign-ueta-pdf-workflow', 'esign-ueta-pdf-workflow'],

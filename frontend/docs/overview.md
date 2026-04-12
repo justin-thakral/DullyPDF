@@ -29,8 +29,10 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 ## Workspace routing
 
 - `/` is the marketing shell only.
-- Firebase Hosting rewrites dynamic app and public-ceremony routes (`/upload`, `/ui*`, `/respond/:token`, `/sign/:token`, `/verify-signing/:token`, `/account-action`) to a neutral `app-shell.html` SPA bootstrap instead of the prerendered homepage `index.html`.
+- Firebase Hosting rewrites dynamic app and public-ceremony routes (`/forms`, `/forms/:slug`, `/upload`, `/ui*`, `/respond/:token`, `/sign/:token`, `/verify-signing/:token`, `/account-action`) to a neutral `app-shell.html` SPA bootstrap instead of the prerendered homepage `index.html`.
 - The prerendered homepage `index.html` is reserved for `/` and SEO/public static-route generation, so homepage-only cover markup does not leak into Fill By Link or signing routes.
+- `/forms` is the public form catalog index.
+- `/forms/:slug` is the public detail route for one mirrored blank form.
 - `/upload` mounts the signed-in upload shell.
 - `/ui` is the generic editor/runtime route for unsaved uploads and in-flight workspace processing.
 - `/ui/profile` opens the signed-in profile view.
@@ -49,6 +51,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Public intent landing pages cover commercial search intents:
   - `/pdf-to-fillable-form`
   - `/pdf-to-database-template`
+  - `/pdf-form-catalog`
   - `/fill-pdf-from-csv`
   - `/fill-pdf-by-link`
   - `/fill-information-in-pdf`
@@ -66,6 +69,10 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
   - `/nonprofit-pdf-form-automation`
   - `/logistics-pdf-automation`
 - Each route has unique canonical metadata and FAQ structured data.
+- The workflow route `/pdf-form-catalog` now explains what the catalog contains, what each entry exposes, and how the blank forms connect to the main DullyPDF workflow.
+- Selected catalog-backed industry pages also render curated real-form thumbnails and ten-document examples pulled from the DullyPDF catalog, with editor deep links (`/upload?catalogSlug=...`) plus Search & Fill, API Fill, Fill By Link, and signature guidance.
+- In local dev those catalog PDFs and thumbnails are served from the repo-level `form_catalog/` directory through Vite at `/form-catalog-assets/*`. In prod they resolve through `VITE_FORM_CATALOG_ASSET_BASE`, which is expected to point at a public mirrored GCS bucket.
+- Catalog cards now use pre-generated first-page `.webp` thumbnails instead of fetching PDFs in-browser just to render previews. Signed-in detail pages still fetch the real PDF when the user opens a specific form preview or sends it into the editor.
 - Selected workflow routes and docs pages can also surface embedded YouTube walkthroughs when a focused demo adds search-intent context without bloating the homepage.
 - Authority-style intent routes can also render inline legal footnotes and explicit source sections when the page needs statute or policy references instead of summary-only marketing copy.
 - Two hub routes aggregate intent pages for cleaner global navigation:

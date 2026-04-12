@@ -17,6 +17,8 @@ export const LazySignatureRequestDialog = lazy(() => import('./components/featur
 export const LazyDowngradeRetentionDialog = lazy(() => import('./components/features/DowngradeRetentionDialog'));
 export const LazyUploadView = lazy(() => import('./components/features/UploadView'));
 export const LazyProcessingView = lazy(() => import('./components/features/ProcessingView'));
+export const LazyFormCatalogIndexPage = lazy(() => import('./components/pages/FormCatalogIndexPage'));
+export const LazyFormCatalogFormPage = lazy(() => import('./components/pages/FormCatalogFormPage'));
 
 export const LazyGroupUploadDialog = lazy(() =>
   import('./components/features/GroupUploadDialog').then((module) => ({

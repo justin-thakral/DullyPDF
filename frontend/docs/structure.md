@@ -28,7 +28,7 @@ frontend/
 - `frontend/src/App.tsx`: Top-level shell that keeps `/` on the marketing homepage, auto-starts the runtime for `/upload` and `/ui*` workspace routes, and owns browser history synchronization between the lightweight shell and the runtime.
 - `frontend/src/WorkspaceRuntime.tsx`: Main signed-in runtime that renders upload/processing/editor/profile/auth states and now coordinates direct route restore for saved forms/groups.
 - `frontend/src/workspaceLazyComponents.tsx`: Lazy import registry for large runtime-only screens/dialogs so `WorkspaceRuntime` stays orchestration-focused and does not pull every rarely used UI island into one chunk.
-- `frontend/src/utils/workspaceRoutes.ts`: Parser/builder helpers for workspace browser routes (`/upload`, `/ui`, `/ui/profile`, `/ui/forms/:id`, `/ui/groups/:id?template=:id`).
+- `frontend/src/utils/workspaceRoutes.ts`: Parser/builder helpers for workspace browser routes (`/forms`, `/forms/:slug`, `/upload`, `/ui`, `/ui/profile`, `/ui/forms/:id`, `/ui/groups/:id?template=:id`).
 - `frontend/src/utils/workspaceResumeState.ts`: Session-scoped resume manifest helpers for restoring saved-form/group routes after refresh without persisting full document state locally.
 - `frontend/src/hooks/`: App feature hooks extracted from `App.tsx` (`useAuth`, `useSavedForms`, `useDetection`, `useOpenAiPipeline`, `useWorkspaceSessionDiagnostic`, `useDataSource`, `usePipelineModal`, `useSaveDownload`, `useDemo`, `useFieldHistory`, `useFieldState`, `useDialog`, `useGroupTemplateCache`).
 - `frontend/src/services/apiConfig.ts`: Shared fetch wrapper, auth headers, status normalization, and API base URL resolution.
@@ -36,6 +36,9 @@ frontend/
 - `frontend/src/services/detectionApi.ts`: Detection upload + polling (`/detect-fields`) and detection-session keep-alive.
 - `frontend/src/config/planLimits.mjs`: Shared default plan-limit and credit snapshots used by the public plan pages, usage docs copy, and frontend profile fallbacks.
 - `frontend/src/config/intentPages.ts`: Content + FAQ + SEO metadata config for public intent and industry landing routes.
+- `frontend/src/config/formCatalogAssetBase.mjs`: Shared resolver for the public form-catalog asset origin. Dev defaults to `/form-catalog-assets`; prod reads `VITE_FORM_CATALOG_ASSET_BASE`.
+- `frontend/src/config/intentCatalogShowcases.mjs`: Curated real-form examples for selected industry landing routes, including thumbnail assets, catalog/editor deep links, and reusable workflow-step copy for Search & Fill, API Fill, Fill By Link, and signatures.
+- `frontend/src/config/formCatalogCategories.mjs`, `frontend/src/config/formCatalogData.mjs`, `frontend/src/config/formCatalogExternalSources.mjs`: Auto-generated datasets behind `/forms`. The external-sources file is built from copyright-restricted `form_catalog/*/links.txt` manifests so restricted categories remain browsable without mirroring protected PDFs, while mirrored categories store relative asset paths that are rebound through `formCatalogAssetBase.mjs` at runtime.
 - `frontend/src/config/publicRouteSeoData.mjs`: Shared source of truth for public route metadata and build-time static body content used by the runtime SEO adapter plus the static HTML and sitemap generators.
 - `frontend/src/config/routeSeo.ts`: Typed runtime adapter over the shared public route SEO dataset for all indexable public pages (`/`, legal, `/usage-docs/*`, intent pages, hub pages, and blog routes).
 - `frontend/src/publicRouteRouting.ts`: Shared matcher for indexable public routes that should be prerendered and hydrated instead of mounted as empty client-only shells.
@@ -48,6 +51,9 @@ frontend/
 - `frontend/src/components/features/SearchFillModal.tsx`: Record search and field fill logic.
 - `frontend/src/components/features/UploadView.tsx`: Upload + saved-form selection UI and OpenAI preflight modal entry.
 - `frontend/src/components/pages/*.tsx`: Homepage, auth pages, profile page, legal pages, public usage docs pages (`/usage-docs/*`), and intent landing pages.
+- `frontend/src/components/pages/FormCatalogIndexPage.tsx`: Public `/forms` catalog browser, including hosted-form search/pagination and external-source link lists for ACORD, HIPAA, and NAR / Realtor.
+- `frontend/src/components/pages/FormCatalogFormPage.tsx`: Individual form-catalog detail route with preview metadata and “Open in DullyPDF” editor handoff.
+- `frontend/src/components/pages/FormCatalogThumbnail.tsx`: Shared catalog/intent-card thumbnail renderer that now prefers static `.webp` previews and only falls back to a text badge when the image cannot load.
 - `frontend/src/components/pages/IntentLandingPage.tsx`: Shared renderer for workflow/industry authority pages, including long-form article sections, FAQ blocks, related docs, optional source panels, and inline legal-footnote rendering for authority-heavy pages.
 - `frontend/src/components/pages/AccountActionPage.tsx`: Public branded Firebase email action handler for verification and password reset links (`/account-action`, with legacy `/verify-email` compatibility).
 - `frontend/src/components/pages/AuthActionShell.tsx`: Shared branded shell used by the public account-action route and the signed-in verification gate.
@@ -65,5 +71,8 @@ frontend/
 - `scripts/seo-route-data.mjs`: Build-time re-export bridge for the shared public route SEO dataset. Existing scripts import this path, but `frontend/src/config/publicRouteSeoData.mjs` is the source of truth.
 - `frontend/src/ssr/publicRouteRenderer.ts` + `frontend/vite.public-ssr.config.ts`: Tiny SSR build entry used by `scripts/generate-static-html.mjs` to prerender the homepage and SEO/public routes from the same React components the browser hydrates.
 - `scripts/generate-static-html.mjs`: Converts the raw Vite `index.html` into two deploy artifacts: a neutral `frontend/dist/app-shell.html` for Firebase rewrite targets and the prerendered `frontend/dist/index.html` plus route-specific `*/index.html` files for homepage/SEO delivery.
+- `scripts/build-form-catalog-index.mjs`: Rebuilds the catalog datasets consumed by `/forms`, including the external-link manifests generated from restricted-category `links.txt` files and the relative asset paths that are later joined against the runtime asset base.
+- `scripts/generate-form-catalog-thumbnails.py`: Renders first-page `.webp` previews for every mirrored PDF under `form_catalog/`.
+- `scripts/deploy-form-catalog-assets.sh`: Prod deploy helper that generates missing thumbnails, validates counts, configures the public GCS bucket/CORS, and syncs mirrored PDFs plus thumbnails before the frontend hosting deploy runs.
 
 For the hook interaction map, see `frontend/docs/app-hooks.md`.

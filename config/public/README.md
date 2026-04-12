@@ -10,6 +10,10 @@ These files may contain public browser config (`VITE_*`) such as Firebase web co
 Do not store backend secrets here.
 Google Ads / analytics browser tag IDs and conversion labels are acceptable here because they are public client-side identifiers.
 
+They may also contain non-secret deploy-time variables consumed by frontend scripts rather than the browser bundle itself. Current examples include:
+- `FORM_CATALOG_BUCKET_URL`
+- `FORM_CATALOG_BUCKET_REGION`
+
 ## Local overrides (gitignored)
 
 Use local override files in `env/` for machine-specific values:

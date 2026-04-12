@@ -17,6 +17,7 @@ const APP_ROUTE_HYDRATION_COVER_CONFIG: AppRouteHydrationCoverConfig = {
     '/upload',
     '/ui',
     '/ui/profile',
+    '/forms',
   ],
   singleSegmentPrefixes: [
     '/respond/',
@@ -26,6 +27,7 @@ const APP_ROUTE_HYDRATION_COVER_CONFIG: AppRouteHydrationCoverConfig = {
   workspaceDynamicPrefixes: [
     '/ui/forms/',
     '/ui/groups/',
+    '/forms/',
   ],
 };
 

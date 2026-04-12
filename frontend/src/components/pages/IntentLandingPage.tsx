@@ -1,10 +1,16 @@
 import { useEffect, useMemo, type ReactNode } from 'react';
+import FormCatalogThumbnail from './FormCatalogThumbnail';
 import {
   getIntentPage,
   getIntentPageArticleFigures,
   getIntentPages,
   type IntentPageKey,
 } from '../../config/intentPages';
+import {
+  buildIntentCatalogWorkflowSteps,
+  getIntentCatalogShowcase,
+  getIntentCatalogCategorySummaries,
+} from '../../config/intentCatalogShowcases.mjs';
 import { PDF_TO_FILLABLE_DEMO_VIDEO } from '../../config/publicVideoContent';
 import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
 import { applyRouteSeo } from '../../utils/seo';
@@ -34,9 +40,62 @@ const getFootnoteSuffix = (referenceIndex: number): string => {
   return suffix;
 };
 
+type IntentCatalogDocument = {
+  slug: string;
+  formNumber: string;
+  title: string;
+  description: string;
+  pageCount: number | null;
+  pdfUrl: string;
+  thumbnailUrl: string;
+  sourceUrl: string;
+  sectionLabel: string;
+  editorHref: string;
+  catalogHref: string;
+};
+
+type IntentCatalogWorkflowStep = {
+  title: string;
+  description: string;
+  href: string;
+  linkLabel: string;
+};
+
+type IntentCatalogShowcase = {
+  title: string;
+  description: string;
+  categoryLinks?: Array<{ label: string; href: string }>;
+  documents: IntentCatalogDocument[];
+  featuredDocuments: IntentCatalogDocument[];
+};
+
+type IntentCatalogCategorySummary = {
+  key: string;
+  label: string;
+  count: number;
+  empty: boolean;
+  emptyReason: string | null;
+  description: string;
+  browseHref: string | null;
+  representativeDocument: {
+    formLabel: string;
+    pdfUrl: string;
+    thumbnailUrl: string;
+  } | null;
+};
+
 const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
   const page = getIntentPage(pageKey);
   const articleFigures = getIntentPageArticleFigures(pageKey);
+  const catalogShowcase = getIntentCatalogShowcase(pageKey) as IntentCatalogShowcase | null;
+  const catalogCategorySummaries = useMemo<IntentCatalogCategorySummary[]>(
+    () => getIntentCatalogCategorySummaries(pageKey) as IntentCatalogCategorySummary[],
+    [pageKey],
+  );
+  const catalogWorkflowSteps = useMemo<IntentCatalogWorkflowStep[]>(
+    () => (catalogShowcase ? buildIntentCatalogWorkflowSteps(catalogShowcase) as IntentCatalogWorkflowStep[] : []),
+    [catalogShowcase],
+  );
   const pageVideo = pageKey === 'pdf-to-fillable-form' ? PDF_TO_FILLABLE_DEMO_VIDEO : null;
   const footnoteNumberById = useMemo(
     () => new Map((page.footnotes ?? []).map((footnote, index) => [footnote.id, index + 1])),
@@ -180,6 +239,161 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
       ) : null}
 
       {pageVideo ? <PublicVideoPanel {...pageVideo} /> : null}
+
+      {catalogShowcase ? (
+        <>
+          <section className="intent-page__panel">
+            <h2>{catalogShowcase.title}</h2>
+            <p>{catalogShowcase.description}</p>
+            {catalogShowcase.categoryLinks?.length ? (
+              <div className="intent-page__catalog-link-row">
+                {catalogShowcase.categoryLinks.map((link) => (
+                  <a key={`${link.label}-${link.href}`} href={link.href}>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            ) : null}
+            <div className="intent-page__catalog-grid">
+                {catalogShowcase.featuredDocuments.map((document) => (
+                  <article key={document.slug} className="intent-page__catalog-card">
+                    <a href={document.editorHref} className="intent-page__catalog-card-link">
+                      <div className="intent-page__catalog-image-shell">
+                        <FormCatalogThumbnail thumbnailUrl={document.thumbnailUrl} formNumber={document.formNumber} />
+                      </div>
+                    </a>
+                    <div className="intent-page__catalog-card-copy">
+                    <p className="intent-page__catalog-card-kicker">{document.sectionLabel}</p>
+                    <h3>
+                      <a href={document.catalogHref}>
+                        {document.formNumber ? `${document.formNumber} — ` : ''}
+                        {document.title}
+                      </a>
+                    </h3>
+                    <p>{document.description}</p>
+                    <p className="intent-page__catalog-card-meta">
+                      {document.pageCount ? `${document.pageCount} ${document.pageCount === 1 ? 'page' : 'pages'} • ` : ''}
+                      Blank official PDF
+                    </p>
+                  </div>
+                  <div className="intent-page__catalog-actions">
+                    <a
+                      href={document.editorHref}
+                      className="intent-page__catalog-action intent-page__catalog-action--primary"
+                      aria-label={`Open ${document.formNumber || document.title} in DullyPDF`}
+                    >
+                      Open in DullyPDF
+                    </a>
+                    <a
+                      href={document.pdfUrl}
+                      className="intent-page__catalog-action intent-page__catalog-action--secondary"
+                      aria-label={`Download blank PDF for ${document.formNumber || document.title}`}
+                    >
+                      Download blank PDF
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="intent-page__grid">
+            <article className="intent-page__panel">
+              <h2>10 specific forms to automate on this route</h2>
+              <div className="intent-page__catalog-list">
+                {catalogShowcase.documents.map((document) => (
+                  <article key={document.slug} className="intent-page__catalog-list-item">
+                    <div className="intent-page__catalog-list-copy">
+                      <h3>
+                        <a href={document.catalogHref}>
+                          {document.formNumber ? `${document.formNumber} — ` : ''}
+                          {document.title}
+                        </a>
+                      </h3>
+                      <p>{document.description}</p>
+                      <p className="intent-page__catalog-list-meta">
+                        {document.sectionLabel}
+                        {document.pageCount ? ` • ${document.pageCount} ${document.pageCount === 1 ? 'page' : 'pages'}` : ''}
+                        {' • '}
+                        <a href={document.sourceUrl}>Official source</a>
+                      </p>
+                    </div>
+                    <div className="intent-page__catalog-list-actions">
+                      <a href={document.editorHref}>Open in DullyPDF</a>
+                      <a href={document.pdfUrl}>Blank PDF</a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </article>
+
+            <article className="intent-page__panel">
+              <h2>How to open these PDFs in DullyPDF and automate them</h2>
+              <div className="intent-page__workflow-grid">
+                {catalogWorkflowSteps.map((step) => (
+                  <article key={step.title} className="intent-page__workflow-card">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                    <a href={step.href}>{step.linkLabel}</a>
+                  </article>
+                ))}
+              </div>
+            </article>
+          </section>
+        </>
+      ) : null}
+
+      {catalogCategorySummaries.length ? (
+        <section className="intent-page__panel">
+          <h2>All form catalog categories in DullyPDF</h2>
+          <p>
+            Every category below now carries a short explanation of what that bucket contains. Non-empty categories
+            also show a representative mirrored PDF so the page reads like a real catalog overview instead of a text-only route.
+          </p>
+          <div className="intent-page__catalog-category-grid">
+                {catalogCategorySummaries.map((category) => (
+                  <article
+                    key={category.key}
+                className={`intent-page__catalog-category-card${
+                  category.empty ? ' intent-page__catalog-category-card--empty' : ''
+                }`}
+              >
+                {category.representativeDocument ? (
+                  <div className="intent-page__catalog-category-media">
+                    <div className="intent-page__catalog-category-image-shell">
+                      <FormCatalogThumbnail
+                        thumbnailUrl={category.representativeDocument.thumbnailUrl}
+                        formNumber={category.representativeDocument.formLabel}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="intent-page__catalog-category-media intent-page__catalog-category-media--placeholder">
+                    <span>External source bucket</span>
+                  </div>
+                )}
+                <div className="intent-page__catalog-category-copy">
+                  <p className="intent-page__catalog-category-kicker">{category.label}</p>
+                  <h3>{category.count.toLocaleString()} {category.count === 1 ? 'form' : 'forms'}</h3>
+                  <p>{category.description}</p>
+                  <p className="intent-page__catalog-category-meta">
+                    {category.empty
+                      ? category.emptyReason || 'Catalog coverage described here; source forms remain external.'
+                      : `Representative PDF: ${category.representativeDocument?.formLabel}. Browsable in the mirrored DullyPDF catalog and openable directly in the editor.`}
+                  </p>
+                </div>
+                <div className="intent-page__catalog-category-actions">
+                  {category.browseHref ? (
+                    <a href={category.browseHref}>Browse {category.label}</a>
+                  ) : (
+                    <span>External-only source note</span>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {page.articleSections?.map((section) => (
         <section key={section.title} className="intent-page__panel intent-page__panel--article">

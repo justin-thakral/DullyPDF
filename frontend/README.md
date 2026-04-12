@@ -1,8 +1,9 @@
 # Frontend
 
-React + TypeScript UI for viewing PDFs, editing detected fields, organizing saved forms into named groups, running Search & Fill, publishing native Fill By Link forms for either one saved template or an open group, sending PDFs for signature, and saving forms. Saved templates now also expose an `API Fill` manager in the workspace header so owners can publish a template-scoped JSON-to-PDF endpoint, rotate/revoke keys, review recent endpoint activity, and copy server-side examples without leaving the editor. The upload screen includes a compact saved-form browser with group filtering, a stable selected-group label during group refreshes, an `Open groups` toggle, create/delete group actions, and pill-style saved-template chips. Fill By Link now uses a large builder dialog with sticky global settings, searchable question management, live preview, per-question requiredness and text limits, template-only custom web-form questions, and a separate responses tab for Search & Fill handoff. Saved forms now persist versioned editor snapshots so reopen/group-switch flows can hydrate fields and page sizes without re-extracting them on every open. The editor now treats radio fields as first-class single-select groups instead of leaning on legacy checkbox hints, and the frontend talks to the FastAPI backend for detection, OpenAI rename, schema mapping (schema headers only), group management, and owner/respondent workflows, including deterministic `fillRules` for checkbox, radio, and text split/join fill behavior. Workspace navigation is route-driven under `/upload` and `/ui`, with direct routes for the upload shell, profile, saved forms, and saved groups so refresh/bookmark flows reopen the same workspace context instead of dropping back to `/`.
+React + TypeScript UI for viewing PDFs, editing detected fields, organizing saved forms into named groups, running Search & Fill, publishing native Fill By Link forms for either one saved template or an open group, sending PDFs for signature, and saving forms. Saved templates now also expose an `API Fill` manager in the workspace header so owners can publish a template-scoped JSON-to-PDF endpoint, rotate/revoke keys, review recent endpoint activity, and copy server-side examples without leaving the editor. The upload screen includes a compact saved-form browser with group filtering, a stable selected-group label during group refreshes, an `Open groups` toggle, create/delete group actions, and pill-style saved-template chips. Fill By Link now uses a large builder dialog with sticky global settings, searchable question management, live preview, per-question requiredness and text limits, template-only custom web-form questions, and a separate responses tab for Search & Fill handoff. Saved forms now persist versioned editor snapshots so reopen/group-switch flows can hydrate fields and page sizes without re-extracting them on every open. The editor now treats radio fields as first-class single-select groups instead of leaning on legacy checkbox hints, and the frontend talks to the FastAPI backend for detection, OpenAI rename, schema mapping (schema headers only), group management, and owner/respondent workflows, including deterministic `fillRules` for checkbox, radio, and text split/join fill behavior. Workspace navigation is route-driven under `/upload`, `/ui`, and the public `/forms` catalog, with direct routes for the upload shell, profile, saved forms, saved groups, and catalog detail pages so refresh/bookmark flows reopen the same workspace or catalog context instead of dropping back to `/`.
 Public product usage documentation is available at canonical `/usage-docs/*` URLs. Legacy `/docs/*` URLs permanently redirect to matching canonical docs routes.
-Public intent landing pages are also available for search-oriented entry routes (for example `/pdf-to-fillable-form`, `/pdf-fill-api`, `/pdf-radio-button-editor`, `/pdf-signature-workflow`, and `/fill-pdf-from-csv`) and industry-focused routes (for example `/healthcare-pdf-automation` and `/acord-form-automation`).
+Public intent landing pages are also available for search-oriented entry routes (for example `/pdf-to-fillable-form`, `/pdf-form-catalog`, `/pdf-fill-api`, `/pdf-radio-button-editor`, `/pdf-signature-workflow`, and `/fill-pdf-from-csv`) and industry-focused routes (for example `/healthcare-pdf-automation` and `/acord-form-automation`).
+Selected public routes now also explain the form catalog itself and surface curated public-domain form examples pulled from the catalog, including thumbnail previews, direct `Open in DullyPDF` editor deep links, and workflow guidance for Search & Fill, API Fill, Fill By Link, and signatures.
 Public plan explainer pages are available at `/free-features` and `/premium-features`, and the premium page can launch Stripe Checkout for signed-in users when billing is available.
 Profile and public plan messaging now audit the full enforced tier set instead of only Fill By Link copy. Current defaults are: free = 5 saved forms, 5 detect pages, 50 fillable pages, unlimited active Fill By Links with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 fills/month and 25 pages/request, 25 sent signing requests/month, and a base OpenAI pool that tops back up to 10 each month when the balance is below 10; premium = 100 saved forms, 100 detect pages, 1,000 fillable pages, unlimited active Fill By Links with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 fills/month and 250 pages/request, 10,000 sent signing requests/month, and a 500-credit monthly pool before refill packs.
 Completed signing flows now also expose a public `/verify-signing/:token` validation page, and audit receipts point there with a QR-backed validation link so recipients can re-check the retained record later without opening the signer ceremony again. The owner-side audit evidence is broader than the public receipt: it preserves immutable source/signed hashes, sender and signer identity fields, invite delivery metadata, OTP/access-check state, ceremony timestamps, disclosure evidence, retained artifact metadata, and, for company-binding requests, the authority-attestation text/version/hash plus the signer-provided representative title and company name so the owner can export a dispute package later. That evidence model is intended to support the core E-SIGN mechanics around signer intent, association with the exact record, consumer consent where required, and later-reference retention, but it is not a blanket legal determination for every workflow or an independent proof of corporate authority. When no production PKCS#12 or Cloud KMS PDF signing identity is configured, DullyPDF can self-sign the finalized PDF for tamper evidence, but standard PDF viewers may still show that embedded certificate as untrusted because it is not chained to a public CA. In that configuration, the intended verification path is the audit receipt plus the retained validation page rather than a viewer trust badge.
@@ -57,6 +58,7 @@ This starts a standalone local server on `http://127.0.0.1:5174`. The dashboard 
 
 The dev scripts source env vars via `scripts/use-frontend-env.sh`. Common entries:
 - `VITE_API_URL` / `VITE_DETECTION_API_URL` for backend base URLs.
+- `VITE_FORM_CATALOG_ASSET_BASE` for the public form-catalog asset origin. Dev and stack keep this on `/form-catalog-assets`; prod points it at the public GCS bucket.
 - `VITE_DETECTION_POLL_TIMEOUT_MS` to cap how long detection polling waits before returning.
 - `VITE_BACKEND_READY_MAX_WAIT_MS` to control how long the homepage shell waits for `/api/health` during Cloud Run cold starts before surfacing a retry message.
 - Firebase Identity Platform keys (`VITE_FIREBASE_*`).
@@ -68,6 +70,10 @@ Committed frontend env sources live in:
 - `config/public/frontend.dev.env`
 - `config/public/frontend.stack.env`
 - `config/public/frontend.prod.env`
+
+Prod env also carries deploy-only public bucket settings used by the frontend deploy script:
+- `FORM_CATALOG_BUCKET_URL`
+- `FORM_CATALOG_BUCKET_REGION`
 
 Optional local-only overrides live in ignored files:
 - `env/frontend.dev.local.env`
@@ -84,6 +90,8 @@ prod-like testing.
 ## Workspace routes
 
 - `/` keeps the marketing shell.
+- `/forms` opens the public form catalog index.
+- `/forms/:slug` opens a public catalog detail page for one mirrored blank form.
 - `/upload` opens the signed-in upload shell.
 - `/ui` is the generic editor/runtime route for unsaved uploads and in-flight workspace processing.
 - `/ui/profile` opens the profile view.
@@ -104,7 +112,7 @@ on whatever stale `.env.local` happens to be in the workspace:
 - From the repo root: `npm run frontend:build:dev` or `npm run frontend:build:prod`
 - From `frontend/`: `npm run build:dev` or `npm run build:prod`
 
-Production/static deploys then run `node scripts/generate-static-html.mjs`, which emits both the prerendered homepage/public-route HTML and a neutral `frontend/dist/app-shell.html` used only for Firebase rewrite targets like `/respond/:token`, `/sign/:token`, `/upload`, and `/ui/*`.
+Production/static deploys first run `bash scripts/deploy-form-catalog-assets.sh`, which generates any missing first-page `.webp` previews with `python3 scripts/generate-form-catalog-thumbnails.py` and syncs the catalog PDFs plus thumbnails to the public GCS bucket declared in the prod env. They then run `node scripts/generate-static-html.mjs`, which emits both the prerendered homepage/public-route HTML and a neutral `frontend/dist/app-shell.html` used only for Firebase rewrite targets like `/forms`, `/forms/:slug`, `/respond/:token`, `/sign/:token`, `/upload`, and `/ui/*`.
 
 CSV/XLSX/JSON/TXT schema imports are capped at 10MB in the browser so oversized
 files fail fast instead of freezing the editor tab.
@@ -135,6 +143,8 @@ npm run frontend:webp
 You can tune conversion settings with:
 - `WEBP_QUALITY` (default `82`)
 - `WEBP_METHOD` (default `6`)
+
+The form catalog uses a separate thumbnail path. `python3 scripts/generate-form-catalog-thumbnails.py --catalog-root form_catalog` renders first-page `.webp` previews next to each mirrored catalog PDF, and the public catalog now loads those static images instead of fetching PDFs just to paint thumbnails in-browser.
 
 ## Docs
 
