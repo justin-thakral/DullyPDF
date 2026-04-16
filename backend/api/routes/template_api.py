@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, Optional
 from fastapi import APIRouter, Header, HTTPException, Query, Response
 
 from backend.api.schemas import TemplateApiEndpointPublishRequest
+from backend.firebaseDB.group_database import get_group
 from backend.firebaseDB.template_api_endpoint_database import (
     count_active_template_api_endpoints,
     create_template_api_endpoint_event,
@@ -26,16 +27,23 @@ from backend.firebaseDB.user_database import get_user_profile, normalize_role
 from backend.services.auth_service import require_user
 from backend.services.downgrade_retention_service import is_user_retention_template_locked
 from backend.services.limits_service import (
+    check_group_fill_quota,
     resolve_template_api_active_limit,
     resolve_template_api_max_pages,
     resolve_template_api_requests_monthly_limit,
 )
+from backend.services.saved_form_snapshot_service import load_saved_form_editor_snapshot
 from backend.services.template_api_service import (
+    build_group_template_api_schema,
+    build_group_template_api_snapshot,
     build_template_api_key_prefix,
     build_template_api_schema,
     build_template_api_snapshot,
     generate_template_api_secret,
+    group_template_api_pdf_count,
+    group_template_api_total_page_count,
     hash_template_api_secret,
+    is_group_template_api_snapshot,
 )
 
 
@@ -48,10 +56,19 @@ def _apply_private_cache_headers(response: Response) -> None:
 
 
 def _serialize_endpoint(record) -> Dict[str, Any]:
+    scope_type = (record.scope_type or "template")
+    fill_path = (
+        f"/api/v1/fill/{record.id}.zip"
+        if scope_type == "group"
+        else f"/api/v1/fill/{record.id}.pdf"
+    )
     return {
         "id": record.id,
-        "templateId": record.template_id,
+        "scopeType": scope_type,
+        "templateId": record.template_id or None,
         "templateName": record.template_name,
+        "groupId": record.group_id,
+        "groupName": record.group_name,
         "status": record.status,
         "snapshotVersion": record.snapshot_version,
         "keyPrefix": record.key_prefix,
@@ -69,7 +86,7 @@ def _serialize_endpoint(record) -> Dict[str, Any]:
         "lastFailureAt": record.last_failure_at,
         "lastFailureReason": record.last_failure_reason,
         "auditEventCount": record.audit_event_count,
-        "fillPath": f"/api/v1/fill/{record.id}.pdf",
+        "fillPath": fill_path,
         "schemaPath": f"/api/template-api-endpoints/{record.id}/schema",
     }
 
@@ -79,12 +96,27 @@ def _resolve_role_for_user(user) -> str:
     return normalize_role(profile.role if profile else user.role)
 
 
+def _resolve_endpoint_page_count(record_snapshot: Optional[Dict[str, Any]]) -> int:
+    """Page count for either a template snapshot or a group bundle."""
+
+    if not isinstance(record_snapshot, dict):
+        return 0
+    if is_group_template_api_snapshot(record_snapshot):
+        return group_template_api_total_page_count(record_snapshot)
+    try:
+        return max(0, int(record_snapshot.get("pageCount") or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
 def _build_owner_limit_summary(*, user_id: str, role: str, current_endpoint=None) -> Dict[str, Any]:
     monthly_usage = get_template_api_monthly_usage(user_id)
     active_count = count_active_template_api_endpoints(user_id)
-    template_page_count = 0
-    if current_endpoint is not None and isinstance(current_endpoint.snapshot, dict):
-        template_page_count = max(0, int(current_endpoint.snapshot.get("pageCount") or 0))
+    template_page_count = (
+        _resolve_endpoint_page_count(current_endpoint.snapshot)
+        if current_endpoint is not None
+        else 0
+    )
     return {
         "activeEndpointsMax": resolve_template_api_active_limit(role),
         "activeEndpointsUsed": active_count,
@@ -97,9 +129,11 @@ def _build_owner_limit_summary(*, user_id: str, role: str, current_endpoint=None
 
 
 def _build_owner_limit_summary_fallback(*, role: str, current_endpoint=None) -> Dict[str, Any]:
-    template_page_count = 0
-    if current_endpoint is not None and isinstance(current_endpoint.snapshot, dict):
-        template_page_count = max(0, int(current_endpoint.snapshot.get("pageCount") or 0))
+    template_page_count = (
+        _resolve_endpoint_page_count(current_endpoint.snapshot)
+        if current_endpoint is not None
+        else 0
+    )
     return {
         "activeEndpointsMax": resolve_template_api_active_limit(role),
         "activeEndpointsUsed": 1 if current_endpoint is not None and current_endpoint.status == "active" else 0,
@@ -209,6 +243,17 @@ def _serialize_event(record) -> Dict[str, Any]:
     }
 
 
+def _build_endpoint_schema_or_raise(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    """Return the public JSON schema for either a template or group snapshot."""
+
+    try:
+        if is_group_template_api_snapshot(snapshot):
+            return build_group_template_api_schema(snapshot)
+        return build_template_api_schema(snapshot)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+
 def _build_owner_details_payload(record, *, role: str, include_schema: bool = True) -> Dict[str, Any]:
     snapshot = dict(record.snapshot or {})
     payload: Dict[str, Any] = {
@@ -225,10 +270,7 @@ def _build_owner_details_payload(record, *, role: str, include_schema: bool = Tr
     if include_schema:
         if not snapshot:
             raise HTTPException(status_code=404, detail="API Fill snapshot is missing")
-        try:
-            payload["schema"] = build_template_api_schema(snapshot)
-        except ValueError as exc:
-            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        payload["schema"] = _build_endpoint_schema_or_raise(snapshot)
     return payload
 
 
@@ -251,7 +293,10 @@ def _build_owner_mutation_payload(
     )
     payload["recentEvents"] = _list_owner_recent_events_best_effort(endpoint_id=record.id, user_id=record.user_id)
     if include_schema:
-        payload["schema"] = schema if schema is not None else build_template_api_schema(dict(record.snapshot or {}))
+        if schema is not None:
+            payload["schema"] = schema
+        else:
+            payload["schema"] = _build_endpoint_schema_or_raise(dict(record.snapshot or {}))
     return payload
 
 
@@ -274,6 +319,103 @@ def _build_snapshot_or_400(template, *, export_mode: str) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+def _resolve_group_or_404(group_id: str, user_id: str):
+    group = get_group(group_id, user_id)
+    if group is None:
+        raise HTTPException(status_code=404, detail="Workflow group not found")
+    return group
+
+
+def _build_group_template_sources_or_400(
+    group,
+    user_id: str,
+) -> tuple[list[Any], list[Dict[str, Any]]]:
+    """Load every template in ``group`` and produce the source dicts the
+    canonical schema service expects.
+
+    Reuses the same persistence path as Phase 2's ``GET /api/groups/{id}/canonical-schema``
+    so a published API Fill group endpoint will see the exact same field shapes
+    that Phase 2's preview surface shows the workspace.
+    """
+
+    template_records: list[Any] = []
+    template_sources: list[Dict[str, Any]] = []
+    for template_id in group.template_ids:
+        template_record = get_template(template_id, user_id)
+        if template_record is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Saved form {template_id!r} in this group is no longer available.",
+            )
+        if is_user_retention_template_locked(user_id, template_record.id):
+            raise HTTPException(
+                status_code=409,
+                detail="One or more saved forms in this group are locked on the base plan. Upgrade before publishing API Fill for the group.",
+            )
+        editor_snapshot = load_saved_form_editor_snapshot(template_record.metadata)
+        if not editor_snapshot:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    f"Saved form {template_id!r} does not have an editor snapshot yet. "
+                    "Open it in the workspace and save before publishing API Fill for this group."
+                ),
+            )
+        fields = editor_snapshot.get("fields") if isinstance(editor_snapshot, dict) else None
+        if not isinstance(fields, list) or not fields:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    f"Saved form {template_id!r} has no fields detected yet. "
+                    "Run field detection in the workspace before publishing API Fill for this group."
+                ),
+            )
+        metadata = template_record.metadata if isinstance(template_record.metadata, dict) else {}
+        fill_rules_root = metadata.get("fillRules") if isinstance(metadata.get("fillRules"), dict) else {}
+        checkbox_rules_raw = (
+            fill_rules_root.get("checkboxRules")
+            if isinstance(fill_rules_root.get("checkboxRules"), list)
+            else metadata.get("checkboxRules")
+        )
+        checkbox_rules = (
+            [dict(entry) for entry in checkbox_rules_raw if isinstance(entry, dict)]
+            if isinstance(checkbox_rules_raw, list)
+            else []
+        )
+        try:
+            page_count = int(editor_snapshot.get("pageCount") or 0) if isinstance(editor_snapshot, dict) else 0
+        except (TypeError, ValueError):
+            page_count = 0
+        template_records.append(template_record)
+        template_sources.append(
+            {
+                "templateId": template_record.id,
+                "templateName": template_record.name or template_record.id,
+                "fields": fields,
+                "checkboxRules": checkbox_rules,
+                "pageCount": max(0, page_count),
+            }
+        )
+    return template_records, template_sources
+
+
+def _build_group_snapshot_or_400(
+    group,
+    user_id: str,
+) -> Dict[str, Any]:
+    template_records, template_sources = _build_group_template_sources_or_400(group, user_id)
+    try:
+        return build_group_template_api_snapshot(
+            group_id=group.id,
+            template_records=template_records,
+            template_sources=template_sources,
+        )
+    except HTTPException:
+        raise
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 def _resolve_endpoint_or_404(endpoint_id: str, user_id: str):
     record = get_template_api_endpoint(endpoint_id, user_id)
     if record is None:
@@ -292,7 +434,7 @@ def _record_owner_event_best_effort(
         create_template_api_endpoint_event(
             endpoint_id=record.id,
             user_id=record.user_id,
-            template_id=record.template_id,
+            template_id=record.template_id or (record.group_id or ""),
             event_type=event_type,
             snapshot_version=snapshot_version,
             metadata=metadata,
@@ -339,17 +481,69 @@ async def publish_template_api_endpoint(
     response: Response,
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
-    """Publish or republish a saved form into a frozen API Fill snapshot."""
+    """Publish or republish a saved form (or template group) as an API Fill endpoint."""
     _apply_private_cache_headers(response)
     user = require_user(authorization)
     role = _resolve_role_for_user(user)
-    template = _resolve_template_or_404(payload.templateId, user.app_user_id)
     active_limit = resolve_template_api_active_limit(role)
     if active_limit <= 0:
         raise HTTPException(status_code=403, detail="API Fill is unavailable on the current plan.")
+    max_pages = resolve_template_api_max_pages(role)
+
+    if payload.scopeType == "group":
+        group = _resolve_group_or_404(payload.groupId, user.app_user_id)
+        snapshot = _build_group_snapshot_or_400(group, user.app_user_id)
+        total_page_count = group_template_api_total_page_count(snapshot)
+        if total_page_count > max_pages:
+            raise HTTPException(
+                status_code=403,
+                detail=(
+                    f"API Fill group endpoints are limited to {max_pages} total pages across all "
+                    f"templates on your plan (got {total_page_count})."
+                ),
+            )
+        schema = build_group_template_api_schema(snapshot)
+        secret = generate_template_api_secret()
+        try:
+            endpoint_record, created = publish_or_republish_template_api_endpoint(
+                user_id=user.app_user_id,
+                scope_type="group",
+                group_id=group.id,
+                group_name=group.name,
+                template_id=None,
+                template_name=None,
+                snapshot=snapshot,
+                active_limit=active_limit,
+                key_prefix=build_template_api_key_prefix(secret),
+                secret_hash=hash_template_api_secret(secret),
+            )
+        except TemplateApiActiveEndpointLimitError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except HTTPException:
+            raise
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail="Failed to publish API Fill group endpoint") from exc
+
+        _record_owner_event_best_effort(
+            endpoint_record,
+            event_type="published" if created else "republished",
+            snapshot_version=endpoint_record.snapshot_version,
+            metadata={
+                "scopeType": "group",
+                "groupId": group.id,
+                "templateCount": group_template_api_pdf_count(snapshot),
+                "totalPageCount": total_page_count,
+            },
+        )
+        return {
+            "created": created,
+            "secret": secret if created else None,
+            **_build_owner_mutation_payload(endpoint_record, role=role, schema=schema),
+        }
+
+    template = _resolve_template_or_404(payload.templateId, user.app_user_id)
     snapshot = _build_snapshot_or_400(template, export_mode=payload.exportMode)
     template_page_count = max(0, int(snapshot.get("pageCount") or 0))
-    max_pages = resolve_template_api_max_pages(role)
     if template_page_count > max_pages:
         raise HTTPException(
             status_code=403,
@@ -360,6 +554,7 @@ async def publish_template_api_endpoint(
     try:
         endpoint_record, created = publish_or_republish_template_api_endpoint(
             user_id=user.app_user_id,
+            scope_type="template",
             template_id=template.id,
             template_name=template.name,
             snapshot=snapshot,
@@ -377,6 +572,7 @@ async def publish_template_api_endpoint(
         event_type="published" if created else "republished",
         snapshot_version=endpoint_record.snapshot_version,
         metadata={
+            "scopeType": "template",
             "exportMode": snapshot.get("defaultExportMode"),
             "pageCount": snapshot.get("pageCount"),
         },
@@ -459,3 +655,67 @@ async def get_template_api_endpoint_schema(
     role = _resolve_role_for_user(user)
     record = _resolve_endpoint_or_404(endpoint_id, user.app_user_id)
     return _build_owner_details_payload(record, role=role)
+
+
+@router.get("/api/template-api-endpoints/precheck")
+async def precheck_template_api_quota(
+    response: Response,
+    pdfCount: int = Query(default=1, ge=1),
+    pageCount: int = Query(default=0, ge=0),
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    """Phase 5: pre-validate a planned fill against the user's monthly + per-request limits.
+
+    Account-scoped. Used by:
+      * the workspace Search & Fill modal to display "you have X of Y monthly
+        fills remaining" before the user clicks "Fill all N PDFs"
+      * API Fill consumers building retry / batching logic so they can avoid
+        hammering the public route with calls that would 429
+
+    Query params:
+        pdfCount: number of PDFs the planned fill would materialize (default 1).
+                  For a group fill, this is the template count in the group.
+        pageCount: total page count across all PDFs in the planned fill (default 0).
+                   For a group fill, this is the sum across the bundle.
+
+    Returns:
+        ``{
+            "allowed": bool,
+            "fillsRemaining": int,
+            "pdfCount": int,
+            "monthlyLimit": int,
+            "maxPagesPerRequest": int,
+            "pageCountPerRequest": int,
+            "reason": "fills_exhausted" | "pages_per_request" | None,
+            "currentMonthUsage": int,
+            "monthKey": str,
+        }``
+
+    Read-only — does not consume quota or modify state. The actual debit
+    happens during materialization in ``record_template_api_endpoint_success``,
+    so a precheck-allowed plan is guaranteed to fit *if no concurrent fill races
+    in between*. Concurrent races still hit the atomic quota check inside the
+    materialize transaction and surface as 429 — clients should treat the
+    precheck as a UX hint, not a contract.
+    """
+
+    _apply_private_cache_headers(response)
+    user = require_user(authorization)
+    role = _resolve_role_for_user(user)
+    monthly_limit = resolve_template_api_requests_monthly_limit(role)
+    max_pages = resolve_template_api_max_pages(role)
+    monthly_usage = get_template_api_monthly_usage(user.app_user_id)
+    current_count = monthly_usage.request_count if monthly_usage is not None else 0
+    month_key = monthly_usage.month_key if monthly_usage is not None else ""
+    result = check_group_fill_quota(
+        monthly_limit=monthly_limit,
+        current_request_count=current_count,
+        pdf_count=pdfCount,
+        page_count_per_request=pageCount,
+        max_pages_per_request=max_pages,
+    )
+    return {
+        **result,
+        "currentMonthUsage": current_count,
+        "monthKey": month_key,
+    }

@@ -60,6 +60,26 @@ describe('routeSeo config', () => {
     expect(metadata.title).toContain('Healthcare');
   });
 
+  it('resolves form catalog intent metadata by key', () => {
+    const metadata = resolveRouteSeo({ kind: 'intent', intentKey: 'pdf-form-catalog' });
+    expect(metadata.canonicalPath).toBe('/pdf-form-catalog');
+    expect(metadata.title).toContain('Form Catalog');
+  });
+
+  it('adds item list and how-to schema for catalog-backed industry routes', () => {
+    const metadata = resolveRouteSeo({ kind: 'intent', intentKey: 'healthcare-pdf-automation' });
+
+    expect(
+      metadata.structuredData?.some((entry) => entry['@type'] === 'ItemList'),
+    ).toBe(true);
+    expect(
+      metadata.structuredData?.some((entry) => entry['@type'] === 'HowTo'),
+    ).toBe(true);
+
+    const itemList = metadata.structuredData?.find((entry) => entry['@type'] === 'ItemList');
+    expect(itemList?.numberOfItems).toBe(10);
+  });
+
   it('resolves signature workflow intent metadata by key', () => {
     const metadata = resolveRouteSeo({ kind: 'intent', intentKey: 'pdf-signature-workflow' });
     expect(metadata.canonicalPath).toBe('/pdf-signature-workflow');

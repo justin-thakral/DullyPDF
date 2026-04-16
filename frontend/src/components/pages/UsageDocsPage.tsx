@@ -12,8 +12,10 @@ import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import type { IntentPageKey } from '../../config/intentPages';
 import { getIntentPage } from '../../config/intentPages';
 import {
+  FILL_PDF_FROM_FILE_DEMO_VIDEO,
   FULL_FEATURE_DEMO_VIDEO,
   PDF_TO_FILLABLE_DEMO_VIDEO,
+  WEB_FORM_AND_SIGN_DEMO_VIDEO,
 } from '../../config/publicVideoContent';
 import PublicVideoPanel from './PublicVideoPanel';
 import PublicProfileLinksPanel from './PublicProfileLinksPanel';
@@ -29,7 +31,11 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
     ? FULL_FEATURE_DEMO_VIDEO
     : pageKey === 'getting-started'
       ? PDF_TO_FILLABLE_DEMO_VIDEO
-      : null;
+      : pageKey === 'search-fill'
+        ? FILL_PDF_FROM_FILE_DEMO_VIDEO
+        : pageKey === 'fill-by-link'
+          ? WEB_FORM_AND_SIGN_DEMO_VIDEO
+          : null;
 
   const relatedWorkflows = useMemo(() => {
     const keys: IntentPageKey[] = page.relatedWorkflowKeys ?? [];

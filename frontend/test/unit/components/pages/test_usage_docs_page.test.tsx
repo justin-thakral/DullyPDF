@@ -79,4 +79,28 @@ describe('UsageDocsPage', () => {
       'https://youtu.be/JIVx5VrtkAg?si=XsswWbjanIVnY5vp',
     );
   });
+
+  it('renders the fill-by-file demo on the Search & Fill docs page', () => {
+    render(<UsageDocsPage pageKey="search-fill" />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Fill PDF from CSV, Excel, JSON, SQL, or TXT' }),
+    ).toBeTruthy();
+    expect(screen.getByTitle('Fill PDF from CSV, Excel, JSON, SQL, or TXT')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
+      'https://youtu.be/CT3IEzh4p10',
+    );
+  });
+
+  it('renders the web form + sign demo on the Fill By Link docs page', () => {
+    render(<UsageDocsPage pageKey="fill-by-link" />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Fill a PDF web form and sign it in the browser' }),
+    ).toBeTruthy();
+    expect(screen.getByTitle('Fill a PDF web form and sign it in the browser')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
+      'https://youtu.be/mXtmgrCOitM',
+    );
+  });
 });

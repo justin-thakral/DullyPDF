@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Header, HTTPException, Query
+from fastapi import APIRouter, BackgroundTasks, Header, HTTPException, Query
+from fastapi.responses import FileResponse
 
 from backend.api.schemas import FillLinkCreateRequest, FillLinkUpdateRequest
 from backend.firebaseDB.fill_link_database import (
@@ -30,16 +31,25 @@ from backend.firebaseDB.group_database import get_group
 from backend.firebaseDB.template_database import get_template
 from backend.services.auth_service import require_user
 from backend.services.fill_link_download_service import (
+    build_group_fill_link_publish_snapshot,
     build_template_fill_link_download_snapshot,
+    group_fill_link_publish_snapshot_template_count,
+    materialize_group_fill_link_response_packet,
     respondent_pdf_editable_enabled,
     respondent_pdf_download_enabled,
 )
+from backend.services.pdf_service import cleanup_paths
 from backend.services.fill_links_service import (
     build_group_fill_link_questions,
     build_fill_link_questions,
     build_fill_link_web_form_schema,
     build_fill_link_public_token,
 )
+from backend.services.group_schema_service import (
+    build_group_canonical_schema_from_sources,
+    freeze_group_schema_snapshot,
+)
+from backend.services.group_schema_types import GroupSchemaTypeConflictError
 from backend.services.fill_link_scope_service import close_fill_link_if_scope_invalid, validate_fill_link_scope
 from backend.services.downgrade_retention_service import (
     get_user_retention_pending_template_ids,
@@ -410,12 +420,8 @@ async def create_owner_fill_link(
     signing_config: Optional[Dict[str, Any]] = None
     existing = None
 
+    group_canonical_schema_snapshot: Optional[Dict[str, Any]] = None
     if scope_type == "group":
-        if payload.respondentPdfDownloadEnabled:
-            raise HTTPException(
-                status_code=400,
-                detail="Respondent PDF download is only available for template Fill By Link.",
-            )
         if payload.respondentPdfEditableEnabled:
             raise HTTPException(
                 status_code=400,
@@ -425,9 +431,12 @@ async def create_owner_fill_link(
         if not group:
             raise HTTPException(status_code=404, detail="Group not found")
         template_ids = list(group.template_ids)
+        group_template_records: List[Any] = []
         for template_id in template_ids:
-            if not get_template(template_id, user.app_user_id):
+            template_record = get_template(template_id, user.app_user_id)
+            if not template_record:
                 raise HTTPException(status_code=404, detail="One or more saved forms were not found")
+            group_template_records.append(template_record)
         normalized_sources = _validate_group_template_sources(
             template_ids,
             _normalize_group_template_sources(payload),
@@ -437,6 +446,32 @@ async def create_owner_fill_link(
             web_form_config=web_form_config,
             require_all_fields=payload.requireAllFields,
         )
+        try:
+            canonical_schema = build_group_canonical_schema_from_sources(
+                normalized_sources,
+                group_id=group.id,
+                strict=True,
+                include_synthetic_identifier=True,
+            )
+        except GroupSchemaTypeConflictError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "message": str(exc),
+                    "code": "group_schema_type_conflict",
+                    "canonicalKey": exc.canonical_key,
+                    "conflictingTypes": exc.conflicting_types,
+                },
+            ) from exc
+        if payload.respondentPdfDownloadEnabled:
+            try:
+                group_canonical_schema_snapshot = build_group_fill_link_publish_snapshot(
+                    canonical_schema=freeze_group_schema_snapshot(canonical_schema)["schema"],
+                    template_records=group_template_records,
+                    template_sources=normalized_sources,
+                )
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
         signing_config = _normalize_signing_config(
             payload,
             scope_type=scope_type,
@@ -469,7 +504,7 @@ async def create_owner_fill_link(
         )
         existing = get_fill_link_for_template(payload.templateId, user.app_user_id)
     signing_enabled = bool(isinstance(signing_config, dict) and signing_config.get("enabled"))
-    respondent_download_enabled = bool(payload.respondentPdfDownloadEnabled and scope_type == "template")
+    respondent_download_enabled = bool(payload.respondentPdfDownloadEnabled)
     respondent_download_editable_enabled = bool(
         respondent_download_enabled
         and payload.respondentPdfEditableEnabled
@@ -504,6 +539,7 @@ async def create_owner_fill_link(
             signing_config=signing_config,
             respondent_pdf_download_enabled=respondent_download_enabled,
             respondent_pdf_snapshot=respondent_download_snapshot,
+            canonical_schema_snapshot=group_canonical_schema_snapshot,
             status="active",
             closed_reason=None,
         )
@@ -563,12 +599,8 @@ async def update_owner_fill_link(
         if isinstance(record.respondent_pdf_snapshot, dict)
         else None
     )
+    next_canonical_schema_snapshot: Optional[Dict[str, Any]] = None
     if record.scope_type == "group":
-        if payload.respondentPdfDownloadEnabled:
-            raise HTTPException(
-                status_code=400,
-                detail="Respondent PDF download is only available for template Fill By Link.",
-            )
         if payload.respondentPdfEditableEnabled:
             raise HTTPException(
                 status_code=400,
@@ -583,6 +615,12 @@ async def update_owner_fill_link(
             if not group:
                 raise HTTPException(status_code=404, detail="Group not found")
             next_template_ids = list(group.template_ids)
+            update_template_records: List[Any] = []
+            for template_id in next_template_ids:
+                template_record = get_template(template_id, user.app_user_id)
+                if not template_record:
+                    raise HTTPException(status_code=404, detail="One or more saved forms were not found")
+                update_template_records.append(template_record)
             normalized_sources = _validate_group_template_sources(
                 next_template_ids,
                 _normalize_group_template_sources(payload),
@@ -596,6 +634,32 @@ async def update_owner_fill_link(
                     else record.require_all_fields
                 ),
             )
+            try:
+                update_canonical_schema = build_group_canonical_schema_from_sources(
+                    normalized_sources,
+                    group_id=record.group_id,
+                    strict=True,
+                    include_synthetic_identifier=True,
+                )
+            except GroupSchemaTypeConflictError as exc:
+                raise HTTPException(
+                    status_code=422,
+                    detail={
+                        "message": str(exc),
+                        "code": "group_schema_type_conflict",
+                        "canonicalKey": exc.canonical_key,
+                        "conflictingTypes": exc.conflicting_types,
+                    },
+                ) from exc
+            if next_respondent_download_enabled:
+                try:
+                    next_canonical_schema_snapshot = build_group_fill_link_publish_snapshot(
+                        canonical_schema=freeze_group_schema_snapshot(update_canonical_schema)["schema"],
+                        template_records=update_template_records,
+                        template_sources=normalized_sources,
+                    )
+                except ValueError as exc:
+                    raise HTTPException(status_code=400, detail=str(exc)) from exc
             next_signing_config = _normalize_signing_config(
                 payload,
                 scope_type=record.scope_type,
@@ -765,11 +829,14 @@ async def update_owner_fill_link(
             ),
             signing_config=next_signing_config if payload.signingConfig is not None else None,
             respondent_pdf_download_enabled=(
-                next_respondent_download_enabled if record.scope_type == "template" else None
+                next_respondent_download_enabled
+                if (record.scope_type == "template" or payload.respondentPdfDownloadEnabled is not None)
+                else None
             ),
             respondent_pdf_snapshot=(
                 next_respondent_download_snapshot if record.scope_type == "template" else None
             ),
+            canonical_schema_snapshot=next_canonical_schema_snapshot,
             status=payload.status,
             closed_reason="owner_closed" if payload.status == "closed" else None,
         )
@@ -857,3 +924,66 @@ async def get_owner_fill_link_response(
         if signing_record:
             linked_signing = _serialize_linked_signing(signing_record)
     return {"response": _serialize_response(response_record, linked_signing=linked_signing)}
+
+
+@router.get("/api/fill-links/{link_id}/responses/{response_id}/packet")
+async def get_owner_fill_link_response_packet(
+    link_id: str,
+    response_id: str,
+    background_tasks: BackgroundTasks,
+    authorization: Optional[str] = Header(default=None),
+):
+    """Owner-side packet download for a group Fill By Link response.
+
+    Phase 3: lets the workspace 'Generate packet' button materialize every PDF
+    in the group's publish snapshot from a single stored respondent submission
+    and stream them back as a zip. Group scope only — template scope continues
+    to use the existing single-PDF download path on the public route.
+    """
+
+    user = require_user(authorization)
+    _sync_fill_link_retention(user.app_user_id)
+    record = get_fill_link(link_id, user.app_user_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Fill By Link not found")
+    if record.scope_type != "group":
+        raise HTTPException(
+            status_code=409,
+            detail="Group packet download is only available for group Fill By Link.",
+        )
+    if not isinstance(record.canonical_schema_snapshot, dict):
+        raise HTTPException(
+            status_code=409,
+            detail="This group Fill By Link does not have a publish snapshot. Republish to enable packet download.",
+        )
+    response_record = get_fill_link_response(response_id, link_id, user.app_user_id)
+    if not response_record:
+        raise HTTPException(status_code=404, detail="Response not found")
+
+    base_filename = (
+        record.title
+        or record.group_name
+        or "fill-link-response"
+    )
+    try:
+        zip_path, cleanup_targets, zip_filename = materialize_group_fill_link_response_packet(
+            canonical_schema_snapshot=record.canonical_schema_snapshot,
+            answers=response_record.answers,
+            base_filename=base_filename,
+        )
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Failed to generate group respondent PDFs.") from exc
+
+    background_tasks.add_task(cleanup_paths, cleanup_targets)
+    file_response = FileResponse(
+        str(zip_path),
+        media_type="application/zip",
+        filename=zip_filename,
+        background=background_tasks,
+    )
+    file_response.headers["Cache-Control"] = "private, no-store"
+    return file_response

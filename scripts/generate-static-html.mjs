@@ -84,6 +84,10 @@ function mapSeoRouteToHydratableRoute(route) {
       return { kind: 'blog-index' };
     case 'blog-post':
       return { kind: 'blog-post', slug: route.slug };
+    case 'form-catalog-index':
+      return { kind: 'form-catalog-index' };
+    case 'form-catalog-form':
+      return { kind: 'form-catalog-form', slug: route.slug };
     default:
       throw new Error(`Unsupported public route kind for prerender: ${route.kind}`);
   }
@@ -113,10 +117,30 @@ function getHomepageHydrationCoverTags(route) {
     </style>`;
 }
 
+/**
+ * React 19's renderToString emits <link rel="preload"> Float hints inline
+ * inside the rendered markup. During hydrateRoot the client does not produce
+ * matching inline link nodes — it manages resources via the Float system
+ * instead — so the extra nodes trigger a hydration mismatch (React error
+ * #418). Strip them from the body markup and hoist them into <head> where
+ * they still benefit the browser without breaking hydration.
+ */
+function extractPreloadLinks(markup) {
+  const preloadLinks = [];
+  const cleaned = markup.replace(/<link\s[^>]*rel="preload"[^>]*\/?>/gi, (tag) => {
+    preloadLinks.push(tag);
+    return '';
+  });
+  return { cleaned, preloadLinks };
+}
+
 function generatePageHtml(route, viteAssets, prerenderedMarkup) {
   const { seo } = route;
   const canonicalUrl = `${SITE_ORIGIN}${seo.canonicalPath}`;
-  const imageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
+  const resolvedOgImagePath = seo.ogImagePath || DEFAULT_SOCIAL_IMAGE_PATH;
+  const imageUrl = resolvedOgImagePath.startsWith('http')
+    ? resolvedOgImagePath
+    : `${SITE_ORIGIN}${resolvedOgImagePath}`;
   const ogTitle = seo.ogTitle || seo.title;
   const ogDescription = seo.ogDescription || seo.description;
   const twitterTitle = seo.twitterTitle || ogTitle;
@@ -128,6 +152,25 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     )
     .join('\n    ');
   const homepageHydrationCoverTags = getHomepageHydrationCoverTags(route);
+  const videoMetaTags = seo.video
+    ? `
+    <meta property="og:video" content="${esc(seo.video.embedUrl)}" />
+    <meta property="og:video:url" content="${esc(seo.video.embedUrl)}" />
+    <meta property="og:video:secure_url" content="${esc(seo.video.embedUrl)}" />
+    <meta property="og:video:type" content="text/html" />
+    <meta property="og:video:width" content="1280" />
+    <meta property="og:video:height" content="720" />
+    <meta property="og:video:tag" content="DullyPDF" />
+    <meta name="twitter:player" content="${esc(seo.video.embedUrl)}" />
+    <meta name="twitter:player:width" content="1280" />
+    <meta name="twitter:player:height" content="720" />
+    <link rel="video_src" href="${esc(seo.video.embedUrl)}" />`
+    : '';
+
+  const { cleaned: cleanedMarkup, preloadLinks } = extractPreloadLinks(prerenderedMarkup);
+  const preloadLinkTags = preloadLinks.length
+    ? '\n    ' + preloadLinks.join('\n    ')
+    : '';
 
   return `<!doctype html>
 <html lang="en">
@@ -148,20 +191,21 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     <meta property="og:url" content="${esc(canonicalUrl)}" />
     <meta property="og:image" content="${esc(imageUrl)}" />
     <meta property="og:image:alt" content="DullyPDF logo" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="${seo.video ? 'player' : 'summary_large_image'}" />
     <meta name="twitter:title" content="${esc(twitterTitle)}" />
     <meta name="twitter:description" content="${esc(twitterDescription)}" />
-    <meta name="twitter:image" content="${esc(imageUrl)}" />
+    <meta name="twitter:image" content="${esc(imageUrl)}" />${videoMetaTags}
+    <link rel="alternate" type="application/atom+xml" title="DullyPDF Blog" href="${SITE_ORIGIN}/feed.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />${preloadLinkTags}
     ${structuredDataScripts}
     ${homepageHydrationCoverTags}
     ${viteAssets.linkTags.join('\n    ')}
   </head>
   <body>
     ${route.kind === 'home' ? '<div id="homepage-hydration-cover" aria-hidden="true"></div>' : ''}
-    <div id="root">${prerenderedMarkup}</div>
+    <div id="root">${cleanedMarkup}</div>
     ${viteAssets.scriptTags.join('\n    ')}
   </body>
 </html>
@@ -226,6 +270,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
 }
 
 export {
+  extractPreloadLinks,
   extractViteAssetTags,
   generateAppShellHtml,
   generatePageHtml,

@@ -26,6 +26,7 @@ from backend.services.app_config import resolve_stream_cors_headers
 from backend.services.fill_link_download_service import (
     build_fill_link_download_payload,
     materialize_fill_link_response_download,
+    materialize_group_fill_link_response_packet,
     respondent_pdf_editable_enabled,
     respondent_pdf_download_enabled,
 )
@@ -689,21 +690,60 @@ async def download_public_fill_link_response(
     record = preview_fill_link_if_scope_invalid(get_fill_link_by_public_token(public_token))
     if not record:
         raise HTTPException(status_code=404, detail="Fill By Link not found")
-    if record.scope_type != "template":
+    if record.scope_type not in {"template", "group"}:
         raise HTTPException(
             status_code=409,
-            detail="Respondent PDF download is only available for template Fill By Link.",
+            detail="Respondent PDF download is not supported for this Fill By Link.",
         )
     if _fill_link_references_locked_templates(record):
         raise HTTPException(status_code=409, detail="This respondent PDF is no longer available.")
-    if not respondent_pdf_download_enabled(record):
-        raise HTTPException(status_code=404, detail="Respondent PDF download is not available for this link.")
+    if record.scope_type == "group":
+        if not bool(record.respondent_pdf_download_enabled) or not isinstance(
+            record.canonical_schema_snapshot, dict
+        ):
+            raise HTTPException(
+                status_code=404,
+                detail="Respondent PDF download is not available for this link.",
+            )
+    else:
+        if not respondent_pdf_download_enabled(record):
+            raise HTTPException(status_code=404, detail="Respondent PDF download is not available for this link.")
     if is_closed_reason_blocking_download(record.closed_reason):
         raise HTTPException(status_code=409, detail="This respondent PDF is no longer available.")
 
     response_record = get_fill_link_response(response_id, record.id, record.user_id)
     if not response_record:
         raise HTTPException(status_code=404, detail="Response not found")
+
+    if record.scope_type == "group":
+        base_filename = (
+            record.title
+            or record.group_name
+            or "fill-link-response"
+        )
+        try:
+            zip_path, cleanup_targets, zip_filename = materialize_group_fill_link_response_packet(
+                canonical_schema_snapshot=record.canonical_schema_snapshot,
+                answers=response_record.answers,
+                base_filename=base_filename,
+            )
+        except FileNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail="Failed to generate group respondent PDFs.") from exc
+        background_tasks.add_task(cleanup_paths, cleanup_targets)
+        zip_response = FileResponse(
+            str(zip_path),
+            media_type="application/zip",
+            filename=zip_filename,
+            background=background_tasks,
+        )
+        zip_response.headers.update(resolve_stream_cors_headers(request.headers.get("origin")))
+        zip_response.headers["Cache-Control"] = "private, no-store"
+        return zip_response
+
     snapshot = (
         response_record.respondent_pdf_snapshot
         if isinstance(response_record.respondent_pdf_snapshot, dict)

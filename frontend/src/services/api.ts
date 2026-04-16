@@ -923,7 +923,7 @@ export class ApiService {
   }
 
   private static async pollOpenAiJob(
-    resource: 'renames' | 'schema-mappings' | 'rename-remap',
+    resource: 'renames' | 'schema-mappings' | 'rename-remap' | 'image-fill',
     jobId: string,
     timeoutMs = OPENAI_JOB_POLL_TIMEOUT_MS,
     options?: AbortableRequestOptions,
@@ -988,6 +988,7 @@ export class ApiService {
   static submitPublicFillLink = FillLinksApiService.submitPublicFillLink;
   static retryPublicFillLinkSigning = FillLinksApiService.retryPublicFillLinkSigning;
   static downloadPublicFillLinkResponsePdf = FillLinksApiService.downloadPublicFillLinkResponsePdf;
+  static downloadOwnerFillLinkResponsePacket = FillLinksApiService.downloadOwnerFillLinkResponsePacket;
 
   static async getSigningOptions(): Promise<SigningOptions> {
     const response = await apiFetch('GET', '/api/signing/options');
@@ -2081,6 +2082,27 @@ export class ApiService {
       ...buildAbortOptions(options?.signal),
     });
 
-    return apiJsonFetch(response);
+    const result = await apiJsonFetch<Record<string, unknown>>(response);
+    const status = String((result as Record<string, unknown>)?.status || '').toLowerCase();
+    if ((status === 'queued' || status === 'running') && (result as Record<string, unknown>)?.jobId) {
+      const jobResult = await ApiService.pollOpenAiJob(
+        'image-fill',
+        String((result as Record<string, unknown>).jobId),
+        OPENAI_JOB_POLL_TIMEOUT_MS,
+        options,
+      );
+      return jobResult as {
+        success: boolean;
+        fields: Array<{ fieldName: string; value: string; confidence: number }>;
+        usage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number };
+        creditPricing?: Record<string, unknown>;
+      };
+    }
+    return result as {
+      success: boolean;
+      fields: Array<{ fieldName: string; value: string; confidence: number }>;
+      usage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number };
+      creditPricing?: Record<string, unknown>;
+    };
   }
 }

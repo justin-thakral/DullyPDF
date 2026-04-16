@@ -20,11 +20,15 @@ def _endpoint_record(
     key_prefix: str = "dpa_live_secret",
     secret_hash: str = "hash",
     snapshot: dict | None = None,
+    scope_type: str = "template",
+    template_id: str = "tpl-1",
+    group_id: str | None = None,
+    group_name: str | None = None,
 ) -> TemplateApiEndpointRecord:
     return TemplateApiEndpointRecord(
         id="tep-1",
         user_id="user_base",
-        template_id="tpl-1",
+        template_id=template_id,
         template_name="Patient Intake",
         status=status,
         snapshot_version=2,
@@ -54,6 +58,46 @@ def _endpoint_record(
         last_failure_at=None,
         last_failure_reason=None,
         audit_event_count=0,
+        scope_type=scope_type,
+        group_id=group_id,
+        group_name=group_name,
+    )
+
+
+def _group_endpoint_record() -> TemplateApiEndpointRecord:
+    bundle = {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {
+            "groupId": "grp-1",
+            "fields": [
+                {
+                    "canonicalKey": "patient_name",
+                    "label": "Patient Name",
+                    "type": "text",
+                    "required": False,
+                    "allowedValues": None,
+                    "perTemplateBindings": [
+                        {"templateId": "tpl-1", "fieldName": "patient_name", "sourceField": "patient_name", "sourceType": "pdf_field"},
+                        {"templateId": "tpl-2", "fieldName": "patient_name", "sourceField": "patient_name", "sourceType": "pdf_field"},
+                    ],
+                    "sourceFillLinkType": "text",
+                },
+            ],
+        },
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "I-130", "snapshot": {"sourcePdfPath": "gs://forms/tpl-1.pdf", "pageCount": 1}},
+            {"templateId": "tpl-2", "templateName": "I-130A", "snapshot": {"sourcePdfPath": "gs://forms/tpl-2.pdf", "pageCount": 2}},
+        ],
+        "snapshotKind": "group",
+        "templateApiSnapshotVersion": 1,
+    }
+    return _endpoint_record(
+        snapshot=bundle,
+        scope_type="group",
+        template_id="",
+        group_id="grp-1",
+        group_name="I-130 Spouse Packet",
     )
 
 
@@ -103,7 +147,9 @@ def test_public_template_api_schema_and_fill_route(
     assert schema_response.json() == {
         "endpoint": {
             "id": "tep-1",
+            "scopeType": "template",
             "templateName": "Patient Intake",
+            "groupName": None,
             "status": "active",
             "snapshotVersion": 2,
             "fillPath": "/api/v1/fill/tep-1.pdf",
@@ -811,6 +857,132 @@ def test_public_template_api_fill_blocks_when_monthly_quota_is_exhausted(client,
     cleanup_mock.assert_called_once_with([mock_pdf_path])
 
 
+def test_public_template_api_fill_rejects_before_materialization_when_monthly_usage_exhausted(
+    client, app_main, mocker
+) -> None:
+    """Pre-check guard: when the pre-read monthly usage + pdf_count already exceeds
+    the limit, ``_enforce_runtime_plan_limits`` must raise 429 *before* we call
+    ``materialize_template_api_snapshot``. Saves the server from burning compute
+    rendering a PDF that the atomic check inside
+    ``record_template_api_endpoint_success`` would then reject.
+    """
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "get_user_profile", return_value=None)
+    mocker.patch.object(app_main, "normalize_role", return_value="base")
+    mocker.patch.object(app_main, "resolve_template_api_active_limit", return_value=1)
+    mocker.patch.object(app_main, "resolve_template_api_requests_monthly_limit", return_value=10)
+    mocker.patch.object(app_main, "resolve_template_api_max_pages", return_value=25)
+    create_event_mock = mocker.patch.object(app_main, "create_template_api_endpoint_event", return_value=None)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=_endpoint_record())
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=_endpoint_record())
+    mocker.patch.object(app_main, "verify_template_api_secret", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "resolve_template_api_request_data",
+        return_value={"full_name": "Ada Lovelace"},
+    )
+    from backend.firebaseDB.template_api_endpoint_database import TemplateApiMonthlyUsageRecord
+    mocker.patch.object(
+        app_main,
+        "get_template_api_monthly_usage",
+        return_value=TemplateApiMonthlyUsageRecord(
+            id="user-1__2026-03",
+            user_id="user-1",
+            month_key="2026-03",
+            request_count=10,  # exactly at limit
+            created_at="2026-03-01T00:00:00+00:00",
+            updated_at="2026-03-14T00:00:00+00:00",
+        ),
+    )
+    materialize_mock = mocker.patch.object(app_main, "materialize_template_api_snapshot")
+    record_success_mock = mocker.patch.object(app_main, "record_template_api_endpoint_success")
+
+    response = client.post(
+        "/api/v1/fill/tep-1.pdf",
+        json={"data": {"full_name": "Ada Lovelace"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 429
+    assert "monthly api fill request limit" in response.json()["detail"].lower()
+    # The whole point: materialization never ran.
+    materialize_mock.assert_not_called()
+    record_success_mock.assert_not_called()
+    assert create_event_mock.call_args.kwargs["event_type"] == "fill_quota_blocked"
+
+
+def test_public_template_api_group_fill_rejects_when_member_template_is_retention_locked(
+    client, app_main, mocker
+) -> None:
+    """Retention bypass regression: if any template in the group bundle is
+    locked by downgrade retention, the fill must be rejected with 403 —
+    previously the check relied on ``is_user_retention_template_locked(template_id=None)``
+    which silently returned False for group endpoints, letting downgraded users
+    keep serving locked templates through the frozen API endpoint.
+    """
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+    # One of the group's member templates is locked by retention.
+    mocker.patch.object(
+        app_main,
+        "get_user_retention_locked_template_ids",
+        return_value={"tpl-1"},
+    )
+    materialize_mock = mocker.patch.object(app_main, "materialize_group_template_api_snapshot")
+    record_success_mock = mocker.patch.object(app_main, "record_template_api_endpoint_success")
+
+    response = client.post(
+        "/api/v1/fill/tep-group-1.zip",
+        json={"data": {"patient_name": "Aria Patel"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 403
+    assert "current plan" in response.json()["detail"].lower()
+    materialize_mock.assert_not_called()
+    record_success_mock.assert_not_called()
+
+
+def test_public_template_api_group_fill_rejects_before_materialization_when_monthly_usage_would_overflow(
+    client, app_main, mocker, tmp_path
+) -> None:
+    """Group pre-check: the fixture group has 2 template snapshots, so pdf_count=2.
+    With monthly_limit=10 and current usage=9, the fill would overflow (9+2=11>10).
+    Must reject with 429 before materializing the zip.
+    """
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main, monthly_limit=10)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+    from backend.firebaseDB.template_api_endpoint_database import TemplateApiMonthlyUsageRecord
+    mocker.patch.object(
+        app_main,
+        "get_template_api_monthly_usage",
+        return_value=TemplateApiMonthlyUsageRecord(
+            id="user-1__2026-04",
+            user_id="user-1",
+            month_key="2026-04",
+            request_count=9,  # 9 + 2 = 11 > 10
+            created_at="2026-04-01T00:00:00+00:00",
+            updated_at="2026-04-14T00:00:00+00:00",
+        ),
+    )
+    materialize_mock = mocker.patch.object(app_main, "materialize_group_template_api_snapshot")
+    record_success_mock = mocker.patch.object(app_main, "record_template_api_endpoint_success")
+
+    response = client.post(
+        "/api/v1/fill/tep-group-1.zip",
+        json={"data": {"patient_name": "Aria Patel"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 429
+    materialize_mock.assert_not_called()
+    record_success_mock.assert_not_called()
+
+
 def test_public_template_api_fill_records_plan_blocks_separately_from_quota(client, app_main, mocker) -> None:
     over_limit_snapshot = {
         **_endpoint_record().snapshot,
@@ -841,3 +1013,228 @@ def test_public_template_api_fill_records_plan_blocks_separately_from_quota(clie
     assert response.status_code == 403
     assert "limited to 25 pages" in response.json()["detail"].lower()
     assert create_event_mock.call_args.kwargs["event_type"] == "fill_plan_blocked"
+
+
+# ---------------------------------------------------------------------------
+# Phase 4: group API Fill public routes
+# ---------------------------------------------------------------------------
+
+
+def _patch_group_fill_environment(mocker, app_main, *, monthly_limit: int = 250) -> None:
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "get_user_profile", return_value=None)
+    mocker.patch.object(app_main, "normalize_role", return_value="base")
+    mocker.patch.object(app_main, "resolve_template_api_active_limit", return_value=20)
+    mocker.patch.object(app_main, "resolve_template_api_requests_monthly_limit", return_value=monthly_limit)
+    mocker.patch.object(app_main, "resolve_template_api_max_pages", return_value=250)
+    mocker.patch.object(app_main, "create_template_api_endpoint_event", return_value=None)
+    mocker.patch.object(app_main, "verify_template_api_secret", return_value=True)
+    mocker.patch.object(app_main, "_current_usage_month_key", return_value="2026-04")
+
+
+def test_public_template_api_group_zip_fill_route_returns_zip(client, app_main, mocker, tmp_path) -> None:
+    """Phase 4 happy path: POST /.zip on a group endpoint validates the JSON body
+    and streams a zip of per-template PDFs."""
+
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+
+    zip_path = tmp_path / "i130-spouse-packet.zip"
+    zip_path.write_bytes(b"PK\x03\x04stub-zip-bytes")
+    materialize_mock = mocker.patch.object(
+        app_main,
+        "materialize_group_template_api_snapshot",
+        return_value=(zip_path, [zip_path], "i130-spouse-packet.zip"),
+    )
+    record_success_mock = mocker.patch.object(
+        app_main,
+        "record_template_api_endpoint_success",
+        return_value=record,
+    )
+
+    response = client.post(
+        "/api/v1/fill/tep-1.zip",
+        json={"data": {"patient_name": "Aria Patel"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/zip"
+    assert "i130-spouse-packet.zip" in response.headers["content-disposition"]
+    assert response.headers["cache-control"] == "private, no-store"
+
+    materialize_mock.assert_called_once()
+    call_kwargs = materialize_mock.call_args.kwargs
+    assert call_kwargs["data"] == {"patient_name": "Aria Patel"}
+
+    record_success_mock.assert_called_once()
+    metadata = record_success_mock.call_args.kwargs["metadata"]
+    assert metadata["scopeType"] == "group"
+    assert metadata["pdfCount"] == 2
+    assert metadata["templateCount"] == 2
+    assert metadata["totalPages"] == 3
+
+
+def test_public_template_api_group_zip_fill_rejects_template_endpoint(client, app_main, mocker) -> None:
+    """The .zip route only serves group endpoints; template endpoints get 409."""
+
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=_endpoint_record())
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=_endpoint_record())
+
+    response = client.post(
+        "/api/v1/fill/tep-1.zip",
+        json={"data": {"full_name": "Ada Lovelace"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 409
+    assert "single-template" in response.text.lower() or ".pdf" in response.text
+
+
+def test_public_template_api_pdf_fill_rejects_group_endpoint(client, app_main, mocker) -> None:
+    """The .pdf route only serves template endpoints; group endpoints get 409 with .zip hint."""
+
+    _patch_group_fill_environment(mocker, app_main)
+    record = _group_endpoint_record()
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+
+    response = client.post(
+        "/api/v1/fill/tep-1.pdf",
+        json={"data": {"patient_name": "Aria Patel"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 409
+    assert ".zip" in response.text
+
+
+def test_public_template_api_group_zip_fill_rejects_unknown_field(client, app_main, mocker) -> None:
+    """additionalProperties: false — unknown body keys are rejected (D6)."""
+
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+    materialize_mock = mocker.patch.object(app_main, "materialize_group_template_api_snapshot")
+
+    response = client.post(
+        "/api/v1/fill/tep-1.zip",
+        json={"data": {"patient_name": "Aria Patel", "rogue_field": "x"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 400
+    assert "unknown field" in response.text.lower()
+    materialize_mock.assert_not_called()
+
+
+def test_public_template_api_group_zip_fill_passes_per_pdf_count_increment(client, app_main, mocker, tmp_path) -> None:
+    """Phase 5 D7: a 7-PDF group fill calls record_template_api_endpoint_success
+    with count_increment=7 so the user is charged 7 fills against their monthly
+    quota, not 1."""
+
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+
+    zip_path = tmp_path / "i130-spouse-packet.zip"
+    zip_path.write_bytes(b"PK\x03\x04stub")
+    mocker.patch.object(
+        app_main,
+        "materialize_group_template_api_snapshot",
+        return_value=(zip_path, [zip_path], "i130-spouse-packet.zip"),
+    )
+    record_success_mock = mocker.patch.object(
+        app_main,
+        "record_template_api_endpoint_success",
+        return_value=record,
+    )
+
+    response = client.post(
+        "/api/v1/fill/tep-1.zip",
+        json={"data": {"patient_name": "Aria Patel"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 200
+    record_success_mock.assert_called_once()
+    call_kwargs = record_success_mock.call_args.kwargs
+    # The bundle from _group_endpoint_record has 2 templateSnapshots, so the
+    # group fill charges 2 fills, not 1.
+    assert call_kwargs["count_increment"] == 2
+    metadata = call_kwargs["metadata"]
+    assert metadata["pdfCount"] == 2
+    assert metadata["quotaIncrement"] == 2
+    assert metadata["scopeType"] == "group"
+
+
+def test_public_template_api_group_zip_fill_blocks_when_increment_exceeds_quota(client, app_main, mocker, tmp_path) -> None:
+    """Per-PDF accounting: a 2-PDF group fill rejects with 429 when the user
+    has fewer than 2 fills remaining for the month. The materialize call
+    happens (the precheck is best-effort, not a contract), but the success
+    bookkeeping inside the transaction raises the limit error."""
+
+    from backend.firebaseDB.template_api_endpoint_database import TemplateApiMonthlyLimitExceededError
+
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+    zip_path = tmp_path / "i130.zip"
+    zip_path.write_bytes(b"PK\x03\x04stub")
+    mocker.patch.object(
+        app_main,
+        "materialize_group_template_api_snapshot",
+        return_value=(zip_path, [zip_path], "i130.zip"),
+    )
+    mocker.patch.object(
+        app_main,
+        "record_template_api_endpoint_success",
+        side_effect=TemplateApiMonthlyLimitExceededError("monthly limit reached"),
+    )
+    create_event_mock = mocker.patch.object(app_main, "create_template_api_endpoint_event", return_value=None)
+
+    response = client.post(
+        "/api/v1/fill/tep-1.zip",
+        json={"data": {"patient_name": "Aria"}},
+        headers=_basic_auth("dpa_live_secret"),
+    )
+
+    assert response.status_code == 429
+    # The audit event for fill_quota_blocked should record group scope info so
+    # post-mortems can see "the blocked fill was a 2-PDF group, not 1 PDF".
+    quota_calls = [
+        call for call in create_event_mock.call_args_list
+        if call.kwargs.get("event_type") == "fill_quota_blocked"
+    ]
+    assert quota_calls, "expected at least one fill_quota_blocked audit event"
+    metadata = quota_calls[-1].kwargs["metadata"]
+    assert metadata.get("scopeType") == "group"
+    assert metadata.get("pdfCount") == 2
+    assert metadata.get("totalPages") == 3
+
+
+def test_public_template_api_group_schema_route_returns_canonical_json_schema(client, app_main, mocker) -> None:
+    """GET /schema on a group endpoint returns the canonical JSON Schema."""
+
+    record = _group_endpoint_record()
+    _patch_group_fill_environment(mocker, app_main)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public_metadata", return_value=record)
+    mocker.patch.object(app_main, "get_template_api_endpoint_public", return_value=record)
+
+    response = client.get("/api/v1/fill/tep-1/schema", headers=_basic_auth("dpa_live_secret"))
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["endpoint"]["scopeType"] == "group"
+    assert body["endpoint"]["fillPath"] == "/api/v1/fill/tep-1.zip"
+    schema = body["schema"]
+    assert schema["additionalProperties"] is False
+    assert "patient_name" in schema["properties"]
+    assert schema["properties"]["patient_name"]["type"] == "string"
+    assert schema["properties"]["patient_name"]["x-dullypdf-templates"] == ["tpl-1", "tpl-2"]

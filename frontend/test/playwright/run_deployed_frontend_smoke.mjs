@@ -24,7 +24,7 @@ async function main() {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await Promise.race([
       page.locator('.homepage-container').waitFor({ timeout: 30000 }),
-      page.getByRole('button', { name: /Try Now/i }).first().waitFor({ timeout: 30000 }),
+      page.getByRole('button', { name: /Detect Fields & Open the Form Workspace/i }).first().waitFor({ timeout: 30000 }),
     ]);
 
     let healthPayload = null;
@@ -41,7 +41,7 @@ async function main() {
     }
 
     logStep('verifying anonymous workspace entry path');
-    await page.getByRole('button', { name: /Try Now/i }).first().click();
+    await page.getByRole('button', { name: /Detect Fields & Open the Form Workspace/i }).first().click();
     await Promise.race([
       page.getByLabel('Email').waitFor({ timeout: 30000 }),
       page.getByText('Upload PDF for Field Detection').waitFor({ timeout: 30000 }),

@@ -149,7 +149,7 @@ const buildFakeUser = () => ({
 } as unknown as Parameters<typeof FormCatalogIndexPage>[0]['verifiedUser']);
 
 describe('FormCatalogIndexPage', () => {
-  it('renders the sign-in gate for unauthenticated users', () => {
+  it('renders catalog with sign-in button for unauthenticated users', () => {
     const onRequestSignIn = vi.fn();
     render(
       <FormCatalogIndexPage
@@ -159,9 +159,9 @@ describe('FormCatalogIndexPage', () => {
       />,
     );
 
-    expect(screen.getByRole('heading', { level: 2, name: /Sign in to browse the Form Catalog/i })).toBeTruthy();
-    const gateButton = screen.getByRole('button', { name: /Sign in to continue/i });
-    gateButton.click();
+    expect(screen.getByRole('heading', { level: 1, name: /Pre-made fillable PDF templates/i })).toBeTruthy();
+    const signInButton = screen.getByRole('button', { name: /Sign in/i });
+    signInButton.click();
     expect(onRequestSignIn).toHaveBeenCalledTimes(1);
   });
 

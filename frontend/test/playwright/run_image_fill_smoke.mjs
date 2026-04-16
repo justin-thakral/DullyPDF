@@ -82,7 +82,7 @@ async function signIn(page) {
     const uploadHeading = Array.from(document.querySelectorAll('*'))
       .find((el) => el.textContent?.trim() === 'Upload PDF for Field Detection');
     const tryNow = Array.from(document.querySelectorAll('button'))
-      .find((btn) => btn.textContent?.trim() === 'Try Now');
+      .find((btn) => btn.textContent?.trim() === 'Detect Fields & Open the Form Workspace');
     const signInBtn = Array.from(document.querySelectorAll('button'))
       .find((btn) => btn.textContent?.trim() === 'Sign in');
     return isVisible(emailInput) || isVisible(uploadHeading) || isVisible(tryNow) || isVisible(signInBtn);
@@ -93,7 +93,7 @@ async function signIn(page) {
 
   const isAlreadyAtLogin = await emailField.isVisible().catch(() => false);
   if (!isAlreadyAtLogin) {
-    const tryNow = page.getByRole('button', { name: 'Try Now' }).first();
+    const tryNow = page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' }).first();
     const headerSignIn = page.locator('.signin-button').first();
     if (await tryNow.isVisible().catch(() => false)) {
       await tryNow.click();
@@ -114,7 +114,7 @@ async function signIn(page) {
   await emailField.fill(email);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  await page.getByRole('button', { name: 'Try Now' }).waitFor({ timeout: 30000 });
+  await page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' }).waitFor({ timeout: 30000 });
 }
 
 async function navigateToUploadView(page) {
@@ -122,7 +122,7 @@ async function navigateToUploadView(page) {
   if (await uploadHeading.isVisible().catch(() => false)) return;
 
   const homeButton = page.getByRole('button', { name: 'Home' });
-  const tryNow = page.getByRole('button', { name: 'Try Now' });
+  const tryNow = page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' });
   if (await homeButton.isVisible().catch(() => false)) {
     await homeButton.click();
     await sleep(500);

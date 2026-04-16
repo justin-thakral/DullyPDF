@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from backend.firebaseDB.group_database import TemplateGroupRecord
 from backend.firebaseDB.template_api_endpoint_database import (
     TemplateApiActiveEndpointLimitError,
     TemplateApiEndpointRecord,
@@ -48,6 +49,9 @@ def _endpoint_record(
     snapshot: dict | None = None,
     current_usage_month: str | None = "2026-03",
     current_month_usage_count: int = 0,
+    scope_type: str = "template",
+    group_id: str | None = None,
+    group_name: str | None = None,
 ) -> TemplateApiEndpointRecord:
     return TemplateApiEndpointRecord(
         id=endpoint_id,
@@ -80,6 +84,43 @@ def _endpoint_record(
         last_failure_at=None,
         last_failure_reason=None,
         audit_event_count=0,
+        scope_type=scope_type,
+        group_id=group_id,
+        group_name=group_name,
+    )
+
+
+def _group_record() -> TemplateGroupRecord:
+    return TemplateGroupRecord(
+        id="grp-1",
+        user_id="user_base",
+        name="I-130 Spouse Packet",
+        normalized_name="i-130 spouse packet",
+        template_ids=["tpl-1", "tpl-2"],
+        created_at="2024-01-01T00:00:00+00:00",
+        updated_at="2024-01-01T00:00:00+00:00",
+    )
+
+
+def _group_endpoint_record(*, snapshot: dict | None = None) -> TemplateApiEndpointRecord:
+    bundle = snapshot or {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {"groupId": "grp-1", "fields": []},
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "I-130", "snapshot": {"sourcePdfPath": "gs://forms/tpl-1.pdf", "pageCount": 1}},
+            {"templateId": "tpl-2", "templateName": "I-130A", "snapshot": {"sourcePdfPath": "gs://forms/tpl-2.pdf", "pageCount": 2}},
+        ],
+        "snapshotKind": "group",
+        "templateApiSnapshotVersion": 1,
+    }
+    return _endpoint_record(
+        endpoint_id="tep-grp-1",
+        template_id="",
+        snapshot=bundle,
+        scope_type="group",
+        group_id="grp-1",
+        group_name="I-130 Spouse Packet",
     )
 
 
@@ -101,8 +142,11 @@ def test_template_api_endpoints_list_publish_rotate_revoke_and_schema(
     assert response.json()["endpoints"] == [
         {
             "id": "tep-1",
+            "scopeType": "template",
             "templateId": "tpl-1",
             "templateName": "Patient Intake",
+            "groupId": None,
+            "groupName": None,
             "status": "active",
             "snapshotVersion": 1,
             "keyPrefix": "dpa_live_abc123",
@@ -153,6 +197,7 @@ def test_template_api_endpoints_list_publish_rotate_revoke_and_schema(
     assert create_response.json()["limits"]["maxPagesPerRequest"] == 25
     publish_mock.assert_called_once_with(
         user_id="user_base",
+        scope_type="template",
         template_id="tpl-1",
         template_name="Patient Intake",
         active_limit=1,
@@ -454,6 +499,7 @@ def test_template_api_publish_reuses_existing_active_endpoint_without_rotating_s
     assert response.json()["secret"] is None
     publish_mock.assert_called_once_with(
         user_id="user_base",
+        scope_type="template",
         template_id="tpl-1",
         template_name="Patient Intake",
         active_limit=1,
@@ -602,3 +648,381 @@ def test_template_api_publish_enforces_page_limit(client, app_main, base_user, m
 
     assert response.status_code == 403
     assert "limited to 25 pages" in response.json()["detail"].lower()
+
+
+# ---------------------------------------------------------------------------
+# Phase 4: group API Fill endpoint publish
+# ---------------------------------------------------------------------------
+
+
+def test_template_api_publish_group_endpoint_persists_canonical_bundle(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    """Phase 4 happy path: publishing a group API Fill endpoint builds the canonical
+    schema, freezes the publish snapshot bundle, persists it, and serializes the
+    new endpoint with scopeType="group" and a .zip fillPath."""
+
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+    mocker.patch.object(app_main, "count_active_template_api_endpoints", return_value=0)
+    mocker.patch.object(app_main, "get_group", return_value=_group_record())
+    fake_bundle = {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {"groupId": "grp-1", "fields": []},
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "I-130", "snapshot": {"sourcePdfPath": "gs://forms/tpl-1.pdf", "pageCount": 1}},
+            {"templateId": "tpl-2", "templateName": "I-130A", "snapshot": {"sourcePdfPath": "gs://forms/tpl-2.pdf", "pageCount": 2}},
+        ],
+        "snapshotKind": "group",
+        "templateApiSnapshotVersion": 1,
+    }
+    build_snapshot_mock = mocker.patch.object(
+        app_main,
+        "_build_group_snapshot_or_400",
+        return_value=fake_bundle,
+    )
+    build_schema_mock = mocker.patch.object(
+        app_main,
+        "build_group_template_api_schema",
+        return_value={"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "additionalProperties": False, "properties": {}},
+    )
+    mocker.patch.object(app_main, "generate_template_api_secret", return_value="dpa_live_group_secret")
+    mocker.patch.object(app_main, "build_template_api_key_prefix", return_value="dpa_live_group_secret")
+    mocker.patch.object(app_main, "hash_template_api_secret", return_value="hashed-group-secret")
+    publish_mock = mocker.patch.object(
+        app_main,
+        "publish_or_republish_template_api_endpoint",
+        return_value=(_group_endpoint_record(snapshot=fake_bundle), True),
+    )
+
+    response = client.post(
+        "/api/template-api-endpoints",
+        json={"scopeType": "group", "groupId": "grp-1", "exportMode": "flat"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["created"] is True
+    assert body["secret"] == "dpa_live_group_secret"
+    assert body["endpoint"]["scopeType"] == "group"
+    assert body["endpoint"]["groupId"] == "grp-1"
+    assert body["endpoint"]["groupName"] == "I-130 Spouse Packet"
+    assert body["endpoint"]["fillPath"] == "/api/v1/fill/tep-grp-1.zip"
+
+    build_snapshot_mock.assert_called_once()
+    build_schema_mock.assert_called_once_with(fake_bundle)
+    publish_mock.assert_called_once_with(
+        user_id="user_base",
+        scope_type="group",
+        group_id="grp-1",
+        group_name="I-130 Spouse Packet",
+        template_id=None,
+        template_name=None,
+        active_limit=1,
+        key_prefix="dpa_live_group_secret",
+        secret_hash="hashed-group-secret",
+        snapshot=fake_bundle,
+    )
+
+
+def test_template_api_publish_group_endpoint_returns_404_for_missing_group(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+    mocker.patch.object(app_main, "count_active_template_api_endpoints", return_value=0)
+    mocker.patch.object(app_main, "get_group", return_value=None)
+
+    response = client.post(
+        "/api/template-api-endpoints",
+        json={"scopeType": "group", "groupId": "missing-group", "exportMode": "flat"},
+        headers=auth_headers,
+    )
+    assert response.status_code == 404
+    assert "workflow group not found" in response.text.lower()
+
+
+def test_template_api_publish_group_endpoint_enforces_total_page_limit(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+    mocker.patch.object(app_main, "count_active_template_api_endpoints", return_value=0)
+    mocker.patch.object(app_main, "get_group", return_value=_group_record())
+    huge_bundle = {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {"groupId": "grp-1", "fields": []},
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "Big A", "snapshot": {"sourcePdfPath": "gs://forms/tpl-1.pdf", "pageCount": 20}},
+            {"templateId": "tpl-2", "templateName": "Big B", "snapshot": {"sourcePdfPath": "gs://forms/tpl-2.pdf", "pageCount": 20}},
+        ],
+        "snapshotKind": "group",
+        "templateApiSnapshotVersion": 1,
+    }
+    mocker.patch.object(app_main, "_build_group_snapshot_or_400", return_value=huge_bundle)
+
+    response = client.post(
+        "/api/template-api-endpoints",
+        json={"scopeType": "group", "groupId": "grp-1", "exportMode": "flat"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 403
+    assert "total pages" in response.text.lower()
+
+
+def test_template_api_publish_rejects_template_id_with_group_scope(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+
+    response = client.post(
+        "/api/template-api-endpoints",
+        json={"scopeType": "group", "groupId": "grp-1", "templateId": "tpl-1", "exportMode": "flat"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    if isinstance(detail, list):
+        messages = " ".join(str(entry.get("msg", "")) for entry in detail)
+    else:
+        messages = str(detail)
+    assert "templateId must not be set" in messages or "templateid must not be set" in messages.lower()
+
+
+def test_template_api_publish_rejects_group_id_with_template_scope(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+
+    response = client.post(
+        "/api/template-api-endpoints",
+        json={"scopeType": "template", "templateId": "tpl-1", "groupId": "grp-1"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    if isinstance(detail, list):
+        messages = " ".join(str(entry.get("msg", "")) for entry in detail)
+    else:
+        messages = str(detail)
+    assert "groupid must not be set" in messages.lower()
+
+
+def test_template_api_serialize_group_endpoint_uses_zip_fill_path(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    """Listing API endpoints surfaces the .zip fillPath for group scope endpoints."""
+
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+    mocker.patch.object(app_main, "list_template_api_endpoints", return_value=[_group_endpoint_record()])
+
+    response = client.get("/api/template-api-endpoints", headers=auth_headers)
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["endpoints"][0]["scopeType"] == "group"
+    assert payload["endpoints"][0]["fillPath"] == "/api/v1/fill/tep-grp-1.zip"
+    assert payload["endpoints"][0]["groupId"] == "grp-1"
+    assert payload["endpoints"][0]["templateId"] is None
+
+
+# ---------------------------------------------------------------------------
+# Phase 5: precheck endpoint
+# ---------------------------------------------------------------------------
+
+
+def _patch_precheck_environment(mocker, app_main, *, current: int = 10, monthly_limit: int = 250, max_pages: int = 50) -> None:
+    mocker.patch.object(app_main, "get_user_profile", return_value=None)
+    mocker.patch.object(app_main, "normalize_role", return_value="base")
+    mocker.patch.object(app_main, "resolve_template_api_active_limit", return_value=1)
+    mocker.patch.object(app_main, "resolve_template_api_requests_monthly_limit", return_value=monthly_limit)
+    mocker.patch.object(app_main, "resolve_template_api_max_pages", return_value=max_pages)
+
+    class _Usage:
+        def __init__(self, count: int) -> None:
+            self.request_count = count
+            self.month_key = "2026-04"
+
+    mocker.patch.object(
+        app_main,
+        "get_template_api_monthly_usage",
+        return_value=_Usage(current),
+    )
+
+
+def test_template_api_precheck_allows_fill_within_budget(client, app_main, base_user, mocker, auth_headers) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_precheck_environment(mocker, app_main, current=10, monthly_limit=250, max_pages=50)
+
+    response = client.get(
+        "/api/template-api-endpoints/precheck?pdfCount=7&pageCount=32",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["allowed"] is True
+    assert body["fillsRemaining"] == 240
+    assert body["pdfCount"] == 7
+    assert body["monthlyLimit"] == 250
+    assert body["maxPagesPerRequest"] == 50
+    assert body["pageCountPerRequest"] == 32
+    assert body["reason"] is None
+    assert body["currentMonthUsage"] == 10
+    assert body["monthKey"] == "2026-04"
+
+
+def test_template_api_precheck_blocks_when_fills_exhausted(client, app_main, base_user, mocker, auth_headers) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_precheck_environment(mocker, app_main, current=247, monthly_limit=250, max_pages=50)
+
+    response = client.get(
+        "/api/template-api-endpoints/precheck?pdfCount=7&pageCount=32",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["allowed"] is False
+    assert body["reason"] == "fills_exhausted"
+    assert body["fillsRemaining"] == 3
+
+
+def test_template_api_precheck_blocks_when_pages_exceed_per_request_cap(client, app_main, base_user, mocker, auth_headers) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    _patch_precheck_environment(mocker, app_main, current=10, monthly_limit=250, max_pages=50)
+
+    response = client.get(
+        "/api/template-api-endpoints/precheck?pdfCount=7&pageCount=80",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["allowed"] is False
+    assert body["reason"] == "pages_per_request"
+    assert body["pageCountPerRequest"] == 80
+
+
+def test_template_api_precheck_defaults_to_one_pdf(client, app_main, base_user, mocker, auth_headers) -> None:
+    """Calling precheck with no params returns the single-template cost (1 fill, 0 pages)."""
+
+    _patch_auth(mocker, app_main, base_user)
+    _patch_precheck_environment(mocker, app_main, current=0, monthly_limit=250, max_pages=50)
+
+    response = client.get(
+        "/api/template-api-endpoints/precheck",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["allowed"] is True
+    assert body["pdfCount"] == 1
+    assert body["pageCountPerRequest"] == 0
+
+
+def test_template_api_precheck_requires_authentication(client, app_main, mocker) -> None:
+    response = client.get("/api/template-api-endpoints/precheck?pdfCount=7")
+    assert response.status_code == 401
+
+
+# ---------------------------------------------------------------------------
+# Phase 6: backwards compatibility / migration safety
+# ---------------------------------------------------------------------------
+
+
+def test_pre_migration_template_endpoint_loads_with_template_scope_default() -> None:
+    """A pre-migration endpoint document with no ``scope_type`` / ``group_id`` /
+    ``group_name`` fields must deserialize cleanly with ``scope_type="template"``
+    and the new fields defaulted to ``None``."""
+
+    from backend.firebaseDB.template_api_endpoint_database import _serialize_template_api_endpoint_data
+
+    pre_migration_data = {
+        "user_id": "user_legacy",
+        "template_id": "tpl-old",
+        "template_name": "Legacy Template",
+        "status": "active",
+        "snapshot_version": 3,
+        "key_prefix": "dpa_live_old",
+        "secret_hash": "hash",
+        "snapshot": {"version": 1, "sourcePdfPath": "gs://forms/old.pdf", "fields": []},
+        "usage_count": 42,
+        # No scope_type, no group_id, no group_name — pre-Phase-4 record.
+    }
+    record = _serialize_template_api_endpoint_data("tep-legacy", pre_migration_data)
+    assert record.scope_type == "template"
+    assert record.group_id is None
+    assert record.group_name is None
+    assert record.template_id == "tpl-old"
+    assert record.usage_count == 42
+
+
+def test_pre_migration_template_endpoint_serializes_to_template_pdf_fill_path(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    """The list endpoint payload for a pre-migration record reports the .pdf
+    fillPath (not .zip) since the defensive default is ``scope_type="template"``."""
+
+    from backend.firebaseDB.template_api_endpoint_database import _serialize_template_api_endpoint_data
+
+    _patch_auth(mocker, app_main, base_user)
+    _patch_limits(mocker, app_main)
+    pre_migration = _serialize_template_api_endpoint_data(
+        "tep-legacy",
+        {
+            "user_id": base_user.app_user_id,
+            "template_id": "tpl-old",
+            "template_name": "Legacy Template",
+            "status": "active",
+            "snapshot_version": 3,
+            "key_prefix": "dpa_live_old",
+            "secret_hash": "hash",
+            "snapshot": {"version": 1, "sourcePdfPath": "gs://forms/old.pdf", "fields": []},
+            "usage_count": 42,
+        },
+    )
+    mocker.patch.object(app_main, "list_template_api_endpoints", return_value=[pre_migration])
+
+    response = client.get("/api/template-api-endpoints", headers=auth_headers)
+    assert response.status_code == 200
+    payload = response.json()
+    endpoint = payload["endpoints"][0]
+    assert endpoint["scopeType"] == "template"
+    assert endpoint["fillPath"] == "/api/v1/fill/tep-legacy.pdf"
+    assert endpoint["groupId"] is None
+    assert endpoint["groupName"] is None
+    assert endpoint["templateId"] == "tpl-old"

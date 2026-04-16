@@ -126,3 +126,17 @@ serviceAccounts/
 /.vscode/
 /.idea/
 /.tmp/
+
+# Claude Code artifacts
+.claude/scheduled_tasks.lock
+
+# Form catalog generated assets (thumbnails, batch scripts)
+/form_catalog/
+
+# Local screenshots and walkthrough captures
+/homepage-*.png
+/walkthrough-*.png
+/group-publish-state.yml
+
+# Video assets (local recordings)
+/youtube/

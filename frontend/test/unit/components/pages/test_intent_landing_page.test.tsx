@@ -67,6 +67,30 @@ describe('IntentLandingPage', () => {
     );
   });
 
+  it('renders the fill-by-file demo on the Fill PDF from CSV route', () => {
+    render(<IntentLandingPage pageKey="fill-pdf-from-csv" />);
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Fill PDF from CSV, Excel, JSON, SQL, or TXT' }),
+    ).toBeTruthy();
+    expect(screen.getByTitle('Fill PDF from CSV, Excel, JSON, SQL, or TXT')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
+      'https://youtu.be/CT3IEzh4p10',
+    );
+  });
+
+  it('renders the web form + sign demo on the Fill PDF By Link route', () => {
+    render(<IntentLandingPage pageKey="fill-pdf-by-link" />);
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Fill a PDF web form and sign it in the browser' }),
+    ).toBeTruthy();
+    expect(screen.getByTitle('Fill a PDF web form and sign it in the browser')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
+      'https://youtu.be/mXtmgrCOitM',
+    );
+  });
+
   it('uses targeted supporting docs from the shared SEO dataset', () => {
     render(<IntentLandingPage pageKey="pdf-fill-api" />);
 

@@ -15,6 +15,7 @@ describe('intentPages config', () => {
 
   it('resolves canonical intent routes', () => {
     expect(resolveIntentPath('/pdf-to-fillable-form')).toBe('pdf-to-fillable-form');
+    expect(resolveIntentPath('/pdf-form-catalog')).toBe('pdf-form-catalog');
     expect(resolveIntentPath('/fillable-form-field-name/')).toBe('fillable-form-field-name');
     expect(resolveIntentPath('/pdf-signature-workflow')).toBe('pdf-signature-workflow');
     expect(resolveIntentPath('/esign-ueta-pdf-workflow')).toBe('esign-ueta-pdf-workflow');

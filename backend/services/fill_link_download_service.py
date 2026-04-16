@@ -1,29 +1,42 @@
-"""Template-only respondent PDF download helpers for Fill By Link.
+"""Respondent PDF download helpers for Fill By Link.
 
 The public download path materializes a PDF from the publish-time snapshot that
-was frozen when the owner published the template link. This keeps output stable
-even if the saved form changes later and avoids trusting client-supplied field
-payloads. Runtime is linear in the number of snapshot fields plus checkbox
-options because each field and checkbox group is walked a bounded number of
-times per materialization request.
+was frozen when the owner published the link. This keeps output stable even if
+the underlying saved forms change later and avoids trusting client-supplied
+field payloads. Runtime is linear in the number of snapshot fields plus
+checkbox options because each field and checkbox group is walked a bounded
+number of times per materialization request.
+
+For group fill links (Phase 3) the publish snapshot is a *bundle* containing
+one per-template snapshot for every saved form in the group plus the canonical
+schema produced by ``backend.services.group_schema_service``. At download time
+the bundle materializes one PDF per template and zips them together so the
+respondent (or owner) gets the entire packet from a single submission.
 """
 
 from __future__ import annotations
 
+import io
 import json
 import os
 import tempfile
+import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from backend.fieldDetecting.rename_pipeline.combinedSrc.form_filler import inject_fields
 from backend.firebaseDB.storage_service import download_pdf_bytes, is_gcs_path
+from backend.logging_config import get_logger
 from backend.services.mapping_service import normalize_data_key
 from backend.services.pdf_export_service import flatten_pdf_form_widgets
-from backend.services.pdf_service import coerce_field_payloads, safe_pdf_download_filename
+from backend.services.pdf_service import coerce_field_payloads, safe_pdf_download_filename, sanitize_basename_segment
 
+
+logger = get_logger(__name__)
 
 RESPONDENT_PDF_SNAPSHOT_VERSION = 1
+GROUP_FILL_LINK_PUBLISH_SNAPSHOT_FORMAT_VERSION = 1
 _BOOLEAN_TRUE = {"1", "true", "yes", "y", "on", "checked", "x"}
 _BOOLEAN_FALSE = {"0", "false", "no", "n", "off", "unchecked"}
 
@@ -58,11 +71,49 @@ def _resolve_saved_form_fill_rules(template_metadata: Optional[Dict[str, Any]]) 
     }
 
 
+def _resolve_template_page_count(template, override: Optional[int] = None) -> int:
+    """Return the page count for a saved-form template record.
+
+    Precedence:
+      1. Explicit ``override`` from the caller. This wins because the caller
+         may have just loaded the full editor snapshot (authoritative), while
+         the manifest on the template record can lag behind.
+      2. ``template.metadata['editorSnapshot']['pageCount']`` — the small
+         manifest stored directly on the template record. No storage fetch
+         needed.
+      3. 0.
+
+    Phase 4/5 use this so group API Fill bundles carry a real per-template page
+    count; without it the bundle's ``total_pages`` computation is always 0,
+    and the per-request page limit check on group endpoints never fires.
+    """
+
+    try:
+        if override is not None:
+            coerced = int(override)
+            if coerced >= 0:
+                return coerced
+    except (TypeError, ValueError):
+        pass
+    metadata = getattr(template, "metadata", None) if template is not None else None
+    if isinstance(metadata, dict):
+        editor_manifest = metadata.get("editorSnapshot")
+        if isinstance(editor_manifest, dict):
+            raw_page_count = editor_manifest.get("pageCount")
+            try:
+                if raw_page_count is not None:
+                    return max(0, int(raw_page_count))
+            except (TypeError, ValueError):
+                pass
+    return 0
+
+
 def build_template_fill_link_download_snapshot(
     *,
     template,
     fields: List[Dict[str, Any]],
     export_mode: str = "flat",
+    page_count: Optional[int] = None,
 ) -> Dict[str, Any]:
     if not template or not getattr(template, "pdf_bucket_path", None):
         raise ValueError("Saved form PDF is required for respondent download.")
@@ -73,6 +124,7 @@ def build_template_fill_link_download_snapshot(
         raise ValueError("No usable template fields were provided for respondent download.")
     fill_rules = _resolve_saved_form_fill_rules(template.metadata if hasattr(template, "metadata") else None)
     base_name = template.name or "fill-link-response"
+    resolved_page_count = _resolve_template_page_count(template, override=page_count)
     return {
         "version": RESPONDENT_PDF_SNAPSHOT_VERSION,
         "scopeType": "template",
@@ -81,6 +133,7 @@ def build_template_fill_link_download_snapshot(
         "sourcePdfPath": template.pdf_bucket_path,
         "filename": safe_pdf_download_filename(f"{base_name}-response", "fill-link-response"),
         "downloadMode": _normalize_download_mode(export_mode),
+        "pageCount": resolved_page_count,
         "fields": normalized_fields,
         "checkboxRules": fill_rules["checkboxRules"],
         "radioGroups": fill_rules["radioGroups"],
@@ -88,14 +141,32 @@ def build_template_fill_link_download_snapshot(
     }
 
 
+def _fill_link_bundle(record) -> Optional[Dict[str, Any]]:
+    """Return the persisted publish bundle for either template or group scope.
+
+    Templates store the per-template materialization snapshot in
+    ``respondent_pdf_snapshot``; groups store the canonical-schema bundle in
+    ``canonical_schema_snapshot``. This helper normalizes both paths so
+    accessors don't have to branch on scope.
+    """
+    scope_type = str(getattr(record, "scope_type", None) or "template").strip() or "template"
+    if scope_type == "group":
+        bundle = getattr(record, "canonical_schema_snapshot", None)
+    else:
+        bundle = getattr(record, "respondent_pdf_snapshot", None)
+    return bundle if isinstance(bundle, dict) else None
+
+
 def respondent_pdf_download_enabled(record) -> bool:
-    return bool(getattr(record, "respondent_pdf_download_enabled", False)) and isinstance(
-        getattr(record, "respondent_pdf_snapshot", None),
-        dict,
+    return bool(getattr(record, "respondent_pdf_download_enabled", False)) and (
+        _fill_link_bundle(record) is not None
     )
 
 
 def respondent_pdf_download_mode(record) -> str:
+    scope_type = str(getattr(record, "scope_type", None) or "template").strip() or "template"
+    if scope_type == "group":
+        return "flat"
     snapshot = getattr(record, "respondent_pdf_snapshot", None)
     if not isinstance(snapshot, dict):
         return "flat"
@@ -114,32 +185,60 @@ def build_fill_link_download_payload(
     snapshot: Optional[Dict[str, Any]] = None,
     enabled: Optional[bool] = None,
 ) -> Optional[Dict[str, Any]]:
-    resolved_snapshot = (
-        dict(snapshot)
-        if isinstance(snapshot, dict)
-        else record.respondent_pdf_snapshot if isinstance(record.respondent_pdf_snapshot, dict) else None
-    )
+    scope_type = str(getattr(record, "scope_type", None) or "template").strip() or "template"
+    is_group = scope_type == "group"
+
+    if is_group:
+        # Group links don't have a response-level respondent_pdf_snapshot; the
+        # download endpoint materializes a zip on demand from the publish-time
+        # canonical_schema_snapshot stored on the record. We only need to know
+        # the bundle exists and the flag is set.
+        bundle = getattr(record, "canonical_schema_snapshot", None)
+        has_bundle = isinstance(bundle, dict)
+        resolved_snapshot: Optional[Dict[str, Any]] = bundle if has_bundle else None
+    else:
+        resolved_snapshot = (
+            dict(snapshot)
+            if isinstance(snapshot, dict)
+            else record.respondent_pdf_snapshot if isinstance(record.respondent_pdf_snapshot, dict) else None
+        )
+        has_bundle = resolved_snapshot is not None
+
     download_enabled = (
         bool(enabled)
         if enabled is not None
-        else bool(resolved_snapshot) and respondent_pdf_download_enabled(record)
+        else has_bundle and respondent_pdf_download_enabled(record)
     )
-    if not download_enabled or not resolved_snapshot:
+    if not download_enabled or not has_bundle:
         return None
-    filename = safe_pdf_download_filename(
-        str(resolved_snapshot.get("filename") or record.template_name or record.title or "fill-link-response"),
-        "fill-link-response",
-    )
+
     normalized_token = str(token or "").strip()
     normalized_response_id = str(response_id or "").strip()
     if not normalized_token or not normalized_response_id:
         return None
+
+    if is_group:
+        base_name = str(
+            getattr(record, "group_name", None)
+            or getattr(record, "title", None)
+            or "fill-link-response"
+        )
+        filename = f"{sanitize_basename_segment(base_name, 'fill-link-response')}.zip"
+        mode = "flat"
+    else:
+        assert resolved_snapshot is not None
+        filename = safe_pdf_download_filename(
+            str(resolved_snapshot.get("filename") or record.template_name or record.title or "fill-link-response"),
+            "fill-link-response",
+        )
+        mode = _normalize_download_mode(resolved_snapshot.get("downloadMode"))
+
     return {
         "enabled": True,
         "responseId": normalized_response_id,
         "downloadPath": f"/api/fill-links/public/{normalized_token}/responses/{normalized_response_id}/download",
         "filename": filename,
-        "mode": _normalize_download_mode(resolved_snapshot.get("downloadMode")),
+        "mode": mode,
     }
 
 
@@ -570,3 +669,204 @@ def materialize_fill_link_response_download(
         "fill-link-response",
     )
     return Path(output_name), cleanup_targets, filename
+
+
+# ---------------------------------------------------------------------------
+# Group Fill By Link publish + materialization (Phase 3)
+# ---------------------------------------------------------------------------
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def build_group_fill_link_publish_snapshot(
+    *,
+    canonical_schema: Mapping[str, Any],
+    template_records: Iterable[Any],
+    template_sources: Iterable[Mapping[str, Any]],
+) -> Dict[str, Any]:
+    """Bundle a Phase 1 canonical schema with per-template materialization snapshots.
+
+    The publish handler calls this once after building the canonical schema so
+    the resulting dict can be embedded on the fill_link Firestore record. At
+    download time, ``materialize_group_fill_link_response_packet`` walks the
+    embedded ``templateSnapshots`` list and reuses the existing
+    ``materialize_fill_link_response_download`` per template.
+
+    Args:
+        canonical_schema: A Phase 1 ``GroupCanonicalSchema`` (dict-shaped).
+        template_records: TemplateRecord-like objects with ``id``,
+            ``pdf_bucket_path``, ``name``, and ``metadata`` attributes.
+        template_sources: The raw source dicts from the publish payload —
+            same shape as ``_normalize_group_template_sources`` produces:
+            ``{"templateId", "templateName", "fields", "checkboxRules"}``.
+            Each source's ``fields`` are the post-rename field metadata as
+            displayed in the workspace.
+
+    Raises:
+        ValueError: if any source's template is missing from ``template_records``
+            or the per-template snapshot build fails (e.g. invalid bucket path).
+    """
+
+    template_record_lookup = {
+        getattr(record, "id", None): record for record in template_records
+    }
+    per_template_snapshots: List[Dict[str, Any]] = []
+    for source in template_sources:
+        if not isinstance(source, Mapping):
+            continue
+        template_id = str(source.get("templateId") or "").strip()
+        if not template_id:
+            continue
+        template_record = template_record_lookup.get(template_id)
+        if template_record is None:
+            raise ValueError(
+                f"Template {template_id!r} is missing from the publish payload."
+            )
+        raw_fields = source.get("fields") if isinstance(source.get("fields"), list) else []
+        # The caller may already know the page count (e.g. because it just
+        # loaded the editor snapshot). Pass it through so the per-template
+        # snapshot carries a real value even when the template record's
+        # editorSnapshot manifest is stale or missing pageCount.
+        source_page_count: Optional[int]
+        try:
+            source_page_count = int(source.get("pageCount")) if source.get("pageCount") is not None else None
+        except (TypeError, ValueError):
+            source_page_count = None
+        try:
+            template_snapshot = build_template_fill_link_download_snapshot(
+                template=template_record,
+                fields=raw_fields,
+                export_mode="flat",
+                page_count=source_page_count,
+            )
+        except ValueError as exc:
+            raise ValueError(
+                f"Failed to build per-template snapshot for {template_id!r}: {exc}"
+            ) from exc
+        per_template_snapshots.append(
+            {
+                "templateId": template_id,
+                "templateName": template_snapshot.get("templateName") or template_id,
+                "snapshot": template_snapshot,
+            }
+        )
+
+    return {
+        "snapshotFormatVersion": GROUP_FILL_LINK_PUBLISH_SNAPSHOT_FORMAT_VERSION,
+        "frozenAt": _now_iso(),
+        "schema": dict(canonical_schema),
+        "templateSnapshots": per_template_snapshots,
+    }
+
+
+def group_fill_link_publish_snapshot_template_count(
+    canonical_schema_snapshot: Optional[Mapping[str, Any]],
+) -> int:
+    if not isinstance(canonical_schema_snapshot, Mapping):
+        return 0
+    template_snapshots = canonical_schema_snapshot.get("templateSnapshots")
+    if not isinstance(template_snapshots, list):
+        return 0
+    return sum(1 for entry in template_snapshots if isinstance(entry, dict))
+
+
+def materialize_group_fill_link_response_packet(
+    *,
+    canonical_schema_snapshot: Mapping[str, Any],
+    answers: Mapping[str, Any],
+    base_filename: str,
+) -> tuple[Path, List[Path], str]:
+    """Produce a zip of per-template PDFs from a single group fill link response.
+
+    The function:
+      1. Walks the bundle's ``templateSnapshots`` list.
+      2. Calls ``materialize_fill_link_response_download`` for each per-template
+         snapshot, passing the same ``answers`` dict — the existing per-template
+         apply path already handles canonical-key projection because the
+         workspace rename pipeline ensures field names match the merged
+         canonical question keys.
+      3. Collects the resulting PDF byte streams.
+      4. Zips them into a single archive named ``{base_filename}.zip``.
+
+    Returns ``(zip_path, cleanup_paths, zip_filename)`` mirroring the per-template
+    helper's contract so the route can plug it into ``BackgroundTasks`` without
+    a parallel cleanup story.
+    """
+
+    if not isinstance(canonical_schema_snapshot, Mapping):
+        raise ValueError("Group fill link is missing its canonical schema snapshot.")
+    template_snapshots = canonical_schema_snapshot.get("templateSnapshots")
+    if not isinstance(template_snapshots, list) or not template_snapshots:
+        raise ValueError("Group fill link snapshot has no template entries to materialize.")
+
+    cleanup_paths: List[Path] = []
+    pdf_payloads: List[tuple[str, bytes]] = []
+    used_archive_names: set[str] = set()
+
+    try:
+        for entry in template_snapshots:
+            if not isinstance(entry, dict):
+                continue
+            template_snapshot = entry.get("snapshot")
+            if not isinstance(template_snapshot, dict):
+                continue
+            template_id = str(entry.get("templateId") or "").strip() or "template"
+            template_name = (
+                str(entry.get("templateName") or template_snapshot.get("templateName") or template_id).strip()
+                or template_id
+            )
+            try:
+                pdf_path, per_template_cleanup, _ = materialize_fill_link_response_download(
+                    template_snapshot,
+                    answers=dict(answers),
+                )
+            except Exception as exc:
+                logger.warning(
+                    "Group fill link materialization failed for template=%s: %s",
+                    template_id,
+                    exc,
+                )
+                raise
+            cleanup_paths.extend(per_template_cleanup)
+            pdf_bytes = pdf_path.read_bytes()
+            archive_name = _resolve_unique_archive_name(template_name, used_archive_names)
+            used_archive_names.add(archive_name)
+            pdf_payloads.append((archive_name, pdf_bytes))
+
+        if not pdf_payloads:
+            raise ValueError("Group fill link snapshot produced no PDFs.")
+
+        zip_fd, zip_name = tempfile.mkstemp(suffix=".zip")
+        os.close(zip_fd)
+        zip_path = Path(zip_name)
+        cleanup_paths.append(zip_path)
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            for archive_name, pdf_bytes in pdf_payloads:
+                archive.writestr(archive_name, pdf_bytes)
+        zip_path.write_bytes(buffer.getvalue())
+    except Exception:
+        for path in cleanup_paths:
+            try:
+                path.unlink(missing_ok=True)
+            except Exception:
+                pass
+        raise
+
+    zip_filename = safe_pdf_download_filename(base_filename, "fill-link-response").rsplit(".", 1)[0] + ".zip"
+    return zip_path, cleanup_paths, zip_filename
+
+
+def _resolve_unique_archive_name(template_name: str, used: set[str]) -> str:
+    base = safe_pdf_download_filename(template_name, "fill-link-response")
+    if not base.lower().endswith(".pdf"):
+        base = f"{base}.pdf"
+    candidate = base
+    counter = 2
+    stem = base[:-4] if base.lower().endswith(".pdf") else base
+    while candidate in used:
+        candidate = f"{stem}-{counter}.pdf"
+        counter += 1
+    return candidate

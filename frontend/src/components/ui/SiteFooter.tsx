@@ -2,12 +2,14 @@ import './SiteFooter.css';
 import { OFFICIAL_PUBLIC_PROFILE_LINKS } from '../../config/publicProfiles';
 
 const PRODUCT_LINKS = [
+  { label: 'Form Catalog', href: '/forms' },
   { label: 'Getting Started', href: '/usage-docs/getting-started' },
   { label: 'Usage Docs', href: '/usage-docs' },
 ];
 
 const RESOURCE_LINKS = [
   { label: 'Blog', href: '/blog' },
+  { label: 'Form Catalog', href: '/forms' },
   { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
 ];
 

@@ -9,6 +9,9 @@ describe('IntentHubPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Workflow Library for PDF Automation' })).toBeTruthy();
     expect(screen.getByRole('heading', { level: 2, name: 'How to use this library' })).toBeTruthy();
     expect(screen.getByRole('link', { name: /PDF to Fillable Form/i }).getAttribute('href')).toBe('/pdf-to-fillable-form');
+    expect(
+      screen.getAllByRole('link', { name: /PDF Form Catalog/i }).some((link) => link.getAttribute('href') === '/pdf-form-catalog'),
+    ).toBe(true);
     expect(screen.getByAltText('A source PDF document before it has been turned into a reusable fillable template.')).toBeTruthy();
     expect(screen.getByRole('heading', { level: 2, name: 'More workflow pages' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Usage Docs Overview' }).getAttribute('href')).toBe('/usage-docs');

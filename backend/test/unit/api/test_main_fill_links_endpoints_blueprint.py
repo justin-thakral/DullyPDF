@@ -107,7 +107,11 @@ def _group_record() -> TemplateGroupRecord:
     )
 
 
-def _group_fill_link_record() -> FillLinkRecord:
+def _group_fill_link_record(
+    *,
+    respondent_pdf_download_enabled: bool = False,
+    canonical_schema_snapshot: dict | None = None,
+) -> FillLinkRecord:
     questions = [{"key": "full_name", "label": "Full Name", "type": "text"}]
     return FillLinkRecord(
         id="group-link-1",
@@ -131,6 +135,8 @@ def _group_fill_link_record() -> FillLinkRecord:
         updated_at="2024-01-01T00:00:00+00:00",
         published_at="2024-01-01T00:00:00+00:00",
         closed_at=None,
+        respondent_pdf_download_enabled=respondent_pdf_download_enabled,
+        canonical_schema_snapshot=canonical_schema_snapshot,
     )
 
 
@@ -349,6 +355,7 @@ def test_fill_links_list_create_and_response_endpoints(client, app_main, base_us
             "textTransformRules": [],
             "filename": "template-one-response.pdf",
         },
+        canonical_schema_snapshot=None,
         status="active",
         closed_reason=None,
     )
@@ -454,6 +461,7 @@ def test_fill_links_update_endpoint_uses_link_id_and_serializes_canonical_signed
             "textTransformRules": [],
             "filename": "template-one-response.pdf",
         },
+        canonical_schema_snapshot=None,
         status="active",
         closed_reason=None,
     )
@@ -884,7 +892,11 @@ def test_fill_links_create_blocks_pending_delete_template_after_downgrade(
     pending_template_ids_mock.assert_called_once_with(base_user.app_user_id)
 
 
-def test_fill_links_create_group_link_merges_group_templates(client, app_main, base_user, mocker, auth_headers) -> None:
+def test_fill_links_create_group_link_persists_canonical_schema_snapshot(client, app_main, base_user, mocker, auth_headers) -> None:
+    """Phase 3: publishing a group Fill By Link with respondent download enabled
+    builds a canonical schema, freezes a publish snapshot containing per-template
+    download snapshots, and persists the bundle on the new fill link record."""
+
     _patch_auth(mocker, app_main, base_user)
     mocker.patch.object(app_main, "get_group", return_value=_group_record())
     mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
@@ -911,6 +923,20 @@ def test_fill_links_create_group_link_merges_group_templates(client, app_main, b
         app_main,
         "build_group_fill_link_questions",
         return_value=[{"key": "full_name", "label": "Full Name", "type": "text"}],
+    )
+    fake_snapshot = {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {"fields": []},
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "Template One", "snapshot": {"version": 1}},
+            {"templateId": "tpl-2", "templateName": "Template Two", "snapshot": {"version": 1}},
+        ],
+    }
+    publish_snapshot_mock = mocker.patch.object(
+        app_main,
+        "build_group_fill_link_publish_snapshot",
+        return_value=fake_snapshot,
     )
     create_mock = mocker.patch.object(app_main, "create_or_update_fill_link", return_value=_group_fill_link_record())
 
@@ -941,10 +967,82 @@ def test_fill_links_create_group_link_merges_group_templates(client, app_main, b
         headers=auth_headers,
     )
 
-    assert response.status_code == 400
-    assert "template fill by link" in response.text.lower()
-    build_questions_mock.assert_not_called()
-    create_mock.assert_not_called()
+    assert response.status_code == 200
+    assert response.json()["link"]["status"] == "active"
+    build_questions_mock.assert_called_once()
+    publish_snapshot_mock.assert_called_once()
+    create_mock.assert_called_once()
+    create_kwargs = create_mock.call_args.kwargs
+    assert create_kwargs["scope_type"] == "group"
+    assert create_kwargs["respondent_pdf_download_enabled"] is True
+    assert create_kwargs["canonical_schema_snapshot"] is fake_snapshot
+
+
+def test_fill_links_create_group_link_without_download_skips_snapshot(client, app_main, base_user, mocker, auth_headers) -> None:
+    """When respondent download is OFF for a group link, no snapshot is built."""
+
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "get_group", return_value=_group_record())
+    mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "get_template",
+        side_effect=[
+            _template_record(),
+            TemplateRecord(
+                id="tpl-2",
+                pdf_bucket_path="gs://forms/template-2.pdf",
+                template_bucket_path="gs://templates/template-2.pdf",
+                metadata={"name": "Template Two"},
+                created_at="2024-01-02T00:00:00+00:00",
+                updated_at="2024-01-02T00:00:00+00:00",
+                name="Template Two",
+            ),
+        ],
+    )
+    mocker.patch.object(app_main, "get_fill_link_for_group", return_value=None)
+    mocker.patch.object(app_main, "resolve_fill_link_responses_monthly_limit", return_value=25)
+    mocker.patch.object(app_main, "list_fill_links", return_value=[])
+    mocker.patch.object(
+        app_main,
+        "build_group_fill_link_questions",
+        return_value=[{"key": "full_name", "label": "Full Name", "type": "text"}],
+    )
+    publish_snapshot_mock = mocker.patch.object(app_main, "build_group_fill_link_publish_snapshot")
+    create_mock = mocker.patch.object(app_main, "create_or_update_fill_link", return_value=_group_fill_link_record())
+
+    response = client.post(
+        "/api/fill-links",
+        json={
+            "scopeType": "group",
+            "groupId": "group-1",
+            "groupName": "Admissions Packet",
+            "requireAllFields": True,
+            "respondentPdfDownloadEnabled": False,
+            "fields": [],
+            "groupTemplates": [
+                {
+                    "templateId": "tpl-1",
+                    "templateName": "Template One",
+                    "fields": [{"name": "full_name", "type": "text", "page": 1}],
+                    "checkboxRules": [],
+                },
+                {
+                    "templateId": "tpl-2",
+                    "templateName": "Template Two",
+                    "fields": [{"name": "dob", "type": "date", "page": 1}],
+                    "checkboxRules": [],
+                },
+            ],
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    publish_snapshot_mock.assert_not_called()
+    create_kwargs = create_mock.call_args.kwargs
+    assert create_kwargs["respondent_pdf_download_enabled"] is False
+    assert create_kwargs["canonical_schema_snapshot"] is None
 
 
 def test_fill_links_update_blocks_reactivate_when_template_is_queued_for_deletion(
@@ -1876,6 +1974,258 @@ def test_fill_links_public_download_prefers_response_snapshot_for_historical_sub
         },
         answers={"full_name": "Ada Lovelace"},
     )
+
+
+def test_fill_links_public_download_returns_zip_for_group_links(client, app_main, mocker, tmp_path) -> None:
+    """Phase 3: public download for a group fill link materializes the snapshot bundle
+    into a zip of per-template PDFs and serves it with application/zip."""
+
+    snapshot_bundle = {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {"fields": []},
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "Template One", "snapshot": {"version": 1}},
+            {"templateId": "tpl-2", "templateName": "Template Two", "snapshot": {"version": 1}},
+        ],
+    }
+    record = _group_fill_link_record(
+        respondent_pdf_download_enabled=True,
+        canonical_schema_snapshot=snapshot_bundle,
+    )
+    response_record = FillLinkResponseRecord(
+        id="resp-1",
+        link_id=record.id,
+        user_id=record.user_id,
+        scope_type="group",
+        template_id=None,
+        group_id=record.group_id,
+        attempt_id=None,
+        respondent_label="Ada Lovelace",
+        respondent_secondary_label=None,
+        answers={"full_name": "Ada Lovelace"},
+        search_text="ada lovelace",
+        submitted_at="2024-02-01T00:00:00+00:00",
+    )
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "_resolve_fill_link_download_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "get_fill_link_response", return_value=response_record)
+    zip_path = tmp_path / "respondent-packet.zip"
+    zip_path.write_bytes(b"PK\x03\x04stub-zip-bytes")
+    materialize_mock = mocker.patch.object(
+        app_main,
+        "materialize_group_fill_link_response_packet",
+        return_value=(zip_path, [zip_path], "admissions-packet-response.zip"),
+    )
+
+    response = client.get("/api/fill-links/public/token-1/responses/resp-1/download")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/zip"
+    assert response.headers["cache-control"] == "private, no-store"
+    assert "admissions-packet-response.zip" in response.headers["content-disposition"]
+    materialize_mock.assert_called_once()
+    call_kwargs = materialize_mock.call_args.kwargs
+    assert call_kwargs["canonical_schema_snapshot"] is snapshot_bundle
+    assert call_kwargs["answers"] == {"full_name": "Ada Lovelace"}
+
+
+def test_fill_links_owner_packet_returns_zip_for_group_link(client, app_main, mocker, auth_headers, base_user, tmp_path) -> None:
+    """Phase 3: the owner-side ``/responses/{id}/packet`` endpoint streams a zip for group links."""
+
+    snapshot_bundle = {
+        "snapshotFormatVersion": 1,
+        "frozenAt": "2026-04-13T00:00:00Z",
+        "schema": {"fields": []},
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "templateName": "Admissions Packet", "snapshot": {"version": 1}},
+            {"templateId": "tpl-2", "templateName": "Consent Form", "snapshot": {"version": 1}},
+        ],
+    }
+    record = _group_fill_link_record(
+        respondent_pdf_download_enabled=True,
+        canonical_schema_snapshot=snapshot_bundle,
+    )
+    response_record = FillLinkResponseRecord(
+        id="resp-1",
+        link_id=record.id,
+        user_id=base_user.app_user_id,
+        scope_type="group",
+        template_id=None,
+        group_id=record.group_id,
+        attempt_id=None,
+        respondent_label="Ada Lovelace",
+        respondent_secondary_label=None,
+        answers={"full_name": "Ada Lovelace"},
+        search_text="ada lovelace",
+        submitted_at="2024-02-01T00:00:00+00:00",
+    )
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "get_fill_link", return_value=record)
+    mocker.patch.object(app_main, "get_fill_link_response", return_value=response_record)
+    zip_path = tmp_path / "owner-packet.zip"
+    zip_path.write_bytes(b"PK\x03\x04owner-stub")
+    materialize_mock = mocker.patch.object(
+        app_main,
+        "materialize_group_fill_link_response_packet",
+        return_value=(zip_path, [zip_path], "admissions-packet.zip"),
+    )
+
+    response = client.get(
+        f"/api/fill-links/{record.id}/responses/{response_record.id}/packet",
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/zip"
+    assert "admissions-packet.zip" in response.headers["content-disposition"]
+    materialize_mock.assert_called_once()
+    call_kwargs = materialize_mock.call_args.kwargs
+    assert call_kwargs["canonical_schema_snapshot"] is snapshot_bundle
+    assert call_kwargs["answers"] == {"full_name": "Ada Lovelace"}
+
+
+def test_fill_links_owner_packet_rejects_template_scope(client, app_main, mocker, auth_headers, base_user) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "get_fill_link", return_value=_fill_link_record())
+
+    response = client.get(
+        "/api/fill-links/link-1/responses/resp-1/packet",
+        headers=auth_headers,
+    )
+    assert response.status_code == 409
+    assert "group fill by link" in response.text.lower()
+
+
+def test_fill_links_owner_packet_rejects_group_link_without_snapshot(client, app_main, mocker, auth_headers, base_user) -> None:
+    record = _group_fill_link_record(
+        respondent_pdf_download_enabled=True,
+        canonical_schema_snapshot=None,
+    )
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "get_fill_link", return_value=record)
+
+    response = client.get(
+        f"/api/fill-links/{record.id}/responses/resp-1/packet",
+        headers=auth_headers,
+    )
+    assert response.status_code == 409
+    assert "republish" in response.text.lower()
+
+
+# ---------------------------------------------------------------------------
+# Phase 6: backwards compatibility / migration safety for fill links
+# ---------------------------------------------------------------------------
+
+
+def test_pre_migration_fill_link_record_loads_with_canonical_snapshot_none() -> None:
+    """A pre-migration group fill link document with no ``canonical_schema_snapshot``
+    field must deserialize cleanly with ``canonical_schema_snapshot=None``."""
+
+    from backend.firebaseDB.fill_link_database import _serialize_fill_link
+
+    class FakeDoc:
+        def __init__(self, doc_id, data):
+            self.id = doc_id
+            self._data = data
+
+        def to_dict(self):
+            return dict(self._data)
+
+    pre_migration_data = {
+        "user_id": "user_legacy",
+        "scope_type": "group",
+        "template_id": None,
+        "group_id": "grp-old",
+        "group_name": "Legacy Group",
+        "template_ids": ["tpl-1", "tpl-2"],
+        "title": "Legacy Group",
+        "status": "active",
+        "questions": [{"key": "full_name"}],
+        "web_form_config": {"questions": []},
+        "response_count": 5,
+        # No canonical_schema_snapshot — pre-Phase-3 group fill link.
+    }
+    record = _serialize_fill_link(FakeDoc("link-legacy", pre_migration_data))
+    assert record.scope_type == "group"
+    assert record.canonical_schema_snapshot is None
+    assert record.respondent_pdf_download_enabled is False
+    assert record.group_id == "grp-old"
+
+
+def test_pre_migration_template_fill_link_serializes_unchanged() -> None:
+    """A pre-migration template fill link record (no canonical_schema_snapshot,
+    no group fields) loads with the existing template defaults — proves the
+    Phase 3 additive field doesn't disrupt template-scope readers."""
+
+    from backend.firebaseDB.fill_link_database import _serialize_fill_link
+
+    class FakeDoc:
+        def __init__(self, doc_id, data):
+            self.id = doc_id
+            self._data = data
+
+        def to_dict(self):
+            return dict(self._data)
+
+    pre_migration_data = {
+        "user_id": "user_legacy",
+        "scope_type": "template",
+        "template_id": "tpl-old",
+        "template_name": "Legacy Form",
+        "template_ids": ["tpl-old"],
+        "title": "Legacy Form Intake",
+        "status": "active",
+        "questions": [{"key": "full_name"}],
+        "web_form_config": {"questions": []},
+        "response_count": 3,
+        "respondent_pdf_download_enabled": True,
+        "respondent_pdf_snapshot": {"version": 1, "sourcePdfPath": "gs://forms/old.pdf", "fields": []},
+    }
+    record = _serialize_fill_link(FakeDoc("link-legacy", pre_migration_data))
+    assert record.scope_type == "template"
+    assert record.template_id == "tpl-old"
+    assert record.canonical_schema_snapshot is None  # Phase 3 default
+    assert record.respondent_pdf_download_enabled is True
+    assert isinstance(record.respondent_pdf_snapshot, dict)
+
+
+def test_pre_migration_group_fill_link_public_download_returns_404(client, app_main, mocker) -> None:
+    """End-to-end Phase 6 check: a pre-migration group fill link served from
+    Firestore (no canonical_schema_snapshot, but respondent_pdf_download_enabled
+    was somehow set) returns 404 from the public download endpoint instead of
+    crashing or serving an empty zip."""
+
+    record = _group_fill_link_record(
+        respondent_pdf_download_enabled=True,
+        canonical_schema_snapshot=None,
+    )
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "_resolve_fill_link_download_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+
+    response = client.get("/api/fill-links/public/token-1/responses/resp-1/download")
+    assert response.status_code == 404
+    assert "not available" in response.text.lower() or "republish" in response.text.lower()
+
+
+def test_fill_links_public_download_returns_404_for_group_without_snapshot(client, app_main, mocker) -> None:
+    """A group fill link with download disabled (or missing snapshot) returns 404."""
+
+    record = _group_fill_link_record(
+        respondent_pdf_download_enabled=True,
+        canonical_schema_snapshot=None,  # publish without freeze => no packet available
+    )
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "_resolve_fill_link_download_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+
+    response = client.get("/api/fill-links/public/token-1/responses/resp-1/download")
+    assert response.status_code == 404
 
 
 def test_fill_links_public_download_reuses_retained_signing_source_pdf_when_signing_exists(client, app_main, mocker) -> None:

@@ -866,6 +866,10 @@ def build_fill_link_web_form_schema(
             stored_questions.append(_apply_fill_link_builder_overrides(matched_default, normalized_question))
     else:
         stored_questions = [dict(question) for question in normalized_defaults]
+        for question in normalized_defaults:
+            normalized_key = normalize_fill_link_key(question.get("key"))
+            if normalized_key:
+                seen_default_keys.add(normalized_key)
 
     for default_question in normalized_defaults:
         normalized_key = normalize_fill_link_key(default_question.get("key"))

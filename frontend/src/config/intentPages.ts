@@ -4,6 +4,7 @@ import { INTENT_PAGES as SHARED_INTENT_PAGES } from './publicRouteSeoData.mjs';
 export type IntentPageKey =
   | 'pdf-to-fillable-form'
   | 'pdf-to-database-template'
+  | 'pdf-form-catalog'
   | 'fill-pdf-from-csv'
   | 'fill-pdf-by-link'
   | 'pdf-signature-workflow'
@@ -112,6 +113,7 @@ const INTENT_PAGES = SHARED_INTENT_PAGES as IntentPage[];
 const WORKFLOW_LIBRARY_SHOWCASE_KEYS: IntentPageKey[] = [
   'pdf-to-fillable-form',
   'pdf-to-database-template',
+  'pdf-form-catalog',
   'fill-pdf-from-csv',
   'fill-pdf-by-link',
   'pdf-signature-workflow',
@@ -172,6 +174,22 @@ const INTENT_VISUALS: Partial<Record<IntentPageKey, IntentVisuals>> = {
         src: '/demo/mobile-rename-remap.webp',
         alt: 'PDF template field names aligned to a structured schema.',
         caption: 'A database template only helps once the saved PDF fields are named and mapped to stable schema keys.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-form-catalog': {
+    hubImage: {
+      src: '/blog/irs-w4-official-1.png',
+      alt: 'Official IRS W-4 form page representing a blank source document from the catalog.',
+      objectPosition: 'center top',
+      eyebrow: 'Blank official forms',
+    },
+    articleFigures: [
+      {
+        src: '/blog/irs-w4-official-1.png',
+        alt: 'Official IRS W-4 form page downloaded from irs.gov and mirrored in the DullyPDF catalog.',
+        caption: 'The catalog starts from the blank source PDF teams already recognize, then hands that document into the normal template workflow.',
         objectPosition: 'center top',
       },
     ],

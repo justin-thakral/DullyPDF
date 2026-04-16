@@ -252,7 +252,7 @@ def test_call_openai_schema_mapping_uses_json_response_format_and_parses_wrapped
     client = _FakeOpenAIClient(
         [_response_with_content("prefix {\"mappings\": [], \"notes\": \"wrapped\"} suffix")]
     )
-    mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+    mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
 
     result = schema_mapping.call_openai_schema_mapping({"schemaFields": [], "templateTags": []})
 
@@ -299,7 +299,7 @@ def test_call_openai_schema_mapping_retries_without_response_format_when_rejecte
     client = _FakeOpenAIClient(
         [_ResponseFormatError(), _response_with_content("{\"mappings\": [{\"schemaField\": \"ok\"}]}")]
     )
-    mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+    mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
 
     result = schema_mapping.call_openai_schema_mapping({"schemaFields": [], "templateTags": []})
 
@@ -323,7 +323,7 @@ def test_call_openai_schema_mapping_collects_usage_and_honors_retry_override(
         "completion_tokens_details": {"reasoning_tokens": 2},
     }
     client = _FakeOpenAIClient([response])
-    create_client = mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+    create_client = mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
     usage_events = []
 
     result = schema_mapping.call_openai_schema_mapping(
@@ -436,7 +436,7 @@ def test_call_openai_schema_mapping_none_content_falls_back_to_empty_dict(
     # The `or "{}"` fallback in call_openai_schema_mapping turns None into "{}"
     response.choices[0].message.content = None
     client = _FakeOpenAIClient([response])
-    mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+    mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
 
     result = schema_mapping.call_openai_schema_mapping(
         {"schemaFields": [], "templateTags": []}

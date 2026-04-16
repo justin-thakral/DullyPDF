@@ -229,6 +229,131 @@ def test_record_template_api_endpoint_success_fails_closed_when_monthly_limit_is
     assert len(events) == 1
 
 
+def test_revoke_template_api_endpoints_referencing_template_revokes_template_and_group_zombies(mocker) -> None:
+    """When a saved form is deleted, every template_api endpoint that references
+    it (single-template scope AND group scope where the template is inside
+    templateSnapshots) must be revoked so the endpoints don't become zombies
+    that count against the active-endpoint cap but always fail with 404.
+    """
+
+    client = FakeFirestoreClient()
+    mocker.patch("backend.firebaseDB.template_api_endpoint_database.get_firestore_client", return_value=client)
+    mocker.patch(
+        "backend.firebaseDB.template_api_endpoint_database.now_iso",
+        side_effect=[
+            "ts-tpl-1",
+            "ts-tpl-2",
+            "ts-group",
+            "ts-unrelated",
+            "ts-revoke-tpl",
+            "ts-revoke-group",
+        ],
+    )
+
+    # 1) Active endpoint for the template we're about to delete.
+    tpl_endpoint, _ = db.publish_or_republish_template_api_endpoint(
+        user_id="user-1",
+        template_id="tpl-doomed",
+        template_name="Doomed Form",
+        snapshot={"version": 1, "fields": [{"name": "full_name"}]},
+        active_limit=10,
+        key_prefix="dpa_live_tpl",
+        secret_hash="hash-tpl",
+    )
+    # 2) Active endpoint for a different template — must NOT be revoked.
+    unrelated_endpoint, _ = db.publish_or_republish_template_api_endpoint(
+        user_id="user-1",
+        template_id="tpl-safe",
+        template_name="Safe Form",
+        snapshot={"version": 1, "fields": [{"name": "full_name"}]},
+        active_limit=10,
+        key_prefix="dpa_live_safe",
+        secret_hash="hash-safe",
+    )
+    # 3) Group endpoint whose bundle includes the doomed template.
+    group_endpoint, _ = db.publish_or_republish_template_api_endpoint(
+        user_id="user-1",
+        template_name=None,
+        snapshot={
+            "snapshotFormatVersion": 1,
+            "templateSnapshots": [
+                {"templateId": "tpl-doomed", "snapshot": {"pageCount": 2}},
+                {"templateId": "tpl-safe", "snapshot": {"pageCount": 2}},
+            ],
+        },
+        active_limit=10,
+        key_prefix="dpa_live_grp",
+        secret_hash="hash-grp",
+        scope_type="group",
+        group_id="grp-1",
+        group_name="Mixed Group",
+    )
+
+    revoked = db.revoke_template_api_endpoints_referencing_template("tpl-doomed", "user-1")
+    revoked_ids = sorted(record.id for record in revoked)
+
+    # Both the template endpoint and the group endpoint should be revoked.
+    assert tpl_endpoint.id in revoked_ids
+    assert group_endpoint.id in revoked_ids
+    # The unrelated endpoint must remain active.
+    assert unrelated_endpoint.id not in revoked_ids
+
+    # Re-fetch to confirm persisted status.
+    after_tpl = db.get_template_api_endpoint(tpl_endpoint.id, "user-1")
+    after_group = db.get_template_api_endpoint(group_endpoint.id, "user-1")
+    after_safe = db.get_template_api_endpoint(unrelated_endpoint.id, "user-1")
+    assert after_tpl is not None and after_tpl.status == "revoked"
+    assert after_group is not None and after_group.status == "revoked"
+    assert after_safe is not None and after_safe.status == "active"
+
+
+def test_record_template_api_endpoint_success_refuses_to_charge_revoked_endpoint(mocker) -> None:
+    """Defense-in-depth: if an endpoint is revoked between auth check and the
+    success transaction, the increment must NOT happen. Prevents over-billing
+    a just-revoked endpoint for an in-flight request."""
+
+    client = FakeFirestoreClient()
+    mocker.patch("backend.firebaseDB.template_api_endpoint_database.get_firestore_client", return_value=client)
+    mocker.patch(
+        "backend.firebaseDB.template_api_endpoint_database.now_iso",
+        side_effect=["ts-created", "ts-revoked", "ts-race"],
+    )
+    mocker.patch("backend.firebaseDB.template_api_endpoint_database._current_month_key", return_value="2026-04")
+
+    created = db.create_template_api_endpoint(
+        user_id="user-1",
+        template_id="tpl-1",
+        template_name="Patient Intake",
+        key_prefix="dpa_live_abc123",
+        secret_hash="hash-1",
+        snapshot={"version": 1, "fields": [{"name": "full_name"}]},
+    )
+    # Simulate an owner-initiated revoke landing between the in-flight request's
+    # auth check and its success transaction.
+    db.update_template_api_endpoint(created.id, "user-1", status="revoked")
+
+    recorded = db.record_template_api_endpoint_success(
+        created.id,
+        month_key="2026-04",
+        monthly_limit=250,
+        metadata={"raceWindow": "auth-to-bookkeeping"},
+    )
+
+    # The success bookkeeping must bail and return None — the route maps this
+    # to a 500 that does NOT charge the user.
+    assert recorded is None
+    # The counter state must stay untouched.
+    refetched = db.get_template_api_endpoint(created.id, "user-1")
+    assert refetched is not None
+    assert refetched.status == "revoked"
+    assert refetched.usage_count == 0
+    assert refetched.current_month_usage_count == 0
+    usage = db.get_template_api_monthly_usage("user-1", month_key="2026-04")
+    # Either the doc was never created or it was created with count 0 — both
+    # are acceptable (the point is that no increment happened).
+    assert usage is None or usage.request_count == 0
+
+
 def test_get_active_template_api_endpoint_for_template_returns_only_active(mocker) -> None:
     client = FakeFirestoreClient()
     mocker.patch("backend.firebaseDB.template_api_endpoint_database.get_firestore_client", return_value=client)

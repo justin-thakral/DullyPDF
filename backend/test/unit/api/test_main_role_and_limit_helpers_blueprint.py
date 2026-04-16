@@ -105,6 +105,9 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
     ):
         monkeypatch.delenv(env_name, raising=False)
 
+    # Phase 5: templateApiMaxPages bumped from 25/250/1000 → 50/500/2000 so a
+    # typical immigration packet (~30 pages across 8 forms) fits on the free
+    # tier per-request limit.
     assert app_main._resolve_role_limits("base") == {
         "detectMaxPages": 5,
         "fillableMaxPages": 50,
@@ -112,7 +115,7 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "fillLinkResponsesMonthlyMax": 25,
         "templateApiActiveMax": 1,
         "templateApiRequestsMonthlyMax": 250,
-        "templateApiMaxPages": 25,
+        "templateApiMaxPages": 50,
         "signingRequestsMonthlyMax": 25,
     }
     assert app_main._resolve_role_limits("pro") == {
@@ -122,7 +125,7 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "fillLinkResponsesMonthlyMax": 10000,
         "templateApiActiveMax": 20,
         "templateApiRequestsMonthlyMax": 10000,
-        "templateApiMaxPages": 250,
+        "templateApiMaxPages": 500,
         "signingRequestsMonthlyMax": 10000,
     }
     assert app_main._resolve_role_limits("god") == {
@@ -132,6 +135,6 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "fillLinkResponsesMonthlyMax": 100000,
         "templateApiActiveMax": 100,
         "templateApiRequestsMonthlyMax": 100000,
-        "templateApiMaxPages": 1000,
+        "templateApiMaxPages": 2000,
         "signingRequestsMonthlyMax": 100000,
     }

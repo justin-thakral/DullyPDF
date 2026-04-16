@@ -8,7 +8,28 @@ import {
 } from '../../config/formCatalogData.mjs';
 import { FORM_CATALOG_CATEGORIES } from '../../config/formCatalogCategories.mjs';
 import { FORM_CATALOG_EXTERNAL_SOURCES } from '../../config/formCatalogExternalSources.mjs';
-import type { WorkspaceBrowserRoute } from '../../utils/workspaceRoutes';
+import {
+  buildWorkspaceBrowserHref,
+  type WorkspaceBrowserRoute,
+} from '../../utils/workspaceRoutes';
+
+const defaultStandaloneNavigate = (
+  route: WorkspaceBrowserRoute,
+  options?: { replace?: boolean },
+) => {
+  if (typeof window === 'undefined') return;
+  const href = buildWorkspaceBrowserHref(route);
+  if (route.kind === 'form-catalog-index' && options?.replace) {
+    window.history.replaceState({}, '', href);
+    return;
+  }
+  window.location.href = href;
+};
+
+const defaultStandaloneRequestSignIn = () => {
+  if (typeof window === 'undefined') return;
+  window.location.href = '/upload';
+};
 
 type FormCatalogEntry = {
   slug: string;
@@ -46,12 +67,12 @@ type FormCatalogExternalSource = {
 };
 
 type FormCatalogIndexPageProps = {
-  verifiedUser: User | null;
+  verifiedUser?: User | null;
   initialCategory?: string;
   initialQuery?: string;
   initialPage?: number;
-  onRequestSignIn: () => void;
-  onNavigate: (route: WorkspaceBrowserRoute, options?: { replace?: boolean }) => void;
+  onRequestSignIn?: () => void;
+  onNavigate?: (route: WorkspaceBrowserRoute, options?: { replace?: boolean }) => void;
 };
 
 // Popular / commonly-requested forms surfaced first in the "All categories" view
@@ -109,12 +130,12 @@ const resolveCategorySections = (categoryRecord: FormCatalogCategory | null, fal
 };
 
 const FormCatalogIndexPage = ({
-  verifiedUser,
+  verifiedUser = null,
   initialCategory,
   initialQuery,
   initialPage = 0,
-  onRequestSignIn,
-  onNavigate,
+  onRequestSignIn = defaultStandaloneRequestSignIn,
+  onNavigate = defaultStandaloneNavigate,
 }: FormCatalogIndexPageProps) => {
   const [category, setCategory] = useState<string>(initialCategory || 'all');
   const [query, setQuery] = useState<string>(initialQuery || '');
@@ -133,6 +154,24 @@ const FormCatalogIndexPage = ({
     setQuery(initialQuery || '');
     setVisibleCount(Math.max(PAGE_BATCH, (initialPage + 1) * PAGE_BATCH));
   }, [initialCategory, initialQuery, initialPage]);
+
+  useEffect(() => {
+    // Standalone hydration path (no initial props from a parent): read URL query
+    // params on mount so direct visits to /forms?category=healthcare still apply
+    // the filter after the SSR-matched default render.
+    if (typeof window === 'undefined') return;
+    if (initialCategory !== undefined || initialQuery !== undefined || initialPage) return;
+    const params = new URLSearchParams(window.location.search);
+    const urlCategory = params.get('category');
+    const urlQuery = params.get('q');
+    const urlPageRaw = params.get('page');
+    const urlPage = urlPageRaw ? Math.max(0, Number.parseInt(urlPageRaw, 10) || 0) : 0;
+    if (urlCategory) setCategory(urlCategory);
+    if (urlQuery) setQuery(urlQuery);
+    if (urlPage) setVisibleCount(Math.max(PAGE_BATCH, (urlPage + 1) * PAGE_BATCH));
+    // Intentionally runs once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const pushRoute = useCallback(
     (nextCategory: string, nextQuery: string) => {
@@ -222,24 +261,6 @@ const FormCatalogIndexPage = ({
       : `${total} forms in ${scope}`;
     return total > showing ? `${base} • Showing ${showing}` : base;
   }, [activeCategory, activeExternalSource, category, clampedVisible, filteredEntries.length, query]);
-
-  const renderAuthGate = () => (
-    <section className="form-catalog__auth-gate">
-      <h2>Sign in to browse the Form Catalog</h2>
-      <p>
-        The pre-made catalog contains {ENTRIES.length.toLocaleString()} free fillable PDF templates across{' '}
-        {CATEGORIES.filter((c) => !c.empty).length} categories. Create a free account to search, filter, and
-        open any form in the DullyPDF editor.
-      </p>
-      <button
-        type="button"
-        className="form-catalog__auth-gate-button"
-        onClick={onRequestSignIn}
-      >
-        Sign in to continue
-      </button>
-    </section>
-  );
 
   const renderCatalog = () => (
     <>
@@ -418,7 +439,7 @@ const FormCatalogIndexPage = ({
           </p>
         </section>
 
-        {verifiedUser ? renderCatalog() : renderAuthGate()}
+        {renderCatalog()}
       </main>
       <SiteFooter />
     </div>

@@ -91,6 +91,18 @@ const BLOG_FIGURE_LIBRARY = {
     src: '/seo/csv-calc-screenshot.png',
     alt: 'Spreadsheet grid with columns and rows representing data prepared for repeat PDF filling.',
   },
+  homeworkWorksheetSource: {
+    src: '/blog/homework-worksheet-source.png',
+    alt: 'A flat NOAA student worksheet PDF before DullyPDF field detection, still showing printed answer lines and a response table.',
+  },
+  homeworkWorksheetDetectedFields: {
+    src: '/blog/homework-worksheet-detected-fields.png',
+    alt: 'The DullyPDF workspace showing the homework worksheet after field detection, with visible overlays on the answer lines and table cells.',
+  },
+  homeworkWorksheetWithAnswers: {
+    src: '/blog/homework-worksheet-with-answers.png',
+    alt: 'A browser PDF viewer showing the same homework worksheet after mock student answers were typed into the detected fields at 175 percent zoom.',
+  },
 };
 
 const figure = (key, caption, extra = {}) => ({
@@ -1512,5 +1524,212 @@ export const BLOG_POSTS = [
     ],
     relatedIntentPages: ['fill-pdf-from-csv', 'fill-information-in-pdf'],
     relatedDocs: ['search-fill'],
+  },
+  {
+    slug: 'dullypdf-vs-anvil-pdf-automation-pricing',
+    title: 'DullyPDF vs Anvil for PDF Automation, API Fill, Web Form Fill, and Pricing',
+    seoTitle: 'DullyPDF vs Anvil Pricing for PDF Automation, API Fill, and Web Form Fill (2026)',
+    seoDescription:
+      'See why DullyPDF is the better and lower-cost Anvil alternative for automatic PDF to fillable form workflows, API fill, web form fill, pre-made templates, and pricing.',
+    seoKeywords: [
+      'dullypdf vs anvil',
+      'anvil alternative for pdf automation',
+      'api fill comparison',
+      'web form fill comparison',
+      'automatic pdf to fillable form',
+      'pre made pdf templates',
+      'anvil pricing',
+    ],
+    publishedDate: '2026-04-11',
+    updatedDate: '2026-04-11',
+    author: 'DullyPDF Team',
+    summary:
+      'For most teams automating existing PDFs, DullyPDF is the better choice. Anvil is priced like a broader document platform long before many operations teams actually need that breadth, while DullyPDF gets you to automatic PDF to fillable form setup, saved templates, API Fill, web form fill, and repeat reuse at a much lower operational cost.',
+    sections: [
+      section(
+        'comparison-starts-with-the-document',
+        'The real comparison starts with the document you already have',
+        [
+          'Anvil and DullyPDF overlap in just enough places to get compared, but they begin from very different assumptions. Anvil is built as a broader document workflow platform for product teams that may want embedded forms, embedded signing, and a larger configurable workflow layer. DullyPDF starts from the more common operations problem: the PDF already exists, the layout matters, and the team needs to automate that exact document without rebuilding the process around a much broader platform.',
+          'That distinction matters because Anvil can be the wrong purchase simply by being too much platform for the job. If the real pain is automatic PDF to fillable form conversion for recurring packets, then the important question is not which system has more platform surface area. The important question is which one gets an existing PDF into a dependable template faster, cheaper, and with less repeated setup work. For that job, DullyPDF has the cleaner answer.',
+        ],
+      ),
+      section(
+        'automatic-pdf-to-fillable-form',
+        'DullyPDF is stronger when automatic PDF to fillable form is the first job',
+        [
+          'This is where DullyPDF pulls ahead. The platform is built around field detection, field cleanup, rename and mapping, saved templates, and later reuse through Search and Fill, API Fill, or web-form-driven intake. That means the workflow starts by turning a fixed document into something operational instead of asking the team to assemble a larger workflow stack before they have even solved the PDF itself.',
+          'Anvil does offer Document AI and PDF services, but its public pricing page splits that capability across plan gates and metered usage. DullyPDF is more opinionated here in the right way: it assumes the saved PDF template is the real asset. If your business runs on official forms, carrier packets, tax filings, HR paperwork, or recurring intake documents, that tighter model is not just different. It is usually better.',
+        ],
+        {
+          figures: [
+            figure(
+              'rawPatientIntake',
+              'The DullyPDF comparison advantage becomes obvious when the source file is still a flat PDF that needs to become a reusable template rather than just another upload.',
+            ),
+            figure(
+              'renameMapUi',
+              'DullyPDF turns the automatic PDF to fillable form workflow into detection, review, rename, and schema mapping instead of manual rebuild labor on every document.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'api-fill-and-web-form-fill',
+        'API Fill and web form fill are where the cost and workflow model diverge',
+        [
+          'If the team needs API fill, the economics change fast, and this is one of the clearest reasons to favor DullyPDF. As of April 11, 2026, Anvil lists a free plan at $0, but also notes that it is a UI-only plan and that API key access requires adding a card or moving into paid usage. The same pricing page lists PDF fill or generation over API at $0.10 per usage. That means Anvil free is not really a serious low-friction API fill evaluation path for teams that already know their future is automated PDF output.',
+          'DullyPDF’s model is materially better to enter because API Fill is part of the product surface even on the free tier. The current DullyPDF defaults in this repo include one active API Fill endpoint, 250 successful fills per month, and 25 pages per request on free. The same free tier also supports native web form fill through Fill By Link with no active-link cap and 25 accepted responses per month. In practice, that means DullyPDF gives many teams a real working automation system before Anvil reaches its first meaningful paid tier.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'DullyPDF web form fill is built around the saved PDF template, so the respondent flow exists to support the final document instead of replacing it.',
+            ),
+            figure(
+              'groupManager',
+              'Once a team has several recurring forms, DullyPDF keeps them as reusable saved templates instead of pushing every repeat process into a separate custom workflow build.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'pre-made-templates',
+        'Pre-made templates matter more when your team already works from official forms',
+        [
+          'Anvil advertises a form library with pre-made form templates, which is useful, but DullyPDF now has the more relevant pre-made template story for teams that live inside official PDFs. The catalog is built around public-domain PDFs and direct editor deep links so teams can open the real document, turn it into a reusable saved template, and connect it to Search and Fill, API Fill, or web form fill without starting from a blank canvas.',
+          'This is one of the most practical differences in day-to-day work. A pre-made template is only valuable if it lands you inside the exact PDF workflow your team already owns. DullyPDF’s template model stays anchored to the real document and to the real automation path that follows. Anvil’s broader workflow tooling is more abstract, more configurable, and often more expensive than many fixed-PDF teams actually need.',
+        ],
+        {
+          figures: [
+            figure(
+              'irsW4Official',
+              'Official recurring forms are where pre-made templates save the most time because the final layout is non-negotiable even when the data source changes every run.',
+            ),
+            figure(
+              'filledPreview',
+              'The real value of a pre-made template is not the blank file alone; it is getting to a reviewed filled output without rebuilding the same PDF logic again next week.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'why-dullypdf-wins',
+        'Why DullyPDF usually wins for existing PDF operations',
+        [
+          'For fixed-document teams, DullyPDF has the more compelling product logic. It is cheaper to start, easier to evaluate on one painful recurring form, and more direct about the actual work: detect the fields, clean them up, save the template, fill it from data, collect responses when needed, and send the completed record into signature. That is the workflow many operations teams actually want.',
+          'Anvil asks a buyer to pay for a broader platform story sooner. Sometimes that is justified. Often it is not. If the team is not building an embedded document product with white labeling, integrated workflow submissions, and a larger product engineering surface, then Anvil can feel like paying platform pricing for fixed-PDF work that DullyPDF already handles more directly.',
+        ],
+        {
+          bullets: [
+            'DullyPDF is better when the PDF already exists and the main problem is making it reusable.',
+            'DullyPDF gives teams a usable API fill and web form fill path earlier and at lower cost.',
+            'DullyPDF keeps saved templates, Search and Fill, API Fill, web form fill, and signature handoff inside one document-centered operating model.',
+            'Anvil is easier to overbuy if your real job is recurring PDF automation rather than embedded product workflow infrastructure.',
+          ],
+        },
+      ),
+      section(
+        'pricing-comparison',
+        'Pricing comparison: why DullyPDF is the lower-cost option for this workflow',
+        [
+          'The cleanest pricing comparison is not just monthly sticker price. It is the cost to get from an existing PDF to a real production workflow with API fill, web form fill, and repeatable saved templates. On that measure, DullyPDF is not just somewhat cheaper. It is often dramatically cheaper because the free tier already includes hosted PDF automation features that Anvil either gates behind plan upgrades or bills on a per-usage basis.',
+          'As of April 11, 2026, Anvil’s public pricing page lists Free at $0, AI Pack at $99 per month, and Product Pack at $425 per month, then layers metered pricing on top for API PDF fill or generation, integrated workflow submissions, and integrated e-sign packets. For many fixed-PDF teams, that makes Anvil hard to justify early. DullyPDF’s published free and premium limits in this repo are simpler and more favorable: free already includes one API Fill endpoint, 250 successful fills per month, native web form fill capacity, and signing capacity, while premium mainly raises ceilings instead of forcing a different product tier just to get a practical workflow running.',
+        ],
+        {
+          bullets: [
+            'Anvil Free: $0, 2 users, unlimited templates, but the pricing page labels it a UI-only plan and says API key access requires a card or higher plan.',
+            'Anvil AI Pack: $99 per month, 5 users, programmatic Document AI, AI schema mapping, and the same metered API PDF fill pricing starting at $0.10 per call.',
+            'Anvil Product Pack: $425 per month, white labeling, interactive signing, and workflow features, with integrated workflow submissions listed at $1.00 each and integrated e-sign packets at $1.50 each.',
+            'DullyPDF Free: 1 active API Fill endpoint, 250 successful API fills per month, 25 pages per request, no active Fill By Link cap, 25 accepted web form responses per month, and 25 sent signing requests per month.',
+            'DullyPDF Premium: 20 active API Fill endpoints, 10,000 successful API fills per month, 250 pages per request, 10,000 accepted Fill By Link responses per month, and 10,000 sent signing requests per month plus monthly AI credits.',
+          ],
+        },
+      ),
+      section(
+        'where-anvil-is-broader',
+        'Anvil is broader in some areas, but broader is not the same as better for this use case',
+        [
+          'Anvil still deserves credit for being a broader embedded document platform. If the project needs white-labeled signing, embedded webforms, deeper workflow composition, and a heavier product-build mindset from day one, Anvil may be the broader platform. That is exactly why its pricing structure is higher and more layered.',
+          'But that breadth is also why DullyPDF is the better answer for many operations-heavy teams. If the actual need is automatic PDF to fillable form setup, API fill from structured data, web form fill tied to the same saved template, and a library of pre-made templates around official PDFs, then DullyPDF is the lower-cost, less bloated, and better-fit system. It spends less product surface on generalized workflow machinery and more on making the fixed PDF workflow actually usable.',
+        ],
+      ),
+    ],
+    relatedIntentPages: ['pdf-to-fillable-form', 'pdf-fill-api', 'fill-pdf-by-link'],
+    relatedDocs: ['getting-started', 'api-fill'],
+  },
+  {
+    slug: 'turn-homework-pdf-into-fillable-student-worksheet',
+    title: 'How to Turn a Homework PDF Into a Fillable Student Worksheet',
+    seoTitle: 'Turn Homework PDFs Into Fillable Student Worksheets | DullyPDF Blog',
+    seoDescription:
+      'See how DullyPDF converts a flat homework worksheet into a fillable PDF so students type inside real fields instead of between printed lines.',
+    seoKeywords: [
+      'homework pdf to fillable form',
+      'fillable student worksheet',
+      'turn worksheet into fillable pdf',
+      'student worksheet pdf fields',
+      'digital homework pdf',
+      'students type inside pdf lines',
+      'worksheet field detection',
+    ],
+    publishedDate: '2026-04-11',
+    updatedDate: '2026-04-11',
+    author: 'DullyPDF Team',
+    summary:
+      'The useful homework demo is a three-step one: the raw worksheet, the same page after DullyPDF field detection, and the same page again after mock answers are typed into the resulting fillable PDF in a normal browser viewer at 175 percent zoom.',
+    sections: [
+      section(
+        'three-step-homework-proof',
+        'The clearest proof is a three-step view of the exact same worksheet',
+        [
+          'A lot of classroom PDFs still behave like paper handouts. They have printed answer lines, blank table cells, and just enough structure to look obvious to a human while still being useless to a keyboard. The most convincing way to explain the DullyPDF value is to hold the worksheet still and show three moments in sequence: the raw source, the detected field layer, and the answered worksheet after those fields are actually used.',
+          'That is why this post now leads with a strict before-and-after progression instead of only one proof image. The first image shows the flat worksheet exactly as a teacher or school staff member would find it online. The second shows DullyPDF turning those lines into fields. The third shows the resulting fillable PDF opened in a regular browser viewer at 175 percent zoom so the reader can see that the answers live inside the document instead of floating between printed guides.',
+        ],
+        {
+          figures: [
+            figure(
+              'homeworkWorksheetSource',
+              'Step 1: the source worksheet is still a flat `.gov` PDF, so a student opening it digitally has nowhere clean to type.',
+            ),
+            figure(
+              'homeworkWorksheetDetectedFields',
+              'Step 2: this is the actual DullyPDF editor after field detection on the same worksheet, with overlays sitting directly on the answer lines and table cells.',
+            ),
+            figure(
+              'homeworkWorksheetWithAnswers',
+              'Step 3: the resulting fillable PDF opened in a normal browser viewer at 175 percent zoom, with mock answers typed into the detected fields.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'middle-step-explains-the-conversion',
+        'The middle step is what makes the conversion believable',
+        [
+          'The second image does the heavy lifting because it explains where the writable worksheet came from. DullyPDF is not replacing the worksheet with a new layout or a detached web form. It is reading the existing page, finding the answer regions, and placing a field layer on top of those regions so the original lesson sheet keeps its structure while the digital behavior changes.',
+          'For this example, the worksheet was uploaded through the live DullyPDF workspace and processed through the normal CommonForms detection path. The overlay screenshot is from that actual run. That matters because a reader can see the detected rectangles on the real answer lines before any mock values are entered, which makes the third screenshot feel like a direct continuation instead of a separate marketing mockup.',
+        ],
+      ),
+      section(
+        'students-type-inside-fields-not-between-lines',
+        'Once the fields exist, students type inside the worksheet instead of around it',
+        [
+          'The change sounds small, but it fixes the exact failure mode that makes digital homework feel sloppy. Instead of trying to line up text boxes with underlines, the student clicks into a field and types where the worksheet already expects the answer to live. The table rows behave like cells, the long prompts behave like text inputs, and the page stays readable when the assignment is submitted back to the teacher.',
+          'DullyPDF is not required for that typing step. Its job is to detect and create the field layer in the original worksheet PDF. After that, the student can open the fillable PDF in many normal browser PDF viewers or in Adobe Acrobat or Reader and type into the fields there. DullyPDF solves the conversion problem first so the finished file behaves correctly later in the tools people already use.',
+        ],
+      ),
+      section(
+        'teachers-keep-the-same-worksheet',
+        'Teachers keep the worksheet they already use instead of rebuilding the assignment',
+        [
+          'That practical detail matters for schools because the worksheet itself is usually already approved by the teacher, aligned to the lesson, and familiar to the students. The fastest win is not rebuilding the assignment somewhere else. It is preserving the same PDF and making it usable on a laptop, which lets one worksheet serve print use, digital homework, and later template reuse without splitting the class across different formats.',
+          'It also gives staff a cleaner maintenance path. If the teacher revises a prompt later, the team can reopen the worksheet, review the fields that changed, and keep using the same digital pattern. That is a better classroom workflow than reauthoring each assignment from scratch or asking students to keep improvising around a document that was never made to accept typed answers in the first place.',
+        ],
+      ),
+    ],
+    relatedIntentPages: ['pdf-to-fillable-form', 'pdf-field-detection-tool', 'education-form-automation'],
+    relatedDocs: ['getting-started', 'detection', 'editor-workflow'],
   },
 ];

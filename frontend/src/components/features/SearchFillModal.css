@@ -185,6 +185,38 @@
   color: #475569;
 }
 
+.searchfill-targets__all-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.35);
+  background: rgba(236, 253, 245, 0.85);
+  cursor: pointer;
+}
+
+.searchfill-targets__all-toggle input {
+  margin: 0.18rem 0 0;
+}
+
+.searchfill-targets__all-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.searchfill-targets__all-label strong {
+  font-size: 0.92rem;
+  color: #0f172a;
+}
+
+.searchfill-targets__all-help {
+  font-size: 0.75rem;
+  color: #475569;
+}
+
 .searchfill-field {
   display: flex;
   flex-direction: column;

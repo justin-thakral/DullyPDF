@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect, react-hooks/preserve-manual-memoization */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Dialog, DialogCloseButton } from '../ui/Dialog';
 import { Alert } from '../ui/Alert';
@@ -365,10 +366,12 @@ function ResponsesPanel({
   const [query, setQuery] = useState('');
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [downloadingPath, setDownloadingPath] = useState<string | null>(null);
+  const [downloadingPacketResponseId, setDownloadingPacketResponseId] = useState<string | null>(null);
   const previousQueryRef = useRef('');
   const skipNextQueryEffectRef = useRef(false);
   const onRefreshRef = useRef(onRefresh);
   const onSearchResponsesRef = useRef(onSearchResponses);
+  const isGroupLink = (link?.scopeType ?? '') === 'group';
 
   useEffect(() => {
     onRefreshRef.current = onRefresh;
@@ -384,6 +387,7 @@ function ResponsesPanel({
       setQuery('');
       setDownloadError(null);
       setDownloadingPath(null);
+      setDownloadingPacketResponseId(null);
       previousQueryRef.current = '';
       return;
     }
@@ -401,6 +405,28 @@ function ResponsesPanel({
       setDownloadError(error instanceof Error ? error.message : 'Failed to download file.');
     } finally {
       setDownloadingPath((current) => (current === downloadPath ? null : current));
+    }
+  }
+
+  async function handleGroupPacketDownload(response: FillLinkResponse) {
+    if (!link?.id) return;
+    setDownloadError(null);
+    setDownloadingPacketResponseId(response.id);
+    try {
+      const { blob, filename } = await ApiService.downloadOwnerFillLinkResponsePacket(link.id, response.id);
+      const objectUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      const baseName = (link.title || link.groupName || 'fill-link-response').replace(/[^a-zA-Z0-9._-]+/g, '_');
+      anchor.download = filename || `${baseName}.zip`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      setDownloadError(error instanceof Error ? error.message : 'Failed to download group packet.');
+    } finally {
+      setDownloadingPacketResponseId((current) => (current === response.id ? null : current));
     }
   }
 
@@ -555,6 +581,17 @@ function ResponsesPanel({
                     {downloadingPath === response.linkedSigning.artifacts.disputePackage.downloadPath
                       ? 'Downloading…'
                       : 'Full package'}
+                  </button>
+                ) : null}
+                {isGroupLink ? (
+                  <button
+                    type="button"
+                    className="ui-button ui-button--primary ui-button--compact"
+                    onClick={() => void handleGroupPacketDownload(response)}
+                    disabled={downloadingPacketResponseId === response.id}
+                    title="Download every PDF in this group from this respondent submission."
+                  >
+                    {downloadingPacketResponseId === response.id ? 'Generating…' : 'Generate packet'}
                   </button>
                 ) : null}
                 <button
@@ -2159,6 +2196,7 @@ export function FillLinkManagerDialog({
             hasPrefilledFieldValues={false}
             sourceLoading={groupBuilderLoading}
             allowCustomQuestions={false}
+            showRespondentPdfDownloadToggle
             link={groupLink}
             responses={groupResponses}
             loadingLink={groupLoadingLink}

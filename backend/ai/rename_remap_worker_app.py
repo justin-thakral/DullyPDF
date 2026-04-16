@@ -42,6 +42,7 @@ from backend.services.mapping_service import (
     prepare_incremental_remap_ai_payload,
     template_fields_to_rename_fields,
 )
+from backend.ai.image_fill_pipeline import run_image_fill
 from backend.services.pdf_service import get_pdf_page_count
 from backend.services.task_auth_service import resolve_task_audiences, verify_internal_oidc_token
 from backend.sessions.session_store import (
@@ -55,6 +56,7 @@ from .status import (
     OPENAI_JOB_STATUS_FAILED,
     OPENAI_JOB_STATUS_QUEUED,
     OPENAI_JOB_STATUS_RUNNING,
+    OPENAI_JOB_TYPE_IMAGE_FILL,
     OPENAI_JOB_TYPE_RENAME_REMAP,
 )
 
@@ -1147,6 +1149,208 @@ async def run_remap_job(
         raise HTTPException(
             status_code=500,
             detail="Schema mapping worker failed; retrying",
+            headers=_retry_headers(),
+        ) from exc
+
+
+# ---------------------------------------------------------------------------
+# Image fill job models + handler
+# ---------------------------------------------------------------------------
+
+
+class ImageFillJobRequest(BaseModel):
+    jobId: str = Field(..., min_length=1)
+    sessionId: str = Field(..., min_length=1)
+    userId: str = Field(..., min_length=1)
+    userRole: Optional[str] = None
+    fields: List[Dict[str, Any]]
+    gcsFileUris: List[str] = Field(..., min_length=1)
+    credits: int = 0
+    creditsCharged: bool = False
+    creditBreakdown: Optional[Dict[str, int]] = None
+
+
+def _bind_image_fill_payload_to_job(
+    payload: ImageFillJobRequest,
+    job: Dict[str, Any],
+) -> ImageFillJobRequest:
+    trusted_user_id = str(job.get("user_id") or "").strip()
+    if not trusted_user_id:
+        raise ValueError("Image fill job metadata is incomplete")
+    if payload.userId != trusted_user_id:
+        raise ValueError("Image fill job user mismatch")
+
+    stored_session_id = str(job.get("session_id") or "").strip()
+    if stored_session_id and payload.sessionId != stored_session_id:
+        raise ValueError("Image fill job session mismatch")
+
+    stored_credit_breakdown = job.get("credit_breakdown")
+    if not isinstance(stored_credit_breakdown, dict):
+        stored_credit_breakdown = payload.creditBreakdown
+
+    return payload.model_copy(
+        update={
+            "sessionId": stored_session_id or payload.sessionId,
+            "userId": trusted_user_id,
+            "userRole": str(job.get("user_role") or "").strip() or payload.userRole,
+            "credits": int(job.get("credits") or payload.credits or 0),
+            "creditsCharged": bool(job.get("credits_charged")) if "credits_charged" in job else payload.creditsCharged,
+            "creditBreakdown": stored_credit_breakdown,
+        },
+    )
+
+
+def _download_gcs_files(gcs_uris: List[str]) -> List[Dict[str, Any]]:
+    """Download files from GCS URIs and return as list of {filename, bytes}."""
+    from google.cloud import storage as gcs_storage
+
+    client = gcs_storage.Client()
+    files: List[Dict[str, Any]] = []
+    for uri in gcs_uris:
+        if not uri.startswith("gs://"):
+            raise ValueError(f"Invalid GCS URI: {uri}")
+        path = uri[5:]
+        bucket_name, _, blob_name = path.partition("/")
+        if not bucket_name or not blob_name:
+            raise ValueError(f"Invalid GCS URI: {uri}")
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(blob_name)
+        data = blob.download_as_bytes()
+        filename = blob_name.rsplit("/", 1)[-1] if "/" in blob_name else blob_name
+        files.append({"filename": filename, "bytes": data})
+    return files
+
+
+@app.post("/internal/image-fill")
+async def run_image_fill_job(
+    payload: ImageFillJobRequest,
+    authorization: Optional[str] = Header(default=None),
+    x_cloud_tasks_taskretrycount: Optional[str] = Header(
+        default=None,
+        alias="X-CloudTasks-TaskRetryCount",
+    ),
+) -> Dict[str, Any]:
+    try:
+        _require_internal_auth(authorization)
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, str) else "Image fill worker request rejected"
+        logger.warning("Image fill job %s rejected before start: %s", payload.jobId, detail)
+        raise
+
+    job = get_openai_job(payload.jobId)
+    if not job:
+        logger.warning("Image fill job %s rejected: metadata not found", payload.jobId)
+        return _reject_job_request(payload.jobId, "Image fill job metadata not found", source="image_fill.worker")
+
+    status = str(job.get("status") or "").strip().lower()
+    if status == OPENAI_JOB_STATUS_COMPLETE:
+        return {"jobId": payload.jobId, "status": OPENAI_JOB_STATUS_COMPLETE}
+    if status == OPENAI_JOB_STATUS_FAILED:
+        return {
+            "jobId": payload.jobId,
+            "status": OPENAI_JOB_STATUS_FAILED,
+            "error": job.get("error") or "Image fill job failed",
+        }
+
+    try:
+        payload = _bind_image_fill_payload_to_job(payload, job)
+    except ValueError as exc:
+        logger.warning("Image fill job %s rejected: %s", payload.jobId, exc)
+        return _reject_job_request(payload.jobId, str(exc), source="image_fill.worker")
+
+    retry_count = _parse_retry_count(x_cloud_tasks_taskretrycount)
+    attempt_count = retry_count + 1
+
+    update_openai_job(
+        job_id=payload.jobId,
+        status=OPENAI_JOB_STATUS_RUNNING,
+        error="",
+        started_at=now_iso(),
+        attempt_count=attempt_count,
+    )
+
+    def _fail_image_fill(message: str) -> Dict[str, Any]:
+        return _finish_failure(
+            job_id=payload.jobId,
+            user_id=payload.userId,
+            user_role=payload.userRole,
+            credits=payload.credits,
+            credits_charged=payload.creditsCharged,
+            request_id=payload.jobId,
+            credit_breakdown=payload.creditBreakdown,
+            message=message,
+            source="image_fill.worker",
+            attempt_count=attempt_count,
+        )
+
+    try:
+        user = RequestUser(
+            uid=payload.userId,
+            app_user_id=payload.userId,
+            role=payload.userRole,
+        )
+        entry = _get_session_entry(
+            payload.sessionId,
+            user,
+            include_result=True,
+            include_renames=False,
+            include_checkbox_rules=False,
+            force_l2=True,
+        )
+        pdf_bytes = entry.get("pdf_bytes")
+        if not pdf_bytes:
+            raise HTTPException(status_code=404, detail="Session PDF not found")
+
+        uploaded_files = _download_gcs_files(payload.gcsFileUris)
+
+        result = run_image_fill(
+            uploaded_files=uploaded_files,
+            template_pdf_bytes=pdf_bytes,
+            fields=payload.fields,
+        )
+
+        credit_pricing = job.get("credit_pricing")
+        job_result = {
+            "success": True,
+            "fields": result.get("fields", []),
+            "usage": result.get("usage", {}),
+            "creditPricing": credit_pricing if isinstance(credit_pricing, dict) else {},
+        }
+        update_openai_job(
+            job_id=payload.jobId,
+            status=OPENAI_JOB_STATUS_COMPLETE,
+            error="",
+            result=job_result,
+            completed_at=now_iso(),
+            attempt_count=attempt_count,
+        )
+        return {
+            "jobId": payload.jobId,
+            "status": OPENAI_JOB_STATUS_COMPLETE,
+            "fieldCount": len(result.get("fields", [])),
+        }
+    except HTTPException as exc:
+        detail = exc.detail if isinstance(exc.detail, str) else "Image fill job rejected"
+        if exc.status_code < 500 or _should_finalize_failure(retry_count):
+            logger.warning("Image fill job %s failed: %s", payload.jobId, detail)
+            return _fail_image_fill(str(detail))
+        raise HTTPException(
+            status_code=500,
+            detail="Image fill worker failed; retrying",
+            headers=_retry_headers(),
+        ) from exc
+    except Exception as exc:
+        if is_insufficient_quota_error(exc):
+            message = f"OpenAI insufficient_quota: {exc}"
+            logger.warning("Image fill job %s terminal failure: %s", payload.jobId, message)
+            return _fail_image_fill(message)
+        logger.exception("Image fill job %s failed: %s", payload.jobId, exc)
+        if _should_finalize_failure(retry_count):
+            message = f"Image fill failed after {retry_count + 1} attempts: {exc}"
+            return _fail_image_fill(message)
+        raise HTTPException(
+            status_code=500,
+            detail="Image fill worker failed; retrying",
             headers=_retry_headers(),
         ) from exc
 

@@ -20,24 +20,19 @@ from backend.ai.credit_pricing import (
     compute_credit_pricing,
     compute_image_fill_credits,
 )
-from backend.ai.image_fill_pipeline import run_image_fill
-from backend.ai.rename_pipeline import run_openai_rename_on_pdf
 from backend.ai.openai_usage import build_openai_usage_summary
-from backend.ai.schema_mapping import (
-    build_allowlist_payload,
-    call_openai_schema_mapping_chunked,
-    validate_payload_size,
-)
 from backend.ai.status import (
     OPENAI_JOB_STATUS_COMPLETE,
     OPENAI_JOB_STATUS_FAILED,
     OPENAI_JOB_STATUS_QUEUED,
     OPENAI_JOB_STATUS_RUNNING,
+    OPENAI_JOB_TYPE_IMAGE_FILL,
     OPENAI_JOB_TYPE_REMAP,
     OPENAI_JOB_TYPE_RENAME,
     OPENAI_JOB_TYPE_RENAME_REMAP,
 )
 from backend.ai.tasks import (
+    enqueue_openai_image_fill_task,
     enqueue_openai_remap_task,
     enqueue_openai_rename_task,
     enqueue_openai_rename_remap_task,
@@ -606,6 +601,9 @@ async def rename_fields_ai(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     """Run OpenAI rename using cached PDF bytes and overlay tags."""
+    from backend.ai.rename_pipeline import run_openai_rename_on_pdf
+    from backend.ai.schema_mapping import build_allowlist_payload, validate_payload_size
+
     user = _resolve_user_from_request(request, authorization)
 
     entry = _get_session_entry(
@@ -910,6 +908,9 @@ async def rename_remap_fields_ai(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     """Run one schema-aware OpenAI rename pass and derive mapping results locally."""
+    from backend.ai.rename_pipeline import run_openai_rename_on_pdf
+    from backend.ai.schema_mapping import build_allowlist_payload, validate_payload_size
+
     user = _resolve_user_from_request(request, authorization)
 
     entry = _get_session_entry(
@@ -1216,6 +1217,12 @@ async def map_schema_ai(
     authorization: Optional[str] = Header(default=None),
 ) -> Dict[str, Any]:
     """Run OpenAI mapping using schema metadata + template overlay tags."""
+    from backend.ai.schema_mapping import (
+        build_allowlist_payload,
+        call_openai_schema_mapping_chunked,
+        validate_payload_size,
+    )
+
     user = _resolve_user_from_request(request, authorization)
     schema = get_schema(payload.schemaId, user.app_user_id)
     if not schema:
@@ -1560,6 +1567,28 @@ async def get_schema_mapping_job_status(
     return _build_openai_job_response(job_id=job_id, job=job)
 
 
+def _upload_image_fill_files_to_gcs(
+    job_id: str,
+    uploaded_files: List[Dict[str, Any]],
+) -> List[str]:
+    """Upload image fill files to the session bucket and return GCS URIs."""
+    from google.cloud import storage as gcs_storage
+
+    bucket_name = os.getenv("SANDBOX_SESSION_BUCKET", "")
+    if not bucket_name:
+        raise RuntimeError("SANDBOX_SESSION_BUCKET is not configured")
+    client = gcs_storage.Client()
+    bucket = client.bucket(bucket_name)
+    uris: List[str] = []
+    for i, item in enumerate(uploaded_files):
+        filename = item["filename"]
+        blob_name = f"image-fill/{job_id}/{i}_{filename}"
+        blob = bucket.blob(blob_name)
+        blob.upload_from_string(item["bytes"], content_type="application/octet-stream")
+        uris.append(f"gs://{bucket_name}/{blob_name}")
+    return uris
+
+
 @router.post("/api/ai/extract-from-documents")
 async def extract_from_documents(
     request: Request,
@@ -1571,7 +1600,6 @@ async def extract_from_documents(
     """Extract field values from uploaded images/documents using OpenAI vision."""
     user = _resolve_user_from_request(request, authorization)
 
-    # Fetch session to get template PDF bytes
     entry = _get_session_entry(
         session_id,
         user,
@@ -1590,7 +1618,6 @@ async def extract_from_documents(
         session_entry=entry,
     )
 
-    # Parse fields from JSON
     try:
         fields = json.loads(fields_json)
     except (json.JSONDecodeError, TypeError) as exc:
@@ -1598,7 +1625,6 @@ async def extract_from_documents(
     if not isinstance(fields, list) or not fields:
         raise HTTPException(status_code=400, detail="No fields provided")
 
-    # Rate limit
     window_seconds = _safe_positive_int_env("OPENAI_IMAGE_FILL_RATE_LIMIT_WINDOW_SECONDS", 60)
     user_rate = _safe_positive_int_env("OPENAI_IMAGE_FILL_RATE_LIMIT_PER_USER", 6)
     if not check_rate_limit(
@@ -1609,12 +1635,11 @@ async def extract_from_documents(
     ):
         raise HTTPException(status_code=429, detail="Rate limit exceeded for user")
 
-    # Read and validate uploaded files first (needed to compute credits)
     max_files = 10
     if len(files) > max_files:
         raise HTTPException(status_code=400, detail=f"Maximum {max_files} files allowed")
 
-    max_file_size = 20 * 1024 * 1024  # 20 MB per file
+    max_file_size = 20 * 1024 * 1024
     uploaded_files: List[Dict[str, Any]] = []
     image_count = 0
     doc_page_counts: List[int] = []
@@ -1634,7 +1659,6 @@ async def extract_from_documents(
         else:
             image_count += 1
 
-    # Compute credits based on uploaded file types
     credit_pricing = compute_image_fill_credits(
         image_count=image_count,
         doc_page_counts=doc_page_counts,
@@ -1658,28 +1682,102 @@ async def extract_from_documents(
             detail=f"OpenAI credits exhausted (remaining={remaining}, required={credits_required})",
         )
 
-    # Run the pipeline
+    job_id = uuid.uuid4().hex
+    task_config = resolve_openai_rename_remap_task_config()
+
     try:
-        result = run_image_fill(
-            uploaded_files=uploaded_files,
-            template_pdf_bytes=pdf_bytes,
-            fields=fields,
+        create_openai_job(
+            job_id=job_id,
+            request_id=job_id,
+            job_type=OPENAI_JOB_TYPE_IMAGE_FILL,
+            user_id=user.app_user_id,
+            session_id=session_id,
+            status=OPENAI_JOB_STATUS_QUEUED,
+            queue=task_config.get("queue"),
+            service_url=task_config.get("service_url"),
+            credits=credits_required,
+            credit_pricing=credit_pricing.to_dict(),
+            credits_charged=credits_charged,
+            credit_breakdown=credit_breakdown,
+            user_role=user.role,
         )
+    except OpenAiJobAlreadyExistsError:
+        raise HTTPException(status_code=409, detail="Image fill job already exists")
+
+    try:
+        gcs_uris = _upload_image_fill_files_to_gcs(job_id, uploaded_files)
     except Exception as exc:
         _refund_credits_if_charged(
             user_id=user.app_user_id,
             role=user.role,
             credits=credits_required,
             charged=credits_charged,
-            source="image_fill.pipeline",
+            source="image_fill.upload",
             credit_breakdown=credit_breakdown,
         )
-        logger.exception("Image fill pipeline failed")
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+        update_openai_job(
+            job_id=job_id,
+            status=OPENAI_JOB_STATUS_FAILED,
+            error=f"Failed to upload files: {exc}",
+            completed_at=now_iso(),
+        )
+        logger.exception("Image fill GCS upload failed")
+        raise HTTPException(status_code=500, detail="Failed to upload files for processing") from exc
+
+    try:
+        task_name = enqueue_openai_image_fill_task(
+            {
+                "jobId": job_id,
+                "sessionId": session_id,
+                "userId": user.app_user_id,
+                "userRole": user.role,
+                "fields": fields,
+                "gcsFileUris": gcs_uris,
+                "credits": credits_required,
+                "creditsCharged": credits_charged,
+                "creditBreakdown": credit_breakdown,
+            },
+        )
+        update_openai_job(job_id=job_id, task_name=task_name)
+    except Exception as exc:
+        _refund_credits_if_charged(
+            user_id=user.app_user_id,
+            role=user.role,
+            credits=credits_required,
+            charged=credits_charged,
+            source="image_fill.enqueue",
+            credit_breakdown=credit_breakdown,
+        )
+        update_openai_job(
+            job_id=job_id,
+            status=OPENAI_JOB_STATUS_FAILED,
+            error=f"Failed to enqueue job: {exc}",
+            completed_at=now_iso(),
+        )
+        logger.exception("Image fill task enqueue failed")
+        raise HTTPException(status_code=500, detail="Failed to enqueue image fill job") from exc
 
     return {
         "success": True,
-        "fields": result.get("fields", []),
-        "usage": result.get("usage", {}),
+        "jobId": job_id,
+        "sessionId": session_id,
+        "status": OPENAI_JOB_STATUS_QUEUED,
         "creditPricing": credit_pricing.to_dict(),
     }
+
+
+@router.get("/api/image-fill/ai/{job_id}")
+async def get_image_fill_job_status(
+    request: Request,
+    job_id: str,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    user = _resolve_user_from_request(request, authorization)
+    job = get_openai_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Image fill job not found")
+    if str(job.get("job_type") or "") != OPENAI_JOB_TYPE_IMAGE_FILL:
+        raise HTTPException(status_code=404, detail="Image fill job not found")
+    if str(job.get("user_id") or "") != user.app_user_id:
+        raise HTTPException(status_code=403, detail="Image fill job access denied")
+    return _build_openai_job_response(job_id=job_id, job=job)

@@ -2,11 +2,17 @@ import { useEffect, useMemo } from 'react';
 import { getBlogPost } from '../../config/blogPosts';
 import { getBlogPostSeo } from '../../config/blogSeo';
 import { getIntentPage } from '../../config/intentPages';
+import { ESIGN_PIPELINE_DEMO_VIDEO } from '../../config/publicVideoContent';
 import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
 import { applyNoIndexSeo, applySeoMetadata } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
+import PublicVideoPanel from './PublicVideoPanel';
 import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import './BlogPostPage.css';
+
+const BLOG_POST_VIDEOS: Record<string, typeof ESIGN_PIPELINE_DEMO_VIDEO> = {
+  'send-pdf-for-signature-by-email-or-web-form': ESIGN_PIPELINE_DEMO_VIDEO,
+};
 
 type BlogPostPageProps = {
   slug: string;
@@ -75,6 +81,7 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
   const publishedDateLabel = formatDisplayDate(post.publishedDate);
   const updatedDateLabel = formatDisplayDate(post.updatedDate);
   const showUpdatedDate = post.updatedDate !== post.publishedDate;
+  const postVideo = BLOG_POST_VIDEOS[post.slug] ?? null;
 
   return (
     <PublicSiteFrame activeNavKey="blog" bodyClassName="blog-post__content">
@@ -117,6 +124,8 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                 </div>
               ) : null}
             </header>
+
+            {postVideo ? <PublicVideoPanel {...postVideo} /> : null}
 
             {post.sections.map((section) => (
               <section key={section.id} id={section.id} className="blog-post__section">

@@ -5,7 +5,6 @@ import os
 import re
 from typing import Any, Dict, List, MutableSequence, Optional
 
-from backend.ai.openai_client import create_openai_client
 from backend.ai.openai_usage import normalize_chat_usage
 from backend.logging_config import get_logger
 
@@ -281,6 +280,8 @@ def call_openai_schema_mapping(
         "- Do not map one templateTag to multiple schemaField values.\n"
         "- If no confident mappings exist, return an empty mappings list.\n"
     )
+
+    from backend.ai.openai_client import create_openai_client
 
     client = create_openai_client(api_key=key, max_retries_override=openai_max_retries)
     base_req = {

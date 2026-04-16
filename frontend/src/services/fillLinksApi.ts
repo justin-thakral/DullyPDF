@@ -256,6 +256,7 @@ export function normalizeFillLinkSummary(link: FillLinkSummary | null | undefine
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function normalizePublicFillLinkSubmitResult(payload: any): PublicFillLinkSubmitResult {
   const download = payload?.download && typeof payload.download === 'object'
     ? payload.download as { enabled?: unknown; downloadPath?: unknown; mode?: unknown }
@@ -478,6 +479,7 @@ export class FillLinksApiService {
           : buildFillLinkSubmitAttemptId(),
       }),
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await apiJsonFetch<any>(response);
     return normalizePublicFillLinkSubmitResult(result);
   }
@@ -496,6 +498,7 @@ export class FillLinksApiService {
       },
       body: JSON.stringify(payload),
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await apiJsonFetch<any>(response);
     return {
       success: Boolean(result?.success),
@@ -537,6 +540,41 @@ export class FillLinksApiService {
     });
     if (!response.ok) {
       throw new Error(`Failed to download submitted PDF: ${response.statusText}`);
+    }
+    return {
+      blob: await response.blob(),
+      filename: parseDownloadFilename(response.headers.get('content-disposition')),
+    };
+  }
+
+  /**
+   * Phase 3: Owner-side packet download for a group Fill By Link response.
+   *
+   * Calls ``GET /api/fill-links/{linkId}/responses/{responseId}/packet`` which
+   * materializes every PDF in the group's publish snapshot from a single
+   * stored respondent submission and returns them as a zip archive. Used by
+   * the workspace "Generate packet" button.
+   */
+  static async downloadOwnerFillLinkResponsePacket(
+    linkId: string,
+    responseId: string,
+    options?: AbortableRequestOptions,
+  ): Promise<{ blob: Blob; filename: string | null }> {
+    const requestPath = `/api/fill-links/${encodeURIComponent(linkId)}/responses/${encodeURIComponent(responseId)}/packet`;
+    const response = await apiFetch('GET', requestPath, {
+      ...buildAbortOptions(options?.signal),
+    });
+    if (!response.ok) {
+      let detail = response.statusText;
+      try {
+        const body = await response.clone().json();
+        if (body && typeof body === 'object' && typeof body.detail === 'string') {
+          detail = body.detail;
+        }
+      } catch {
+        // body is not JSON; fall back to statusText
+      }
+      throw new Error(`Failed to download group packet: ${detail}`);
     }
     return {
       blob: await response.blob(),

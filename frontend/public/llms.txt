@@ -1,0 +1,73 @@
+# DullyPDF
+
+> AI-powered PDF form automation: convert existing PDFs into fillable templates, fill them from data, collect answers by web form or API, and add U.S. e-signatures.
+
+DullyPDF turns raw PDFs into reusable fillable templates using AI field detection. It is built for recurring document workflows — not one-time edits or page redesign. Upload a PDF, review detected fields, clean the template in the editor, then fill it from structured data, respondent submissions, or API calls.
+
+## Core Workflows
+
+- [PDF to Fillable Form](https://dullypdf.com/pdf-to-fillable-form): Upload a raw PDF, detect candidate fields with AI, refine geometry and names in the editor, and save a reusable template.
+- [Search & Fill from CSV](https://dullypdf.com/fill-pdf-from-csv): Map PDF fields to CSV, Excel, JSON, or TXT schema headers, then search rows and fill the template. Data stays in the browser.
+- [Fill By Link](https://dullypdf.com/fill-pdf-by-link): Publish a hosted web form for respondents to answer. Their responses fill the PDF when the owner generates it.
+- [API Fill](https://dullypdf.com/pdf-fill-api): Expose a template-scoped JSON-to-PDF endpoint with auth key management, rate limiting, and schema downloads.
+- [E-Sign Workflow](https://dullypdf.com/esign-ueta-pdf-workflow): Route filled PDFs into email-based signature requests with immutable record freezing under U.S. E-SIGN and UETA.
+- [Fill from Images](https://dullypdf.com/usage-docs/fill-from-images): Upload photos of IDs, invoices, or scanned documents and let AI vision extract data into template fields.
+- [Batch Fill](https://dullypdf.com/batch-fill-pdf-forms): Fill multiple records or entire document packets from a single data source.
+
+## Detection and Editing
+
+- AI field detection uses the CommonForms model with confidence scoring for text, checkbox, radio, date, and signature fields.
+- The visual editor supports resize, rename, reposition, type normalization, checkbox group management, and radio button editing.
+- OpenAI-powered Rename + Map aligns field names to schema headers automatically.
+
+## Industry Solutions
+
+- [Healthcare](https://dullypdf.com/healthcare-pdf-automation): Medicare enrollment, patient-health claims and appeals, dental intake, and HIPAA-adjacent healthcare workflows.
+- [Insurance](https://dullypdf.com/insurance-pdf-automation): ACORD 25/24/27/28/126/140 certificates and carrier-specific forms.
+- [ACORD Forms](https://dullypdf.com/acord-form-automation): Certificate of insurance and ACORD-first workflows.
+- [Real Estate](https://dullypdf.com/real-estate-pdf-automation): Rental applications, lease agreements, mortgage packets.
+- [Government](https://dullypdf.com/government-form-automation): Permits, tax forms, licensing applications.
+- [Finance & Loans](https://dullypdf.com/finance-loan-pdf-automation): Loan applications and financial disclosure workflows.
+- [HR & Onboarding](https://dullypdf.com/hr-pdf-automation): New hire paperwork, benefits enrollment, compliance forms.
+- [Legal](https://dullypdf.com/legal-pdf-workflow-automation): Contracts, filings, and case packet automation.
+- [Education](https://dullypdf.com/education-form-automation): Student applications and enrollment workflows.
+- [Nonprofit](https://dullypdf.com/nonprofit-pdf-form-automation): Grant applications, volunteer intake, donor forms.
+- [Logistics](https://dullypdf.com/logistics-pdf-automation): Bills of lading, delivery receipts, transport paperwork.
+
+## Documentation
+
+- [Getting Started](https://dullypdf.com/usage-docs/getting-started): End-to-end quick start from upload to filled PDF.
+- [Detection](https://dullypdf.com/usage-docs/detection): Field detection confidence, cleanup, and review.
+- [Editor Workflow](https://dullypdf.com/usage-docs/editor-workflow): Editor tools, field properties, and template refinement.
+- [Rename & Mapping](https://dullypdf.com/usage-docs/rename-mapping): AI field renaming and schema alignment.
+- [Search & Fill](https://dullypdf.com/usage-docs/search-fill): Row-based filling from structured data sources.
+- [Fill By Link](https://dullypdf.com/usage-docs/fill-by-link): Respondent form publishing and answer collection.
+- [API Fill](https://dullypdf.com/usage-docs/api-fill): Endpoint management, auth keys, and schema.
+- [Signature Workflow](https://dullypdf.com/usage-docs/signature-workflow): Signing process, guardrails, and compliance scope.
+- [Template Groups](https://dullypdf.com/usage-docs/create-group): Batch operations across document packets.
+- [Fill from Images](https://dullypdf.com/usage-docs/fill-from-images): Vision-based extraction from photos and scanned documents.
+- [Save & Download](https://dullypdf.com/usage-docs/save-download-profile): Template persistence, profiles, and collaboration.
+- [Troubleshooting](https://dullypdf.com/usage-docs/troubleshooting): Detection, mapping, and fill issue diagnosis.
+
+## Plans
+
+- **Free**: 5 saved forms, 5 detect pages, 50 fillable pages, 25 Fill By Link responses/month, 1 API endpoint (250 fills/month), 25 signing requests/month.
+- **Premium**: 100 saved forms, 100 detect pages, 1,000 fillable pages, 10,000 Fill By Link responses/month, 20 API endpoints (10,000 fills/month), 10,000 signing requests/month.
+
+## Blog
+
+- [Blog Index](https://dullypdf.com/blog)
+
+## Links
+
+- [Homepage](https://dullypdf.com/)
+- [Free Features](https://dullypdf.com/free-features)
+- [Premium Features](https://dullypdf.com/premium-features)
+- [Workflow Library](https://dullypdf.com/workflows)
+- [Industry Solutions](https://dullypdf.com/industries)
+- [Privacy Policy](https://dullypdf.com/privacy)
+- [Terms of Service](https://dullypdf.com/terms)
+- [LinkedIn](https://www.linkedin.com/company/dullypdf)
+- [GitHub](https://github.com/justin-thakral/DullyPDF)
+- [YouTube](https://www.youtube.com/@DullyPDF)
+- [X](https://x.com/DullyPDF)

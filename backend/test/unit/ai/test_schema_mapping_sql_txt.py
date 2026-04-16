@@ -179,7 +179,7 @@ class TestSqlSchemaOpenAiRoundTrip:
         })
 
         client = _FakeOpenAIClient([_response_with_content(ai_response)])
-        mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+        mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
 
         payload = schema_mapping.build_allowlist_payload(SQL_SCHEMA_FIELDS, TEMPLATE_FIELDS)
         result = schema_mapping.call_openai_schema_mapping(payload)
@@ -211,7 +211,7 @@ class TestSqlSchemaOpenAiRoundTrip:
         })
 
         client = _FakeOpenAIClient([_response_with_content(ai_response)])
-        mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+        mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
 
         payload = schema_mapping.build_allowlist_payload(TXT_SCHEMA_FIELDS, TEMPLATE_FIELDS)
         result = schema_mapping.call_openai_schema_mapping(payload)
@@ -233,7 +233,7 @@ class TestSqlSchemaOpenAiRoundTrip:
             _response_with_content(json.dumps({"mappings": [{"schemaField": "medication_1", "templateTag": "medication_1"}]})),
         ]
         client = _FakeOpenAIClient(effects)
-        mocker.patch("backend.ai.schema_mapping.create_openai_client", return_value=client)
+        mocker.patch("backend.ai.openai_client.create_openai_client", return_value=client)
 
         payload = schema_mapping.build_allowlist_payload(SQL_SCHEMA_FIELDS, TEMPLATE_FIELDS)
         usage_events = []

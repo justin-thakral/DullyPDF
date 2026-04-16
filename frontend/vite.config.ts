@@ -54,13 +54,27 @@ function formCatalogAssetDevPlugin() {
 
 function appRouteHydrationCoverPlugin() {
   const bootstrapScript = buildAppRouteHydrationCoverBootstrapScript();
+  const externalFileName = 'hydration-cover-bootstrap.js';
   return {
     name: 'dully-app-route-hydration-cover',
+    configureServer(server: { middlewares: { use: Function } }) {
+      server.middlewares.use(`/${externalFileName}`, (_req: unknown, res: { setHeader: Function; end: Function }) => {
+        res.setHeader('Content-Type', 'application/javascript');
+        res.end(bootstrapScript);
+      });
+    },
     transformIndexHtml(html: string) {
       return html.replace(
-        '__DULLY_APP_ROUTE_HYDRATION_COVER_BOOTSTRAP__',
-        bootstrapScript,
+        /(<script\s+data-app-route-hydration-cover="true">)[\s\S]*?(<\/script>)/,
+        `<script data-app-route-hydration-cover="true" src="/${externalFileName}"></script>`,
       );
+    },
+    generateBundle() {
+      (this as any).emitFile({
+        type: 'asset',
+        fileName: externalFileName,
+        source: bootstrapScript,
+      });
     },
   };
 }

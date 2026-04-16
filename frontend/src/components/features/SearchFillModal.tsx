@@ -147,6 +147,7 @@ export default function SearchFillModal({
   const [localError, setLocalError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedFillTargetIds, setSelectedFillTargetIds] = useState<string[]>([]);
+  const [fillAllInGroup, setFillAllInGroup] = useState<boolean>(true);
 
   const canSearchAnyColumn = true;
   const hasRows = rows.length > 0;
@@ -397,9 +398,10 @@ export default function SearchFillModal({
     setLocalError(null);
     setSearchMode(presetMode);
     setHasSearched(false);
-    const defaultTargetId = fillTargetDefaultsRef.current.defaultTargetId;
-    const nextTargetIds = defaultTargetId ? [defaultTargetId] : [];
-    setSelectedFillTargetIds((prev) => (areStringArraysEqual(prev, nextTargetIds) ? prev : nextTargetIds));
+    setFillAllInGroup(true);
+    // Target list seeding is handled by the dedicated reconciliation effect
+    // below so that subsequent changes to `fillTargets` (group membership
+    // edits while the modal is open) do not clobber the search query / results.
   }, [
     availableKeys,
     identifierKey,
@@ -412,8 +414,12 @@ export default function SearchFillModal({
 
   useEffect(() => {
     if (!open) return;
+    const allTargetIds = resolvedFillTargets.map((target) => target.id);
     const defaultTargetId = fillTargetDefaultsRef.current.defaultTargetId;
     setSelectedFillTargetIds((prev) => {
+      if (fillAllInGroup && allTargetIds.length > 1) {
+        return areStringArraysEqual(prev, allTargetIds) ? prev : allTargetIds;
+      }
       const validTargetIds = prev.filter((targetId) => fillTargetLookup.has(targetId));
       if (validTargetIds.length > 0) {
         return areStringArraysEqual(prev, validTargetIds) ? prev : validTargetIds;
@@ -421,7 +427,7 @@ export default function SearchFillModal({
       const nextTargetIds = defaultTargetId ? [defaultTargetId] : [];
       return areStringArraysEqual(prev, nextTargetIds) ? prev : nextTargetIds;
     });
-  }, [fillTargetIdsKey, fillTargetLookup, open]);
+  }, [fillAllInGroup, fillTargetIdsKey, fillTargetLookup, open]);
 
   useEffect(() => {
     if (!open) {
@@ -462,6 +468,22 @@ export default function SearchFillModal({
       return prev.filter((value) => value !== targetId);
     });
   }, []);
+
+  const handleFillAllInGroupToggle = useCallback((checked: boolean) => {
+    setFillAllInGroup(checked);
+    if (checked) {
+      const allTargetIds = resolvedFillTargets.map((target) => target.id);
+      setSelectedFillTargetIds((prev) =>
+        areStringArraysEqual(prev, allTargetIds) ? prev : allTargetIds,
+      );
+      return;
+    }
+    const defaultTargetId = fillTargetDefaultsRef.current.defaultTargetId;
+    if (!defaultTargetId) return;
+    setSelectedFillTargetIds((prev) =>
+      areStringArraysEqual(prev, [defaultTargetId]) ? prev : [defaultTargetId],
+    );
+  }, [fillTargetIdsKey]);
 
   const handleSelectCurrentTarget = useCallback(() => {
     const targetId = activeFillTargetId && fillTargetLookup.has(activeFillTargetId)
@@ -529,53 +551,78 @@ export default function SearchFillModal({
 
         {hasGroupFillTargets ? (
           <section className="searchfill-targets" aria-label="Fill targets">
-            <div className="searchfill-targets__header">
-              <div>
-                <p className="searchfill-targets__eyebrow">Fill targets</p>
-                <h3>Select which PDFs receive the row</h3>
-              </div>
-              <div className="searchfill-actions">
-                <button
-                  type="button"
-                  className="ui-button ui-button--ghost ui-button--compact"
-                  onClick={handleSelectCurrentTarget}
-                  disabled={searching}
-                >
-                  Current PDF
-                </button>
-                <button
-                  type="button"
-                  className="ui-button ui-button--ghost ui-button--compact"
-                  onClick={handleSelectAllTargets}
-                  disabled={searching}
-                >
-                  All PDFs
-                </button>
-              </div>
-            </div>
-            <div className="searchfill-targets__list">
-              {resolvedFillTargets.map((target) => {
-                const checked = selectedFillTargetIds.includes(target.id);
-                const isCurrent = target.id === activeFillTargetId;
-                return (
-                  <label key={target.id} className="searchfill-targets__item">
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={(event) => toggleFillTarget(target.id, event.target.checked)}
-                      disabled={searching || (checked && selectedFillTargetIds.length === 1)}
-                    />
-                    <span className="searchfill-targets__name">
-                      {target.name}
-                      {isCurrent ? <em>Current</em> : null}
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
-            <p className="searchfill-targets__summary">
-              {selectedFillTargetIds.length} PDF{selectedFillTargetIds.length === 1 ? '' : 's'} selected
-            </p>
+            <label className="searchfill-targets__all-toggle">
+              <input
+                type="checkbox"
+                checked={fillAllInGroup}
+                onChange={(event) => handleFillAllInGroupToggle(event.target.checked)}
+                disabled={searching}
+                aria-describedby="searchfill-targets-all-help"
+              />
+              <span className="searchfill-targets__all-label">
+                <strong>
+                  Apply to all forms in this group ({resolvedFillTargets.length} PDFs)
+                </strong>
+                <span id="searchfill-targets-all-help" className="searchfill-targets__all-help">
+                  When off, choose individual PDFs below.
+                </span>
+              </span>
+            </label>
+            {!fillAllInGroup ? (
+              <>
+                <div className="searchfill-targets__header">
+                  <div>
+                    <p className="searchfill-targets__eyebrow">Fill targets</p>
+                    <h3>Select which PDFs receive the row</h3>
+                  </div>
+                  <div className="searchfill-actions">
+                    <button
+                      type="button"
+                      className="ui-button ui-button--ghost ui-button--compact"
+                      onClick={handleSelectCurrentTarget}
+                      disabled={searching}
+                    >
+                      Current PDF
+                    </button>
+                    <button
+                      type="button"
+                      className="ui-button ui-button--ghost ui-button--compact"
+                      onClick={handleSelectAllTargets}
+                      disabled={searching}
+                    >
+                      All PDFs
+                    </button>
+                  </div>
+                </div>
+                <div className="searchfill-targets__list">
+                  {resolvedFillTargets.map((target) => {
+                    const checked = selectedFillTargetIds.includes(target.id);
+                    const isCurrent = target.id === activeFillTargetId;
+                    return (
+                      <label key={target.id} className="searchfill-targets__item">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(event) => toggleFillTarget(target.id, event.target.checked)}
+                          disabled={searching || (checked && selectedFillTargetIds.length === 1)}
+                        />
+                        <span className="searchfill-targets__name">
+                          {target.name}
+                          {isCurrent ? <em>Current</em> : null}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+                <p className="searchfill-targets__summary">
+                  {selectedFillTargetIds.length} PDF{selectedFillTargetIds.length === 1 ? '' : 's'} selected
+                </p>
+              </>
+            ) : (
+              <p className="searchfill-targets__summary">
+                Will fill all {resolvedFillTargets.length} PDFs in this group from the selected row.
+              </p>
+            )}
           </section>
         ) : null}
 
@@ -745,7 +792,11 @@ export default function SearchFillModal({
                       onClick={() => void handleFill(result.row)}
                       disabled={searching}
                     >
-                      {hasGroupFillTargets ? 'Fill selected PDFs' : 'Fill PDF'}
+                      {hasGroupFillTargets
+                        ? (fillAllInGroup
+                            ? `Fill all ${resolvedFillTargets.length} PDFs`
+                            : 'Fill selected PDFs')
+                        : 'Fill PDF'}
                     </button>
                   </div>
                 );

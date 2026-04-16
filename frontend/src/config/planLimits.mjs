@@ -13,6 +13,12 @@
 
 const NUMBER_FORMATTER = new Intl.NumberFormat('en-US');
 
+// Phase 5 (D7/D8): API Fill `templateApiMaxPages` is the per-request page cap.
+// For group endpoints it gates the *sum* of pages across every template in the
+// group, so the typical immigration packet (~30 pages across 8 forms) needs
+// the cap to be at least 50 to fit on the free tier. Quota counts each
+// materialized PDF as 1 fill against `templateApiRequestsMonthlyMax`, so a
+// 7-PDF group fill burns 7 of your monthly fills.
 export const FREE_PLAN_LIMITS = Object.freeze({
   detectMaxPages: 5,
   fillableMaxPages: 50,
@@ -20,7 +26,7 @@ export const FREE_PLAN_LIMITS = Object.freeze({
   fillLinkResponsesMonthlyMax: 25,
   templateApiActiveMax: 1,
   templateApiRequestsMonthlyMax: 250,
-  templateApiMaxPages: 25,
+  templateApiMaxPages: 50,
   signingRequestsMonthlyMax: 25,
 });
 
@@ -31,7 +37,7 @@ export const PREMIUM_PLAN_LIMITS = Object.freeze({
   fillLinkResponsesMonthlyMax: 10000,
   templateApiActiveMax: 20,
   templateApiRequestsMonthlyMax: 10000,
-  templateApiMaxPages: 250,
+  templateApiMaxPages: 500,
   signingRequestsMonthlyMax: 10000,
 });
 
@@ -42,7 +48,7 @@ export const GOD_PLAN_LIMITS = Object.freeze({
   fillLinkResponsesMonthlyMax: 100000,
   templateApiActiveMax: 100,
   templateApiRequestsMonthlyMax: 100000,
-  templateApiMaxPages: 1000,
+  templateApiMaxPages: 2000,
   signingRequestsMonthlyMax: 100000,
 });
 

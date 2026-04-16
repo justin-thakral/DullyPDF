@@ -213,7 +213,7 @@ describe('SearchFillModal', () => {
     expect(screen.getByText('001 • Ada Lovelace')).toBeTruthy();
   });
 
-  it('supports selecting multiple group PDF targets before filling', async () => {
+  it('defaults a group context to "fill all forms" and submits every target on fill', async () => {
     const user = userEvent.setup();
     const onFillTargets = vi.fn();
     const onAfterFill = vi.fn();
@@ -235,14 +235,15 @@ describe('SearchFillModal', () => {
       />,
     );
 
-    expect(screen.getByText('Select which PDFs receive the row')).toBeTruthy();
-    expect(screen.getByText('1 PDF selected')).toBeTruthy();
-
-    await user.click(screen.getByRole('button', { name: 'All PDFs' }));
-    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+    // The "Apply to all forms in this group" master checkbox is on by default
+    // and the per-target picker is hidden in favor of a summary line.
+    const masterToggle = screen.getByRole('checkbox', { name: /apply to all forms in this group/i });
+    expect((masterToggle as HTMLInputElement).checked).toBe(true);
+    expect(screen.getByText('Will fill all 2 PDFs in this group from the selected row.')).toBeTruthy();
+    expect(screen.queryByText('Select which PDFs receive the row')).toBeNull();
 
     await runSearch('100');
-    await user.click(screen.getByRole('button', { name: 'Fill selected PDFs' }));
+    await user.click(screen.getByRole('button', { name: 'Fill all 2 PDFs' }));
 
     await waitFor(() => {
       expect(onFillTargets).toHaveBeenCalledWith(
@@ -257,8 +258,83 @@ describe('SearchFillModal', () => {
     });
   });
 
-  it('preserves the live search query and results when the active group target changes', async () => {
+  it('reveals the per-target picker when the master "fill all" checkbox is unchecked', async () => {
     const user = userEvent.setup();
+    const onFillTargets = vi.fn();
+    const onAfterFill = vi.fn();
+    const onClose = vi.fn();
+
+    render(
+      <SearchFillModal
+        {...buildProps({
+          rows: [{ mrn: '100', full_name: 'Ada Lovelace' }],
+          fillTargets: [
+            { id: 'tpl-a', name: 'Admissions Packet' },
+            { id: 'tpl-b', name: 'Consent Form' },
+            { id: 'tpl-c', name: 'Financial Disclosure' },
+          ],
+          activeFillTargetId: 'tpl-a',
+          onFillTargets,
+          onAfterFill,
+          onClose,
+        })}
+      />,
+    );
+
+    // Master toggle starts ON (all 3 selected, picker hidden).
+    expect(screen.queryByText('Select which PDFs receive the row')).toBeNull();
+
+    // Toggle the master checkbox OFF — picker reveals and only the active
+    // template is preselected (back to the single-target default behavior).
+    const masterToggle = screen.getByRole('checkbox', { name: /apply to all forms in this group/i });
+    await user.click(masterToggle);
+    expect((masterToggle as HTMLInputElement).checked).toBe(false);
+    expect(screen.getByText('Select which PDFs receive the row')).toBeTruthy();
+    expect(screen.getByText('1 PDF selected')).toBeTruthy();
+
+    // Manually pick a second target and run the fill.
+    const consentCheckbox = within(screen.getByText('Consent Form').closest('label') as HTMLElement)
+      .getByRole('checkbox');
+    await user.click(consentCheckbox);
+    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+
+    await runSearch('100');
+    await user.click(screen.getByRole('button', { name: 'Fill selected PDFs' }));
+
+    await waitFor(() => {
+      expect(onFillTargets).toHaveBeenCalledWith(
+        { mrn: '100', full_name: 'Ada Lovelace' },
+        ['tpl-a', 'tpl-b'],
+      );
+    });
+  });
+
+  it('toggling the master checkbox back ON reselects every target in the group', async () => {
+    const user = userEvent.setup();
+    render(
+      <SearchFillModal
+        {...buildProps({
+          rows: [{ mrn: '100', full_name: 'Ada Lovelace' }],
+          fillTargets: [
+            { id: 'tpl-a', name: 'Admissions Packet' },
+            { id: 'tpl-b', name: 'Consent Form' },
+          ],
+          activeFillTargetId: 'tpl-a',
+          onFillTargets: vi.fn(),
+        })}
+      />,
+    );
+
+    const masterToggle = screen.getByRole('checkbox', { name: /apply to all forms in this group/i });
+    await user.click(masterToggle); // off → picker visible
+    expect(screen.getByText('1 PDF selected')).toBeTruthy();
+    await user.click(masterToggle); // back on
+    expect((masterToggle as HTMLInputElement).checked).toBe(true);
+    expect(screen.queryByText('Select which PDFs receive the row')).toBeNull();
+    expect(screen.getByText('Will fill all 2 PDFs in this group from the selected row.')).toBeTruthy();
+  });
+
+  it('preserves the live search query and results when the active group target changes', async () => {
     const props = buildProps({
       rows: [{ mrn: '100', full_name: 'Ada Lovelace' }],
       fillTargets: [
@@ -270,8 +346,7 @@ describe('SearchFillModal', () => {
     });
     const { rerender } = render(<SearchFillModal {...props} />);
 
-    await user.click(screen.getByRole('button', { name: 'All PDFs' }));
-    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+    expect(screen.getByText('Will fill all 2 PDFs in this group from the selected row.')).toBeTruthy();
 
     await runSearch('100');
     expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
@@ -280,11 +355,10 @@ describe('SearchFillModal', () => {
 
     expect((screen.getByLabelText('Search') as HTMLInputElement).value).toBe('100');
     expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
-    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
+    expect(screen.getByText('Will fill all 2 PDFs in this group from the selected row.')).toBeTruthy();
   });
 
   it('drops removed group targets without clearing the current search session', async () => {
-    const user = userEvent.setup();
     const props = buildProps({
       rows: [{ mrn: '100', full_name: 'Ada Lovelace' }],
       fillTargets: [
@@ -296,9 +370,9 @@ describe('SearchFillModal', () => {
     });
     const { rerender } = render(<SearchFillModal {...props} />);
 
-    await user.click(screen.getByRole('button', { name: 'All PDFs' }));
+    expect(screen.getByText('Will fill all 2 PDFs in this group from the selected row.')).toBeTruthy();
+
     await runSearch('100');
-    expect(screen.getByText('2 PDFs selected')).toBeTruthy();
     expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
 
     rerender(
@@ -310,6 +384,8 @@ describe('SearchFillModal', () => {
 
     expect((screen.getByLabelText('Search') as HTMLInputElement).value).toBe('100');
     expect(screen.getByText('100 • Ada Lovelace')).toBeTruthy();
+    // Single-target context — no master checkbox, no per-target picker.
+    expect(screen.queryByRole('checkbox', { name: /apply to all forms in this group/i })).toBeNull();
     expect(screen.queryByText('Select which PDFs receive the row')).toBeNull();
     expect(screen.getByRole('button', { name: 'Fill PDF' })).toBeTruthy();
   });

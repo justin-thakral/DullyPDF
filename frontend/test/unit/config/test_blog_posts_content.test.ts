@@ -24,7 +24,7 @@ describe('blog post content', () => {
         }
 
         for (const figure of section.figures ?? []) {
-          expect(figure.src, `${post.slug}/${section.id} figure src should point at a public asset`).toMatch(/^\/(demo|blog)\//);
+          expect(figure.src, `${post.slug}/${section.id} figure src should point at a public asset`).toMatch(/^\/(demo|blog|seo)\//);
           expect(figure.alt.length, `${post.slug}/${section.id} figure alt text should be descriptive`).toBeGreaterThan(20);
           expect(figure.caption.length, `${post.slug}/${section.id} figure captions should add context`).toBeGreaterThan(20);
         }

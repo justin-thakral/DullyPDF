@@ -174,14 +174,6 @@
         "destination": "/app-shell.html"
       },
       {
-        "source": "/forms",
-        "destination": "/app-shell.html"
-      },
-      {
-        "source": "/forms/:slug",
-        "destination": "/app-shell.html"
-      },
-      {
         "source": "/ui",
         "destination": "/app-shell.html"
       },

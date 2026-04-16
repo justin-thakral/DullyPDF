@@ -156,7 +156,7 @@ describe('FeaturePlanPage', () => {
     await vi.dynamicImportSettled();
 
     expect(await screen.findByText('This account already has premium access. Use Profile in the workspace to manage cancellation or refills.')).toBeTruthy();
-    expect(screen.getByText(/20 active API Fill endpoints, 10,000 successful fills per month, and 250 pages per request/)).toBeTruthy();
+    expect(screen.getByText(/20 active API Fill endpoints, 10,000 successful fills per month, and 500 pages per request/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Buy Pro Monthly/ })).toBeNull();
   });
 });

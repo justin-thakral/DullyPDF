@@ -99,7 +99,7 @@ async function signIn(page) {
     const emailInput = document.querySelector('#auth-email');
     const uploadHeading = Array.from(document.querySelectorAll('*')).find((element) => element.textContent?.trim() === 'Upload PDF for Field Detection');
     const tryNowButton = Array.from(document.querySelectorAll('button'))
-      .find((button) => button.textContent?.trim() === 'Try Now');
+      .find((button) => button.textContent?.trim() === 'Detect Fields & Open the Form Workspace');
     const signInButton = Array.from(document.querySelectorAll('button'))
       .find((button) => button.textContent?.trim() === 'Sign in');
 
@@ -109,7 +109,7 @@ async function signIn(page) {
   const uploadHeading = page.getByText('Upload PDF for Field Detection');
   const isAlreadyAtLogin = await emailField.isVisible().catch(() => false);
   if (!isAlreadyAtLogin) {
-    const tryNowButton = page.getByRole('button', { name: 'Try Now' }).first();
+    const tryNowButton = page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' }).first();
     const headerSignIn = page.locator('.signin-button').first();
     if (await tryNowButton.isVisible().catch(() => false)) {
       await tryNowButton.click();
@@ -134,7 +134,7 @@ async function signIn(page) {
   await emailField.fill(email);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  await page.getByRole('button', { name: 'Try Now' }).waitFor({ timeout: 30000 });
+  await page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' }).waitFor({ timeout: 30000 });
 }
 
 async function openUploadView(page) {
@@ -144,7 +144,7 @@ async function openUploadView(page) {
   }
 
   const homeButton = page.getByRole('button', { name: 'Home' });
-  const tryNowButton = page.getByRole('button', { name: 'Try Now' });
+  const tryNowButton = page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' });
   if (await homeButton.isVisible().catch(() => false)) {
     await homeButton.click();
     await page.waitForTimeout(300);

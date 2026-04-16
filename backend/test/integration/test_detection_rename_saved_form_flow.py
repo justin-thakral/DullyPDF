@@ -323,7 +323,7 @@ def _integration_state(mocker, qa_user: RequestUser):
             ],
         )
 
-    mocker.patch.object(ai_routes, "run_openai_rename_on_pdf", side_effect=_run_openai_rename_on_pdf)
+    mocker.patch("backend.ai.rename_pipeline.run_openai_rename_on_pdf", side_effect=_run_openai_rename_on_pdf)
 
     return {
         "firestore_client": firestore_client,
@@ -695,13 +695,12 @@ def test_schema_mapping_rejects_locked_saved_form_template_after_real_base_downg
         "get_schema",
         return_value=type("SchemaRecord", (), {"id": "schema_1", "fields": [{"name": "insured_name"}]})(),
     )
-    build_allowlist_mock = mocker.patch.object(
-        ai_routes,
-        "build_allowlist_payload",
+    build_allowlist_mock = mocker.patch(
+        "backend.ai.schema_mapping.build_allowlist_payload",
         return_value={"schemaFields": [{"name": "insured_name"}], "templateTags": [{"tag": "insured_name"}]},
     )
     consume_mock = mocker.patch.object(ai_routes, "consume_openai_credits")
-    openai_mock = mocker.patch.object(ai_routes, "call_openai_schema_mapping_chunked")
+    openai_mock = mocker.patch("backend.ai.schema_mapping.call_openai_schema_mapping_chunked")
 
     response = client.post(
         "/api/schema-mappings/ai",
@@ -787,7 +786,7 @@ def test_rename_rejects_legacy_saved_form_session_for_locked_template_after_down
     user_database.downgrade_to_base_membership(qa_user.app_user_id)
 
     consume_mock = mocker.patch.object(ai_routes, "consume_openai_credits")
-    openai_mock = mocker.patch.object(ai_routes, "run_openai_rename_on_pdf")
+    openai_mock = mocker.patch("backend.ai.rename_pipeline.run_openai_rename_on_pdf")
 
     response = client.post(
         "/api/renames/ai",

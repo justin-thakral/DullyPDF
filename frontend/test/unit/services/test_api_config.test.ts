@@ -19,6 +19,7 @@ const importApiConfig = async () => {
 
 describe('apiConfig', () => {
   beforeEach(() => {
+    vi.resetModules();
     authMocks.getFreshIdToken.mockReset().mockResolvedValue(null);
     authMocks.signOut.mockReset().mockResolvedValue(undefined);
   });
@@ -204,8 +205,10 @@ describe('apiConfig', () => {
   });
 
   it('injects dev admin token unless explicitly disabled', async () => {
-    vi.stubEnv('DEV', '1');
-    vi.stubEnv('VITE_ADMIN_TOKEN', 'admin-token');
+    const envBackup = { ...import.meta.env };
+    import.meta.env.DEV = true as unknown as string;
+    import.meta.env.VITE_ADMIN_TOKEN = 'admin-token';
+    delete (import.meta.env as Record<string, unknown>).VITE_DISABLE_ADMIN_OVERRIDE;
 
     const fetchMock = vi.fn().mockResolvedValue(new Response('', { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
@@ -216,10 +219,7 @@ describe('apiConfig', () => {
     const headers = fetchMock.mock.calls[0][1].headers as Headers;
     expect(headers.get('x-admin-token')).toBe('admin-token');
 
-    vi.unstubAllEnvs();
-    vi.stubEnv('DEV', '1');
-    vi.stubEnv('VITE_ADMIN_TOKEN', 'admin-token');
-    vi.stubEnv('VITE_DISABLE_ADMIN_OVERRIDE', 'true');
+    import.meta.env.VITE_DISABLE_ADMIN_OVERRIDE = 'true';
     fetchMock.mockClear();
 
     const disabledModule = await importApiConfig();
@@ -227,6 +227,8 @@ describe('apiConfig', () => {
 
     const disabledHeaders = fetchMock.mock.calls[0][1].headers as Headers;
     expect(disabledHeaders.get('x-admin-token')).toBeNull();
+
+    Object.assign(import.meta.env, envBackup);
   });
 
   it('handles timeout aborts and external signal propagation', async () => {

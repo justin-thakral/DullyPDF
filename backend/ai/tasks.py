@@ -19,6 +19,7 @@ _PREFIX = "OPENAI_RENAME_REMAP"
 OPENAI_RENAME_TASK_HANDLER = "/internal/rename"
 OPENAI_REMAP_TASK_HANDLER = "/internal/remap"
 OPENAI_RENAME_REMAP_TASK_HANDLER = "/internal/rename-remap"
+OPENAI_IMAGE_FILL_TASK_HANDLER = "/internal/image-fill"
 
 
 def _safe_positive_int(value: str, default: int) -> int:
@@ -114,3 +115,7 @@ def enqueue_openai_remap_task(payload: Dict[str, Any]) -> str:
 
 def enqueue_openai_rename_remap_task(payload: Dict[str, Any]) -> str:
     return _enqueue_task(OPENAI_RENAME_REMAP_TASK_HANDLER, payload)
+
+
+def enqueue_openai_image_fill_task(payload: Dict[str, Any]) -> str:
+    return _enqueue_task(OPENAI_IMAGE_FILL_TASK_HANDLER, payload)

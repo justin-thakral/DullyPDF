@@ -18,6 +18,7 @@ from backend.firebaseDB.template_api_endpoint_database import (
     create_template_api_endpoint_event,
     get_template_api_endpoint_public,
     get_template_api_endpoint_public_metadata,
+    get_template_api_monthly_usage,
     record_template_api_endpoint_failure,
     record_template_api_endpoint_success,
     TemplateApiMonthlyLimitExceededError,
@@ -27,18 +28,28 @@ from backend.firebaseDB.user_database import get_user_profile, normalize_role
 from backend.security.rate_limit import check_rate_limit
 from backend.services.app_config import resolve_stream_cors_headers
 from backend.services.contact_service import resolve_client_ip
-from backend.services.downgrade_retention_service import is_user_retention_template_locked
+from backend.services.downgrade_retention_service import (
+    get_user_retention_locked_template_ids,
+    is_user_retention_template_locked,
+)
 from backend.services.pdf_service import cleanup_paths
 from backend.services.limits_service import (
+    check_group_fill_quota,
     resolve_template_api_active_limit,
     resolve_template_api_max_pages,
     resolve_template_api_requests_monthly_limit,
 )
 from backend.services.template_api_service import (
+    build_group_template_api_schema,
     build_template_api_key_prefix,
     build_template_api_schema,
+    group_template_api_pdf_count,
+    group_template_api_total_page_count,
+    is_group_template_api_snapshot,
+    materialize_group_template_api_snapshot,
     materialize_template_api_snapshot,
     parse_template_api_basic_secret,
+    resolve_group_template_api_request_data,
     resolve_template_api_request_data,
     verify_template_api_secret,
 )
@@ -108,12 +119,20 @@ def _unauthorized(*, record=None, lookup_record: bool = True) -> HTTPException:
 
 
 def _serialize_public_endpoint(record) -> Dict[str, Any]:
+    scope_type = (getattr(record, "scope_type", None) or "template")
+    fill_path = (
+        f"/api/v1/fill/{record.id}.zip"
+        if scope_type == "group"
+        else f"/api/v1/fill/{record.id}.pdf"
+    )
     return {
         "id": record.id,
+        "scopeType": scope_type,
         "templateName": record.template_name,
+        "groupName": getattr(record, "group_name", None),
         "status": record.status,
         "snapshotVersion": record.snapshot_version,
-        "fillPath": f"/api/v1/fill/{record.id}.pdf",
+        "fillPath": fill_path,
         "schemaPath": f"/api/v1/fill/{record.id}/schema",
     }
 
@@ -130,7 +149,7 @@ def _record_event(record, *, event_type: str, outcome: str = "success", metadata
         create_template_api_endpoint_event(
             endpoint_id=record.id,
             user_id=record.user_id,
-            template_id=record.template_id,
+            template_id=getattr(record, "template_id", None) or (getattr(record, "group_id", None) or ""),
             event_type=event_type,
             outcome=outcome,
             snapshot_version=record.snapshot_version,
@@ -351,20 +370,57 @@ def _record_runtime_failure(record, *, reason: str, client_ip: str, payload: Opt
 def _enforce_runtime_plan_limits(
     record,
     snapshot: Dict[str, Any],
+    *,
+    pdf_count: int = 1,
+    month_key: Optional[str] = None,
 ) -> int:
+    """Pre-validate a planned fill against the owner's plan + monthly quota.
+
+    Returns the monthly limit so the caller can pass it to
+    ``record_template_api_endpoint_success`` for the atomic final check.
+
+    Raises ``HTTPException(403)`` when the role can't use API Fill at all or
+    the per-request page cap is exceeded. Raises ``HTTPException(429)`` when
+    the pre-read monthly usage + ``pdf_count`` would exceed the limit — this
+    saves the server from materializing a group zip that the atomic check
+    inside ``record_template_api_endpoint_success`` would then reject.
+
+    The atomic check inside the success transaction still runs as the source
+    of truth for concurrent-race cases where another request eats the budget
+    between this pre-check and the actual bookkeeping.
+    """
     role = _resolve_owner_role(record)
     if resolve_template_api_active_limit(role) <= 0:
         raise HTTPException(status_code=403, detail="API Fill is unavailable on this account's current plan.")
     max_pages = resolve_template_api_max_pages(role)
-    page_count = max(0, int(snapshot.get("pageCount") or 0))
-    if page_count > max_pages:
-        raise HTTPException(
-            status_code=403,
-            detail=f"API Fill templates are limited to {max_pages} pages on this account's current plan.",
-        )
+    if is_group_template_api_snapshot(snapshot):
+        page_count = group_template_api_total_page_count(snapshot)
+    else:
+        page_count = max(0, int(snapshot.get("pageCount") or 0))
     monthly_limit = resolve_template_api_requests_monthly_limit(role)
     if monthly_limit <= 0:
         raise HTTPException(status_code=403, detail="API Fill is unavailable on this account's current plan.")
+    usage_record = get_template_api_monthly_usage(record.user_id, month_key=month_key)
+    current_count = usage_record.request_count if usage_record is not None else 0
+    quota_result = check_group_fill_quota(
+        monthly_limit=monthly_limit,
+        current_request_count=current_count,
+        pdf_count=max(1, int(pdf_count or 1)),
+        page_count_per_request=page_count,
+        max_pages_per_request=max_pages,
+    )
+    if not quota_result["allowed"]:
+        reason = quota_result.get("reason")
+        if reason == "pages_per_request":
+            raise HTTPException(
+                status_code=403,
+                detail=f"API Fill templates are limited to {max_pages} pages on this account's current plan.",
+            )
+        # reason == "fills_exhausted" → 429 so clients can retry next month
+        raise HTTPException(
+            status_code=429,
+            detail="This account has reached its monthly API Fill request limit.",
+        )
     return monthly_limit
 
 
@@ -380,12 +436,56 @@ def _record_plan_or_quota_block(
         _record_runtime_failure(record, reason=reason, client_ip=client_ip, payload=payload)
         return
     event_type = "fill_quota_blocked" if exc.status_code == 429 else "fill_plan_blocked"
+    metadata: Dict[str, Any] = {"reason": reason, "clientIpHash": _hash_client_ip(client_ip)}
+    # Phase 5: surface group-fill scale on plan/quota block events so post-mortems
+    # can distinguish "1 PDF blocked" from "an 8-PDF packet blocked".
+    snapshot = getattr(record, "snapshot", None)
+    if is_group_template_api_snapshot(snapshot):
+        metadata["scopeType"] = "group"
+        metadata["pdfCount"] = group_template_api_pdf_count(snapshot)
+        metadata["totalPages"] = group_template_api_total_page_count(snapshot)
     _record_event(
         record,
         event_type=event_type,
         outcome="denied",
-        metadata={"reason": reason, "clientIpHash": _hash_client_ip(client_ip)},
+        metadata=metadata,
     )
+
+
+def _template_api_endpoint_references_locked_template(record) -> bool:
+    """True when a published template_api endpoint references any template that
+    is currently locked by downgrade retention on the owner's account.
+
+    Scope-aware:
+      * ``template`` — checks ``record.template_id``
+      * ``group``    — walks the bundle's ``templateSnapshots`` for any locked
+        template id (equivalent to the fill-link public path's
+        ``_fill_link_references_locked_templates`` helper).
+
+    Without this, a downgraded user with locked templates can still serve
+    filled PDFs via a frozen group endpoint because
+    ``is_user_retention_template_locked`` treats a missing template_id
+    (which all group endpoints have) as unlocked.
+    """
+    if record is None:
+        return False
+    locked_template_ids = get_user_retention_locked_template_ids(record.user_id)
+    if not locked_template_ids:
+        return False
+    scope_type = str(getattr(record, "scope_type", None) or "template").strip().lower() or "template"
+    if scope_type == "template":
+        return bool(record.template_id and record.template_id in locked_template_ids)
+    snapshot = record.snapshot if isinstance(record.snapshot, dict) else {}
+    template_snapshots = snapshot.get("templateSnapshots")
+    if not isinstance(template_snapshots, list):
+        return False
+    for entry in template_snapshots:
+        if not isinstance(entry, dict):
+            continue
+        entry_template_id = str(entry.get("templateId") or "").strip()
+        if entry_template_id and entry_template_id in locked_template_ids:
+            return True
+    return False
 
 
 def _resolve_authenticated_endpoint(endpoint_id: str, authorization: Optional[str]):
@@ -407,7 +507,7 @@ def _resolve_authenticated_endpoint(endpoint_id: str, authorization: Optional[st
         raise HTTPException(status_code=404, detail="API Fill endpoint not found.")
     if record.status != "active":
         raise HTTPException(status_code=404, detail="API Fill endpoint not found.")
-    if is_user_retention_template_locked(record.user_id, record.template_id):
+    if _template_api_endpoint_references_locked_template(record):
         raise HTTPException(status_code=403, detail="API Fill endpoint is unavailable on this account's current plan.")
     snapshot = dict(record.snapshot or {})
     if not snapshot:
@@ -417,6 +517,8 @@ def _resolve_authenticated_endpoint(endpoint_id: str, authorization: Optional[st
 
 def _build_public_schema_response(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     try:
+        if is_group_template_api_snapshot(snapshot):
+            return build_group_template_api_schema(snapshot)
         return build_template_api_schema(snapshot)
     except ValueError as exc:
         raise HTTPException(
@@ -528,6 +630,20 @@ async def fill_public_template_api_endpoint(
             metadata={"route": "fill", "clientIpHash": _hash_client_ip(client_ip)},
         )
         raise HTTPException(status_code=429, detail="Too many API Fill requests for this endpoint. Please wait and try again.")
+    if is_group_template_api_snapshot(snapshot):
+        _record_event(
+            record,
+            event_type="fill_validation_failed",
+            outcome="error",
+            metadata={"reason": "group_endpoint_requires_zip_route"},
+        )
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This endpoint is a group API Fill. POST to /api/v1/fill/{endpoint_id}.zip "
+                "to receive a zip archive of the per-template PDFs."
+            ),
+        )
     _enforce_json_content_type(request)
     try:
         payload = await _parse_fill_request_payload(request)
@@ -572,7 +688,12 @@ async def fill_public_template_api_endpoint(
     usage_month_key = _current_usage_month_key()
     cleanup_targets = []
     try:
-        monthly_limit = _enforce_runtime_plan_limits(record, snapshot)
+        monthly_limit = _enforce_runtime_plan_limits(
+            record,
+            snapshot,
+            pdf_count=1,
+            month_key=usage_month_key,
+        )
         output_path, cleanup_targets, filename = materialize_template_api_snapshot(
             snapshot,
             data=normalized_data,
@@ -639,6 +760,211 @@ async def fill_public_template_api_endpoint(
         str(output_path),
         media_type="application/pdf",
         filename=filename,
+        background=background_tasks,
+    )
+    response.headers.update(resolve_stream_cors_headers(request.headers.get("origin")))
+    response.headers["Cache-Control"] = "private, no-store"
+    return response
+
+
+@router.post("/api/v1/fill/{endpoint_id}.zip")
+async def fill_public_template_api_endpoint_group(
+    endpoint_id: str,
+    request: Request,
+    background_tasks: BackgroundTasks,
+    authorization: Optional[str] = Header(default=None),
+):
+    """Phase 4: group API Fill — JSON in, zip of per-template PDFs out.
+
+    Mirrors the per-template ``.pdf`` route's auth, rate limit, plan limit,
+    quota, and audit machinery exactly. Differences:
+
+    * Snapshot must be a Phase 3 group bundle (``is_group_template_api_snapshot``).
+    * Body validates against the canonical JSON schema (additionalProperties:
+      false; required keys; enum values for radio groups).
+    * Materialization loops the per-template fill primitive across every
+      template in the bundle and zips the resulting PDFs.
+    * Quota counts each materialized PDF as one fill against the user's
+      monthly budget (D7).
+    """
+
+    content_length = _parse_content_length(request)
+    if content_length > _MAX_FILL_REQUEST_BODY_BYTES:
+        raise HTTPException(status_code=413, detail="Request body too large.")
+    window_seconds, per_ip, per_endpoint, global_limit = _resolve_public_rate_limits("SANDBOX_TEMPLATE_API_FILL_RATE_LIMIT")
+    client_ip = resolve_client_ip(request)
+    allowed = _check_public_rate_limits(
+        scope="template_api_fill",
+        client_ip=client_ip,
+        window_seconds=window_seconds,
+        per_ip=per_ip,
+        global_limit=global_limit,
+    )
+    if not allowed:
+        raise HTTPException(status_code=429, detail="Too many API Fill requests. Please wait and try again.")
+    try:
+        record, snapshot = _resolve_authenticated_endpoint(endpoint_id, authorization)
+    except HTTPException as exc:
+        if exc.status_code == 401:
+            _handle_public_auth_failure(
+                scope="template_api_fill",
+                endpoint_id=endpoint_id,
+                reason="fill_auth_failed",
+                client_ip=client_ip,
+                window_seconds=window_seconds,
+                per_endpoint=per_endpoint,
+                record=getattr(exc, "template_api_record", None),
+                lookup_record=bool(getattr(exc, "template_api_lookup_record", True)),
+            )
+        raise
+    if not _check_endpoint_rate_limit(
+        scope="template_api_fill",
+        endpoint_id=endpoint_id,
+        window_seconds=window_seconds,
+        per_endpoint=per_endpoint,
+    ):
+        _record_event(
+            record,
+            event_type="fill_rate_limited",
+            outcome="denied",
+            metadata={"route": "fill_zip", "clientIpHash": _hash_client_ip(client_ip)},
+        )
+        raise HTTPException(status_code=429, detail="Too many API Fill requests for this endpoint. Please wait and try again.")
+    if not is_group_template_api_snapshot(snapshot):
+        _record_event(
+            record,
+            event_type="fill_validation_failed",
+            outcome="error",
+            metadata={"reason": "template_endpoint_requires_pdf_route"},
+        )
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This endpoint is a single-template API Fill. POST to "
+                "/api/v1/fill/{endpoint_id}.pdf to receive the PDF."
+            ),
+        )
+    _enforce_json_content_type(request)
+    try:
+        payload = await _parse_fill_request_payload(request)
+    except HTTPException as exc:
+        reason = _normalize_failure_reason_for_storage(exc.detail)
+        _record_failure_counters(
+            endpoint_id,
+            validation_failure=True,
+            reason=reason,
+        )
+        _record_event(
+            record,
+            event_type="fill_validation_failed",
+            outcome="error",
+            metadata={"reason": reason},
+        )
+        raise
+    try:
+        normalized_data = resolve_group_template_api_request_data(
+            snapshot,
+            payload.data,
+            strict=True,
+        )
+    except HTTPException as exc:
+        reason = _normalize_failure_reason_for_storage(exc.detail)
+        if exc.status_code >= 500:
+            _record_runtime_failure(record, reason=reason, client_ip=client_ip, payload=payload)
+            raise
+        _record_failure_counters(
+            endpoint_id,
+            validation_failure=True,
+            reason=reason,
+        )
+        _record_event(
+            record,
+            event_type="fill_validation_failed",
+            outcome="error",
+            metadata={"reason": reason, "strict": True, "scopeType": "group"},
+        )
+        raise
+
+    pdf_count = group_template_api_pdf_count(snapshot)
+    total_pages = group_template_api_total_page_count(snapshot)
+    usage_month_key = _current_usage_month_key()
+    cleanup_targets = []
+    try:
+        monthly_limit = _enforce_runtime_plan_limits(
+            record,
+            snapshot,
+            pdf_count=pdf_count,
+            month_key=usage_month_key,
+        )
+        zip_path, cleanup_targets, zip_filename = materialize_group_template_api_snapshot(
+            snapshot,
+            data=normalized_data,
+            filename=payload.filename,
+        )
+    except FileNotFoundError as exc:
+        _record_runtime_failure(record, reason=str(exc), client_ip=client_ip, payload=payload)
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        reason = _normalize_failure_reason_for_storage(str(exc))
+        _record_failure_counters(
+            endpoint_id,
+            validation_failure=True,
+            reason=reason,
+        )
+        _record_event(
+            record,
+            event_type="fill_validation_failed",
+            outcome="error",
+            metadata={"reason": reason, "scopeType": "group"},
+        )
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except HTTPException as exc:
+        _record_plan_or_quota_block(record, exc=exc, client_ip=client_ip, payload=payload)
+        raise
+    except Exception as exc:
+        if cleanup_targets:
+            cleanup_paths(cleanup_targets)
+        _record_runtime_failure(record, reason="unexpected_runtime_error", client_ip=client_ip, payload=payload)
+        raise HTTPException(status_code=500, detail="API Fill failed while generating the group packet.") from exc
+
+    try:
+        try:
+            file_size = Path(zip_path).stat().st_size
+        except OSError:
+            file_size = None
+        updated_record = record_template_api_endpoint_success(
+            record.id,
+            month_key=usage_month_key,
+            monthly_limit=monthly_limit,
+            count_increment=pdf_count,  # Phase 5 D7: per-PDF accounting for group fills.
+            metadata={
+                "scopeType": "group",
+                "pdfCount": pdf_count,
+                "templateCount": pdf_count,
+                "totalPages": total_pages,
+                "quotaIncrement": pdf_count,
+                "filenameProvided": bool(str(payload.filename or "").strip()),
+                "clientIpHash": _hash_client_ip(client_ip),
+                "responseBytes": file_size,
+            },
+        )
+        if updated_record is None:
+            raise RuntimeError("API Fill endpoint disappeared before success bookkeeping completed.")
+    except TemplateApiMonthlyLimitExceededError as exc:
+        cleanup_paths(cleanup_targets)
+        quota_exc = HTTPException(status_code=429, detail=str(exc))
+        _record_plan_or_quota_block(record, exc=quota_exc, client_ip=client_ip, payload=payload)
+        raise quota_exc
+    except Exception as exc:
+        cleanup_paths(cleanup_targets)
+        _record_runtime_failure(record, reason="success_bookkeeping_failed", client_ip=client_ip, payload=payload)
+        raise HTTPException(status_code=500, detail="API Fill failed while finalizing the response.") from exc
+
+    background_tasks.add_task(cleanup_paths, cleanup_targets)
+    response = FileResponse(
+        str(zip_path),
+        media_type="application/zip",
+        filename=zip_filename,
         background=background_tasks,
     )
     response.headers.update(resolve_stream_cors_headers(request.headers.get("origin")))

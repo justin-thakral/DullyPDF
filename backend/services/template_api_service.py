@@ -21,7 +21,17 @@ from fastapi import HTTPException
 
 from backend.firebaseDB.storage_service import is_gcs_path
 from backend.firebaseDB.template_database import TemplateRecord
-from backend.services.fill_link_download_service import materialize_fill_link_response_download
+from backend.services.fill_link_download_service import (
+    build_group_fill_link_publish_snapshot,
+    materialize_fill_link_response_download,
+    materialize_group_fill_link_response_packet,
+)
+from backend.services.group_schema_service import (
+    build_group_canonical_json_schema,
+    build_group_canonical_schema_from_sources,
+    freeze_group_schema_snapshot,
+)
+from backend.services.group_schema_types import GroupSchemaTypeConflictError
 from backend.services.mapping_service import normalize_data_key
 from backend.services.pdf_service import coerce_field_payloads
 from backend.services.saved_form_snapshot_service import load_saved_form_editor_snapshot
@@ -29,6 +39,7 @@ from backend.time_utils import now_iso
 
 
 TEMPLATE_API_SNAPSHOT_VERSION = 1
+TEMPLATE_API_GROUP_SNAPSHOT_VERSION = 1
 TEMPLATE_API_SECRET_PREFIX = "dpa_live_"
 TEMPLATE_API_SECRET_HASH_SCHEME = "pbkdf2_sha256"
 TEMPLATE_API_SECRET_HASH_ITERATIONS = 200_000
@@ -745,3 +756,244 @@ def materialize_template_api_snapshot(
         answers=data,
         export_mode=export_mode,
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 4: group API Fill snapshot + schema + materialization
+# ---------------------------------------------------------------------------
+
+
+def is_group_template_api_snapshot(snapshot: Optional[Dict[str, Any]]) -> bool:
+    """Return True when ``snapshot`` is the Phase 3 group publish bundle shape.
+
+    Group snapshots have a ``templateSnapshots`` list and a ``schema`` field
+    populated by ``backend.services.group_schema_service``. Template snapshots
+    have a top-level ``sourcePdfPath`` and a flat ``fields`` array.
+    """
+
+    if not isinstance(snapshot, dict):
+        return False
+    if not isinstance(snapshot.get("templateSnapshots"), list):
+        return False
+    return isinstance(snapshot.get("schema"), dict)
+
+
+def build_group_template_api_snapshot(
+    *,
+    group_id: str,
+    template_records: Iterable[Any],
+    template_sources: Iterable[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Build a frozen group API Fill snapshot.
+
+    Wraps Phase 1's ``build_group_canonical_schema_from_sources`` (in strict
+    mode, since publish-time type collisions must be fixed before the endpoint
+    can serve fills) and Phase 3's ``build_group_fill_link_publish_snapshot``
+    (which bundles per-template materialization snapshots so download time does
+    not need to re-load templates from Firestore).
+
+    Raises:
+        HTTPException 422: canonical type collision in the group fields.
+        ValueError: per-template snapshot build failure (e.g. missing GCS path).
+    """
+
+    template_record_list = list(template_records)
+    template_source_list = list(template_sources)
+    try:
+        canonical_schema = build_group_canonical_schema_from_sources(
+            template_source_list,
+            group_id=group_id,
+            strict=True,
+            include_synthetic_identifier=False,
+        )
+    except GroupSchemaTypeConflictError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": str(exc),
+                "code": "group_schema_type_conflict",
+                "canonicalKey": exc.canonical_key,
+                "conflictingTypes": exc.conflicting_types,
+            },
+        ) from exc
+
+    bundle = build_group_fill_link_publish_snapshot(
+        canonical_schema=freeze_group_schema_snapshot(canonical_schema)["schema"],
+        template_records=template_record_list,
+        template_sources=template_source_list,
+    )
+    bundle["snapshotKind"] = "group"
+    bundle["templateApiSnapshotVersion"] = TEMPLATE_API_GROUP_SNAPSHOT_VERSION
+    return bundle
+
+
+def build_group_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    """Return the canonical JSON Schema for a group API Fill snapshot.
+
+    The result is a draft-2020-12 JSON Schema with ``additionalProperties:
+    False`` (D6) so API consumers get a strict contract. Generated on demand
+    from the canonical schema embedded in the publish bundle so future
+    canonical-schema layout changes don't require a re-publish.
+    """
+
+    if not is_group_template_api_snapshot(snapshot):
+        raise HTTPException(status_code=500, detail="Group API snapshot is missing or malformed.")
+    canonical = snapshot.get("schema")
+    if not isinstance(canonical, dict):
+        raise HTTPException(status_code=500, detail="Group API snapshot is missing its canonical schema.")
+    return build_group_canonical_json_schema(canonical, title=None)
+
+
+def group_template_api_total_page_count(snapshot: Dict[str, Any]) -> int:
+    """Sum of page counts across all per-template snapshots in a group bundle."""
+
+    if not isinstance(snapshot, dict):
+        return 0
+    template_snapshots = snapshot.get("templateSnapshots")
+    if not isinstance(template_snapshots, list):
+        return 0
+    total = 0
+    for entry in template_snapshots:
+        if not isinstance(entry, dict):
+            continue
+        per_template = entry.get("snapshot")
+        if not isinstance(per_template, dict):
+            continue
+        try:
+            total += max(0, int(per_template.get("pageCount") or 0))
+        except (TypeError, ValueError):
+            continue
+    return total
+
+
+def group_template_api_pdf_count(snapshot: Dict[str, Any]) -> int:
+    """Count the PDFs a group bundle will actually materialize.
+
+    This must match the filter applied by
+    ``materialize_group_fill_link_response_packet`` — it requires each entry
+    to be a dict AND to carry a ``snapshot`` sub-dict. If a bundle has
+    entries without a valid per-template snapshot (hand-corruption, schema
+    migration gone wrong, etc.) those templates silently render to nothing,
+    so counting them would over-bill the user.
+    """
+    if not isinstance(snapshot, dict):
+        return 0
+    template_snapshots = snapshot.get("templateSnapshots")
+    if not isinstance(template_snapshots, list):
+        return 0
+    return sum(
+        1
+        for entry in template_snapshots
+        if isinstance(entry, dict) and isinstance(entry.get("snapshot"), dict)
+    )
+
+
+def materialize_group_template_api_snapshot(
+    snapshot: Dict[str, Any],
+    *,
+    data: Dict[str, Any],
+    filename: Optional[str] = None,
+):
+    """Materialize every PDF in a group bundle from one input record.
+
+    Wraps Phase 3's ``materialize_group_fill_link_response_packet`` and returns
+    a tuple ``(zip_path, cleanup_paths, zip_filename)`` mirroring the per-template
+    helper's contract. The route plugs the cleanup paths into FastAPI's
+    BackgroundTasks so the temporary files are wiped after streaming.
+    """
+
+    if not is_group_template_api_snapshot(snapshot):
+        raise HTTPException(status_code=500, detail="Group API snapshot is missing or malformed.")
+    base_filename = filename or snapshot.get("schema", {}).get("groupId") or "api-fill-response"
+    return materialize_group_fill_link_response_packet(
+        canonical_schema_snapshot=snapshot,
+        answers=data,
+        base_filename=base_filename,
+    )
+
+
+def resolve_group_template_api_request_data(
+    snapshot: Dict[str, Any],
+    data: Any,
+    *,
+    strict: bool = True,
+) -> Dict[str, Any]:
+    """Validate a JSON body against the canonical JSON Schema and return it normalized.
+
+    Phase 4: strict mode (the default and only-supported mode for group
+    endpoints) rejects unknown keys so API consumers get a clear contract
+    error. Type checking is intentionally minimal — we accept anything JSON
+    serializable and let the per-template fill engine coerce; the canonical
+    JSON Schema is informational (and consumed by `GET /schema`) rather than a
+    full runtime validator.
+
+    Validation rules applied here:
+      * ``data`` must be a JSON object (dict)
+      * Every required canonical key must be present and non-empty
+      * No extra keys allowed (``additionalProperties: false``)
+      * For radio_group fields with allowedValues, the value must be in the list
+    """
+
+    if not is_group_template_api_snapshot(snapshot):
+        raise HTTPException(status_code=500, detail="Group API snapshot is missing or malformed.")
+    if not isinstance(data, dict):
+        raise HTTPException(status_code=400, detail="Group API Fill body must be a JSON object.")
+
+    canonical = snapshot.get("schema") or {}
+    fields = canonical.get("fields") if isinstance(canonical, dict) else None
+    if not isinstance(fields, list):
+        raise HTTPException(status_code=500, detail="Group API canonical schema is malformed.")
+
+    canonical_keys: Dict[str, Dict[str, Any]] = {}
+    for field in fields:
+        if not isinstance(field, dict):
+            continue
+        key = str(field.get("canonicalKey") or "").strip()
+        if key:
+            canonical_keys[key] = field
+
+    errors: List[str] = []
+
+    if strict:
+        unknown = sorted(set(data.keys()) - set(canonical_keys.keys()))
+        if unknown:
+            preview = ", ".join(unknown[:_MAX_TEMPLATE_API_ERROR_ITEMS])
+            errors.append(f"Unknown field(s): {preview}.")
+
+    required_missing: List[str] = []
+    for key, field in canonical_keys.items():
+        if not bool(field.get("required")):
+            continue
+        value = data.get(key)
+        if value is None or (isinstance(value, str) and not value.strip()):
+            required_missing.append(key)
+    if required_missing:
+        errors.append(
+            f"Required field(s) missing: {', '.join(sorted(required_missing)[:_MAX_TEMPLATE_API_ERROR_ITEMS])}."
+        )
+
+    enum_violations: List[str] = []
+    for key, value in data.items():
+        field = canonical_keys.get(key)
+        if not field:
+            continue
+        if field.get("type") != "radio_group":
+            continue
+        allowed = field.get("allowedValues")
+        if not isinstance(allowed, list) or not allowed:
+            continue
+        coerced = str(value).strip() if value is not None else ""
+        if coerced and coerced not in allowed:
+            enum_violations.append(f"{key}={coerced!r} (allowed: {sorted(allowed)})")
+    if enum_violations:
+        errors.append(
+            f"Out-of-enum value(s): {'; '.join(enum_violations[:_MAX_TEMPLATE_API_ERROR_ITEMS])}."
+        )
+
+    if errors:
+        raise HTTPException(
+            status_code=400,
+            detail=_truncate_template_api_error_detail(" ".join(errors)),
+        )
+
+    return dict(data)

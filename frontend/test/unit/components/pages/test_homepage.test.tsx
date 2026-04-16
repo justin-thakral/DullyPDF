@@ -100,7 +100,7 @@ describe('Homepage', () => {
     document.body.classList.remove('homepage-no-scroll');
   });
 
-  it('wires Try Now and Demo CTAs to callbacks', async () => {
+  it('wires builder and demo CTAs to callbacks', async () => {
     const user = userEvent.setup();
     const onStartWorkflow = vi.fn();
     const onStartDemo = vi.fn();
@@ -114,16 +114,24 @@ describe('Homepage', () => {
       }),
     ).toBeTruthy();
 
-    const ctaButtons = screen.getByRole('button', { name: 'Try Now' }).parentElement;
+    const ctaButtons = screen.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' }).parentElement;
     if (!ctaButtons) {
       throw new Error('CTA button group not found');
     }
 
-    await user.click(screen.getByRole('button', { name: 'Try Now' }));
-    await user.click(within(ctaButtons).getByRole('button', { name: 'Demo' }));
+    await user.click(screen.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' }));
+    await user.click(within(ctaButtons).getByRole('button', { name: 'See an Interactive Demo' }));
 
     expect(onStartWorkflow).toHaveBeenCalledTimes(1);
     expect(onStartDemo).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders the desktop Form Catalog link pointing at /forms', () => {
+    render(<Homepage onStartWorkflow={vi.fn()} />);
+
+    const catalogLink = screen.getAllByRole('link', { name: 'Go to the Pre-Made Form Catalog' })[0];
+    expect(catalogLink).toBeTruthy();
+    expect(catalogLink.getAttribute('href')).toBe('/forms');
   });
 
   it('renders compact feature-plan links in the quick info card', () => {
@@ -209,7 +217,7 @@ describe('Homepage', () => {
     expect(screen.getByText('Contact open: no')).toBeTruthy();
   });
 
-  it('renders mobile combined docs/legal link', () => {
+  it('renders mobile combined docs/legal link without a Form Catalog link', () => {
     render(<Homepage onStartWorkflow={vi.fn()} />);
 
     const mobileCta = document.querySelector('.mobile-cta');
@@ -219,6 +227,7 @@ describe('Homepage', () => {
     const ctaLinks = within(mobileCta).getAllByRole('link');
     const combinedLink = within(mobileCta).getByRole('link', { name: 'Docs & Privacy & Terms' });
 
+    expect(within(mobileCta).queryByRole('link', { name: 'Form Catalog' })).toBeNull();
     expect(combinedLink.getAttribute('href')).toBe('/usage-docs');
     expect(ctaLinks.map((link) => link.textContent?.trim())).toEqual(['Docs & Privacy & Terms']);
   });

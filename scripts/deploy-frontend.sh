@@ -217,6 +217,8 @@ node scripts/generate-static-html.mjs
 echo "Generating sitemap..."
 node scripts/generate-sitemap.mjs
 
+echo "Generating blog RSS feed..."
+node scripts/generate-rss.mjs
 
 # Validate key static HTML files exist
 require_file "frontend/dist/index.html"
@@ -224,8 +226,11 @@ require_file "frontend/dist/app-shell.html"
 require_file "frontend/dist/healthcare-pdf-automation/index.html"
 require_file "frontend/dist/pdf-to-fillable-form/index.html"
 require_file "frontend/dist/usage-docs/index.html"
+require_file "frontend/dist/forms/index.html"
+require_file "frontend/dist/forms/w-9-w-9-fw9/index.html"
 require_file "frontend/dist/sitemap.xml"
-echo "Static HTML and sitemap validation passed."
+require_file "frontend/dist/feed.xml"
+echo "Static HTML, sitemap, and feed validation passed."
 
 for asset_path in "${CRITICAL_WEBP_ASSETS[@]}"; do
   require_file "frontend/dist${asset_path}"
@@ -243,9 +248,13 @@ check_remote_body_contains "${LIVE_BASE_URL}/fill-pdf-from-csv" 'data-seo-jsonld
 check_remote_body_not_contains "${LIVE_BASE_URL}/respond/token-1" 'homepage-shell'
 check_remote_body_contains "${LIVE_BASE_URL}/respond/token-1" '<div id="root"></div>'
 check_remote_body_not_contains "${LIVE_BASE_URL}/forms" 'homepage-shell'
-check_remote_body_contains "${LIVE_BASE_URL}/forms" '<div id="root"></div>'
+check_remote_body_contains "${LIVE_BASE_URL}/forms" 'Form Catalog'
+check_remote_body_contains "${LIVE_BASE_URL}/forms" 'data-seo-jsonld="true"'
+check_remote_body_contains "${LIVE_BASE_URL}/forms" '<link rel="canonical" href="https://dullypdf.com/forms"'
 check_remote_body_not_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" 'homepage-shell'
-check_remote_body_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" '<div id="root"></div>'
+check_remote_body_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" 'W-9'
+check_remote_body_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" 'data-seo-jsonld="true"'
+check_remote_body_contains "${LIVE_BASE_URL}/forms/w-9-w-9-fw9" '<link rel="canonical" href="https://dullypdf.com/forms/w-9-w-9-fw9"'
 check_remote_content_type "${VITE_FORM_CATALOG_ASSET_BASE}/hr_onboarding/w-9__fw9.pdf" "application/pdf"
 check_remote_content_type "${VITE_FORM_CATALOG_ASSET_BASE}/hr_onboarding/w-9__fw9.webp" "image/webp"
 check_remote_cors_origin "${VITE_FORM_CATALOG_ASSET_BASE}/hr_onboarding/w-9__fw9.pdf" "https://${PROJECT_ID}.web.app"

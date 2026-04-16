@@ -11,7 +11,12 @@ import {
   getIntentCatalogShowcase,
   getIntentCatalogCategorySummaries,
 } from '../../config/intentCatalogShowcases.mjs';
-import { PDF_TO_FILLABLE_DEMO_VIDEO } from '../../config/publicVideoContent';
+import {
+  ESIGN_PIPELINE_DEMO_VIDEO,
+  FILL_PDF_FROM_FILE_DEMO_VIDEO,
+  PDF_TO_FILLABLE_DEMO_VIDEO,
+  WEB_FORM_AND_SIGN_DEMO_VIDEO,
+} from '../../config/publicVideoContent';
 import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
 import { applyRouteSeo } from '../../utils/seo';
 import { IntentPageShell } from './IntentPageShell';
@@ -96,7 +101,17 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
     () => (catalogShowcase ? buildIntentCatalogWorkflowSteps(catalogShowcase) as IntentCatalogWorkflowStep[] : []),
     [catalogShowcase],
   );
-  const pageVideo = pageKey === 'pdf-to-fillable-form' ? PDF_TO_FILLABLE_DEMO_VIDEO : null;
+  const pageVideo = pageKey === 'pdf-to-fillable-form'
+    ? PDF_TO_FILLABLE_DEMO_VIDEO
+    : pageKey === 'fill-pdf-from-csv'
+      ? FILL_PDF_FROM_FILE_DEMO_VIDEO
+      : pageKey === 'fill-pdf-by-link'
+        ? WEB_FORM_AND_SIGN_DEMO_VIDEO
+        : pageKey === 'pdf-signature-workflow'
+          || pageKey === 'esign-ueta-pdf-workflow'
+          || pageKey === 'pdf-fill-api'
+          ? ESIGN_PIPELINE_DEMO_VIDEO
+          : null;
   const footnoteNumberById = useMemo(
     () => new Map((page.footnotes ?? []).map((footnote, index) => [footnote.id, index + 1])),
     [page.footnotes],

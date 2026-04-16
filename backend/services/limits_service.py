@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from backend.env_utils import int_env as _int_env
 from backend.firebaseDB.user_database import ROLE_GOD, ROLE_PRO, normalize_role
@@ -63,12 +63,87 @@ def resolve_template_api_requests_monthly_limit(role: Optional[str]) -> int:
 
 
 def resolve_template_api_max_pages(role: Optional[str]) -> int:
+    # Phase 5: bumped from 25/250/1000 → 50/500/2000 so a typical immigration
+    # packet (~30 pages across 8 forms) fits on the free tier. Group endpoints
+    # gate the *sum* of pages across every template in the group, so this
+    # number has to accommodate packet-size fills, not single-template fills.
     normalized = normalize_role(role)
     if normalized == ROLE_GOD:
-        return max(1, _int_env("SANDBOX_TEMPLATE_API_MAX_PAGES_GOD", 1000))
+        return max(1, _int_env("SANDBOX_TEMPLATE_API_MAX_PAGES_GOD", 2000))
     if normalized == ROLE_PRO:
-        return max(1, _int_env("SANDBOX_TEMPLATE_API_MAX_PAGES_PRO", 250))
-    return max(1, _int_env("SANDBOX_TEMPLATE_API_MAX_PAGES_BASE", 25))
+        return max(1, _int_env("SANDBOX_TEMPLATE_API_MAX_PAGES_PRO", 500))
+    return max(1, _int_env("SANDBOX_TEMPLATE_API_MAX_PAGES_BASE", 50))
+
+
+def check_group_fill_quota(
+    *,
+    monthly_limit: int,
+    current_request_count: int,
+    pdf_count: int,
+    page_count_per_request: int,
+    max_pages_per_request: int,
+) -> Dict[str, Any]:
+    """Phase 5 (D7): pre-validate a group fill against monthly + per-request limits.
+
+    Returns a dict with::
+
+        {
+            "allowed": bool,
+            "fillsRemaining": int,
+            "pdfCount": int,
+            "monthlyLimit": int,
+            "maxPagesPerRequest": int,
+            "pageCountPerRequest": int,
+            "reason": Optional[str],
+        }
+
+    Reasons are stable strings the precheck endpoint can surface to clients:
+      - ``"fills_exhausted"`` — the group fill would push monthly usage over.
+      - ``"pages_per_request"`` — the sum of pages exceeds the per-request cap.
+
+    All-or-nothing semantics: if either check fails, ``allowed`` is False and
+    the caller must not consume any quota. The actual debit happens during
+    materialization in ``record_template_api_endpoint_success`` with the same
+    ``count_increment`` value, so a successful precheck plus a successful fill
+    are guaranteed to use exactly the budget the precheck reported.
+    """
+
+    normalized_monthly_limit = max(0, int(monthly_limit or 0))
+    normalized_current = max(0, int(current_request_count or 0))
+    normalized_pdf_count = max(1, int(pdf_count or 1))
+    normalized_pages = max(0, int(page_count_per_request or 0))
+    normalized_max_pages = max(1, int(max_pages_per_request or 1))
+    fills_remaining = max(0, normalized_monthly_limit - normalized_current)
+
+    if normalized_pages > normalized_max_pages:
+        return {
+            "allowed": False,
+            "fillsRemaining": fills_remaining,
+            "pdfCount": normalized_pdf_count,
+            "monthlyLimit": normalized_monthly_limit,
+            "maxPagesPerRequest": normalized_max_pages,
+            "pageCountPerRequest": normalized_pages,
+            "reason": "pages_per_request",
+        }
+    if normalized_current + normalized_pdf_count > normalized_monthly_limit:
+        return {
+            "allowed": False,
+            "fillsRemaining": fills_remaining,
+            "pdfCount": normalized_pdf_count,
+            "monthlyLimit": normalized_monthly_limit,
+            "maxPagesPerRequest": normalized_max_pages,
+            "pageCountPerRequest": normalized_pages,
+            "reason": "fills_exhausted",
+        }
+    return {
+        "allowed": True,
+        "fillsRemaining": fills_remaining,
+        "pdfCount": normalized_pdf_count,
+        "monthlyLimit": normalized_monthly_limit,
+        "maxPagesPerRequest": normalized_max_pages,
+        "pageCountPerRequest": normalized_pages,
+        "reason": None,
+    }
 
 def resolve_signing_requests_monthly_limit(role: Optional[str]) -> int:
     normalized = normalize_role(role)

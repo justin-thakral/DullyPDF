@@ -1,5 +1,78 @@
 # DullyPDF
 
+**[dullypdf.com](https://dullypdf.com)** — Free PDF form automation platform that converts existing PDFs into reusable fillable templates with AI field detection, then fills them from spreadsheets, web form responses, API calls, or scanned documents.
+
+Upload any PDF, let the AI detection pipeline find every text field, checkbox group, radio button, date, and signature region, then clean the template in the visual editor and reuse it across every fill workflow the platform supports. No Acrobat license needed.
+
+## Platform Workflows
+
+| Workflow | What it does |
+|----------|-------------|
+| [PDF to Fillable Form](https://dullypdf.com/pdf-to-fillable-form) | Detect fields automatically and build a reusable fillable template from any flat, scanned, or native PDF |
+| [Fill PDF from Spreadsheet](https://dullypdf.com/fill-pdf-from-csv) | Map template fields to CSV, Excel, JSON, or TXT headers and bulk fill from matching rows — data stays in-browser |
+| [Collect Answers by Web Form](https://dullypdf.com/fill-pdf-by-link) | Publish a hosted respondent form so clients submit answers that fill the PDF when you generate it |
+| [JSON-to-PDF API Endpoint](https://dullypdf.com/pdf-fill-api) | Expose a template-scoped REST endpoint for programmatic document generation from structured payloads |
+| [E-Signature Workflow](https://dullypdf.com/esign-ueta-pdf-workflow) | Route filled PDFs into email-based signing requests with immutable record freezing under U.S. E-SIGN and UETA |
+| [Batch Fill PDF Forms](https://dullypdf.com/batch-fill-pdf-forms) | Automate high-volume filling across document packets and template groups from a single data source |
+| [Fill from Photos and Scanned Documents](https://dullypdf.com/usage-docs/fill-from-images) | Extract data from IDs, invoices, pay stubs, and insurance cards using AI vision and populate template fields |
+| [PDF Field Detection Tool](https://dullypdf.com/pdf-field-detection-tool) | Review AI-detected field candidates with confidence scoring before committing the template layout |
+| [Field Name Normalization](https://dullypdf.com/fillable-form-field-name) | Standardize field names across messy or inconsistent PDF templates for reliable downstream mapping |
+
+## Industry-Specific Solutions
+
+| Industry | Supported document types |
+|----------|------------------------|
+| [Healthcare Intake Automation](https://dullypdf.com/healthcare-pdf-automation) | Patient registration, dental intake, HIPAA consent, and medical history forms |
+| [Insurance Certificate Processing](https://dullypdf.com/insurance-pdf-automation) | ACORD certificates, carrier-specific policy forms, and COI packet workflows |
+| [ACORD Form Filler](https://dullypdf.com/acord-form-automation) | ACORD 25, 24, 27, 28, 126, and 140 certificate of insurance templates |
+| [HR Onboarding Document Automation](https://dullypdf.com/hr-pdf-automation) | New hire packets, benefits enrollment, W-4, I-9, and compliance forms |
+| [Shipping and Freight Paperwork](https://dullypdf.com/logistics-pdf-automation) | Bills of lading, delivery receipts, customs declarations, and transport logs |
+| [Loan Application PDF Automation](https://dullypdf.com/finance-loan-pdf-automation) | Mortgage applications, financial disclosures, and lending document packets |
+| [Rental and Lease Packet Filler](https://dullypdf.com/real-estate-pdf-automation) | Rental applications, lease agreements, property disclosure, and tenant screening forms |
+| [Legal Document Workflow](https://dullypdf.com/legal-pdf-workflow-automation) | Contracts, court filings, retainer agreements, and case intake packets |
+| [Government Form Processing](https://dullypdf.com/government-form-automation) | Permit applications, tax forms, licensing packets, and public records requests |
+| [Student Application Automation](https://dullypdf.com/education-form-automation) | Enrollment forms, transcript requests, financial aid applications, and registration packets |
+| [Nonprofit Intake Automation](https://dullypdf.com/nonprofit-pdf-form-automation) | Grant applications, volunteer onboarding, donor pledge forms, and program intake |
+
+## Documentation
+
+- [Getting Started Guide](https://dullypdf.com/usage-docs/getting-started) — End-to-end walkthrough from PDF upload to filled output
+- [Field Detection](https://dullypdf.com/usage-docs/detection) — How AI confidence scoring and field classification work
+- [Editor Workflow](https://dullypdf.com/usage-docs/editor-workflow) — Visual field editing, geometry tools, and template cleanup
+- [Rename and Schema Mapping](https://dullypdf.com/usage-docs/rename-mapping) — AI field renaming and database column alignment
+- [Search and Fill](https://dullypdf.com/usage-docs/search-fill) — Row-based filling from structured data files
+- [Fill By Link](https://dullypdf.com/usage-docs/fill-by-link) — Respondent web form publishing and answer collection
+- [API Fill](https://dullypdf.com/usage-docs/api-fill) — Endpoint management, auth keys, and JSON schema
+- [Signature Workflow](https://dullypdf.com/usage-docs/signature-workflow) — E-SIGN/UETA compliance scope and signing process
+- [Template Groups](https://dullypdf.com/usage-docs/create-group) — Batch operations across multi-template document packets
+- [Troubleshooting](https://dullypdf.com/usage-docs/troubleshooting) — Detection, mapping, and fill issue diagnosis
+
+## Blog
+
+- [How to Convert a PDF to a Fillable Form](https://dullypdf.com/blog/how-to-convert-pdf-to-fillable-form)
+- [Auto-Fill PDFs from a Spreadsheet](https://dullypdf.com/blog/auto-fill-pdf-from-spreadsheet)
+- [Automate Medical Intake Forms](https://dullypdf.com/blog/automate-medical-intake-forms)
+- [Fill ACORD 25 Certificates Faster](https://dullypdf.com/blog/acord-25-certificate-fill-faster)
+- [DullyPDF vs Adobe Acrobat for PDF Form Automation](https://dullypdf.com/blog/dullypdf-vs-adobe-acrobat-pdf-form-automation)
+- [DullyPDF vs JotForm for PDF Data Collection](https://dullypdf.com/blog/dullypdf-vs-jotform-pdf-data-collection)
+- [Stop Retyping Employee Data During HR Onboarding](https://dullypdf.com/blog/hr-onboarding-stop-retyping-employee-data)
+- [How AI Finds Fields in a PDF Form](https://dullypdf.com/blog/pdf-form-field-detection-how-ai-finds-fields)
+- [Map PDF Fields to Database Columns](https://dullypdf.com/blog/map-pdf-fields-to-database-columns)
+- [All posts →](https://dullypdf.com/blog)
+
+## Browse
+
+- [Workflow Library](https://dullypdf.com/workflows) — All supported PDF automation workflows
+- [Industry Solutions](https://dullypdf.com/industries) — Document automation by vertical
+- [Free Features](https://dullypdf.com/free-features) — What is included at no cost
+- [Premium Features](https://dullypdf.com/premium-features) — Higher limits for teams and production use
+- [Privacy Policy](https://dullypdf.com/privacy) ·  [Terms of Service](https://dullypdf.com/terms)
+- [LinkedIn](https://www.linkedin.com/company/dullypdf) · [YouTube](https://www.youtube.com/@DullyPDF) · [X](https://x.com/DullyPDF)
+
+---
+
+## Development
+
 FastAPI + React app for detecting PDF form fields, renaming candidates with OpenAI, editing fields in a PDF viewer, and publishing native Fill By Link respondent forms from saved templates. The main pipeline is CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)) detection, optional OpenAI rename, schema-only mapping, and Search & Fill or Fill By Link respondent selection at generation time.
 
 ## Getting Started

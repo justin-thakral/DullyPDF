@@ -198,7 +198,7 @@ async function openUploadView(page) {
     if (await uploadHeading.isVisible().catch(() => false)) {
       return;
     }
-    const tryNowButton = page.getByRole('button', { name: 'Try Now' });
+    const tryNowButton = page.getByRole('button', { name: 'Detect Fields & Open the Form Workspace' });
     await tryNowButton.waitFor({ timeout: 30000 });
     await tryNowButton.click();
     await uploadHeading.waitFor({ timeout: 30000 });

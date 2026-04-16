@@ -39,6 +39,51 @@ def test_prod_fill_link_secret_rejects_missing_or_weak_values(monkeypatch) -> No
         raise AssertionError("Expected production fill link secret validation to fail for weak placeholder values.")
 
 
+def test_build_fill_link_web_form_schema_does_not_duplicate_defaults_on_fresh_publish() -> None:
+    """Regression: a fresh publish (no incoming web_form_config) previously went
+    through an else branch that populated stored_questions with every default,
+    then a follow-up loop *also* appended every default because
+    ``seen_default_keys`` was never populated in that branch. Result: every
+    question was duplicated, producing React duplicate-key errors on the public
+    respondent page for group fill links.
+    """
+
+    default_questions = [
+        {
+            "id": "pdf_field:patient_name",
+            "key": "patient_name",
+            "label": "Patient Name",
+            "type": "text",
+            "sourceType": "pdf_field",
+            "visible": True,
+            "required": False,
+            "order": 0,
+        },
+        {
+            "id": "pdf_field:patient_dob",
+            "key": "patient_dob",
+            "label": "Patient DOB",
+            "type": "text",
+            "sourceType": "pdf_field",
+            "visible": True,
+            "required": False,
+            "order": 1,
+        },
+    ]
+
+    stored_config, published_questions = fls.build_fill_link_web_form_schema(
+        default_questions,
+    )
+
+    stored_keys = [q["key"] for q in stored_config["questions"]]
+    assert stored_keys.count("patient_name") == 1, "stored questions must not duplicate defaults on fresh publish"
+    assert stored_keys.count("patient_dob") == 1
+
+    published_keys = [q["key"] for q in published_questions]
+    assert published_keys.count("patient_name") == 1
+    assert published_keys.count("patient_dob") == 1
+
+
 def test_build_fill_link_web_form_schema_excludes_signature_questions_for_post_submit_signing() -> None:
     default_questions = [
         {

@@ -1,15 +1,30 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { User } from 'firebase/auth';
-import { getDocument } from 'pdfjs-dist';
-// Side-effect import: configures pdfjs GlobalWorkerOptions.workerSrc.
-import '../../utils/pdf';
 import './FormCatalogPage.css';
 import { SiteFooter } from '../ui/SiteFooter';
 import {
   FORM_CATALOG_BY_SLUG,
 } from '../../config/formCatalogData.mjs';
 import { FORM_CATALOG_CATEGORIES } from '../../config/formCatalogCategories.mjs';
-import type { WorkspaceBrowserRoute } from '../../utils/workspaceRoutes';
+import {
+  buildWorkspaceBrowserHref,
+  type WorkspaceBrowserRoute,
+} from '../../utils/workspaceRoutes';
+
+const defaultStandaloneNavigate = (route: WorkspaceBrowserRoute) => {
+  if (typeof window === 'undefined') return;
+  window.location.href = buildWorkspaceBrowserHref(route);
+};
+
+const defaultStandaloneRequestSignIn = () => {
+  if (typeof window === 'undefined') return;
+  window.location.href = '/upload';
+};
+
+const defaultStandaloneOpenInWorkspace = async (entry: { slug: string }) => {
+  if (typeof window === 'undefined') return;
+  window.location.href = `/upload?catalogSlug=${encodeURIComponent(entry.slug)}`;
+};
 
 type FormCatalogEntry = {
   slug: string;
@@ -37,10 +52,10 @@ type FormCatalogCategory = {
 
 type FormCatalogFormPageProps = {
   slug: string;
-  verifiedUser: User | null;
-  onRequestSignIn: () => void;
-  onNavigate: (route: WorkspaceBrowserRoute, options?: { replace?: boolean }) => void;
-  onOpenInWorkspace: (entry: FormCatalogEntry) => Promise<void>;
+  verifiedUser?: User | null;
+  onRequestSignIn?: () => void;
+  onNavigate?: (route: WorkspaceBrowserRoute, options?: { replace?: boolean }) => void;
+  onOpenInWorkspace?: (entry: FormCatalogEntry) => Promise<void>;
 };
 
 const CATEGORIES = FORM_CATALOG_CATEGORIES as FormCatalogCategory[];
@@ -55,10 +70,10 @@ function formatBytes(bytes: number | null): string {
 
 const FormCatalogFormPage = ({
   slug,
-  verifiedUser,
-  onRequestSignIn,
-  onNavigate,
-  onOpenInWorkspace,
+  verifiedUser = null,
+  onRequestSignIn = defaultStandaloneRequestSignIn,
+  onNavigate = defaultStandaloneNavigate,
+  onOpenInWorkspace = defaultStandaloneOpenInWorkspace,
 }: FormCatalogFormPageProps) => {
   const entry = useMemo<FormCatalogEntry | null>(() => BY_SLUG[slug] || null, [slug]);
   const category = useMemo(
@@ -80,7 +95,7 @@ const FormCatalogFormPage = ({
   }, [entry]);
 
   useEffect(() => {
-    if (!entry || !verifiedUser) {
+    if (!entry) {
       return;
     }
     let cancelled = false;
@@ -89,6 +104,10 @@ const FormCatalogFormPage = ({
 
     const renderPreview = async () => {
       try {
+        // Dynamic import keeps pdfjs-dist out of the SSR bundle and delays
+        // the heavy worker setup until a real browser visit.
+        await import('../../utils/pdf');
+        const { getDocument } = await import('pdfjs-dist');
         const response = await fetch(entry.pdfUrl);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
@@ -133,7 +152,7 @@ const FormCatalogFormPage = ({
     return () => {
       cancelled = true;
     };
-  }, [entry, verifiedUser]);
+  }, [entry]);
 
   const handleOpenInWorkspace = useCallback(async () => {
     if (!entry) return;
@@ -235,37 +254,7 @@ const FormCatalogFormPage = ({
     );
   }
 
-  if (!verifiedUser) {
-    return (
-      <div className="form-catalog">
-        {renderHeader()}
-        <main className="form-catalog__main">
-          <section className="form-catalog__hero">
-            <div className="form-catalog__hero-kicker">{category?.label || 'Form catalog'}</div>
-            <h1 className="form-catalog__hero-title">{entry.title}</h1>
-            {entry.description ? (
-              <p className="form-catalog__hero-summary">{entry.description}</p>
-            ) : null}
-          </section>
-          <section className="form-catalog__auth-gate">
-            <h2>Sign in to open this form</h2>
-            <p>
-              Create a free DullyPDF account to preview, download, or open {entry.formNumber || 'this form'}{' '}
-              directly in the editor.
-            </p>
-            <button
-              type="button"
-              className="form-catalog__auth-gate-button"
-              onClick={onRequestSignIn}
-            >
-              Sign in to continue
-            </button>
-          </section>
-        </main>
-        <SiteFooter />
-      </div>
-    );
-  }
+  const openButtonLabel = openInProgress ? 'Loading into editor…' : 'Open in DullyPDF';
 
   return (
     <div className="form-catalog">
@@ -343,7 +332,7 @@ const FormCatalogFormPage = ({
                 onClick={handleOpenInWorkspace}
                 disabled={openInProgress}
               >
-                {openInProgress ? 'Loading into editor…' : 'Open in DullyPDF'}
+                {openButtonLabel}
               </button>
               <a
                 className="form-catalog-detail__button form-catalog-detail__button--secondary"

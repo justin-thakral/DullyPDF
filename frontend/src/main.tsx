@@ -65,6 +65,21 @@ const resolveRoute = (): AppRoute => {
     return { kind: 'home' };
   }
 
+  // Form catalog routes must resolve as hydratable public routes so main.tsx
+  // hydrates the server-rendered HTML instead of spinning up the full workspace
+  // runtime and blowing away the prerendered markup.
+  if (normalizedPath === '/forms') {
+    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
+    return { kind: 'form-catalog-index' };
+  }
+  if (normalizedPath.startsWith('/forms/')) {
+    const slug = normalizedPath.slice('/forms/'.length);
+    if (slug && !slug.includes('/')) {
+      if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
+      return { kind: 'form-catalog-form', slug };
+    }
+  }
+
   const workspaceBrowserRoute = parseWorkspaceBrowserRoute(path, window.location.search);
   if (workspaceBrowserRoute) {
     return {
@@ -166,7 +181,9 @@ const isHydratablePublicRoute = (route: AppRoute): route is HydratablePublicRout
   route.kind === 'feature-plan' ||
   route.kind === 'usage-docs' ||
   route.kind === 'blog-index' ||
-  route.kind === 'blog-post'
+  route.kind === 'blog-post' ||
+  route.kind === 'form-catalog-index' ||
+  route.kind === 'form-catalog-form'
 );
 
 const renderRoute = (route: AppRoute) => {

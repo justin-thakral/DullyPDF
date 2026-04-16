@@ -83,6 +83,9 @@ class TemplateApiEndpointRecord:
     last_failure_at: Optional[str]
     last_failure_reason: Optional[str]
     audit_event_count: int
+    scope_type: str = "template"
+    group_id: Optional[str] = None
+    group_name: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -169,6 +172,9 @@ def _serialize_template_api_endpoint(doc) -> TemplateApiEndpointRecord:
         last_failure_at=data.get("last_failure_at"),
         last_failure_reason=(str(data.get("last_failure_reason") or "").strip() or None),
         audit_event_count=max(0, int(data.get("audit_event_count") or 0)),
+        scope_type=(str(data.get("scope_type") or "template").strip() or "template"),
+        group_id=(str(data.get("group_id") or "").strip() or None),
+        group_name=(str(data.get("group_name") or "").strip() or None),
     )
 
 
@@ -211,6 +217,9 @@ def _endpoint_record_to_document(record: TemplateApiEndpointRecord) -> Dict[str,
         "last_failure_at": record.last_failure_at,
         "last_failure_reason": record.last_failure_reason,
         "audit_event_count": record.audit_event_count,
+        "scope_type": record.scope_type or "template",
+        "group_id": record.group_id,
+        "group_name": record.group_name,
     }
 
 
@@ -340,6 +349,8 @@ def list_template_api_endpoints(
     user_id: str,
     *,
     template_id: Optional[str] = None,
+    group_id: Optional[str] = None,
+    scope_type: Optional[str] = None,
 ) -> List[TemplateApiEndpointRecord]:
     if not user_id:
         return []
@@ -353,6 +364,12 @@ def list_template_api_endpoints(
     if template_id:
         normalized_template_id = str(template_id or "").strip()
         records = [record for record in records if record.template_id == normalized_template_id]
+    if group_id:
+        normalized_group_id = str(group_id or "").strip()
+        records = [record for record in records if record.group_id == normalized_group_id]
+    if scope_type:
+        normalized_scope_type = str(scope_type or "").strip().lower()
+        records = [record for record in records if (record.scope_type or "template") == normalized_scope_type]
     records.sort(key=lambda record: record.updated_at or record.created_at or "", reverse=True)
     return records
 
@@ -360,12 +377,15 @@ def list_template_api_endpoints(
 def publish_or_republish_template_api_endpoint(
     *,
     user_id: str,
-    template_id: str,
+    template_id: Optional[str] = None,
     template_name: Optional[str],
     snapshot: Dict[str, Any],
     active_limit: int,
     key_prefix: str,
     secret_hash: str,
+    scope_type: str = "template",
+    group_id: Optional[str] = None,
+    group_name: Optional[str] = None,
 ) -> tuple[TemplateApiEndpointRecord, bool]:
     """Serialize create/republish for one user to avoid active-endpoint races.
 
@@ -374,13 +394,25 @@ def publish_or_republish_template_api_endpoint(
     cap. Every publish/republish transaction therefore reads and updates a
     per-user guard document so concurrent owner operations for the same account
     conflict and retry against fresh state.
+
+    Phase 4: when ``scope_type`` is ``group``, the existing-active lookup keys
+    on ``group_id`` instead of ``template_id`` so each group has at most one
+    active endpoint just like templates do.
     """
     normalized_user_id = str(user_id or "").strip()
-    normalized_template_id = str(template_id or "").strip()
+    normalized_template_id = str(template_id or "").strip() if template_id else ""
+    normalized_group_id = str(group_id or "").strip() if group_id else ""
+    normalized_scope_type = str(scope_type or "template").strip().lower() or "template"
+    if normalized_scope_type not in {"template", "group"}:
+        raise ValueError("scope_type must be 'template' or 'group'")
     if not normalized_user_id:
         raise ValueError("user_id is required")
-    if not normalized_template_id:
-        raise ValueError("template_id is required")
+    if normalized_scope_type == "template":
+        if not normalized_template_id:
+            raise ValueError("template_id is required for a template scope endpoint")
+    else:
+        if not normalized_group_id:
+            raise ValueError("group_id is required for a group scope endpoint")
     if active_limit <= 0:
         raise TemplateApiActiveEndpointLimitError("API Fill is unavailable on the current plan.")
     if not key_prefix:
@@ -404,12 +436,22 @@ def publish_or_republish_template_api_endpoint(
         docs = _get_query_snapshots(query, transaction=transaction)
         records = [_serialize_template_api_endpoint(doc) for doc in docs]
         active_records = [record for record in records if record.status == "active"]
-        template_active_records = [
-            record for record in active_records if record.template_id == normalized_template_id
-        ]
+        if normalized_scope_type == "group":
+            scope_active_records = [
+                record
+                for record in active_records
+                if record.scope_type == "group" and record.group_id == normalized_group_id
+            ]
+        else:
+            scope_active_records = [
+                record
+                for record in active_records
+                if (record.scope_type or "template") == "template"
+                and record.template_id == normalized_template_id
+            ]
         existing_active = (
-            max(template_active_records, key=_endpoint_recency_key)
-            if template_active_records
+            max(scope_active_records, key=_endpoint_recency_key)
+            if scope_active_records
             else None
         )
 
@@ -424,6 +466,11 @@ def publish_or_republish_template_api_endpoint(
                     "published_at": timestamp,
                     "status": "active",
                     "updated_at": timestamp,
+                    "scope_type": normalized_scope_type,
+                    "group_id": normalized_group_id or None,
+                    "group_name": (group_name or None) if normalized_scope_type == "group" else None,
+                    "key_prefix": key_prefix,
+                    "secret_hash": secret_hash,
                 }
             )
             _set_document_payload(
@@ -431,7 +478,7 @@ def publish_or_republish_template_api_endpoint(
                 updated_document,
                 transaction=transaction,
             )
-            for duplicate in template_active_records:
+            for duplicate in scope_active_records:
                 if duplicate.id == existing_active.id:
                     continue
                 duplicate_ref = endpoints_collection.document(duplicate.id)
@@ -485,6 +532,9 @@ def publish_or_republish_template_api_endpoint(
             "last_failure_at": None,
             "last_failure_reason": None,
             "audit_event_count": 0,
+            "scope_type": normalized_scope_type,
+            "group_id": normalized_group_id or None,
+            "group_name": (group_name or None) if normalized_scope_type == "group" else None,
         }
         _set_document_payload(
             created_doc_ref,
@@ -624,6 +674,82 @@ def revoke_template_api_endpoint_atomic(
     if revoked_record is None:
         return None
     return revoked_record
+
+
+def revoke_template_api_endpoints_for_group(
+    group_id: str,
+    user_id: str,
+) -> List[TemplateApiEndpointRecord]:
+    """Revoke every active template_api endpoint that targets ``group_id``.
+
+    Called when a group is deleted so group-scope endpoints don't become
+    zombies that continue to count against the active-endpoint cap but never
+    resolve to a valid group bundle.
+    """
+    normalized_group_id = str(group_id or "").strip()
+    normalized_user_id = str(user_id or "").strip()
+    if not normalized_group_id or not normalized_user_id:
+        return []
+
+    records = list_template_api_endpoints(normalized_user_id)
+    revoked: List[TemplateApiEndpointRecord] = []
+    for record in records:
+        if record.status != "active":
+            continue
+        if str(record.scope_type or "template").strip().lower() != "group":
+            continue
+        if record.group_id != normalized_group_id:
+            continue
+        result = revoke_template_api_endpoint_atomic(record.id, normalized_user_id)
+        if result is not None:
+            revoked.append(result)
+    return revoked
+
+
+def revoke_template_api_endpoints_referencing_template(
+    template_id: str,
+    user_id: str,
+) -> List[TemplateApiEndpointRecord]:
+    """Revoke every active template_api endpoint that references ``template_id``.
+
+    Called when a saved form is deleted so zombie endpoints don't accumulate —
+    without this, a deleted template leaves both single-template endpoints
+    (scope=template, matching template_id) and group endpoints (scope=group,
+    template appears in the bundle's ``templateSnapshots``) in an ``active``
+    state that forever returns 404 and continues to count against the user's
+    active-endpoint cap.
+
+    Returns the list of records that were transitioned to ``revoked``.
+    """
+    normalized_template_id = str(template_id or "").strip()
+    normalized_user_id = str(user_id or "").strip()
+    if not normalized_template_id or not normalized_user_id:
+        return []
+
+    records = list_template_api_endpoints(normalized_user_id)
+    revoked: List[TemplateApiEndpointRecord] = []
+    for record in records:
+        if record.status != "active":
+            continue
+        scope_type = str(record.scope_type or "template").strip().lower() or "template"
+        references = False
+        if scope_type == "template":
+            references = record.template_id == normalized_template_id
+        else:
+            snapshot = record.snapshot if isinstance(record.snapshot, dict) else {}
+            template_snapshots = snapshot.get("templateSnapshots")
+            if isinstance(template_snapshots, list):
+                references = any(
+                    isinstance(entry, dict)
+                    and str(entry.get("templateId") or "").strip() == normalized_template_id
+                    for entry in template_snapshots
+                )
+        if not references:
+            continue
+        result = revoke_template_api_endpoint_atomic(record.id, normalized_user_id)
+        if result is not None:
+            revoked.append(result)
+    return revoked
 
 
 def rotate_template_api_endpoint_secret_atomic(
@@ -944,11 +1070,27 @@ def record_template_api_endpoint_success(
     metadata: Optional[Dict[str, Any]] = None,
     event_type: str = "fill_succeeded",
     outcome: str = "success",
+    count_increment: int = 1,
 ) -> Optional[TemplateApiEndpointRecord]:
+    """Record a successful fill against the per-endpoint and per-account counters.
+
+    Phase 5 (D7): ``count_increment`` lets group endpoints charge per-PDF
+    instead of per-call. The single-template ``.pdf`` route passes 1 (default);
+    the group ``.zip`` route passes the per-fill ``pdf_count`` so a 7-PDF
+    packet counts as 7 fills against the user's monthly API Fill quota.
+
+    The increment is applied atomically inside the success transaction so
+    concurrent fills cannot race past the cap. If ``count_increment`` would
+    push the user over their monthly limit the function raises
+    :class:`TemplateApiMonthlyLimitExceededError` and **does not** charge any
+    portion of the increment — all-or-nothing semantics, no partial billing.
+    """
+
     normalized_endpoint_id = str(endpoint_id or "").strip()
     normalized_event_type = str(event_type or "").strip()
     normalized_outcome = str(outcome or "success").strip() or "success"
     normalized_month_key = _coerce_month_key(month_key) or _current_month_key()
+    normalized_increment = max(1, int(count_increment or 1))
     if not normalized_endpoint_id:
         return None
     if not normalized_event_type:
@@ -965,6 +1107,13 @@ def record_template_api_endpoint_success(
         if not snapshot.exists:
             return None
         existing = _serialize_template_api_endpoint(snapshot)
+        # Defense in depth: the public fill handler already rejects requests
+        # against revoked endpoints at auth time, but a concurrent revoke can
+        # commit between auth resolution (T1) and this transaction (T2). Bail
+        # without charging if the endpoint is no longer active so in-flight
+        # work doesn't over-bill a just-revoked endpoint.
+        if str(existing.status or "").strip().lower() != "active":
+            return None
         timestamp = now_iso()
         usage_count = None
         usage_created_at = None
@@ -981,7 +1130,9 @@ def record_template_api_endpoint_success(
             )
             usage_data = usage_snapshot.to_dict() or {} if usage_snapshot.exists else {}
             usage_count = max(0, int(usage_data.get("request_count") or 0))
-            if usage_count >= monthly_limit:
+            # Phase 5: per-PDF accounting. The whole increment must fit;
+            # if it would push us over the limit, reject without charging.
+            if usage_count + normalized_increment > monthly_limit:
                 raise TemplateApiMonthlyLimitExceededError("This account has reached its monthly API Fill request limit.")
             usage_created_at = usage_data.get("created_at") or timestamp
             _set_document_payload(
@@ -989,23 +1140,23 @@ def record_template_api_endpoint_success(
                 {
                     "user_id": existing.user_id,
                     "month_key": normalized_month_key,
-                    "request_count": usage_count + 1,
+                    "request_count": usage_count + normalized_increment,
                     "created_at": usage_created_at,
                     "updated_at": timestamp,
                 },
                 transaction=transaction,
             )
         next_month_usage = (
-            existing.current_month_usage_count + 1
+            existing.current_month_usage_count + normalized_increment
             if existing.current_usage_month == normalized_month_key
-            else 1
+            else normalized_increment
         )
         _set_document_payload(
             event_doc_ref,
             {
                 "endpoint_id": normalized_endpoint_id,
                 "user_id": existing.user_id,
-                "template_id": existing.template_id,
+                "template_id": existing.template_id or (existing.group_id or ""),
                 "event_type": normalized_event_type,
                 "outcome": normalized_outcome,
                 "snapshot_version": existing.snapshot_version,
@@ -1019,7 +1170,7 @@ def record_template_api_endpoint_success(
             {
                 "updated_at": timestamp,
                 "last_used_at": timestamp,
-                "usage_count": existing.usage_count + 1,
+                "usage_count": existing.usage_count + normalized_increment,
                 "current_usage_month": normalized_month_key,
                 "current_month_usage_count": next_month_usage,
                 "audit_event_count": existing.audit_event_count + 1,

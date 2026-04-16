@@ -745,3 +745,224 @@ def test_materialize_template_api_snapshot_delegates_to_fill_link_download_path(
         answers={"full_name": "Ada Lovelace"},
         export_mode=None,
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 4: group API Fill service helpers
+# ---------------------------------------------------------------------------
+
+
+def _gcs_template_record(template_id: str, name: str) -> TemplateRecord:
+    return TemplateRecord(
+        id=template_id,
+        pdf_bucket_path=f"gs://forms/{template_id}.pdf",
+        template_bucket_path=f"gs://templates/{template_id}.json",
+        metadata={"name": name},
+        created_at="2024-01-01T00:00:00+00:00",
+        updated_at="2024-01-01T00:00:00+00:00",
+        name=name,
+    )
+
+
+def _text_field(name: str) -> dict:
+    return {
+        "id": f"field-{name}",
+        "name": name,
+        "type": "text",
+        "page": 1,
+        "rect": {"x": 10, "y": 10, "width": 100, "height": 20},
+    }
+
+
+def _date_field(name: str) -> dict:
+    return {
+        "id": f"field-{name}",
+        "name": name,
+        "type": "date",
+        "page": 1,
+        "rect": {"x": 10, "y": 10, "width": 100, "height": 20},
+    }
+
+
+def test_build_group_template_api_snapshot_returns_bundle_with_canonical_schema() -> None:
+    template_records = [
+        _gcs_template_record("tpl-1", "Form A"),
+        _gcs_template_record("tpl-2", "Form B"),
+    ]
+    template_sources = [
+        {
+            "templateId": "tpl-1",
+            "templateName": "Form A",
+            "fields": [_text_field("patient_name"), _date_field("dob")],
+            "checkboxRules": [],
+        },
+        {
+            "templateId": "tpl-2",
+            "templateName": "Form B",
+            "fields": [_text_field("patient_name"), _text_field("address")],
+            "checkboxRules": [],
+        },
+    ]
+
+    bundle = template_api_service.build_group_template_api_snapshot(
+        group_id="grp-1",
+        template_records=template_records,
+        template_sources=template_sources,
+    )
+
+    assert template_api_service.is_group_template_api_snapshot(bundle)
+    assert bundle["snapshotKind"] == "group"
+    assert bundle["templateApiSnapshotVersion"] == template_api_service.TEMPLATE_API_GROUP_SNAPSHOT_VERSION
+    assert bundle["schema"]["groupId"] == "grp-1"
+    canonical_keys = {field["canonicalKey"] for field in bundle["schema"]["fields"]}
+    assert canonical_keys == {"patient_name", "dob", "address"}
+    template_ids = {entry["templateId"] for entry in bundle["templateSnapshots"]}
+    assert template_ids == {"tpl-1", "tpl-2"}
+
+
+def test_build_group_template_api_snapshot_strict_mode_raises_on_type_conflict() -> None:
+    template_records = [
+        _gcs_template_record("tpl-1", "Form A"),
+        _gcs_template_record("tpl-2", "Form B"),
+    ]
+    template_sources = [
+        {
+            "templateId": "tpl-1",
+            "templateName": "Form A",
+            "fields": [_text_field("dob")],
+            "checkboxRules": [],
+        },
+        {
+            "templateId": "tpl-2",
+            "templateName": "Form B",
+            "fields": [_date_field("dob")],
+            "checkboxRules": [],
+        },
+    ]
+    from fastapi import HTTPException
+
+    with pytest.raises(HTTPException) as exc_info:
+        template_api_service.build_group_template_api_snapshot(
+            group_id="grp-1",
+            template_records=template_records,
+            template_sources=template_sources,
+        )
+    assert exc_info.value.status_code == 422
+    detail = exc_info.value.detail
+    assert detail["code"] == "group_schema_type_conflict"
+    assert detail["canonicalKey"] == "dob"
+
+
+def test_build_group_template_api_schema_emits_strict_json_schema() -> None:
+    bundle = template_api_service.build_group_template_api_snapshot(
+        group_id="grp-1",
+        template_records=[_gcs_template_record("tpl-1", "Form A")],
+        template_sources=[
+            {
+                "templateId": "tpl-1",
+                "templateName": "Form A",
+                "fields": [_text_field("patient_name"), _date_field("dob")],
+                "checkboxRules": [],
+            }
+        ],
+    )
+
+    schema = template_api_service.build_group_template_api_schema(bundle)
+    assert schema["additionalProperties"] is False
+    assert schema["type"] == "object"
+    assert "patient_name" in schema["properties"]
+    assert schema["properties"]["patient_name"]["type"] == "string"
+    assert schema["properties"]["dob"]["type"] == "string"
+    assert schema["properties"]["dob"]["format"] == "date"
+    assert schema["properties"]["patient_name"]["x-dullypdf-templates"] == ["tpl-1"]
+
+
+def test_resolve_group_template_api_request_data_accepts_known_keys() -> None:
+    bundle = template_api_service.build_group_template_api_snapshot(
+        group_id="grp-1",
+        template_records=[_gcs_template_record("tpl-1", "Form A")],
+        template_sources=[
+            {
+                "templateId": "tpl-1",
+                "templateName": "Form A",
+                "fields": [_text_field("patient_name"), _date_field("dob")],
+                "checkboxRules": [],
+            }
+        ],
+    )
+    out = template_api_service.resolve_group_template_api_request_data(
+        bundle,
+        {"patient_name": "Aria", "dob": "1992-04-11"},
+        strict=True,
+    )
+    assert out == {"patient_name": "Aria", "dob": "1992-04-11"}
+
+
+def test_resolve_group_template_api_request_data_rejects_unknown_keys() -> None:
+    bundle = template_api_service.build_group_template_api_snapshot(
+        group_id="grp-1",
+        template_records=[_gcs_template_record("tpl-1", "Form A")],
+        template_sources=[
+            {
+                "templateId": "tpl-1",
+                "templateName": "Form A",
+                "fields": [_text_field("patient_name")],
+                "checkboxRules": [],
+            }
+        ],
+    )
+    from fastapi import HTTPException
+
+    with pytest.raises(HTTPException) as exc_info:
+        template_api_service.resolve_group_template_api_request_data(
+            bundle,
+            {"patient_name": "Aria", "rogue_field": "x"},
+            strict=True,
+        )
+    assert exc_info.value.status_code == 400
+    assert "unknown field" in str(exc_info.value.detail).lower()
+
+
+def test_resolve_group_template_api_request_data_rejects_non_object_body() -> None:
+    bundle = template_api_service.build_group_template_api_snapshot(
+        group_id="grp-1",
+        template_records=[_gcs_template_record("tpl-1", "Form A")],
+        template_sources=[
+            {"templateId": "tpl-1", "templateName": "Form A", "fields": [_text_field("patient_name")], "checkboxRules": []}
+        ],
+    )
+    from fastapi import HTTPException
+
+    with pytest.raises(HTTPException) as exc_info:
+        template_api_service.resolve_group_template_api_request_data(bundle, [1, 2, 3], strict=True)
+    assert exc_info.value.status_code == 400
+    assert "must be a json object" in str(exc_info.value.detail).lower()
+
+
+def test_group_template_api_total_page_count_sums_per_template_pages() -> None:
+    bundle = {
+        "templateSnapshots": [
+            {"templateId": "tpl-1", "snapshot": {"pageCount": 3}},
+            {"templateId": "tpl-2", "snapshot": {"pageCount": 2}},
+            {"templateId": "tpl-3", "snapshot": {"pageCount": 0}},
+            "garbage",
+        ],
+    }
+    assert template_api_service.group_template_api_total_page_count(bundle) == 5
+    assert template_api_service.group_template_api_pdf_count(bundle) == 3
+
+
+def test_is_group_template_api_snapshot_distinguishes_shapes() -> None:
+    template_snapshot = {
+        "version": 1,
+        "sourcePdfPath": "gs://forms/x.pdf",
+        "fields": [],
+    }
+    group_snapshot = {
+        "schema": {"fields": []},
+        "templateSnapshots": [],
+    }
+    assert template_api_service.is_group_template_api_snapshot(group_snapshot)
+    assert not template_api_service.is_group_template_api_snapshot(template_snapshot)
+    assert not template_api_service.is_group_template_api_snapshot(None)
+    assert not template_api_service.is_group_template_api_snapshot({"templateSnapshots": "garbage"})

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_ROUTES } from '../../../../scripts/seo-route-data.mjs';
 import {
+  extractPreloadLinks,
   extractViteAssetTags,
   generateAppShellHtml,
   generatePageHtml,
@@ -88,6 +89,40 @@ describe('generate-static-html', () => {
     expect(html).toContain('<title>');
     expect(html).toContain('name="description"');
     expect(html).toContain('rel="canonical"');
+  });
+
+  it('strips React 19 Float preload links from SSR markup and hoists them to head', () => {
+    const route = ALL_ROUTES.find((entry) => entry.path === '/fill-pdf-from-csv');
+    expect(route).toBeTruthy();
+
+    const ssrMarkup =
+      '<link rel="preload" as="image" href="/social/linkedin.svg"/>' +
+      '<link rel="preload" as="image" href="/social/github.svg"/>' +
+      '<main><h1>Fill PDF</h1></main>';
+
+    const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, ssrMarkup);
+
+    // Preload links should be in <head>, not inside #root
+    expect(html).toContain('<div id="root"><main><h1>Fill PDF</h1></main></div>');
+    expect(html).toMatch(/<head>[\s\S]*<link rel="preload" as="image" href="\/social\/linkedin\.svg"\/>/);
+    expect(html).toMatch(/<head>[\s\S]*<link rel="preload" as="image" href="\/social\/github\.svg"\/>/);
+  });
+
+  it('extractPreloadLinks returns cleaned markup and extracted links', () => {
+    const { cleaned, preloadLinks } = extractPreloadLinks(
+      '<link rel="preload" as="image" href="/a.png"/><div>content</div><link rel="preload" as="image" href="/b.png"/>',
+    );
+    expect(cleaned).toBe('<div>content</div>');
+    expect(preloadLinks).toHaveLength(2);
+    expect(preloadLinks[0]).toContain('/a.png');
+    expect(preloadLinks[1]).toContain('/b.png');
+  });
+
+  it('extractPreloadLinks passes through markup without preload links unchanged', () => {
+    const markup = '<main><h1>Hello</h1></main>';
+    const { cleaned, preloadLinks } = extractPreloadLinks(markup);
+    expect(cleaned).toBe(markup);
+    expect(preloadLinks).toHaveLength(0);
   });
 
   it('includes head SEO signals for blog index', () => {

@@ -410,3 +410,308 @@ def test_delete_group_returns_404_when_missing(
 
     assert response.status_code == 404
     assert "Group not found" in response.text
+
+
+# ---------------------------------------------------------------------------
+# GET /api/groups/{group_id}/canonical-schema (Phase 2)
+# ---------------------------------------------------------------------------
+
+
+def _editor_snapshot(*fields: dict) -> dict:
+    return {
+        "version": 2,
+        "pageCount": 1,
+        "pageSizes": {"1": {"width": 612.0, "height": 792.0}},
+        "fields": list(fields),
+        "radioGroups": [],
+        "hasRenamedFields": True,
+        "hasMappedSchema": False,
+    }
+
+
+def _text_field(name: str, *, field_id: str | None = None, page: int = 1, y: int = 10) -> dict:
+    return {
+        "id": field_id or f"f-{name}",
+        "name": name,
+        "type": "text",
+        "page": page,
+        "rect": {"x": 10.0, "y": float(y), "width": 100.0, "height": 14.0},
+    }
+
+
+def _date_field(name: str, *, field_id: str | None = None, page: int = 1, y: int = 10) -> dict:
+    return {
+        "id": field_id or f"f-{name}",
+        "name": name,
+        "type": "date",
+        "page": page,
+        "rect": {"x": 10.0, "y": float(y), "width": 100.0, "height": 14.0},
+    }
+
+
+def _template_record_with_snapshot(template_id: str, name: str) -> TemplateRecord:
+    return TemplateRecord(
+        id=template_id,
+        pdf_bucket_path=f"gs://forms/{template_id}.pdf",
+        template_bucket_path=f"gs://templates/{template_id}.pdf",
+        metadata={"editorSnapshot": {"version": 2, "path": f"gs://snapshots/{template_id}.json"}},
+        created_at="2025-01-01T00:00:00.000Z",
+        updated_at="2025-01-01T00:00:00.000Z",
+        name=name,
+    )
+
+
+def test_canonical_schema_returns_404_when_group_missing(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "get_group", return_value=None)
+
+    response = client.get("/api/groups/missing/canonical-schema", headers=auth_headers)
+    assert response.status_code == 404
+    assert "Group not found" in response.text
+
+
+def test_canonical_schema_merges_two_template_snapshots(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    group = _group_record(group_id="grp-1", template_ids=["tpl-1", "tpl-2"])
+    mocker.patch.object(app_main, "get_group", return_value=group)
+
+    template_lookup = {
+        "tpl-1": _template_record_with_snapshot("tpl-1", "I-130"),
+        "tpl-2": _template_record_with_snapshot("tpl-2", "I-130A"),
+    }
+    snapshot_lookup = {
+        "tpl-1": _editor_snapshot(_text_field("petitioner_name"), _date_field("petitioner_dob", y=30)),
+        "tpl-2": _editor_snapshot(_text_field("petitioner_name"), _text_field("beneficiary_name", y=30)),
+    }
+
+    mocker.patch.object(app_main, "get_template", side_effect=lambda template_id, user_id: template_lookup.get(template_id))
+    mocker.patch.object(
+        app_main,
+        "load_saved_form_editor_snapshot",
+        side_effect=lambda metadata: snapshot_lookup.get(
+            (metadata or {}).get("editorSnapshot", {}).get("path", "").split("/")[-1].replace(".json", "")
+        ),
+    )
+
+    response = client.get("/api/groups/grp-1/canonical-schema", headers=auth_headers)
+    assert response.status_code == 200
+    body = response.json()
+
+    schema = body["schema"]
+    assert schema["groupId"] == "grp-1"
+    assert sorted(schema["templateIds"]) == ["tpl-1", "tpl-2"]
+
+    canonical_keys = {field["canonicalKey"] for field in schema["fields"]}
+    assert canonical_keys == {"petitioner_name", "petitioner_dob", "beneficiary_name"}
+
+    petitioner_name = next(field for field in schema["fields"] if field["canonicalKey"] == "petitioner_name")
+    binding_template_ids = sorted({binding["templateId"] for binding in petitioner_name["perTemplateBindings"]})
+    assert binding_template_ids == ["tpl-1", "tpl-2"]
+
+
+def test_canonical_schema_warns_on_missing_template_snapshots(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    """A template in the group with no editor snapshot is reported in skippedTemplateIds."""
+
+    _patch_auth(mocker, app_main, base_user)
+    group = _group_record(group_id="grp-1", template_ids=["tpl-1", "tpl-missing"])
+    mocker.patch.object(app_main, "get_group", return_value=group)
+
+    template_lookup = {
+        "tpl-1": _template_record_with_snapshot("tpl-1", "I-130"),
+        "tpl-missing": _template_record_with_snapshot("tpl-missing", "Pending"),
+    }
+    snapshot_lookup = {"tpl-1": _editor_snapshot(_text_field("petitioner_name"))}
+
+    mocker.patch.object(app_main, "get_template", side_effect=lambda template_id, user_id: template_lookup.get(template_id))
+    mocker.patch.object(
+        app_main,
+        "load_saved_form_editor_snapshot",
+        side_effect=lambda metadata: snapshot_lookup.get(
+            (metadata or {}).get("editorSnapshot", {}).get("path", "").split("/")[-1].replace(".json", "")
+        ),
+    )
+
+    response = client.get("/api/groups/grp-1/canonical-schema", headers=auth_headers)
+    assert response.status_code == 200
+    body = response.json()
+    assert body["skippedTemplateIds"] == ["tpl-missing"]
+    canonical_keys = {field["canonicalKey"] for field in body["schema"]["fields"]}
+    assert canonical_keys == {"petitioner_name"}
+
+
+def test_canonical_schema_strict_mode_returns_422_on_type_conflict(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    group = _group_record(group_id="grp-1", template_ids=["tpl-1", "tpl-2"])
+    mocker.patch.object(app_main, "get_group", return_value=group)
+
+    template_lookup = {
+        "tpl-1": _template_record_with_snapshot("tpl-1", "Form A"),
+        "tpl-2": _template_record_with_snapshot("tpl-2", "Form B"),
+    }
+    # 'dob' is a text field on tpl-1 but a date field on tpl-2 — strict mode must reject.
+    snapshot_lookup = {
+        "tpl-1": _editor_snapshot(_text_field("dob")),
+        "tpl-2": _editor_snapshot(_date_field("dob")),
+    }
+
+    mocker.patch.object(app_main, "get_template", side_effect=lambda template_id, user_id: template_lookup.get(template_id))
+    mocker.patch.object(
+        app_main,
+        "load_saved_form_editor_snapshot",
+        side_effect=lambda metadata: snapshot_lookup.get(
+            (metadata or {}).get("editorSnapshot", {}).get("path", "").split("/")[-1].replace(".json", "")
+        ),
+    )
+
+    response = client.get("/api/groups/grp-1/canonical-schema?strict=true", headers=auth_headers)
+    assert response.status_code == 422
+    body = response.json()
+    assert body["detail"]["code"] == "group_schema_type_conflict"
+    assert body["detail"]["canonicalKey"] == "dob"
+    assert sorted(body["detail"]["conflictingTypes"]) == sorted({"text", "date"})
+
+
+def test_canonical_schema_soft_mode_emits_warnings_instead_of_failing(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    group = _group_record(group_id="grp-1", template_ids=["tpl-1", "tpl-2"])
+    mocker.patch.object(app_main, "get_group", return_value=group)
+
+    template_lookup = {
+        "tpl-1": _template_record_with_snapshot("tpl-1", "Form A"),
+        "tpl-2": _template_record_with_snapshot("tpl-2", "Form B"),
+    }
+    snapshot_lookup = {
+        "tpl-1": _editor_snapshot(_text_field("dob")),
+        "tpl-2": _editor_snapshot(_date_field("dob")),
+    }
+
+    mocker.patch.object(app_main, "get_template", side_effect=lambda template_id, user_id: template_lookup.get(template_id))
+    mocker.patch.object(
+        app_main,
+        "load_saved_form_editor_snapshot",
+        side_effect=lambda metadata: snapshot_lookup.get(
+            (metadata or {}).get("editorSnapshot", {}).get("path", "").split("/")[-1].replace(".json", "")
+        ),
+    )
+
+    response = client.get("/api/groups/grp-1/canonical-schema", headers=auth_headers)
+    assert response.status_code == 200
+    body = response.json()
+    warning_codes = [warning["code"] for warning in body["warnings"]]
+    assert "type_conflict_soft" in warning_codes
+    dob = next(field for field in body["schema"]["fields"] if field["canonicalKey"] == "dob")
+    assert dob["type"] == "date"  # more-constrained type wins
+
+
+def test_canonical_schema_includes_checkbox_rules_from_template_metadata(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    """Checkbox rules persisted on template metadata flow through to canonical questions."""
+
+    _patch_auth(mocker, app_main, base_user)
+    group = _group_record(group_id="grp-1", template_ids=["tpl-1"])
+    mocker.patch.object(app_main, "get_group", return_value=group)
+
+    template = TemplateRecord(
+        id="tpl-1",
+        pdf_bucket_path="gs://forms/tpl-1.pdf",
+        template_bucket_path="gs://templates/tpl-1.pdf",
+        metadata={
+            "editorSnapshot": {"version": 2, "path": "gs://snapshots/tpl-1.json"},
+            "fillRules": {
+                "checkboxRules": [
+                    {"databaseField": "marital_status", "groupKey": "marital_status", "operation": "enum"}
+                ]
+            },
+        },
+        created_at="2025-01-01T00:00:00.000Z",
+        updated_at="2025-01-01T00:00:00.000Z",
+        name="Form A",
+    )
+    snapshot = _editor_snapshot(
+        {
+            "id": "f-single",
+            "name": "i_marital_status_single",
+            "type": "checkbox",
+            "page": 1,
+            "rect": {"x": 10.0, "y": 10.0, "width": 14.0, "height": 14.0},
+            "groupKey": "marital_status",
+            "groupLabel": "Marital Status",
+            "optionKey": "single",
+            "optionLabel": "Single",
+        },
+        {
+            "id": "f-married",
+            "name": "i_marital_status_married",
+            "type": "checkbox",
+            "page": 1,
+            "rect": {"x": 30.0, "y": 10.0, "width": 14.0, "height": 14.0},
+            "groupKey": "marital_status",
+            "groupLabel": "Marital Status",
+            "optionKey": "married",
+            "optionLabel": "Married",
+        },
+    )
+
+    mocker.patch.object(app_main, "get_template", return_value=template)
+    mocker.patch.object(app_main, "load_saved_form_editor_snapshot", return_value=snapshot)
+
+    response = client.get("/api/groups/grp-1/canonical-schema", headers=auth_headers)
+    assert response.status_code == 200
+    body = response.json()
+    marital = next(field for field in body["schema"]["fields"] if field["canonicalKey"] == "marital_status")
+    assert marital["type"] == "radio_group"
+    assert marital["allowedValues"] == ["single", "married"]
+
+
+def test_canonical_schema_returns_empty_fields_when_group_has_no_loadable_templates(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    group = _group_record(group_id="grp-1", template_ids=["tpl-1"])
+    mocker.patch.object(app_main, "get_group", return_value=group)
+    mocker.patch.object(app_main, "get_template", return_value=None)
+
+    response = client.get("/api/groups/grp-1/canonical-schema", headers=auth_headers)
+    assert response.status_code == 200
+    body = response.json()
+    assert body["schema"]["fields"] == []
+    assert body["skippedTemplateIds"] == ["tpl-1"]

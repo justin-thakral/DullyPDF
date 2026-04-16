@@ -81,8 +81,8 @@ def test_download_endpoint_prefers_cached_pdf_bytes_over_storage_stream(
 
 def test_create_schema_endpoint_rejects_empty_allowlist(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
-    mocker.patch.object(app_main, "build_allowlist_payload", return_value={"schemaFields": []})
-    validate = mocker.patch.object(app_main, "validate_payload_size")
+    mocker.patch("backend.api.routes.schemas.build_allowlist_payload", return_value={"schemaFields": []})
+    validate = mocker.patch("backend.api.routes.schemas.validate_payload_size")
 
     response = client.post(
         "/api/schemas",
@@ -103,12 +103,11 @@ def test_create_schema_endpoint_maps_payload_validation_error_to_400(
     auth_headers,
 ) -> None:
     _patch_auth(mocker, app_main, base_user)
-    mocker.patch.object(
-        app_main,
-        "build_allowlist_payload",
+    mocker.patch(
+        "backend.api.routes.schemas.build_allowlist_payload",
         return_value={"schemaFields": [{"name": "first_name", "type": "string"}]},
     )
-    mocker.patch.object(app_main, "validate_payload_size", side_effect=ValueError("OpenAI payload too large"))
+    mocker.patch("backend.api.routes.schemas.validate_payload_size", side_effect=ValueError("OpenAI payload too large"))
     create_schema = mocker.patch.object(app_main, "create_schema")
 
     response = client.post(
@@ -125,8 +124,8 @@ def test_create_schema_endpoint_maps_payload_validation_error_to_400(
 def test_create_and_list_schemas_success_path(client, app_main, base_user, mocker, auth_headers) -> None:
     _patch_auth(mocker, app_main, base_user)
     allowlist = {"schemaFields": [{"name": "first_name", "type": "string"}]}
-    mocker.patch.object(app_main, "build_allowlist_payload", return_value=allowlist)
-    mocker.patch.object(app_main, "validate_payload_size", return_value=None)
+    mocker.patch("backend.api.routes.schemas.build_allowlist_payload", return_value=allowlist)
+    mocker.patch("backend.api.routes.schemas.validate_payload_size", return_value=None)
     mocker.patch.object(app_main, "create_schema", return_value=_schema_record("schema_new"))
 
     create_response = client.post(

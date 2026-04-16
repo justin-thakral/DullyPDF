@@ -14,7 +14,9 @@ export type HydratablePublicRoute =
   | { kind: 'feature-plan'; planKey: FeaturePlanPageKey }
   | { kind: 'usage-docs'; pageKey: UsageDocsPageKey }
   | { kind: 'blog-index' }
-  | { kind: 'blog-post'; slug: string };
+  | { kind: 'blog-post'; slug: string }
+  | { kind: 'form-catalog-index' }
+  | { kind: 'form-catalog-form'; slug: string };
 
 export function resolveHydratablePublicRoute(pathname: string): HydratablePublicRoute | null {
   const normalizedPath = pathname.replace(/\/+$/, '') || '/';
@@ -39,6 +41,17 @@ export function resolveHydratablePublicRoute(pathname: string): HydratablePublic
     const slug = normalizedPath.slice('/blog/'.length);
     if (slug && !slug.includes('/')) {
       return { kind: 'blog-post', slug };
+    }
+  }
+
+  if (normalizedPath === '/forms') {
+    return { kind: 'form-catalog-index' };
+  }
+
+  if (normalizedPath.startsWith('/forms/')) {
+    const slug = normalizedPath.slice('/forms/'.length);
+    if (slug && !slug.includes('/')) {
+      return { kind: 'form-catalog-form', slug };
     }
   }
 

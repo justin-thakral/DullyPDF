@@ -688,10 +688,18 @@ const Homepage: React.FC<HomepageProps> = ({
               <div className="cta-section">
                 <h3>Build, Share, Fill and Sign</h3>
                 <p className="cta-description">
-                  Click <strong>Try Now</strong> to upload your PDF document and use AI-driven form field detection,
-                  the form builder, native Fill By Link, API Fill, database field mapping, and supported U.S. e-sign workflows.
-                  The <strong>Demo</strong> is interactive and live. Use <strong>Contact</strong> to send me a
-                  message.
+                  Detect fields on any PDF with AI, then reuse the same template to bulk fill from CSV or
+                  Excel, publish a hosted Fill By Link web form, expose a JSON-to-PDF API, extract from
+                  photos of IDs and scanned documents, or route into a U.S. E-SIGN/UETA e-signature.
+                  {' '}Questions?{' '}
+                  <button
+                    type="button"
+                    className="cta-description-contact"
+                    onClick={handleOpenContact}
+                  >
+                    Contact me
+                  </button>
+                  .
                 </p>
 
                 <div className="cta-buttons">
@@ -699,7 +707,7 @@ const Homepage: React.FC<HomepageProps> = ({
                     onClick={onStartWorkflow}
                     className="try-now-button"
                   >
-                    Try Now
+                    Detect Fields &amp; Open the Form Workspace
                   </button>
                   {onStartDemo ? (
                     <button
@@ -707,12 +715,22 @@ const Homepage: React.FC<HomepageProps> = ({
                       className="demo-button"
                       type="button"
                     >
-                      Demo
+                      See an Interactive Demo
                     </button>
                   ) : null}
-                  <button type="button" className="contact-button" onClick={handleOpenContact}>
-                    Contact
-                  </button>
+                </div>
+
+                <p className="cta-catalog-intro">
+                  Pre-Made Form Catalog has fillable templates from every major industry: healthcare,
+                  insurance and ACORD, HR onboarding, finance and loans, real estate and leases, legal,
+                  logistics, government and tax, education, and nonprofits. Optionally open in the
+                  DullyPDF UI for form workflows.
+                </p>
+
+                <div className="cta-buttons">
+                  <a href="/forms" className="demo-button">
+                    Go to the Pre-Made Form Catalog
+                  </a>
                 </div>
 
                 <div className="quick-info">
@@ -737,15 +755,6 @@ const Homepage: React.FC<HomepageProps> = ({
                 </div>
               </div>
 
-              <div className="tech-note">
-                <h4>Powered by Advanced Technology</h4>
-                <p>
-                  Built using PDF.js rendering for precision geometry,
-                  React for responsive interfaces, and AI workflows for intelligent field detection and naming.
-                  Respondent answers stay structured so owners can reopen the workspace, search a respondent list, and
-                  generate the final PDF only when it is needed.
-                </p>
-              </div>
             </div>
           </div>
         </div>

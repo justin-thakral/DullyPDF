@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException, Query
 
 from backend.api.schemas import TemplateGroupCreateRequest, TemplateGroupUpdateRequest
 from backend.firebaseDB.group_database import (
@@ -15,17 +15,29 @@ from backend.firebaseDB.group_database import (
     normalize_group_name,
     update_group,
 )
+from backend.firebaseDB.template_api_endpoint_database import (
+    revoke_template_api_endpoints_for_group,
+)
+from backend.logging_config import get_logger
 from backend.firebaseDB.fill_link_database import (
     close_fill_link,
     close_fill_links_for_group,
     get_fill_link_for_group,
     update_fill_link,
 )
-from backend.firebaseDB.template_database import list_templates
+from backend.firebaseDB.template_database import get_template, list_templates
 from backend.services.auth_service import require_user
 from backend.services.downgrade_retention_service import sync_user_downgrade_retention
+from backend.services.group_schema_service import (
+    build_group_canonical_schema_from_sources,
+)
+from backend.services.group_schema_types import GroupSchemaTypeConflictError
+from backend.services.saved_form_snapshot_service import (
+    load_saved_form_editor_snapshot,
+)
 
 router = APIRouter()
+logger = get_logger(__name__)
 
 
 def _locked_template_ids_from_summary(retention_summary: Optional[Dict[str, Any]]) -> set[str]:
@@ -237,7 +249,130 @@ async def delete_owner_group(
         detail="This workflow group is locked because one or more saved forms are unavailable on the base plan.",
     )
     close_fill_links_for_group(existing_group.id, user.app_user_id, closed_reason="group_deleted")
+    # Revoke any group-scope template_api endpoints that target this group so
+    # they don't become zombies (active status, counted against the plan cap,
+    # always failing with 404 at fill time because the group doc is gone).
+    try:
+        revoke_template_api_endpoints_for_group(existing_group.id, user.app_user_id)
+    except Exception as exc:
+        logger.warning(
+            "Failed to revoke template_api endpoints for deleted group=%s user=%s: %s",
+            existing_group.id,
+            user.app_user_id,
+            exc,
+        )
     deleted = delete_group(group_id, user.app_user_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Group not found")
     return {"success": True}
+
+
+def _resolve_template_checkbox_rules(metadata: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Mirror the resolution order used by ``fill_link_download_service``.
+
+    Looks for ``metadata['fillRules']['checkboxRules']`` first (the new
+    persistence shape), then falls back to ``metadata['checkboxRules']`` for
+    older saved forms. Returns an empty list when neither location yields a
+    list of dicts.
+    """
+
+    if not isinstance(metadata, dict):
+        return []
+    fill_rules = metadata.get("fillRules") if isinstance(metadata.get("fillRules"), dict) else {}
+    raw = fill_rules.get("checkboxRules") if isinstance(fill_rules.get("checkboxRules"), list) else metadata.get("checkboxRules")
+    if not isinstance(raw, list):
+        return []
+    return [dict(entry) for entry in raw if isinstance(entry, dict)]
+
+
+def _build_template_source_for_group(
+    template_id: str,
+    user_id: str,
+) -> Optional[Dict[str, Any]]:
+    """Load one template's editor snapshot and reshape into a canonical-schema source.
+
+    Returns ``None`` when the template is missing, owned by another user, or
+    has no editor snapshot persisted yet (e.g. an in-progress upload). Callers
+    convert these into ``orphan_field`` warnings on the canonical schema so the
+    user can see exactly which templates were skipped.
+    """
+
+    template = get_template(template_id, user_id)
+    if template is None:
+        return None
+    snapshot = load_saved_form_editor_snapshot(template.metadata)
+    if not snapshot:
+        return None
+    fields = snapshot.get("fields") if isinstance(snapshot, dict) else None
+    if not isinstance(fields, list) or not fields:
+        return None
+    return {
+        "templateId": template.id,
+        "templateName": template.name or template.id,
+        "fields": fields,
+        "checkboxRules": _resolve_template_checkbox_rules(template.metadata),
+    }
+
+
+@router.get("/api/groups/{group_id}/canonical-schema")
+async def get_owner_group_canonical_schema(
+    group_id: str,
+    strict: bool = Query(default=False),
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    """Return the canonical group schema for Search & Fill / API Fill / Fill By Link.
+
+    The schema is the deduped union of every template field across the group,
+    keyed by canonical field key (see :mod:`backend.services.group_schema_service`).
+    Per-template bindings let downstream consumers project a single input
+    record into a per-template fill payload.
+
+    Query parameters:
+        strict: when True, type collisions raise HTTP 422 with conflict
+                details. When False (the default), collisions are surfaced as
+                warnings on the response and resolved via the precedence map.
+
+    Status codes:
+        200 - schema returned (with warnings array, possibly empty).
+        404 - group not found or not owned by the caller.
+        422 - strict mode and at least one canonical type collision was found.
+    """
+
+    user = require_user(authorization)
+    group = get_group(group_id, user.app_user_id)
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+
+    template_sources: List[Dict[str, Any]] = []
+    skipped_template_ids: List[str] = []
+    for template_id in group.template_ids:
+        source = _build_template_source_for_group(template_id, user.app_user_id)
+        if source is None:
+            skipped_template_ids.append(template_id)
+            continue
+        template_sources.append(source)
+
+    try:
+        schema = build_group_canonical_schema_from_sources(
+            template_sources,
+            group_id=group.id,
+            strict=strict,
+        )
+    except GroupSchemaTypeConflictError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": str(exc),
+                "code": "group_schema_type_conflict",
+                "canonicalKey": exc.canonical_key,
+                "conflictingTypes": exc.conflicting_types,
+            },
+        ) from exc
+
+    response: Dict[str, Any] = {
+        "schema": schema,
+        "warnings": list(schema.get("warnings", [])),
+    }
+    if skipped_template_ids:
+        response["skippedTemplateIds"] = skipped_template_ids
+    return response

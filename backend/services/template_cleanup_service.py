@@ -13,6 +13,9 @@ from backend.firebaseDB.fill_link_database import (
 from backend.firebaseDB.group_database import remove_template_from_all_groups
 from backend.firebaseDB.signing_database import invalidate_signing_request, list_signing_requests
 from backend.firebaseDB.storage_service import delete_pdf, is_gcs_path
+from backend.firebaseDB.template_api_endpoint_database import (
+    revoke_template_api_endpoints_referencing_template,
+)
 from backend.firebaseDB.template_database import delete_template, get_template
 from backend.logging_config import get_logger
 from backend.services.saved_form_snapshot_service import get_saved_form_editor_snapshot_path
@@ -113,6 +116,21 @@ def delete_saved_form_assets(
     else:
         close_fill_links_for_template(form_id, user_id, closed_reason="template_deleted")
         close_group_fill_links_for_template(form_id, user_id, closed_reason="template_deleted")
+
+    # Revoke every active template_api endpoint that references this template —
+    # otherwise the deleted template leaves zombie endpoints that stay "active",
+    # count against the user's active-endpoint cap, and return 404 on every
+    # subsequent fill. Covers both template-scope (matching template_id) and
+    # group-scope (template appears in the bundle's templateSnapshots).
+    try:
+        revoke_template_api_endpoints_referencing_template(form_id, user_id)
+    except Exception as exc:
+        logger.warning(
+            "Failed to revoke template_api endpoints referencing deleted template=%s user=%s: %s",
+            form_id,
+            user_id,
+            exc,
+        )
 
     removed = delete_template(form_id, user_id)
     if not removed:

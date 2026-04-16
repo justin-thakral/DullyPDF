@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from fastapi import HTTPException, UploadFile
-import fitz
 
 from backend.detection.pdf_validation import PdfValidationError, PdfValidationResult, preflight_pdf_bytes
 
@@ -135,6 +134,8 @@ def coerce_field_payloads(raw_fields: List[Any]) -> List[Dict[str, Any]]:
 
 def get_pdf_page_count(pdf_bytes: bytes) -> int:
     """Return the number of pages in a PDF byte stream."""
+    import fitz
+
     if not pdf_bytes:
         return 0
     with fitz.open(stream=io.BytesIO(pdf_bytes), filetype="pdf") as doc:

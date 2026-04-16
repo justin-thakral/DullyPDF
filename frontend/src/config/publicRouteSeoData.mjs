@@ -11,6 +11,15 @@ import {
   formatPlanLimitCount,
 } from './planLimits.mjs';
 import { BLOG_POSTS } from './blogContent.mjs';
+import {
+  buildIntentCatalogWorkflowSteps,
+  getIntentCatalogShowcase,
+} from './intentCatalogShowcases.mjs';
+import { FORM_CATALOG_ENTRIES } from './formCatalogData.mjs';
+import {
+  FORM_CATALOG_CATEGORIES,
+  FORM_CATALOG_TOTAL_COUNT,
+} from './formCatalogCategories.mjs';
 
 export const SITE_ORIGIN = 'https://dullypdf.com';
 export const DEFAULT_SOCIAL_IMAGE_PATH = '/DullyPDFLogoImproved.png';
@@ -46,6 +55,11 @@ const INTENT_PAGES = [
       'fillable pdf builder',
       'convert pdf to fillable template',
       'fillable form template workflow',
+      'make pdf fillable online free',
+      'turn pdf into fillable form',
+      'create fillable pdf from existing document',
+      'pdf to editable form converter',
+      'scan to fillable pdf',
     ],
     valuePoints: [
       'Convert scanned or native PDFs into editable fillable templates.',
@@ -155,6 +169,10 @@ const INTENT_PAGES = [
       'automatic pdf to database mapping',
       'map pdf fields to database columns',
       'pdf schema mapping workflow',
+      'pdf to structured data',
+      'pdf form to spreadsheet mapping',
+      'extract pdf fields to database',
+      'pdf field column alignment tool',
     ],
     valuePoints: [
       'Map detected fields to CSV/SQL/XLSX/JSON schema headers.',
@@ -229,6 +247,134 @@ const INTENT_PAGES = [
     relatedDocs: ['rename-mapping', 'getting-started', 'api-fill'],
   },
   {
+    key: 'pdf-form-catalog',
+    category: 'workflow',
+    path: '/pdf-form-catalog',
+    navLabel: 'PDF Form Catalog',
+    heroTitle: 'Browse a PDF Form Catalog of Official Blank Forms',
+    heroSummary:
+      'Start from curated public-domain forms instead of rebuilding layouts from scratch. Open blank PDFs in DullyPDF, save them as reusable templates, and connect them to Search & Fill, API Fill, Fill By Link, or signatures.',
+    seoTitle: 'PDF Form Catalog of Official Blank Forms | DullyPDF',
+    seoDescription:
+      'Browse DullyPDF’s PDF form catalog of official blank forms. Open a form in the editor, save it as a template, then map, fill, publish, or sign it.',
+    seoKeywords: [
+      'pdf form catalog',
+      'official blank pdf forms',
+      'fillable form catalog',
+      'government pdf form library',
+      'pdf template library',
+      'pre made pdf forms',
+      'blank pdf form catalog',
+      'public domain pdf forms',
+      'fillable pdf template catalog',
+      'official form pdf library',
+    ],
+    valuePoints: [
+      'Start from real blank forms that already have a fixed official layout.',
+      'Use deep links from the catalog into DullyPDF instead of downloading and reuploading every source PDF manually.',
+      'Treat catalog forms like reusable workflow inputs once they are saved, mapped, and validated.',
+    ],
+    proofPoints: [
+      'Catalog entries include form-number/title context, category grouping, page counts, blank PDF assets, and editor-open links.',
+      'The catalog is built around public-domain and official-source-style forms that fit repeat operations better than blank document authoring.',
+      'After opening a catalog PDF in DullyPDF, the downstream workflow is the same as any other template: detect, rename, map, fill, publish, or sign.',
+    ],
+    articleSections: [
+      {
+        title: 'What the DullyPDF form catalog is actually for',
+        paragraphs: [
+          'The catalog is for teams that already know which document they need. They are not searching for a generic PDF editor. They need an official-looking blank form such as a W-4, W-9, CMS packet, onboarding document, immigration form, or other repeat layout that should stay visually intact while the underlying record changes from run to run.',
+          'That makes the catalog a workflow shortcut, not a final workflow by itself. It reduces the setup cost of finding and staging the source PDF, then hands the document into the normal DullyPDF process where the operator can detect fields, review the geometry, map the schema, and save a reusable template.',
+        ],
+      },
+      {
+        title: 'What the catalog contains',
+        paragraphs: [
+          'The catalog is built around blank public-domain and official-source-style PDF forms that fit recurring operations. The strongest fit is government, healthcare, HR, payroll, tax, immigration, veterans, and other regulated or semi-regulated document families where the visual layout is fixed and the data should be applied consistently.',
+          'In practice that means the catalog is closer to a source-document library than to a finished template marketplace. It contains the blank PDF foundation for a workflow, not a promise that every form is already mapped to your exact schema or ready for production use without review.',
+        ],
+        bullets: [
+          'Good fit: recurring official forms with stable layouts and changing row data.',
+          'Less ideal: ad hoc custom documents, heavy page redesign, or workflows that need custom authoring instead of form reuse.',
+        ],
+      },
+      {
+        title: 'What each catalog entry contains',
+        paragraphs: [
+          'Each entry is meant to answer the practical questions an operator has before opening the document. The useful metadata is not just the title. A strong catalog entry should tell you what the form is, where it belongs, how large it is, and whether it is worth opening in the editor for your specific workflow.',
+          'That is why the DullyPDF catalog pairs the PDF asset with form identifiers, category context, page counts, thumbnails, lightweight descriptions, and direct open-in-editor paths. When the official source is known, the catalog can also preserve that provenance so operators can verify the blank document they are starting from.',
+        ],
+        bullets: [
+          'Form number and title for recognition and search.',
+          'Category grouping so similar workflows stay clustered together.',
+          'Page count, blank PDF asset, and thumbnail preview.',
+          'Direct link to open the form inside DullyPDF without a manual reupload step.',
+        ],
+      },
+      {
+        title: 'How the catalog fits the actual DullyPDF workflow',
+        paragraphs: [
+          'Opening a catalog document is the beginning of the workflow, not the end. Once the blank PDF is opened in DullyPDF, the operator still needs to review the detected or embedded fields, fix naming, align the template to the real schema, and run at least one representative fill before treating the template as production-ready.',
+          'That distinction matters because it keeps expectations clean. The catalog saves time on source acquisition and document selection. The editor, Search & Fill, API Fill, Fill By Link, and signing surfaces are what turn that blank form into a reliable operational asset.',
+        ],
+      },
+      {
+        title: 'What the catalog does not contain',
+        paragraphs: [
+          'The catalog is not your saved-template workspace, and it is not a legal claim that every form revision is always the right one for your jurisdiction or filing date. It gives you a structured starting point, but the operator still owns validation, mapping quality, and source-version review before shipping a workflow.',
+          'That is especially important for official forms that change periodically. If a filing, agency, or partner requires a specific revision, use the catalog metadata as a convenience layer, then confirm the version and test the filled output before relying on it downstream.',
+        ],
+      },
+      {
+        title: 'When to use the catalog versus uploading your own PDF',
+        paragraphs: [
+          'Use the catalog when the source form is already a known recurring document and the cost of locating and staging it manually adds no value. Use upload when your organization has a custom packet, partner-specific layout, or revised internal form that is not represented in the catalog.',
+          'That separation keeps the product honest. The catalog accelerates repeat work on widely recognized blank forms. The upload flow stays the better answer for proprietary layouts and one-off documents that only your team controls.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are catalog forms already mapped to my data?',
+        answer:
+          'No. The catalog provides the blank source PDF and entry metadata. You still need to review fields, map the schema, and validate one representative fill for your own workflow.',
+      },
+      {
+        question: 'Can I save a catalog form as my own reusable template?',
+        answer:
+          'Yes. Once opened in DullyPDF, a catalog PDF can be reviewed, saved, and reused like any other template in the workspace.',
+      },
+      {
+        question: 'Does the catalog replace source-version review?',
+        answer:
+          'No. Treat the catalog as a structured starting point and confirm the required agency or partner revision before depending on it in production.',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Browse the live catalog and adjacent routes',
+        paragraphs: [
+          'Use the links below when you want the actual catalog browser or nearby route pages that already show catalog-backed examples in context.',
+        ],
+        links: [
+          { label: 'Browse Form Catalog', href: '/forms' },
+          { label: 'Workflow Library', href: '/workflows' },
+          { label: 'Government Form Automation', href: '/government-form-automation' },
+          { label: 'HR PDF Automation', href: '/hr-pdf-automation' },
+          { label: 'Healthcare PDF Automation', href: '/healthcare-pdf-automation' },
+        ],
+      },
+    ],
+    relatedIntentPages: [
+      'pdf-to-fillable-form',
+      'fill-pdf-from-csv',
+      'government-form-automation',
+      'hr-pdf-automation',
+      'healthcare-pdf-automation',
+    ],
+    relatedDocs: ['getting-started', 'detection', 'search-fill', 'api-fill'],
+  },
+  {
     key: 'fill-pdf-from-csv',
     category: 'workflow',
     path: '/fill-pdf-from-csv',
@@ -246,6 +392,10 @@ const INTENT_PAGES = [
       'fill pdf from sql',
       'fill pdf from excel',
       'fill pdf from json',
+      'populate pdf from spreadsheet',
+      'auto fill pdf from data',
+      'pdf mail merge from csv',
+      'bulk fill pdf from excel rows',
     ],
     valuePoints: [
       'Load CSV, XLSX, or JSON rows and search records quickly.',
@@ -344,6 +494,10 @@ const INTENT_PAGES = [
       'pdf form respondent link',
       'collect pdf form responses',
       'html form to fill pdf',
+      'send pdf form to fill online',
+      'client intake form link',
+      'online form to pdf converter',
+      'web form that generates pdf',
     ],
     valuePoints: [
       'Publish a DullyPDF-hosted HTML form from any saved template.',
@@ -843,6 +997,10 @@ const INTENT_PAGES = [
       'fillable pdf api',
       'hosted json to pdf endpoint',
       'pdf automation api',
+      'generate pdf from json programmatically',
+      'rest api fill pdf template',
+      'pdf generation api',
+      'document automation api endpoint',
     ],
     valuePoints: [
       'Publish one saved-template snapshot as a hosted JSON-to-PDF endpoint.',
@@ -920,6 +1078,10 @@ const INTENT_PAGES = [
       'free automatic pdf form filling',
       'fill data in pdf forms',
       'automated pdf form filling',
+      'how to fill out pdf form online',
+      'auto populate pdf fields',
+      'enter data into pdf fields automatically',
+      'complete pdf form digitally',
     ],
     valuePoints: [
       'Turn manual copy/paste workflows into reusable mapped templates.',
@@ -1017,6 +1179,10 @@ const INTENT_PAGES = [
       'free fillable form field mapping',
       'pdf field naming standardization',
       'pdf field rename mapping',
+      'rename pdf form fields in bulk',
+      'standardize pdf field labels',
+      'pdf field name best practices',
+      'fix messy pdf field names',
     ],
     valuePoints: [
       'Use AI-assisted rename to convert inconsistent labels into stable names.',
@@ -1088,6 +1254,10 @@ const INTENT_PAGES = [
       'healthcare pdf form automation',
       'patient registration form automation',
       'hipaa release form automation',
+      'medical form digitization',
+      'clinic intake workflow automation',
+      'digital patient registration system',
+      'healthcare document management software',
     ],
     valuePoints: [
       'Build reusable templates for medical and dental intake, registration, history, and consent packets.',
@@ -1181,6 +1351,10 @@ const INTENT_PAGES = [
       'acord 28 automation',
       'acord 126 automation',
       'acord 140 automation',
+      'acord form filler software',
+      'certificate of insurance generator',
+      'coi form automation tool',
+      'insurance certificate auto fill',
     ],
     valuePoints: [
       'Standardize repetitive ACORD field naming across brokers and account teams.',
@@ -1295,6 +1469,10 @@ const INTENT_PAGES = [
       'policy summary pdf automation',
       'endorsement form automation',
       'claims intake pdf automation',
+      'insurance document processing software',
+      'insurance agency form filler',
+      'commercial insurance pdf workflow',
+      'policy renewal paperwork automation',
     ],
     valuePoints: [
       'Build reusable templates for ACORD packets and carrier-specific insurance forms.',
@@ -1394,6 +1572,10 @@ const INTENT_PAGES = [
       'real estate form automation',
       'lease agreement pdf automation',
       'property inspection form automation',
+      'tenant screening form filler',
+      'rental lease packet automation',
+      'property management pdf workflow',
+      'real estate closing document automation',
     ],
     valuePoints: [
       'Support rental intake packets, mortgage documents, and lease workflows.',
@@ -1472,6 +1654,10 @@ const INTENT_PAGES = [
       'tax form database mapping',
       'public sector pdf automation',
       'license renewal form automation',
+      'municipal form digitization',
+      'government document processing',
+      'city permit application filler',
+      'regulatory compliance form automation',
     ],
     valuePoints: [
       'Handle standardized permit, licensing, tax, and public service forms.',
@@ -1550,6 +1736,10 @@ const INTENT_PAGES = [
       'fill pdf financial form from database',
       'financial disclosure pdf automation',
       'kyc aml pdf automation',
+      'mortgage application auto fill',
+      'loan origination document automation',
+      'lending document processing software',
+      'borrower application form filler',
     ],
     valuePoints: [
       'Map borrower and underwriting fields to lending schema columns.',
@@ -1628,6 +1818,10 @@ const INTENT_PAGES = [
       'onboarding packet pdf automation',
       'benefits enrollment form automation',
       'w4 1099 pdf automation',
+      'new hire paperwork automation',
+      'employee document automation software',
+      'i9 form automation',
+      'hr document workflow tool',
     ],
     valuePoints: [
       'Use one mapped template set for common onboarding packet forms.',
@@ -1734,6 +1928,10 @@ const INTENT_PAGES = [
       'contract pdf to database',
       'legal intake form automation',
       'affidavit template automation',
+      'law firm document automation',
+      'legal form filler software',
+      'retainer agreement pdf automation',
+      'case intake packet automation',
     ],
     valuePoints: [
       'Reuse mapped templates for legal intake, contracts, and filing workflows.',
@@ -1890,6 +2088,10 @@ const INTENT_PAGES = [
       'volunteer registration pdf automation',
       'human services form automation',
       'nonprofit intake pdf automation',
+      'charity form filler',
+      'nonprofit document workflow',
+      'grant application form automation',
+      'donor management form automation',
     ],
     valuePoints: [
       'Support grant packets, volunteer onboarding, and program intake forms.',
@@ -1968,6 +2170,11 @@ const INTENT_PAGES = [
       'bill of lading automation',
       'delivery receipt pdf automation',
       'safety inspection form automation',
+      'freight document automation',
+      'shipping paperwork digitization',
+      'bol form filler',
+      'trucking form automation',
+      'supply chain pdf workflow',
     ],
     valuePoints: [
       'Standardize recurring shipping, inspection, and delivery document templates.',
@@ -2047,6 +2254,10 @@ const INTENT_PAGES = [
       'bulk pdf filling',
       'fill multiple pdfs from spreadsheet',
       'batch pdf form automation',
+      'mass pdf generation from data',
+      'high volume pdf filling tool',
+      'pdf mail merge tool',
+      'automated document batch processing',
     ],
     valuePoints: [
       'Map a PDF template once and fill it from any number of records.',
@@ -2262,6 +2473,10 @@ const INTENT_PAGES = [
       'detect form fields in pdf',
       'pdf field detection tool',
       'ai form field detection',
+      'find fields in pdf automatically',
+      'pdf form field recognition',
+      'ai pdf form scanner',
+      'intelligent form field finder',
     ],
     valuePoints: [
       'Detect text, date, checkbox, and signature fields automatically.',
@@ -2331,6 +2546,10 @@ const INTENT_PAGES = [
       'safety inspection form pdf',
       'construction change order automation',
       'daily log pdf automation',
+      'contractor document workflow',
+      'building permit form filler',
+      'osha inspection form automation',
+      'construction project paperwork tool',
     ],
     valuePoints: [
       'Standardize permit, inspection, and change order form templates.',
@@ -2409,6 +2628,10 @@ const INTENT_PAGES = [
       'w9 form automation',
       '1099 pdf automation',
       'cpa firm pdf automation',
+      'bookkeeper form filler',
+      'tax preparer document automation',
+      'engagement letter pdf automation',
+      'accounting firm document workflow',
     ],
     valuePoints: [
       'Map client and entity data to recurring tax and engagement forms.',
@@ -2490,6 +2713,9 @@ const INTENT_PAGES = [
       'scan invoice fill form',
       'invoice data extraction tool',
       'invoice automation pdf',
+      'photo to invoice data',
+      'invoice capture and fill',
+      'accounts payable pdf automation',
     ],
     valuePoints: [
       'Upload photos or scans of invoices and extract vendor, date, and amount data automatically.',
@@ -2865,6 +3091,90 @@ const buildTechArticleSchema = (headline, description, path) => ({
   },
 });
 
+const buildVideoObjectSchema = (video) => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: video.name,
+  description: video.description,
+  thumbnailUrl: video.thumbnailUrl,
+  uploadDate: video.uploadDate,
+  contentUrl: video.contentUrl,
+  embedUrl: video.embedUrl,
+  publisher: {
+    '@type': 'Organization',
+    name: 'DullyPDF',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_ORIGIN}/DullyPDFLogoImproved.png`,
+    },
+  },
+});
+
+// Canonical video metadata for the DullyPDF e-sign pipeline walkthrough.
+// Kept here (rather than imported from publicVideoContent.ts) so the .mjs
+// SEO pipeline has no cross-language dependency. Keep the videoId and
+// youtubeUrl in sync with frontend/src/config/publicVideoContent.ts.
+const ESIGN_PIPELINE_VIDEO = {
+  videoId: 'CJ0TCXGHFdQ',
+  name: 'DullyPDF E-Sign Pipeline — every signing workflow, every industry',
+  description:
+    'Single-signer, sequential multi-signer, parallel multi-signer, Fill By Link → sign, group fill → multi-sign, and API Fill → sign — walked end to end across HR onboarding, healthcare intake, real estate, legal, insurance ACORD, and immigration USCIS workflows.',
+  contentUrl: 'https://youtu.be/CJ0TCXGHFdQ',
+  embedUrl: 'https://www.youtube.com/embed/CJ0TCXGHFdQ',
+  thumbnailUrl: 'https://i.ytimg.com/vi/CJ0TCXGHFdQ/maxresdefault.jpg',
+  uploadDate: '2026-04-14',
+};
+
+// Intent pages that should emit the e-sign video in JSON-LD and OG tags.
+const VIDEO_BY_INTENT_KEY = {
+  'pdf-signature-workflow': ESIGN_PIPELINE_VIDEO,
+  'esign-ueta-pdf-workflow': ESIGN_PIPELINE_VIDEO,
+  'fill-pdf-by-link': ESIGN_PIPELINE_VIDEO,
+  'pdf-fill-api': ESIGN_PIPELINE_VIDEO,
+};
+
+// Blog posts that should emit the e-sign video alongside BlogPosting.
+const VIDEO_BY_BLOG_SLUG = {
+  'send-pdf-for-signature-by-email-or-web-form': ESIGN_PIPELINE_VIDEO,
+};
+
+const buildIntentCatalogItemListSchema = (page, showcase) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${page.navLabel} PDFs in the DullyPDF catalog`,
+  itemListOrder: 'https://schema.org/ItemListUnordered',
+  numberOfItems: showcase.documents.length,
+  itemListElement: showcase.documents.map((document, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: `${SITE_ORIGIN}${document.catalogHref}`,
+    name: `${document.formNumber ? `${document.formNumber} — ` : ''}${document.title}`,
+    item: {
+      '@type': 'CreativeWork',
+      name: `${document.formNumber ? `${document.formNumber} — ` : ''}${document.title}`,
+      image: `${SITE_ORIGIN}${document.thumbnailUrl}`,
+      url: `${SITE_ORIGIN}${document.catalogHref}`,
+      isBasedOnUrl: document.sourceUrl,
+    },
+  })),
+});
+
+const buildIntentCatalogHowToSchema = (page, showcase) => ({
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: `How to automate ${page.navLabel.toLowerCase()} PDFs in DullyPDF`,
+  description:
+    `Open blank ${page.navLabel.toLowerCase()} PDFs, map fields once, fill them from CSV, XLSX, JSON, or SQL-backed schemas, publish API and web-form flows, and route the completed record into signature.`,
+  url: `${SITE_ORIGIN}${page.path}`,
+  step: buildIntentCatalogWorkflowSteps(showcase).map((step, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: step.title,
+    text: step.description,
+    url: `${SITE_ORIGIN}${step.href}`,
+  })),
+});
+
 const HOME_ROUTE_SEO = {
   title: 'DullyPDF — Automatic PDF to Fillable Form With Search & Fill',
   description:
@@ -3178,19 +3488,35 @@ for (const page of USAGE_DOCS_PAGES) {
 
 const INTENT_ROUTE_SEO = {};
 for (const page of INTENT_PAGES) {
+  const catalogShowcase = getIntentCatalogShowcase(page.key);
+  let structuredData = appendStructuredData(
+    toFaqSchema(page.faqs),
+    buildBreadcrumbSchema([
+      { label: 'Home', href: '/' },
+      { label: page.category === 'industry' ? 'Industries' : 'Workflows' },
+      { label: page.navLabel },
+    ]),
+  );
+
+  if (catalogShowcase) {
+    structuredData = appendStructuredData(
+      appendStructuredData(structuredData, buildIntentCatalogItemListSchema(page, catalogShowcase)),
+      buildIntentCatalogHowToSchema(page, catalogShowcase),
+    );
+  }
+
+  const intentVideo = VIDEO_BY_INTENT_KEY[page.key];
+  if (intentVideo) {
+    structuredData = appendStructuredData(structuredData, buildVideoObjectSchema(intentVideo));
+  }
+
   INTENT_ROUTE_SEO[page.key] = {
     title: buildIntentSeoTitle(page.heroTitle),
     description: buildIntentSeoDescription(page.heroSummary),
     canonicalPath: page.path,
     keywords: page.seoKeywords,
-    structuredData: appendStructuredData(
-      toFaqSchema(page.faqs),
-      buildBreadcrumbSchema([
-        { label: 'Home', href: '/' },
-        { label: page.category === 'industry' ? 'Industries' : 'Workflows' },
-        { label: page.navLabel },
-      ]),
-    ),
+    structuredData,
+    ...(intentVideo ? { video: intentVideo } : {}),
     bodyContent: {
       heading: page.heroTitle,
       paragraphs: [page.heroSummary],
@@ -3206,7 +3532,7 @@ const INTENT_HUB_ROUTE_SEO = {
   workflows: {
     title: 'PDF Automation Workflows — Templates, Filling, Signing, and API',
     description:
-      'Every way to automate PDFs: convert to fillable forms, fill from spreadsheets or databases, collect signatures by link, and publish fill-by-API endpoints.',
+      'Every way to automate PDFs: browse a form catalog, convert to fillable forms, fill from spreadsheets or databases, collect signatures, and publish fill-by-API endpoints.',
     canonicalPath: '/workflows',
     keywords: [
       'pdf workflow library',
@@ -3228,11 +3554,11 @@ const INTENT_HUB_ROUTE_SEO = {
       heroKicker: 'Workflow hub',
       heading: 'Workflow Library for PDF Automation',
       paragraphs: [
-        'Browse workflow-first landing pages for converting PDFs to fillable templates, mapping fields to structured schemas, and filling forms from repeat records.',
+        'Browse workflow-first landing pages for converting PDFs to fillable templates, starting from curated blank forms, mapping fields to structured schemas, and filling forms from repeat records.',
       ],
       panelTitle: 'All workflow pages',
       panelDescription:
-        'These pages are organized for users searching by action (convert, map, fill, rename). Start with the workflow closest to your immediate task.',
+        'These pages are organized for users searching by action (browse a catalog, convert, map, fill, rename, sign). Start with the workflow closest to your immediate task.',
       sections: INTENT_PAGES
         .filter((page) => page.category === 'workflow')
         .map((page) => ({ title: page.navLabel, description: page.heroSummary, href: page.path })),
@@ -3250,6 +3576,8 @@ const INTENT_HUB_ROUTE_SEO = {
             'After choosing a workflow page, use these public resources to get operational details and implementation examples.',
           ],
           links: [
+            { label: 'PDF Form Catalog', href: '/pdf-form-catalog' },
+            { label: 'Browse Form Catalog', href: '/forms' },
             { label: 'Usage Docs Overview', href: '/usage-docs' },
             { label: 'Getting Started', href: '/usage-docs/getting-started' },
             { label: 'Blog', href: '/blog' },
@@ -3355,6 +3683,216 @@ for (const page of FEATURE_PLAN_PAGES) {
 }
 
 // ---------------------------------------------------------------------------
+// Form Catalog routes
+// ---------------------------------------------------------------------------
+
+const ACTIVE_FORM_CATALOG_CATEGORIES = FORM_CATALOG_CATEGORIES.filter((category) => !category.empty);
+
+const FORM_CATALOG_INDEX_KEYWORDS = [
+  'free fillable pdf forms',
+  'fillable pdf form library',
+  'official government pdf forms',
+  'irs fillable pdf forms',
+  'uscis fillable pdf forms',
+  'pdf form catalog',
+  'fillable pdf templates',
+  'w-9 fillable pdf',
+  'w-4 fillable pdf',
+  'i-9 fillable pdf',
+  '1099 fillable pdf',
+  'fillable pdf form downloads',
+  'free pdf form templates',
+  'dullypdf form catalog',
+];
+
+const FORM_CATALOG_INDEX_FAQS = [
+  {
+    question: 'How many forms are in the DullyPDF form catalog?',
+    answer: `The catalog currently hosts ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms across ${ACTIVE_FORM_CATALOG_CATEGORIES.length} categories, including tax, immigration, healthcare, real estate, HR, bankruptcy, veterans, and small-business documents.`,
+  },
+  {
+    question: 'Are the form catalog PDFs free to download?',
+    answer: 'Yes. Every hosted form comes from a public-domain government source. You can download the blank PDF, or open it inside DullyPDF to auto-detect fields, fill from a spreadsheet, collect answers from a web form, or route the filled record into a signature workflow.',
+  },
+  {
+    question: 'Can I fill these forms automatically?',
+    answer: 'Yes. Open any catalog form in DullyPDF and the field detection pipeline finds every text box, checkbox, radio group, and signature region. You can then search and fill from CSV, Excel, or JSON rows, call the JSON-to-PDF API, or publish a hosted web form to collect structured answers before generating the final PDF.',
+  },
+  {
+    question: 'Which categories are supported?',
+    answer: `The catalog covers ${ACTIVE_FORM_CATALOG_CATEGORIES.map((category) => category.label).join(', ')}.`,
+  },
+];
+
+const FORM_CATALOG_INDEX_STRUCTURED_DATA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'DullyPDF Form Catalog',
+    description: `Browse ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms organised by category. Open any form inside DullyPDF to automate detection, filling, and e-signature.`,
+    url: `${SITE_ORIGIN}/forms`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'DullyPDF',
+      url: `${SITE_ORIGIN}/`,
+    },
+  },
+  buildBreadcrumbSchema([
+    { label: 'Home', href: '/' },
+    { label: 'Form Catalog' },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'DullyPDF Form Catalog Categories',
+    itemListOrder: 'https://schema.org/ItemListUnordered',
+    numberOfItems: ACTIVE_FORM_CATALOG_CATEGORIES.length,
+    itemListElement: ACTIVE_FORM_CATALOG_CATEGORIES.map((category, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: category.label,
+      url: `${SITE_ORIGIN}/forms?category=${encodeURIComponent(category.key)}`,
+    })),
+  },
+  ...toFaqSchema(FORM_CATALOG_INDEX_FAQS),
+];
+
+const FORM_CATALOG_INDEX_ROUTE = {
+  path: '/forms',
+  seo: {
+    title: `Free Fillable PDF Form Catalog — ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()}+ Official Forms | DullyPDF`,
+    description: `Browse ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms across ${ACTIVE_FORM_CATALOG_CATEGORIES.length} categories — tax, immigration, healthcare, real estate, HR, and more. Open any form in DullyPDF to auto-detect fields, fill from your data, and e-sign.`,
+    canonicalPath: '/forms',
+    keywords: FORM_CATALOG_INDEX_KEYWORDS,
+    structuredData: FORM_CATALOG_INDEX_STRUCTURED_DATA,
+  },
+  kind: 'form-catalog-index',
+};
+
+const FORM_CATALOG_CATEGORY_BY_KEY = new Map(
+  FORM_CATALOG_CATEGORIES.map((category) => [category.key, category]),
+);
+
+const FORM_CATALOG_SECTION_TO_CATEGORY = new Map();
+for (const category of FORM_CATALOG_CATEGORIES) {
+  for (const section of category.sections || [category.key]) {
+    if (!FORM_CATALOG_SECTION_TO_CATEGORY.has(section)) {
+      FORM_CATALOG_SECTION_TO_CATEGORY.set(section, category);
+    }
+  }
+}
+
+const formatFormCatalogTitle = (entry) => {
+  const prefix = entry.formNumber ? `${entry.formNumber} — ` : '';
+  return `${prefix}${entry.title}`.trim();
+};
+
+const buildFormCatalogEntrySeo = (entry) => {
+  const category =
+    FORM_CATALOG_SECTION_TO_CATEGORY.get(entry.section)
+    || FORM_CATALOG_CATEGORY_BY_KEY.get(entry.section)
+    || null;
+  const categoryLabel = category?.label || entry.section;
+  const displayTitle = formatFormCatalogTitle(entry);
+  const canonicalPath = `/forms/${entry.slug}`;
+  const description = entry.description
+    ? `${entry.description} Download the blank PDF or open it in DullyPDF to auto-detect fields, fill from CSV, collect answers by web form, call a JSON-to-PDF API, and e-sign.`
+    : `Free fillable ${displayTitle} PDF. Download the blank PDF or open it in DullyPDF to auto-detect fields, fill from CSV, collect answers by web form, call a JSON-to-PDF API, and e-sign.`;
+  const keywords = [
+    entry.formNumber ? `${entry.formNumber} fillable pdf` : null,
+    entry.formNumber ? `${entry.formNumber} pdf download` : null,
+    `${entry.title} fillable pdf`,
+    `${entry.title} pdf download`,
+    `${categoryLabel.toLowerCase()} pdf forms`,
+    'free fillable pdf',
+    'official fillable pdf form',
+  ].filter(Boolean);
+
+  const thumbnailUrl = entry.thumbnailUrl
+    ? (entry.thumbnailUrl.startsWith('http')
+        ? entry.thumbnailUrl
+        : `${SITE_ORIGIN}${entry.thumbnailUrl}`)
+    : `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
+
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: `${displayTitle} — Free Fillable PDF`,
+      description,
+      url: `${SITE_ORIGIN}${canonicalPath}`,
+      inLanguage: 'en-US',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'DullyPDF',
+        url: `${SITE_ORIGIN}/`,
+      },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: thumbnailUrl,
+      },
+      about: {
+        '@type': 'CreativeWork',
+        name: displayTitle,
+        ...(entry.sourceUrl ? { isBasedOnUrl: entry.sourceUrl } : {}),
+      },
+    },
+    buildBreadcrumbSchema([
+      { label: 'Home', href: '/' },
+      { label: 'Form Catalog', href: '/forms' },
+      ...(category ? [{ label: category.label, href: `/forms?category=${encodeURIComponent(category.key)}` }] : []),
+      { label: displayTitle },
+    ]),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: `How to fill out ${displayTitle} with DullyPDF`,
+      description: `Open the free blank ${displayTitle} PDF inside DullyPDF, let the AI detect every field, then fill from a spreadsheet, a hosted web form, or a JSON-to-PDF API call before downloading or signing.`,
+      url: `${SITE_ORIGIN}${canonicalPath}`,
+      step: [
+        {
+          '@type': 'HowToStep',
+          position: 1,
+          name: `Open ${entry.formNumber || 'the form'} in DullyPDF`,
+          text: `Open ${displayTitle} in the DullyPDF editor or download the blank PDF directly from this page.`,
+          url: `${SITE_ORIGIN}${canonicalPath}`,
+        },
+        {
+          '@type': 'HowToStep',
+          position: 2,
+          name: 'Detect and rename fields',
+          text: 'Let DullyPDF run CommonForms field detection, review the candidates, and optionally apply AI rename so every field has a clear, reusable name.',
+          url: `${SITE_ORIGIN}/pdf-field-detection-tool`,
+        },
+        {
+          '@type': 'HowToStep',
+          position: 3,
+          name: 'Fill, sign, and reuse',
+          text: 'Fill from CSV or JSON, publish a hosted web form, call the JSON-to-PDF API, or route the completed record into an E-SIGN/UETA signature ceremony.',
+          url: `${SITE_ORIGIN}/fill-pdf-from-csv`,
+        },
+      ],
+    },
+  ];
+
+  return {
+    title: `${displayTitle} — Free Fillable PDF | DullyPDF`,
+    description,
+    canonicalPath,
+    keywords,
+    ogImagePath: entry.thumbnailUrl || null,
+    structuredData,
+  };
+};
+
+const FORM_CATALOG_FORM_ROUTES = FORM_CATALOG_ENTRIES.map((entry) => ({
+  path: `/forms/${entry.slug}`,
+  seo: buildFormCatalogEntrySeo(entry),
+  kind: 'form-catalog-form',
+  slug: entry.slug,
+}));
+
+// ---------------------------------------------------------------------------
 // All routes consolidated
 // ---------------------------------------------------------------------------
 
@@ -3396,6 +3934,7 @@ export const INDEXABLE_PUBLIC_ROUTE_PATHS = ALL_ROUTES.map((r) => r.path);
 export const FOOTER_LINKS = {
   product: [
     { label: 'Try DullyPDF', href: '/' },
+    { label: 'Form Catalog', href: '/forms' },
     { label: 'Getting Started', href: '/usage-docs/getting-started' },
     { label: 'Usage Docs', href: '/usage-docs' },
   ],
@@ -3403,6 +3942,7 @@ export const FOOTER_LINKS = {
   industries: INTENT_PAGES.filter((p) => p.category === 'industry').map((p) => ({ label: p.navLabel, href: p.path })),
   resources: [
     { label: 'Blog', href: '/blog' },
+    { label: 'Form Catalog', href: '/forms' },
     { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
   ],
   legal: [
@@ -3499,6 +4039,33 @@ const getPrimaryBlogFigure = (post) => post.sections.flatMap((section) => sectio
 
 const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
   const primaryFigure = getPrimaryBlogFigure(post);
+  const blogVideo = VIDEO_BY_BLOG_SLUG[post.slug];
+
+  let blogStructuredData = appendStructuredData([{
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.seoDescription,
+    author: { '@type': 'Organization', name: post.author, sameAs: OFFICIAL_PUBLIC_PROFILE_URLS },
+    datePublished: post.publishedDate,
+    dateModified: post.updatedDate,
+    url: `https://dullypdf.com/blog/${post.slug}`,
+    ...(primaryFigure ? { image: `${SITE_ORIGIN}${primaryFigure.src}` } : {}),
+    publisher: {
+      '@type': 'Organization',
+      name: 'DullyPDF',
+      sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
+      logo: { '@type': 'ImageObject', url: 'https://dullypdf.com/DullyPDFLogoImproved.png' },
+    },
+  }], buildBreadcrumbSchema([
+    { label: 'Home', href: '/' },
+    { label: 'Blog', href: '/blog' },
+    { label: post.title },
+  ]));
+
+  if (blogVideo) {
+    blogStructuredData = appendStructuredData(blogStructuredData, buildVideoObjectSchema(blogVideo));
+  }
 
   return {
     path: `/blog/${post.slug}`,
@@ -3507,27 +4074,8 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
       description: post.seoDescription,
       canonicalPath: `/blog/${post.slug}`,
       keywords: post.seoKeywords,
-      structuredData: appendStructuredData([{
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        headline: post.title,
-        description: post.seoDescription,
-        author: { '@type': 'Organization', name: post.author, sameAs: OFFICIAL_PUBLIC_PROFILE_URLS },
-        datePublished: post.publishedDate,
-        dateModified: post.updatedDate,
-        url: `https://dullypdf.com/blog/${post.slug}`,
-        ...(primaryFigure ? { image: `${SITE_ORIGIN}${primaryFigure.src}` } : {}),
-        publisher: {
-          '@type': 'Organization',
-          name: 'DullyPDF',
-          sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
-          logo: { '@type': 'ImageObject', url: 'https://dullypdf.com/DullyPDFLogoImproved.png' },
-        },
-      }], buildBreadcrumbSchema([
-        { label: 'Home', href: '/' },
-        { label: 'Blog', href: '/blog' },
-        { label: post.title },
-      ])),
+      structuredData: blogStructuredData,
+      ...(blogVideo ? { video: blogVideo } : {}),
       bodyContent: {
         heading: post.title,
         paragraphs: [
@@ -3552,6 +4100,10 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
 // Append blog routes
 ALL_ROUTES.push(BLOG_INDEX_ROUTE);
 ALL_ROUTES.push(...BLOG_POST_ROUTES);
+
+// Append form catalog routes
+ALL_ROUTES.push(FORM_CATALOG_INDEX_ROUTE);
+ALL_ROUTES.push(...FORM_CATALOG_FORM_ROUTES);
 
 // Export raw data for blog/sitemap integration
 export { INTENT_PAGES, USAGE_DOCS_PAGES, FEATURE_PLAN_PAGES, BLOG_POSTS };

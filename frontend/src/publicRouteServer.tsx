@@ -6,6 +6,8 @@ import IntentHubPage from './components/pages/IntentHubPage';
 import FeaturePlanPage from './components/pages/FeaturePlanPage';
 import BlogIndexPage from './components/pages/BlogIndexPage';
 import BlogPostPage from './components/pages/BlogPostPage';
+import FormCatalogIndexPage from './components/pages/FormCatalogIndexPage';
+import FormCatalogFormPage from './components/pages/FormCatalogFormPage';
 import { HomepageShell } from './components/pages/HomepageShell';
 import type { HydratablePublicRoute } from './publicRouteRouting';
 
@@ -36,6 +38,10 @@ function renderPublicRouteElement(route: HydratablePublicRoute) {
       return <BlogIndexPage />;
     case 'blog-post':
       return <BlogPostPage slug={route.slug} />;
+    case 'form-catalog-index':
+      return <FormCatalogIndexPage />;
+    case 'form-catalog-form':
+      return <FormCatalogFormPage slug={route.slug} />;
   }
 }
 

@@ -164,12 +164,32 @@ class SavedFormEditorSnapshotUpdateRequest(BaseModel):
 
 
 class TemplateApiEndpointPublishRequest(BaseModel):
-    """Publish or republish a saved form as a scoped API Fill endpoint."""
+    """Publish or republish a saved form (or template group) as a scoped API Fill endpoint.
 
-    templateId: str = Field(..., min_length=1)
+    Phase 4: ``scopeType`` defaults to ``template`` for backwards compatibility.
+    Setting ``scopeType`` to ``group`` and supplying ``groupId`` publishes a
+    group endpoint whose body conforms to the union JSON Schema across every
+    template in the group.
+    """
+
+    scopeType: Literal["template", "group"] = "template"
+    templateId: Optional[str] = Field(default=None, min_length=1)
+    groupId: Optional[str] = Field(default=None, min_length=1)
     exportMode: Literal["flat", "editable"] = "flat"
 
     model_config = {"extra": "forbid"}
+
+    def model_post_init(self, _context: Any) -> None:
+        if self.scopeType == "template":
+            if not self.templateId:
+                raise ValueError("templateId is required for a template API Fill endpoint")
+            if self.groupId:
+                raise ValueError("groupId must not be set for a template API Fill endpoint")
+        else:
+            if not self.groupId:
+                raise ValueError("groupId is required for a group API Fill endpoint")
+            if self.templateId:
+                raise ValueError("templateId must not be set for a group API Fill endpoint")
 
 
 class TemplateApiFillRequest(BaseModel):

@@ -46,7 +46,7 @@ async function signInIfConfigured(page) {
 async function openDemo(page) {
   await retry('open demo', 3, async () => {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.getByRole('button', { name: 'Demo', exact: true }).click();
+    await page.getByRole('button', { name: 'See an Interactive Demo', exact: true }).click();
     await page.getByText('Form Field Editor').waitFor({ timeout: 30000 });
     await page.locator('[data-page-number="1"]').waitFor({ timeout: 30000 });
   });

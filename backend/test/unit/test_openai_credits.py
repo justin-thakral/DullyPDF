@@ -92,7 +92,7 @@ def test_rename_charges_one_credit_without_schema(
     mocker.patch("backend.api.routes.ai.check_rate_limit", return_value=True)
     mocker.patch("backend.api.routes.ai.record_openai_rename_request", return_value=None)
     mocker.patch(
-        "backend.api.routes.ai.run_openai_rename_on_pdf",
+        "backend.ai.rename_pipeline.run_openai_rename_on_pdf",
         return_value=({}, [{"name": "first_name", "originalName": "A1"}]),
     )
     mocker.patch("backend.api.routes.ai._update_session_entry", return_value=None)
@@ -130,7 +130,7 @@ def test_rename_charges_two_credits_with_schema(
     mocker.patch("backend.api.routes.ai.get_schema", return_value=_dummy_schema_record(schema_id="schema_1"))
     mocker.patch("backend.api.routes.ai.record_openai_rename_request", return_value=None)
     mocker.patch(
-        "backend.api.routes.ai.run_openai_rename_on_pdf",
+        "backend.ai.rename_pipeline.run_openai_rename_on_pdf",
         return_value=({}, [{"name": "first_name", "originalName": "A1"}]),
     )
     mocker.patch("backend.api.routes.ai._update_session_entry", return_value=None)
@@ -168,7 +168,7 @@ def test_schema_mapping_charges_one_credit(
     mocker.patch("backend.api.routes.ai.get_schema", return_value=_dummy_schema_record(schema_id="schema_1"))
     mocker.patch("backend.api.routes.ai.record_openai_request", return_value=None)
     mocker.patch(
-        "backend.api.routes.ai.call_openai_schema_mapping_chunked",
+        "backend.ai.schema_mapping.call_openai_schema_mapping_chunked",
         return_value={"mappings": [], "checkboxRules": [], "radioGroupSuggestions": [], "notes": ""},
     )
     mocker.patch("backend.api.routes.ai._update_session_entry", return_value=None)
@@ -214,7 +214,7 @@ def test_rename_with_schema_charges_four_credits_for_ten_pages(
     mocker.patch("backend.api.routes.ai.get_schema", return_value=_dummy_schema_record(schema_id="schema_1"))
     mocker.patch("backend.api.routes.ai.record_openai_rename_request", return_value=None)
     mocker.patch(
-        "backend.api.routes.ai.run_openai_rename_on_pdf",
+        "backend.ai.rename_pipeline.run_openai_rename_on_pdf",
         return_value=({}, [{"name": "first_name", "originalName": "A1"}]),
     )
     mocker.patch("backend.api.routes.ai._update_session_entry", return_value=None)
@@ -252,7 +252,7 @@ def test_schema_mapping_charges_two_credits_for_ten_pages(
     mocker.patch("backend.api.routes.ai.get_schema", return_value=_dummy_schema_record(schema_id="schema_1"))
     mocker.patch("backend.api.routes.ai.record_openai_request", return_value=None)
     mocker.patch(
-        "backend.api.routes.ai.call_openai_schema_mapping_chunked",
+        "backend.ai.schema_mapping.call_openai_schema_mapping_chunked",
         return_value={"mappings": [], "checkboxRules": [], "radioGroupSuggestions": [], "notes": ""},
     )
     mocker.patch("backend.api.routes.ai._update_session_entry", return_value=None)
