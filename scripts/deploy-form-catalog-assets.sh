@@ -24,8 +24,12 @@ if [[ "${FORM_CATALOG_ASSET_BASE}" != "${EXPECTED_ASSET_BASE}" ]]; then
 fi
 
 if [[ ! -d "${CATALOG_ROOT}" ]]; then
-  echo "Missing form catalog root: ${CATALOG_ROOT}" >&2
-  exit 1
+  # form_catalog/ is a large tree of generated thumbnails and PDFs that we keep
+  # out of git (see .gitignore). When CI doesn't have a local copy, the assets
+  # still live in the GCS bucket from a prior deploy, so the hosted frontend
+  # continues serving them. Skip rather than fail.
+  echo "Form catalog root '${CATALOG_ROOT}' not present; assuming bucket is already populated and skipping asset sync." >&2
+  exit 0
 fi
 
 TMP_CORS_FILE="$(mktemp)"
