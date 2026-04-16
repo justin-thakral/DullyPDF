@@ -479,7 +479,9 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
 
         <div className="fill-link-public-page__card">
           {loading ? (
-            <p className="fill-link-public-page__status">Loading form…</p>
+            <p className="fill-link-public-page__status">
+              Loading form… waiting for backend (up to ~10s on first visit)
+            </p>
           ) : null}
           <div ref={alertRef} className="fill-link-public-page__alerts">
             {error ? (

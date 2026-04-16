@@ -28,7 +28,9 @@ export default function PublicSigningPage({ token }: PublicSigningPageProps) {
           </p>
         </header>
 
-        {flow.loading ? <p>Loading signing request…</p> : null}
+        {flow.loading ? (
+          <p>Loading signing request… waiting for backend (up to ~10s on first visit)</p>
+        ) : null}
         {flow.error ? <Alert tone="error" variant="inline" message={flow.error} /> : null}
 
         {flow.request ? (

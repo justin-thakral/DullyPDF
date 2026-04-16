@@ -27,6 +27,7 @@ export default function PublicSigningValidationPage({ token }: PublicSigningVali
 
   useEffect(() => {
     let active = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset on token change before new fetch
     setLoading(true);
     setError(null);
     setValidation(null);
@@ -57,7 +58,9 @@ export default function PublicSigningValidationPage({ token }: PublicSigningVali
           </p>
         </header>
 
-        {loading ? <p>Loading validation record…</p> : null}
+        {loading ? (
+          <p>Loading validation record… waiting for backend (up to ~10s on first visit)</p>
+        ) : null}
         {error ? <Alert tone="error" variant="inline" message={error} /> : null}
 
         {validation ? (

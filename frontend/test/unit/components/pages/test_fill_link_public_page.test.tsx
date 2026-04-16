@@ -36,7 +36,7 @@ import FillLinkPublicPage from '../../../../src/components/pages/FillLinkPublicP
 async function waitForPublicFillLinkReady() {
   expect(await screen.findByRole('heading', { name: 'Fill out this form' })).toBeTruthy();
   await waitFor(() => {
-    expect(screen.queryByText('Loading form…')).toBeNull();
+    expect(screen.queryByText(/Loading form…/)).toBeNull();
   });
 }
 

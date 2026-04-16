@@ -271,15 +271,13 @@ jobs:
           CHANGED_BACKEND_FILES: ${{ needs.changes.outputs.backend_any_files }}
         run: bash scripts/ci/classify_backend_changes.sh
 
-      - name: Authenticate to Google Cloud for backend integration suites
+      - name: Authenticate to Google Cloud for backend tests
+        # Unit tests that touch Firestore mocks still need ADC at import time, so
+        # run auth whenever the backend_qa job runs, not just for integration suites.
         if: >-
           ${{
-            needs.changes.outputs.template_api == 'true'
-            || needs.changes.outputs.detection_ai == 'true'
-            || needs.changes.outputs.workspace == 'true'
-            || needs.changes.outputs.fill_links == 'true'
-            || needs.changes.outputs.signing == 'true'
-            || needs.changes.outputs.billing == 'true'
+            needs.changes.outputs.backend_any == 'true'
+            || needs.changes.outputs.backend_governance == 'true'
             || needs.changes.outputs.shared_runtime == 'true'
           }}
         uses: google-github-actions/auth@v3
