@@ -18,8 +18,7 @@ RUN adduser --disabled-password --gecos "" appuser
 
 COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install --upgrade pip \
-  && pip install -r /app/backend/requirements.txt \
-  && pip uninstall -y opencv-python-headless numpy pdfplumber
+  && pip install -r /app/backend/requirements.txt
 
 COPY --chown=appuser:appuser backend /app/backend
 COPY --chown=appuser:appuser scripts/cleanup_sessions.py /app/scripts/cleanup_sessions.py
