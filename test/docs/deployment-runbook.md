@@ -161,6 +161,39 @@ gh workflow run controlled-deploy.yml \
   -f dry_run=false
 ```
 
+## Region Topology
+
+Both environments standardize on the same four-service footprint and keep
+Cloud Tasks queues in `us-east4`, but the GPU detector service region is
+split by project so dev and prod do not fight over the same single-GPU
+L4 quota slot:
+
+| Service                        | Prod (`dullypdf`) region | Dev (`dullypdf-dev`) region |
+| ------------------------------ | ------------------------ | --------------------------- |
+| `dullypdf-backend-east4`       | `us-east4`               | `us-east4`                  |
+| `dullypdf-openai-rename-remap` | `us-east4`               | `us-east4`                  |
+| `dullypdf-detector-light-gpu`  | `us-east4`               | `us-central1`               |
+| `dullypdf-session-cleanup` (Job) | `us-east4`              | `us-east4`                  |
+
+CPU detectors (`dullypdf-detector-light`, `dullypdf-detector-heavy`) are
+unsupported in both environments. The deploy scripts refuse any non-GPU
+routing mode and any region drift:
+
+- `scripts/deploy-backend.sh` — requires `BACKEND_REGION=us-east4` and the
+  `dullypdf-backend-east4` service name.
+- `scripts/deploy-openai-workers.sh` — requires `REGION=us-east4` and
+  `OPENAI_RENAME_REMAP_TASKS_LOCATION=us-east4`.
+- `scripts/deploy-detector-services.sh` — requires `DETECTOR_ROUTING_MODE=gpu`,
+  `REGION=us-east4` (tasks queue), and a project-matched
+  `DETECTOR_GPU_REGION` (prod: `us-east4`, dev: `us-central1`).
+- `scripts/deploy-session-cleanup-job.sh` — prod-only today; requires
+  `us-east4`.
+
+When updating the dev env file (`BACKEND_ENV_FILE_B64_DEV` GitHub secret),
+keep `DETECTOR_GPU_REGION=us-central1`. The Cloud Tasks queue still lives in
+`us-east4` and dispatches cross-region to the `us-central1` GPU service — that
+is expected and supported.
+
 ## Verification Checklist
 
 For a dev deploy, verify all of the following:

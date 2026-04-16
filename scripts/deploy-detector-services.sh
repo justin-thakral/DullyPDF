@@ -130,8 +130,14 @@ DETECTOR_DEPLOY_PHASE="${DETECTOR_DEPLOY_PHASE:-multi}"
 DETECTOR_ROUTING_MODE="$(detector_normalize_routing_mode "${DETECTOR_ROUTING_MODE:-}")"
 DETECTOR_DEPLOY_VARIANTS="$(normalize_detector_deploy_variants "${DETECTOR_DEPLOY_VARIANTS:-active}")"
 
-# Both dev and prod standardize on a GPU-only detector topology in us-east4.
-# Refuse any config that would create CPU detectors or cross-region drift.
+# Both dev and prod standardize on a GPU-only detector topology. CPU detectors
+# are no longer supported in either environment. Cloud Tasks queues always live
+# in us-east4 so the backend's dispatch is region-consistent, but the GPU
+# service region is split by project:
+#   - prod (dullypdf)     -> us-east4  (matches the rest of prod)
+#   - dev  (dullypdf-dev) -> us-central1 (separate per-region GPU quota so dev
+#                                         deploys don't fight prod for the
+#                                         single-GPU allotment in us-east4)
 if [[ "$DETECTOR_ROUTING_MODE" != "gpu" ]]; then
   echo "Refusing to deploy detectors with DETECTOR_ROUTING_MODE=${DETECTOR_ROUTING_MODE}. Expected 'gpu'." >&2
   exit 1
@@ -141,15 +147,26 @@ if [[ "$DETECTOR_DEPLOY_VARIANTS" != "active" && "$DETECTOR_DEPLOY_VARIANTS" != 
   exit 1
 fi
 if [[ "$REGION" != "us-east4" ]]; then
-  echo "Refusing to deploy detectors outside us-east4 (got REGION=${REGION})." >&2
+  echo "Refusing to deploy detectors with REGION=${REGION} (tasks queue region must stay us-east4)." >&2
   exit 1
 fi
 if [[ -n "${DETECTOR_TASKS_LOCATION:-}" && "$DETECTOR_TASKS_LOCATION" != "us-east4" ]]; then
   echo "Refusing to deploy: env file has DETECTOR_TASKS_LOCATION=${DETECTOR_TASKS_LOCATION}, expected us-east4." >&2
   exit 1
 fi
-if [[ -n "${DETECTOR_GPU_REGION:-}" && "$DETECTOR_GPU_REGION" != "us-east4" ]]; then
-  echo "Refusing to deploy: env file has DETECTOR_GPU_REGION=${DETECTOR_GPU_REGION}, expected us-east4." >&2
+case "$PROJECT_ID" in
+  dullypdf)
+    EXPECTED_DETECTOR_GPU_REGION="us-east4"
+    ;;
+  dullypdf-dev)
+    EXPECTED_DETECTOR_GPU_REGION="us-central1"
+    ;;
+  *)
+    EXPECTED_DETECTOR_GPU_REGION="${DETECTOR_GPU_REGION:-us-east4}"
+    ;;
+esac
+if [[ -n "${DETECTOR_GPU_REGION:-}" && "$DETECTOR_GPU_REGION" != "$EXPECTED_DETECTOR_GPU_REGION" ]]; then
+  echo "Refusing to deploy: env file has DETECTOR_GPU_REGION=${DETECTOR_GPU_REGION} for project ${PROJECT_ID}, expected ${EXPECTED_DETECTOR_GPU_REGION}." >&2
   exit 1
 fi
 
