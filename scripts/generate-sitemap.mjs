@@ -52,7 +52,7 @@ function buildVideoBlock(video) {
       <video:family_friendly>yes</video:family_friendly>
       <video:requires_subscription>no</video:requires_subscription>
       <video:live>no</video:live>
-      <video:publisher>DullyPDF</video:publisher>
+      <video:uploader>DullyPDF</video:uploader>
     </video:video>`;
 }
 
