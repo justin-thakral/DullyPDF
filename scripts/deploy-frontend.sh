@@ -206,9 +206,16 @@ fi
 
 bash scripts/deploy-form-catalog-assets.sh
 
-echo "Rebuilding form catalog index (slugs + legacy redirects)..."
-node scripts/build-form-catalog-index.mjs
-node scripts/merge-form-slug-redirects.mjs
+# Rebuild the form catalog index only when the scraper manifest is available
+# locally. CI runners ship without form_catalog/ (gitignored local-only data)
+# and rely on the already-committed formCatalogData.mjs + firebase.json.
+if [[ -f form_catalog/manifest.json ]]; then
+  echo "Rebuilding form catalog index (slugs + legacy redirects)..."
+  node scripts/build-form-catalog-index.mjs
+  node scripts/merge-form-slug-redirects.mjs
+else
+  echo "Skipping form catalog index rebuild (form_catalog/manifest.json not present; using committed formCatalogData.mjs + firebase.json)."
+fi
 
 (
   cd frontend
