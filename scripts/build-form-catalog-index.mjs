@@ -29,6 +29,7 @@ const CATALOG_ROOT = resolve(ROOT, 'form_catalog');
 const OUT_DATA = resolve(ROOT, 'frontend/src/config/formCatalogData.mjs');
 const OUT_CATEGORIES = resolve(ROOT, 'frontend/src/config/formCatalogCategories.mjs');
 const OUT_EXTERNAL_SOURCES = resolve(ROOT, 'frontend/src/config/formCatalogExternalSources.mjs');
+const OUT_SLUG_REDIRECTS = resolve(ROOT, 'form_catalog/slug_redirects.json');
 
 const CATEGORY_LABELS = {
   acord: 'ACORD (Insurance)',
@@ -135,14 +136,40 @@ function slugify(raw) {
 }
 
 function buildSlug(entry, usedSlugs) {
+  const formNumberSlug = slugify(entry.form_number || '');
+  if (formNumberSlug && !usedSlugs.has(formNumberSlug)) {
+    usedSlugs.add(formNumberSlug);
+    return formNumberSlug;
+  }
+  if (formNumberSlug && entry.year) {
+    const yearSlug = slugify(`${entry.form_number}-${entry.year}`);
+    if (yearSlug && !usedSlugs.has(yearSlug)) {
+      usedSlugs.add(yearSlug);
+      return yearSlug;
+    }
+  }
+  const base =
+    formNumberSlug ||
+    slugify(entry.filename.replace(/\.pdf$/i, '')) ||
+    entry.sha256?.slice(0, 12) ||
+    'form';
+  const suffix = entry.sha256 ? entry.sha256.slice(0, 8) : Math.random().toString(36).slice(2, 10);
+  const disambiguated = `${base}-${suffix}`;
+  usedSlugs.add(disambiguated);
+  return disambiguated;
+}
+
+// Replicates the pre-2026-04 slug shape so we can emit 301 redirects for
+// already-indexed URLs. Do not change: old slugs Google has already crawled
+// must remain mappable or we lose whatever link equity they have.
+function computeLegacySlug(entry, usedSlugs) {
   const baseSource = `${entry.form_number || ''}-${entry.filename.replace(/\.pdf$/i, '')}`;
-  let base = slugify(baseSource) || slugify(entry.filename) || entry.sha256?.slice(0, 12) || 'form';
+  const base = slugify(baseSource) || slugify(entry.filename) || entry.sha256?.slice(0, 12) || 'form';
   if (!usedSlugs.has(base)) {
     usedSlugs.add(base);
     return base;
   }
-  // Disambiguate with a short sha256 prefix
-  const suffix = entry.sha256 ? entry.sha256.slice(0, 8) : Math.random().toString(36).slice(2, 10);
+  const suffix = entry.sha256 ? entry.sha256.slice(0, 8) : 'legacy';
   const disambiguated = `${base}-${suffix}`;
   usedSlugs.add(disambiguated);
   return disambiguated;
@@ -632,8 +659,7 @@ function resolveCategorySections(key) {
   return [key];
 }
 
-function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLookup, titleOverrides, usedSlugs) {
-  const slug = buildSlug(rawEntry, usedSlugs);
+function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLookup, titleOverrides, usedSlugs, legacyUsedSlugs) {
   const descriptionKey = `${rawEntry.section}/${rawEntry.filename}`;
   const desc = descriptionsLookup[descriptionKey] || {};
   const catalogSection = resolveCatalogSection(rawEntry);
@@ -644,12 +670,19 @@ function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLo
     section: catalogSection,
     year: identity.year,
   };
+  // Slug uses normalized form_number + year so prior-year "1040__2023_1040"
+  // garbage from the disk-rebuild scraper produces clean "1040-2023", not a
+  // duplicated mess. Legacy slug uses rawEntry so the 301 source matches the
+  // URL Google already indexed.
+  const slug = buildSlug(normalizedEntry, usedSlugs);
+  const legacySlug = legacyUsedSlugs ? computeLegacySlug(rawEntry, legacyUsedSlugs) : null;
   const title = identity.title;
   const description = desc.description || buildAutoDescription(normalizedEntry, title);
   const cachedPageCount = rawEntry.sha256 ? pageCountCache[rawEntry.sha256] : null;
   const pageCount = Number.isFinite(cachedPageCount) && cachedPageCount > 0 ? cachedPageCount : null;
   return {
     slug,
+    legacySlug,
     formNumber: identity.formNumber,
     title,
     section: catalogSection,
@@ -699,11 +732,29 @@ async function main() {
   }
 
   const usedSlugs = new Set();
+  const legacyUsedSlugs = new Set();
   const entries = [];
   const bySlug = {};
+  const slugRedirects = [];
   for (const section of [...bySection.keys()].sort()) {
     for (const raw of bySection.get(section)) {
-      const built = buildEntry(raw, descriptions, pageCountCache, currentTitleLookup, titleOverrides, usedSlugs);
+      const built = buildEntry(
+        raw,
+        descriptions,
+        pageCountCache,
+        currentTitleLookup,
+        titleOverrides,
+        usedSlugs,
+        legacyUsedSlugs,
+      );
+      if (built.legacySlug && built.legacySlug !== built.slug) {
+        slugRedirects.push({
+          source: `/forms/${built.legacySlug}`,
+          destination: `/forms/${built.slug}`,
+          type: 301,
+        });
+      }
+      delete built.legacySlug;
       entries.push(built);
       bySlug[built.slug] = built;
     }
@@ -779,9 +830,15 @@ export const FORM_CATALOG_EXTERNAL_SOURCES = ${JSON.stringify(buildExternalSourc
 `;
   writeFileSync(OUT_EXTERNAL_SOURCES, externalSourcesBody);
 
+  slugRedirects.sort((a, b) => a.source.localeCompare(b.source));
+  writeFileSync(OUT_SLUG_REDIRECTS, `${JSON.stringify(slugRedirects, null, 2)}\n`);
+
   const activeCount = categories.filter((c) => !c.empty).length;
   console.log(
     `[build-form-catalog-index] ${entries.length} entries across ${activeCount} categories → ${OUT_DATA.replace(ROOT + '/', '')}`,
+  );
+  console.log(
+    `[build-form-catalog-index] ${slugRedirects.length} legacy → new slug redirects → ${OUT_SLUG_REDIRECTS.replace(ROOT + '/', '')}`,
   );
 }
 

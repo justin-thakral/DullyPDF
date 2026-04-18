@@ -117,7 +117,7 @@ describe('IntentLandingPage', () => {
     expect(
       screen
         .getAllByRole('link', { name: 'Open CMS-855I in DullyPDF' })
-        .every((link) => link.getAttribute('href') === '/upload?catalogSlug=cms-855i-cms-855i-cms855i'),
+        .every((link) => link.getAttribute('href') === '/upload?catalogSlug=cms-855i'),
     ).toBe(true);
     expect(screen.getByText('10 specific forms to automate on this route')).toBeTruthy();
     expect(

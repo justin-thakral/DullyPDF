@@ -18,7 +18,7 @@ describe('appRouteHydrationCover', () => {
     ['/verify-email', '', true],
     ['/upload', '', true],
     ['/forms', '', true],
-    ['/forms/w-9-w-9-fw9', '', true],
+    ['/forms/w-9', '', true],
     ['/ui', '', true],
     ['/ui/profile', '', true],
     ['/ui/forms/saved-1', '', true],

@@ -268,7 +268,7 @@ const SHOWCASES = {
     ],
     documents: [
       {
-        slug: 'cms-855i-cms-855i-cms855i',
+        slug: 'cms-855i',
         formNumber: 'CMS-855I',
         title: 'Medicare Enrollment Application - Physicians',
         section: 'healthcare',
@@ -279,7 +279,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855I.pdf',
       },
       {
-        slug: 'cms-40b-cms-40b-cms40b-e',
+        slug: 'cms-40b',
         formNumber: 'CMS-40B',
         title: 'Application for Enrollment in Medicare Part B',
         section: 'patient_intake',
@@ -290,7 +290,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS40B-E.pdf',
       },
       {
-        slug: 'cms-10106-cms-10106-cms10106',
+        slug: 'cms-10106',
         formNumber: 'CMS-10106',
         title: 'Authorization to Disclose Personal Health Information',
         section: 'patient_intake',
@@ -301,7 +301,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/cms10106.pdf',
       },
       {
-        slug: 'cms-1490s-cms-1490s-cms1490s-english',
+        slug: 'cms-1490s',
         formNumber: 'CMS-1490S',
         title: "Patient's Request for Medical Payment",
         section: 'patient_intake',
@@ -312,7 +312,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS1490S-English.pdf',
       },
       {
-        slug: 'cms-855a-cms-855a-cms855a',
+        slug: 'cms-855a',
         formNumber: 'CMS-855A',
         title: 'Medicare Enrollment Application - Institutional Provider',
         section: 'healthcare',
@@ -323,7 +323,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855A.pdf',
       },
       {
-        slug: 'cms-855b-cms-855b-cms855b',
+        slug: 'cms-855b',
         formNumber: 'CMS-855B',
         title: 'Medicare Enrollment Application - Clinics',
         section: 'healthcare',
@@ -334,7 +334,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855B.pdf',
       },
       {
-        slug: 'cms-855s-cms-855s-cms855s',
+        slug: 'cms-855s',
         formNumber: 'CMS-855S',
         title: 'Medicare Enrollment Application - DMEPOS Suppliers',
         section: 'healthcare',
@@ -345,7 +345,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855S.pdf',
       },
       {
-        slug: 'cms-460-cms-460-cms460',
+        slug: 'cms-460',
         formNumber: 'CMS-460',
         title: 'Medicare Participating Physician or Supplier Agreement',
         section: 'healthcare',
@@ -356,7 +356,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS460.pdf',
       },
       {
-        slug: 'cms-20027-cms-20027-cms20027',
+        slug: 'cms-20027',
         formNumber: 'CMS-20027',
         title: 'Medicare Redetermination Request Form',
         section: 'patient_intake',
@@ -367,7 +367,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS20027.pdf',
       },
       {
-        slug: 'cms-20033-cms-20033-cms20033',
+        slug: 'cms-20033',
         formNumber: 'CMS-20033',
         title: 'Medicare Reconsideration Request',
         section: 'patient_intake',
@@ -389,7 +389,7 @@ const SHOWCASES = {
     ],
     documents: [
       {
-        slug: 'i-9-i-9-i-9',
+        slug: 'i-9',
         formNumber: 'I-9',
         title: 'Employment Eligibility Verification',
         section: 'hr_onboarding',
@@ -400,7 +400,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.uscis.gov/sites/default/files/document/forms/i-9.pdf',
       },
       {
-        slug: 'w-4-w-4-fw4',
+        slug: 'w-4',
         formNumber: 'W-4',
         title: "Employee's Withholding Certificate",
         section: 'hr_onboarding',
@@ -411,7 +411,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/fw4.pdf',
       },
       {
-        slug: 'w-9-w-9-fw9',
+        slug: 'w-9',
         formNumber: 'W-9',
         title: 'Request for Taxpayer Identification Number',
         section: 'hr_onboarding',
@@ -422,7 +422,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/fw9.pdf',
       },
       {
-        slug: '2553-2553-f2553',
+        slug: '2553',
         formNumber: '2553',
         title: 'Election by a Small Business Corporation',
         section: 'tax_business',
@@ -433,7 +433,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f2553.pdf',
       },
       {
-        slug: 'ss-4-ss-4-fss4',
+        slug: 'ss-4',
         formNumber: 'SS-4',
         title: 'Application for Employer Identification Number (EIN)',
         section: 'hr_onboarding',
@@ -444,7 +444,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/fss4.pdf',
       },
       {
-        slug: 'ss-8-ss-8-fss8',
+        slug: 'ss-8',
         formNumber: 'SS-8',
         title: 'Determination of Worker Status',
         section: 'hr_onboarding',
@@ -455,7 +455,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/fss8.pdf',
       },
       {
-        slug: 'w-8ben-w-8ben-fw8ben',
+        slug: 'w-8ben',
         formNumber: 'W-8BEN',
         title: 'Certificate of Foreign Status - Individuals',
         section: 'hr_onboarding',
@@ -466,7 +466,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/fw8ben.pdf',
       },
       {
-        slug: '8832-8832-f8832',
+        slug: '8832',
         formNumber: '8832',
         title: 'Entity Classification Election',
         section: 'tax_business',
@@ -477,7 +477,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f8832.pdf',
       },
       {
-        slug: '941-x-941-x-f941x',
+        slug: '941-x',
         formNumber: '941-X',
         title: "Adjusted Employer's Quarterly Federal Tax Return",
         section: 'tax_payroll',
@@ -488,7 +488,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f941x.pdf',
       },
       {
-        slug: 'w-2-w-2-fw2',
+        slug: 'w-2',
         formNumber: 'W-2',
         title: 'Wage and Tax Statement',
         section: 'tax_payroll',
@@ -509,7 +509,7 @@ const SHOWCASES = {
     ],
     documents: [
       {
-        slug: 'cbp-19-cbp-19-cbp-form-19',
+        slug: 'cbp-19',
         formNumber: 'CBP 19',
         title: 'Protest',
         section: 'customs_logistics',
@@ -520,7 +520,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2024-05/cbp_form_19.pdf',
       },
       {
-        slug: 'cbp-214-cbp-214-cbp-form-214',
+        slug: 'cbp-214',
         formNumber: 'CBP 214',
         title: 'Application for Foreign-Trade Zone Admission and/or Status Designation',
         section: 'customs_logistics',
@@ -531,7 +531,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/assets/documents/2023-Dec/CBP%20Form%20214.pdf',
       },
       {
-        slug: 'cbp-1300-cbp-1300-cbp-form-1300',
+        slug: 'cbp-1300',
         formNumber: 'CBP 1300',
         title: 'Vessel Entrance or Clearance Statement',
         section: 'customs_logistics',
@@ -542,7 +542,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2025-06/cbp_form_1300.pdf',
       },
       {
-        slug: 'cbp-349-cbp-349-cbp-form-349',
+        slug: 'cbp-349',
         formNumber: 'CBP 349',
         title: 'Harbor Maintenance Fee Quarterly Summary Report',
         section: 'customs_logistics',
@@ -553,7 +553,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2024-05/cbp_form_349.pdf',
       },
       {
-        slug: 'cbp-28-cbp-28-cbp-form-28',
+        slug: 'cbp-28',
         formNumber: 'CBP 28',
         title: 'Request for Information',
         section: 'customs_logistics',
@@ -564,7 +564,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2025-05/cbp_form_28.pdf',
       },
       {
-        slug: 'cbp-214a-cbp-214a-cbp-form-214a',
+        slug: 'cbp-214a',
         formNumber: 'CBP 214A',
         title: 'Application for Foreign-Trade Zone Admission',
         section: 'customs_logistics',
@@ -575,7 +575,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2024-05/cbp_form_214a.pdf',
       },
       {
-        slug: 'cbp-216-cbp-216-cbp-form-216',
+        slug: 'cbp-216',
         formNumber: 'CBP 216',
         title: 'Application for Foreign-Trade Zone Activity Permit',
         section: 'customs_logistics',
@@ -586,7 +586,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2024-12/cbp_form_216.pdf',
       },
       {
-        slug: 'cbp-226-cbp-226-cbp-form-226',
+        slug: 'cbp-226',
         formNumber: 'CBP 226',
         title: 'Record of Vessel Foreign Repair or Equipment Purchase',
         section: 'customs_logistics',
@@ -597,7 +597,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2024-05/cbp_form_226.pdf',
       },
       {
-        slug: 'cbp-300-cbp-300-cbp-form-300',
+        slug: 'cbp-300',
         formNumber: 'CBP 300',
         title: "Bonded Warehouse Proprietor's Submission",
         section: 'customs_logistics',
@@ -608,7 +608,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.cbp.gov/sites/default/files/2024-08/cbp_form_300.pdf',
       },
       {
-        slug: 'cbp-3173-cbp-3173-cbp-form-3173',
+        slug: 'cbp-3173',
         formNumber: 'CBP 3173',
         title: 'Application for Extension of Bond for Temporary Importation',
         section: 'customs_logistics',
@@ -629,7 +629,7 @@ const SHOWCASES = {
     ],
     documents: [
       {
-        slug: '990-990-f990',
+        slug: '990',
         formNumber: '990',
         title: 'Return of Organization Exempt From Income Tax',
         section: 'nonprofit',
@@ -640,7 +640,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990.pdf',
       },
       {
-        slug: '990-schedule-a-990-schedule-a-f990sa',
+        slug: '990-schedule-a',
         formNumber: '990 Schedule A',
         title: 'Public Charity Status and Public Support',
         section: 'nonprofit',
@@ -651,7 +651,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990sa.pdf',
       },
       {
-        slug: '990-ez-990-ez-f990ez',
+        slug: '990-ez',
         formNumber: '990-EZ',
         title: 'Short Form Return of Organization Exempt',
         section: 'nonprofit',
@@ -662,7 +662,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990ez.pdf',
       },
       {
-        slug: '990-schedule-g-990-schedule-g-f990sg',
+        slug: '990-schedule-g',
         formNumber: '990 Schedule G',
         title: 'Fundraising or Gaming Activities',
         section: 'nonprofit',
@@ -673,7 +673,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990sg.pdf',
       },
       {
-        slug: '990-schedule-d-990-schedule-d-f990sd',
+        slug: '990-schedule-d',
         formNumber: '990 Schedule D',
         title: 'Supplemental Financial Statements',
         section: 'nonprofit',
@@ -684,7 +684,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990sd.pdf',
       },
       {
-        slug: '990-schedule-i-990-schedule-i-f990si',
+        slug: '990-schedule-i',
         formNumber: '990 Schedule I',
         title: 'Grants and Other Assistance',
         section: 'nonprofit',
@@ -695,7 +695,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990si.pdf',
       },
       {
-        slug: '990-schedule-j-990-schedule-j-f990sj',
+        slug: '990-schedule-j',
         formNumber: '990 Schedule J',
         title: 'Compensation Information',
         section: 'nonprofit',
@@ -706,7 +706,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990sj.pdf',
       },
       {
-        slug: '990-schedule-o-990-schedule-o-f990so',
+        slug: '990-schedule-o',
         formNumber: '990 Schedule O',
         title: 'Supplemental Information',
         section: 'nonprofit',
@@ -717,7 +717,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990so.pdf',
       },
       {
-        slug: '990-schedule-r-990-schedule-r-f990sr',
+        slug: '990-schedule-r',
         formNumber: '990 Schedule R',
         title: 'Related Organizations and Unrelated Partnerships',
         section: 'nonprofit',
@@ -728,7 +728,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f990sr.pdf',
       },
       {
-        slug: '990-bl-990-bl-f990bl',
+        slug: '990-bl',
         formNumber: '990-BL',
         title: 'Information and Initial Excise Tax Return for Black Lung Benefit Trusts',
         section: 'nonprofit',
@@ -752,7 +752,7 @@ const SHOWCASES = {
     ],
     documents: [
       {
-        slug: 'ds-11-ds-11-ds11-pdf',
+        slug: 'ds-11',
         formNumber: 'DS-11',
         title: 'Application for a U.S. Passport',
         section: 'state_department',
@@ -763,7 +763,7 @@ const SHOWCASES = {
         sourceUrl: 'https://eforms.state.gov/Forms/ds11_pdf.PDF',
       },
       {
-        slug: 'i-130-i-130-i-130',
+        slug: 'i-130',
         formNumber: 'I-130',
         title: 'Petition for Alien Relative',
         section: 'immigration',
@@ -774,7 +774,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.uscis.gov/sites/default/files/document/forms/i-130.pdf',
       },
       {
-        slug: 'ss-5-ss-5-ss-5',
+        slug: 'ss-5',
         formNumber: 'SS-5',
         title: 'Application for a Social Security Card',
         section: 'social_security',
@@ -785,7 +785,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.ssa.gov/forms/ss-5.pdf',
       },
       {
-        slug: 'va-21-526ez-va-21-526ez-vba-21-526ez-are',
+        slug: 'va-21-526ez',
         formNumber: 'VA 21-526EZ',
         title: 'Application for Disability Compensation',
         section: 'veterans',
@@ -796,7 +796,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.vba.va.gov/pubs/forms/VBA-21-526EZ-ARE.pdf',
       },
       {
-        slug: 'ds-82-ds-82-ds82-pdf',
+        slug: 'ds-82',
         formNumber: 'DS-82',
         title: 'U.S. Passport Renewal Application by Mail',
         section: 'state_department',
@@ -807,7 +807,7 @@ const SHOWCASES = {
         sourceUrl: 'https://eforms.state.gov/Forms/ds82_pdf.PDF',
       },
       {
-        slug: 'g-639-g-639-g-639',
+        slug: 'g-639',
         formNumber: 'G-639',
         title: 'Freedom of Information/Privacy Act Request',
         section: 'immigration',
@@ -818,7 +818,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.uscis.gov/sites/default/files/document/forms/g-639.pdf',
       },
       {
-        slug: 'i-90-i-90-i-90',
+        slug: 'i-90',
         formNumber: 'I-90',
         title: 'Application to Replace Permanent Resident Card',
         section: 'immigration',
@@ -829,7 +829,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.uscis.gov/sites/default/files/document/forms/i-90.pdf',
       },
       {
-        slug: 'ssa-16-ssa-16-ssa-16-bk',
+        slug: 'ssa-16',
         formNumber: 'SSA-16',
         title: 'Application for Disability Insurance Benefits',
         section: 'social_security',
@@ -840,7 +840,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.ssa.gov/forms/ssa-16-bk.pdf',
       },
       {
-        slug: 'va-21-8940-va-21-8940-vba-21-8940-are',
+        slug: 'va-21-8940',
         formNumber: 'VA 21-8940',
         title: 'Application for Increased Compensation Based on Unemployability',
         section: 'veterans',
@@ -851,7 +851,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.vba.va.gov/pubs/forms/VBA-21-8940-ARE.pdf',
       },
       {
-        slug: 'va-21-4142-va-21-4142-vba-21-4142-are',
+        slug: 'va-21-4142',
         formNumber: 'VA 21-4142',
         title: 'Authorization to Disclose Information to VA',
         section: 'veterans',
@@ -874,7 +874,7 @@ const SHOWCASES = {
     ],
     documents: [
       {
-        slug: '1040-1040-f1040',
+        slug: '1040',
         formNumber: '1040',
         title: 'U.S. Individual Income Tax Return',
         section: 'tax_individual',
@@ -885,7 +885,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1040.pdf',
       },
       {
-        slug: '1099-misc-1099-misc-f1099msc',
+        slug: '1099-misc',
         formNumber: '1099-MISC',
         title: 'Miscellaneous Information',
         section: 'tax_individual',
@@ -896,7 +896,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1099msc.pdf',
       },
       {
-        slug: '1120-1120-f1120',
+        slug: '1120',
         formNumber: '1120',
         title: 'U.S. Corporation Income Tax Return',
         section: 'tax_business',
@@ -907,7 +907,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1120.pdf',
       },
       {
-        slug: '941-941-f941',
+        slug: '941',
         formNumber: '941',
         title: "Employer's Quarterly Federal Tax Return",
         section: 'tax_payroll',
@@ -918,7 +918,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f941.pdf',
       },
       {
-        slug: '1040-es-1040-es-f1040es',
+        slug: '1040-es',
         formNumber: '1040-ES',
         title: 'Estimated Tax for Individuals',
         section: 'tax_individual',
@@ -929,7 +929,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1040es.pdf',
       },
       {
-        slug: '1040-nr-1040-nr-f1040nr',
+        slug: '1040-nr',
         formNumber: '1040-NR',
         title: 'U.S. Nonresident Alien Income Tax Return',
         section: 'tax_individual',
@@ -940,7 +940,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1040nr.pdf',
       },
       {
-        slug: '1099-nec-1099-nec-f1099nec',
+        slug: '1099-nec',
         formNumber: '1099-NEC',
         title: 'Nonemployee Compensation',
         section: 'tax_individual',
@@ -951,7 +951,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1099nec.pdf',
       },
       {
-        slug: '1120-s-1120-s-f1120s',
+        slug: '1120-s',
         formNumber: '1120-S',
         title: 'U.S. Income Tax Return for an S Corporation',
         section: 'tax_business',
@@ -962,7 +962,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1120s.pdf',
       },
       {
-        slug: '1065-1065-f1065',
+        slug: '1065',
         formNumber: '1065',
         title: 'U.S. Return of Partnership Income',
         section: 'tax_business',
@@ -973,7 +973,7 @@ const SHOWCASES = {
         sourceUrl: 'https://www.irs.gov/pub/irs-pdf/f1065.pdf',
       },
       {
-        slug: '940-940-f940',
+        slug: '940',
         formNumber: '940',
         title: "Employer's Annual Federal Unemployment (FUTA) Tax Return",
         section: 'tax_payroll',

@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 vi.mock('../../../../src/config/formCatalogData.mjs', () => {
   const entries = [
     {
-      slug: 'w-9-w-9-fw9',
+      slug: 'w-9',
       formNumber: 'W-9',
       title: 'Request for Taxpayer Identification Number',
       section: 'hr_onboarding',
@@ -23,7 +23,7 @@ vi.mock('../../../../src/config/formCatalogData.mjs', () => {
       useCase: '',
     },
     {
-      slug: 'i-9-i-9-i-9',
+      slug: 'i-9',
       formNumber: 'I-9',
       title: 'Employment Eligibility Verification',
       section: 'hr_onboarding',
@@ -39,7 +39,7 @@ vi.mock('../../../../src/config/formCatalogData.mjs', () => {
       useCase: '',
     },
     {
-      slug: 'cms-1500-cms-1500-cms1500',
+      slug: 'cms-1500',
       formNumber: 'CMS-1500',
       title: 'Health Insurance Claim Form',
       section: 'healthcare',
@@ -55,7 +55,7 @@ vi.mock('../../../../src/config/formCatalogData.mjs', () => {
       useCase: '',
     },
     {
-      slug: 'cms-10106-cms-10106-cms10106',
+      slug: 'cms-10106',
       formNumber: 'CMS-10106',
       title: 'Authorization to Disclose Personal Health Information',
       section: 'healthcare',
@@ -265,7 +265,7 @@ describe('FormCatalogIndexPage', () => {
     if (!w9Link) return;
     await user.click(w9Link);
     expect(onNavigate).toHaveBeenCalledWith(
-      expect.objectContaining({ kind: 'form-catalog-form', slug: 'w-9-w-9-fw9' }),
+      expect.objectContaining({ kind: 'form-catalog-form', slug: 'w-9' }),
     );
   });
 });
