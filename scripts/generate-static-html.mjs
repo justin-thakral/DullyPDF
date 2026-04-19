@@ -21,10 +21,22 @@ const SSR_RENDERER_PATH = resolve(process.cwd(), 'frontend/dist-ssr/public-route
 const APP_SHELL_FILENAME = 'app-shell.html';
 
 function generateAppShellHtml(indexHtml) {
-  return indexHtml
+  const stripped = indexHtml
     .replace(/\s*<style\b[^>]*data-homepage-hydration-cover="true"[\s\S]*?<\/style>/gi, '')
     .replace(/\s*<script\b[^>]*data-homepage-hydration-cover="true"[\s\S]*?<\/script>/gi, '')
     .replace(/\s*<div id="homepage-hydration-cover" aria-hidden="true"><\/div>/gi, '');
+
+  // app-shell.html is served by Firebase rewrites for every SPA-only route:
+  // /upload, /ui/*, /respond/:token, /sign/:token, /account-action,
+  // /verify-email. These are interactive workspace entries, not content, and
+  // must not be indexed. Without this tag, /upload?catalogSlug=<slug>
+  // variants get crawled as duplicate copies of a generic "DullyPDF" shell
+  // (Ahrefs flagged 60 such duplicates sharing one content hash). The
+  // "follow" hint lets any equity from inbound links flow through to the
+  // linked content pages.
+  const robotsMeta = '<meta name="robots" content="noindex,follow" />';
+  if (/<meta\s+name="robots"/i.test(stripped)) return stripped;
+  return stripped.replace(/<head(\s[^>]*)?>/i, (match) => `${match}\n    ${robotsMeta}`);
 }
 
 function extractViteAssetTags(indexHtml) {
@@ -152,6 +164,13 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     )
     .join('\n    ');
   const homepageHydrationCoverTags = getHomepageHydrationCoverTags(route);
+  // Open Graph video tags are safe on any platform that consumes them
+  // (Facebook/LinkedIn). We intentionally do NOT emit a Twitter player card:
+  // X/Twitter's player card requires the iframe to be on a whitelisted host
+  // with a validated response, which arbitrary YouTube /embed/ URLs do not
+  // satisfy — so a `twitter:card=player` referencing youtube.com renders as
+  // an invalid card (flagged by Ahrefs as "incomplete"). We use
+  // summary_large_image instead and let users click through to watch.
   const videoMetaTags = seo.video
     ? `
     <meta property="og:video" content="${esc(seo.video.embedUrl)}" />
@@ -161,9 +180,6 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     <meta property="og:video:width" content="1280" />
     <meta property="og:video:height" content="720" />
     <meta property="og:video:tag" content="DullyPDF" />
-    <meta name="twitter:player" content="${esc(seo.video.embedUrl)}" />
-    <meta name="twitter:player:width" content="1280" />
-    <meta name="twitter:player:height" content="720" />
     <link rel="video_src" href="${esc(seo.video.embedUrl)}" />`
     : '';
 
@@ -182,7 +198,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     <title>${esc(seo.title)}</title>
     <meta name="description" content="${esc(seo.description)}" />
     <meta name="keywords" content="${esc(seo.keywords.join(', '))}" />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content="${route.lowValue ? 'noindex,follow' : 'index,follow'}" />
     <link rel="canonical" href="${esc(canonicalUrl)}" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="DullyPDF" />
@@ -191,7 +207,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     <meta property="og:url" content="${esc(canonicalUrl)}" />
     <meta property="og:image" content="${esc(imageUrl)}" />
     <meta property="og:image:alt" content="DullyPDF logo" />
-    <meta name="twitter:card" content="${seo.video ? 'player' : 'summary_large_image'}" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(twitterTitle)}" />
     <meta name="twitter:description" content="${esc(twitterDescription)}" />
     <meta name="twitter:image" content="${esc(imageUrl)}" />${videoMetaTags}

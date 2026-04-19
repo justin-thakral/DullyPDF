@@ -272,7 +272,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
             <div className="intent-page__catalog-grid">
                 {catalogShowcase.featuredDocuments.map((document) => (
                   <article key={document.slug} className="intent-page__catalog-card">
-                    <a href={document.editorHref} className="intent-page__catalog-card-link">
+                    <a href={document.catalogHref} className="intent-page__catalog-card-link">
                       <div className="intent-page__catalog-image-shell">
                         <FormCatalogThumbnail thumbnailUrl={document.thumbnailUrl} formNumber={document.formNumber} />
                       </div>
@@ -296,6 +296,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                       href={document.editorHref}
                       className="intent-page__catalog-action intent-page__catalog-action--primary"
                       aria-label={`Open ${document.formNumber || document.title} in DullyPDF`}
+                      rel="nofollow"
                     >
                       Open in DullyPDF
                     </a>
@@ -334,7 +335,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                       </p>
                     </div>
                     <div className="intent-page__catalog-list-actions">
-                      <a href={document.editorHref}>Open in DullyPDF</a>
+                      <a href={document.editorHref} rel="nofollow">Open in DullyPDF</a>
                       <a href={document.pdfUrl}>Blank PDF</a>
                     </div>
                   </article>
@@ -349,7 +350,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                   <article key={step.title} className="intent-page__workflow-card">
                     <h3>{step.title}</h3>
                     <p>{step.description}</p>
-                    <a href={step.href}>{step.linkLabel}</a>
+                    <a href={step.href} rel={step.href.startsWith('/upload') ? 'nofollow' : undefined}>{step.linkLabel}</a>
                   </article>
                 ))}
               </div>

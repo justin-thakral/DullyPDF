@@ -78,6 +78,13 @@ describe('generate-static-html', () => {
     expect(appShell).toContain('data-app-route-hydration-cover="true"');
     expect(appShell).toContain('<div id="root"></div>');
     expect(appShell).not.toContain('homepage-hydration-cover');
+    // Every route served by /app-shell.html (/upload, /ui/*, /sign/:token,
+    // /respond/:token, /account-action, /verify-email) must be noindexed so
+    // query-param variants like /upload?catalogSlug=<slug> don't flood the
+    // index as duplicates of a generic "DullyPDF" shell. The per-route
+    // prerendered HTML files set index,follow explicitly, so this only
+    // affects the SPA fallback.
+    expect(appShell).toContain('<meta name="robots" content="noindex,follow" />');
   });
 
   it('includes head SEO signals for usage docs pages', () => {

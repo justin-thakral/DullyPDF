@@ -58,7 +58,14 @@ function buildVideoBlock(video) {
 
 function main() {
   let videoEntryCount = 0;
-  const entries = ALL_ROUTES.map((route) => {
+  // Pages flagged as lowValue (prior-year duplicates, blank stubs, near-
+  // duplicate variant slugs) get <meta robots="noindex,follow"> in
+  // generate-static-html.mjs. Don't list them in sitemap.xml either — Google
+  // will eventually drop them from the index and consolidate link equity onto
+  // the cluster parent via rel=canonical.
+  const sitemapRoutes = ALL_ROUTES.filter((route) => !route.lowValue);
+  const skippedCount = ALL_ROUTES.length - sitemapRoutes.length;
+  const entries = sitemapRoutes.map((route) => {
     const loc = route.path === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${route.path}`;
     const video = route.seo?.video ?? null;
     if (video) videoEntryCount += 1;
@@ -80,7 +87,7 @@ ${entries.join('\n')}
   const outputPath = join(DIST_DIR, 'sitemap.xml');
   writeFileSync(outputPath, xml, 'utf-8');
   console.log(
-    `Generated sitemap.xml with ${entries.length} URLs (including ${videoEntryCount} video entries) at ${outputPath}`,
+    `Generated sitemap.xml with ${entries.length} URLs (including ${videoEntryCount} video entries; skipped ${skippedCount} lowValue routes) at ${outputPath}`,
   );
 }
 

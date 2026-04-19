@@ -180,6 +180,19 @@ describe('routeSeo config', () => {
     expect(staticDocsMetadata).toEqual(runtimeDocsMetadata);
   });
 
+  it('keeps form-catalog form page titles at or under 60 characters', () => {
+    // Google truncates <title> around 60 chars / 600px. Form-catalog form
+    // pages are auto-generated from the official form title (often 100+
+    // chars), so publicRouteSeoData.mjs drops the "— Free Fillable PDF"
+    // suffix and truncates the title at a word boundary when needed. If this
+    // assertion starts failing, a new form entry is pushing past the budget —
+    // either shorten the entry.title or set entry.seoShortTitle.
+    const overBudget = ALL_ROUTES
+      .filter((route) => route.kind === 'form-catalog-form')
+      .filter((route) => route.seo.title.length > 60);
+    expect(overBudget).toEqual([]);
+  });
+
   it('adds blog article and breadcrumb structured data with the modified date', () => {
     const post = getBlogPost('auto-fill-pdf-from-spreadsheet');
     expect(post).toBeTruthy();

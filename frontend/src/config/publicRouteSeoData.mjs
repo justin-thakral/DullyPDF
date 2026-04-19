@@ -769,7 +769,11 @@ const INTENT_PAGES = [
     footnotes: [
       { id: 'esign-7001', label: '15 U.S.C. § 7001 | General rule of validity and related provisions', href: 'https://www.law.cornell.edu/uscode/text/15/7001' },
       { id: 'esign-7003', label: '15 U.S.C. § 7003 | Federal exclusions and exceptions', href: 'https://www.law.cornell.edu/uscode/text/15/7003' },
-      { id: 'ueta', label: 'Uniform Electronic Transactions Act | Uniform Law Commission source text', href: 'https://www.uniformlaws.org/viewdocument/enactment-kit-17?CommunityKey=2c04b76c-2b7d-4399-977e-d5876ba7e034' },
+      // The ULC's per-document URL (viewdocument/enactment-kit-17?CommunityKey=…)
+      // 403s to crawlers and the CommunityKey query string is intrinsically
+      // brittle. Wikipedia's UETA article is editorially stable and itself
+      // cites the official ULC source.
+      { id: 'ueta', label: 'Uniform Electronic Transactions Act | overview and authoritative sources', href: 'https://en.wikipedia.org/wiki/Uniform_Electronic_Transactions_Act' },
       { id: 'ny-esra', label: '9 NYCRR Part 540 | New York ESRA regulation', href: 'https://its.ny.gov/electronic-signatures-and-records-act-esra-regulation' },
       { id: 'ny-rpl-291i', label: 'N.Y. Real Prop. Law § 291-i | Electronic recording', href: 'https://www.nysenate.gov/legislation/laws/RPP/291-I' },
     ],
@@ -968,7 +972,11 @@ const INTENT_PAGES = [
     footnotes: [
       { id: 'esign-7001', label: '15 U.S.C. § 7001 | General rule of validity and related provisions', href: 'https://www.law.cornell.edu/uscode/text/15/7001' },
       { id: 'esign-7003', label: '15 U.S.C. § 7003 | Exceptions and exclusions', href: 'https://www.law.cornell.edu/uscode/text/15/7003' },
-      { id: 'ueta', label: 'Uniform Electronic Transactions Act | Uniform Law Commission source text', href: 'https://www.uniformlaws.org/viewdocument/enactment-kit-17?CommunityKey=2c04b76c-2b7d-4399-977e-d5876ba7e034' },
+      // The ULC's per-document URL (viewdocument/enactment-kit-17?CommunityKey=…)
+      // 403s to crawlers and the CommunityKey query string is intrinsically
+      // brittle. Wikipedia's UETA article is editorially stable and itself
+      // cites the official ULC source.
+      { id: 'ueta', label: 'Uniform Electronic Transactions Act | overview and authoritative sources', href: 'https://en.wikipedia.org/wiki/Uniform_Electronic_Transactions_Act' },
       { id: 'ny-esra', label: '9 NYCRR Part 540 | New York ESRA regulation', href: 'https://its.ny.gov/electronic-signatures-and-records-act-esra-regulation' },
       { id: 'ny-rpl-291i', label: 'N.Y. Real Prop. Law § 291-i | Electronic recording', href: 'https://www.nysenate.gov/legislation/laws/RPP/291-I' },
       { id: 'regf-1006-42', label: '12 CFR § 1006.42 | Sending required disclosures', href: 'https://www.law.cornell.edu/cfr/text/12/1006.42' },
@@ -1059,7 +1067,7 @@ const INTENT_PAGES = [
           'Yes. The published schema includes deterministic fill rules, including checkbox rules, radio group expectations, and text transforms from the frozen saved-template snapshot.',
       },
     ],
-    relatedIntentPages: ['pdf-to-database-template', 'fill-pdf-from-csv', 'pdf-radio-button-editor'],
+    relatedIntentPages: ['pdf-fill-api-nodejs', 'pdf-fill-api-python', 'pdf-fill-api-curl', 'anvil-alternative', 'pdf-to-database-template'],
     relatedDocs: ['api-fill', 'rename-mapping'],
   },
   {
@@ -2787,6 +2795,690 @@ const INTENT_PAGES = [
     relatedIntentPages: ['accounting-tax-pdf-automation', 'fill-information-in-pdf', 'finance-loan-pdf-automation'],
     relatedDocs: ['fill-from-images', 'search-fill', 'rename-mapping'],
   },
+  // ---------------------------------------------------------------------------
+  // Developer-focused SEO landing pages.
+  //
+  // These three pages target the "developer evaluating a PDF fill API" search
+  // intent that the rest of the workflow pages do not capture well. They link
+  // back to /pdf-fill-api (the product page) and /usage-docs/api-fill (the
+  // setup docs) so the search-to-product path is short.
+  // ---------------------------------------------------------------------------
+  {
+    key: 'anvil-alternative',
+    category: 'workflow',
+    path: '/anvil-alternative',
+    navLabel: 'Anvil Alternative',
+    heroTitle: 'Anvil Alternative: Free PDF Fill API + Webform Builder',
+    heroSummary:
+      'A side-by-side look at when DullyPDF is the right Anvil replacement and when Anvil still wins. Free tier, JSON-to-PDF API, webforms, and field detection without the $79/mo entry price.',
+    seoTitle: 'Anvil Alternative — Free PDF Fill API and Webform Builder | DullyPDF',
+    seoDescription:
+      'Looking for an Anvil (useanvil.com) alternative? Compare DullyPDF vs Anvil for PDF fill API, webforms, and e-signatures. Free tier available, no $79/mo starter.',
+    seoKeywords: [
+      'anvil alternative',
+      'useanvil alternative',
+      'alternative to anvil',
+      'anvil pdf api alternative',
+      'free anvil alternative',
+      'anvil competitors',
+      'pdf fill api comparison',
+      'webform pdf api alternative',
+      'cheap anvil alternative',
+      'anvil pricing alternative',
+      'open source anvil alternative',
+      'json to pdf api alternative',
+      'pdf form fill api comparison',
+    ],
+    valuePoints: [
+      'Free tier: detect fields, save templates, publish a webform, and call the JSON-to-PDF API without a credit card.',
+      'No $79/mo Starter floor — pay only when you need more than the free quotas.',
+      'Same building blocks (PDF field detection, webforms, JSON fill, e-signature) shipped as a leaner self-serve product.',
+    ],
+    proofPoints: [
+      'Anvil Starter is $79/mo, Professional $199/mo, Business $399/mo. DullyPDF Premium is a single self-serve tier with no sales call.',
+      'Both products turn an uploaded PDF into a fillable template, a hosted webform, and an e-signed output PDF.',
+      'DullyPDF runs the field-detection step in-product so you can validate a PDF against the workflow before paying.',
+    ],
+    articleSections: [
+      {
+        title: 'Why teams search for an Anvil alternative',
+        paragraphs: [
+          'Anvil is a strong product. The most common reason engineering teams look for an alternative is not feature gaps — it is the entry-level pricing. The Anvil Starter plan begins at $79/mo, the Professional plan at $199/mo, and the Business plan at $399/mo. For a small team that just needs to render JSON into a PDF or stand up a webform-fed signature flow, those tiers can be heavier than the actual workload requires.',
+          'The other common reason is procurement friction. Anvil leans toward enterprise sales: SOC 2 audit, BAAs on Business+, dedicated support. That is the right shape for fintech and benefits-admin platforms but it can slow down a side project, prototype, or small SaaS that just needs the building blocks today.',
+          'DullyPDF is the leaner option for those situations. Self-serve signup, free tier with real quotas, and the same primitives — PDF detection, JSON-to-PDF, webform-to-PDF, e-signature.',
+        ],
+      },
+      {
+        title: 'Feature-by-feature comparison',
+        paragraphs: [
+          'The two products overlap on the core building blocks. The differences are mostly in tier ceilings and surface area.',
+        ],
+        bullets: [
+          'PDF field detection: Anvil ships PDF templates + manual field placement. DullyPDF runs CommonForms detection on upload and lets you cleanup in the editor.',
+          'JSON-to-PDF API: Both. DullyPDF includes API access in the free tier with monthly request quotas; Anvil starts at the Starter plan.',
+          'Webforms: Both turn a PDF into a hosted fillable web form whose responses populate the underlying PDF.',
+          'E-signature: Both are E-SIGN/UETA compliant. Anvil Etch chains multi-document workflows out of the box; DullyPDF supports single-document flows today.',
+          'Fill from photo / scan: DullyPDF supports vision-based extraction from a snapshot of a filled paper form. Not a documented Anvil feature.',
+          'Compliance: Anvil is SOC 2 Type 2 audited and signs HIPAA BAAs on Business tier and above. DullyPDF is not SOC 2 today and does not sign BAAs — do not use it for PHI workflows that require one.',
+          'Pricing: Anvil $0 dev tier (no API) → $79/$199/$399/mo. DullyPDF free → single Premium tier.',
+        ],
+      },
+      {
+        title: 'When DullyPDF is the right Anvil replacement',
+        paragraphs: [
+          'DullyPDF is the better fit when the workload looks like one of: a small SaaS that needs PDF generation as a feature without a Starter-tier commitment, a side project or internal tool that wants to evaluate API+webform behavior before any paid commitment, a non-regulated vertical where SOC 2 and BAAs are nice-to-have rather than gating, or an operator-driven workflow where the Search & Fill browser experience matters as much as the API.',
+          'In those situations the $79/mo entry on Anvil is more friction than the workload justifies. DullyPDF gives you the same primitives behind a free tier so the product can be validated end to end before the budget conversation.',
+        ],
+        bullets: [
+          'Side projects and prototypes that need PDF fill without a $79/mo floor.',
+          'Small SaaS adding "generate a filled PDF" as a feature with low monthly volume.',
+          'Non-regulated verticals where SOC 2/BAA are not gating requirements.',
+          'Operator-led workflows where browser-based Search & Fill matters too.',
+        ],
+      },
+      {
+        title: 'When Anvil is still the right answer',
+        paragraphs: [
+          'There are workloads where Anvil is the better choice and you should not switch. Regulated verticals where you need a signed BAA and SOC 2 attestation are the clearest example — Anvil offers both at the right tier and DullyPDF does not yet. Multi-document signature workflows with Etch chaining, large enterprise procurement, dedicated CSM relationships, and high-volume server-to-server PDF generation under contractual SLAs all fit Anvil better today.',
+          'The honest framing is that DullyPDF is the lower-friction option for smaller teams; Anvil is the more enterprise-shaped option for larger workloads. Pick the one whose shape matches the workload.',
+        ],
+      },
+      {
+        title: 'Migrating from Anvil to DullyPDF',
+        paragraphs: [
+          'If the workload fits the smaller-team profile above, the migration is short. Upload the same PDF templates you have in Anvil, let DullyPDF detect the fields, review the field set in the editor, and rename anything the detector got wrong. Save the template, then either: (a) publish it as a JSON-to-PDF API endpoint and swap the call URL in your existing integration, or (b) publish it as a webform if the Anvil flow you are replacing is respondent-facing.',
+          'The biggest checklist item is field-name parity. Anvil templates often use camelCase or numeric field IDs. DullyPDF lets you rename fields after detection so the JSON contract on the new endpoint matches whatever your existing caller already sends. That makes the integration swap a one-line URL change rather than a payload rewrite.',
+        ],
+        bullets: [
+          'Upload your existing PDF templates and run detection.',
+          'Rename fields to match the JSON keys your existing integration already sends.',
+          'Publish either an API endpoint (server-to-server) or a webform (respondent-facing).',
+          'Swap the URL in your client code, run a representative payload, validate the output PDF.',
+        ],
+      },
+      {
+        title: 'A short word on pricing math at small scale',
+        paragraphs: [
+          'For a workload of, say, 200 filled PDFs per month, Anvil Starter ($79) costs $0.40 per fill. DullyPDF free covers it at $0. At 2,000 fills per month, Anvil Starter is $0.04 per fill but the DullyPDF Premium tier at a single self-serve price is usually still cheaper per fill at that volume. The break-even where Anvil becomes the more cost-efficient choice is much higher — roughly the volume where you also need a CSM, SOC 2 attestation, and dedicated SLAs anyway.',
+          'For everything below that crossover, DullyPDF is the better economic answer. For everything above it, Anvil usually wins on the bundle of price + compliance + dedicated support.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is DullyPDF actually free for the API?',
+        answer:
+          'Yes. The free tier includes a monthly API request quota, plus webform responses and saved templates. You only need Premium if you exceed those quotas or need higher limits. There is no paid floor on the API itself.',
+      },
+      {
+        question: 'Can I migrate my existing Anvil PDF templates?',
+        answer:
+          'Yes. Upload the same PDFs into DullyPDF, let detection run, then rename fields so the JSON keys match the payload your existing Anvil integration already sends. Most migrations are a one-line URL swap after that.',
+      },
+      {
+        question: 'Is DullyPDF SOC 2 or HIPAA compliant?',
+        answer:
+          'DullyPDF is not SOC 2 audited today and does not sign HIPAA BAAs. If your workflow requires either, Anvil at the Business tier is the right choice. DullyPDF is the better fit for non-regulated workloads.',
+      },
+      {
+        question: 'Does DullyPDF support multi-document signature chains like Anvil Etch?',
+        answer:
+          'DullyPDF supports single-document E-SIGN/UETA signing today. Multi-document chained ceremonies are on the roadmap. If you need chained multi-document signing now, Anvil Etch is more mature.',
+      },
+      {
+        question: 'How does field detection compare?',
+        answer:
+          'Both products turn an uploaded PDF into a fillable template. DullyPDF runs CommonForms detection automatically on upload and surfaces low-confidence fields for human review in the editor. Anvil supports manual field placement plus an AI-assisted webform builder.',
+      },
+    ],
+    relatedIntentPages: ['pdf-fill-api', 'pdf-fill-api-nodejs', 'pdf-fill-api-python', 'pdf-fill-api-curl', 'pdf-field-detection-accuracy'],
+    relatedDocs: ['api-fill', 'getting-started'],
+  },
+
+  {
+    key: 'pdf-fill-api-nodejs',
+    category: 'workflow',
+    path: '/pdf-fill-api-nodejs',
+    navLabel: 'PDF Fill API for Node.js',
+    heroTitle: 'Fill PDFs With Node.js — JSON-to-PDF API for JavaScript Backends',
+    heroSummary:
+      'Send a JSON payload from Node.js, get back a filled PDF. No native PDF libraries to install, no field-coordinate math, no Puppeteer headless Chrome. Free tier available.',
+    seoTitle: 'Fill PDFs with Node.js — Free JSON to PDF API for JavaScript | DullyPDF',
+    seoDescription:
+      'Fill PDF forms from Node.js with a single API call. JSON in, filled PDF out. Free tier, no credit card. Compare to pdf-lib, pdfkit, and Puppeteer.',
+    seoKeywords: [
+      'fill pdf nodejs',
+      'fill pdf javascript',
+      'pdf fill api node',
+      'node js pdf form fill',
+      'javascript pdf form filling',
+      'json to pdf nodejs',
+      'fill pdf form javascript api',
+      'node pdf form generation',
+      'pdf-lib alternative',
+      'pdfkit alternative fill form',
+      'fill fillable pdf javascript',
+      'programmatic pdf fill node',
+      'rest api fill pdf nodejs',
+    ],
+    valuePoints: [
+      'POST a JSON body, get a filled PDF back. No native bindings, no font shipping, no headless Chrome.',
+      'Works from any Node.js runtime: Express, Next.js API routes, Lambda, Cloud Functions, Cloudflare Workers (via fetch).',
+      'Free tier covers low-volume workloads end to end before any paid commitment.',
+    ],
+    proofPoints: [
+      'API call is a standard HTTPS POST with a JSON payload — no SDK install required.',
+      'Field schema is downloadable from the saved template so the JSON contract is visible to the calling code.',
+      'Each published endpoint is template-scoped so a template revision does not silently break callers.',
+    ],
+    articleSections: [
+      {
+        title: 'Why most Node teams stop rolling their own PDF fill code',
+        paragraphs: [
+          'Filling a PDF programmatically from Node.js looks easy until the first edge case. The pdf-lib approach works for trivial forms but breaks on radio groups, checkbox encoding variants, and AcroForm flattening. PDFKit is for generating PDFs from scratch, not filling existing fillable forms. The Puppeteer + headless Chrome approach renders an HTML overlay onto a PDF but ships a 200MB browser, breaks on scaled layouts, and is hard to deploy on serverless platforms.',
+          'The DullyPDF API is a thin layer over the same field-detection and fill engine the web product uses. The Node.js call is one HTTPS POST. No SDK, no native bindings, no font shipping. The PDF is detected and the field map is frozen at template publish time, so the JSON contract is stable across deployments.',
+        ],
+      },
+      {
+        title: 'Minimal Node.js example',
+        paragraphs: [
+          'A typical call from a Node.js backend looks like the snippet below. The endpoint URL and API key come from the API Fill modal in the DullyPDF workspace after you publish a saved template. The JSON body uses three top-level keys: a `data` object whose keys are the cleaned field names from your saved template, an `exportMode` flag (`"flat"` returns a non-editable PDF, `"editable"` keeps the AcroForm intact), and a `strict` boolean (set true so unknown payload keys are rejected instead of silently ignored).',
+          'Authentication is HTTP Basic with the API key as the username and a blank password — equivalent to sending `Authorization: Basic base64(API_KEY + ":")`. The response body is the raw PDF.',
+        ],
+        bullets: [
+          'import { writeFile } from "node:fs/promises";',
+          'const apiKey = process.env.DULLYPDF_API_KEY;',
+          'const auth = `Basic ${Buffer.from(`${apiKey}:`).toString("base64")}`;',
+          'const res = await fetch("https://api.dullypdf.com/api/v1/fill/<TEMPLATE_ID>.pdf", {',
+          '  method: "POST",',
+          '  headers: { "Content-Type": "application/json", Authorization: auth },',
+          '  body: JSON.stringify({ data: { patient_name: "Jane Doe", patient_email: "jane@example.com" }, exportMode: "flat", strict: true }),',
+          '});',
+          'if (!res.ok) throw new Error(`fill failed: ${res.status} ${await res.text()}`);',
+          'await writeFile("./filled.pdf", Buffer.from(await res.arrayBuffer()));',
+        ],
+      },
+      {
+        title: 'Where this fits in a typical Node app',
+        paragraphs: [
+          'The Node.js teams that get the most out of an external PDF fill API tend to share a shape. They have an existing CRUD or workflow app where the user has just submitted a form, finished an order, completed a benefits enrollment, or signed a contract. They need to render that record into a specific PDF — an ACORD certificate, an HR onboarding packet, a fillable government form, a generated invoice — and either email it, store it, or hand it back to the user.',
+          'In that shape, every native PDF library forces you to think about field positions, font embedding, encryption, and AcroForm internals. An external API replaces that with one HTTPS call and a JSON payload that mirrors the database row you already have. That removes most of the surface area where in-house PDF code goes wrong.',
+        ],
+        bullets: [
+          'Insurance back-office: render a filled ACORD 25 from the policy record after binding.',
+          'HR / staffing: render a populated I-9 + W-4 packet on hire-confirmed.',
+          'Healthcare-adjacent (non-PHI): render an intake summary PDF for the customer record.',
+          'Internal ops: scheduled job renders 50 filled certificates from yesterday\'s submissions.',
+        ],
+      },
+      {
+        title: 'Comparison with native Node.js PDF approaches',
+        paragraphs: [
+          'There is a place for in-process PDF libraries. If you control the source PDF and the form is trivial — a single page with a handful of named text fields and no checkboxes or radios — pdf-lib is fine. If you are generating a PDF from scratch and never touching an existing fillable template, PDFKit is the right tool. The DullyPDF API is the right tool when the source PDF is non-trivial, the field set needs detection, or the same template is going to be filled by more than one caller from more than one runtime.',
+        ],
+        bullets: [
+          'pdf-lib: good for trivial AcroForms, weak on radio groups + checkbox variants + flattening.',
+          'PDFKit: PDF generation from scratch, not fillable-form filling. Different tool category.',
+          'Puppeteer + Chrome: works but ships a browser, slow cold start, hard on serverless.',
+          'DullyPDF API: one HTTPS POST, no native deps, template-scoped schema, field detection done once.',
+        ],
+      },
+      {
+        title: 'Deployment shapes that work well',
+        paragraphs: [
+          'Because the API is a single HTTPS endpoint, every Node deployment shape works without extra setup. From a long-running Express server, the call is fetch + write to disk. From a Next.js Route Handler the same fetch returns a Response that streams straight back to the browser. AWS Lambda, Google Cloud Functions, Cloudflare Workers, and Vercel Edge all work because there are no native dependencies to ship in the bundle. Cold starts stay fast because no PDF library has to be loaded into memory on the calling side.',
+        ],
+      },
+      {
+        title: 'When you outgrow the free tier',
+        paragraphs: [
+          'The free tier covers prototypes and low-volume production. Once you cross the request quota, the single Premium tier raises the limits without a separate plan negotiation. The published endpoint and field schema do not change when the plan changes — only the quotas do. That means scaling up does not force a code change.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do I need an SDK or npm package?',
+        answer:
+          'No. The API is plain HTTPS + JSON, callable with the global fetch in modern Node.js or any HTTP client. An optional client library is on the roadmap but not required.',
+      },
+      {
+        question: 'Can I call this from Next.js, Lambda, or Cloudflare Workers?',
+        answer:
+          'Yes. Because the call is plain fetch with no native dependencies, every Node-compatible runtime works including edge environments.',
+      },
+      {
+        question: 'How do I know what JSON keys to send?',
+        answer:
+          'Each published endpoint exposes a downloadable schema with the exact field names you reviewed during template setup. The schema is template-scoped and only changes when you intentionally republish.',
+      },
+      {
+        question: 'Can I rotate the API key without redeploying?',
+        answer:
+          'Yes. Endpoint keys can be rotated from the workspace. The endpoint URL stays stable; only the bearer token changes.',
+      },
+      {
+        question: 'How does this compare to pdf-lib?',
+        answer:
+          'pdf-lib is a low-level Node library. It works well for trivial AcroForms but requires you to handle field detection, radio group encoding, and flattening yourself. The DullyPDF API does that work once at template setup time and exposes a stable JSON contract to the calling code.',
+      },
+    ],
+    relatedIntentPages: ['pdf-fill-api', 'pdf-fill-api-python', 'pdf-fill-api-curl', 'anvil-alternative'],
+    relatedDocs: ['api-fill', 'rename-mapping'],
+  },
+
+  {
+    key: 'pdf-fill-api-python',
+    category: 'workflow',
+    path: '/pdf-fill-api-python',
+    navLabel: 'PDF Fill API for Python',
+    heroTitle: 'Fill PDFs With Python — JSON-to-PDF API for Python Backends',
+    heroSummary:
+      'Send a JSON payload from Python with requests or httpx, get back a filled PDF. No PyPDF2 / pypdf field-coordinate math, no reportlab redrawing, no LibreOffice headless. Free tier available.',
+    seoTitle: 'Fill PDFs with Python — Free JSON to PDF API for Python | DullyPDF',
+    seoDescription:
+      'Fill PDF forms from Python with one requests.post call. JSON in, filled PDF out. Free tier, no credit card. Vs. pypdf, fillpdf, reportlab, LibreOffice.',
+    seoKeywords: [
+      'fill pdf python',
+      'fill pdf form python',
+      'pdf fill api python',
+      'python pdf form fill',
+      'json to pdf python',
+      'pypdf alternative',
+      'fillpdf alternative',
+      'reportlab fill pdf form',
+      'fill fillable pdf python api',
+      'programmatic pdf fill python',
+      'python pdf form filling library',
+      'rest api fill pdf python',
+      'pypdf2 fill form',
+    ],
+    valuePoints: [
+      'requests.post a JSON body, get a filled PDF back. No PyPDF2 / pypdf field math, no reportlab redrawing.',
+      'Works from any Python deployment: Flask, FastAPI, Django, Lambda, Cloud Run, batch jobs.',
+      'Free tier covers low-volume workloads end to end before any paid commitment.',
+    ],
+    proofPoints: [
+      'API call is a standard HTTPS POST — works with requests, httpx, urllib, aiohttp.',
+      'Field schema is downloadable from the saved template so the JSON contract is visible to the calling code.',
+      'Each published endpoint is template-scoped so a template revision does not silently break callers.',
+    ],
+    articleSections: [
+      {
+        title: 'Why most Python teams stop rolling their own PDF fill code',
+        paragraphs: [
+          'Filling a PDF programmatically from Python sounds straightforward until production hits an unusual form. pypdf and PyPDF2 can update text fields but the API around radio groups, checkbox export values, appearance streams, and AcroForm flattening is awkward and frequently produces filled forms that look correct in some PDF viewers but blank or partially blank in others. fillpdf wraps pdftk, which is unmaintained and a heavy system dependency. reportlab generates PDFs from scratch but is not a fillable-form filler — you would be redrawing the document. The LibreOffice headless approach works but ships a 400MB binary and is painful to package on serverless.',
+          'The DullyPDF API replaces all of that with a single requests.post call. The PDF is detected and the field map is frozen at template publish time, so the JSON contract is stable across runs and across PDF readers.',
+        ],
+      },
+      {
+        title: 'Minimal Python example',
+        paragraphs: [
+          'A typical call from a Python backend looks like the snippet below. The endpoint URL and API key come from the API Fill modal in the DullyPDF workspace after you publish a saved template. The JSON body uses three top-level keys: a `data` object whose keys are the cleaned field names from your saved template, an `exportMode` flag (`"flat"` returns a non-editable PDF, `"editable"` keeps the AcroForm intact), and a `strict` boolean (set true so unknown payload keys are rejected instead of silently ignored).',
+          'Authentication is HTTP Basic with the API key as the username and a blank password — pass `auth=(api_key, "")` to requests, or set the Authorization header manually as `Basic base64(api_key + ":")`. The response body is the raw PDF.',
+        ],
+        bullets: [
+          'import os, requests',
+          'api_key = os.environ["DULLYPDF_API_KEY"]',
+          'res = requests.post(',
+          '    "https://api.dullypdf.com/api/v1/fill/<TEMPLATE_ID>.pdf",',
+          '    auth=(api_key, ""),',
+          '    json={"data": {"patient_name": "Jane Doe", "patient_email": "jane@example.com"}, "exportMode": "flat", "strict": True},',
+          ')',
+          'res.raise_for_status()',
+          'with open("filled.pdf", "wb") as fh: fh.write(res.content)',
+          '# For async: httpx.AsyncClient.post with the same auth tuple and json body.',
+        ],
+      },
+      {
+        title: 'Where this fits in a typical Python app',
+        paragraphs: [
+          'Most Python teams reaching for an external PDF fill API have a Flask, FastAPI, or Django backend with a record (a customer, an enrollment, a claim, a quote) that needs to be turned into a specific PDF — an ACORD certificate, a 1099 form, an HR onboarding packet, a state-specific government form, a generated invoice. They have already tried pypdf or fillpdf and ran into one of: forms that flatten incorrectly, radio groups that come back blank, output that looks fine in Preview but blank in Adobe Reader, or pdftk dependencies that broke on the first deploy.',
+          'In that shape, the API call is a one-line replacement. The JSON keys mirror the dictionary you would have built anyway. The output PDF is consistent across viewers because the fill engine and field detection are versioned with the saved template.',
+        ],
+        bullets: [
+          'Insurance ops: render a filled ACORD 25 from the policy row after binding.',
+          'Tax / accounting: render filled 1099/W-2/W-9 PDFs from accounting database records.',
+          'Government / immigration: render filled USCIS or state forms from intake records.',
+          'Internal batch: nightly job renders N filled certificates for the day\'s submissions.',
+        ],
+      },
+      {
+        title: 'Comparison with native Python PDF approaches',
+        paragraphs: [
+          'There is a place for in-process PDF libraries. pypdf is good for low-level inspection and trivial text-only field updates. reportlab is the right tool when you are generating a PDF from scratch and not filling an existing template. LibreOffice headless works for one-off conversions but is heavy. The DullyPDF API is the right tool when the source PDF is non-trivial, the field set needs detection, or the same template is going to be filled by more than one caller across more than one Python service.',
+        ],
+        bullets: [
+          'pypdf / PyPDF2: good for inspection, weak on radio groups + appearance streams + flattening.',
+          'fillpdf: wraps pdftk, which is unmaintained and a heavy system dependency.',
+          'reportlab: PDF generation from scratch, not fillable-form filling. Different tool category.',
+          'LibreOffice headless: works but ships ~400MB, painful on serverless / Lambda.',
+          'DullyPDF API: one requests.post, template-scoped schema, field detection done once.',
+        ],
+      },
+      {
+        title: 'Deployment shapes that work well',
+        paragraphs: [
+          'Because the API is a single HTTPS endpoint, every Python deployment shape works without extra setup. Long-running Flask, FastAPI, Django Channels, Celery batch workers, AWS Lambda with the slim runtime, Google Cloud Run, Heroku, Fly.io, and serverless Python runtimes all work because there is no system-level dependency to install. Cold starts stay fast because no PDF library has to load into memory on the calling side.',
+        ],
+      },
+      {
+        title: 'When you outgrow the free tier',
+        paragraphs: [
+          'The free tier covers prototypes and low-volume production. Once you cross the request quota, the single Premium tier raises the limits without a separate plan negotiation. The published endpoint and field schema do not change when the plan changes — only the quotas do. That means scaling up does not force a code change in your Python service.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do I need a Python SDK?',
+        answer:
+          'No. The API is plain HTTPS + JSON. requests, httpx, urllib, and aiohttp all work without any DullyPDF-specific package install.',
+      },
+      {
+        question: 'Does this replace pypdf or PyPDF2?',
+        answer:
+          'For inspecting an existing PDF, pypdf is still the right tool. For filling a fillable PDF programmatically, the DullyPDF API is usually faster to integrate and produces output that renders consistently across PDF readers, including Adobe Reader.',
+      },
+      {
+        question: 'Can I call this from AWS Lambda or Cloud Run?',
+        answer:
+          'Yes. Because the call is plain HTTPS with no native dependencies, every serverless Python runtime works. No need to bundle pdftk or LibreOffice.',
+      },
+      {
+        question: 'How do I know what JSON keys to send?',
+        answer:
+          'Each published endpoint exposes a downloadable schema with the exact field names you reviewed during template setup. The schema is template-scoped and only changes when you intentionally republish.',
+      },
+      {
+        question: 'Async support?',
+        answer:
+          'Yes — call the same endpoint from httpx.AsyncClient or aiohttp. The endpoint is just an HTTPS POST and is async-runtime agnostic.',
+      },
+    ],
+    relatedIntentPages: ['pdf-fill-api', 'pdf-fill-api-nodejs', 'pdf-fill-api-curl', 'anvil-alternative'],
+    relatedDocs: ['api-fill', 'rename-mapping'],
+  },
+
+  {
+    key: 'pdf-fill-api-curl',
+    category: 'workflow',
+    path: '/pdf-fill-api-curl',
+    navLabel: 'PDF Fill API with curl',
+    heroTitle: 'Fill PDFs With curl — JSON-to-PDF API From the Terminal',
+    heroSummary:
+      'One curl command, one JSON body, one filled PDF written to disk. Test the JSON-to-PDF API in 30 seconds before writing any application code. Free tier available.',
+    seoTitle: 'Fill PDFs with curl — Free JSON to PDF API From the Terminal | DullyPDF',
+    seoDescription:
+      'Fill PDF forms from the command line with one curl call. JSON in, filled PDF out. Free tier, no credit card. Great for shell scripts and CI jobs.',
+    seoKeywords: [
+      'fill pdf curl',
+      'pdf api curl example',
+      'curl pdf form fill',
+      'json to pdf curl',
+      'curl post pdf api',
+      'pdf fill api command line',
+      'shell script fill pdf',
+      'curl pdf form filling',
+      'test pdf api with curl',
+      'fill fillable pdf bash',
+      'pdf api quickstart curl',
+      'http api fill pdf form',
+      'curl example pdf form',
+    ],
+    valuePoints: [
+      'One terminal command to verify the API works against your real PDF before writing any application code.',
+      'No SDK install, no language runtime — useful for evaluation, debugging, shell scripts, and CI smoke tests.',
+      'Same endpoint and JSON contract used by the Node.js, Python, and webform paths — the curl call is the canonical reference.',
+    ],
+    proofPoints: [
+      'API call is a standard HTTPS POST with a JSON payload and HTTP Basic authentication (API key as username, blank password).',
+      'Response body is the raw filled PDF — pipe it straight to a file with `--output`.',
+      'curl response headers include the request ID for support traceability.',
+    ],
+    articleSections: [
+      {
+        title: 'Why most engineers test new APIs with curl first',
+        paragraphs: [
+          'Before any application integration, the right first step with a new PDF fill API is a curl call. It removes every layer that could fail for a reason unrelated to the API itself: the SDK install, the language runtime, the network library, the framework. If the curl call returns a valid PDF, the API works. If it does not, the failure mode is unambiguous.',
+          'That same call also doubles as the canonical reference for whatever language wrapper comes next. The Node.js fetch, the Python requests.post, the Go http.Post — all of them are encoding the same HTTPS POST that the curl call already proved out. Starting with curl shortens debugging in every later language binding.',
+        ],
+      },
+      {
+        title: 'Minimal curl example',
+        paragraphs: [
+          'A typical call from the terminal looks like the snippet below. Replace `<TEMPLATE_ID>` with the saved-template ID shown in the API Fill modal and `$DULLYPDF_API_KEY` with the API key from the same modal. Authentication is HTTP Basic with the API key as the username and a blank password — the printf+base64 trick below builds the right header without needing a curl version that supports `--user`.',
+          'The body is a single `data` object whose keys are the cleaned field names from your saved template, plus `exportMode: "flat"` (non-editable PDF) or `"editable"` (preserves AcroForm), plus `strict: true` (recommended for production — rejects unknown payload keys).',
+        ],
+        bullets: [
+          'curl -X POST "https://api.dullypdf.com/api/v1/fill/<TEMPLATE_ID>.pdf" \\',
+          '  -H "Authorization: Basic $(printf \'%s:\' \"$DULLYPDF_API_KEY\" | base64)" \\',
+          '  -H "Content-Type: application/json" \\',
+          '  --data \'{"data": {"patient_name": "Jane Doe", "patient_email": "jane@example.com"}, "exportMode": "flat", "strict": true}\' \\',
+          '  --fail \\',
+          '  --output filled.pdf',
+          '',
+          'After the call: `open filled.pdf` (macOS) or `xdg-open filled.pdf` (Linux) to inspect the result. For larger payloads, save the JSON body to `payload.json` and reference it with `--data-binary @payload.json` instead of inlining.',
+        ],
+      },
+      {
+        title: 'Where curl fits in a typical evaluation cycle',
+        paragraphs: [
+          'The first 30 seconds of evaluating a PDF fill API should be a curl call against a real template, not reading marketing copy. Upload one PDF, let detection run, copy the endpoint URL and API key from the workspace, paste them into a curl command with one or two field values you actually care about, and look at the resulting PDF in a viewer. That single round trip tells you more than any feature comparison page can.',
+          'After the curl call works, the same JSON shape ports directly to the language you actually use in production. The Node.js fetch, the Python requests, the Go net/http call — each is the same HTTPS POST with the same body. The curl call is the contract; the language binding is just a convenience wrapper around it.',
+        ],
+        bullets: [
+          'Step 1: upload one real PDF, run detection, save as a template.',
+          'Step 2: copy endpoint URL + API key from the workspace.',
+          'Step 3: run the curl command with --output filled.pdf.',
+          'Step 4: open filled.pdf and verify the field values rendered correctly.',
+        ],
+      },
+      {
+        title: 'Useful curl flags for this API',
+        paragraphs: [
+          'A few curl flags make this API easier to work with during evaluation and in shell scripts.',
+        ],
+        bullets: [
+          '--output filled.pdf  → write the filled PDF directly to disk instead of dumping bytes to the terminal.',
+          '--fail               → exit with a non-zero status on HTTP 4xx/5xx, useful in shell scripts and CI jobs.',
+          '--silent --show-error → suppress the progress bar but still print real errors.',
+          '-D headers.txt       → dump response headers to a file (the request ID lives in `x-dullypdf-request-id`).',
+          '--data-binary @body.json → for larger payloads, store the JSON body in a file and reference it.',
+          '-w "%{http_code}\\n"  → print the final HTTP status code after the body is written.',
+        ],
+      },
+      {
+        title: 'Using curl in shell scripts and CI',
+        paragraphs: [
+          'Once the curl call works at the terminal, the same command drops cleanly into a shell script or a CI job. A nightly cron task that renders 50 filled PDFs from yesterday\'s submissions is a few lines of bash plus a loop over a CSV. A CI smoke test that verifies the production endpoint is still serving correct PDFs is a single curl + a file-size or PDF-magic-bytes check.',
+          'For shell scripts, prefer storing the API key in an environment variable rather than inline so you can rotate keys without rewriting scripts. Pair `--fail` with `set -euo pipefail` so an API error stops the script instead of silently writing an empty PDF.',
+        ],
+      },
+      {
+        title: 'Common curl errors and what they usually mean',
+        paragraphs: [
+          'A few error patterns show up consistently when evaluating any HTTP API with curl. Knowing them in advance saves debugging time.',
+        ],
+        bullets: [
+          'HTTP 401 / 403: the bearer token is missing, wrong, rotated, or scoped to a different template. Check the Authorization header and the template ID.',
+          'HTTP 404: usually a wrong template ID or wrong endpoint URL. Confirm both in the workspace endpoint settings.',
+          'HTTP 422: the JSON body is structurally fine but a required field is missing or a field value violates a template-defined rule. The response body lists which field caused the failure.',
+          'HTTP 429: rate-limited. Check the X-RateLimit-Remaining and Retry-After response headers.',
+          'Empty file written to disk: usually `--fail` was missing and curl wrote a JSON error body to filled.pdf. Open the file in a text editor and the JSON error message will be visible.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do I need an SDK to test the API?',
+        answer:
+          'No. The API is plain HTTPS + JSON, callable with curl, wget, httpie, Postman, or any HTTP client. Curl is the fastest first call.',
+      },
+      {
+        question: 'Can I use the same curl call from a CI job?',
+        answer:
+          'Yes. Pair `--fail` with `set -euo pipefail` so a non-2xx response stops the job. Store the API key in a CI secret variable rather than inline.',
+      },
+      {
+        question: 'How do I see the response headers for a specific call?',
+        answer:
+          'Add `-D headers.txt` to the curl command (or `-i` to include them inline). DullyPDF returns the snapshot version, rate-limit counters, and a request identifier in the response headers — useful for support requests and rate-limit debugging.',
+      },
+      {
+        question: 'How do I send a large JSON payload?',
+        answer:
+          'Save the JSON body to a file and reference it with `--data-binary @body.json` instead of inlining the JSON in the command line. This avoids shell quoting issues.',
+      },
+      {
+        question: 'Why is my downloaded PDF empty?',
+        answer:
+          'Usually the API returned an error and curl wrote the JSON error body to your output file. Add `--fail` so curl exits on HTTP errors instead of writing them to disk, or open the file in a text editor to read the error message.',
+      },
+    ],
+    relatedIntentPages: ['pdf-fill-api', 'pdf-fill-api-nodejs', 'pdf-fill-api-python', 'anvil-alternative'],
+    relatedDocs: ['api-fill', 'getting-started'],
+  },
+
+  {
+    key: 'pdf-field-detection-accuracy',
+    category: 'workflow',
+    path: '/pdf-field-detection-accuracy',
+    navLabel: 'PDF Field Detection Accuracy',
+    heroTitle: 'PDF Field Detection Accuracy: How DullyPDF Compares to Adobe and Apryse',
+    heroSummary:
+      'DullyPDF runs the open-research FFDNet model from the CommonForms paper (arXiv 2509.16506). Outperforms the leading commercial PDF reader on form field detection and uniquely supports checkbox detection — both verifiable against the public CommonForms benchmark.',
+    seoTitle: 'PDF Field Detection Accuracy — CommonForms FFDNet vs Adobe and Apryse | DullyPDF',
+    seoDescription:
+      'How accurate is PDF field detection? DullyPDF runs FFDNet (CommonForms, Barrow 2025) — beats the leading commercial PDF reader on a public benchmark.',
+    seoKeywords: [
+      'pdf field detection accuracy',
+      'best pdf field detection',
+      'commonforms benchmark',
+      'ffdnet pdf detection',
+      'adobe pdf field detection accuracy',
+      'apryse pdf form field detection',
+      'pdftron field detection comparison',
+      'open source pdf field detection',
+      'pdf form detection benchmark',
+      'pdf checkbox detection',
+      'aws textract pdf form alternative',
+      'document ai field detection comparison',
+      'pdf field detection model',
+    ],
+    valuePoints: [
+      'DullyPDF runs the FFDNet-Large model from the open CommonForms paper (arXiv 2509.16506) — not a black-box detector.',
+      'CommonForms reports FFDNet outperforming a popular commercial PDF reader on the same benchmark.',
+      'Detects checkboxes — a class most commercial PDF detectors do not support according to the same paper.',
+    ],
+    proofPoints: [
+      'Source: Joe Barrow, "CommonForms: A Large, Diverse Dataset for Form Field Detection," arXiv:2509.16506 (2025).',
+      'Benchmark dataset: ~55,000 documents and 450,000+ pages drawn from Common Crawl, with ~1/3 non-English content and 14 classified domains (no single domain exceeds 25%).',
+      'Training cost reported in the paper: under $500 per model — fully reproducible by anyone who wants to verify.',
+    ],
+    articleSections: [
+      {
+        title: 'Why field-detection accuracy is the part nobody benchmarks publicly',
+        paragraphs: [
+          'Adobe Acrobat ships AI Form Detection. Apryse (formerly PDFTron) sells a Form Field Detection capability inside their SDK. AWS Textract has a forms feature. None of these vendors publish a head-to-head accuracy benchmark on a public dataset. That is unusual for a category that markets on accuracy claims, and it is the reason most evaluation today happens by uploading one or two test PDFs and eyeballing the results.',
+          'CommonForms changes that. The CommonForms paper — Joe Barrow, arXiv:2509.16506, published in 2025 — releases both a large public benchmark dataset and the trained models that run on it. Anyone can download the benchmark, run any commercial detector on it, and compare. The same paper reports FFDNet outperforming a popular commercial PDF reader on this benchmark.',
+          'DullyPDF runs the actual FFDNet-Large model from that paper as its detection backbone. We did not retrain it, did not fork it, and did not modify the inference pipeline. The detector you use in DullyPDF is the same detector the published benchmark numbers describe.',
+        ],
+      },
+      {
+        title: 'What the CommonForms paper actually claims',
+        paragraphs: [
+          'The CommonForms paper makes three concrete claims that matter for product evaluation. None of them require trust in the vendor — they are reproducible from the public dataset.',
+        ],
+        bullets: [
+          'FFDNet "outperforms a popular, commercially available PDF reader" on the CommonForms test set. The paper does not name the reader explicitly in the abstract; based on category leadership the reference is widely understood to mean Adobe Acrobat\'s AI Form Detection.',
+          'FFDNet "can predict checkboxes" — a capability the paper notes is missing from "the most popular commercially available solutions." For any form with checkbox groups (insurance ACORDs, medical intake, government forms), this matters concretely: missed checkboxes mean an operator has to draw them by hand later.',
+          'FFDNet attains "very high average precision" on the test set. The benchmark dataset is ~55,000 documents and 450,000+ pages drawn from Common Crawl, with explicit diversity controls (~1/3 non-English, 14 classified domains, no domain over 25%) — meaning the model was not overfit to a single document type.',
+        ],
+      },
+      {
+        title: 'How this maps to what DullyPDF detects in practice',
+        paragraphs: [
+          'When you upload a PDF, DullyPDF runs FFDNet-Large detection and surfaces every candidate field with a confidence score visible in the editor (you can see "98% field" / "95% remap" labels in the field rail of any saved template). The product separates two confidences explicitly: detection confidence (how sure the model is the region is a field) and rename confidence (how sure the rename layer is about the human-readable name).',
+          'For a typical multi-page intake — like the New Patient Dental Intake Form linked from this site\'s API walkthrough — that means 167 fields are detected on a 2-page form, 90 of which become the operator\'s working set after editor review. Checkbox groups (5 of them on that example) and radio groups (8 of them) are detected and grouped automatically — the part the CommonForms paper specifically calls out as missing from competitor detectors.',
+        ],
+        bullets: [
+          'Text fields: detected with bounding boxes plus AI-rename to human labels.',
+          'Checkbox groups: detected and grouped — a class the paper notes is missing from leading commercial solutions.',
+          'Radio groups: deterministically resolved as a single selected option key in the JSON contract.',
+          'Signature, date, and other typed fields: classified at detection time so the editor can apply the right input control.',
+        ],
+      },
+      {
+        title: 'What we can and cannot say about Adobe Acrobat vs FFDNet',
+        paragraphs: [
+          'Honest framing matters here. The CommonForms paper claims FFDNet outperforms a popular commercial PDF reader on the public benchmark — that is a citable, third-party, reproducible claim. We are not going to invent specific percentage-point comparisons that the paper does not publish. If you want to verify, the dataset is public and you can run Adobe\'s detection on it yourself.',
+          'What is concretely verifiable in everyday use: Adobe\'s AI Form Detection treats checkboxes inconsistently and frequently does not group them with their parent question. The CommonForms paper attributes that to a class limitation in the underlying detector. DullyPDF, running FFDNet, surfaces the checkbox groups as a first-class output of detection.',
+        ],
+      },
+      {
+        title: 'What we can and cannot say about Apryse / PDFTron',
+        paragraphs: [
+          'Apryse sells form-field detection as one capability inside an enterprise SDK. They do not publish a head-to-head benchmark against any open dataset. We are also not going to claim a number we cannot prove. What we can say is: the CommonForms benchmark is a fair, public yardstick that Apryse — and any other vendor — could publish numbers against if they chose to. The fact that it has not been done in either direction is a reason to be skeptical of any unsourced claim that "we are 23% better than Apryse." Including any such claim from us.',
+          'In practice, the realistic comparison shape is: Apryse is the right buy if you need a 25-year-old codebase with viewing, editing, OCR, redaction, signing, and detection inside a single enterprise SDK at $50k–500k+ per year. DullyPDF is the right buy if your detection use case fits a self-serve product and you want to see open-research methodology behind the model.',
+        ],
+      },
+      {
+        title: 'How to verify the claim yourself',
+        paragraphs: [
+          'The single best move if accuracy is your decision criterion is to evaluate against your actual document corpus, not against a third-party claim — including ours. The reproducible recipe is:',
+        ],
+        bullets: [
+          'Pick 5 representative PDFs from your real workflow — the messy ones, not the clean ones.',
+          'Upload each into DullyPDF and record: total fields detected, checkbox groups detected, fields you would have had to add by hand.',
+          'Run the same PDFs through Adobe Acrobat\'s AI Form Detection (free trial works) and record the same.',
+          'If you have an Apryse trial, run them through Apryse\'s form-field detection and record the same.',
+          'Compare detection-completeness, not just detection-presence — a detector that finds 80% of fields without checkboxes is worse than one that finds 70% with checkboxes for any workflow that has checkbox groups.',
+        ],
+      },
+      {
+        title: 'Why we think open-research detection is a structural advantage',
+        paragraphs: [
+          'A closed-source detector at a commercial vendor improves at whatever pace the vendor\'s team improves it. An open-research detector improves at the pace the entire ML community improves it — and the vendor (us, in this case) gets to integrate that improvement immediately. CommonForms is a paper, a dataset, and a model release. The next version of FFDNet will be public the same way. When that drops, DullyPDF rolls it into the same detection pipeline.',
+          'That is the structural advantage of building on open-research detection rather than rolling our own black box: every published improvement in form-field detection is automatically a DullyPDF roadmap item, and the public benchmark exists so customers do not have to take our word for it.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'What model does DullyPDF actually use for field detection?',
+        answer:
+          'FFDNet-Large from the CommonForms paper (Barrow 2025, arXiv:2509.16506). We use the same model weights the paper releases, with no proprietary modifications to the detection step.',
+      },
+      {
+        question: 'Is the accuracy claim against Adobe verifiable?',
+        answer:
+          'Yes. The CommonForms paper releases the dataset, the test split, and the trained models. Anyone can run Adobe Acrobat\'s detection on the same test set and reproduce the comparison. The paper itself states FFDNet outperforms "a popular, commercially available PDF reader" on the benchmark.',
+      },
+      {
+        question: 'Why does checkbox detection matter so much?',
+        answer:
+          'Most production forms with structured data — insurance ACORDs, medical intake, government applications — encode their multiple-choice answers as checkbox groups. A detector that misses checkboxes forces a human operator to manually add every checkbox region, which often takes longer than reviewing the entire detected text-field set. CommonForms specifically calls out checkbox prediction as a capability missing from leading commercial detectors.',
+      },
+      {
+        question: 'Do you publish your own per-document accuracy numbers?',
+        answer:
+          'We rely on the published CommonForms benchmark rather than producing our own marketing numbers. Vendor-produced accuracy claims tend to be cherry-picked; the public benchmark is the honest yardstick. If you want a per-document evaluation, the upload-and-compare recipe in this article is the right approach.',
+      },
+      {
+        question: 'How does this compare to AWS Textract or Google Document AI?',
+        answer:
+          'AWS Textract and Google Document AI are general document-understanding services optimized for OCR and key-value extraction from filled documents — slightly different problem from detecting empty form fields on a blank template. Both have published benchmarks on their own datasets but neither publishes results on the CommonForms benchmark. The honest comparison to either is, again, run your own representative documents through both and look at completeness on your real workflow.',
+      },
+      {
+        question: 'What about hand-drawn or scanned PDFs?',
+        answer:
+          'CommonForms is trained primarily on native PDFs with visible form lines and structure. Scanned forms with poor contrast or skewed pages will degrade detection quality for any model — including FFDNet, Adobe, Apryse, and Textract. The DullyPDF editor exposes confidence scoring so low-confidence detections can be reviewed first; that is the practical answer for scan quality rather than expecting any detector to solve it perfectly.',
+      },
+    ],
+    relatedIntentPages: ['pdf-field-detection-tool', 'pdf-fill-api', 'anvil-alternative', 'pdf-fill-api-nodejs'],
+    relatedDocs: ['detection', 'getting-started'],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -3787,14 +4479,51 @@ const formatFormCatalogTitle = (entry) => {
   return `${prefix}${entry.title}`.trim();
 };
 
-const buildFormCatalogEntrySeo = (entry) => {
+// Google truncates <title> tags around 60 characters / 600 pixels in SERP
+// rendering. Form-catalog titles are auto-generated from official form titles
+// (often 100+ chars), so we apply a tiered budget:
+//   1. Try the full marketing title with " — Free Fillable PDF | DullyPDF"
+//   2. If too long, drop the marketing suffix and use just " | DullyPDF"
+//   3. If still too long, truncate the displayTitle at a word boundary and
+//      add an ellipsis, keeping the brand suffix.
+//
+// The 60-char ceiling is enforced by frontend/test/unit/config/test_route_seo.test.ts.
+const SERP_TITLE_BUDGET = 60;
+const BRAND_SUFFIX = ' | DullyPDF';
+const FULL_SUFFIX = ' — Free Fillable PDF | DullyPDF';
+
+const truncateAtWord = (text, maxLength) => {
+  if (text.length <= maxLength) return text;
+  // Reserve 1 char for the ellipsis.
+  const cutoff = text.lastIndexOf(' ', maxLength - 1);
+  const sliceEnd = cutoff > 20 ? cutoff : maxLength - 1;
+  return text.slice(0, sliceEnd).trimEnd() + '…';
+};
+
+const buildFormCatalogPageTitle = (displayTitle) => {
+  const fullTitle = `${displayTitle}${FULL_SUFFIX}`;
+  if (fullTitle.length <= SERP_TITLE_BUDGET) return fullTitle;
+
+  const compactTitle = `${displayTitle}${BRAND_SUFFIX}`;
+  if (compactTitle.length <= SERP_TITLE_BUDGET) return compactTitle;
+
+  const room = SERP_TITLE_BUDGET - BRAND_SUFFIX.length;
+  return `${truncateAtWord(displayTitle, room)}${BRAND_SUFFIX}`;
+};
+
+const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
   const category =
     FORM_CATALOG_SECTION_TO_CATEGORY.get(entry.section)
     || FORM_CATALOG_CATEGORY_BY_KEY.get(entry.section)
     || null;
   const categoryLabel = category?.label || entry.section;
   const displayTitle = formatFormCatalogTitle(entry);
-  const canonicalPath = `/forms/${entry.slug}`;
+  // For variant pages we point rel=canonical at the cluster parent so Google
+  // consolidates link equity onto one page. The on-page URL itself stays
+  // accessible via the variant slug.
+  const canonicalPath = canonicalSlug
+    ? `/forms/${canonicalSlug}`
+    : `/forms/${entry.slug}`;
   const description = entry.description
     ? `${entry.description} Download the blank PDF or open it in DullyPDF to auto-detect fields, fill from CSV, collect answers by web form, call a JSON-to-PDF API, and e-sign.`
     : `Free fillable ${displayTitle} PDF. Download the blank PDF or open it in DullyPDF to auto-detect fields, fill from CSV, collect answers by web form, call a JSON-to-PDF API, and e-sign.`;
@@ -3876,7 +4605,7 @@ const buildFormCatalogEntrySeo = (entry) => {
   ];
 
   return {
-    title: `${displayTitle} — Free Fillable PDF | DullyPDF`,
+    title: buildFormCatalogPageTitle(displayTitle),
     description,
     canonicalPath,
     keywords,
@@ -3885,12 +4614,67 @@ const buildFormCatalogEntrySeo = (entry) => {
   };
 };
 
-const FORM_CATALOG_FORM_ROUTES = FORM_CATALOG_ENTRIES.map((entry) => ({
-  path: `/forms/${entry.slug}`,
-  seo: buildFormCatalogEntrySeo(entry),
-  kind: 'form-catalog-form',
-  slug: entry.slug,
-}));
+// ---------------------------------------------------------------------------
+// Low-value form classification (SEO pruning)
+//
+// We keep every form-catalog page LIVE (deep links + Reddit shares still work)
+// but we mark thin/duplicate ones as `lowValue` so:
+//   - generate-static-html.mjs emits <meta name="robots" content="noindex,follow">
+//     for them
+//   - generate-sitemap.mjs drops them from sitemap.xml
+//   - rel=canonical points at the cluster parent (set above) so link equity
+//     consolidates onto one page
+//
+// A form is lowValue when ANY of the following holds:
+//   1. is a prior-year edition of a form whose current edition is also in the
+//      catalog (handled via `entry.isPriorYear`)
+//   2. ships as <10kB on disk (almost always a stub or a near-empty PDF)
+//   3. is a near-duplicate variant of a parent form, e.g. CMS-855a/b/i/o/s all
+//      variants of CMS-855 Medicare Provider Enrollment
+// ---------------------------------------------------------------------------
+
+const VARIANT_CLUSTERS = [
+  // CMS-855 Medicare Provider Enrollment (a/b/i/o/s) → consolidate on cms-855a
+  { pattern: /^cms-855[abios]$/i, canonical: 'cms-855a' },
+  // VA Form 10-10 Health Benefits Application (10-10d, 10-10ez, 10-10ezr)
+  { pattern: /^10-10(?:d|ez|ezr)$/i, canonical: '10-10ez' },
+  // VA CHAMPVA Claim Form variants (10-7959a, 10-7959c)
+  { pattern: /^10-7959[ac]$/i, canonical: '10-7959a' },
+  // VA Request for and Authorization to Release Medical Records (10-5345, 10-5345a)
+  { pattern: /^10-5345a?$/i, canonical: '10-5345' },
+  // CMS-36 Medicare benefits family (cms-36, cms-36p)
+  { pattern: /^cms-36p?$/i, canonical: 'cms-36' },
+];
+
+const LOW_VALUE_BYTE_THRESHOLD = 10_000;
+
+function classifyLowValue(entry) {
+  if (entry.isPriorYear === true) {
+    return { lowValue: true, reason: 'prior-year', canonicalSlug: null };
+  }
+  if (typeof entry.bytes === 'number' && entry.bytes < LOW_VALUE_BYTE_THRESHOLD) {
+    return { lowValue: true, reason: 'tiny-bytes', canonicalSlug: null };
+  }
+  for (const cluster of VARIANT_CLUSTERS) {
+    if (cluster.pattern.test(entry.slug) && entry.slug !== cluster.canonical) {
+      return { lowValue: true, reason: 'variant-of-cluster', canonicalSlug: cluster.canonical };
+    }
+  }
+  return { lowValue: false, reason: null, canonicalSlug: null };
+}
+
+const FORM_CATALOG_FORM_ROUTES = FORM_CATALOG_ENTRIES.map((entry) => {
+  const { lowValue, reason, canonicalSlug } = classifyLowValue(entry);
+  return {
+    path: `/forms/${entry.slug}`,
+    seo: buildFormCatalogEntrySeo(entry, { canonicalSlug }),
+    kind: 'form-catalog-form',
+    slug: entry.slug,
+    lowValue,
+    lowValueReason: reason,
+    ...(canonicalSlug ? { canonicalSlug } : {}),
+  };
+});
 
 // ---------------------------------------------------------------------------
 // All routes consolidated

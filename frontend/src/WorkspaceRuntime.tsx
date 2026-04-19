@@ -61,7 +61,7 @@ import { fetchDetectionStatus } from './services/detectionApi';
 import { debugLog } from './utils/debug';
 import { resolveConfirmDialogResult } from './utils/dialogResult';
 import { returnWorkspaceToHomepage } from './utils/returnWorkspaceToHomepage';
-import { applyRouteSeo } from './utils/seo';
+import { applyNoIndexSeo, applyRouteSeo } from './utils/seo';
 import {
   LazyDemoTour,
   LazyDowngradeRetentionDialog,
@@ -332,8 +332,16 @@ function WorkspaceRuntime({
   const fieldClickPageChangeRef = useRef(false);
 
   useEffect(() => {
-    applyRouteSeo({ kind: 'app' });
-  }, []);
+    if (browserRoute.kind === 'homepage') {
+      applyRouteSeo({ kind: 'app' });
+    } else {
+      applyNoIndexSeo({
+        title: 'DullyPDF',
+        description: 'DullyPDF workspace — sign in to continue.',
+        canonicalPath: '/',
+      });
+    }
+  }, [browserRoute.kind]);
 
   useEffect(() => {
     if (browserRoute.kind === 'homepage') {
