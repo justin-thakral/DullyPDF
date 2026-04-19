@@ -1,4 +1,11 @@
+import sys
+from pathlib import Path
+
 import pytest
+
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from internal_stats.collector import PROD_FIREBASE_PROJECT_ID, require_prod_project_configuration
 
