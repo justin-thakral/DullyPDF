@@ -35,7 +35,10 @@ const AuthActionShell = ({
       <div className="verify-action-shell">
         <div className="verify-action-brand">
           <a className="verify-action-brandmark" href="/" aria-label="Open DullyPDF homepage">
-            <img src="/DullyPDFLogoImproved.png" alt="" />
+            {/* alt is meaningful for crawlers; aria-hidden prevents the screen
+                reader from reading "DullyPDF logo" + "DullyPDF" + the link
+                aria-label all at once. */}
+            <img src="/DullyPDFLogoImproved.png" alt="DullyPDF logo" aria-hidden="true" />
             <span>DullyPDF</span>
           </a>
           <span className="verify-action-support">{supportLabel}</span>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type ReactNode } from 'react';
+import { useEffect, useMemo, type MouseEvent, type ReactNode } from 'react';
 import FormCatalogThumbnail from './FormCatalogThumbnail';
 import {
   getIntentPage,
@@ -63,6 +63,7 @@ type IntentCatalogWorkflowStep = {
   title: string;
   description: string;
   href: string;
+  editorHref?: string;
   linkLabel: string;
 };
 
@@ -112,6 +113,12 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
           || pageKey === 'pdf-fill-api'
           ? ESIGN_PIPELINE_DEMO_VIDEO
           : null;
+
+  const handleOpenInWorkspace = (event: MouseEvent<HTMLAnchorElement>, editorHref: string) => {
+    event.preventDefault();
+    window.location.href = editorHref;
+  };
+
   const footnoteNumberById = useMemo(
     () => new Map((page.footnotes ?? []).map((footnote, index) => [footnote.id, index + 1])),
     [page.footnotes],
@@ -274,7 +281,11 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                   <article key={document.slug} className="intent-page__catalog-card">
                     <a href={document.catalogHref} className="intent-page__catalog-card-link">
                       <div className="intent-page__catalog-image-shell">
-                        <FormCatalogThumbnail thumbnailUrl={document.thumbnailUrl} formNumber={document.formNumber} />
+                        <FormCatalogThumbnail
+                          thumbnailUrl={document.thumbnailUrl}
+                          formNumber={document.formNumber}
+                          title={document.title}
+                        />
                       </div>
                     </a>
                     <div className="intent-page__catalog-card-copy">
@@ -293,10 +304,10 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                   </div>
                   <div className="intent-page__catalog-actions">
                     <a
-                      href={document.editorHref}
+                      href={document.catalogHref}
                       className="intent-page__catalog-action intent-page__catalog-action--primary"
                       aria-label={`Open ${document.formNumber || document.title} in DullyPDF`}
-                      rel="nofollow"
+                      onClick={(event) => handleOpenInWorkspace(event, document.editorHref)}
                     >
                       Open in DullyPDF
                     </a>
@@ -331,11 +342,13 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                         {document.sectionLabel}
                         {document.pageCount ? ` • ${document.pageCount} ${document.pageCount === 1 ? 'page' : 'pages'}` : ''}
                         {' • '}
-                        <a href={document.sourceUrl}>Official source</a>
+                        <a href={document.sourceUrl} target="_blank" rel="noreferrer noopener">Official source</a>
                       </p>
                     </div>
                     <div className="intent-page__catalog-list-actions">
-                      <a href={document.editorHref} rel="nofollow">Open in DullyPDF</a>
+                      <a href={document.catalogHref} onClick={(event) => handleOpenInWorkspace(event, document.editorHref)}>
+                        Open in DullyPDF
+                      </a>
                       <a href={document.pdfUrl}>Blank PDF</a>
                     </div>
                   </article>
@@ -350,7 +363,14 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                   <article key={step.title} className="intent-page__workflow-card">
                     <h3>{step.title}</h3>
                     <p>{step.description}</p>
-                    <a href={step.href} rel={step.href.startsWith('/upload') ? 'nofollow' : undefined}>{step.linkLabel}</a>
+                    <a
+                      href={step.href}
+                      onClick={step.editorHref
+                        ? (event) => handleOpenInWorkspace(event, step.editorHref as string)
+                        : undefined}
+                    >
+                      {step.linkLabel}
+                    </a>
                   </article>
                 ))}
               </div>

@@ -15,6 +15,7 @@ import {
   buildIntentCatalogWorkflowSteps,
   getIntentCatalogShowcase,
 } from './intentCatalogShowcases.mjs';
+import { getStableSourceUrl } from './stableSourceUrl.mjs';
 import { FORM_CATALOG_ENTRIES } from './formCatalogData.mjs';
 import {
   FORM_CATALOG_CATEGORIES,
@@ -3846,7 +3847,11 @@ const buildIntentCatalogItemListSchema = (page, showcase) => ({
       name: `${document.formNumber ? `${document.formNumber} — ` : ''}${document.title}`,
       image: `${SITE_ORIGIN}${document.thumbnailUrl}`,
       url: `${SITE_ORIGIN}${document.catalogHref}`,
-      isBasedOnUrl: document.sourceUrl,
+      isBasedOnUrl: getStableSourceUrl({
+        sourceUrl: document.sourceUrl,
+        formNumber: document.formNumber,
+        section: document.section,
+      }),
     },
   })),
 });
@@ -4563,7 +4568,13 @@ const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
       about: {
         '@type': 'CreativeWork',
         name: displayTitle,
-        ...(entry.sourceUrl ? { isBasedOnUrl: entry.sourceUrl } : {}),
+        ...(entry.sourceUrl ? {
+          isBasedOnUrl: getStableSourceUrl({
+            sourceUrl: entry.sourceUrl,
+            formNumber: entry.formNumber,
+            section: entry.section,
+          }),
+        } : {}),
       },
     },
     buildBreadcrumbSchema([

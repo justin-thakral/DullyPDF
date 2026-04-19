@@ -113,6 +113,14 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
         },
+        // /detect-fields is served by the same backend as /api/* (see
+        // firebase.json rewrites). Proxy it here too so dev can talk to a
+        // remote backend when VITE_DETECTION_API_URL points at localhost.
+        '/detect-fields': {
+          target: apiTarget,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
   };

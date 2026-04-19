@@ -1,6 +1,7 @@
 import { FORM_CATALOG_CATEGORIES } from './formCatalogCategories.mjs';
 import { FORM_CATALOG_ENTRIES } from './formCatalogData.mjs';
 import { buildFormCatalogAssetUrl } from './formCatalogAssetBase.mjs';
+import { getStableSourceUrl } from './stableSourceUrl.mjs';
 
 const FORM_SECTION_LABELS = {
   healthcare: 'Healthcare & Medicine',
@@ -106,6 +107,11 @@ const toCatalogDocument = (document) => ({
   ...document,
   pdfUrl: rebaseCatalogAssetUrl(document.pdfUrl),
   thumbnailUrl: rebaseCatalogAssetUrl(document.thumbnailUrl),
+  sourceUrl: getStableSourceUrl({
+    sourceUrl: document.sourceUrl,
+    formNumber: document.formNumber,
+    section: document.section,
+  }),
   description: needsCuratedDescription(document.description)
     ? buildCuratedDescription(document)
     : document.description,
@@ -1004,8 +1010,9 @@ export const buildIntentCatalogWorkflowSteps = (showcase) => {
     {
       title: `Open a blank ${subject} PDF in DullyPDF`,
       description:
-        'Use any "Open in DullyPDF" button below to land on the upload route with the catalog slug already selected so the blank official PDF loads directly into the workspace.',
-      href: primaryDocument.editorHref,
+        'Use any "Open in DullyPDF" button below to move from the public form page into the workspace with the blank official PDF already selected.',
+      href: primaryDocument.catalogHref,
+      editorHref: primaryDocument.editorHref,
       linkLabel: `Open ${primaryDocument.formNumber || primaryDocument.title} in DullyPDF`,
     },
     {

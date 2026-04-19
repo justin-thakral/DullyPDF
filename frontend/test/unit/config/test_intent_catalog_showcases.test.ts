@@ -16,6 +16,7 @@ describe('intentCatalogShowcases', () => {
       expect(new Set(showcase.documents.map((document) => document.slug)).size).toBe(10);
       expect(showcase.documents.every((document) => document.editorHref.startsWith('/upload?catalogSlug='))).toBe(true);
       expect(showcase.documents.every((document) => document.catalogHref.startsWith('/forms/'))).toBe(true);
+      expect(showcase.documents.every((document) => !document.sourceUrl.includes('sites/default/files'))).toBe(true);
       expect(showcase.documents.every((document) => document.thumbnailUrl.endsWith('.webp'))).toBe(true);
       expect(showcase.documents.every((document) => !/^Use Form\b/i.test(document.description))).toBe(true);
       expect(showcase.documents.every((document) => document.description.split(/\s+/).length >= 18)).toBe(true);
@@ -28,6 +29,8 @@ describe('intentCatalogShowcases', () => {
       const steps = buildIntentCatalogWorkflowSteps(showcase);
 
       expect(steps.length).toBeGreaterThanOrEqual(6);
+      expect(steps[0]?.href).toBe(showcase.featuredDocuments[0]?.catalogHref);
+      expect(steps[0]?.editorHref).toBe(showcase.featuredDocuments[0]?.editorHref);
       expect(steps.some((step) => /csv|xlsx|json|sql/i.test(step.description))).toBe(true);
       expect(steps.some((step) => step.href === '/usage-docs/api-fill')).toBe(true);
       expect(steps.some((step) => step.href === '/usage-docs/fill-by-link')).toBe(true);

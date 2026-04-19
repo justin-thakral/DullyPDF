@@ -10,6 +10,7 @@ import {
   buildWorkspaceBrowserHref,
   type WorkspaceBrowserRoute,
 } from '../../utils/workspaceRoutes';
+import { getStableSourceUrl, getStableSourceLabel } from '../../utils/stableSourceUrl';
 
 const defaultStandaloneNavigate = (route: WorkspaceBrowserRoute) => {
   if (typeof window === 'undefined') return;
@@ -346,14 +347,27 @@ const FormCatalogFormPage = ({
               <p className="form-catalog-detail__error">{openError}</p>
             ) : null}
 
-            {entry.sourceUrl ? (
-              <p className="form-catalog-detail__source">
-                Public-domain source:{' '}
-                <a href={entry.sourceUrl} target="_blank" rel="noreferrer noopener">
-                  {entry.sourceUrl}
-                </a>
-              </p>
-            ) : null}
+            {entry.sourceUrl ? (() => {
+              // Several federal agencies (USCIS, SBA, CBP, FEMA, DOL) gate
+              // their PDFs behind 403 to crawlers and frequently move their
+              // CMS paths. Rewrite to a stable per-form landing page (or the
+              // agency forms hub) so external link health stays clean. See
+              // utils/stableSourceUrl.ts for the host map.
+              const stableUrl = getStableSourceUrl({
+                sourceUrl: entry.sourceUrl,
+                formNumber: entry.formNumber,
+                section: entry.section,
+              });
+              const stableLabel = getStableSourceLabel(stableUrl);
+              return (
+                <p className="form-catalog-detail__source">
+                  Public-domain source:{' '}
+                  <a href={stableUrl} target="_blank" rel="noreferrer noopener">
+                    {stableLabel}
+                  </a>
+                </p>
+              );
+            })() : null}
           </aside>
         </div>
       </main>

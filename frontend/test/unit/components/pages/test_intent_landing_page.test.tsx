@@ -117,7 +117,7 @@ describe('IntentLandingPage', () => {
     expect(
       screen
         .getAllByRole('link', { name: 'Open CMS-855I in DullyPDF' })
-        .every((link) => link.getAttribute('href') === '/upload?catalogSlug=cms-855i'),
+        .every((link) => link.getAttribute('href') === '/forms/cms-855i'),
     ).toBe(true);
     expect(screen.getByText('10 specific forms to automate on this route')).toBeTruthy();
     expect(
@@ -126,6 +126,21 @@ describe('IntentLandingPage', () => {
     expect(
       screen.getByRole('link', { name: 'Signature workflow docs' }).getAttribute('href'),
     ).toBe('/usage-docs/signature-workflow');
+  });
+
+  it('keeps public catalog CTAs crawl-safe and removes direct government file URLs from official-source links', () => {
+    render(<IntentLandingPage pageKey="government-form-automation" />);
+
+    expect(
+      screen.getAllByRole('link', { name: /Open .* in DullyPDF/i }).every((link) => (
+        link.getAttribute('href')?.startsWith('/forms/')
+      )),
+    ).toBe(true);
+    expect(
+      screen.getAllByRole('link', { name: 'Official source' }).every((link) => (
+        !(link.getAttribute('href') ?? '').includes('sites/default/files')
+      )),
+    ).toBe(true);
   });
 
   it('renders inline legal footnotes and the numbered source list for authority-style pages', () => {

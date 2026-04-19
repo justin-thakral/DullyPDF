@@ -69,10 +69,18 @@ const SocialLinkGroup = ({ links }: { links: SocialLink[] }) => (
         className="site-footer__social-link"
         href={link.href}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="nofollow me noopener noreferrer"
         aria-label={link.label}
       >
-        <img className="site-footer__social-icon" src={link.iconSrc} alt="" aria-hidden="true" />
+        {/* alt fills in for crawlers (Ahrefs, Google Image, etc.) while
+            aria-hidden prevents screen readers from double-announcing the
+            link's accessible name + the icon's alt. */}
+        <img
+          className="site-footer__social-icon"
+          src={link.iconSrc}
+          alt={`${link.label} icon`}
+          aria-hidden="true"
+        />
       </a>
     ))}
   </div>

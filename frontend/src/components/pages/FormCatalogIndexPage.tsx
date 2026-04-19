@@ -345,7 +345,11 @@ const FormCatalogIndexPage = ({
                 onNavigate({ kind: 'form-catalog-form', slug: entry.slug });
               }}
             >
-              <FormCatalogThumbnail thumbnailUrl={entry.thumbnailUrl} formNumber={entry.formNumber} />
+              <FormCatalogThumbnail
+                thumbnailUrl={entry.thumbnailUrl}
+                formNumber={entry.formNumber}
+                title={entry.title}
+              />
               <div className="form-catalog__card-meta">
                 {entry.formNumber ? (
                   <span className="form-catalog__card-number">{entry.formNumber}</span>

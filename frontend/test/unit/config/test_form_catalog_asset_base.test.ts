@@ -11,9 +11,14 @@ describe('formCatalogAssetBase', () => {
     vi.unstubAllEnvs();
   });
 
-  it('defaults to the local dev asset prefix when no env override is set', () => {
-    expect(FORM_CATALOG_ASSET_BASE).toBe('/form-catalog-assets');
+  it('falls back to the local dev asset prefix when the configured base is blank', () => {
+    expect(resolveFormCatalogAssetBase('')).toBe('/form-catalog-assets');
     expect(buildFormCatalogAssetUrl('healthcare/cms-855i__cms855i.pdf'))
+      .toBe(`${FORM_CATALOG_ASSET_BASE}/healthcare/cms-855i__cms855i.pdf`);
+    expect(buildFormCatalogAssetUrl(
+      'healthcare/cms-855i__cms855i.pdf',
+      resolveFormCatalogAssetBase(''),
+    ))
       .toBe('/form-catalog-assets/healthcare/cms-855i__cms855i.pdf');
   });
 
