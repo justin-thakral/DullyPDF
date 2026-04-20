@@ -1,5 +1,5 @@
 import type { PdfField } from '../types';
-import type { SigningAnchorPayload, SigningRequestSourceType } from '../services/api';
+import type { SearchFillSourceKind, SigningAnchorPayload, SigningRequestSourceType } from '../services/api';
 export { clonePdfBytes, hashSourcePdfSha256 } from './pdfFingerprint';
 
 export type ReviewedFillContext = {
@@ -9,6 +9,14 @@ export type ReviewedFillContext = {
   sourceRecordLabel?: string | null;
   reviewedAt: string;
   sourceLabel?: string | null;
+  // Search & Fill provenance: set when this reviewed fill originated from a
+  // committed Search & Fill credit event. Downstream save/download/sign flows
+  // read these to avoid double-charging for the same filled output.
+  structuredFillEventId?: string | null;
+  structuredFillRequestId?: string | null;
+  structuredFillCountIncrement?: number | null;
+  structuredFillSourceKind?: SearchFillSourceKind | null;
+  structuredFillRecordFingerprint?: string | null;
 };
 
 export const SIGNER_COLORS = ['#3b82f6', '#22c55e', '#f97316', '#a855f7', '#ef4444', '#06b6d4'];

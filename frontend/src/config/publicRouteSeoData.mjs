@@ -21,6 +21,11 @@ import {
   FORM_CATALOG_CATEGORIES,
   FORM_CATALOG_TOTAL_COUNT,
 } from './formCatalogCategories.mjs';
+import {
+  FORM_CATALOG_INDEX_DESCRIPTION,
+  buildFormCatalogIndexSeo,
+} from './formCatalogSeo.mjs';
+import { INTENT_VISUALS } from './intentVisuals.mjs';
 
 export const SITE_ORIGIN = 'https://dullypdf.com';
 export const DEFAULT_SOCIAL_IMAGE_PATH = '/DullyPDFLogoImproved.png';
@@ -30,6 +35,12 @@ const OFFICIAL_PUBLIC_PROFILE_URLS = [
   'https://www.youtube.com/@DullyPDF',
   'https://x.com/DullyPDF',
 ];
+
+const resolveIntentPrimaryImage = (pageKey) => {
+  const visuals = INTENT_VISUALS[pageKey];
+  if (!visuals) return null;
+  return visuals.articleFigures?.[0] ?? visuals.hubImage ?? null;
+};
 
 // ---------------------------------------------------------------------------
 // Intent pages
@@ -254,7 +265,7 @@ const INTENT_PAGES = [
     navLabel: 'PDF Form Catalog',
     heroTitle: 'Browse a PDF Form Catalog of Official Blank Forms',
     heroSummary:
-      'Start from curated public-domain forms instead of rebuilding layouts from scratch. Open blank PDFs in DullyPDF, save them as reusable templates, and connect them to Search & Fill, API Fill, Fill By Link, or signatures.',
+      'Start from curated public-domain forms. Open blank PDFs in DullyPDF, save as reusable templates, and connect to Search & Fill, API, or signing.',
     seoTitle: 'PDF Form Catalog of Official Blank Forms | DullyPDF',
     seoDescription:
       'Browse DullyPDF’s PDF form catalog of official blank forms. Open a form in the editor, save it as a template, then map, fill, publish, or sign it.',
@@ -483,7 +494,7 @@ const INTENT_PAGES = [
     navLabel: 'Fill PDF By Link',
     heroTitle: 'Collect PDF Answers With Native Fill By Link',
     heroSummary:
-      'Start from a saved DullyPDF template, publish a mobile-friendly form link, collect respondent answers, and either let respondents download their submitted copy after submit or generate the filled PDF later in the workspace.',
+      'Start from a saved DullyPDF template, publish a mobile-friendly form link, collect respondent answers, and generate the filled PDF in the workspace.',
     seoTitle: 'Free Automatic PDF Fill By Link and Web Forms | DullyPDF',
     seoDescription:
       'Use free automatic Fill By Link workflows to send web forms, collect respondent answers, and fill mapped PDFs later in DullyPDF.',
@@ -592,9 +603,9 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/pdf-signature-workflow',
     navLabel: 'PDF Signature Workflow',
-    heroTitle: 'Detailed PDF Signature Workflow for Email and Web-Form-to-Sign Pipelines',
+    heroTitle: 'PDF Signature Workflow for Email and Web Forms',
     heroSummary:
-      'DullyPDF keeps two signing entry paths split on purpose: send a final PDF directly by email, or collect answers through a hosted web form first and then freeze that exact filled PDF before signature. Both routes converge on one immutable-record signing engine with owner-visible artifacts.',
+      'Two signing entry paths: send a final PDF by email, or collect answers through a web form first and then freeze the filled PDF for signature.',
     seoTitle: 'Send a PDF for E-Signature by Email or Web Form',
     seoDescription:
       'Two ways to collect signatures: email a final PDF directly, or collect answers through a web form first, then freeze and sign. Full audit trail and immutable record included.',
@@ -775,7 +786,9 @@ const INTENT_PAGES = [
       // brittle. Wikipedia's UETA article is editorially stable and itself
       // cites the official ULC source.
       { id: 'ueta', label: 'Uniform Electronic Transactions Act | overview and authoritative sources', href: 'https://en.wikipedia.org/wiki/Uniform_Electronic_Transactions_Act' },
-      { id: 'ny-esra', label: '9 NYCRR Part 540 | New York ESRA regulation', href: 'https://its.ny.gov/electronic-signatures-and-records-act-esra-regulation' },
+      // The ITS regulation page renders in a browser but still shows up as a
+      // 4xx in Ahrefs. Keep the citation text while dropping the outbound URL.
+      { id: 'ny-esra', label: '9 NYCRR Part 540 | New York ESRA regulation' },
       { id: 'ny-rpl-291i', label: 'N.Y. Real Prop. Law § 291-i | Electronic recording', href: 'https://www.nysenate.gov/legislation/laws/RPP/291-I' },
     ],
     relatedIntentPages: ['esign-ueta-pdf-workflow', 'fill-pdf-by-link', 'pdf-fill-api'],
@@ -786,9 +799,9 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/esign-ueta-pdf-workflow',
     navLabel: 'E-SIGN / UETA PDF Workflow',
-    heroTitle: 'Detailed U.S. E-SIGN and UETA Workflow for Supported Records',
+    heroTitle: 'U.S. E-SIGN and UETA Workflow for PDF Records',
     heroSummary:
-      'This page is the legal-scope companion to the workflow page. It maps the DullyPDF signing pipeline to 15 U.S.C. §§ 7001-7003, UETA §§ 5, 7, 8, 9, and 12, New York ESRA rules in 9 NYCRR Part 540, and the categories that should remain outside ordinary self-serve signing.',
+      'How the DullyPDF signing pipeline maps to 15 U.S.C. §§ 7001-7003, UETA §§ 5, 7, 8, 9, 12, and New York ESRA 9 NYCRR Part 540.',
     seoTitle: 'US E-SIGN Act and UETA Compliance for PDF Signatures',
     seoDescription:
       'How PDF e-signatures align with 15 U.S.C. §§ 7001-7003 and UETA: consumer consent, immutable record freeze, retention, audit artifacts, and which document categories are excluded.',
@@ -978,7 +991,9 @@ const INTENT_PAGES = [
       // brittle. Wikipedia's UETA article is editorially stable and itself
       // cites the official ULC source.
       { id: 'ueta', label: 'Uniform Electronic Transactions Act | overview and authoritative sources', href: 'https://en.wikipedia.org/wiki/Uniform_Electronic_Transactions_Act' },
-      { id: 'ny-esra', label: '9 NYCRR Part 540 | New York ESRA regulation', href: 'https://its.ny.gov/electronic-signatures-and-records-act-esra-regulation' },
+      // The ITS regulation page renders in a browser but still shows up as a
+      // 4xx in Ahrefs. Keep the citation text while dropping the outbound URL.
+      { id: 'ny-esra', label: '9 NYCRR Part 540 | New York ESRA regulation' },
       { id: 'ny-rpl-291i', label: 'N.Y. Real Prop. Law § 291-i | Electronic recording', href: 'https://www.nysenate.gov/legislation/laws/RPP/291-I' },
       { id: 'regf-1006-42', label: '12 CFR § 1006.42 | Sending required disclosures', href: 'https://www.law.cornell.edu/cfr/text/12/1006.42' },
       { id: 'erisa-2520-104b-1', label: '29 CFR § 2520.104b-1 | ERISA disclosure', href: 'https://www.law.cornell.edu/cfr/text/29/2520.104b-1' },
@@ -1463,9 +1478,9 @@ const INTENT_PAGES = [
     category: 'industry',
     path: '/insurance-pdf-automation',
     navLabel: 'Insurance PDF Automation',
-    heroTitle: 'Insurance PDF Automation for Carrier, Renewal, and Servicing Workflows',
+    heroTitle: 'Insurance PDF Automation for Carrier and Renewal',
     heroSummary:
-      'Automate carrier supplements, renewal packets, policy summaries, endorsement forms, and claims-intake PDFs by mapping recurring insurance documents to structured agency data exports.',
+      'Automate carrier supplements, renewal packets, policy summaries, endorsements, and claims-intake PDFs by mapping to agency data.',
     seoTitle: 'Insurance PDF Automation for Carrier and Renewal Forms | DullyPDF',
     seoDescription:
       'Automate carrier-specific insurance PDFs, renewal paperwork, policy summaries, endorsements, and claims-intake forms by mapping fields to structured agency or broker data.',
@@ -1817,30 +1832,33 @@ const INTENT_PAGES = [
     navLabel: 'HR PDF Automation',
     heroTitle: 'HR Onboarding and Employee PDF Form Automation',
     heroSummary:
-      'Automate job application, onboarding, benefits, and tax-document PDFs by mapping recurring HR forms to structured employee records.',
+      'Use one employee record to populate W-4s, acknowledgments, benefits forms, and grouped onboarding packets instead of retyping the same data into each document.',
     seoTitle: 'Auto-Fill HR Onboarding PDFs From Employee Records',
     seoDescription:
-      'Pull new-hire data from your system and fill W-4s, I-9s, offer letters, and onboarding packets automatically. Stop retyping the same employee info into every form.',
+      'Pull new-hire data from your HRIS, ATS, or onboarding spreadsheet and use it to drive grouped onboarding packets, API requests, or employee web-form collection without rebuilding the packet each time.',
     seoKeywords: [
       'automate hr onboarding forms',
       'pdf employee form automation',
       'onboarding packet pdf automation',
+      'fill onboarding packet from employee record',
+      'search and fill onboarding packet',
       'benefits enrollment form automation',
       'w4 1099 pdf automation',
       'new hire paperwork automation',
+      'employee packet automation',
       'employee document automation software',
       'i9 form automation',
       'hr document workflow tool',
     ],
     valuePoints: [
-      'Use one mapped template set for common onboarding packet forms.',
-      'Fill employee details from structured HR records instead of retyping.',
-      'Support checkbox and text-field heavy benefits documents.',
+      'Use one employee row to drive grouped onboarding packets, not just one isolated form.',
+      'Keep one canonical template per recurring HR document while still supporting packet variants by role or location.',
+      'Extend a reviewed onboarding packet into group API Fill or Fill By Link only after Search & Fill QA is trusted.',
     ],
     proofPoints: [
-      'Repeat-fill workflows reduce turnaround time for HR operations teams.',
-      'Mapped templates improve consistency across locations and recruiters.',
-      'Template save/reload supports recurring hiring cycles.',
+      'Open groups let one selected employee record fill the entire packet instead of forcing HR to reopen each form separately.',
+      'Mapped templates improve consistency across recruiters, locations, and packet variants.',
+      'Group API Fill can publish the reviewed packet as a ZIP-returning endpoint when another system should request the documents directly.',
     ],
     articleSections: [
       {
@@ -1853,8 +1871,15 @@ const INTENT_PAGES = [
       {
         title: 'How one employee record can drive multiple forms',
         paragraphs: [
-          'A mapped template workflow lets the HR team use structured employee data as the source for recurring paperwork instead of retyping it. Once each form type is configured, the same employee record can drive multiple onboarding documents through repeat fills.',
-          'This is especially useful when several forms share overlapping fields but still need to remain distinct documents. The template layer keeps that overlap manageable.',
+          'A mapped template workflow lets the HR team use structured employee data as the source for recurring paperwork instead of retyping it. Once each form type is configured, the same employee record can drive multiple onboarding documents through repeat fills or one grouped packet run.',
+          'This is especially useful when several forms share overlapping fields but still need to remain distinct documents. The template layer keeps that overlap manageable, and the group layer keeps the packet from turning back into a manual checklist.',
+        ],
+      },
+      {
+        title: 'Search & Fill groups are the safest first onboarding packet workflow',
+        paragraphs: [
+          'The best first packet rollout is usually the operator path: save each recurring form, add the forms to a group, load one employee row from the HRIS export or onboarding spreadsheet, and let Search & Fill apply that same record across the open packet. Recruiters or coordinators can then inspect the W-4, acknowledgments, benefits forms, and other PDFs before the packet leaves the workspace.',
+          'That review step is not bureaucracy. It is how smaller HR teams earn trust in the workflow quickly. New-hire packets share a lot of fields, but they also contain state-specific tax forms, role-specific notices, and checkbox-heavy benefit selections that deserve review before anyone assumes the packet is production-safe.',
         ],
       },
       {
@@ -1876,6 +1901,13 @@ const INTENT_PAGES = [
         paragraphs: [
           'The operational win comes from starting with the system that already holds the employee data. HRIS exports, recruiting-platform exports, and onboarding spreadsheets all work as structured sources once the template names match the schema. That lets the HR team fill W-4s, acknowledgments, benefits forms, and department-specific paperwork from one record instead of retyping the same details across the packet.',
           'This page should therefore speak to more than generic onboarding. It should answer the actual HR question: how do we take employee attributes from our current system and use them to drive several PDFs cleanly? The answer is template discipline first, grouped packet logic second, and controlled Search & Fill validation before broader rollout.',
+        ],
+      },
+      {
+        title: 'After packet QA, the same onboarding group can support API or web-form intake',
+        paragraphs: [
+          'Once the packet is stable, HR teams can keep using Search & Fill for coordinator-driven runs, publish group API Fill when another system should request the packet directly, or use group Fill By Link when the employee should submit the source answers first. The point is not to maintain three different onboarding definitions. The point is to reuse one reviewed packet across the right entry channels.',
+          'That sequencing is especially useful for lower-authority teams and smaller HR ops groups because it keeps the trust burden realistic. Search & Fill proves the packet with real employee rows, group API Fill becomes the scale path for system-driven requests, and Fill By Link becomes the intake path when the answers still live with the employee.',
         ],
       },
       {
@@ -1907,18 +1939,23 @@ const INTENT_PAGES = [
           'Yes. HR teams can map onboarding templates once and fill forms from structured employee records.',
       },
       {
+        question: 'Can one employee record fill an entire onboarding packet at once?',
+        answer:
+          'Yes. Open the saved onboarding group and Search & Fill can apply one selected employee row across the packet instead of only one template.',
+      },
+      {
         question: 'Does it support employee tax and benefits forms?',
         answer:
           'Yes. HR-focused PDF templates can include tax and benefits form workflows.',
       },
       {
-        question: 'Can HR teams reuse templates for every new hire?',
+        question: 'Can HR teams reuse the same packet through API or employee web forms later?',
         answer:
-          'Yes. Saved templates support repeat onboarding runs with minimal setup.',
+          'Yes. After the grouped onboarding packet is reviewed, the same definition can stay operator-driven through Search & Fill, be published as group API Fill, or be exposed through group Fill By Link for employee-submitted answers.',
       },
     ],
-    relatedIntentPages: ['pdf-to-database-template', 'fill-pdf-from-csv', 'fill-pdf-by-link'],
-    relatedDocs: ['getting-started', 'search-fill', 'create-group', 'fill-from-images'],
+    relatedIntentPages: ['batch-fill-pdf-forms', 'pdf-fill-api', 'fill-pdf-by-link', 'pdf-to-database-template'],
+    relatedDocs: ['getting-started', 'search-fill', 'create-group', 'api-fill'],
   },
   {
     key: 'legal-pdf-workflow-automation',
@@ -2250,79 +2287,109 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/batch-fill-pdf-forms',
     navLabel: 'Batch Fill PDF Forms',
-    heroTitle: 'Batch Fill PDF Forms From Multiple Records',
+    heroTitle: 'Batch Fill PDF Forms and Entire Document Packets',
     heroSummary:
-      'Fill the same PDF template with multiple records from your CSV, Excel, or JSON data. Map once, then fill form after form in seconds.',
-    seoTitle: 'Free Automatic Batch Fill PDF Forms From CSV and Excel | DullyPDF',
+      'Use one structured record to fill the current template repeatedly or apply the same row across an open group of saved PDFs when the workflow is really a packet, not a single form.',
+    seoTitle: 'Fill Multiple PDF Documents at Once From One Spreadsheet Row | DullyPDF',
     seoDescription:
-      'Use free automatic batch-style PDF filling by mapping a template once, then repeatedly filling it from CSV, Excel, or JSON records through Search & Fill.',
+      'Map each recurring PDF once, group related templates into one packet, then use Search & Fill, group API Fill, or Fill By Link to drive the same record across the full document set.',
     seoKeywords: [
       'batch fill pdf forms',
-      'free batch fill pdf forms',
-      'automatic batch pdf filling',
-      'bulk pdf filling',
+      'fill multiple pdf documents at once',
+      'fill entire pdf packet from one spreadsheet row',
+      'search and fill multiple pdfs',
       'fill multiple pdfs from spreadsheet',
-      'batch pdf form automation',
-      'mass pdf generation from data',
-      'high volume pdf filling tool',
-      'pdf mail merge tool',
-      'automated document batch processing',
+      'pdf packet automation',
+      'multi document pdf automation',
+      'fill multiple forms from one row',
+      'group pdf fill workflow',
+      'packet search and fill',
+      'fill multiple documents with same data',
+      'pdf packet api fill',
     ],
     valuePoints: [
-      'Map a PDF template once and fill it from any number of records.',
-      'Search and select rows individually for controlled batch output.',
-      'Clear and refill between records to verify mapping quality.',
+      'Apply one selected record across a single template or a full saved packet.',
+      'Keep one canonical template per recurring document, then reuse groups for multi-document workflows.',
+      'Expand the same reviewed packet into group API Fill or group Fill By Link after Search & Fill QA is trusted.',
     ],
     proofPoints: [
-      'Search & Fill supports fast row switching for sequential form filling.',
-      'Templates persist mapping context between fill sessions.',
-      'Filled output can be downloaded immediately for each record.',
+      'When a group is open, Search & Fill can apply one selected record across the packet instead of just one template.',
+      'Stored Fill By Link responses can feed the same packet workflow without retyping the record.',
+      'Group API Fill can materialize one JSON payload into a ZIP of per-template PDFs after the packet has been reviewed.',
     ],
     articleSections: [
       {
-        title: 'What batch fill means in DullyPDF',
+        title: 'Most batch-fill searches are really about packet work, not blind bulk export',
         paragraphs: [
-          'Some teams searching for batch fill PDF forms expect a fire-and-forget bulk generator. DullyPDF is more deliberate than that. It is designed around a mapped template plus repeat record selection, which means you can fill the same document again and again from structured data while keeping human review in the loop.',
-          'That is still a batch-style workflow in the operational sense. You map once, then process many records. The difference is that the product prioritizes controlled output over blind mass generation.',
+          'A lot of “batch fill PDF” demand is really one of two jobs. Sometimes the team wants to run many different rows through one recurring template. Other times the team wants to take one row and push it through several related PDFs that together make up an onboarding packet, admissions packet, client intake set, or other document bundle. Those are different workflows even though the search terms overlap.',
+          'DullyPDF can support both, but the more distinctive capability is the packet path. You can still map one template once and fill it over and over, yet you can also open a saved group and apply the same selected record across every document in that packet. That is closer to how a lot of real operations teams actually work.',
         ],
       },
       {
-        title: 'How to process many records without losing QA',
+        title: 'Build one canonical template per document before you group the packet',
         paragraphs: [
-          'The practical pattern is to open the mapped template, search or select the first row, fill the PDF, inspect the result, clear it, and repeat for the next record. That sounds slower than a pure batch export, but it is often the right tradeoff for forms where the cost of a bad fill is higher than the cost of a quick review step.',
-          'Because the mapping context persists, the operator is not rebuilding the workflow each time. They are running a repeatable fill loop against a stable template.',
+          'The safest packet rollout is not to throw a folder of unrelated PDFs into one automation step and hope the overlap works out. Start by treating each recurring document type as its own template. Detect fields, clean geometry, normalize names, map the schema, and validate one realistic output for that document first. Only after each member form is believable should the team assemble the multi-document packet.',
+          'That sequence matters because grouped workflows inherit the quality of the member templates. If one packet document still has vague names or weak checkbox logic, the group will only make those problems harder to debug later. A packet is strongest when it is made from clean building blocks rather than from several unfinished drafts.',
         ],
         bullets: [
-          'Map the template once before starting the run.',
-          'Use row search to pull up the right record quickly.',
-          'Clear and refill between records so each output starts from a known state.',
+          'Save one canonical template per recurring document type.',
+          'Use groups only for documents that truly belong to one respondent, employee, client, or case packet.',
+          'Validate the member templates before you judge the packet workflow as a whole.',
         ],
       },
       {
-        title: 'When controlled sequential fill is better than blind bulk generation',
+        title: 'How Search & Fill applies one record across an open group',
         paragraphs: [
-          'If the document is simple, a pure bulk generator may be fine. But many real-world forms contain dates, checkboxes, repeated names, and edge-case fields that still benefit from a brief review before the output is sent or archived. That is where DullyPDF’s workflow is strongest.',
-          'The template does the hard work once, and the operator keeps enough control to catch mistakes early rather than after an entire export run has completed.',
+          'The packet operator flow is straightforward. Open the saved group, load the structured source data, search for the person or record you need, and apply that selected row across the packet. DullyPDF keeps the grouped template context active so you can move between the documents without losing which record is currently driving the fill.',
+          'That makes the workflow feel very different from remapping each PDF one by one. The common row is selected once, the packet stays in context, and the review attention shifts to whether each document behaved correctly rather than whether the team remembered to re-enter the same names and dates everywhere.',
+        ],
+        bullets: [
+          'Search the source data once for the target row.',
+          'Apply that row across the open group instead of only the current template.',
+          'Review the packet documents while keeping the same selected record in context.',
+        ],
+      },
+      {
+        title: 'Packet QA should focus on shared fields first and document-specific exceptions second',
+        paragraphs: [
+          'Multi-document filling succeeds or fails on two layers. Shared fields such as name, address, date of birth, employee identifiers, or client matter details need to land consistently everywhere they repeat. Then each packet document still has its own exceptions: a checkbox-heavy disclosure, a date format quirk, a role-specific field, or a signature section that belongs later in the workflow.',
+          'That is why packet QA should be staged. First confirm the repeated facts stay aligned across the packet. Then inspect the exceptions that only appear once or twice. That review order is faster and more realistic than rereading every document from the top as if each one were unrelated.',
+        ],
+      },
+      {
+        title: 'Search & Fill is the first packet workflow; API Fill and web forms are the scale paths',
+        paragraphs: [
+          'Search & Fill is the best first proof because it keeps a human operator close to the output. Once the grouped packet is trusted, the same reviewed definition can support other entry paths. Group Fill By Link works when the source answers still belong to a respondent. Group API Fill works when another system should request the packet directly and receive a ZIP of per-template PDFs back.',
+          'The key sequencing rule is simple: do not lead with publication if the packet has not already passed operator QA. Search & Fill proves the grouped templates. API Fill or Fill By Link should inherit that packet definition later, not replace the initial review step.',
+        ],
+      },
+      {
+        title: 'This workflow is strongest for repeat packets, not one-off unrelated PDFs',
+        paragraphs: [
+          'Good fits include HR onboarding sets, admissions packets, legal intake bundles, finance and loan packets, and any other workflow where several recurring documents share the same party data. In those cases the packet model reduces rekeying and helps the team keep one canonical template per document while still generating the whole set from one record.',
+          'Poor fits are loose folders of unrelated PDFs, documents whose layouts change every time, or one-off exports where there is no reason to maintain a reusable packet. The point is not to make every PDF workflow look like a packet. The point is to recognize when the business already works that way and give it a cleaner operating model.',
         ],
       },
     ],
     faqs: [
       {
-        question: 'Can I fill the same PDF form with different records?',
+        question: 'Can DullyPDF fill multiple PDF documents at once with the same record?',
         answer:
-          'Yes. After mapping, use Search & Fill to select any row and populate the template, then clear and fill with the next record.',
+          'Yes. Save the related documents as a group, open that packet, and Search & Fill can apply one selected record across the full group instead of only the current template.',
       },
       {
-        question: 'Does DullyPDF support bulk PDF generation?',
+        question: 'Is this only for spreadsheet-driven packet fills?',
         answer:
-          'DullyPDF fills one record at a time through Search & Fill for controlled output. Map once, then fill repeatedly from your data rows.',
+          'No. Search & Fill works with CSV, XLSX, JSON, SQL-backed row data, and stored Fill By Link responses. After the packet is reviewed, the same group can also be published as group API Fill or group Fill By Link.',
       },
       {
-        question: 'What data sources work for batch filling?',
+        question: 'Does DullyPDF behave like a blind bulk generator?',
         answer:
-          'CSV, XLSX, and JSON files with row data. Each row represents one form to fill.',
+          'Not by default. DullyPDF is intentionally more controlled: it favors mapped templates, grouped packet review, and operator-visible validation before teams rely on high-volume generation.',
       },
     ],
+    relatedIntentPages: ['fill-pdf-from-csv', 'pdf-fill-api', 'fill-pdf-by-link', 'hr-pdf-automation'],
+    relatedDocs: ['search-fill', 'create-group', 'api-fill', 'fill-by-link'],
   },
   {
     key: 'pdf-checkbox-automation',
@@ -2399,9 +2466,9 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/pdf-radio-button-editor',
     navLabel: 'PDF Radio Button Editor',
-    heroTitle: 'Edit PDF Radio Button Groups Without Losing Single-Select Logic',
+    heroTitle: 'PDF Radio Button Editor — Single-Select Groups',
     heroSummary:
-      'Create, inspect, and map PDF radio fields with explicit group keys and option keys so single-select forms stay predictable during Search & Fill, API Fill, and web-form publishing.',
+      'Create, inspect, and map PDF radio fields with explicit group keys so single-select forms stay predictable during fill and publishing.',
     seoTitle: 'PDF Radio Button Editor and Radio Group Mapping | DullyPDF',
     seoDescription:
       'Edit PDF radio buttons, create single-select radio groups, and map radio option keys to structured data for reliable fill behavior in DullyPDF.',
@@ -2811,7 +2878,7 @@ const INTENT_PAGES = [
     navLabel: 'Anvil Alternative',
     heroTitle: 'Anvil Alternative: Free PDF Fill API + Webform Builder',
     heroSummary:
-      'A side-by-side look at when DullyPDF is the right Anvil replacement and when Anvil still wins. Free tier, JSON-to-PDF API, webforms, and field detection without the $79/mo entry price.',
+      'When DullyPDF is the right Anvil replacement and when Anvil still wins. Free tier, JSON-to-PDF API, webforms — no $79/mo entry price.',
     seoTitle: 'Anvil Alternative — Free PDF Fill API and Webform Builder | DullyPDF',
     seoDescription:
       'Looking for an Anvil (useanvil.com) alternative? Compare DullyPDF vs Anvil for PDF fill API, webforms, and e-signatures. Free tier available, no $79/mo starter.',
@@ -2941,9 +3008,9 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/pdf-fill-api-nodejs',
     navLabel: 'PDF Fill API for Node.js',
-    heroTitle: 'Fill PDFs With Node.js — JSON-to-PDF API for JavaScript Backends',
+    heroTitle: 'Fill PDFs With Node.js — JSON-to-PDF API',
     heroSummary:
-      'Send a JSON payload from Node.js, get back a filled PDF. No native PDF libraries to install, no field-coordinate math, no Puppeteer headless Chrome. Free tier available.',
+      'Send a JSON payload from Node.js, get back a filled PDF. No native PDF libraries, no field-coordinate math, no Puppeteer. Free tier available.',
     seoTitle: 'Fill PDFs with Node.js — Free JSON to PDF API for JavaScript | DullyPDF',
     seoDescription:
       'Fill PDF forms from Node.js with a single API call. JSON in, filled PDF out. Free tier, no credit card. Compare to pdf-lib, pdfkit, and Puppeteer.',
@@ -3073,9 +3140,9 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/pdf-fill-api-python',
     navLabel: 'PDF Fill API for Python',
-    heroTitle: 'Fill PDFs With Python — JSON-to-PDF API for Python Backends',
+    heroTitle: 'Fill PDFs With Python — JSON-to-PDF API',
     heroSummary:
-      'Send a JSON payload from Python with requests or httpx, get back a filled PDF. No PyPDF2 / pypdf field-coordinate math, no reportlab redrawing, no LibreOffice headless. Free tier available.',
+      'Send JSON from Python with requests or httpx, get back a filled PDF. No pypdf coordinate math, no reportlab, no LibreOffice. Free tier available.',
     seoTitle: 'Fill PDFs with Python — Free JSON to PDF API for Python | DullyPDF',
     seoDescription:
       'Fill PDF forms from Python with one requests.post call. JSON in, filled PDF out. Free tier, no credit card. Vs. pypdf, fillpdf, reportlab, LibreOffice.',
@@ -3208,7 +3275,7 @@ const INTENT_PAGES = [
     navLabel: 'PDF Fill API with curl',
     heroTitle: 'Fill PDFs With curl — JSON-to-PDF API From the Terminal',
     heroSummary:
-      'One curl command, one JSON body, one filled PDF written to disk. Test the JSON-to-PDF API in 30 seconds before writing any application code. Free tier available.',
+      'One curl command, one JSON body, one filled PDF. Test the JSON-to-PDF API in 30 seconds before writing code. Free tier available.',
     seoTitle: 'Fill PDFs with curl — Free JSON to PDF API From the Terminal | DullyPDF',
     seoDescription:
       'Fill PDF forms from the command line with one curl call. JSON in, filled PDF out. Free tier, no credit card. Great for shell scripts and CI jobs.',
@@ -3346,9 +3413,9 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/pdf-field-detection-accuracy',
     navLabel: 'PDF Field Detection Accuracy',
-    heroTitle: 'PDF Field Detection Accuracy: How DullyPDF Compares to Adobe and Apryse',
+    heroTitle: 'PDF Field Detection Accuracy vs Adobe and Apryse',
     heroSummary:
-      'DullyPDF runs the open-research FFDNet model from the CommonForms paper (arXiv 2509.16506). Outperforms the leading commercial PDF reader on form field detection and uniquely supports checkbox detection — both verifiable against the public CommonForms benchmark.',
+      'DullyPDF runs the open-research FFDNet model (CommonForms, arXiv 2509.16506). Beats the leading commercial PDF reader and uniquely detects checkboxes.',
     seoTitle: 'PDF Field Detection Accuracy — CommonForms FFDNet vs Adobe and Apryse | DullyPDF',
     seoDescription:
       'How accurate is PDF field detection? DullyPDF runs FFDNet (CommonForms, Barrow 2025) — beats the leading commercial PDF reader on a public benchmark.',
@@ -3629,7 +3696,7 @@ const FEATURE_PLAN_PAGES = [
       `Start with unlimited PDF-to-form setup and validate one repeat workflow under the free account limits: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
     seoTitle: 'Free PDF Form Builder Features | DullyPDF',
     seoDescription:
-      `Review the free DullyPDF feature set, including unlimited PDF-to-form setup plus ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
+      `Free DullyPDF: unlimited PDF-to-form setup, ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} signing requests, ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} monthly credits.`,
     seoKeywords: ['free pdf form builder', 'free pdf to form tool', 'free fillable pdf builder', 'free pdf workflow software'],
     valuePoints: [
       'Unlimited PDF-to-form setup and access to the form builder.',
@@ -3679,7 +3746,7 @@ const FEATURE_PLAN_PAGES = [
       `Premium is the higher-usage tier for teams running repeat PDF automation across more saved templates, more live links, higher API traffic, larger signing volume, and a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool.`,
     seoTitle: 'Premium PDF Automation Features and Billing | DullyPDF',
     seoDescription:
-      `Review premium DullyPDF features, including ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly credits.`,
+      `Premium DullyPDF: ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} signing requests, ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly credits.`,
     seoKeywords: ['premium pdf automation software', 'pdf form builder subscription', 'fill by link premium plan', 'stripe pdf software billing'],
     valuePoints: [
       `Up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} pages for already-fillable template uploads.`,
@@ -3803,31 +3870,47 @@ const buildVideoObjectSchema = (video) => ({
   },
 });
 
-// Canonical video metadata for the DullyPDF e-sign pipeline walkthrough.
-// Kept here (rather than imported from publicVideoContent.ts) so the .mjs
-// SEO pipeline has no cross-language dependency. Keep the videoId and
-// youtubeUrl in sync with frontend/src/config/publicVideoContent.ts.
+const buildYouTubeWatchUrl = (videoId) => `https://www.youtube.com/watch?v=${videoId}`;
+
+// Canonical video metadata kept here (rather than imported from
+// publicVideoContent.ts) so the .mjs SEO pipeline has no cross-language
+// dependency. Keep the videoId and youtubeUrl in sync with
+// frontend/src/config/publicVideoContent.ts.
+const PACKET_SEARCH_FILL_VIDEO = {
+  videoId: 'RIxRmZvVnVw',
+  name: 'Fill an Entire PDF Packet from One Spreadsheet Row (CSV, SQL, JSON, EXCEL, JSON) API or Web Form',
+  description:
+    'See how DullyPDF applies one structured record across a grouped packet of saved PDFs, then reuses that same reviewed packet for group API Fill or Fill By Link when the source data should come from another system or respondent.',
+  contentUrl: buildYouTubeWatchUrl('RIxRmZvVnVw'),
+  embedUrl: 'https://www.youtube.com/embed/RIxRmZvVnVw',
+  thumbnailUrl: 'https://i.ytimg.com/vi/RIxRmZvVnVw/hqdefault.jpg',
+  uploadDate: '2026-04-13',
+};
+
 const ESIGN_PIPELINE_VIDEO = {
   videoId: 'CJ0TCXGHFdQ',
   name: 'DullyPDF E-Sign Pipeline — every signing workflow, every industry',
   description:
     'Single-signer, sequential multi-signer, parallel multi-signer, Fill By Link → sign, group fill → multi-sign, and API Fill → sign — walked end to end across HR onboarding, healthcare intake, real estate, legal, insurance ACORD, and immigration USCIS workflows.',
-  contentUrl: 'https://youtu.be/CJ0TCXGHFdQ',
+  contentUrl: buildYouTubeWatchUrl('CJ0TCXGHFdQ'),
   embedUrl: 'https://www.youtube.com/embed/CJ0TCXGHFdQ',
   thumbnailUrl: 'https://i.ytimg.com/vi/CJ0TCXGHFdQ/maxresdefault.jpg',
   uploadDate: '2026-04-14',
 };
 
-// Intent pages that should emit the e-sign video in JSON-LD and OG tags.
+// Intent pages that should emit focused workflow videos in JSON-LD and OG tags.
 const VIDEO_BY_INTENT_KEY = {
+  'batch-fill-pdf-forms': PACKET_SEARCH_FILL_VIDEO,
+  'hr-pdf-automation': PACKET_SEARCH_FILL_VIDEO,
   'pdf-signature-workflow': ESIGN_PIPELINE_VIDEO,
   'esign-ueta-pdf-workflow': ESIGN_PIPELINE_VIDEO,
   'fill-pdf-by-link': ESIGN_PIPELINE_VIDEO,
   'pdf-fill-api': ESIGN_PIPELINE_VIDEO,
 };
 
-// Blog posts that should emit the e-sign video alongside BlogPosting.
+// Blog posts that should emit focused workflow videos alongside BlogPosting.
 const VIDEO_BY_BLOG_SLUG = {
+  'fill-entire-pdf-packet-from-one-row': PACKET_SEARCH_FILL_VIDEO,
   'send-pdf-for-signature-by-email-or-web-form': ESIGN_PIPELINE_VIDEO,
 };
 
@@ -3847,11 +3930,7 @@ const buildIntentCatalogItemListSchema = (page, showcase) => ({
       name: `${document.formNumber ? `${document.formNumber} — ` : ''}${document.title}`,
       image: `${SITE_ORIGIN}${document.thumbnailUrl}`,
       url: `${SITE_ORIGIN}${document.catalogHref}`,
-      isBasedOnUrl: getStableSourceUrl({
-        sourceUrl: document.sourceUrl,
-        formNumber: document.formNumber,
-        section: document.section,
-      }),
+      ...(document.sourceUrl ? { isBasedOnUrl: document.sourceUrl } : {}),
     },
   })),
 });
@@ -3875,7 +3954,7 @@ const buildIntentCatalogHowToSchema = (page, showcase) => ({
 const HOME_ROUTE_SEO = {
   title: 'DullyPDF — Automatic PDF to Fillable Form With Search & Fill',
   description:
-    'Turn any PDF into a fillable template, then Search & Fill from CSV, Excel, JSON, or SQL. Collect answers by web form or API and add US e-signatures — all in one platform.',
+    'Turn any PDF into a fillable template, then Search & Fill from CSV, Excel, JSON, or SQL. Collect answers by web form or API and add US e-signatures.',
   canonicalPath: '/',
   keywords: ['pdf automation platform', 'ai pdf workflow software', 'fillable pdf automation', 'pdf workflow software', 'structured data to pdf', 'pdf intake automation'],
   structuredData: [
@@ -4186,6 +4265,7 @@ for (const page of USAGE_DOCS_PAGES) {
 const INTENT_ROUTE_SEO = {};
 for (const page of INTENT_PAGES) {
   const catalogShowcase = getIntentCatalogShowcase(page.key);
+  const intentPrimaryImage = resolveIntentPrimaryImage(page.key);
   let structuredData = appendStructuredData(
     toFaqSchema(page.faqs),
     buildBreadcrumbSchema([
@@ -4212,6 +4292,10 @@ for (const page of INTENT_PAGES) {
     description: buildIntentSeoDescription(page.heroSummary),
     canonicalPath: page.path,
     keywords: page.seoKeywords,
+    ...(intentPrimaryImage ? {
+      ogImagePath: intentPrimaryImage.src,
+      ogImageAlt: intentPrimaryImage.alt,
+    } : {}),
     structuredData,
     ...(intentVideo ? { video: intentVideo } : {}),
     bodyContent: {
@@ -4229,8 +4313,10 @@ const INTENT_HUB_ROUTE_SEO = {
   workflows: {
     title: 'PDF Automation Workflows — Templates, Filling, Signing, and API',
     description:
-      'Every way to automate PDFs: browse a form catalog, convert to fillable forms, fill from spreadsheets or databases, collect signatures, and publish fill-by-API endpoints.',
+      'Every way to automate PDFs: browse a form catalog, convert to fillable forms, fill from data, collect signatures, and publish JSON-to-PDF endpoints.',
     canonicalPath: '/workflows',
+    ogImagePath: '/demo/workflow-library/commonforms-card.png',
+    ogImageAlt: 'Workflow library preview for PDF automation routes in DullyPDF.',
     keywords: [
       'pdf workflow library',
       'pdf to fillable form workflow',
@@ -4288,6 +4374,8 @@ const INTENT_HUB_ROUTE_SEO = {
     description:
       'See how teams in healthcare, insurance, legal, HR, finance, logistics, and education use PDF auto-fill to eliminate repetitive form entry.',
     canonicalPath: '/industries',
+    ogImagePath: '/blog/dental-intake-form-1.png',
+    ogImageAlt: 'Industry PDF automation preview using a healthcare intake form example.',
     keywords: [
       'industry pdf automation',
       'healthcare insurance legal pdf workflows',
@@ -4385,23 +4473,6 @@ for (const page of FEATURE_PLAN_PAGES) {
 
 const ACTIVE_FORM_CATALOG_CATEGORIES = FORM_CATALOG_CATEGORIES.filter((category) => !category.empty);
 
-const FORM_CATALOG_INDEX_KEYWORDS = [
-  'free fillable pdf forms',
-  'fillable pdf form library',
-  'official government pdf forms',
-  'irs fillable pdf forms',
-  'uscis fillable pdf forms',
-  'pdf form catalog',
-  'fillable pdf templates',
-  'w-9 fillable pdf',
-  'w-4 fillable pdf',
-  'i-9 fillable pdf',
-  '1099 fillable pdf',
-  'fillable pdf form downloads',
-  'free pdf form templates',
-  'dullypdf form catalog',
-];
-
 const FORM_CATALOG_INDEX_FAQS = [
   {
     question: 'How many forms are in the DullyPDF form catalog?',
@@ -4426,7 +4497,7 @@ const FORM_CATALOG_INDEX_STRUCTURED_DATA = [
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'DullyPDF Form Catalog',
-    description: `Browse ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms organised by category. Open any form inside DullyPDF to automate detection, filling, and e-signature.`,
+    description: FORM_CATALOG_INDEX_DESCRIPTION,
     url: `${SITE_ORIGIN}/forms`,
     isPartOf: {
       '@type': 'WebSite',
@@ -4457,10 +4528,7 @@ const FORM_CATALOG_INDEX_STRUCTURED_DATA = [
 const FORM_CATALOG_INDEX_ROUTE = {
   path: '/forms',
   seo: {
-    title: `Free Fillable PDF Form Catalog — ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()}+ Official Forms | DullyPDF`,
-    description: `Browse ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms across ${ACTIVE_FORM_CATALOG_CATEGORIES.length} categories — tax, immigration, healthcare, real estate, HR, and more. Open any form in DullyPDF to auto-detect fields, fill from your data, and e-sign.`,
-    canonicalPath: '/forms',
-    keywords: FORM_CATALOG_INDEX_KEYWORDS,
+    ...buildFormCatalogIndexSeo(),
     structuredData: FORM_CATALOG_INDEX_STRUCTURED_DATA,
   },
   kind: 'form-catalog-index',
@@ -4497,12 +4565,30 @@ const SERP_TITLE_BUDGET = 60;
 const BRAND_SUFFIX = ' | DullyPDF';
 const FULL_SUFFIX = ' — Free Fillable PDF | DullyPDF';
 
+// Google truncates <meta description> around 155 chars on desktop (~120 on
+// mobile) in SERP rendering. Anything past the cap is shown as "…" so the
+// visible snippet should stand on its own at 155 chars. The CTA suffix below
+// is appended after the per-form lead so every form page gets a consistent
+// call-to-action; when the concatenation would exceed the budget we truncate
+// only the lead and keep the CTA intact.
+const SERP_DESCRIPTION_BUDGET = 155;
+const FORM_CATALOG_DESCRIPTION_CTA =
+  'Download the blank PDF or open in DullyPDF to fill and e-sign.';
+
 const truncateAtWord = (text, maxLength) => {
   if (text.length <= maxLength) return text;
   // Reserve 1 char for the ellipsis.
   const cutoff = text.lastIndexOf(' ', maxLength - 1);
   const sliceEnd = cutoff > 20 ? cutoff : maxLength - 1;
   return text.slice(0, sliceEnd).trimEnd() + '…';
+};
+
+const buildFormCatalogMetaDescription = (leadText) => {
+  const ctaSuffix = ` ${FORM_CATALOG_DESCRIPTION_CTA}`;
+  const combined = `${leadText}${ctaSuffix}`;
+  if (combined.length <= SERP_DESCRIPTION_BUDGET) return combined;
+  const leadBudget = SERP_DESCRIPTION_BUDGET - ctaSuffix.length;
+  return `${truncateAtWord(leadText, leadBudget)}${ctaSuffix}`;
 };
 
 const buildFormCatalogPageTitle = (displayTitle) => {
@@ -4529,9 +4615,10 @@ const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
   const canonicalPath = canonicalSlug
     ? `/forms/${canonicalSlug}`
     : `/forms/${entry.slug}`;
-  const description = entry.description
-    ? `${entry.description} Download the blank PDF or open it in DullyPDF to auto-detect fields, fill from CSV, collect answers by web form, call a JSON-to-PDF API, and e-sign.`
-    : `Free fillable ${displayTitle} PDF. Download the blank PDF or open it in DullyPDF to auto-detect fields, fill from CSV, collect answers by web form, call a JSON-to-PDF API, and e-sign.`;
+  const leadText = entry.description
+    ? entry.description
+    : `Free fillable ${displayTitle} PDF.`;
+  const description = buildFormCatalogMetaDescription(leadText);
   const keywords = [
     entry.formNumber ? `${entry.formNumber} fillable pdf` : null,
     entry.formNumber ? `${entry.formNumber} pdf download` : null,
@@ -4547,6 +4634,14 @@ const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
         ? entry.thumbnailUrl
         : `${SITE_ORIGIN}${entry.thumbnailUrl}`)
     : `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
+
+  const sourceReferenceUrl = entry.sourceUrl
+    ? getStableSourceUrl({
+      sourceUrl: entry.sourceUrl,
+      formNumber: entry.formNumber,
+      section: entry.section,
+    })
+    : null;
 
   const structuredData = [
     {
@@ -4568,13 +4663,7 @@ const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
       about: {
         '@type': 'CreativeWork',
         name: displayTitle,
-        ...(entry.sourceUrl ? {
-          isBasedOnUrl: getStableSourceUrl({
-            sourceUrl: entry.sourceUrl,
-            formNumber: entry.formNumber,
-            section: entry.section,
-          }),
-        } : {}),
+        ...(sourceReferenceUrl ? { isBasedOnUrl: sourceReferenceUrl } : {}),
       },
     },
     buildBreadcrumbSchema([
@@ -4621,6 +4710,7 @@ const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
     canonicalPath,
     keywords,
     ogImagePath: entry.thumbnailUrl || null,
+    ogImageAlt: `${displayTitle} blank form preview`,
     structuredData,
   };
 };
@@ -4747,6 +4837,14 @@ export const FOOTER_LINKS = {
 };
 
 // Add blog routes to ALL_ROUTES
+function getPrimaryBlogFigure(post) {
+  return post.sections.flatMap((section) => section.figures ?? [])[0] ?? null;
+}
+
+const BLOG_INDEX_PRIMARY_FIGURE = getPrimaryBlogFigure(
+  BLOG_POSTS.find((post) => post.slug === 'how-to-convert-pdf-to-fillable-form') ?? BLOG_POSTS[0],
+);
+
 const BLOG_INDEX_ROUTE = {
   path: '/blog',
   seo: {
@@ -4754,6 +4852,10 @@ const BLOG_INDEX_ROUTE = {
     description: 'Step-by-step guides for converting PDFs to fillable forms, auto-filling from spreadsheets, setting up e-signatures, and eliminating manual data entry.',
     canonicalPath: '/blog',
     keywords: ['pdf automation blog', 'fillable form guides', 'pdf form tutorials'],
+    ...(BLOG_INDEX_PRIMARY_FIGURE ? {
+      ogImagePath: BLOG_INDEX_PRIMARY_FIGURE.src,
+      ogImageAlt: BLOG_INDEX_PRIMARY_FIGURE.alt,
+    } : {}),
     structuredData: [{
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
@@ -4830,8 +4932,6 @@ const BLOG_INDEX_ROUTE = {
   kind: 'blog-index',
 };
 
-const getPrimaryBlogFigure = (post) => post.sections.flatMap((section) => section.figures ?? [])[0] ?? null;
-
 const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
   const primaryFigure = getPrimaryBlogFigure(post);
   const blogVideo = VIDEO_BY_BLOG_SLUG[post.slug];
@@ -4869,6 +4969,10 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
       description: post.seoDescription,
       canonicalPath: `/blog/${post.slug}`,
       keywords: post.seoKeywords,
+      ...(primaryFigure ? {
+        ogImagePath: primaryFigure.src,
+        ogImageAlt: primaryFigure.alt,
+      } : {}),
       structuredData: blogStructuredData,
       ...(blogVideo ? { video: blogVideo } : {}),
       bodyContent: {

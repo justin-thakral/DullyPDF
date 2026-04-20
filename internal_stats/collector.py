@@ -22,6 +22,11 @@ from backend.firebaseDB.fill_link_database import (
 )
 from backend.firebaseDB.openai_job_database import OPENAI_JOBS_COLLECTION
 from backend.firebaseDB.signing_database import SIGNING_REQUESTS_COLLECTION
+from backend.firebaseDB.structured_fill_database import (
+    STATUS_COMMITTED,
+    STRUCTURED_FILL_EVENTS_COLLECTION,
+    STRUCTURED_FILL_SOURCE_KINDS,
+)
 from backend.firebaseDB.template_api_endpoint_database import (
     TEMPLATE_API_ENDPOINTS_COLLECTION,
 )
@@ -141,12 +146,26 @@ class UserStatsAccumulator:
     api_fills: int = 0
     signing_requests: int = 0
     completed_signing_requests: int = 0
+    structured_fill_credits: int = 0
+    structured_fill_commits: int = 0
+    structured_fill_matched_pdfs: int = 0
+    structured_fill_credits_by_source: Dict[str, int] = None  # type: ignore[assignment]
     last_activity_at: Optional[str] = None
+    last_structured_fill_at: Optional[str] = None
+
+    def __post_init__(self) -> None:
+        if self.structured_fill_credits_by_source is None:
+            self.structured_fill_credits_by_source = {kind: 0 for kind in STRUCTURED_FILL_SOURCE_KINDS}
 
     def touch(self, *timestamps: Any) -> None:
         candidate = _latest_timestamp(self.last_activity_at, *timestamps)
         if candidate:
             self.last_activity_at = candidate
+
+    def touch_structured_fill(self, timestamp: Any) -> None:
+        candidate = _latest_timestamp(self.last_structured_fill_at, timestamp)
+        if candidate:
+            self.last_structured_fill_at = candidate
 
     @property
     def activity_score(self) -> int:
@@ -159,9 +178,11 @@ class UserStatsAccumulator:
             + self.api_endpoints
             + self.api_fills
             + self.signing_requests
+            + self.structured_fill_credits
         )
 
     def to_dict(self) -> Dict[str, Any]:
+        by_source = self.structured_fill_credits_by_source or {}
         return {
             "userId": self.user_id,
             "email": self.email,
@@ -179,6 +200,15 @@ class UserStatsAccumulator:
             "apiFills": self.api_fills,
             "signingRequests": self.signing_requests,
             "completedSigningRequests": self.completed_signing_requests,
+            "structuredFillCredits": self.structured_fill_credits,
+            "structuredFillCommits": self.structured_fill_commits,
+            "structuredFillMatchedPdfs": self.structured_fill_matched_pdfs,
+            "structuredFillCsvCredits": by_source.get("csv", 0),
+            "structuredFillExcelCredits": by_source.get("excel", 0),
+            "structuredFillSqlCredits": by_source.get("sql", 0),
+            "structuredFillJsonCredits": by_source.get("json", 0),
+            "structuredFillTxtCredits": by_source.get("txt", 0),
+            "lastStructuredFillAt": self.last_structured_fill_at,
             "lastActivityAt": self.last_activity_at,
             "activityScore": self.activity_score,
         }
@@ -357,6 +387,60 @@ def _scan_template_api_endpoints(
     return total_endpoints, total_active_endpoints, total_api_fills
 
 
+def _scan_structured_fill_events(
+    client: firestore.Client,
+    accumulators: Dict[str, UserStatsAccumulator],
+) -> Dict[str, Any]:
+    """Scan committed Search & Fill events for global + per-user credit totals.
+
+    Only ``status='committed'`` events contribute to credit totals — replayed
+    entries would double-count the original commit, and ``rejected_*`` events
+    carry ``count_increment=0`` anyway.  Per-source-kind splits let the
+    dashboard distinguish CSV vs Excel vs SQL vs JSON vs TXT usage.
+    """
+
+    total_credits = 0
+    total_commits = 0
+    total_matched_pdfs = 0
+    credits_by_source: Dict[str, int] = {kind: 0 for kind in STRUCTURED_FILL_SOURCE_KINDS}
+
+    for snapshot in client.collection(STRUCTURED_FILL_EVENTS_COLLECTION).stream():
+        data = snapshot.to_dict() or {}
+        user_id = _coerce_text(data.get("user_id"))
+        if not user_id:
+            continue
+        status = _coerce_text(data.get("status")) or ""
+        if status != STATUS_COMMITTED:
+            continue
+        count_increment = _coerce_non_negative_int(data.get("count_increment"))
+        if count_increment <= 0:
+            continue
+        source_kind = _coerce_text(data.get("source_kind")) or ""
+        matched_ids = data.get("matched_template_ids") or []
+        matched_pdfs = len(matched_ids) if isinstance(matched_ids, list) else 0
+        total_credits += count_increment
+        total_commits += 1
+        total_matched_pdfs += matched_pdfs
+        if source_kind in credits_by_source:
+            credits_by_source[source_kind] += count_increment
+
+        user = _get_user(accumulators, user_id)
+        user.structured_fill_credits += count_increment
+        user.structured_fill_commits += 1
+        user.structured_fill_matched_pdfs += matched_pdfs
+        if source_kind in user.structured_fill_credits_by_source:
+            user.structured_fill_credits_by_source[source_kind] += count_increment
+        user.touch_structured_fill(data.get("created_at"))
+        user.touch(data.get("created_at"), data.get("updated_at"))
+
+    return {
+        "totalCredits": total_credits,
+        "totalCommits": total_commits,
+        "totalMatchedPdfs": total_matched_pdfs,
+        "creditsBySource": credits_by_source,
+    }
+
+
 def _scan_signing_requests(
     client: firestore.Client,
     accumulators: Dict[str, UserStatsAccumulator],
@@ -402,6 +486,7 @@ def build_internal_stats_snapshot() -> Dict[str, Any]:
     total_fill_link_responses = _scan_fill_link_responses(client, accumulators)
     total_api_endpoints, total_active_api_endpoints, total_api_fills = _scan_template_api_endpoints(client, accumulators)
     total_signing_requests, total_completed_signing_requests = _scan_signing_requests(client, accumulators)
+    structured_fill_totals = _scan_structured_fill_events(client, accumulators)
 
     users = [user.to_dict() for user in accumulators.values()]
     users.sort(
@@ -438,6 +523,14 @@ def build_internal_stats_snapshot() -> Dict[str, Any]:
             "totalApiFills": total_api_fills,
             "totalSigningRequests": total_signing_requests,
             "totalCompletedSigningRequests": total_completed_signing_requests,
+            "totalStructuredFillCredits": structured_fill_totals["totalCredits"],
+            "totalStructuredFillCommits": structured_fill_totals["totalCommits"],
+            "totalStructuredFillMatchedPdfs": structured_fill_totals["totalMatchedPdfs"],
+            "totalStructuredFillCsvCredits": structured_fill_totals["creditsBySource"].get("csv", 0),
+            "totalStructuredFillExcelCredits": structured_fill_totals["creditsBySource"].get("excel", 0),
+            "totalStructuredFillSqlCredits": structured_fill_totals["creditsBySource"].get("sql", 0),
+            "totalStructuredFillJsonCredits": structured_fill_totals["creditsBySource"].get("json", 0),
+            "totalStructuredFillTxtCredits": structured_fill_totals["creditsBySource"].get("txt", 0),
         },
         "users": users,
     }

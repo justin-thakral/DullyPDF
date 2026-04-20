@@ -9,7 +9,7 @@ export type StableUrlInput = {
   section?: string;
 };
 
-export function getStableSourceUrl({ sourceUrl, formNumber }: StableUrlInput): string {
+export function getStableSourceUrl({ sourceUrl, formNumber }: StableUrlInput): string | null {
   return getStableSourceUrlShared({ sourceUrl, formNumber });
 }
 

@@ -945,3 +945,67 @@ class BillingReconcileRequest(BaseModel):
             return None
         resolved = str(value).strip()
         return resolved or None
+
+
+class SearchFillUsageCommitRequest(BaseModel):
+    """Commit payload for a Search & Fill (structured data) credit charge.
+
+    The frontend resolves ``matchedTemplateIds`` from the planned fill and sets
+    ``countIncrement`` to the number of PDFs to charge (1 for a single-template
+    fill, N for a group fill). The backend re-validates and is the source of
+    truth for the actual charge.
+    """
+
+    requestId: str = Field(..., min_length=1, max_length=180)
+    sourceCategory: Literal["structured_data"] = "structured_data"
+    sourceKind: Literal["csv", "excel", "sql", "json", "txt"]
+    scopeType: Literal["template", "group"] = "template"
+    scopeId: Optional[str] = Field(default=None, max_length=180)
+    templateId: Optional[str] = Field(default=None, max_length=180)
+    groupId: Optional[str] = Field(default=None, max_length=180)
+    targetTemplateIds: List[str] = Field(default_factory=list)
+    matchedTemplateIds: List[str] = Field(default_factory=list)
+    countIncrement: int = Field(default=0, ge=0)
+    matchCount: int = Field(default=0, ge=0)
+    recordLabelPreview: Optional[str] = Field(default=None, max_length=200)
+    recordFingerprint: Optional[str] = Field(default=None, max_length=128)
+    dataSourceLabel: Optional[str] = Field(default=None, max_length=200)
+    workspaceSavedFormId: Optional[str] = Field(default=None, max_length=180)
+    searchQueryPreview: Optional[str] = Field(default=None, max_length=200)
+    reviewedFillContext: Optional[Dict[str, Any]] = None
+
+    model_config = {"extra": "ignore"}
+
+    @field_validator(
+        "requestId",
+        "scopeId",
+        "templateId",
+        "groupId",
+        "recordLabelPreview",
+        "recordFingerprint",
+        "dataSourceLabel",
+        "workspaceSavedFormId",
+        "searchQueryPreview",
+        mode="before",
+    )
+    @classmethod
+    def _trim_optional_string(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        resolved = str(value).strip()
+        return resolved or None
+
+    @field_validator("targetTemplateIds", "matchedTemplateIds", mode="before")
+    @classmethod
+    def _normalize_id_list(cls, value: Any) -> List[str]:
+        if value is None:
+            return []
+        if not isinstance(value, list):
+            raise ValueError("template id list must be an array")
+        deduped: List[str] = []
+        for entry in value:
+            text = str(entry or "").strip()
+            if not text or text in deduped:
+                continue
+            deduped.append(text)
+        return deduped

@@ -2,75 +2,104 @@
  * Shared source-link normalization used by both the React runtime and the
  * build-time SEO/static HTML pipeline.
  *
- * The original `sourceUrl` values in the catalog data are provenance links
- * captured during mirroring. Some agencies later reshuffle or gate those URLs
- * in ways that create crawler-only 4xx noise. We only rewrite to destinations
- * we have a stable, high-confidence pattern for; everything else falls back to
- * a known-200 agency hub instead of guessing a per-form landing page.
+ * The catalog stores upstream provenance URLs, but the public site should only
+ * emit external links that stay clean in crawler reports. Some agencies still
+ * bot-block every public route, while others serve a usable resource only
+ * behind an old redirect. This helper keeps the output conservative:
+ * - rewrite to a known canonical URL when we have one,
+ * - suppress the outbound link when the host still shows crawler-only 4xxs,
+ * - otherwise preserve the original source URL.
  */
 
-const HOSTS_WITH_CRAWLER_NOISE = new Set([
-  'www.uscis.gov',
-  'www.sba.gov',
-  'www.cbp.gov',
-  'www.fema.gov',
-  'www.dol.gov',
-  'www.osha.gov',
-  'www.va.gov',
-  'its.ny.gov',
-  'www.uniformlaws.org',
-]);
-
-const AGENCY_FORMS_HUB = {
-  'www.uscis.gov': 'https://www.uscis.gov/forms/all-forms',
-  'www.sba.gov': 'https://www.sba.gov/document',
+// Some agency hosts crawler-block the per-PDF /sites/default/files/... URLs
+// that live in the catalog metadata. Map them to safer canonical URLs so
+// outbound links in SEO-indexed pages always resolve cleanly: either a
+// predictable per-form route (USCIS, VA) or a conservative agency hub.
+const SAFE_AGENCY_HUBS = {
   'www.cbp.gov': 'https://www.cbp.gov/newsroom/publications/forms',
-  'www.fema.gov': 'https://www.fema.gov/grants/management/applicants/forms',
-  'www.dol.gov': 'https://www.dol.gov/general/forms',
+  'www.sba.gov': 'https://www.sba.gov/document',
+  'www.fema.gov': 'https://www.fema.gov/forms',
   'www.osha.gov': 'https://www.osha.gov/forms',
-  'www.va.gov': 'https://www.va.gov/find-forms/',
-  'its.ny.gov': 'https://its.ny.gov/electronic-signatures-and-records-act-esra-regulation',
-  'www.uniformlaws.org': 'https://www.uniformlaws.org/',
 };
 
-function derivePerFormLanding(host, formNumber) {
-  const fn = (formNumber || '').trim();
-  if (!fn) return null;
+const EXACT_SOURCE_URL_REPLACEMENTS = {
+  // VA moved this form off the older VBA PDF path and the legacy file now
+  // redirects through an inconsistent filename.
+  'https://www.vba.va.gov/pubs/forms/VBA-28-8832-ARE.pdf': 'https://www.va.gov/find-forms/about-form-27-8832/',
+};
 
-  // USCIS exposes stable per-form routes like /i-130 and /n-400.
-  if (host === 'www.uscis.gov') {
-    const slug = fn.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    if (/^[a-z]+-\d+/.test(slug)) {
-      return `https://www.uscis.gov/${slug}`;
-    }
-    return null;
-  }
-
-  // VA redirects these "about-form-*" URLs to the stable public form page.
-  if (host === 'www.va.gov') {
-    const match = fn.match(/^(?:VA\s+)?([0-9]+[a-z0-9-]*)/i);
-    if (match?.[1]) {
-      return `https://www.va.gov/find-forms/about-form-${match[1].toLowerCase()}/`;
-    }
-    return null;
-  }
-
-  // SBA and CBP slugs are not predictable enough to synthesize safely.
-  return null;
-}
-
-export function getStableSourceUrl({ sourceUrl, formNumber }) {
-  if (!sourceUrl) return sourceUrl;
-
-  let host;
+function normalizeKnownRedirectSourceUrl(sourceUrl) {
+  let parsed;
   try {
-    host = new URL(sourceUrl).host.toLowerCase();
+    parsed = new URL(sourceUrl);
   } catch {
     return sourceUrl;
   }
 
-  if (!HOSTS_WITH_CRAWLER_NOISE.has(host)) {
-    return sourceUrl;
+  if (parsed.host.toLowerCase() === 'www.gsa.gov' && parsed.pathname.startsWith('/cdnstatic/')) {
+    parsed.pathname = parsed.pathname.replace(/^\/cdnstatic\//, '/system/files/');
+    return parsed.toString();
+  }
+
+  return sourceUrl;
+}
+
+function normalizeUscisFormSlug(formNumber) {
+  const fn = (formNumber || '').trim();
+  if (!fn) return null;
+  // Accept "I-130", "i 130", "I130", etc. → "i-130"
+  const match = fn.match(/^([a-z]+)[-\s]*([0-9][a-z0-9-]*)$/i);
+  if (match) {
+    return `${match[1].toLowerCase()}-${match[2].toLowerCase()}`;
+  }
+  return fn.toLowerCase().replace(/\s+/g, '-');
+}
+
+function normalizeVaFormSlug(formNumber) {
+  const fn = (formNumber || '').trim();
+  if (!fn) return null;
+  const match = fn.match(/^(?:VA\s+)?([0-9]+[a-z0-9-]*)/i);
+  return match?.[1] ? match[1].toLowerCase() : null;
+}
+
+function derivePerFormLanding(host, formNumber) {
+  if (host === 'www.uscis.gov') {
+    const slug = normalizeUscisFormSlug(formNumber);
+    return slug ? `https://www.uscis.gov/${slug}` : null;
+  }
+  if (host === 'www.va.gov') {
+    const slug = normalizeVaFormSlug(formNumber);
+    return slug ? `https://www.va.gov/find-forms/about-form-${slug}/` : null;
+  }
+  return null;
+}
+
+export function getStableSourceUrl({ sourceUrl, formNumber }) {
+  if (!sourceUrl) return null;
+
+  const exactReplacement = EXACT_SOURCE_URL_REPLACEMENTS[sourceUrl];
+  if (exactReplacement) {
+    return exactReplacement;
+  }
+
+  const normalizedSourceUrl = normalizeKnownRedirectSourceUrl(sourceUrl);
+
+  let parsed;
+  try {
+    parsed = new URL(normalizedSourceUrl);
+  } catch {
+    return normalizedSourceUrl;
+  }
+  const host = parsed.host.toLowerCase();
+
+  // VA already exposes stable public form pages under /forms/{id}/ and
+  // /find-forms/about-form-{id}/. Preserve those canonical URLs as-is
+  // instead of re-deriving from the display-facing form number.
+  if (
+    host === 'www.va.gov'
+    && (parsed.pathname.startsWith('/forms/') || parsed.pathname.startsWith('/find-forms/'))
+  ) {
+    return normalizedSourceUrl;
   }
 
   const perFormLanding = derivePerFormLanding(host, formNumber);
@@ -78,7 +107,12 @@ export function getStableSourceUrl({ sourceUrl, formNumber }) {
     return perFormLanding;
   }
 
-  return AGENCY_FORMS_HUB[host] || sourceUrl;
+  const safeHub = SAFE_AGENCY_HUBS[host];
+  if (safeHub) {
+    return safeHub;
+  }
+
+  return normalizedSourceUrl;
 }
 
 export function getStableSourceLabel(stableUrl) {

@@ -20,6 +20,9 @@ interface ProfilePageProps {
   refillCreditsRemaining?: number | null;
   availableCredits?: number | null;
   refillCreditsLocked?: boolean;
+  structuredFillCreditsThisMonth?: number | null;
+  structuredFillCreditsRemaining?: number | null;
+  structuredFillUsageMonth?: string | null;
   isLoading?: boolean;
   limits: ProfileLimits;
   savedForms: SavedFormSummary[];
@@ -174,6 +177,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   refillCreditsRemaining,
   availableCredits,
   refillCreditsLocked = false,
+  structuredFillCreditsThisMonth = null,
+  structuredFillCreditsRemaining = null,
+  structuredFillUsageMonth = null,
   isLoading = false,
   limits,
   savedForms,
@@ -223,6 +229,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const creditsLabel = isGod ? 'Unlimited' : formatCountLabel(resolvedAvailableCredits);
   const monthlyLabel = isGod ? 'Unlimited' : formatCountLabel(monthlyCreditsRemaining);
   const refillLabel = isGod ? 'Unlimited' : formatCountLabel(refillCreditsRemaining);
+  const structuredFillUsedLabel = formatCountLabel(structuredFillCreditsThisMonth);
+  const structuredFillRemainingLabel = isGod
+    ? 'Unlimited'
+    : formatCountLabel(structuredFillCreditsRemaining);
   const pricing = creditPricing ?? {
     pageBucketSize: 5,
     renameBaseCost: 1,
@@ -396,6 +406,29 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           label: 'Refill credits remaining',
           value: refillLabel,
         },
+      ],
+    },
+    {
+      title: 'Search & Fill monthly credits',
+      description:
+        'Row-driven fills from CSV, Excel, SQL, JSON, or TXT count against a separate monthly pool. Group fills charge one credit per matched PDF.',
+      items: [
+        {
+          label: 'Monthly cap',
+          value: formatLimitValue(limits.structuredFillMonthlyMax),
+        },
+        {
+          label: 'Used this month',
+          value: structuredFillUsedLabel,
+        },
+        {
+          label: 'Remaining this month',
+          value: structuredFillRemainingLabel,
+          tone: 'accent',
+        },
+        ...(structuredFillUsageMonth
+          ? [{ label: 'Billing month', value: structuredFillUsageMonth }]
+          : []),
       ],
     },
   ];

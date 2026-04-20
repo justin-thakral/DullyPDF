@@ -5,8 +5,12 @@ import { MAX_FIELD_HISTORY } from '../config/appConstants';
 import {
   ApiService,
   type SavedFormSummary,
+  type SearchFillSourceKind,
+  type SearchFillUsageResponse,
   type TemplateGroupSummary,
 } from '../services/api';
+import { ApiError } from '../services/apiConfig';
+import type { StructuredFillCommitProvenance } from '../components/features/SearchFillModal';
 import type {
   BannerNotice,
   CheckboxRule,
@@ -189,7 +193,68 @@ type OpenAiRuntimeState = {
 
 type SearchFillRuntimeState = {
   dataSourceKind: DataSourceKind;
+  dataSourceLabel?: string | null;
+  identifierKey?: string | null;
 };
+
+const STRUCTURED_FILL_SOURCE_KINDS: ReadonlySet<SearchFillSourceKind> = new Set([
+  'csv',
+  'excel',
+  'sql',
+  'json',
+  'txt',
+]);
+
+function toStructuredFillSourceKind(value: DataSourceKind): SearchFillSourceKind | null {
+  return STRUCTURED_FILL_SOURCE_KINDS.has(value as SearchFillSourceKind)
+    ? (value as SearchFillSourceKind)
+    : null;
+}
+
+function buildStructuredFillRequestId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return `sf_${crypto.randomUUID()}`;
+  }
+  return `sf_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+async function sha256HexForGroupFingerprint(input: string): Promise<string> {
+  if (typeof crypto !== 'undefined' && crypto.subtle && typeof crypto.subtle.digest === 'function') {
+    const buf = new TextEncoder().encode(input);
+    const digest = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(digest))
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+  }
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < input.length; i += 1) {
+    hash ^= input.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return `fnv1a_${hash.toString(16).padStart(8, '0')}`;
+}
+
+async function buildGroupRecordFingerprint(
+  row: Record<string, unknown>,
+  identifierKey: string | null | undefined,
+): Promise<string | null> {
+  const parts: string[] = [];
+  const push = (value: unknown) => {
+    const text = String(value ?? '').trim();
+    if (text) parts.push(text);
+  };
+  if (identifierKey && row[identifierKey] !== undefined) push(row[identifierKey]);
+  const lowered = new Map<string, unknown>();
+  for (const [key, value] of Object.entries(row)) {
+    lowered.set(key.toLowerCase(), value);
+  }
+  push(lowered.get('full_name'));
+  push(lowered.get('first_name'));
+  push(lowered.get('last_name'));
+  push(lowered.get('dob') ?? lowered.get('date_of_birth'));
+  if (parts.length === 0) return null;
+  return sha256HexForGroupFingerprint(parts.join('|'));
+}
 
 type UseGroupTemplateCacheDeps = {
   verifiedUser: unknown;
@@ -742,12 +807,29 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
   const handleFillSearchTargets = useCallback(async (
     row: Record<string, unknown>,
     targetIds: string[],
-  ) => {
+  ): Promise<{ structuredFillCommit?: StructuredFillCommitProvenance | null } | void> => {
     if (!targetIds.length) {
       throw new Error('Select at least one PDF target before filling.');
     }
 
-    const matchedTemplateNames: string[] = [];
+    type PlannedApplication =
+      | {
+          kind: 'active';
+          targetId: string;
+          templateName: string;
+          nextFields: PdfField[];
+        }
+      | {
+          kind: 'cached';
+          targetId: string;
+          templateName: string;
+          nextSnapshot: GroupTemplateWorkspaceSnapshot;
+        };
+
+    // Pass 1 — plan: compute matched fills across every target without
+    // mutating any snapshot. The commit happens before any field state
+    // change so a 429 / commit failure cannot leave the group half-filled.
+    const plannedApplications: PlannedApplication[] = [];
     let unmatchedTargetCount = 0;
     const uniqueTargetIds = Array.from(new Set(targetIds));
     for (const targetId of uniqueTargetIds) {
@@ -765,8 +847,12 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
           unmatchedTargetCount += 1;
           continue;
         }
-        matchedTemplateNames.push(template.name);
-        fieldSelection.handleFieldsChange(searchFillResult.fields);
+        plannedApplications.push({
+          kind: 'active',
+          targetId,
+          templateName: template.name,
+          nextFields: searchFillResult.fields,
+        });
         continue;
       }
 
@@ -782,7 +868,6 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
         unmatchedTargetCount += 1;
         continue;
       }
-      matchedTemplateNames.push(template.name);
       const nextSnapshot: GroupTemplateWorkspaceSnapshot = {
         ...snapshot,
         fields: clonePdfFields(searchFillResult.fields),
@@ -791,11 +876,78 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
           redo: [],
         },
       };
-      setReadyGroupTemplateSnapshot(nextSnapshot, groupCacheTokenRef.current);
+      plannedApplications.push({
+        kind: 'cached',
+        targetId,
+        templateName: template.name,
+        nextSnapshot,
+      });
     }
 
-    if (matchedTemplateNames.length === 0) {
+    if (plannedApplications.length === 0) {
       throw new Error(SEARCH_FILL_NO_MATCH_MESSAGE);
+    }
+
+    // Commit once for the whole group fill. Credits == matched target PDFs.
+    // Refuse to apply the fill if crediting should have happened but the
+    // group context is missing — silently skipping the commit would be a
+    // free-fill path.
+    let structuredFillCommit: StructuredFillCommitProvenance | null = null;
+    const chargeableSourceKind = toStructuredFillSourceKind(searchFill.dataSourceKind);
+    if (chargeableSourceKind && !group.activeGroupId) {
+      throw new Error('Active group context is required to commit a Search & Fill charge.');
+    }
+    if (chargeableSourceKind && group.activeGroupId) {
+      const requestId = buildStructuredFillRequestId();
+      const matchedTemplateIds = plannedApplications.map((entry) => entry.targetId);
+      const fingerprint = await buildGroupRecordFingerprint(row, searchFill.identifierKey ?? null);
+      try {
+        const commitResponse: SearchFillUsageResponse = await ApiService.commitSearchFillUsage({
+          requestId,
+          sourceKind: chargeableSourceKind,
+          scopeType: 'group',
+          scopeId: group.activeGroupId,
+          groupId: group.activeGroupId,
+          targetTemplateIds: uniqueTargetIds,
+          matchedTemplateIds,
+          countIncrement: matchedTemplateIds.length,
+          matchCount: matchedTemplateIds.length,
+          recordLabelPreview:
+            plannedApplications[0]?.templateName ? plannedApplications[0].templateName : null,
+          recordFingerprint: fingerprint,
+          dataSourceLabel: searchFill.dataSourceLabel ?? null,
+          workspaceSavedFormId: savedForms.activeSavedFormId ?? null,
+        });
+        structuredFillCommit = {
+          eventId: commitResponse.eventId,
+          requestId: commitResponse.requestId,
+          status: commitResponse.status,
+          countIncrement: commitResponse.countIncrement,
+          sourceKind: chargeableSourceKind,
+          recordFingerprint: fingerprint,
+        };
+      } catch (commitError) {
+        if (commitError instanceof ApiError && commitError.status === 429) {
+          setBannerNotice({
+            tone: 'error',
+            message: commitError.message || 'Monthly Search & Fill credit limit reached.',
+            autoDismissMs: 8000,
+          });
+          throw commitError;
+        }
+        throw commitError;
+      }
+    }
+
+    // Pass 2 — apply: all mutations happen after the debit is confirmed.
+    const matchedTemplateNames: string[] = [];
+    for (const planned of plannedApplications) {
+      matchedTemplateNames.push(planned.templateName);
+      if (planned.kind === 'active') {
+        fieldSelection.handleFieldsChange(planned.nextFields);
+      } else {
+        setReadyGroupTemplateSnapshot(planned.nextSnapshot, groupCacheTokenRef.current);
+      }
     }
 
     if (uniqueTargetIds.length > 1) {
@@ -817,16 +969,22 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
         autoDismissMs: 5000,
       });
     }
+
+    return { structuredFillCommit };
   }, [
     activeGroupTemplates,
     ensureGroupTemplateSnapshot,
     fieldHistory.fields,
     fieldSelection,
+    group.activeGroupId,
     group.activeGroupName,
+    groupCacheTokenRef,
     openAi.checkboxRules,
     openAi.textTransformRules,
     savedForms.activeSavedFormId,
     searchFill.dataSourceKind,
+    searchFill.dataSourceLabel,
+    searchFill.identifierKey,
     setReadyGroupTemplateSnapshot,
     setBannerNotice,
   ]);

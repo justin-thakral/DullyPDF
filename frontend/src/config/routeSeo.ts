@@ -25,6 +25,8 @@ export type RouteSeoMetadata = {
   description: string;
   canonicalPath: string;
   keywords: string[];
+  ogImagePath?: string | null;
+  ogImageAlt?: string;
   ogTitle?: string;
   ogDescription?: string;
   twitterTitle?: string;

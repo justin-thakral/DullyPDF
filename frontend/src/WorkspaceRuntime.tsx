@@ -122,6 +122,7 @@ import {
   FILL_LINK_RESPONDENT_LABEL_KEY,
 } from './utils/fillLinks';
 import type { ReviewedFillContext } from './utils/signing';
+import type { StructuredFillCommitProvenance } from './components/features/SearchFillModal';
 import {
   clearWorkspaceResumeState,
   findMatchingWorkspaceResumeState,
@@ -587,6 +588,8 @@ function WorkspaceRuntime({
       setSchemaUploadInProgress: dataSource.setSchemaUploadInProgress,
       dataColumns: dataSource.dataColumns,
       dataSourceKind: dataSource.dataSourceKind,
+      dataSourceLabel: dataSource.dataSourceLabel,
+      identifierKey: dataSource.identifierKey,
       resolveSchemaForMapping: dataSource.resolveSchemaForMapping,
     },
     markSavedFillLinkSnapshot: captureSavedFillLinkPublishFingerprint,
@@ -1099,7 +1102,11 @@ function WorkspaceRuntime({
     ],
   );
 
-  const handleAfterSearchFill = useCallback((payload: { row: Record<string, unknown>; dataSourceKind: DataSourceKind }) => {
+  const handleAfterSearchFill = useCallback((payload: {
+    row: Record<string, unknown>;
+    dataSourceKind: DataSourceKind;
+    structuredFillCommit?: StructuredFillCommitProvenance | null;
+  }) => {
     setSearchFillPreset(null);
     handleSetTransformMode(false);
     clearCreateToolState();
@@ -1117,6 +1124,16 @@ function WorkspaceRuntime({
       ? payload.row[FILL_LINK_RESPONDENT_LABEL_KEY] as string
       : null;
 
+    const structuredFillProvenance = payload.structuredFillCommit
+      ? {
+          structuredFillEventId: payload.structuredFillCommit.eventId,
+          structuredFillRequestId: payload.structuredFillCommit.requestId,
+          structuredFillCountIncrement: payload.structuredFillCommit.countIncrement,
+          structuredFillSourceKind: payload.structuredFillCommit.sourceKind,
+          structuredFillRecordFingerprint: payload.structuredFillCommit.recordFingerprint,
+        }
+      : {};
+
     if (payload.dataSourceKind === 'respondent' && responseId) {
       setReviewedFillContext({
         sourceType: 'fill_link_response',
@@ -1125,6 +1142,7 @@ function WorkspaceRuntime({
         sourceRecordLabel: respondentLabel,
         sourceLabel: dataSource.dataSourceLabel,
         reviewedAt: new Date().toISOString(),
+        ...structuredFillProvenance,
       });
     } else {
       setReviewedFillContext({
@@ -1132,6 +1150,7 @@ function WorkspaceRuntime({
         sourceId: savedForms.activeSavedFormId,
         sourceLabel: dataSource.dataSourceLabel,
         reviewedAt: new Date().toISOString(),
+        ...structuredFillProvenance,
       });
     }
 
@@ -2649,6 +2668,9 @@ function WorkspaceRuntime({
             refillCreditsRemaining={userProfile?.refillCreditsRemaining ?? 0}
             availableCredits={userProfile?.availableCredits ?? userProfile?.creditsRemaining ?? 0}
             refillCreditsLocked={Boolean(userProfile?.refillCreditsLocked)}
+            structuredFillCreditsThisMonth={userProfile?.structuredFillCreditsThisMonth ?? 0}
+            structuredFillCreditsRemaining={userProfile?.structuredFillCreditsRemaining ?? null}
+            structuredFillUsageMonth={userProfile?.structuredFillUsageMonth ?? null}
             billingEnabled={typeof userProfile?.billing?.enabled === 'boolean' ? userProfile.billing.enabled : null}
             billingHasSubscription={userProfile?.billing?.hasSubscription === true}
             billingSubscriptionStatus={userProfile?.billing?.subscriptionStatus ?? null}
@@ -2952,7 +2974,11 @@ function WorkspaceRuntime({
             onAfterFill={handleAfterSearchFill}
             onError={(message) => dataSource.setSchemaError(message)}
             onRequestDataSource={(kind) => dataSource.handleChooseDataSource(kind)}
-            demoSearch={demoActive ? demoSearchPreset : null} />
+            demoSearch={demoActive ? demoSearchPreset : null}
+            templateId={activeGroupId ? null : savedForms.activeSavedFormId}
+            groupId={activeGroupId ?? null}
+            workspaceSavedFormId={savedForms.activeSavedFormId}
+            structuredFillCreditingEnabled={!demoActive} />
         </Suspense>
       ) : null}
       {imageFill.open ? (

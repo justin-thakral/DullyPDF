@@ -4,6 +4,7 @@ import './FormCatalogPage.css';
 import { SiteFooter } from '../ui/SiteFooter';
 import {
   FORM_CATALOG_BY_SLUG,
+  FORM_CATALOG_ENTRIES,
 } from '../../config/formCatalogData.mjs';
 import { FORM_CATALOG_CATEGORIES } from '../../config/formCatalogCategories.mjs';
 import {
@@ -40,6 +41,7 @@ type FormCatalogEntry = {
   thumbnailUrl: string;
   description: string;
   useCase: string;
+  isPriorYear: boolean;
 };
 
 type FormCatalogCategory = {
@@ -61,6 +63,104 @@ type FormCatalogFormPageProps = {
 
 const CATEGORIES = FORM_CATALOG_CATEGORIES as FormCatalogCategory[];
 const BY_SLUG = FORM_CATALOG_BY_SLUG as Record<string, FormCatalogEntry>;
+const ENTRIES = FORM_CATALOG_ENTRIES as FormCatalogEntry[];
+
+function compareFormCatalogEntries(left: FormCatalogEntry, right: FormCatalogEntry): number {
+  return left.formNumber.localeCompare(right.formNumber, 'en', { numeric: true })
+    || left.title.localeCompare(right.title)
+    || left.slug.localeCompare(right.slug);
+}
+
+const ACTIVE_ENTRIES_BY_SECTION = new Map<string, FormCatalogEntry[]>();
+
+for (const entry of ENTRIES) {
+  if (entry.isPriorYear) {
+    continue;
+  }
+
+  const sectionEntries = ACTIVE_ENTRIES_BY_SECTION.get(entry.section) ?? [];
+  sectionEntries.push(entry);
+  ACTIVE_ENTRIES_BY_SECTION.set(entry.section, sectionEntries);
+}
+
+for (const sectionEntries of ACTIVE_ENTRIES_BY_SECTION.values()) {
+  sectionEntries.sort(compareFormCatalogEntries);
+}
+
+// Keep the related-forms block symmetric around the current entry instead of
+// always taking the first N forms in a category. That circular window keeps the
+// catalog graph evenly connected, and after the pool is built the walk is O(m)
+// where m is the number of forms in the resolved category cluster.
+const RELATED_FORMS_LIMIT = 20;
+
+function resolveRelatedSections(entry: FormCatalogEntry, category: FormCatalogCategory | null): Set<string> {
+  const sections = category?.sections && category.sections.length > 0
+    ? category.sections
+    : [entry.section];
+  return new Set(sections);
+}
+
+function buildRelatedEntryPool(entry: FormCatalogEntry, category: FormCatalogCategory | null): FormCatalogEntry[] {
+  const sections = Array.from(resolveRelatedSections(entry, category));
+  if (sections.length === 1) {
+    return ACTIVE_ENTRIES_BY_SECTION.get(sections[0]) ?? [];
+  }
+
+  const seenSlugs = new Set<string>();
+  const mergedEntries: FormCatalogEntry[] = [];
+
+  sections.forEach((section) => {
+    (ACTIVE_ENTRIES_BY_SECTION.get(section) ?? []).forEach((candidate) => {
+      if (seenSlugs.has(candidate.slug)) {
+        return;
+      }
+
+      seenSlugs.add(candidate.slug);
+      mergedEntries.push(candidate);
+    });
+  });
+
+  return mergedEntries.sort(compareFormCatalogEntries);
+}
+
+function pickCircularRelatedEntries(
+  pool: FormCatalogEntry[],
+  currentSlug: string,
+  limit: number,
+): FormCatalogEntry[] {
+  const maxRelatedEntries = Math.min(limit, Math.max(pool.length - 1, 0));
+  if (maxRelatedEntries === 0) {
+    return [];
+  }
+
+  const currentIndex = pool.findIndex((candidate) => candidate.slug === currentSlug);
+  if (currentIndex < 0) {
+    return pool.slice(0, maxRelatedEntries);
+  }
+
+  const seenSlugs = new Set([currentSlug]);
+  const relatedEntries: FormCatalogEntry[] = [];
+
+  for (let distance = 1; distance < pool.length && relatedEntries.length < maxRelatedEntries; distance += 1) {
+    const forwardEntry = pool[(currentIndex + distance) % pool.length];
+    if (!seenSlugs.has(forwardEntry.slug)) {
+      seenSlugs.add(forwardEntry.slug);
+      relatedEntries.push(forwardEntry);
+    }
+
+    if (relatedEntries.length >= maxRelatedEntries) {
+      break;
+    }
+
+    const backwardEntry = pool[(currentIndex - distance + pool.length) % pool.length];
+    if (!seenSlugs.has(backwardEntry.slug)) {
+      seenSlugs.add(backwardEntry.slug);
+      relatedEntries.push(backwardEntry);
+    }
+  }
+
+  return relatedEntries;
+}
 
 function formatBytes(bytes: number | null): string {
   if (!bytes || bytes <= 0) return 'Unknown';
@@ -81,6 +181,11 @@ const FormCatalogFormPage = ({
     () => (entry ? CATEGORIES.find((c) => c.key === entry.section) || null : null),
     [entry],
   );
+  const relatedEntries = useMemo<FormCatalogEntry[]>(() => {
+    if (!entry) return [];
+    const relatedEntryPool = buildRelatedEntryPool(entry, category);
+    return pickCircularRelatedEntries(relatedEntryPool, entry.slug, RELATED_FORMS_LIMIT);
+  }, [entry, category]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [previewLoading, setPreviewLoading] = useState(true);
@@ -157,6 +262,13 @@ const FormCatalogFormPage = ({
 
   const handleOpenInWorkspace = useCallback(async () => {
     if (!entry) return;
+    if (
+      typeof window !== 'undefined'
+      && window.matchMedia('(max-width: 768px)').matches
+    ) {
+      window.alert('DullyPDF Workspace is only available on Desktop');
+      return;
+    }
     setOpenError(null);
     setOpenInProgress(true);
     try {
@@ -255,7 +367,10 @@ const FormCatalogFormPage = ({
     );
   }
 
-  const openButtonLabel = openInProgress ? 'Loading into editor…' : 'Open in DullyPDF';
+  const openButtonLabel = openInProgress ? 'Loading into editor…' : 'Open in the DullyPDF Workspace';
+  const downloadLabel = entry
+    ? `Download ${entry.formNumber || entry.title} fillable form`
+    : 'Download fillable form';
 
   return (
     <div className="form-catalog">
@@ -292,7 +407,7 @@ const FormCatalogFormPage = ({
             <span className="form-catalog-detail__meta-kicker">
               {category?.label || 'Form catalog'}
             </span>
-            <h1>{entry.title}</h1>
+            <p className="form-catalog-detail__meta-title">{entry.title}</p>
             {entry.description ? (
               <p className="form-catalog-detail__description">{entry.description}</p>
             ) : null}
@@ -335,41 +450,113 @@ const FormCatalogFormPage = ({
               >
                 {openButtonLabel}
               </button>
-              <a
-                className="form-catalog-detail__button form-catalog-detail__button--secondary"
-                href={entry.pdfUrl}
-                download={entry.filename}
-              >
-                Download blank PDF
-              </a>
             </div>
             {openError ? (
               <p className="form-catalog-detail__error">{openError}</p>
             ) : null}
 
+            <div className="form-catalog-detail__explainer">
+              <h3 className="form-catalog-detail__explainer-heading">
+                The DullyPDF Workspace
+              </h3>
+              <p className="form-catalog-detail__explainer-body">
+                The DullyPDF Workspace is a form automation builder.{' '}
+                <a href="/pdf-to-fillable-form">
+                  Open any PDF to auto-detect its fields with AI
+                </a>
+                , then reuse the template across workflows:{' '}
+                <a href="/fill-pdf-from-csv">
+                  fill from CSV, Excel, JSON, or SQL
+                </a>{' '}
+                with Search &amp; Fill;{' '}
+                <a href="/fill-pdf-by-link">publish a shareable web form</a>{' '}
+                with Fill By Link;{' '}
+                <a href="/pdf-fill-api">call a JSON-to-PDF API</a> from your
+                backend; or add{' '}
+                <a href="/esign-ueta-pdf-workflow">
+                  E-SIGN / UETA–compliant signatures
+                </a>
+                .
+              </p>
+            </div>
+
+            <a
+              className="form-catalog-detail__button form-catalog-detail__button--secondary form-catalog-detail__download"
+              href={entry.pdfUrl}
+              download={entry.filename}
+            >
+              {downloadLabel}
+            </a>
+
             {entry.sourceUrl ? (() => {
-              // Several federal agencies (USCIS, SBA, CBP, FEMA, DOL) gate
-              // their PDFs behind 403 to crawlers and frequently move their
-              // CMS paths. Rewrite to a stable per-form landing page (or the
-              // agency forms hub) so external link health stays clean. See
-              // utils/stableSourceUrl.ts for the host map.
+              // Keep provenance visible without emitting a broken outbound
+              // link. The shared normalizer only returns a destination when
+              // we have a clean canonical target.
               const stableUrl = getStableSourceUrl({
                 sourceUrl: entry.sourceUrl,
                 formNumber: entry.formNumber,
                 section: entry.section,
               });
-              const stableLabel = getStableSourceLabel(stableUrl);
+              const stableLabel = getStableSourceLabel(stableUrl || entry.sourceUrl);
               return (
                 <p className="form-catalog-detail__source">
                   Public-domain source:{' '}
-                  <a href={stableUrl} target="_blank" rel="noreferrer noopener">
-                    {stableLabel}
-                  </a>
+                  {stableUrl ? (
+                    <a href={stableUrl} target="_blank" rel="noreferrer noopener">
+                      {stableLabel}
+                    </a>
+                  ) : (
+                    <span>{stableLabel}</span>
+                  )}
                 </p>
               );
             })() : null}
           </aside>
         </div>
+
+        {relatedEntries.length > 0 ? (
+          <section
+            className="form-catalog-detail__related"
+            aria-labelledby="related-forms-heading"
+          >
+            <h2 id="related-forms-heading" className="form-catalog-detail__related-heading">
+              {category ? `More ${category.label} forms` : 'More forms in this catalog'}
+            </h2>
+            <ul className="form-catalog-detail__related-list">
+              {relatedEntries.map((related) => {
+                const label = related.formNumber
+                  ? `${related.formNumber} — ${related.title}`
+                  : related.title;
+                return (
+                  <li key={related.slug} className="form-catalog-detail__related-item">
+                    <a
+                      href={`/forms/${related.slug}`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        onNavigate({ kind: 'form-catalog-form', slug: related.slug });
+                      }}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+            {category ? (
+              <p className="form-catalog-detail__related-footer">
+                <a
+                  href={`/forms?category=${encodeURIComponent(category.key)}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onNavigate({ kind: 'form-catalog-index', category: category.key });
+                  }}
+                >
+                  Browse all {category.label} forms →
+                </a>
+              </p>
+            ) : null}
+          </section>
+        ) : null}
       </main>
       <SiteFooter />
     </div>

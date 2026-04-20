@@ -488,7 +488,7 @@
   padding: 24px;
 }
 
-.form-catalog-detail__meta h1 {
+.form-catalog-detail__meta-title {
   font-size: 22px;
   line-height: 1.25;
   color: #0f1720;
@@ -581,6 +581,44 @@
   margin: 8px 0 0;
 }
 
+.form-catalog-detail__explainer {
+  margin: 20px 0 0;
+  padding: 14px 16px;
+  background: #f6f7f9;
+  border: 1px solid #e1e5eb;
+  border-radius: 10px;
+}
+
+.form-catalog-detail__explainer-heading {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d2530;
+}
+
+.form-catalog-detail__explainer-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #4a5562;
+}
+
+.form-catalog-detail__explainer-body a {
+  color: #2b6cb0;
+  text-decoration: none;
+}
+
+.form-catalog-detail__explainer-body a:hover {
+  text-decoration: underline;
+}
+
+.form-catalog-detail__download {
+  margin-top: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
 .form-catalog-detail__source {
   font-size: 12px;
   color: #8892a0;
@@ -590,4 +628,56 @@
 
 .form-catalog-detail__source a {
   color: #5a6473;
+}
+
+.form-catalog-detail__related {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #e2e6ee;
+}
+
+.form-catalog-detail__related-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d2530;
+  margin: 0 0 16px;
+}
+
+.form-catalog-detail__related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px 24px;
+}
+
+.form-catalog-detail__related-item a {
+  display: block;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #2b6cb0;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-catalog-detail__related-item a:hover {
+  text-decoration: underline;
+}
+
+.form-catalog-detail__related-footer {
+  margin: 20px 0 0;
+  font-size: 14px;
+}
+
+.form-catalog-detail__related-footer a {
+  color: #2b6cb0;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-catalog-detail__related-footer a:hover {
+  text-decoration: underline;
 }

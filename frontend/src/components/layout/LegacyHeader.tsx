@@ -65,6 +65,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
   };
 
   const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : null;
+  const TitleTag = currentView === 'homepage' ? 'div' : 'h1';
 
   return (
     <header className="app-header">
@@ -81,7 +82,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
             </button>
           )}
           <div className="header-branding">
-            <h1 className="header-title">{getTitle()}</h1>
+            <TitleTag className="header-title">{getTitle()}</TitleTag>
             <p className="header-description">{getDescription()}</p>
           </div>
         </div>

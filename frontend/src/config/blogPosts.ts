@@ -40,3 +40,6 @@ export const getBlogPosts = (): BlogPost[] => BLOG_POSTS;
 export const getBlogPost = (slug: string): BlogPost | undefined => POST_BY_SLUG.get(slug);
 
 export const getBlogSlugs = (): string[] => BLOG_POSTS.map((post) => post.slug);
+
+export const getBlogPostPrimaryFigure = (post: BlogPost): BlogPostFigure | null =>
+  post.sections.flatMap((section) => section.figures ?? [])[0] ?? null;

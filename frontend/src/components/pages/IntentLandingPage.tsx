@@ -11,9 +11,11 @@ import {
   getIntentCatalogShowcase,
   getIntentCatalogCategorySummaries,
 } from '../../config/intentCatalogShowcases.mjs';
+import { getBlogGuideLinksForIntentPage } from '../../config/blogRelations';
 import {
   ESIGN_PIPELINE_DEMO_VIDEO,
   FILL_PDF_FROM_FILE_DEMO_VIDEO,
+  PDF_PACKET_SEARCH_FILL_DEMO_VIDEO,
   PDF_TO_FILLABLE_DEMO_VIDEO,
   WEB_FORM_AND_SIGN_DEMO_VIDEO,
 } from '../../config/publicVideoContent';
@@ -53,7 +55,7 @@ type IntentCatalogDocument = {
   pageCount: number | null;
   pdfUrl: string;
   thumbnailUrl: string;
-  sourceUrl: string;
+  sourceUrl: string | null;
   sectionLabel: string;
   editorHref: string;
   catalogHref: string;
@@ -106,6 +108,9 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
     ? PDF_TO_FILLABLE_DEMO_VIDEO
     : pageKey === 'fill-pdf-from-csv'
       ? FILL_PDF_FROM_FILE_DEMO_VIDEO
+      : pageKey === 'batch-fill-pdf-forms'
+        || pageKey === 'hr-pdf-automation'
+        ? PDF_PACKET_SEARCH_FILL_DEMO_VIDEO
       : pageKey === 'fill-pdf-by-link'
         ? WEB_FORM_AND_SIGN_DEMO_VIDEO
         : pageKey === 'pdf-signature-workflow'
@@ -116,7 +121,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
 
   const handleOpenInWorkspace = (event: MouseEvent<HTMLAnchorElement>, editorHref: string) => {
     event.preventDefault();
-    window.location.href = editorHref;
+    window.location.assign(editorHref);
   };
 
   const footnoteNumberById = useMemo(
@@ -171,6 +176,10 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
       });
     },
     [page.relatedDocs],
+  );
+  const relatedGuides = useMemo(
+    () => getBlogGuideLinksForIntentPage(pageKey),
+    [pageKey],
   );
   const routeFocusLabel = page.navLabel.toLowerCase();
   const relatedRoutesSummary = page.category === 'industry'
@@ -341,8 +350,12 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
                       <p className="intent-page__catalog-list-meta">
                         {document.sectionLabel}
                         {document.pageCount ? ` • ${document.pageCount} ${document.pageCount === 1 ? 'page' : 'pages'}` : ''}
-                        {' • '}
-                        <a href={document.sourceUrl} target="_blank" rel="noreferrer noopener">Official source</a>
+                        {document.sourceUrl ? (
+                          <>
+                            {' • '}
+                            <a href={document.sourceUrl} target="_blank" rel="noreferrer noopener">Official source</a>
+                          </>
+                        ) : null}
                       </p>
                     </div>
                     <div className="intent-page__catalog-list-actions">
@@ -499,9 +512,13 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
             {page.footnotes.map((footnote, index) => (
               <li key={footnote.id} id={`footnote-${footnote.id}`} className="intent-page__footnote-item">
                 <span className="intent-page__footnote-number">{index + 1}.</span>
-                <a href={footnote.href} className="intent-page__footnote-link">
-                  {footnote.label}
-                </a>
+                {footnote.href ? (
+                  <a href={footnote.href} className="intent-page__footnote-link">
+                    {footnote.label}
+                  </a>
+                ) : (
+                  <span className="intent-page__footnote-link">{footnote.label}</span>
+                )}
                 <a
                   href={`#footnote-ref-${footnote.id}-1`}
                   className="intent-page__footnote-backlink"
@@ -541,6 +558,23 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
           ) : null}
         </section>
       ))}
+
+      {relatedGuides.length > 0 ? (
+        <section className="intent-page__panel">
+          <h2>Guides for {page.navLabel}</h2>
+          <p>
+            These walkthroughs and comparison posts cover the same workflow cluster from an operator point of view,
+            which helps you move from a route summary into a more specific implementation path.
+          </p>
+          <ul>
+            {relatedGuides.map((guide) => (
+              <li key={guide.href}>
+                <a href={guide.href}>{guide.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="intent-page__panel">
         <h2>Docs for {page.navLabel}</h2>

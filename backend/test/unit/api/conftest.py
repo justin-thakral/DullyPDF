@@ -21,6 +21,7 @@ import backend.api.routes.profile as profile_routes
 import backend.api.routes.public as public_routes
 import backend.api.routes.saved_forms as saved_forms_routes
 import backend.api.routes.schemas as schemas_routes
+import backend.api.routes.search_fill_usage as search_fill_usage_routes
 import backend.api.routes.sessions as sessions_routes
 import backend.api.routes.signing as signing_routes
 import backend.api.routes.signing_public as signing_public_routes
@@ -43,6 +44,7 @@ import backend.services.pdf_service as pdf_service
 import backend.services.template_api_service as template_api_service
 import backend.firebaseDB.billing_database as billing_database
 import backend.firebaseDB.fill_link_database as fill_link_database
+import backend.firebaseDB.structured_fill_database as structured_fill_database
 import backend.firebaseDB.template_api_endpoint_database as template_api_endpoint_database
 
 
@@ -132,6 +134,7 @@ def app_main():
         public_routes,
         saved_forms_routes,
         schemas_routes,
+        search_fill_usage_routes,
         sessions_routes,
         signing_routes,
         signing_public_routes,
@@ -154,6 +157,7 @@ def app_main():
         template_api_service,
         billing_database,
         fill_link_database,
+        structured_fill_database,
         template_api_endpoint_database,
     ]
     return _ModuleProxy(modules)
@@ -214,6 +218,7 @@ def stub_retention_defaults(mocker, app_main) -> None:
     mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value={"status": "grace_period"})
     mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
     mocker.patch.object(app_main, "get_openai_job", return_value=None)
+    mocker.patch.object(app_main, "get_structured_fill_monthly_usage", return_value=None)
     mocker.patch.object(app_main, "close_fill_link_if_scope_invalid", side_effect=lambda record: record)
     mocker.patch.object(app_main, "preview_fill_link_if_scope_invalid", side_effect=lambda record: record)
     mocker.patch.object(app_main, "get_fill_link_for_group", return_value=None)

@@ -21,6 +21,7 @@ from backend.api.routes import (
     public_router,
     saved_forms_router,
     schemas_router,
+    search_fill_usage_router,
     sessions_router,
     signing_public_router,
     signing_router,
@@ -74,6 +75,7 @@ def create_app() -> FastAPI:
     app.include_router(fill_links_router)
     app.include_router(groups_router)
     app.include_router(saved_forms_router)
+    app.include_router(search_fill_usage_router)
     app.include_router(sessions_router)
     app.include_router(signing_router)
     app.include_router(template_api_router)

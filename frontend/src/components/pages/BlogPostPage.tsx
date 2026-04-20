@@ -1,8 +1,12 @@
 import { useEffect, useMemo } from 'react';
-import { getBlogPost } from '../../config/blogPosts';
+import { getRelatedBlogGuideLinksForPost } from '../../config/blogRelations';
+import { getBlogPost, getBlogPostPrimaryFigure } from '../../config/blogPosts';
 import { getBlogPostSeo } from '../../config/blogSeo';
 import { getIntentPage } from '../../config/intentPages';
-import { ESIGN_PIPELINE_DEMO_VIDEO } from '../../config/publicVideoContent';
+import {
+  ESIGN_PIPELINE_DEMO_VIDEO,
+  PDF_PACKET_SEARCH_FILL_DEMO_VIDEO,
+} from '../../config/publicVideoContent';
 import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
 import { applyNoIndexSeo, applySeoMetadata } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
@@ -11,6 +15,7 @@ import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import './BlogPostPage.css';
 
 const BLOG_POST_VIDEOS: Record<string, typeof ESIGN_PIPELINE_DEMO_VIDEO> = {
+  'fill-entire-pdf-packet-from-one-row': PDF_PACKET_SEARCH_FILL_DEMO_VIDEO,
   'send-pdf-for-signature-by-email-or-web-form': ESIGN_PIPELINE_DEMO_VIDEO,
 };
 
@@ -45,10 +50,42 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
       : []),
     [post],
   );
+  const relatedGuideLinks = useMemo(
+    () => (post ? getRelatedBlogGuideLinksForPost(post.slug) : []),
+    [post],
+  );
   const inlineResourceLinks = useMemo(
     () => [...relatedIntentLinks.slice(0, 2), ...relatedDocsLinks.slice(0, 2)],
     [relatedDocsLinks, relatedIntentLinks],
   );
+  const coverFigure = useMemo(() => (post ? getBlogPostPrimaryFigure(post) : null), [post]);
+  const renderedSections = useMemo(() => {
+    if (!post) return [];
+
+    let skippedCoverFigure = false;
+
+    return post.sections.map((section) => {
+      const figures = (section.figures ?? []).filter((figure) => {
+        if (
+          coverFigure
+          && !skippedCoverFigure
+          && figure.src === coverFigure.src
+          && figure.alt === coverFigure.alt
+          && figure.caption === coverFigure.caption
+        ) {
+          skippedCoverFigure = true;
+          return false;
+        }
+
+        return true;
+      });
+
+      return {
+        ...section,
+        figures,
+      };
+    });
+  }, [coverFigure, post]);
 
   useEffect(() => {
     if (post) {
@@ -111,6 +148,18 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                 <span className="blog-post__author">by {post.author}</span>
               </div>
               <p className="blog-post__summary">{post.summary}</p>
+              {coverFigure ? (
+                <figure className="blog-post__cover">
+                  <img
+                    src={coverFigure.src}
+                    alt={coverFigure.alt}
+                    loading="eager"
+                    decoding="async"
+                    className="blog-post__cover-image"
+                  />
+                  <figcaption>{coverFigure.caption}</figcaption>
+                </figure>
+              ) : null}
               {inlineResourceLinks.length > 0 ? (
                 <div className="blog-post__inline-links" aria-label="Key workflow links">
                   <span className="blog-post__inline-links-label">Key workflow links</span>
@@ -127,7 +176,7 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
 
             {postVideo ? <PublicVideoPanel {...postVideo} /> : null}
 
-            {post.sections.map((section) => (
+            {renderedSections.map((section) => (
               <section key={section.id} id={section.id} className="blog-post__section">
                 <h2>{section.title}</h2>
                 {section.paragraphs.map((paragraph, index) => (
@@ -161,7 +210,7 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
 
           </article>
 
-          {(relatedIntentLinks.length > 0 || relatedDocsLinks.length > 0) && (
+          {(relatedIntentLinks.length > 0 || relatedDocsLinks.length > 0 || relatedGuideLinks.length > 0) && (
             <section className="blog-post__panel">
               <h2>Related resources for this guide</h2>
               <div className="blog-post__related-grid">
@@ -184,6 +233,18 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                       {relatedDocsLinks.map((link) => (
                         <li key={link.href}>
                           <a href={link.href}>{link.label}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {relatedGuideLinks.length > 0 && (
+                  <div>
+                    <h3>More guides</h3>
+                    <ul>
+                      {relatedGuideLinks.map((guide) => (
+                        <li key={guide.href}>
+                          <a href={guide.href}>{guide.title}</a>
                         </li>
                       ))}
                     </ul>

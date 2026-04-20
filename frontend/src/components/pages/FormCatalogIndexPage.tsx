@@ -12,6 +12,8 @@ import {
   buildWorkspaceBrowserHref,
   type WorkspaceBrowserRoute,
 } from '../../utils/workspaceRoutes';
+import { applySeoMetadata } from '../../utils/seo';
+import { buildFormCatalogIndexSeo } from '../../config/formCatalogSeo.mjs';
 
 const defaultStandaloneNavigate = (
   route: WorkspaceBrowserRoute,
@@ -144,10 +146,6 @@ const FormCatalogIndexPage = ({
   );
 
   useEffect(() => {
-    document.title = 'Pre-Made Form Catalog — DullyPDF';
-  }, []);
-
-  useEffect(() => {
     // Back/forward navigation pushes new props in. Sync local state and reset the
     // visible window so the grid starts from the top of the filtered list.
     setCategory(initialCategory || 'all');
@@ -261,6 +259,14 @@ const FormCatalogIndexPage = ({
       : `${total} forms in ${scope}`;
     return total > showing ? `${base} • Showing ${showing}` : base;
   }, [activeCategory, activeExternalSource, category, clampedVisible, filteredEntries.length, query]);
+
+  useEffect(() => {
+    applySeoMetadata(
+      buildFormCatalogIndexSeo({
+        categoryKey: category !== 'all' ? category : null,
+      }),
+    );
+  }, [category]);
 
   const renderCatalog = () => (
     <>

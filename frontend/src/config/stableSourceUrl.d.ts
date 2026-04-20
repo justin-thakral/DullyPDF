@@ -4,5 +4,5 @@ export type StableUrlInput = {
   section?: string;
 };
 
-export function getStableSourceUrl(input: StableUrlInput): string;
+export function getStableSourceUrl(input: StableUrlInput): string | null;
 export function getStableSourceLabel(stableUrl: string): string;

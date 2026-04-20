@@ -2,7 +2,16 @@
 /**
  * Auto-generate sitemap.xml from the shared public SEO route dataset exposed via
  * seo-route-data.mjs.
- * Writes to frontend/dist/sitemap.xml (must run after Vite build).
+ *
+ * Emits three files in frontend/dist/:
+ *   - sitemap-main.xml   → home, legal, intent, docs, blog, feature-plan,
+ *                          form-catalog-index, intent-hub (~150 URLs)
+ *   - sitemap-forms.xml  → form-catalog-form routes only (~1,200 URLs)
+ *   - sitemap.xml        → <sitemapindex> pointing at the two children
+ *
+ * The split lets Ahrefs + GSC report crawl/indexation coverage for the form
+ * catalog independently from the rest of the site.
+ * Must run after Vite build.
  */
 
 import { writeFileSync } from 'node:fs';
@@ -56,16 +65,9 @@ function buildVideoBlock(video) {
     </video:video>`;
 }
 
-function main() {
+function buildUrlsetXml(routes) {
   let videoEntryCount = 0;
-  // Pages flagged as lowValue (prior-year duplicates, blank stubs, near-
-  // duplicate variant slugs) get <meta robots="noindex,follow"> in
-  // generate-static-html.mjs. Don't list them in sitemap.xml either — Google
-  // will eventually drop them from the index and consolidate link equity onto
-  // the cluster parent via rel=canonical.
-  const sitemapRoutes = ALL_ROUTES.filter((route) => !route.lowValue);
-  const skippedCount = ALL_ROUTES.length - sitemapRoutes.length;
-  const entries = sitemapRoutes.map((route) => {
+  const entries = routes.map((route) => {
     const loc = route.path === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${route.path}`;
     const video = route.seo?.video ?? null;
     if (video) videoEntryCount += 1;
@@ -83,11 +85,46 @@ function main() {
 ${entries.join('\n')}
 </urlset>
 `;
+  return { xml, urlCount: entries.length, videoEntryCount };
+}
 
-  const outputPath = join(DIST_DIR, 'sitemap.xml');
-  writeFileSync(outputPath, xml, 'utf-8');
+function buildSitemapIndexXml(childSitemapNames) {
+  const entries = childSitemapNames.map((name) => `  <sitemap>
+    <loc>${escXml(`${SITE_ORIGIN}/${name}`)}</loc>
+    <lastmod>${TODAY}</lastmod>
+  </sitemap>`);
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries.join('\n')}
+</sitemapindex>
+`;
+}
+
+function main() {
+  // Pages flagged as lowValue (prior-year duplicates, blank stubs, near-
+  // duplicate variant slugs) get <meta robots="noindex,follow"> in
+  // generate-static-html.mjs. Don't list them in any sitemap — Google will
+  // eventually drop them from the index and consolidate link equity onto the
+  // cluster parent via rel=canonical.
+  const sitemapRoutes = ALL_ROUTES.filter((route) => !route.lowValue);
+  const skippedCount = ALL_ROUTES.length - sitemapRoutes.length;
+
+  const formRoutes = sitemapRoutes.filter((r) => r.kind === 'form-catalog-form');
+  const mainRoutes = sitemapRoutes.filter((r) => r.kind !== 'form-catalog-form');
+
+  const main = buildUrlsetXml(mainRoutes);
+  const forms = buildUrlsetXml(formRoutes);
+  const indexXml = buildSitemapIndexXml(['sitemap-main.xml', 'sitemap-forms.xml']);
+
+  writeFileSync(join(DIST_DIR, 'sitemap-main.xml'), main.xml, 'utf-8');
+  writeFileSync(join(DIST_DIR, 'sitemap-forms.xml'), forms.xml, 'utf-8');
+  writeFileSync(join(DIST_DIR, 'sitemap.xml'), indexXml, 'utf-8');
+
   console.log(
-    `Generated sitemap.xml with ${entries.length} URLs (including ${videoEntryCount} video entries; skipped ${skippedCount} lowValue routes) at ${outputPath}`,
+    `Generated sitemap index at ${join(DIST_DIR, 'sitemap.xml')}: ` +
+      `sitemap-main.xml=${main.urlCount} URLs (${main.videoEntryCount} video), ` +
+      `sitemap-forms.xml=${forms.urlCount} URLs, ` +
+      `skipped=${skippedCount} lowValue routes.`,
   );
 }
 

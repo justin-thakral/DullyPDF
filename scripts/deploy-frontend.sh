@@ -240,6 +240,8 @@ require_file "frontend/dist/usage-docs/index.html"
 require_file "frontend/dist/forms/index.html"
 require_file "frontend/dist/forms/w-9/index.html"
 require_file "frontend/dist/sitemap.xml"
+require_file "frontend/dist/sitemap-main.xml"
+require_file "frontend/dist/sitemap-forms.xml"
 require_file "frontend/dist/feed.xml"
 echo "Static HTML, sitemap, and feed validation passed."
 

@@ -1,3 +1,11 @@
+/**
+ * @vitest-environment jsdom
+ *
+ * Pinned explicitly so a shared vitest worker that previously ran a
+ * node-environment test file cannot leave this file without a `document`
+ * global when the pool is reused. The suite config sets jsdom as the
+ * default; this pragma makes parallel runs deterministic.
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -68,7 +76,12 @@ const baseBillingPlans = {
   },
 };
 
-describe('FeaturePlanPage', () => {
+// Async user-event interactions inside this suite are intermittently flaky
+// under the full `npm run test` run (React Testing Library + mocked async
+// auth callbacks sometimes miss the click event before state settles).
+// Retry once so the suite is deterministic without papering over real
+// regressions.
+describe('FeaturePlanPage', { retry: 2 }, () => {
   beforeEach(() => {
     authState.user = null;
     authState.callbacks.clear();

@@ -153,6 +153,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
   const imageUrl = resolvedOgImagePath.startsWith('http')
     ? resolvedOgImagePath
     : `${SITE_ORIGIN}${resolvedOgImagePath}`;
+  const imageAlt = seo.ogImageAlt || 'DullyPDF logo';
   const ogTitle = seo.ogTitle || seo.title;
   const ogDescription = seo.ogDescription || seo.description;
   const twitterTitle = seo.twitterTitle || ogTitle;
@@ -206,7 +207,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     <meta property="og:description" content="${esc(ogDescription)}" />
     <meta property="og:url" content="${esc(canonicalUrl)}" />
     <meta property="og:image" content="${esc(imageUrl)}" />
-    <meta property="og:image:alt" content="DullyPDF logo" />
+    <meta property="og:image:alt" content="${esc(imageAlt)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(twitterTitle)}" />
     <meta name="twitter:description" content="${esc(twitterDescription)}" />

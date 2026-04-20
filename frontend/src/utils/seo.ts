@@ -66,7 +66,8 @@ export const applySeoMetadata = (metadata: RouteSeoMetadata): void => {
   const ogDescription = metadata.ogDescription ?? metadata.description;
   const twitterTitle = metadata.twitterTitle ?? ogTitle;
   const twitterDescription = metadata.twitterDescription ?? ogDescription;
-  const imageUrl = toAbsoluteUrl(DEFAULT_SOCIAL_IMAGE_PATH);
+  const imageUrl = toAbsoluteUrl(metadata.ogImagePath ?? DEFAULT_SOCIAL_IMAGE_PATH);
+  const imageAlt = metadata.ogImageAlt ?? DEFAULT_SOCIAL_IMAGE_ALT;
 
   document.title = metadata.title;
 
@@ -82,7 +83,7 @@ export const applySeoMetadata = (metadata: RouteSeoMetadata): void => {
   ensureMetaByProperty('og:description').setAttribute('content', ogDescription);
   ensureMetaByProperty('og:url').setAttribute('content', canonicalUrl);
   ensureMetaByProperty('og:image').setAttribute('content', imageUrl);
-  ensureMetaByProperty('og:image:alt').setAttribute('content', DEFAULT_SOCIAL_IMAGE_ALT);
+  ensureMetaByProperty('og:image:alt').setAttribute('content', imageAlt);
 
   ensureMetaByName('twitter:card').setAttribute('content', 'summary_large_image');
   ensureMetaByName('twitter:title').setAttribute('content', twitterTitle);

@@ -20,12 +20,15 @@ function createProps(overrides: Partial<LegacyHeaderProps> = {}): LegacyHeaderPr
 }
 
 describe('LegacyHeader', () => {
+  it('renders homepage branding text without adding a competing page heading', () => {
+    render(<LegacyHeader {...createProps({ currentView: 'homepage' })} />);
+
+    expect(screen.getByText('PDF Form Generator')).toBeTruthy();
+    expect(screen.queryByRole('heading', { name: 'PDF Form Generator' })).toBeNull();
+    expect(screen.getByText('Transform PDFs into interactive forms with AI-powered field detection')).toBeTruthy();
+  });
+
   it.each([
-    [
-      'homepage',
-      'PDF Form Generator',
-      'Transform PDFs into interactive forms with AI-powered field detection',
-    ],
     ['upload', 'Upload PDF Document', 'Select a PDF file to begin automatic form field detection'],
     ['processing', 'Processing Document', 'Analyzing document and detecting form fields using AI'],
     ['editor', 'Form Field Editor', 'Review and edit detected form fields with precision tools'],

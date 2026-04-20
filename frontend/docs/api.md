@@ -4,11 +4,11 @@ This document describes the implemented Anvil-style template fill API in DullyPD
 
 The target user flow is:
 
-1. A user saves a PDF template in DullyPDF.
+1. A user saves a PDF template or a saved group in DullyPDF.
 2. The user clicks `API Fill`.
-3. DullyPDF publishes a frozen API snapshot for that saved template and generates a scoped secret key.
+3. DullyPDF publishes a frozen API snapshot for that saved template or group and generates a scoped secret key.
 4. The user sends JSON data to a server-side API endpoint.
-5. DullyPDF returns a final PDF binary response.
+5. DullyPDF returns either a final PDF binary response or, for a group endpoint, a ZIP of per-template PDFs.
 
 Example target contract:
 
@@ -45,8 +45,8 @@ This feature should be built as `API Fill`, not as a public wrapper around the e
 That distinction matters:
 
 - `POST /api/forms/materialize` currently trusts a client-supplied PDF upload plus a client-supplied field payload.
-- A proper API fill product should trust only a server-owned published snapshot of a saved template.
-- The public API should fill one saved template at a time from JSON values, not accept arbitrary PDFs per request.
+- A proper API fill product should trust only a server-owned published snapshot of a saved template or saved group.
+- The public API should fill one saved template or one saved group snapshot at a time from JSON values, not accept arbitrary PDFs per request.
 
 This is intentionally similar to Anvil's PDF fill model:
 
@@ -65,6 +65,7 @@ References:
 - Milestone 1 is implemented on the backend: owner publish/list/rotate/revoke/schema routes plus frozen snapshot persistence.
 - Milestone 2 is implemented end-to-end: public `GET /api/v1/fill/{endpointId}/schema`, public `POST /api/v1/fill/{endpointId}.pdf`, and a workspace `API Fill` manager button/dialog for saved templates.
 - Milestone 3 is implemented: endpoint audit events, account monthly usage counters, per-endpoint/public rate limits, owner plan/page enforcement, and a hardened manager dialog that surfaces limits plus recent activity.
+- Milestone 4 is implemented: saved groups can now be published as group API Fill endpoints; public `POST /api/v1/fill/{endpointId}.zip` materializes the reviewed packet as a ZIP of per-template PDFs from one JSON payload.
 
 ## Non-goals for v1
 
@@ -72,24 +73,23 @@ References:
 - No browser-side long-lived API key usage.
 - No direct public use of `POST /api/forms/materialize`.
 - No arbitrary unsaved editor-state filling.
-- No packet/group API filling in v1.
 - No customer-managed API Fill webhooks in v1. Signing lifecycle webhooks now exist as backend-configured server-to-server delivery and stay separate from the API Fill surface.
 - No async job model unless page counts or latency force it later.
 
 ## Core design decisions
 
-### Template-scoped key, not user-scoped key
+### Template- or group-scoped key, not user-scoped key
 
-The correct security model is one API endpoint per published saved template, with a secret key scoped to that endpoint.
+The correct security model is one API endpoint per published saved template or saved group, with a secret key scoped to that endpoint.
 
 Do not use one master key per user account.
 
 Why:
 
-- Least privilege: a leaked key only affects one template.
+- Least privilege: a leaked key only affects one published endpoint.
 - Safer rotation: one integration can rotate without breaking others.
-- Better auditability: usage is attributable to one template endpoint.
-- Better product UX: `Publish API for this template` is simple and clear.
+- Better auditability: usage is attributable to one endpoint instead of one whole account.
+- Better product UX: `Publish API for this template` or `Publish API for this group` is simple and clear.
 
 ### Frozen publish snapshot
 

@@ -25,6 +25,7 @@ _ROUTER_MODULES = {
     "public_router": ".public",
     "saved_forms_router": ".saved_forms",
     "schemas_router": ".schemas",
+    "search_fill_usage_router": ".search_fill_usage",
     "sessions_router": ".sessions",
     "signing_public_router": ".signing_public",
     "signing_router": ".signing",

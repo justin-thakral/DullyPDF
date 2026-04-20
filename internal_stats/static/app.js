@@ -6,6 +6,9 @@ const METRIC_OPTIONS = [
   { key: 'fillLinkResponses', label: 'Fill Link Responses' },
   { key: 'apiFills', label: 'API Fills' },
   { key: 'signingRequests', label: 'Signing Requests' },
+  { key: 'structuredFillCredits', label: 'Structured Fill Credits' },
+  { key: 'structuredFillCommits', label: 'Structured Fill Commits' },
+  { key: 'structuredFillMatchedPdfs', label: 'Structured Fill Matched PDFs' },
 ];
 
 const numberFormatter = new Intl.NumberFormat();
@@ -95,6 +98,24 @@ function renderCards(globalStats = {}) {
     ['Fill Link Responses', globalStats.totalFillLinkResponses, `${formatCount(globalStats.totalActiveFillLinks)} active links`],
     ['API Endpoints', globalStats.totalApiEndpoints, `${formatCount(globalStats.totalActiveApiEndpoints)} active endpoints`],
     ['Signing Requests', globalStats.totalSigningRequests, `${formatCount(globalStats.totalCompletedSigningRequests)} completed requests`],
+    [
+      'Search & Fill Credits',
+      globalStats.totalStructuredFillCredits,
+      `${formatCount(globalStats.totalStructuredFillCommits)} commits · ${formatCount(globalStats.totalStructuredFillMatchedPdfs)} matched PDFs`,
+    ],
+    [
+      'Search & Fill by Source',
+      (globalStats.totalStructuredFillCsvCredits || 0)
+        + (globalStats.totalStructuredFillExcelCredits || 0)
+        + (globalStats.totalStructuredFillSqlCredits || 0)
+        + (globalStats.totalStructuredFillJsonCredits || 0)
+        + (globalStats.totalStructuredFillTxtCredits || 0),
+      `CSV ${formatCount(globalStats.totalStructuredFillCsvCredits)} · `
+      + `XLSX ${formatCount(globalStats.totalStructuredFillExcelCredits)} · `
+      + `SQL ${formatCount(globalStats.totalStructuredFillSqlCredits)} · `
+      + `JSON ${formatCount(globalStats.totalStructuredFillJsonCredits)} · `
+      + `TXT ${formatCount(globalStats.totalStructuredFillTxtCredits)}`,
+    ],
   ];
   for (const [label, value, note] of cards) {
     const card = document.createElement('article');
@@ -167,7 +188,7 @@ function renderTable() {
   const users = getSortedUsers();
   if (users.length === 0) {
     const row = document.createElement('tr');
-    row.innerHTML = '<td colspan="9" class="empty-state">No users match the current search.</td>';
+    row.innerHTML = '<td colspan="11" class="empty-state">No users match the current search.</td>';
     userRows.appendChild(row);
     return;
   }
@@ -188,6 +209,8 @@ function renderTable() {
       <td>${formatCount(user.fillLinkResponses)}</td>
       <td>${formatCount(user.apiFills)}</td>
       <td>${formatCount(user.signingRequests)}</td>
+      <td>${formatCount(user.structuredFillCredits)}</td>
+      <td>${formatCount(user.structuredFillCommits)}</td>
       <td>${formatDateTime(user.lastActivityAt)}</td>
     `;
     userRows.appendChild(row);

@@ -36,6 +36,10 @@ function buildProps(overrides: Partial<ComponentProps<typeof SearchFillModal>> =
     onError: vi.fn(),
     onRequestDataSource: vi.fn(),
     demoSearch: null,
+    // Disable crediting by default so existing tests stay focused on
+    // application behavior; the structured-fill crediting tests opt back in
+    // by setting `structuredFillCreditingEnabled: true` + a templateId.
+    structuredFillCreditingEnabled: false as const,
     ...overrides,
   };
 }
@@ -176,6 +180,7 @@ describe('SearchFillModal', () => {
           email: 'grace@example.com',
         },
         dataSourceKind: 'csv',
+        structuredFillCommit: null,
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
@@ -253,6 +258,7 @@ describe('SearchFillModal', () => {
       expect(onAfterFill).toHaveBeenCalledWith({
         row: { mrn: '100', full_name: 'Ada Lovelace' },
         dataSourceKind: 'csv',
+        structuredFillCommit: null,
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
@@ -914,6 +920,7 @@ describe('SearchFillModal', () => {
       expect(onAfterFill).toHaveBeenCalledWith({
         row: { patient_name: 'Justin Thakral', patient_city: 'San Francisco', medication_1: 'Lisinopril 10mg' },
         dataSourceKind: 'sql',
+        structuredFillCommit: null,
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
@@ -959,5 +966,276 @@ describe('SearchFillModal', () => {
     expect(
       screen.getByText('The connected source is schema-only (no row data). Upload a CSV, Excel, or JSON file with rows to search and fill.'),
     ).toBeTruthy();
+  });
+
+  describe('structured fill crediting', () => {
+    it('commits Search & Fill usage before mutating fields when templateId is provided', async () => {
+      const user = userEvent.setup();
+      const onFieldsChange = vi.fn();
+      const onAfterFill = vi.fn();
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi
+        .spyOn(ApiService, 'commitSearchFillUsage')
+        .mockResolvedValue({
+          status: 'committed',
+          eventId: 'sfe_test_1',
+          requestId: 'sf_test',
+          countIncrement: 1,
+          monthKey: '2026-04',
+          currentMonthUsage: 1,
+          fillsRemaining: 49,
+          monthlyLimit: 50,
+        });
+
+      const fields: PdfField[] = [
+        makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+      ];
+      render(
+        <SearchFillModal
+          {...buildProps({
+            fields,
+            rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+            onFieldsChange,
+            onAfterFill,
+            templateId: 'tpl-1',
+            workspaceSavedFormId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(commitSpy).toHaveBeenCalledTimes(1);
+        expect(onFieldsChange).toHaveBeenCalledTimes(1);
+      });
+      // Commit must be called BEFORE the fields are mutated.
+      const commitCallOrder = commitSpy.mock.invocationCallOrder[0];
+      const fieldsChangeCallOrder = onFieldsChange.mock.invocationCallOrder[0];
+      expect(commitCallOrder).toBeLessThan(fieldsChangeCallOrder);
+
+      const commitArg = commitSpy.mock.calls[0][0];
+      expect(commitArg.scopeType).toBe('template');
+      expect(commitArg.templateId).toBe('tpl-1');
+      expect(commitArg.matchedTemplateIds).toEqual(['tpl-1']);
+      expect(commitArg.countIncrement).toBe(1);
+      expect(commitArg.sourceKind).toBe('csv');
+
+      const afterFillArg = onAfterFill.mock.calls[0][0];
+      expect(afterFillArg.structuredFillCommit).toMatchObject({
+        eventId: 'sfe_test_1',
+        status: 'committed',
+        countIncrement: 1,
+      });
+
+      commitSpy.mockRestore();
+    });
+
+    it('does not mutate fields when commit returns 429', async () => {
+      const user = userEvent.setup();
+      const onFieldsChange = vi.fn();
+      const onAfterFill = vi.fn();
+      const onClose = vi.fn();
+      const { ApiService } = await import('../../../../src/services/api');
+      const { ApiError } = await import('../../../../src/services/apiConfig');
+      const commitSpy = vi
+        .spyOn(ApiService, 'commitSearchFillUsage')
+        .mockRejectedValue(new ApiError('Monthly Search & Fill credit limit reached.', 429, 'structured_fill_limit_reached'));
+
+      const fields: PdfField[] = [
+        makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+      ];
+      render(
+        <SearchFillModal
+          {...buildProps({
+            fields,
+            rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+            onFieldsChange,
+            onAfterFill,
+            onClose,
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(commitSpy).toHaveBeenCalledTimes(1);
+      });
+      expect(onFieldsChange).not.toHaveBeenCalled();
+      expect(onAfterFill).not.toHaveBeenCalled();
+      expect(onClose).not.toHaveBeenCalled();
+      expect(screen.getByText(/Monthly Search & Fill credit limit reached/i)).toBeTruthy();
+
+      commitSpy.mockRestore();
+    });
+
+    it('skips commit entirely when structuredFillCreditingEnabled is false', async () => {
+      const user = userEvent.setup();
+      const onFieldsChange = vi.fn();
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi.spyOn(ApiService, 'commitSearchFillUsage').mockResolvedValue({
+        status: 'committed',
+        eventId: 'should-not-be-called',
+        requestId: 'req',
+        countIncrement: 1,
+        monthKey: '2026-04',
+        currentMonthUsage: 0,
+        fillsRemaining: 50,
+        monthlyLimit: 50,
+      });
+
+      const fields: PdfField[] = [
+        makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+      ];
+      render(
+        <SearchFillModal
+          {...buildProps({
+            fields,
+            rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+            onFieldsChange,
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: false,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(onFieldsChange).toHaveBeenCalledTimes(1);
+      });
+      expect(commitSpy).not.toHaveBeenCalled();
+
+      commitSpy.mockRestore();
+    });
+
+    it('refuses to fill an unsaved workspace when crediting is enabled (revenue leak guard)', async () => {
+      const user = userEvent.setup();
+      const onFieldsChange = vi.fn();
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi.spyOn(ApiService, 'commitSearchFillUsage');
+
+      const fields: PdfField[] = [
+        makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+      ];
+      render(
+        <SearchFillModal
+          {...buildProps({
+            fields,
+            rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+            onFieldsChange,
+            templateId: null, // <- the bug: no saved form
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Save the form before running Search & Fill/i),
+        ).toBeTruthy();
+      });
+      expect(commitSpy).not.toHaveBeenCalled();
+      expect(onFieldsChange).not.toHaveBeenCalled();
+
+      commitSpy.mockRestore();
+    });
+
+    it('hashes recordFingerprint instead of sending raw PII', async () => {
+      const user = userEvent.setup();
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi
+        .spyOn(ApiService, 'commitSearchFillUsage')
+        .mockResolvedValue({
+          status: 'committed',
+          eventId: 'sfe_hash_test',
+          requestId: 'req',
+          countIncrement: 1,
+          monthKey: '2026-04',
+          currentMonthUsage: 1,
+          fillsRemaining: 49,
+          monthlyLimit: 50,
+        });
+
+      const fields: PdfField[] = [
+        makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+      ];
+      render(
+        <SearchFillModal
+          {...buildProps({
+            fields,
+            rows: [{
+              mrn: '001',
+              full_name: 'Ada Lovelace',
+              dob: '1815-12-10',
+            }],
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(commitSpy).toHaveBeenCalledTimes(1);
+      });
+      const fingerprint = commitSpy.mock.calls[0][0].recordFingerprint;
+      expect(fingerprint).toBeTruthy();
+      // The fingerprint must NOT contain the raw PII. Both Web Crypto SHA-256
+      // (a 64-char hex digest) and the FNV-1a fallback (`fnv1a_<hex>`) pass
+      // this check; the legacy "raw identity joined with |" implementation
+      // would fail it.
+      expect(fingerprint).not.toContain('Ada');
+      expect(fingerprint).not.toContain('Lovelace');
+      expect(fingerprint).not.toContain('1815');
+      const looksHashed =
+        /^[0-9a-f]{64}$/i.test(fingerprint as string)
+        || /^fnv1a_[0-9a-f]+$/.test(fingerprint as string);
+      expect(looksHashed).toBe(true);
+
+      commitSpy.mockRestore();
+    });
+
+    it('does not call commit on no-match (preserves the validation error path)', async () => {
+      const user = userEvent.setup();
+      const onFieldsChange = vi.fn();
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi.spyOn(ApiService, 'commitSearchFillUsage');
+
+      render(
+        <SearchFillModal
+          {...buildProps({
+            fields: [makeField({ id: 'irrelevant', name: 'irrelevant', type: 'text', page: 1 })],
+            rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+            onFieldsChange,
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(screen.getByText(SEARCH_FILL_NO_MATCH_MESSAGE)).toBeTruthy();
+      });
+      expect(commitSpy).not.toHaveBeenCalled();
+      expect(onFieldsChange).not.toHaveBeenCalled();
+
+      commitSpy.mockRestore();
+    });
   });
 });

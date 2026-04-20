@@ -344,6 +344,57 @@ export type ProfileLimits = {
   templateApiRequestsMonthlyMax?: number;
   templateApiMaxPages?: number;
   signingRequestsMonthlyMax?: number;
+  structuredFillMonthlyMax?: number;
+};
+
+export type SearchFillSourceKind = 'csv' | 'excel' | 'sql' | 'json' | 'txt';
+
+export type SearchFillPrecheckResponse = {
+  allowed: boolean;
+  monthlyLimit: number;
+  currentMonthUsage: number;
+  fillsRemaining: number;
+  monthKey: string;
+  sourceKind: SearchFillSourceKind | null;
+  sourceCategory: 'structured_data';
+  pdfCount: number;
+};
+
+export type SearchFillUsageStatus =
+  | 'committed'
+  | 'replayed'
+  | 'rejected_no_match'
+  | 'rejected_limit'
+  | 'rejected_invalid';
+
+export type SearchFillUsageRequest = {
+  requestId: string;
+  sourceKind: SearchFillSourceKind;
+  scopeType?: 'template' | 'group';
+  scopeId?: string | null;
+  templateId?: string | null;
+  groupId?: string | null;
+  targetTemplateIds?: string[];
+  matchedTemplateIds?: string[];
+  countIncrement: number;
+  matchCount: number;
+  recordLabelPreview?: string | null;
+  recordFingerprint?: string | null;
+  dataSourceLabel?: string | null;
+  workspaceSavedFormId?: string | null;
+  searchQueryPreview?: string | null;
+  reviewedFillContext?: Record<string, unknown> | null;
+};
+
+export type SearchFillUsageResponse = {
+  status: SearchFillUsageStatus;
+  eventId: string;
+  requestId: string;
+  countIncrement: number;
+  monthKey: string;
+  currentMonthUsage: number;
+  fillsRemaining: number;
+  monthlyLimit: number;
 };
 
 export type BillingCheckoutKind = 'pro_monthly' | 'pro_yearly' | 'refill_500' | 'free_trial';
@@ -459,6 +510,9 @@ export type UserProfile = {
   refillCreditsRemaining?: number | null;
   availableCredits?: number | null;
   refillCreditsLocked?: boolean;
+  structuredFillCreditsThisMonth?: number | null;
+  structuredFillCreditsRemaining?: number | null;
+  structuredFillUsageMonth?: string | null;
   creditPricing?: CreditPricingConfig;
   billing?: BillingProfileConfig;
   retention?: DowngradeRetentionSummary | null;
@@ -975,6 +1029,54 @@ export class ApiService {
     });
     const payload = await apiJsonFetch<{ retention?: DowngradeRetentionSummary | null }>(response);
     return payload?.retention ?? null;
+  }
+
+  static async precheckSearchFillUsage(params: {
+    pdfCount: number;
+    sourceKind: SearchFillSourceKind;
+  }): Promise<SearchFillPrecheckResponse> {
+    const query = new URLSearchParams({
+      pdfCount: String(Math.max(0, Math.floor(params.pdfCount))),
+      sourceKind: params.sourceKind,
+    });
+    const response = await apiFetch('GET', `/api/search-fill/precheck?${query.toString()}`);
+    return apiJsonFetch(response);
+  }
+
+  static async commitSearchFillUsage(payload: SearchFillUsageRequest): Promise<SearchFillUsageResponse> {
+    const response = await apiFetch('POST', '/api/search-fill/usage', {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: payload.requestId,
+        sourceCategory: 'structured_data',
+        sourceKind: payload.sourceKind,
+        scopeType: payload.scopeType ?? 'template',
+        scopeId: payload.scopeId ?? null,
+        templateId: payload.templateId ?? null,
+        groupId: payload.groupId ?? null,
+        targetTemplateIds: payload.targetTemplateIds ?? [],
+        matchedTemplateIds: payload.matchedTemplateIds ?? [],
+        countIncrement: Math.max(0, Math.floor(payload.countIncrement)),
+        matchCount: Math.max(0, Math.floor(payload.matchCount)),
+        recordLabelPreview: payload.recordLabelPreview ?? null,
+        recordFingerprint: payload.recordFingerprint ?? null,
+        dataSourceLabel: payload.dataSourceLabel ?? null,
+        workspaceSavedFormId: payload.workspaceSavedFormId ?? null,
+        searchQueryPreview: payload.searchQueryPreview ?? null,
+        reviewedFillContext: payload.reviewedFillContext ?? null,
+      }),
+      allowStatuses: [429],
+    });
+    if (response.status === 429) {
+      const payloadBody = await apiJsonFetch<{ detail?: string }>(response).catch(() => null);
+      throw new ApiError(
+        payloadBody?.detail || 'Monthly Search & Fill credit limit reached.',
+        429,
+        'structured_fill_limit_reached',
+        payloadBody,
+      );
+    }
+    return apiJsonFetch(response);
   }
 
   // -- Fill By Link delegations (canonical implementation in FillLinksApiService) --

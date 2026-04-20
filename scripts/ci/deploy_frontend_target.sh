@@ -129,7 +129,9 @@ for required_path in \
   "${REPO_ROOT}/frontend/dist/healthcare-pdf-automation/index.html" \
   "${REPO_ROOT}/frontend/dist/pdf-to-fillable-form/index.html" \
   "${REPO_ROOT}/frontend/dist/usage-docs/index.html" \
-  "${REPO_ROOT}/frontend/dist/sitemap.xml"; do
+  "${REPO_ROOT}/frontend/dist/sitemap.xml" \
+  "${REPO_ROOT}/frontend/dist/sitemap-main.xml" \
+  "${REPO_ROOT}/frontend/dist/sitemap-forms.xml"; do
   if [[ ! -f "$required_path" ]]; then
     echo "Missing required build artifact: ${required_path}" >&2
     exit 1

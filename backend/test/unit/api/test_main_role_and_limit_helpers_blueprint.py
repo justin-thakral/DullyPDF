@@ -45,6 +45,7 @@ def test_resolve_role_limits_aggregates_helpers(app_main, mocker) -> None:
     mocker.patch.object(app_main, "_resolve_template_api_requests_monthly_limit", return_value=250)
     mocker.patch.object(app_main, "_resolve_template_api_max_pages", return_value=25)
     mocker.patch.object(app_main, "_resolve_signing_requests_monthly_limit", return_value=25)
+    mocker.patch.object(app_main, "_resolve_structured_fill_monthly_limit", return_value=50)
     assert app_main._resolve_role_limits("base") == {
         "detectMaxPages": 7,
         "fillableMaxPages": 55,
@@ -54,6 +55,7 @@ def test_resolve_role_limits_aggregates_helpers(app_main, mocker) -> None:
         "templateApiRequestsMonthlyMax": 250,
         "templateApiMaxPages": 25,
         "signingRequestsMonthlyMax": 25,
+        "structuredFillMonthlyMax": 50,
     }
 
 
@@ -102,6 +104,9 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_BASE",
         "SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_PRO",
         "SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_GOD",
+        "SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_BASE",
+        "SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_PRO",
+        "SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_GOD",
     ):
         monkeypatch.delenv(env_name, raising=False)
 
@@ -117,6 +122,7 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "templateApiRequestsMonthlyMax": 250,
         "templateApiMaxPages": 50,
         "signingRequestsMonthlyMax": 25,
+        "structuredFillMonthlyMax": 50,
     }
     assert app_main._resolve_role_limits("pro") == {
         "detectMaxPages": 100,
@@ -127,6 +133,7 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "templateApiRequestsMonthlyMax": 10000,
         "templateApiMaxPages": 500,
         "signingRequestsMonthlyMax": 10000,
+        "structuredFillMonthlyMax": 10000,
     }
     assert app_main._resolve_role_limits("god") == {
         "detectMaxPages": 100,
@@ -137,4 +144,5 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "templateApiRequestsMonthlyMax": 100000,
         "templateApiMaxPages": 2000,
         "signingRequestsMonthlyMax": 100000,
+        "structuredFillMonthlyMax": 100000,
     }

@@ -105,6 +105,12 @@ export default defineConfig(({ mode }) => {
       setupFiles: './test/setup.ts',
       clearMocks: true,
       restoreMocks: true,
+      // Run each test file in its own forked process with isolate: true so
+      // page-level React Testing Library tests can't collide on a shared
+      // worker whose jsdom state was torn down by a prior file. This trades
+      // ~10-20% total runtime for deterministic `npm run test` behavior.
+      pool: 'forks',
+      isolate: true,
     },
     server: {
       proxy: {

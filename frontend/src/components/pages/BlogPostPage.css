@@ -96,6 +96,33 @@
   margin: 0;
 }
 
+.blog-post__cover {
+  margin: 1.35rem 0 0;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 22px;
+  background:
+    radial-gradient(720px at 0% 0%, rgba(191, 219, 254, 0.34), transparent 60%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98) 0%, rgba(255, 255, 255, 0.98) 100%);
+  box-shadow: 0 20px 36px rgba(15, 23, 42, 0.05);
+}
+
+.blog-post__cover-image {
+  display: block;
+  width: 100%;
+  max-height: 460px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.blog-post__cover figcaption {
+  margin-top: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.62;
+  color: #64748b;
+}
+
 .blog-post__inline-links {
   margin-top: 1.2rem;
   padding: 1rem 1.1rem;

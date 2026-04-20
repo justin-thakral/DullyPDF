@@ -80,11 +80,11 @@ export const FORM_CATALOG_EXTERNAL_SOURCES = {
       },
       {
         "label": "SF-3881 - ACH Vendor/Miscellaneous Payment Enrollment Form",
-        "url": "https://www.gsa.gov/cdnstatic/SF3881-03b.pdf"
+        "url": "https://www.gsa.gov/system/files/SF3881-03b.pdf"
       },
       {
         "label": "SF-1199A - Direct Deposit Sign-Up Form",
-        "url": "https://www.gsa.gov/cdnstatic/SF1199A-20.pdf"
+        "url": "https://www.gsa.gov/system/files/SF1199A-20.pdf"
       }
     ]
   },

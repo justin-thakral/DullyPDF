@@ -1514,4 +1514,100 @@ describe('ApiService', () => {
       ] as any),
     ).rejects.toThrow('Failed to generate fillable PDF: Unprocessable Entity');
   });
+
+  it('precheckSearchFillUsage builds the query string and returns the payload', async () => {
+    apiConfigMocks.apiFetch.mockResolvedValueOnce({ id: 'precheck-response' });
+    apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
+      allowed: true,
+      monthlyLimit: 50,
+      currentMonthUsage: 3,
+      fillsRemaining: 47,
+      monthKey: '2026-04',
+      sourceKind: 'csv',
+      sourceCategory: 'structured_data',
+      pdfCount: 1,
+    });
+
+    const result = await ApiService.precheckSearchFillUsage({ pdfCount: 1, sourceKind: 'csv' });
+
+    expect(result.allowed).toBe(true);
+    expect(result.fillsRemaining).toBe(47);
+    expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith(
+      'GET',
+      '/api/search-fill/precheck?pdfCount=1&sourceKind=csv',
+    );
+  });
+
+  it('commitSearchFillUsage posts the full commit payload and normalizes counts', async () => {
+    apiConfigMocks.apiFetch.mockResolvedValueOnce({ id: 'commit-response' });
+    apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
+      status: 'committed',
+      eventId: 'sfe_1',
+      requestId: 'req_1',
+      countIncrement: 3,
+      monthKey: '2026-04',
+      currentMonthUsage: 3,
+      fillsRemaining: 47,
+      monthlyLimit: 50,
+    });
+
+    const response = await ApiService.commitSearchFillUsage({
+      requestId: 'req_1',
+      sourceKind: 'excel',
+      scopeType: 'group',
+      groupId: 'grp-9',
+      targetTemplateIds: ['tpl-a', 'tpl-b', 'tpl-c', 'tpl-d'],
+      matchedTemplateIds: ['tpl-a', 'tpl-b', 'tpl-c'],
+      countIncrement: 3,
+      matchCount: 3,
+      recordLabelPreview: 'Justin Thakral',
+      recordFingerprint: 'fp-abc',
+      dataSourceLabel: 'customers.xlsx',
+    });
+
+    expect(response.status).toBe('committed');
+    expect(response.eventId).toBe('sfe_1');
+    expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith(
+      'POST',
+      '/api/search-fill/usage',
+      expect.objectContaining({
+        headers: { 'Content-Type': 'application/json' },
+        allowStatuses: [429],
+      }),
+    );
+    const bodyString = apiConfigMocks.apiFetch.mock.calls[0][2]!.body as string;
+    const parsed = JSON.parse(bodyString);
+    expect(parsed).toMatchObject({
+      sourceCategory: 'structured_data',
+      sourceKind: 'excel',
+      scopeType: 'group',
+      groupId: 'grp-9',
+      countIncrement: 3,
+      matchCount: 3,
+      matchedTemplateIds: ['tpl-a', 'tpl-b', 'tpl-c'],
+    });
+  });
+
+  it('commitSearchFillUsage surfaces 429 as a typed ApiError', async () => {
+    apiConfigMocks.apiFetch.mockResolvedValueOnce({ status: 429 });
+    apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
+      detail: 'Monthly Search & Fill credit limit reached.',
+    });
+
+    await expect(
+      ApiService.commitSearchFillUsage({
+        requestId: 'req_429',
+        sourceKind: 'csv',
+        scopeType: 'template',
+        templateId: 'tpl-1',
+        targetTemplateIds: ['tpl-1'],
+        matchedTemplateIds: ['tpl-1'],
+        countIncrement: 1,
+        matchCount: 1,
+      }),
+    ).rejects.toMatchObject({
+      status: 429,
+      message: 'Monthly Search & Fill credit limit reached.',
+    });
+  });
 });

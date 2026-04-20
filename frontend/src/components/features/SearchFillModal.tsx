@@ -9,11 +9,95 @@ import type {
 import './SearchFillModal.css';
 import type { CheckboxRule, TextTransformRule } from '../../types';
 import {
+  ApiService,
+  type SearchFillSourceKind,
+  type SearchFillUsageResponse,
+} from '../../services/api';
+import { ApiError } from '../../services/apiConfig';
+import {
   applySearchFillRowToFieldsWithStats,
   SEARCH_FILL_NO_MATCH_MESSAGE,
 } from '../../utils/searchFillApply';
 import { Alert } from '../ui/Alert';
 import { DialogCloseButton, DialogFrame } from '../ui/Dialog';
+
+export type StructuredFillCommitProvenance = {
+  eventId: string;
+  requestId: string;
+  status: SearchFillUsageResponse['status'];
+  countIncrement: number;
+  sourceKind: SearchFillSourceKind;
+  recordFingerprint: string | null;
+};
+
+const STRUCTURED_FILL_SOURCE_KINDS: ReadonlySet<SearchFillSourceKind> = new Set([
+  'csv',
+  'excel',
+  'sql',
+  'json',
+  'txt',
+]);
+
+function toStructuredFillSourceKind(value: DataSourceKind): SearchFillSourceKind | null {
+  return STRUCTURED_FILL_SOURCE_KINDS.has(value as SearchFillSourceKind)
+    ? (value as SearchFillSourceKind)
+    : null;
+}
+
+function buildStructuredFillRequestId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return `sf_${crypto.randomUUID()}`;
+  }
+  return `sf_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function collectFingerprintParts(
+  row: Record<string, unknown>,
+  identifierKey: string | null,
+): string[] {
+  const parts: string[] = [];
+  const push = (value: unknown) => {
+    const text = String(value ?? '').trim();
+    if (text) parts.push(text);
+  };
+  if (identifierKey && row[identifierKey] !== undefined) push(row[identifierKey]);
+  const lowered = new Map<string, unknown>();
+  for (const [key, value] of Object.entries(row)) {
+    lowered.set(key.toLowerCase(), value);
+  }
+  push(lowered.get('full_name'));
+  push(lowered.get('first_name'));
+  push(lowered.get('last_name'));
+  push(lowered.get('dob') ?? lowered.get('date_of_birth'));
+  return parts;
+}
+
+async function sha256Hex(input: string): Promise<string> {
+  if (typeof crypto !== 'undefined' && crypto.subtle && typeof crypto.subtle.digest === 'function') {
+    const buf = new TextEncoder().encode(input);
+    const digest = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(digest))
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+  }
+  // Deterministic fallback hash (FNV-1a) when Web Crypto is unavailable —
+  // used only in exotic/test environments. Still non-reversible for raw PII.
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < input.length; i += 1) {
+    hash ^= input.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return `fnv1a_${hash.toString(16).padStart(8, '0')}`;
+}
+
+async function buildRecordFingerprint(
+  row: Record<string, unknown>,
+  identifierKey: string | null,
+): Promise<string | null> {
+  const parts = collectFingerprintParts(row, identifierKey);
+  if (parts.length === 0) return null;
+  return sha256Hex(parts.join('|'));
+}
 
 type SearchMode = 'contains' | 'equals';
 
@@ -42,7 +126,11 @@ type SearchFillModalProps = {
   textTransformRules?: TextTransformRule[];
   onFieldsChange: (next: PdfField[]) => void;
   onClearFields: () => void;
-  onAfterFill: (payload: { row: Record<string, unknown>; dataSourceKind: DataSourceKind }) => void;
+  onAfterFill: (payload: {
+    row: Record<string, unknown>;
+    dataSourceKind: DataSourceKind;
+    structuredFillCommit?: StructuredFillCommitProvenance | null;
+  }) => void;
   onError: (message: string) => void;
   onRequestDataSource?: (kind: 'csv' | 'excel' | 'json') => void;
   searchPreset?: {
@@ -65,7 +153,14 @@ type SearchFillModalProps = {
   } | null;
   fillTargets?: Array<{ id: string; name: string }>;
   activeFillTargetId?: string | null;
-  onFillTargets?: (row: Record<string, unknown>, targetIds: string[]) => void | Promise<void>;
+  onFillTargets?: (
+    row: Record<string, unknown>,
+    targetIds: string[],
+  ) => Promise<{ structuredFillCommit?: StructuredFillCommitProvenance | null } | void> | void;
+  templateId?: string | null;
+  groupId?: string | null;
+  workspaceSavedFormId?: string | null;
+  structuredFillCreditingEnabled?: boolean;
 };
 
 const VALIDATION_ERRORS = new Set([
@@ -136,6 +231,13 @@ export default function SearchFillModal({
   fillTargets,
   activeFillTargetId = null,
   onFillTargets,
+  templateId = null,
+  // `groupId` is intentionally not destructured here: the modal never sends
+  // a group-scope commit of its own — `onFillTargets` delegates to
+  // useGroupTemplateCache which owns that path. Keeping the prop in the
+  // type definition documents the scope for consumers; the modal ignores it.
+  workspaceSavedFormId = null,
+  structuredFillCreditingEnabled = true,
 }: SearchFillModalProps) {
   const resolvedFillTargets = fillTargets ?? [];
   const resolvedSearchPreset = demoSearch ?? searchPreset ?? null;
@@ -252,6 +354,8 @@ export default function SearchFillModal({
   const handleFill = useCallback(
     async (row: Record<string, unknown>): Promise<boolean> => {
       setLocalError(null);
+      const chargeableSourceKind = toStructuredFillSourceKind(dataSourceKind);
+      let structuredFillCommit: StructuredFillCommitProvenance | null = null;
       try {
         if (hasGroupFillTargets && onFillTargets) {
           const targetIds = selectedFillTargetIds.filter((targetId) => fillTargetLookup.has(targetId));
@@ -259,7 +363,10 @@ export default function SearchFillModal({
             setLocalError('Select at least one PDF target before filling.');
             return false;
           }
-          await onFillTargets(row, targetIds);
+          const groupResult = await onFillTargets(row, targetIds);
+          if (groupResult && typeof groupResult === 'object' && groupResult.structuredFillCommit) {
+            structuredFillCommit = groupResult.structuredFillCommit;
+          }
         } else {
           const searchFillResult = applySearchFillRowToFieldsWithStats({
             row,
@@ -272,9 +379,74 @@ export default function SearchFillModal({
             setLocalError(SEARCH_FILL_NO_MATCH_MESSAGE);
             return false;
           }
+          // Single-template fill: commit one Search & Fill credit before
+          // mutating local field state so a 429 / commit failure can't leave
+          // the workspace with applied-but-unbilled changes.
+          //
+          // If crediting is enabled for this source kind but we don't have a
+          // templateId to attribute the charge to, refuse the fill rather
+          // than silently skipping the charge (a free-fill path a user could
+          // exploit by never saving). `structuredFillCreditingEnabled=false`
+          // is the explicit bypass used by demo mode.
+          if (
+            structuredFillCreditingEnabled
+            && chargeableSourceKind
+            && !templateId
+          ) {
+            setLocalError('Save the form before running Search & Fill so usage can be attributed.');
+            return false;
+          }
+          if (
+            structuredFillCreditingEnabled
+            && chargeableSourceKind
+            && templateId
+          ) {
+            const fingerprint = await buildRecordFingerprint(row, identifierKey);
+            const labelPreview = (() => {
+              const match = results.find((entry) => entry.row === row);
+              if (match) {
+                return [match.preview.title, match.preview.subtitle].filter(Boolean).join(' — ');
+              }
+              return null;
+            })();
+            const requestId = buildStructuredFillRequestId();
+            try {
+              const commitResponse = await ApiService.commitSearchFillUsage({
+                requestId,
+                sourceKind: chargeableSourceKind,
+                scopeType: 'template',
+                scopeId: templateId,
+                templateId,
+                targetTemplateIds: [templateId],
+                matchedTemplateIds: [templateId],
+                countIncrement: 1,
+                matchCount: 1,
+                recordLabelPreview: labelPreview,
+                recordFingerprint: fingerprint,
+                dataSourceLabel,
+                workspaceSavedFormId: workspaceSavedFormId ?? templateId,
+              });
+              structuredFillCommit = {
+                eventId: commitResponse.eventId,
+                requestId: commitResponse.requestId,
+                status: commitResponse.status,
+                countIncrement: commitResponse.countIncrement,
+                sourceKind: chargeableSourceKind,
+                recordFingerprint: fingerprint,
+              };
+            } catch (commitError) {
+              if (commitError instanceof ApiError && commitError.status === 429) {
+                setLocalError(
+                  commitError.message || 'Monthly Search & Fill credit limit reached.',
+                );
+                return false;
+              }
+              throw commitError;
+            }
+          }
           onFieldsChange(searchFillResult.fields);
         }
-        onAfterFill({ row, dataSourceKind });
+        onAfterFill({ row, dataSourceKind, structuredFillCommit });
         onClose();
         return true;
       } catch (error) {
@@ -286,17 +458,23 @@ export default function SearchFillModal({
     },
     [
       checkboxRules,
+      dataSourceKind,
+      dataSourceLabel,
       fields,
+      fillTargetLookup,
+      hasGroupFillTargets,
+      identifierKey,
       onAfterFill,
       onClose,
       onError,
       onFieldsChange,
       onFillTargets,
-      fillTargetLookup,
-      hasGroupFillTargets,
-      dataSourceKind,
+      results,
       selectedFillTargetIds,
+      structuredFillCreditingEnabled,
+      templateId,
       textTransformRules,
+      workspaceSavedFormId,
     ],
   );
 

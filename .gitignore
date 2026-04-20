@@ -136,7 +136,13 @@ serviceAccounts/
 # Local screenshots and walkthrough captures
 /homepage-*.png
 /walkthrough-*.png
+/fillapi-*.png
+/fillapi-*.jpg
 /group-publish-state.yml
+
+# Local SEO analytics exports (ahrefs, GSC, etc.)
+/ahref/
+/ahrefs/
 
 # Video assets (local recordings)
 /youtube/

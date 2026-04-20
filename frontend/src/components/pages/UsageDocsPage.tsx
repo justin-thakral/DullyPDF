@@ -11,6 +11,7 @@ import { Breadcrumbs } from '../ui/Breadcrumbs';
 import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import type { IntentPageKey } from '../../config/intentPages';
 import { getIntentPage } from '../../config/intentPages';
+import { getBlogGuideLinksForUsageDocsPage } from '../../config/blogRelations';
 import {
   FILL_PDF_FROM_FILE_DEMO_VIDEO,
   FULL_FEATURE_DEMO_VIDEO,
@@ -44,6 +45,10 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
       return { label: p.navLabel, href: p.path };
     });
   }, [page.relatedWorkflowKeys]);
+  const relatedGuides = useMemo(
+    () => getBlogGuideLinksForUsageDocsPage(page.key, page.relatedWorkflowKeys ?? []),
+    [page.key, page.relatedWorkflowKeys],
+  );
   const adjacentDocs = useMemo(() => {
     const currentIndex = pages.findIndex((entry) => entry.key === pageKey);
     return pages.filter((entry, index) => entry.key !== pageKey && Math.abs(index - currentIndex) <= 2);
@@ -165,6 +170,23 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
                   {relatedWorkflows.map((link) => (
                     <li key={link.href}>
                       <a href={link.href}>{link.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {relatedGuides.length > 0 && (
+              <section className="usage-docs-section usage-docs-section--related">
+                <h2>Related guides</h2>
+                <p>
+                  These blog posts show concrete rollout examples and comparisons for the same workflow area, which is
+                  useful when you want a narrower example before returning to the operational docs.
+                </p>
+                <ul>
+                  {relatedGuides.map((guide) => (
+                    <li key={guide.href}>
+                      <a href={guide.href}>{guide.title}</a>
                     </li>
                   ))}
                 </ul>

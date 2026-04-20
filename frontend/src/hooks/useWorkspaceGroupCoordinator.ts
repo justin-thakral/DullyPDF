@@ -220,6 +220,8 @@ type DataSourceController = {
   setSchemaUploadInProgress: (value: boolean) => void;
   dataColumns: string[];
   dataSourceKind: DataSourceKind;
+  dataSourceLabel: string | null;
+  identifierKey: string | null;
   resolveSchemaForMapping: (mode: 'map' | 'renameAndMap') => Promise<string | null>;
 };
 
@@ -366,6 +368,8 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
     openAi: deps.openAi,
     searchFill: {
       dataSourceKind: deps.dataSource.dataSourceKind,
+      dataSourceLabel: deps.dataSource.dataSourceLabel,
+      identifierKey: deps.dataSource.identifierKey,
     },
     setBannerNotice: deps.dialog.setBannerNotice,
     markSavedFillLinkSnapshot: deps.markSavedFillLinkSnapshot,

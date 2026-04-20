@@ -48,6 +48,9 @@ Run this every week for the previous 7 days:
    - `build fillable form from pdf`
    - `pdf to database template`
    - `fill pdf from csv`
+   - `fill multiple pdf documents at once`
+   - `fill entire pdf packet from spreadsheet row`
+   - `search and fill multiple pdfs`
    - `fill information in pdf`
    - `esign pdf workflow`
    - `ueta electronic signature workflow`
@@ -62,6 +65,7 @@ Run this every week for the previous 7 days:
    - `government form automation`
    - `loan application pdf automation`
    - `automate hr onboarding forms`
+   - `employee onboarding packet automation`
    - `legal pdf workflow automation`
    - `automate student application pdfs`
    - `nonprofit pdf form automation`
@@ -94,7 +98,19 @@ Authority growth is not a one-time code change. Use this recurring plan:
 5. Keep internal links updated:
    - intent pages -> other intent pages,
    - intent pages -> docs sections,
-   - docs sections -> matching intent pages.
+   - intent pages -> matching blog guides,
+   - docs sections -> matching intent pages,
+   - docs sections -> matching blog guides,
+   - blog posts -> matching workflow pages, docs pages, and adjacent posts.
+
+## Lower-authority route strategy
+
+- Prefer one canonical workflow page, one matching industry page, and one evidence-heavy blog post per intent cluster before creating more routes.
+- Consolidate long-tail variants into existing pages when the underlying workflow is the same. Avoid launching near-duplicate pages that split links, impressions, and internal-anchor relevance.
+- Use first-hand evidence on the primary pages: product screenshots, focused walkthrough videos, and explicit workflow sequencing that shows what the operator actually does.
+- Prefer first-party screenshots or official blank-form captures over generic stock photos. If a page needs an image, the visual should prove the workflow or the source document, not decorate the page.
+- Keep visible route imagery and social imagery aligned. When a blog or intent page gets a new hero or figure treatment, update the route-level OG image to match that same proof asset instead of leaving the default logo.
+- Let non-branded Search Console demand decide when a cluster deserves a new route. Rising impressions plus weak intent fit is a stronger trigger than brainstorming many page ideas in advance.
 
 ## Release checklist add-on (technical SEO)
 
@@ -111,6 +127,7 @@ Authority growth is not a one-time code change. Use this recurring plan:
 - `/pdf-to-fillable-form`: convert raw PDFs to fillable templates and absorb existing-PDF builder intent (`pdf form builder`, `fillable pdf builder`, `build fillable form from pdf`) until a dedicated builder page is warranted.
 - `/pdf-to-database-template`: map fields to database/schema columns.
 - `/fill-pdf-from-csv`: row-based PDF filling from CSV/XLSX/JSON.
+- `/batch-fill-pdf-forms`: grouped packet workflows plus repeated row-driven filling for queries such as `fill multiple pdf documents at once`, `fill entire pdf packet from spreadsheet row`, and `search and fill multiple pdfs`.
 - `/fill-information-in-pdf`: broad informational fill intent.
 - `/esign-ueta-pdf-workflow`: legal-intent searches around E-SIGN, UETA, immutable record signing, consumer consent, and excluded-category guardrails for supported U.S. business workflows.
 - `/fillable-form-field-name`: field naming normalization and mapping quality.
@@ -120,7 +137,7 @@ Authority growth is not a one-time code change. Use this recurring plan:
 - `/real-estate-pdf-automation`: rental, lease, and mortgage packet workflows.
 - `/government-form-automation`: permit, tax, and licensing form workflows.
 - `/finance-loan-pdf-automation`: loan application and financial disclosure workflows.
-- `/hr-pdf-automation`: onboarding, benefits, and HR document workflows.
+- `/hr-pdf-automation`: onboarding, benefits, employee packet automation, and HR document workflows.
 - `/legal-pdf-workflow-automation`: legal contracts, filings, and case packet workflows.
 - `/education-form-automation`: student application and enrollment workflow coverage.
 - `/nonprofit-pdf-form-automation`: grants, volunteer, and nonprofit intake workflows.

@@ -193,6 +193,20 @@ describe('routeSeo config', () => {
     expect(overBudget).toEqual([]);
   });
 
+  it('keeps form-catalog form page meta descriptions at or under 155 characters', () => {
+    // Google truncates <meta description> around 155 chars on desktop. Every
+    // form page's description is built in publicRouteSeoData.mjs by appending
+    // a shared CTA to the per-form lead; buildFormCatalogMetaDescription
+    // truncates the lead at a word boundary when the concatenation would
+    // overflow. If this starts failing, a new entry.description is long
+    // enough to leave no room for the CTA — shorten the entry.description
+    // or tighten FORM_CATALOG_DESCRIPTION_CTA.
+    const overBudget = ALL_ROUTES
+      .filter((route) => route.kind === 'form-catalog-form')
+      .filter((route) => route.seo.description.length > 155);
+    expect(overBudget).toEqual([]);
+  });
+
   it('adds blog article and breadcrumb structured data with the modified date', () => {
     const post = getBlogPost('auto-fill-pdf-from-spreadsheet');
     expect(post).toBeTruthy();

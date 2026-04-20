@@ -154,6 +154,21 @@ def resolve_signing_requests_monthly_limit(role: Optional[str]) -> int:
     return max(0, _int_env("SANDBOX_SIGNING_REQUESTS_MONTHLY_MAX_BASE", 25))
 
 
+def resolve_structured_fill_monthly_limit(role: Optional[str]) -> int:
+    """Monthly Search & Fill credit cap for row-driven structured data fills.
+
+    Credit cost is defined in ``backend/firebaseDB/structured_fill_database.py``:
+    a single-template fill with at least one match charges 1; a group fill charges
+    the number of matched target PDFs; no-match / schema-only fills charge 0.
+    """
+    normalized = normalize_role(role)
+    if normalized == ROLE_GOD:
+        return max(0, _int_env("SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_GOD", 100000))
+    if normalized == ROLE_PRO:
+        return max(0, _int_env("SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_PRO", 10000))
+    return max(0, _int_env("SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_BASE", 50))
+
+
 def resolve_role_limits(role: Optional[str]) -> Dict[str, int]:
     return {
         "detectMaxPages": resolve_detect_max_pages(role),
@@ -164,4 +179,5 @@ def resolve_role_limits(role: Optional[str]) -> Dict[str, int]:
         "templateApiRequestsMonthlyMax": resolve_template_api_requests_monthly_limit(role),
         "templateApiMaxPages": resolve_template_api_max_pages(role),
         "signingRequestsMonthlyMax": resolve_signing_requests_monthly_limit(role),
+        "structuredFillMonthlyMax": resolve_structured_fill_monthly_limit(role),
     }

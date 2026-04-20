@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getBlogPosts } from '../../config/blogPosts';
+import { getBlogPostPrimaryFigure, getBlogPosts } from '../../config/blogPosts';
 import { BLOG_INDEX_SEO } from '../../config/blogSeo';
 import { applySeoMetadata } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
@@ -46,24 +46,39 @@ const BlogIndexPage = () => {
         </section>
 
         <div className="blog-index__grid">
-          {posts.map((post) => (
-            <article key={post.slug} className="blog-index__post-card">
-              <h2>
-                <a href={`/blog/${post.slug}`}>{post.title}</a>
-              </h2>
-              <time className="blog-index__date" dateTime={post.publishedDate}>
-                {new Date(post.publishedDate + 'T00:00:00').toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </time>
-              <p>{post.summary}</p>
-              <a href={`/blog/${post.slug}`} className="blog-index__read-more">
-                Read more
-              </a>
-            </article>
-          ))}
+          {posts.map((post) => {
+            const coverFigure = getBlogPostPrimaryFigure(post);
+
+            return (
+              <article key={post.slug} className="blog-index__post-card">
+                {coverFigure ? (
+                  <a href={`/blog/${post.slug}`} className="blog-index__post-media">
+                    <img
+                      src={coverFigure.src}
+                      alt={coverFigure.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="blog-index__post-image"
+                    />
+                  </a>
+                ) : null}
+                <h2>
+                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                </h2>
+                <time className="blog-index__date" dateTime={post.publishedDate}>
+                  {new Date(post.publishedDate + 'T00:00:00').toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                <p>{post.summary}</p>
+                <a href={`/blog/${post.slug}`} className="blog-index__read-more">
+                  Read more
+                </a>
+              </article>
+            );
+          })}
         </div>
       </div>
     </PublicSiteFrame>

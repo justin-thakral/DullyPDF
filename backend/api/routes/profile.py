@@ -9,6 +9,7 @@ from fastapi import HTTPException
 
 from backend.ai.credit_pricing import resolve_credit_pricing_config
 from backend.api.schemas import DowngradeRetentionUpdateRequest
+from backend.firebaseDB.structured_fill_database import get_structured_fill_monthly_usage
 from backend.firebaseDB.user_database import (
     ROLE_BASE,
     ROLE_GOD,
@@ -27,7 +28,10 @@ from backend.services.downgrade_retention_service import (
     select_user_retained_templates,
     sync_user_downgrade_retention,
 )
-from backend.services.limits_service import resolve_role_limits
+from backend.services.limits_service import (
+    resolve_role_limits,
+    resolve_structured_fill_monthly_limit,
+)
 
 router = APIRouter()
 
@@ -63,6 +67,17 @@ async def get_profile(authorization: Optional[str] = Header(default=None)) -> Di
         clear_user_downgrade_retention(user.app_user_id)
     billing_is_enabled = billing_enabled()
     billing_record = get_user_billing_record(user.app_user_id) if billing_is_enabled else None
+    structured_fill_usage = get_structured_fill_monthly_usage(user.app_user_id)
+    structured_fill_monthly_max = resolve_structured_fill_monthly_limit(role)
+    structured_fill_credits_this_month = (
+        structured_fill_usage.credit_count if structured_fill_usage is not None else 0
+    )
+    structured_fill_usage_month = (
+        structured_fill_usage.month_key if structured_fill_usage is not None else None
+    )
+    structured_fill_credits_remaining = max(
+        0, structured_fill_monthly_max - structured_fill_credits_this_month
+    )
     return {
         "email": user.email,
         "displayName": user.display_name,
@@ -72,6 +87,9 @@ async def get_profile(authorization: Optional[str] = Header(default=None)) -> Di
         "refillCreditsRemaining": refill_credits_remaining,
         "availableCredits": available_credits,
         "refillCreditsLocked": refill_credits_locked,
+        "structuredFillCreditsThisMonth": structured_fill_credits_this_month,
+        "structuredFillCreditsRemaining": structured_fill_credits_remaining,
+        "structuredFillUsageMonth": structured_fill_usage_month,
         "creditPricing": resolve_credit_pricing_config(),
         "billing": {
             "enabled": billing_is_enabled,
