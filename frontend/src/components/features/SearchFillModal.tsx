@@ -711,7 +711,31 @@ export default function SearchFillModal({
               : 'Find a record locally and populate the current PDF.'}
           </p>
         </div>
-        <DialogCloseButton onClick={onClose} label="Close Search, Fill & Clear dialog" />
+        <div className="searchfill-modal__header-actions">
+          {structuredFillCreditingEnabled && toStructuredFillSourceKind(dataSourceKind) ? (
+            <span
+              className="searchfill-modal__credit-pill"
+              title={
+                hasGroupFillTargets
+                  ? `This fill will debit one Search & Fill credit per matched PDF (${
+                      selectedFillTargetIds.filter((id) => fillTargetLookup.has(id)).length
+                    } selected).`
+                  : 'This fill will debit 1 Search & Fill credit when a match is found.'
+              }
+            >
+              {hasGroupFillTargets
+                ? `Will use ${
+                    selectedFillTargetIds.filter((id) => fillTargetLookup.has(id)).length
+                  } credit${
+                    selectedFillTargetIds.filter((id) => fillTargetLookup.has(id)).length === 1
+                      ? ''
+                      : 's'
+                  }`
+                : 'Will use 1 credit'}
+            </span>
+          ) : null}
+          <DialogCloseButton onClick={onClose} label="Close Search, Fill & Clear dialog" />
+        </div>
       </div>
       <div className="searchfill-modal__body">
         <div className="searchfill-meta">

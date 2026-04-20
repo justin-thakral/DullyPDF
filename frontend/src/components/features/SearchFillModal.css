@@ -29,6 +29,25 @@
   color: #64748b;
 }
 
+.searchfill-modal__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.searchfill-modal__credit-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #1d4ed8;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .searchfill-modal__body {
   padding: 1.25rem 1.5rem;
   display: flex;
