@@ -695,7 +695,7 @@
   transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
 }
 
-.ui-group-menu__item:hover:not(:disabled),
+.ui-group-menu__item:hover:not(:disabled):not([aria-busy='true']),
 .ui-group-menu__item:focus-visible {
   background: rgba(37, 99, 235, 0.18);
   border-color: rgba(96, 165, 250, 0.34);
@@ -712,6 +712,51 @@
 .ui-group-menu__item[aria-disabled='true'] {
   transform: none;
   box-shadow: none;
+}
+
+.ui-group-menu__item--loading {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.ui-group-menu__item--loading:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.ui-group-menu__item--error {
+  opacity: 0.82;
+}
+
+.ui-group-menu__spinner {
+  flex: 0 0 auto;
+  width: 0.78rem;
+  height: 0.78rem;
+  border-radius: 50%;
+  border: 2px solid rgba(191, 219, 254, 0.32);
+  border-top-color: #bfdbfe;
+  animation: ui-group-menu-spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes ui-group-menu-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ui-group-menu__error-badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: rgba(248, 113, 113, 0.22);
+  border: 1px solid rgba(248, 113, 113, 0.48);
+  color: #fecaca;
+  font-size: 0.66rem;
+  font-weight: 700;
 }
 
 .ui-group-menu__label {

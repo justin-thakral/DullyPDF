@@ -5,6 +5,7 @@ export const FORM_CATALOG_CATEGORIES = [
   {"key":"tax_individual","label":"Tax — Individual","sections":["tax_individual"],"count":300,"empty":false,"emptyReason":null},
   {"key":"practice_intake","label":"Practice Intake Templates","sections":["practice_intake"],"count":200,"empty":false,"emptyReason":null},
   {"key":"tax_business","label":"Tax — Business","sections":["tax_business"],"count":200,"empty":false,"emptyReason":null},
+  {"key":"federal_specialized","label":"Federal — Specialized Agencies","sections":["federal_specialized"],"count":195,"empty":false,"emptyReason":null},
   {"key":"tax_payroll","label":"Tax — Payroll","sections":["tax_payroll"],"count":100,"empty":false,"emptyReason":null},
   {"key":"immigration","label":"Immigration & USCIS","sections":["immigration"],"count":85,"empty":false,"emptyReason":null},
   {"key":"nonprofit","label":"Nonprofit","sections":["nonprofit"],"count":77,"empty":false,"emptyReason":null},
@@ -18,9 +19,12 @@ export const FORM_CATALOG_CATEGORIES = [
   {"key":"state_department","label":"State Department (DS forms)","sections":["state_department"],"count":50,"empty":false,"emptyReason":null},
   {"key":"customs_logistics","label":"Customs & Logistics","sections":["customs_logistics"],"count":49,"empty":false,"emptyReason":null},
   {"key":"patient_intake","label":"Patient Health & Appeals","sections":["patient_intake"],"count":49,"empty":false,"emptyReason":null},
+  {"key":"state_dmv","label":"State DMV & Vehicle","sections":["state_dmv"],"count":42,"empty":false,"emptyReason":null},
   {"key":"bankruptcy","label":"Bankruptcy","sections":["bankruptcy"],"count":34,"empty":false,"emptyReason":null},
   {"key":"civil_litigation","label":"Federal Civil Litigation","sections":["civil_litigation"],"count":33,"empty":false,"emptyReason":null},
   {"key":"disaster_emergency","label":"Disaster Recovery & FEMA","sections":["disaster_emergency"],"count":25,"empty":false,"emptyReason":null},
+  {"key":"state_courts","label":"State Courts","sections":["state_courts"],"count":25,"empty":false,"emptyReason":null},
+  {"key":"state_tax","label":"State Tax & Revenue","sections":["state_tax"],"count":19,"empty":false,"emptyReason":null},
   {"key":"acord","label":"ACORD (Insurance)","sections":["acord"],"count":0,"empty":true,"emptyReason":"Copyright-restricted. See form_catalog/acord/links.txt for official ACORD sources."},
   {"key":"contracts_procurement","label":"Contracts & Procurement","sections":["contracts_procurement"],"count":0,"empty":true,"emptyReason":"Hosted forms were pruned from the public catalog. See form_catalog/contracts_procurement/links.txt for official GSA sources."},
   {"key":"criminal_justice","label":"Federal Criminal","sections":["criminal_justice"],"count":0,"empty":true,"emptyReason":"Hosted forms were pruned from the public catalog. See form_catalog/criminal_justice/links.txt for official U.S. Courts sources."},
@@ -28,4 +32,4 @@ export const FORM_CATALOG_CATEGORIES = [
   {"key":"nar_realtor","label":"NAR / Realtor","sections":["nar_realtor"],"count":0,"empty":true,"emptyReason":"NAR / Realtor forms are copyright-restricted. See form_catalog/nar_realtor/links.txt."}
 ];
 
-export const FORM_CATALOG_TOTAL_COUNT = 1526;
+export const FORM_CATALOG_TOTAL_COUNT = 1807;

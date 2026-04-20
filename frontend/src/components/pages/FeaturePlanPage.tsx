@@ -268,6 +268,7 @@ const FeaturePlanPage = ({ pageKey }: FeaturePlanPageProps) => {
       heroKicker="Plan details"
       heroTitle={page.heroTitle}
       heroSummary={page.heroSummary}
+      usePublicChrome
     >
       <section className="intent-page__grid">
         <article className="intent-page__panel">

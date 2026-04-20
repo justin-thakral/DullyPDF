@@ -491,32 +491,55 @@ export function HeaderBar({
                   >
                     {groupTemplates.map((template) => {
                       const status = groupTemplateStatuses[template.id];
-                      const optionDisabled =
-                        status === 'loading' && template.id !== activeGroupTemplateId;
-                      const optionFullLabel = formatGroupTemplateOptionLabel(template, status);
-                      const optionDisplayLabel = formatGroupTemplateOptionLabel(
-                        template,
-                        status,
-                        { maxNameChars: HEADER_GROUP_TEMPLATE_MENU_MAX_CHARS },
-                      );
                       const optionSelected = template.id === activeGroupTemplateId;
+                      const isLoading = status === 'loading' && !optionSelected;
+                      const isError = status === 'error';
+                      const optionFullLabel = formatGroupTemplateOptionLabel(template, status);
+                      const optionDisplayLabel = truncateHeaderText(
+                        template.name,
+                        HEADER_GROUP_TEMPLATE_MENU_MAX_CHARS,
+                      );
+                      const itemClassName = [
+                        'ui-group-menu__item',
+                        optionSelected ? 'ui-group-menu__item--selected' : '',
+                        isLoading ? 'ui-group-menu__item--loading' : '',
+                        isError ? 'ui-group-menu__item--error' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ');
                       return (
                         <button
                           key={template.id}
                           type="button"
-                          className={`ui-group-menu__item${optionSelected ? ' ui-group-menu__item--selected' : ''}`}
+                          className={itemClassName}
                           role="option"
                           aria-selected={optionSelected}
-                          disabled={optionDisabled}
+                          aria-busy={isLoading}
+                          aria-label={optionFullLabel}
                           title={optionFullLabel}
                           onClick={() => {
                             setShowGroupMenu(false);
                             onSelectGroupTemplate?.(template.id);
                           }}
                         >
+                          {isLoading ? (
+                            <span
+                              className="ui-group-menu__spinner"
+                              role="img"
+                              aria-label="Preparing"
+                            />
+                          ) : null}
                           <span className="ui-group-menu__label">{optionDisplayLabel}</span>
                           {optionSelected ? (
                             <span className="ui-group-menu__status" aria-hidden="true">✓</span>
+                          ) : isError ? (
+                            <span
+                              className="ui-group-menu__error-badge"
+                              role="img"
+                              aria-label="Reload needed"
+                            >
+                              !
+                            </span>
                           ) : null}
                         </button>
                       );
