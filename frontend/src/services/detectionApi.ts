@@ -28,27 +28,61 @@ type PollOptions = {
 
 /**
  * Resolve the detection API base URL from env with fallback.
+ *
+ * Three cases:
+ *   1. **Prod** (``import.meta.env.PROD``): emit the current window origin so
+ *      ``https://dullypdf.com/detect-fields`` is hit — Firebase Hosting rewrites
+ *      forward that path to the Cloud Run backend.
+ *   2. **Dev against localhost**: prefer the current window origin
+ *      (``http://127.0.0.1:5173``) so requests flow through Vite's ``/detect-fields``
+ *      proxy. That proxy is already wired to the Vite-side ``VITE_API_URL`` env
+ *      var, which is how the rest of the ``/api`` traffic reaches the backend
+ *      (local uvicorn OR a remote deployed target). Hardcoding
+ *      ``http://localhost:8000`` here used to break detection whenever the user
+ *      ran the frontend against a remote backend because nothing was listening
+ *      on :8000.
+ *   3. **Dev with an explicit override**: ``VITE_DETECTION_API_URL`` wins when
+ *      set — useful for rare setups that need to target a specific backend
+ *      directly without the Vite proxy.
  */
 export function getDetectionApiBase(): string {
-  if (import.meta.env?.PROD && typeof window !== 'undefined' && window.location?.origin) {
+  const env = import.meta.env;
+  const explicitOverride = (env?.VITE_DETECTION_API_URL || '').trim().replace(/\/+$/, '');
+  const fallbackOverride = (env?.VITE_SANDBOX_API_URL || '').trim().replace(/\/+$/, '');
+
+  const hostOf = (value: string): string | null => {
+    try { return new URL(value).hostname.toLowerCase(); } catch { return null; }
+  };
+  const isLocalHost = (host: string | null) => host === 'localhost' || host === '127.0.0.1';
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
     const origin = window.location.origin.trim().replace(/\/+$/, '');
     if (origin) {
-      try {
-        const url = new URL(origin);
-        const host = url.hostname.toLowerCase();
-        if (host && host !== 'localhost' && host !== '127.0.0.1') {
-          return origin;
+      const originHost = hostOf(origin);
+      // Prod: trust the served origin unconditionally.
+      if (env?.PROD && originHost && !isLocalHost(originHost)) {
+        return origin;
+      }
+      // Dev with a localhost origin: prefer env overrides when they point at
+      // a real backend (so devs can target a remote staging env without the
+      // Vite proxy). When no override is set or the override also points at
+      // localhost, fall through to the origin so requests flow through
+      // Vite's ``/detect-fields`` proxy — which was the missing wiring that
+      // caused recurring ``ERR_CONNECTION_REFUSED`` on dev deploys whenever
+      // no backend was listening on the hardcoded ``localhost:8000`` default.
+      if (!env?.PROD && originHost && isLocalHost(originHost)) {
+        if (explicitOverride && !isLocalHost(hostOf(explicitOverride))) {
+          return explicitOverride;
         }
-      } catch {
-        // Fall back to env-driven detection routing below if the browser origin is malformed.
+        if (fallbackOverride && !isLocalHost(hostOf(fallbackOverride))) {
+          return fallbackOverride;
+        }
+        return origin;
       }
     }
   }
-  const env = import.meta.env;
-  const raw = env?.VITE_DETECTION_API_URL || env?.VITE_SANDBOX_API_URL;
-  const trimmed = typeof raw === 'string' ? raw.trim() : '';
-  const normalised = trimmed ? trimmed.replace(/\/+$/, '') : DEFAULT_DETECTION_API;
-  return normalised || DEFAULT_DETECTION_API;
+
+  return explicitOverride || fallbackOverride || DEFAULT_DETECTION_API;
 }
 
 type DetectOptions = {

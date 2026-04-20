@@ -28,20 +28,38 @@ describe('detectionApi', () => {
     vi.unstubAllEnvs();
   });
 
-  it('selects detection API base from env and falls back to localhost', async () => {
+  it('selects detection API base from env and falls back to the served origin', async () => {
+    // Explicit non-localhost override wins (useful for pointing the dev
+    // frontend at a remote staging backend).
     vi.stubEnv('VITE_DETECTION_API_URL', ' https://detect.local/ ');
     let module = await importDetectionApi();
     expect(module.getDetectionApiBase()).toBe('https://detect.local');
 
+    // Fallback VITE_SANDBOX_API_URL wins when VITE_DETECTION_API_URL is empty.
     vi.stubEnv('VITE_DETECTION_API_URL', '');
     vi.stubEnv('VITE_SANDBOX_API_URL', ' https://sandbox.local/// ');
     module = await importDetectionApi();
     expect(module.getDetectionApiBase()).toBe('https://sandbox.local');
 
+    // With no overrides and a localhost origin, fall back to the served
+    // origin so Vite's ``/detect-fields`` proxy is responsible for routing.
+    // Previously this returned DEFAULT_DETECTION_API (``http://localhost:8000``)
+    // which broke detection whenever nothing was listening on :8000 — the
+    // recurring breakage every dev deploy triggered.
     vi.stubEnv('VITE_DETECTION_API_URL', '');
     vi.stubEnv('VITE_SANDBOX_API_URL', '');
     module = await importDetectionApi();
-    expect(module.getDetectionApiBase()).toBe('http://localhost:8000');
+    expect(module.getDetectionApiBase()).toBe('http://localhost:3000');
+  });
+
+  it('ignores localhost overrides and prefers the served origin instead', async () => {
+    // This is the exact failure mode of the recurring bug: an env override
+    // like ``http://localhost:8000`` leaked from a stale ``.env.local``
+    // would send direct POSTs to :8000, bypassing Vite's proxy. The new
+    // resolver treats localhost overrides as "just use the proxy".
+    vi.stubEnv('VITE_DETECTION_API_URL', 'http://localhost:8000');
+    const module = await importDetectionApi();
+    expect(module.getDetectionApiBase()).toBe('http://localhost:3000');
   });
 
   it('prefers the current site origin for production detection requests', async () => {
