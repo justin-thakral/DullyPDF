@@ -65,6 +65,7 @@ export type FillLinkManagerDialogProps = {
   onSearchTemplateResponses: (search: string) => void;
   onCloseTemplateLink: (options?: FillLinkPublishOptions) => void;
   onApplyTemplateResponse: (response: FillLinkResponse) => void;
+  onApplyTemplateResponseWithClear?: (response: FillLinkResponse) => void;
   onUseTemplateResponsesAsSearchFill: () => void;
   groupLink: FillLinkSummary | null;
   groupResponses: FillLinkResponse[];
@@ -78,6 +79,7 @@ export type FillLinkManagerDialogProps = {
   onSearchGroupResponses: (search: string) => void;
   onCloseGroupLink: (options?: FillLinkPublishOptions) => void;
   onApplyGroupResponse: (response: FillLinkResponse) => void;
+  onApplyGroupResponseWithClear?: (response: FillLinkResponse) => void;
   onUseGroupResponsesAsSearchFill: () => void;
 };
 
@@ -109,6 +111,11 @@ type FillLinkScopePanelProps = {
   onSearchResponses: (search: string) => void;
   onCloseLink: (options?: FillLinkPublishOptions) => void;
   onApplyResponse: (response: FillLinkResponse) => void;
+  // When present, renders a second "Clear Field Information First & Apply
+  // To PDF" button next to the default merge-apply button. Consumers wire
+  // this to the handler that wipes existing field values before applying
+  // the response so the PDF fully matches the chosen respondent.
+  onApplyResponseWithClear?: (response: FillLinkResponse) => void;
   onUseResponsesAsSearchFill: () => void;
 };
 
@@ -352,6 +359,7 @@ function ResponsesPanel({
   onRefresh,
   onSearchResponses,
   onApplyResponse,
+  onApplyResponseWithClear,
   onUseResponsesAsSearchFill,
 }: {
   open: boolean;
@@ -361,6 +369,7 @@ function ResponsesPanel({
   onRefresh: (search?: string) => void;
   onSearchResponses: (search: string) => void;
   onApplyResponse: (response: FillLinkResponse) => void;
+  onApplyResponseWithClear?: (response: FillLinkResponse) => void;
   onUseResponsesAsSearchFill: () => void;
 }) {
   const [query, setQuery] = useState('');
@@ -598,9 +607,20 @@ function ResponsesPanel({
                   type="button"
                   className="ui-button ui-button--primary ui-button--compact"
                   onClick={() => onApplyResponse(response)}
+                  title="Fill empty PDF fields from this response. Existing values get overwritten when the response has a value for that field, but other existing values are preserved."
                 >
                   Apply to PDF
                 </button>
+                {onApplyResponseWithClear ? (
+                  <button
+                    type="button"
+                    className="ui-button ui-button--primary ui-button--compact"
+                    onClick={() => onApplyResponseWithClear(response)}
+                    title="Wipe every field value in the current PDF first, then apply this response. Use when the template has prior data that should be fully replaced."
+                  >
+                    Clear Field Information First &amp; Apply To PDF
+                  </button>
+                ) : null}
               </div>
             </div>
           ))}
@@ -634,6 +654,7 @@ function FillLinkScopePanel({
   onSearchResponses,
   onCloseLink,
   onApplyResponse,
+  onApplyResponseWithClear,
   onUseResponsesAsSearchFill,
 }: FillLinkScopePanelProps) {
   void kind;
@@ -1635,6 +1656,7 @@ function FillLinkScopePanel({
             onRefresh={onRefresh}
             onSearchResponses={onSearchResponses}
             onApplyResponse={onApplyResponse}
+            onApplyResponseWithClear={onApplyResponseWithClear}
             onUseResponsesAsSearchFill={onUseResponsesAsSearchFill}
           />
         </section>
@@ -2095,6 +2117,7 @@ export function FillLinkManagerDialog({
   onSearchTemplateResponses,
   onCloseTemplateLink,
   onApplyTemplateResponse,
+  onApplyTemplateResponseWithClear,
   onUseTemplateResponsesAsSearchFill,
   groupLink,
   groupResponses,
@@ -2108,6 +2131,7 @@ export function FillLinkManagerDialog({
   onSearchGroupResponses,
   onCloseGroupLink,
   onApplyGroupResponse,
+  onApplyGroupResponseWithClear,
   onUseGroupResponsesAsSearchFill,
 }: FillLinkManagerDialogProps) {
   const availableScopes = useMemo<ScopeKind[]>(() => {
@@ -2180,6 +2204,7 @@ export function FillLinkManagerDialog({
             onSearchResponses={onSearchTemplateResponses}
             onCloseLink={onCloseTemplateLink}
             onApplyResponse={onApplyTemplateResponse}
+            onApplyResponseWithClear={onApplyTemplateResponseWithClear}
             onUseResponsesAsSearchFill={onUseTemplateResponsesAsSearchFill}
           />
         ) : null}
@@ -2209,6 +2234,7 @@ export function FillLinkManagerDialog({
             onSearchResponses={onSearchGroupResponses}
             onCloseLink={onCloseGroupLink}
             onApplyResponse={onApplyGroupResponse}
+            onApplyResponseWithClear={onApplyGroupResponseWithClear}
             onUseResponsesAsSearchFill={onUseGroupResponsesAsSearchFill}
           />
         ) : null}

@@ -1610,4 +1610,39 @@ describe('ApiService', () => {
       message: 'Monthly Search & Fill credit limit reached.',
     });
   });
+
+  it('commitSearchFillUsage always sends sourceCategory=structured_data', async () => {
+    // Pin the wire contract so a refactor that lets the client pass
+    // ``sourceCategory: 'webform_response'`` or similar can never debit
+    // the wrong pool server-side. Every allowed sourceKind must flow
+    // through the structured_data category.
+    apiConfigMocks.apiFetch.mockResolvedValue({ id: 'ok' });
+    apiConfigMocks.apiJsonFetch.mockResolvedValue({
+      status: 'committed',
+      eventId: 'sfe_pool_iso',
+      requestId: 'req_pool_iso',
+      countIncrement: 1,
+      monthKey: '2026-04',
+      currentMonthUsage: 1,
+      fillsRemaining: 49,
+      monthlyLimit: 50,
+    });
+
+    for (const sourceKind of ['csv', 'excel', 'sql', 'json', 'txt'] as const) {
+      apiConfigMocks.apiFetch.mockClear();
+      await ApiService.commitSearchFillUsage({
+        requestId: `req_${sourceKind}`,
+        sourceKind,
+        scopeType: 'template',
+        templateId: 'tpl-1',
+        targetTemplateIds: ['tpl-1'],
+        matchedTemplateIds: ['tpl-1'],
+        countIncrement: 1,
+        matchCount: 1,
+      });
+      const payload = JSON.parse(apiConfigMocks.apiFetch.mock.calls[0][2]!.body as string);
+      expect(payload.sourceCategory).toBe('structured_data');
+      expect(payload.sourceKind).toBe(sourceKind);
+    }
+  });
 });

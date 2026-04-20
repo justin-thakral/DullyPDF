@@ -88,6 +88,8 @@ function renderHarness(overrides: Record<string, unknown> = {}) {
   const setBannerNotice = vi.fn();
   const applyStructuredDataSource = vi.fn();
   const clearFieldValues = vi.fn();
+  const handleFieldsChange = vi.fn();
+  const enterFillDisplayMode = vi.fn();
   const setSearchFillPreset = vi.fn();
   const setShowSearchFill = vi.fn();
   const bumpSearchFillSession = vi.fn();
@@ -117,6 +119,8 @@ function renderHarness(overrides: Record<string, unknown> = {}) {
     ensureGroupTemplateSnapshot: vi.fn(),
     applyStructuredDataSource,
     clearFieldValues,
+    handleFieldsChange,
+    enterFillDisplayMode,
     setSearchFillPreset,
     setShowSearchFill,
     bumpSearchFillSession,
@@ -135,6 +139,8 @@ function renderHarness(overrides: Record<string, unknown> = {}) {
     setBannerNotice,
     applyStructuredDataSource,
     clearFieldValues,
+    handleFieldsChange,
+    enterFillDisplayMode,
     setSearchFillPreset,
     setShowSearchFill,
     bumpSearchFillSession,
@@ -155,7 +161,35 @@ describe('useWorkspaceFillLinks', () => {
     ));
   });
 
-  it('surfaces Search & Fill handoff errors instead of failing silently', async () => {
+  it('applies a Fill By Link response directly without opening the Search & Fill popup', async () => {
+    // Regression: the old implementation routed every "Apply to PDF" click
+    // through ``openResponsesInSearchFill`` which loaded every response,
+    // seeded a preset, and opened the popup. Any failure in that chain
+    // surfaced as "popup opens but does not fill". The new contract is a
+    // deterministic direct apply — no popup, no preset, no extra fetch.
+    const templateState = createTemplateFillLinkState({
+      activeLink: {
+        id: 'link-1',
+        scopeType: 'template',
+        templateName: 'Template One',
+        status: 'active',
+        responseCount: 1,
+        requireAllFields: false,
+      },
+      responses: [
+        {
+          id: 'resp-1',
+          linkId: 'link-1',
+          respondentLabel: 'Ada Lovelace',
+          answers: { full_name: 'Ada Lovelace' },
+          submittedAt: '2026-03-10T12:00:00.000Z',
+        },
+      ],
+    });
+    useFillLinksMock.mockImplementation(({ scopeType }: { scopeType: 'template' | 'group' }) => (
+      scopeType === 'template' ? templateState : createGroupFillLinkState()
+    ));
+
     const harness = renderHarness();
     const response = harness.hook.dialogProps.templateResponses[0] as FillLinkResponse;
 
@@ -163,110 +197,76 @@ describe('useWorkspaceFillLinks', () => {
       await harness.hook.dialogProps.onApplyTemplateResponse(response);
     });
 
-    expect(harness.setBannerNotice).toHaveBeenCalledWith({
-      tone: 'error',
-      message: 'Response fetch failed.',
-    });
-    expect(harness.clearFieldValues).not.toHaveBeenCalled();
+    // No popup-mediated handoff: loadAllResponses / applyStructuredDataSource /
+    // setShowSearchFill stay silent because the fill happens inline.
+    expect(templateState.loadAllResponses).not.toHaveBeenCalled();
     expect(harness.applyStructuredDataSource).not.toHaveBeenCalled();
     expect(harness.setShowSearchFill).not.toHaveBeenCalled();
+    expect(harness.setSearchFillPreset).not.toHaveBeenCalled();
 
-    await act(async () => {
-      await harness.hook.dialogProps.onUseTemplateResponsesAsSearchFill();
-    });
+    // But the PDF fields DID get updated and the manager closed.
+    expect(harness.handleFieldsChange).toHaveBeenCalledTimes(1);
+    expect(harness.setManagerOpen).toHaveBeenCalledWith(false);
 
-    expect(harness.setBannerNotice).toHaveBeenLastCalledWith({
-      tone: 'error',
-      message: 'Response fetch failed.',
-    });
-    expect(harness.setShowSearchFill).not.toHaveBeenCalled();
+    // UX guard: the workspace flips to fill-display mode so the user sees
+    // the values immediately. This was the "why didn't anything happen?"
+    // complaint from webform response apply.
+    expect(harness.enterFillDisplayMode).toHaveBeenCalledTimes(1);
   });
 
-  it('loads all template respondents and seeds Search & Fill for Apply to PDF handoff', async () => {
-    const fullResponseSet: FillLinkResponse[] = [
-      {
-        id: 'resp-1',
-        linkId: 'link-1',
-        respondentLabel: 'Ada Lovelace',
-        answers: { full_name: 'Ada Lovelace' },
-        submittedAt: '2026-03-10T12:00:00.000Z',
-      },
-      {
-        id: 'resp-2',
-        linkId: 'link-1',
-        respondentLabel: 'Grace Hopper',
-        answers: { full_name: 'Grace Hopper' },
-        submittedAt: '2026-03-10T13:00:00.000Z',
-      },
-    ];
+  it('wipes existing field values before applying when "Clear First & Apply" is clicked', async () => {
     const templateState = createTemplateFillLinkState({
       activeLink: {
         id: 'link-1',
         scopeType: 'template',
         templateName: 'Template One',
         status: 'active',
-        responseCount: 2,
+        responseCount: 1,
         requireAllFields: false,
       },
-      responses: [fullResponseSet[0]],
-      loadAllResponses: vi.fn().mockResolvedValue(fullResponseSet),
+      responses: [
+        {
+          id: 'resp-1',
+          linkId: 'link-1',
+          respondentLabel: 'Ada Lovelace',
+          answers: { full_name: 'Ada Lovelace' },
+          submittedAt: '2026-03-10T12:00:00.000Z',
+        },
+      ],
     });
     useFillLinksMock.mockImplementation(({ scopeType }: { scopeType: 'template' | 'group' }) => (
       scopeType === 'template' ? templateState : createGroupFillLinkState()
     ));
 
     const harness = renderHarness();
+    const response = harness.hook.dialogProps.templateResponses[0] as FillLinkResponse;
 
     await act(async () => {
-      await harness.hook.dialogProps.onApplyTemplateResponse(fullResponseSet[0]);
+      await harness.hook.dialogProps.onApplyTemplateResponseWithClear!(response);
     });
 
-    expect(templateState.loadAllResponses).toHaveBeenCalledWith(2);
-    expect(harness.clearFieldValues).toHaveBeenCalledTimes(1);
-    expect(harness.applyStructuredDataSource).toHaveBeenCalledWith({
-      kind: 'respondent',
-      label: 'Fill By Link respondents: Template One',
-      rows: [
-        {
-          full_name: 'Ada Lovelace',
-          [FILL_LINK_LINK_ID_KEY]: 'link-1',
-          [FILL_LINK_RESPONSE_ID_KEY]: 'resp-1',
-          [FILL_LINK_RESPONDENT_LABEL_KEY]: 'Ada Lovelace',
-          __fill_link_respondent_secondary_label: '',
-          [FILL_LINK_SUBMITTED_AT_KEY]: '2026-03-10T12:00:00.000Z',
-        },
-        {
-          full_name: 'Grace Hopper',
-          [FILL_LINK_LINK_ID_KEY]: 'link-1',
-          [FILL_LINK_RESPONSE_ID_KEY]: 'resp-2',
-          [FILL_LINK_RESPONDENT_LABEL_KEY]: 'Grace Hopper',
-          __fill_link_respondent_secondary_label: '',
-          [FILL_LINK_SUBMITTED_AT_KEY]: '2026-03-10T13:00:00.000Z',
-        },
-      ],
-      columns: [
-        'full_name',
-        FILL_LINK_RESPONSE_ID_KEY,
-        FILL_LINK_LINK_ID_KEY,
-        FILL_LINK_RESPONDENT_LABEL_KEY,
-        '__fill_link_respondent_secondary_label',
-        FILL_LINK_SUBMITTED_AT_KEY,
-      ],
-      identifierKey: FILL_LINK_RESPONDENT_LABEL_KEY,
+    // Both the cleared baseline commit and the fill-mode switch fire.
+    expect(harness.handleFieldsChange).toHaveBeenCalledTimes(1);
+    expect(harness.enterFillDisplayMode).toHaveBeenCalledTimes(1);
+    // Still no popup.
+    expect(harness.setShowSearchFill).not.toHaveBeenCalled();
+    expect(harness.setSearchFillPreset).not.toHaveBeenCalled();
+  });
+
+  it('surfaces an error banner when "Use respondents as Search & Fill" handoff fails', async () => {
+    // The "Open Search & Fill" (bulk) flow still goes through the popup and
+    // still needs its existing error-surfacing behavior intact.
+    const harness = renderHarness();
+
+    await act(async () => {
+      await harness.hook.dialogProps.onUseTemplateResponsesAsSearchFill();
     });
-    expect(harness.setSearchFillPreset).toHaveBeenCalledWith(expect.objectContaining({
-      query: 'resp-1',
-      searchKey: FILL_LINK_RESPONSE_ID_KEY,
-      searchMode: 'equals',
-      autoRun: true,
-      autoFillOnSearch: true,
-    }));
-    expect(harness.setSearchFillPreset).toHaveBeenCalledWith(expect.objectContaining({
-      token: expect.any(Number),
-    }));
-    expect(harness.setManagerOpen).toHaveBeenCalledWith(false);
-    expect(harness.bumpSearchFillSession).toHaveBeenCalledTimes(1);
-    expect(harness.setShowSearchFill).toHaveBeenCalledWith(true);
+
+    expect(harness.setBannerNotice).toHaveBeenCalledWith({
+      tone: 'error',
+      message: 'Response fetch failed.',
+    });
+    expect(harness.setShowSearchFill).not.toHaveBeenCalled();
   });
 
   it('does not prefetch Fill By Link data while the manager is closed', () => {

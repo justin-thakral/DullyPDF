@@ -31,6 +31,7 @@ import {
   buildFillLinkQuestionsFromFields,
   mergeFillLinkQuestionSets,
 } from '../utils/fillLinkWebForm';
+import { applySearchFillRowToFieldsWithStats } from '../utils/searchFillApply';
 import { buildSigningAnchorsFromFields, hasMeaningfulFillValues } from '../utils/signing';
 
 type SearchFillPresetState = {
@@ -75,6 +76,12 @@ type UseWorkspaceFillLinksDeps = {
   ensureGroupTemplateSnapshot: (formId: string, templateNameHint?: string | null) => Promise<GroupTemplateSnapshot>;
   applyStructuredDataSource: (payload: StructuredDataSourcePayload) => void;
   clearFieldValues: () => void;
+  handleFieldsChange: (next: PdfField[]) => void;
+  // Called after a direct field apply (the "Apply to PDF" buttons on the
+  // Fill By Link manager) to flip the workspace into its "fill" display
+  // preset so the user actually sees the new values instead of a
+  // names-only list view.
+  enterFillDisplayMode: () => void;
   setSearchFillPreset: Dispatch<SetStateAction<SearchFillPresetState>>;
   setShowSearchFill: Dispatch<SetStateAction<boolean>>;
   bumpSearchFillSession: () => void;
@@ -102,6 +109,8 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     ensureGroupTemplateSnapshot,
     applyStructuredDataSource,
     clearFieldValues,
+    handleFieldsChange,
+    enterFillDisplayMode,
     setSearchFillPreset,
     setShowSearchFill,
     bumpSearchFillSession,
@@ -666,18 +675,111 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     setShowSearchFill,
   ]);
 
-  const handleApplyTemplateResponse = useCallback(async (response: FillLinkResponse) => {
-    await openResponsesInSearchFill(response, activeTemplateLink, templateResponses, loadAllTemplateResponses);
-  }, [activeTemplateLink, loadAllTemplateResponses, openResponsesInSearchFill, templateResponses]);
+  // Apply a single Fill By Link response directly to the PDF fields without
+  // ever opening the Search & Fill popup. The popup path (``openResponsesIn
+  // SearchFill``) was fragile: it loaded every response, set a preset, and
+  // hoped the auto-run search hit the right row. Any failure along that
+  // chain surfaced as "popup opens but doesn't fill" — the exact bug users
+  // reported. Direct apply is deterministic: we have the row, we have the
+  // fields, we just merge.
+  //
+  // ``clearFirst=true`` — wipe every field value first so the fill fully
+  // replaces whatever was there. Equivalent to the old default.
+  // ``clearFirst=false`` — merge: only empty fields get populated from the
+  // response, but collisions (non-empty fields that the response has data
+  // for) are overwritten. Useful when the user has already typed values
+  // they want to keep.
+  const applyResponseToFields = useCallback(
+    (response: FillLinkResponse, { clearFirst }: { clearFirst: boolean }) => {
+      const [row] = buildFillLinkResponseRows([response]);
+      if (!row) {
+        setBannerNotice({ tone: 'error', message: 'Response has no answers to apply.' });
+        return;
+      }
+      let baseFields = fields;
+      if (clearFirst) {
+        // Zero out existing values but keep the field definitions so
+        // ``applySearchFillRowToFieldsWithStats`` has something to fill.
+        baseFields = fields.map((field) => ({
+          ...field,
+          value: field.type === 'checkbox' ? false : undefined,
+        }));
+      }
+      const result = applySearchFillRowToFieldsWithStats({
+        row,
+        fields: baseFields,
+        checkboxRules,
+        textTransformRules,
+        dataSourceKind: 'respondent',
+      });
+      let appliedFieldValues = false;
+      if (clearFirst) {
+        // Always commit the cleared baseline even when the response had
+        // zero matches — the user asked for a clean slate.
+        handleFieldsChange(result.fields);
+        appliedFieldValues = true;
+      } else if (result.matchedFieldCount === 0) {
+        setBannerNotice({
+          tone: 'info',
+          message: 'Response had no values that matched the template fields.',
+          autoDismissMs: 4000,
+        });
+      } else {
+        handleFieldsChange(result.fields);
+        appliedFieldValues = true;
+      }
+      setManagerOpen(false);
+      if (appliedFieldValues) {
+        // Flip the workspace into fill-display mode so the user actually
+        // sees the values they just applied instead of a names-only list.
+        // Skipping this was the root cause of "I thought the fill didn't
+        // work" on webform response apply.
+        enterFillDisplayMode();
+      }
+    },
+    [
+      checkboxRules,
+      enterFillDisplayMode,
+      fields,
+      handleFieldsChange,
+      setBannerNotice,
+      setManagerOpen,
+      textTransformRules,
+    ],
+  );
+
+  const handleApplyTemplateResponse = useCallback(
+    async (response: FillLinkResponse) => {
+      applyResponseToFields(response, { clearFirst: false });
+    },
+    [applyResponseToFields],
+  );
+
+  const handleApplyTemplateResponseWithClear = useCallback(
+    async (response: FillLinkResponse) => {
+      applyResponseToFields(response, { clearFirst: true });
+    },
+    [applyResponseToFields],
+  );
 
   const handleUseTemplateResponsesAsSearchFill = useCallback(async () => {
     if (!templateResponses.length) return;
     await openResponsesInSearchFill(null, activeTemplateLink, templateResponses, loadAllTemplateResponses);
   }, [activeTemplateLink, loadAllTemplateResponses, openResponsesInSearchFill, templateResponses]);
 
-  const handleApplyGroupResponse = useCallback(async (response: FillLinkResponse) => {
-    await openResponsesInSearchFill(response, activeGroupLink, groupResponses, loadAllGroupResponses);
-  }, [activeGroupLink, groupResponses, loadAllGroupResponses, openResponsesInSearchFill]);
+  const handleApplyGroupResponse = useCallback(
+    async (response: FillLinkResponse) => {
+      applyResponseToFields(response, { clearFirst: false });
+    },
+    [applyResponseToFields],
+  );
+
+  const handleApplyGroupResponseWithClear = useCallback(
+    async (response: FillLinkResponse) => {
+      applyResponseToFields(response, { clearFirst: true });
+    },
+    [applyResponseToFields],
+  );
 
   const handleUseGroupResponsesAsSearchFill = useCallback(async () => {
     if (!groupResponses.length) return;
@@ -714,6 +816,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     onSearchTemplateResponses: handleSearchTemplateResponses,
     onCloseTemplateLink: activeTemplateLink?.status === 'active' ? handleCloseTemplate : handleReopenTemplate,
     onApplyTemplateResponse: handleApplyTemplateResponse,
+    onApplyTemplateResponseWithClear: handleApplyTemplateResponseWithClear,
     onUseTemplateResponsesAsSearchFill: handleUseTemplateResponsesAsSearchFill,
     groupLink: activeGroupLink,
     groupResponses,
@@ -727,6 +830,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     onSearchGroupResponses: handleSearchGroupResponses,
     onCloseGroupLink: activeGroupLink?.status === 'active' ? handleCloseGroup : handleReopenGroup,
     onApplyGroupResponse: handleApplyGroupResponse,
+    onApplyGroupResponseWithClear: handleApplyGroupResponseWithClear,
     onUseGroupResponsesAsSearchFill: handleUseGroupResponsesAsSearchFill,
   }), [
     activeGroupLink,
@@ -742,7 +846,9 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     groupSourceQuestions,
     groupBuilderLoading,
     handleApplyGroupResponse,
+    handleApplyGroupResponseWithClear,
     handleApplyTemplateResponse,
+    handleApplyTemplateResponseWithClear,
     handleCloseGroup,
     handleCloseTemplate,
     handlePublishGroup,

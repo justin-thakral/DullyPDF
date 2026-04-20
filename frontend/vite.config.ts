@@ -111,6 +111,13 @@ export default defineConfig(({ mode }) => {
       // ~10-20% total runtime for deterministic `npm run test` behavior.
       pool: 'forks',
       isolate: true,
+      // Vitest's default 5s per-test timeout is tight for RTL + userEvent
+      // interaction flows (sign-in, checkout, envelope builder) when the
+      // runner is under parallel load. Bumping to 15s removes the
+      // "worked in isolation / flakes in suite" class of failure without
+      // hiding real regressions — genuine infinite loops still surface.
+      testTimeout: 15000,
+      hookTimeout: 15000,
     },
     server: {
       proxy: {

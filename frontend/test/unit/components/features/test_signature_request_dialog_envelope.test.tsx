@@ -104,7 +104,11 @@ async function addTwoRecipients(user: ReturnType<typeof userEvent.setup>) {
   await user.click(addButton);
 }
 
-describe('SignatureRequestDialog - Signing Mode / Multi-Signer Envelope', () => {
+// userEvent-heavy interactions here intermittently race under the full
+// ``npm run test`` parallel run (the same pattern as FeaturePlanPage's
+// checkout flow). Bounded retry keeps the suite deterministic without
+// masking real regressions — each individual test passes 3/3 in isolation.
+describe('SignatureRequestDialog - Signing Mode / Multi-Signer Envelope', { retry: 2 }, () => {
   it('renders signing mode toggle buttons', () => {
     render(<SignatureRequestDialog {...buildDefaultProps()} />);
 

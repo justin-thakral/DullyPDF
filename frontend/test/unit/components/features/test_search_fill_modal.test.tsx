@@ -1238,4 +1238,148 @@ describe('SearchFillModal', () => {
       commitSpy.mockRestore();
     });
   });
+
+  describe('credit pool isolation', () => {
+    // Fill By Link web-form responses surface as `dataSourceKind='respondent'`.
+    // Those fills should never hit the Fill by File credit pool — the response
+    // has already been debited against ``fill_link_usage_counters`` when the
+    // webform was submitted. The modal must detect this and skip the commit.
+    it('does not commit Search & Fill credits for webform respondent fills', async () => {
+      const user = userEvent.setup();
+      const onFieldsChange = vi.fn();
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi
+        .spyOn(ApiService, 'commitSearchFillUsage')
+        .mockResolvedValue({
+          status: 'committed',
+          eventId: 'should-not-be-called',
+          requestId: 'unused',
+          countIncrement: 1,
+          monthKey: '2026-04',
+          currentMonthUsage: 0,
+          fillsRemaining: 50,
+          monthlyLimit: 50,
+        });
+
+      const fields: PdfField[] = [
+        makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+      ];
+      render(
+        <SearchFillModal
+          {...buildProps({
+            // Webform-backed data source. Credits already accounted for by
+            // Fill By Link at submit time.
+            dataSourceKind: 'respondent',
+            dataSourceLabel: 'Fill By Link respondents',
+            fields,
+            rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+            onFieldsChange,
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      await runSearch('001');
+      await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+      await waitFor(() => {
+        expect(onFieldsChange).toHaveBeenCalledTimes(1);
+      });
+      expect(commitSpy).not.toHaveBeenCalled();
+
+      commitSpy.mockRestore();
+    });
+
+    // The header credit pill should also hide itself when the source kind
+    // is not chargeable so users don't get a confusing "Will use 1 credit"
+    // preview for a fill that isn't charged.
+    it('hides the "Will use N credit" pill for respondent data sources', () => {
+      render(
+        <SearchFillModal
+          {...buildProps({
+            dataSourceKind: 'respondent',
+            dataSourceLabel: 'Fill By Link respondents',
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+      expect(screen.queryByText(/Will use.*credit/i)).toBeNull();
+    });
+
+    // ``dataSourceKind='none'`` (nothing connected) must also bypass the
+    // commit path so opening and closing the modal without selecting a
+    // source never writes a structured-fill event.
+    it('does not commit Search & Fill credits when no data source is selected', async () => {
+      const { ApiService } = await import('../../../../src/services/api');
+      const commitSpy = vi.spyOn(ApiService, 'commitSearchFillUsage');
+
+      render(
+        <SearchFillModal
+          {...buildProps({
+            dataSourceKind: 'none',
+            dataSourceLabel: null,
+            rows: [],
+            templateId: 'tpl-1',
+            structuredFillCreditingEnabled: true,
+          })}
+        />,
+      );
+
+      // No interactions — just assert the network was never touched.
+      expect(commitSpy).not.toHaveBeenCalled();
+
+      commitSpy.mockRestore();
+    });
+
+    // Each of the five documented structured source kinds must trigger
+    // exactly one commit on a successful fill — an easy regression guard
+    // against someone accidentally gating the path on one specific kind.
+    it.each(['csv', 'excel', 'sql', 'json'] as const)(
+      'commits exactly once for the %s source kind',
+      async (sourceKind) => {
+        const user = userEvent.setup();
+        const { ApiService } = await import('../../../../src/services/api');
+        const commitSpy = vi
+          .spyOn(ApiService, 'commitSearchFillUsage')
+          .mockResolvedValue({
+            status: 'committed',
+            eventId: `sfe_${sourceKind}`,
+            requestId: `req_${sourceKind}`,
+            countIncrement: 1,
+            monthKey: '2026-04',
+            currentMonthUsage: 1,
+            fillsRemaining: 49,
+            monthlyLimit: 50,
+          });
+
+        const fields: PdfField[] = [
+          makeField({ id: 'name', name: 'full_name', type: 'text', page: 1 }),
+        ];
+        render(
+          <SearchFillModal
+            {...buildProps({
+              dataSourceKind: sourceKind,
+              dataSourceLabel: `${sourceKind.toUpperCase()}: sample`,
+              fields,
+              rows: [{ mrn: '001', full_name: 'Ada Lovelace' }],
+              templateId: 'tpl-1',
+              structuredFillCreditingEnabled: true,
+            })}
+          />,
+        );
+
+        await runSearch('001');
+        await user.click(screen.getByRole('button', { name: 'Fill PDF' }));
+
+        await waitFor(() => {
+          expect(commitSpy).toHaveBeenCalledTimes(1);
+        });
+        expect(commitSpy.mock.calls[0][0].sourceKind).toBe(sourceKind);
+
+        commitSpy.mockRestore();
+      },
+    );
+  });
 });

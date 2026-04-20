@@ -755,6 +755,23 @@ function WorkspaceRuntime({
     resolveSourcePdfBytes: async () => resolveWorkspaceImmutableSourcePdfBytes(),
     reviewedFillContext,
   });
+  // Declared ahead of ``useWorkspaceFillLinks`` so it can be passed into the
+  // hook's deps. Any flow that writes values into PDF fields (Search & Fill
+  // modal, Fill By Link direct-apply buttons) should call this so the user
+  // immediately sees their filled values on the PDF instead of staying on
+  // whatever panel/mode they happened to be in when the fill completed.
+  //
+  // Uses raw state setters + the create-tool ref so this helper can live
+  // above the richer ``handleSetTransformMode`` / ``clearCreateToolState``
+  // helpers that are declared later in the component body.
+  const enterFillDisplayMode = useCallback(() => {
+    setTransformMode(false);
+    createToolDisplayStateRef.current = null;
+    fieldState.setShowFieldInfo(true);
+    fieldState.setShowFieldNames(false);
+    fieldState.setShowFields(true);
+  }, [fieldState]);
+
   const {
     canTriggerFillLink,
     handleOpenFillLinkManager,
@@ -779,6 +796,8 @@ function WorkspaceRuntime({
     ensureGroupTemplateSnapshot,
     applyStructuredDataSource: dataSource.applyStructuredDataSource,
     clearFieldValues: fieldState.handleClearFieldValues,
+    handleFieldsChange: fieldState.handleFieldsChange,
+    enterFillDisplayMode,
     setSearchFillPreset,
     setShowSearchFill,
     bumpSearchFillSession: () => setSearchFillSessionId((prev) => prev + 1),
@@ -1108,11 +1127,7 @@ function WorkspaceRuntime({
     structuredFillCommit?: StructuredFillCommitProvenance | null;
   }) => {
     setSearchFillPreset(null);
-    handleSetTransformMode(false);
-    clearCreateToolState();
-    fieldState.setShowFieldInfo(true);
-    fieldState.setShowFieldNames(false);
-    fieldState.setShowFields(true);
+    enterFillDisplayMode();
 
     const responseId = typeof payload.row[FILL_LINK_RESPONSE_ID_KEY] === 'string'
       ? payload.row[FILL_LINK_RESPONSE_ID_KEY] as string
@@ -1160,9 +1175,7 @@ function WorkspaceRuntime({
   }, [
     dataSource.dataSourceLabel,
     demo,
-    fieldState,
-    clearCreateToolState,
-    handleSetTransformMode,
+    enterFillDisplayMode,
     savedForms.activeSavedFormId,
   ]);
 
@@ -2996,12 +3009,20 @@ function WorkspaceRuntime({
             onRunExtraction={imageFill.runExtraction}
             onUpdateFieldValue={imageFill.updateFieldValue}
             onRejectField={imageFill.rejectField}
-            onApplyFields={imageFill.applyFields}
+            onApplyFields={() => {
+              imageFill.applyFields();
+              // Land the user in fill-display mode so the extracted values
+              // are immediately visible. Without this, users stayed on
+              // whatever panel they'd been in (often names-only review)
+              // and assumed the extraction didn't land.
+              enterFillDisplayMode();
+            }}
             onApplyFieldsWithClear={() => {
               // Wipe existing values first so the extracted image info fully
               // replaces whatever was in the template instead of merging.
               fieldState.handleClearFieldValues();
               imageFill.applyFields();
+              enterFillDisplayMode();
             }}
           />
         </Suspense>
