@@ -2997,6 +2997,12 @@ function WorkspaceRuntime({
             onUpdateFieldValue={imageFill.updateFieldValue}
             onRejectField={imageFill.rejectField}
             onApplyFields={imageFill.applyFields}
+            onApplyFieldsWithClear={() => {
+              // Wipe existing values first so the extracted image info fully
+              // replaces whatever was in the template instead of merging.
+              fieldState.handleClearFieldValues();
+              imageFill.applyFields();
+            }}
           />
         </Suspense>
       ) : null}

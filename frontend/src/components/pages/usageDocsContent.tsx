@@ -957,7 +957,10 @@ email`}</pre>
             <li>Click <strong>Send</strong> to run extraction. DullyPDF renders the template PDF to extract label context for each field, encodes your uploaded files, and calls OpenAI vision.</li>
             <li>Review extracted fields: each shows the matched field name, the extracted value (editable), a confidence percentage, and a Reject button.</li>
             <li>Edit values inline or reject fields you do not want applied.</li>
-            <li>Click <strong>Fill</strong> to write accepted values into your template fields.</li>
+            <li>Click <strong>Fill</strong> to write accepted values into your template fields. Existing values stay in place and are merged with the extracted information.</li>
+            <li>
+              Or click <strong>Fill &amp; Clear</strong> to wipe every field in the current PDF first and then apply only the extracted values. Use this when the template has prior data from a different record that should be fully replaced rather than merged.
+            </li>
           </ol>
         ),
       },

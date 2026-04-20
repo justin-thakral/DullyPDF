@@ -18,6 +18,11 @@ type ImageFillDialogProps = {
   onUpdateFieldValue: (index: number, value: string) => void;
   onRejectField: (index: number) => void;
   onApplyFields: () => void;
+  // Optional. When provided the dialog renders a "Fill & Clear" button that
+  // zeros out the current PDF first, then applies the extracted values on
+  // top of the blank template. Use when the target template had prior data
+  // you want to fully replace rather than merge with.
+  onApplyFieldsWithClear?: () => void;
 };
 
 function confidenceClass(confidence: number): string {
@@ -44,6 +49,7 @@ export function ImageFillDialog({
   onUpdateFieldValue,
   onRejectField,
   onApplyFields,
+  onApplyFieldsWithClear,
 }: ImageFillDialogProps) {
   const titleId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -109,6 +115,17 @@ export function ImageFillDialog({
         >
           Fill ({acceptedCount})
         </button>
+        {onApplyFieldsWithClear ? (
+          <button
+            className="ui-button ui-button--primary ui-button--compact"
+            type="button"
+            onClick={onApplyFieldsWithClear}
+            disabled={!canFill}
+            title="Clear existing field values first, then apply the extracted image information."
+          >
+            Fill &amp; Clear ({acceptedCount})
+          </button>
+        ) : null}
         <button
           className="ui-button ui-button--ghost ui-button--compact"
           type="button"
