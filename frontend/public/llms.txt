@@ -11,6 +11,8 @@ DullyPDF turns raw PDFs into reusable fillable templates using AI field detectio
 - [Fill By Link](https://dullypdf.com/fill-pdf-by-link): Publish a hosted web form for respondents to answer. Their responses fill the PDF when the owner generates it.
 - [API Fill](https://dullypdf.com/pdf-fill-api): Expose a template-scoped JSON-to-PDF endpoint with auth key management, rate limiting, and schema downloads.
 - [E-Sign Workflow](https://dullypdf.com/esign-ueta-pdf-workflow): Route filled PDFs into email-based signature requests with immutable record freezing under U.S. E-SIGN and UETA.
+- [PDF Form Catalog](https://dullypdf.com/forms): Browse 1,807 public-domain blank PDF forms, download the source PDF, or open a form in DullyPDF for field detection, filling, API output, and signing.
+- [Catalog Workflow](https://dullypdf.com/pdf-form-catalog): Use the form catalog as a starting point for reusable PDF templates instead of uploading a local blank form.
 - [Fill from Images](https://dullypdf.com/usage-docs/fill-from-images): Upload photos of IDs, invoices, or scanned documents and let AI vision extract data into template fields.
 - [Batch Fill](https://dullypdf.com/batch-fill-pdf-forms): Fill multiple records or entire document packets from a single data source.
 
@@ -65,6 +67,8 @@ DullyPDF turns raw PDFs into reusable fillable templates using AI field detectio
 - [Premium Features](https://dullypdf.com/premium-features)
 - [Workflow Library](https://dullypdf.com/workflows)
 - [Industry Solutions](https://dullypdf.com/industries)
+- [PDF Form Catalog](https://dullypdf.com/forms)
+- [Sitemap Index](https://dullypdf.com/sitemap.xml)
 - [Privacy Policy](https://dullypdf.com/privacy)
 - [Terms of Service](https://dullypdf.com/terms)
 - [LinkedIn](https://www.linkedin.com/company/dullypdf)

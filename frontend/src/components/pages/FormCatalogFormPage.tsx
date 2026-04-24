@@ -169,6 +169,10 @@ function formatBytes(bytes: number | null): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function formatFormDisplayName(entry: FormCatalogEntry): string {
+  return entry.formNumber ? `${entry.formNumber} — ${entry.title}` : entry.title;
+}
+
 const FormCatalogFormPage = ({
   slug,
   verifiedUser = null,
@@ -371,6 +375,24 @@ const FormCatalogFormPage = ({
   const downloadLabel = entry
     ? `Download ${entry.formNumber || entry.title} fillable form`
     : 'Download fillable form';
+  const displayName = formatFormDisplayName(entry);
+  const categoryLabel = category?.label || entry.section;
+  const formHandle = entry.formNumber || 'this form';
+  const workflowPurpose = entry.useCase
+    || `Use it for repeat ${categoryLabel.toLowerCase()} work where the official PDF layout needs to stay intact.`;
+  const pageCountLabel = entry.pageCount
+    ? `${entry.pageCount} ${entry.pageCount === 1 ? 'page' : 'pages'}`
+    : 'its source pages';
+  const stableSourceUrl = entry.sourceUrl
+    ? getStableSourceUrl({
+      sourceUrl: entry.sourceUrl,
+      formNumber: entry.formNumber,
+      section: entry.section,
+    })
+    : null;
+  const sourceLabel = entry.sourceUrl
+    ? getStableSourceLabel(stableSourceUrl || entry.sourceUrl)
+    : null;
 
   return (
     <div className="form-catalog">
@@ -489,30 +511,62 @@ const FormCatalogFormPage = ({
             </a>
 
             {entry.sourceUrl ? (() => {
-              // Keep provenance visible without emitting a broken outbound
-              // link. The shared normalizer only returns a destination when
-              // we have a clean canonical target.
-              const stableUrl = getStableSourceUrl({
-                sourceUrl: entry.sourceUrl,
-                formNumber: entry.formNumber,
-                section: entry.section,
-              });
-              const stableLabel = getStableSourceLabel(stableUrl || entry.sourceUrl);
               return (
                 <p className="form-catalog-detail__source">
                   Public-domain source:{' '}
-                  {stableUrl ? (
-                    <a href={stableUrl} target="_blank" rel="noreferrer noopener">
-                      {stableLabel}
+                  {stableSourceUrl ? (
+                    <a href={stableSourceUrl} target="_blank" rel="noreferrer noopener">
+                      {sourceLabel}
                     </a>
                   ) : (
-                    <span>{stableLabel}</span>
+                    <span>{sourceLabel}</span>
                   )}
                 </p>
               );
             })() : null}
           </aside>
         </div>
+
+        <section
+          className="form-catalog-detail__workflow"
+          aria-labelledby="form-workflow-heading"
+        >
+          <span className="form-catalog-detail__workflow-kicker">
+            PDF automation context
+          </span>
+          <h2 id="form-workflow-heading" className="form-catalog-detail__workflow-heading">
+            How {formHandle} fits into a repeat PDF workflow
+          </h2>
+          <p>
+            {displayName} is listed in the {categoryLabel} catalog. {workflowPurpose}{' '}
+            Treat the blank PDF as the controlled starting point: keep the official
+            layout intact, then add reviewed fields and mappings before using it
+            for live records.
+          </p>
+          <ul className="form-catalog-detail__workflow-list">
+            <li>
+              <strong>Template setup:</strong> open the blank PDF in DullyPDF,
+              run field detection, and review text boxes, checkboxes, radio
+              groups, dates, and signature areas before saving the template.
+            </li>
+            <li>
+              <strong>Data fill:</strong> map the detected fields to CSV,
+              Excel, JSON, or SQL-backed schema headers so the same reviewed
+              PDF can be filled from repeat records.
+            </li>
+            <li>
+              <strong>Output paths:</strong> download the completed PDF, collect
+              respondent answers with Fill By Link, call API Fill, or route the
+              prepared record into a signature workflow.
+            </li>
+          </ul>
+          <p>
+            The catalog keeps {pageCountLabel}, file size, category, and
+            {sourceLabel ? ` source attribution to ${sourceLabel}` : ' source attribution'} visible
+            before automation starts, which helps teams confirm they are working
+            from the right official blank form before saving a template.
+          </p>
+        </section>
 
         {relatedEntries.length > 0 ? (
           <section

@@ -3890,7 +3890,7 @@ const PACKET_SEARCH_FILL_VIDEO = {
   contentUrl: buildYouTubeWatchUrl('RIxRmZvVnVw'),
   embedUrl: 'https://www.youtube.com/embed/RIxRmZvVnVw',
   thumbnailUrl: 'https://i.ytimg.com/vi/RIxRmZvVnVw/hqdefault.jpg',
-  uploadDate: '2026-04-13',
+  uploadDate: '2026-04-13T00:00:00Z',
 };
 
 const ESIGN_PIPELINE_VIDEO = {
@@ -3901,7 +3901,7 @@ const ESIGN_PIPELINE_VIDEO = {
   contentUrl: buildYouTubeWatchUrl('CJ0TCXGHFdQ'),
   embedUrl: 'https://www.youtube.com/embed/CJ0TCXGHFdQ',
   thumbnailUrl: 'https://i.ytimg.com/vi/CJ0TCXGHFdQ/maxresdefault.jpg',
-  uploadDate: '2026-04-14',
+  uploadDate: '2026-04-14T00:00:00Z',
 };
 
 // Intent pages that should emit focused workflow videos in JSON-LD and OG tags.
@@ -4242,12 +4242,12 @@ for (const page of USAGE_DOCS_PAGES) {
   const breadcrumbItems = page.key === 'index'
     ? [
         { label: 'Home', href: '/' },
-        { label: 'Usage Docs' },
+        { label: 'Usage Docs', href: '/usage-docs' },
       ]
     : [
         { label: 'Home', href: '/' },
         { label: 'Usage Docs', href: '/usage-docs' },
-        { label: page.title },
+        { label: page.title, href: page.path },
       ];
   USAGE_DOCS_ROUTE_SEO[page.key] = {
     title: seo.title,
@@ -4276,8 +4276,11 @@ for (const page of INTENT_PAGES) {
     toFaqSchema(page.faqs),
     buildBreadcrumbSchema([
       { label: 'Home', href: '/' },
-      { label: page.category === 'industry' ? 'Industries' : 'Workflows' },
-      { label: page.navLabel },
+      {
+        label: page.category === 'industry' ? 'Industries' : 'Workflows',
+        href: page.category === 'industry' ? '/industries' : '/workflows',
+      },
+      { label: page.navLabel, href: page.path },
     ]),
   );
 
@@ -4336,7 +4339,7 @@ const INTENT_HUB_ROUTE_SEO = {
       ),
       buildBreadcrumbSchema([
         { label: 'Home', href: '/' },
-        { label: 'Workflows' },
+        { label: 'Workflows', href: '/workflows' },
       ]),
     ],
     bodyContent: {
@@ -4395,7 +4398,7 @@ const INTENT_HUB_ROUTE_SEO = {
       ),
       buildBreadcrumbSchema([
         { label: 'Home', href: '/' },
-        { label: 'Industries' },
+        { label: 'Industries', href: '/industries' },
       ]),
     ],
     bodyContent: {
@@ -4456,8 +4459,7 @@ for (const page of FEATURE_PLAN_PAGES) {
       toFaqSchema(page.faqs),
       buildBreadcrumbSchema([
         { label: 'Home', href: '/' },
-        { label: 'Plans' },
-        { label: page.navLabel },
+        { label: page.navLabel, href: page.path },
       ]),
     ),
     bodyContent: {
@@ -4513,7 +4515,7 @@ const FORM_CATALOG_INDEX_STRUCTURED_DATA = [
   },
   buildBreadcrumbSchema([
     { label: 'Home', href: '/' },
-    { label: 'Form Catalog' },
+    { label: 'Form Catalog', href: '/forms' },
   ]),
   {
     '@context': 'https://schema.org',
@@ -4676,7 +4678,7 @@ const buildFormCatalogEntrySeo = (entry, { canonicalSlug = null } = {}) => {
       { label: 'Home', href: '/' },
       { label: 'Form Catalog', href: '/forms' },
       ...(category ? [{ label: category.label, href: `/forms?category=${encodeURIComponent(category.key)}` }] : []),
-      { label: displayTitle },
+      { label: displayTitle, href: canonicalPath },
     ]),
     {
       '@context': 'https://schema.org',
@@ -4870,7 +4872,7 @@ const BLOG_INDEX_ROUTE = {
       description: 'Guides and tutorials for PDF form automation, field detection, schema mapping, and auto-fill workflows.',
     }, buildBreadcrumbSchema([
       { label: 'Home', href: '/' },
-      { label: 'Blog' },
+      { label: 'Blog', href: '/blog' },
     ])],
     bodyContent: {
       heroKicker: 'Blog',
@@ -4961,7 +4963,7 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
   }], buildBreadcrumbSchema([
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
-    { label: post.title },
+    { label: post.title, href: `/blog/${post.slug}` },
   ]));
 
   if (blogVideo) {

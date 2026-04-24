@@ -207,6 +207,42 @@ describe('routeSeo config', () => {
     expect(overBudget).toEqual([]);
   });
 
+  it('emits complete breadcrumb item URLs for every JSON-LD breadcrumb', () => {
+    const invalidBreadcrumbItems = ALL_ROUTES.flatMap((route) => (
+      route.seo.structuredData ?? []
+    )
+      .filter((entry) => entry['@type'] === 'BreadcrumbList')
+      .flatMap((entry) => (entry.itemListElement ?? []).map((item) => ({
+        routePath: route.path,
+        item,
+      }))))
+      .filter(({ item }) => (
+        typeof item.item !== 'string'
+        || !item.item.startsWith('https://dullypdf.com/')
+      ));
+
+    expect(invalidBreadcrumbItems).toEqual([]);
+  });
+
+  it('uses timezone-qualified upload dates for VideoObject structured data', () => {
+    const videoObjects = ALL_ROUTES.flatMap((route) => (
+      route.seo.structuredData ?? []
+    )
+      .filter((entry) => entry['@type'] === 'VideoObject')
+      .map((entry) => ({
+        routePath: route.path,
+        uploadDate: entry.uploadDate,
+      })));
+    const invalidVideoDates = videoObjects.filter(({ uploadDate }) => (
+      typeof uploadDate !== 'string'
+      || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(uploadDate)
+      || Number.isNaN(Date.parse(uploadDate))
+    ));
+
+    expect(videoObjects.length).toBeGreaterThan(0);
+    expect(invalidVideoDates).toEqual([]);
+  });
+
   it('adds blog article and breadcrumb structured data with the modified date', () => {
     const post = getBlogPost('auto-fill-pdf-from-spreadsheet');
     expect(post).toBeTruthy();
