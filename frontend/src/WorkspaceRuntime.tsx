@@ -622,6 +622,12 @@ function WorkspaceRuntime({
     if (isFormCatalogRoute(browserRoute) && !pdfDoc && !detection.isProcessing) {
       return browserRoute;
     }
+    // Catalog editor handoffs carry the selected slug in /upload?catalogSlug=...
+    // until auth finishes. Preserve that pending route so the history sync does
+    // not collapse it to plain /upload before the post-sign-in loader runs.
+    if (browserRoute.kind === 'upload-root' && browserRoute.catalogSlug && !pdfDoc && !detection.isProcessing) {
+      return browserRoute;
+    }
     if (auth.showProfile) {
       return { kind: 'profile' };
     }

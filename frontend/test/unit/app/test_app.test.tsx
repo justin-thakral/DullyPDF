@@ -755,6 +755,35 @@ describe('App', () => {
     expect(window.location.pathname).toBe('/upload');
   }, 15_000);
 
+  it('keeps catalog handoff slugs through sign-in and opens the selected form', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      blob: async () => new Blob(['%PDF-1.4 catalog pdf'], { type: 'application/pdf' }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+    window.history.replaceState({}, '', '/upload?catalogSlug=w-9');
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'upload-root', catalogSlug: 'w-9' }} />);
+
+    await settleAuthAsSignedOut();
+    expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(window.location.pathname).toBe('/upload');
+    expect(window.location.search).toBe('?catalogSlug=w-9');
+
+    fireEvent.click(screen.getByTestId('login-authenticated'));
+    await settleAuthAsSignedIn();
+
+    await waitFor(() => {
+      expect(fetchMock.mock.calls.some(([input]) => String(input).includes('/form-catalog-assets/'))).toBe(true);
+      expect(pdfMocks.loadPdfFromFile).toHaveBeenCalled();
+    });
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(window.location.pathname).toBe('/ui');
+    expect(window.location.search).toBe('');
+  }, 15_000);
+
   it('keeps direct workflow routes on the homepage shell below the 900px breakpoint', async () => {
     installMatchMedia({
       '(max-width: 900px)': true,
