@@ -134,6 +134,10 @@
   min-width: 0;
 }
 
+.ui-header__tools .ui-button--compact {
+  white-space: nowrap;
+}
+
 .ui-header__action-hint {
   display: inline-block;
   font-size: 0.72rem;

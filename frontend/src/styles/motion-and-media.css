@@ -37,6 +37,15 @@
   .app-shell {
     --workspace-panel-width: 240px;
   }
+
+  .ui-header__tools {
+    gap: 0.35rem;
+  }
+
+  .ui-header__tools .ui-button--compact {
+    padding: 0.32rem 0.55rem;
+    font-size: 0.66rem;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -66,6 +75,11 @@
 
   .ui-header__tools {
     flex-wrap: wrap;
+  }
+
+  .ui-header__tools .ui-button--compact {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.62rem;
   }
 
   .ui-header__save-row {
