@@ -47,10 +47,14 @@
 }
 
 .app-shell {
+  --workspace-panel-width: 340px;
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(300px, 340px) minmax(0, 1fr) minmax(300px, 340px);
+  grid-template-columns:
+    var(--workspace-panel-width)
+    minmax(0, 1fr)
+    var(--workspace-panel-width);
   grid-template-rows: minmax(0, 1fr);
   gap: 1.5rem;
   padding: 1.5rem 1.8rem 2rem;

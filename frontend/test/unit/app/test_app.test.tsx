@@ -776,7 +776,7 @@ describe('App', () => {
     await settleAuthAsSignedIn();
 
     await waitFor(() => {
-      expect(fetchMock.mock.calls.some(([input]) => String(input).includes('/form-catalog-assets/'))).toBe(true);
+      expect(fetchMock.mock.calls.some(([input]) => String(input).includes('hr_onboarding/w-9__fw9.pdf'))).toBe(true);
       expect(pdfMocks.loadPdfFromFile).toHaveBeenCalled();
     });
     expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();

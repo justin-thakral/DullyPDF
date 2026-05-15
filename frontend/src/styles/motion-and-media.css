@@ -27,11 +27,19 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1800px) {
   .app-shell {
-    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(240px, 300px);
+    --workspace-panel-width: 280px;
   }
+}
 
+@media (max-width: 1400px) {
+  .app-shell {
+    --workspace-panel-width: 240px;
+  }
+}
+
+@media (max-width: 1200px) {
   .ui-header {
     grid-template-columns: 1fr;
     justify-items: start;
