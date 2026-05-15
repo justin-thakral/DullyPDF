@@ -120,7 +120,7 @@ def test_free_trial_succeeds_for_eligible_base_user(
     )
     mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
     mocker.patch.object(app_main, "get_trial_used", return_value=False)
-    mark_mock = mocker.patch.object(app_main, "mark_trial_used")
+    persist_customer_mock = mocker.patch.object(app_main, "set_user_billing_subscription")
     mocker.patch.object(
         app_main, "create_checkout_session",
         return_value={"sessionId": "cs_trial", "url": "https://checkout/trial"},
@@ -136,10 +136,23 @@ def test_free_trial_succeeds_for_eligible_base_user(
     data = response.json()
     assert data["kind"] == "free_trial"
     assert data["sessionId"] == "cs_trial"
-    mark_mock.assert_called_once_with(base_user.app_user_id)
+    persist_customer_mock.assert_not_called()
 
 
 def test_free_trial_kind_passes_schema_validation() -> None:
     from backend.api.schemas.models import BillingCheckoutRequest
     req = BillingCheckoutRequest(kind="free_trial")
     assert req.kind == "free_trial"
+
+
+def test_free_trial_checkout_completion_is_reconciliation_candidate(app_main) -> None:
+    event_payload = {
+        "data": {
+            "object": {
+                "metadata": {"checkoutKind": "free_trial"},
+                "payment_status": "no_payment_required",
+            }
+        }
+    }
+
+    assert app_main._event_is_checkout_fulfillment_candidate(event_payload) is True

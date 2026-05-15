@@ -64,7 +64,7 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - Field confidence (`fieldConfidence`) comes from detection, or from OpenAI rename `isItAfieldConfidence` when available.
 - Name confidence comes from OpenAI rename (`renameConfidence`) and/or schema alignment (`mappingConfidence`).
 - Filtering primarily uses field confidence tiers.
-- The list header shows `visible / in-scope` counts and overall total for faster filter-state checks.
+- The field controls show a compact `Page Fields` count for the current page, and the list header includes a `Top` action for returning to the start of the scrollable field panel.
 
 ## OpenAI guardrails
 

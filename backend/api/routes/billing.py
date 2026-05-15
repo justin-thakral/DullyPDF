@@ -29,7 +29,6 @@ from backend.firebaseDB.user_database import (
     get_trial_used,
     get_user_billing_record,
     get_user_profile,
-    mark_trial_used,
     normalize_role,
     set_user_billing_subscription,
 )
@@ -535,7 +534,12 @@ def _event_is_checkout_fulfillment_candidate(event_payload: Dict[str, Any]) -> b
     session_obj = _resolve_event_session_object(event_payload)
     metadata = session_obj.get("metadata") if isinstance(session_obj.get("metadata"), dict) else {}
     checkout_kind = str(metadata.get("checkoutKind") or "").strip().lower()
-    if checkout_kind not in {CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY, CHECKOUT_KIND_REFILL_500}:
+    if checkout_kind not in {
+        CHECKOUT_KIND_PRO_MONTHLY,
+        CHECKOUT_KIND_PRO_YEARLY,
+        CHECKOUT_KIND_FREE_TRIAL,
+        CHECKOUT_KIND_REFILL_500,
+    }:
         return False
     payment_status = str(session_obj.get("payment_status") or "").strip().lower()
     return payment_status in {"paid", "no_payment_required"}
@@ -671,7 +675,6 @@ async def create_checkout(
             raise HTTPException(status_code=409, detail="Free trial is not available for active Pro or God users.")
         if get_trial_used(user.app_user_id):
             raise HTTPException(status_code=409, detail="Free trial has already been used.")
-        mark_trial_used(user.app_user_id)
     if checkout_kind == CHECKOUT_KIND_REFILL_500:
         if role != ROLE_PRO:
             raise HTTPException(status_code=403, detail="Credit refill is available to Pro users only.")

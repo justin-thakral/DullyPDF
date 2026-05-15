@@ -418,7 +418,9 @@ Use these commands when validating Stripe billing checkout/webhook behavior:
 
 ```bash
 pytest backend/test/unit/api/test_main_billing_endpoints_blueprint.py
+pytest backend/test/unit/api/test_billing_trial_checkout_blueprint.py
 pytest backend/test/unit/core/test_billing_service_blueprint.py
+pytest backend/test/integration/test_billing_trial_lifecycle_integration.py
 pytest backend/test/integration/test_billing_webhook_integration.py
 ```
 
@@ -444,13 +446,14 @@ is an env-file change plus backend redeploy.
 Webhook fulfillment and checkout guardrails:
 - Refill checkout fulfillment (`checkout.session.completed` for `refill_500`) is applied only when the user is currently Pro at fulfillment time.
 - Refill checkout credits are validated against the configured Stripe refill price mapping before credits are granted; mismatched or unresolvable refill metadata now returns a retriable non-2xx webhook response so fulfillment is not silently acknowledged.
-- Pro checkout session creation (`pro_monthly` / `pro_yearly`) is blocked when the user already has an active subscription.
-- Pro checkout now binds to a stable Stripe customer, reuses an existing open Pro checkout session for that customer when present, blocks checkout when that customer already has an active Pro subscription in Stripe, and uses deterministic per-plan idempotency keys so concurrent duplicate session creates collapse without monthly/yearly key collisions.
+- Pro checkout session creation (`free_trial` / `pro_monthly` / `pro_yearly`) is blocked when the user already has an active subscription.
+- Pro checkout reuses an existing Stripe customer only when one is already linked to the DullyPDF user, reuses an existing open Pro checkout session for that customer when present, blocks checkout when that customer already has an active Pro subscription in Stripe, and uses deterministic per-plan idempotency keys so concurrent duplicate session creates collapse without monthly/yearly key collisions. Brand-new subscription checkouts pass `customer_email` to Stripe instead of pre-creating a Customer, so abandoned checkout sessions do not look like completed Pro signups in Stripe Customers.
+- Starting a Pro or trial Checkout Session is not the entitlement boundary: role promotion, Pro credits, subscription linkage, and `trial_used=true` are written only after completed checkout/subscription fulfillment.
 - Refill checkout session creation is blocked unless the user is currently eligible for refill fulfillment (active Pro state).
 - Refill checkout now also binds to a stable Stripe customer and reuses an existing open refill session for that customer when present, which prevents accidental duplicate session creation during quick retries.
 - Checkout session creation can be hard-blocked by Stripe webhook health (`STRIPE_ENFORCE_WEBHOOK_HEALTH=true`) so new purchases are disabled when delivery prerequisites are unhealthy.
 - Set `STRIPE_WEBHOOK_ENDPOINT_URL` to the exact webhook URL your backend receives. Webhook health checks match this specific URL and fail closed when enforcement is enabled but the URL is missing/misconfigured.
-- `POST /api/billing/reconcile` lets authenticated users recover missed paid checkout fulfillment for a specific checkout session they started; `ROLE_GOD` can still reconcile across users from recent Stripe events.
+- `POST /api/billing/reconcile` lets authenticated users recover missed completed Pro/trial checkout fulfillment for a specific checkout session they started; `ROLE_GOD` can still reconcile across users from recent Stripe events.
 - Subscription lifecycle role changes (`customer.subscription.updated` / `customer.subscription.deleted`) are applied only for configured Pro price ids; unrelated subscription products are ignored.
 - Subscription cancel requests are allowed when the user has a stored Stripe subscription id, even if role state drifted from `pro`, so users can always stop billing.
 - Fresh in-progress webhook locks now return a retriable non-2xx response instead of a duplicate `200` so Stripe retries rather than dropping fulfillment.

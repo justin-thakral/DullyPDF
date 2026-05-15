@@ -89,7 +89,7 @@ describe('Homepage', () => {
   beforeEach(() => {
     installMatchMedia({
       '(max-width: 1020px)': false,
-      '(max-height: 749px)': false,
+      '(max-height: 700px)': false,
     });
     vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
   });
@@ -236,7 +236,7 @@ describe('Homepage', () => {
     installMatchMedia({
       '(max-width: 1020px)': true,
       '(max-width: 900px)': true,
-      '(max-height: 749px)': false,
+      '(max-height: 700px)': false,
     });
 
     render(<Homepage onStartWorkflow={vi.fn()} />);
@@ -300,6 +300,14 @@ describe('Homepage', () => {
     expect(document.documentElement.classList.contains('homepage-no-scroll')).toBe(true);
     expect(document.body.classList.contains('homepage-no-scroll')).toBe(true);
 
+    setMatchMedia('(max-height: 700px)', true);
+    expect(document.documentElement.classList.contains('homepage-no-scroll')).toBe(false);
+    expect(document.body.classList.contains('homepage-no-scroll')).toBe(false);
+
+    setMatchMedia('(max-height: 700px)', false);
+    expect(document.documentElement.classList.contains('homepage-no-scroll')).toBe(true);
+    expect(document.body.classList.contains('homepage-no-scroll')).toBe(true);
+
     setMatchMedia('(max-width: 1020px)', true);
     expect(document.documentElement.classList.contains('homepage-no-scroll')).toBe(false);
     expect(document.body.classList.contains('homepage-no-scroll')).toBe(false);
@@ -316,7 +324,7 @@ describe('Homepage', () => {
   it('does not add homepage-no-scroll on mobile-sized viewports', () => {
     installMatchMedia({
       '(max-width: 1020px)': true,
-      '(max-height: 749px)': false,
+      '(max-height: 700px)': false,
     });
 
     render(<Homepage onStartWorkflow={vi.fn()} />);

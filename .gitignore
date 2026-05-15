@@ -15,6 +15,7 @@ frontend/test/playwright/run_homepage_instant_render.mjs
 # Local PDFs (keep untracked)
 *.pdf
 *.PDF
+!frontend/public/demo/*.pdf
 !quickTestFiles/
 !quickTestFiles/**
 

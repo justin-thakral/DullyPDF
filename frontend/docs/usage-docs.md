@@ -56,6 +56,7 @@ Unknown slugs (for example `/usage-docs/typo`) are treated as not found:
   - `pro_monthly` and `pro_yearly` are recurring subscriptions with labels/pricing sourced from backend Stripe metadata
   - `refill_500` (Pro-only) is a one-time credit refill with label/pricing sourced from backend Stripe metadata
   - checkout and payment transactions are processed securely via Stripe Checkout.
+  - opening a Checkout Session is not the entitlement boundary; Pro access and trial usage are granted only after completed Stripe checkout/subscription fulfillment.
   - subscription linkage/status + cancellation schedule metadata from backend profile state.
   - refill-credit retention across downgrades/upgrades.
 

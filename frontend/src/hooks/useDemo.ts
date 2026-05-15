@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 import type { DemoSearchPreset, PdfField } from '../types';
 import type { HeaderRename } from '../utils/dataSource';
 import { ensureUniqueFieldName } from '../utils/fields';
@@ -8,8 +9,11 @@ import { debugLog } from '../utils/debug';
 import { parseDemoFieldFixture, validateDemoAssetBlob } from '../utils/demoAssets';
 import { DEMO_ASSETS, DEMO_STEPS } from '../config/appConstants';
 
+// Bump this when public demo assets move or need to bypass immutable hosting cache entries.
+const DEMO_ASSET_CACHE_VERSION = 'demo-pdf-assets-2026-05-15';
+
 export interface UseDemoDeps {
-  pdfDoc: any;
+  pdfDoc: PDFDocumentProxy | null;
   sourceFileName: string | null;
   dataColumns: string[];
   resetFieldHistory: (fields?: PdfField[]) => void;
@@ -66,7 +70,8 @@ export function useDemo(deps: UseDemoDeps) {
       const cached = demoAssetCacheRef.current.get(filename);
       if (cached) return cached;
       const baseUrl = import.meta.env.BASE_URL ?? '/';
-      const response = await fetch(`${baseUrl}demo/${filename}`);
+      const assetUrl = `${baseUrl}demo/${filename}?v=${encodeURIComponent(DEMO_ASSET_CACHE_VERSION)}`;
+      const response = await fetch(assetUrl);
       if (!response.ok) throw new Error(`Failed to load demo asset: ${filename}`);
       const blob = await response.blob();
       await validateDemoAssetBlob(filename, blob);

@@ -15,6 +15,16 @@ CRITICAL_WEBP_ASSETS=(
   "/demo/mobile-rename-remap.webp"
   "/demo/mobile-filled.webp"
 )
+CRITICAL_DEMO_ASSETS=(
+  "/demo/new_patient_forms_1915ccb015.pdf|application/pdf"
+  "/demo/baseFieldDetections.pdf|application/pdf"
+  "/demo/openAiRename.pdf|application/pdf"
+  "/demo/openAiRemap.pdf|application/pdf"
+  "/demo/new_patient_forms_1915ccb015_mock.csv|text/csv"
+  "/demo/generated/baseFieldDetections.fields.json|application/json"
+  "/demo/generated/baseToOpenAiRenameNameMap.json|application/json"
+  "/demo/generated/baseToOpenAiRemapNameMap.json|application/json"
+)
 
 if [[ "$PROJECT_ID" != "dullypdf" && -z "$ALLOW_NON_PROD" ]]; then
   echo "Refusing to deploy frontend to non-prod project: $PROJECT_ID. Set DULLYPDF_ALLOW_NON_PROD=1 to override." >&2
@@ -248,12 +258,20 @@ echo "Static HTML, sitemap, and feed validation passed."
 for asset_path in "${CRITICAL_WEBP_ASSETS[@]}"; do
   require_file "frontend/dist${asset_path}"
 done
+for asset_spec in "${CRITICAL_DEMO_ASSETS[@]}"; do
+  IFS='|' read -r asset_path _expected_content_type <<<"$asset_spec"
+  require_file "frontend/dist${asset_path}"
+done
 
 firebase deploy --only hosting --project "$PROJECT_ID"
 
 LIVE_BASE_URL="https://${PROJECT_ID}.web.app"
 for asset_path in "${CRITICAL_WEBP_ASSETS[@]}"; do
   check_remote_content_type "${LIVE_BASE_URL}${asset_path}" "image/webp"
+done
+for asset_spec in "${CRITICAL_DEMO_ASSETS[@]}"; do
+  IFS='|' read -r asset_path expected_content_type <<<"$asset_spec"
+  check_remote_content_type "${LIVE_BASE_URL}${asset_path}" "$expected_content_type"
 done
 
 check_remote_status "${LIVE_BASE_URL}/fill-pdf-from-csv/" "301"

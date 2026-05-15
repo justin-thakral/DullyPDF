@@ -1,7 +1,7 @@
 /**
  * Side panel that lists fields and controls visibility/filtering.
  */
-import { memo, useCallback, useDeferredValue, useMemo, useState, type ChangeEvent } from 'react';
+import { memo, useCallback, useDeferredValue, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import type { ConfidenceFilter, ConfidenceTier, FieldType, PdfField } from '../../types';
 import {
   fieldConfidenceForField,
@@ -34,7 +34,6 @@ type PreparedFieldRow = {
 
 type FieldListPanelProps = {
   fields: PdfField[];
-  totalFieldCount: number;
   selectedFieldId: string | null;
   selectedField: PdfField | null;
   currentPage: number;
@@ -212,7 +211,6 @@ const FieldListRow = memo(function FieldListRow({
  */
 export function FieldListPanel({
   fields,
-  totalFieldCount,
   selectedFieldId,
   selectedField,
   currentPage,
@@ -246,15 +244,21 @@ export function FieldListPanel({
   const [sortMode, setSortMode] = useState<SortMode>('page');
   const [showAllPages, setShowAllPages] = useState(false);
   const deferredQuery = useDeferredValue(query);
+  const panelBodyRef = useRef<HTMLDivElement | null>(null);
 
   const preparedFields = useMemo(
     () => fields.map((field) => prepareFieldRow(field)),
     [fields],
   );
 
+  const currentPageFields = useMemo(
+    () => preparedFields.filter((row) => row.field.page === currentPage),
+    [currentPage, preparedFields],
+  );
+
   const baseFields = useMemo(
-    () => (showAllPages ? preparedFields : preparedFields.filter((row) => row.field.page === currentPage)),
-    [currentPage, preparedFields, showAllPages],
+    () => (showAllPages ? preparedFields : currentPageFields),
+    [currentPageFields, preparedFields, showAllPages],
   );
 
   const filtered = useMemo(() => {
@@ -268,8 +272,7 @@ export function FieldListPanel({
 
   const sorted = useMemo(() => sortFields(filtered, sortMode), [filtered, sortMode]);
 
-  const headerScopeCount = baseFields.length;
-  const visibleCount = sorted.length;
+  const currentPageFieldCount = currentPageFields.length;
   const emptyMessage =
     baseFields.length === 0
       ? showAllPages
@@ -316,6 +319,10 @@ export function FieldListPanel({
     onResetConfidenceFilters();
   }, [onResetConfidenceFilters]);
 
+  const handleScrollToTop = useCallback(() => {
+    panelBodyRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleRevealSelected = useCallback(() => {
     if (!selectedOutsideFilters) return;
     setQuery('');
@@ -343,20 +350,24 @@ export function FieldListPanel({
   return (
     <aside className="panel panel--field-list">
       <div className="panel__header">
-        <div>
+        <div className="panel__header-copy">
           <h2>Fields</h2>
           <p className="panel__hint">
             {renameInProgress ? '(Renaming...) ' : ''}
             Filter, sort, and jump to fields fast.
           </p>
         </div>
-        <div className="panel__meta panel__meta--counts" title={`Visible ${visibleCount} of ${headerScopeCount} in scope; ${fields.length} of ${totalFieldCount} after confidence filter.`}>
-          <span className="panel__meta-primary">{visibleCount} / {headerScopeCount}</span>
-          <span className="panel__meta-secondary">of {totalFieldCount}</span>
-        </div>
+        <button
+          className="panel-scroll-top"
+          type="button"
+          onClick={handleScrollToTop}
+          aria-label="Scroll field panel to top"
+        >
+          Top
+        </button>
       </div>
 
-      <div className="panel__body">
+      <div className="panel__body" ref={panelBodyRef}>
         <div className="panel__section panel__section--page">
           <label className="panel__label" htmlFor="page-input">
             Page
@@ -572,6 +583,10 @@ export function FieldListPanel({
                 <option value="type">Type</option>
                 <option value="confidence">Confidence</option>
               </select>
+            </div>
+            <div className="panel-page-field-count" title="Fields on the current page after confidence filtering">
+              <span className="panel-page-field-count__label">Page Fields:</span>
+              <span className="panel-page-field-count__value">{currentPageFieldCount}</span>
             </div>
           </div>
 

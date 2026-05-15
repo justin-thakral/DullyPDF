@@ -152,6 +152,60 @@ def test_trial_checkout_and_activation(
     assert profile_data["billing"]["trialUsed"] is True
 
 
+def test_abandoned_trial_checkout_does_not_burn_trial_eligibility(
+    client: TestClient,
+    mocker,
+) -> None:
+    """Base user → free_trial checkout creation only → trial eligibility remains available."""
+    firestore_client = FakeFirestoreClient()
+    request_user = _authenticated_user()
+    _seed_base_profile(firestore_client, user_id=request_user.app_user_id)
+
+    mocker.patch.object(security_middleware, "verify_token", return_value={"uid": request_user.uid})
+    mocker.patch.object(billing_routes, "ensure_user", return_value=request_user)
+    mocker.patch.object(billing_routes, "require_user", return_value=request_user)
+    mocker.patch.object(billing_routes, "billing_enabled", return_value=True)
+    mocker.patch.object(billing_routes, "check_rate_limit", return_value=True)
+    mocker.patch.object(billing_routes, "webhook_health_enforced_for_checkout", return_value=False)
+    for module in (billing_database, user_database):
+        mocker.patch.object(module, "get_firestore_client", return_value=firestore_client)
+
+    checkout_mock = mocker.patch.object(
+        billing_routes,
+        "create_checkout_session",
+        side_effect=[
+            {"sessionId": "cs_trial_first", "url": "https://checkout.example/first"},
+            {"sessionId": "cs_trial_second", "url": "https://checkout.example/second"},
+        ],
+    )
+
+    first_response = client.post(
+        "/api/billing/checkout-session",
+        json={"kind": "free_trial"},
+        headers={"Authorization": "Bearer trial-token"},
+    )
+    second_response = client.post(
+        "/api/billing/checkout-session",
+        json={"kind": "free_trial"},
+        headers={"Authorization": "Bearer trial-token"},
+    )
+
+    assert first_response.status_code == 200
+    assert first_response.json()["sessionId"] == "cs_trial_first"
+    assert second_response.status_code == 200
+    assert second_response.json()["sessionId"] == "cs_trial_second"
+    assert checkout_mock.call_count == 2
+
+    stored_user = (
+        firestore_client.collection(user_database.USERS_COLLECTION)
+        .document(request_user.app_user_id)
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.ROLE_FIELD] == user_database.ROLE_BASE
+    assert stored_user.get(user_database.TRIAL_USED_FIELD) is not True
+
+
 def test_trial_expiry_downgrades(
     client: TestClient,
     webhook_secret: str,

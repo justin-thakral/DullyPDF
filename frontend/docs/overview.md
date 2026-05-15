@@ -136,6 +136,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 ## Demo and fixtures
 
 - Demo assets are served from `frontend/public/demo`.
+- Interactive demo PDFs under `frontend/public/demo/*.pdf` are intentionally tracked despite the repo-wide local PDF ignore rule, and prod deploys validate their live content types so the tour cannot ship with missing static fixtures.
 - Demo sessions allow downloading the generated PDF without signing in; saving to profile remains sign-in only.
 - Mobile homepage walkthrough is marketing/demo only, but it now explains template prep, native Fill By Link intake, extraction from images/documents, final fill review, and the supported U.S. e-sign handoff.
 - Small tracked fixtures live in `quickTestFiles/`; larger local datasets live in `samples/`.

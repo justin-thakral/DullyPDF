@@ -253,7 +253,7 @@ const Homepage: React.FC<HomepageProps> = ({
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const mediaQuery = window.matchMedia('(max-width: 1020px)');
-    const heightQuery = window.matchMedia('(max-height: 749px)');
+    const heightQuery = window.matchMedia('(max-height: 700px)');
     const updateScrollLock = () => {
       const shouldLockScroll = !mediaQuery.matches && !heightQuery.matches;
       document.documentElement.classList.toggle('homepage-no-scroll', shouldLockScroll);

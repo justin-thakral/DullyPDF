@@ -2895,7 +2895,7 @@ function WorkspaceRuntime({
         onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}
       />
       <div className="app-shell">
-        <FieldListPanel fields={visibleFields} totalFieldCount={fields.length}
+        <FieldListPanel fields={visibleFields}
           selectedFieldId={selectedFieldId} selectedField={selectedField}
           currentPage={currentPage} pageCount={pageCount} showFields={showFields}
           onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}

@@ -32,7 +32,21 @@ webhook delivery.
 
 ---
 
-## 2. Profile page trial button visibility
+## 2. Abandoned free trial checkout does not consume trial
+
+1. Sign in as a base user who has never used a trial.
+2. Click **"Start 7-Day Free Trial"**.
+3. Close Stripe Checkout or return through the cancel URL without completing checkout.
+4. Open Profile page and confirm:
+   - Role still shows **Base**
+   - `trial_used` is not **true** in Firestore
+   - **"Start 7-Day Free Trial"** button is still visible
+
+**Expected Stripe state:** Checkout Session may exist with `status: expired` after its expiration window, but no subscription exists and no Pro entitlement is granted.
+
+---
+
+## 3. Profile page trial button visibility
 
 1. Sign in as a **base** user who has never used a trial.
 2. Go to Profile -> Billing section.
@@ -44,7 +58,7 @@ webhook delivery.
 
 ---
 
-## 3. Trial expiry -> downgrade
+## 4. Trial expiry -> downgrade
 
 Use a [Stripe test clock](https://dashboard.stripe.com/test/test-clocks) to simulate trial expiry:
 
@@ -61,7 +75,7 @@ Use a [Stripe test clock](https://dashboard.stripe.com/test/test-clocks) to simu
 
 ---
 
-## 4. Trial -> paid conversion
+## 5. Trial -> paid conversion
 
 1. Start with a user in **trialing** status (from test 1 or a test clock).
 2. Advance the test clock past the trial period with a **valid** card (`4242 4242 4242 4242`).
@@ -75,9 +89,9 @@ Use a [Stripe test clock](https://dashboard.stripe.com/test/test-clocks) to simu
 
 ---
 
-## 5. Invoice paid after trial conversion
+## 6. Invoice paid after trial conversion
 
-1. After test 4, advance the test clock by one billing cycle (1 month).
+1. After test 5, advance the test clock by one billing cycle (1 month).
 2. Verify `invoice.paid` webhook fires.
 3. Confirm:
    - User remains **pro**
@@ -86,7 +100,7 @@ Use a [Stripe test clock](https://dashboard.stripe.com/test/test-clocks) to simu
 
 ---
 
-## 6. Double trial prevention
+## 7. Double trial prevention
 
 1. Sign in as a base user with `trial_used: true` in Firestore.
 2. Attempt to POST `/api/billing/checkout-session` with `{"kind": "free_trial"}`.
@@ -102,7 +116,7 @@ Use a [Stripe test clock](https://dashboard.stripe.com/test/test-clocks) to simu
 
 ---
 
-## 7. Onboarding skip -> free path
+## 8. Onboarding skip -> free path
 
 1. Create a new account.
 2. On the onboarding page, click the **Free** tab.

@@ -289,6 +289,26 @@ def _resolve_customer_create_idempotency_key(*, user_id: str) -> str:
     return f"customer_{digest}"
 
 
+def _list_customer_ids_for_email(
+    *,
+    stripe: Any,
+    user_email: Optional[str],
+) -> list[str]:
+    normalized_email = (user_email or "").strip()
+    if not normalized_email:
+        return []
+    customers = stripe.Customer.list(email=normalized_email, limit=25)
+    customer_ids: list[str] = []
+    seen_ids: set[str] = set()
+    for customer in _extract_list_data(customers):
+        customer_id = str(customer.get("id") or "").strip()
+        if not customer_id or customer_id in seen_ids or bool(customer.get("deleted")):
+            continue
+        seen_ids.add(customer_id)
+        customer_ids.append(customer_id)
+    return customer_ids
+
+
 def _list_existing_customer_ids_for_user(
     *,
     stripe: Any,
@@ -319,7 +339,7 @@ def _list_existing_customer_ids_for_user(
     return matching_user_ids
 
 
-def _resolve_or_create_customer_id(
+def _resolve_existing_customer_id(
     *,
     stripe: Any,
     user_id: str,
@@ -330,15 +350,33 @@ def _resolve_or_create_customer_id(
     if normalized_customer_id:
         return normalized_customer_id
 
-    normalized_user_id = (user_id or "").strip()
-    normalized_email = (user_email or "").strip() or None
     candidate_customer_ids = _list_existing_customer_ids_for_user(
         stripe=stripe,
-        user_id=normalized_user_id,
-        user_email=normalized_email,
+        user_id=(user_id or "").strip(),
+        user_email=(user_email or "").strip() or None,
     )
     if candidate_customer_ids:
         return candidate_customer_ids[0]
+    return None
+
+
+def _resolve_or_create_customer_id(
+    *,
+    stripe: Any,
+    user_id: str,
+    user_email: Optional[str],
+    customer_id: Optional[str] = None,
+) -> Optional[str]:
+    normalized_user_id = (user_id or "").strip()
+    normalized_email = (user_email or "").strip() or None
+    existing_customer_id = _resolve_existing_customer_id(
+        stripe=stripe,
+        user_id=normalized_user_id,
+        user_email=normalized_email,
+        customer_id=customer_id,
+    )
+    if existing_customer_id:
+        return existing_customer_id
 
     create_payload: Dict[str, Any] = {"metadata": {"userId": normalized_user_id}}
     if normalized_email:
@@ -438,7 +476,11 @@ def _find_open_pro_checkout_session(
         stripe=stripe,
         user_id=user_id,
         customer_id=customer_id,
-        allowed_checkout_kinds={CHECKOUT_KIND_PRO_MONTHLY, CHECKOUT_KIND_PRO_YEARLY},
+        allowed_checkout_kinds={
+            CHECKOUT_KIND_PRO_MONTHLY,
+            CHECKOUT_KIND_PRO_YEARLY,
+            CHECKOUT_KIND_FREE_TRIAL,
+        },
         expected_checkout_attempt_id=checkout_attempt_id,
         expected_checkout_price_id=checkout_price_id,
     )
@@ -1054,7 +1096,7 @@ def create_checkout_session(
         if existing_open_refill_checkout:
             return existing_open_refill_checkout
     if plan.mode == "subscription":
-        resolved_customer_id = _resolve_or_create_customer_id(
+        resolved_customer_id = _resolve_existing_customer_id(
             stripe=stripe,
             user_id=metadata["userId"],
             user_email=user_email,
@@ -1068,18 +1110,18 @@ def create_checkout_session(
         )
         if existing_open_pro_checkout:
             return existing_open_pro_checkout
-        customer_ids_to_check: list[str] = []
+        linked_customer_ids_to_check: list[str] = []
         if resolved_customer_id:
-            customer_ids_to_check.append(resolved_customer_id)
+            linked_customer_ids_to_check.append(resolved_customer_id)
         for candidate_customer_id in _list_existing_customer_ids_for_user(
             stripe=stripe,
             user_id=metadata["userId"],
             user_email=user_email,
         ):
-            if candidate_customer_id in customer_ids_to_check:
+            if candidate_customer_id in linked_customer_ids_to_check:
                 continue
-            customer_ids_to_check.append(candidate_customer_id)
-        for existing_customer_id in customer_ids_to_check:
+            linked_customer_ids_to_check.append(candidate_customer_id)
+        for existing_customer_id in linked_customer_ids_to_check:
             existing_open_pro_checkout = _find_open_pro_checkout_session(
                 stripe=stripe,
                 user_id=metadata["userId"],
@@ -1088,6 +1130,15 @@ def create_checkout_session(
             )
             if existing_open_pro_checkout:
                 return existing_open_pro_checkout
+
+        customer_ids_to_check = list(linked_customer_ids_to_check)
+        for candidate_customer_id in _list_customer_ids_for_email(
+            stripe=stripe,
+            user_email=user_email,
+        ):
+            if candidate_customer_id in customer_ids_to_check:
+                continue
+            customer_ids_to_check.append(candidate_customer_id)
 
         active_subscription_id: Optional[str] = None
         for existing_customer_id in customer_ids_to_check:

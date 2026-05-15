@@ -531,7 +531,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               Display presets are <code>Review</code>, <code>Edit</code>, and <code>Fill</code>, with manual toggles for
               <code>Fields</code>, <code>Names</code>, <code>Info</code>, <code>All</code>, and <code>Clear</code>.
             </li>
-            <li>The field list header shows <code>visible / in-scope</code> counts and overall total for state clarity.</li>
+            <li>The field list controls show a compact <code>Page Fields</code> count, and the header includes a <code>Top</code> action for returning to the start of the scrollable panel.</li>
           </ul>
         ),
       },
@@ -1481,6 +1481,7 @@ email`}</pre>
             <p>Profile billing actions are backed by Stripe Checkout:</p>
             <ul>
               <li>Pro Monthly (`pro_monthly`) and Pro Yearly (`pro_yearly`) are recurring Stripe subscriptions.</li>
+              <li>Starting Checkout does not grant Pro access by itself; DullyPDF grants Pro and records trial usage only after Stripe confirms a completed checkout or active subscription lifecycle event.</li>
               <li>Refill 500 (`refill_500`) is a Pro-only one-time credit pack and uses backend-provided Stripe plan metadata.</li>
               <li>Payments are handled through Stripe Checkout for secure transaction processing.</li>
               <li>Canceling Pro schedules cancellation at period end; Pro access remains active until that date.</li>

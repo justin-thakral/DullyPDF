@@ -39,7 +39,6 @@ const SAMPLE_FIELDS: PdfField[] = [
 function createProps(overrides: Partial<FieldListPanelProps> = {}): FieldListPanelProps {
   return {
     fields: SAMPLE_FIELDS,
-    totalFieldCount: SAMPLE_FIELDS.length,
     selectedFieldId: null,
     selectedField: null,
     currentPage: 1,

@@ -759,6 +759,68 @@ def test_create_checkout_session_reuses_existing_open_pro_checkout(
     assert create_calls == []
 
 
+def test_create_checkout_session_reuses_existing_open_free_trial_checkout(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
+    monkeypatch.setenv("STRIPE_PRICE_PRO_MONTHLY", "price_monthly_123")
+
+    class _FakeCheckoutSession:
+        @staticmethod
+        def list(**kwargs):
+            assert kwargs == {"customer": "cus_123", "status": "open", "limit": 20}
+            return {
+                "data": [
+                    {
+                        "id": "cs_open_trial",
+                        "url": "https://checkout.stripe.test/open-trial",
+                        "client_reference_id": "user_123",
+                        "metadata": {
+                            "userId": "user_123",
+                            "checkoutKind": "free_trial",
+                            "checkoutPriceId": "price_monthly_123",
+                            "checkoutAttemptId": "attempt_trial_existing",
+                        },
+                    }
+                ]
+            }
+
+        @staticmethod
+        def create(**kwargs):
+            raise AssertionError("Session.create should not run when an open trial checkout already exists.")
+
+    class _FakeCustomer:
+        @staticmethod
+        def list(email: str, limit: int):
+            assert email == "user@example.com"
+            assert limit == 25
+            return {"data": [{"id": "cus_123", "metadata": {"userId": "user_123"}}]}
+
+    class _FakeCheckout:
+        Session = _FakeCheckoutSession
+
+    class _FakeStripe:
+        api_key = None
+        checkout = _FakeCheckout
+        Customer = _FakeCustomer
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    session = billing_service.create_checkout_session(
+        user_id="user_123",
+        user_email="user@example.com",
+        checkout_kind="free_trial",
+    )
+
+    assert session == {
+        "sessionId": "cs_open_trial",
+        "url": "https://checkout.stripe.test/open-trial",
+        "customerId": "cus_123",
+        "checkoutAttemptId": "attempt_trial_existing",
+        "checkoutPriceId": "price_monthly_123",
+    }
+
+
 def test_create_checkout_session_does_not_reuse_open_pro_checkout_for_different_plan(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -1157,7 +1219,62 @@ def test_create_checkout_session_rejects_when_customer_has_active_pro_subscripti
     assert "cus_123" not in str(exc_info.value)
 
 
-def test_create_checkout_session_ignores_unlinked_same_email_customers_and_creates_a_new_customer(
+def test_create_checkout_session_rejects_unlinked_same_email_active_pro_subscription(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
+    monkeypatch.setenv("STRIPE_PRICE_PRO_MONTHLY", "price_monthly_123")
+
+    class _FakeCheckoutSession:
+        @staticmethod
+        def list(**kwargs):
+            raise AssertionError("Unlinked customers should not be used for open checkout reuse.")
+
+        @staticmethod
+        def create(**kwargs):
+            raise AssertionError("Session.create should not run when same-email customer has active Pro.")
+
+    class _FakeCustomer:
+        @staticmethod
+        def list(email: str, limit: int):
+            assert email == "user@example.com"
+            assert limit == 25
+            return {"data": [{"id": "cus_checkout_created", "email": "user@example.com"}]}
+
+    class _FakeSubscription:
+        @staticmethod
+        def list(**kwargs):
+            assert kwargs == {"customer": "cus_checkout_created", "status": "all", "limit": 20}
+            return {
+                "data": [
+                    {
+                        "id": "sub_checkout_created",
+                        "status": "trialing",
+                        "items": {"data": [{"price": {"id": "price_monthly_123"}}]},
+                    }
+                ]
+            }
+
+    class _FakeCheckout:
+        Session = _FakeCheckoutSession
+
+    class _FakeStripe:
+        api_key = None
+        checkout = _FakeCheckout
+        Customer = _FakeCustomer
+        Subscription = _FakeSubscription
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    with pytest.raises(billing_service.BillingCheckoutConflictError, match="active Pro subscription"):
+        billing_service.create_checkout_session(
+            user_id="user_123",
+            user_email="user@example.com",
+            checkout_kind="pro_monthly",
+        )
+
+
+def test_create_checkout_session_ignores_unlinked_same_email_customers_and_uses_customer_email(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
@@ -1190,10 +1307,7 @@ def test_create_checkout_session_ignores_unlinked_same_email_customers_and_creat
 
         @staticmethod
         def create(**kwargs):
-            assert kwargs["metadata"] == {"userId": "user_123"}
-            assert kwargs["email"] == "user@example.com"
-            assert kwargs["idempotency_key"]
-            return {"id": "cus_new_123"}
+            raise AssertionError("Customer.create should not run for a brand-new subscription checkout.")
 
     class _FakeSubscription:
         @staticmethod
@@ -1220,8 +1334,9 @@ def test_create_checkout_session_ignores_unlinked_same_email_customers_and_creat
     )
 
     assert result["sessionId"] == "cs_123"
-    assert result["customerId"] == "cus_new_123"
-    assert captured["customer"] == "cus_new_123"
+    assert result["customerId"] is None
+    assert captured["customer_email"] == "user@example.com"
+    assert "customer" not in captured
 
 
 def test_create_checkout_session_requires_user_id(

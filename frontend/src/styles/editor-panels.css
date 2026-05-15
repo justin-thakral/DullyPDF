@@ -48,38 +48,29 @@
   color: var(--ink-900);
 }
 
+.panel-scroll-top {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.35rem 0.65rem;
+  white-space: nowrap;
+}
+
+.panel-scroll-top:hover {
+  background: rgba(59, 130, 246, 0.16);
+}
+
 .panel__hint {
   margin: 0.35rem 0 0;
   font-size: 0.85rem;
   color: var(--ink-500);
-}
-
-.panel__meta {
-  min-width: 32px;
-  padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(59, 130, 246, 0.15);
-  color: var(--blue-700);
-  font-weight: 600;
-  text-align: center;
-  font-size: 0.8rem;
-}
-
-.panel__meta--counts {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.panel__meta-primary {
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.panel__meta-secondary {
-  font-size: 0.68rem;
-  color: var(--blue-800);
-  opacity: 1;
 }
 
 .panel__section {
@@ -250,6 +241,34 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.6rem;
+}
+
+.panel-page-field-count {
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 36px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.panel-page-field-count__label {
+  color: var(--ink-500);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-page-field-count__value {
+  color: var(--ink-900);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 0.22rem;
 }
 
 .panel-filter-summary {
@@ -689,6 +708,24 @@
   animation-delay: 0.05s;
   padding: 0.95rem 0.95rem 1.05rem;
   gap: 0.85rem;
+  overflow: hidden;
+}
+
+.panel--field-list .panel__body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.2rem;
+  scrollbar-gutter: stable;
+}
+
+.panel--field-list .panel__list,
+.panel--field-list .field-list {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.panel--field-list .field-list {
+  padding-right: 0;
 }
 
 .panel--inspector {
