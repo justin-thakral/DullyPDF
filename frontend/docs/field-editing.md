@@ -12,7 +12,8 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - `Fields`: show/hide overlay boxes.
 - `Names`: show/hide overlay labels.
 - `Info`: show/hide input controls on the PDF for entering values.
-- In `Info`, checkbox and radio controls keep the visible control outline at the real field size while rendering slightly oversized check/dot marks for tiny PDF boxes so selected states stay readable. Editable and flat exports follow the same rule.
+- In `Info`, checkbox and radio controls keep the visible control outline at the real field size while rendering slightly oversized check/dot marks for tiny PDF boxes so selected states stay readable.
+- Editable and flat PDF exports render only generated checkbox/radio selection marks for selected states. The source PDF's own box or circle artwork remains visible instead of receiving a second generated control outline.
 - `Transform` and `Info` are mutually exclusive to avoid drag/edit conflicts (enabling one disables the other).
 - `All`: list fields from all pages in the left panel.
 - `Clear`: clear current field values in the session.
@@ -58,7 +59,7 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - Editable exports store text values, selected font settings, and widget-owned appearance streams on the AcroForm fields instead of adding a separate page-content text layer under the field. Exported AcroFields use short Base 14 font resource aliases in `/DA` so the inactive value and the focused typing state resolve the same selected font in stricter PDF viewers.
 - Radio `Group key` is the persisted single-choice identifier used by exported PDFs, Search & Fill, and Fill By Link.
 - Editable PDF exports write checkbox and radio button widgets with explicit on/off appearance states,
-  and reused source widgets are registered in the output AcroForm tree so strict viewers such as Chrome and Adobe can load, display, and toggle them.
+  and those generated states draw only the selected check/dot mark so the original PDF control artwork is not covered or doubled. Reused source widgets are registered in the output AcroForm tree so strict viewers such as Chrome and Adobe can load, display, and toggle them.
 - When a new or AI-suggested radio group key collides with a different existing radio group, the editor auto-suffixes the key to keep those groups separate downstream.
 - The inspector header shows the selected field name and calls out that `Enter` confirms edits.
 - Delete the selected field, or remove every field from the current workspace after confirming the bulk delete dialog.

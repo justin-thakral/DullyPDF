@@ -526,13 +526,32 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
           <ul>
             <li>Overlay is best for spatial review and direct manipulation.</li>
             <li>Field list is best for scanning, filtering, and page jumping.</li>
-            <li>Inspector is best for precise metadata and geometry edits, and its header now exposes a right-aligned <em>Usage Docs</em> button that opens this Editor Workflow page in a new browser tab/window.</li>
+            <li>Inspector is best for precise metadata and geometry edits.</li>
+            <li>The field list and inspector headers both expose a right-aligned <em>Usage Docs</em> button that opens this Editor Workflow page in a new browser tab/window.</li>
             <li>
               Display presets are <code>Review</code>, <code>Edit</code>, and <code>Fill</code>, with manual toggles for
               <code>Fields</code>, <code>Names</code>, <code>Info</code>, <code>All</code>, and <code>Clear</code>.
             </li>
             <li>The field list controls show a compact <code>Page Fields</code> count, and the header includes a <code>Top</code> action for returning to the start of the scrollable panel.</li>
           </ul>
+        ),
+      },
+      {
+        id: 'review-edit-fill-modes',
+        title: 'Review, Edit, and Fill modes',
+        body: (
+          <>
+            <p>
+              The display presets change which editor layer is active. Use them as a workflow switch, not as permanent
+              template metadata.
+            </p>
+            <ul>
+              <li><code>Review</code> shows field overlays and names so you can scan detection quality, naming, page assignment, and confidence without moving geometry by accident.</li>
+              <li><code>Edit</code> is the default cleanup mode. It enables transform controls for moving and resizing fields, then pairs with the inspector for exact metadata and coordinate edits.</li>
+              <li><code>Fill</code> shows interactive field controls on the PDF so you can enter or validate values before saving, downloading, publishing, or running Search &amp; Fill.</li>
+              <li>Manual toggles can create a custom visibility state when a preset is close but not exact enough for the current review pass.</li>
+            </ul>
+          </>
         ),
       },
       {

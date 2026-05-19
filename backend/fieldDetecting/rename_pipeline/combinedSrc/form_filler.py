@@ -1882,12 +1882,14 @@ def _build_checkbox_appearance(
     inset = border_width / 2.0
     inner_w = max(width - (inset * 2.0), 0.0)
     inner_h = max(height - (inset * 2.0), 0.0)
-    commands = [
-        "0 0 0 RG",
-        f"{border_width:.2f} w",
-        f"{inset:.2f} {inset:.2f} {inner_w:.2f} {inner_h:.2f} re S",
-    ]
+    commands = ["q"]
     if checked:
+        commands.extend(
+            [
+                "0 0 0 RG",
+                f"{border_width:.2f} w",
+            ]
+        )
         x1 = inset + inner_w * 0.14
         y1 = inset + inner_h * 0.52
         x2 = inset + inner_w * 0.40
@@ -1897,6 +1899,7 @@ def _build_checkbox_appearance(
         commands.append(
             f"{x1:.2f} {y1:.2f} m {x2:.2f} {y2:.2f} l {x3:.2f} {y3:.2f} l S"
         )
+    commands.append("Q")
     stream = DecodedStreamObject()
     stream.set_data("\n".join(commands).encode("ascii"))
     stream.update(
@@ -1968,22 +1971,18 @@ def _build_radio_appearance(
             ]
         )
 
-    commands = [
-        "0 0 0 RG",
-        "0 0 0 rg",
-        f"{border_width:.2f} w",
-        ellipse_path(cx, cy, rx, ry),
-        "S",
-    ]
+    commands = ["q"]
     if checked:
-        inner_rx = max(rx * 0.62, border_width)
-        inner_ry = max(ry * 0.62, border_width)
+        commands.append("0 0 0 rg")
+        inner_rx = max(rx * 0.48, border_width)
+        inner_ry = max(ry * 0.48, border_width)
         commands.extend(
             [
                 ellipse_path(cx, cy, inner_rx, inner_ry),
                 "f",
             ]
         )
+    commands.append("Q")
     stream = DecodedStreamObject()
     stream.set_data("\n".join(commands).encode("ascii"))
     stream.update(

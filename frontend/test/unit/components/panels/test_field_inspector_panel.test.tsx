@@ -205,9 +205,18 @@ describe('FieldInspectorPanel', () => {
       />,
     );
 
+    onUpdateField.mockClear();
+    fireEvent.change(screen.getByLabelText('Custom font size'), {
+      target: { value: '1' },
+    });
+    expect((screen.getByLabelText('Custom font size') as HTMLInputElement).value).toBe('1');
+    expect(onUpdateField).not.toHaveBeenCalled();
+
     fireEvent.change(screen.getByLabelText('Custom font size'), {
       target: { value: '18' },
     });
+    expect(onUpdateField).not.toHaveBeenCalled();
+    fireEvent.blur(screen.getByLabelText('Custom font size'));
     expect(onUpdateField).toHaveBeenCalledWith('field-1', { fontSize: 18 });
   });
 

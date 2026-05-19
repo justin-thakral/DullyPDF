@@ -46,7 +46,7 @@ Editable exports should:
 - Store selected fonts, point sizes, and font colors in `/DA`.
 - Register the selected Base 14 font in `/AcroForm /DR /Font`.
 - Attach widget-owned `/AP` streams so viewers show the filled value immediately.
-- Keep checkbox and radio widgets synchronized across `/V`, `/AS`, and `/AP`.
+- Keep checkbox and radio widgets synchronized across `/V`, `/AS`, and `/AP`; generated button appearances draw only selected marks so existing PDF box/circle artwork is not doubled.
 - Remove stale same-name widgets when DullyPDF replaces a detected/source widget with a moved or edited
   version.
 - Avoid adding a separate page-content text layer underneath live widgets.
@@ -305,7 +305,7 @@ Backend unit tests should verify:
   and widget `/AP` streams, and generated PDFs include `/DullyPDFAppearance` metadata for re-upload
   hydration.
 - Existing widgets update in place without duplicate same-name widgets.
-- Checkbox and radio widgets have matching `/V`, `/AS`, and `/AP` states.
+- Checkbox and radio widgets have matching `/V`, `/AS`, and `/AP` states with mark-only generated button appearances.
 - Flat exports remove live widgets and stale `/AcroForm` metadata.
 
 Integration tests should cover:

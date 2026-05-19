@@ -70,6 +70,18 @@ function createProps(overrides: Partial<FieldListPanelProps> = {}): FieldListPan
 }
 
 describe('FieldListPanel', () => {
+  it('opens editor workflow usage docs from the field list header', async () => {
+    const user = userEvent.setup();
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<FieldListPanel {...createProps()} />);
+
+    await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
+
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/editor-workflow', '_blank', 'noopener,noreferrer');
+    openSpy.mockRestore();
+  });
+
   it('shows the renaming hint only while rename is in progress', () => {
     const { rerender } = render(<FieldListPanel {...createProps()} />);
 
@@ -221,9 +233,19 @@ describe('FieldListPanel', () => {
     await user.selectOptions(screen.getByLabelText('Global font size'), 'auto');
     expect(onGlobalFieldFontSizeChange).toHaveBeenCalledWith('auto');
 
-    fireEvent.change(screen.getByLabelText('Global custom font size'), {
+    onGlobalFieldFontSizeChange.mockClear();
+    const customFontSizeInput = screen.getByLabelText('Global custom font size') as HTMLInputElement;
+    fireEvent.change(customFontSizeInput, {
+      target: { value: '1' },
+    });
+    expect(customFontSizeInput.value).toBe('1');
+    expect(onGlobalFieldFontSizeChange).not.toHaveBeenCalled();
+
+    fireEvent.change(customFontSizeInput, {
       target: { value: '16' },
     });
+    expect(onGlobalFieldFontSizeChange).not.toHaveBeenCalled();
+    fireEvent.blur(customFontSizeInput);
     expect(onGlobalFieldFontSizeChange).toHaveBeenCalledWith(16);
   });
 

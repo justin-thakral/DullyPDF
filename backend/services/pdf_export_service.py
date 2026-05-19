@@ -178,21 +178,18 @@ def _draw_flat_check_widget(page, payload: dict[str, Any]) -> None:
     rect = fitz.Rect(payload["rect"])
     if rect.is_empty or rect.width <= 0 or rect.height <= 0:
         return
+    if not payload.get("checked"):
+        return
     color = payload.get("color") or (0.0, 0.0, 0.0)
     stroke_width = max(min(rect.width, rect.height) * 0.08, 0.6)
     widget_type = payload.get("field_type")
     if widget_type == fitz.PDF_WIDGET_TYPE_RADIOBUTTON:
-        page.draw_oval(rect, color=color, width=stroke_width, overlay=True)
-        if payload.get("checked"):
-            inset = max(min(rect.width, rect.height) * 0.20, stroke_width)
-            inner = fitz.Rect(rect.x0 + inset, rect.y0 + inset, rect.x1 - inset, rect.y1 - inset)
-            if not inner.is_empty:
-                page.draw_oval(inner, color=color, fill=color, width=stroke_width, overlay=True)
+        inset = max(min(rect.width, rect.height) * 0.26, stroke_width)
+        inner = fitz.Rect(rect.x0 + inset, rect.y0 + inset, rect.x1 - inset, rect.y1 - inset)
+        if not inner.is_empty:
+            page.draw_oval(inner, color=color, fill=color, width=stroke_width, overlay=True)
         return
 
-    page.draw_rect(rect, color=color, width=stroke_width, overlay=True)
-    if not payload.get("checked"):
-        return
     x1 = rect.x0 + rect.width * 0.14
     y1 = rect.y0 + rect.height * 0.55
     x2 = rect.x0 + rect.width * 0.40

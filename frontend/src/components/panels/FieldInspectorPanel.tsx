@@ -164,6 +164,7 @@ export function FieldInspectorPanel({
   const [radioOptionLabelDraft, setRadioOptionLabelDraft] = useState('');
   const [radioOptionKeyDraft, setRadioOptionKeyDraft] = useState('');
   const [radioMoveGroupId, setRadioMoveGroupId] = useState('');
+  const [fieldFontSizeDraft, setFieldFontSizeDraft] = useState('');
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -225,8 +226,6 @@ export function FieldInspectorPanel({
       : selected?.fontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE
         ? DEFAULT_FIELD_FONT_SIZE_CHOICE
         : 'global';
-  const selectedCustomFontSizeValue =
-    typeof selected?.fontSize === 'number' ? String(selected.fontSize) : '';
   const globalFontSizeLabel = fieldFontSizeChoiceLabel(globalFieldFontSize);
   const selectedFontColorValue =
     typeof selected?.fontColor === 'string' && selected.fontColor !== 'global'
@@ -260,6 +259,10 @@ export function FieldInspectorPanel({
     selected?.type,
     selectedRadioGroup,
   ]);
+
+  useEffect(() => {
+    setFieldFontSizeDraft(typeof selected?.fontSize === 'number' ? String(selected.fontSize) : '');
+  }, [selected?.id, selected?.fontSize]);
 
   /**
    * Patch rect properties while keeping the rest of the geometry intact.
@@ -361,12 +364,21 @@ export function FieldInspectorPanel({
   };
 
   const handleFieldFontSizeChange = (value: string) => {
+    setFieldFontSizeDraft(value);
+  };
+
+  const commitFieldFontSizeChange = () => {
     if (!selected || !canEditSelectedFont) return;
     const fallback =
       typeof selected.fontSize === 'number'
         ? selected.fontSize
         : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT;
-    const nextFontSize = sanitizeFieldFontSizeOverride(value, fallback);
+    const rawFontSizeDraft = fieldFontSizeDraft.trim();
+    const nextFontSize =
+      rawFontSizeDraft.length === 0
+        ? fallback
+        : sanitizeFieldFontSizeOverride(rawFontSizeDraft, fallback);
+    setFieldFontSizeDraft(typeof nextFontSize === 'number' ? String(nextFontSize) : String(fallback));
     if (typeof nextFontSize === 'number' && nextFontSize !== selected.fontSize) {
       onUpdateField(selected.id, { fontSize: nextFontSize });
     }
@@ -606,10 +618,13 @@ export function FieldInspectorPanel({
                           step={0.5}
                           inputMode="decimal"
                           aria-label="Custom font size"
-                          value={selectedCustomFontSizeValue}
+                          value={selectedFontSizeValue === 'custom' ? fieldFontSizeDraft : ''}
                           placeholder={globalFontSizeLabel}
                           disabled={selectedFontSizeValue !== 'custom'}
+                          onFocus={beginFieldEdit}
+                          onBlur={() => commitFieldEdit(commitFieldFontSizeChange)}
                           onChange={(event) => handleFieldFontSizeChange(event.target.value)}
+                          onKeyDown={handleNumberInputKeyDown}
                         />
                       </div>
                     </div>

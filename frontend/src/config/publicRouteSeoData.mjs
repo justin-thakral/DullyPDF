@@ -3818,7 +3818,7 @@ const USAGE_DOCS_PAGES = [
     title: 'Editor Workflow',
     summary: 'How to use overlay, field list, and inspector together for fast, high-confidence template cleanup.',
     relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-checkbox-automation'],
-    sectionTitles: ['Three-panel model', 'Editing actions', 'Ten-minute cleanup order', 'Recommended quality loop', 'History and clear behavior'],
+    sectionTitles: ['Three-panel model', 'Review, Edit, and Fill modes', 'Editing actions', 'Ten-minute cleanup order', 'Recommended quality loop', 'History and clear behavior', 'Keyboard shortcuts'],
   },
   {
     key: 'search-fill',

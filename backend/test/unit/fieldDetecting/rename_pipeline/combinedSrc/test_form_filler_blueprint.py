@@ -83,6 +83,42 @@ def test_checkbox_value_and_confidence_helpers() -> None:
     assert form_filler._confidence_tag({"confidence": "bad"}) is None
 
 
+def test_button_appearance_streams_draw_only_selected_marks() -> None:
+    writer = PdfWriter()
+
+    checkbox_off = form_filler._build_checkbox_appearance(
+        writer,
+        width=12,
+        height=12,
+        checked=False,
+    ).get_object().get_data().decode("ascii")
+    checkbox_on = form_filler._build_checkbox_appearance(
+        writer,
+        width=12,
+        height=12,
+        checked=True,
+    ).get_object().get_data().decode("ascii")
+    radio_off = form_filler._build_radio_appearance(
+        writer,
+        width=12,
+        height=12,
+        checked=False,
+    ).get_object().get_data().decode("ascii")
+    radio_on = form_filler._build_radio_appearance(
+        writer,
+        width=12,
+        height=12,
+        checked=True,
+    ).get_object().get_data().decode("ascii")
+
+    assert " re S" not in checkbox_off
+    assert " re S" not in checkbox_on
+    assert " l " in checkbox_on
+    assert radio_off == "q\nQ"
+    assert "\nf" in radio_on
+    assert "\nS" not in radio_on
+
+
 def test_dedupe_existing_widgets_and_reset_acroform_fields() -> None:
     writer = PdfWriter()
     page = writer.add_blank_page(width=200, height=200)

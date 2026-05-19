@@ -1,7 +1,16 @@
 /**
  * Side panel that lists fields and controls visibility/filtering.
  */
-import { memo, useCallback, useDeferredValue, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import {
+  memo,
+  useCallback,
+  useDeferredValue,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
 import type {
   ConfidenceFilter,
   ConfidenceTier,
@@ -32,11 +41,17 @@ import {
 } from '../../utils/fieldFonts';
 import { formatSize } from '../../utils/fields';
 import { FIELD_TYPES, fieldTypeLabel } from '../../utils/fieldUi';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 
 const MIN_PAGE = 1;
 
 type SortMode = 'page' | 'name' | 'type' | 'confidence';
 export type FieldListDisplayPreset = 'review' | 'edit' | 'fill' | 'custom';
+
+type FontSizeDraft = {
+  source: FieldFontSizeChoice;
+  value: string;
+};
 
 type PreparedFieldRow = {
   field: PdfField;
@@ -122,6 +137,10 @@ function sortFields(items: PreparedFieldRow[], mode: SortMode): PreparedFieldRow
     return a.field.name.localeCompare(b.field.name, undefined, { sensitivity: 'base' });
   });
   return sorted;
+}
+
+function fontSizeDraftValue(fontSize: FieldFontSizeChoice): string {
+  return typeof fontSize === 'number' ? String(fontSize) : '';
 }
 
 function prepareFieldRow(field: PdfField): PreparedFieldRow {
@@ -275,8 +294,15 @@ export function FieldListPanel({
   const [filterType, setFilterType] = useState<FieldType | 'all'>('all');
   const [sortMode, setSortMode] = useState<SortMode>('page');
   const [showAllPages, setShowAllPages] = useState(false);
+  const [globalFieldFontSizeDraft, setGlobalFieldFontSizeDraft] = useState<FontSizeDraft>({
+    source: globalFieldFontSize,
+    value: fontSizeDraftValue(globalFieldFontSize),
+  });
   const deferredQuery = useDeferredValue(query);
   const panelBodyRef = useRef<HTMLDivElement | null>(null);
+  const resolvedGlobalFieldFontSizeDraft = Object.is(globalFieldFontSizeDraft.source, globalFieldFontSize)
+    ? globalFieldFontSizeDraft.value
+    : fontSizeDraftValue(globalFieldFontSize);
 
   const preparedFields = useMemo(
     () => fields.map((field) => prepareFieldRow(field)),
@@ -342,22 +368,55 @@ export function FieldListPanel({
 
   const handleGlobalFieldFontSizeModeChange = (value: string) => {
     if (value === DEFAULT_FIELD_FONT_SIZE_CHOICE) {
+      setGlobalFieldFontSizeDraft({ source: DEFAULT_FIELD_FONT_SIZE_CHOICE, value: '' });
       onGlobalFieldFontSizeChange(DEFAULT_FIELD_FONT_SIZE_CHOICE);
       return;
     }
-    onGlobalFieldFontSizeChange(
+    const nextFontSize =
       typeof globalFieldFontSize === 'number'
         ? globalFieldFontSize
-        : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT,
-    );
+        : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT;
+    setGlobalFieldFontSizeDraft({ source: nextFontSize, value: String(nextFontSize) });
+    onGlobalFieldFontSizeChange(nextFontSize);
   };
 
   const handleGlobalFieldFontSizeChange = (value: string) => {
+    setGlobalFieldFontSizeDraft({ source: globalFieldFontSize, value });
+  };
+
+  const commitGlobalFieldFontSizeChange = () => {
     const fallback =
       typeof globalFieldFontSize === 'number'
         ? globalFieldFontSize
         : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT;
-    onGlobalFieldFontSizeChange(sanitizeFieldFontSizeChoice(value, fallback));
+    const rawFontSizeDraft = resolvedGlobalFieldFontSizeDraft.trim();
+    const nextFontSize =
+      rawFontSizeDraft.length === 0
+        ? fallback
+        : sanitizeFieldFontSizeChoice(rawFontSizeDraft, fallback);
+    setGlobalFieldFontSizeDraft({
+      source: nextFontSize,
+      value: typeof nextFontSize === 'number' ? String(nextFontSize) : String(fallback),
+    });
+    if (nextFontSize !== globalFieldFontSize) {
+      onGlobalFieldFontSizeChange(nextFontSize);
+    }
+  };
+
+  const handleGlobalFieldFontSizeKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.currentTarget.blur();
+      return;
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setGlobalFieldFontSizeDraft({
+        source: globalFieldFontSize,
+        value: fontSizeDraftValue(globalFieldFontSize),
+      });
+      event.currentTarget.blur();
+    }
   };
 
   const handleGlobalFieldFontColorChange = (value: string) => {
@@ -415,14 +474,24 @@ export function FieldListPanel({
             Filter, sort, and jump to fields fast.
           </p>
         </div>
-        <button
-          className="panel-scroll-top"
-          type="button"
-          onClick={handleScrollToTop}
-          aria-label="Scroll field panel to top"
-        >
-          Top
-        </button>
+        <div className="panel__header-actions">
+          <button
+            type="button"
+            className="ui-button ui-button--ghost ui-button--compact panel__header-action"
+            onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.editorWorkflow)}
+            title="Open Editor Workflow usage docs in a new window"
+          >
+            Usage Docs
+          </button>
+          <button
+            className="panel-scroll-top"
+            type="button"
+            onClick={handleScrollToTop}
+            aria-label="Scroll field panel to top"
+          >
+            Top
+          </button>
+        </div>
       </div>
 
       <div className="panel__body" ref={panelBodyRef}>
@@ -623,13 +692,15 @@ export function FieldListPanel({
                 inputMode="decimal"
                 aria-label="Global custom font size"
                 value={
-                  typeof globalFieldFontSize === 'number'
-                    ? String(globalFieldFontSize)
-                    : ''
+                  globalFieldFontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE
+                    ? ''
+                    : resolvedGlobalFieldFontSizeDraft
                 }
                 placeholder="Auto"
                 disabled={globalFieldFontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE}
                 onChange={(event) => handleGlobalFieldFontSizeChange(event.target.value)}
+                onBlur={commitGlobalFieldFontSizeChange}
+                onKeyDown={handleGlobalFieldFontSizeKeyDown}
               />
             </div>
           </div>

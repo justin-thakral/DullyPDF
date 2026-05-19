@@ -33,6 +33,19 @@
   flex: 1 1 auto;
 }
 
+.panel__header-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.panel__header-actions .panel__header-action {
+  margin-right: 0;
+}
+
 .panel__header-action {
   flex: 0 0 auto;
   align-self: flex-start;
