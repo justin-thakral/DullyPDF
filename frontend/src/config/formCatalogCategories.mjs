@@ -3,7 +3,7 @@
 
 export const FORM_CATALOG_CATEGORIES = [
   {"key":"tax_individual","label":"Tax — Individual","sections":["tax_individual"],"count":300,"empty":false,"emptyReason":null},
-  {"key":"practice_intake","label":"Practice Intake Templates","sections":["practice_intake"],"count":200,"empty":false,"emptyReason":null},
+  {"key":"practice_intake","label":"Practice Intake Templates","sections":["practice_intake"],"count":260,"empty":false,"emptyReason":null},
   {"key":"tax_business","label":"Tax — Business","sections":["tax_business"],"count":200,"empty":false,"emptyReason":null},
   {"key":"federal_specialized","label":"Federal — Specialized Agencies","sections":["federal_specialized"],"count":195,"empty":false,"emptyReason":null},
   {"key":"tax_payroll","label":"Tax — Payroll","sections":["tax_payroll"],"count":100,"empty":false,"emptyReason":null},
@@ -32,4 +32,4 @@ export const FORM_CATALOG_CATEGORIES = [
   {"key":"nar_realtor","label":"NAR / Realtor","sections":["nar_realtor"],"count":0,"empty":true,"emptyReason":"NAR / Realtor forms are copyright-restricted. See form_catalog/nar_realtor/links.txt."}
 ];
 
-export const FORM_CATALOG_TOTAL_COUNT = 1807;
+export const FORM_CATALOG_TOTAL_COUNT = 1867;

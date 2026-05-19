@@ -1079,6 +1079,11 @@ email`}</pre>
               tablets, and desktops.
             </p>
             <p>
+              It also avoids asking respondents to rely on a mobile PDF viewer for data entry. Browser, phone, and
+              email-preview PDF viewers can handle editable field styling differently, while the web form gives every
+              respondent the same collection surface.
+            </p>
+            <p>
               For template links only, owners can optionally expose a post-submit button that lets respondents
               download a PDF copy of what they just submitted.
             </p>
@@ -1099,6 +1104,24 @@ email`}</pre>
         ),
       },
       {
+        id: 'pdf-output-compatibility',
+        title: 'PDF output and viewer compatibility',
+        body: (
+          <>
+            <p>
+              When a completed document is being sent outside your team, prefer Fill By Link or a flat PDF download.
+              Flat PDFs bake submitted values into page content, so the finished copy does not depend on the
+              recipient&apos;s PDF viewer preserving editable AcroForm font, font-size, or color behavior.
+            </p>
+            <p>
+              Editable PDFs remain useful when the next person must keep filling the same live fields after download.
+              For respondent receipts, signed packets, and final records, the flat output path is usually the safer
+              default.
+            </p>
+          </>
+        ),
+      },
+      {
         id: 'reviewing-responses',
         title: 'Reviewing responses and generating PDFs',
         body: (
@@ -1106,7 +1129,7 @@ email`}</pre>
             <li>Open the saved respondent list in the workspace.</li>
             <li>Select one submission and hand it to Search &amp; Fill just like a local CSV/XLSX/JSON row.</li>
             <li>Generate the PDF only when you are ready to materialize that response into the active template or group.</li>
-            <li>Download the output immediately or keep working with the stored respondent record later.</li>
+            <li>Download a flat PDF for final sharing, or keep working with the stored respondent record later.</li>
             <li>
               If post-submit signing was enabled and the respondent completed it, download the signed PDF and audit
               receipt directly from that response row.
@@ -1403,6 +1426,7 @@ email`}</pre>
             <li>Save to profile when the template will be reused or shared within your account context.</li>
             <li>Saved forms persist template metadata including checkbox rules, radio groups, and text transform rules.</li>
             <li>Fill By Link starts from a saved form or an open group because the public respondent link is tied to the owner account and saved template set.</li>
+            <li>For external recipients, respondent receipts, and final records, prefer Fill By Link or flat PDF downloads because completed values are baked into the page instead of depending on the recipient&apos;s PDF viewer to preserve editable field styling.</li>
           </ul>
         ),
       },

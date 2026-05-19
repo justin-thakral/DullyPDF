@@ -494,10 +494,10 @@ const INTENT_PAGES = [
     navLabel: 'Fill PDF By Link',
     heroTitle: 'Collect PDF Answers With Native Fill By Link',
     heroSummary:
-      'Start from a saved DullyPDF template, publish a mobile-friendly form link, collect respondent answers, and generate the filled PDF in the workspace.',
+      'Start from a saved DullyPDF template, publish a mobile-friendly form link, collect respondent answers, and generate a flat, viewer-friendly PDF in the workspace.',
     seoTitle: 'Free Automatic PDF Fill By Link and Web Forms | DullyPDF',
     seoDescription:
-      'Use free automatic Fill By Link workflows to send web forms, collect respondent answers, and fill mapped PDFs later in DullyPDF.',
+      'Use free automatic Fill By Link workflows to send web forms, collect respondent answers, and generate flat filled PDFs later in DullyPDF.',
     seoKeywords: [
       'fill pdf by link',
       'free fill pdf by link',
@@ -515,6 +515,7 @@ const INTENT_PAGES = [
       'Publish a DullyPDF-hosted HTML form from any saved template.',
       'Store respondent answers as structured records under the template owner account.',
       'Optionally let template respondents download their submitted PDF copy on the success screen.',
+      'Prefer flat PDF outputs when sending completed copies to people who may open them in mobile or browser PDF viewers.',
       'Pick a respondent later in the workspace and fill the source PDF on demand.',
     ],
     proofPoints: [
@@ -528,6 +529,13 @@ const INTENT_PAGES = [
         paragraphs: [
           'Many teams do not actually want respondents opening and editing a PDF on a phone. They want the information collected in a simpler web form, then they want the final PDF generated later in a controlled owner workflow. That distinction matters because it separates data collection from document generation.',
           'DullyPDF Fill By Link is built around that separation. The respondent submits answers through a mobile-friendly HTML form, while the owner keeps the saved template, stored responses, and final PDF generation workflow inside the workspace. That usually creates a cleaner process than emailing PDFs back and forth or relying on manual re-entry after someone submits a form.',
+        ],
+      },
+      {
+        title: 'Why flat PDFs are better for completed copies',
+        paragraphs: [
+          'Editable PDFs are useful when the recipient needs live fields after download, but PDF viewers do not all handle editable field appearance the same way. A file that keeps font size, font family, and text color in one viewer can still be displayed or edited differently in another mobile, browser, or email preview viewer.',
+          'For completed respondent copies, DullyPDF recommends the Fill By Link workflow or a flat PDF download. Flat outputs bake the submitted values into the page content, so the recipient receives a final document instead of a live form that depends on their PDF viewer preserving field styling.',
         ],
       },
       {
@@ -573,7 +581,7 @@ const INTENT_PAGES = [
       {
         title: 'When Fill By Link is better than sending a PDF or jumping straight to e-sign',
         paragraphs: [
-          'Use Fill By Link when the main need is data collection from a respondent who should not be editing the actual PDF directly. Use a direct PDF workflow when the operator already has the data and only needs to materialize the file. Use the signature workflow after the record is complete and the final immutable version is ready for signer review.',
+          'Use Fill By Link when the main need is data collection from a respondent who should not be editing the actual PDF directly, especially when recipients may open the file on phones or in browser PDF viewers. Use a direct PDF workflow when the operator already has the data and only needs to materialize the file. Use the signature workflow after the record is complete and the final immutable version is ready for signer review.',
           'That sequence keeps the product model coherent. Fill By Link collects the row, Search & Fill materializes the row into the template, and signature routes only start after the record is finalized. Trying to collapse those stages too early usually creates weaker operational controls and weaker SEO separation between the routes.',
         ],
       },
@@ -585,14 +593,19 @@ const INTENT_PAGES = [
           'No. The respondent fills a DullyPDF-hosted mobile-friendly HTML form. Template links can optionally expose a post-submit PDF download, but the owner still manages the saved response and final workflow in the workspace.',
       },
       {
+        question: 'Should I send clients an editable PDF or a Fill By Link?',
+        answer:
+          'Use Fill By Link when clients only need to submit answers and receive a completed copy. The final flat PDF is more reliable across mobile and browser viewers than an editable PDF whose field styling can vary by viewer.',
+      },
+      {
         question: 'How many Fill By Link responses are allowed on free and premium?',
         answer:
           'Base includes 25 accepted Fill By Link responses per month across the account. Premium supports up to 10,000 accepted responses per month across the account.',
       },
       {
-        question: 'Can I publish one link for every template?',
+        question: 'Can I publish links for multiple templates?',
         answer:
-          'Premium users can publish a shareable link for every saved template they keep in DullyPDF. Free users are limited to 1 active published link at a time.',
+          `Yes. DullyPDF does not cap active Fill By Links by template count. Base accounts can collect up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account, while Premium raises that monthly response capacity to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)}.`,
       },
     ],
     relatedIntentPages: ['fill-pdf-from-csv', 'pdf-signature-workflow', 'fill-information-in-pdf'],
@@ -3846,9 +3859,9 @@ const USAGE_DOCS_PAGES = [
     path: '/usage-docs/fill-by-link',
     navLabel: 'Fill By Link',
     title: 'Fill By Link',
-    summary: 'Publish a DullyPDF-hosted form from a saved template or open group, share the generated link, and turn stored respondent answers into PDFs when needed, with optional post-submit downloads for template respondents.',
+    summary: 'Publish a DullyPDF-hosted form from a saved template or open group, share the generated link, and turn stored respondent answers into flat PDFs when needed, with optional post-submit downloads for template respondents.',
     relatedWorkflowKeys: ['fill-pdf-by-link', 'pdf-signature-workflow'],
-    sectionTitles: ['What gets published', 'Owner publishing flow', 'What respondents see', 'Reviewing responses and generating PDFs', 'Limits and sharing guidance'],
+    sectionTitles: ['What gets published', 'Owner publishing flow', 'What respondents see', 'PDF output and viewer compatibility', 'Reviewing responses and generating PDFs', 'Limits and sharing guidance'],
   },
   {
     key: 'signature-workflow',
@@ -3886,9 +3899,9 @@ const USAGE_DOCS_PAGES = [
     path: '/usage-docs/save-download-profile',
     navLabel: 'Save / Download',
     title: 'Save, Download, and Profile',
-    summary: 'Understand when to download immediately versus saving templates to your profile for reuse, Fill By Link publishing, and respondent management.',
+    summary: 'Understand when to download flat or editable PDFs immediately versus saving templates to your profile for reuse, Fill By Link publishing, and respondent management.',
     relatedWorkflowKeys: ['pdf-to-fillable-form', 'fill-pdf-by-link'],
-    sectionTitles: ['Download vs save', 'Saved form workflow', 'What must be saved before publishing or API use', 'Limits and credits', 'Stripe billing plans', 'Replace vs new save'],
+    sectionTitles: ['Download vs save', 'Saved form workflow', 'What must be saved before publishing or API use', 'Fill By Link owner flow', 'Limits and credits', 'Stripe billing plans', 'Replace vs new save'],
   },
   {
     key: 'troubleshooting',

@@ -74,3 +74,8 @@ Unknown slugs (for example `/usage-docs/typo`) are treated as not found:
 - Workspace `Rename or Remap` dropdown includes `Usage Docs`, which opens `/usage-docs/rename-mapping` in a new browser tab/window.
 - Workspace `Fill from information extracted from images and documents`, `Fill By Web Form Link + Sign`, `Send PDF for Signature by email`, and `API Fill` dialogs expose a `Usage Docs` button immediately left of the red close control, and each button opens its matching `/usage-docs/*` route in a new browser tab/window.
 - Workspace field-list and inspector headers expose right-aligned `Usage Docs` buttons that open `/usage-docs/editor-workflow` in a new browser tab/window without disturbing the active editor state.
+
+## Output guidance
+
+- The Fill By Link docs explicitly recommend flat PDF outputs for external recipients, respondent receipts, and final records because the completed values are baked into page content instead of depending on a mobile or browser PDF viewer to preserve editable AcroForm styling.
+- Editable PDF downloads remain documented as the right choice when a recipient needs to keep working with live fields after download.
