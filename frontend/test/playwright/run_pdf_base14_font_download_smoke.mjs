@@ -228,6 +228,17 @@ function summarizePdfInspection(inspection) {
   };
 }
 
+function assertPdfRendererAvailable() {
+  try {
+    execFileSync('pdftoppm', ['-v'], {
+      cwd: repoRoot,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  } catch {
+    throw new Error('Missing pdftoppm. Install Poppler, for example `sudo apt-get install poppler-utils`, before running the PDF font smoke.');
+  }
+}
+
 function renderFirstPage(pdfPath, label) {
   const prefix = path.join(artifactDir, label);
   execFileSync('pdftoppm', ['-png', '-singlefile', '-f', '1', '-l', '1', pdfPath, prefix], {
@@ -300,6 +311,8 @@ async function readSelectValue(page, selector) {
 }
 
 async function main() {
+  assertPdfRendererAvailable();
+
   if (!fs.existsSync(samplePdfPath)) {
     throw new Error(`Missing sample PDF: ${samplePdfPath}`);
   }
