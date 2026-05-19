@@ -310,6 +310,7 @@ def _normalize_group_template_sources(payload: FillLinkCreateRequest | FillLinkU
             {
                 "templateId": template_source.templateId,
                 "templateName": template_source.templateName,
+                "appearance": dict(template_source.appearance or {}),
                 "fields": [field.model_dump(exclude_none=True) for field in template_source.fields],
                 "checkboxRules": list(template_source.checkboxRules or []),
             }

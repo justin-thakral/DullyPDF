@@ -12,9 +12,13 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - `Fields`: show/hide overlay boxes.
 - `Names`: show/hide overlay labels.
 - `Info`: show/hide input controls on the PDF for entering values.
+- In `Info`, checkbox and radio controls keep the visible control outline at the real field size while rendering slightly oversized check/dot marks for tiny PDF boxes so selected states stay readable. Editable and flat exports follow the same rule.
 - `Transform` and `Info` are mutually exclusive to avoid drag/edit conflicts (enabling one disables the other).
 - `All`: list fields from all pages in the left panel.
 - `Clear`: clear current field values in the session.
+- `Global font`: chooses the workspace font for text/date fields from the text-safe PDF Base 14 font subset. `Default (Helvetica)` preserves the current DullyPDF font behavior in preview and exported PDFs. Symbol-only Base 14 fonts (`Symbol`, `ZapfDingbats`) are not exposed for typed fields because common PDF viewers cannot reliably map normal typed text into those encodings.
+- `Global font size`: chooses whether text/date fields keep `Auto (dynamic)` or use a custom workspace point size in the fill preview and generated PDFs.
+- `Global font color`: chooses the workspace text color for text/date fields. It is written to the AcroForm root appearance and used by every field that has not selected a custom color.
 - The schema/source dropdown keeps Search & Fill actions close to the active source: `Search & Fill` opens the modal, `Clear Field Information` clears current field values without disconnecting the source, and `Disconnect Data Source` removes the attached source.
 
 ## Creating and selecting fields
@@ -46,7 +50,15 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 ## Inspector editing
 
 - Rename fields and change type/page assignment.
+- Text and date fields can override the global field font with one of the supported text-safe Base 14 fonts, or inherit the global setting.
+- Text and date fields can also set field-specific font-size behavior: `Use global` inherits the workspace font-size setting, `Auto` forces the current height-based sizing for that field, and `Custom` stores an individual point size.
+- Text and date fields can set field-specific font colors. `Use global` inherits the workspace color; `Custom` stores a per-field hex color that overrides the global color in preview, editable downloads, flat downloads, Fill By Link, and API Fill materialization.
+- Font, font-size, and font-color choices persist in saved templates and are applied when DullyPDF materializes editable or flat PDFs, including Fill By Link and API Fill outputs that reuse the saved snapshot.
+- DullyPDF-generated editable PDFs include a small appearance metadata record so re-uploading that PDF can restore the global color and keep true per-field color overrides marked as custom in the inspector.
+- Editable exports store text values, selected font settings, and widget-owned appearance streams on the AcroForm fields instead of adding a separate page-content text layer under the field. Exported AcroFields use short Base 14 font resource aliases in `/DA` so the inactive value and the focused typing state resolve the same selected font in stricter PDF viewers.
 - Radio `Group key` is the persisted single-choice identifier used by exported PDFs, Search & Fill, and Fill By Link.
+- Editable PDF exports write checkbox and radio button widgets with explicit on/off appearance states,
+  and reused source widgets are registered in the output AcroForm tree so strict viewers such as Chrome and Adobe can load, display, and toggle them.
 - When a new or AI-suggested radio group key collides with a different existing radio group, the editor auto-suffixes the key to keep those groups separate downstream.
 - The inspector header shows the selected field name and calls out that `Enter` confirms edits.
 - Delete the selected field, or remove every field from the current workspace after confirming the bulk delete dialog.
@@ -54,6 +66,7 @@ Field editing is centered around three coordinated areas: overlay (PDF), field l
 - Undo/redo field edits with keyboard shortcuts (history depth: 10 snapshots).
 - Workspace edits only change the editor overlay state; the underlying PDF bytes are rewritten later when you save or download.
 - Toolbar actions that depend on the latest editor state now defer until the next tick so blur-committed inspector edits settle before Save, Fill By Web Form, API Fill, or Search & Fill reads the workspace.
+
 ## Confidence labels
 
 - The field list supports high/medium/low confidence filtering.

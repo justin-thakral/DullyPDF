@@ -80,6 +80,7 @@ mcp/.env.*.local
 /legacy/
 
 # Internal bug-report artifacts (PII/session data)
+/bugs.md
 /backend/test/bugs/*.md
 /test/bugs/*.md
 !/test/bugs/README.md
@@ -87,6 +88,10 @@ mcp/.env.*.local
 
 # Local security audit artifacts
 /security_full_audit_report_*.md
+
+# Local implementation plans
+/DIFFERENT_FONT_IMPLEMENTATION_PLAN.md
+/FONT_SIZE_SETTINGS_IMPLEMENTATION_PLAN.md
 
 # Local run artifacts (keep cleanup scripts/README tracked)
 /output/

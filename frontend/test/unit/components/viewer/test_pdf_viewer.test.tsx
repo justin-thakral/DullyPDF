@@ -123,6 +123,8 @@ function buildProps(overrides: Partial<ComponentProps<typeof PdfViewer>> = {}) {
     scale: 1,
     pageSizes: makePageSizes(5),
     fields: [] as PdfField[],
+    globalFieldFont: 'default',
+    globalFieldFontSize: 'auto',
     showFields: false,
     showFieldNames: false,
     showFieldInfo: false,
@@ -312,5 +314,28 @@ describe('PdfViewer', () => {
     rerender(<PdfViewer {...props} showFields={false} showFieldInfo />);
     expect(container.querySelectorAll('.mock-field-overlay')).toHaveLength(0);
     expect(container.querySelectorAll('.mock-field-input-overlay').length).toBeGreaterThan(0);
+  });
+
+  it('passes the global field font settings to the fill input overlay', () => {
+    const field = makeField({ id: 'f1', name: 'Name', type: 'text', page: 1 });
+    render(
+      <PdfViewer
+        {...buildProps({
+          pdfDoc: createPdfDoc(1) as any,
+          pageSizes: makePageSizes(1),
+          fields: [field],
+          showFieldInfo: true,
+          globalFieldFont: 'Times-Italic',
+          globalFieldFontSize: 14,
+        })}
+      />,
+    );
+
+    expect(overlayMocks.fieldInputOverlay).toHaveBeenCalledWith(
+      expect.objectContaining({
+        globalFieldFont: 'Times-Italic',
+        globalFieldFontSize: 14,
+      }),
+    );
   });
 });

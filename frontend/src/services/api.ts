@@ -4,6 +4,7 @@
 import type {
   CheckboxRule,
   PdfField,
+  SavedFormAppearance,
   SavedFormEditorSnapshot,
   TextTransformRule,
 } from '../types';
@@ -2131,11 +2132,17 @@ export class ApiService {
   static async materializeFormPdf(
     blob: Blob,
     fields: PdfField[],
-    options?: AbortableRequestOptions & { exportMode?: MaterializePdfExportMode },
+    options?: AbortableRequestOptions & {
+      exportMode?: MaterializePdfExportMode;
+      appearance?: SavedFormAppearance;
+    },
   ): Promise<Blob> {
     const formData = new FormData();
     formData.append('pdf', blob, 'form.pdf');
-    formData.append('fields', JSON.stringify({ fields }));
+    formData.append('fields', JSON.stringify({
+      fields,
+      ...(options?.appearance ? { appearance: options.appearance } : {}),
+    }));
     if (options?.exportMode) {
       formData.append('exportMode', options.exportMode);
     }

@@ -1,7 +1,7 @@
 import { act, render, waitFor } from '@testing-library/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { PdfField } from '../../../src/types';
+import type { FieldFontChoice, FieldFontColorChoice, FieldFontSizeChoice, PdfField } from '../../../src/types';
 import { useGroupTemplateCache } from '../../../src/hooks/useGroupTemplateCache';
 
 const loadSavedFormMock = vi.hoisted(() => vi.fn());
@@ -12,6 +12,7 @@ const touchSessionMock = vi.hoisted(() => vi.fn());
 const loadPdfFromFileMock = vi.hoisted(() => vi.fn());
 const loadPageSizesMock = vi.hoisted(() => vi.fn());
 const extractFieldsFromPdfMock = vi.hoisted(() => vi.fn());
+const extractDullyPdfAppearanceMetadataMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../../../src/services/api', () => ({
   ApiService: {
@@ -27,6 +28,7 @@ vi.mock('../../../src/utils/pdf', () => ({
   loadPdfFromFile: loadPdfFromFileMock,
   loadPageSizes: loadPageSizesMock,
   extractFieldsFromPdf: extractFieldsFromPdfMock,
+  extractDullyPdfAppearanceMetadata: extractDullyPdfAppearanceMetadataMock,
 }));
 
 type DisplayState = {
@@ -110,6 +112,9 @@ function renderHarness(
     const [checkboxRules, setCheckboxRules] = useState<any[]>([]);
     const [radioGroupSuggestions, setRadioGroupSuggestions] = useState<any[]>([]);
     const [textTransformRules, setTextTransformRules] = useState<any[]>([]);
+    const [globalFieldFont, setGlobalFieldFont] = useState<FieldFontChoice>('default');
+    const [globalFieldFontSize, setGlobalFieldFontSize] = useState<FieldFontSizeChoice>('auto');
+    const [globalFieldFontColor, setGlobalFieldFontColor] = useState<FieldFontColorChoice>('#000000');
 
     useEffect(() => {
       fieldsRef.current = fields;
@@ -185,6 +190,14 @@ function renderHarness(
         historyRef,
         historyTick,
         restoreState,
+      },
+      appearance: {
+        globalFieldFont,
+        globalFieldFontSize,
+        globalFieldFontColor,
+        setGlobalFieldFont,
+        setGlobalFieldFontSize,
+        setGlobalFieldFontColor,
       },
       fieldSelection: {
         selectedFieldId,
@@ -275,6 +288,7 @@ describe('useGroupTemplateCache', () => {
     loadPdfFromFileMock.mockReset();
     loadPageSizesMock.mockReset();
     extractFieldsFromPdfMock.mockReset();
+    extractDullyPdfAppearanceMetadataMock.mockReset().mockResolvedValue(null);
   });
 
   afterEach(() => {

@@ -8,6 +8,7 @@ const pollDetectionStatusMock = vi.hoisted(() => vi.fn());
 const loadPdfFromFileMock = vi.hoisted(() => vi.fn());
 const loadPageSizesMock = vi.hoisted(() => vi.fn());
 const extractFieldsFromPdfMock = vi.hoisted(() => vi.fn());
+const extractDullyPdfAppearanceMetadataMock = vi.hoisted(() => vi.fn());
 const touchSessionMock = vi.hoisted(() => vi.fn());
 const loadSavedFormMock = vi.hoisted(() => vi.fn());
 const downloadSavedFormMock = vi.hoisted(() => vi.fn());
@@ -21,6 +22,7 @@ vi.mock('../../../src/utils/pdf', () => ({
   loadPdfFromFile: loadPdfFromFileMock,
   loadPageSizes: loadPageSizesMock,
   extractFieldsFromPdf: extractFieldsFromPdfMock,
+  extractDullyPdfAppearanceMetadata: extractDullyPdfAppearanceMetadataMock,
 }));
 
 vi.mock('../../../src/services/api', () => ({
@@ -95,6 +97,9 @@ function createDeps(overrides: Record<string, unknown> = {}) {
     setSourceFile: vi.fn(),
     setSourceFileName: vi.fn(),
     setSourceFileIsDemo: vi.fn(),
+    setGlobalFieldFont: vi.fn(),
+    setGlobalFieldFontSize: vi.fn(),
+    setGlobalFieldFontColor: vi.fn(),
     markSavedFillLinkSnapshot: vi.fn(),
     setActiveSavedFormId: vi.fn(),
     setActiveSavedFormName: vi.fn(),
@@ -141,6 +146,7 @@ describe('useDetection', () => {
     loadPdfFromFileMock.mockReset().mockResolvedValue(createPdfDoc());
     loadPageSizesMock.mockReset().mockResolvedValue({ 1: { width: 612, height: 792 } });
     extractFieldsFromPdfMock.mockReset().mockResolvedValue([]);
+    extractDullyPdfAppearanceMetadataMock.mockReset().mockResolvedValue(null);
     touchSessionMock.mockReset();
     loadSavedFormMock.mockReset().mockResolvedValue({
       name: 'Saved Template',

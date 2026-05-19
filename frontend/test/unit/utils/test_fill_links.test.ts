@@ -131,6 +131,69 @@ describe('fillLinks utils', () => {
     expect(secondFingerprint).not.toBe(firstFingerprint);
   });
 
+  it('serializes effective Base 14 font names for text fields only', () => {
+    const [textField, checkboxField] = buildFillLinkTemplateFields(
+      [
+        { ...createField('legal_name', 10), fontName: 'global' },
+        {
+          id: 'consent',
+          name: 'consent',
+          type: 'checkbox',
+          page: 1,
+          rect: { x: 10, y: 40, width: 14, height: 14 },
+          value: null,
+          fontName: 'Courier-Bold',
+        },
+      ],
+      'Times-Italic',
+    );
+
+    expect(textField.fontName).toBe('Times-Italic');
+    expect(checkboxField.fontName).toBeUndefined();
+  });
+
+  it('serializes effective font sizes for text fields only', () => {
+    const [inheritedField, autoField, checkboxField] = buildFillLinkTemplateFields(
+      [
+        { ...createField('legal_name', 10), fontSize: 'global' },
+        { ...createField('policy_number', 20), fontSize: 'auto' },
+        {
+          id: 'consent',
+          name: 'consent',
+          type: 'checkbox',
+          page: 1,
+          rect: { x: 10, y: 40, width: 14, height: 14 },
+          value: null,
+          fontSize: 20,
+        },
+      ],
+      'default',
+      12,
+    );
+
+    expect(inheritedField.fontSize).toBe(12);
+    expect(autoField.fontSize).toBe('auto');
+    expect(checkboxField.fontSize).toBeUndefined();
+  });
+
+  it('changes the publish fingerprint when the effective font changes', () => {
+    const fields = [{ ...createField('legal_name', 10), fontName: 'global' as const }];
+
+    const firstFingerprint = buildFillLinkPublishFingerprint(fields, [], 'Times-Roman');
+    const secondFingerprint = buildFillLinkPublishFingerprint(fields, [], 'Courier-Bold');
+
+    expect(secondFingerprint).not.toBe(firstFingerprint);
+  });
+
+  it('changes the publish fingerprint when the effective font size changes', () => {
+    const fields = [{ ...createField('legal_name', 10), fontSize: 'global' as const }];
+
+    const firstFingerprint = buildFillLinkPublishFingerprint(fields, [], 'default', 10);
+    const secondFingerprint = buildFillLinkPublishFingerprint(fields, [], 'default', 14);
+
+    expect(secondFingerprint).not.toBe(firstFingerprint);
+  });
+
   it('normalizes respondent download availability from link and submit payload fallbacks', () => {
     expect(fillLinkRespondentPdfDownloadEnabled({
       allowRespondentPdfDownload: true,

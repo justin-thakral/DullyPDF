@@ -11,6 +11,9 @@ import type {
   CheckboxRule,
   CreateTool,
   DataSourceKind,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
   FieldType,
   PageSize,
   PdfField,
@@ -60,6 +63,11 @@ import { ApiService } from './services/api';
 import { fetchDetectionStatus } from './services/detectionApi';
 import { debugLog } from './utils/debug';
 import { resolveConfirmDialogResult } from './utils/dialogResult';
+import {
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+} from './utils/fieldFonts';
 import { returnWorkspaceToHomepage } from './utils/returnWorkspaceToHomepage';
 import { applyNoIndexSeo, applyRouteSeo } from './utils/seo';
 import {
@@ -302,6 +310,12 @@ function WorkspaceRuntime({
   const [showTemplateApiManager, setShowTemplateApiManager] = useState(false);
   const [transformMode, setTransformMode] = useState(false);
   const [activeCreateTool, setActiveCreateTool] = useState<CreateTool | null>(null);
+  const [globalFieldFont, setGlobalFieldFont] = useState<FieldFontChoice>(DEFAULT_FIELD_FONT_CHOICE);
+  const [globalFieldFontSize, setGlobalFieldFontSize] = useState<FieldFontSizeChoice>(
+    DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  );
+  const [globalFieldFontColor, setGlobalFieldFontColor] =
+    useState<FieldFontColorChoice>(DEFAULT_FIELD_FONT_COLOR);
   const [manualRadioToolDraft, setManualRadioToolDraft] = useState<RadioToolDraft | null>(null);
   const [quickRadioToolDraft, setQuickRadioToolDraft] = useState<RadioToolDraft | null>(null);
   const [pendingQuickRadioSelection, setPendingQuickRadioSelection] =
@@ -357,10 +371,24 @@ function WorkspaceRuntime({
   }), []);
 
   const captureSavedFillLinkPublishFingerprint = useCallback(
-    (nextFields: PdfField[], nextCheckboxRules: CheckboxRule[]) => {
-      setSavedFillLinkPublishFingerprint(buildFillLinkPublishFingerprint(nextFields, nextCheckboxRules));
+    (
+      nextFields: PdfField[],
+      nextCheckboxRules: CheckboxRule[],
+      nextGlobalFieldFont: FieldFontChoice = globalFieldFont,
+      nextGlobalFieldFontSize: FieldFontSizeChoice = globalFieldFontSize,
+      nextGlobalFieldFontColor: FieldFontColorChoice = globalFieldFontColor,
+    ) => {
+      setSavedFillLinkPublishFingerprint(
+        buildFillLinkPublishFingerprint(
+          nextFields,
+          nextCheckboxRules,
+          nextGlobalFieldFont,
+          nextGlobalFieldFontSize,
+          nextGlobalFieldFontColor,
+        ),
+      );
     },
-    [],
+    [globalFieldFont, globalFieldFontSize, globalFieldFontColor],
   );
 
   // ── Data source (uses auth, dialog; openAi setters via bridge) ─────
@@ -391,6 +419,9 @@ function WorkspaceRuntime({
     setSourceFile,
     setSourceFileName,
     setSourceFileIsDemo,
+    setGlobalFieldFont,
+    setGlobalFieldFontSize,
+    setGlobalFieldFontColor,
     setActiveSavedFormId: savedForms.setActiveSavedFormId,
     setActiveSavedFormName: savedForms.setActiveSavedFormName,
     schemaId: dataSource.schemaId,
@@ -432,10 +463,23 @@ function WorkspaceRuntime({
   const resolveWorkspaceImmutableSourcePdfBytes = useCallback(async (): Promise<Uint8Array> => {
     const sourcePdfBytes = await resolveWorkspaceSourcePdfBytes();
     const sourceBlob = new Blob([Uint8Array.from(sourcePdfBytes)], { type: 'application/pdf' });
-    const materializedFields = prepareFieldsForMaterialize(fieldHistory.fields);
-    const materializedBlob = await ApiService.materializeFormPdf(sourceBlob, materializedFields, { exportMode: 'flat' });
+    const materializedFields = prepareFieldsForMaterialize(
+      fieldHistory.fields,
+      globalFieldFont,
+      globalFieldFontColor,
+    );
+    const materializedBlob = await ApiService.materializeFormPdf(sourceBlob, materializedFields, {
+      exportMode: 'flat',
+      appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor },
+    });
     return new Uint8Array(await materializedBlob.arrayBuffer());
-  }, [fieldHistory.fields, resolveWorkspaceSourcePdfBytes]);
+  }, [
+    fieldHistory.fields,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
+    resolveWorkspaceSourcePdfBytes,
+  ]);
 
   // ── OpenAI pipeline (uses detection state directly) ────────────────
   const openAi = useOpenAiPipeline({
@@ -564,6 +608,14 @@ function WorkspaceRuntime({
       historyRef: fieldHistory.historyRef,
       historyTick: fieldHistory.historyTick,
       restoreState: fieldHistory.restoreState,
+    },
+    appearance: {
+      globalFieldFont,
+      globalFieldFontSize,
+      globalFieldFontColor,
+      setGlobalFieldFont,
+      setGlobalFieldFontSize,
+      setGlobalFieldFontColor,
     },
     fieldSelection: {
       selectedFieldId: fieldState.selectedFieldId,
@@ -795,6 +847,9 @@ function WorkspaceRuntime({
     activeGroupName,
     activeGroupTemplates,
     fields: fieldHistory.fields,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
     checkboxRules: openAi.checkboxRules,
     textTransformRules: openAi.textTransformRules,
     savedFillLinkPublishFingerprint,
@@ -872,6 +927,9 @@ function WorkspaceRuntime({
     setSearchFillPreset(null); setShowFillLinkManager(false); setShowTemplateApiManager(false);
     createToolDisplayStateRef.current = null;
     setTransformMode(false); setActiveCreateTool(null);
+    setGlobalFieldFont(DEFAULT_FIELD_FONT_CHOICE);
+    setGlobalFieldFontSize(DEFAULT_FIELD_FONT_SIZE_CHOICE);
+    setGlobalFieldFontColor(DEFAULT_FIELD_FONT_COLOR);
     setManualRadioToolDraft(null); setQuickRadioToolDraft(null);
     setPendingQuickRadioSelection(null); setDismissedRadioSuggestionIds([]);
     setSourceFile(null); setSourceFileName(null); setSourceFileIsDemo(false);
@@ -960,6 +1018,9 @@ function WorkspaceRuntime({
     sourceFile,
     sourceFileName,
     fields: fieldHistory.fields,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
     pageSizes,
     pageCount,
     checkboxRules: openAi.checkboxRules,
@@ -1224,6 +1285,7 @@ function WorkspaceRuntime({
       const nextRect = pageSize
         ? normalizeRectForFieldType(current.rect, type, pageSize)
         : current.rect;
+      const clearsFont = !(type === 'text' || type === 'date');
       if (type === 'radio') {
         const baseDraft = buildNextRadioToolDraft(fieldHistory.fieldsRef.current, current.groupLabel || current.name);
         let nextDraft: RadioToolDraft | null = null;
@@ -1231,7 +1293,7 @@ function WorkspaceRuntime({
           const nextFields = convertFieldsToRadioGroup(
             prev.map((field) => (
               field.id === fieldId
-                ? { ...field, rect: nextRect }
+                ? { ...field, rect: nextRect, fontName: undefined, fontSize: undefined }
                 : field
             )),
             [fieldId],
@@ -1251,11 +1313,16 @@ function WorkspaceRuntime({
           return {
             ...convertRadioFieldToType(field, type),
             rect: nextRect,
+            ...(clearsFont ? { fontName: undefined, fontSize: undefined } : {}),
           };
         }));
         return;
       }
-      fieldState.handleUpdateField(fieldId, { type, rect: nextRect });
+      fieldState.handleUpdateField(fieldId, {
+        type,
+        rect: nextRect,
+        ...(clearsFont ? { fontName: undefined, fontSize: undefined } : {}),
+      });
     },
     [fieldHistory.fieldsRef, fieldHistory, fieldState, pageSizes],
   );
@@ -1367,7 +1434,7 @@ function WorkspaceRuntime({
 
   const handleSelectRadioFieldValue = useCallback(
     (fieldId: string) => {
-      fieldHistory.updateFieldsWith((prev) => setRadioGroupSelectedValue(prev, fieldId));
+      fieldHistory.updateFieldsWith((prev) => setRadioGroupSelectedValue(prev, fieldId, { allowDeselect: true }));
       fieldState.setSelectedFieldId(fieldId);
     },
     [fieldHistory, fieldState],
@@ -1469,6 +1536,11 @@ function WorkspaceRuntime({
       return;
     }
     initializedEditorDocRef.current = pdfDoc;
+    if (!activeGroupId && !savedForms.activeSavedFormId) {
+      setGlobalFieldFont(DEFAULT_FIELD_FONT_CHOICE);
+      setGlobalFieldFontSize(DEFAULT_FIELD_FONT_SIZE_CHOICE);
+      setGlobalFieldFontColor(DEFAULT_FIELD_FONT_COLOR);
+    }
     // Group template restores its own cached display state. Do not overwrite it
     // with the default editor preset each time the active template PDF swaps.
     if (activeGroupId) {
@@ -1489,6 +1561,7 @@ function WorkspaceRuntime({
     fieldState.showFields,
     handleApplyDisplayPreset,
     pdfDoc,
+    savedForms.activeSavedFormId,
     transformMode,
   ]);
 
@@ -2907,6 +2980,12 @@ function WorkspaceRuntime({
           onShowFieldInfoChange={handleShowFieldInfoChange}
           onTransformModeChange={handleSetTransformMode}
           canClearInputs={hasFieldValues} onClearInputs={fieldState.handleClearFieldValues}
+          globalFieldFont={globalFieldFont}
+          onGlobalFieldFontChange={setGlobalFieldFont}
+          globalFieldFontSize={globalFieldFontSize}
+          onGlobalFieldFontSizeChange={setGlobalFieldFontSize}
+          globalFieldFontColor={globalFieldFontColor}
+          onGlobalFieldFontColorChange={setGlobalFieldFontColor}
           confidenceFilter={confidenceFilter} onConfidenceFilterChange={fieldState.handleConfidenceFilterChange}
           onResetConfidenceFilters={handleResetConfidenceFilters}
           onSelectField={handleSelectField} onPageChange={handlePageJump}
@@ -2922,6 +3001,9 @@ function WorkspaceRuntime({
             <PdfViewer pdfDoc={pdfDoc} pageNumber={currentPage} scale={scale}
               pageSizes={pageSizes}
               fields={visibleFields} showFields={showFields} showFieldNames={showFieldNames}
+              globalFieldFont={globalFieldFont}
+              globalFieldFontSize={globalFieldFontSize}
+              globalFieldFontColor={globalFieldFontColor}
               showFieldInfo={showFieldInfo}
               moveEnabled={transformMode && !showFieldInfo}
               resizeEnabled={transformMode && !showFieldInfo}
@@ -2945,6 +3027,9 @@ function WorkspaceRuntime({
           selectedField={selectedField}
           radioGroups={radioGroups}
           selectedRadioSuggestion={selectedRadioSuggestion}
+          globalFieldFont={globalFieldFont}
+          globalFieldFontSize={globalFieldFontSize}
+          globalFieldFontColor={globalFieldFontColor}
           activeCreateTool={activeCreateTool}
           radioToolDraft={activeRadioToolDraft}
           pendingQuickRadioFields={pendingQuickRadioFields}

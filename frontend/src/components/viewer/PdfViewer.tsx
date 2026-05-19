@@ -4,7 +4,17 @@
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnnotationMode } from 'pdfjs-dist';
 import type { PDFDocumentProxy, RenderTask } from 'pdfjs-dist/types/src/display/api';
-import type { CreateTool, FieldRect, FieldType, PageSize, PdfField, RadioGroupSuggestion } from '../../types';
+import type {
+  CreateTool,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
+  FieldRect,
+  FieldType,
+  PageSize,
+  PdfField,
+  RadioGroupSuggestion,
+} from '../../types';
 import { FieldOverlay } from './FieldOverlay';
 import { FieldInputOverlay } from './FieldInputOverlay';
 import { Alert } from '../ui/Alert';
@@ -22,6 +32,9 @@ type PdfViewerProps = {
   scale: number;
   pageSizes: Record<number, PageSize>;
   fields: PdfField[];
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   showFields: boolean;
   showFieldNames: boolean;
   showFieldInfo: boolean;
@@ -52,6 +65,9 @@ type PdfPageProps = {
   renderScale: number;
   pageSize: PageSize;
   fields: PdfField[];
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   showFields: boolean;
   showFieldNames: boolean;
   showFieldInfo: boolean;
@@ -84,6 +100,9 @@ function PdfPageComponent({
   renderScale,
   pageSize,
   fields,
+  globalFieldFont,
+  globalFieldFontSize,
+  globalFieldFontColor,
   showFields,
   showFieldNames,
   showFieldInfo,
@@ -221,6 +240,9 @@ function PdfPageComponent({
               fields={fields}
               pageSize={pageSize}
               scale={scale}
+              globalFieldFont={globalFieldFont}
+              globalFieldFontSize={globalFieldFontSize}
+              globalFieldFontColor={globalFieldFontColor}
               selectedFieldId={selectedFieldId}
               onSelectField={onSelectField}
               onUpdateField={onUpdateField}
@@ -261,6 +283,9 @@ const PdfPage = memo(PdfPageComponent, (prev, next) => {
     prev.pageSize.width === next.pageSize.width &&
     prev.pageSize.height === next.pageSize.height &&
     areFieldArraysShallowEqual(prev.fields, next.fields) &&
+    prev.globalFieldFont === next.globalFieldFont &&
+    prev.globalFieldFontSize === next.globalFieldFontSize &&
+    prev.globalFieldFontColor === next.globalFieldFontColor &&
     prev.showFields === next.showFields &&
     prev.showFieldNames === next.showFieldNames &&
     prev.showFieldInfo === next.showFieldInfo &&
@@ -283,6 +308,9 @@ export function PdfViewer({
   scale,
   pageSizes,
   fields,
+  globalFieldFont,
+  globalFieldFontSize,
+  globalFieldFontColor,
   showFields,
   showFieldNames,
   showFieldInfo,
@@ -501,6 +529,9 @@ export function PdfViewer({
             renderScale={effectiveScale}
             pageSize={pageSizes[page] || EMPTY_SIZE}
             fields={fieldsByPage.get(page) || EMPTY_FIELDS}
+            globalFieldFont={globalFieldFont}
+            globalFieldFontSize={globalFieldFontSize}
+            globalFieldFontColor={globalFieldFontColor}
             showFields={showFields}
             showFieldNames={showFieldNames}
             showFieldInfo={showFieldInfo}

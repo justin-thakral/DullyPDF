@@ -127,6 +127,7 @@ const pdfMocks = vi.hoisted(() => ({
   loadPdfFromFile: vi.fn(),
   loadPageSizes: vi.fn(),
   extractFieldsFromPdf: vi.fn(),
+  extractDullyPdfAppearanceMetadata: vi.fn(),
 }));
 
 const uiMocks = vi.hoisted(() => ({
@@ -218,6 +219,7 @@ vi.mock('../../../src/utils/pdf', () => ({
   loadPdfFromFile: pdfMocks.loadPdfFromFile,
   loadPageSizes: pdfMocks.loadPageSizes,
   extractFieldsFromPdf: pdfMocks.extractFieldsFromPdf,
+  extractDullyPdfAppearanceMetadata: pdfMocks.extractDullyPdfAppearanceMetadata,
 }));
 
 vi.mock('../../../src/components/pages/Homepage', () => ({
@@ -638,6 +640,7 @@ describe('App', () => {
     pdfMocks.loadPdfFromFile.mockReset().mockResolvedValue(makePdfDoc());
     pdfMocks.loadPageSizes.mockReset().mockResolvedValue({ 1: { width: 612, height: 792 } });
     pdfMocks.extractFieldsFromPdf.mockReset().mockResolvedValue([makeField()]);
+    pdfMocks.extractDullyPdfAppearanceMetadata.mockReset().mockResolvedValue(null);
   });
 
   afterEach(() => {
@@ -1773,6 +1776,7 @@ describe('App', () => {
 
     await settleAuthAsSignedIn();
     await openFillableWorkspace();
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
 
     fireEvent.click(await screen.findByTestId('sign-out'));
     await waitFor(() => {

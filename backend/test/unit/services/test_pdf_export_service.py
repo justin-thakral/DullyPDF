@@ -6,7 +6,10 @@ import fitz
 from pypdf import PdfWriter
 from reportlab.pdfgen import canvas
 
-from backend.services.pdf_export_service import build_immutable_signing_source_pdf
+from backend.services.pdf_export_service import (
+    _coerce_builtin_font_name,
+    build_immutable_signing_source_pdf,
+)
 
 
 def _blank_pdf_bytes(*, width: float = 200, height: float = 200) -> bytes:
@@ -51,3 +54,25 @@ def test_build_immutable_signing_source_pdf_flattens_existing_widgets() -> None:
         document.close()
 
     assert "Jordan Example" in page_text
+
+
+def test_flatten_font_mapper_supports_dullypdf_base14_resource_names() -> None:
+    assert _coerce_builtin_font_name("Time") == "tiro"
+    assert _coerce_builtin_font_name("TiIt") == "tiit"
+    assert _coerce_builtin_font_name("HeBO") == "hebi"
+    assert _coerce_builtin_font_name("CoBO") == "cobi"
+    assert _coerce_builtin_font_name("CoOb") == "coit"
+    assert _coerce_builtin_font_name("DullyFontHelvetica") == "helv"
+    assert _coerce_builtin_font_name("DullyFontHelveticaBold") == "hebo"
+    assert _coerce_builtin_font_name("DullyFontHelveticaOblique") == "heit"
+    assert _coerce_builtin_font_name("DullyFontHelveticaBoldOblique") == "hebi"
+    assert _coerce_builtin_font_name("DullyFontTimesRoman") == "tiro"
+    assert _coerce_builtin_font_name("DullyFontTimesBold") == "tibo"
+    assert _coerce_builtin_font_name("DullyFontTimesItalic") == "tiit"
+    assert _coerce_builtin_font_name("DullyFontTimesBoldItalic") == "tibi"
+    assert _coerce_builtin_font_name("DullyFontCourier") == "cour"
+    assert _coerce_builtin_font_name("DullyFontCourierBold") == "cobo"
+    assert _coerce_builtin_font_name("DullyFontCourierOblique") == "coit"
+    assert _coerce_builtin_font_name("DullyFontCourierBoldOblique") == "cobi"
+    assert _coerce_builtin_font_name("DullyFontSymbol") == "symb"
+    assert _coerce_builtin_font_name("DullyFontZapfDingbats") == "zadb"

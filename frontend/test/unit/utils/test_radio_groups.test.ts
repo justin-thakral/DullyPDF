@@ -223,6 +223,82 @@ describe('radioGroups utils', () => {
     );
   });
 
+  it('clears a selected radio value when deselection is allowed', () => {
+    const fields = setRadioGroupSelectedValue(
+      convertFieldsToRadioGroup(
+        [makeCheckbox('field-1', 'yes', 10), makeCheckbox('field-2', 'no', 40)],
+        ['field-1', 'field-2'],
+        buildNextRadioToolDraft([], 'Over 18'),
+      ),
+      'field-2',
+    );
+
+    const cleared = setRadioGroupSelectedValue(fields, 'field-2', { allowDeselect: true });
+
+    expect(cleared.find((field) => field.id === 'field-1')?.value).toBeNull();
+    expect(cleared.find((field) => field.id === 'field-2')?.value).toBeNull();
+  });
+
+  it('uses radio group keys for selection when a stable group id is missing', () => {
+    const fields: PdfField[] = [
+      {
+        id: 'field-1',
+        name: 'coverage_yes',
+        type: 'radio',
+        page: 1,
+        rect: { x: 10, y: 10, width: 14, height: 14 },
+        radioGroupKey: 'coverage',
+        radioOptionKey: 'yes',
+        value: 'yes',
+      },
+      {
+        id: 'field-2',
+        name: 'coverage_no',
+        type: 'radio',
+        page: 1,
+        rect: { x: 40, y: 10, width: 14, height: 14 },
+        radioGroupKey: 'coverage',
+        radioOptionKey: 'no',
+        value: null,
+      },
+    ];
+
+    const selected = setRadioGroupSelectedValue(fields, 'field-2');
+
+    expect(selected.find((field) => field.id === 'field-1')?.value).toBeNull();
+    expect(selected.find((field) => field.id === 'field-2')?.value).toBe('no');
+  });
+
+  it('allows deselect using radio group keys when a stable group id is missing', () => {
+    const fields: PdfField[] = [
+      {
+        id: 'field-1',
+        name: 'coverage_yes',
+        type: 'radio',
+        page: 1,
+        rect: { x: 10, y: 10, width: 14, height: 14 },
+        radioGroupKey: 'coverage',
+        radioOptionKey: 'yes',
+        value: null,
+      },
+      {
+        id: 'field-2',
+        name: 'coverage_no',
+        type: 'radio',
+        page: 1,
+        rect: { x: 40, y: 10, width: 14, height: 14 },
+        radioGroupKey: 'coverage',
+        radioOptionKey: 'no',
+        value: 'no',
+      },
+    ];
+
+    const cleared = setRadioGroupSelectedValue(fields, 'field-2', { allowDeselect: true });
+
+    expect(cleared.find((field) => field.id === 'field-1')?.value).toBeNull();
+    expect(cleared.find((field) => field.id === 'field-2')?.value).toBeNull();
+  });
+
   it('prefers a specific radio option key over a collapsed field label when deriving display text', () => {
     expect(resolveRadioOptionDisplayLabel({
       name: 'Sex: M F',

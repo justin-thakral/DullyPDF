@@ -7,14 +7,14 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 1. Load a PDF (detection upload, fillable upload, saved form, or a saved-form group that opens the alphabetically first template first unless a direct group route requests a specific template).
 2. Detect fields with CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)) via `/detect-fields`, or import embedded AcroForm widgets.
 3. Optionally run OpenAI rename and schema mapping.
-4. Edit fields in overlay/list/inspector panels.
+4. Edit fields in overlay/list/inspector panels, including optional text-safe PDF Base 14 font, point-size, and font-color choices for text/date fields.
 5. Save the template, optionally add it to a named saved-form group, then either publish a native Fill By Link for the active template or publish one merged Fill By Link for the open group before loading local CSV/Excel/JSON rows.
 6. Reopen templates from the upload screen through the saved-form browser, which supports group filtering, an `Open groups` toggle, inline group deletion, and a stable selected-group label while the group list refreshes.
 7. When a group is open, switch between member templates from the header and run batch Rename + Map across every saved form in that group.
 8. Run Search & Fill from CSV/Excel/JSON rows or stored Fill By Link respondent records.
-9. Download either a `Flat PDF` (field values baked into page content) or an `Editable PDF` (widgets preserved for later editing), or save the current state to the signed-in profile.
+9. Download either a `Flat PDF` (field values baked into page content) or an `Editable PDF` (widgets preserved for later editing), or save the current state to the signed-in profile. Selected text-safe Base 14 fonts, font sizes, and font colors are carried into both download modes.
 10. Persist and replay deterministic fill rules (`fillRules`) including text split/join transforms.
-11. Persist a versioned saved-form editor snapshot so reopened templates and group switches can hydrate fields/page sizes without re-extracting them on every open.
+11. Persist a versioned saved-form editor snapshot so reopened templates and group switches can hydrate fields/page sizes/appearance without re-extracting them on every open.
 
 ## Public usage docs
 
@@ -56,6 +56,8 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
   - `/fill-pdf-by-link`
   - `/fill-information-in-pdf`
   - `/fillable-form-field-name`
+  - `/fillable-pdf-fonts-colors`
+  - `/acroform-field-appearance`
 - Industry-specific SEO routes are available for:
   - `/healthcare-pdf-automation`
   - `/acord-form-automation`
@@ -75,6 +77,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Catalog cards now use pre-generated first-page `.webp` thumbnails instead of fetching PDFs in-browser just to render previews. Signed-in detail pages still fetch the real PDF when the user opens a specific form preview or sends it into the editor.
 - Selected workflow routes and docs pages can also surface embedded YouTube walkthroughs when a focused demo adds search-intent context without bloating the homepage.
 - Authority-style intent routes can also render inline legal footnotes and explicit source sections when the page needs statute or policy references instead of summary-only marketing copy.
+- Field-appearance intent routes now cover fillable PDF fonts, font sizes, colors, saved template persistence, and the AcroForm `/DA`/`/DR`/`/AP`/`/V` mechanics behind editable exports.
 - Two hub routes aggregate intent pages for cleaner global navigation:
   - `/workflows` lists workflow-intent pages.
   - `/industries` lists industry-intent pages.

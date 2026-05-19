@@ -4,8 +4,10 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import pytest
+from pypdf import PdfReader, PdfWriter
 
 from backend.firebaseDB.template_database import TemplateRecord
+from backend.services import fill_link_download_service
 from backend.services.fill_link_download_service import (
     GROUP_FILL_LINK_PUBLISH_SNAPSHOT_FORMAT_VERSION,
     apply_fill_link_answers_to_fields,
@@ -14,6 +16,7 @@ from backend.services.fill_link_download_service import (
     build_template_fill_link_download_snapshot,
     group_fill_link_publish_snapshot_template_count,
     materialize_group_fill_link_response_packet,
+    materialize_fill_link_response_download,
 )
 
 
@@ -47,6 +50,54 @@ def _template_record() -> TemplateRecord:
         created_at="2024-01-01T00:00:00+00:00",
         updated_at="2024-01-01T00:00:00+00:00",
         name="Admissions Form",
+    )
+
+
+def _blank_pdf_bytes() -> bytes:
+    writer = PdfWriter()
+    writer.add_blank_page(width=300, height=200)
+    buffer = io.BytesIO()
+    writer.write(buffer)
+    return buffer.getvalue()
+
+
+def _pdf_font_debug(pdf_path: Path) -> tuple[set[str], str, str, str]:
+    reader = PdfReader(str(pdf_path))
+    base_fonts: set[str] = set()
+    appearance_streams: List[str] = []
+    page_streams: List[str] = []
+    default_appearances: List[str] = []
+
+    acroform = reader.trailer["/Root"].get("/AcroForm")
+    if acroform:
+        acroform = acroform.get_object()
+        font_resources = acroform["/DR"].get_object()["/Font"].get_object()
+        for font_ref in font_resources.values():
+            base_fonts.add(str(font_ref.get_object().get("/BaseFont")))
+        for field_ref in acroform.get("/Fields", []):
+            field = field_ref.get_object()
+            if field.get("/DA") is not None:
+                default_appearances.append(str(field.get("/DA")))
+            appearance = field.get("/AP")
+            if appearance and "/N" in appearance:
+                appearance_streams.append(appearance["/N"].get_object().get_data().decode("utf-8", "ignore"))
+
+    for page in reader.pages:
+        resources = page.get("/Resources")
+        if resources:
+            font_resources = resources.get_object().get("/Font")
+            if font_resources:
+                for font_ref in font_resources.get_object().values():
+                    base_fonts.add(str(font_ref.get_object().get("/BaseFont")))
+        contents = page.get_contents()
+        if contents:
+            page_streams.append(contents.get_data().decode("utf-8", "ignore"))
+
+    return (
+        base_fonts,
+        "\n".join(appearance_streams),
+        "\n".join(page_streams),
+        "\n".join(default_appearances),
     )
 
 
@@ -202,6 +253,195 @@ def test_build_template_fill_link_download_snapshot_uses_saved_form_fill_rules()
     assert snapshot["downloadMode"] == "flat"
     assert snapshot["checkboxRules"][0]["groupKey"] == "consent_group"
     assert snapshot["textTransformRules"][0]["targetField"] == "full_name"
+
+
+def test_build_group_fill_link_publish_snapshot_preserves_template_font_appearance() -> None:
+    bundle = build_group_fill_link_publish_snapshot(
+        canonical_schema={"groupId": "grp", "fields": []},
+        template_records=[_template_record()],
+        template_sources=[
+            {
+                "templateId": "tpl-1",
+                "templateName": "Admissions Form",
+                "appearance": {"globalFieldFont": "Times-Roman", "globalFieldFontSize": 11},
+                "fields": [
+                    {
+                        "name": "full_name",
+                        "type": "text",
+                        "page": 1,
+                        "rect": {"x": 1, "y": 2, "width": 3, "height": 4},
+                        "fontName": "global",
+                        "fontSize": 9,
+                    }
+                ],
+                "checkboxRules": [],
+            }
+        ],
+    )
+
+    snapshot = bundle["templateSnapshots"][0]["snapshot"]
+    assert snapshot["appearance"] == {
+        "globalFieldFont": "Times-Roman",
+        "globalFieldFontSize": 11.0,
+        "globalFieldFontColor": "#000000",
+    }
+    assert snapshot["fields"][0]["fontName"] == "global"
+    assert snapshot["fields"][0]["fontSize"] == 9.0
+
+
+def test_materialize_fill_link_response_download_preserves_base14_fonts(mocker) -> None:
+    mocker.patch.object(fill_link_download_service, "download_pdf_bytes", return_value=_blank_pdf_bytes())
+    snapshot = {
+        "sourcePdfPath": "gs://forms/template.pdf",
+        "templateName": "Admissions Form",
+        "filename": "admissions-response.pdf",
+        "downloadMode": "editable",
+        "appearance": {"globalFieldFont": "Times-Roman"},
+        "fields": [
+            {
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 120, 40],
+                "fontName": "global",
+            },
+            {
+                "name": "policy_number",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 50, 120, 70],
+                "fontName": "Courier-Bold",
+            },
+        ],
+        "checkboxRules": [],
+        "textTransformRules": [],
+        "radioGroups": [],
+    }
+
+    output_path, cleanup_targets, _ = materialize_fill_link_response_download(
+        snapshot,
+        answers={"full_name": "Ada Lovelace", "policy_number": "ABC-123"},
+        export_mode="editable",
+    )
+
+    try:
+        base_fonts, appearance_streams, page_streams, default_appearances = _pdf_font_debug(output_path)
+        assert "/Times-Roman" in base_fonts
+        assert "/Courier-Bold" in base_fonts
+        assert "/Time" in appearance_streams
+        assert "/CoBo" in appearance_streams
+        assert "Ada Lovelace" not in page_streams
+        assert "ABC-123" not in page_streams
+        assert "/Time" in default_appearances
+        assert "/CoBo" in default_appearances
+    finally:
+        for path in cleanup_targets:
+            path.unlink(missing_ok=True)
+
+
+def test_materialize_fill_link_response_download_preserves_font_sizes(mocker) -> None:
+    mocker.patch.object(fill_link_download_service, "download_pdf_bytes", return_value=_blank_pdf_bytes())
+    snapshot = {
+        "sourcePdfPath": "gs://forms/template.pdf",
+        "templateName": "Admissions Form",
+        "filename": "admissions-response.pdf",
+        "downloadMode": "editable",
+        "appearance": {"globalFieldFontSize": 15},
+        "fields": [
+            {
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 120, 40],
+            },
+            {
+                "name": "policy_number",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 50, 120, 70],
+                "fontSize": 9,
+            },
+            {
+                "name": "city",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 80, 120, 94],
+                "fontSize": "auto",
+            },
+        ],
+        "checkboxRules": [],
+        "textTransformRules": [],
+        "radioGroups": [],
+    }
+
+    output_path, cleanup_targets, _ = materialize_fill_link_response_download(
+        snapshot,
+        answers={"full_name": "Ada Lovelace", "policy_number": "ABC-123", "city": "Austin"},
+        export_mode="editable",
+    )
+
+    try:
+        _base_fonts, appearance_streams, page_streams, default_appearances = _pdf_font_debug(output_path)
+        assert "/Helv 15.00 Tf" in appearance_streams
+        assert "/Helv 9.00 Tf" in appearance_streams
+        assert "/Helv 9.10 Tf" in appearance_streams
+        assert "Ada Lovelace" not in page_streams
+        assert "/Helv 15 Tf" in default_appearances
+        assert "/Helv 9 Tf" in default_appearances
+        assert "/Helv 9.1 Tf" in default_appearances
+    finally:
+        for path in cleanup_targets:
+            path.unlink(missing_ok=True)
+
+
+def test_materialize_group_fill_link_response_packet_preserves_per_template_fonts(mocker, tmp_path: Path) -> None:
+    mocker.patch.object(fill_link_download_service, "download_pdf_bytes", return_value=_blank_pdf_bytes())
+    canonical_snapshot = {
+        "templateSnapshots": [
+            {
+                "templateId": "tpl-1",
+                "templateName": "Admissions Form",
+                "snapshot": {
+                    "sourcePdfPath": "gs://forms/template.pdf",
+                    "templateName": "Admissions Form",
+                    "filename": "admissions-response.pdf",
+                    "downloadMode": "editable",
+                    "appearance": {"globalFieldFont": "Times-Roman", "globalFieldFontSize": 13},
+                    "fields": [
+                        {
+                            "name": "full_name",
+                            "type": "text",
+                            "page": 1,
+                            "rect": [20, 20, 120, 40],
+                            "fontName": "global",
+                        }
+                    ],
+                    "checkboxRules": [],
+                    "textTransformRules": [],
+                    "radioGroups": [],
+                },
+            }
+        ]
+    }
+
+    zip_path, cleanup_targets, _ = materialize_group_fill_link_response_packet(
+        canonical_schema_snapshot=canonical_snapshot,
+        answers={"full_name": "Ada Lovelace"},
+        base_filename="admissions",
+    )
+
+    extracted_pdf = tmp_path / "group-font-output.pdf"
+    try:
+        with zipfile.ZipFile(zip_path) as archive:
+            extracted_pdf.write_bytes(archive.read(archive.namelist()[0]))
+        base_fonts, appearance_streams, page_streams, default_appearances = _pdf_font_debug(extracted_pdf)
+        assert "/Times-Roman" in base_fonts
+        assert "/Time 13.00 Tf" in appearance_streams
+        assert "Ada Lovelace" not in page_streams
+        assert "/Time 13 Tf" in default_appearances
+    finally:
+        for path in cleanup_targets:
+            path.unlink(missing_ok=True)
 
 
 def test_apply_fill_link_answers_to_fields_sets_text_transform_and_checkbox_values() -> None:

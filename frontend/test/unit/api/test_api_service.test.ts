@@ -1308,6 +1308,7 @@ describe('ApiService', () => {
       version: 1,
       pageCount: 1,
       pageSizes: { 1: { width: 612, height: 792 } },
+      appearance: { globalFieldFont: 'default' },
       fields: [],
       hasRenamedFields: false,
       hasMappedSchema: false,
@@ -1379,6 +1380,7 @@ describe('ApiService', () => {
             version: 1,
             pageCount: 1,
             pageSizes: { 1: { width: 612, height: 792 } },
+            appearance: { globalFieldFont: 'default' },
             fields: [],
             hasRenamedFields: false,
             hasMappedSchema: false,
@@ -1423,6 +1425,7 @@ describe('ApiService', () => {
         version: 1,
         pageCount: 1,
         pageSizes: { 1: { width: 612, height: 792 } },
+        appearance: { globalFieldFont: 'default', globalFieldFontSize: 'auto' },
         fields: [],
         hasRenamedFields: false,
         hasMappedSchema: false,
@@ -1439,7 +1442,10 @@ describe('ApiService', () => {
         rect: { x: 0, y: 0, width: 10, height: 10 },
         value: 'Alex',
       },
-    ] as any, { signal });
+    ] as any, {
+      signal,
+      appearance: { globalFieldFont: 'Times-Roman', globalFieldFontSize: 12 },
+    });
 
     expect(templateSession.success).toBe(true);
     expect(saved.id).toBe('saved-1');
@@ -1468,6 +1474,7 @@ describe('ApiService', () => {
       version: 1,
       pageCount: 1,
       pageSizes: { 1: { width: 612, height: 792 } },
+      appearance: { globalFieldFont: 'default', globalFieldFontSize: 'auto' },
       fields: [],
       hasRenamedFields: false,
       hasMappedSchema: false,
@@ -1488,6 +1495,7 @@ describe('ApiService', () => {
             value: 'Alex',
           },
         ],
+        appearance: { globalFieldFont: 'Times-Roman', globalFieldFontSize: 12 },
       }),
     );
     expect(apiConfigMocks.apiFetch.mock.calls[2][2]).toMatchObject({ signal });

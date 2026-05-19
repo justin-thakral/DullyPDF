@@ -19,7 +19,10 @@ def _snapshot_payload() -> dict:
             "page": 1,
             "rect": {"x": 10, "y": 12, "width": 110, "height": 18},
             "value": None,
+            "fontName": "global",
+            "fontSize": 12,
         }],
+        "appearance": {"globalFieldFont": "Times-Roman", "globalFieldFontSize": 14, "globalFieldFontColor": "#112233"},
         "hasRenamedFields": True,
         "hasMappedSchema": False,
     }
@@ -31,7 +34,12 @@ def test_normalize_saved_form_editor_snapshot_payload_accepts_valid_payload() ->
     assert normalized["version"] == snapshot_service.SAVED_FORM_EDITOR_SNAPSHOT_VERSION
     assert normalized["pageCount"] == 1
     assert normalized["pageSizes"]["1"]["width"] == 612
+    assert normalized["appearance"]["globalFieldFont"] == "Times-Roman"
+    assert normalized["appearance"]["globalFieldFontSize"] == 14.0
+    assert normalized["appearance"]["globalFieldFontColor"] == "#112233"
     assert normalized["fields"][0]["name"] == "full_name"
+    assert normalized["fields"][0]["fontName"] == "global"
+    assert normalized["fields"][0]["fontSize"] == 12.0
     assert normalized["hasRenamedFields"] is True
 
 
@@ -45,6 +53,101 @@ def test_normalize_saved_form_editor_snapshot_payload_rejects_missing_page_size(
         assert str(exc) == "pageSizes missing entry for page 1"
     else:
         raise AssertionError("Expected ValueError for missing page size")
+
+
+def test_normalize_saved_form_editor_snapshot_payload_rejects_invalid_font_metadata() -> None:
+    payload = _snapshot_payload()
+    payload["appearance"] = {"globalFieldFont": "ComicSans"}
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "appearance.globalFieldFont must be default or a supported PDF text font"
+    else:
+        raise AssertionError("Expected ValueError for invalid global font")
+
+    payload = _snapshot_payload()
+    payload["appearance"] = {"globalFieldFont": "Symbol"}
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "appearance.globalFieldFont must be default or a supported PDF text font"
+    else:
+        raise AssertionError("Expected ValueError for symbol global font")
+
+    payload = _snapshot_payload()
+    payload["fields"][0]["fontName"] = "ComicSans"
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "field fontName must be a supported PDF text font or global"
+    else:
+        raise AssertionError("Expected ValueError for invalid field font")
+
+    payload = _snapshot_payload()
+    payload["fields"][0]["fontName"] = "ZapfDingbats"
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "field fontName must be a supported PDF text font or global"
+    else:
+        raise AssertionError("Expected ValueError for dingbats field font")
+
+    payload = _snapshot_payload()
+    payload["appearance"] = {"globalFieldFontSize": 100}
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "appearance.globalFieldFontSize must be auto or a font size from 4 to 72"
+    else:
+        raise AssertionError("Expected ValueError for invalid global font size")
+
+    payload = _snapshot_payload()
+    payload["fields"][0]["fontSize"] = 100
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "field fontSize must be global, auto, or a font size from 4 to 72"
+    else:
+        raise AssertionError("Expected ValueError for invalid field font size")
+
+    payload = _snapshot_payload()
+    payload["appearance"] = {"globalFieldFontColor": "not-a-color"}
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "appearance.globalFieldFontColor must be a #rrggbb color"
+    else:
+        raise AssertionError("Expected ValueError for invalid global font color")
+
+    payload = _snapshot_payload()
+    payload["fields"][0]["fontColor"] = "not-a-color"
+
+    try:
+        snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+    except ValueError as exc:
+        assert str(exc) == "field fontColor must be global or a #rrggbb color"
+    else:
+        raise AssertionError("Expected ValueError for invalid field font color")
+
+
+def test_normalize_saved_form_editor_snapshot_payload_defaults_missing_appearance() -> None:
+    payload = _snapshot_payload()
+    payload.pop("appearance")
+
+    normalized = snapshot_service.normalize_saved_form_editor_snapshot_payload(payload)
+
+    assert normalized["appearance"] == {
+        "globalFieldFont": "default",
+        "globalFieldFontSize": "auto",
+        "globalFieldFontColor": "#000000",
+    }
 
 
 def test_load_saved_form_editor_snapshot_returns_none_when_storage_download_fails(mocker) -> None:

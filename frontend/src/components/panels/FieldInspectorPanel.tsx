@@ -5,13 +5,36 @@ import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent } from 'r
 import { ConfirmDialog } from '../ui/Dialog';
 import type {
   CreateTool,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontColorOverride,
+  FieldFontOverride,
+  FieldFontSizeChoice,
+  FieldFontSizeOverride,
   FieldRect,
   FieldType,
+  PdfBase14FontName,
   PdfField,
   RadioGroup,
   RadioGroupSuggestion,
   RadioToolDraft,
 } from '../../types';
+import {
+  DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  MAX_FIELD_FONT_SIZE_PT,
+  MIN_FIELD_FONT_SIZE_PT,
+  PDF_BASE_14_FONT_OPTION_GROUPS,
+  fieldFontColorChoiceLabel,
+  fieldFontChoiceLabel,
+  fieldFontSizeChoiceLabel,
+  isPdfBase14FontName,
+  sanitizeFieldFontColorChoice,
+  sanitizeFieldFontColorOverride,
+  sanitizeFieldFontSizeOverride,
+} from '../../utils/fieldFonts';
 import { getMinFieldSize } from '../../utils/fields';
 import {
   MAX_ARROW_KEY_MOVE_STEP,
@@ -42,6 +65,9 @@ type FieldInspectorPanelProps = {
   selectedField?: PdfField | null;
   radioGroups: RadioGroup[];
   selectedRadioSuggestion: RadioGroupSuggestion | null;
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   activeCreateTool: CreateTool | null;
   radioToolDraft: RadioToolDraft | null;
   pendingQuickRadioFields: PdfField[];
@@ -84,6 +110,9 @@ export function FieldInspectorPanel({
   selectedField,
   radioGroups,
   selectedRadioSuggestion,
+  globalFieldFont,
+  globalFieldFontSize,
+  globalFieldFontColor,
   activeCreateTool,
   radioToolDraft,
   pendingQuickRadioFields,
@@ -183,6 +212,31 @@ export function FieldInspectorPanel({
   const otherRadioGroups = selectedRadioGroup
     ? radioGroups.filter((group) => group.id !== selectedRadioGroup.id)
     : radioGroups;
+  const canEditSelectedFont = selected?.type === 'text' || selected?.type === 'date';
+  const selectedFontValue: FieldFontOverride = isPdfBase14FontName(selected?.fontName)
+    ? selected.fontName
+    : 'global';
+  const globalFontLabel = globalFieldFont === DEFAULT_FIELD_FONT_CHOICE
+    ? 'Default'
+    : fieldFontChoiceLabel(globalFieldFont);
+  const selectedFontSizeValue =
+    typeof selected?.fontSize === 'number'
+      ? 'custom'
+      : selected?.fontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE
+        ? DEFAULT_FIELD_FONT_SIZE_CHOICE
+        : 'global';
+  const selectedCustomFontSizeValue =
+    typeof selected?.fontSize === 'number' ? String(selected.fontSize) : '';
+  const globalFontSizeLabel = fieldFontSizeChoiceLabel(globalFieldFontSize);
+  const selectedFontColorValue =
+    typeof selected?.fontColor === 'string' && selected.fontColor !== 'global'
+      ? 'custom'
+      : 'global';
+  const selectedCustomFontColorValue =
+    selectedFontColorValue === 'custom'
+      ? sanitizeFieldFontColorChoice(selected?.fontColor, DEFAULT_FIELD_FONT_COLOR)
+      : sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
+  const globalFontColorLabel = fieldFontColorChoiceLabel(globalFieldFontColor);
 
   useEffect(() => {
     if (!selectedRadioGroup || selected?.type !== 'radio') {
@@ -277,6 +331,70 @@ export function FieldInspectorPanel({
     if (!selected) return;
     commit();
     onCommitFieldChange();
+  };
+
+  const handleFieldFontChange = (value: string) => {
+    if (!selected || !canEditSelectedFont) return;
+    const nextFont: FieldFontOverride = value === 'global'
+      ? 'global'
+      : isPdfBase14FontName(value)
+        ? (value as PdfBase14FontName)
+        : 'global';
+    if (nextFont !== selected.fontName) {
+      onUpdateField(selected.id, { fontName: nextFont });
+    }
+  };
+
+  const handleFieldFontSizeModeChange = (value: string) => {
+    if (!selected || !canEditSelectedFont) return;
+    const nextFontSize: FieldFontSizeOverride =
+      value === 'custom'
+        ? typeof selected.fontSize === 'number'
+          ? selected.fontSize
+          : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT
+        : value === DEFAULT_FIELD_FONT_SIZE_CHOICE
+          ? DEFAULT_FIELD_FONT_SIZE_CHOICE
+          : 'global';
+    if (nextFontSize !== selected.fontSize) {
+      onUpdateField(selected.id, { fontSize: nextFontSize });
+    }
+  };
+
+  const handleFieldFontSizeChange = (value: string) => {
+    if (!selected || !canEditSelectedFont) return;
+    const fallback =
+      typeof selected.fontSize === 'number'
+        ? selected.fontSize
+        : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT;
+    const nextFontSize = sanitizeFieldFontSizeOverride(value, fallback);
+    if (typeof nextFontSize === 'number' && nextFontSize !== selected.fontSize) {
+      onUpdateField(selected.id, { fontSize: nextFontSize });
+    }
+  };
+
+  const handleFieldFontColorModeChange = (value: string) => {
+    if (!selected || !canEditSelectedFont) return;
+    const nextFontColor: FieldFontColorOverride =
+      value === 'custom'
+        ? selected.fontColor && selected.fontColor !== 'global'
+          ? sanitizeFieldFontColorChoice(selected.fontColor, DEFAULT_FIELD_FONT_COLOR)
+          : sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR)
+        : 'global';
+    if (nextFontColor !== selected.fontColor) {
+      onUpdateField(selected.id, { fontColor: nextFontColor });
+    }
+  };
+
+  const handleFieldFontColorChange = (value: string) => {
+    if (!selected || !canEditSelectedFont) return;
+    const fallback =
+      selected.fontColor && selected.fontColor !== 'global'
+        ? sanitizeFieldFontColorChoice(selected.fontColor, DEFAULT_FIELD_FONT_COLOR)
+        : sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
+    const nextFontColor = sanitizeFieldFontColorOverride(value, fallback);
+    if (nextFontColor !== 'global' && nextFontColor !== selected.fontColor) {
+      onUpdateField(selected.id, { fontColor: nextFontColor });
+    }
   };
 
   const handleNumberInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
@@ -435,6 +553,96 @@ export function FieldInspectorPanel({
                     onKeyDown={handleNumberInputKeyDown}
                   />
                 </div>
+
+                {canEditSelectedFont ? (
+                  <>
+                    <div className="panel__row">
+                      <label className="panel__label" htmlFor="field-font">
+                        Font
+                      </label>
+                      <select
+                        id="field-font"
+                        name="field-font"
+                        className="panel__select"
+                        value={selectedFontValue}
+                        onChange={(event) => handleFieldFontChange(event.target.value)}
+                      >
+                        <option value="global">Use global ({globalFontLabel})</option>
+                        {PDF_BASE_14_FONT_OPTION_GROUPS.map((group) => (
+                          <optgroup key={group.label} label={group.label}>
+                            {group.options.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.advanced ? `${option.label} (symbol)` : option.label}
+                              </option>
+                            ))}
+                          </optgroup>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="panel__row">
+                      <label className="panel__label" htmlFor="field-font-size">
+                        Font size
+                      </label>
+                      <div className="panel__inline-control">
+                        <select
+                          id="field-font-size"
+                          name="field-font-size"
+                          className="panel__select"
+                          value={selectedFontSizeValue}
+                          onChange={(event) => handleFieldFontSizeModeChange(event.target.value)}
+                        >
+                          <option value="global">Use global ({globalFontSizeLabel})</option>
+                          <option value="auto">Auto</option>
+                          <option value="custom">Custom</option>
+                        </select>
+                        <input
+                          id="field-font-size-custom"
+                          name="field-font-size-custom"
+                          className="panel__input panel__input--inline"
+                          type="number"
+                          min={MIN_FIELD_FONT_SIZE_PT}
+                          max={MAX_FIELD_FONT_SIZE_PT}
+                          step={0.5}
+                          inputMode="decimal"
+                          aria-label="Custom font size"
+                          value={selectedCustomFontSizeValue}
+                          placeholder={globalFontSizeLabel}
+                          disabled={selectedFontSizeValue !== 'custom'}
+                          onChange={(event) => handleFieldFontSizeChange(event.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="panel__row">
+                      <label className="panel__label" htmlFor="field-font-color">
+                        Font color
+                      </label>
+                      <div className="panel__inline-control panel__inline-control--color">
+                        <select
+                          id="field-font-color"
+                          name="field-font-color"
+                          className="panel__select"
+                          value={selectedFontColorValue}
+                          onChange={(event) => handleFieldFontColorModeChange(event.target.value)}
+                        >
+                          <option value="global">Use global ({globalFontColorLabel})</option>
+                          <option value="custom">Custom</option>
+                        </select>
+                        <input
+                          id="field-font-color-custom"
+                          name="field-font-color-custom"
+                          className="panel__color-input"
+                          type="color"
+                          aria-label="Custom font color"
+                          value={selectedCustomFontColorValue}
+                          disabled={selectedFontColorValue !== 'custom'}
+                          onChange={(event) => handleFieldFontColorChange(event.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : null}
 
                 <div className="panel__grid">
                   <div>

@@ -51,8 +51,17 @@ def test_build_template_api_snapshot_uses_saved_form_editor_snapshot_and_fill_ru
         return_value={
             "pageCount": 1,
             "pageSizes": {"1": {"width": 612, "height": 792}},
+            "appearance": {"globalFieldFont": "Times-Roman", "globalFieldFontSize": 12},
             "fields": [
-                {"id": "field-1", "name": "full_name", "type": "text", "page": 1, "rect": {"x": 1, "y": 2, "width": 100, "height": 20}},
+                {
+                    "id": "field-1",
+                    "name": "full_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": {"x": 1, "y": 2, "width": 100, "height": 20},
+                    "fontName": "global",
+                    "fontSize": 9,
+                },
                 {
                     "id": "field-2",
                     "name": "i_consent_group_yes",
@@ -73,6 +82,13 @@ def test_build_template_api_snapshot_uses_saved_form_editor_snapshot_and_fill_ru
     assert snapshot["templateId"] == "tpl-1"
     assert snapshot["sourcePdfPath"] == "gs://forms/patient-intake.pdf"
     assert snapshot["defaultExportMode"] == "editable"
+    assert snapshot["appearance"] == {
+        "globalFieldFont": "Times-Roman",
+        "globalFieldFontSize": 12.0,
+        "globalFieldFontColor": "#000000",
+    }
+    assert snapshot["fields"][0]["fontName"] == "global"
+    assert snapshot["fields"][0]["fontSize"] == 9.0
     assert snapshot["fields"][0]["rect"] == [1.0, 2.0, 101.0, 22.0]
     assert snapshot["checkboxRules"][0]["groupKey"] == "consent_group"
     assert snapshot["textTransformRules"][0]["targetField"] == "full_name"
@@ -744,6 +760,65 @@ def test_materialize_template_api_snapshot_delegates_to_fill_link_download_path(
         },
         answers={"full_name": "Ada Lovelace"},
         export_mode=None,
+    )
+
+
+def test_materialize_template_api_snapshot_passes_font_appearance(mocker, tmp_path: Path) -> None:
+    output_path = tmp_path / "filled-fonts.pdf"
+    cleanup_targets = [output_path]
+    materialize_mock = mocker.patch.object(
+        template_api_service,
+        "materialize_fill_link_response_download",
+        return_value=(output_path, cleanup_targets, "patient-intake.pdf"),
+    )
+
+    template_api_service.materialize_template_api_snapshot(
+        {
+            "sourcePdfPath": "gs://forms/patient-intake.pdf",
+            "appearance": {"globalFieldFont": "Times-Roman", "globalFieldFontSize": 12},
+            "fields": [
+                {
+                    "name": "full_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": [1, 2, 3, 4],
+                    "fontName": "global",
+                    "fontSize": 9,
+                }
+            ],
+            "checkboxRules": [],
+            "textTransformRules": [],
+            "radioGroups": [],
+            "defaultExportMode": "flat",
+            "templateName": "Patient Intake",
+        },
+        data={"full_name": "Ada Lovelace"},
+        export_mode="editable",
+        filename=None,
+    )
+
+    materialize_mock.assert_called_once_with(
+        {
+            "sourcePdfPath": "gs://forms/patient-intake.pdf",
+            "fields": [
+                {
+                    "name": "full_name",
+                    "type": "text",
+                    "page": 1,
+                    "rect": [1, 2, 3, 4],
+                    "fontName": "global",
+                    "fontSize": 9,
+                }
+            ],
+            "checkboxRules": [],
+            "textTransformRules": [],
+            "radioGroups": [],
+            "downloadMode": "editable",
+            "filename": "Patient Intake",
+            "appearance": {"globalFieldFont": "Times-Roman", "globalFieldFontSize": 12},
+        },
+        answers={"full_name": "Ada Lovelace"},
+        export_mode="editable",
     )
 
 

@@ -522,14 +522,41 @@ export function convertRadioFieldToType(field: PdfField, type: Exclude<PdfField[
   };
 }
 
-export function setRadioGroupSelectedValue(fields: PdfField[], fieldId: string): PdfField[] {
+export function setRadioGroupSelectedValue(
+  fields: PdfField[],
+  fieldId: string,
+  options: { allowDeselect?: boolean } = {},
+): PdfField[] {
   const selectedField = fields.find((field) => field.id === fieldId && field.type === 'radio');
-  if (!selectedField?.radioGroupId || !selectedField.radioOptionKey) return fields;
+  if (!selectedField) return fields;
+  const selectedGroupId = String(selectedField.radioGroupId || '').trim();
+  const selectedGroupKey = normalizeRadioKey(
+    String(selectedField.radioGroupKey || selectedField.radioGroupLabel || '').trim(),
+    '',
+  );
+  const selectedGroupIdentity = selectedGroupId ? `id:${selectedGroupId}` : selectedGroupKey ? `key:${selectedGroupKey}` : '';
+  if (!selectedGroupIdentity) return fields;
+  const selectedValue = String(selectedField.radioOptionKey || selectedField.name || selectedField.id).trim();
+  if (!selectedValue) return fields;
+  const alreadySelected = String(selectedField.value ?? '') === selectedValue;
   return fields.map((field) => {
-    if (field.type !== 'radio' || field.radioGroupId !== selectedField.radioGroupId) return field;
+    if (field.type !== 'radio') return field;
+    const fieldGroupId = String(field.radioGroupId || '').trim();
+    const fieldGroupKey = normalizeRadioKey(
+      String(field.radioGroupKey || field.radioGroupLabel || '').trim(),
+      '',
+    );
+    const fieldGroupIdentity = fieldGroupId ? `id:${fieldGroupId}` : fieldGroupKey ? `key:${fieldGroupKey}` : '';
+    if (fieldGroupIdentity !== selectedGroupIdentity) return field;
+    if (options.allowDeselect && alreadySelected) {
+      return {
+        ...field,
+        value: null,
+      };
+    }
     return {
       ...field,
-      value: field.id === selectedField.id ? selectedField.radioOptionKey : null,
+      value: field.id === selectedField.id ? selectedValue : null,
     };
   });
 }

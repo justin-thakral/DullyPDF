@@ -13,6 +13,8 @@ export type IntentPageKey =
   | 'pdf-fill-api'
   | 'fill-information-in-pdf'
   | 'fillable-form-field-name'
+  | 'fillable-pdf-fonts-colors'
+  | 'acroform-field-appearance'
   | 'healthcare-pdf-automation'
   | 'acord-form-automation'
   | 'insurance-pdf-automation'
@@ -124,6 +126,8 @@ const WORKFLOW_LIBRARY_SHOWCASE_KEYS: IntentPageKey[] = [
   'fill-pdf-by-link',
   'pdf-signature-workflow',
   'fillable-form-field-name',
+  'fillable-pdf-fonts-colors',
+  'acroform-field-appearance',
   'batch-fill-pdf-forms',
   'pdf-checkbox-automation',
   'pdf-field-detection-tool',

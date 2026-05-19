@@ -24,6 +24,7 @@ from backend.services.pdf_export_service import flatten_pdf_form_widgets
 from backend.services.pdf_service import (
     cleanup_paths,
     coerce_field_payloads,
+    normalize_field_appearance_payload,
     read_upload_bytes,
     resolve_upload_limit,
     safe_pdf_download_filename,
@@ -165,6 +166,8 @@ async def materialize_form(
         return response
 
     template.setdefault("coordinateSystem", "originTop")
+    template["appearance"] = normalize_field_appearance_payload(template.get("appearance"))
+    template["renderTextAppearanceStreams"] = True
     template["fields"] = coerce_field_payloads(raw_fields)
 
     template_fd, template_name = tempfile.mkstemp(suffix=".json")

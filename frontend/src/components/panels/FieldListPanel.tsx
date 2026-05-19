@@ -2,7 +2,15 @@
  * Side panel that lists fields and controls visibility/filtering.
  */
 import { memo, useCallback, useDeferredValue, useMemo, useRef, useState, type ChangeEvent } from 'react';
-import type { ConfidenceFilter, ConfidenceTier, FieldType, PdfField } from '../../types';
+import type {
+  ConfidenceFilter,
+  ConfidenceTier,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
+  FieldType,
+  PdfField,
+} from '../../types';
 import {
   fieldConfidenceForField,
   fieldConfidenceTierForField,
@@ -10,6 +18,18 @@ import {
   nameConfidenceTierForField,
   hasAnyConfidence,
 } from '../../utils/confidence';
+import {
+  DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  MAX_FIELD_FONT_SIZE_PT,
+  MIN_FIELD_FONT_SIZE_PT,
+  PDF_BASE_14_FONT_OPTION_GROUPS,
+  fieldFontColorChoiceLabel,
+  sanitizeFieldFontColorChoice,
+  sanitizeFieldFontSizeChoice,
+} from '../../utils/fieldFonts';
 import { formatSize } from '../../utils/fields';
 import { FIELD_TYPES, fieldTypeLabel } from '../../utils/fieldUi';
 
@@ -50,6 +70,12 @@ type FieldListPanelProps = {
   onTransformModeChange: (enabled: boolean) => void;
   canClearInputs: boolean;
   onClearInputs: () => void;
+  globalFieldFont: FieldFontChoice;
+  onGlobalFieldFontChange: (font: FieldFontChoice) => void;
+  globalFieldFontSize: FieldFontSizeChoice;
+  onGlobalFieldFontSizeChange: (fontSize: FieldFontSizeChoice) => void;
+  globalFieldFontColor: FieldFontColorChoice;
+  onGlobalFieldFontColorChange: (fontColor: FieldFontColorChoice) => void;
   confidenceFilter: ConfidenceFilter;
   onConfidenceFilterChange: (tier: ConfidenceTier, enabled: boolean) => void;
   onResetConfidenceFilters: () => void;
@@ -227,6 +253,12 @@ export function FieldListPanel({
   onTransformModeChange,
   canClearInputs,
   onClearInputs,
+  globalFieldFont,
+  onGlobalFieldFontChange,
+  globalFieldFontSize,
+  onGlobalFieldFontSizeChange,
+  globalFieldFontColor,
+  onGlobalFieldFontColorChange,
   confidenceFilter,
   onConfidenceFilterChange,
   onResetConfidenceFilters,
@@ -306,6 +338,32 @@ export function FieldListPanel({
     const raw = Number(event.target.value);
     if (Number.isNaN(raw)) return;
     onPageChange(clampPage(Math.round(raw), pageCount));
+  };
+
+  const handleGlobalFieldFontSizeModeChange = (value: string) => {
+    if (value === DEFAULT_FIELD_FONT_SIZE_CHOICE) {
+      onGlobalFieldFontSizeChange(DEFAULT_FIELD_FONT_SIZE_CHOICE);
+      return;
+    }
+    onGlobalFieldFontSizeChange(
+      typeof globalFieldFontSize === 'number'
+        ? globalFieldFontSize
+        : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT,
+    );
+  };
+
+  const handleGlobalFieldFontSizeChange = (value: string) => {
+    const fallback =
+      typeof globalFieldFontSize === 'number'
+        ? globalFieldFontSize
+        : DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT;
+    onGlobalFieldFontSizeChange(sanitizeFieldFontSizeChoice(value, fallback));
+  };
+
+  const handleGlobalFieldFontColorChange = (value: string) => {
+    onGlobalFieldFontColorChange(
+      sanitizeFieldFontColorChoice(value, globalFieldFontColor || DEFAULT_FIELD_FONT_COLOR),
+    );
   };
 
   const handlePrev = () => onPageChange(clampPage(currentPage - 1, pageCount));
@@ -511,6 +569,89 @@ export function FieldListPanel({
             >
               Clear
             </button>
+          </div>
+
+          <div>
+            <label className="panel__label" htmlFor="global-field-font">
+              Global font
+            </label>
+            <select
+              id="global-field-font"
+              name="global-field-font"
+              className="panel__select panel__select--compact"
+              value={globalFieldFont}
+              title="Default keeps the current generated PDF field font behavior"
+              onChange={(event) => onGlobalFieldFontChange(event.target.value as FieldFontChoice)}
+            >
+              <option value={DEFAULT_FIELD_FONT_CHOICE}>Default (Helvetica)</option>
+              {PDF_BASE_14_FONT_OPTION_GROUPS.map((group) => (
+                <optgroup key={group.label} label={group.label}>
+                  {group.options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.advanced ? `${option.label} (symbol)` : option.label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="panel__label" htmlFor="global-field-font-size">
+              Global font size
+            </label>
+            <div className="panel__inline-control panel__inline-control--stacked">
+              <select
+                id="global-field-font-size"
+                name="global-field-font-size"
+                className="panel__select panel__select--compact"
+                value={globalFieldFontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE ? 'auto' : 'custom'}
+                title="Auto keeps the current generated PDF field font-size behavior"
+                onChange={(event) => handleGlobalFieldFontSizeModeChange(event.target.value)}
+              >
+                <option value="auto">Auto (dynamic)</option>
+                <option value="custom">Custom</option>
+              </select>
+              <input
+                id="global-field-font-size-custom"
+                name="global-field-font-size-custom"
+                className="panel__input panel__input--inline"
+                type="number"
+                min={MIN_FIELD_FONT_SIZE_PT}
+                max={MAX_FIELD_FONT_SIZE_PT}
+                step={0.5}
+                inputMode="decimal"
+                aria-label="Global custom font size"
+                value={
+                  typeof globalFieldFontSize === 'number'
+                    ? String(globalFieldFontSize)
+                    : ''
+                }
+                placeholder="Auto"
+                disabled={globalFieldFontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE}
+                onChange={(event) => handleGlobalFieldFontSizeChange(event.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="panel__label" htmlFor="global-field-font-color">
+              Global font color
+            </label>
+            <div className="panel__inline-control panel__inline-control--color">
+              <input
+                id="global-field-font-color"
+                name="global-field-font-color"
+                className="panel__color-input"
+                type="color"
+                aria-label="Global font color"
+                value={sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR)}
+                onChange={(event) => handleGlobalFieldFontColorChange(event.target.value)}
+              />
+              <span className="panel__color-value">
+                {fieldFontColorChoiceLabel(globalFieldFontColor)}
+              </span>
+            </div>
           </div>
 
           <div>

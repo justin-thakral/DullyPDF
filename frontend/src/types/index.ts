@@ -12,6 +12,38 @@ export type FieldType = 'text' | 'checkbox' | 'radio' | 'signature' | 'date';
 
 export type CreateTool = FieldType | 'quick-radio';
 
+export type PdfBase14FontName =
+  | 'Helvetica'
+  | 'Helvetica-Bold'
+  | 'Helvetica-Oblique'
+  | 'Helvetica-BoldOblique'
+  | 'Times-Roman'
+  | 'Times-Bold'
+  | 'Times-Italic'
+  | 'Times-BoldItalic'
+  | 'Courier'
+  | 'Courier-Bold'
+  | 'Courier-Oblique'
+  | 'Courier-BoldOblique';
+
+export type FieldFontChoice = 'default' | PdfBase14FontName;
+
+export type FieldFontOverride = 'global' | PdfBase14FontName;
+
+export type FieldFontSizeChoice = 'auto' | number;
+
+export type FieldFontSizeOverride = 'global' | 'auto' | number;
+
+export type FieldFontColorChoice = string;
+
+export type FieldFontColorOverride = 'global' | string;
+
+export type SavedFormAppearance = {
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize?: FieldFontSizeChoice;
+  globalFieldFontColor?: FieldFontColorChoice;
+};
+
 export type RadioGroupSource = 'manual' | 'ai_suggestion' | 'migrated_legacy';
 
 export type RadioGroupOption = {
@@ -74,6 +106,22 @@ export type PdfField = {
    * Optional field value to inject when generating a filled PDF.
    */
   value?: string | number | boolean | null;
+  /**
+   * Optional text-safe PDF Base 14 font preview override for text-like fields.
+   * "global" inherits the workspace-level font setting; missing values keep legacy data compatible.
+   */
+  fontName?: FieldFontOverride;
+  /**
+   * Optional font-size override in PDF points for text-like fields.
+   * "global" inherits the workspace-level size, "auto" preserves height-based sizing,
+   * and missing values keep legacy data compatible.
+   */
+  fontSize?: FieldFontSizeOverride;
+  /**
+   * Optional text color override for text-like fields.
+   * "global" inherits the workspace-level color, and missing values keep legacy data compatible.
+   */
+  fontColor?: FieldFontColorOverride;
   /**
    * Checkbox grouping metadata used for schema mapping and search/fill rules.
    */
@@ -164,6 +212,7 @@ export type SavedFormEditorSnapshot = {
   version: number;
   pageCount: number;
   pageSizes: Record<number, PageSize>;
+  appearance: SavedFormAppearance;
   fields: PdfField[];
   radioGroups: RadioGroup[];
   hasRenamedFields: boolean;

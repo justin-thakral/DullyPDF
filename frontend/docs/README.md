@@ -7,6 +7,7 @@
 - `api-routing.md` - Same-origin `/api/*` calls vs direct backend calls.
 - `api.md` - Implementation guide for the saved-template `API Fill` product surface, request contract, and rollout guardrails.
 - `field-editing.md` - Overlay, inspector, and fill behavior.
+- `acroform-field-properties.md` - PDF fillable-field keys, editable/flat export rules, and why AcroForm correctness matters to DullyPDF.
 - `styling.md` - Tokens, stylesheet modules, and typography rules.
 - `usage-docs.md` - Public `/usage-docs/*` information architecture and page layout notes.
 - `seo-operations.md` - Weekly SEO operations, query tuning, and authority growth workflow.

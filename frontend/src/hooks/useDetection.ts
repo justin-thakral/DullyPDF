@@ -4,6 +4,9 @@ import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 import type {
   BannerNotice,
   CheckboxRule,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
   PageSize,
   PdfField,
   PendingAutoActions,
@@ -16,9 +19,19 @@ import {
   mapDetectionFields,
   resolveDetectionStatusMessage,
 } from '../utils/detection';
-import { extractFieldsFromPdf, loadPageSizes, loadPdfFromFile } from '../utils/pdf';
+import {
+  extractDullyPdfAppearanceMetadata,
+  extractFieldsFromPdf,
+  loadPageSizes,
+  loadPdfFromFile,
+} from '../utils/pdf';
 import { buildTemplateFields } from '../utils/fields';
 import { debugLog } from '../utils/debug';
+import {
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+} from '../utils/fieldFonts';
 import {
   buildSavedFormEditorSnapshot,
   extractSavedFormFillRuleState,
@@ -79,7 +92,16 @@ export interface UseDetectionDeps {
   setSourceFile: (file: File | null) => void;
   setSourceFileName: (name: string | null) => void;
   setSourceFileIsDemo: (value: boolean) => void;
-  markSavedFillLinkSnapshot: (fields: PdfField[], checkboxRules: CheckboxRule[]) => void;
+  setGlobalFieldFont: (font: FieldFontChoice) => void;
+  setGlobalFieldFontSize: (fontSize: FieldFontSizeChoice) => void;
+  setGlobalFieldFontColor: (fontColor: FieldFontColorChoice) => void;
+  markSavedFillLinkSnapshot: (
+    fields: PdfField[],
+    checkboxRules: CheckboxRule[],
+    globalFieldFont?: FieldFontChoice,
+    globalFieldFontSize?: FieldFontSizeChoice,
+    globalFieldFontColor?: FieldFontColorChoice,
+  ) => void;
   setActiveSavedFormId: (id: string | null) => void;
   setActiveSavedFormName: (name: string | null) => void;
   setShowSearchFill: (value: boolean) => void;
@@ -449,6 +471,16 @@ export function useDetection(deps: UseDetectionDeps) {
       deps.setActiveSavedFormName(null);
       try {
         const doc = await loadPdfFromFile(file);
+        const dullyAppearanceMetadata = await extractDullyPdfAppearanceMetadata(doc);
+        deps.setGlobalFieldFont(
+          dullyAppearanceMetadata?.appearance.globalFieldFont ?? DEFAULT_FIELD_FONT_CHOICE,
+        );
+        deps.setGlobalFieldFontSize(
+          dullyAppearanceMetadata?.appearance.globalFieldFontSize ?? DEFAULT_FIELD_FONT_SIZE_CHOICE,
+        );
+        deps.setGlobalFieldFontColor(
+          dullyAppearanceMetadata?.appearance.globalFieldFontColor ?? DEFAULT_FIELD_FONT_COLOR,
+        );
         if (doc.numPages > deps.profileLimits.fillableMaxPages) {
           if (loadTokenRef.current !== loadToken) return;
           deps.clearWorkspace();
@@ -461,7 +493,7 @@ export function useDetection(deps: UseDetectionDeps) {
         const existingFieldsPromise = options.skipExistingFields
           ? null
           : (async () => {
-              try { return await extractFieldsFromPdf(doc); }
+              try { return await extractFieldsFromPdf(doc, { dullyAppearanceMetadata }); }
               catch (error) {
                 debugLog('Failed to extract existing fields', error);
                 deps.setBannerNotice({ tone: 'warning', message: 'Could not extract existing PDF fields. Fields may need to be re-created.', autoDismissMs: 8000 });
@@ -572,13 +604,31 @@ export function useDetection(deps: UseDetectionDeps) {
           const hydratedSnapshot = normalizeSavedFormEditorSnapshot(savedMeta?.editorSnapshot, {
             expectedPageCount: doc.numPages,
           });
+          const dullyAppearanceMetadata = hydratedSnapshot
+            ? null
+            : await extractDullyPdfAppearanceMetadata(doc);
+          const savedGlobalFieldFont =
+            hydratedSnapshot?.appearance.globalFieldFont ??
+            dullyAppearanceMetadata?.appearance.globalFieldFont ??
+            DEFAULT_FIELD_FONT_CHOICE;
+          const savedGlobalFieldFontSize =
+            hydratedSnapshot?.appearance.globalFieldFontSize ??
+            dullyAppearanceMetadata?.appearance.globalFieldFontSize ??
+            DEFAULT_FIELD_FONT_SIZE_CHOICE;
+          const savedGlobalFieldFontColor =
+            hydratedSnapshot?.appearance.globalFieldFontColor ??
+            dullyAppearanceMetadata?.appearance.globalFieldFontColor ??
+            DEFAULT_FIELD_FONT_COLOR;
+          deps.setGlobalFieldFont(savedGlobalFieldFont);
+          deps.setGlobalFieldFontSize(savedGlobalFieldFontSize);
+          deps.setGlobalFieldFontColor(savedGlobalFieldFontColor);
           const sizesPromise = hydratedSnapshot
             ? Promise.resolve(hydratedSnapshot.pageSizes)
             : loadPageSizes(doc);
           const existingFieldsPromise = hydratedSnapshot
             ? Promise.resolve(clonePdfFields(hydratedSnapshot.fields))
             : (async () => {
-                try { return await extractFieldsFromPdf(doc); }
+                try { return await extractFieldsFromPdf(doc, { dullyAppearanceMetadata }); }
                 catch (error) {
                   debugLog('Failed to extract saved form fields', error);
                   deps.setBannerNotice({ tone: 'warning', message: 'Could not extract saved form fields. Some fields may be missing.', autoDismissMs: 8000 });
@@ -645,7 +695,13 @@ export function useDetection(deps: UseDetectionDeps) {
           };
 
           if (hydratedSnapshot) {
-            deps.markSavedFillLinkSnapshot(initialFields, savedCheckboxRules);
+            deps.markSavedFillLinkSnapshot(
+              initialFields,
+              savedCheckboxRules,
+              savedGlobalFieldFont,
+              savedGlobalFieldFontSize,
+              savedGlobalFieldFontColor,
+            );
             debugLog('Loaded saved form from editor snapshot', { name, pages: doc.numPages, fields: initialFields.length });
             if (deps.verifiedUser) {
               void registerSavedFormSession(initialFields);
@@ -662,7 +718,13 @@ export function useDetection(deps: UseDetectionDeps) {
             deps.resetFieldHistory(existingFields);
             deps.setSelectedFieldId(null);
             deps.setRadioGroupSuggestions(extractedLegacyRadioSuggestions);
-            deps.markSavedFillLinkSnapshot(existingFields, savedCheckboxRules);
+            deps.markSavedFillLinkSnapshot(
+              existingFields,
+              savedCheckboxRules,
+              savedGlobalFieldFont,
+              savedGlobalFieldFontSize,
+              savedGlobalFieldFontColor,
+            );
             debugLog('Extracted saved form fields', { total: existingFields.length });
             debugLog('Loaded saved form', { name, pages: doc.numPages, fields: existingFields.length });
             if (deps.verifiedUser && existingFields.length) {
@@ -673,6 +735,9 @@ export function useDetection(deps: UseDetectionDeps) {
                     pageCount: doc.numPages,
                     pageSizes: sizes,
                     fields: existingFields,
+                    globalFieldFont: savedGlobalFieldFont,
+                    globalFieldFontSize: savedGlobalFieldFontSize,
+                    globalFieldFontColor: savedGlobalFieldFontColor,
                     hasRenamedFields: false,
                     hasMappedSchema: derivedHasMappedSchema,
                   }),

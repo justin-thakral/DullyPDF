@@ -15,6 +15,9 @@ import type {
   CheckboxRule,
   ConfirmDialogOptions,
   DataSourceKind,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
   PageSize,
   PdfField,
   ProcessingMode,
@@ -22,7 +25,7 @@ import type {
   SchemaPayload,
   TextTransformRule,
 } from '../types';
-import { buildTemplateFields, clearFieldValues } from '../utils/fields';
+import { buildTemplateFields, clearFieldValues, prepareFieldsForMaterialize } from '../utils/fields';
 import {
   applyMappingPayloadToFields,
   applyRenamePayloadToFields,
@@ -31,6 +34,7 @@ import { hashSourcePdfSha256 } from '../utils/pdfFingerprint';
 import { resolveGroupTemplates, useGroupTemplateCache } from './useGroupTemplateCache';
 import type { SavedFormSessionResume } from './useDetection';
 import { useGroupUploadModal } from './useGroupUploadModal';
+import { buildSavedFormEditorSnapshot } from '../utils/savedFormHydration';
 import {
   applyRadioGroupSuggestions,
   shouldAutoApplyRadioGroupSuggestion,
@@ -195,6 +199,15 @@ type FieldHistoryController = {
   ) => void;
 };
 
+type AppearanceController = {
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
+  setGlobalFieldFont: Dispatch<SetStateAction<FieldFontChoice>>;
+  setGlobalFieldFontSize: Dispatch<SetStateAction<FieldFontSizeChoice>>;
+  setGlobalFieldFontColor: Dispatch<SetStateAction<FieldFontColorChoice>>;
+};
+
 type FieldSelectionController = {
   selectedFieldId: string | null;
   setSelectedFieldId: Dispatch<SetStateAction<string | null>>;
@@ -243,10 +256,17 @@ type UseWorkspaceGroupCoordinatorDeps = {
   document: DocumentController;
   pdfState: PdfStateBridge;
   fieldHistory: FieldHistoryController;
+  appearance: AppearanceController;
   fieldSelection: FieldSelectionController;
   display: DisplayController;
   dataSource: DataSourceController;
-  markSavedFillLinkSnapshot: (fields: PdfField[], checkboxRules: CheckboxRule[]) => void;
+  markSavedFillLinkSnapshot: (
+    fields: PdfField[],
+    checkboxRules: CheckboxRule[],
+    globalFieldFont?: FieldFontChoice,
+    globalFieldFontSize?: FieldFontSizeChoice,
+    globalFieldFontColor?: FieldFontColorChoice,
+  ) => void;
 };
 
 function buildFallbackActiveGroup(
@@ -354,6 +374,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
     },
     document: deps.document,
     fieldHistory: deps.fieldHistory,
+    appearance: deps.appearance,
     fieldSelection: deps.fieldSelection,
     detection: {
       detectSessionId: deps.detection.detectSessionId,
@@ -906,10 +927,32 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
           }
           const checkboxRules = mapped.checkboxRules;
           const textTransformRules = mapped.textTransformRules;
+          const clearedFields = clearFieldValues(nextFields);
           const materializedBlob = await ApiService.materializeFormPdf(
             blob,
-            clearFieldValues(nextFields),
+            prepareFieldsForMaterialize(
+              clearedFields,
+              snapshot.globalFieldFont,
+              snapshot.globalFieldFontColor,
+            ),
+            {
+              appearance: {
+                globalFieldFont: snapshot.globalFieldFont,
+                globalFieldFontSize: snapshot.globalFieldFontSize,
+                globalFieldFontColor: snapshot.globalFieldFontColor,
+              },
+            },
           );
+          const editorSnapshot = buildSavedFormEditorSnapshot({
+            pageCount: snapshot.pageCount,
+            pageSizes: snapshot.pageSizes,
+            fields: clearedFields,
+            globalFieldFont: snapshot.globalFieldFont,
+            globalFieldFontSize: snapshot.globalFieldFontSize,
+            globalFieldFontColor: snapshot.globalFieldFontColor,
+            hasRenamedFields: true,
+            hasMappedSchema: true,
+          });
           await ApiService.saveFormToProfile(
             materializedBlob,
             template.name,
@@ -917,6 +960,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
             template.id,
             checkboxRules,
             textTransformRules,
+            editorSnapshot,
           );
           successIds.push(template.id);
         } catch (error) {

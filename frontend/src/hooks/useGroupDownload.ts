@@ -87,7 +87,18 @@ export function useGroupDownload(deps: UseGroupDownloadDeps) {
         const snapshot = activeSnapshot ?? await deps.ensureGroupTemplateSnapshot(template.id, template.name);
         const materializedBlob = await ApiService.materializeFormPdf(
           snapshot.sourceFile,
-          prepareFieldsForMaterialize(snapshot.fields),
+          prepareFieldsForMaterialize(
+            snapshot.fields,
+            snapshot.globalFieldFont,
+            snapshot.globalFieldFontColor,
+          ),
+          {
+            appearance: {
+              globalFieldFont: snapshot.globalFieldFont,
+              globalFieldFontSize: snapshot.globalFieldFontSize,
+              globalFieldFontColor: snapshot.globalFieldFontColor,
+            },
+          },
         );
         const bytes = new Uint8Array(await materializedBlob.arrayBuffer());
         const fileName = ensureUniqueArchiveName(

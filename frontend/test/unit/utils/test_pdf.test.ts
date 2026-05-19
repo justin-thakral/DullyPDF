@@ -15,6 +15,7 @@ vi.mock('pdfjs-dist/build/pdf.worker.min.mjs?url', () => ({
 }));
 
 import {
+  extractDullyPdfAppearanceMetadata,
   extractFieldsFromPdf,
   loadPageSizes,
   loadPdfFromFile,
@@ -50,14 +51,17 @@ function createMockPage({
 function createMockDoc({
   pages,
   fieldObjects = null,
+  metadataInfo = {},
 }: {
   pages: ReturnType<typeof createMockPage>[];
   fieldObjects?: Record<string, MockFieldObject[]> | null;
+  metadataInfo?: Record<string, unknown>;
 }) {
   return {
     numPages: pages.length,
     getPage: vi.fn(async (pageNum: number) => pages[pageNum - 1]),
     getFieldObjects: vi.fn(async () => fieldObjects),
+    getMetadata: vi.fn(async () => ({ info: metadataInfo })),
   };
 }
 
@@ -289,6 +293,97 @@ describe('pdf utils', () => {
       rect: { x: 140, y: 20, width: 50, height: 20 },
       value: true,
     });
+  });
+
+  it('hydrates text field appearance from PDF.js default appearance data', async () => {
+    const page = createMockPage({
+      annotations: [
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: 'notes',
+          rect: [10, 10, 110, 30],
+          defaultAppearanceData: {
+            fontName: 'Helv',
+            fontSize: 14,
+            fontColor: Uint8ClampedArray.from([12, 34, 56]),
+          },
+        },
+      ],
+    });
+    const doc = createMockDoc({ pages: [page] });
+
+    const fields = await extractFieldsFromPdf(doc as any);
+
+    expect(fields).toHaveLength(1);
+    expect(fields[0]).toMatchObject({
+      name: 'notes',
+      fontName: 'Helvetica',
+      fontSize: 14,
+      fontColor: '#0c2238',
+    });
+  });
+
+  it('hydrates DullyPDF global appearance metadata and field overrides on re-upload', async () => {
+    const metadataPayload = {
+      schema: 'dullypdf.appearance.v1',
+      appearance: {
+        globalFieldFont: 'Times-Roman',
+        globalFieldFontSize: 12,
+        globalFieldFontColor: '#123456',
+      },
+      fields: [
+        {
+          name: 'notes',
+          page: 1,
+          type: 'text',
+          fontColor: '#abcdef',
+        },
+      ],
+    };
+    const page = createMockPage({
+      annotations: [
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: 'notes',
+          rect: [10, 10, 110, 30],
+          defaultAppearanceData: {
+            fontColor: Uint8ClampedArray.from([18, 52, 86]),
+          },
+        },
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: 'inherited_global',
+          rect: [10, 40, 130, 60],
+          defaultAppearanceData: {
+            fontColor: Uint8ClampedArray.from([18, 52, 86]),
+          },
+        },
+      ],
+    });
+    const doc = createMockDoc({
+      pages: [page],
+      metadataInfo: {
+        Custom: {
+          DullyPDFAppearance: JSON.stringify(metadataPayload),
+        },
+      },
+    });
+
+    const metadata = await extractDullyPdfAppearanceMetadata(doc as any);
+    const fields = await extractFieldsFromPdf(doc as any, { dullyAppearanceMetadata: metadata });
+
+    expect(metadata?.appearance).toEqual({
+      globalFieldFont: 'Times-Roman',
+      globalFieldFontSize: 12,
+      globalFieldFontColor: '#123456',
+    });
+    expect(fields).toHaveLength(2);
+    expect(fields[0]).toMatchObject({ name: 'notes', fontColor: '#abcdef' });
+    expect(fields[1]).toMatchObject({ name: 'inherited_global' });
+    expect(fields[1]).not.toHaveProperty('fontColor');
   });
 
   it('extracts confidence tags and ignores confidence-only alternative text for names', async () => {

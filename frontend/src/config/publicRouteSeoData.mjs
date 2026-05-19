@@ -1260,6 +1260,222 @@ const INTENT_PAGES = [
     ],
   },
   {
+    key: 'fillable-pdf-fonts-colors',
+    category: 'workflow',
+    path: '/fillable-pdf-fonts-colors',
+    navLabel: 'Fillable PDF Fonts and Colors',
+    heroTitle: 'Style Fillable PDF Fonts, Sizes, and Colors',
+    heroSummary:
+      'Set global or per-field fonts, sizes, and colors for fillable PDF text/date fields, then save templates that preserve them in exports.',
+    seoTitle: 'Fillable PDF Fonts, Sizes & Colors | DullyPDF',
+    seoDescription:
+      'Choose fonts, sizes, and colors for fillable PDF fields. Save templates that keep those styles on editable and flat exports.',
+    seoKeywords: [
+      'fillable pdf fonts',
+      'pdf form font size',
+      'pdf form font color',
+      'fillable pdf field color',
+      'editable pdf field fonts',
+      'save pdf template field colors',
+      'pdf form appearance settings',
+      'pdf text field font controls',
+    ],
+    valuePoints: [
+      'Set one workspace default for fillable text and date fields, then override individual fields when the template needs exceptions.',
+      'Choose from the text-safe Helvetica, Times, and Courier Base 14 font families without uploading custom font files.',
+      'Use Auto font sizing or custom point sizes, then pair those choices with global or per-field text colors.',
+    ],
+    proofPoints: [
+      'Saved templates keep selected fonts, font sizes, and field colors when reopened later.',
+      'Editable PDF exports place values and appearance inside AcroForm fields, including the selected font color and size while a field is actively being typed into.',
+      'Flat PDF exports bake the same chosen fonts, sizes, and colors into the final non-editable page content.',
+      'Fill By Link and API Fill outputs reuse the saved template appearance snapshot, so respondent and API-generated files keep the same field colors.',
+    ],
+    articleSections: [
+      {
+        title: 'Why field appearance matters on reusable PDF templates',
+        paragraphs: [
+          'A fillable PDF template is easier to trust when the generated fields look like part of the original document. Font family, point size, and color all affect that trust. A certificate, intake form, permit, or internal worksheet can technically be filled while still looking wrong if typed values are too large, too small, or visually disconnected from the rest of the form.',
+          'DullyPDF treats those choices as template appearance settings, not as one-time preview tweaks. The operator can choose a global field appearance for the workspace and then override individual text or date fields when a specific field needs a different font, size, or color.',
+        ],
+      },
+      {
+        title: 'Global appearance gives teams a stable default',
+        paragraphs: [
+          'The left field panel gives operators a global starting point for text and date fields. The global editor can set the shared font family, keep font size on Auto dynamic sizing, and choose one field color that inherited fields reuse across preview and export.',
+          'That global layer keeps setup fast. Most recurring forms only need one appearance rule, so teams can avoid setting every field manually while still producing editable and flat downloads that match the chosen template style.',
+        ],
+        bullets: [
+          'Use Default (Helvetica) when the template should behave like previous DullyPDF exports.',
+          'Use Auto font size when field height should drive the rendered text size.',
+          'Use global font color when most fields should share the same visible text color.',
+        ],
+      },
+      {
+        title: 'Field-specific overrides handle the exceptions',
+        paragraphs: [
+          'Some PDFs need targeted exceptions. A narrow ID field may need a smaller point size, a highlighted total may need a specific color, or a section heading may need a bold font from the supported Base 14 set. The field inspector lets text and date fields inherit the workspace appearance or store their own override for font, font size, and color.',
+          'Those overrides travel with the field metadata. They are used in the live fill preview, saved templates, editable PDF downloads, flat PDF downloads, Fill By Link materialization, and API Fill materialization.',
+        ],
+      },
+      {
+        title: 'Saved templates keep field colors on fillable forms',
+        paragraphs: [
+          'The important product behavior is persistence. When a user saves a DullyPDF template, the selected font, font size behavior, and font color choices are saved with the field definitions. Reopening the template should not collapse custom colors back to black or forget which fields intentionally inherit the global color.',
+          'The same rule applies after publication. A saved template used for Fill By Link or API Fill keeps the selected field colors when DullyPDF generates a fillable form output from respondent answers or JSON data.',
+        ],
+      },
+      {
+        title: 'Editable and flat exports use the same appearance intent',
+        paragraphs: [
+          'Editable exports keep the value inside the AcroForm field and attach widget appearance data so the completed value is visible when the PDF opens. The editable export should also apply the selected font color and size while the user is typing in the selected field, then keep the same appearance once the field is committed.',
+          'Flat exports remove interactivity and draw the final value into the page content. Those output modes are different, but they should both respect the same saved font, size, and color decisions.',
+          'That distinction prevents the bug where a PDF shows text on the page but the actual editable field remains empty or uses a stale default appearance. DullyPDF avoids that by treating editable output as real field data plus field appearance, not a flat drawing with an empty widget layered on top.',
+        ],
+      },
+      {
+        title: 'PDF viewers may still control the live focused editing state',
+        paragraphs: [
+          'PDF viewers are not completely uniform while a user is actively typing inside an exported field, so focused font-family behavior can still vary by viewer. DullyPDF writes the field appearance so selected color and size apply to the editable typing state where supported, and the committed value, printed output, and flat output follow the selected DullyPDF appearance.',
+          'For normal text and date fields, DullyPDF uses the text-safe Helvetica, Times, and Courier Base 14 families because those fonts can be referenced without embedding external font programs. Symbol-only Base 14 fonts are intentionally excluded from typed field controls because normal user text does not map reliably to those encodings across common viewers.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF change fonts in fillable PDF fields?',
+        answer:
+          'Yes. Text and date fields can use a global font or a field-specific font from the supported text-safe Base 14 font families.',
+      },
+      {
+        question: 'Can I set font colors on fillable PDF fields?',
+        answer:
+          'Yes. DullyPDF supports global field color and per-field custom color for text and date fields, and saved templates keep those colors for later editable and flat exports.',
+      },
+      {
+        question: 'Do saved templates preserve font size and color?',
+        answer:
+          'Yes. Saved templates preserve the selected font, font-size behavior, and font-color metadata so reopened templates, Fill By Link, and API Fill outputs use the same appearance settings.',
+      },
+      {
+        question: 'Why does DullyPDF limit field fonts to Helvetica, Times, and Courier families?',
+        answer:
+          'Those text-safe PDF Base 14 families work without embedding font files. Arbitrary fonts would require embedded font programs, subsetting, encoding, and extra appearance-stream handling.',
+      },
+    ],
+    relatedIntentPages: ['acroform-field-appearance', 'pdf-to-fillable-form', 'fillable-form-field-name', 'fill-pdf-by-link'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'fill-by-link', 'api-fill'],
+  },
+  {
+    key: 'acroform-field-appearance',
+    category: 'workflow',
+    path: '/acroform-field-appearance',
+    navLabel: 'AcroForm Field Appearance',
+    heroTitle: 'How Editable PDF Field Appearance Works',
+    heroSummary:
+      'Learn how AcroForm /DA, /DR, /AP, and /V keep field values, fonts, sizes, and colors inside editable PDF widgets after export.',
+    seoTitle: 'How Fillable PDF Field Appearance Works | DullyPDF',
+    seoDescription:
+      'Understand how AcroForm /DA, /DR, /AP, and /V preserve editable PDF field values, fonts, sizes, and colors after export.',
+    seoKeywords: [
+      'acroform field appearance',
+      'pdf da appearance string',
+      'pdf ap appearance stream',
+      'pdf dr font resources',
+      'editable pdf field values',
+      'fillable pdf field font',
+      'pdf acroform field color',
+      'pdf form widget appearance',
+    ],
+    valuePoints: [
+      'Understand the difference between editable field values and flat page text.',
+      'See why /DA, /DR, and /AP must agree for stable fonts, sizes, and colors.',
+      'Use the same mental model to evaluate editable downloads, flat downloads, Fill By Link, and API Fill outputs.',
+    ],
+    proofPoints: [
+      'Editable exports store text-like values in /V and /DV so values stay inside the fillable field.',
+      'Field appearance strings store selected font resource names, point sizes, and RGB colors.',
+      'Selected text field color and size can apply while the exported field is focused for typing, not only after focus leaves the field.',
+      'Widget-owned /AP streams show completed values immediately without adding a separate page-content text layer.',
+      'Flat exports intentionally bake values into page content and remove live widgets.',
+    ],
+    articleSections: [
+      {
+        title: 'An editable PDF needs data and appearance',
+        paragraphs: [
+          'A fillable PDF is not just a visual page with rectangles on top. The PDF catalog owns an /AcroForm, the form owns logical field dictionaries, pages own widget annotations, and widgets can own appearance streams that describe how the filled value should look.',
+          'That split matters because the user-visible text and the editable field value are not the same thing. If an exporter only draws text onto the page while leaving an empty widget above it, the PDF can look filled but behave like an empty form when someone clicks, edits, submits, or imports it later.',
+        ],
+      },
+      {
+        title: '/V is the field value; page text is not',
+        paragraphs: [
+          'For text-like editable output, the current value belongs in the field dictionary as /V, with /DV used when the generated file should also treat that value as the default reset state. That is what lets a downloaded editable PDF reopen with the text inside the actual field.',
+          'Flat output is different. A flat PDF should draw the final value into page content and remove interactive widgets. Mixing those models creates duplicated or stale values, so DullyPDF keeps editable output and flat output as separate export paths.',
+        ],
+      },
+      {
+        title: '/DA tells viewers which font, size, and color to use',
+        paragraphs: [
+          'Variable text fields use a default appearance string, usually called /DA, to describe the font resource, point size, and text color. A typical value looks like /Helv 10 Tf 0 0 0 rg: use the Helv font resource at 10 points with RGB black text.',
+          'DullyPDF writes selected fonts, Auto or custom font sizes, and global or field-specific colors into appearance data so editable fields can display both active typed text and the final committed value with the intended style instead of falling back to a generic viewer default.',
+        ],
+      },
+      {
+        title: '/DR registers the fonts that /DA references',
+        paragraphs: [
+          'The font name inside /DA is a resource alias. It only works reliably when the corresponding font resource exists in the document-level /AcroForm /DR /Font dictionary or in field/widget resources. DullyPDF registers the selected text-safe Base 14 font resources so appearance strings and widget appearances can resolve them.',
+          'DullyPDF uses short AcroForm-style aliases such as /Helv, /Time, /TiIt, and /CoBo while the underlying /BaseFont remains Helvetica, Times, or Courier. This keeps generated files closer to common AcroForm conventions.',
+        ],
+      },
+      {
+        title: '/AP makes the completed widget draw correctly',
+        paragraphs: [
+          'A widget appearance stream is a small PDF drawing program attached to a form widget. For text fields, the normal appearance draws the current value with the chosen font, size, and color. For checkboxes and radio buttons, the normal appearance usually contains state names such as /Off and the selected export value.',
+          'An appearance stream is still part of the field. It is not the same as flattening. Editable PDFs can and should include widget-owned /AP data when that helps viewers show the completed form immediately after download.',
+        ],
+      },
+      {
+        title: 'What DullyPDF preserves across templates and generated outputs',
+        paragraphs: [
+          'DullyPDF saves normalized appearance intent with the template field metadata and writes the corresponding PDF keys during materialization. Global editor settings provide the inherited default, and the individual field inspector can override that default for a specific widget. That is why fonts, font sizes, and field colors can persist through save, reopen, Fill By Link, API Fill, editable download, and flat download.',
+          'Generated editable PDFs also carry compact DullyPDF appearance metadata so re-uploading one of those files can restore global color and field-specific color overrides in the inspector rather than treating every color as an unrelated PDF default.',
+        ],
+      },
+      {
+        title: 'What PDF viewers can still vary',
+        paragraphs: [
+          'Viewers have latitude while a user is actively focused inside a field. Adobe, Chrome, Preview, and browser PDF engines can differ in how much of the live typing state they source from /DA before the value is committed. That does not change where DullyPDF stores the chosen appearance: field values stay in /V, appearance lives in /DA and widget /AP, and flat exports bake the final visible state into page content.',
+          'The practical QA check is to inspect both editable and flat outputs. Editable output should keep values inside fields and show the selected appearance when the field is not being actively edited. Flat output should have no live widgets and should visually match the selected fonts, sizes, and colors.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is /DA in a fillable PDF field?',
+        answer:
+          '/DA is the default appearance string for variable text fields. It references a font resource, point size, and text color.',
+      },
+      {
+        question: 'What is /AP in a PDF widget?',
+        answer:
+          '/AP is the appearance dictionary for a widget annotation. Its normal appearance can draw the current field value or the selected checkbox/radio state.',
+      },
+      {
+        question: 'Why should editable exports not draw a separate flat text layer under fields?',
+        answer:
+          'That creates a PDF that looks filled but has a different live field value above the drawn text. Editable exports should put the value and appearance into the AcroForm field itself.',
+      },
+      {
+        question: 'How do font colors stay with saved templates?',
+        answer:
+          'DullyPDF saves normalized appearance metadata with the template and writes the selected color into field/root appearance strings and widget appearances when generating PDFs.',
+      },
+    ],
+    relatedIntentPages: ['fillable-pdf-fonts-colors', 'pdf-to-fillable-form', 'pdf-field-detection-tool', 'pdf-fill-api'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'api-fill', 'troubleshooting'],
+  },
+  {
     key: 'healthcare-pdf-automation',
     category: 'industry',
     path: '/healthcare-pdf-automation',

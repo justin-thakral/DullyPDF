@@ -1,5 +1,21 @@
-import type { CheckboxRule, PdfField } from '../types';
+import type {
+  CheckboxRule,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
+  PdfField,
+} from '../types';
 import type { FillLinkResponse, FillLinkSummary, PublicFillLinkSubmitResult } from '../services/api';
+import {
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  resolveEffectiveFieldFont,
+  resolveEffectiveFieldFontColor,
+  sanitizeFieldFontColorChoice,
+  sanitizeFieldFontSizeChoice,
+  sanitizeFieldFontSizeOverride,
+} from './fieldFonts';
 
 export const FILL_LINK_RESPONSE_ID_KEY = '__fill_link_response_id';
 export const FILL_LINK_LINK_ID_KEY = '__fill_link_link_id';
@@ -7,12 +23,46 @@ export const FILL_LINK_RESPONDENT_LABEL_KEY = '__fill_link_respondent_label';
 export const FILL_LINK_RESPONDENT_SECONDARY_LABEL_KEY = '__fill_link_respondent_secondary_label';
 export const FILL_LINK_SUBMITTED_AT_KEY = '__fill_link_submitted_at';
 
-export function buildFillLinkTemplateFields(fields: PdfField[]) {
+function textFieldSupportsFont(field: PdfField): boolean {
+  return field.type === 'text' || field.type === 'date';
+}
+
+function resolveFillLinkFieldFontSize(
+  field: PdfField,
+  globalFieldFontSize: FieldFontSizeChoice = DEFAULT_FIELD_FONT_SIZE_CHOICE,
+): number | 'auto' | undefined {
+  if (!textFieldSupportsFont(field)) {
+    return undefined;
+  }
+  const fieldFontSize = sanitizeFieldFontSizeOverride(field.fontSize, 'global');
+  if (typeof fieldFontSize === 'number' || fieldFontSize === DEFAULT_FIELD_FONT_SIZE_CHOICE) {
+    return fieldFontSize;
+  }
+  const globalFontSize = sanitizeFieldFontSizeChoice(globalFieldFontSize, DEFAULT_FIELD_FONT_SIZE_CHOICE);
+  return typeof globalFontSize === 'number' ? globalFontSize : undefined;
+}
+
+export function buildFillLinkTemplateFields(
+  fields: PdfField[],
+  globalFieldFont: FieldFontChoice = DEFAULT_FIELD_FONT_CHOICE,
+  globalFieldFontSize: FieldFontSizeChoice = DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  globalFieldFontColor: FieldFontColorChoice = DEFAULT_FIELD_FONT_COLOR,
+) {
+  const normalizedGlobalColor = sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
   return fields.map((field) => ({
     name: field.name,
     type: field.type,
     page: field.page,
     rect: field.rect,
+    fontName:
+      textFieldSupportsFont(field)
+        ? resolveEffectiveFieldFont(field, globalFieldFont) || undefined
+        : undefined,
+    fontSize: resolveFillLinkFieldFontSize(field, globalFieldFontSize),
+    fontColor:
+      textFieldSupportsFont(field)
+        ? resolveEffectiveFieldFontColor(field, normalizedGlobalColor)
+        : undefined,
     groupKey: field.groupKey,
     optionKey: field.optionKey,
     optionLabel: field.optionLabel,
@@ -72,11 +122,25 @@ function sortValueMap(valueMap: Record<string, string> | undefined) {
   );
 }
 
-export function buildFillLinkPublishFingerprint(fields: PdfField[], checkboxRules: CheckboxRule[]): string {
-  const normalizedFields = buildFillLinkTemplateFields(fields)
+export function buildFillLinkPublishFingerprint(
+  fields: PdfField[],
+  checkboxRules: CheckboxRule[],
+  globalFieldFont: FieldFontChoice = DEFAULT_FIELD_FONT_CHOICE,
+  globalFieldFontSize: FieldFontSizeChoice = DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  globalFieldFontColor: FieldFontColorChoice = DEFAULT_FIELD_FONT_COLOR,
+): string {
+  const normalizedFields = buildFillLinkTemplateFields(
+    fields,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
+  )
     .map((field) => ({
       name: field.name,
       type: field.type || 'text',
+      fontName: field.fontName || '',
+      fontSize: field.fontSize ?? '',
+      fontColor: field.fontColor || '',
       page: Number.isFinite(field.page) ? field.page : 0,
       rect: {
         x: Number(field.rect?.x || 0),

@@ -33,7 +33,7 @@ from backend.services.group_schema_service import (
 )
 from backend.services.group_schema_types import GroupSchemaTypeConflictError
 from backend.services.mapping_service import normalize_data_key
-from backend.services.pdf_service import coerce_field_payloads
+from backend.services.pdf_service import coerce_field_payloads, normalize_field_appearance_payload
 from backend.services.saved_form_snapshot_service import load_saved_form_editor_snapshot
 from backend.time_utils import now_iso
 
@@ -349,6 +349,7 @@ def build_template_api_snapshot(
         "templateName": template.name or "Saved form",
         "sourcePdfPath": template.pdf_bucket_path,
         "fields": fields,
+        "appearance": normalize_field_appearance_payload(editor_snapshot.get("appearance")),
         "pageCount": int(editor_snapshot.get("pageCount") or 0),
         "pageSizes": dict(editor_snapshot.get("pageSizes") or {}),
         "checkboxRules": fill_rules["checkboxRules"],
@@ -492,7 +493,9 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             )
             continue
         if field_type == "radio":
-            group_key = normalize_data_key(str(field.get("radioGroupKey") or field.get("groupKey") or field_name))
+            group_key = normalize_data_key(
+                str(field.get("radioGroupKey") or field.get("radioGroupId") or field.get("groupKey") or field_name)
+            )
             option_key = normalize_data_key(str(field.get("radioOptionKey") or field.get("optionKey") or field_name))
             if not group_key or not option_key:
                 continue
@@ -751,6 +754,8 @@ def materialize_template_api_snapshot(
         "downloadMode": _normalize_export_mode(export_mode or snapshot.get("defaultExportMode")),
         "filename": filename or snapshot.get("templateName") or "api-fill-response",
     }
+    if isinstance(snapshot.get("appearance"), dict):
+        resolved_snapshot["appearance"] = snapshot.get("appearance") or {}
     return materialize_fill_link_response_download(
         resolved_snapshot,
         answers=data,

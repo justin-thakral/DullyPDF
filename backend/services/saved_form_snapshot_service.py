@@ -10,6 +10,18 @@ from backend.firebaseDB.storage_service import (
     upload_saved_form_snapshot_json,
 )
 from backend.logging_config import get_logger
+from backend.services.pdf_service import (
+    DEFAULT_FIELD_FONT_COLOR,
+    DEFAULT_FIELD_FONT_CHOICE,
+    DEFAULT_FIELD_FONT_SIZE_CHOICE,
+    normalize_field_font_color_override,
+    normalize_pdf_base14_font_name,
+    normalize_field_font_override,
+    normalize_field_font_size_override,
+    normalize_global_field_font_color,
+    normalize_global_field_font_size,
+    normalize_pdf_hex_color,
+)
 from backend.time_utils import now_iso
 
 
@@ -19,6 +31,7 @@ SAVED_FORM_EDITOR_SNAPSHOT_VERSION = 2
 MAX_SAVED_FORM_EDITOR_SNAPSHOT_BYTES = 1_500_000
 SAVED_FORM_EDITOR_SNAPSHOT_METADATA_KEY = "editorSnapshot"
 ALLOWED_FIELD_TYPES = {"text", "checkbox", "radio", "signature", "date"}
+FONT_COMPATIBLE_FIELD_TYPES = {"text", "date"}
 
 
 def _coerce_bool(value: Any, *, default: bool = False) -> bool:
@@ -63,6 +76,40 @@ def _normalize_rect(value: Any) -> Dict[str, float]:
     }
 
 
+def _normalize_appearance(value: Any) -> Dict[str, Any]:
+    if value is None:
+        return {
+            "globalFieldFont": DEFAULT_FIELD_FONT_CHOICE,
+            "globalFieldFontSize": DEFAULT_FIELD_FONT_SIZE_CHOICE,
+            "globalFieldFontColor": DEFAULT_FIELD_FONT_COLOR,
+        }
+    if not isinstance(value, dict):
+        raise ValueError("appearance must be an object")
+    raw_global_font = value.get("globalFieldFont", DEFAULT_FIELD_FONT_CHOICE)
+    if raw_global_font in (None, "", DEFAULT_FIELD_FONT_CHOICE):
+        global_font = DEFAULT_FIELD_FONT_CHOICE
+    else:
+        global_font = normalize_pdf_base14_font_name(raw_global_font)
+        if not global_font:
+            raise ValueError("appearance.globalFieldFont must be default or a supported PDF text font")
+    raw_global_font_size = value.get("globalFieldFontSize", DEFAULT_FIELD_FONT_SIZE_CHOICE)
+    global_font_size = normalize_global_field_font_size(raw_global_font_size)
+    if (
+        raw_global_font_size not in (None, "", DEFAULT_FIELD_FONT_SIZE_CHOICE)
+        and global_font_size == DEFAULT_FIELD_FONT_SIZE_CHOICE
+    ):
+        raise ValueError("appearance.globalFieldFontSize must be auto or a font size from 4 to 72")
+    raw_global_font_color = value.get("globalFieldFontColor", DEFAULT_FIELD_FONT_COLOR)
+    global_font_color = normalize_global_field_font_color(raw_global_font_color)
+    if raw_global_font_color not in (None, "") and normalize_pdf_hex_color(raw_global_font_color) is None:
+        raise ValueError("appearance.globalFieldFontColor must be a #rrggbb color")
+    return {
+        "globalFieldFont": global_font,
+        "globalFieldFontSize": global_font_size,
+        "globalFieldFontColor": global_font_color,
+    }
+
+
 def _normalize_field(value: Any) -> Dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError("snapshot fields must contain objects")
@@ -89,6 +136,24 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
         "page": page,
         "rect": _normalize_rect(value.get("rect")),
     }
+    if value.get("fontName") is not None:
+        font_name = normalize_field_font_override(value.get("fontName"))
+        if not font_name:
+            raise ValueError("field fontName must be a supported PDF text font or global")
+        if field_type in FONT_COMPATIBLE_FIELD_TYPES:
+            normalized["fontName"] = font_name
+    if value.get("fontSize") is not None:
+        font_size = normalize_field_font_size_override(value.get("fontSize"))
+        if font_size is None:
+            raise ValueError("field fontSize must be global, auto, or a font size from 4 to 72")
+        if field_type in FONT_COMPATIBLE_FIELD_TYPES:
+            normalized["fontSize"] = font_size
+    if value.get("fontColor") is not None:
+        font_color = normalize_field_font_color_override(value.get("fontColor"))
+        if font_color is None:
+            raise ValueError("field fontColor must be global or a #rrggbb color")
+        if field_type in FONT_COMPATIBLE_FIELD_TYPES:
+            normalized["fontColor"] = font_color
 
     for key in (
         "groupKey",
@@ -232,6 +297,7 @@ def normalize_saved_form_editor_snapshot_payload(payload: Any) -> Dict[str, Any]
         "version": SAVED_FORM_EDITOR_SNAPSHOT_VERSION,
         "pageCount": page_count,
         "pageSizes": _normalize_page_sizes(payload.get("pageSizes"), page_count),
+        "appearance": _normalize_appearance(payload.get("appearance")),
         "fields": [_normalize_field(field) for field in raw_fields],
         "radioGroups": _normalize_radio_groups(payload.get("radioGroups")),
         "hasRenamedFields": _coerce_bool(payload.get("hasRenamedFields"), default=False),

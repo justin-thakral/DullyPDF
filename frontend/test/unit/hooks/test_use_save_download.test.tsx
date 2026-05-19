@@ -28,6 +28,9 @@ function createDeps(overrides: Partial<UseSaveDownloadDeps> = {}): UseSaveDownlo
       rect: { x: 10, y: 10, width: 100, height: 20 },
       value: null,
     }],
+    globalFieldFont: 'default',
+    globalFieldFontSize: 'auto',
+    globalFieldFontColor: '#000000',
     pageSizes: {
       1: { width: 612, height: 792 },
     },
@@ -244,7 +247,14 @@ describe('useSaveDownload', () => {
     expect(materializeFormPdfMock).toHaveBeenCalledWith(
       deps.sourceFile,
       expect.any(Array),
-      { exportMode: 'flat' },
+      {
+        exportMode: 'flat',
+        appearance: {
+          globalFieldFont: 'default',
+          globalFieldFontSize: 'auto',
+          globalFieldFontColor: '#000000',
+        },
+      },
     );
     expect(createObjectUrlSpy).toHaveBeenCalledWith(expect.any(Blob));
     expect(clickSpy).toHaveBeenCalledTimes(1);

@@ -15,13 +15,26 @@ import type {
   BannerNotice,
   CheckboxRule,
   DataSourceKind,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
   PageSize,
   PdfField,
   RadioGroupSuggestion,
   TextTransformRule,
 } from '../types';
 import { debugLog } from '../utils/debug';
-import { extractFieldsFromPdf, loadPageSizes, loadPdfFromFile } from '../utils/pdf';
+import {
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+} from '../utils/fieldFonts';
+import {
+  extractDullyPdfAppearanceMetadata,
+  extractFieldsFromPdf,
+  loadPageSizes,
+  loadPdfFromFile,
+} from '../utils/pdf';
 import {
   applySearchFillRowToFieldsWithStats,
   SEARCH_FILL_NO_MATCH_MESSAGE,
@@ -58,6 +71,9 @@ export type GroupTemplateWorkspaceSnapshot = {
   currentPage: number;
   scale: number;
   fields: PdfField[];
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   history: {
     undo: PdfField[][];
     redo: PdfField[][];
@@ -156,6 +172,15 @@ type FieldHistoryRuntimeState = {
       redo?: PdfField[][];
     } | null,
   ) => void;
+};
+
+type AppearanceRuntimeState = {
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
+  setGlobalFieldFont: Dispatch<SetStateAction<FieldFontChoice>>;
+  setGlobalFieldFontSize: Dispatch<SetStateAction<FieldFontSizeChoice>>;
+  setGlobalFieldFontColor: Dispatch<SetStateAction<FieldFontColorChoice>>;
 };
 
 type FieldSelectionRuntimeState = {
@@ -265,9 +290,16 @@ type UseGroupTemplateCacheDeps = {
   fieldSelection: FieldSelectionRuntimeState;
   detection: DetectionRuntimeState;
   openAi: OpenAiRuntimeState;
+  appearance: AppearanceRuntimeState;
   searchFill: SearchFillRuntimeState;
   setBannerNotice: (notice: BannerNotice | null) => void;
-  markSavedFillLinkSnapshot: (fields: PdfField[], checkboxRules: CheckboxRule[]) => void;
+  markSavedFillLinkSnapshot: (
+    fields: PdfField[],
+    checkboxRules: CheckboxRule[],
+    globalFieldFont?: FieldFontChoice,
+    globalFieldFontSize?: FieldFontSizeChoice,
+    globalFieldFontColor?: FieldFontColorChoice,
+  ) => void;
 };
 
 const GROUP_TEMPLATE_LOAD_TIMEOUT_MS = 15_000;
@@ -298,6 +330,9 @@ function buildGroupTemplatePersistedSignature(snapshot: GroupTemplateWorkspaceSn
         height: field.rect.height,
       },
       value: field.value ?? null,
+      fontName: field.fontName ?? null,
+      fontSize: field.fontSize ?? null,
+      fontColor: field.fontColor ?? null,
       groupKey: field.groupKey ?? null,
       optionKey: field.optionKey ?? null,
       optionLabel: field.optionLabel ?? null,
@@ -306,6 +341,9 @@ function buildGroupTemplatePersistedSignature(snapshot: GroupTemplateWorkspaceSn
       mappingConfidence: field.mappingConfidence ?? null,
       renameConfidence: field.renameConfidence ?? null,
     })),
+    globalFieldFont: snapshot.globalFieldFont,
+    globalFieldFontSize: snapshot.globalFieldFontSize,
+    globalFieldFontColor: snapshot.globalFieldFontColor,
     hasRenamedFields: snapshot.hasRenamedFields,
     hasMappedSchema: snapshot.hasMappedSchema,
     checkboxRules: snapshot.checkboxRules,
@@ -366,6 +404,7 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
     fieldSelection,
     detection,
     openAi,
+    appearance,
     searchFill,
     setBannerNotice,
     markSavedFillLinkSnapshot,
@@ -458,6 +497,9 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
       currentPage: documentState.currentPage,
       scale: documentState.scale,
       fields: clonePdfFields(fieldHistory.fieldsRef.current),
+      globalFieldFont: appearance.globalFieldFont,
+      globalFieldFontSize: appearance.globalFieldFontSize,
+      globalFieldFontColor: appearance.globalFieldFontColor,
       history: cloneFieldHistoryStacks(fieldHistory.historyRef.current),
       selectedFieldId: fieldSelection.selectedFieldId,
       detectSessionId: detection.detectSessionId,
@@ -482,6 +524,9 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
     fieldHistory.historyRef,
     fieldSelection.selectedFieldId,
     group.activeGroupId,
+    appearance.globalFieldFont,
+    appearance.globalFieldFontSize,
+    appearance.globalFieldFontColor,
     openAi.checkboxRules,
     openAi.hasMappedSchema,
     openAi.hasRenamedFields,
@@ -620,10 +665,19 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
     openAi.setRadioGroupSuggestions(cloneRadioGroupSuggestions(snapshot.radioGroupSuggestions));
     openAi.setTextTransformRules(cloneTextTransformRules(snapshot.textTransformRules));
     openAi.setOpenAiError(null);
-    markSavedFillLinkSnapshot(snapshot.fields, snapshot.checkboxRules);
+    appearance.setGlobalFieldFont(snapshot.globalFieldFont);
+    appearance.setGlobalFieldFontSize(snapshot.globalFieldFontSize);
+    appearance.setGlobalFieldFontColor(snapshot.globalFieldFontColor);
+    markSavedFillLinkSnapshot(
+      snapshot.fields,
+      snapshot.checkboxRules,
+      snapshot.globalFieldFont,
+      snapshot.globalFieldFontSize,
+      snapshot.globalFieldFontColor,
+    );
     savedForms.setActiveSavedFormId(snapshot.formId);
     savedForms.setActiveSavedFormName(snapshot.templateName);
-  }, [detection, documentState, fieldHistory, fieldSelection, markSavedFillLinkSnapshot, openAi, savedForms]);
+  }, [appearance, detection, documentState, fieldHistory, fieldSelection, markSavedFillLinkSnapshot, openAi, savedForms]);
 
   const loadGroupTemplateSnapshot = useCallback(async (
     formId: string,
@@ -640,6 +694,9 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
       const hydratedSnapshot = normalizeSavedFormEditorSnapshot(savedMeta?.editorSnapshot, {
         expectedPageCount: doc.numPages,
       });
+      const dullyAppearanceMetadata = hydratedSnapshot
+        ? null
+        : await extractDullyPdfAppearanceMetadata(doc);
       const [sizes, existingFields] = await Promise.all([
         hydratedSnapshot
           ? Promise.resolve(hydratedSnapshot.pageSizes)
@@ -648,7 +705,7 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
           ? Promise.resolve(clonePdfFields(hydratedSnapshot.fields))
           : (async () => {
               try {
-                return await extractFieldsFromPdf(doc);
+                return await extractFieldsFromPdf(doc, { dullyAppearanceMetadata });
               } catch (error) {
                 debugLog('Failed to extract cached group template fields', error);
                 return [] as PdfField[];
@@ -656,6 +713,18 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
             })(),
       ]);
       const fillRuleState = extractSavedFormFillRuleState(savedMeta, { fields: existingFields });
+      const snapshotGlobalFieldFont =
+        hydratedSnapshot?.appearance.globalFieldFont ??
+        dullyAppearanceMetadata?.appearance.globalFieldFont ??
+        DEFAULT_FIELD_FONT_CHOICE;
+      const snapshotGlobalFieldFontSize =
+        hydratedSnapshot?.appearance.globalFieldFontSize ??
+        dullyAppearanceMetadata?.appearance.globalFieldFontSize ??
+        DEFAULT_FIELD_FONT_SIZE_CHOICE;
+      const snapshotGlobalFieldFontColor =
+        hydratedSnapshot?.appearance.globalFieldFontColor ??
+        dullyAppearanceMetadata?.appearance.globalFieldFontColor ??
+        DEFAULT_FIELD_FONT_COLOR;
       const derivedHasMappedSchema = Boolean(
         fillRuleState.checkboxRules.length ||
         fillRuleState.textTransformRules.length
@@ -668,6 +737,9 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
               pageCount: doc.numPages,
               pageSizes: sizes,
               fields: existingFields,
+              globalFieldFont: snapshotGlobalFieldFont,
+              globalFieldFontSize: snapshotGlobalFieldFontSize,
+              globalFieldFontColor: snapshotGlobalFieldFontColor,
               hasRenamedFields: false,
               hasMappedSchema: derivedHasMappedSchema,
             }),
@@ -687,6 +759,9 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
         currentPage: 1,
         scale: 1,
         fields: clonePdfFields(existingFields),
+        globalFieldFont: snapshotGlobalFieldFont,
+        globalFieldFontSize: snapshotGlobalFieldFontSize,
+        globalFieldFontColor: snapshotGlobalFieldFontColor,
         history: { undo: [], redo: [] },
         selectedFieldId: null,
         detectSessionId: null,

@@ -15,11 +15,13 @@ DullyPDF turns raw PDFs into reusable fillable templates using AI field detectio
 - [Catalog Workflow](https://dullypdf.com/pdf-form-catalog): Use the form catalog as a starting point for reusable PDF templates instead of uploading a local blank form.
 - [Fill from Images](https://dullypdf.com/usage-docs/fill-from-images): Upload photos of IDs, invoices, or scanned documents and let AI vision extract data into template fields.
 - [Batch Fill](https://dullypdf.com/batch-fill-pdf-forms): Fill multiple records or entire document packets from a single data source.
+- [Fillable PDF Fonts and Colors](https://dullypdf.com/fillable-pdf-fonts-colors): Set global or per-field fonts, sizes, and colors for fillable text/date fields; saved templates keep those colors on editable and flat exports.
+- [AcroForm Field Appearance](https://dullypdf.com/acroform-field-appearance): Learn how `/DA`, `/DR`, `/AP`, and `/V` keep editable PDF field values and appearance inside the fields.
 
 ## Detection and Editing
 
 - AI field detection uses the CommonForms model with confidence scoring for text, checkbox, radio, date, and signature fields.
-- The visual editor supports resize, rename, reposition, type normalization, checkbox group management, and radio button editing.
+- The visual editor supports resize, rename, reposition, type normalization, text-safe Base 14 fonts, field font sizes, field colors, checkbox group management, and radio button editing.
 - OpenAI-powered Rename + Map aligns field names to schema headers automatically.
 
 ## Industry Solutions

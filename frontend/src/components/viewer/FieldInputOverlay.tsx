@@ -1,15 +1,30 @@
 /**
  * Overlay layer that renders input elements aligned to PDF fields.
  */
-import { useEffect, useState, type ChangeEvent, type FocusEvent } from 'react';
-import type { PdfField, PageSize } from '../../types';
+import { useMemo, useState, type ChangeEvent, type FocusEvent, type MouseEvent as ReactMouseEvent } from 'react';
+import type {
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
+  PdfField,
+  PageSize,
+} from '../../types';
 import { fieldConfidenceTierForField } from '../../utils/confidence';
 import { toViewportRect } from '../../utils/coords';
+import {
+  cssStyleForPdfBase14Font,
+  resolveEffectiveFieldFont,
+  resolveEffectiveFieldFontColor,
+  resolveEffectiveFieldFontSize,
+} from '../../utils/fieldFonts';
 
 type FieldInputOverlayProps = {
   fields: PdfField[];
   pageSize: PageSize;
   scale: number;
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   selectedFieldId: string | null;
   onSelectField: (fieldId: string) => void;
   onUpdateField: (fieldId: string, updates: Partial<PdfField>) => void;
@@ -54,6 +69,9 @@ export function FieldInputOverlay({
   fields,
   pageSize,
   scale,
+  globalFieldFont,
+  globalFieldFontSize,
+  globalFieldFontColor,
   selectedFieldId,
   onSelectField,
   onUpdateField,
@@ -61,25 +79,17 @@ export function FieldInputOverlay({
 }: FieldInputOverlayProps) {
   const [draftValues, setDraftValues] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    setDraftValues((prev) => {
-      let next: Record<string, string> | null = null;
-      const fieldById = new Map(fields.map((field) => [field.id, field] as const));
-      for (const [fieldId, draftValue] of Object.entries(prev)) {
-        const field = fieldById.get(fieldId);
-        if (!field) {
-          if (!next) next = { ...prev };
-          delete next[fieldId];
-          continue;
-        }
-        if (coerceToString(field.value) === draftValue) {
-          if (!next) next = { ...prev };
-          delete next[fieldId];
-        }
+  const activeDraftValues = useMemo(() => {
+    const fieldById = new Map(fields.map((field) => [field.id, field] as const));
+    return Object.entries(draftValues).reduce<Record<string, string>>((acc, [fieldId, draftValue]) => {
+      const field = fieldById.get(fieldId);
+      if (!field || coerceToString(field.value) === draftValue) {
+        return acc;
       }
-      return next ?? prev;
-    });
-  }, [fields]);
+      acc[fieldId] = draftValue;
+      return acc;
+    }, {});
+  }, [draftValues, fields]);
 
   /**
    * Generate focus handlers that keep selection in sync.
@@ -95,6 +105,14 @@ export function FieldInputOverlay({
 
   const handleCheckboxChange = (field: PdfField) => (event: ChangeEvent<HTMLInputElement>) => {
     onUpdateField(field.id, { value: event.target.checked });
+  };
+
+  const handleRadioClick = (field: PdfField, isChecked: boolean) => (event: ReactMouseEvent<HTMLInputElement>) => {
+    if (!isChecked) {
+      return;
+    }
+    event.preventDefault();
+    onSelectRadioField(field.id);
   };
 
   const handleRadioChange = (field: PdfField) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -139,13 +157,35 @@ export function FieldInputOverlay({
         const confidenceTier = fieldConfidenceTierForField(field);
         const selected = field.id === selectedFieldId;
         const minSide = Math.min(rect.width, rect.height);
+        const isTextLikeField = field.type === 'text' || field.type === 'date';
+        const safeScale = scale > 0 ? scale : 1;
+        const autoFontSizePx = Math.max(8, Math.min(32, rect.height * 0.48));
         const fontSize =
-          field.type === 'checkbox' || field.type === 'radio'
-            ? undefined
-            : Math.max(8, Math.min(32, rect.height * 0.48));
+          isTextLikeField
+            ? resolveEffectiveFieldFontSize(
+                field,
+                globalFieldFontSize,
+                autoFontSizePx / safeScale,
+              ) * safeScale
+            : field.type === 'signature'
+              ? autoFontSizePx
+              : undefined;
         const checkboxSize =
-          field.type === 'checkbox' || field.type === 'radio'
-            ? Math.max(14, Math.min(56, minSide - 4))
+          field.type === 'checkbox'
+            ? Math.max(18, Math.min(56, minSide + 4))
+            : field.type === 'radio'
+              ? Math.max(18, Math.min(56, minSide + 4))
+              : undefined;
+        const fieldFont = isTextLikeField
+          ? resolveEffectiveFieldFont(field, globalFieldFont)
+          : null;
+        const inputFontStyle = fieldFont ? cssStyleForPdfBase14Font(fieldFont) : undefined;
+        const inputTextColor = isTextLikeField
+          ? resolveEffectiveFieldFontColor(field, globalFieldFontColor)
+          : undefined;
+        const inputTextStyle =
+          inputFontStyle || inputTextColor
+            ? { ...inputFontStyle, ...(inputTextColor ? { color: inputTextColor } : {}) }
             : undefined;
 
         const boxClassName = [
@@ -160,6 +200,12 @@ export function FieldInputOverlay({
         const trimmedName = field.name.trim();
         const inputName = trimmedName || field.id;
         const inputId = `field-input-${field.id}`;
+        const radioOptionValue = field.type === 'radio'
+          ? String(field.radioOptionKey || field.name || field.id)
+          : '';
+        const radioChecked = field.type === 'radio'
+          ? coerceToString(field.value) === radioOptionValue
+          : false;
         const commonInputProps = {
           onFocus: handleFocus(field.id),
           id: inputId,
@@ -195,7 +241,8 @@ export function FieldInputOverlay({
                 className="field-input field-input--radio"
                 type="radio"
                 name={field.radioGroupId || field.radioGroupKey || inputName}
-                checked={coerceToString(field.value) === String(field.radioOptionKey || '')}
+                checked={radioChecked}
+                onClick={handleRadioClick(field, radioChecked)}
                 onChange={handleRadioChange(field)}
               />
             ) : field.type === 'date' ? (
@@ -203,7 +250,8 @@ export function FieldInputOverlay({
                 {...commonInputProps}
                 className="field-input"
                 type="date"
-                value={draftValues[field.id] ?? coerceToString(field.value)}
+                style={inputTextStyle}
+                value={activeDraftValues[field.id] ?? coerceToString(field.value)}
                 onChange={handleTextChange(field)}
                 onBlur={handleBlur(field)}
               />
@@ -212,7 +260,7 @@ export function FieldInputOverlay({
                 {...commonInputProps}
                 className="field-input field-input--signature"
                 type="text"
-                value={draftValues[field.id] ?? coerceToString(field.value)}
+                value={activeDraftValues[field.id] ?? coerceToString(field.value)}
                 onChange={handleTextChange(field)}
                 placeholder="Sign here"
                 onBlur={handleBlur(field)}
@@ -222,7 +270,8 @@ export function FieldInputOverlay({
                 {...commonInputProps}
                 className="field-input"
                 type="text"
-                value={draftValues[field.id] ?? coerceToString(field.value)}
+                style={inputTextStyle}
+                value={activeDraftValues[field.id] ?? coerceToString(field.value)}
                 onChange={handleTextChange(field)}
                 placeholder=""
                 onBlur={handleBlur(field)}

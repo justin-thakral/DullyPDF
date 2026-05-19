@@ -24,7 +24,13 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
   return {
     fields: [SAMPLE_FIELD],
     selectedFieldId: SAMPLE_FIELD.id,
+    radioGroups: [],
+    selectedRadioSuggestion: null,
+    globalFieldFont: 'default',
+    globalFieldFontSize: 'auto',
     activeCreateTool: null,
+    radioToolDraft: null,
+    pendingQuickRadioFields: [],
     arrowKeyMoveEnabled: false,
     arrowKeyMoveStep: 5,
     onUpdateField: vi.fn(),
@@ -33,6 +39,17 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
     onDeleteField: vi.fn(),
     onDeleteAllFields: vi.fn(),
     onCreateToolChange: vi.fn(),
+    onUpdateRadioToolDraft: vi.fn(),
+    onApplyPendingQuickRadioSelection: vi.fn(),
+    onCancelPendingQuickRadioSelection: vi.fn(),
+    onRemovePendingQuickRadioField: vi.fn(),
+    onRenameRadioGroup: vi.fn(),
+    onUpdateRadioFieldOption: vi.fn(),
+    onMoveRadioFieldToGroup: vi.fn(),
+    onReorderRadioField: vi.fn(),
+    onDissolveRadioGroup: vi.fn(),
+    onApplyRadioSuggestion: vi.fn(),
+    onDismissRadioSuggestion: vi.fn(),
     onArrowKeyMoveEnabledChange: vi.fn(),
     onArrowKeyMoveStepChange: vi.fn(),
     onBeginFieldChange: vi.fn(),
@@ -123,6 +140,75 @@ describe('FieldInspectorPanel', () => {
     expect(lastRect.y).toBe(22);
     expect(lastRect.width).toBe(120);
     expect(lastRect.height).toBe(30);
+  });
+
+  it('updates text field font overrides and hides font controls for non-text fields', async () => {
+    const user = userEvent.setup();
+    const onUpdateField = vi.fn();
+    const { rerender } = render(
+      <FieldInspectorPanel
+        {...createProps({
+          globalFieldFont: 'Helvetica-Bold',
+          onUpdateField,
+        })}
+      />,
+    );
+
+    const fontSelect = screen.getByLabelText('Font') as HTMLSelectElement;
+    expect(fontSelect.value).toBe('global');
+    expect(screen.getByRole('option', { name: 'Use global (Helvetica Bold)' })).toBeTruthy();
+
+    await user.selectOptions(fontSelect, 'Courier-BoldOblique');
+    expect(onUpdateField).toHaveBeenCalledWith('field-1', { fontName: 'Courier-BoldOblique' });
+
+    rerender(
+      <FieldInspectorPanel
+        {...createProps({
+          selectedField: { ...SAMPLE_FIELD, type: 'checkbox' },
+          onUpdateField,
+        })}
+      />,
+    );
+
+    expect(screen.queryByLabelText('Font')).toBeNull();
+    expect(screen.queryByLabelText('Font size')).toBeNull();
+  });
+
+  it('updates text field font size overrides', async () => {
+    const user = userEvent.setup();
+    const onUpdateField = vi.fn();
+    const { rerender } = render(
+      <FieldInspectorPanel
+        {...createProps({
+          globalFieldFontSize: 11,
+          onUpdateField,
+        })}
+      />,
+    );
+
+    const fontSizeSelect = screen.getByLabelText('Font size') as HTMLSelectElement;
+    expect(fontSizeSelect.value).toBe('global');
+    expect(screen.getByRole('option', { name: 'Use global (11 pt)' })).toBeTruthy();
+
+    await user.selectOptions(fontSizeSelect, 'auto');
+    expect(onUpdateField).toHaveBeenCalledWith('field-1', { fontSize: 'auto' });
+
+    await user.selectOptions(fontSizeSelect, 'custom');
+    expect(onUpdateField).toHaveBeenCalledWith('field-1', { fontSize: 10 });
+
+    rerender(
+      <FieldInspectorPanel
+        {...createProps({
+          selectedField: { ...SAMPLE_FIELD, fontSize: 12 },
+          onUpdateField,
+        })}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText('Custom font size'), {
+      target: { value: '18' },
+    });
+    expect(onUpdateField).toHaveBeenCalledWith('field-1', { fontSize: 18 });
   });
 
   it('clamps page input to at least 1 and rounds fractional values', () => {

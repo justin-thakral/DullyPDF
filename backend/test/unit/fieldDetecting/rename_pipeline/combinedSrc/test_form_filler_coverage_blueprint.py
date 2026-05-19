@@ -223,9 +223,346 @@ def test_update_existing_widget_checkbox_parent_syncs_value_and_confidence_tag()
 
     parent_obj = parent_ref.get_object()
     widget_obj = widget_ref.get_object()
+    normal_states = widget_obj["/AP"]["/N"].get_object()
+    acro_fields = acroform["/Fields"].get_object()
     assert changed is True
     assert str(parent_obj.get("/T")) == "consent_new"
     assert parent_obj.get("/V") == NameObject("/Yes")
     assert widget_obj.get("/V") == NameObject("/Yes")
+    assert widget_obj.get("/AS") == NameObject("/Yes")
+    assert set(str(key) for key in normal_states.keys()) == {"/Off", "/Yes"}
+    assert list(parent_obj.get("/Kids")) == [widget_ref]
+    assert list(acro_fields) == [parent_ref]
     assert str(parent_obj.get("/TU")) == "dullypdf:confidence=0.9000"
     assert str(widget_obj.get("/TU")) == "dullypdf:confidence=0.9000"
+
+
+def test_update_existing_widget_checkbox_replaces_broken_appearance_states() -> None:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    acroform = form_filler._ensure_acroform(writer)
+
+    widget = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("old_checkbox"),
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(10), NumberObject(10), NumberObject(22), NumberObject(22)]
+            ),
+            NameObject("/AS"): NameObject("/On"),
+            NameObject("/AP"): DictionaryObject(
+                {
+                    NameObject("/N"): DictionaryObject(
+                        {
+                            NameObject("/On"): DictionaryObject(),
+                        }
+                    )
+                }
+            ),
+        }
+    )
+    widget_ref = writer._add_object(widget)  # pylint: disable=protected-access
+    page[NameObject("/Annots")] = ArrayObject([widget_ref])
+
+    changed = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[10, 10, 22, 22],
+        field_type="checkbox",
+        value=None,
+        export_value="Yes",
+        new_name="new_checkbox",
+    )
+
+    widget_obj = widget_ref.get_object()
+    normal_states = widget_obj["/AP"]["/N"].get_object()
+    assert changed is True
+    assert str(widget_obj.get("/T")) == "new_checkbox"
+    assert widget_obj.get("/V") == NameObject("/Off")
+    assert widget_obj.get("/AS") == NameObject("/Off")
+    assert set(str(key) for key in normal_states.keys()) == {"/Off", "/Yes"}
+    assert list(acroform["/Fields"].get_object()) == [widget_ref]
+
+
+def test_update_existing_widget_checkbox_clears_locked_radio_flags() -> None:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    acroform = form_filler._ensure_acroform(writer)
+
+    widget = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("old_checkbox"),
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(10), NumberObject(10), NumberObject(22), NumberObject(22)]
+            ),
+            NameObject("/Ff"): NumberObject(
+                form_filler.FLAG_READ_ONLY
+                | form_filler.FLAG_RADIO
+                | form_filler.FLAG_NO_TOGGLE_TO_OFF
+            ),
+            NameObject("/F"): NumberObject(
+                form_filler.ANNOT_FLAG_HIDDEN
+                | form_filler.ANNOT_FLAG_READ_ONLY
+                | form_filler.ANNOT_FLAG_LOCKED
+            ),
+        }
+    )
+    widget_ref = writer._add_object(widget)  # pylint: disable=protected-access
+    page[NameObject("/Annots")] = ArrayObject([widget_ref])
+
+    changed = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[10, 10, 22, 22],
+        field_type="checkbox",
+        value=True,
+        export_value="Yes",
+        flags=form_filler.FLAG_READ_ONLY,
+        new_name="new_checkbox",
+    )
+
+    widget_obj = widget_ref.get_object()
+    field_flags = int(widget_obj.get("/Ff"))
+    annot_flags = int(widget_obj.get("/F"))
+    assert changed is True
+    assert field_flags & form_filler.FLAG_READ_ONLY == 0
+    assert field_flags & form_filler.FLAG_RADIO == 0
+    assert field_flags & form_filler.FLAG_NO_TOGGLE_TO_OFF == 0
+    assert annot_flags == form_filler.ANNOT_FLAG_PRINT
+    assert widget_obj.get("/AS") == NameObject("/Yes")
+
+
+def test_update_existing_widget_checkbox_detaches_from_source_radio_parent() -> None:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    acroform = form_filler._ensure_acroform(writer)
+
+    parent = DictionaryObject(
+        {
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("old_group"),
+            NameObject("/Ff"): NumberObject(form_filler.FLAG_RADIO),
+            NameObject("/Kids"): ArrayObject(),
+        }
+    )
+    parent_ref = writer._add_object(parent)  # pylint: disable=protected-access
+    first = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/Parent"): parent_ref,
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(10), NumberObject(10), NumberObject(22), NumberObject(22)]
+            ),
+        }
+    )
+    second = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/Parent"): parent_ref,
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(30), NumberObject(10), NumberObject(42), NumberObject(22)]
+            ),
+        }
+    )
+    first_ref = writer._add_object(first)  # pylint: disable=protected-access
+    second_ref = writer._add_object(second)  # pylint: disable=protected-access
+    parent["/Kids"].extend([first_ref, second_ref])
+    page[NameObject("/Annots")] = ArrayObject([first_ref, second_ref])
+    acroform["/Fields"].append(parent_ref)
+
+    changed = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[10, 10, 22, 22],
+        field_type="checkbox",
+        value=True,
+        export_value="Yes",
+        new_name="standalone_checkbox",
+    )
+
+    parent_obj = parent_ref.get_object()
+    first_widget = first_ref.get_object()
+    assert changed is True
+    assert list(parent_obj.get("/Kids")) == [second_ref]
+    assert first_widget.get("/Parent") is None
+    assert str(first_widget.get("/T")) == "standalone_checkbox"
+    assert int(first_widget.get("/Ff")) & form_filler.FLAG_RADIO == 0
+    assert list(acroform["/Fields"].get_object()) == [first_ref]
+
+
+def test_update_existing_widget_radio_parent_sets_group_value_and_appearance() -> None:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    acroform = form_filler._ensure_acroform(writer)
+
+    parent = DictionaryObject(
+        {
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("contact_old"),
+            NameObject("/Ff"): NumberObject(form_filler.FLAG_RADIO),
+        }
+    )
+    parent_ref = writer._add_object(parent)  # pylint: disable=protected-access
+    widget = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/Parent"): parent_ref,
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(10), NumberObject(10), NumberObject(22), NumberObject(22)]
+            ),
+            NameObject("/AS"): NameObject("/Off"),
+        }
+    )
+    widget_ref = writer._add_object(widget)  # pylint: disable=protected-access
+    page[NameObject("/Annots")] = ArrayObject([widget_ref])
+
+    changed = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[10, 10, 22, 22],
+        field_type="radio",
+        value="email",
+        export_value="email",
+        new_name="preferred_contact",
+    )
+
+    parent_obj = parent_ref.get_object()
+    widget_obj = widget_ref.get_object()
+    normal_states = widget_obj["/AP"]["/N"].get_object()
+    assert changed is True
+    assert str(parent_obj.get("/T")) == "preferred_contact"
+    assert parent_obj.get("/V") == NameObject("/email")
+    assert widget_obj.get("/AS") == NameObject("/email")
+    assert set(str(key) for key in normal_states.keys()) == {"/Off", "/email"}
+
+
+def test_update_existing_widget_radio_without_value_sets_off_appearance() -> None:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    acroform = form_filler._ensure_acroform(writer)
+
+    parent = DictionaryObject(
+        {
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("contact_old"),
+            NameObject("/Ff"): NumberObject(form_filler.FLAG_RADIO),
+        }
+    )
+    parent_ref = writer._add_object(parent)  # pylint: disable=protected-access
+    widget = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/Parent"): parent_ref,
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(10), NumberObject(10), NumberObject(22), NumberObject(22)]
+            ),
+        }
+    )
+    widget_ref = writer._add_object(widget)  # pylint: disable=protected-access
+    page[NameObject("/Annots")] = ArrayObject([widget_ref])
+
+    changed = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[10, 10, 22, 22],
+        field_type="radio",
+        value=None,
+        export_value="sms",
+        new_name="preferred_contact",
+    )
+
+    parent_obj = parent_ref.get_object()
+    widget_obj = widget_ref.get_object()
+    normal_states = widget_obj["/AP"]["/N"].get_object()
+    assert changed is True
+    assert str(parent_obj.get("/T")) == "preferred_contact"
+    assert parent_obj.get("/V") == NameObject("/Off")
+    assert widget_obj.get("/AS") == NameObject("/Off")
+    assert set(str(key) for key in normal_states.keys()) == {"/Off", "/sms"}
+
+
+def test_update_existing_widget_radio_reparents_top_level_widgets_into_one_group() -> None:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    acroform = form_filler._ensure_acroform(writer)
+
+    first = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("old_first"),
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(10), NumberObject(10), NumberObject(22), NumberObject(22)]
+            ),
+        }
+    )
+    second = DictionaryObject(
+        {
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/FT"): NameObject("/Btn"),
+            NameObject("/T"): TextStringObject("old_second"),
+            NameObject("/Rect"): ArrayObject(
+                [NumberObject(30), NumberObject(10), NumberObject(42), NumberObject(22)]
+            ),
+        }
+    )
+    first_ref = writer._add_object(first)  # pylint: disable=protected-access
+    second_ref = writer._add_object(second)  # pylint: disable=protected-access
+    page[NameObject("/Annots")] = ArrayObject([first_ref, second_ref])
+    acroform["/Fields"].extend([first_ref, second_ref])
+    radio_groups = {}
+
+    changed_first = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[10, 10, 22, 22],
+        field_type="radio",
+        value="sms",
+        export_value="sms",
+        new_name="preferred_contact",
+        radio_group_state=radio_groups,
+        radio_group_name="preferred_contact",
+    )
+    changed_second = form_filler._update_existing_widget(
+        writer,
+        page,
+        acroform,
+        rect=[30, 10, 42, 22],
+        field_type="radio",
+        value=None,
+        export_value="email",
+        new_name="preferred_contact",
+        radio_group_state=radio_groups,
+        radio_group_name="preferred_contact",
+    )
+
+    acro_fields = acroform["/Fields"].get_object()
+    group_ref = acro_fields[0]
+    group = group_ref.get_object()
+    first_widget = first_ref.get_object()
+    second_widget = second_ref.get_object()
+    assert changed_first is True
+    assert changed_second is True
+    assert len(acro_fields) == 1
+    assert str(group.get("/T")) == "preferred_contact"
+    assert int(group.get("/Ff")) & form_filler.FLAG_RADIO
+    assert not int(group.get("/Ff")) & form_filler.FLAG_NO_TOGGLE_TO_OFF
+    assert group.get("/V") == NameObject("/sms")
+    assert list(group.get("/Kids")) == [first_ref, second_ref]
+    assert first_widget.get("/Parent") == group_ref
+    assert second_widget.get("/Parent") == group_ref
+    assert "/T" not in first_widget
+    assert "/FT" not in first_widget
+    assert first_widget.get("/AS") == NameObject("/sms")
+    assert second_widget.get("/AS") == NameObject("/Off")
+    assert set(str(key) for key in first_widget["/AP"]["/N"].get_object().keys()) == {"/Off", "/sms"}
+    assert set(str(key) for key in second_widget["/AP"]["/N"].get_object().keys()) == {"/Off", "/email"}

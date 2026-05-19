@@ -6,7 +6,12 @@ from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from backend.services.pdf_service import normalize_optional_pdf_sha256
+from backend.services.pdf_service import (
+    normalize_field_font_color_override,
+    normalize_field_font_override,
+    normalize_field_font_size_override,
+    normalize_optional_pdf_sha256,
+)
 
 
 CONTACT_ISSUE_LABELS = {
@@ -81,6 +86,9 @@ class TemplateOverlayField(BaseModel):
     radioGroupLabel: Optional[str] = None
     radioOptionKey: Optional[str] = None
     radioOptionLabel: Optional[str] = None
+    fontName: Optional[str] = None
+    fontSize: Optional[Any] = None
+    fontColor: Optional[str] = None
 
     model_config = {"extra": "ignore"}
 
@@ -102,6 +110,36 @@ class TemplateOverlayField(BaseModel):
                 raise ValueError("rect list must have 4 numbers")
             return _rect_from_corners(value[0], value[1], value[2], value[3])
         raise ValueError("rect must be a dict or 4-item list")
+
+    @field_validator("fontName", mode="before")
+    @classmethod
+    def _normalize_font_name(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        normalized = normalize_field_font_override(value)
+        if not normalized:
+            raise ValueError("fontName must be a supported PDF text font or global")
+        return normalized
+
+    @field_validator("fontSize", mode="before")
+    @classmethod
+    def _normalize_font_size(cls, value: Any) -> Optional[str | float]:
+        if value is None:
+            return None
+        normalized = normalize_field_font_size_override(value)
+        if normalized is None:
+            raise ValueError("fontSize must be global, auto, or a font size from 4 to 72")
+        return normalized
+
+    @field_validator("fontColor", mode="before")
+    @classmethod
+    def _normalize_font_color(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        normalized = normalize_field_font_color_override(value)
+        if normalized is None:
+            raise ValueError("fontColor must be global or a #rrggbb color")
+        return normalized
 
 
 class SchemaMappingRequest(BaseModel):
@@ -710,6 +748,7 @@ class FillLinkGroupTemplateSource(BaseModel):
 
     templateId: str = Field(..., min_length=1, max_length=160)
     templateName: Optional[str] = Field(default=None, max_length=200)
+    appearance: Optional[Dict[str, Any]] = None
     fields: List[TemplateOverlayField] = Field(default_factory=list)
     checkboxRules: List[Dict[str, Any]] = Field(default_factory=list)
 

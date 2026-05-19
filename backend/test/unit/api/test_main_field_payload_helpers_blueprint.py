@@ -47,6 +47,15 @@ def test_template_overlay_field_rect_validator_modes(app_main) -> None:
     with pytest.raises(ValidationError):
         app_main.TemplateOverlayField(name="x", rect={"x": "bad", "y": 2, "width": 1, "height": 4})
 
+    font_field = app_main.TemplateOverlayField(name="fonted", fontName="Times-Italic")
+    assert font_field.fontName == "Times-Italic"
+    font_size_field = app_main.TemplateOverlayField(name="sized", fontSize="12")
+    assert font_size_field.fontSize == 12.0
+    with pytest.raises(ValidationError):
+        app_main.TemplateOverlayField(name="bad_font", fontName="ComicSans")
+    with pytest.raises(ValidationError):
+        app_main.TemplateOverlayField(name="bad_font_size", fontSize=100)
+
 
 def test_coerce_field_payloads_normalizes_mixed_shapes(app_main) -> None:
     raw = [
@@ -55,15 +64,68 @@ def test_coerce_field_payloads_normalizes_mixed_shapes(app_main) -> None:
         {"name": "c", "rect": [2, 3, 7, 8]},
         {"name": "d", "x": 1, "y": 2, "width": 5, "height": 6},
         {"name": "e", "rect": {"x": "bad"}},
+        {"name": "f", "type": "text", "rect": [1, 2, 3, 4], "fontName": "Courier-Bold"},
+        {"name": "g", "type": "checkbox", "rect": [1, 2, 3, 4], "fontName": "Courier-Bold"},
+        {"name": "h", "type": "text", "rect": [1, 2, 3, 4], "fontName": "ComicSans"},
+        {"name": "i", "type": "text", "rect": [1, 2, 3, 4], "fontSize": "auto"},
+        {"name": "j", "type": "checkbox", "rect": [1, 2, 3, 4], "fontSize": 12},
+        {"name": "k", "type": "text", "rect": [1, 2, 3, 4], "fontSize": 100},
         "not-a-dict",
     ]
     cleaned = app_main._coerce_field_payloads(raw)
-    assert [entry["name"] for entry in cleaned] == ["a", "b", "c", "d", "e"]
+    assert [entry["name"] for entry in cleaned] == ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]
     assert cleaned[0]["rect"] == [1.0, 2.0, 4.0, 6.0]
     assert cleaned[1]["rect"] == [10.0, 20.0, 13.0, 25.0]
     assert cleaned[2]["rect"] == [2.0, 3.0, 7.0, 8.0]
     assert cleaned[3]["rect"] == [1.0, 2.0, 6.0, 8.0]
     assert cleaned[4]["rect"] is None
+    assert cleaned[5]["fontName"] == "Courier-Bold"
+    assert "fontName" not in cleaned[6]
+    assert "fontName" not in cleaned[7]
+    assert cleaned[8]["fontSize"] == "auto"
+    assert "fontSize" not in cleaned[9]
+    assert "fontSize" not in cleaned[10]
+
+
+def test_field_font_size_resolution_helpers(app_main) -> None:
+    assert app_main.resolve_auto_field_font_size(14) == 9.1
+    assert app_main.resolve_effective_field_font_size(
+        {"type": "text"},
+        global_field_font_size="auto",
+        auto_size=9.1,
+    ) == 9.1
+    assert app_main.resolve_effective_field_font_size(
+        {"type": "text"},
+        global_field_font_size=14,
+        auto_size=9.1,
+    ) == 14.0
+    assert app_main.resolve_effective_field_font_size(
+        {"type": "text", "fontSize": 8},
+        global_field_font_size=14,
+        auto_size=9.1,
+    ) == 8.0
+    assert app_main.resolve_effective_field_font_size(
+        {"type": "text", "fontSize": "auto"},
+        global_field_font_size=14,
+        auto_size=9.1,
+    ) == 9.1
+    assert app_main.resolve_effective_field_font_size(
+        {"type": "checkbox", "fontSize": 8},
+        global_field_font_size=14,
+        auto_size=9.1,
+    ) is None
+    assert app_main.should_write_field_font_size_default_appearance(
+        {"type": "text"},
+        global_field_font_size=14,
+    ) is True
+    assert app_main.should_write_field_font_size_default_appearance(
+        {"type": "text"},
+        global_field_font_size="auto",
+    ) is False
+    assert app_main.should_write_field_font_size_default_appearance(
+        {"type": "text", "fontSize": "auto"},
+        global_field_font_size=14,
+    ) is True
 
 
 def test_template_fields_to_rename_fields(app_main) -> None:

@@ -2,12 +2,31 @@
  * PDF.js utilities for loading documents and extracting existing widgets.
  */
 import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
-import type { FieldRect, FieldType, PageSize, PdfField } from '../types';
+import type {
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
+  FieldRect,
+  FieldType,
+  PageSize,
+  PdfBase14FontName,
+  PdfField,
+} from '../types';
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { clampRectToPage } from './coords';
 import { parseConfidence } from './confidence';
 import { ensureUniqueFieldName, makeId } from './fields';
+import {
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  isPdfBase14FontName,
+  sanitizeFieldFontColorChoice,
+  sanitizeFieldFontColorOverride,
+  sanitizeFieldFontSizeChoice,
+  sanitizeFieldFontSizeOverride,
+} from './fieldFonts';
 
 const DEBUG_PDF = false;
 const DEFAULT_PAGE_COUNT_TIMEOUT_MS = 15000;
@@ -69,6 +88,11 @@ type PdfJsAnnotation = {
   checkBox?: boolean;
   radioButton?: boolean;
   pushButton?: boolean;
+  defaultAppearanceData?: {
+    fontName?: string;
+    fontSize?: number;
+    fontColor?: ArrayLike<number>;
+  };
 };
 
 type PdfJsFieldObject = {
@@ -81,9 +105,36 @@ type PdfJsFieldObject = {
   defaultValue?: unknown;
   exportValues?: unknown;
   hidden?: boolean;
+  defaultAppearanceData?: {
+    fontName?: string;
+    fontSize?: number;
+    fontColor?: ArrayLike<number>;
+  };
 };
 
 const CONFIDENCE_TAG_PREFIX = 'dullypdf:confidence=';
+const DULLYPDF_APPEARANCE_METADATA_INFO_KEY = 'DullyPDFAppearance';
+const DULLYPDF_APPEARANCE_METADATA_SCHEMA = 'dullypdf.appearance.v1';
+
+export type DullyPdfAppearanceMetadata = {
+  appearance: {
+    globalFieldFont: FieldFontChoice;
+    globalFieldFontSize: FieldFontSizeChoice;
+    globalFieldFontColor: FieldFontColorChoice;
+  };
+  fields: Array<{
+    name: string;
+    page: number;
+    type: 'text' | 'date';
+    fontName?: PdfBase14FontName;
+    fontSize?: FieldFontSizeChoice;
+    fontColor?: FieldFontColorChoice;
+  }>;
+};
+
+type ExtractFieldsOptions = {
+  dullyAppearanceMetadata?: DullyPdfAppearanceMetadata | null;
+};
 
 function parseConfidenceTag(raw?: string): number | undefined {
   if (!raw) return undefined;
@@ -115,6 +166,87 @@ function extractFieldConfidence(annotation: PdfJsAnnotation): number | undefined
     parseConfidenceTag(annotation.alternativeText) ??
     parseConfidenceTag(annotation.title)
   );
+}
+
+function metadataRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+}
+
+function normalizeDullyPdfAppearanceMetadata(value: unknown): DullyPdfAppearanceMetadata | null {
+  const record = metadataRecord(value);
+  if (record.schema !== DULLYPDF_APPEARANCE_METADATA_SCHEMA) {
+    return null;
+  }
+  const appearance = metadataRecord(record.appearance);
+  const globalFieldFont = isPdfBase14FontName(appearance.globalFieldFont)
+    ? appearance.globalFieldFont
+    : DEFAULT_FIELD_FONT_CHOICE;
+  const globalFieldFontSize = sanitizeFieldFontSizeChoice(
+    appearance.globalFieldFontSize,
+    DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  );
+  const globalFieldFontColor = sanitizeFieldFontColorChoice(
+    appearance.globalFieldFontColor,
+    DEFAULT_FIELD_FONT_COLOR,
+  );
+  const fields = Array.isArray(record.fields)
+    ? record.fields
+        .map((entry): DullyPdfAppearanceMetadata['fields'][number] | null => {
+          const fieldRecord = metadataRecord(entry);
+          const name = typeof fieldRecord.name === 'string' ? fieldRecord.name.trim() : '';
+          if (!name) return null;
+          const page = Number(fieldRecord.page);
+          const type = fieldRecord.type === 'date' ? 'date' : 'text';
+          const normalizedField: DullyPdfAppearanceMetadata['fields'][number] = {
+            name,
+            page: Number.isFinite(page) && page > 0 ? Math.floor(page) : 1,
+            type,
+          };
+          if (isPdfBase14FontName(fieldRecord.fontName)) {
+            normalizedField.fontName = fieldRecord.fontName;
+          }
+          const fontSize = sanitizeFieldFontSizeOverride(fieldRecord.fontSize, 'global');
+          if (fontSize !== 'global') {
+            normalizedField.fontSize = fontSize;
+          }
+          const fontColor = sanitizeFieldFontColorOverride(fieldRecord.fontColor, 'global');
+          if (fontColor !== 'global') {
+            normalizedField.fontColor = sanitizeFieldFontColorChoice(fontColor, DEFAULT_FIELD_FONT_COLOR);
+          }
+          return normalizedField;
+        })
+        .filter((entry): entry is DullyPdfAppearanceMetadata['fields'][number] => entry !== null)
+    : [];
+  return {
+    appearance: {
+      globalFieldFont,
+      globalFieldFontSize,
+      globalFieldFontColor,
+    },
+    fields,
+  };
+}
+
+export async function extractDullyPdfAppearanceMetadata(
+  doc: Pick<PDFDocumentProxy, 'getMetadata'>,
+): Promise<DullyPdfAppearanceMetadata | null> {
+  try {
+    const metadata = await doc.getMetadata();
+    const info = metadataRecord((metadata as { info?: unknown })?.info);
+    const custom = metadataRecord(info.Custom);
+    const raw =
+      info[DULLYPDF_APPEARANCE_METADATA_INFO_KEY] ??
+      info[`/${DULLYPDF_APPEARANCE_METADATA_INFO_KEY}`] ??
+      custom[DULLYPDF_APPEARANCE_METADATA_INFO_KEY] ??
+      custom[`/${DULLYPDF_APPEARANCE_METADATA_INFO_KEY}`];
+    if (typeof raw !== 'string' || !raw.trim()) {
+      return null;
+    }
+    return normalizeDullyPdfAppearanceMetadata(JSON.parse(raw));
+  } catch (error) {
+    debugLog('Failed to parse DullyPDF appearance metadata', error);
+    return null;
+  }
 }
 
 export async function loadPdfFromFile(file: File): Promise<PDFDocumentProxy> {
@@ -279,9 +411,122 @@ function coerceFieldValue(rawValue: unknown): PdfField['value'] | undefined {
   return String(rawValue);
 }
 
-export async function extractFieldsFromPdf(doc: PDFDocumentProxy): Promise<PdfField[]> {
+function clampRgbChannel(value: number): number {
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(Math.max(Math.round(value), 0), 255);
+}
+
+function hexColorFromPdfJsColor(value: ArrayLike<number> | undefined): FieldFontColorChoice | undefined {
+  if (!value || value.length < 3) return undefined;
+  const rawChannels = [Number(value[0]), Number(value[1]), Number(value[2])];
+  const usesUnitRange = rawChannels.every((channel) => Number.isFinite(channel) && channel >= 0 && channel <= 1);
+  const channels = rawChannels.map((channel) => clampRgbChannel(usesUnitRange ? channel * 255 : channel));
+  return sanitizeFieldFontColorChoice(
+    `#${channels.map((channel) => channel.toString(16).padStart(2, '0')).join('')}`,
+    DEFAULT_FIELD_FONT_COLOR,
+  );
+}
+
+function normalizePdfJsFontName(value: unknown): PdfBase14FontName | undefined {
+  if (typeof value !== 'string') return undefined;
+  const normalized = value.trim().replace(/^\//, '');
+  if (isPdfBase14FontName(normalized)) return normalized;
+  const resourceAliasMap: Record<string, PdfBase14FontName> = {
+    Helv: 'Helvetica',
+    HeBo: 'Helvetica-Bold',
+    HeOb: 'Helvetica-Oblique',
+    HeBO: 'Helvetica-BoldOblique',
+    Time: 'Times-Roman',
+    TiBo: 'Times-Bold',
+    TiIt: 'Times-Italic',
+    TiBI: 'Times-BoldItalic',
+    Cour: 'Courier',
+    CoBo: 'Courier-Bold',
+    CoOb: 'Courier-Oblique',
+    CoBO: 'Courier-BoldOblique',
+  };
+  return resourceAliasMap[normalized];
+}
+
+function applyPdfJsDefaultAppearance(
+  field: PdfField,
+  appearanceData: PdfJsAnnotation['defaultAppearanceData'] | PdfJsFieldObject['defaultAppearanceData'],
+): PdfField {
+  if (field.type !== 'text' && field.type !== 'date') {
+    return field;
+  }
+  const next: PdfField = { ...field };
+  const fontName = normalizePdfJsFontName(appearanceData?.fontName);
+  if (fontName) {
+    next.fontName = fontName;
+  }
+  const fontSize = sanitizeFieldFontSizeOverride(appearanceData?.fontSize, 'global');
+  if (fontSize !== 'global') {
+    next.fontSize = fontSize;
+  }
+  const fontColor = hexColorFromPdfJsColor(appearanceData?.fontColor);
+  if (fontColor) {
+    next.fontColor = fontColor;
+  }
+  return next;
+}
+
+function appearanceMetadataKey(field: Pick<PdfField, 'name' | 'page' | 'type'>): string {
+  return `${field.page}\n${field.type}\n${field.name}`;
+}
+
+function buildAppearanceMetadataQueues(
+  metadata: DullyPdfAppearanceMetadata | null | undefined,
+): Map<string, DullyPdfAppearanceMetadata['fields']> {
+  const queues = new Map<string, DullyPdfAppearanceMetadata['fields']>();
+  for (const field of metadata?.fields ?? []) {
+    const key = appearanceMetadataKey(field);
+    const queue = queues.get(key);
+    if (queue) {
+      queue.push(field);
+    } else {
+      queues.set(key, [field]);
+    }
+  }
+  return queues;
+}
+
+function applyDullyPdfFieldAppearance(
+  field: PdfField,
+  metadataQueues: Map<string, DullyPdfAppearanceMetadata['fields']>,
+): PdfField {
+  if (field.type !== 'text' && field.type !== 'date') {
+    return field;
+  }
+  const queue = metadataQueues.get(appearanceMetadataKey(field));
+  const metadata = queue?.shift();
+  if (!metadata) {
+    return field;
+  }
+  const next: PdfField = { ...field };
+  if (metadata.fontName) {
+    next.fontName = metadata.fontName;
+  }
+  if (metadata.fontSize !== undefined) {
+    next.fontSize = metadata.fontSize;
+  }
+  if (metadata.fontColor) {
+    next.fontColor = metadata.fontColor;
+  }
+  return next;
+}
+
+export async function extractFieldsFromPdf(
+  doc: PDFDocumentProxy,
+  options: ExtractFieldsOptions = {},
+): Promise<PdfField[]> {
   const fields: PdfField[] = [];
   const existingNames = new Set<string>();
+  const dullyAppearanceMetadata =
+    options.dullyAppearanceMetadata === undefined
+      ? await extractDullyPdfAppearanceMetadata(doc)
+      : options.dullyAppearanceMetadata;
+  const dullyAppearanceMetadataQueues = buildAppearanceMetadataQueues(dullyAppearanceMetadata);
 
   for (let pageNum = 1; pageNum <= doc.numPages; pageNum += 1) {
     const page = await doc.getPage(pageNum);
@@ -313,7 +558,7 @@ export async function extractFieldsFromPdf(doc: PDFDocumentProxy): Promise<PdfFi
       const hasValue =
         value !== undefined && (typeof value !== 'string' || value.trim() !== '');
 
-      fields.push({
+      const baseField: PdfField = {
         id: makeId(),
         name,
         type,
@@ -321,7 +566,12 @@ export async function extractFieldsFromPdf(doc: PDFDocumentProxy): Promise<PdfFi
         rect,
         ...(fieldConfidence !== undefined ? { fieldConfidence } : {}),
         ...(hasValue ? { value } : {}),
-      });
+      };
+      const field = applyDullyPdfFieldAppearance(
+        dullyAppearanceMetadata ? baseField : applyPdfJsDefaultAppearance(baseField, annotation.defaultAppearanceData),
+        dullyAppearanceMetadataQueues,
+      );
+      fields.push(field);
 
       if (DEBUG_PDF && fieldIndex <= 6) {
         debugLog('Widget', {
@@ -400,14 +650,19 @@ export async function extractFieldsFromPdf(doc: PDFDocumentProxy): Promise<PdfFi
     const hasValue =
       value !== undefined && (typeof value !== 'string' || value.trim() !== '');
 
-    fields.push({
+    const baseField: PdfField = {
       id: makeId(),
       name,
       type,
       page: pageNum,
       rect,
       ...(hasValue ? { value } : {}),
-    });
+    };
+    const field = applyDullyPdfFieldAppearance(
+      dullyAppearanceMetadata ? baseField : applyPdfJsDefaultAppearance(baseField, fieldObject.defaultAppearanceData),
+      dullyAppearanceMetadataQueues,
+    );
+    fields.push(field);
 
     fallbackIndex += 1;
   }

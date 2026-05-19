@@ -1,8 +1,14 @@
 /**
  * Field helpers for creation, naming, and formatting.
  */
-import type { FieldRect, FieldType, PageSize, PdfField } from '../types';
+import type { FieldFontChoice, FieldFontColorChoice, FieldRect, FieldType, PageSize, PdfField } from '../types';
 import { clampRectToPage } from './coords';
+import {
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_COLOR,
+  resolveEffectiveFieldFont,
+  resolveEffectiveFieldFontColor,
+} from './fieldFonts';
 
 // Defaults mirror common form dimensions so new fields feel usable immediately.
 const DEFAULT_SIZES: Record<FieldType, FieldRect> = {
@@ -197,12 +203,68 @@ export function buildTemplateFields(sourceFields: PdfField[]) {
 }
 
 /**
- * Apply value normalization across all fields before materialization.
+ * Apply value normalization across all fields before materialization or snapshot persistence.
  */
-export function prepareFieldsForMaterialize(fields: PdfField[]): PdfField[] {
+export function normalizeFieldValuesForMaterialize(fields: PdfField[]): PdfField[] {
   return fields.map((field) => {
     const value = normaliseFieldValueForMaterialize(field);
     return value === field.value ? field : { ...field, value };
+  });
+}
+
+function textFieldSupportsFont(field: PdfField): boolean {
+  return field.type === 'text' || field.type === 'date';
+}
+
+/**
+ * Build the PDF materialization payload. Global appearance stays in the
+ * top-level appearance payload; only explicit field overrides are copied onto
+ * fields so saved PDFs can later distinguish inherited settings from custom
+ * field settings.
+ */
+export function prepareFieldsForMaterialize(
+  fields: PdfField[],
+  globalFieldFont: FieldFontChoice = DEFAULT_FIELD_FONT_CHOICE,
+  globalFieldFontColor: FieldFontColorChoice = DEFAULT_FIELD_FONT_COLOR,
+): PdfField[] {
+  void globalFieldFont;
+  void globalFieldFontColor;
+  return fields.map((field) => {
+    const value = normaliseFieldValueForMaterialize(field);
+    const supportsFont = textFieldSupportsFont(field);
+    const hasExplicitFieldColor =
+      supportsFont && field.fontColor !== undefined && field.fontColor !== 'global';
+    const explicitFont = supportsFont && field.fontName && field.fontName !== 'global'
+      ? resolveEffectiveFieldFont(field, DEFAULT_FIELD_FONT_CHOICE)
+      : null;
+    const explicitColor = hasExplicitFieldColor
+      ? resolveEffectiveFieldFontColor(field, DEFAULT_FIELD_FONT_COLOR)
+      : null;
+    const valueChanged = value !== field.value;
+    const fontNameChanged =
+      explicitFont ? field.fontName !== explicitFont : field.fontName !== undefined;
+    const fontColorChanged =
+      explicitColor ? field.fontColor !== explicitColor : field.fontColor !== undefined;
+    const fontSizeChanged = !supportsFont && field.fontSize !== undefined;
+    if (!valueChanged && !fontNameChanged && !fontColorChanged && !fontSizeChanged) {
+      return field;
+    }
+    const next = { ...field, value };
+    if (explicitFont) {
+      next.fontName = explicitFont;
+    } else {
+      delete next.fontName;
+    }
+    if (explicitColor) {
+      next.fontColor = explicitColor;
+    } else {
+      delete next.fontColor;
+    }
+    if (!supportsFont) {
+      delete next.fontSize;
+      delete next.fontColor;
+    }
+    return next;
   });
 }
 

@@ -41,6 +41,7 @@
     "test:playwright:localhost-detection": "node frontend/test/playwright/run_localhost_detection_smoke.mjs",
     "test:playwright:saved-form-snapshot:real": "node frontend/test/playwright/run_saved_form_snapshot_smoke.mjs",
     "test:playwright:fill-link-download:real": "node frontend/test/playwright/run_fill_link_download_smoke.mjs",
+    "test:playwright:pdf-fonts": "node frontend/test/playwright/run_pdf_base14_font_download_smoke.mjs",
     "test:playwright:deployed-frontend:real": "node frontend/test/playwright/run_deployed_frontend_smoke.mjs",
     "test:playwright:openai-rename": "node frontend/test/playwright/run_openai_rename_smoke.mjs",
     "test:playwright:openai-rename-remap": "node frontend/test/playwright/run_openai_rename_remap_smoke.mjs",

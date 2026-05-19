@@ -3,9 +3,17 @@ import type { Dispatch, SetStateAction } from 'react';
 import type {
   BannerNotice,
   CheckboxRule,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
   PdfField,
   TextTransformRule,
 } from '../types';
+import {
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+} from '../utils/fieldFonts';
 import type {
   FillLinkGroupTemplatePayload,
   FillLinkQuestion,
@@ -46,6 +54,9 @@ type SearchFillPresetState = {
 
 type GroupTemplateSnapshot = {
   fields: PdfField[];
+  globalFieldFont?: FieldFontChoice;
+  globalFieldFontSize?: FieldFontSizeChoice;
+  globalFieldFontColor?: FieldFontColorChoice;
   checkboxRules: CheckboxRule[];
 };
 
@@ -69,6 +80,9 @@ type UseWorkspaceFillLinksDeps = {
   activeGroupName: string | null;
   activeGroupTemplates: SavedFormSummary[];
   fields: PdfField[];
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   checkboxRules: CheckboxRule[];
   textTransformRules: TextTransformRule[];
   savedFillLinkPublishFingerprint: string | null;
@@ -102,6 +116,9 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     activeGroupName,
     activeGroupTemplates,
     fields,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
     checkboxRules,
     textTransformRules,
     savedFillLinkPublishFingerprint,
@@ -196,12 +213,31 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     if (!activeTemplateId || savedFillLinkPublishFingerprint === null) {
       return false;
     }
-    return buildFillLinkPublishFingerprint(fields, checkboxRules) !== savedFillLinkPublishFingerprint;
-  }, [activeTemplateId, checkboxRules, fields, savedFillLinkPublishFingerprint]);
+    return buildFillLinkPublishFingerprint(
+      fields,
+      checkboxRules,
+      globalFieldFont,
+      globalFieldFontSize,
+      globalFieldFontColor,
+    ) !== savedFillLinkPublishFingerprint;
+  }, [
+    activeTemplateId,
+    checkboxRules,
+    fields,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
+    savedFillLinkPublishFingerprint,
+  ]);
 
   const serializeCurrentFillLinkFields = useCallback(
-    (): FillLinkTemplateFieldPayload[] => buildFillLinkTemplateFields(fields),
-    [fields],
+    (): FillLinkTemplateFieldPayload[] => buildFillLinkTemplateFields(
+      fields,
+      globalFieldFont,
+      globalFieldFontSize,
+      globalFieldFontColor,
+    ),
+    [fields, globalFieldFont, globalFieldFontSize, globalFieldFontColor],
   );
 
   useEffect(() => {
@@ -324,6 +360,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
         groupTemplateSources.push({
           templateId: template.id,
           templateName: template.name,
+          appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor },
           fields: serializeCurrentFillLinkFields(),
           checkboxRules: checkboxRules as Array<Record<string, unknown>>,
         });
@@ -333,7 +370,17 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
       groupTemplateSources.push({
         templateId: template.id,
         templateName: template.name,
-        fields: buildFillLinkTemplateFields(snapshot.fields),
+        appearance: {
+          globalFieldFont: snapshot.globalFieldFont ?? DEFAULT_FIELD_FONT_CHOICE,
+          globalFieldFontSize: snapshot.globalFieldFontSize ?? DEFAULT_FIELD_FONT_SIZE_CHOICE,
+          globalFieldFontColor: snapshot.globalFieldFontColor ?? DEFAULT_FIELD_FONT_COLOR,
+        },
+        fields: buildFillLinkTemplateFields(
+          snapshot.fields,
+          snapshot.globalFieldFont ?? DEFAULT_FIELD_FONT_CHOICE,
+          snapshot.globalFieldFontSize ?? DEFAULT_FIELD_FONT_SIZE_CHOICE,
+          snapshot.globalFieldFontColor ?? DEFAULT_FIELD_FONT_COLOR,
+        ),
         checkboxRules: snapshot.checkboxRules as Array<Record<string, unknown>>,
       });
     }
@@ -344,6 +391,9 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     activeTemplateId,
     checkboxRules,
     ensureGroupTemplateSnapshot,
+    globalFieldFont,
+    globalFieldFontSize,
+    globalFieldFontColor,
     serializeCurrentFillLinkFields,
   ]);
 

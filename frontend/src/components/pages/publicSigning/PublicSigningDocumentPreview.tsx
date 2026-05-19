@@ -129,6 +129,9 @@ export function PublicSigningDocumentPreview({
           scale={1}
           pageSizes={pageSizes}
           fields={previewFields}
+          globalFieldFont="default"
+          globalFieldFontSize="auto"
+          globalFieldFontColor="#000000"
           showFields
           showFieldNames
           showFieldInfo={false}

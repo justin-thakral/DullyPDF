@@ -1,5 +1,8 @@
 import type {
   CheckboxRule,
+  FieldFontColorChoice,
+  FieldFontChoice,
+  FieldFontSizeChoice,
   PageSize,
   PdfField,
   RadioGroup,
@@ -7,6 +10,16 @@ import type {
   SavedFormEditorSnapshot,
   TextTransformRule,
 } from '../types';
+import {
+  DEFAULT_FIELD_FONT_COLOR,
+  DEFAULT_FIELD_FONT_CHOICE,
+  DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  isPdfBase14FontName,
+  sanitizeFieldFontColorChoice,
+  sanitizeFieldFontColorOverride,
+  sanitizeFieldFontSizeChoice,
+  sanitizeFieldFontSizeOverride,
+} from './fieldFonts';
 import { buildRadioGroups } from './radioGroups';
 import { deriveRadioGroupSuggestionsFromCheckboxRules } from './openAiFields';
 
@@ -111,6 +124,18 @@ function normalizeField(value: unknown): PdfField | null {
       field.radioGroupSource = source;
     }
   }
+  if (record.fontName !== undefined && record.fontName !== null) {
+    const fontName = String(record.fontName).trim();
+    if (fontName === 'global' || isPdfBase14FontName(fontName)) {
+      field.fontName = fontName;
+    }
+  }
+  if ((type === 'text' || type === 'date') && record.fontSize !== undefined && record.fontSize !== null) {
+    field.fontSize = sanitizeFieldFontSizeOverride(record.fontSize, 'global');
+  }
+  if ((type === 'text' || type === 'date') && record.fontColor !== undefined && record.fontColor !== null) {
+    field.fontColor = sanitizeFieldFontColorOverride(record.fontColor, 'global');
+  }
   for (const key of ['fieldConfidence', 'mappingConfidence', 'renameConfidence', 'radioOptionOrder'] as const) {
     const raw = record[key];
     if (raw === undefined || raw === null) {
@@ -126,6 +151,23 @@ function normalizeField(value: unknown): PdfField | null {
     }
   }
   return field;
+}
+
+function normalizeAppearance(value: unknown): SavedFormEditorSnapshot['appearance'] {
+  const record = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+  const rawGlobalFont = String(record.globalFieldFont || DEFAULT_FIELD_FONT_CHOICE).trim();
+  const globalFieldFont: FieldFontChoice = isPdfBase14FontName(rawGlobalFont)
+    ? rawGlobalFont
+    : DEFAULT_FIELD_FONT_CHOICE;
+  const globalFieldFontSize = sanitizeFieldFontSizeChoice(
+    record.globalFieldFontSize,
+    DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  );
+  const globalFieldFontColor = sanitizeFieldFontColorChoice(
+    record.globalFieldFontColor,
+    DEFAULT_FIELD_FONT_COLOR,
+  );
+  return { globalFieldFont, globalFieldFontSize, globalFieldFontColor };
 }
 
 function normalizeRadioGroups(value: unknown): RadioGroup[] | null {
@@ -220,9 +262,23 @@ export function buildSavedFormEditorSnapshot(params: {
   pageCount: number;
   pageSizes: Record<number, PageSize>;
   fields: PdfField[];
+  globalFieldFont?: FieldFontChoice;
+  globalFieldFontSize?: FieldFontSizeChoice;
+  globalFieldFontColor?: FieldFontColorChoice;
   hasRenamedFields: boolean;
   hasMappedSchema: boolean;
 }): SavedFormEditorSnapshot {
+  const globalFieldFont = isPdfBase14FontName(params.globalFieldFont)
+    ? params.globalFieldFont
+    : DEFAULT_FIELD_FONT_CHOICE;
+  const globalFieldFontSize = sanitizeFieldFontSizeChoice(
+    params.globalFieldFontSize,
+    DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  );
+  const globalFieldFontColor = sanitizeFieldFontColorChoice(
+    params.globalFieldFontColor,
+    DEFAULT_FIELD_FONT_COLOR,
+  );
   return {
     version: 2,
     pageCount: params.pageCount,
@@ -232,6 +288,7 @@ export function buildSavedFormEditorSnapshot(params: {
         { width: size.width, height: size.height },
       ]),
     ),
+    appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor },
     fields: params.fields.map((field) => ({
       ...field,
       rect: { ...field.rect },
@@ -279,6 +336,7 @@ export function normalizeSavedFormEditorSnapshot(
     version: 2,
     pageCount,
     pageSizes,
+    appearance: normalizeAppearance(record.appearance),
     fields,
     radioGroups: radioGroups.length ? radioGroups : buildRadioGroups(fields),
     hasRenamedFields: Boolean(record.hasRenamedFields),

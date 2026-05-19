@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { PdfField } from '../../../../src/types';
 import { FieldListPanel } from '../../../../src/components/panels/FieldListPanel';
@@ -55,6 +55,10 @@ function createProps(overrides: Partial<FieldListPanelProps> = {}): FieldListPan
     onShowFieldInfoChange: vi.fn(),
     canClearInputs: true,
     onClearInputs: vi.fn(),
+    globalFieldFont: 'default',
+    onGlobalFieldFontChange: vi.fn(),
+    globalFieldFontSize: 'auto',
+    onGlobalFieldFontSizeChange: vi.fn(),
     confidenceFilter: { high: true, medium: true, low: true },
     onConfidenceFilterChange: vi.fn(),
     onResetConfidenceFilters: vi.fn(),
@@ -182,6 +186,45 @@ describe('FieldListPanel', () => {
     expect(screen.getByText('70% name')).toBeTruthy();
     expect(screen.getByText('60% field')).toBeTruthy();
     expect(screen.getByText('55% field remap')).toBeTruthy();
+  });
+
+  it('places global font controls before confidence and emits selected font settings', async () => {
+    const user = userEvent.setup();
+    const onGlobalFieldFontChange = vi.fn();
+    const onGlobalFieldFontSizeChange = vi.fn();
+
+    render(
+      <FieldListPanel
+        {...createProps({
+          globalFieldFont: 'default',
+          onGlobalFieldFontChange,
+          globalFieldFontSize: 12,
+          onGlobalFieldFontSizeChange,
+        })}
+      />,
+    );
+
+    const displayLabel = screen.getByText('Display mode');
+    const globalLabel = screen.getByText('Global font');
+    const globalSizeLabel = screen.getByText('Global font size');
+    const confidenceLabel = screen.getAllByText('Confidence').find((node) => node.tagName === 'SPAN');
+    expect(confidenceLabel).toBeTruthy();
+    expect(displayLabel.compareDocumentPosition(globalLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(globalLabel.compareDocumentPosition(globalSizeLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(globalSizeLabel.compareDocumentPosition(confidenceLabel!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'Default (Helvetica)' })).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'Auto (dynamic)' })).toBeTruthy();
+
+    await user.selectOptions(screen.getByLabelText('Global font'), 'Times-Italic');
+    expect(onGlobalFieldFontChange).toHaveBeenCalledWith('Times-Italic');
+
+    await user.selectOptions(screen.getByLabelText('Global font size'), 'auto');
+    expect(onGlobalFieldFontSizeChange).toHaveBeenCalledWith('auto');
+
+    fireEvent.change(screen.getByLabelText('Global custom font size'), {
+      target: { value: '16' },
+    });
+    expect(onGlobalFieldFontSizeChange).toHaveBeenCalledWith(16);
   });
 
   it('rounds fractional page input to the nearest integer', async () => {

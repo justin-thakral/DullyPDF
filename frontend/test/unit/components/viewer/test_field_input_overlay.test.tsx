@@ -33,6 +33,9 @@ function StatefulOverlay({
       fields={fields}
       pageSize={{ width: 200, height: 100 }}
       scale={1}
+      globalFieldFont="default"
+      globalFieldFontSize="auto"
+      globalFieldFontColor="#000000"
       selectedFieldId={null}
       onSelectField={onSelectField}
       onUpdateField={(fieldId, updates) => {
@@ -41,12 +44,13 @@ function StatefulOverlay({
           prev.map((field) => (field.id === fieldId ? { ...field, ...updates } : field)),
         );
       }}
+      onSelectRadioField={vi.fn()}
     />
   );
 }
 
 describe('FieldInputOverlay', () => {
-  it('renders text/date/checkbox input types with coerced values and scaled geometry', () => {
+  it('renders text/date/choice input types with coerced values and scaled geometry', () => {
     const fields = [
       makeField({
         id: 'text',
@@ -69,6 +73,14 @@ describe('FieldInputOverlay', () => {
         rect: { x: 15, y: 30, width: 10, height: 10 },
         value: 'yes',
       }),
+      makeField({
+        id: 'radio',
+        name: 'consent_yes',
+        type: 'radio',
+        rect: { x: 35, y: 30, width: 10, height: 10 },
+        radioOptionKey: 'yes',
+        value: 'yes',
+      }),
     ];
 
     const { container } = render(
@@ -76,9 +88,13 @@ describe('FieldInputOverlay', () => {
         fields={fields}
         pageSize={{ width: 200, height: 100 }}
         scale={2}
+        globalFieldFont="default"
+        globalFieldFontSize="auto"
+        globalFieldFontColor="#000000"
         selectedFieldId="text"
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
+        onSelectRadioField={vi.fn()}
       />,
     );
 
@@ -89,18 +105,28 @@ describe('FieldInputOverlay', () => {
     const textInput = screen.getByLabelText('amount') as HTMLInputElement;
     const dateInput = screen.getByLabelText('visit_date') as HTMLInputElement;
     const checkboxInput = screen.getByRole('checkbox', { name: 'has_consent' }) as HTMLInputElement;
+    const radioInput = screen.getByRole('radio', { name: 'consent_yes' }) as HTMLInputElement;
 
     expect(textInput.type).toBe('text');
     expect(textInput.value).toBe('42');
     expect(dateInput.type).toBe('date');
     expect(dateInput.value).toBe('2025-01-02');
     expect(checkboxInput.checked).toBe(true);
+    expect(radioInput.checked).toBe(true);
 
     const textBox = container.querySelector('[data-field-id="text"]') as HTMLDivElement;
+    const checkboxBox = container.querySelector('[data-field-id="checkbox"]') as HTMLDivElement;
+    const radioBox = container.querySelector('[data-field-id="radio"]') as HTMLDivElement;
     expect(textBox.style.left).toBe('10px');
     expect(textBox.style.top).toBe('20px');
     expect(textBox.style.width).toBe('120px');
     expect(textBox.style.height).toBe('24px');
+    expect(checkboxBox.style.width).toBe('20px');
+    expect(checkboxBox.style.height).toBe('20px');
+    expect(radioBox.style.width).toBe('20px');
+    expect(radioBox.style.height).toBe('20px');
+    expect(checkboxBox.style.getPropertyValue('--field-checkbox-size')).toBe('24px');
+    expect(radioBox.style.getPropertyValue('--field-checkbox-size')).toBe('24px');
   });
 
   it('does not treat NaN checkbox values as checked', () => {
@@ -116,9 +142,13 @@ describe('FieldInputOverlay', () => {
         ]}
         pageSize={{ width: 200, height: 100 }}
         scale={1}
+        globalFieldFont="default"
+        globalFieldFontSize="auto"
+        globalFieldFontColor="#000000"
         selectedFieldId={null}
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
+        onSelectRadioField={vi.fn()}
       />,
     );
 
@@ -160,6 +190,112 @@ describe('FieldInputOverlay', () => {
     await user.click(checkboxInput);
     expect(onSelectField).toHaveBeenCalledWith('checkbox');
     expect(onUpdateField).toHaveBeenCalledWith('checkbox', { value: true });
+  });
+
+  it('calls the radio selection callback when a selected radio is clicked again', async () => {
+    const user = userEvent.setup();
+    const onSelectRadioField = vi.fn();
+
+    render(
+      <FieldInputOverlay
+        fields={[
+          makeField({
+            id: 'radio-selected',
+            name: 'preferred_email',
+            type: 'radio',
+            radioGroupId: 'preferred_contact',
+            radioOptionKey: 'email',
+            value: 'email',
+          }),
+        ]}
+        pageSize={{ width: 200, height: 100 }}
+        scale={1}
+        globalFieldFont="default"
+        globalFieldFontSize="auto"
+        globalFieldFontColor="#000000"
+        selectedFieldId={null}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onSelectRadioField={onSelectRadioField}
+      />,
+    );
+
+    await user.click(screen.getByRole('radio', { name: 'preferred_email' }));
+
+    expect(onSelectRadioField).toHaveBeenCalledWith('radio-selected');
+  });
+
+  it('previews inherited and field-specific Base 14 font choices', () => {
+    render(
+      <FieldInputOverlay
+        fields={[
+          makeField({
+            id: 'global-font',
+            name: 'global_font',
+            type: 'text',
+          }),
+          makeField({
+            id: 'override-font',
+            name: 'override_font',
+            type: 'text',
+            fontName: 'Courier-BoldOblique',
+          }),
+        ]}
+        pageSize={{ width: 200, height: 100 }}
+        scale={1}
+        globalFieldFont="Times-Italic"
+        globalFieldFontSize="auto"
+        globalFieldFontColor="#000000"
+        selectedFieldId={null}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onSelectRadioField={vi.fn()}
+      />,
+    );
+
+    const inheritedInput = screen.getByLabelText('global_font') as HTMLInputElement;
+    const overrideInput = screen.getByLabelText('override_font') as HTMLInputElement;
+
+    expect(inheritedInput.style.fontFamily).toContain('Times New Roman');
+    expect(inheritedInput.style.fontStyle).toBe('italic');
+    expect(overrideInput.style.fontFamily).toContain('Courier New');
+    expect(overrideInput.style.fontWeight).toBe('700');
+    expect(overrideInput.style.fontStyle).toBe('italic');
+  });
+
+  it('previews inherited and field-specific font size choices', () => {
+    const { container } = render(
+      <FieldInputOverlay
+        fields={[
+          makeField({
+            id: 'global-size',
+            name: 'global_size',
+            type: 'text',
+          }),
+          makeField({
+            id: 'override-size',
+            name: 'override_size',
+            type: 'text',
+            fontSize: 8,
+          }),
+        ]}
+        pageSize={{ width: 200, height: 100 }}
+        scale={2}
+        globalFieldFont="default"
+        globalFieldFontSize={12}
+        globalFieldFontColor="#000000"
+        selectedFieldId={null}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onSelectRadioField={vi.fn()}
+      />,
+    );
+
+    const inheritedBox = container.querySelector('[data-field-id="global-size"]') as HTMLDivElement;
+    const overrideBox = container.querySelector('[data-field-id="override-size"]') as HTMLDivElement;
+
+    expect(inheritedBox.style.getPropertyValue('--field-font-size')).toBe('24px');
+    expect(overrideBox.style.getPropertyValue('--field-font-size')).toBe('16px');
   });
 
   it('normalizes empty date values to null on blur', async () => {

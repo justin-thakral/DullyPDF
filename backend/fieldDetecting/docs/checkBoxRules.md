@@ -40,6 +40,8 @@ Important distinction:
 - Fill By Link web forms only render radio questions for explicit radio widgets.
 - `radioGroupSuggestions` exist to convert checkbox clusters into explicit radios upstream.
 - If a checkbox cluster is not converted, respondent-facing web forms keep checkbox semantics (`boolean` or grouped multi-select) even when checkbox rules describe a single-choice pattern.
+- Explicit checkbox and radio widgets materialize with normal on/off appearance states.
+  Reused source widgets are also registered in the output AcroForm tree so editable exports stay compatible with strict PDF viewers such as Chrome and Adobe.
 
 ## Rule generation paths
 

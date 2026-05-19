@@ -132,6 +132,14 @@ OpenAI rename smoke from repo root:
 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run test:playwright:openai-rename
 ```
 
+PDF text-safe Base 14 font export smoke from repo root:
+
+```bash
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:5173 npm run test:playwright:pdf-fonts
+```
+
+This smoke signs in a temporary verified test user, sets global and per-field fonts, downloads editable and flat PDFs, renders first-page PNGs, reopens the saved template to confirm the font controls hydrate, and writes artifacts under `output/playwright/pdf-base14-fonts/`.
+
 The owner smoke signs into the workspace with a Firebase custom token, opens a real fillable PDF in the editor, adds a signature anchor, saves a signing draft, and sends the immutable request with mocked signing endpoints. Both smoke scripts write screenshots and JSON summaries under `frontend/output/playwright/`.
 
 ## reCAPTCHA env flags

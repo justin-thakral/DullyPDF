@@ -9,11 +9,37 @@ import os
 import re
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from fastapi import HTTPException, UploadFile
 
 from backend.detection.pdf_validation import PdfValidationError, PdfValidationResult, preflight_pdf_bytes
+
+# Product-facing text fields use the 12 Base 14 fonts that reliably render normal typed text.
+PDF_BASE_14_FONTS = frozenset(
+    {
+        "Helvetica",
+        "Helvetica-Bold",
+        "Helvetica-Oblique",
+        "Helvetica-BoldOblique",
+        "Times-Roman",
+        "Times-Bold",
+        "Times-Italic",
+        "Times-BoldItalic",
+        "Courier",
+        "Courier-Bold",
+        "Courier-Oblique",
+        "Courier-BoldOblique",
+    }
+)
+DEFAULT_FIELD_FONT_CHOICE = "default"
+GLOBAL_FIELD_FONT_CHOICE = "global"
+DEFAULT_FIELD_FONT_SIZE_CHOICE = "auto"
+GLOBAL_FIELD_FONT_SIZE_CHOICE = "global"
+DEFAULT_FIELD_FONT_COLOR = "#000000"
+GLOBAL_FIELD_FONT_COLOR_CHOICE = "global"
+MIN_FIELD_FONT_SIZE_PT = 4
+MAX_FIELD_FONT_SIZE_PT = 72
 
 
 def sanitize_basename_segment(value: str, fallback: str) -> str:
@@ -62,6 +88,214 @@ def normalize_optional_pdf_sha256(value: Optional[str]) -> Optional[str]:
     return normalized
 
 
+def normalize_pdf_base14_font_name(value: Any) -> Optional[str]:
+    """Return a text-safe PDF Base 14 font name or None."""
+    normalized = str(value or "").strip()
+    return normalized if normalized in PDF_BASE_14_FONTS else None
+
+
+def normalize_global_field_font(value: Any) -> str:
+    """Normalize a workspace-level field font setting."""
+    normalized = normalize_pdf_base14_font_name(value)
+    return normalized if normalized else DEFAULT_FIELD_FONT_CHOICE
+
+
+def normalize_field_font_override(value: Any) -> Optional[str]:
+    """Normalize a per-field font override for stored editor payloads."""
+    normalized = str(value or "").strip()
+    if normalized == GLOBAL_FIELD_FONT_CHOICE:
+        return GLOBAL_FIELD_FONT_CHOICE
+    return normalize_pdf_base14_font_name(normalized)
+
+
+def _normalize_field_font_size_number(value: Any) -> Optional[float]:
+    if isinstance(value, bool) or value is None:
+        return None
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return None
+    if numeric < MIN_FIELD_FONT_SIZE_PT or numeric > MAX_FIELD_FONT_SIZE_PT:
+        return None
+    return numeric
+
+
+def _is_normalized_field_font_size_number(value: Any) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def normalize_global_field_font_size(value: Any) -> str | float:
+    """Normalize a workspace-level field font-size setting."""
+    normalized = str(value or "").strip()
+    if not normalized or normalized == DEFAULT_FIELD_FONT_SIZE_CHOICE:
+        return DEFAULT_FIELD_FONT_SIZE_CHOICE
+    numeric = _normalize_field_font_size_number(value)
+    return numeric if numeric is not None else DEFAULT_FIELD_FONT_SIZE_CHOICE
+
+
+def normalize_field_font_size_override(value: Any) -> Optional[str | float]:
+    """Normalize a per-field font-size override for stored editor payloads."""
+    normalized = str(value or "").strip()
+    if normalized == GLOBAL_FIELD_FONT_SIZE_CHOICE:
+        return GLOBAL_FIELD_FONT_SIZE_CHOICE
+    if normalized == DEFAULT_FIELD_FONT_SIZE_CHOICE:
+        return DEFAULT_FIELD_FONT_SIZE_CHOICE
+    return _normalize_field_font_size_number(value)
+
+
+def normalize_pdf_hex_color(value: Any) -> Optional[str]:
+    """Return a normalized #rrggbb color string or None."""
+    if not isinstance(value, str):
+        return None
+    normalized = value.strip()
+    if not normalized:
+        return None
+    if not normalized.startswith("#"):
+        normalized = f"#{normalized}"
+    if not re.fullmatch(r"#[0-9a-fA-F]{6}", normalized):
+        return None
+    return normalized.lower()
+
+
+def normalize_global_field_font_color(value: Any) -> str:
+    """Normalize a workspace-level text color setting."""
+    return normalize_pdf_hex_color(value) or DEFAULT_FIELD_FONT_COLOR
+
+
+def normalize_field_font_color_override(value: Any) -> Optional[str]:
+    """Normalize a per-field text color override for stored editor payloads."""
+    normalized = str(value or "").strip()
+    if normalized == GLOBAL_FIELD_FONT_COLOR_CHOICE:
+        return GLOBAL_FIELD_FONT_COLOR_CHOICE
+    return normalize_pdf_hex_color(value)
+
+
+def pdf_rgb_from_hex_color(value: Any) -> Tuple[float, float, float]:
+    """Convert a #rrggbb color into PDF RGB operands from 0 to 1."""
+    normalized = normalize_pdf_hex_color(value) or DEFAULT_FIELD_FONT_COLOR
+    return (
+        int(normalized[1:3], 16) / 255.0,
+        int(normalized[3:5], 16) / 255.0,
+        int(normalized[5:7], 16) / 255.0,
+    )
+
+
+def resolve_auto_field_font_size(widget_height: Any) -> float:
+    """Return the legacy automatic text appearance font size for a widget height."""
+    try:
+        height = float(widget_height)
+    except (TypeError, ValueError):
+        height = 0.0
+    return max(6.0, min(12.0, height * 0.65))
+
+
+def normalize_field_appearance_payload(value: Any) -> Dict[str, Any]:
+    """Normalize stored field appearance settings with backwards-compatible defaults."""
+    appearance = value if isinstance(value, dict) else {}
+    return {
+        "globalFieldFont": normalize_global_field_font(appearance.get("globalFieldFont")),
+        "globalFieldFontSize": normalize_global_field_font_size(appearance.get("globalFieldFontSize")),
+        "globalFieldFontColor": normalize_global_field_font_color(appearance.get("globalFieldFontColor")),
+    }
+
+
+def resolve_effective_field_font(
+    field: Dict[str, Any],
+    *,
+    global_field_font: Any = DEFAULT_FIELD_FONT_CHOICE,
+) -> Optional[str]:
+    """Resolve the concrete text-safe Base 14 font for a text-like field."""
+    field_type = str(field.get("type") or "text").strip().lower()
+    if field_type not in {"text", "date", "combo", "combobox"}:
+        return None
+    field_font = normalize_field_font_override(field.get("fontName"))
+    if normalize_pdf_base14_font_name(field_font):
+        return field_font
+    if field_font == GLOBAL_FIELD_FONT_CHOICE:
+        return normalize_pdf_base14_font_name(global_field_font)
+    return None
+
+
+def resolve_effective_field_font_size(
+    field: Dict[str, Any],
+    *,
+    global_field_font_size: Any = DEFAULT_FIELD_FONT_SIZE_CHOICE,
+    auto_size: Any,
+) -> Optional[float]:
+    """Resolve the concrete PDF point size for a text-like field."""
+    field_type = str(field.get("type") or "text").strip().lower()
+    if field_type not in {"text", "date", "combo", "combobox"}:
+        return None
+
+    try:
+        resolved_auto_size = float(auto_size)
+    except (TypeError, ValueError):
+        resolved_auto_size = resolve_auto_field_font_size(0.0)
+    if resolved_auto_size <= 0 or resolved_auto_size != resolved_auto_size:
+        resolved_auto_size = resolve_auto_field_font_size(0.0)
+    field_font_size = normalize_field_font_size_override(field.get("fontSize"))
+    if _is_normalized_field_font_size_number(field_font_size):
+        return float(field_font_size)
+    if field_font_size == DEFAULT_FIELD_FONT_SIZE_CHOICE:
+        return resolved_auto_size
+
+    global_font_size = normalize_global_field_font_size(global_field_font_size)
+    if _is_normalized_field_font_size_number(global_font_size):
+        return float(global_font_size)
+    return resolved_auto_size
+
+
+def resolve_effective_field_font_color(
+    field: Dict[str, Any],
+    *,
+    global_field_font_color: Any = DEFAULT_FIELD_FONT_COLOR,
+) -> Optional[str]:
+    """Resolve the concrete #rrggbb text color for a text-like field."""
+    field_type = str(field.get("type") or "text").strip().lower()
+    if field_type not in {"text", "date", "combo", "combobox"}:
+        return None
+    field_color = normalize_field_font_color_override(field.get("fontColor"))
+    if field_color and field_color != GLOBAL_FIELD_FONT_COLOR_CHOICE:
+        return field_color
+    return normalize_global_field_font_color(global_field_font_color)
+
+
+def should_write_field_font_size_default_appearance(
+    field: Dict[str, Any],
+    *,
+    global_field_font_size: Any = DEFAULT_FIELD_FONT_SIZE_CHOICE,
+) -> bool:
+    """Return True when a field's /DA should carry an explicit font size."""
+    field_type = str(field.get("type") or "text").strip().lower()
+    if field_type not in {"text", "date", "combo", "combobox"}:
+        return False
+
+    field_font_size = normalize_field_font_size_override(field.get("fontSize"))
+    if _is_normalized_field_font_size_number(field_font_size):
+        return True
+    if field_font_size == DEFAULT_FIELD_FONT_SIZE_CHOICE:
+        return True
+
+    global_font_size = normalize_global_field_font_size(global_field_font_size)
+    return _is_normalized_field_font_size_number(global_font_size)
+
+
+def should_write_field_font_color_default_appearance(
+    field: Dict[str, Any],
+    *,
+    global_field_font_color: Any = DEFAULT_FIELD_FONT_COLOR,
+) -> bool:
+    """Return True when a field's /DA should carry an explicit text color."""
+    field_type = str(field.get("type") or "text").strip().lower()
+    if field_type not in {"text", "date", "combo", "combobox"}:
+        return False
+    field_color = normalize_field_font_color_override(field.get("fontColor"))
+    if field_color and field_color != GLOBAL_FIELD_FONT_COLOR_CHOICE:
+        return True
+    global_color = normalize_global_field_font_color(global_field_font_color)
+    return global_color != DEFAULT_FIELD_FONT_COLOR
+
+
 def cleanup_paths(paths: List[Path]) -> None:
     """Best-effort cleanup for temp files."""
     for path in paths:
@@ -98,6 +332,21 @@ def coerce_field_payloads(raw_fields: List[Any]) -> List[Dict[str, Any]]:
         if not isinstance(entry, dict):
             continue
         payload = dict(entry)
+        font_name = normalize_field_font_override(payload.get("fontName"))
+        if font_name and str(payload.get("type") or "text").strip().lower() in {"text", "date", "combo", "combobox"}:
+            payload["fontName"] = font_name
+        else:
+            payload.pop("fontName", None)
+        font_size = normalize_field_font_size_override(payload.get("fontSize"))
+        if font_size is not None and str(payload.get("type") or "text").strip().lower() in {"text", "date", "combo", "combobox"}:
+            payload["fontSize"] = font_size
+        else:
+            payload.pop("fontSize", None)
+        font_color = normalize_field_font_color_override(payload.get("fontColor"))
+        if font_color is not None and str(payload.get("type") or "text").strip().lower() in {"text", "date", "combo", "combobox"}:
+            payload["fontColor"] = font_color
+        else:
+            payload.pop("fontColor", None)
         rect_list: Optional[List[float]] = None
         rect = payload.get("rect")
         if isinstance(rect, dict):

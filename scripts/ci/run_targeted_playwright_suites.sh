@@ -30,6 +30,7 @@ if [[ "${RUN_PLAYWRIGHT_SAFE:-false}" == "true" || "${RUN_DETECTION_AI:-false}" 
 fi
 if [[ "${RUN_PLAYWRIGHT_SAFE:-false}" == "true" || "${RUN_WORKSPACE:-false}" == "true" || "${RUN_SHARED_RUNTIME:-false}" == "true" ]]; then
   append_unique "npm run test:playwright:saved-form-snapshot:real"
+  append_unique "npm run test:playwright:pdf-fonts"
 fi
 if [[ "${RUN_PLAYWRIGHT_SAFE:-false}" == "true" || "${RUN_FILL_LINKS:-false}" == "true" || "${RUN_SHARED_RUNTIME:-false}" == "true" ]]; then
   append_unique "npm run test:playwright:fill-link-download:real"

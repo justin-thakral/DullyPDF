@@ -154,6 +154,74 @@ export const INTENT_VISUALS = {
       },
     ],
   },
+  'fillable-pdf-fonts-colors': {
+    hubImage: {
+      src: '/demo/field-colors-editable-export.png',
+      alt: 'Editable dental intake PDF export with colored field values and an active field using the selected global font color and size.',
+      objectPosition: 'center top',
+      eyebrow: 'Field appearance',
+    },
+    articleFigures: [
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF export of a dental intake form with filled values baked into the page in multiple field colors.',
+        caption: 'Flat downloads bake the final field values directly into the PDF page content, so the chosen colors render even after the fields are no longer editable.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-editable-export.png',
+        alt: 'Editable PDF export showing live AcroForm fields with colored values and an active typed value using the global orange field appearance.',
+        caption: 'Editable downloads keep text inside the AcroForm fields. When the user types into a selected field, the selected font color and size are applied to the active editing state as well as the committed value.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-appearance-global-editor.png',
+        alt: 'DullyPDF left field panel global font controls set to Times Bold, Auto dynamic size, and an orange global field color.',
+        caption: 'The left field panel sets the global default: Times Bold, Auto dynamic font size, and a shared orange field color for fields that inherit appearance.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-appearance-individual-editor.png',
+        alt: 'DullyPDF field inspector showing one field overriding the global style with Helvetica Bold, custom size 10, and black text.',
+        caption: 'The field inspector handles exceptions. A specific field can override the global font, font size, and color while the rest of the template continues to inherit the shared settings.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'acroform-field-appearance': {
+    hubImage: {
+      src: '/demo/field-appearance-individual-editor.png',
+      alt: 'DullyPDF field inspector showing field-specific font, font size, and font color overrides for an AcroForm field.',
+      objectPosition: 'center top',
+      eyebrow: 'AcroForm output',
+    },
+    articleFigures: [
+      {
+        src: '/demo/field-colors-editable-export.png',
+        alt: 'Editable PDF export with the selected AcroForm field active and typed text rendered in the global orange field appearance.',
+        caption: 'Editable output is trustworthy when values live inside AcroForm fields. This viewer state shows typed field text using the selected font color and size while the field is active.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF export with colored field values drawn into the dental intake form page content.',
+        caption: 'Flat output is a separate export mode: it intentionally draws the final values into page content and removes the need for live widget appearances.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-appearance-global-editor.png',
+        alt: 'Global field appearance panel showing Times Bold, Auto dynamic font size, and orange field color controls.',
+        caption: 'Global appearance settings become the inherited template intent that DullyPDF maps into AcroForm appearance data during editable export.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-appearance-individual-editor.png',
+        alt: 'Individual field inspector showing Helvetica Bold, custom size 10, and black color overriding the global appearance.',
+        caption: 'Per-field overrides are stored with the field metadata so one widget can write a different /DA font, size, or color from the global default.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
   'batch-fill-pdf-forms': {
     hubImage: {
       src: '/demo/workflow-library/create-group-card.png',

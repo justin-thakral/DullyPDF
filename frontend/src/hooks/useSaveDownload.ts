@@ -5,11 +5,14 @@ import type {
   BannerNotice,
   CheckboxRule,
   ConfirmDialogOptions,
+  FieldFontChoice,
+  FieldFontColorChoice,
+  FieldFontSizeChoice,
   PdfField,
   PromptDialogOptions,
   TextTransformRule,
 } from '../types';
-import { normaliseFormName, prepareFieldsForMaterialize } from '../utils/fields';
+import { normaliseFormName, normalizeFieldValuesForMaterialize, prepareFieldsForMaterialize } from '../utils/fields';
 import { debugLog } from '../utils/debug';
 import { buildSavedFormEditorSnapshot } from '../utils/savedFormHydration';
 import { ApiError } from '../services/apiConfig';
@@ -21,6 +24,9 @@ export interface UseSaveDownloadDeps {
   sourceFile: File | null;
   sourceFileName: string | null;
   fields: PdfField[];
+  globalFieldFont: FieldFontChoice;
+  globalFieldFontSize: FieldFontSizeChoice;
+  globalFieldFontColor: FieldFontColorChoice;
   pageSizes: Record<number, { width: number; height: number }>;
   pageCount: number;
   checkboxRules: CheckboxRule[];
@@ -47,7 +53,13 @@ export interface UseSaveDownloadDeps {
   markGroupTemplatesPersisted?: (formIds?: string[]) => void;
   queueSaveAfterLimit: (action: () => Promise<void>) => void;
   allowAnonymousDownload?: boolean;
-  onSaveSuccess?: (fields: PdfField[], checkboxRules: CheckboxRule[]) => void;
+  onSaveSuccess?: (
+    fields: PdfField[],
+    checkboxRules: CheckboxRule[],
+    globalFieldFont: FieldFontChoice,
+    globalFieldFontSize: FieldFontSizeChoice,
+    globalFieldFontColor: FieldFontColorChoice,
+  ) => void;
 }
 
 export function useSaveDownload(deps: UseSaveDownloadDeps) {
@@ -85,17 +97,31 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
           const data = await deps.pdfDoc.getData();
           blob = new Blob([new Uint8Array(data)], { type: 'application/pdf' });
         }
-        const fieldsForSave = prepareFieldsForMaterialize(deps.fields);
+        const fieldsForSnapshot = normalizeFieldValuesForMaterialize(deps.fields);
+        const fieldsForSave = prepareFieldsForMaterialize(
+          deps.fields,
+          deps.globalFieldFont,
+          deps.globalFieldFontColor,
+        );
         const checkboxRulesForSave = deps.checkboxRules;
         const textTransformRulesForSave = deps.textTransformRules;
         const editorSnapshot = buildSavedFormEditorSnapshot({
           pageCount: deps.pageCount || deps.pdfDoc.numPages,
           pageSizes: deps.pageSizes,
-          fields: fieldsForSave,
+          fields: fieldsForSnapshot,
+          globalFieldFont: deps.globalFieldFont,
+          globalFieldFontSize: deps.globalFieldFontSize,
+          globalFieldFontColor: deps.globalFieldFontColor,
           hasRenamedFields: deps.hasRenamedFields,
           hasMappedSchema: deps.hasMappedSchema,
         });
-        const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForSave);
+        const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForSave, {
+          appearance: {
+            globalFieldFont: deps.globalFieldFont,
+            globalFieldFontSize: deps.globalFieldFontSize,
+            globalFieldFontColor: deps.globalFieldFontColor,
+          },
+        });
         const payload = await ApiService.saveFormToProfile(
           generatedBlob, saveName, deps.mappingSessionId || undefined,
           overwriteFormId || undefined, checkboxRulesForSave, textTransformRulesForSave,
@@ -111,7 +137,13 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
           }
         }
         try {
-          deps.onSaveSuccess?.(fieldsForSave, checkboxRulesForSave);
+          deps.onSaveSuccess?.(
+            fieldsForSnapshot,
+            checkboxRulesForSave,
+            deps.globalFieldFont,
+            deps.globalFieldFontSize,
+            deps.globalFieldFontColor,
+          );
         } catch (error) {
           debugLog('Failed to run post-save workspace sync', error);
         }
@@ -215,8 +247,19 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
         const data = await deps.pdfDoc.getData();
         blob = new Blob([new Uint8Array(data)], { type: 'application/pdf' });
       }
-      const fieldsForDownload = prepareFieldsForMaterialize(deps.fields);
-      const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForDownload, { exportMode });
+      const fieldsForDownload = prepareFieldsForMaterialize(
+        deps.fields,
+        deps.globalFieldFont,
+        deps.globalFieldFontColor,
+      );
+      const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForDownload, {
+        exportMode,
+        appearance: {
+          globalFieldFont: deps.globalFieldFont,
+          globalFieldFontSize: deps.globalFieldFontSize,
+          globalFieldFontColor: deps.globalFieldFontColor,
+        },
+      });
       const baseName = normaliseFormName(deps.activeSavedFormName || deps.sourceFileName || deps.sourceFile?.name);
       const filename = exportMode === 'flat'
         ? `${baseName}-flat.pdf`

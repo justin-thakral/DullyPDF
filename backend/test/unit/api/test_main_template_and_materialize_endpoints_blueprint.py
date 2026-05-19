@@ -1,16 +1,65 @@
 import io
 import hashlib
+import json
 from pathlib import Path
 
 from fastapi import HTTPException
 import pytest
+import fitz
+from pypdf import PdfReader, PdfWriter
 
 from backend.detection.pdf_validation import PdfValidationResult
+from backend.services.pdf_export_service import pdf_has_form_widgets
 
 
 def _patch_auth(mocker, app_main, user) -> None:
     mocker.patch.object(app_main, "_verify_token", return_value={"uid": user.app_user_id})
     mocker.patch.object(app_main, "ensure_user", return_value=user)
+
+
+def _blank_pdf_bytes(*, width: float = 200, height: float = 200) -> bytes:
+    writer = PdfWriter()
+    writer.add_blank_page(width=width, height=height)
+    buffer = io.BytesIO()
+    writer.write(buffer)
+    return buffer.getvalue()
+
+
+def _appearance_streams(pdf_bytes: bytes) -> str:
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    acroform = reader.trailer["/Root"].get("/AcroForm")
+    if not acroform:
+        return ""
+    streams: list[str] = []
+    for field_ref in acroform.get_object().get("/Fields", []):
+        field = field_ref.get_object()
+        appearance = field.get("/AP")
+        if appearance and "/N" in appearance:
+            streams.append(appearance["/N"].get_object().get_data().decode("utf-8", "ignore"))
+    return "\n".join(streams)
+
+
+def _page_content_streams(pdf_bytes: bytes) -> str:
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    streams: list[str] = []
+    for page in reader.pages:
+        contents = page.get_contents()
+        if contents:
+            streams.append(contents.get_data().decode("utf-8", "ignore"))
+    return "\n".join(streams)
+
+
+def _field_default_appearances(pdf_bytes: bytes) -> dict[str, str | None]:
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    acroform = reader.trailer["/Root"].get("/AcroForm")
+    if not acroform:
+        return {}
+    fields: dict[str, str | None] = {}
+    for field_ref in acroform.get_object().get("/Fields", []):
+        field = field_ref.get_object()
+        name = str(field.get("/T"))
+        fields[name] = str(field.get("/DA")) if field.get("/DA") is not None else None
+    return fields
 
 
 class _FakePdfDoc:
@@ -235,6 +284,54 @@ def test_materialize_inject_fields_path_and_filename_sanitization(
     assert response.headers["cache-control"] == "private, no-store"
 
 
+def test_materialize_form_uses_font_size_payload_in_editable_field_appearances(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+
+    payload = {
+        "appearance": {"globalFieldFontSize": 15},
+        "fields": [
+            {
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 140, 45],
+                "value": "Ada Lovelace",
+            },
+            {
+                "name": "policy_number",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 55, 140, 80],
+                "value": "ABC-123",
+                "fontSize": 9,
+            },
+        ],
+    }
+
+    response = client.post(
+        "/api/forms/materialize",
+        files={"pdf": ("font-size.pdf", _blank_pdf_bytes(), "application/pdf")},
+        data={"fields": json.dumps(payload), "exportMode": "editable"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    appearance_streams = _appearance_streams(response.content)
+    assert "/Helv 15.00 Tf" in appearance_streams
+    assert "/Helv 9.00 Tf" in appearance_streams
+    assert "Ada Lovelace" not in _page_content_streams(response.content)
+    default_appearances = _field_default_appearances(response.content)
+    assert default_appearances["full_name"] == "/Helv 15 Tf 0 0 0 rg"
+    assert default_appearances["policy_number"] == "/Helv 9 Tf 0 0 0 rg"
+
+
 def test_materialize_flat_mode_flattens_generated_output(
     client,
     app_main,
@@ -270,6 +367,41 @@ def test_materialize_flat_mode_flattens_generated_output(
     assert "-flat" in response.headers["content-disposition"]
     assert response.headers["cache-control"] == "private, no-store"
     flatten_mock.assert_called_once_with(b"%PDF-1.4\nfilled")
+
+
+def test_materialize_form_flat_mode_completes_with_font_size_payload(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+
+    payload = {
+        "appearance": {"globalFieldFontSize": 16},
+        "fields": [
+            {
+                "name": "full_name",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 140, 45],
+                "value": "Ada Lovelace",
+            }
+        ],
+    }
+    response = client.post(
+        "/api/forms/materialize",
+        files={"pdf": ("flat-font-size.pdf", _blank_pdf_bytes(), "application/pdf")},
+        data={"fields": json.dumps(payload), "exportMode": "flat"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    assert pdf_has_form_widgets(response.content) is False
+    with fitz.open(stream=response.content, filetype="pdf") as document:
+        assert "Ada Lovelace" in document[0].get_text()
 
 
 def test_materialize_inject_failure_cleans_temp_files_immediately(

@@ -171,6 +171,9 @@ export type FillLinkTemplateFieldPayload = {
   type?: string;
   page?: number;
   rect?: { x: number; y: number; width: number; height: number };
+  fontName?: string;
+  fontSize?: string | number;
+  fontColor?: string;
   groupKey?: string;
   optionKey?: string;
   optionLabel?: string;
@@ -185,6 +188,11 @@ export type FillLinkTemplateFieldPayload = {
 export type FillLinkGroupTemplatePayload = {
   templateId: string;
   templateName?: string;
+  appearance?: {
+    globalFieldFont?: string;
+    globalFieldFontSize?: string | number;
+    globalFieldFontColor?: string;
+  };
   fields: FillLinkTemplateFieldPayload[];
   checkboxRules?: Array<Record<string, unknown>>;
   textTransformRules?: Array<Record<string, unknown>>;

@@ -108,8 +108,20 @@ describe('useGroupDownload', () => {
     });
 
     expect(setLoadError.mock.calls).toEqual([[null]]);
-    expect(materializeFormPdfMock).toHaveBeenNthCalledWith(1, activeFile, expect.any(Array));
-    expect(materializeFormPdfMock).toHaveBeenNthCalledWith(2, cachedFile, expect.any(Array));
+    expect(materializeFormPdfMock).toHaveBeenNthCalledWith(1, activeFile, expect.any(Array), {
+      appearance: {
+        globalFieldFont: undefined,
+        globalFieldFontSize: undefined,
+        globalFieldFontColor: undefined,
+      },
+    });
+    expect(materializeFormPdfMock).toHaveBeenNthCalledWith(2, cachedFile, expect.any(Array), {
+      appearance: {
+        globalFieldFont: undefined,
+        globalFieldFontSize: undefined,
+        globalFieldFontColor: undefined,
+      },
+    });
     expect(ensureGroupTemplateSnapshot).toHaveBeenCalledWith('tpl-b', 'Bravo Intake');
     expect(clickSpy).toHaveBeenCalledTimes(1);
     expect(revokeObjectUrlSpy).not.toHaveBeenCalled();

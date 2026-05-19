@@ -30,7 +30,12 @@ from backend.firebaseDB.storage_service import download_pdf_bytes, is_gcs_path
 from backend.logging_config import get_logger
 from backend.services.mapping_service import normalize_data_key
 from backend.services.pdf_export_service import flatten_pdf_form_widgets
-from backend.services.pdf_service import coerce_field_payloads, safe_pdf_download_filename, sanitize_basename_segment
+from backend.services.pdf_service import (
+    coerce_field_payloads,
+    normalize_field_appearance_payload,
+    safe_pdf_download_filename,
+    sanitize_basename_segment,
+)
 
 
 logger = get_logger(__name__)
@@ -114,6 +119,7 @@ def build_template_fill_link_download_snapshot(
     fields: List[Dict[str, Any]],
     export_mode: str = "flat",
     page_count: Optional[int] = None,
+    appearance: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     if not template or not getattr(template, "pdf_bucket_path", None):
         raise ValueError("Saved form PDF is required for respondent download.")
@@ -134,6 +140,7 @@ def build_template_fill_link_download_snapshot(
         "filename": safe_pdf_download_filename(f"{base_name}-response", "fill-link-response"),
         "downloadMode": _normalize_download_mode(export_mode),
         "pageCount": resolved_page_count,
+        "appearance": normalize_field_appearance_payload(appearance),
         "fields": normalized_fields,
         "checkboxRules": fill_rules["checkboxRules"],
         "radioGroups": fill_rules["radioGroups"],
@@ -344,7 +351,14 @@ def _build_radio_groups(
     groups: Dict[str, Dict[str, List[Dict[str, Any]]]] = {}
     for field in fields:
         field_type = str(field.get("type") or "text").strip().lower()
-        raw_group_key = str(field.get("radioGroupKey") or field.get("groupKey") or field.get("group") or field.get("name") or "").strip()
+        raw_group_key = str(
+            field.get("radioGroupKey")
+            or field.get("radioGroupId")
+            or field.get("groupKey")
+            or field.get("group")
+            or field.get("name")
+            or ""
+        ).strip()
         group_key = normalize_data_key(raw_group_key)
         raw_option_key = str(field.get("radioOptionKey") or field.get("optionKey") or field.get("exportValue") or field.get("name") or "").strip()
         option_key = normalize_data_key(raw_option_key)
@@ -636,6 +650,9 @@ def materialize_fill_link_response_download(
         raise FileNotFoundError("Saved form PDF is unavailable for respondent download.")
     source_pdf_bytes = download_pdf_bytes(source_pdf_path)
     filled_fields = apply_fill_link_answers_to_fields(snapshot, answers)
+    resolved_export_mode = _normalize_download_mode(
+        export_mode if export_mode is not None else snapshot.get("downloadMode")
+    )
 
     source_fd, source_name = tempfile.mkstemp(suffix=".pdf")
     template_fd, template_name = tempfile.mkstemp(suffix=".json")
@@ -647,6 +664,8 @@ def materialize_fill_link_response_download(
         json.dumps(
             {
                 "coordinateSystem": "originTop",
+                "appearance": normalize_field_appearance_payload(snapshot.get("appearance")),
+                "renderTextAppearanceStreams": True,
                 "fields": filled_fields,
             }
         ),
@@ -655,9 +674,6 @@ def materialize_fill_link_response_download(
     cleanup_targets = [Path(source_name), Path(template_name), Path(output_name)]
     try:
         inject_fields(Path(source_name), Path(template_name), Path(output_name))
-        resolved_export_mode = _normalize_download_mode(
-            export_mode if export_mode is not None else snapshot.get("downloadMode")
-        )
         if resolved_export_mode == "flat":
             Path(output_name).write_bytes(flatten_pdf_form_widgets(Path(output_name).read_bytes()))
     except Exception:
@@ -740,6 +756,7 @@ def build_group_fill_link_publish_snapshot(
                 fields=raw_fields,
                 export_mode="flat",
                 page_count=source_page_count,
+                appearance=source.get("appearance") if isinstance(source.get("appearance"), dict) else None,
             )
         except ValueError as exc:
             raise ValueError(
