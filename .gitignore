@@ -92,6 +92,9 @@ mcp/.env.*.local
 # Local implementation plans
 /DIFFERENT_FONT_IMPLEMENTATION_PLAN.md
 /FONT_SIZE_SETTINGS_IMPLEMENTATION_PLAN.md
+/GROUP_FILL_MIGRATION_PLAN.md
+/file_search_and_fill_crediting_rollout.md
+/todo.txt
 
 # Local run artifacts (keep cleanup scripts/README tracked)
 /output/
@@ -144,7 +147,11 @@ serviceAccounts/
 /walkthrough-*.png
 /fillapi-*.png
 /fillapi-*.jpg
+/group-dropdown-*.png
 /group-publish-state.yml
+
+# Local OpenAI rename/debug payload dumps
+/openAI_overlays_exmaple/
 
 # Local SEO analytics exports (ahrefs, GSC, etc.)
 /ahref/
