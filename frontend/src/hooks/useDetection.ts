@@ -7,6 +7,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   PageSize,
   PdfField,
   PendingAutoActions,
@@ -31,6 +32,7 @@ import {
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
 } from '../utils/fieldFonts';
 import {
   buildSavedFormEditorSnapshot,
@@ -95,12 +97,14 @@ export interface UseDetectionDeps {
   setGlobalFieldFont: (font: FieldFontChoice) => void;
   setGlobalFieldFontSize: (fontSize: FieldFontSizeChoice) => void;
   setGlobalFieldFontColor: (fontColor: FieldFontColorChoice) => void;
+  setGlobalFieldAlignment?: (alignment: FieldTextAlignmentChoice) => void;
   markSavedFillLinkSnapshot: (
     fields: PdfField[],
     checkboxRules: CheckboxRule[],
     globalFieldFont?: FieldFontChoice,
     globalFieldFontSize?: FieldFontSizeChoice,
     globalFieldFontColor?: FieldFontColorChoice,
+    globalFieldAlignment?: FieldTextAlignmentChoice,
   ) => void;
   setActiveSavedFormId: (id: string | null) => void;
   setActiveSavedFormName: (name: string | null) => void;
@@ -481,6 +485,9 @@ export function useDetection(deps: UseDetectionDeps) {
         deps.setGlobalFieldFontColor(
           dullyAppearanceMetadata?.appearance.globalFieldFontColor ?? DEFAULT_FIELD_FONT_COLOR,
         );
+        deps.setGlobalFieldAlignment?.(
+          dullyAppearanceMetadata?.appearance.globalFieldAlignment ?? DEFAULT_FIELD_TEXT_ALIGNMENT,
+        );
         if (doc.numPages > deps.profileLimits.fillableMaxPages) {
           if (loadTokenRef.current !== loadToken) return;
           deps.clearWorkspace();
@@ -523,6 +530,10 @@ export function useDetection(deps: UseDetectionDeps) {
               pageCount: doc.numPages,
             });
             if (loadTokenRef.current !== loadToken) return;
+            if (Array.isArray(sessionPayload.fields) && sessionPayload.fields.length === existingFields.length) {
+              deps.resetFieldHistory(sessionPayload.fields);
+              debugLog('Applied imported AcroForm field metadata', { total: sessionPayload.fields.length });
+            }
             setDetectSessionId(sessionPayload.sessionId);
             setMappingSessionId(sessionPayload.sessionId);
           } catch (error) {
@@ -619,9 +630,14 @@ export function useDetection(deps: UseDetectionDeps) {
             hydratedSnapshot?.appearance.globalFieldFontColor ??
             dullyAppearanceMetadata?.appearance.globalFieldFontColor ??
             DEFAULT_FIELD_FONT_COLOR;
+          const savedGlobalFieldAlignment =
+            hydratedSnapshot?.appearance.globalFieldAlignment ??
+            dullyAppearanceMetadata?.appearance.globalFieldAlignment ??
+            DEFAULT_FIELD_TEXT_ALIGNMENT;
           deps.setGlobalFieldFont(savedGlobalFieldFont);
           deps.setGlobalFieldFontSize(savedGlobalFieldFontSize);
           deps.setGlobalFieldFontColor(savedGlobalFieldFontColor);
+          deps.setGlobalFieldAlignment?.(savedGlobalFieldAlignment);
           const sizesPromise = hydratedSnapshot
             ? Promise.resolve(hydratedSnapshot.pageSizes)
             : loadPageSizes(doc);
@@ -701,6 +717,7 @@ export function useDetection(deps: UseDetectionDeps) {
               savedGlobalFieldFont,
               savedGlobalFieldFontSize,
               savedGlobalFieldFontColor,
+              savedGlobalFieldAlignment,
             );
             debugLog('Loaded saved form from editor snapshot', { name, pages: doc.numPages, fields: initialFields.length });
             if (deps.verifiedUser) {
@@ -724,6 +741,7 @@ export function useDetection(deps: UseDetectionDeps) {
               savedGlobalFieldFont,
               savedGlobalFieldFontSize,
               savedGlobalFieldFontColor,
+              savedGlobalFieldAlignment,
             );
             debugLog('Extracted saved form fields', { total: existingFields.length });
             debugLog('Loaded saved form', { name, pages: doc.numPages, fields: existingFields.length });
@@ -738,6 +756,7 @@ export function useDetection(deps: UseDetectionDeps) {
                     globalFieldFont: savedGlobalFieldFont,
                     globalFieldFontSize: savedGlobalFieldFontSize,
                     globalFieldFontColor: savedGlobalFieldFontColor,
+                    globalFieldAlignment: savedGlobalFieldAlignment,
                     hasRenamedFields: false,
                     hasMappedSchema: derivedHasMappedSchema,
                   }),

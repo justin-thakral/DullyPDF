@@ -91,12 +91,14 @@ export function useGroupDownload(deps: UseGroupDownloadDeps) {
             snapshot.fields,
             snapshot.globalFieldFont,
             snapshot.globalFieldFontColor,
+            { preserveAppOnlyFieldMarkers: true },
           ),
           {
             appearance: {
               globalFieldFont: snapshot.globalFieldFont,
               globalFieldFontSize: snapshot.globalFieldFontSize,
               globalFieldFontColor: snapshot.globalFieldFontColor,
+              globalFieldAlignment: snapshot.globalFieldAlignment,
             },
           },
         );

@@ -69,7 +69,7 @@ The `/AcroForm` dictionary lives under the PDF catalog and describes the form as
 | `/DA` | Default appearance string for variable text fields. | Provides fallback font, size, and color when a field does not define its own `/DA`. DullyPDF writes the global font color here for fields that inherit global color. |
 | `/Q` | Default text justification: `0` left, `1` center, `2` right. | Useful if DullyPDF adds alignment controls later. |
 | `/SigFlags` | Signature-related document flags. | Relevant to signing workflows when the PDF contains digital signature fields. |
-| `/CO` | Calculation order array. | Relevant for calculated forms. DullyPDF should preserve it if importing existing calculated PDFs. |
+| `/CO` | Calculation order array. | DullyPDF writes calculated fields in dependency order for editable exports and preserves unrelated existing entries when safe. |
 | `/XFA` | XML Forms Architecture data. | Legacy/dynamic form technology. DullyPDF should treat it carefully because normal AcroForm edits may not fully update XFA forms. |
 
 ## Common Field Dictionary Keys
@@ -78,7 +78,7 @@ Field dictionaries describe logical form fields.
 
 | Key | Meaning | DullyPDF relevance |
 | --- | --- | --- |
-| `/FT` | Field type. Common values are `/Tx`, `/Btn`, `/Ch`, and `/Sig`. | Maps to DullyPDF text/date, checkbox/radio, combo/list, and signature concepts. |
+| `/FT` | Field type. Common values are `/Tx`, `/Btn`, `/Ch`, and `/Sig`. | Maps to DullyPDF text, checkbox/radio, combo/list, and signature concepts. Date-like values use text fields or schema/question date semantics rather than a separate AcroForm field type. |
 | `/T` | Partial field name. | The name DullyPDF saves, maps, fills, and exposes through Fill By Link/API Fill. |
 | `/TU` | Alternate user-facing field name. | Can support accessibility/tooltips or friendlier labels later. |
 | `/TM` | Mapping name used when exporting form data. | Useful for integration exports, but not currently the primary DullyPDF identifier. |
@@ -89,9 +89,44 @@ Field dictionaries describe logical form fields.
 | `/DV` | Default field value. | Useful so reset/default behavior matches the filled export. |
 | `/AA` | Additional actions triggered by field events. | Should generally be preserved from source PDFs unless DullyPDF intentionally strips risky behavior. |
 
+## Calculation Field Keys
+
+DullyPDF-managed calculation fields are still ordinary text fields in the PDF. The safe formula model
+lives in DullyPDF metadata, and generated Acrobat JavaScript is only a compatibility layer for
+editable PDFs.
+
+For number inputs:
+
+- `/FT /Tx` stores the field as a normal text field.
+- `/AA /K`, `/AA /V`, and `/AA /F` can carry generated numeric keystroke, validation, and format
+  actions.
+- `/V`, `/DV`, and `/AP` still carry the precomputed/current value so viewers that do not run
+  JavaScript display the right value.
+
+For calculated outputs and calculated intermediates:
+
+- `/FT /Tx` stores the calculated value as a normal text field.
+- `/Ff` includes the `ReadOnly` bit so users do not type into computed outputs.
+- `/AA /C` carries generated calculate JavaScript produced from the safe AST.
+- `/AA /F` carries generated formatting behavior when needed.
+- `/V`, `/DV`, and `/AP` carry the value DullyPDF computed server-side before export.
+
+The catalog `/AcroForm /CO` array lists DullyPDF-owned calculated fields in topological dependency
+order. Chained intermediates therefore appear before downstream outputs. Unrelated existing `/CO`
+entries are kept ahead of the DullyPDF-owned calculation order when they are not replaced.
+
+Generated editable PDFs also include `/DullyPDFCalculations` document metadata. That payload stores
+roles, value types, formula ASTs, dependencies, and output settings for DullyPDF re-import. It does
+not store user-authored JavaScript as the source of truth.
+
+Imported third-party calculation JavaScript is never executed during analysis. DullyPDF detects the
+presence of `/AA /C`, numeric action patterns, and `/CO` references, then either hydrates supported
+DullyPDF metadata or marks the field as an external imported calculation that must be rebuilt before
+it becomes editable in the formula builder.
+
 ## Variable Text Keys
 
-Text fields, date fields, and editable combo boxes use variable text behavior.
+Text fields and editable combo boxes use variable text behavior.
 
 | Key | Meaning | DullyPDF relevance |
 | --- | --- | --- |
@@ -257,15 +292,24 @@ Helvetica works reliably because PDF viewers are expected to know these standard
 fonts are harder because DullyPDF would need to embed font programs, subset glyphs, write encoding data,
 and ensure appearance streams reference the embedded resources correctly.
 
-DullyPDF exposes only the 12 text-safe Base 14 fonts for text/date field controls: Helvetica, Times,
+DullyPDF exposes only the 12 text-safe Base 14 fonts for text field controls: Helvetica, Times,
 and Courier families. `Symbol` and `ZapfDingbats` remain part of the PDF Base 14 set, but they use
 symbol encodings and are not reliable for normal user-typed text in editable form fields.
 
 Global font color and per-field font color can coexist. The AcroForm root `/DA` stores the workspace
-fallback color, while a field-level `/DA` can override that color for one text/date field. DullyPDF also
+fallback color, while a field-level `/DA` can override that color for one text field. DullyPDF also
 stores a compact `/DullyPDFAppearance` document metadata payload in generated editable PDFs so
 re-uploading a DullyPDF download can distinguish inherited global color from a true per-field custom
-color in the inspector.
+color in the Field Editor.
+
+DullyPDF-only image, PDF417, barcode, and QR helpers are not native AcroForm field types. Editable exports
+write blank tagged text widgets as positional anchors and store app-only helper metadata in
+`/DullyPDFAppearance` so DullyPDF can restore the helper type, dimensions, dependency mappings, and
+visual payload on re-upload. Flat exports stamp the final helper visual into page content before
+flattening and should not require DullyPDF metadata for ordinary PDF viewers to display the result.
+Public Fill By Link, group Fill By Link, and Template API materialization run the same helper preparation
+server-side: Code 128 barcodes, PDF417 payloads, and QR codes are generated as PNG data URLs before stamping, then
+flat exports remove live widgets as usual.
 
 ## Product Invariants
 
@@ -278,6 +322,13 @@ DullyPDF should keep these rules stable:
 - Page-content text under a live field is not acceptable in editable output because it creates duplicate
   or stale values.
 - Font settings and font colors belong in normalized DullyPDF appearance data, `/DA`, and `/AP` resources.
+- DullyPDF-only helper values belong in DullyPDF metadata and stamped page content, not in visible AcroForm
+  text values.
+- Calculation formulas belong in the DullyPDF safe formula model. Generated Acrobat JavaScript belongs in
+  `/AA` actions for editable compatibility only.
+- Calculated output values must be materialized into `/V`, `/DV`, and `/AP` before export so non-JS viewers
+  show the server-computed value.
+- Calculated outputs and intermediates must be read-only text fields, and `/CO` must follow dependency order.
 - Checkbox/radio state must keep `/V`, `/AS`, and `/AP` state names synchronized.
 - Checkboxes must be exported as independently toggleable button fields. When reusing a source
   widget, DullyPDF clears stale radio, pushbutton, no-toggle, read-only, hidden, and locked flags that
@@ -307,6 +358,8 @@ Backend unit tests should verify:
 - Existing widgets update in place without duplicate same-name widgets.
 - Checkbox and radio widgets have matching `/V`, `/AS`, and `/AP` states with mark-only generated button appearances.
 - Flat exports remove live widgets and stale `/AcroForm` metadata.
+- Calculation field tests should verify generated `/AA /C`, `/AA /K`, `/AA /V`, `/AA /F`, read-only flags,
+  `/CO` order, `/DullyPDFCalculations` metadata, and server-computed `/V`, `/DV`, and `/AP` values.
 
 Integration tests should cover:
 
@@ -314,6 +367,8 @@ Integration tests should cover:
 - Saved template reopen and download.
 - Fill By Link respondent downloads in editable and flat modes.
 - API Fill outputs that use the saved template snapshot.
+- Re-uploading a DullyPDF-generated calculated PDF so safe calculation metadata hydrates without parsing
+  arbitrary JavaScript.
 
 End-to-end smoke tests should:
 
@@ -323,3 +378,5 @@ End-to-end smoke tests should:
 - Render downloaded PDFs to images so visual font, size, and checkbox/radio states can be inspected.
 - Reopen saved templates and DullyPDF-generated editable downloads and confirm field geometry, values,
   fonts, font-size controls, and inherited/custom color controls hydrate.
+- For calculation fields, verify DullyPDF preview/materialization values in Chrome and run separate Adobe
+  Acrobat QA for live editable recalculation.

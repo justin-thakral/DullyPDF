@@ -196,7 +196,7 @@ These routes should remain signed-in owner routes only in Milestone 1. The publi
 
 Define the fill contract now so all later layers are built against it:
 
-- text/date: scalar values
+- text: scalar values
 - checkbox boolean field: `true` or `false`
 - checkbox group with `enum` rule: one selected option key string
 - checkbox group with `list` rule: array of option keys
@@ -287,7 +287,7 @@ Suggested default behavior:
 
 - omitted keys: ignored
 - null values: treated as unset
-- blank strings: preserved for scalar fields so callers can intentionally clear a text/date-like value
+- blank strings: preserved for scalar fields so callers can intentionally clear a text value
 - unknown keys: ignored when `strict=false`
 - unknown keys: `400` when `strict=true`
 - differently spelled aliases that normalize to the same schema key are rejected as ambiguous

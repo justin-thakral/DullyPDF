@@ -8,9 +8,17 @@ export type { AlertTone } from '../components/ui/Alert';
 export type { DialogTone } from '../components/ui/Dialog';
 
 // Supported field categories used by the editor and overlay styling.
-export type FieldType = 'text' | 'checkbox' | 'radio' | 'signature' | 'date';
+export type FieldType =
+  | 'text'
+  | 'checkbox'
+  | 'radio'
+  | 'signature'
+  | 'image'
+  | 'pdf417'
+  | 'barcode'
+  | 'qr';
 
-export type CreateTool = FieldType | 'quick-radio';
+export type CreateTool = FieldType | 'quick-radio' | 'bulk-text-style' | 'number-input' | 'calculated-output';
 
 export type PdfBase14FontName =
   | 'Helvetica'
@@ -38,10 +46,90 @@ export type FieldFontColorChoice = string;
 
 export type FieldFontColorOverride = 'global' | string;
 
+export type FieldTextAlignmentChoice = 'left' | 'center' | 'right';
+
+export type FieldTextAlignmentOverride = 'global' | FieldTextAlignmentChoice;
+
+export type NumericValueType = 'integer' | 'decimal';
+
+export type CalculationFieldRole =
+  | 'none'
+  | 'number_input'
+  | 'calculated_output'
+  | 'calculated_intermediate'
+  | 'external_imported_calculation';
+
+export type FormulaNode =
+  | { kind: 'constant'; value: number }
+  | { kind: 'field'; fieldId: string }
+  | { kind: 'unary'; op: '-'; value: FormulaNode }
+  | { kind: 'binary'; op: '+' | '-' | '*' | '/'; left: FormulaNode; right: FormulaNode };
+
+export type CalculationMetadata = {
+  role: CalculationFieldRole;
+  valueType: NumericValueType;
+  formula?: FormulaNode;
+  dependencies?: string[];
+  output?: {
+    valueType: NumericValueType;
+    rounding?: 'round' | 'floor' | 'ceil' | 'truncate';
+    blankInputBehavior?: 'treat_as_zero' | 'blank_result' | 'validation_error';
+    divideByZeroBehavior?: 'blank_result' | 'validation_error';
+  };
+  imported?: {
+    source: 'acroform_js' | 'dullypdf_metadata';
+    supported: boolean;
+    reason?: string;
+    rawActionSummary?: string;
+  };
+};
+
+export type FieldDependencyRef = {
+  fieldId: string;
+  fieldName: string;
+};
+
+export type Pdf417DependencyKey =
+  | 'firstName'
+  | 'middleName'
+  | 'lastName'
+  | 'streetAddress'
+  | 'city'
+  | 'state'
+  | 'zip'
+  | 'dob'
+  | 'sex'
+  | 'eyeColor'
+  | 'height'
+  | 'customerId'
+  | 'issueDate'
+  | 'expirationDate';
+
+export type Pdf417ScanData = {
+  [key in Pdf417DependencyKey]?: string | null;
+};
+
+/**
+ * Unified configuration entry for app-only barcode fields (pdf417, barcode, qr).
+ * Each class represents a single label-and-value pairing that the form creator
+ * defines. PDF417 fields concatenate every class into the encoded scan text;
+ * QR / 1D barcode fields encode exactly one class (the first).
+ */
+export type BarcodeClassMode = 'manual' | 'field';
+
+export type BarcodeClass = {
+  id: string;
+  label: string;
+  mode: BarcodeClassMode;
+  fieldRef?: FieldDependencyRef | null;
+  manualValue?: string | null;
+};
+
 export type SavedFormAppearance = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize?: FieldFontSizeChoice;
   globalFieldFontColor?: FieldFontColorChoice;
+  globalFieldAlignment?: FieldTextAlignmentChoice;
 };
 
 export type RadioGroupSource = 'manual' | 'ai_suggestion' | 'migrated_legacy';
@@ -107,6 +195,41 @@ export type PdfField = {
    */
   value?: string | number | boolean | null;
   /**
+   * DullyPDF-only image payload used by image fields and generated barcode previews.
+   */
+  imageDataUrl?: string | null;
+  imageMimeType?: string | null;
+  imageName?: string | null;
+  /**
+   * DullyPDF-only PDF417 scan data and manual fallback values.
+   */
+  pdf417Name?: string | null;
+  pdf417Dob?: string | null;
+  pdf417Data?: Pdf417ScanData | null;
+  /**
+   * DullyPDF-only dependency metadata for generated app-helper fields.
+   */
+  barcodeSourceField?: FieldDependencyRef | null;
+  qrSourceField?: FieldDependencyRef | null;
+  pdf417FieldMappings?: Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> | null;
+  /**
+   * User-defined classes that drive the encoded contents of pdf417 / barcode /
+   * qr fields. Source of truth going forward; legacy pdf417*/qrSourceField/
+   * barcodeSourceField properties remain only for hydration migration.
+   */
+  barcodeClasses?: BarcodeClass[] | null;
+  /**
+   * Internal editable-export marker name used to restore DullyPDF-only helper fields.
+   */
+  appOnlyMarkerName?: string | null;
+  /**
+   * AcroForm field behavior metadata shared by standard fields and calculation controls.
+   */
+  readOnly?: boolean;
+  required?: boolean;
+  valueType?: NumericValueType;
+  calculation?: CalculationMetadata;
+  /**
    * Optional text-safe PDF Base 14 font preview override for text-like fields.
    * "global" inherits the workspace-level font setting; missing values keep legacy data compatible.
    */
@@ -122,6 +245,11 @@ export type PdfField = {
    * "global" inherits the workspace-level color, and missing values keep legacy data compatible.
    */
   fontColor?: FieldFontColorOverride;
+  /**
+   * Optional text alignment override for text-like fields.
+   * "global" inherits the workspace-level alignment, and missing values keep legacy data compatible.
+   */
+  textAlign?: FieldTextAlignmentOverride;
   /**
    * Checkbox grouping metadata used for schema mapping and search/fill rules.
    */

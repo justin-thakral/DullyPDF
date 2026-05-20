@@ -55,6 +55,15 @@ def _coerce_dict_list(value: Any) -> List[Dict[str, Any]]:
     return [dict(entry) for entry in value if isinstance(entry, dict)]
 
 
+def _is_calculated_output_field(field: Dict[str, Any]) -> bool:
+    """Return True when a field is a DullyPDF-computed read-only output."""
+    calculation = field.get("calculation")
+    if not isinstance(calculation, dict):
+        return False
+    role = str(calculation.get("role") or "").strip()
+    return role in {"calculated_output", "calculated_intermediate"}
+
+
 def _resolve_saved_form_fill_rules(template_metadata: Optional[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
     metadata = template_metadata if isinstance(template_metadata, dict) else {}
     fill_rules = metadata.get("fillRules") if isinstance(metadata.get("fillRules"), dict) else {}
@@ -457,7 +466,13 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             # Signature widgets are reserved for the signing workflow. The API
             # Fill contract should not advertise them as writable scalar inputs
             # because the PDF fill engine does not materialize arbitrary text
-            # into signature widgets the way it does for text/date fields.
+            # into signature widgets the way it does for text fields.
+            continue
+        if _is_calculated_output_field(field):
+            # Calculated outputs are materialized server-side from formula
+            # dependencies. Advertising them as writable scalar inputs would
+            # mislead callers; strict mode falls through to unknown-key
+            # rejection, and non-strict mode silently ignores the key.
             continue
         if field_type == "checkbox":
             group_key = normalize_data_key(str(field.get("groupKey") or field_name))

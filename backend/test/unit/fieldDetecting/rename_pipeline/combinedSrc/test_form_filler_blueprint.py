@@ -33,6 +33,7 @@ def _field_debug(pdf_path: Path) -> dict[str, dict[str, str | None]]:
             stream = appearance["/N"].get_object().get_data().decode("utf-8", "ignore")
         debug[name] = {
             "da": str(field.get("/DA")) if field.get("/DA") is not None else None,
+            "q": int(field.get("/Q")) if field.get("/Q") is not None else None,
             "stream": stream,
         }
     return debug
@@ -511,7 +512,7 @@ def test_inject_fields_from_template_resolves_global_and_field_font_sizes(tmp_pa
             },
             {
                 "name": "date_global",
-                "type": "date",
+                "type": "text",
                 "page": 1,
                 "rect": [20, 105, 120, 125],
                 "value": "2026-05-15",
@@ -573,6 +574,49 @@ def test_inject_fields_from_template_resolves_global_and_field_font_colors(tmp_p
     assert dully_metadata["appearance"]["globalFieldFontColor"] == "#336699"
     assert dully_metadata["fields"] == [
         {"fontColor": "#cc3300", "name": "custom_color", "page": 1, "type": "text"}
+    ]
+
+
+def test_inject_fields_from_template_resolves_global_and_field_text_alignment(tmp_path: Path) -> None:
+    input_pdf = tmp_path / "input-alignment.pdf"
+    output_pdf = tmp_path / "output-alignment.pdf"
+    _write_blank_pdf(input_pdf)
+
+    template = {
+        "coordinateSystem": "originTop",
+        "appearance": {"globalFieldAlignment": "center"},
+        "fields": [
+            {
+                "name": "global_alignment",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 120, 40],
+                "value": "Global",
+            },
+            {
+                "name": "custom_alignment",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 50, 120, 70],
+                "value": "Custom",
+                "textAlign": "right",
+            },
+        ],
+    }
+
+    form_filler.inject_fields_from_template(input_pdf, template, output_pdf)
+
+    reader = PdfReader(str(output_pdf))
+    fields = _field_debug(output_pdf)
+    dully_metadata = json.loads(reader.metadata.get("/DullyPDFAppearance"))
+
+    assert fields["global_alignment"]["q"] == 1
+    assert fields["custom_alignment"]["q"] == 2
+    assert "1 0 0 1 32.00" in fields["global_alignment"]["stream"]
+    assert "1 0 0 1 60.00" in fields["custom_alignment"]["stream"]
+    assert dully_metadata["appearance"]["globalFieldAlignment"] == "center"
+    assert dully_metadata["fields"] == [
+        {"name": "custom_alignment", "page": 1, "textAlign": "right", "type": "text"}
     ]
 
 

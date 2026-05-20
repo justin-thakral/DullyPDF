@@ -10,7 +10,7 @@ The frontend styling uses shared design tokens in `index.css`, layered module im
   - `app-shell.css`: editor shell and shared container layout.
   - `ui-buttons.css`: shared button variants.
   - `header-bar.css`: top header controls.
-  - `editor-panels.css`: field list + inspector panels.
+  - `editor-panels.css`: Browser + Field Editor panels.
   - `pdf-viewer.css` and `field-overlays.css`: viewer frame and field overlay visuals.
   - `motion-and-media.css`: motion helpers and responsive breakpoints.
   - `recaptcha.css`: reCAPTCHA badge positioning.

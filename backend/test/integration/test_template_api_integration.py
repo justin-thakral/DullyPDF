@@ -297,7 +297,7 @@ def test_template_api_republish_updates_existing_active_snapshot_version(
                 "pageSizes": {"1": {"width": 612, "height": 792}},
                 "fields": [
                     {"id": "field-1", "name": "full_name", "type": "text", "page": 1, "rect": {"x": 1, "y": 2, "width": 100, "height": 20}},
-                    {"id": "field-2", "name": "dob", "type": "date", "page": 1, "rect": {"x": 5, "y": 30, "width": 80, "height": 18}},
+                    {"id": "field-2", "name": "dob", "type": "text", "page": 1, "rect": {"x": 5, "y": 30, "width": 80, "height": 18}},
                 ],
             },
         ],
@@ -324,7 +324,7 @@ def test_template_api_republish_updates_existing_active_snapshot_version(
     assert second_response.json()["endpoint"]["snapshotVersion"] == 2
     assert second_response.json()["schema"]["defaultExportMode"] == "editable"
     assert second_response.json()["schema"]["fields"] == [
-        {"key": "dob", "fieldName": "dob", "type": "date", "page": 1},
+        {"key": "dob", "fieldName": "dob", "type": "text", "page": 1},
         {"key": "full_name", "fieldName": "full_name", "type": "text", "page": 1},
     ]
     assert snapshot_loader.call_count == 2

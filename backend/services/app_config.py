@@ -62,6 +62,14 @@ def legacy_endpoints_enabled() -> bool:
     return _env_truthy("SANDBOX_ENABLE_LEGACY_ENDPOINTS")
 
 
+def calculation_fields_enabled() -> bool:
+    """Return whether DullyPDF-managed calculation fields are enabled."""
+    raw = _env_value("DULLYPDF_CALCULATION_FIELDS_ENABLED") or _env_value("SANDBOX_ENABLE_CALCULATION_FIELDS")
+    if raw:
+        return raw.lower() in {"1", "true", "yes"}
+    return not is_prod()
+
+
 def require_legacy_enabled() -> None:
     if not legacy_endpoints_enabled():
         raise HTTPException(status_code=404, detail="Not found")

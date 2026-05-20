@@ -15,7 +15,7 @@ describe('buildSigningAnchorsFromFields', () => {
       {
         id: 'date-1',
         name: 'sign_date',
-        type: 'date',
+        type: 'text',
         page: 2,
         rect: { x: 130, y: 20, width: 90, height: 24 },
       },

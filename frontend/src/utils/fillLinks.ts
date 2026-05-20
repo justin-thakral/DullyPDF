@@ -3,6 +3,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   PdfField,
 } from '../types';
 import type { FillLinkResponse, FillLinkSummary, PublicFillLinkSubmitResult } from '../services/api';
@@ -10,11 +11,14 @@ import {
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
   resolveEffectiveFieldFont,
   resolveEffectiveFieldFontColor,
+  resolveEffectiveFieldTextAlignment,
   sanitizeFieldFontColorChoice,
   sanitizeFieldFontSizeChoice,
   sanitizeFieldFontSizeOverride,
+  sanitizeGlobalFieldTextAlignment,
 } from './fieldFonts';
 
 export const FILL_LINK_RESPONSE_ID_KEY = '__fill_link_response_id';
@@ -24,7 +28,7 @@ export const FILL_LINK_RESPONDENT_SECONDARY_LABEL_KEY = '__fill_link_respondent_
 export const FILL_LINK_SUBMITTED_AT_KEY = '__fill_link_submitted_at';
 
 function textFieldSupportsFont(field: PdfField): boolean {
-  return field.type === 'text' || field.type === 'date';
+  return field.type === 'text';
 }
 
 function resolveFillLinkFieldFontSize(
@@ -47,13 +51,22 @@ export function buildFillLinkTemplateFields(
   globalFieldFont: FieldFontChoice = DEFAULT_FIELD_FONT_CHOICE,
   globalFieldFontSize: FieldFontSizeChoice = DEFAULT_FIELD_FONT_SIZE_CHOICE,
   globalFieldFontColor: FieldFontColorChoice = DEFAULT_FIELD_FONT_COLOR,
+  globalFieldAlignment: FieldTextAlignmentChoice = DEFAULT_FIELD_TEXT_ALIGNMENT,
 ) {
   const normalizedGlobalColor = sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
+  const normalizedGlobalAlignment = sanitizeGlobalFieldTextAlignment(
+    globalFieldAlignment,
+    DEFAULT_FIELD_TEXT_ALIGNMENT,
+  );
   return fields.map((field) => ({
     name: field.name,
     type: field.type,
     page: field.page,
     rect: field.rect,
+    readOnly: field.readOnly,
+    required: field.required,
+    valueType: field.valueType,
+    calculation: field.calculation,
     fontName:
       textFieldSupportsFont(field)
         ? resolveEffectiveFieldFont(field, globalFieldFont) || undefined
@@ -62,6 +75,10 @@ export function buildFillLinkTemplateFields(
     fontColor:
       textFieldSupportsFont(field)
         ? resolveEffectiveFieldFontColor(field, normalizedGlobalColor)
+        : undefined,
+    textAlign:
+      textFieldSupportsFont(field)
+        ? resolveEffectiveFieldTextAlignment(field, normalizedGlobalAlignment)
         : undefined,
     groupKey: field.groupKey,
     optionKey: field.optionKey,
@@ -128,19 +145,26 @@ export function buildFillLinkPublishFingerprint(
   globalFieldFont: FieldFontChoice = DEFAULT_FIELD_FONT_CHOICE,
   globalFieldFontSize: FieldFontSizeChoice = DEFAULT_FIELD_FONT_SIZE_CHOICE,
   globalFieldFontColor: FieldFontColorChoice = DEFAULT_FIELD_FONT_COLOR,
+  globalFieldAlignment: FieldTextAlignmentChoice = DEFAULT_FIELD_TEXT_ALIGNMENT,
 ): string {
   const normalizedFields = buildFillLinkTemplateFields(
     fields,
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
   )
     .map((field) => ({
       name: field.name,
       type: field.type || 'text',
+      readOnly: field.readOnly ?? '',
+      required: field.required ?? '',
+      valueType: field.valueType || '',
+      calculation: field.calculation || null,
       fontName: field.fontName || '',
       fontSize: field.fontSize ?? '',
       fontColor: field.fontColor || '',
+      textAlign: field.textAlign || '',
       page: Number.isFinite(field.page) ? field.page : 0,
       rect: {
         x: Number(field.rect?.x || 0),

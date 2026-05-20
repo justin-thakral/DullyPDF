@@ -10,7 +10,7 @@ import type {
   FieldFontColorChoice,
   FieldFontSizeChoice,
   FieldRect,
-  FieldType,
+  FieldTextAlignmentChoice,
   PageSize,
   PdfField,
   RadioGroupSuggestion,
@@ -35,6 +35,7 @@ type PdfViewerProps = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   showFields: boolean;
   showFieldNames: boolean;
   showFieldInfo: boolean;
@@ -44,12 +45,14 @@ type PdfViewerProps = {
   activeCreateTool: CreateTool | null;
   selectedFieldId: string | null;
   pendingQuickRadioFieldIds: string[];
+  pendingBulkTextStyleFieldIds: string[];
   radioSuggestionByFieldId: Map<string, RadioGroupSuggestion>;
   onSelectField: (fieldId: string) => void;
   onUpdateField: (fieldId: string, updates: Partial<PdfField>) => void;
   onUpdateFieldGeometry: (fieldId: string, updates: Partial<PdfField>) => void;
-  onCreateFieldWithRect: (pageNumber: number, type: FieldType, rect: FieldRect) => void;
+  onCreateFieldWithRect: (pageNumber: number, type: CreateTool, rect: FieldRect) => void;
   onQuickRadioSelect: (fieldIds: string[], pageNumber: number) => void;
+  onBulkTextStyleSelect: (fieldIds: string[], pageNumber: number) => void;
   onSelectRadioField: (fieldId: string) => void;
   onBeginFieldChange: () => void;
   onCommitFieldChange: () => void;
@@ -68,6 +71,7 @@ type PdfPageProps = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   showFields: boolean;
   showFieldNames: boolean;
   showFieldInfo: boolean;
@@ -77,12 +81,14 @@ type PdfPageProps = {
   activeCreateTool: CreateTool | null;
   selectedFieldId: string | null;
   pendingQuickRadioFieldIds: string[];
+  pendingBulkTextStyleFieldIds: string[];
   radioSuggestionByFieldId: Map<string, RadioGroupSuggestion>;
   onSelectField: (fieldId: string) => void;
   onUpdateField: (fieldId: string, updates: Partial<PdfField>) => void;
   onUpdateFieldGeometry: (fieldId: string, updates: Partial<PdfField>) => void;
-  onCreateFieldWithRect: (pageNumber: number, type: FieldType, rect: FieldRect) => void;
+  onCreateFieldWithRect: (pageNumber: number, type: CreateTool, rect: FieldRect) => void;
   onQuickRadioSelect: (fieldIds: string[], pageNumber: number) => void;
+  onBulkTextStyleSelect: (fieldIds: string[], pageNumber: number) => void;
   onSelectRadioField: (fieldId: string) => void;
   onBeginFieldChange: () => void;
   onCommitFieldChange: () => void;
@@ -103,6 +109,7 @@ function PdfPageComponent({
   globalFieldFont,
   globalFieldFontSize,
   globalFieldFontColor,
+  globalFieldAlignment,
   showFields,
   showFieldNames,
   showFieldInfo,
@@ -112,12 +119,14 @@ function PdfPageComponent({
   activeCreateTool,
   selectedFieldId,
   pendingQuickRadioFieldIds,
+  pendingBulkTextStyleFieldIds,
   radioSuggestionByFieldId,
   onSelectField,
   onUpdateField,
   onUpdateFieldGeometry,
   onCreateFieldWithRect,
   onQuickRadioSelect,
+  onBulkTextStyleSelect,
   onSelectRadioField,
   onBeginFieldChange,
   onCommitFieldChange,
@@ -226,11 +235,13 @@ function PdfPageComponent({
               showFieldNames={showFieldNames}
               selectedFieldId={selectedFieldId}
               pendingQuickRadioFieldIds={pendingQuickRadioFieldIds}
+              pendingBulkTextStyleFieldIds={pendingBulkTextStyleFieldIds}
               radioSuggestionByFieldId={radioSuggestionByFieldId}
               onSelectField={onSelectField}
               onUpdateField={onUpdateFieldGeometry}
               onCreateFieldWithRect={(type, rect) => onCreateFieldWithRect(pageNumber, type, rect)}
               onQuickRadioSelect={(fieldIds) => onQuickRadioSelect(fieldIds, pageNumber)}
+              onBulkTextStyleSelect={(fieldIds) => onBulkTextStyleSelect(fieldIds, pageNumber)}
               onBeginFieldChange={onBeginFieldChange}
               onCommitFieldChange={onCommitFieldChange}
             />
@@ -243,6 +254,7 @@ function PdfPageComponent({
               globalFieldFont={globalFieldFont}
               globalFieldFontSize={globalFieldFontSize}
               globalFieldFontColor={globalFieldFontColor}
+              globalFieldAlignment={globalFieldAlignment}
               selectedFieldId={selectedFieldId}
               onSelectField={onSelectField}
               onUpdateField={onUpdateField}
@@ -286,6 +298,7 @@ const PdfPage = memo(PdfPageComponent, (prev, next) => {
     prev.globalFieldFont === next.globalFieldFont &&
     prev.globalFieldFontSize === next.globalFieldFontSize &&
     prev.globalFieldFontColor === next.globalFieldFontColor &&
+    prev.globalFieldAlignment === next.globalFieldAlignment &&
     prev.showFields === next.showFields &&
     prev.showFieldNames === next.showFieldNames &&
     prev.showFieldInfo === next.showFieldInfo &&
@@ -295,6 +308,7 @@ const PdfPage = memo(PdfPageComponent, (prev, next) => {
     prev.activeCreateTool === next.activeCreateTool &&
     prev.selectedFieldId === next.selectedFieldId &&
     prev.pendingQuickRadioFieldIds === next.pendingQuickRadioFieldIds &&
+    prev.pendingBulkTextStyleFieldIds === next.pendingBulkTextStyleFieldIds &&
     prev.isActive === next.isActive
   );
 });
@@ -311,6 +325,7 @@ export function PdfViewer({
   globalFieldFont,
   globalFieldFontSize,
   globalFieldFontColor,
+  globalFieldAlignment,
   showFields,
   showFieldNames,
   showFieldInfo,
@@ -320,12 +335,14 @@ export function PdfViewer({
   activeCreateTool,
   selectedFieldId,
   pendingQuickRadioFieldIds,
+  pendingBulkTextStyleFieldIds,
   radioSuggestionByFieldId,
   onSelectField,
   onUpdateField,
   onUpdateFieldGeometry,
   onCreateFieldWithRect,
   onQuickRadioSelect,
+  onBulkTextStyleSelect,
   onSelectRadioField,
   onBeginFieldChange,
   onCommitFieldChange,
@@ -532,21 +549,24 @@ export function PdfViewer({
             globalFieldFont={globalFieldFont}
             globalFieldFontSize={globalFieldFontSize}
             globalFieldFontColor={globalFieldFontColor}
+            globalFieldAlignment={globalFieldAlignment}
             showFields={showFields}
             showFieldNames={showFieldNames}
             showFieldInfo={showFieldInfo}
             moveEnabled={moveEnabled}
             resizeEnabled={resizeEnabled}
             createEnabled={createEnabled}
-                activeCreateTool={activeCreateTool}
-                selectedFieldId={selectedFieldId}
-                pendingQuickRadioFieldIds={pendingQuickRadioFieldIds}
-                radioSuggestionByFieldId={radioSuggestionByFieldId}
-                onSelectField={onSelectField}
+            activeCreateTool={activeCreateTool}
+            selectedFieldId={selectedFieldId}
+            pendingQuickRadioFieldIds={pendingQuickRadioFieldIds}
+            pendingBulkTextStyleFieldIds={pendingBulkTextStyleFieldIds}
+            radioSuggestionByFieldId={radioSuggestionByFieldId}
+            onSelectField={onSelectField}
             onUpdateField={onUpdateField}
             onUpdateFieldGeometry={onUpdateFieldGeometry}
             onCreateFieldWithRect={onCreateFieldWithRect}
             onQuickRadioSelect={onQuickRadioSelect}
+            onBulkTextStyleSelect={onBulkTextStyleSelect}
             onSelectRadioField={onSelectRadioField}
             onBeginFieldChange={onBeginFieldChange}
             onCommitFieldChange={onCommitFieldChange}

@@ -17,6 +17,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   FieldType,
   PdfField,
 } from '../../types';
@@ -32,12 +33,15 @@ import {
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  FIELD_TEXT_ALIGNMENT_CHOICES,
   MAX_FIELD_FONT_SIZE_PT,
   MIN_FIELD_FONT_SIZE_PT,
   PDF_BASE_14_FONT_OPTION_GROUPS,
   fieldFontColorChoiceLabel,
+  fieldTextAlignmentChoiceLabel,
   sanitizeFieldFontColorChoice,
   sanitizeFieldFontSizeChoice,
+  sanitizeGlobalFieldTextAlignment,
 } from '../../utils/fieldFonts';
 import { formatSize } from '../../utils/fields';
 import { FIELD_TYPES, fieldTypeLabel } from '../../utils/fieldUi';
@@ -91,6 +95,8 @@ type FieldListPanelProps = {
   onGlobalFieldFontSizeChange: (fontSize: FieldFontSizeChoice) => void;
   globalFieldFontColor: FieldFontColorChoice;
   onGlobalFieldFontColorChange: (fontColor: FieldFontColorChoice) => void;
+  globalFieldAlignment: FieldTextAlignmentChoice;
+  onGlobalFieldAlignmentChange: (alignment: FieldTextAlignmentChoice) => void;
   confidenceFilter: ConfidenceFilter;
   onConfidenceFilterChange: (tier: ConfidenceTier, enabled: boolean) => void;
   onResetConfidenceFilters: () => void;
@@ -278,6 +284,8 @@ export function FieldListPanel({
   onGlobalFieldFontSizeChange,
   globalFieldFontColor,
   onGlobalFieldFontColorChange,
+  globalFieldAlignment,
+  onGlobalFieldAlignmentChange,
   confidenceFilter,
   onConfidenceFilterChange,
   onResetConfidenceFilters,
@@ -294,6 +302,7 @@ export function FieldListPanel({
   const [filterType, setFilterType] = useState<FieldType | 'all'>('all');
   const [sortMode, setSortMode] = useState<SortMode>('page');
   const [showAllPages, setShowAllPages] = useState(false);
+  const [browserDescriptionOpen, setBrowserDescriptionOpen] = useState(false);
   const [globalFieldFontSizeDraft, setGlobalFieldFontSizeDraft] = useState<FontSizeDraft>({
     source: globalFieldFontSize,
     value: fontSizeDraftValue(globalFieldFontSize),
@@ -466,39 +475,61 @@ export function FieldListPanel({
 
   return (
     <aside className="panel panel--field-list">
-      <div className="panel__header">
-        <div className="panel__header-copy">
-          <h2>Fields</h2>
-          <p className="panel__hint">
-            {renameInProgress ? '(Renaming...) ' : ''}
-            Filter, sort, and jump to fields fast.
-          </p>
+      <div className="panel__header panel__header--stacked">
+        <div className="panel__header-row">
+          <div className="panel__header-copy">
+            <h2>
+              <button
+                type="button"
+                className="panel-title-toggle"
+                aria-expanded={browserDescriptionOpen}
+                aria-controls="field-browser-description"
+                onClick={() => setBrowserDescriptionOpen((open) => !open)}
+              >
+                Browser
+              </button>
+            </h2>
+            {renameInProgress ? <p className="panel__status-text">Renaming in progress.</p> : null}
+          </div>
+          <div className="panel__header-actions">
+            <button
+              type="button"
+              className="ui-button ui-button--ghost ui-button--compact panel__header-action"
+              onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.editorWorkflow)}
+              title="Open Editor Workflow usage docs in a new window"
+            >
+              Usage Docs
+            </button>
+            <button
+              className="panel-scroll-top"
+              type="button"
+              onClick={handleScrollToTop}
+              aria-label="Scroll field panel to top"
+            >
+              Top
+            </button>
+          </div>
         </div>
-        <div className="panel__header-actions">
-          <button
-            type="button"
-            className="ui-button ui-button--ghost ui-button--compact panel__header-action"
-            onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.editorWorkflow)}
-            title="Open Editor Workflow usage docs in a new window"
-          >
-            Usage Docs
-          </button>
-          <button
-            className="panel-scroll-top"
-            type="button"
-            onClick={handleScrollToTop}
-            aria-label="Scroll field panel to top"
-          >
-            Top
-          </button>
-        </div>
+        <p
+          id="field-browser-description"
+          className="panel__micro panel-title-description"
+          hidden={!browserDescriptionOpen}
+        >
+          Browse detected fields, move between PDF pages, control overlay visibility, set workspace-wide
+          text appearance, and select a field before editing it in the right panel.
+        </p>
       </div>
 
       <div className="panel__body" ref={panelBodyRef}>
         <div className="panel__section panel__section--page">
-          <label className="panel__label" htmlFor="page-input">
-            Page
-          </label>
+          <details className="panel-disclosure">
+            <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+              Page
+            </summary>
+            <p className="panel__micro panel-disclosure__body">
+              Move through the PDF pages. With All off, the field list follows the current page.
+            </p>
+          </details>
           <div className="page-bar">
             <button
               className="page-bar__button"
@@ -516,6 +547,7 @@ export function FieldListPanel({
                 name="page-input"
                 className="page-bar__input"
                 type="number"
+                aria-label="Page"
                 min={MIN_PAGE}
                 max={pageCount || MIN_PAGE}
                 inputMode="numeric"
@@ -539,29 +571,34 @@ export function FieldListPanel({
         </div>
 
         <div className="panel__section panel__section--tight">
-          <div>
-            <span className="panel__label">Display mode</span>
-            <div className="panel-display-modes" role="group" aria-label="Display mode presets">
-              {([
-                { key: 'review', label: 'Review' },
-                { key: 'edit', label: 'Edit' },
-                { key: 'fill', label: 'Fill' },
-              ] as const).map((preset) => (
-                <button
-                  key={preset.key}
-                  type="button"
-                  className={`panel-mode-chip${displayPreset === preset.key ? ' panel-mode-chip--active' : ''}`}
-                  onClick={() => onApplyDisplayPreset(preset.key)}
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
-            {displayPreset === 'custom' ? (
-              <p className="panel__micro">Custom mode active from manual visibility toggles.</p>
-            ) : null}
+          <details className="panel-disclosure">
+            <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+              Display mode
+            </summary>
+            <p className="panel__micro panel-disclosure__body">
+              Review shows overlays and names, Edit enables field moving and resizing, and Fill shows
+              fillable inputs. Manual toggles can override the preset.
+            </p>
+          </details>
+          <div className="panel-display-modes" role="group" aria-label="Display mode presets">
+            {([
+              { key: 'review', label: 'Review' },
+              { key: 'edit', label: 'Edit' },
+              { key: 'fill', label: 'Fill' },
+            ] as const).map((preset) => (
+              <button
+                key={preset.key}
+                type="button"
+                className={`panel-mode-chip${displayPreset === preset.key ? ' panel-mode-chip--active' : ''}`}
+                onClick={() => onApplyDisplayPreset(preset.key)}
+              >
+                {preset.label}
+              </button>
+            ))}
           </div>
-
+          {displayPreset === 'custom' ? (
+            <p className="panel__micro">Custom mode active from manual visibility toggles.</p>
+          ) : null}
           <div className="panel__toggle-row" role="group" aria-label="Field display controls">
             <label
               className={`panel-pill-toggle${showFields ? ' panel-pill-toggle--active' : ''}`}
@@ -639,7 +676,18 @@ export function FieldListPanel({
               Clear
             </button>
           </div>
+        </div>
 
+        <div className="panel__section panel__section--tight">
+          <details className="panel-disclosure">
+            <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+              Global appearance
+            </summary>
+            <p className="panel__micro panel-disclosure__body">
+              These workspace defaults apply to text fields unless a selected field has its own font,
+              size, color, or alignment override.
+            </p>
+          </details>
           <div>
             <label className="panel__label" htmlFor="global-field-font">
               Global font
@@ -726,98 +774,132 @@ export function FieldListPanel({
           </div>
 
           <div>
-            <span className="panel__label">Confidence</span>
-            <div className="confidence-filter confidence-filter--compact" role="group" aria-label="Filter by confidence">
-              {(['high', 'medium', 'low'] as const).map((tier) => (
-                <label
-                  key={tier}
-                  className={`confidence-filter__option confidence-filter__option--${tier}`}
-                >
-                  <input
-                    id={`confidence-filter-${tier}`}
-                    name={`confidence-filter-${tier}`}
-                    type="checkbox"
-                    checked={confidenceFilter[tier]}
-                    onChange={(event) => onConfidenceFilterChange(tier, event.target.checked)}
-                  />
-                  <span>{tier.charAt(0).toUpperCase() + tier.slice(1)}</span>
-                </label>
+            <label className="panel__label" htmlFor="global-field-alignment">
+              Global alignment
+            </label>
+            <select
+              id="global-field-alignment"
+              name="global-field-alignment"
+              className="panel__select panel__select--compact"
+              value={sanitizeGlobalFieldTextAlignment(globalFieldAlignment)}
+              onChange={(event) => (
+                onGlobalFieldAlignmentChange(
+                  sanitizeGlobalFieldTextAlignment(event.target.value, globalFieldAlignment),
+                )
+              )}
+            >
+              {FIELD_TEXT_ALIGNMENT_CHOICES.map((alignment) => (
+                <option key={alignment} value={alignment}>
+                  {fieldTextAlignmentChoiceLabel(alignment)}
+                </option>
               ))}
-            </div>
+            </select>
           </div>
+        </div>
 
-          <div className="panel__controls">
+        <div className="panel__section panel__section--tight">
+          <details className="panel-disclosure">
+            <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+              List filters
+            </summary>
+            <p className="panel__micro panel-disclosure__body">
+              Narrow the field list by confidence, name, type, page scope, or sort order before choosing the
+              field to inspect.
+            </p>
+          </details>
             <div>
-              <label className="panel__label" htmlFor="field-search">
-                Search
-              </label>
-              <input
-                id="field-search"
-                name="field-search"
-                className="panel__input"
-                placeholder="Search by name"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </div>
-            <div>
-              <label className="panel__label" htmlFor="field-filter">
-                Filter
-              </label>
-              <select
-                id="field-filter"
-                name="field-filter"
-                className="panel__select"
-                value={filterType}
-                onChange={(event) => setFilterType(event.target.value as FieldType | 'all')}
-              >
-                <option value="all">All types</option>
-                {FIELD_TYPES.map((type) => (
-                  <option key={type} value={type}>
-                    {fieldTypeLabel(type)}
-                  </option>
+              <span className="panel__label">Confidence</span>
+              <div className="confidence-filter confidence-filter--compact" role="group" aria-label="Filter by confidence">
+                {(['high', 'medium', 'low'] as const).map((tier) => (
+                  <label
+                    key={tier}
+                    className={`confidence-filter__option confidence-filter__option--${tier}`}
+                  >
+                    <input
+                      id={`confidence-filter-${tier}`}
+                      name={`confidence-filter-${tier}`}
+                      type="checkbox"
+                      checked={confidenceFilter[tier]}
+                      onChange={(event) => onConfidenceFilterChange(tier, event.target.checked)}
+                    />
+                    <span>{tier.charAt(0).toUpperCase() + tier.slice(1)}</span>
+                  </label>
                 ))}
-              </select>
+              </div>
             </div>
-            <div>
-              <label className="panel__label" htmlFor="field-sort">
-                Sort
-              </label>
-              <select
-                id="field-sort"
-                name="field-sort"
-                className="panel__select"
-                value={sortMode}
-                onChange={(event) => setSortMode(event.target.value as SortMode)}
-              >
-                <option value="page">Page order</option>
-                <option value="name">Name</option>
-                <option value="type">Type</option>
-                <option value="confidence">Confidence</option>
-              </select>
-            </div>
-            <div className="panel-page-field-count" title="Fields on the current page after confidence filtering">
-              <span className="panel-page-field-count__label">Page Fields:</span>
-              <span className="panel-page-field-count__value">{currentPageFieldCount}</span>
-            </div>
-          </div>
 
-          {hasActiveFilters ? (
-            <div className="panel-filter-summary">
-              {query.trim().length > 0 ? <span className="panel-filter-chip">Search: {query.trim()}</span> : null}
-              {filterType !== 'all' ? <span className="panel-filter-chip">Type: {fieldTypeLabel(filterType)}</span> : null}
-              {showAllPages ? <span className="panel-filter-chip">Scope: all pages</span> : null}
-              {sortMode !== 'page' ? <span className="panel-filter-chip">Sort: {sortMode}</span> : null}
-              {confidenceChipLabel ? <span className="panel-filter-chip">{confidenceChipLabel}</span> : null}
-              <button
-                type="button"
-                className="panel-filter-reset"
-                onClick={clearFilters}
-              >
-                Reset filters
-              </button>
+            <div className="panel__controls">
+              <div>
+                <label className="panel__label" htmlFor="field-search">
+                  Search
+                </label>
+                <input
+                  id="field-search"
+                  name="field-search"
+                  className="panel__input"
+                  placeholder="Search by name"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+              </div>
+              <div>
+                <label className="panel__label" htmlFor="field-filter">
+                  Filter
+                </label>
+                <select
+                  id="field-filter"
+                  name="field-filter"
+                  className="panel__select"
+                  value={filterType}
+                  onChange={(event) => setFilterType(event.target.value as FieldType | 'all')}
+                >
+                  <option value="all">All types</option>
+                  {FIELD_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {fieldTypeLabel(type)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="panel__label" htmlFor="field-sort">
+                  Sort
+                </label>
+                <select
+                  id="field-sort"
+                  name="field-sort"
+                  className="panel__select"
+                  value={sortMode}
+                  onChange={(event) => setSortMode(event.target.value as SortMode)}
+                >
+                  <option value="page">Page order</option>
+                  <option value="name">Name</option>
+                  <option value="type">Type</option>
+                  <option value="confidence">Confidence</option>
+                </select>
+              </div>
+              <div className="panel-page-field-count" title="Fields on the current page after confidence filtering">
+                <span className="panel-page-field-count__label">Page Fields:</span>
+                <span className="panel-page-field-count__value">{currentPageFieldCount}</span>
+              </div>
             </div>
-          ) : null}
+
+            {hasActiveFilters ? (
+              <div className="panel-filter-summary">
+                {query.trim().length > 0 ? <span className="panel-filter-chip">Search: {query.trim()}</span> : null}
+                {filterType !== 'all' ? <span className="panel-filter-chip">Type: {fieldTypeLabel(filterType)}</span> : null}
+                {showAllPages ? <span className="panel-filter-chip">Scope: all pages</span> : null}
+                {sortMode !== 'page' ? <span className="panel-filter-chip">Sort: {sortMode}</span> : null}
+                {confidenceChipLabel ? <span className="panel-filter-chip">{confidenceChipLabel}</span> : null}
+                <button
+                  type="button"
+                  className="panel-filter-reset"
+                  onClick={clearFilters}
+                >
+                  Reset filters
+                </button>
+              </div>
+            ) : null}
         </div>
 
         <div className="panel__list">

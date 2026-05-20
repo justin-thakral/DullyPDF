@@ -959,7 +959,7 @@ def test_fill_links_create_group_link_persists_canonical_schema_snapshot(client,
                 {
                     "templateId": "tpl-2",
                     "templateName": "Template Two",
-                    "fields": [{"name": "dob", "type": "date", "page": 1}],
+                    "fields": [{"name": "dob", "type": "text", "page": 1}],
                     "checkboxRules": [],
                 },
             ],
@@ -1030,7 +1030,7 @@ def test_fill_links_create_group_link_without_download_skips_snapshot(client, ap
                 {
                     "templateId": "tpl-2",
                     "templateName": "Template Two",
-                    "fields": [{"name": "dob", "type": "date", "page": 1}],
+                    "fields": [{"name": "dob", "type": "text", "page": 1}],
                     "checkboxRules": [],
                 },
             ],

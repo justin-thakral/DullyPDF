@@ -1,10 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 
 import type { PdfField } from '../../../../src/types';
 import { FieldInputOverlay } from '../../../../src/components/viewer/FieldInputOverlay';
+
+vi.mock('bwip-js/browser', () => ({
+  default: {
+    toCanvas: vi.fn(),
+  },
+}));
 
 function makeField(overrides: Partial<PdfField> & Pick<PdfField, 'id' | 'name' | 'type'>): PdfField {
   return {
@@ -36,6 +42,7 @@ function StatefulOverlay({
       globalFieldFont="default"
       globalFieldFontSize="auto"
       globalFieldFontColor="#000000"
+      globalFieldAlignment="left"
       selectedFieldId={null}
       onSelectField={onSelectField}
       onUpdateField={(fieldId, updates) => {
@@ -50,7 +57,7 @@ function StatefulOverlay({
 }
 
 describe('FieldInputOverlay', () => {
-  it('renders text/date/choice input types with coerced values and scaled geometry', () => {
+  it('renders text and choice input types with coerced values and scaled geometry', () => {
     const fields = [
       makeField({
         id: 'text',
@@ -62,7 +69,7 @@ describe('FieldInputOverlay', () => {
       makeField({
         id: 'date',
         name: 'visit_date',
-        type: 'date',
+        type: 'text',
         rect: { x: 20, y: 12, width: 40, height: 10 },
         value: '2025-01-02',
       }),
@@ -91,6 +98,7 @@ describe('FieldInputOverlay', () => {
         globalFieldFont="default"
         globalFieldFontSize="auto"
         globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
         selectedFieldId="text"
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
@@ -109,7 +117,7 @@ describe('FieldInputOverlay', () => {
 
     expect(textInput.type).toBe('text');
     expect(textInput.value).toBe('42');
-    expect(dateInput.type).toBe('date');
+    expect(dateInput.type).toBe('text');
     expect(dateInput.value).toBe('2025-01-02');
     expect(checkboxInput.checked).toBe(true);
     expect(radioInput.checked).toBe(true);
@@ -145,6 +153,7 @@ describe('FieldInputOverlay', () => {
         globalFieldFont="default"
         globalFieldFontSize="auto"
         globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
         selectedFieldId={null}
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
@@ -213,6 +222,7 @@ describe('FieldInputOverlay', () => {
         globalFieldFont="default"
         globalFieldFontSize="auto"
         globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
         selectedFieldId={null}
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
@@ -246,6 +256,7 @@ describe('FieldInputOverlay', () => {
         globalFieldFont="Times-Italic"
         globalFieldFontSize="auto"
         globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
         selectedFieldId={null}
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
@@ -284,6 +295,7 @@ describe('FieldInputOverlay', () => {
         globalFieldFont="default"
         globalFieldFontSize={12}
         globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
         selectedFieldId={null}
         onSelectField={vi.fn()}
         onUpdateField={vi.fn()}
@@ -298,7 +310,7 @@ describe('FieldInputOverlay', () => {
     expect(overrideBox.style.getPropertyValue('--field-font-size')).toBe('16px');
   });
 
-  it('normalizes empty date values to null on blur', async () => {
+  it('clears date-like text values to an empty string on blur', async () => {
     const user = userEvent.setup();
     const onUpdateField = vi.fn();
     render(
@@ -307,7 +319,7 @@ describe('FieldInputOverlay', () => {
           makeField({
             id: 'date',
             name: 'appointment_date',
-            type: 'date',
+            type: 'text',
             value: '2025-03-15',
           }),
         ]}
@@ -320,6 +332,125 @@ describe('FieldInputOverlay', () => {
     await user.clear(dateInput);
     await user.tab();
 
-    expect(onUpdateField).toHaveBeenCalledWith('date', { value: null });
+    expect(onUpdateField).toHaveBeenCalledWith('date', { value: '' });
+  });
+
+  it('normalizes barcode input and uploads image field previews', async () => {
+    const onUpdateField = vi.fn();
+    render(
+      <StatefulOverlay
+        initialFields={[
+          makeField({
+            id: 'barcode',
+            name: 'member_barcode',
+            type: 'barcode',
+            value: '',
+          }),
+          makeField({
+            id: 'image',
+            name: 'profile_photo',
+            type: 'image',
+            value: null,
+          }),
+        ]}
+        onSelectField={vi.fn()}
+        onUpdateField={onUpdateField}
+      />,
+    );
+
+    const barcodeInput = screen.getByLabelText('member_barcode') as HTMLInputElement;
+    fireEvent.change(barcodeInput, { target: { value: '12-34 abc5678' } });
+    expect(barcodeInput.value).toBe('12345678');
+    fireEvent.blur(barcodeInput);
+    expect(onUpdateField).toHaveBeenCalledWith('barcode', { value: '12345678' });
+
+    const imageInput = screen.getByLabelText('profile_photo') as HTMLInputElement;
+    const file = new File(['image-bytes'], 'profile.png', { type: 'image/png' });
+    fireEvent.change(imageInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      expect(onUpdateField).toHaveBeenCalledWith(
+        'image',
+        expect.objectContaining({
+          imageDataUrl: expect.stringMatching(/^data:image\/png;base64,/),
+          imageMimeType: 'image/png',
+          imageName: 'profile.png',
+          value: null,
+        }),
+      );
+    });
+  });
+
+  it('renders barcode dependency values from source fields as read-only input', () => {
+    render(
+      <FieldInputOverlay
+        fields={[
+          makeField({
+            id: 'source',
+            name: 'member_id',
+            type: 'text',
+            value: '12345678',
+          }),
+          makeField({
+            id: 'barcode',
+            name: 'member_barcode',
+            type: 'barcode',
+            value: '',
+            barcodeSourceField: { fieldId: 'source', fieldName: 'member_id' },
+          }),
+        ]}
+        pageSize={{ width: 200, height: 100 }}
+        scale={1}
+        globalFieldFont="default"
+        globalFieldFontSize="auto"
+        globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
+        selectedFieldId={null}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onSelectRadioField={vi.fn()}
+      />,
+    );
+
+    const barcodeInput = screen.getByLabelText('member_barcode') as HTMLInputElement;
+    expect(barcodeInput.value).toBe('12345678');
+    expect(barcodeInput.readOnly).toBe(true);
+  });
+
+  it('renders QR previews from source field dependencies', () => {
+    vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue('data:image/png;base64,qr');
+
+    render(
+      <FieldInputOverlay
+        fields={[
+          makeField({
+            id: 'source',
+            name: 'verification_url',
+            type: 'text',
+            value: 'https://example.com/verify/abc',
+          }),
+          makeField({
+            id: 'qr',
+            name: 'verification_qr',
+            type: 'qr',
+            value: '',
+            qrSourceField: { fieldId: 'source', fieldName: 'verification_url' },
+          }),
+        ]}
+        pageSize={{ width: 200, height: 100 }}
+        scale={1}
+        globalFieldFont="default"
+        globalFieldFontSize="auto"
+        globalFieldFontColor="#000000"
+        globalFieldAlignment="left"
+        selectedFieldId={null}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onSelectRadioField={vi.fn()}
+      />,
+    );
+
+    const qrPreview = screen.getByRole('button', { name: 'verification_qr' });
+    expect(qrPreview.getAttribute('title')).toBe('https://example.com/verify/abc');
   });
 });

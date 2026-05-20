@@ -18,6 +18,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   PageSize,
   PdfField,
   ProcessingMode,
@@ -203,9 +204,11 @@ type AppearanceController = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   setGlobalFieldFont: Dispatch<SetStateAction<FieldFontChoice>>;
   setGlobalFieldFontSize: Dispatch<SetStateAction<FieldFontSizeChoice>>;
   setGlobalFieldFontColor: Dispatch<SetStateAction<FieldFontColorChoice>>;
+  setGlobalFieldAlignment?: Dispatch<SetStateAction<FieldTextAlignmentChoice>>;
 };
 
 type FieldSelectionController = {
@@ -266,6 +269,7 @@ type UseWorkspaceGroupCoordinatorDeps = {
     globalFieldFont?: FieldFontChoice,
     globalFieldFontSize?: FieldFontSizeChoice,
     globalFieldFontColor?: FieldFontColorChoice,
+    globalFieldAlignment?: FieldTextAlignmentChoice,
   ) => void;
 };
 
@@ -934,12 +938,14 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
               clearedFields,
               snapshot.globalFieldFont,
               snapshot.globalFieldFontColor,
+              { preserveAppOnlyFieldMarkers: true },
             ),
             {
               appearance: {
                 globalFieldFont: snapshot.globalFieldFont,
                 globalFieldFontSize: snapshot.globalFieldFontSize,
                 globalFieldFontColor: snapshot.globalFieldFontColor,
+                globalFieldAlignment: snapshot.globalFieldAlignment,
               },
             },
           );
@@ -950,6 +956,7 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
             globalFieldFont: snapshot.globalFieldFont,
             globalFieldFontSize: snapshot.globalFieldFontSize,
             globalFieldFontColor: snapshot.globalFieldFontColor,
+            globalFieldAlignment: snapshot.globalFieldAlignment,
             hasRenamedFields: true,
             hasMappedSchema: true,
           });

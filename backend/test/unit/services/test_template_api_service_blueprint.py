@@ -86,6 +86,7 @@ def test_build_template_api_snapshot_uses_saved_form_editor_snapshot_and_fill_ru
         "globalFieldFont": "Times-Roman",
         "globalFieldFontSize": 12.0,
         "globalFieldFontColor": "#000000",
+        "globalFieldAlignment": "left",
     }
     assert snapshot["fields"][0]["fontName"] == "global"
     assert snapshot["fields"][0]["fontSize"] == 9.0
@@ -853,9 +854,19 @@ def _date_field(name: str) -> dict:
     return {
         "id": f"field-{name}",
         "name": name,
-        "type": "date",
+        "type": "text",
         "page": 1,
         "rect": {"x": 10, "y": 10, "width": 100, "height": 20},
+    }
+
+
+def _checkbox_field(name: str) -> dict:
+    return {
+        "id": f"field-{name}",
+        "name": name,
+        "type": "checkbox",
+        "page": 1,
+        "rect": {"x": 10, "y": 10, "width": 14, "height": 14},
     }
 
 
@@ -910,7 +921,7 @@ def test_build_group_template_api_snapshot_strict_mode_raises_on_type_conflict()
         {
             "templateId": "tpl-2",
             "templateName": "Form B",
-            "fields": [_date_field("dob")],
+            "fields": [_checkbox_field("dob")],
             "checkboxRules": [],
         },
     ]
@@ -948,7 +959,7 @@ def test_build_group_template_api_schema_emits_strict_json_schema() -> None:
     assert "patient_name" in schema["properties"]
     assert schema["properties"]["patient_name"]["type"] == "string"
     assert schema["properties"]["dob"]["type"] == "string"
-    assert schema["properties"]["dob"]["format"] == "date"
+    assert "format" not in schema["properties"]["dob"]
     assert schema["properties"]["patient_name"]["x-dullypdf-templates"] == ["tpl-1"]
 
 

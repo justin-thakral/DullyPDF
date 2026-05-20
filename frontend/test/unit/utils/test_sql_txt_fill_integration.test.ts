@@ -64,10 +64,10 @@ describe('SQL file → Search & Fill integration', () => {
     expect(filled.find((f) => f.id === 'f7')?.value).toBe('Penicillin');
   });
 
-  it('fills date fields from SQL-parsed row data', () => {
+  it('fills date-like text fields from SQL-parsed row data', () => {
     const fields: PdfField[] = [
-      makeField({ id: 'd1', name: 'patient_birthdate', type: 'date', page: 1 }),
-      makeField({ id: 'd2', name: 'patient_or_guardian_signature_date', type: 'date', page: 2 }),
+      makeField({ id: 'd1', name: 'patient_birthdate', type: 'text', page: 1 }),
+      makeField({ id: 'd2', name: 'patient_or_guardian_signature_date', type: 'text', page: 2 }),
     ];
 
     const filled = applySearchFillRowToFields({

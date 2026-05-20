@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import math
 import os
 import re
 import tempfile
@@ -14,6 +15,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from fastapi import HTTPException, UploadFile
 
 from backend.detection.pdf_validation import PdfValidationError, PdfValidationResult, preflight_pdf_bytes
+from backend.services.app_config import calculation_fields_enabled
 
 # Product-facing text fields use the 12 Base 14 fonts that reliably render normal typed text.
 PDF_BASE_14_FONTS = frozenset(
@@ -38,8 +40,29 @@ DEFAULT_FIELD_FONT_SIZE_CHOICE = "auto"
 GLOBAL_FIELD_FONT_SIZE_CHOICE = "global"
 DEFAULT_FIELD_FONT_COLOR = "#000000"
 GLOBAL_FIELD_FONT_COLOR_CHOICE = "global"
+DEFAULT_FIELD_TEXT_ALIGNMENT = "left"
+GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE = "global"
+FIELD_TEXT_ALIGNMENTS = frozenset({"left", "center", "right"})
+PDF_QUADDING_BY_ALIGNMENT = {"left": 0, "center": 1, "right": 2}
 MIN_FIELD_FONT_SIZE_PT = 4
 MAX_FIELD_FONT_SIZE_PT = 72
+NUMERIC_VALUE_TYPES = frozenset({"integer", "decimal"})
+CALCULATION_COMPATIBLE_FIELD_TYPES = frozenset({"text"})
+CALCULATION_FIELD_ROLES = frozenset(
+    {
+        "none",
+        "number_input",
+        "calculated_output",
+        "calculated_intermediate",
+        "external_imported_calculation",
+    }
+)
+FORMULA_BINARY_OPERATORS = frozenset({"+", "-", "*", "/"})
+FORMULA_ROUNDING_MODES = frozenset({"round", "floor", "ceil", "truncate"})
+FORMULA_BLANK_INPUT_BEHAVIORS = frozenset({"treat_as_zero", "blank_result", "validation_error"})
+FORMULA_DIVIDE_BY_ZERO_BEHAVIORS = frozenset({"blank_result", "validation_error"})
+CALCULATION_IMPORT_SOURCES = frozenset({"acroform_js", "dullypdf_metadata"})
+MAX_FORMULA_NODE_DEPTH = 64
 
 
 def sanitize_basename_segment(value: str, fallback: str) -> str:
@@ -170,6 +193,190 @@ def normalize_field_font_color_override(value: Any) -> Optional[str]:
     return normalize_pdf_hex_color(value)
 
 
+def normalize_global_field_alignment(value: Any) -> str:
+    """Normalize a workspace-level text alignment setting."""
+    normalized = str(value or "").strip().lower()
+    return normalized if normalized in FIELD_TEXT_ALIGNMENTS else DEFAULT_FIELD_TEXT_ALIGNMENT
+
+
+def normalize_field_alignment_override(value: Any) -> Optional[str]:
+    """Normalize a per-field text alignment override for stored editor payloads."""
+    normalized = str(value or "").strip().lower()
+    if normalized == GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE:
+        return GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE
+    return normalized if normalized in FIELD_TEXT_ALIGNMENTS else None
+
+
+def normalize_numeric_value_type(value: Any) -> Optional[str]:
+    """Return a supported numeric field value type or None."""
+    normalized = str(value or "").strip().lower()
+    return normalized if normalized in NUMERIC_VALUE_TYPES else None
+
+
+def _coerce_payload_bool(value: Any, *, default: bool = False) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return default
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "1", "yes"}:
+            return True
+        if normalized in {"false", "0", "no"}:
+            return False
+    return bool(value)
+
+
+def _normalize_formula_node(value: Any, *, depth: int = 0) -> Dict[str, Any]:
+    """
+    Validate one DullyPDF formula node and return its normalized safe shape.
+
+    The recursive walk is O(n) over the number of formula nodes and caps depth
+    so malformed payloads cannot create unbounded recursion.
+    """
+    if depth > MAX_FORMULA_NODE_DEPTH:
+        raise ValueError("formula nesting is too deep")
+    if not isinstance(value, dict):
+        raise ValueError("formula nodes must be objects")
+    kind = str(value.get("kind") or "").strip()
+    if kind == "constant":
+        raw_value = value.get("value")
+        if isinstance(raw_value, bool):
+            raise ValueError("formula constants must be numeric")
+        try:
+            numeric = float(raw_value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("formula constants must be numeric") from exc
+        if not math.isfinite(numeric):
+            raise ValueError("formula constants must be finite")
+        return {"kind": "constant", "value": numeric}
+    if kind == "field":
+        field_id = str(value.get("fieldId") or "").strip()
+        if not field_id:
+            raise ValueError("formula field nodes require fieldId")
+        return {"kind": "field", "fieldId": field_id}
+    if kind == "unary":
+        op = str(value.get("op") or "").strip()
+        if op != "-":
+            raise ValueError("formula unary operator must be -")
+        return {
+            "kind": "unary",
+            "op": op,
+            "value": _normalize_formula_node(value.get("value"), depth=depth + 1),
+        }
+    if kind == "binary":
+        op = str(value.get("op") or "").strip()
+        if op not in FORMULA_BINARY_OPERATORS:
+            raise ValueError("formula binary operator must be one of +, -, *, /")
+        return {
+            "kind": "binary",
+            "op": op,
+            "left": _normalize_formula_node(value.get("left"), depth=depth + 1),
+            "right": _normalize_formula_node(value.get("right"), depth=depth + 1),
+        }
+    raise ValueError("formula node kind is not supported")
+
+
+def _normalize_formula_output(value: Any, *, default_value_type: str) -> Optional[Dict[str, Any]]:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError("calculation.output must be an object")
+    raw_value_type = value.get("valueType")
+    output_value_type = normalize_numeric_value_type(raw_value_type)
+    if raw_value_type is not None and output_value_type is None:
+        raise ValueError("calculation.output.valueType is not supported")
+    output: Dict[str, Any] = {
+        "valueType": output_value_type or default_value_type,
+    }
+    rounding = value.get("rounding")
+    if rounding is not None:
+        normalized_rounding = str(rounding or "").strip()
+        if normalized_rounding not in FORMULA_ROUNDING_MODES:
+            raise ValueError("calculation.output.rounding is not supported")
+        output["rounding"] = normalized_rounding
+    blank_input_behavior = value.get("blankInputBehavior")
+    if blank_input_behavior is not None:
+        normalized_blank_behavior = str(blank_input_behavior or "").strip()
+        if normalized_blank_behavior not in FORMULA_BLANK_INPUT_BEHAVIORS:
+            raise ValueError("calculation.output.blankInputBehavior is not supported")
+        output["blankInputBehavior"] = normalized_blank_behavior
+    divide_by_zero_behavior = value.get("divideByZeroBehavior")
+    if divide_by_zero_behavior is not None:
+        normalized_divide_behavior = str(divide_by_zero_behavior or "").strip()
+        if normalized_divide_behavior not in FORMULA_DIVIDE_BY_ZERO_BEHAVIORS:
+            raise ValueError("calculation.output.divideByZeroBehavior is not supported")
+        output["divideByZeroBehavior"] = normalized_divide_behavior
+    return output
+
+
+def _normalize_imported_calculation_metadata(value: Any) -> Optional[Dict[str, Any]]:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError("calculation.imported must be an object")
+    source = str(value.get("source") or "").strip()
+    if source not in CALCULATION_IMPORT_SOURCES:
+        raise ValueError("calculation.imported.source is not supported")
+    imported: Dict[str, Any] = {
+        "source": source,
+        "supported": _coerce_payload_bool(value.get("supported"), default=False),
+    }
+    for key in ("reason", "rawActionSummary"):
+        raw = value.get(key)
+        if raw is not None:
+            imported[key] = str(raw)
+    return imported
+
+
+def normalize_calculation_metadata(value: Any) -> Optional[Dict[str, Any]]:
+    """Normalize DullyPDF calculation metadata without evaluating field dependencies."""
+    if value is None:
+        return None
+    if not calculation_fields_enabled():
+        raise ValueError("calculation fields are disabled")
+    if not isinstance(value, dict):
+        raise ValueError("field calculation must be an object")
+    role = str(value.get("role") or "").strip()
+    if role not in CALCULATION_FIELD_ROLES:
+        raise ValueError("calculation.role is not supported")
+    raw_value_type = value.get("valueType")
+    value_type = normalize_numeric_value_type(raw_value_type)
+    if raw_value_type is not None and value_type is None:
+        raise ValueError("calculation.valueType is not supported")
+    value_type = value_type or "integer"
+    normalized: Dict[str, Any] = {
+        "role": role,
+        "valueType": value_type,
+    }
+    if value.get("formula") is not None:
+        normalized["formula"] = _normalize_formula_node(value.get("formula"))
+    dependencies = value.get("dependencies")
+    if dependencies is not None:
+        if not isinstance(dependencies, list):
+            raise ValueError("calculation.dependencies must be a list")
+        normalized["dependencies"] = [
+            dependency
+            for entry in dependencies
+            if (dependency := str(entry or "").strip())
+        ]
+    output = _normalize_formula_output(value.get("output"), default_value_type=value_type)
+    if output is not None:
+        normalized["output"] = output
+    imported = _normalize_imported_calculation_metadata(value.get("imported"))
+    if imported is not None:
+        normalized["imported"] = imported
+    return normalized
+
+
+def pdf_quadding_from_alignment(value: Any) -> int:
+    """Return the AcroForm /Q value for a normalized text alignment."""
+    return PDF_QUADDING_BY_ALIGNMENT.get(
+        normalize_global_field_alignment(value),
+        PDF_QUADDING_BY_ALIGNMENT[DEFAULT_FIELD_TEXT_ALIGNMENT],
+    )
+
+
 def pdf_rgb_from_hex_color(value: Any) -> Tuple[float, float, float]:
     """Convert a #rrggbb color into PDF RGB operands from 0 to 1."""
     normalized = normalize_pdf_hex_color(value) or DEFAULT_FIELD_FONT_COLOR
@@ -196,6 +403,7 @@ def normalize_field_appearance_payload(value: Any) -> Dict[str, Any]:
         "globalFieldFont": normalize_global_field_font(appearance.get("globalFieldFont")),
         "globalFieldFontSize": normalize_global_field_font_size(appearance.get("globalFieldFontSize")),
         "globalFieldFontColor": normalize_global_field_font_color(appearance.get("globalFieldFontColor")),
+        "globalFieldAlignment": normalize_global_field_alignment(appearance.get("globalFieldAlignment")),
     }
 
 
@@ -258,6 +466,21 @@ def resolve_effective_field_font_color(
     if field_color and field_color != GLOBAL_FIELD_FONT_COLOR_CHOICE:
         return field_color
     return normalize_global_field_font_color(global_field_font_color)
+
+
+def resolve_effective_field_alignment(
+    field: Dict[str, Any],
+    *,
+    global_field_alignment: Any = DEFAULT_FIELD_TEXT_ALIGNMENT,
+) -> Optional[str]:
+    """Resolve the concrete text alignment for a text-like field."""
+    field_type = str(field.get("type") or "text").strip().lower()
+    if field_type not in {"text", "date", "combo", "combobox"}:
+        return None
+    field_alignment = normalize_field_alignment_override(field.get("textAlign"))
+    if field_alignment and field_alignment != GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE:
+        return field_alignment
+    return normalize_global_field_alignment(global_field_alignment)
 
 
 def should_write_field_font_size_default_appearance(
@@ -332,21 +555,50 @@ def coerce_field_payloads(raw_fields: List[Any]) -> List[Dict[str, Any]]:
         if not isinstance(entry, dict):
             continue
         payload = dict(entry)
+        field_type = str(payload.get("type") or "text").strip().lower()
+        if field_type == "date":
+            field_type = "text"
+            payload["type"] = field_type
         font_name = normalize_field_font_override(payload.get("fontName"))
-        if font_name and str(payload.get("type") or "text").strip().lower() in {"text", "date", "combo", "combobox"}:
+        if font_name and field_type in {"text", "combo", "combobox"}:
             payload["fontName"] = font_name
         else:
             payload.pop("fontName", None)
         font_size = normalize_field_font_size_override(payload.get("fontSize"))
-        if font_size is not None and str(payload.get("type") or "text").strip().lower() in {"text", "date", "combo", "combobox"}:
+        if font_size is not None and field_type in {"text", "combo", "combobox"}:
             payload["fontSize"] = font_size
         else:
             payload.pop("fontSize", None)
         font_color = normalize_field_font_color_override(payload.get("fontColor"))
-        if font_color is not None and str(payload.get("type") or "text").strip().lower() in {"text", "date", "combo", "combobox"}:
+        if font_color is not None and field_type in {"text", "combo", "combobox"}:
             payload["fontColor"] = font_color
         else:
             payload.pop("fontColor", None)
+        text_alignment = normalize_field_alignment_override(payload.get("textAlign"))
+        if text_alignment is not None and field_type in {"text", "combo", "combobox"}:
+            payload["textAlign"] = text_alignment
+        else:
+            payload.pop("textAlign", None)
+        if "readOnly" in payload or "readonly" in payload:
+            payload["readOnly"] = _coerce_payload_bool(payload.get("readOnly", payload.get("readonly")))
+            payload.pop("readonly", None)
+        if "required" in payload:
+            payload["required"] = _coerce_payload_bool(payload.get("required"))
+        if payload.get("valueType") is not None:
+            if field_type not in CALCULATION_COMPATIBLE_FIELD_TYPES:
+                raise ValueError("valueType is only supported on text fields")
+            value_type = normalize_numeric_value_type(payload.get("valueType"))
+            if value_type is None:
+                raise ValueError("valueType must be integer or decimal")
+            payload["valueType"] = value_type
+        else:
+            payload.pop("valueType", None)
+        if payload.get("calculation") is not None:
+            if field_type not in CALCULATION_COMPATIBLE_FIELD_TYPES:
+                raise ValueError("calculation metadata is only supported on text fields")
+            payload["calculation"] = normalize_calculation_metadata(payload.get("calculation"))
+        else:
+            payload.pop("calculation", None)
         rect_list: Optional[List[float]] = None
         rect = payload.get("rect")
         if isinstance(rect, dict):

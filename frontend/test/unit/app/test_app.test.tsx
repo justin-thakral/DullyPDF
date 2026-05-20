@@ -581,6 +581,15 @@ const openFillableWorkspace = async () => {
   fireEvent.click(await screen.findByTestId('upload-fillable'));
 };
 
+const waitForPipelinePageCount = async (count = '1') => {
+  await waitFor(() => {
+    const pageSummaries = screen
+      .getAllByText('Pages')
+      .map((node) => node.parentElement?.textContent ?? '');
+    expect(pageSummaries.some((summary) => summary.includes(count))).toBe(true);
+  });
+};
+
 describe('App', () => {
   beforeEach(() => {
     installMatchMedia({
@@ -1956,6 +1965,7 @@ describe('App', () => {
       await settleAuthAsSignedIn();
       fireEvent.click(await screen.findByTestId('start-workflow'));
       fireEvent.click(await screen.findByTestId('upload-detect'));
+      await waitForPipelinePageCount();
       fireEvent.click(await screen.findByRole('button', { name: 'Continue' }));
 
       await waitFor(() => {
@@ -2008,6 +2018,7 @@ describe('App', () => {
       await settleAuthAsSignedIn();
       fireEvent.click(await screen.findByTestId('start-workflow'));
       fireEvent.click(await screen.findByTestId('upload-detect'));
+      await waitForPipelinePageCount();
       fireEvent.click(await screen.findByRole('button', { name: 'Continue' }));
 
       expect(await screen.findByText('Waiting for GPU detector to start...')).toBeTruthy();

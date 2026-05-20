@@ -47,7 +47,7 @@ def _date_field(name: str, *, page: int = 1, y: int = 10) -> Dict[str, Any]:
     return {
         "id": f"field-{name}",
         "name": name,
-        "type": "date",
+        "type": "text",
         "page": page,
         "rect": {"x": 10, "y": y, "width": 100, "height": 14},
     }
@@ -291,26 +291,26 @@ def test_required_all_optional_stays_optional() -> None:
 def test_type_conflict_strict_raises() -> None:
     sources = [
         _source("tpl-1", "A", [_text_field("dob")]),
-        _source("tpl-2", "B", [_date_field("dob")]),
+        _source("tpl-2", "B", [_checkbox_field(group_key="dob", option_key="yes")]),
     ]
     with pytest.raises(GroupSchemaTypeConflictError) as exc_info:
         g.build_group_canonical_schema_from_sources(sources, strict=True)
     assert exc_info.value.canonical_key == "dob"
     assert "text" in exc_info.value.conflicting_types
-    assert "date" in exc_info.value.conflicting_types
+    assert "checkbox" in exc_info.value.conflicting_types
 
 
 def test_type_conflict_soft_warns_and_picks_more_constrained() -> None:
     sources = [
         _source("tpl-1", "A", [_text_field("dob")]),
-        _source("tpl-2", "B", [_date_field("dob")]),
+        _source("tpl-2", "B", [_checkbox_field(group_key="dob", option_key="yes")]),
     ]
     schema = g.build_group_canonical_schema_from_sources(sources, strict=False)
 
     warning_codes = [w["code"] for w in schema["warnings"]]
     assert "type_conflict_soft" in warning_codes
     dob = next(f for f in schema["fields"] if f["canonicalKey"] == "dob")
-    assert dob["type"] == "date", "soft mode should keep the more-constrained 'date' type"
+    assert dob["type"] == "checkbox", "soft mode should keep the more-constrained checkbox type"
 
 
 def test_type_conflict_no_conflict_for_compatible_types() -> None:
@@ -380,13 +380,13 @@ def test_json_schema_text_field_emits_string_type() -> None:
     assert js["properties"]["patient_name"]["type"] == "string"
 
 
-def test_json_schema_date_field_emits_date_format() -> None:
+def test_json_schema_date_like_text_field_emits_plain_string() -> None:
     sources = [_source("tpl-1", "A", [_date_field("dob")])]
     js = g.build_group_canonical_json_schema(
         g.build_group_canonical_schema_from_sources(sources)
     )
     assert js["properties"]["dob"]["type"] == "string"
-    assert js["properties"]["dob"]["format"] == "date"
+    assert "format" not in js["properties"]["dob"]
 
 
 def test_json_schema_radio_group_emits_enum() -> None:

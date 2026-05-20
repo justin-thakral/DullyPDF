@@ -71,7 +71,7 @@ def _date_field(name: str) -> dict:
     return {
         "id": f"field-{name}",
         "name": name,
-        "type": "date",
+        "type": "text",
         "page": 1,
         "rect": {"x": 10, "y": 30, "width": 100, "height": 20},
     }

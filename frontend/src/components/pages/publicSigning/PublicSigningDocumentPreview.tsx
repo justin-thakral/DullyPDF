@@ -13,6 +13,7 @@ type PublicSigningDocumentPreviewProps = {
 
 const EMPTY_PAGE_SIZES: Record<number, PageSize> = {};
 const EMPTY_PENDING_RADIO_IDS: string[] = [];
+const EMPTY_PENDING_BULK_STYLE_IDS: string[] = [];
 const EMPTY_RADIO_SUGGESTIONS = new Map<string, RadioGroupSuggestion>();
 
 function destroyPdfDocument(pdfDoc: PDFDocumentProxy | null) {
@@ -132,6 +133,7 @@ export function PublicSigningDocumentPreview({
           globalFieldFont="default"
           globalFieldFontSize="auto"
           globalFieldFontColor="#000000"
+          globalFieldAlignment="left"
           showFields
           showFieldNames
           showFieldInfo={false}
@@ -141,12 +143,14 @@ export function PublicSigningDocumentPreview({
           activeCreateTool={null}
           selectedFieldId={null}
           pendingQuickRadioFieldIds={EMPTY_PENDING_RADIO_IDS}
+          pendingBulkTextStyleFieldIds={EMPTY_PENDING_BULK_STYLE_IDS}
           radioSuggestionByFieldId={EMPTY_RADIO_SUGGESTIONS}
           onSelectField={() => {}}
           onUpdateField={() => {}}
           onUpdateFieldGeometry={() => {}}
           onCreateFieldWithRect={() => {}}
           onQuickRadioSelect={() => {}}
+          onBulkTextStyleSelect={() => {}}
           onSelectRadioField={() => {}}
           onBeginFieldChange={() => {}}
           onCommitFieldChange={() => {}}

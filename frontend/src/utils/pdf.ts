@@ -3,29 +3,41 @@
  */
 import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 import type {
+  FieldDependencyRef,
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   FieldRect,
   FieldType,
   PageSize,
   PdfBase14FontName,
+  Pdf417DependencyKey,
+  Pdf417ScanData,
   PdfField,
 } from '../types';
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { clampRectToPage } from './coords';
 import { parseConfidence } from './confidence';
-import { ensureUniqueFieldName, makeId } from './fields';
+import {
+  convertAppOnlyMarkerFields,
+  ensureUniqueFieldName,
+  makeId,
+  type DullyPdfAppOnlyFieldMetadata,
+} from './fields';
 import {
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
   isPdfBase14FontName,
   sanitizeFieldFontColorChoice,
   sanitizeFieldFontColorOverride,
   sanitizeFieldFontSizeChoice,
   sanitizeFieldFontSizeOverride,
+  sanitizeFieldTextAlignmentOverride,
+  sanitizeGlobalFieldTextAlignment,
 } from './fieldFonts';
 
 const DEBUG_PDF = false;
@@ -93,6 +105,8 @@ type PdfJsAnnotation = {
     fontSize?: number;
     fontColor?: ArrayLike<number>;
   };
+  textAlignment?: unknown;
+  textAlign?: unknown;
 };
 
 type PdfJsFieldObject = {
@@ -110,6 +124,8 @@ type PdfJsFieldObject = {
     fontSize?: number;
     fontColor?: ArrayLike<number>;
   };
+  textAlignment?: unknown;
+  textAlign?: unknown;
 };
 
 const CONFIDENCE_TAG_PREFIX = 'dullypdf:confidence=';
@@ -121,15 +137,18 @@ export type DullyPdfAppearanceMetadata = {
     globalFieldFont: FieldFontChoice;
     globalFieldFontSize: FieldFontSizeChoice;
     globalFieldFontColor: FieldFontColorChoice;
+    globalFieldAlignment: FieldTextAlignmentChoice;
   };
   fields: Array<{
     name: string;
     page: number;
-    type: 'text' | 'date';
+    type: 'text';
     fontName?: PdfBase14FontName;
     fontSize?: FieldFontSizeChoice;
     fontColor?: FieldFontColorChoice;
+    textAlign?: FieldTextAlignmentChoice;
   }>;
+  appOnlyFields?: DullyPdfAppOnlyFieldMetadata[];
 };
 
 type ExtractFieldsOptions = {
@@ -172,6 +191,116 @@ function metadataRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
 }
 
+function normalizeMetadataRect(value: unknown): FieldRect | undefined {
+  if (Array.isArray(value) && value.length === 4) {
+    const [x1, y1, x2, y2] = value.map(Number);
+    if ([x1, y1, x2, y2].every(Number.isFinite) && x2 > x1 && y2 > y1) {
+      return { x: x1, y: y1, width: x2 - x1, height: y2 - y1 };
+    }
+  }
+  const rect = metadataRecord(value);
+  const x = Number(rect.x);
+  const y = Number(rect.y);
+  const width = Number(rect.width);
+  const height = Number(rect.height);
+  if ([x, y, width, height].every(Number.isFinite) && width > 0 && height > 0) {
+    return { x, y, width, height };
+  }
+  return undefined;
+}
+
+function normalizeMetadataDependencyRef(value: unknown): FieldDependencyRef | null {
+  const record = metadataRecord(value);
+  const fieldId = typeof record.fieldId === 'string' ? record.fieldId.trim() : '';
+  const fieldName = typeof record.fieldName === 'string' ? record.fieldName.trim() : '';
+  if (!fieldId && !fieldName) return null;
+  return { fieldId, fieldName };
+}
+
+function normalizeMetadataPdf417Data(value: unknown): Pdf417ScanData | null {
+  const record = metadataRecord(value);
+  const entries = Object.entries(record).reduce<Pdf417ScanData>((acc, [key, entryValue]) => {
+    if (typeof entryValue === 'string') {
+      acc[key as Pdf417DependencyKey] = entryValue;
+    } else if (entryValue === null) {
+      acc[key as Pdf417DependencyKey] = null;
+    }
+    return acc;
+  }, {});
+  return Object.keys(entries).length ? entries : null;
+}
+
+function normalizeMetadataPdf417Mappings(
+  value: unknown,
+): Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> | null {
+  const record = metadataRecord(value);
+  const entries = Object.entries(record).reduce<Partial<Record<Pdf417DependencyKey, FieldDependencyRef>>>(
+    (acc, [key, entryValue]) => {
+      const ref = normalizeMetadataDependencyRef(entryValue);
+      if (ref) {
+        acc[key as Pdf417DependencyKey] = ref;
+      }
+      return acc;
+    },
+    {},
+  );
+  return Object.keys(entries).length ? entries : null;
+}
+
+function normalizeDullyPdfAppOnlyFieldMetadata(value: unknown): DullyPdfAppOnlyFieldMetadata[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((entry): DullyPdfAppOnlyFieldMetadata | null => {
+      const record = metadataRecord(entry);
+      const name = typeof record.name === 'string' ? record.name.trim() : '';
+      const type = typeof record.type === 'string' ? record.type.trim().toLowerCase() : '';
+      if (!name || (type !== 'image' && type !== 'pdf417' && type !== 'barcode' && type !== 'qr')) return null;
+      const page = Number(record.page);
+      const metadata: DullyPdfAppOnlyFieldMetadata = {
+        name,
+        type,
+        page: Number.isFinite(page) && page > 0 ? Math.floor(page) : 1,
+      };
+      if (typeof record.id === 'string' && record.id.trim()) {
+        metadata.id = record.id.trim();
+      }
+      if (typeof record.markerName === 'string' && record.markerName.trim()) {
+        metadata.markerName = record.markerName.trim();
+      }
+      const rect = normalizeMetadataRect(record.rect);
+      if (rect) metadata.rect = rect;
+      if (
+        record.value === null ||
+        typeof record.value === 'string' ||
+        typeof record.value === 'number' ||
+        typeof record.value === 'boolean'
+      ) {
+        metadata.value = record.value;
+      }
+      if (typeof record.imageDataUrl === 'string' || record.imageDataUrl === null) {
+        metadata.imageDataUrl = record.imageDataUrl;
+      }
+      if (typeof record.imageMimeType === 'string' || record.imageMimeType === null) {
+        metadata.imageMimeType = record.imageMimeType;
+      }
+      if (typeof record.imageName === 'string' || record.imageName === null) {
+        metadata.imageName = record.imageName;
+      }
+      if (typeof record.pdf417Name === 'string' || record.pdf417Name === null) {
+        metadata.pdf417Name = record.pdf417Name;
+      }
+      if (typeof record.pdf417Dob === 'string' || record.pdf417Dob === null) {
+        metadata.pdf417Dob = record.pdf417Dob;
+      }
+      metadata.pdf417Data = normalizeMetadataPdf417Data(record.pdf417Data);
+      metadata.barcodeSourceField = normalizeMetadataDependencyRef(record.barcodeSourceField);
+      metadata.qrSourceField = normalizeMetadataDependencyRef(record.qrSourceField);
+      metadata.pdf417FieldMappings = normalizeMetadataPdf417Mappings(record.pdf417FieldMappings);
+      return metadata;
+    })
+    .filter((entry): entry is DullyPdfAppOnlyFieldMetadata => entry !== null);
+}
+
 function normalizeDullyPdfAppearanceMetadata(value: unknown): DullyPdfAppearanceMetadata | null {
   const record = metadataRecord(value);
   if (record.schema !== DULLYPDF_APPEARANCE_METADATA_SCHEMA) {
@@ -189,6 +318,10 @@ function normalizeDullyPdfAppearanceMetadata(value: unknown): DullyPdfAppearance
     appearance.globalFieldFontColor,
     DEFAULT_FIELD_FONT_COLOR,
   );
+  const globalFieldAlignment = sanitizeGlobalFieldTextAlignment(
+    appearance.globalFieldAlignment,
+    DEFAULT_FIELD_TEXT_ALIGNMENT,
+  );
   const fields = Array.isArray(record.fields)
     ? record.fields
         .map((entry): DullyPdfAppearanceMetadata['fields'][number] | null => {
@@ -196,11 +329,10 @@ function normalizeDullyPdfAppearanceMetadata(value: unknown): DullyPdfAppearance
           const name = typeof fieldRecord.name === 'string' ? fieldRecord.name.trim() : '';
           if (!name) return null;
           const page = Number(fieldRecord.page);
-          const type = fieldRecord.type === 'date' ? 'date' : 'text';
           const normalizedField: DullyPdfAppearanceMetadata['fields'][number] = {
             name,
             page: Number.isFinite(page) && page > 0 ? Math.floor(page) : 1,
-            type,
+            type: 'text',
           };
           if (isPdfBase14FontName(fieldRecord.fontName)) {
             normalizedField.fontName = fieldRecord.fontName;
@@ -213,6 +345,10 @@ function normalizeDullyPdfAppearanceMetadata(value: unknown): DullyPdfAppearance
           if (fontColor !== 'global') {
             normalizedField.fontColor = sanitizeFieldFontColorChoice(fontColor, DEFAULT_FIELD_FONT_COLOR);
           }
+          const textAlign = sanitizeFieldTextAlignmentOverride(fieldRecord.textAlign, 'global');
+          if (textAlign !== 'global') {
+            normalizedField.textAlign = textAlign;
+          }
           return normalizedField;
         })
         .filter((entry): entry is DullyPdfAppearanceMetadata['fields'][number] => entry !== null)
@@ -222,8 +358,10 @@ function normalizeDullyPdfAppearanceMetadata(value: unknown): DullyPdfAppearance
       globalFieldFont,
       globalFieldFontSize,
       globalFieldFontColor,
+      globalFieldAlignment,
     },
     fields,
+    appOnlyFields: normalizeDullyPdfAppOnlyFieldMetadata(record.appOnlyFields),
   };
 }
 
@@ -374,9 +512,6 @@ function mapFieldObjectType(fieldType?: string): FieldType {
   if (normalized === 'signature') {
     return 'signature';
   }
-  if (normalized === 'date') {
-    return 'date';
-  }
   return 'text';
 }
 
@@ -448,11 +583,20 @@ function normalizePdfJsFontName(value: unknown): PdfBase14FontName | undefined {
   return resourceAliasMap[normalized];
 }
 
+function normalizePdfJsTextAlignment(value: unknown): FieldTextAlignmentChoice | undefined {
+  const normalized = typeof value === 'string' ? value.trim().toLowerCase() : value;
+  if (normalized === 0 || normalized === '0' || normalized === 'left') return 'left';
+  if (normalized === 1 || normalized === '1' || normalized === 'center') return 'center';
+  if (normalized === 2 || normalized === '2' || normalized === 'right') return 'right';
+  return undefined;
+}
+
 function applyPdfJsDefaultAppearance(
   field: PdfField,
   appearanceData: PdfJsAnnotation['defaultAppearanceData'] | PdfJsFieldObject['defaultAppearanceData'],
+  source?: Pick<PdfJsAnnotation | PdfJsFieldObject, 'textAlignment' | 'textAlign'>,
 ): PdfField {
-  if (field.type !== 'text' && field.type !== 'date') {
+  if (field.type !== 'text') {
     return field;
   }
   const next: PdfField = { ...field };
@@ -467,6 +611,10 @@ function applyPdfJsDefaultAppearance(
   const fontColor = hexColorFromPdfJsColor(appearanceData?.fontColor);
   if (fontColor) {
     next.fontColor = fontColor;
+  }
+  const textAlign = normalizePdfJsTextAlignment(source?.textAlignment ?? source?.textAlign);
+  if (textAlign) {
+    next.textAlign = textAlign;
   }
   return next;
 }
@@ -495,7 +643,7 @@ function applyDullyPdfFieldAppearance(
   field: PdfField,
   metadataQueues: Map<string, DullyPdfAppearanceMetadata['fields']>,
 ): PdfField {
-  if (field.type !== 'text' && field.type !== 'date') {
+  if (field.type !== 'text') {
     return field;
   }
   const queue = metadataQueues.get(appearanceMetadataKey(field));
@@ -512,6 +660,9 @@ function applyDullyPdfFieldAppearance(
   }
   if (metadata.fontColor) {
     next.fontColor = metadata.fontColor;
+  }
+  if (metadata.textAlign) {
+    next.textAlign = metadata.textAlign;
   }
   return next;
 }
@@ -568,7 +719,9 @@ export async function extractFieldsFromPdf(
         ...(hasValue ? { value } : {}),
       };
       const field = applyDullyPdfFieldAppearance(
-        dullyAppearanceMetadata ? baseField : applyPdfJsDefaultAppearance(baseField, annotation.defaultAppearanceData),
+        dullyAppearanceMetadata
+          ? baseField
+          : applyPdfJsDefaultAppearance(baseField, annotation.defaultAppearanceData, annotation),
         dullyAppearanceMetadataQueues,
       );
       fields.push(field);
@@ -596,13 +749,13 @@ export async function extractFieldsFromPdf(
 
   if (fields.length > 0) {
     debugLog('Extracted fields', { total: fields.length });
-    return fields;
+    return convertAppOnlyMarkerFields(fields, dullyAppearanceMetadata?.appOnlyFields ?? []);
   }
 
   const fieldObjects = (await doc.getFieldObjects()) as Record<string, PdfJsFieldObject[]> | null;
   if (!fieldObjects) {
     debugLog('Extracted fields', { total: fields.length });
-    return fields;
+    return convertAppOnlyMarkerFields(fields, dullyAppearanceMetadata?.appOnlyFields ?? []);
   }
 
   const pageCache = new Map<
@@ -659,7 +812,9 @@ export async function extractFieldsFromPdf(
       ...(hasValue ? { value } : {}),
     };
     const field = applyDullyPdfFieldAppearance(
-      dullyAppearanceMetadata ? baseField : applyPdfJsDefaultAppearance(baseField, fieldObject.defaultAppearanceData),
+      dullyAppearanceMetadata
+        ? baseField
+        : applyPdfJsDefaultAppearance(baseField, fieldObject.defaultAppearanceData, fieldObject),
       dullyAppearanceMetadataQueues,
     );
     fields.push(field);
@@ -668,5 +823,5 @@ export async function extractFieldsFromPdf(
   }
 
   debugLog('Extracted fields from field objects', { total: fields.length });
-  return fields;
+  return convertAppOnlyMarkerFields(fields, dullyAppearanceMetadata?.appOnlyFields ?? []);
 }

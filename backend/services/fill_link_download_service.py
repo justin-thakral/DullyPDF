@@ -29,7 +29,10 @@ from backend.fieldDetecting.rename_pipeline.combinedSrc.form_filler import injec
 from backend.firebaseDB.storage_service import download_pdf_bytes, is_gcs_path
 from backend.logging_config import get_logger
 from backend.services.mapping_service import normalize_data_key
+from backend.services.app_only_field_materialization_service import prepare_app_only_fields_for_materialization
+from backend.services.calculation_field_service import materialize_calculated_fields
 from backend.services.pdf_export_service import flatten_pdf_form_widgets
+from backend.services.pdf_images import stamp_image_fields_into_pdf
 from backend.services.pdf_service import (
     coerce_field_payloads,
     normalize_field_appearance_payload,
@@ -636,7 +639,7 @@ def apply_fill_link_answers_to_fields(snapshot: Dict[str, Any], answers: Dict[st
                 continue
         field["value"] = value
 
-    return fields
+    return materialize_calculated_fields(fields)
 
 
 def materialize_fill_link_response_download(
@@ -653,6 +656,10 @@ def materialize_fill_link_response_download(
     resolved_export_mode = _normalize_download_mode(
         export_mode if export_mode is not None else snapshot.get("downloadMode")
     )
+    filled_fields = prepare_app_only_fields_for_materialization(
+        filled_fields,
+        include_markers=resolved_export_mode == "editable",
+    )
 
     source_fd, source_name = tempfile.mkstemp(suffix=".pdf")
     template_fd, template_name = tempfile.mkstemp(suffix=".json")
@@ -666,6 +673,7 @@ def materialize_fill_link_response_download(
                 "coordinateSystem": "originTop",
                 "appearance": normalize_field_appearance_payload(snapshot.get("appearance")),
                 "renderTextAppearanceStreams": True,
+                "includeDullyPdfAppOnlyMetadata": resolved_export_mode == "editable",
                 "fields": filled_fields,
             }
         ),
@@ -674,6 +682,7 @@ def materialize_fill_link_response_download(
     cleanup_targets = [Path(source_name), Path(template_name), Path(output_name)]
     try:
         inject_fields(Path(source_name), Path(template_name), Path(output_name))
+        Path(output_name).write_bytes(stamp_image_fields_into_pdf(Path(output_name).read_bytes(), filled_fields))
         if resolved_export_mode == "flat":
             Path(output_name).write_bytes(flatten_pdf_form_widgets(Path(output_name).read_bytes()))
     except Exception:

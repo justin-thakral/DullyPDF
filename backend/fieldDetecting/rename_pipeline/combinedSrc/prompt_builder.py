@@ -269,7 +269,7 @@ def build_prompt(
         "2) The same page image with an overlay of field IDs.\n"
         "Each detected field is drawn as a box and tagged with a short 3-character ID "
         "(base32, e.g., k7m):\n"
-        "- Text/date/signature fields: the ID is printed centered *inside* the field box.\n"
+        "- Text/signature fields: the ID is printed centered *inside* the field box.\n"
         "- Checkbox fields: the ID is centered on the checkbox square (no callout box).\n"
         "- If present, a third image shows the bottom of the previous page (no overlays). "
         "It is context only—do NOT label or rename fields from that image.\n"

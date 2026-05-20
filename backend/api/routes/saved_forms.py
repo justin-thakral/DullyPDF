@@ -243,7 +243,10 @@ async def create_saved_form_session(
     if not template.pdf_bucket_path or not is_gcs_path(template.pdf_bucket_path):
         raise HTTPException(status_code=404, detail="Form PDF not found in storage")
 
-    fields = coerce_field_payloads(payload.fields)
+    try:
+        fields = coerce_field_payloads(payload.fields)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     if not fields:
         raise HTTPException(status_code=400, detail="No fields provided for saved form session")
 

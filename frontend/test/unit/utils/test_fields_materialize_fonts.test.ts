@@ -79,4 +79,12 @@ describe('prepareFieldsForMaterialize font metadata', () => {
 
     expect(field.fontSize).toBe('auto');
   });
+
+  it('keeps global font size top-level and drops inherited field font-size markers', () => {
+    const [field] = prepareFieldsForMaterialize([
+      textField({ fontSize: 'global', value: 'Ada' }),
+    ]);
+
+    expect(field.fontSize).toBeUndefined();
+  });
 });

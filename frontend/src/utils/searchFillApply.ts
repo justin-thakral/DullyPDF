@@ -104,10 +104,31 @@ function parseDateFromUnknown(value: unknown): Date | null {
   return null;
 }
 
-function formatDateValue(value: unknown): string | null {
-  const parsed = parseDateFromUnknown(value);
-  if (!parsed) return null;
-  return parsed.toISOString().slice(0, 10);
+function fieldLooksLikeDateValue(field: PdfField): boolean {
+  if (field.type !== 'text') {
+    return false;
+  }
+  const normalizedName = normaliseDataKey(field.name || '');
+  if (!normalizedName) {
+    return false;
+  }
+  const tokens = normalizedName.split('_').filter(Boolean);
+  return tokens.includes('date') || tokens.includes('dob') || tokens.includes('birthdate');
+}
+
+function normalizeDateValue(value: unknown): string | null {
+  const date = parseDateFromUnknown(value);
+  return date ? date.toISOString().slice(0, 10) : null;
+}
+
+function coerceValueForField(field: PdfField, value: unknown): string | number | boolean | null {
+  if (fieldLooksLikeDateValue(field)) {
+    const normalizedDate = normalizeDateValue(value);
+    if (normalizedDate !== null) {
+      return normalizedDate;
+    }
+  }
+  return coerceValue(value);
 }
 
 function computeAgeYears(dob: Date, reference: Date): number {
@@ -944,6 +965,13 @@ export function applySearchFillRowToFieldsWithStats({
       return undefined;
     }
 
+    const calculationRole = field.calculation?.role;
+    if (calculationRole === 'calculated_output' || calculationRole === 'calculated_intermediate') {
+      // Calculated outputs are recomputed from formula dependencies; ignore
+      // any value the source row might provide for them.
+      return undefined;
+    }
+
     const normalizedName = normaliseDataKey(field.name || '');
     if (!normalizedName) return undefined;
 
@@ -1048,16 +1076,7 @@ export function applySearchFillRowToFieldsWithStats({
       changedFieldCount += 1;
       return { ...field, value: null };
     }
-    if (field.type === 'date') {
-      const dateValue = formatDateValue(matchValue);
-      if (dateValue === null) return field;
-      matchedFieldCount += 1;
-      if (!Object.is(normalizeComparableFieldValue(field.value), dateValue)) {
-        changedFieldCount += 1;
-      }
-      return { ...field, value: dateValue };
-    }
-    const nextValue = coerceValue(matchValue);
+    const nextValue = coerceValueForField(field, matchValue);
     matchedFieldCount += 1;
     if (!Object.is(normalizeComparableFieldValue(field.value), normalizeComparableFieldValue(nextValue))) {
       changedFieldCount += 1;

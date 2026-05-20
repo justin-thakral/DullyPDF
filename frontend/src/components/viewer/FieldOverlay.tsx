@@ -3,11 +3,13 @@
  */
 import { type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from 'react';
 import type { CreateTool, FieldRect, FieldType, PdfField, PageSize, RadioGroupSuggestion } from '../../types';
+import { isCalculationCreateTool } from '../../utils/calculationFields';
 import { fieldConfidenceTierForField, nameConfidenceTierForField } from '../../utils/confidence';
 import { clamp, clampRectToPage, toViewportRect } from '../../utils/coords';
 import { getDefaultFieldRect, getMinFieldSize } from '../../utils/fields';
 import { radioGroupSuggestionConfidenceTier } from '../../utils/radioGroupSuggestions';
 import {
+  collectFieldSelection,
   collectQuickRadioSelection,
   type QuickRadioSelectionMode,
   toQuickRadioSelectionRect,
@@ -15,6 +17,29 @@ import {
 
 const SMALL_FIELD_THRESHOLD_PDF = 24;
 const CREATE_CLICK_THRESHOLD = 2;
+const NOOP_BULK_TEXT_STYLE_SELECT = () => {};
+
+function isFieldCreateTool(tool: CreateTool): tool is FieldType {
+  return (
+    tool === 'text' ||
+    tool === 'signature' ||
+    tool === 'checkbox' ||
+    tool === 'radio' ||
+    tool === 'image' ||
+    tool === 'pdf417' ||
+    tool === 'barcode' ||
+    tool === 'qr'
+  );
+}
+
+function createToolFieldType(tool: CreateTool): FieldType | null {
+  if (isCalculationCreateTool(tool)) return 'text';
+  return isFieldCreateTool(tool) ? tool : null;
+}
+
+function isBulkTextStyleSelectionField(field: PdfField) {
+  return field.type === 'text';
+}
 
 type CornerResizeMode = 'resize-tl' | 'resize-tr' | 'resize-bl' | 'resize-br';
 type DragMode =
@@ -61,11 +86,13 @@ type FieldOverlayProps = {
   showFieldNames: boolean;
   selectedFieldId: string | null;
   pendingQuickRadioFieldIds: string[];
+  pendingBulkTextStyleFieldIds?: string[];
   radioSuggestionByFieldId: Map<string, RadioGroupSuggestion>;
   onSelectField: (fieldId: string) => void;
   onUpdateField: (fieldId: string, updates: Partial<PdfField>) => void;
-  onCreateFieldWithRect: (type: FieldType, rect: FieldRect) => void;
+  onCreateFieldWithRect: (type: CreateTool, rect: FieldRect) => void;
   onQuickRadioSelect: (fieldIds: string[]) => void;
+  onBulkTextStyleSelect?: (fieldIds: string[]) => void;
   onBeginFieldChange: () => void;
   onCommitFieldChange: () => void;
 };
@@ -261,11 +288,13 @@ export function FieldOverlay({
   showFieldNames,
   selectedFieldId,
   pendingQuickRadioFieldIds = [],
+  pendingBulkTextStyleFieldIds = [],
   radioSuggestionByFieldId = new Map<string, RadioGroupSuggestion>(),
   onSelectField,
   onUpdateField,
   onCreateFieldWithRect,
   onQuickRadioSelect,
+  onBulkTextStyleSelect = NOOP_BULK_TEXT_STYLE_SELECT,
   onBeginFieldChange,
   onCommitFieldChange,
 }: FieldOverlayProps) {
@@ -279,6 +308,7 @@ export function FieldOverlay({
   const createToolRef = useRef<CreateTool | null>(activeCreateTool);
   const [draftCreateRect, setDraftCreateRect] = useState<FieldRect | null>(null);
   const [previewQuickRadioFieldIds, setPreviewQuickRadioFieldIds] = useState<string[]>([]);
+  const [previewBulkTextStyleFieldIds, setPreviewBulkTextStyleFieldIds] = useState<string[]>([]);
   const [dragPreview, setDragPreview] = useState<DragPreviewState>(null);
   const dragPreviewRef = useRef<DragPreviewState>(null);
 
@@ -292,10 +322,15 @@ export function FieldOverlay({
 
   useEffect(() => {
     createToolRef.current = activeCreateTool;
+    if (activeCreateTool !== 'quick-radio') {
+      setPreviewQuickRadioFieldIds([]);
+    }
+    if (activeCreateTool !== 'bulk-text-style') {
+      setPreviewBulkTextStyleFieldIds([]);
+    }
     if (!activeCreateTool) {
       createStateRef.current = null;
       setDraftCreateRect(null);
-      setPreviewQuickRadioFieldIds([]);
     }
   }, [activeCreateTool]);
 
@@ -333,7 +368,7 @@ export function FieldOverlay({
     const handlePointerMove = (event: PointerEvent) => {
       const createState = createStateRef.current;
       if (createState && event.pointerId === createState.pointerId) {
-        const type = createToolRef.current;
+        const type = createState.tool;
         const point = clientPointToPdfPoint(event.clientX, event.clientY);
         if (!type || !point) return;
         createState.current = point;
@@ -347,11 +382,25 @@ export function FieldOverlay({
           );
           return;
         }
+        if (type === 'bulk-text-style') {
+          const selectionMode: QuickRadioSelectionMode = event.altKey ? 'touch' : 'precise';
+          createState.selectionMode = selectionMode;
+          const nextDraft = toQuickRadioSelectionRect(createState.start, point, pageRef.current);
+          setDraftCreateRect(nextDraft);
+          setPreviewBulkTextStyleFieldIds(
+            collectFieldSelection(fields, nextDraft, point, selectionMode, isBulkTextStyleSelectionField),
+          );
+          return;
+        }
+        const fieldType = createToolFieldType(type);
+        if (!fieldType) {
+          return;
+        }
         if (isCreateClick(createState.start, point)) {
           setDraftCreateRect(null);
           return;
         }
-        const nextDraft = toDragRect(createState.start, point, type, pageRef.current);
+        const nextDraft = toDragRect(createState.start, point, fieldType, pageRef.current);
         setDraftCreateRect(nextDraft);
         return;
       }
@@ -436,7 +485,7 @@ export function FieldOverlay({
     const endDrag = (pointerId: number) => {
       const createState = createStateRef.current;
       if (createState && pointerId === createState.pointerId) {
-        const type = createToolRef.current;
+        const type = createState.tool;
         if (createState.pointerTarget) {
           try {
             createState.pointerTarget.releasePointerCapture(createState.pointerId);
@@ -459,8 +508,25 @@ export function FieldOverlay({
             );
             onQuickRadioSelect(fieldIds);
             setPreviewQuickRadioFieldIds([]);
+          } else if (type === 'bulk-text-style') {
+            const selectionRect = toQuickRadioSelectionRect(
+              createState.start,
+              createState.current,
+              pageRef.current,
+            );
+            const fieldIds = collectFieldSelection(
+              fields,
+              selectionRect,
+              createState.current,
+              createState.selectionMode ?? 'precise',
+              isBulkTextStyleSelectionField,
+            );
+            onBulkTextStyleSelect(fieldIds);
+            setPreviewBulkTextStyleFieldIds([]);
           } else {
-            const rect = toDragRect(createState.start, createState.current, type, pageRef.current);
+            const fieldType = createToolFieldType(type);
+            if (!fieldType) return;
+            const rect = toDragRect(createState.start, createState.current, fieldType, pageRef.current);
             onCreateFieldWithRect(type, rect);
           }
         }
@@ -501,7 +567,14 @@ export function FieldOverlay({
       window.removeEventListener('pointercancel', handlePointerCancel);
       clearDragPreview();
     };
-  }, [fields, onCommitFieldChange, onCreateFieldWithRect, onQuickRadioSelect, onUpdateField]);
+  }, [
+    fields,
+    onBulkTextStyleSelect,
+    onCommitFieldChange,
+    onCreateFieldWithRect,
+    onQuickRadioSelect,
+    onUpdateField,
+  ]);
 
   /**
    * Capture initial drag state and signal change start.
@@ -566,6 +639,11 @@ export function FieldOverlay({
       setPreviewQuickRadioFieldIds([]);
       return;
     }
+    if (type === 'bulk-text-style') {
+      setDraftCreateRect(null);
+      setPreviewBulkTextStyleFieldIds([]);
+      return;
+    }
     setDraftCreateRect(null);
   };
 
@@ -575,6 +653,10 @@ export function FieldOverlay({
   const selectedRadioGroupId =
     selectedField?.type === 'radio' ? selectedField.radioGroupId || null : null;
   const pendingQuickRadioIdSet = new Set([...pendingQuickRadioFieldIds, ...previewQuickRadioFieldIds]);
+  const pendingBulkTextStyleIdSet = new Set([
+    ...pendingBulkTextStyleFieldIds,
+    ...previewBulkTextStyleFieldIds,
+  ]);
 
   return (
     <div
@@ -592,7 +674,9 @@ export function FieldOverlay({
           aria-label={
             activeCreateTool === 'quick-radio'
               ? 'Drag a selection box around checkbox fields for a radio group'
-              : `Draw ${activeCreateTool} field`
+              : activeCreateTool === 'bulk-text-style'
+                ? 'Drag a selection box around text fields for bulk style conversion'
+                : `Draw ${activeCreateTool} field`
           }
         />
       ) : null}
@@ -638,6 +722,7 @@ export function FieldOverlay({
           selected ? 'field-box--active' : '',
           radioPeer ? 'field-box--radio-peer' : '',
           pendingQuickRadioIdSet.has(field.id) ? 'field-box--quick-radio-pending' : '',
+          pendingBulkTextStyleIdSet.has(field.id) ? 'field-box--bulk-text-style-pending' : '',
           suggestedForRadio ? 'field-box--radio-suggestion' : '',
           suggestedForRadio && radioSuggestionTier ? `field-box--radio-suggestion--${radioSuggestionTier}` : '',
         ]

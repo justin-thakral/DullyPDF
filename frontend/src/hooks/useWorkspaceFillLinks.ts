@@ -6,6 +6,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   PdfField,
   TextTransformRule,
 } from '../types';
@@ -13,6 +14,7 @@ import {
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
 } from '../utils/fieldFonts';
 import type {
   FillLinkGroupTemplatePayload,
@@ -57,6 +59,7 @@ type GroupTemplateSnapshot = {
   globalFieldFont?: FieldFontChoice;
   globalFieldFontSize?: FieldFontSizeChoice;
   globalFieldFontColor?: FieldFontColorChoice;
+  globalFieldAlignment?: FieldTextAlignmentChoice;
   checkboxRules: CheckboxRule[];
 };
 
@@ -83,6 +86,7 @@ type UseWorkspaceFillLinksDeps = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   checkboxRules: CheckboxRule[];
   textTransformRules: TextTransformRule[];
   savedFillLinkPublishFingerprint: string | null;
@@ -119,6 +123,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
     checkboxRules,
     textTransformRules,
     savedFillLinkPublishFingerprint,
@@ -219,6 +224,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
       globalFieldFont,
       globalFieldFontSize,
       globalFieldFontColor,
+      globalFieldAlignment,
     ) !== savedFillLinkPublishFingerprint;
   }, [
     activeTemplateId,
@@ -227,6 +233,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
     savedFillLinkPublishFingerprint,
   ]);
 
@@ -236,8 +243,9 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
       globalFieldFont,
       globalFieldFontSize,
       globalFieldFontColor,
+      globalFieldAlignment,
     ),
-    [fields, globalFieldFont, globalFieldFontSize, globalFieldFontColor],
+    [fields, globalFieldFont, globalFieldFontSize, globalFieldFontColor, globalFieldAlignment],
   );
 
   useEffect(() => {
@@ -360,7 +368,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
         groupTemplateSources.push({
           templateId: template.id,
           templateName: template.name,
-          appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor },
+          appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor, globalFieldAlignment },
           fields: serializeCurrentFillLinkFields(),
           checkboxRules: checkboxRules as Array<Record<string, unknown>>,
         });
@@ -374,12 +382,14 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
           globalFieldFont: snapshot.globalFieldFont ?? DEFAULT_FIELD_FONT_CHOICE,
           globalFieldFontSize: snapshot.globalFieldFontSize ?? DEFAULT_FIELD_FONT_SIZE_CHOICE,
           globalFieldFontColor: snapshot.globalFieldFontColor ?? DEFAULT_FIELD_FONT_COLOR,
+          globalFieldAlignment: snapshot.globalFieldAlignment ?? DEFAULT_FIELD_TEXT_ALIGNMENT,
         },
         fields: buildFillLinkTemplateFields(
           snapshot.fields,
           snapshot.globalFieldFont ?? DEFAULT_FIELD_FONT_CHOICE,
           snapshot.globalFieldFontSize ?? DEFAULT_FIELD_FONT_SIZE_CHOICE,
           snapshot.globalFieldFontColor ?? DEFAULT_FIELD_FONT_COLOR,
+          snapshot.globalFieldAlignment ?? DEFAULT_FIELD_TEXT_ALIGNMENT,
         ),
         checkboxRules: snapshot.checkboxRules as Array<Record<string, unknown>>,
       });
@@ -394,6 +404,7 @@ export function useWorkspaceFillLinks(deps: UseWorkspaceFillLinksDeps) {
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
     serializeCurrentFillLinkFields,
   ]);
 

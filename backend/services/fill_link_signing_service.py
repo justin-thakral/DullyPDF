@@ -89,7 +89,7 @@ def upload_signing_pdf_bytes(pdf_bytes: bytes, destination_path: str) -> str:
 
 def _looks_like_signed_date_field(field_name: str, field_type: str) -> bool:
     normalized_name = str(field_name or "").strip().lower()
-    return field_type == "date" and "sign" in normalized_name and "date" in normalized_name
+    return field_type == "text" and "sign" in normalized_name and "date" in normalized_name
 
 
 def _coerce_text_answer(value: Any) -> str:

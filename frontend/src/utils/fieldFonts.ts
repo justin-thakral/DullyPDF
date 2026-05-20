@@ -5,6 +5,8 @@ import type {
   FieldFontChoice,
   FieldFontSizeChoice,
   FieldFontSizeOverride,
+  FieldTextAlignmentChoice,
+  FieldTextAlignmentOverride,
   PdfBase14FontName,
   PdfField,
 } from '../types';
@@ -12,9 +14,12 @@ import type {
 export const DEFAULT_FIELD_FONT_CHOICE: FieldFontChoice = 'default';
 export const DEFAULT_FIELD_FONT_SIZE_CHOICE: FieldFontSizeChoice = 'auto';
 export const DEFAULT_FIELD_FONT_COLOR: FieldFontColorChoice = '#000000';
+export const DEFAULT_FIELD_TEXT_ALIGNMENT: FieldTextAlignmentChoice = 'left';
+export const GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE = 'global';
 export const DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT = 10;
 export const MIN_FIELD_FONT_SIZE_PT = 4;
 export const MAX_FIELD_FONT_SIZE_PT = 72;
+export const FIELD_TEXT_ALIGNMENT_CHOICES = ['left', 'center', 'right'] as const satisfies readonly FieldTextAlignmentChoice[];
 
 // Product-facing text fields use the 12 Base 14 fonts that reliably render normal typed text.
 export const PDF_BASE_14_FONTS = [
@@ -33,6 +38,7 @@ export const PDF_BASE_14_FONTS = [
 ] as const satisfies readonly PdfBase14FontName[];
 
 const PDF_BASE_14_FONT_SET = new Set<string>(PDF_BASE_14_FONTS);
+const FIELD_TEXT_ALIGNMENT_SET = new Set<string>(FIELD_TEXT_ALIGNMENT_CHOICES);
 
 export type PdfBase14FontOptionGroup = {
   label: string;
@@ -221,6 +227,46 @@ export function fieldFontSizeChoiceLabel(value: FieldFontSizeChoice | undefined)
     return 'Auto';
   }
   return `${value} pt`;
+}
+
+export function isFieldTextAlignmentChoice(value: unknown): value is FieldTextAlignmentChoice {
+  return typeof value === 'string' && FIELD_TEXT_ALIGNMENT_SET.has(value);
+}
+
+export function sanitizeGlobalFieldTextAlignment(
+  value: unknown,
+  fallback: FieldTextAlignmentChoice = DEFAULT_FIELD_TEXT_ALIGNMENT,
+): FieldTextAlignmentChoice {
+  return isFieldTextAlignmentChoice(value) ? value : fallback;
+}
+
+export function sanitizeFieldTextAlignmentOverride(
+  value: unknown,
+  fallback: FieldTextAlignmentOverride = GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE,
+): FieldTextAlignmentOverride {
+  if (value === GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE) {
+    return GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE;
+  }
+  return isFieldTextAlignmentChoice(value) ? value : fallback;
+}
+
+export function resolveEffectiveFieldTextAlignment(
+  field: Pick<PdfField, 'textAlign'>,
+  globalFieldAlignment: FieldTextAlignmentChoice | undefined,
+): FieldTextAlignmentChoice {
+  const fieldAlignment = sanitizeFieldTextAlignmentOverride(
+    field.textAlign,
+    GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE,
+  );
+  if (fieldAlignment !== GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE) {
+    return fieldAlignment;
+  }
+  return sanitizeGlobalFieldTextAlignment(globalFieldAlignment, DEFAULT_FIELD_TEXT_ALIGNMENT);
+}
+
+export function fieldTextAlignmentChoiceLabel(value: FieldTextAlignmentChoice | undefined): string {
+  const normalized = sanitizeGlobalFieldTextAlignment(value, DEFAULT_FIELD_TEXT_ALIGNMENT);
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 }
 
 export function cssStyleForPdfBase14Font(fontName: PdfBase14FontName): CSSProperties {

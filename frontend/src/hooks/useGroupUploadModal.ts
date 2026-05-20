@@ -554,6 +554,9 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
               signal: controller.signal,
             });
             sessionId = sessionPayload.sessionId;
+            if (Array.isArray(sessionPayload.fields) && sessionPayload.fields.length === fields.length) {
+              fields = sessionPayload.fields;
+            }
           }
 
           if (cancelRequestedRef.current) {
@@ -665,7 +668,12 @@ export function useGroupUploadModal(deps: UseGroupUploadModalDeps) {
           setItemState(item.id, { detail: 'Saving template…' });
           const materializedBlob = await ApiService.materializeFormPdf(
             item.file,
-            prepareFieldsForMaterialize(nextFields),
+            prepareFieldsForMaterialize(
+              nextFields,
+              undefined,
+              undefined,
+              { preserveAppOnlyFieldMarkers: true },
+            ),
             {
               signal: controller.signal,
             },

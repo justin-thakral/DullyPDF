@@ -205,9 +205,6 @@ function fillLinkQuestionLooksLikePhone(question: Partial<FillLinkQuestion>): bo
 
 function inferFieldQuestionType(field: Pick<PdfField, 'name' | 'type'>): FillLinkQuestion['type'] {
   const normalizedFieldType = normalizeFillLinkKey(field.type) || 'text';
-  if (normalizedFieldType === 'date') {
-    return 'date';
-  }
   const probe = {
     key: field.name,
     sourceField: field.name,

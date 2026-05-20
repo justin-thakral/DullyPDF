@@ -61,6 +61,7 @@ The dev scripts source env vars via `scripts/use-frontend-env.sh`. Common entrie
 - `VITE_FORM_CATALOG_ASSET_BASE` for the public form-catalog asset origin. Dev and stack keep this on `/form-catalog-assets`; prod points it at the public GCS bucket.
 - `VITE_DETECTION_POLL_TIMEOUT_MS` to cap how long detection polling waits before returning.
 - `VITE_BACKEND_READY_MAX_WAIT_MS` to control how long the homepage shell waits for `/api/health` during Cloud Run cold starts before surfacing a retry message.
+- `VITE_ENABLE_CALCULATION_FIELDS` to show or hide DullyPDF-managed calculation field setup in the editor. When unset, it defaults on outside production builds and off in production builds.
 - Firebase Identity Platform keys (`VITE_FIREBASE_*`).
 - `VITE_GOOGLE_ADS_TAG_ID` to inject the Google Ads `gtag.js` base tag in prod builds.
 - `VITE_GOOGLE_ADS_SIGNUP_LABEL`, `VITE_GOOGLE_ADS_PRO_PURCHASE_LABEL`, and `VITE_GOOGLE_ADS_REFILL_PURCHASE_LABEL` for native Google Ads conversion events.

@@ -443,9 +443,19 @@ def _date_field(name: str, *, field_id: str | None = None, page: int = 1, y: int
     return {
         "id": field_id or f"f-{name}",
         "name": name,
-        "type": "date",
+        "type": "text",
         "page": page,
         "rect": {"x": 10.0, "y": float(y), "width": 100.0, "height": 14.0},
+    }
+
+
+def _checkbox_field(name: str, *, field_id: str | None = None, page: int = 1, y: int = 10) -> dict:
+    return {
+        "id": field_id or f"f-{name}",
+        "name": name,
+        "type": "checkbox",
+        "page": page,
+        "rect": {"x": 10.0, "y": float(y), "width": 14.0, "height": 14.0},
     }
 
 
@@ -572,10 +582,10 @@ def test_canonical_schema_strict_mode_returns_422_on_type_conflict(
         "tpl-1": _template_record_with_snapshot("tpl-1", "Form A"),
         "tpl-2": _template_record_with_snapshot("tpl-2", "Form B"),
     }
-    # 'dob' is a text field on tpl-1 but a date field on tpl-2 — strict mode must reject.
+    # 'dob' is a text field on tpl-1 but a checkbox field on tpl-2, so strict mode must reject.
     snapshot_lookup = {
         "tpl-1": _editor_snapshot(_text_field("dob")),
-        "tpl-2": _editor_snapshot(_date_field("dob")),
+        "tpl-2": _editor_snapshot(_checkbox_field("dob")),
     }
 
     mocker.patch.object(app_main, "get_template", side_effect=lambda template_id, user_id: template_lookup.get(template_id))
@@ -592,7 +602,7 @@ def test_canonical_schema_strict_mode_returns_422_on_type_conflict(
     body = response.json()
     assert body["detail"]["code"] == "group_schema_type_conflict"
     assert body["detail"]["canonicalKey"] == "dob"
-    assert sorted(body["detail"]["conflictingTypes"]) == sorted({"text", "date"})
+    assert sorted(body["detail"]["conflictingTypes"]) == sorted({"text", "checkbox"})
 
 
 def test_canonical_schema_soft_mode_emits_warnings_instead_of_failing(
@@ -612,7 +622,7 @@ def test_canonical_schema_soft_mode_emits_warnings_instead_of_failing(
     }
     snapshot_lookup = {
         "tpl-1": _editor_snapshot(_text_field("dob")),
-        "tpl-2": _editor_snapshot(_date_field("dob")),
+        "tpl-2": _editor_snapshot(_checkbox_field("dob")),
     }
 
     mocker.patch.object(app_main, "get_template", side_effect=lambda template_id, user_id: template_lookup.get(template_id))
@@ -630,7 +640,7 @@ def test_canonical_schema_soft_mode_emits_warnings_instead_of_failing(
     warning_codes = [warning["code"] for warning in body["warnings"]]
     assert "type_conflict_soft" in warning_codes
     dob = next(field for field in body["schema"]["fields"] if field["canonicalKey"] == "dob")
-    assert dob["type"] == "date"  # more-constrained type wins
+    assert dob["type"] == "checkbox"  # more-constrained type wins
 
 
 def test_canonical_schema_includes_checkbox_rules_from_template_metadata(

@@ -14,6 +14,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   FieldType,
   PageSize,
   PdfField,
@@ -24,6 +25,8 @@ import type {
 } from './types';
 import { HeaderBar } from './components/layout/HeaderBar';
 import LegacyHeader from './components/layout/LegacyHeader';
+import { CalculationSetupDialog, type CalculationSetupIntent } from './components/features/CalculationSetupDialog';
+import { BarcodeFieldModal } from './components/features/BarcodeFieldModal';
 import { FieldInspectorPanel } from './components/panels/FieldInspectorPanel';
 import { FieldListPanel, type FieldListDisplayPreset } from './components/panels/FieldListPanel';
 import { PdfViewer } from './components/viewer/PdfViewer';
@@ -67,6 +70,7 @@ import {
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
 } from './utils/fieldFonts';
 import { returnWorkspaceToHomepage } from './utils/returnWorkspaceToHomepage';
 import { applyNoIndexSeo, applyRouteSeo } from './utils/seo';
@@ -137,9 +141,12 @@ import {
   writeWorkspaceResumeState,
 } from './utils/workspaceResumeState';
 import {
+  prunePendingBulkTextStyleSelection,
   prunePendingQuickRadioSelection,
+  resolvePendingBulkTextStyleFields,
   resolvePendingQuickRadioFields,
   resolveRadioToolDraftForToolChange,
+  type PendingBulkTextStyleSelection,
   type PendingQuickRadioSelection,
 } from './utils/createToolState';
 import {
@@ -150,6 +157,10 @@ import {
 } from './utils/workspaceRoutes';
 import { shouldIgnoreWorkspaceHotkeys } from './utils/workspaceShortcuts';
 import { consumeOnboardingPending, clearOnboardingPending } from './utils/onboardingState';
+import {
+  calculationFieldDefaultsForTool,
+  isCalculationCreateTool,
+} from './utils/calculationFields';
 
 /**
  * Launch actions that can be requested by the lightweight homepage shell.
@@ -310,16 +321,25 @@ function WorkspaceRuntime({
   const [showTemplateApiManager, setShowTemplateApiManager] = useState(false);
   const [transformMode, setTransformMode] = useState(false);
   const [activeCreateTool, setActiveCreateTool] = useState<CreateTool | null>(null);
+  const [calculationSetupState, setCalculationSetupState] = useState<{
+    fieldId: string;
+    intent: CalculationSetupIntent;
+  } | null>(null);
+  const [barcodeSetupFieldId, setBarcodeSetupFieldId] = useState<string | null>(null);
   const [globalFieldFont, setGlobalFieldFont] = useState<FieldFontChoice>(DEFAULT_FIELD_FONT_CHOICE);
   const [globalFieldFontSize, setGlobalFieldFontSize] = useState<FieldFontSizeChoice>(
     DEFAULT_FIELD_FONT_SIZE_CHOICE,
   );
   const [globalFieldFontColor, setGlobalFieldFontColor] =
     useState<FieldFontColorChoice>(DEFAULT_FIELD_FONT_COLOR);
+  const [globalFieldAlignment, setGlobalFieldAlignment] =
+    useState<FieldTextAlignmentChoice>(DEFAULT_FIELD_TEXT_ALIGNMENT);
   const [manualRadioToolDraft, setManualRadioToolDraft] = useState<RadioToolDraft | null>(null);
   const [quickRadioToolDraft, setQuickRadioToolDraft] = useState<RadioToolDraft | null>(null);
   const [pendingQuickRadioSelection, setPendingQuickRadioSelection] =
     useState<PendingQuickRadioSelection>(null);
+  const [pendingBulkTextStyleSelection, setPendingBulkTextStyleSelection] =
+    useState<PendingBulkTextStyleSelection>(null);
   const [dismissedRadioSuggestionIds, setDismissedRadioSuggestionIds] = useState<string[]>([]);
   const [arrowKeyMoveEnabled, setArrowKeyMoveEnabled] = useState(false);
   const [arrowKeyMoveStep, setArrowKeyMoveStep] = useState(DEFAULT_ARROW_KEY_MOVE_STEP);
@@ -377,6 +397,7 @@ function WorkspaceRuntime({
       nextGlobalFieldFont: FieldFontChoice = globalFieldFont,
       nextGlobalFieldFontSize: FieldFontSizeChoice = globalFieldFontSize,
       nextGlobalFieldFontColor: FieldFontColorChoice = globalFieldFontColor,
+      nextGlobalFieldAlignment: FieldTextAlignmentChoice = globalFieldAlignment,
     ) => {
       setSavedFillLinkPublishFingerprint(
         buildFillLinkPublishFingerprint(
@@ -385,10 +406,11 @@ function WorkspaceRuntime({
           nextGlobalFieldFont,
           nextGlobalFieldFontSize,
           nextGlobalFieldFontColor,
+          nextGlobalFieldAlignment,
         ),
       );
     },
-    [globalFieldFont, globalFieldFontSize, globalFieldFontColor],
+    [globalFieldFont, globalFieldFontSize, globalFieldFontColor, globalFieldAlignment],
   );
 
   // ── Data source (uses auth, dialog; openAi setters via bridge) ─────
@@ -422,6 +444,7 @@ function WorkspaceRuntime({
     setGlobalFieldFont,
     setGlobalFieldFontSize,
     setGlobalFieldFontColor,
+    setGlobalFieldAlignment,
     setActiveSavedFormId: savedForms.setActiveSavedFormId,
     setActiveSavedFormName: savedForms.setActiveSavedFormName,
     schemaId: dataSource.schemaId,
@@ -470,7 +493,7 @@ function WorkspaceRuntime({
     );
     const materializedBlob = await ApiService.materializeFormPdf(sourceBlob, materializedFields, {
       exportMode: 'flat',
-      appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor },
+      appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor, globalFieldAlignment },
     });
     return new Uint8Array(await materializedBlob.arrayBuffer());
   }, [
@@ -478,6 +501,7 @@ function WorkspaceRuntime({
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
     resolveWorkspaceSourcePdfBytes,
   ]);
 
@@ -613,9 +637,11 @@ function WorkspaceRuntime({
       globalFieldFont,
       globalFieldFontSize,
       globalFieldFontColor,
+      globalFieldAlignment,
       setGlobalFieldFont,
       setGlobalFieldFontSize,
       setGlobalFieldFontColor,
+      setGlobalFieldAlignment,
     },
     fieldSelection: {
       selectedFieldId: fieldState.selectedFieldId,
@@ -850,6 +876,7 @@ function WorkspaceRuntime({
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
     checkboxRules: openAi.checkboxRules,
     textTransformRules: openAi.textTransformRules,
     savedFillLinkPublishFingerprint,
@@ -930,6 +957,7 @@ function WorkspaceRuntime({
     setGlobalFieldFont(DEFAULT_FIELD_FONT_CHOICE);
     setGlobalFieldFontSize(DEFAULT_FIELD_FONT_SIZE_CHOICE);
     setGlobalFieldFontColor(DEFAULT_FIELD_FONT_COLOR);
+    setGlobalFieldAlignment(DEFAULT_FIELD_TEXT_ALIGNMENT);
     setManualRadioToolDraft(null); setQuickRadioToolDraft(null);
     setPendingQuickRadioSelection(null); setDismissedRadioSuggestionIds([]);
     setSourceFile(null); setSourceFileName(null); setSourceFileIsDemo(false);
@@ -1021,6 +1049,7 @@ function WorkspaceRuntime({
     globalFieldFont,
     globalFieldFontSize,
     globalFieldFontColor,
+    globalFieldAlignment,
     pageSizes,
     pageCount,
     checkboxRules: openAi.checkboxRules,
@@ -1115,6 +1144,7 @@ function WorkspaceRuntime({
   const resetCreateToolState = useCallback(() => {
     setActiveCreateTool(null);
     setPendingQuickRadioSelection(null);
+    setPendingBulkTextStyleSelection(null);
     setManualRadioToolDraft(null);
     setQuickRadioToolDraft(null);
   }, []);
@@ -1165,6 +1195,7 @@ function WorkspaceRuntime({
       }
       setActiveCreateTool(type);
       setPendingQuickRadioSelection(null);
+      setPendingBulkTextStyleSelection(null);
       setManualRadioToolDraft((prev) => (
         resolveRadioToolDraftForToolChange('radio', type, activeCreateTool, prev, currentFields)
       ));
@@ -1246,32 +1277,75 @@ function WorkspaceRuntime({
     savedForms.activeSavedFormId,
   ]);
 
+  const handleOpenCalculationSetup = useCallback((fieldId: string, intent: CalculationSetupIntent = 'edit') => {
+    setCalculationSetupState({ fieldId, intent });
+  }, []);
+
+  const handleCloseCalculationSetup = useCallback(() => {
+    setCalculationSetupState(null);
+  }, []);
+
+  const handleSaveCalculationSetup = useCallback((fieldId: string, updates: Partial<PdfField>) => {
+    fieldState.handleUpdateField(fieldId, updates);
+    setCalculationSetupState(null);
+  }, [fieldState]);
+
+  const handleOpenBarcodeSetup = useCallback((fieldId: string) => {
+    setBarcodeSetupFieldId(fieldId);
+  }, []);
+
+  const handleCloseBarcodeSetup = useCallback(() => {
+    setBarcodeSetupFieldId(null);
+  }, []);
+
+  const handleSaveBarcodeSetup = useCallback((fieldId: string, updates: Partial<PdfField>) => {
+    fieldState.handleUpdateField(fieldId, updates);
+    setBarcodeSetupFieldId(null);
+  }, [fieldState]);
+
   const handleCreateFieldWithRect = useCallback(
-    (page: number, type: FieldType, rect: { x: number; y: number; width: number; height: number }) => {
+    (page: number, type: CreateTool, rect: { x: number; y: number; width: number; height: number }) => {
       const pageSize = pageSizes[page];
       if (!pageSize) return;
+      const fieldType: FieldType | null = isCalculationCreateTool(type)
+        ? 'text'
+        : type === 'text' || type === 'signature' || type === 'checkbox' || type === 'radio' || type === 'image' || type === 'pdf417' || type === 'barcode' || type === 'qr'
+          ? type
+          : null;
+      if (!fieldType) return;
       let createdFieldId: string | null = null;
       let nextRadioDraft: RadioToolDraft | null = null;
       fieldHistory.updateFieldsWith((prev) => {
         const created =
-          type === 'radio' && manualRadioToolDraft
+          fieldType === 'radio' && manualRadioToolDraft
             ? createRadioFieldFromRect(prev, page, pageSize, rect, manualRadioToolDraft)
-            : createFieldWithRect(type, page, pageSize, prev, rect);
-        createdFieldId = created.id;
-        const nextFields = [...prev, created];
-        if (type === 'radio' && manualRadioToolDraft) {
+            : createFieldWithRect(fieldType, page, pageSize, prev, rect);
+        const nextCreated = isCalculationCreateTool(type)
+          ? { ...created, ...calculationFieldDefaultsForTool(type) }
+          : created;
+        createdFieldId = nextCreated.id;
+        const nextFields = [...prev, nextCreated];
+        if (fieldType === 'radio' && manualRadioToolDraft) {
           nextRadioDraft = advanceRadioToolDraft(nextFields, manualRadioToolDraft);
         }
         return nextFields;
       });
       if (createdFieldId) {
         fieldState.setSelectedFieldId(createdFieldId);
+        if (isCalculationCreateTool(type)) {
+          handleOpenCalculationSetup(
+            createdFieldId,
+            type === 'number-input' ? 'number_input' : 'calculated_output',
+          );
+        } else if (fieldType === 'pdf417' || fieldType === 'barcode' || fieldType === 'qr') {
+          handleOpenBarcodeSetup(createdFieldId);
+        }
       }
-      if (type === 'radio' && nextRadioDraft) {
+      if (fieldType === 'radio' && nextRadioDraft) {
         setManualRadioToolDraft(nextRadioDraft);
       }
     },
-    [fieldHistory, fieldState, manualRadioToolDraft, pageSizes],
+    [fieldHistory, fieldState, handleOpenCalculationSetup, manualRadioToolDraft, pageSizes],
   );
 
   const handleSetFieldType = useCallback(
@@ -1285,7 +1359,21 @@ function WorkspaceRuntime({
       const nextRect = pageSize
         ? normalizeRectForFieldType(current.rect, type, pageSize)
         : current.rect;
-      const clearsFont = !(type === 'text' || type === 'date');
+      const clearsFont = type !== 'text';
+      const appOnlyFieldReset: Partial<PdfField> = {
+        imageDataUrl: type === 'image' ? current.imageDataUrl ?? null : undefined,
+        imageMimeType: type === 'image' ? current.imageMimeType ?? null : undefined,
+        imageName: type === 'image' ? current.imageName ?? null : undefined,
+        pdf417Name: type === 'pdf417' ? current.pdf417Name ?? null : undefined,
+        pdf417Dob: type === 'pdf417' ? current.pdf417Dob ?? null : undefined,
+        pdf417Data: type === 'pdf417' ? current.pdf417Data ?? null : undefined,
+        pdf417FieldMappings: type === 'pdf417' ? current.pdf417FieldMappings ?? null : undefined,
+        barcodeSourceField: type === 'barcode' ? current.barcodeSourceField ?? null : undefined,
+        qrSourceField: type === 'qr' ? current.qrSourceField ?? null : undefined,
+        valueType: type === 'text' ? current.valueType : undefined,
+        calculation: type === 'text' ? current.calculation : undefined,
+        value: type === 'image' || type === 'pdf417' ? null : type === 'barcode' || type === 'qr' ? '' : current.value,
+      };
       if (type === 'radio') {
         const baseDraft = buildNextRadioToolDraft(fieldHistory.fieldsRef.current, current.groupLabel || current.name);
         let nextDraft: RadioToolDraft | null = null;
@@ -1293,7 +1381,14 @@ function WorkspaceRuntime({
           const nextFields = convertFieldsToRadioGroup(
             prev.map((field) => (
               field.id === fieldId
-                ? { ...field, rect: nextRect, fontName: undefined, fontSize: undefined }
+                ? {
+                    ...field,
+                    ...appOnlyFieldReset,
+                    rect: nextRect,
+                    fontName: undefined,
+                    fontSize: undefined,
+                    textAlign: undefined,
+                  }
                 : field
             )),
             [fieldId],
@@ -1312,8 +1407,9 @@ function WorkspaceRuntime({
           if (field.id !== fieldId) return field;
           return {
             ...convertRadioFieldToType(field, type),
+            ...appOnlyFieldReset,
             rect: nextRect,
-            ...(clearsFont ? { fontName: undefined, fontSize: undefined } : {}),
+            ...(clearsFont ? { fontName: undefined, fontSize: undefined, textAlign: undefined } : {}),
           };
         }));
         return;
@@ -1321,10 +1417,14 @@ function WorkspaceRuntime({
       fieldState.handleUpdateField(fieldId, {
         type,
         rect: nextRect,
-        ...(clearsFont ? { fontName: undefined, fontSize: undefined } : {}),
+        ...appOnlyFieldReset,
+        ...(clearsFont ? { fontName: undefined, fontSize: undefined, textAlign: undefined } : {}),
       });
+      if (type === 'pdf417' || type === 'barcode' || type === 'qr') {
+        handleOpenBarcodeSetup(fieldId);
+      }
     },
-    [fieldHistory.fieldsRef, fieldHistory, fieldState, pageSizes],
+    [fieldHistory.fieldsRef, fieldHistory, fieldState, handleOpenBarcodeSetup, pageSizes],
   );
 
   const handleUpdateRadioToolDraft = useCallback(
@@ -1386,6 +1486,69 @@ function WorkspaceRuntime({
     setPendingQuickRadioSelection(null);
     setQuickRadioToolDraft(buildNextRadioToolDraft(nextFieldsSnapshot));
   }, [currentPage, fieldHistory, fieldState, pageSizes, pendingQuickRadioSelection, quickRadioToolDraft]);
+
+  const handleBulkTextStyleSelection = useCallback(
+    (fieldIds: string[], page: number) => {
+      setPendingBulkTextStyleSelection(fieldIds.length ? { fieldIds, page } : null);
+      if (fieldIds[0]) {
+        fieldState.setSelectedFieldId(fieldIds[0]);
+      }
+    },
+    [fieldState],
+  );
+
+  const handleRemovePendingBulkTextStyleField = useCallback((fieldId: string) => {
+    setPendingBulkTextStyleSelection((prev) => {
+      if (!prev) return prev;
+      const nextFieldIds = prev.fieldIds.filter((id) => id !== fieldId);
+      if (!nextFieldIds.length) {
+        return null;
+      }
+      return { ...prev, fieldIds: nextFieldIds };
+    });
+  }, []);
+
+  const handleCancelPendingBulkTextStyleSelection = useCallback(() => {
+    setPendingBulkTextStyleSelection(null);
+  }, []);
+
+  const handleApplyPendingBulkTextStyleSelection = useCallback(
+    (updates: Partial<PdfField>) => {
+      const validSelection = prunePendingBulkTextStyleSelection(
+        pendingBulkTextStyleSelection,
+        fieldHistory.fieldsRef.current,
+        currentPage,
+      );
+      if (!validSelection?.fieldIds.length) {
+        setPendingBulkTextStyleSelection(null);
+        return;
+      }
+      const selectedIds = new Set(validSelection.fieldIds);
+      fieldHistory.updateFieldsWith((prev) => {
+        let changed = false;
+        const nextFields = prev.map((field) => {
+          if (!selectedIds.has(field.id) || field.type !== 'text') {
+            return field;
+          }
+          const nextField = { ...field, ...updates };
+          if (
+            nextField.fontName === field.fontName &&
+            nextField.fontSize === field.fontSize &&
+            nextField.fontColor === field.fontColor &&
+            nextField.textAlign === field.textAlign
+          ) {
+            return field;
+          }
+          changed = true;
+          return nextField;
+        });
+        return changed ? nextFields : prev;
+      });
+      fieldState.setSelectedFieldId(validSelection.fieldIds[0] || null);
+      setPendingBulkTextStyleSelection(null);
+    },
+    [currentPage, fieldHistory, fieldState, pendingBulkTextStyleSelection],
+  );
 
   const handleRenameSelectedRadioGroup = useCallback(
     (groupId: string, updates: { label?: string; key?: string }) => {
@@ -1540,6 +1703,7 @@ function WorkspaceRuntime({
       setGlobalFieldFont(DEFAULT_FIELD_FONT_CHOICE);
       setGlobalFieldFontSize(DEFAULT_FIELD_FONT_SIZE_CHOICE);
       setGlobalFieldFontColor(DEFAULT_FIELD_FONT_COLOR);
+      setGlobalFieldAlignment(DEFAULT_FIELD_TEXT_ALIGNMENT);
     }
     // Group template restores its own cached display state. Do not overwrite it
     // with the default editor preset each time the active template PDF swaps.
@@ -1732,11 +1896,6 @@ function WorkspaceRuntime({
           handleSetCreateTool('text');
           return;
         }
-        if (key === 'd') {
-          event.preventDefault();
-          handleSetCreateTool('date');
-          return;
-        }
         if (key === 's') {
           event.preventDefault();
           handleSetCreateTool('signature');
@@ -1898,11 +2057,18 @@ function WorkspaceRuntime({
     () => fields.find((field) => field.id === selectedFieldId) || null,
     [fields, selectedFieldId],
   );
+  const calculationSetupField = useMemo(
+    () => fields.find((field) => field.id === calculationSetupState?.fieldId) || null,
+    [calculationSetupState?.fieldId, fields],
+  );
   const isDemoAsset = Boolean(sourceFileIsDemo && sourceFileName && DEMO_ASSET_NAME_SET.has(sourceFileName));
   const allowAnonymousDemoEditor = demoActive || isDemoAsset;
   const pendingQuickRadioFields = useMemo(() => {
     return resolvePendingQuickRadioFields(pendingQuickRadioSelection, fields);
   }, [fields, pendingQuickRadioSelection]);
+  const pendingBulkTextStyleFields = useMemo(() => {
+    return resolvePendingBulkTextStyleFields(pendingBulkTextStyleSelection, fields);
+  }, [fields, pendingBulkTextStyleSelection]);
   const activeRadioToolDraft = activeCreateTool === 'radio'
     ? manualRadioToolDraft
     : activeCreateTool === 'quick-radio'
@@ -1985,7 +2151,15 @@ function WorkspaceRuntime({
   }, [activeCreateTool]);
 
   useEffect(() => {
+    if (activeCreateTool === 'bulk-text-style') {
+      return;
+    }
+    setPendingBulkTextStyleSelection(null);
+  }, [activeCreateTool]);
+
+  useEffect(() => {
     setPendingQuickRadioSelection((prev) => prunePendingQuickRadioSelection(prev, fields, currentPage));
+    setPendingBulkTextStyleSelection((prev) => prunePendingBulkTextStyleSelection(prev, fields, currentPage));
   }, [currentPage, fields]);
 
   useEffect(() => {
@@ -2635,6 +2809,16 @@ function WorkspaceRuntime({
       confirmLabel="Replay demo" cancelLabel="Continue in editor"
       onConfirm={demo.handleDemoReplay} onCancel={demo.handleDemoContinue} />
   );
+  const calculationSetupDialog = (
+    <CalculationSetupDialog
+      open={Boolean(calculationSetupState && calculationSetupField)}
+      field={calculationSetupField}
+      fields={fields}
+      intent={calculationSetupState?.intent ?? 'edit'}
+      onClose={handleCloseCalculationSetup}
+      onSave={handleSaveCalculationSetup}
+    />
+  );
   const dataSourceInputs = (
     <>
       <input ref={dataSource.csvInputRef} id="csv-file-input" name="csv-file" type="file" accept=".csv,text/csv" aria-label="Upload CSV schema file" style={{ display: 'none' }} onChange={dataSource.handleCsvFileSelected} />
@@ -2752,7 +2936,7 @@ function WorkspaceRuntime({
     return (
       <>
         {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
-        {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{dialogContent}
+        {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{calculationSetupDialog}{dialogContent}
         <Suspense fallback={runtimeLoadingFallback}>
           <LazyProfilePage email={userProfile?.email ?? verifiedUser.email} role={userProfile?.role ?? 'base'}
             creditsRemaining={userProfile?.creditsRemaining ?? 0}
@@ -2864,7 +3048,7 @@ function WorkspaceRuntime({
             so startup fallback replaces the whole shell instead of painting the header first. */}
         <div className="homepage-shell">
           {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
-          {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{demoCompletionDialog}{dialogContent}
+          {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{calculationSetupDialog}{demoCompletionDialog}{dialogContent}
           <LegacyHeader currentView={currentView} onNavigateHome={handleNavigateHome}
             showBackButton={!showHomepage} userEmail={userEmail ?? null}
             onOpenProfile={verifiedUser ? auth.handleOpenProfile : undefined}
@@ -2902,7 +3086,7 @@ function WorkspaceRuntime({
   return (
     <div className={appShellClassName}>
       {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
-      {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{demoCompletionDialog}{dialogContent}
+      {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{calculationSetupDialog}{demoCompletionDialog}{dialogContent}
       <HeaderBar
         pageCount={pageCount} currentPage={currentPage} scale={scale} onScaleChange={setScale}
         onNavigateHome={handleNavigateHome} mappingInProgress={mappingInProgress}
@@ -2986,6 +3170,8 @@ function WorkspaceRuntime({
           onGlobalFieldFontSizeChange={setGlobalFieldFontSize}
           globalFieldFontColor={globalFieldFontColor}
           onGlobalFieldFontColorChange={setGlobalFieldFontColor}
+          globalFieldAlignment={globalFieldAlignment}
+          onGlobalFieldAlignmentChange={setGlobalFieldAlignment}
           confidenceFilter={confidenceFilter} onConfidenceFilterChange={fieldState.handleConfidenceFilterChange}
           onResetConfidenceFilters={handleResetConfidenceFilters}
           onSelectField={handleSelectField} onPageChange={handlePageJump}
@@ -3004,6 +3190,7 @@ function WorkspaceRuntime({
               globalFieldFont={globalFieldFont}
               globalFieldFontSize={globalFieldFontSize}
               globalFieldFontColor={globalFieldFontColor}
+              globalFieldAlignment={globalFieldAlignment}
               showFieldInfo={showFieldInfo}
               moveEnabled={transformMode && !showFieldInfo}
               resizeEnabled={transformMode && !showFieldInfo}
@@ -3011,11 +3198,13 @@ function WorkspaceRuntime({
               activeCreateTool={activeCreateTool}
               selectedFieldId={selectedFieldId}
               pendingQuickRadioFieldIds={pendingQuickRadioSelection?.fieldIds || []}
+              pendingBulkTextStyleFieldIds={pendingBulkTextStyleSelection?.fieldIds || []}
               radioSuggestionByFieldId={radioSuggestionByFieldId}
               onSelectField={handleSelectField} onUpdateField={fieldState.handleUpdateField}
               onUpdateFieldGeometry={fieldState.handleUpdateFieldGeometry}
               onCreateFieldWithRect={handleCreateFieldWithRect}
               onQuickRadioSelect={handleQuickRadioSelection}
+              onBulkTextStyleSelect={handleBulkTextStyleSelection}
               onSelectRadioField={handleSelectRadioFieldValue}
               onBeginFieldChange={fieldHistory.beginFieldHistory}
               onCommitFieldChange={fieldHistory.commitFieldHistory}
@@ -3030,13 +3219,17 @@ function WorkspaceRuntime({
           globalFieldFont={globalFieldFont}
           globalFieldFontSize={globalFieldFontSize}
           globalFieldFontColor={globalFieldFontColor}
+          globalFieldAlignment={globalFieldAlignment}
           activeCreateTool={activeCreateTool}
           radioToolDraft={activeRadioToolDraft}
           pendingQuickRadioFields={pendingQuickRadioFields}
+          pendingBulkTextStyleFields={pendingBulkTextStyleFields}
           arrowKeyMoveEnabled={arrowKeyMoveEnabled}
           arrowKeyMoveStep={arrowKeyMoveStep}
           onUpdateField={fieldState.handleUpdateField}
           onSetFieldType={handleSetFieldType}
+          onOpenCalculationSetup={handleOpenCalculationSetup}
+          onOpenBarcodeSetup={handleOpenBarcodeSetup}
           onUpdateFieldDraft={fieldState.handleUpdateFieldDraft}
           onDeleteField={fieldState.handleDeleteField}
           onDeleteAllFields={fieldState.handleDeleteAllFields}
@@ -3045,6 +3238,9 @@ function WorkspaceRuntime({
           onApplyPendingQuickRadioSelection={handleApplyPendingQuickRadioSelection}
           onCancelPendingQuickRadioSelection={handleCancelPendingQuickRadioSelection}
           onRemovePendingQuickRadioField={handleRemovePendingQuickRadioField}
+          onApplyPendingBulkTextStyleSelection={handleApplyPendingBulkTextStyleSelection}
+          onCancelPendingBulkTextStyleSelection={handleCancelPendingBulkTextStyleSelection}
+          onRemovePendingBulkTextStyleField={handleRemovePendingBulkTextStyleField}
           onRenameRadioGroup={handleRenameSelectedRadioGroup}
           onUpdateRadioFieldOption={handleUpdateSelectedRadioOption}
           onMoveRadioFieldToGroup={handleMoveSelectedRadioField}
@@ -3118,6 +3314,23 @@ function WorkspaceRuntime({
           />
         </Suspense>
       ) : null}
+      {calculationSetupState && calculationSetupField ? (
+        <CalculationSetupDialog
+          open
+          field={calculationSetupField}
+          fields={fields}
+          intent={calculationSetupState.intent}
+          onClose={handleCloseCalculationSetup}
+          onSave={handleSaveCalculationSetup}
+        />
+      ) : null}
+      <BarcodeFieldModal
+        open={Boolean(barcodeSetupFieldId)}
+        field={fields.find((entry) => entry.id === barcodeSetupFieldId) ?? null}
+        fields={fields}
+        onClose={handleCloseBarcodeSetup}
+        onSave={handleSaveBarcodeSetup}
+      />
       {dataSourceInputs}
       {showDemoTour ? (
         <Suspense fallback={null}>

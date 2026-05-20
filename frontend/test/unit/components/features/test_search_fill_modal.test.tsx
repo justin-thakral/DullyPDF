@@ -427,12 +427,12 @@ describe('SearchFillModal', () => {
     expect(byId.get('member-id')).toBe('NEW-42');
   });
 
-  it('fills text/date fields using direct and fallback key heuristics', async () => {
+  it('fills text and date-like text fields using direct and fallback key heuristics', async () => {
     const user = userEvent.setup();
     const onFieldsChange = vi.fn();
     const fields = [
       makeField({ id: 'name', name: 'name', type: 'text', page: 1 }),
-      makeField({ id: 'appointment-date', name: 'appointment_date', type: 'date', page: 1 }),
+      makeField({ id: 'appointment-date', name: 'appointment_date', type: 'text', page: 1 }),
       makeField({ id: 'city-state-zip', name: 'city_state_zip', type: 'text', page: 1 }),
       makeField({ id: 'phone-one', name: 'phone_1', type: 'text', page: 1 }),
       makeField({ id: 'age', name: 'age', type: 'text', page: 1 }),
@@ -589,11 +589,11 @@ describe('SearchFillModal', () => {
     expect(nextFields[0]?.value).toBe('Direct');
   });
 
-  it('normalizes slash-delimited YYYY/MM/DD values for date fields', async () => {
+  it('normalizes slash-delimited YYYY/MM/DD values for date-like text fields', async () => {
     const user = userEvent.setup();
     const onFieldsChange = vi.fn();
     const fields = [
-      makeField({ id: 'appointment-date', name: 'appointment_date', type: 'date', page: 1 }),
+      makeField({ id: 'appointment-date', name: 'appointment_date', type: 'text', page: 1 }),
     ];
     const props = buildProps({
       columns: ['mrn', 'appointment_date'],

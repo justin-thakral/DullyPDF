@@ -395,8 +395,6 @@ def _question_looks_like_phone(question: Dict[str, Any]) -> bool:
 
 def _infer_text_question_type(field_type: Optional[str], source_field: Optional[str]) -> str:
     normalized_field_type = normalize_fill_link_key(field_type) or "text"
-    if normalized_field_type == "date":
-        return "date"
     probe = {
         "type": normalized_field_type,
         "key": source_field,
@@ -443,6 +441,19 @@ def _normalize_fill_link_option(option: Dict[str, Any]) -> Optional[Dict[str, An
     }
 
 
+def _field_is_calculated_output(field: Dict[str, Any]) -> bool:
+    """Return True when a field is a DullyPDF-computed read-only output.
+
+    Calculated outputs and calculated intermediates are materialized server-side
+    on submit and must not appear as respondent questions.
+    """
+    calculation = field.get("calculation")
+    if not isinstance(calculation, dict):
+        return False
+    role = str(calculation.get("role") or "").strip()
+    return role in {"calculated_output", "calculated_intermediate"}
+
+
 def build_fill_link_questions(
     fields: List[Dict[str, Any]],
     checkbox_rules: Optional[List[Dict[str, Any]]] = None,
@@ -453,7 +464,10 @@ def build_fill_link_questions(
     grouping repeated text fields and checkbox clusters into a smaller question
     set suitable for respondent-facing HTML rendering.
     """
-    ordered_fields = sorted([field for field in fields if isinstance(field, dict)], key=_field_sort_key)
+    ordered_fields = sorted(
+        [field for field in fields if isinstance(field, dict) and not _field_is_calculated_output(field)],
+        key=_field_sort_key,
+    )
     rule_map = _normalize_rule_map(checkbox_rules)
     questions: list[dict[str, Any]] = []
     seen_text_keys: set[str] = set()

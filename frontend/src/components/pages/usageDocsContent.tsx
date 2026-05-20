@@ -206,7 +206,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>CSV/XLSX/JSON parsing caps rows at 5000 records per import.</li>
             <li>Schema inference samples up to 200 rows when inferring field types.</li>
             <li>Field edit history depth is 10 snapshots (undo/redo).</li>
-            <li>Minimum overlay geometry is type-based: text/date/checkbox = 12 points, signature = 16 points.</li>
+            <li>Minimum overlay geometry is type-based: text/checkbox = 12 points, signature = 16 points.</li>
           </ul>
         ),
       },
@@ -258,7 +258,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>Check checkbox groups/options (`groupKey`, `optionKey`) before filling.</li>
             <li>Run one test record through Search &amp; Fill before saving templates.</li>
             <li>If using Fill By Link, verify the public form questions read clearly on a phone before sharing.</li>
-            <li>Validate one date field and one checkbox group in the final output PDF.</li>
+            <li>Validate one date-like text field and one checkbox group in the final output PDF.</li>
           </ul>
         ),
       },
@@ -283,7 +283,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>Uploading several document variations before one canonical template is stable.</li>
             <li>Running mapping before low-confidence geometry and checkbox cleanup are reviewed.</li>
             <li>Judging the workflow from field detection alone instead of from one full fill cycle.</li>
-            <li>Publishing links or sharing templates before date, checkbox, and repeated-name fields are tested with a real record.</li>
+            <li>Publishing links or sharing templates before date-like text, checkbox, and repeated-name fields are tested with a real record.</li>
           </ul>
         ),
       },
@@ -320,7 +320,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               in the editor.
             </p>
             <p>
-              Field types supported in the UI are <code>text</code>, <code>date</code>, <code>signature</code>, <code>checkbox</code>, and <code>radio</code>.
+              Field types supported in the UI are <code>text</code>, <code>signature</code>, <code>checkbox</code>, and <code>radio</code>.
             </p>
           </>
         ),
@@ -348,7 +348,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
           <ul>
             <li>Low-quality scans can reduce field boundary precision.</li>
             <li>Dense pages may produce close candidates that need manual cleanup.</li>
-            <li>Decorative boxes can be mistaken for fields; remove or repurpose them in inspector.</li>
+            <li>Decorative boxes can be mistaken for fields; remove or repurpose them in the Field Editor.</li>
             <li>Encrypted PDFs are rejected and must be unlocked before detection.</li>
           </ul>
         ),
@@ -382,8 +382,8 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         body: (
           <ul>
             <li>Rectangles are clamped to page bounds during drag/resize.</li>
-            <li>Minimum field geometry is type-based: text/date/checkbox = 12 points, signature = 16 points.</li>
-            <li>All geometry edits in inspector and overlay are applied in the same coordinate system.</li>
+            <li>Minimum field geometry is type-based: text/checkbox = 12 points, signature = 16 points.</li>
+            <li>All geometry edits in the Field Editor and overlay are applied in the same coordinate system.</li>
           </ul>
         ),
       },
@@ -525,14 +525,15 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         body: (
           <ul>
             <li>Overlay is best for spatial review and direct manipulation.</li>
-            <li>Field list is best for scanning, filtering, and page jumping.</li>
-            <li>Inspector is best for precise metadata and geometry edits.</li>
-            <li>The field list and inspector headers both expose a right-aligned <em>Usage Docs</em> button that opens this Editor Workflow page in a new browser tab/window.</li>
+            <li>Browser is best for scanning, filtering, and page jumping.</li>
+            <li>Field Editor is best for precise metadata and geometry edits.</li>
+            <li>The Browser and Field Editor headers both expose a right-aligned <em>Usage Docs</em> button that opens this Editor Workflow page in a new browser tab/window.</li>
+            <li>Both side panels keep description text in collapsible rows so the working controls stay compact.</li>
             <li>
               Display presets are <code>Review</code>, <code>Edit</code>, and <code>Fill</code>, with manual toggles for
               <code>Fields</code>, <code>Names</code>, <code>Info</code>, <code>All</code>, and <code>Clear</code>.
             </li>
-            <li>The field list controls show a compact <code>Page Fields</code> count, and the header includes a <code>Top</code> action for returning to the start of the scrollable panel.</li>
+            <li>The Browser controls show a compact <code>Page Fields</code> count, and the header includes a <code>Top</code> action for returning to the start of the scrollable panel.</li>
           </ul>
         ),
       },
@@ -547,7 +548,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             </p>
             <ul>
               <li><code>Review</code> shows field overlays and names so you can scan detection quality, naming, page assignment, and confidence without moving geometry by accident.</li>
-              <li><code>Edit</code> is the default cleanup mode. It enables transform controls for moving and resizing fields, then pairs with the inspector for exact metadata and coordinate edits.</li>
+              <li><code>Edit</code> is the default cleanup mode. It enables transform controls for moving and resizing fields, then pairs with the Field Editor for exact metadata and coordinate edits.</li>
               <li><code>Fill</code> shows interactive field controls on the PDF so you can enter or validate values before saving, downloading, publishing, or running Search &amp; Fill.</li>
               <li>Manual toggles can create a custom visibility state when a preset is close but not exact enough for the current review pass.</li>
             </ul>
@@ -569,16 +570,30 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>Standard fields expose four corners plus middle edge handles; small fields (for example tiny checkboxes) use a single bottom-right handle.</li>
             <li>Small fields also include a larger move hit area to reduce missed drag attempts.</li>
             <li>
-              Use inspector create tools to draw text, date, signature, checkbox, and radio fields directly on-canvas,
+              Use Field Editor create tools to draw text, signature, checkbox, and radio fields directly on-canvas,
               including quick-radio helpers for common single-select groups.
             </li>
             <li>Activating a create tool exits <code>Transform</code> and <code>Info</code> so drawing gestures stay deterministic.</li>
             <li>Turning the create tool off restores the previous viewer mode and visibility toggles.</li>
             <li>Click once to place a default-size field, or drag past the click threshold to size the field from the gesture.</li>
-            <li>Use inspector inputs for exact x/y/width/height updates.</li>
-            <li>Delete invalid candidates one by one, or use the inspector bulk-delete action when you want to reset the field set and start over.</li>
+            <li>Use Field Editor inputs for exact x/y/width/height updates.</li>
+            <li>Delete invalid candidates one by one, or use the Field Editor bulk-delete action when you want to reset the field set and start over.</li>
             <li>Geometry is clamped to page bounds and type-based minimum sizes.</li>
             <li>If a selected field is hidden by active filters, use <code>Reveal selected</code> in the list panel.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'calculation-fields',
+        title: 'Calculation fields',
+        body: (
+          <ul>
+            <li><code>Number Input</code> creates an integer text field that users or data sources can fill.</li>
+            <li><code>Calculated Output</code> creates a read-only text field whose value comes from a DullyPDF formula.</li>
+            <li>Formulas are built from numeric field references, constants, unary minus, and <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. DullyPDF stores the formula model, not user-authored JavaScript.</li>
+            <li>The setup dialog blocks missing dependencies, invalid operators, and dependency cycles before the formula is saved.</li>
+            <li>Editable PDFs include generated Acrobat calculation actions for Adobe compatibility, but DullyPDF also precomputes the visible value before export.</li>
+            <li>For completed records, use a flat PDF when the recipient does not need to keep editing live fields.</li>
           </ul>
         ),
       },
@@ -627,7 +642,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li><code>Ctrl/Cmd+Z</code>: undo</li>
             <li><code>Ctrl/Cmd+Shift+Z</code> or <code>Ctrl/Cmd+Y</code>: redo</li>
             <li><code>Delete</code>, <code>Backspace</code>, or <code>Ctrl/Cmd+X</code>: delete selected field</li>
-            <li><code>T</code> / <code>D</code> / <code>S</code> / <code>C</code> / <code>R</code> / <code>Q</code>: activate Text/Date/Signature/Checkbox/Radio/Quick Radio create tools</li>
+            <li><code>T</code> / <code>S</code> / <code>C</code> / <code>R</code> / <code>Q</code>: activate Text/Signature/Checkbox/Radio/Quick Radio create tools</li>
             <li><code>Esc</code>: clear active create tool</li>
             <li><code>Ctrl/Cmd+F</code> or <code>/</code>: focus field search</li>
             <li><code>[</code> and <code>]</code>: previous/next page</li>
@@ -871,7 +886,7 @@ email`}</pre>
             <li>Choose a column (`Any column` is available) and match mode (`contains` or `equals`).</li>
             <li>Search is case-insensitive and returns at most 25 results per query.</li>
             <li>Click `Fill PDF` on a result row to write values to current fields.</li>
-            <li>Date fields normalize accepted values like `YYYY-MM-DD` and `YYYY/MM/DD` to `YYYY-MM-DD`.</li>
+            <li>Date-like text fields normalize accepted values like `YYYY-MM-DD` and `YYYY/MM/DD` to `YYYY-MM-DD`.</li>
           </ol>
         ),
       },
@@ -883,6 +898,7 @@ email`}</pre>
             <li>If mapping is incomplete, fill coverage will be partial.</li>
             <li>Clear and refill when testing mapping revisions.</li>
             <li>Validate at least one full record before saving templates for teams.</li>
+            <li>Search &amp; Fill fills number inputs but ignores calculated outputs and calculated intermediates. DullyPDF recomputes those values during PDF materialization.</li>
             <li>Search &amp; Fill is enabled only for CSV/XLSX/JSON with at least one row, stored respondent records, and a loaded document. SQL and TXT are schema-only sources.</li>
             <li>Fill By Link submissions consume an account-level monthly quota instead of closing one link at a fixed per-link cap: base allows 25 accepted responses per month and premium allows 10,000.</li>
           </ul>
@@ -911,6 +927,7 @@ email`}</pre>
             <li><code>city_state_zip</code> is composed from `city`, `state`, and `zip` when available.</li>
             <li>Numeric suffix fields like `phone_1` fall back to base key `phone`.</li>
             <li>List fields (`allergy_1`, `medication_1`, `diagnosis_1`) can be sourced from comma/pipe/etc. lists.</li>
+            <li>Calculated outputs are resolved after source values are applied, so source rows should provide the number-input dependencies rather than the computed result.</li>
           </ul>
         ),
       },
@@ -936,7 +953,7 @@ email`}</pre>
         body: (
           <ul>
             <li>Some fields are still unmapped or mapped to unstable source headers.</li>
-            <li>Date or checkbox values need normalization rules that the current row does not satisfy.</li>
+            <li>Date-like text or checkbox values need normalization rules that the current row does not satisfy.</li>
             <li>The template was updated but the operator is still validating stale output without clearing and refilling.</li>
             <li>Alias fallbacks help, but they do not replace explicit mapping on important production templates.</li>
           </ul>
@@ -1096,6 +1113,10 @@ email`}</pre>
               of the public form entirely because DullyPDF reserves signature capture for the signing workflow.
             </p>
             <p>
+              Number inputs publish as regular questions. Calculated outputs and calculated intermediates stay out of the
+              respondent form because DullyPDF computes them from submitted answers when the PDF is generated.
+            </p>
+            <p>
               Template links can also require signature after submit. In that mode the public web form collects the
               respondent data first, then hands the same stored response into the signing ceremony so the signer reviews
               the exact filled record before adopting a signature.
@@ -1117,6 +1138,11 @@ email`}</pre>
               Editable PDFs remain useful when the next person must keep filling the same live fields after download.
               For respondent receipts, signed packets, and final records, the flat output path is usually the safer
               default.
+            </p>
+            <p>
+              Calculation fields follow the same rule. DullyPDF precomputes calculated values before download and before
+              Fill By Link respondent copies. Adobe Acrobat/Reader can run the generated live calculation actions in an
+              editable PDF, while browser and mobile viewers may only show the precomputed value.
             </p>
           </>
         ),
@@ -1314,9 +1340,11 @@ email`}</pre>
         body: (
           <ul>
             <li>The public schema exposes field names, types, transforms, checkbox rules, and radio group expectations for the frozen template snapshot.</li>
+            <li>Number inputs are exposed in the schema. Calculated outputs and calculated intermediates are omitted from required caller input because the backend computes them.</li>
             <li>Public requests must send a top-level <code>data</code> object. Misspelled top-level keys like <code>fields</code> or <code>stict</code> are rejected instead of being ignored.</li>
             <li>The manager examples use <code>strict=true</code> so integration smoke tests fail closed when a caller sends unknown keys.</li>
-            <li>Blank strings remain valid scalar values, so callers can intentionally clear a text or date-style field instead of leaving the published default in place.</li>
+            <li>In strict mode, a caller-provided calculated-output key is rejected as an unknown input. In non-strict mode, it is ignored and the computed value wins.</li>
+            <li>Blank strings remain valid scalar values, so callers can intentionally clear a text field instead of leaving the published default in place.</li>
             <li>Radio groups are resolved deterministically as one selected option key, not as a legacy checkbox-hint side channel.</li>
             <li>API Fill does not reuse the generic workspace materialize endpoint. It is its own hosted path with explicit auth, limits, and audit activity.</li>
             <li>The backend is designed not to store raw submitted record values by default unless a separate operational need is added later.</li>
@@ -1424,9 +1452,9 @@ email`}</pre>
           <ul>
             <li>Download when you need a one-off generated output immediately. The workspace download menu now offers both a flat PDF and an editable PDF with fields preserved.</li>
             <li>Save to profile when the template will be reused or shared within your account context.</li>
-            <li>Saved forms persist template metadata including checkbox rules, radio groups, and text transform rules.</li>
+            <li>Saved forms persist template metadata including checkbox rules, radio groups, text transform rules, and calculation metadata.</li>
             <li>Fill By Link starts from a saved form or an open group because the public respondent link is tied to the owner account and saved template set.</li>
-            <li>For external recipients, respondent receipts, and final records, prefer Fill By Link or flat PDF downloads because completed values are baked into the page instead of depending on the recipient&apos;s PDF viewer to preserve editable field styling.</li>
+            <li>For external recipients, respondent receipts, and final records, prefer Fill By Link or flat PDF downloads because completed values are baked into the page instead of depending on the recipient&apos;s PDF viewer to preserve editable field styling or run live calculation JavaScript.</li>
           </ul>
         ),
       },
@@ -1577,7 +1605,7 @@ email`}</pre>
         body: (
           <ul>
             <li>Re-upload cleaner PDFs when labels are faint or skewed.</li>
-            <li>Use inspector tools to correct false positives and missed areas.</li>
+            <li>Use Field Editor tools to correct false positives and missed areas.</li>
             <li>Confirm document is not password protected.</li>
             <li>If upload fails immediately, confirm file type is PDF and size is under 50MB.</li>
           </ul>

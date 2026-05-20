@@ -46,8 +46,8 @@ frontend/
 - `frontend/src/publicRouteServer.tsx`: Server-side React renderer used by the static HTML generator so the emitted HTML matches the hydrated route tree.
 - `frontend/src/utils/seo.ts`: Head-tag applier for title, description, canonical, Open Graph, and Twitter metadata from the shared SEO map.
 - `frontend/src/components/viewer/PdfViewer.tsx`: PDF canvas rendering and overlay mounting.
-- `frontend/src/components/panels/FieldListPanel.tsx`: Field list, page navigation, filter/search, and display toggles.
-- `frontend/src/components/panels/FieldInspectorPanel.tsx`: Selected-field metadata/geometry editing, create/delete actions, undo/redo controls.
+- `frontend/src/components/panels/FieldListPanel.tsx`: Browser panel with page navigation, filter/search, display toggles, and workspace appearance controls.
+- `frontend/src/components/panels/FieldInspectorPanel.tsx`: Field Editor panel with selected-field metadata/geometry editing, create/delete actions, undo/redo controls, and collapsible guidance.
 - `frontend/src/components/features/SearchFillModal.tsx`: Record search and field fill logic.
 - `frontend/src/components/features/UploadView.tsx`: Upload + saved-form selection UI and OpenAI preflight modal entry.
 - `frontend/src/components/pages/*.tsx`: Homepage, auth pages, profile page, legal pages, public usage docs pages (`/usage-docs/*`), and intent landing pages.

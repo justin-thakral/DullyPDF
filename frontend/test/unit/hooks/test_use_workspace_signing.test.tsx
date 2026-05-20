@@ -1,8 +1,9 @@
-import { StrictMode } from 'react';
-import { act, render, waitFor } from '@testing-library/react';
+import { StrictMode, type ReactNode } from 'react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useWorkspaceSigning, type UseWorkspaceSigningDeps } from '../../../src/hooks/useWorkspaceSigning';
 import type { ReviewedFillContext } from '../../../src/utils/signing';
+import type { User } from 'firebase/auth';
 
 const getSigningOptionsMock = vi.hoisted(() => vi.fn());
 const getSigningRequestsMock = vi.hoisted(() => vi.fn());
@@ -26,7 +27,7 @@ vi.mock('../../../src/services/api', () => ({
 
 function createDeps(overrides: Partial<UseWorkspaceSigningDeps> = {}): UseWorkspaceSigningDeps {
   return {
-    verifiedUser: { uid: 'user-1' } as any,
+    verifiedUser: { uid: 'user-1' } as User,
     hasDocument: true,
     sourceDocumentName: 'Bravo Packet',
     sourceTemplateId: 'form-1',
@@ -42,7 +43,7 @@ function createDeps(overrides: Partial<UseWorkspaceSigningDeps> = {}): UseWorksp
       {
         id: 'signed-date-1',
         name: 'sign_date_primary',
-        type: 'date',
+        type: 'text',
         page: 2,
         rect: { x: 140, y: 20, width: 90, height: 24 },
       },
@@ -53,25 +54,16 @@ function createDeps(overrides: Partial<UseWorkspaceSigningDeps> = {}): UseWorksp
 }
 
 function renderHookHarness(deps: UseWorkspaceSigningDeps, options?: { strictMode?: boolean }) {
-  let latest: ReturnType<typeof useWorkspaceSigning> | null = null;
-
-  function Harness() {
-    latest = useWorkspaceSigning(deps);
-    return null;
-  }
-
-  render(options?.strictMode ? (
-    <StrictMode>
-      <Harness />
-    </StrictMode>
-  ) : <Harness />);
+  const wrapper = options?.strictMode
+    ? function StrictModeWrapper({ children }: { children: ReactNode }) {
+      return <StrictMode>{children}</StrictMode>;
+    }
+    : undefined;
+  const { result } = renderHook(() => useWorkspaceSigning(deps), { wrapper });
 
   return {
     get current() {
-      if (!latest) {
-        throw new Error('hook not initialized');
-      }
-      return latest;
+      return result.current;
     },
   };
 }

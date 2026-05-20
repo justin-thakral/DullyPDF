@@ -14,12 +14,18 @@ from backend.services.pdf_service import (
     DEFAULT_FIELD_FONT_COLOR,
     DEFAULT_FIELD_FONT_CHOICE,
     DEFAULT_FIELD_FONT_SIZE_CHOICE,
+    DEFAULT_FIELD_TEXT_ALIGNMENT,
+    CALCULATION_COMPATIBLE_FIELD_TYPES,
+    normalize_field_alignment_override,
+    normalize_calculation_metadata,
     normalize_field_font_color_override,
     normalize_pdf_base14_font_name,
     normalize_field_font_override,
     normalize_field_font_size_override,
+    normalize_global_field_alignment,
     normalize_global_field_font_color,
     normalize_global_field_font_size,
+    normalize_numeric_value_type,
     normalize_pdf_hex_color,
 )
 from backend.time_utils import now_iso
@@ -30,8 +36,24 @@ logger = get_logger(__name__)
 SAVED_FORM_EDITOR_SNAPSHOT_VERSION = 2
 MAX_SAVED_FORM_EDITOR_SNAPSHOT_BYTES = 1_500_000
 SAVED_FORM_EDITOR_SNAPSHOT_METADATA_KEY = "editorSnapshot"
-ALLOWED_FIELD_TYPES = {"text", "checkbox", "radio", "signature", "date"}
-FONT_COMPATIBLE_FIELD_TYPES = {"text", "date"}
+ALLOWED_FIELD_TYPES = {"text", "checkbox", "radio", "signature", "image", "pdf417", "barcode", "qr"}
+FONT_COMPATIBLE_FIELD_TYPES = {"text"}
+PDF417_DEPENDENCY_KEYS = {
+    "firstName",
+    "middleName",
+    "lastName",
+    "streetAddress",
+    "city",
+    "state",
+    "zip",
+    "dob",
+    "sex",
+    "eyeColor",
+    "height",
+    "customerId",
+    "issueDate",
+    "expirationDate",
+}
 
 
 def _coerce_bool(value: Any, *, default: bool = False) -> bool:
@@ -76,12 +98,37 @@ def _normalize_rect(value: Any) -> Dict[str, float]:
     }
 
 
+def _normalize_dependency_ref(value: Any) -> Optional[Dict[str, str]]:
+    if not isinstance(value, dict):
+        return None
+    field_id = str(value.get("fieldId") or "").strip()
+    field_name = str(value.get("fieldName") or "").strip()
+    if not field_id and not field_name:
+        return None
+    return {
+        "fieldId": field_id,
+        "fieldName": field_name,
+    }
+
+
+def _normalize_pdf417_field_mappings(value: Any) -> Optional[Dict[str, Dict[str, str]]]:
+    if not isinstance(value, dict):
+        return None
+    normalized: Dict[str, Dict[str, str]] = {}
+    for key in PDF417_DEPENDENCY_KEYS:
+        ref = _normalize_dependency_ref(value.get(key))
+        if ref:
+            normalized[key] = ref
+    return normalized or None
+
+
 def _normalize_appearance(value: Any) -> Dict[str, Any]:
     if value is None:
         return {
             "globalFieldFont": DEFAULT_FIELD_FONT_CHOICE,
             "globalFieldFontSize": DEFAULT_FIELD_FONT_SIZE_CHOICE,
             "globalFieldFontColor": DEFAULT_FIELD_FONT_COLOR,
+            "globalFieldAlignment": DEFAULT_FIELD_TEXT_ALIGNMENT,
         }
     if not isinstance(value, dict):
         raise ValueError("appearance must be an object")
@@ -103,10 +150,15 @@ def _normalize_appearance(value: Any) -> Dict[str, Any]:
     global_font_color = normalize_global_field_font_color(raw_global_font_color)
     if raw_global_font_color not in (None, "") and normalize_pdf_hex_color(raw_global_font_color) is None:
         raise ValueError("appearance.globalFieldFontColor must be a #rrggbb color")
+    raw_global_alignment = value.get("globalFieldAlignment", DEFAULT_FIELD_TEXT_ALIGNMENT)
+    global_alignment = normalize_global_field_alignment(raw_global_alignment)
+    if raw_global_alignment not in (None, "") and global_alignment != str(raw_global_alignment).strip().lower():
+        raise ValueError("appearance.globalFieldAlignment must be left, center, or right")
     return {
         "globalFieldFont": global_font,
         "globalFieldFontSize": global_font_size,
         "globalFieldFontColor": global_font_color,
+        "globalFieldAlignment": global_alignment,
     }
 
 
@@ -116,6 +168,8 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
     field_id = str(value.get("id") or "").strip()
     field_name = str(value.get("name") or "").strip()
     field_type = str(value.get("type") or "text").strip().lower()
+    if field_type == "date":
+        field_type = "text"
     try:
         page = int(value.get("page"))
     except (TypeError, ValueError) as exc:
@@ -154,6 +208,27 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
             raise ValueError("field fontColor must be global or a #rrggbb color")
         if field_type in FONT_COMPATIBLE_FIELD_TYPES:
             normalized["fontColor"] = font_color
+    if value.get("textAlign") is not None:
+        text_alignment = normalize_field_alignment_override(value.get("textAlign"))
+        if text_alignment is None:
+            raise ValueError("field textAlign must be global, left, center, or right")
+        if field_type in FONT_COMPATIBLE_FIELD_TYPES:
+            normalized["textAlign"] = text_alignment
+    if value.get("readOnly") is not None or value.get("readonly") is not None:
+        normalized["readOnly"] = _coerce_bool(value.get("readOnly", value.get("readonly")))
+    if value.get("required") is not None:
+        normalized["required"] = _coerce_bool(value.get("required"))
+    if value.get("valueType") is not None:
+        if field_type not in CALCULATION_COMPATIBLE_FIELD_TYPES:
+            raise ValueError("field valueType is only supported on text fields")
+        value_type = normalize_numeric_value_type(value.get("valueType"))
+        if value_type is None:
+            raise ValueError("field valueType must be integer or decimal")
+        normalized["valueType"] = value_type
+    if value.get("calculation") is not None:
+        if field_type not in CALCULATION_COMPATIBLE_FIELD_TYPES:
+            raise ValueError("field calculation metadata is only supported on text fields")
+        normalized["calculation"] = normalize_calculation_metadata(value.get("calculation"))
 
     for key in (
         "groupKey",
@@ -166,11 +241,35 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
         "radioOptionKey",
         "radioOptionLabel",
         "radioGroupSource",
+        "imageDataUrl",
+        "imageMimeType",
+        "imageName",
+        "pdf417Name",
+        "pdf417Dob",
     ):
         raw = value.get(key)
         if raw is None:
             continue
         normalized[key] = str(raw)
+
+    raw_pdf417_data = value.get("pdf417Data")
+    if raw_pdf417_data is None:
+        if "pdf417Data" in value:
+            normalized["pdf417Data"] = None
+    elif isinstance(raw_pdf417_data, dict):
+        normalized["pdf417Data"] = {
+            str(key): None if entry is None else str(entry)
+            for key, entry in raw_pdf417_data.items()
+        }
+
+    if "barcodeSourceField" in value:
+        normalized["barcodeSourceField"] = _normalize_dependency_ref(value.get("barcodeSourceField"))
+
+    if "qrSourceField" in value:
+        normalized["qrSourceField"] = _normalize_dependency_ref(value.get("qrSourceField"))
+
+    if "pdf417FieldMappings" in value:
+        normalized["pdf417FieldMappings"] = _normalize_pdf417_field_mappings(value.get("pdf417FieldMappings"))
 
     for key in ("fieldConfidence", "mappingConfidence", "renameConfidence", "radioOptionOrder"):
         raw = value.get(key)

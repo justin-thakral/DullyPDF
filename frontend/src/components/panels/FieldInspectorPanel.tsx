@@ -1,8 +1,9 @@
 /**
  * Field inspector panel for editing geometry and metadata.
  */
-import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useEffect, useState, type ChangeEvent as ReactChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { ConfirmDialog } from '../ui/Dialog';
+import type { CalculationSetupIntent } from '../features/CalculationSetupDialog';
 import type {
   CreateTool,
   FieldFontChoice,
@@ -12,6 +13,8 @@ import type {
   FieldFontSizeChoice,
   FieldFontSizeOverride,
   FieldRect,
+  FieldTextAlignmentChoice,
+  FieldTextAlignmentOverride,
   FieldType,
   PdfBase14FontName,
   PdfField,
@@ -24,16 +27,20 @@ import {
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  FIELD_TEXT_ALIGNMENT_CHOICES,
   MAX_FIELD_FONT_SIZE_PT,
   MIN_FIELD_FONT_SIZE_PT,
   PDF_BASE_14_FONT_OPTION_GROUPS,
   fieldFontColorChoiceLabel,
   fieldFontChoiceLabel,
   fieldFontSizeChoiceLabel,
+  fieldTextAlignmentChoiceLabel,
   isPdfBase14FontName,
   sanitizeFieldFontColorChoice,
   sanitizeFieldFontColorOverride,
   sanitizeFieldFontSizeOverride,
+  sanitizeFieldTextAlignmentOverride,
+  sanitizeGlobalFieldTextAlignment,
 } from '../../utils/fieldFonts';
 import { getMinFieldSize } from '../../utils/fields';
 import {
@@ -41,7 +48,14 @@ import {
   MIN_ARROW_KEY_MOVE_STEP,
   sanitizeArrowKeyMoveStep,
 } from '../../utils/fieldMovement';
-import { CREATE_TOOLS, FIELD_TYPES, createToolLabel, fieldTypeLabel } from '../../utils/fieldUi';
+import {
+  DULLYPDF_ONLY_CREATE_TOOLS,
+  DULLYPDF_ONLY_FIELD_TYPES,
+  NATIVE_CREATE_TOOLS,
+  NATIVE_FIELD_TYPES,
+  createToolLabel,
+  fieldTypeLabel,
+} from '../../utils/fieldUi';
 import {
   isLegacyRadioGroupSuggestion,
   radioGroupSuggestionConfidence,
@@ -49,6 +63,13 @@ import {
   shouldAutoApplyRadioGroupSuggestion,
 } from '../../utils/radioGroupSuggestions';
 import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
+import { IMAGE_ACCEPT, readImageFileAsDataUrl } from '../../utils/images';
+import {
+  CALCULATION_CREATE_TOOLS,
+  calculationFieldsEnabled,
+  calculationRoleLabel,
+  formatFormulaForDisplay,
+} from '../../utils/calculationFields';
 
 type InspectorDraft = {
   name: string;
@@ -59,6 +80,16 @@ type InspectorDraft = {
   height: string;
 };
 
+type BulkTextStyleProperty = 'fontName' | 'fontSize' | 'fontColor' | 'textAlign';
+type BulkFontSizeMode = 'global' | 'auto' | 'custom';
+type BulkFontColorMode = 'global' | 'custom';
+
+function fieldTextAlignmentUpdateValue(
+  value: FieldTextAlignmentOverride,
+): FieldTextAlignmentOverride | undefined {
+  return value === 'global' ? undefined : value;
+}
+
 type FieldInspectorPanelProps = {
   fields: PdfField[];
   selectedFieldId: string | null;
@@ -68,13 +99,17 @@ type FieldInspectorPanelProps = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   activeCreateTool: CreateTool | null;
   radioToolDraft: RadioToolDraft | null;
   pendingQuickRadioFields: PdfField[];
+  pendingBulkTextStyleFields: PdfField[];
   arrowKeyMoveEnabled: boolean;
   arrowKeyMoveStep: number;
   onUpdateField: (fieldId: string, updates: Partial<PdfField>) => void;
   onSetFieldType: (fieldId: string, type: FieldType) => void;
+  onOpenCalculationSetup: (fieldId: string, intent?: CalculationSetupIntent) => void;
+  onOpenBarcodeSetup: (fieldId: string) => void;
   onUpdateFieldDraft: (fieldId: string, updates: Partial<PdfField>) => void;
   onDeleteField: (fieldId: string) => void;
   onDeleteAllFields: () => void;
@@ -83,6 +118,9 @@ type FieldInspectorPanelProps = {
   onApplyPendingQuickRadioSelection: () => void;
   onCancelPendingQuickRadioSelection: () => void;
   onRemovePendingQuickRadioField: (fieldId: string) => void;
+  onApplyPendingBulkTextStyleSelection: (updates: Partial<PdfField>) => void;
+  onCancelPendingBulkTextStyleSelection: () => void;
+  onRemovePendingBulkTextStyleField: (fieldId: string) => void;
   onRenameRadioGroup: (groupId: string, updates: { label?: string; key?: string }) => void;
   onUpdateRadioFieldOption: (fieldId: string, updates: { label?: string; key?: string }) => void;
   onMoveRadioFieldToGroup: (fieldId: string, targetGroup: RadioGroup) => void;
@@ -113,13 +151,17 @@ export function FieldInspectorPanel({
   globalFieldFont,
   globalFieldFontSize,
   globalFieldFontColor,
+  globalFieldAlignment,
   activeCreateTool,
   radioToolDraft,
   pendingQuickRadioFields,
+  pendingBulkTextStyleFields,
   arrowKeyMoveEnabled,
   arrowKeyMoveStep,
   onUpdateField,
   onSetFieldType,
+  onOpenCalculationSetup,
+  onOpenBarcodeSetup,
   onDeleteField,
   onDeleteAllFields,
   onCreateToolChange,
@@ -127,6 +169,9 @@ export function FieldInspectorPanel({
   onApplyPendingQuickRadioSelection,
   onCancelPendingQuickRadioSelection,
   onRemovePendingQuickRadioField,
+  onApplyPendingBulkTextStyleSelection,
+  onCancelPendingBulkTextStyleSelection,
+  onRemovePendingBulkTextStyleField,
   onRenameRadioGroup,
   onUpdateRadioFieldOption,
   onMoveRadioFieldToGroup,
@@ -149,6 +194,18 @@ export function FieldInspectorPanel({
     action();
   };
   const selected = selectedField ?? fields.find((field) => field.id === selectedFieldId) ?? null;
+  const calculationsEnabled = calculationFieldsEnabled();
+  const selectedCalculationRole = selected?.calculation?.role;
+  const selectedCalculationLabel = selectedCalculationRole
+    ? calculationRoleLabel(selectedCalculationRole)
+    : null;
+  const selectedCalculationFormula = selected?.calculation?.formula
+    ? formatFormulaForDisplay(selected.calculation.formula, fields)
+    : null;
+  const selectedCalculationDependencies = selected?.calculation?.dependencies
+    ?.map((fieldId) => fields.find((field) => field.id === fieldId)?.name || 'Missing field')
+    .filter(Boolean) ?? [];
+  const selectedCanConvertToCalculation = Boolean(calculationsEnabled && selected && selected.type === 'text');
   const selectedMinSize = selected ? getMinFieldSize(selected.type) : getMinFieldSize('text');
   const selectedId = selected?.id ?? null;
   const selectedName = selected?.name ?? null;
@@ -165,7 +222,18 @@ export function FieldInspectorPanel({
   const [radioOptionKeyDraft, setRadioOptionKeyDraft] = useState('');
   const [radioMoveGroupId, setRadioMoveGroupId] = useState('');
   const [fieldFontSizeDraft, setFieldFontSizeDraft] = useState('');
+  const [bulkTextStyleProperty, setBulkTextStyleProperty] = useState<BulkTextStyleProperty>('fontName');
+  const [bulkFontValue, setBulkFontValue] = useState<FieldFontOverride>('global');
+  const [bulkFontSizeMode, setBulkFontSizeMode] = useState<BulkFontSizeMode>('global');
+  const [bulkFontSizeDraft, setBulkFontSizeDraft] = useState(String(DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT));
+  const [bulkFontColorMode, setBulkFontColorMode] = useState<BulkFontColorMode>('global');
+  const [bulkFontColorDraft, setBulkFontColorDraft] = useState(
+    sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR),
+  );
+  const [bulkTextAlignmentValue, setBulkTextAlignmentValue] =
+    useState<FieldTextAlignmentOverride>('global');
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false);
+  const [editorDescriptionOpen, setEditorDescriptionOpen] = useState(false);
 
   useEffect(() => {
     if (selectedId === null || selectedName === null || selectedPage === null) {
@@ -213,7 +281,7 @@ export function FieldInspectorPanel({
   const otherRadioGroups = selectedRadioGroup
     ? radioGroups.filter((group) => group.id !== selectedRadioGroup.id)
     : radioGroups;
-  const canEditSelectedFont = selected?.type === 'text' || selected?.type === 'date';
+  const canEditSelectedFont = selected?.type === 'text';
   const selectedFontValue: FieldFontOverride = isPdfBase14FontName(selected?.fontName)
     ? selected.fontName
     : 'global';
@@ -236,7 +304,10 @@ export function FieldInspectorPanel({
       ? sanitizeFieldFontColorChoice(selected?.fontColor, DEFAULT_FIELD_FONT_COLOR)
       : sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
   const globalFontColorLabel = fieldFontColorChoiceLabel(globalFieldFontColor);
-
+  const selectedTextAlignmentValue = sanitizeFieldTextAlignmentOverride(selected?.textAlign, 'global');
+  const globalTextAlignmentLabel = fieldTextAlignmentChoiceLabel(
+    sanitizeGlobalFieldTextAlignment(globalFieldAlignment),
+  );
   useEffect(() => {
     if (!selectedRadioGroup || selected?.type !== 'radio') {
       setRadioGroupLabelDraft('');
@@ -263,6 +334,11 @@ export function FieldInspectorPanel({
   useEffect(() => {
     setFieldFontSizeDraft(typeof selected?.fontSize === 'number' ? String(selected.fontSize) : '');
   }, [selected?.id, selected?.fontSize]);
+
+  useEffect(() => {
+    if (bulkFontColorMode === 'custom') return;
+    setBulkFontColorDraft(sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR));
+  }, [bulkFontColorMode, globalFieldFontColor]);
 
   /**
    * Patch rect properties while keeping the rest of the geometry intact.
@@ -409,6 +485,88 @@ export function FieldInspectorPanel({
     }
   };
 
+  const handleFieldTextAlignmentChange = (value: string) => {
+    if (!selected || !canEditSelectedFont) return;
+    const nextAlignment: FieldTextAlignmentOverride = sanitizeFieldTextAlignmentOverride(value, 'global');
+    const nextStoredAlignment = fieldTextAlignmentUpdateValue(nextAlignment);
+    if (nextStoredAlignment !== selected.textAlign) {
+      onUpdateField(selected.id, { textAlign: nextStoredAlignment });
+    }
+  };
+
+  const handleBulkFontChange = (value: string) => {
+    setBulkFontValue(value === 'global' || !isPdfBase14FontName(value) ? 'global' : value);
+  };
+
+  const handleBulkFontColorChange = (value: string) => {
+    const fallback = sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
+    const nextColor = sanitizeFieldFontColorOverride(value, fallback);
+    setBulkFontColorDraft(nextColor === 'global' ? fallback : nextColor);
+  };
+
+  const handleBulkTextAlignmentChange = (value: string) => {
+    setBulkTextAlignmentValue(sanitizeFieldTextAlignmentOverride(value, 'global'));
+  };
+
+  const handleApplyBulkTextStyleSelection = () => {
+    const updates: Partial<PdfField> = {};
+    if (bulkTextStyleProperty === 'fontName') {
+      updates.fontName = bulkFontValue;
+    } else if (bulkTextStyleProperty === 'fontSize') {
+      if (bulkFontSizeMode === 'custom') {
+        const fallback = DEFAULT_CUSTOM_FIELD_FONT_SIZE_PT;
+        const nextFontSize = sanitizeFieldFontSizeOverride(
+          bulkFontSizeDraft.trim() || String(fallback),
+          fallback,
+        );
+        const normalizedFontSize = typeof nextFontSize === 'number' ? nextFontSize : fallback;
+        setBulkFontSizeDraft(String(normalizedFontSize));
+        updates.fontSize = normalizedFontSize;
+      } else {
+        updates.fontSize = bulkFontSizeMode;
+      }
+    } else if (bulkTextStyleProperty === 'fontColor') {
+      if (bulkFontColorMode === 'custom') {
+        const fallback = sanitizeFieldFontColorChoice(globalFieldFontColor, DEFAULT_FIELD_FONT_COLOR);
+        const nextFontColor = sanitizeFieldFontColorOverride(bulkFontColorDraft, fallback);
+        const normalizedFontColor = nextFontColor === 'global' ? fallback : nextFontColor;
+        setBulkFontColorDraft(normalizedFontColor);
+        updates.fontColor = normalizedFontColor;
+      } else {
+        updates.fontColor = 'global';
+      }
+    } else {
+      updates.textAlign = fieldTextAlignmentUpdateValue(bulkTextAlignmentValue);
+    }
+    onApplyPendingBulkTextStyleSelection(updates);
+  };
+
+  const handleImageFileChange = async (event: ReactChangeEvent<HTMLInputElement>) => {
+    if (!selected || selected.type !== 'image') return;
+    const file = event.target.files?.[0] ?? null;
+    event.target.value = '';
+    if (!file) return;
+    onBeginFieldChange();
+    try {
+      const image = await readImageFileAsDataUrl(file);
+      onUpdateField(selected.id, { ...image, value: null });
+    } catch (error) {
+      onBlockedAction?.(error instanceof Error ? error.message : 'Unable to read this image file.');
+    } finally {
+      onCommitFieldChange();
+    }
+  };
+
+  const clearSelectedImage = () => {
+    if (!selected || selected.type !== 'image') return;
+    onUpdateField(selected.id, {
+      imageDataUrl: null,
+      imageMimeType: null,
+      imageName: null,
+      value: null,
+    });
+  };
+
   const handleNumberInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     if (event.key !== 'Enter') return;
     event.preventDefault();
@@ -491,21 +649,39 @@ export function FieldInspectorPanel({
   return (
     <>
       <aside className="panel panel--inspector">
-        <div className="panel__header">
-          <div className="panel__header-copy">
-            <h2>Inspector</h2>
-            <p className="panel__hint">
-              {selected ? `Editing ${selected.name} (enter to confirm)` : 'Select a field to edit its details.'}
-            </p>
+        <div className="panel__header panel__header--stacked">
+          <div className="panel__header-row">
+            <div className="panel__header-copy">
+              <h2>
+                <button
+                  type="button"
+                  className="panel-title-toggle"
+                  aria-expanded={editorDescriptionOpen}
+                  aria-controls="field-editor-description"
+                  onClick={() => setEditorDescriptionOpen((open) => !open)}
+                >
+                  Field Editor
+                </button>
+              </h2>
+              {selected ? <p className="panel__status-text">Selected: {selected.name}</p> : null}
+            </div>
+            <button
+              type="button"
+              className="ui-button ui-button--ghost ui-button--compact panel__header-action"
+              onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.editorWorkflow)}
+              title="Open Editor Workflow usage docs in a new window"
+            >
+              Usage Docs
+            </button>
           </div>
-          <button
-            type="button"
-            className="ui-button ui-button--ghost ui-button--compact panel__header-action"
-            onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.editorWorkflow)}
-            title="Open Editor Workflow usage docs in a new window"
+          <p
+            id="field-editor-description"
+            className="panel__micro panel-title-description"
+            hidden={!editorDescriptionOpen}
           >
-            Usage Docs
-          </button>
+            Edit the selected field name, type, page, geometry, field-specific appearance, radio grouping,
+            helper data, create tools, keyboard movement, and edit history.
+          </p>
         </div>
 
         <div className="panel__body">
@@ -514,6 +690,13 @@ export function FieldInspectorPanel({
               <p className="panel__empty">No field selected.</p>
             ) : (
               <div className="inspector">
+                <details className="panel-disclosure">
+                  <summary className="panel-disclosure__summary">Field details</summary>
+                  <p className="panel__micro panel-disclosure__body">
+                    Change the selected field metadata, text appearance, and PDF-point geometry. Press Enter
+                    or leave a numeric/text input to commit the edit.
+                  </p>
+                </details>
                 <label className="panel__label" htmlFor="field-name">
                   Name
                 </label>
@@ -539,13 +722,105 @@ export function FieldInspectorPanel({
                     value={selected.type}
                     onChange={(event) => onSetFieldType(selected.id, event.target.value as FieldType)}
                   >
-                    {FIELD_TYPES.map((type) => (
-                      <option key={type} value={type}>
-                        {fieldTypeLabel(type)}
-                      </option>
-                    ))}
+                    <optgroup label="Standard PDF fields">
+                      {NATIVE_FIELD_TYPES.map((type) => (
+                        <option key={type} value={type}>
+                          {fieldTypeLabel(type)}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="DullyPDF-only fields">
+                      {DULLYPDF_ONLY_FIELD_TYPES.map((type) => (
+                        <option key={type} value={type}>
+                          {fieldTypeLabel(type)}
+                        </option>
+                      ))}
+                    </optgroup>
                   </select>
                 </div>
+
+                {selected.type === 'text' && calculationsEnabled ? (
+                  <div className="panel__section panel__section--tight panel__section--divider">
+                    <div className="panel__section-heading-row panel__section-heading-row--disclosure">
+                      <details className="panel-disclosure panel-disclosure--heading">
+                        <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                          Calculation
+                        </summary>
+                        <p className="panel__micro panel-disclosure__body">
+                          Use calculation setup for numeric inputs and formula outputs. Required and read-only
+                          flags are stored with the text field and carry into generated PDFs.
+                        </p>
+                      </details>
+                      {selectedCalculationLabel ? (
+                        <span className="panel-status-badge">{selectedCalculationLabel}</span>
+                      ) : null}
+                    </div>
+                    {selectedCalculationLabel ? (
+                      <>
+                        {selectedCalculationFormula ? (
+                          <p className="panel__micro">Formula: {selectedCalculationFormula}</p>
+                        ) : null}
+                        {selectedCalculationDependencies.length ? (
+                          <p className="panel__micro">Depends on: {selectedCalculationDependencies.join(', ')}</p>
+                        ) : null}
+                        {selected.calculation?.imported?.supported === false ? (
+                          <p className="panel__micro panel__micro--warning">
+                            Imported calculation metadata is locked until it is rebuilt in DullyPDF.
+                          </p>
+                        ) : null}
+                        <div className="panel__action-grid">
+                          <button
+                            type="button"
+                            className="ui-button ui-button--secondary ui-button--compact"
+                            onClick={() => onOpenCalculationSetup(
+                              selected.id,
+                              selected.calculation?.role === 'external_imported_calculation' ? 'review_imported' : 'edit',
+                            )}
+                          >
+                            Edit calculation setup
+                          </button>
+                          {selected.calculation?.role === 'external_imported_calculation' ? (
+                            <button
+                              type="button"
+                              className="ui-button ui-button--ghost ui-button--compact"
+                              onClick={() => onOpenCalculationSetup(selected.id, 'rebuild_imported')}
+                            >
+                              Rebuild in DullyPDF
+                            </button>
+                          ) : null}
+                        </div>
+                      </>
+                    ) : null}
+                    <div className="panel__toggle-row">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={Boolean(selected.required)}
+                          onChange={(event) => onUpdateField(selected.id, { required: event.target.checked })}
+                        />
+                        Required
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={
+                            selected.calculation?.role === 'calculated_output'
+                            || selected.calculation?.role === 'calculated_intermediate'
+                            || selected.calculation?.role === 'external_imported_calculation'
+                            || Boolean(selected.readOnly)
+                          }
+                          disabled={
+                            selected.calculation?.role === 'calculated_output'
+                            || selected.calculation?.role === 'calculated_intermediate'
+                            || selected.calculation?.role === 'external_imported_calculation'
+                          }
+                          onChange={(event) => onUpdateField(selected.id, { readOnly: event.target.checked })}
+                        />
+                        Read-only
+                      </label>
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="panel__row">
                   <label className="panel__label" htmlFor="field-page">
@@ -656,6 +931,26 @@ export function FieldInspectorPanel({
                         />
                       </div>
                     </div>
+
+                    <div className="panel__row">
+                      <label className="panel__label" htmlFor="field-text-alignment">
+                        Alignment
+                      </label>
+                      <select
+                        id="field-text-alignment"
+                        name="field-text-alignment"
+                        className="panel__select"
+                        value={selectedTextAlignmentValue}
+                        onChange={(event) => handleFieldTextAlignmentChange(event.target.value)}
+                      >
+                        <option value="global">Use global ({globalTextAlignmentLabel})</option>
+                        {FIELD_TEXT_ALIGNMENT_CHOICES.map((alignment) => (
+                          <option key={alignment} value={alignment}>
+                            {fieldTextAlignmentChoiceLabel(alignment)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </>
                 ) : null}
 
@@ -737,9 +1032,82 @@ export function FieldInspectorPanel({
                   Delete field
                 </button>
 
+                {selected.type === 'image' ? (
+                  <div className="panel__section panel__section--divider">
+                    <details className="panel-disclosure">
+                      <summary className="panel-disclosure__summary panel-disclosure__summary--section">Image</summary>
+                      <p className="panel__micro panel-disclosure__body">
+                        Attach the image that this helper field should place on the page when DullyPDF
+                        materializes the template.
+                      </p>
+                    </details>
+                    <label className="panel__label" htmlFor="field-image-file">
+                      File
+                    </label>
+                    <input
+                      id="field-image-file"
+                      name="field-image-file"
+                      className="panel__input"
+                      type="file"
+                      accept={IMAGE_ACCEPT}
+                      onChange={handleImageFileChange}
+                    />
+                    {selected.imageDataUrl ? (
+                      <div className="panel-image-preview">
+                        <img src={selected.imageDataUrl} alt="" />
+                        <span>{selected.imageName || 'Selected image'}</span>
+                      </div>
+                    ) : (
+                      <p className="panel__micro">No image selected.</p>
+                    )}
+                    <button
+                      className="ui-button ui-button--ghost ui-button--compact"
+                      type="button"
+                      onClick={() => guardClick(!selected.imageDataUrl, 'No image to clear.', clearSelectedImage)}
+                      aria-disabled={!selected.imageDataUrl}
+                    >
+                      Clear image
+                    </button>
+                  </div>
+                ) : null}
+
+                {selected.type === 'pdf417' || selected.type === 'barcode' || selected.type === 'qr' ? (
+                  <div className="panel__section panel__section--divider">
+                    <details className="panel-disclosure">
+                      <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                        {selected.type === 'pdf417' ? 'PDF417'
+                          : selected.type === 'barcode' ? '1D Barcode'
+                          : 'QR Code'}
+                      </summary>
+                      <p className="panel__micro panel-disclosure__body">
+                        Open setup to configure manual values or source-field dependencies for this
+                        DullyPDF-only barcode helper.
+                      </p>
+                    </details>
+                    <p className="panel__micro">
+                      {(selected.barcodeClasses?.length ?? 0) > 0
+                        ? `${selected.barcodeClasses?.length} class${(selected.barcodeClasses?.length ?? 0) === 1 ? '' : 'es'} configured.`
+                        : 'No classes configured yet.'}
+                    </p>
+                    <button
+                      type="button"
+                      className="ui-button ui-button--ghost ui-button--compact"
+                      onClick={() => onOpenBarcodeSetup(selected.id)}
+                    >
+                      Edit barcode classes…
+                    </button>
+                  </div>
+                ) : null}
+
                 {selected.type === 'radio' && selectedRadioGroup ? (
                   <div className="panel__section panel__section--divider">
-                    <h3>Radio Group</h3>
+                    <details className="panel-disclosure">
+                      <summary className="panel-disclosure__summary panel-disclosure__summary--section">Radio Group</summary>
+                      <p className="panel__micro panel-disclosure__body">
+                        Edit the exported single-choice group key, user-facing labels, option order, or move
+                        this radio option into another group.
+                      </p>
+                    </details>
                     <label className="panel__label" htmlFor="radio-group-label">
                       Group label
                     </label>
@@ -841,7 +1209,16 @@ export function FieldInspectorPanel({
 
                 {selectedRadioSuggestion ? (
                   <div className="panel__section panel__section--divider">
-                    <h3>OpenAI Radio Suggestion</h3>
+                    <details className="panel-disclosure">
+                      <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                        OpenAI Radio Suggestion
+                      </summary>
+                      <p className="panel__micro panel-disclosure__body">
+                        Review the suggested checkbox cluster before converting it into an explicit radio
+                        group. Applying the suggestion changes the selected fields from checkboxes to radio
+                        options.
+                      </p>
+                    </details>
                     <p className="panel__micro">
                       Suggested {selectedRadioSuggestion.groupLabel} radio group with {selectedRadioSuggestion.suggestedFields.length} options.
                     </p>
@@ -897,10 +1274,27 @@ export function FieldInspectorPanel({
           </div>
 
           <div className="panel__section panel__section--divider">
-            <h3>Create field</h3>
-            <span className="panel__label">Create tool</span>
-            <div className="panel-display-modes" role="group" aria-label="Create tool">
-              {CREATE_TOOLS.map((type) => (
+            <details className="panel-disclosure">
+              <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                Create field
+              </summary>
+              <p className="panel__micro panel-disclosure__body">
+                Pick a tool below, then drag on the page to draw a new field. The active tool stays selected
+                until you click Off or press Esc. Tools are grouped by category &mdash; Universal AcroForm
+                fields work in every PDF viewer, DullyPDF-only fields are template helpers we render at
+                export{calculationsEnabled ? ', and Calculation fields are numeric inputs and formula outputs.' : '.'}
+              </p>
+            </details>
+            <details className="panel-disclosure">
+              <summary className="panel-disclosure__summary">Universal AcroForm fields</summary>
+              <p className="panel__micro panel-disclosure__body">
+                Text, signature, checkbox, and radio fields are standard PDF AcroForm types. Every PDF viewer
+                &mdash; Adobe Reader, browsers, macOS Preview, mobile &mdash; renders and fills them natively,
+                so exports work everywhere without DullyPDF in the loop.
+              </p>
+            </details>
+            <div className="panel-display-modes" role="group" aria-label="Universal AcroForm create tools">
+              {NATIVE_CREATE_TOOLS.map((type) => (
                 <button
                   key={type}
                   type="button"
@@ -918,12 +1312,87 @@ export function FieldInspectorPanel({
                 Off
               </button>
             </div>
-            <p className="panel__micro">
-              Draw fields on the page while a tool is active. Press Esc to exit the active tool.
-            </p>
+            <details className="panel-disclosure">
+              <summary className="panel-disclosure__summary">DullyPDF-only fields</summary>
+              <p className="panel__micro panel-disclosure__body">
+                Image, PDF417, barcode, and QR fields are DullyPDF template helpers, not native PDF form field
+                types. Editable exports store them as tagged text fields so DullyPDF can recognize and restore
+                them when the file is reopened. During final export or Fill by Link generation, DullyPDF renders
+                the image, barcode, or QR output into the PDF page content.
+              </p>
+            </details>
+            <div className="panel-display-modes" role="group" aria-label="DullyPDF-only create tools">
+              {DULLYPDF_ONLY_CREATE_TOOLS.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  className={`panel-mode-chip${activeCreateTool === type ? ' panel-mode-chip--active' : ''}`}
+                  onClick={() => onCreateToolChange(activeCreateTool === type ? null : type)}
+                >
+                  {createToolLabel(type)}
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`panel-mode-chip${activeCreateTool === null ? ' panel-mode-chip--active' : ''}`}
+                onClick={() => onCreateToolChange(null)}
+              >
+                Off
+              </button>
+            </div>
+            {CALCULATION_CREATE_TOOLS.length ? (
+              <div className="panel__section panel__section--tight panel__section--divider">
+                <details className="panel-disclosure">
+                  <summary className="panel-disclosure__summary">Calculation fields</summary>
+                  <p className="panel__micro panel-disclosure__body">
+                    Create numeric text fields and read-only calculated outputs. Live recalculation is
+                    Adobe-first; other viewers keep the saved value.
+                  </p>
+                </details>
+                <div className="panel-display-modes" role="group" aria-label="Calculation create tools">
+                  {CALCULATION_CREATE_TOOLS.map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      className={`panel-mode-chip${activeCreateTool === type ? ' panel-mode-chip--active' : ''}`}
+                      onClick={() => onCreateToolChange(activeCreateTool === type ? null : type)}
+                    >
+                      {createToolLabel(type)}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    className="panel-mode-chip"
+                    disabled={!selectedCanConvertToCalculation}
+                    onClick={() => {
+                      if (!selected) return;
+                      onOpenCalculationSetup(selected.id, selected.calculation?.role === 'external_imported_calculation' ? 'review_imported' : 'convert');
+                    }}
+                  >
+                    Convert
+                  </button>
+                  <button
+                    type="button"
+                    className={`panel-mode-chip${activeCreateTool === null ? ' panel-mode-chip--active' : ''}`}
+                    onClick={() => onCreateToolChange(null)}
+                  >
+                    Off
+                  </button>
+                </div>
+              </div>
+            ) : null}
             {radioToolDraft && (activeCreateTool === 'radio' || activeCreateTool === 'quick-radio') ? (
               <div className="panel__section panel__section--tight panel__section--divider">
-                <h3>{activeCreateTool === 'quick-radio' ? 'Quick Radio Group' : 'Radio Tool'}</h3>
+                <details className="panel-disclosure">
+                  <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                    {activeCreateTool === 'quick-radio' ? 'Quick Radio Group' : 'Radio Tool'}
+                  </summary>
+                  <p className="panel__micro panel-disclosure__body">
+                    {activeCreateTool === 'quick-radio'
+                      ? 'Drag a selection box around checkbox fields on the active page, review the selected fields, then convert them into one radio group. Hold Alt while dragging to include any checkbox the marquee touches.'
+                      : 'Draw one radio option at a time. Each placement stays in this group until you switch tools or edit the group draft.'}
+                  </p>
+                </details>
                 <label className="panel__label" htmlFor="radio-tool-group-label">
                   Group label
                 </label>
@@ -966,18 +1435,9 @@ export function FieldInspectorPanel({
                       value={radioToolDraft.nextOptionKey}
                       onChange={(event) => onUpdateRadioToolDraft({ nextOptionKey: event.target.value })}
                     />
-                    <p className="panel__micro">
-                      Draw one radio option at a time. Each placement stays in this group until you switch tools or edit
-                      the group draft.
-                    </p>
                   </>
                 ) : (
                   <>
-                    <p className="panel__micro">
-                      Drag a selection box that mostly encloses the checkbox fields you want on the active page, review
-                      the selection here, and then convert them into one radio group. Hold Alt while dragging to include
-                      any checkbox the marquee touches.
-                    </p>
                     <div className="panel__list panel__list--compact">
                       {pendingQuickRadioFields.length ? (
                         pendingQuickRadioFields.map((field) => (
@@ -1011,17 +1471,209 @@ export function FieldInspectorPanel({
                         onClick={() => guardClick(pendingQuickRadioFields.length === 0, 'Select checkbox fields on the page first before converting.', onApplyPendingQuickRadioSelection)}
                         aria-disabled={pendingQuickRadioFields.length === 0}
                       >
-                        Convert selection
+                        Convert
                       </button>
                     </div>
                   </>
                 )}
               </div>
             ) : null}
+            <div className="panel__section panel__section--tight panel__section--divider">
+              <details className="panel-disclosure">
+                <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                  Bulk Convert Font
+                </summary>
+                <p className="panel__micro panel-disclosure__body">
+                  Choose one text appearance setting, quick-select text fields on the active page, then apply
+                  that setting to the selected fields. Hold Alt while dragging to include any field the marquee
+                  touches.
+                </p>
+              </details>
+              <label className="panel__label" htmlFor="bulk-text-style-property">
+                Change
+              </label>
+              <select
+                id="bulk-text-style-property"
+                name="bulk-text-style-property"
+                className="panel__select"
+                value={bulkTextStyleProperty}
+                onChange={(event) => setBulkTextStyleProperty(event.target.value as BulkTextStyleProperty)}
+              >
+                <option value="fontName">Font</option>
+                <option value="fontSize">Font size</option>
+                <option value="fontColor">Font color</option>
+                <option value="textAlign">Alignment</option>
+              </select>
+
+              {bulkTextStyleProperty === 'fontName' ? (
+                <div className="panel__row">
+                  <label className="panel__label" htmlFor="bulk-text-style-font">
+                    Bulk font
+                  </label>
+                  <select
+                    id="bulk-text-style-font"
+                    name="bulk-text-style-font"
+                    className="panel__select"
+                    value={bulkFontValue}
+                    onChange={(event) => handleBulkFontChange(event.target.value)}
+                  >
+                    <option value="global">Use workspace ({globalFontLabel})</option>
+                    {PDF_BASE_14_FONT_OPTION_GROUPS.map((group) => (
+                      <optgroup key={group.label} label={group.label}>
+                        {group.options.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.advanced ? `${option.label} (symbol)` : option.label}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </div>
+              ) : null}
+
+              {bulkTextStyleProperty === 'fontSize' ? (
+                <div className="panel__row">
+                  <label className="panel__label" htmlFor="bulk-text-style-font-size">
+                    Bulk font size
+                  </label>
+                  <div className="panel__inline-control">
+                    <select
+                      id="bulk-text-style-font-size"
+                      name="bulk-text-style-font-size"
+                      className="panel__select"
+                      value={bulkFontSizeMode}
+                      onChange={(event) => setBulkFontSizeMode(event.target.value as BulkFontSizeMode)}
+                    >
+                      <option value="global">Use workspace ({globalFontSizeLabel})</option>
+                      <option value="auto">Auto</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                    <input
+                      id="bulk-text-style-font-size-custom"
+                      name="bulk-text-style-font-size-custom"
+                      className="panel__input panel__input--inline"
+                      type="number"
+                      min={MIN_FIELD_FONT_SIZE_PT}
+                      max={MAX_FIELD_FONT_SIZE_PT}
+                      step={0.5}
+                      inputMode="decimal"
+                      aria-label="Bulk custom font size"
+                      value={bulkFontSizeMode === 'custom' ? bulkFontSizeDraft : ''}
+                      placeholder={globalFontSizeLabel}
+                      disabled={bulkFontSizeMode !== 'custom'}
+                      onChange={(event) => setBulkFontSizeDraft(event.target.value)}
+                      onKeyDown={handleNumberInputKeyDown}
+                    />
+                  </div>
+                </div>
+              ) : null}
+
+              {bulkTextStyleProperty === 'fontColor' ? (
+                <div className="panel__row">
+                  <label className="panel__label" htmlFor="bulk-text-style-font-color">
+                    Bulk font color
+                  </label>
+                  <div className="panel__inline-control panel__inline-control--color">
+                    <select
+                      id="bulk-text-style-font-color"
+                      name="bulk-text-style-font-color"
+                      className="panel__select"
+                      value={bulkFontColorMode}
+                      onChange={(event) => setBulkFontColorMode(event.target.value as BulkFontColorMode)}
+                    >
+                      <option value="global">Use workspace ({globalFontColorLabel})</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                    <input
+                      id="bulk-text-style-font-color-custom"
+                      name="bulk-text-style-font-color-custom"
+                      className="panel__color-input"
+                      type="color"
+                      aria-label="Bulk custom font color"
+                      value={bulkFontColorDraft}
+                      disabled={bulkFontColorMode !== 'custom'}
+                      onChange={(event) => handleBulkFontColorChange(event.target.value)}
+                    />
+                  </div>
+                </div>
+              ) : null}
+
+              {bulkTextStyleProperty === 'textAlign' ? (
+                <div className="panel__row">
+                  <label className="panel__label" htmlFor="bulk-text-style-alignment">
+                    Bulk alignment
+                  </label>
+                  <select
+                    id="bulk-text-style-alignment"
+                    name="bulk-text-style-alignment"
+                    className="panel__select"
+                    value={bulkTextAlignmentValue}
+                    onChange={(event) => handleBulkTextAlignmentChange(event.target.value)}
+                  >
+                    <option value="global">Use workspace ({globalTextAlignmentLabel})</option>
+                    {FIELD_TEXT_ALIGNMENT_CHOICES.map((alignment) => (
+                      <option key={alignment} value={alignment}>
+                        {fieldTextAlignmentChoiceLabel(alignment)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : null}
+
+              <button
+                type="button"
+                className={`ui-button ${activeCreateTool === 'bulk-text-style' ? 'ui-button--primary' : 'ui-button--ghost'} ui-button--compact`}
+                onClick={() => onCreateToolChange(activeCreateTool === 'bulk-text-style' ? null : 'bulk-text-style')}
+              >
+                Quick select text fields
+              </button>
+              <div className="panel__list panel__list--compact">
+                {pendingBulkTextStyleFields.length ? (
+                  pendingBulkTextStyleFields.map((field) => (
+                    <div key={field.id} className="panel-selection-row">
+                      <span>{field.name}</span>
+                      <button
+                        className="panel-selection-row__remove"
+                        type="button"
+                        onClick={() => onRemovePendingBulkTextStyleField(field.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p className="panel__micro">No text fields selected yet.</p>
+                )}
+              </div>
+              <div className="panel__action-grid">
+                <button
+                  className="ui-button ui-button--ghost ui-button--compact"
+                  type="button"
+                  onClick={() => guardClick(pendingBulkTextStyleFields.length === 0, 'No text fields selected to clear.', onCancelPendingBulkTextStyleSelection)}
+                  aria-disabled={pendingBulkTextStyleFields.length === 0}
+                >
+                  Clear selection
+                </button>
+                <button
+                  className="ui-button ui-button--primary ui-button--compact"
+                  type="button"
+                  onClick={() => guardClick(pendingBulkTextStyleFields.length === 0, 'Select text fields on the page first before converting.', handleApplyBulkTextStyleSelection)}
+                  aria-disabled={pendingBulkTextStyleFields.length === 0}
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
             <div className="panel__section panel__section--tight">
-              <span className="panel__label">
-                Keyboard Move
-              </span>
+              <details className="panel-disclosure">
+                <summary className="panel-disclosure__summary panel-disclosure__summary--section">
+                  Keyboard Move
+                </summary>
+                <p className="panel__micro panel-disclosure__body">
+                  When enabled, Arrow keys move the selected field by the configured step. Alt+Arrow nudges by
+                  1 point, Shift+Alt+Arrow nudges by 10, and movement works from Edit mode.
+                </p>
+              </details>
               <label
                 className={`panel-pill-toggle${arrowKeyMoveEnabled ? ' panel-pill-toggle--active' : ''}`}
                 htmlFor="arrow-key-move-toggle"
@@ -1053,12 +1705,13 @@ export function FieldInspectorPanel({
                   onKeyDown={handleArrowKeyMoveStepKeyDown}
                 />
               </div>
-              <p className="panel__micro">
-                When enabled, Arrow keys move the selected field by the configured step. Alt+Arrow still nudges by 1
-                point, and Shift+Alt+Arrow nudges by 10. Make sure you&apos;re in Edit mode.
-              </p>
             </div>
-            <span className="panel__label">History</span>
+            <details className="panel-disclosure">
+              <summary className="panel-disclosure__summary panel-disclosure__summary--section">History</summary>
+              <p className="panel__micro panel-disclosure__body">
+                Undo or redo the last 10 field edits made in this workspace.
+              </p>
+            </details>
             <div className="panel__action-grid">
               <button
                 className="ui-button ui-button--ghost ui-button--compact"
@@ -1077,7 +1730,6 @@ export function FieldInspectorPanel({
                 Redo
               </button>
             </div>
-            <p className="panel__micro">Undo or redo the last 10 field edits.</p>
           </div>
 
           <div className="panel__section panel__section--divider">
@@ -1089,14 +1741,16 @@ export function FieldInspectorPanel({
             >
               Delete all fields
             </button>
-            <h3>Shortcuts</h3>
-            <p className="panel__micro">
-              Shortcuts: T/D/S/C/R/Q set create tool, Esc clears active create tool,
-              Delete/Backspace delete selected, Ctrl/Cmd+Z undo, Ctrl/Cmd+Shift+Z or Ctrl/Cmd+Y redo, Ctrl/Cmd+F or /
-              focus search, [ and ] change pages, Arrow moves the selected field by the configured step when Keyboard
-              Move is enabled, Alt+Arrow nudges by 1 point (Shift+Alt for 10), and hold Shift during corner-resize to
-              lock aspect ratio.
-            </p>
+            <details className="panel-disclosure">
+              <summary className="panel-disclosure__summary panel-disclosure__summary--section">Shortcuts</summary>
+              <p className="panel__micro panel-disclosure__body">
+                T/S/C/R/Q set create tools, Esc clears the active create tool, Delete/Backspace deletes the
+                selected field, Ctrl/Cmd+Z undoes, Ctrl/Cmd+Shift+Z or Ctrl/Cmd+Y redoes, Ctrl/Cmd+F or /
+                focuses search, [ and ] change pages, Arrow moves the selected field when Keyboard Move is
+                enabled, Alt+Arrow nudges by 1 point, Shift+Alt+Arrow nudges by 10, and Shift during
+                corner-resize locks aspect ratio.
+              </p>
+            </details>
           </div>
         </div>
       </aside>

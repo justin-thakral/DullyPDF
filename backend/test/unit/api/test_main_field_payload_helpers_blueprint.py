@@ -51,10 +51,14 @@ def test_template_overlay_field_rect_validator_modes(app_main) -> None:
     assert font_field.fontName == "Times-Italic"
     font_size_field = app_main.TemplateOverlayField(name="sized", fontSize="12")
     assert font_size_field.fontSize == 12.0
+    aligned_field = app_main.TemplateOverlayField(name="aligned", textAlign="center")
+    assert aligned_field.textAlign == "center"
     with pytest.raises(ValidationError):
         app_main.TemplateOverlayField(name="bad_font", fontName="ComicSans")
     with pytest.raises(ValidationError):
         app_main.TemplateOverlayField(name="bad_font_size", fontSize=100)
+    with pytest.raises(ValidationError):
+        app_main.TemplateOverlayField(name="bad_text_align", textAlign="justify")
 
 
 def test_coerce_field_payloads_normalizes_mixed_shapes(app_main) -> None:
@@ -70,10 +74,28 @@ def test_coerce_field_payloads_normalizes_mixed_shapes(app_main) -> None:
         {"name": "i", "type": "text", "rect": [1, 2, 3, 4], "fontSize": "auto"},
         {"name": "j", "type": "checkbox", "rect": [1, 2, 3, 4], "fontSize": 12},
         {"name": "k", "type": "text", "rect": [1, 2, 3, 4], "fontSize": 100},
+        {"name": "l", "type": "text", "rect": [1, 2, 3, 4], "textAlign": "right"},
+        {"name": "m", "type": "checkbox", "rect": [1, 2, 3, 4], "textAlign": "right"},
+        {"name": "n", "type": "text", "rect": [1, 2, 3, 4], "textAlign": "justify"},
         "not-a-dict",
     ]
     cleaned = app_main._coerce_field_payloads(raw)
-    assert [entry["name"] for entry in cleaned] == ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]
+    assert [entry["name"] for entry in cleaned] == [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+    ]
     assert cleaned[0]["rect"] == [1.0, 2.0, 4.0, 6.0]
     assert cleaned[1]["rect"] == [10.0, 20.0, 13.0, 25.0]
     assert cleaned[2]["rect"] == [2.0, 3.0, 7.0, 8.0]
@@ -85,6 +107,79 @@ def test_coerce_field_payloads_normalizes_mixed_shapes(app_main) -> None:
     assert cleaned[8]["fontSize"] == "auto"
     assert "fontSize" not in cleaned[9]
     assert "fontSize" not in cleaned[10]
+    assert cleaned[11]["textAlign"] == "right"
+    assert "textAlign" not in cleaned[12]
+    assert "textAlign" not in cleaned[13]
+
+
+def test_calculation_metadata_normalizes_for_template_fields_and_materialize_payloads(app_main) -> None:
+    calculation = {
+        "role": "calculated_output",
+        "valueType": "integer",
+        "formula": {
+            "kind": "binary",
+            "op": "+",
+            "left": {"kind": "field", "fieldId": "subtotal"},
+            "right": {"kind": "constant", "value": 5},
+        },
+        "dependencies": ["subtotal"],
+        "output": {"valueType": "integer", "rounding": "round"},
+    }
+
+    field = app_main.TemplateOverlayField(
+        name="total",
+        type="text",
+        rect=[1, 2, 3, 4],
+        readOnly=True,
+        required=True,
+        valueType="integer",
+        calculation=calculation,
+    )
+    assert field.readOnly is True
+    assert field.required is True
+    assert field.valueType == "integer"
+    assert field.calculation["role"] == "calculated_output"
+
+    cleaned = app_main._coerce_field_payloads([
+        {
+            "name": "total",
+            "type": "text",
+            "rect": [1, 2, 3, 4],
+            "readonly": "true",
+            "required": "true",
+            "valueType": "integer",
+            "calculation": calculation,
+        }
+    ])
+
+    assert cleaned[0]["readOnly"] is True
+    assert cleaned[0]["required"] is True
+    assert cleaned[0]["valueType"] == "integer"
+    assert cleaned[0]["calculation"]["formula"]["op"] == "+"
+
+
+def test_calculation_metadata_rejects_unsupported_shapes(app_main) -> None:
+    with pytest.raises(ValidationError):
+        app_main.TemplateOverlayField(
+            name="bad",
+            type="checkbox",
+            rect=[1, 2, 3, 4],
+            valueType="integer",
+        )
+
+    with pytest.raises(ValueError, match="formula binary operator"):
+        app_main._coerce_field_payloads([
+            {
+                "name": "bad",
+                "type": "text",
+                "rect": [1, 2, 3, 4],
+                "calculation": {
+                    "role": "calculated_output",
+                    "valueType": "integer",
+                    "formula": {"kind": "binary", "op": "%"},
+                },
+            }
+        ])
 
 
 def test_field_font_size_resolution_helpers(app_main) -> None:

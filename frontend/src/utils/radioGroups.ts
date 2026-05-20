@@ -516,7 +516,7 @@ export function convertRadioFieldToType(field: PdfField, type: Exclude<PdfField[
   return {
     ...cleared,
     type,
-    value: type === 'signature' || type === 'text' || type === 'date'
+    value: type === 'signature' || type === 'text'
       ? (typeof field.value === 'string' ? field.value : null)
       : field.value,
   };

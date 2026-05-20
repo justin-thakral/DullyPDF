@@ -75,7 +75,7 @@ Files:
 
 1. Backend builds an allowlist payload (`schemaFields` + `templateTags` only).
 2. Payload is byte-capped (`OPENAI_SCHEMA_MAX_PAYLOAD_BYTES`, default 80k).
-3. Exact text/date/signature tag names are pre-resolved locally when they already match schema fields, then only the remaining unresolved or choice-style tags are sent to OpenAI.
+3. Exact text/signature tag names are pre-resolved locally when they already match schema fields, then only the remaining unresolved or choice-style tags are sent to OpenAI.
 4. If the remaining payload is still too large, template tags are chunked across multiple requests while schema fields are repeated per chunk.
 5. Returned `checkboxRules` and `radioGroupSuggestions` are normalized and filtered:
    - schema field must resolve to an allowed schema field

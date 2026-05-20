@@ -16,8 +16,8 @@ function makeField(overrides: Partial<PdfField> & Pick<PdfField, 'id' | 'name' |
   };
 }
 
-function pointerMove(clientX: number, clientY: number, pointerId = 1, shiftKey = false) {
-  fireEvent.pointerMove(window, { clientX, clientY, pointerId, shiftKey });
+function pointerMove(clientX: number, clientY: number, pointerId = 1, shiftKey = false, altKey = false) {
+  fireEvent.pointerMove(window, { clientX, clientY, pointerId, shiftKey, altKey });
 }
 
 function pointerUp(pointerId = 1) {
@@ -27,7 +27,7 @@ function pointerUp(pointerId = 1) {
 describe('FieldOverlay', () => {
   beforeEach(() => {
     if (typeof PointerEvent === 'undefined') {
-      (globalThis as any).PointerEvent = MouseEvent;
+      (globalThis as typeof globalThis & { PointerEvent: typeof MouseEvent }).PointerEvent = MouseEvent;
     }
   });
 
@@ -267,6 +267,134 @@ describe('FieldOverlay', () => {
       width: 70,
       height: 55,
     });
+  });
+
+  it('uses the bulk style tool to marquee-select text fields only', () => {
+    const onBulkTextStyleSelect = vi.fn();
+    const { container } = render(
+      <FieldOverlay
+        fields={[
+          makeField({ id: 'text-field', name: 'Text', type: 'text', rect: { x: 10, y: 10, width: 30, height: 20 } }),
+          makeField({ id: 'date-field', name: 'Date', type: 'text', rect: { x: 55, y: 10, width: 30, height: 20 } }),
+          makeField({ id: 'checkbox-field', name: 'Checkbox', type: 'checkbox', rect: { x: 10, y: 10, width: 14, height: 14 } }),
+        ]}
+        pageSize={{ width: 150, height: 100 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled
+        activeCreateTool="bulk-text-style"
+        showFieldNames={false}
+        selectedFieldId={null}
+        pendingQuickRadioFieldIds={[]}
+        pendingBulkTextStyleFieldIds={[]}
+        radioSuggestionByFieldId={new Map()}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={vi.fn()}
+        onQuickRadioSelect={vi.fn()}
+        onBulkTextStyleSelect={onBulkTextStyleSelect}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const surface = container.querySelector('.field-create-surface') as HTMLDivElement;
+    fireEvent.pointerDown(surface, { clientX: 0, clientY: 0, pointerId: 1 });
+    pointerMove(100, 40, 1);
+    pointerUp(1);
+
+    expect(onBulkTextStyleSelect).toHaveBeenCalledWith(['text-field', 'date-field']);
+  });
+
+  it('supports point and touch-mode selection for the bulk style tool', () => {
+    const onBulkTextStyleSelect = vi.fn();
+    const { container } = render(
+      <FieldOverlay
+        fields={[
+          makeField({ id: 'text-field', name: 'Text', type: 'text', rect: { x: 10, y: 10, width: 30, height: 20 } }),
+          makeField({ id: 'checkbox-field', name: 'Checkbox', type: 'checkbox', rect: { x: 60, y: 10, width: 14, height: 14 } }),
+          makeField({ id: 'partial-field', name: 'Partial', type: 'text', rect: { x: 90, y: 10, width: 30, height: 20 } }),
+        ]}
+        pageSize={{ width: 150, height: 100 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled
+        activeCreateTool="bulk-text-style"
+        showFieldNames={false}
+        selectedFieldId={null}
+        pendingQuickRadioFieldIds={[]}
+        pendingBulkTextStyleFieldIds={[]}
+        radioSuggestionByFieldId={new Map()}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={vi.fn()}
+        onQuickRadioSelect={vi.fn()}
+        onBulkTextStyleSelect={onBulkTextStyleSelect}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const surface = container.querySelector('.field-create-surface') as HTMLDivElement;
+    fireEvent.pointerDown(surface, { clientX: 20, clientY: 20, pointerId: 1 });
+    pointerUp(1);
+    expect(onBulkTextStyleSelect).toHaveBeenLastCalledWith(['text-field']);
+
+    fireEvent.pointerDown(surface, { clientX: 65, clientY: 15, pointerId: 2 });
+    pointerUp(2);
+    expect(onBulkTextStyleSelect).toHaveBeenLastCalledWith([]);
+
+    fireEvent.pointerDown(surface, { clientX: 115, clientY: 10, pointerId: 3 });
+    pointerMove(125, 30, 3);
+    pointerUp(3);
+    expect(onBulkTextStyleSelect).toHaveBeenLastCalledWith([]);
+
+    fireEvent.pointerDown(surface, { clientX: 115, clientY: 10, pointerId: 4 });
+    pointerMove(125, 30, 4, false, true);
+    pointerUp(4);
+    expect(onBulkTextStyleSelect).toHaveBeenLastCalledWith(['partial-field']);
+  });
+
+  it('finishes a bulk style drag with the tool that started the drag', () => {
+    const onBulkTextStyleSelect = vi.fn();
+    const onCreateFieldWithRect = vi.fn();
+    const fields = [
+      makeField({ id: 'text-field', name: 'Text', type: 'text', rect: { x: 10, y: 10, width: 30, height: 20 } }),
+    ];
+    const props = {
+      fields,
+      pageSize: { width: 150, height: 100 },
+      scale: 1,
+      moveEnabled: false,
+      resizeEnabled: false,
+      createEnabled: true,
+      activeCreateTool: 'bulk-text-style' as const,
+      showFieldNames: false,
+      selectedFieldId: null,
+      pendingQuickRadioFieldIds: [],
+      pendingBulkTextStyleFieldIds: [],
+      radioSuggestionByFieldId: new Map<string, RadioGroupSuggestion>(),
+      onSelectField: vi.fn(),
+      onUpdateField: vi.fn(),
+      onCreateFieldWithRect,
+      onQuickRadioSelect: vi.fn(),
+      onBulkTextStyleSelect,
+      onBeginFieldChange: vi.fn(),
+      onCommitFieldChange: vi.fn(),
+    };
+    const { container, rerender } = render(<FieldOverlay {...props} />);
+
+    const surface = container.querySelector('.field-create-surface') as HTMLDivElement;
+    fireEvent.pointerDown(surface, { clientX: 0, clientY: 0, pointerId: 1 });
+    pointerMove(50, 40, 1);
+
+    rerender(<FieldOverlay {...props} activeCreateTool="text" />);
+    pointerUp(1);
+
+    expect(onBulkTextStyleSelect).toHaveBeenCalledWith(['text-field']);
+    expect(onCreateFieldWithRect).not.toHaveBeenCalled();
   });
 
   it('updates geometry for each resize handle and enforces minimum size', () => {

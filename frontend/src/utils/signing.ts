@@ -27,7 +27,8 @@ export function signerColorForOrder(order: number): string {
 
 function looksLikeSignedDateField(field: PdfField): boolean {
   const normalizedName = String(field.name || '').trim().toLowerCase();
-  if (field.type !== 'date') return false;
+  const fieldType = String(field.type);
+  if (fieldType !== 'text') return false;
   return normalizedName.includes('sign') && normalizedName.includes('date');
 }
 

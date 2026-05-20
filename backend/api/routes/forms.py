@@ -20,7 +20,11 @@ from backend.time_utils import now_iso
 from backend.services.app_config import resolve_stream_cors_headers
 from backend.services.auth_service import require_user
 from backend.services.limits_service import resolve_detect_max_pages, resolve_fillable_max_pages
+from backend.services.acroform_calculation_import_service import enrich_fields_with_acroform_calculation_metadata
+from backend.services.app_only_field_materialization_service import prepare_app_only_fields_for_materialization
+from backend.services.calculation_field_service import materialize_calculated_fields
 from backend.services.pdf_export_service import flatten_pdf_form_widgets
+from backend.services.pdf_images import ImageFieldPayloadError, stamp_image_fields_into_pdf
 from backend.services.pdf_service import (
     cleanup_paths,
     coerce_field_payloads,
@@ -34,6 +38,27 @@ from backend.services.pdf_service import (
 )
 
 router = APIRouter()
+
+
+def _fields_for_template_session_response(fields: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    """Return backend-normalized fields in the UI's origin-top rectangle shape."""
+    response_fields: list[Dict[str, Any]] = []
+    for field in fields:
+        payload = dict(field)
+        rect = payload.get("rect")
+        if isinstance(rect, (list, tuple)) and len(rect) == 4:
+            try:
+                x1, y1, x2, y2 = [float(value) for value in rect]
+                payload["rect"] = {
+                    "x": x1,
+                    "y": y1,
+                    "width": x2 - x1,
+                    "height": y2 - y1,
+                }
+            except (TypeError, ValueError):
+                pass
+        response_fields.append(payload)
+    return response_fields
 
 
 @router.post("/api/pdf/page-count")
@@ -168,7 +193,15 @@ async def materialize_form(
     template.setdefault("coordinateSystem", "originTop")
     template["appearance"] = normalize_field_appearance_payload(template.get("appearance"))
     template["renderTextAppearanceStreams"] = True
-    template["fields"] = coerce_field_payloads(raw_fields)
+    template["includeDullyPdfAppOnlyMetadata"] = export_mode == "editable"
+    try:
+        calculated_fields = materialize_calculated_fields(coerce_field_payloads(raw_fields))
+        template["fields"] = prepare_app_only_fields_for_materialization(
+            calculated_fields,
+            include_markers=export_mode == "editable",
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     template_fd, template_name = tempfile.mkstemp(suffix=".json")
     os.close(template_fd)
@@ -182,8 +215,12 @@ async def materialize_form(
         cleanup_targets.append(output_path)
         template_path.write_text(json.dumps(template), encoding="utf-8")
         inject_fields(temp_path, template_path, output_path)
+        output_path.write_bytes(stamp_image_fields_into_pdf(output_path.read_bytes(), template["fields"]))
         if export_mode == "flat":
             output_path.write_bytes(flatten_pdf_form_widgets(output_path.read_bytes()))
+    except ImageFieldPayloadError as exc:
+        cleanup_paths(cleanup_targets)
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
         cleanup_paths(cleanup_targets)
         detail = "Failed to generate flat PDF" if export_mode == "flat" else "Failed to generate fillable PDF"
@@ -231,7 +268,10 @@ async def create_template_session(
     else:
         raise HTTPException(status_code=400, detail="Invalid fields payload")
 
-    template_fields = coerce_field_payloads(raw_fields)
+    try:
+        template_fields = coerce_field_payloads(raw_fields)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     if not template_fields:
         raise HTTPException(status_code=400, detail="No fields provided for template session")
 
@@ -252,6 +292,7 @@ async def create_template_session(
             status_code=403,
             detail=f"Fillable upload limited to {max_pages} pages for your tier (got {validation.page_count}).",
         )
+    template_fields = enrich_fields_with_acroform_calculation_metadata(template_fields, validation.pdf_bytes)
     session_id = str(uuid.uuid4())
     entry: Dict[str, Any] = {
         "user_id": user.app_user_id,
@@ -275,4 +316,5 @@ async def create_template_session(
         "sessionId": session_id,
         "fieldCount": len(template_fields),
         "pageCount": validation.page_count,
+        "fields": _fields_for_template_session_response(template_fields),
     }

@@ -50,7 +50,7 @@ TXT_SCHEMA_FIELDS = [
 
 TEMPLATE_FIELDS = [
     {"name": "patient_name", "type": "text", "page": 1, "rect": {"x": 10, "y": 20, "width": 200, "height": 14}},
-    {"name": "patient_birthdate", "type": "date", "page": 1, "rect": {"x": 10, "y": 40, "width": 100, "height": 14}},
+    {"name": "patient_birthdate", "type": "text", "page": 1, "rect": {"x": 10, "y": 40, "width": 100, "height": 14}},
     {"name": "i_sex_f", "type": "checkbox", "page": 1, "rect": {"x": 300, "y": 20, "width": 12, "height": 12},
      "groupKey": "sex", "optionKey": "f"},
     {"name": "i_sex_m", "type": "checkbox", "page": 1, "rect": {"x": 320, "y": 20, "width": 12, "height": 12},

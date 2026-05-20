@@ -1,7 +1,15 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { PdfField } from '../../../src/types';
-import { createField, ensureUniqueFieldName, formatSize, makeId } from '../../../src/utils/fields';
+import {
+  PHOTO_FIELD_NAME_MARKER,
+  buildTemplateFields,
+  createField,
+  ensureUniqueFieldName,
+  formatSize,
+  makeId,
+  prepareFieldsForMaterialize,
+} from '../../../src/utils/fields';
 
 const existingField = (name: string): PdfField => ({
   id: `${name}-id`,
@@ -53,11 +61,6 @@ describe('fields utils', () => {
           expectedRect: { x: 160, y: 189, width: 180, height: 22 },
         },
         {
-          type: 'date' as const,
-          expectedName: 'date_field',
-          expectedRect: { x: 190, y: 189, width: 120, height: 22 },
-        },
-        {
           type: 'signature' as const,
           expectedName: 'signature',
           expectedRect: { x: 140, y: 184, width: 220, height: 32 },
@@ -66,6 +69,31 @@ describe('fields utils', () => {
           type: 'checkbox' as const,
           expectedName: 'i_checkbox',
           expectedRect: { x: 243, y: 193, width: 14, height: 14 },
+        },
+        {
+          type: 'radio' as const,
+          expectedName: 'radio_option',
+          expectedRect: { x: 243, y: 193, width: 14, height: 14 },
+        },
+        {
+          type: 'image' as const,
+          expectedName: 'image_field',
+          expectedRect: { x: 160, y: 140, width: 180, height: 120 },
+        },
+        {
+          type: 'pdf417' as const,
+          expectedName: 'pdf417_barcode',
+          expectedRect: { x: 140, y: 161, width: 220, height: 78 },
+        },
+        {
+          type: 'barcode' as const,
+          expectedName: 'id_barcode',
+          expectedRect: { x: 140, y: 174, width: 220, height: 52 },
+        },
+        {
+          type: 'qr' as const,
+          expectedName: 'qr_code',
+          expectedRect: { x: 195, y: 145, width: 110, height: 110 },
         },
       ];
 
@@ -124,5 +152,76 @@ describe('fields utils', () => {
 
   it('formats field size with rounded width and height values', () => {
     expect(formatSize({ x: 0, y: 0, width: 11.6, height: 9.2 })).toBe('12 x 9');
+  });
+
+  it('preserves calculation-capable field metadata in template payloads', () => {
+    const [field] = buildTemplateFields([
+      {
+        ...existingField('total'),
+        readOnly: true,
+        required: true,
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: {
+            kind: 'binary',
+            op: '+',
+            left: { kind: 'field', fieldId: 'subtotal' },
+            right: { kind: 'constant', value: 5 },
+          },
+          dependencies: ['subtotal'],
+          output: { valueType: 'integer', rounding: 'round' },
+        },
+      },
+    ]);
+
+    expect(field).toMatchObject({
+      name: 'total',
+      readOnly: true,
+      required: true,
+      valueType: 'integer',
+      calculation: {
+        role: 'calculated_output',
+        dependencies: ['subtotal'],
+      },
+    });
+  });
+
+  it('adds blank marker text anchors when preserving app-only fields for editable exports', () => {
+    const imageField: PdfField = {
+      id: 'photo-id',
+      name: 'photo',
+      type: 'image',
+      page: 1,
+      rect: { x: 10, y: 20, width: 80, height: 60 },
+      value: null,
+      imageDataUrl: 'data:image/png;base64,abc',
+      imageMimeType: 'image/png',
+      imageName: 'photo.png',
+    };
+
+    const fields = prepareFieldsForMaterialize(
+      [imageField],
+      undefined,
+      undefined,
+      { preserveAppOnlyFieldMarkers: true },
+    );
+
+    expect(fields).toHaveLength(2);
+    expect(fields[0]).toMatchObject({
+      id: 'photo-id',
+      type: 'image',
+      appOnlyMarkerName: `photo${PHOTO_FIELD_NAME_MARKER}`,
+      imageDataUrl: 'data:image/png;base64,abc',
+    });
+    expect(fields[1]).toMatchObject({
+      id: 'photo-id_image_marker',
+      name: `photo${PHOTO_FIELD_NAME_MARKER}`,
+      type: 'text',
+      value: null,
+      readOnly: true,
+    });
+    expect(fields[1].imageDataUrl).toBeUndefined();
   });
 });

@@ -7,6 +7,7 @@ from fastapi import HTTPException
 import pytest
 import fitz
 from pypdf import PdfReader, PdfWriter
+from pypdf.generic import ArrayObject, DictionaryObject, FloatObject, NameObject, NumberObject, TextStringObject
 
 from backend.detection.pdf_validation import PdfValidationResult
 from backend.services.pdf_export_service import pdf_has_form_widgets
@@ -20,6 +21,45 @@ def _patch_auth(mocker, app_main, user) -> None:
 def _blank_pdf_bytes(*, width: float = 200, height: float = 200) -> bytes:
     writer = PdfWriter()
     writer.add_blank_page(width=width, height=height)
+    buffer = io.BytesIO()
+    writer.write(buffer)
+    return buffer.getvalue()
+
+
+def _calculated_pdf_bytes() -> bytes:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=200, height=200)
+    total_field = DictionaryObject(
+        {
+            NameObject("/Type"): NameObject("/Annot"),
+            NameObject("/Subtype"): NameObject("/Widget"),
+            NameObject("/FT"): NameObject("/Tx"),
+            NameObject("/T"): TextStringObject("premium_total"),
+            NameObject("/Rect"): ArrayObject([FloatObject(10), FloatObject(160), FloatObject(90), FloatObject(178)]),
+            NameObject("/Ff"): NumberObject(1),
+            NameObject("/AA"): DictionaryObject(
+                {
+                    NameObject("/C"): DictionaryObject(
+                        {
+                            NameObject("/S"): NameObject("/JavaScript"),
+                            NameObject("/JS"): TextStringObject(
+                                "AFSimple_Calculate('SUM', new Array('base_premium'));"
+                            ),
+                        }
+                    )
+                }
+            ),
+        }
+    )
+    total_ref = writer._add_object(total_field)  # pylint: disable=protected-access
+    page[NameObject("/Annots")] = ArrayObject([total_ref])
+    acroform = DictionaryObject(
+        {
+            NameObject("/Fields"): ArrayObject([total_ref]),
+            NameObject("/CO"): ArrayObject([total_ref]),
+        }
+    )
+    writer._root_object[NameObject("/AcroForm")] = writer._add_object(acroform)  # pylint: disable=protected-access
     buffer = io.BytesIO()
     writer.write(buffer)
     return buffer.getvalue()
@@ -60,6 +100,43 @@ def _field_default_appearances(pdf_bytes: bytes) -> dict[str, str | None]:
         name = str(field.get("/T"))
         fields[name] = str(field.get("/DA")) if field.get("/DA") is not None else None
     return fields
+
+
+def _field_values_and_flags(pdf_bytes: bytes) -> dict[str, tuple[str | None, int]]:
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    acroform = reader.trailer["/Root"].get("/AcroForm")
+    if not acroform:
+        return {}
+    values: dict[str, tuple[str | None, int]] = {}
+    for field_ref in acroform.get_object().get("/Fields", []):
+        field = field_ref.get_object()
+        name = str(field.get("/T"))
+        value = field.get("/V")
+        values[name] = (str(value) if value is not None else None, int(field.get("/Ff") or 0))
+    return values
+
+
+def _acroform_fields_by_name(pdf_bytes: bytes) -> dict[str, DictionaryObject]:
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    acroform = reader.trailer["/Root"].get("/AcroForm")
+    if not acroform:
+        return {}
+    fields: dict[str, DictionaryObject] = {}
+    for field_ref in acroform.get_object().get("/Fields", []):
+        field = field_ref.get_object()
+        name = str(field.get("/T") or "")
+        if name:
+            fields[name] = field
+    return fields
+
+
+def _calculation_order_names(pdf_bytes: bytes) -> list[str]:
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    acroform = reader.trailer["/Root"].get("/AcroForm")
+    if not acroform:
+        return []
+    order = acroform.get_object().get("/CO") or []
+    return [str(field_ref.get_object().get("/T") or "") for field_ref in order]
 
 
 class _FakePdfDoc:
@@ -178,8 +255,59 @@ def test_template_session_success_coerces_fields(
     )
     assert response.status_code == 200
     assert response.json()["fieldCount"] == 1
+    assert response.json()["fields"][0]["rect"] == {"x": 1.0, "y": 2.0, "width": 3.0, "height": 4.0}
     stored_entry = store_mock.call_args.args[1]
     assert stored_entry["fields"][0]["rect"] == [1.0, 2.0, 4.0, 6.0]
+
+
+def test_template_session_imports_acroform_calculation_metadata(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    pdf_bytes = _calculated_pdf_bytes()
+    mocker.patch.object(app_main, "_read_upload_bytes", return_value=pdf_bytes)
+    mocker.patch.object(
+        app_main,
+        "_validate_pdf_for_detection",
+        return_value=PdfValidationResult(pdf_bytes=pdf_bytes, page_count=1, was_decrypted=False),
+    )
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=5)
+    store_mock = mocker.patch.object(app_main, "_store_session_entry", return_value=None)
+
+    response = client.post(
+        "/api/templates/session",
+        files={"pdf": ("x.pdf", pdf_bytes, "application/pdf")},
+        data={
+            "fields": json.dumps(
+                [
+                    {
+                        "id": "client-total",
+                        "name": "premium_total",
+                        "type": "text",
+                        "page": 1,
+                        "x": 10,
+                        "y": 22,
+                        "width": 80,
+                        "height": 18,
+                    }
+                ]
+            )
+        },
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    response_field = response.json()["fields"][0]
+    assert response_field["id"] == "client-total"
+    assert response_field["readOnly"] is True
+    assert response_field["calculation"]["role"] == "external_imported_calculation"
+    assert response_field["calculation"]["imported"]["supported"] is False
+    stored_field = store_mock.call_args.args[1]["fields"][0]
+    assert stored_field["calculation"]["imported"]["reason"] == "unsupported_acroform_javascript"
 
 
 def test_template_session_uses_original_upload_hash_when_preflight_decrypts_pdf(
@@ -402,6 +530,207 @@ def test_materialize_form_flat_mode_completes_with_font_size_payload(
     assert pdf_has_form_widgets(response.content) is False
     with fitz.open(stream=response.content, filetype="pdf") as document:
         assert "Ada Lovelace" in document[0].get_text()
+
+
+def test_materialize_form_evaluates_calculation_fields_for_editable_and_flat_exports(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+
+    payload = {
+        "fields": [
+            {
+                "id": "base",
+                "name": "base_premium",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 110, 42],
+                "value": "7",
+                "valueType": "integer",
+                "calculation": {"role": "number_input", "valueType": "integer"},
+            },
+            {
+                "id": "fee",
+                "name": "policy_fee",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 50, 110, 72],
+                "value": "5",
+                "valueType": "integer",
+                "calculation": {"role": "number_input", "valueType": "integer"},
+            },
+            {
+                "id": "total",
+                "name": "premium_total",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 80, 110, 102],
+                "readOnly": False,
+                "valueType": "integer",
+                "calculation": {
+                    "role": "calculated_output",
+                    "valueType": "integer",
+                    "formula": {
+                        "kind": "binary",
+                        "op": "+",
+                        "left": {"kind": "field", "fieldId": "base"},
+                        "right": {"kind": "field", "fieldId": "fee"},
+                    },
+                    "output": {"valueType": "integer", "rounding": "round"},
+                },
+            },
+        ]
+    }
+
+    editable = client.post(
+        "/api/forms/materialize",
+        files={"pdf": ("calculated.pdf", _blank_pdf_bytes(), "application/pdf")},
+        data={"fields": json.dumps(payload), "exportMode": "editable"},
+        headers=auth_headers,
+    )
+
+    assert editable.status_code == 200
+    field_values = _field_values_and_flags(editable.content)
+    assert field_values["premium_total"] == ("12", 1)
+    assert "12" in _appearance_streams(editable.content)
+
+    flat = client.post(
+        "/api/forms/materialize",
+        files={"pdf": ("calculated-flat.pdf", _blank_pdf_bytes(), "application/pdf")},
+        data={"fields": json.dumps(payload), "exportMode": "flat"},
+        headers=auth_headers,
+    )
+
+    assert flat.status_code == 200
+    assert pdf_has_form_widgets(flat.content) is False
+    with fitz.open(stream=flat.content, filetype="pdf") as document:
+        assert "12" in document[0].get_text()
+
+
+def test_materialize_form_exports_acrobat_calculation_actions_and_metadata(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    from backend.services.acroform_calculation_import_service import analyze_acroform_calculation_fields
+
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+
+    payload = {
+        "fields": [
+            {
+                "id": "base",
+                "name": "base_premium",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 110, 42],
+                "value": "7",
+                "valueType": "integer",
+                "calculation": {"role": "number_input", "valueType": "integer"},
+            },
+            {
+                "id": "fee",
+                "name": "policy_fee",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 50, 110, 72],
+                "value": "5",
+                "valueType": "integer",
+                "calculation": {"role": "number_input", "valueType": "integer"},
+            },
+            {
+                "id": "subtotal",
+                "name": "premium_subtotal",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 80, 110, 102],
+                "valueType": "integer",
+                "calculation": {
+                    "role": "calculated_intermediate",
+                    "valueType": "integer",
+                    "formula": {
+                        "kind": "binary",
+                        "op": "+",
+                        "left": {"kind": "field", "fieldId": "base"},
+                        "right": {"kind": "field", "fieldId": "fee"},
+                    },
+                    "output": {"valueType": "integer", "rounding": "round"},
+                },
+            },
+            {
+                "id": "total",
+                "name": "premium_total",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 110, 110, 132],
+                "readOnly": False,
+                "valueType": "integer",
+                "calculation": {
+                    "role": "calculated_output",
+                    "valueType": "integer",
+                    "formula": {
+                        "kind": "binary",
+                        "op": "*",
+                        "left": {"kind": "field", "fieldId": "subtotal"},
+                        "right": {"kind": "constant", "value": 2},
+                    },
+                    "output": {"valueType": "integer", "rounding": "round"},
+                },
+            },
+        ]
+    }
+
+    response = client.post(
+        "/api/forms/materialize",
+        files={"pdf": ("calculated-actions.pdf", _blank_pdf_bytes(), "application/pdf")},
+        data={"fields": json.dumps(payload), "exportMode": "editable"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    fields_by_name = _acroform_fields_by_name(response.content)
+    base_actions = fields_by_name["base_premium"][NameObject("/AA")]
+    assert NameObject("/K") in base_actions
+    assert NameObject("/V") in base_actions
+    assert NameObject("/F") in base_actions
+
+    subtotal_actions = fields_by_name["premium_subtotal"][NameObject("/AA")]
+    total_actions = fields_by_name["premium_total"][NameObject("/AA")]
+    assert NameObject("/C") in subtotal_actions
+    assert NameObject("/F") in subtotal_actions
+    assert NameObject("/C") in total_actions
+    assert int(fields_by_name["premium_total"].get("/Ff") or 0) & 1
+    assert _calculation_order_names(response.content) == ["premium_subtotal", "premium_total"]
+
+    total_js = str(total_actions[NameObject("/C")].get("/JS"))
+    assert "event.value = dullyOutput" in total_js
+    assert 'dullyRead("premium_subtotal")' in total_js
+
+    reader = PdfReader(io.BytesIO(response.content))
+    metadata = json.loads(reader.metadata["/DullyPDFCalculations"])
+    assert metadata["schema"] == "dullypdf.calculations.v1"
+    assert {field["name"] for field in metadata["fields"]} == {
+        "base_premium",
+        "policy_fee",
+        "premium_subtotal",
+        "premium_total",
+    }
+
+    imported = {
+        record["name"]: record
+        for record in analyze_acroform_calculation_fields(response.content)
+    }
+    assert imported["base_premium"]["calculation"]["role"] == "number_input"
+    assert imported["premium_total"]["calculation"]["role"] == "calculated_output"
+    assert imported["premium_total"]["calculation"]["imported"]["source"] == "dullypdf_metadata"
 
 
 def test_materialize_inject_failure_cleans_temp_files_immediately(

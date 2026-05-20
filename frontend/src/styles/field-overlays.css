@@ -43,9 +43,34 @@
   border-radius: 999px;
 }
 
+.field-create-draft--image {
+  border-color: rgba(217, 119, 6, 0.95);
+  background: rgba(217, 119, 6, 0.1);
+}
+
 .field-create-draft--quick-radio {
   border-color: rgba(22, 163, 74, 0.92);
   background: rgba(22, 163, 74, 0.08);
+}
+
+.field-create-draft--bulk-text-style {
+  border-color: rgba(147, 51, 234, 0.92);
+  background: rgba(147, 51, 234, 0.08);
+}
+
+.field-create-draft--pdf417 {
+  border-color: rgba(99, 102, 241, 0.95);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.field-create-draft--barcode {
+  border-color: rgba(8, 145, 178, 0.95);
+  background: rgba(8, 145, 178, 0.08);
+}
+
+.field-create-draft--qr {
+  border-color: rgba(20, 184, 166, 0.95);
+  background: rgba(20, 184, 166, 0.08);
 }
 
 .field-box {
@@ -98,6 +123,30 @@
   background: rgba(16, 185, 129, 0.08);
 }
 
+.field-box--image {
+  border-radius: 3px;
+  border-color: rgba(217, 119, 6, 0.82);
+  background: rgba(217, 119, 6, 0.06);
+}
+
+.field-box--pdf417 {
+  border-radius: 2px;
+  border-color: rgba(99, 102, 241, 0.82);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.field-box--barcode {
+  border-radius: 2px;
+  border-color: rgba(8, 145, 178, 0.82);
+  background: rgba(8, 145, 178, 0.05);
+}
+
+.field-box--qr {
+  border-radius: 2px;
+  border-color: rgba(20, 184, 166, 0.82);
+  background: rgba(20, 184, 166, 0.05);
+}
+
 .field-box--conf-medium {
   outline: 2px solid rgba(245, 158, 11, 0.92);
   outline-offset: 1px;
@@ -119,6 +168,10 @@
 
 .field-box--quick-radio-pending {
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.28), 0 10px 18px rgba(15, 23, 42, 0.16);
+}
+
+.field-box--bulk-text-style-pending {
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.28), 0 10px 18px rgba(15, 23, 42, 0.16);
 }
 
 .field-box--radio-suggestion {
@@ -174,6 +227,30 @@
   border-radius: 999px;
   border-color: rgba(16, 185, 129, 0.58);
   background: rgba(255, 255, 255, 0.12);
+}
+
+.field-input-box--image {
+  border-radius: 3px;
+  border-color: rgba(217, 119, 6, 0.62);
+  background: rgba(255, 251, 235, 0.2);
+}
+
+.field-input-box--pdf417 {
+  border-radius: 2px;
+  border-color: rgba(99, 102, 241, 0.62);
+  background: rgba(238, 242, 255, 0.2);
+}
+
+.field-input-box--barcode {
+  border-radius: 2px;
+  border-color: rgba(8, 145, 178, 0.62);
+  background: rgba(236, 254, 255, 0.22);
+}
+
+.field-input-box--qr {
+  border-radius: 2px;
+  border-color: rgba(20, 184, 166, 0.62);
+  background: rgba(240, 253, 250, 0.22);
 }
 
 .field-input-box--checkbox,
@@ -305,6 +382,154 @@
   border-style: dashed;
   font-style: italic;
   color: rgba(15, 23, 42, 0.78);
+}
+
+.field-image-input {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed rgba(217, 119, 6, 0.55);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #92400e;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: max(9px, var(--field-font-size, 10px));
+  font-weight: 700;
+}
+
+.field-image-input--filled {
+  border-style: solid;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.field-image-input img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.field-image-input__control {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.field-pdf417-preview {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(15, 23, 42, 0.9);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 0.25rem;
+}
+
+.field-pdf417-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+
+.field-pdf417-preview span {
+  max-width: 100%;
+  border-radius: 2px;
+  padding: 0.02rem 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: max(9px, var(--field-font-size, 10px));
+  font-weight: 800;
+}
+
+.field-qr-preview {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(20, 184, 166, 0.45);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(15, 23, 42, 0.9);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 0.2rem;
+}
+
+.field-qr-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.field-qr-preview span {
+  max-width: 100%;
+  border-radius: 2px;
+  padding: 0.02rem 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: max(9px, var(--field-font-size, 10px));
+  font-weight: 800;
+}
+
+.field-barcode-control {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(14px, 28%);
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.field-barcode-preview {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #ffffff;
+  color: rgba(8, 51, 68, 0.78);
+  font-size: max(8px, calc(var(--field-font-size, 10px) * 0.8));
+  font-weight: 800;
+}
+
+.field-barcode-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+
+.field-barcode-input {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-top: 1px solid rgba(8, 145, 178, 0.26);
+  background: rgba(236, 254, 255, 0.9);
+  color: rgba(15, 23, 42, 0.92);
+  font-size: max(8px, calc(var(--field-font-size, 10px) * 0.75));
+  line-height: 1;
+  text-align: center;
+  letter-spacing: 0;
+  outline: none;
+  padding: 0 2px;
+}
+
+.field-barcode-input:focus {
+  box-shadow: inset 0 0 0 2px rgba(8, 145, 178, 0.32);
 }
 
 

@@ -33,7 +33,6 @@ export function normaliseFieldType(raw: unknown): FieldType {
   const candidate = String(raw || '').toLowerCase();
   if (candidate === 'checkbox') return 'checkbox';
   if (candidate === 'signature') return 'signature';
-  if (candidate === 'date') return 'date';
   return 'text';
 }
 

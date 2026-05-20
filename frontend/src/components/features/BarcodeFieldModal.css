@@ -1,0 +1,209 @@
+.barcode-modal {
+  width: min(960px, 92vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.barcode-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.barcode-modal__header h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.barcode-modal__header p {
+  margin: 0;
+  color: var(--ui-text-muted, #5a6376);
+  font-size: 13px;
+  max-width: 540px;
+}
+
+.barcode-modal__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 20px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+@media (max-width: 720px) {
+  .barcode-modal__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.barcode-modal__config,
+.barcode-modal__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.barcode-modal__config h3,
+.barcode-modal__preview h3 {
+  margin: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ui-text-muted, #5a6376);
+}
+
+.barcode-modal__config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.barcode-modal__class-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+}
+
+.barcode-modal__class-row {
+  background: var(--ui-surface-muted, #f5f7fb);
+  border: 1px solid var(--ui-border-subtle, #e3e7ef);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.barcode-modal__class-grid {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto minmax(160px, 1.5fr);
+  gap: 10px;
+  align-items: end;
+}
+
+@media (max-width: 640px) {
+  .barcode-modal__class-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.barcode-modal__label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ui-text-muted, #5a6376);
+}
+
+.barcode-modal__label input,
+.barcode-modal__label select {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid var(--ui-border-strong, #c5cbd6);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ui-text, #1f2733);
+}
+
+.barcode-modal__mode-group {
+  display: inline-flex;
+  border: 1px solid var(--ui-border-strong, #c5cbd6);
+  border-radius: 6px;
+  overflow: hidden;
+  align-self: end;
+}
+
+.barcode-modal__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--ui-text, #1f2733);
+  background: #fff;
+}
+
+.barcode-modal__mode input {
+  display: none;
+}
+
+.barcode-modal__mode--active {
+  background: var(--ui-accent, #1f7be8);
+  color: #fff;
+}
+
+.barcode-modal__remove {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: var(--ui-danger, #c04040);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.barcode-modal__empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ui-text-muted, #5a6376);
+}
+
+.barcode-modal__preview-image {
+  background: var(--ui-surface-muted, #f5f7fb);
+  border: 1px solid var(--ui-border-subtle, #e3e7ef);
+  border-radius: 10px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.barcode-modal__preview-image img {
+  max-width: 100%;
+  max-height: 240px;
+  height: auto;
+  display: block;
+}
+
+.barcode-modal__preview-empty {
+  color: var(--ui-text-muted, #5a6376);
+  font-size: 13px;
+  text-align: center;
+}
+
+.barcode-modal__preview-text {
+  font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  padding: 8px;
+  border: 1px solid var(--ui-border-subtle, #e3e7ef);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ui-text, #1f2733);
+  resize: vertical;
+}
+
+.barcode-modal__warnings {
+  list-style: disc;
+  padding-left: 18px;
+  margin: 0;
+  color: var(--ui-warning, #b06b00);
+  font-size: 12px;
+}
+
+.barcode-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

@@ -93,6 +93,7 @@ mcp/.env.*.local
 /DIFFERENT_FONT_IMPLEMENTATION_PLAN.md
 /FONT_SIZE_SETTINGS_IMPLEMENTATION_PLAN.md
 /GROUP_FILL_MIGRATION_PLAN.md
+/APP_ONLY_FIELDS_IMPLEMENTATION_PLAN.md
 /file_search_and_fill_crediting_rollout.md
 /todo.txt
 

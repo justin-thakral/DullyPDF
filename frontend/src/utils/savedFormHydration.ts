@@ -1,9 +1,15 @@
 import type {
+  CalculationFieldRole,
+  CalculationMetadata,
   CheckboxRule,
   FieldFontColorChoice,
   FieldFontChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
+  FieldDependencyRef,
   PageSize,
+  Pdf417DependencyKey,
+  Pdf417ScanData,
   PdfField,
   RadioGroup,
   RadioGroupSuggestion,
@@ -14,11 +20,14 @@ import {
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
   isPdfBase14FontName,
   sanitizeFieldFontColorChoice,
   sanitizeFieldFontColorOverride,
   sanitizeFieldFontSizeChoice,
   sanitizeFieldFontSizeOverride,
+  sanitizeFieldTextAlignmentOverride,
+  sanitizeGlobalFieldTextAlignment,
 } from './fieldFonts';
 import { buildRadioGroups } from './radioGroups';
 import { deriveRadioGroupSuggestionsFromCheckboxRules } from './openAiFields';
@@ -77,6 +86,156 @@ function normalizeFieldValue(value: unknown): PdfField['value'] {
   return String(value);
 }
 
+function normalizeDependencyRef(value: unknown): FieldDependencyRef | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const record = value as Record<string, unknown>;
+  const fieldId = String(record.fieldId || '').trim();
+  const fieldName = String(record.fieldName || '').trim();
+  if (!fieldId && !fieldName) {
+    return null;
+  }
+  return { fieldId, fieldName };
+}
+
+const LEGACY_PDF417_KEYS: Pdf417DependencyKey[] = [
+  'firstName', 'middleName', 'lastName',
+  'streetAddress', 'city', 'state', 'zip',
+  'dob', 'sex', 'eyeColor', 'height',
+  'customerId', 'issueDate', 'expirationDate',
+];
+
+function normalizePdf417FieldMappings(value: unknown): PdfField['pdf417FieldMappings'] {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const record = value as Record<string, unknown>;
+  const normalized: Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> = {};
+  for (const key of LEGACY_PDF417_KEYS) {
+    const ref = normalizeDependencyRef(record[key]);
+    if (ref) {
+      normalized[key] = ref;
+    }
+  }
+  return Object.keys(normalized).length ? normalized : null;
+}
+
+function normalizeBarcodeClasses(value: unknown): PdfField['barcodeClasses'] {
+  if (value === null) return null;
+  if (!Array.isArray(value)) return undefined;
+  const out: NonNullable<PdfField['barcodeClasses']> = [];
+  for (const entry of value) {
+    if (!entry || typeof entry !== 'object') continue;
+    const record = entry as Record<string, unknown>;
+    const id = String(record.id || '').trim();
+    const label = typeof record.label === 'string' ? record.label : '';
+    const modeRaw = String(record.mode || 'manual').trim();
+    const mode = modeRaw === 'field' ? 'field' : 'manual';
+    const fieldRef = mode === 'field' ? normalizeDependencyRef(record.fieldRef) : null;
+    const manualValue = mode === 'manual' && typeof record.manualValue === 'string'
+      ? record.manualValue
+      : null;
+    if (!id && !label && !fieldRef && !manualValue) continue;
+    out.push({
+      id: id || `class_${Math.random().toString(16).slice(2)}`,
+      label,
+      mode,
+      fieldRef: fieldRef ?? null,
+      manualValue,
+    });
+  }
+  return out;
+}
+
+const NUMERIC_VALUE_TYPES = new Set(['integer', 'decimal']);
+const CALCULATION_FIELD_ROLES = new Set([
+  'none',
+  'number_input',
+  'calculated_output',
+  'calculated_intermediate',
+  'external_imported_calculation',
+]);
+
+function normalizeBoolean(value: unknown): boolean | undefined {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === 'true' || normalized === '1' || normalized === 'yes') return true;
+    if (normalized === 'false' || normalized === '0' || normalized === 'no') return false;
+  }
+  return undefined;
+}
+
+function normalizeNumericValueType(value: unknown): CalculationMetadata['valueType'] | undefined {
+  const normalized = String(value || '').trim();
+  return NUMERIC_VALUE_TYPES.has(normalized)
+    ? normalized as CalculationMetadata['valueType']
+    : undefined;
+}
+
+function normalizeCalculationMetadata(value: unknown): CalculationMetadata | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+  const record = value as Record<string, unknown>;
+  const roleValue = String(record.role || '').trim();
+  const valueType = normalizeNumericValueType(record.valueType);
+  if (!CALCULATION_FIELD_ROLES.has(roleValue) || !valueType) {
+    return undefined;
+  }
+  const calculation: CalculationMetadata = {
+    role: roleValue as CalculationFieldRole,
+    valueType,
+  };
+  if (record.formula && typeof record.formula === 'object' && !Array.isArray(record.formula)) {
+    calculation.formula = record.formula as CalculationMetadata['formula'];
+  }
+  if (Array.isArray(record.dependencies)) {
+    calculation.dependencies = record.dependencies
+      .map((dependency) => String(dependency || '').trim())
+      .filter(Boolean);
+  }
+  if (record.output && typeof record.output === 'object' && !Array.isArray(record.output)) {
+    const outputRecord = record.output as Record<string, unknown>;
+    const outputValueType = normalizeNumericValueType(outputRecord.valueType);
+    if (outputValueType) {
+      calculation.output = { valueType: outputValueType };
+      const rounding = String(outputRecord.rounding || '').trim();
+      if (['round', 'floor', 'ceil', 'truncate'].includes(rounding)) {
+        calculation.output.rounding = rounding as NonNullable<CalculationMetadata['output']>['rounding'];
+      }
+      const blankInputBehavior = String(outputRecord.blankInputBehavior || '').trim();
+      if (['treat_as_zero', 'blank_result', 'validation_error'].includes(blankInputBehavior)) {
+        calculation.output.blankInputBehavior =
+          blankInputBehavior as NonNullable<CalculationMetadata['output']>['blankInputBehavior'];
+      }
+      const divideByZeroBehavior = String(outputRecord.divideByZeroBehavior || '').trim();
+      if (['blank_result', 'validation_error'].includes(divideByZeroBehavior)) {
+        calculation.output.divideByZeroBehavior =
+          divideByZeroBehavior as NonNullable<CalculationMetadata['output']>['divideByZeroBehavior'];
+      }
+    }
+  }
+  if (record.imported && typeof record.imported === 'object' && !Array.isArray(record.imported)) {
+    const importedRecord = record.imported as Record<string, unknown>;
+    const source = String(importedRecord.source || '').trim();
+    if (source === 'acroform_js' || source === 'dullypdf_metadata') {
+      calculation.imported = {
+        source,
+        supported: normalizeBoolean(importedRecord.supported) ?? false,
+      };
+      if (importedRecord.reason !== undefined && importedRecord.reason !== null) {
+        calculation.imported.reason = String(importedRecord.reason);
+      }
+      if (importedRecord.rawActionSummary !== undefined && importedRecord.rawActionSummary !== null) {
+        calculation.imported.rawActionSummary = String(importedRecord.rawActionSummary);
+      }
+    }
+  }
+  return calculation;
+}
+
 function normalizeField(value: unknown): PdfField | null {
   if (!value || typeof value !== 'object') {
     return null;
@@ -84,13 +243,14 @@ function normalizeField(value: unknown): PdfField | null {
   const record = value as Record<string, unknown>;
   const id = String(record.id || '').trim();
   const name = String(record.name || '').trim();
-  const type = String(record.type || 'text').trim() as PdfField['type'];
+  const rawType = String(record.type || 'text').trim().toLowerCase();
+  const type = (rawType === 'date' ? 'text' : rawType) as PdfField['type'];
   const page = Number(record.page);
   const rect = normalizeRect(record.rect);
   if (!id || !name || !rect || !Number.isInteger(page) || page < 1) {
     return null;
   }
-  if (!['text', 'checkbox', 'radio', 'signature', 'date'].includes(type)) {
+  if (!['text', 'checkbox', 'radio', 'signature', 'image', 'pdf417', 'barcode', 'qr'].includes(type)) {
     return null;
   }
   const field: PdfField = {
@@ -101,6 +261,22 @@ function normalizeField(value: unknown): PdfField | null {
     rect,
     value: normalizeFieldValue(record.value),
   };
+  const readOnly = normalizeBoolean(record.readOnly ?? record.readonly);
+  if (readOnly !== undefined) {
+    field.readOnly = readOnly;
+  }
+  const required = normalizeBoolean(record.required);
+  if (required !== undefined) {
+    field.required = required;
+  }
+  const valueType = normalizeNumericValueType(record.valueType);
+  if (valueType && type === 'text') {
+    field.valueType = valueType;
+  }
+  const calculation = normalizeCalculationMetadata(record.calculation);
+  if (calculation && type === 'text') {
+    field.calculation = calculation;
+  }
   for (const key of [
     'groupKey',
     'optionKey',
@@ -130,11 +306,49 @@ function normalizeField(value: unknown): PdfField | null {
       field.fontName = fontName;
     }
   }
-  if ((type === 'text' || type === 'date') && record.fontSize !== undefined && record.fontSize !== null) {
+  if (type === 'text' && record.fontSize !== undefined && record.fontSize !== null) {
     field.fontSize = sanitizeFieldFontSizeOverride(record.fontSize, 'global');
   }
-  if ((type === 'text' || type === 'date') && record.fontColor !== undefined && record.fontColor !== null) {
+  if (type === 'text' && record.fontColor !== undefined && record.fontColor !== null) {
     field.fontColor = sanitizeFieldFontColorOverride(record.fontColor, 'global');
+  }
+  if (type === 'text' && record.textAlign !== undefined && record.textAlign !== null) {
+    field.textAlign = sanitizeFieldTextAlignmentOverride(record.textAlign, 'global');
+  }
+  for (const key of ['imageDataUrl', 'imageMimeType', 'imageName', 'pdf417Name', 'pdf417Dob'] as const) {
+    const raw = record[key];
+    if (raw === undefined) {
+      continue;
+    }
+    field[key] = raw === null ? null : String(raw);
+  }
+  if (record.pdf417Data === null) {
+    field.pdf417Data = null;
+  } else if (record.pdf417Data && typeof record.pdf417Data === 'object') {
+    const rawPdf417Data = record.pdf417Data as Record<string, unknown>;
+    const normalizedPdf417Data: Pdf417ScanData = {};
+    for (const key of LEGACY_PDF417_KEYS) {
+      if (rawPdf417Data[key] !== undefined) {
+        normalizedPdf417Data[key] =
+          rawPdf417Data[key] === null ? null : String(rawPdf417Data[key]);
+      }
+    }
+    field.pdf417Data = normalizedPdf417Data;
+  }
+  if (record.barcodeSourceField !== undefined) {
+    field.barcodeSourceField = normalizeDependencyRef(record.barcodeSourceField);
+  }
+  if (record.qrSourceField !== undefined) {
+    field.qrSourceField = normalizeDependencyRef(record.qrSourceField);
+  }
+  if (record.pdf417FieldMappings !== undefined) {
+    field.pdf417FieldMappings = normalizePdf417FieldMappings(record.pdf417FieldMappings);
+  }
+  if (record.barcodeClasses !== undefined) {
+    const normalizedClasses = normalizeBarcodeClasses(record.barcodeClasses);
+    if (normalizedClasses !== undefined) {
+      field.barcodeClasses = normalizedClasses;
+    }
   }
   for (const key of ['fieldConfidence', 'mappingConfidence', 'renameConfidence', 'radioOptionOrder'] as const) {
     const raw = record[key];
@@ -167,7 +381,11 @@ function normalizeAppearance(value: unknown): SavedFormEditorSnapshot['appearanc
     record.globalFieldFontColor,
     DEFAULT_FIELD_FONT_COLOR,
   );
-  return { globalFieldFont, globalFieldFontSize, globalFieldFontColor };
+  const globalFieldAlignment = sanitizeGlobalFieldTextAlignment(
+    record.globalFieldAlignment,
+    DEFAULT_FIELD_TEXT_ALIGNMENT,
+  );
+  return { globalFieldFont, globalFieldFontSize, globalFieldFontColor, globalFieldAlignment };
 }
 
 function normalizeRadioGroups(value: unknown): RadioGroup[] | null {
@@ -265,6 +483,7 @@ export function buildSavedFormEditorSnapshot(params: {
   globalFieldFont?: FieldFontChoice;
   globalFieldFontSize?: FieldFontSizeChoice;
   globalFieldFontColor?: FieldFontColorChoice;
+  globalFieldAlignment?: FieldTextAlignmentChoice;
   hasRenamedFields: boolean;
   hasMappedSchema: boolean;
 }): SavedFormEditorSnapshot {
@@ -279,6 +498,10 @@ export function buildSavedFormEditorSnapshot(params: {
     params.globalFieldFontColor,
     DEFAULT_FIELD_FONT_COLOR,
   );
+  const globalFieldAlignment = sanitizeGlobalFieldTextAlignment(
+    params.globalFieldAlignment,
+    DEFAULT_FIELD_TEXT_ALIGNMENT,
+  );
   return {
     version: 2,
     pageCount: params.pageCount,
@@ -288,7 +511,7 @@ export function buildSavedFormEditorSnapshot(params: {
         { width: size.width, height: size.height },
       ]),
     ),
-    appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor },
+    appearance: { globalFieldFont, globalFieldFontSize, globalFieldFontColor, globalFieldAlignment },
     fields: params.fields.map((field) => ({
       ...field,
       rect: { ...field.rect },

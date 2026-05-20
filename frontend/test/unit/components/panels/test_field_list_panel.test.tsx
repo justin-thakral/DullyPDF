@@ -20,7 +20,7 @@ const SAMPLE_FIELDS: PdfField[] = [
   {
     id: 'f2',
     name: 'Birth Date',
-    type: 'date',
+    type: 'text',
     page: 1,
     rect: { x: 20, y: 58, width: 88, height: 24 },
     fieldConfidence: 0.6,
@@ -59,6 +59,10 @@ function createProps(overrides: Partial<FieldListPanelProps> = {}): FieldListPan
     onGlobalFieldFontChange: vi.fn(),
     globalFieldFontSize: 'auto',
     onGlobalFieldFontSizeChange: vi.fn(),
+    globalFieldFontColor: '#000000',
+    onGlobalFieldFontColorChange: vi.fn(),
+    globalFieldAlignment: 'left',
+    onGlobalFieldAlignmentChange: vi.fn(),
     confidenceFilter: { high: true, medium: true, low: true },
     onConfidenceFilterChange: vi.fn(),
     onResetConfidenceFilters: vi.fn(),
@@ -82,15 +86,16 @@ describe('FieldListPanel', () => {
     openSpy.mockRestore();
   });
 
-  it('shows the renaming hint only while rename is in progress', () => {
+  it('shows the browser description and renaming status only while rename is in progress', () => {
     const { rerender } = render(<FieldListPanel {...createProps()} />);
 
-    expect(screen.getByText('Filter, sort, and jump to fields fast.')).toBeTruthy();
-    expect(screen.queryByText('(Renaming...) Filter, sort, and jump to fields fast.')).toBeNull();
+    expect(screen.getByRole('heading', { name: 'Browser' })).toBeTruthy();
+    expect(screen.getByText(/Browse detected fields, move between PDF pages/)).toBeTruthy();
+    expect(screen.queryByText('Renaming in progress.')).toBeNull();
 
     rerender(<FieldListPanel {...createProps({ renameInProgress: true })} />);
 
-    expect(screen.getByText('(Renaming...) Filter, sort, and jump to fields fast.')).toBeTruthy();
+    expect(screen.getByText('Renaming in progress.')).toBeTruthy();
   });
 
   it('clamps page navigation and applies disabled states at boundaries', async () => {
@@ -133,7 +138,7 @@ describe('FieldListPanel', () => {
     expect(screen.getByRole('button', { name: /Birth Date/i })).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Full Name/i })).toBeNull();
 
-    await user.selectOptions(screen.getByLabelText('Filter'), 'text');
+    await user.selectOptions(screen.getByLabelText('Filter'), 'signature');
     expect(screen.getByText('No fields match the current filter.')).toBeTruthy();
 
     rerender(<FieldListPanel {...props} currentPage={3} />);
@@ -204,6 +209,8 @@ describe('FieldListPanel', () => {
     const user = userEvent.setup();
     const onGlobalFieldFontChange = vi.fn();
     const onGlobalFieldFontSizeChange = vi.fn();
+    const onGlobalFieldFontColorChange = vi.fn();
+    const onGlobalFieldAlignmentChange = vi.fn();
 
     render(
       <FieldListPanel
@@ -212,6 +219,10 @@ describe('FieldListPanel', () => {
           onGlobalFieldFontChange,
           globalFieldFontSize: 12,
           onGlobalFieldFontSizeChange,
+          globalFieldFontColor: '#000000',
+          onGlobalFieldFontColorChange,
+          globalFieldAlignment: 'left',
+          onGlobalFieldAlignmentChange,
         })}
       />,
     );
@@ -219,11 +230,15 @@ describe('FieldListPanel', () => {
     const displayLabel = screen.getByText('Display mode');
     const globalLabel = screen.getByText('Global font');
     const globalSizeLabel = screen.getByText('Global font size');
+    const globalColorLabel = screen.getByText('Global font color');
+    const globalAlignmentLabel = screen.getByText('Global alignment');
     const confidenceLabel = screen.getAllByText('Confidence').find((node) => node.tagName === 'SPAN');
     expect(confidenceLabel).toBeTruthy();
     expect(displayLabel.compareDocumentPosition(globalLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(globalLabel.compareDocumentPosition(globalSizeLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(globalSizeLabel.compareDocumentPosition(confidenceLabel!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(globalSizeLabel.compareDocumentPosition(globalColorLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(globalColorLabel.compareDocumentPosition(globalAlignmentLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(globalAlignmentLabel.compareDocumentPosition(confidenceLabel!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole('option', { name: 'Default (Helvetica)' })).toBeTruthy();
     expect(screen.getByRole('option', { name: 'Auto (dynamic)' })).toBeTruthy();
 
@@ -247,6 +262,14 @@ describe('FieldListPanel', () => {
     expect(onGlobalFieldFontSizeChange).not.toHaveBeenCalled();
     fireEvent.blur(customFontSizeInput);
     expect(onGlobalFieldFontSizeChange).toHaveBeenCalledWith(16);
+
+    fireEvent.change(screen.getByLabelText('Global font color'), {
+      target: { value: '#336699' },
+    });
+    expect(onGlobalFieldFontColorChange).toHaveBeenCalledWith('#336699');
+
+    await user.selectOptions(screen.getByLabelText('Global alignment'), 'right');
+    expect(onGlobalFieldAlignmentChange).toHaveBeenCalledWith('right');
   });
 
   it('rounds fractional page input to the nearest integer', async () => {

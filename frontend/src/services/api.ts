@@ -56,6 +56,14 @@ type TemplateFieldPayload = {
   groupLabel?: string;
 };
 
+export type TemplateSessionResponse = {
+  success: boolean;
+  sessionId: string;
+  fieldCount: number;
+  pageCount?: number;
+  fields?: PdfField[];
+};
+
 type OpenAiJobPayload<T extends ApiJsonObject> = ApiJsonObject & {
   status?: string;
   jobId?: string;
@@ -2036,7 +2044,7 @@ export class ApiService {
     file: File,
     payload: { fields: Array<Record<string, unknown>>; pageCount?: number },
     options?: AbortableRequestOptions,
-  ): Promise<{ success: boolean; sessionId: string; fieldCount: number; pageCount?: number }> {
+  ): Promise<TemplateSessionResponse> {
     const formData = new FormData();
     formData.append('pdf', file, file.name);
     formData.append('fields', JSON.stringify({ fields: payload.fields }));

@@ -1,9 +1,11 @@
 import io
+import json
 import zipfile
 from pathlib import Path
 from typing import Any, Dict, List
 
 import pytest
+import fitz
 from pypdf import PdfReader, PdfWriter
 
 from backend.firebaseDB.template_database import TemplateRecord
@@ -18,6 +20,7 @@ from backend.services.fill_link_download_service import (
     materialize_group_fill_link_response_packet,
     materialize_fill_link_response_download,
 )
+from backend.services.app_only_field_materialization_service import BARCODE_FIELD_NAME_MARKER
 
 
 def _template_record() -> TemplateRecord:
@@ -284,6 +287,7 @@ def test_build_group_fill_link_publish_snapshot_preserves_template_font_appearan
         "globalFieldFont": "Times-Roman",
         "globalFieldFontSize": 11.0,
         "globalFieldFontColor": "#000000",
+        "globalFieldAlignment": "left",
     }
     assert snapshot["fields"][0]["fontName"] == "global"
     assert snapshot["fields"][0]["fontSize"] == 9.0
@@ -394,6 +398,102 @@ def test_materialize_fill_link_response_download_preserves_font_sizes(mocker) ->
             path.unlink(missing_ok=True)
 
 
+def test_materialize_fill_link_response_download_stamps_dependency_barcode_flat(mocker) -> None:
+    mocker.patch.object(fill_link_download_service, "download_pdf_bytes", return_value=_blank_pdf_bytes())
+    snapshot = {
+        "sourcePdfPath": "gs://forms/template.pdf",
+        "templateName": "Admissions Form",
+        "filename": "admissions-response.pdf",
+        "downloadMode": "flat",
+        "fields": [
+            {
+                "id": "member-id",
+                "name": "member_id",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 120, 40],
+            },
+            {
+                "id": "barcode-id",
+                "name": "member_barcode",
+                "type": "barcode",
+                "page": 1,
+                "rect": [20, 50, 160, 90],
+                "barcodeSourceField": {"fieldId": "member-id", "fieldName": "member_id"},
+            },
+        ],
+        "checkboxRules": [],
+        "textTransformRules": [],
+        "radioGroups": [],
+    }
+
+    output_path, cleanup_targets, _ = materialize_fill_link_response_download(
+        snapshot,
+        answers={"member_id": "123456789"},
+        export_mode="flat",
+    )
+
+    try:
+        reader = PdfReader(str(output_path))
+        assert "/AcroForm" not in reader.trailer["/Root"]
+        with fitz.open(str(output_path)) as document:
+            assert document[0].get_images(full=True)
+    finally:
+        for path in cleanup_targets:
+            path.unlink(missing_ok=True)
+
+
+def test_materialize_fill_link_response_download_preserves_editable_app_only_marker_metadata(mocker) -> None:
+    mocker.patch.object(fill_link_download_service, "download_pdf_bytes", return_value=_blank_pdf_bytes())
+    snapshot = {
+        "sourcePdfPath": "gs://forms/template.pdf",
+        "templateName": "Admissions Form",
+        "filename": "admissions-response.pdf",
+        "downloadMode": "editable",
+        "fields": [
+            {
+                "id": "member-id",
+                "name": "member_id",
+                "type": "text",
+                "page": 1,
+                "rect": [20, 20, 120, 40],
+            },
+            {
+                "id": "barcode-id",
+                "name": "member_barcode",
+                "type": "barcode",
+                "page": 1,
+                "rect": [20, 50, 160, 90],
+                "barcodeSourceField": {"fieldId": "member-id", "fieldName": "member_id"},
+            },
+        ],
+        "checkboxRules": [],
+        "textTransformRules": [],
+        "radioGroups": [],
+    }
+
+    output_path, cleanup_targets, _ = materialize_fill_link_response_download(
+        snapshot,
+        answers={"member_id": "123456789"},
+        export_mode="editable",
+    )
+
+    try:
+        reader = PdfReader(str(output_path))
+        metadata = json.loads(reader.metadata.get("/DullyPDFAppearance"))
+        acroform = reader.trailer["/Root"]["/AcroForm"].get_object()
+        field_names = {str(field_ref.get_object().get("/T")) for field_ref in acroform.get("/Fields", [])}
+        marker_name = f"member_barcode{BARCODE_FIELD_NAME_MARKER}"
+        assert marker_name in field_names
+        assert metadata["appOnlyFields"][0]["name"] == "member_barcode"
+        assert metadata["appOnlyFields"][0]["markerName"] == marker_name
+        assert metadata["appOnlyFields"][0]["value"] == "123456789"
+        assert metadata["appOnlyFields"][0]["imageDataUrl"].startswith("data:image/png;base64,")
+    finally:
+        for path in cleanup_targets:
+            path.unlink(missing_ok=True)
+
+
 def test_materialize_group_fill_link_response_packet_preserves_per_template_fonts(mocker, tmp_path: Path) -> None:
     mocker.patch.object(fill_link_download_service, "download_pdf_bytes", return_value=_blank_pdf_bytes())
     canonical_snapshot = {
@@ -499,6 +599,62 @@ def test_apply_fill_link_answers_to_fields_sets_text_transform_and_checkbox_valu
     assert by_name["full_name"]["value"] == "Ada Lovelace"
     assert by_name["i_consent_group_yes"]["value"] is True
     assert by_name["i_consent_group_no"]["value"] is False
+
+
+def test_apply_fill_link_answers_to_fields_materializes_calculated_outputs() -> None:
+    fields = apply_fill_link_answers_to_fields(
+        {
+            "fields": [
+                {
+                    "id": "base",
+                    "name": "base_premium",
+                    "type": "text",
+                    "page": 1,
+                    "rect": [1, 2, 4, 6],
+                    "valueType": "integer",
+                    "calculation": {"role": "number_input", "valueType": "integer"},
+                },
+                {
+                    "id": "fee",
+                    "name": "policy_fee",
+                    "type": "text",
+                    "page": 1,
+                    "rect": [1, 8, 4, 12],
+                    "valueType": "integer",
+                    "calculation": {"role": "number_input", "valueType": "integer"},
+                },
+                {
+                    "id": "total",
+                    "name": "premium_total",
+                    "type": "text",
+                    "page": 1,
+                    "rect": [1, 14, 4, 18],
+                    "readOnly": False,
+                    "valueType": "integer",
+                    "calculation": {
+                        "role": "calculated_output",
+                        "valueType": "integer",
+                        "formula": {
+                            "kind": "binary",
+                            "op": "+",
+                            "left": {"kind": "field", "fieldId": "base"},
+                            "right": {"kind": "field", "fieldId": "fee"},
+                        },
+                        "output": {"valueType": "integer"},
+                    },
+                },
+            ]
+        },
+        {
+            "base_premium": "7",
+            "policy_fee": "5",
+            "premium_total": "999",
+        },
+    )
+
+    by_name = {str(field.get("name")): field for field in fields}
+    assert by_name["premium_total"]["value"] == "12"
+    assert by_name["premium_total"]["readOnly"] is True
 
 
 def test_apply_fill_link_answers_to_fields_sets_direct_checkbox_and_radio_group_values() -> None:

@@ -18,6 +18,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   PageSize,
   PdfField,
   RadioGroupSuggestion,
@@ -28,6 +29,7 @@ import {
   DEFAULT_FIELD_FONT_COLOR,
   DEFAULT_FIELD_FONT_CHOICE,
   DEFAULT_FIELD_FONT_SIZE_CHOICE,
+  DEFAULT_FIELD_TEXT_ALIGNMENT,
 } from '../utils/fieldFonts';
 import {
   extractDullyPdfAppearanceMetadata,
@@ -74,6 +76,7 @@ export type GroupTemplateWorkspaceSnapshot = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   history: {
     undo: PdfField[][];
     redo: PdfField[][];
@@ -178,9 +181,11 @@ type AppearanceRuntimeState = {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   setGlobalFieldFont: Dispatch<SetStateAction<FieldFontChoice>>;
   setGlobalFieldFontSize: Dispatch<SetStateAction<FieldFontSizeChoice>>;
   setGlobalFieldFontColor: Dispatch<SetStateAction<FieldFontColorChoice>>;
+  setGlobalFieldAlignment?: Dispatch<SetStateAction<FieldTextAlignmentChoice>>;
 };
 
 type FieldSelectionRuntimeState = {
@@ -299,6 +304,7 @@ type UseGroupTemplateCacheDeps = {
     globalFieldFont?: FieldFontChoice,
     globalFieldFontSize?: FieldFontSizeChoice,
     globalFieldFontColor?: FieldFontColorChoice,
+    globalFieldAlignment?: FieldTextAlignmentChoice,
   ) => void;
 };
 
@@ -330,9 +336,14 @@ function buildGroupTemplatePersistedSignature(snapshot: GroupTemplateWorkspaceSn
         height: field.rect.height,
       },
       value: field.value ?? null,
+      readOnly: field.readOnly ?? null,
+      required: field.required ?? null,
+      valueType: field.valueType ?? null,
+      calculation: field.calculation ?? null,
       fontName: field.fontName ?? null,
       fontSize: field.fontSize ?? null,
       fontColor: field.fontColor ?? null,
+      textAlign: field.textAlign ?? null,
       groupKey: field.groupKey ?? null,
       optionKey: field.optionKey ?? null,
       optionLabel: field.optionLabel ?? null,
@@ -344,6 +355,7 @@ function buildGroupTemplatePersistedSignature(snapshot: GroupTemplateWorkspaceSn
     globalFieldFont: snapshot.globalFieldFont,
     globalFieldFontSize: snapshot.globalFieldFontSize,
     globalFieldFontColor: snapshot.globalFieldFontColor,
+    globalFieldAlignment: snapshot.globalFieldAlignment,
     hasRenamedFields: snapshot.hasRenamedFields,
     hasMappedSchema: snapshot.hasMappedSchema,
     checkboxRules: snapshot.checkboxRules,
@@ -500,6 +512,7 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
       globalFieldFont: appearance.globalFieldFont,
       globalFieldFontSize: appearance.globalFieldFontSize,
       globalFieldFontColor: appearance.globalFieldFontColor,
+      globalFieldAlignment: appearance.globalFieldAlignment,
       history: cloneFieldHistoryStacks(fieldHistory.historyRef.current),
       selectedFieldId: fieldSelection.selectedFieldId,
       detectSessionId: detection.detectSessionId,
@@ -527,6 +540,7 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
     appearance.globalFieldFont,
     appearance.globalFieldFontSize,
     appearance.globalFieldFontColor,
+    appearance.globalFieldAlignment,
     openAi.checkboxRules,
     openAi.hasMappedSchema,
     openAi.hasRenamedFields,
@@ -668,12 +682,14 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
     appearance.setGlobalFieldFont(snapshot.globalFieldFont);
     appearance.setGlobalFieldFontSize(snapshot.globalFieldFontSize);
     appearance.setGlobalFieldFontColor(snapshot.globalFieldFontColor);
+    appearance.setGlobalFieldAlignment?.(snapshot.globalFieldAlignment);
     markSavedFillLinkSnapshot(
       snapshot.fields,
       snapshot.checkboxRules,
       snapshot.globalFieldFont,
       snapshot.globalFieldFontSize,
       snapshot.globalFieldFontColor,
+      snapshot.globalFieldAlignment,
     );
     savedForms.setActiveSavedFormId(snapshot.formId);
     savedForms.setActiveSavedFormName(snapshot.templateName);
@@ -725,6 +741,10 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
         hydratedSnapshot?.appearance.globalFieldFontColor ??
         dullyAppearanceMetadata?.appearance.globalFieldFontColor ??
         DEFAULT_FIELD_FONT_COLOR;
+      const snapshotGlobalFieldAlignment =
+        hydratedSnapshot?.appearance.globalFieldAlignment ??
+        dullyAppearanceMetadata?.appearance.globalFieldAlignment ??
+        DEFAULT_FIELD_TEXT_ALIGNMENT;
       const derivedHasMappedSchema = Boolean(
         fillRuleState.checkboxRules.length ||
         fillRuleState.textTransformRules.length
@@ -740,6 +760,7 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
               globalFieldFont: snapshotGlobalFieldFont,
               globalFieldFontSize: snapshotGlobalFieldFontSize,
               globalFieldFontColor: snapshotGlobalFieldFontColor,
+              globalFieldAlignment: snapshotGlobalFieldAlignment,
               hasRenamedFields: false,
               hasMappedSchema: derivedHasMappedSchema,
             }),
@@ -762,6 +783,7 @@ export function useGroupTemplateCache(deps: UseGroupTemplateCacheDeps) {
         globalFieldFont: snapshotGlobalFieldFont,
         globalFieldFontSize: snapshotGlobalFieldFontSize,
         globalFieldFontColor: snapshotGlobalFieldFontColor,
+        globalFieldAlignment: snapshotGlobalFieldAlignment,
         history: { undo: [], redo: [] },
         selectedFieldId: null,
         detectSessionId: null,

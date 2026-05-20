@@ -8,6 +8,7 @@ import type {
   FieldFontChoice,
   FieldFontColorChoice,
   FieldFontSizeChoice,
+  FieldTextAlignmentChoice,
   PdfField,
   PromptDialogOptions,
   TextTransformRule,
@@ -27,6 +28,7 @@ export interface UseSaveDownloadDeps {
   globalFieldFont: FieldFontChoice;
   globalFieldFontSize: FieldFontSizeChoice;
   globalFieldFontColor: FieldFontColorChoice;
+  globalFieldAlignment: FieldTextAlignmentChoice;
   pageSizes: Record<number, { width: number; height: number }>;
   pageCount: number;
   checkboxRules: CheckboxRule[];
@@ -59,6 +61,7 @@ export interface UseSaveDownloadDeps {
     globalFieldFont: FieldFontChoice,
     globalFieldFontSize: FieldFontSizeChoice,
     globalFieldFontColor: FieldFontColorChoice,
+    globalFieldAlignment: FieldTextAlignmentChoice,
   ) => void;
 }
 
@@ -102,6 +105,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
           deps.fields,
           deps.globalFieldFont,
           deps.globalFieldFontColor,
+          { preserveAppOnlyFieldMarkers: true },
         );
         const checkboxRulesForSave = deps.checkboxRules;
         const textTransformRulesForSave = deps.textTransformRules;
@@ -112,6 +116,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
           globalFieldFont: deps.globalFieldFont,
           globalFieldFontSize: deps.globalFieldFontSize,
           globalFieldFontColor: deps.globalFieldFontColor,
+          globalFieldAlignment: deps.globalFieldAlignment,
           hasRenamedFields: deps.hasRenamedFields,
           hasMappedSchema: deps.hasMappedSchema,
         });
@@ -120,6 +125,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
             globalFieldFont: deps.globalFieldFont,
             globalFieldFontSize: deps.globalFieldFontSize,
             globalFieldFontColor: deps.globalFieldFontColor,
+            globalFieldAlignment: deps.globalFieldAlignment,
           },
         });
         const payload = await ApiService.saveFormToProfile(
@@ -143,6 +149,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
             deps.globalFieldFont,
             deps.globalFieldFontSize,
             deps.globalFieldFontColor,
+            deps.globalFieldAlignment,
           );
         } catch (error) {
           debugLog('Failed to run post-save workspace sync', error);
@@ -251,6 +258,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
         deps.fields,
         deps.globalFieldFont,
         deps.globalFieldFontColor,
+        { preserveAppOnlyFieldMarkers: exportMode === 'editable' },
       );
       const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForDownload, {
         exportMode,
@@ -258,6 +266,7 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
           globalFieldFont: deps.globalFieldFont,
           globalFieldFontSize: deps.globalFieldFontSize,
           globalFieldFontColor: deps.globalFieldFontColor,
+          globalFieldAlignment: deps.globalFieldAlignment,
         },
       });
       const baseName = normaliseFormName(deps.activeSavedFormName || deps.sourceFileName || deps.sourceFile?.name);

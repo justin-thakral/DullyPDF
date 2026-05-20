@@ -6,6 +6,17 @@ export type PendingQuickRadioSelection = {
   page: number;
 } | null;
 
+export type PendingBulkTextStyleSelection = {
+  fieldIds: string[];
+  page: number;
+} | null;
+
+const BULK_TEXT_STYLE_FIELD_TYPES = new Set<PdfField['type']>(['text']);
+
+function isBulkTextStyleField(field: PdfField) {
+  return BULK_TEXT_STYLE_FIELD_TYPES.has(field.type);
+}
+
 export function resolveRadioToolDraftForToolChange(
   targetTool: Extract<CreateTool, 'radio' | 'quick-radio'>,
   nextTool: CreateTool | null,
@@ -58,6 +69,49 @@ export function resolvePendingQuickRadioFields(
   const fieldsById = new Map(
     fields
       .filter((field) => field.type === 'checkbox' && field.page === selection.page)
+      .map((field) => [field.id, field]),
+  );
+  return selection.fieldIds
+    .map((fieldId) => fieldsById.get(fieldId) ?? null)
+    .filter((field): field is PdfField => Boolean(field));
+}
+
+export function prunePendingBulkTextStyleSelection(
+  selection: PendingBulkTextStyleSelection,
+  fields: PdfField[],
+  activePage?: number,
+): PendingBulkTextStyleSelection {
+  if (!selection?.fieldIds.length) {
+    return selection;
+  }
+  if (typeof activePage === 'number' && selection.page !== activePage) {
+    return null;
+  }
+  const allowedIds = new Set(
+    fields
+      .filter((field) => isBulkTextStyleField(field) && field.page === selection.page)
+      .map((field) => field.id),
+  );
+  const nextFieldIds = selection.fieldIds.filter((fieldId) => allowedIds.has(fieldId));
+  if (!nextFieldIds.length) {
+    return null;
+  }
+  if (nextFieldIds.length === selection.fieldIds.length) {
+    return selection;
+  }
+  return { ...selection, fieldIds: nextFieldIds };
+}
+
+export function resolvePendingBulkTextStyleFields(
+  selection: PendingBulkTextStyleSelection,
+  fields: PdfField[],
+): PdfField[] {
+  if (!selection?.fieldIds.length) {
+    return [];
+  }
+  const fieldsById = new Map(
+    fields
+      .filter((field) => isBulkTextStyleField(field) && field.page === selection.page)
       .map((field) => [field.id, field]),
   );
   return selection.fieldIds

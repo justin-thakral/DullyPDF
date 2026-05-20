@@ -1,11 +1,21 @@
 import type { ComponentProps } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { PdfField } from '../../../../src/types';
 import { FieldInspectorPanel } from '../../../../src/components/panels/FieldInspectorPanel';
 
 type FieldInspectorPanelProps = ComponentProps<typeof FieldInspectorPanel>;
+
+vi.mock('bwip-js/browser', () => ({
+  default: {
+    toCanvas: vi.fn(),
+  },
+}));
+
+beforeEach(() => {
+  vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue('data:image/png;base64,barcode');
+});
 
 const SAMPLE_FIELD: PdfField = {
   id: 'field-1',
@@ -28,13 +38,18 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
     selectedRadioSuggestion: null,
     globalFieldFont: 'default',
     globalFieldFontSize: 'auto',
+    globalFieldFontColor: '#000000',
+    globalFieldAlignment: 'left',
     activeCreateTool: null,
     radioToolDraft: null,
     pendingQuickRadioFields: [],
+    pendingBulkTextStyleFields: [],
     arrowKeyMoveEnabled: false,
     arrowKeyMoveStep: 5,
     onUpdateField: vi.fn(),
     onSetFieldType: vi.fn(),
+    onOpenCalculationSetup: vi.fn(),
+    onOpenBarcodeSetup: vi.fn(),
     onUpdateFieldDraft: vi.fn(),
     onDeleteField: vi.fn(),
     onDeleteAllFields: vi.fn(),
@@ -43,6 +58,9 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
     onApplyPendingQuickRadioSelection: vi.fn(),
     onCancelPendingQuickRadioSelection: vi.fn(),
     onRemovePendingQuickRadioField: vi.fn(),
+    onApplyPendingBulkTextStyleSelection: vi.fn(),
+    onCancelPendingBulkTextStyleSelection: vi.fn(),
+    onRemovePendingBulkTextStyleField: vi.fn(),
     onRenameRadioGroup: vi.fn(),
     onUpdateRadioFieldOption: vi.fn(),
     onMoveRadioFieldToGroup: vi.fn(),
@@ -60,6 +78,11 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
     onRedo: vi.fn(),
     ...overrides,
   };
+}
+
+function getBulkConvertButton() {
+  const buttons = screen.getAllByRole('button', { name: 'Convert' });
+  return buttons[buttons.length - 1];
 }
 
 describe('FieldInspectorPanel', () => {
@@ -102,7 +125,9 @@ describe('FieldInspectorPanel', () => {
       />,
     );
 
-    expect(screen.getByText('Editing Full Name (enter to confirm)')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Field Editor' })).toBeTruthy();
+    expect(screen.getByText('Selected: Full Name')).toBeTruthy();
+    expect(screen.getByText(/Edit the selected field name, type, page, geometry/)).toBeTruthy();
 
     const nameInput = screen.getByLabelText('Name');
     await user.click(nameInput);
@@ -113,8 +138,8 @@ describe('FieldInspectorPanel', () => {
     expect(onUpdateField).toHaveBeenCalledWith('field-1', { name: 'Full Name X' });
     expect(onCommitFieldChange).toHaveBeenCalledTimes(1);
 
-    await user.selectOptions(screen.getByLabelText('Type'), 'date');
-    expect(onSetFieldType).toHaveBeenLastCalledWith('field-1', 'date');
+    await user.selectOptions(screen.getByLabelText('Type'), 'signature');
+    expect(onSetFieldType).toHaveBeenLastCalledWith('field-1', 'signature');
 
     const pageInput = screen.getByLabelText('Page');
     await user.click(pageInput);
@@ -149,6 +174,7 @@ describe('FieldInspectorPanel', () => {
       <FieldInspectorPanel
         {...createProps({
           globalFieldFont: 'Helvetica-Bold',
+          globalFieldAlignment: 'center',
           onUpdateField,
         })}
       />,
@@ -161,6 +187,27 @@ describe('FieldInspectorPanel', () => {
     await user.selectOptions(fontSelect, 'Courier-BoldOblique');
     expect(onUpdateField).toHaveBeenCalledWith('field-1', { fontName: 'Courier-BoldOblique' });
 
+    const alignmentSelect = screen.getByLabelText('Alignment') as HTMLSelectElement;
+    expect(alignmentSelect.value).toBe('global');
+    expect(screen.getByRole('option', { name: 'Use global (Center)' })).toBeTruthy();
+
+    await user.selectOptions(alignmentSelect, 'right');
+    expect(onUpdateField).toHaveBeenCalledWith('field-1', { textAlign: 'right' });
+
+    rerender(
+      <FieldInspectorPanel
+        {...createProps({
+          globalFieldAlignment: 'center',
+          selectedField: { ...SAMPLE_FIELD, textAlign: 'right' },
+          onUpdateField,
+        })}
+      />,
+    );
+
+    onUpdateField.mockClear();
+    await user.selectOptions(screen.getByLabelText('Alignment'), 'global');
+    expect(onUpdateField).toHaveBeenCalledWith('field-1', { textAlign: undefined });
+
     rerender(
       <FieldInspectorPanel
         {...createProps({
@@ -172,6 +219,7 @@ describe('FieldInspectorPanel', () => {
 
     expect(screen.queryByLabelText('Font')).toBeNull();
     expect(screen.queryByLabelText('Font size')).toBeNull();
+    expect(screen.queryByLabelText('Alignment')).toBeNull();
   });
 
   it('updates text field font size overrides', async () => {
@@ -300,16 +348,16 @@ describe('FieldInspectorPanel', () => {
     expect(onDeleteAllFields).toHaveBeenCalledTimes(1);
 
     await user.click(screen.getByRole('button', { name: 'Text' }));
-    await user.click(screen.getByRole('button', { name: 'Date' }));
     await user.click(screen.getByRole('button', { name: 'Signature' }));
     await user.click(screen.getByRole('button', { name: 'Checkbox' }));
-    await user.click(screen.getByRole('button', { name: 'Off' }));
+    await user.click(screen.getByRole('button', { name: 'Radio' }));
+    await user.click(screen.getAllByRole('button', { name: 'Off' })[0]);
 
     expect(onCreateToolChange).toHaveBeenCalledTimes(5);
     expect(onCreateToolChange).toHaveBeenNthCalledWith(1, 'text');
-    expect(onCreateToolChange).toHaveBeenNthCalledWith(2, 'date');
-    expect(onCreateToolChange).toHaveBeenNthCalledWith(3, 'signature');
-    expect(onCreateToolChange).toHaveBeenNthCalledWith(4, 'checkbox');
+    expect(onCreateToolChange).toHaveBeenNthCalledWith(2, 'signature');
+    expect(onCreateToolChange).toHaveBeenNthCalledWith(3, 'checkbox');
+    expect(onCreateToolChange).toHaveBeenNthCalledWith(4, 'radio');
     expect(onCreateToolChange).toHaveBeenNthCalledWith(5, null);
 
     const undoButtonBefore = screen.getByRole('button', { name: 'Undo' }) as HTMLButtonElement;
@@ -338,6 +386,126 @@ describe('FieldInspectorPanel', () => {
     expect(onRedo).toHaveBeenCalledTimes(1);
   });
 
+  it('activates bulk font conversion and applies a selected style to pending text fields', async () => {
+    const user = userEvent.setup();
+    const onCreateToolChange = vi.fn();
+    const onApplyPendingBulkTextStyleSelection = vi.fn();
+
+    render(
+      <FieldInspectorPanel
+        {...createProps({
+          pendingBulkTextStyleFields: [SAMPLE_FIELD],
+          onCreateToolChange,
+          onApplyPendingBulkTextStyleSelection,
+        })}
+      />,
+    );
+
+    await user.selectOptions(screen.getByLabelText('Change'), 'fontSize');
+    await user.selectOptions(screen.getByLabelText('Bulk font size'), 'custom');
+    const customFontSize = screen.getByLabelText('Bulk custom font size');
+    await user.clear(customFontSize);
+    await user.type(customFontSize, '14');
+
+    await user.click(screen.getByRole('button', { name: 'Quick select text fields' }));
+    expect(onCreateToolChange).toHaveBeenCalledWith('bulk-text-style');
+
+    await user.click(getBulkConvertButton());
+    expect(onApplyPendingBulkTextStyleSelection).toHaveBeenCalledWith({ fontSize: 14 });
+  });
+
+  it('applies each bulk font conversion mode and guards empty selections', async () => {
+    const user = userEvent.setup();
+    const onApplyPendingBulkTextStyleSelection = vi.fn();
+    const onCancelPendingBulkTextStyleSelection = vi.fn();
+    const onRemovePendingBulkTextStyleField = vi.fn();
+    const onBlockedAction = vi.fn();
+    const pendingFields: PdfField[] = [
+      SAMPLE_FIELD,
+      {
+        ...SAMPLE_FIELD,
+        id: 'field-2',
+        name: 'DOB',
+        type: 'text',
+      },
+    ];
+    const { rerender } = render(
+      <FieldInspectorPanel
+        {...createProps({
+          pendingBulkTextStyleFields: pendingFields,
+          onApplyPendingBulkTextStyleSelection,
+          onCancelPendingBulkTextStyleSelection,
+          onRemovePendingBulkTextStyleField,
+          onBlockedAction,
+        })}
+      />,
+    );
+
+    await user.selectOptions(screen.getByLabelText('Bulk font'), 'Courier-Bold');
+    await user.click(getBulkConvertButton());
+    expect(onApplyPendingBulkTextStyleSelection).toHaveBeenLastCalledWith({ fontName: 'Courier-Bold' });
+
+    await user.selectOptions(screen.getByLabelText('Change'), 'fontColor');
+    await user.selectOptions(screen.getByLabelText('Bulk font color'), 'custom');
+    fireEvent.change(screen.getByLabelText('Bulk custom font color'), { target: { value: '#ff0000' } });
+    await user.click(getBulkConvertButton());
+    expect(onApplyPendingBulkTextStyleSelection).toHaveBeenLastCalledWith({ fontColor: '#ff0000' });
+
+    await user.selectOptions(screen.getByLabelText('Change'), 'textAlign');
+    await user.selectOptions(screen.getByLabelText('Bulk alignment'), 'right');
+    await user.click(getBulkConvertButton());
+    expect(onApplyPendingBulkTextStyleSelection).toHaveBeenLastCalledWith({ textAlign: 'right' });
+
+    await user.click(screen.getAllByRole('button', { name: 'Remove' })[0]);
+    expect(onRemovePendingBulkTextStyleField).toHaveBeenCalledWith('field-1');
+
+    await user.click(screen.getByRole('button', { name: 'Clear selection' }));
+    expect(onCancelPendingBulkTextStyleSelection).toHaveBeenCalledTimes(1);
+
+    onApplyPendingBulkTextStyleSelection.mockClear();
+    onCancelPendingBulkTextStyleSelection.mockClear();
+    rerender(
+      <FieldInspectorPanel
+        {...createProps({
+          pendingBulkTextStyleFields: [],
+          onApplyPendingBulkTextStyleSelection,
+          onCancelPendingBulkTextStyleSelection,
+          onRemovePendingBulkTextStyleField,
+          onBlockedAction,
+        })}
+      />,
+    );
+
+    await user.click(getBulkConvertButton());
+    await user.click(screen.getByRole('button', { name: 'Clear selection' }));
+
+    expect(onApplyPendingBulkTextStyleSelection).not.toHaveBeenCalled();
+    expect(onCancelPendingBulkTextStyleSelection).not.toHaveBeenCalled();
+    expect(onBlockedAction).toHaveBeenCalledWith('Select text fields on the page first before converting.');
+    expect(onBlockedAction).toHaveBeenCalledWith('No text fields selected to clear.');
+  });
+
+  it('clears text alignment overrides when bulk applying workspace alignment', async () => {
+    const user = userEvent.setup();
+    const onApplyPendingBulkTextStyleSelection = vi.fn();
+
+    render(
+      <FieldInspectorPanel
+        {...createProps({
+          globalFieldAlignment: 'right',
+          pendingBulkTextStyleFields: [{ ...SAMPLE_FIELD, textAlign: 'center' }],
+          onApplyPendingBulkTextStyleSelection,
+        })}
+      />,
+    );
+
+    await user.selectOptions(screen.getByLabelText('Change'), 'textAlign');
+    expect(screen.getByRole('option', { name: 'Use workspace (Right)' })).toBeTruthy();
+
+    await user.click(getBulkConvertButton());
+    expect(onApplyPendingBulkTextStyleSelection).toHaveBeenCalledWith({ textAlign: undefined });
+  });
+
   it('updates keyboard move preferences from the create field section', async () => {
     const user = userEvent.setup();
     const onArrowKeyMoveEnabledChange = vi.fn();
@@ -360,5 +528,73 @@ describe('FieldInspectorPanel', () => {
     await user.type(stepInput, '7');
     await user.tab();
     expect(onArrowKeyMoveStepChange).toHaveBeenCalledWith(7);
+  });
+
+  it('opens the barcode setup modal for pdf417, barcode, and QR fields', async () => {
+    const user = userEvent.setup();
+    const onOpenBarcodeSetup = vi.fn();
+    const barcodeField: PdfField = {
+      id: 'barcode',
+      name: 'Member Barcode',
+      type: 'barcode',
+      page: 1,
+      rect: { x: 10, y: 10, width: 220, height: 52 },
+      value: '',
+    };
+    const pdf417Field: PdfField = {
+      id: 'pdf417',
+      name: 'License PDF417',
+      type: 'pdf417',
+      page: 1,
+      rect: { x: 10, y: 70, width: 220, height: 78 },
+      value: null,
+    };
+    const qrField: PdfField = {
+      id: 'qr',
+      name: 'Verification QR',
+      type: 'qr',
+      page: 1,
+      rect: { x: 10, y: 160, width: 110, height: 110 },
+      value: '',
+    };
+
+    const { rerender } = render(
+      <FieldInspectorPanel
+        {...createProps({
+          fields: [barcodeField, pdf417Field, qrField],
+          selectedFieldId: barcodeField.id,
+          selectedField: barcodeField,
+          onOpenBarcodeSetup,
+        })}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: /Edit barcode classes/i }));
+    expect(onOpenBarcodeSetup).toHaveBeenCalledWith(barcodeField.id);
+
+    rerender(
+      <FieldInspectorPanel
+        {...createProps({
+          fields: [barcodeField, pdf417Field, qrField],
+          selectedFieldId: pdf417Field.id,
+          selectedField: pdf417Field,
+          onOpenBarcodeSetup,
+        })}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: /Edit barcode classes/i }));
+    expect(onOpenBarcodeSetup).toHaveBeenCalledWith(pdf417Field.id);
+
+    rerender(
+      <FieldInspectorPanel
+        {...createProps({
+          fields: [barcodeField, pdf417Field, qrField],
+          selectedFieldId: qrField.id,
+          selectedField: qrField,
+          onOpenBarcodeSetup,
+        })}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: /Edit barcode classes/i }));
+    expect(onOpenBarcodeSetup).toHaveBeenCalledWith(qrField.id);
   });
 });

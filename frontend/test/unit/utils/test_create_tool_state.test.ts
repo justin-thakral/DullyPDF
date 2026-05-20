@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import type { PdfField, RadioToolDraft } from '../../../src/types';
 import {
+  prunePendingBulkTextStyleSelection,
   prunePendingQuickRadioSelection,
+  resolvePendingBulkTextStyleFields,
   resolvePendingQuickRadioFields,
   resolveRadioToolDraftForToolChange,
 } from '../../../src/utils/createToolState';
@@ -85,5 +87,30 @@ describe('createToolState utils', () => {
     ];
 
     expect(resolvePendingQuickRadioFields(selection, fields).map((field) => field.id)).toEqual(['second', 'first']);
+  });
+
+  it('keeps only text ids for pending bulk font conversion selections', () => {
+    const selection = { fieldIds: ['text', 'dob', 'checkbox', 'other-page'], page: 1 };
+    const fields = [
+      makeField({ id: 'text', name: 'text', type: 'text', page: 1 }),
+      makeField({ id: 'dob', name: 'date', type: 'text', page: 1 }),
+      makeField({ id: 'checkbox', name: 'checkbox', type: 'checkbox', page: 1 }),
+      makeField({ id: 'other-page', name: 'other-page', type: 'text', page: 2 }),
+    ];
+
+    expect(prunePendingBulkTextStyleSelection(selection, fields, 1)).toEqual({
+      fieldIds: ['text', 'dob'],
+      page: 1,
+    });
+    expect(resolvePendingBulkTextStyleFields(selection, fields).map((field) => field.id)).toEqual(['text', 'dob']);
+  });
+
+  it('drops pending bulk font conversion selections when the active page changes', () => {
+    const selection = { fieldIds: ['text'], page: 1 };
+    const fields = [
+      makeField({ id: 'text', name: 'text', type: 'text', page: 1 }),
+    ];
+
+    expect(prunePendingBulkTextStyleSelection(selection, fields, 2)).toBeNull();
   });
 });

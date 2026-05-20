@@ -19,20 +19,29 @@ from pypdf.generic import (
 
 from .config import get_logger
 from .output_layout import temp_prefix_from_pdf
+from backend.services.acroform_calculation_export_service import (
+    apply_calculation_acroform_behavior,
+    set_dullypdf_calculation_metadata,
+)
 from backend.services.pdf_service import (
     DEFAULT_FIELD_FONT_COLOR,
     DEFAULT_FIELD_FONT_CHOICE,
     DEFAULT_FIELD_FONT_SIZE_CHOICE,
+    DEFAULT_FIELD_TEXT_ALIGNMENT,
     GLOBAL_FIELD_FONT_COLOR_CHOICE,
     GLOBAL_FIELD_FONT_CHOICE,
     GLOBAL_FIELD_FONT_SIZE_CHOICE,
+    GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE,
     normalize_field_appearance_payload,
+    normalize_field_alignment_override,
     normalize_field_font_color_override,
     normalize_field_font_override,
     normalize_field_font_size_override,
     normalize_pdf_base14_font_name,
+    pdf_quadding_from_alignment,
     pdf_rgb_from_hex_color,
     resolve_auto_field_font_size,
+    resolve_effective_field_alignment,
     resolve_effective_field_font,
     resolve_effective_field_font_color,
     resolve_effective_field_font_size,
@@ -457,6 +466,8 @@ def _build_target_widget_index(
         field_type = str(field.get("type") or "text").lower().strip()
         if field_type == "date":
             field_type = "text"
+        if field_type in {"image", "pdf417", "barcode", "qr"}:
+            continue
         target_name = _target_name_for_field(field, field_type, name)
         if not target_name:
             continue
@@ -1180,6 +1191,47 @@ def _selected_text_font_resource(
     return _base14_font_resource(writer, acroform, resolved_font)
 
 
+def _estimate_text_width(value: str, *, font_size: float, font_resource_name: str) -> float:
+    """
+    Estimate Base 14 text width for appearance-stream alignment.
+    """
+    if not value:
+        return 0.0
+    average_glyph_width = 0.6 if "Cour" in font_resource_name else 0.5
+    return len(value) * float(font_size) * average_glyph_width
+
+
+def _text_appearance_x(
+    *,
+    width: float,
+    value: str,
+    font_size: float,
+    font_resource_name: str,
+    text_alignment: Optional[str],
+) -> float:
+    """
+    Resolve the text origin for left, center, or right appearance-stream alignment.
+    """
+    inset = max(1.0, min(4.0, width * 0.05))
+    alignment = str(text_alignment or DEFAULT_FIELD_TEXT_ALIGNMENT).strip().lower()
+    if alignment == "center":
+        text_width = _estimate_text_width(value, font_size=font_size, font_resource_name=font_resource_name)
+        return max(inset, (width - text_width) / 2.0)
+    if alignment == "right":
+        text_width = _estimate_text_width(value, font_size=font_size, font_resource_name=font_resource_name)
+        return max(inset, width - text_width - inset)
+    return inset
+
+
+def _set_text_alignment(field: DictionaryObject, text_alignment: Optional[str]) -> None:
+    """
+    Write the AcroForm quadding value for text alignment.
+    """
+    field[NameObject("/Q")] = NumberObject(
+        pdf_quadding_from_alignment(text_alignment or DEFAULT_FIELD_TEXT_ALIGNMENT)
+    )
+
+
 def _build_text_appearance(
     writer: PdfWriter,
     *,
@@ -1190,6 +1242,7 @@ def _build_text_appearance(
     font_resource_name: str = "/Helv",
     font_size: Optional[float] = None,
     font_color: Optional[str] = None,
+    text_alignment: Optional[str] = None,
 ):
     """
     Build a simple appearance stream for text widgets.
@@ -1202,7 +1255,13 @@ def _build_text_appearance(
     safe_text = _pdf_escape_text(value)
     # The auto branch preserves the historical field-height sizing formula.
     resolved_font_size = float(font_size) if font_size is not None else resolve_auto_field_font_size(height)
-    x = max(1.0, min(4.0, width * 0.05))
+    x = _text_appearance_x(
+        width=width,
+        value=value,
+        font_size=resolved_font_size,
+        font_resource_name=font_resource_name,
+        text_alignment=text_alignment,
+    )
     y = max(1.0, (height - resolved_font_size) * 0.45)
 
     commands = [
@@ -1400,6 +1459,7 @@ def _apply_text_appearance(
     font_name: Optional[str] = None,
     font_size: Optional[float] = None,
     font_color: Optional[str] = None,
+    text_alignment: Optional[str] = None,
     default_appearance_font_size: Optional[float] = None,
     default_appearance_font_color: Optional[str] = None,
     render_appearance_stream: bool = True,
@@ -1415,6 +1475,7 @@ def _apply_text_appearance(
         font_name=font_name,
     )
     _ensure_field_font_resource(widget, font_resource_name, font_ref)
+    _set_text_alignment(widget, text_alignment)
     if not render_appearance_stream:
         widget.pop(NameObject("/AP"), None)
         _set_text_default_appearance(
@@ -1434,6 +1495,7 @@ def _apply_text_appearance(
         font_resource_name=font_resource_name,
         font_size=font_size,
         font_color=font_color,
+        text_alignment=text_alignment,
     )
     if ap is not None:
         widget[NameObject("/AP")] = DictionaryObject({NameObject("/N"): ap})
@@ -1460,6 +1522,7 @@ def _update_existing_widget(
     font_name: Optional[str] = None,
     font_size: Optional[float] = None,
     font_color: Optional[str] = None,
+    text_alignment: Optional[str] = None,
     default_appearance_font_size: Optional[float] = None,
     default_appearance_font_color: Optional[str] = None,
     render_text_appearance_streams: bool = True,
@@ -1616,6 +1679,7 @@ def _update_existing_widget(
                     font_name=font_name,
                     font_size=font_size,
                     font_color=font_color,
+                    text_alignment=text_alignment,
                     default_appearance_font_size=default_appearance_font_size,
                     default_appearance_font_color=default_appearance_font_color,
                     render_appearance_stream=render_text_appearance_streams,
@@ -1626,6 +1690,8 @@ def _update_existing_widget(
                     _ensure_field_font_resource(field, font_resource_name, font_ref)
                     if annot.get("/DA") is not None:
                         field[NameObject("/DA")] = annot.get("/DA")
+                    if annot.get("/Q") is not None:
+                        field[NameObject("/Q")] = annot.get("/Q")
                     if not render_text_appearance_streams:
                         field.pop(NameObject("/AP"), None)
                 updated_this_widget = True
@@ -1633,6 +1699,7 @@ def _update_existing_widget(
             font_name is not None
             or default_appearance_font_size is not None
             or default_appearance_font_color is not None
+            or text_alignment is not None
         ):
             font_resource_name, font_ref = _selected_text_font_resource(
                 writer,
@@ -1648,9 +1715,12 @@ def _update_existing_widget(
                 font_size=default_appearance_font_size,
                 font_color=default_appearance_font_color,
             )
+            _set_text_alignment(annot, text_alignment)
             if field is not annot and annot.get("/DA") is not None:
                 _ensure_field_font_resource(field, font_resource_name, font_ref)
                 field[NameObject("/DA")] = annot.get("/DA")
+            if field is not annot and annot.get("/Q") is not None:
+                field[NameObject("/Q")] = annot.get("/Q")
             if not render_text_appearance_streams:
                 annot.pop(NameObject("/AP"), None)
                 if field is not annot:
@@ -1711,7 +1781,7 @@ def _field_appearance_metadata(field: Dict[str, Any]) -> Optional[Dict[str, Any]
     metadata: Dict[str, Any] = {
         "name": name,
         "page": page,
-        "type": "date" if field_type == "date" else "text",
+        "type": "text",
     }
     font_name = normalize_field_font_override(field.get("fontName"))
     if font_name and font_name != GLOBAL_FIELD_FONT_CHOICE:
@@ -1722,14 +1792,82 @@ def _field_appearance_metadata(field: Dict[str, Any]) -> Optional[Dict[str, Any]
     font_color = normalize_field_font_color_override(field.get("fontColor"))
     if font_color and font_color != GLOBAL_FIELD_FONT_COLOR_CHOICE:
         metadata["fontColor"] = font_color
+    text_alignment = normalize_field_alignment_override(field.get("textAlign"))
+    if text_alignment and text_alignment != GLOBAL_FIELD_TEXT_ALIGNMENT_CHOICE:
+        metadata["textAlign"] = text_alignment
 
-    return metadata if any(key in metadata for key in ("fontName", "fontSize", "fontColor")) else None
+    return metadata if any(key in metadata for key in ("fontName", "fontSize", "fontColor", "textAlign")) else None
+
+
+def _field_rect_metadata(field: Dict[str, Any]) -> Optional[Dict[str, float]]:
+    """
+    Return top-left field geometry for DullyPDF metadata rehydration.
+    """
+    rect = _normalize_rect(field)
+    if rect is None:
+        return None
+    x1, y1, x2, y2 = rect
+    width = x2 - x1
+    height = y2 - y1
+    if width <= 0 or height <= 0:
+        return None
+    return {"x": x1, "y": y1, "width": width, "height": height}
+
+
+def _field_app_only_metadata(field: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """
+    Return DullyPDF-only helper metadata needed to restore editable exports.
+    """
+    field_type = str(field.get("type") or "").strip().lower()
+    if field_type not in {"image", "pdf417", "barcode", "qr"}:
+        return None
+
+    name = str(field.get("name") or "").strip()
+    if not name:
+        return None
+
+    try:
+        page = int(field.get("page") or 1)
+    except (TypeError, ValueError):
+        page = 1
+
+    metadata: Dict[str, Any] = {
+        "name": name,
+        "page": page,
+        "type": field_type,
+    }
+    if field.get("id") is not None:
+        metadata["id"] = str(field.get("id"))
+    marker_name = str(field.get("appOnlyMarkerName") or "").strip()
+    if marker_name:
+        metadata["markerName"] = marker_name
+    rect = _field_rect_metadata(field)
+    if rect is not None:
+        metadata["rect"] = rect
+
+    for key in (
+        "value",
+        "imageDataUrl",
+        "imageMimeType",
+        "imageName",
+        "pdf417Name",
+        "pdf417Dob",
+        "pdf417Data",
+        "barcodeSourceField",
+        "qrSourceField",
+        "pdf417FieldMappings",
+    ):
+        if key in field:
+            metadata[key] = field.get(key)
+    return metadata
 
 
 def _set_dullypdf_appearance_metadata(
     writer: PdfWriter,
     fields: List[Dict[str, Any]],
     appearance: Dict[str, Any],
+    *,
+    include_app_only_metadata: bool = True,
 ) -> None:
     """
     Store DullyPDF appearance intent so re-upload can restore global and field overrides.
@@ -1742,6 +1880,11 @@ def _set_dullypdf_appearance_metadata(
             for field in fields
             if (field_metadata := _field_appearance_metadata(field)) is not None
         ],
+        "appOnlyFields": [
+            field_metadata
+            for field in fields
+            if (field_metadata := _field_app_only_metadata(field)) is not None
+        ] if include_app_only_metadata else [],
     }
     try:
         writer.add_metadata(
@@ -1771,6 +1914,7 @@ def _add_text_field(
     font_name: Optional[str] = None,
     font_size: Optional[float] = None,
     font_color: Optional[str] = None,
+    text_alignment: Optional[str] = None,
     default_appearance_font_size: Optional[float] = None,
     default_appearance_font_color: Optional[str] = None,
     render_text_appearance_streams: bool = True,
@@ -1801,6 +1945,7 @@ def _add_text_field(
         font_size=default_appearance_font_size,
         font_color=default_appearance_font_color,
     )
+    _set_text_alignment(field, text_alignment)
     if value is not None:
         field[NameObject("/V")] = TextStringObject(str(value))
         field[NameObject("/DV")] = TextStringObject(str(value))
@@ -1817,6 +1962,7 @@ def _add_text_field(
                 font_resource_name=font_resource_name,
                 font_size=font_size,
                 font_color=font_color,
+                text_alignment=text_alignment,
             )
             if ap is not None:
                 field[NameObject("/AP")] = DictionaryObject({NameObject("/N"): ap})
@@ -2097,6 +2243,7 @@ def _add_combo_field(
     font_name: Optional[str] = None,
     font_size: Optional[float] = None,
     font_color: Optional[str] = None,
+    text_alignment: Optional[str] = None,
     default_appearance_font_size: Optional[float] = None,
     default_appearance_font_color: Optional[str] = None,
     render_text_appearance_streams: bool = True,
@@ -2129,6 +2276,7 @@ def _add_combo_field(
         font_size=default_appearance_font_size,
         font_color=default_appearance_font_color,
     )
+    _set_text_alignment(field, text_alignment)
     if value is not None:
         field[NameObject("/V")] = TextStringObject(str(value))
         field[NameObject("/DV")] = TextStringObject(str(value))
@@ -2145,6 +2293,7 @@ def _add_combo_field(
                 font_resource_name=font_resource_name,
                 font_size=font_size,
                 font_color=font_color,
+                text_alignment=text_alignment,
             )
             if ap is not None:
                 field[NameObject("/AP")] = DictionaryObject({NameObject("/N"): ap})
@@ -2224,10 +2373,15 @@ def inject_fields_from_template(
     global_field_font = appearance.get("globalFieldFont") or DEFAULT_FIELD_FONT_CHOICE
     global_field_font_size = appearance.get("globalFieldFontSize") or DEFAULT_FIELD_FONT_SIZE_CHOICE
     global_field_font_color = appearance.get("globalFieldFontColor") or DEFAULT_FIELD_FONT_COLOR
+    global_field_alignment = appearance.get("globalFieldAlignment") or DEFAULT_FIELD_TEXT_ALIGNMENT
     should_render_text_appearances = (
         _render_text_appearance_streams(template)
         if render_text_appearance_streams is None
         else bool(render_text_appearance_streams)
+    )
+    include_app_only_metadata = _coerce_template_bool(
+        template.get("includeDullyPdfAppOnlyMetadata"),
+        default=True,
     )
     reader = PdfReader(str(input_pdf))
     writer = PdfWriter()
@@ -2296,6 +2450,8 @@ def inject_fields_from_template(
 
         flags = _field_flags(field)
         field_type = str(field.get("type") or "text").lower().strip()
+        if field_type in {"image", "pdf417", "barcode", "qr"}:
+            continue
         selected_font_name = resolve_effective_field_font(field, global_field_font=global_field_font)
         selected_font_size = resolve_effective_field_font_size(
             field,
@@ -2305,6 +2461,10 @@ def inject_fields_from_template(
         selected_font_color = resolve_effective_field_font_color(
             field,
             global_field_font_color=global_field_font_color,
+        )
+        selected_text_alignment = resolve_effective_field_alignment(
+            field,
+            global_field_alignment=global_field_alignment,
         )
         default_appearance_font_size = (
             selected_font_size
@@ -2348,6 +2508,7 @@ def inject_fields_from_template(
                 font_name=selected_font_name,
                 font_size=selected_font_size,
                 font_color=selected_font_color,
+                text_alignment=selected_text_alignment,
                 default_appearance_font_size=default_appearance_font_size,
                 default_appearance_font_color=default_appearance_font_color,
                 render_text_appearance_streams=should_render_text_appearances,
@@ -2379,6 +2540,7 @@ def inject_fields_from_template(
                 font_name=selected_font_name,
                 font_size=selected_font_size,
                 font_color=selected_font_color,
+                text_alignment=selected_text_alignment,
                 default_appearance_font_size=default_appearance_font_size,
                 default_appearance_font_color=default_appearance_font_color,
                 render_text_appearance_streams=should_render_text_appearances,
@@ -2436,6 +2598,7 @@ def inject_fields_from_template(
                 font_name=selected_font_name,
                 font_size=selected_font_size,
                 font_color=selected_font_color,
+                text_alignment=selected_text_alignment,
                 default_appearance_font_size=default_appearance_font_size,
                 default_appearance_font_color=default_appearance_font_color,
                 render_text_appearance_streams=should_render_text_appearances,
@@ -2445,7 +2608,14 @@ def inject_fields_from_template(
             continue
         existing_widgets.setdefault(page_idx, []).append({"rect": pdf_rect, "kind": field_kind})
 
-    _set_dullypdf_appearance_metadata(writer, fields, appearance)
+    apply_calculation_acroform_behavior(acroform, fields)
+    _set_dullypdf_appearance_metadata(
+        writer,
+        fields,
+        appearance,
+        include_app_only_metadata=include_app_only_metadata,
+    )
+    set_dullypdf_calculation_metadata(writer, fields, logger=logger)
     output_pdf.parent.mkdir(parents=True, exist_ok=True)
     with output_pdf.open("wb") as f:
         writer.write(f)

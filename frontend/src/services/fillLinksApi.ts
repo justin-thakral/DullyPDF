@@ -174,6 +174,7 @@ export type FillLinkTemplateFieldPayload = {
   fontName?: string;
   fontSize?: string | number;
   fontColor?: string;
+  textAlign?: string;
   groupKey?: string;
   optionKey?: string;
   optionLabel?: string;
@@ -192,6 +193,7 @@ export type FillLinkGroupTemplatePayload = {
     globalFieldFont?: string;
     globalFieldFontSize?: string | number;
     globalFieldFontColor?: string;
+    globalFieldAlignment?: string;
   };
   fields: FillLinkTemplateFieldPayload[];
   checkboxRules?: Array<Record<string, unknown>>;

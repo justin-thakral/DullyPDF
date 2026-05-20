@@ -64,7 +64,7 @@ function selectionCoverage(target: FieldRect, selectionRect: FieldRect): number 
   return intersectionArea(target, selectionRect) / targetArea;
 }
 
-function compareQuickRadioFields(left: PdfField, right: PdfField) {
+function compareSelectionFields(left: PdfField, right: PdfField) {
   if (left.page !== right.page) return left.page - right.page;
   if (left.rect.y !== right.rect.y) return left.rect.y - right.rect.y;
   if (left.rect.x !== right.rect.x) return left.rect.x - right.rect.x;
@@ -92,9 +92,25 @@ export function collectQuickRadioSelection(
   point: PdfPoint,
   mode: QuickRadioSelectionMode,
 ): string[] {
+  return collectFieldSelection(
+    fields,
+    selectionRect,
+    point,
+    mode,
+    (field) => field.type === 'checkbox',
+  );
+}
+
+export function collectFieldSelection(
+  fields: PdfField[],
+  selectionRect: FieldRect | null,
+  point: PdfPoint,
+  mode: QuickRadioSelectionMode,
+  isSelectableField: (field: PdfField) => boolean,
+): string[] {
   return fields
-    .filter((field) => field.type === 'checkbox')
+    .filter(isSelectableField)
     .filter((field) => fieldMatchesQuickRadioSelection(field.rect, selectionRect, point, mode))
-    .sort(compareQuickRadioFields)
+    .sort(compareSelectionFields)
     .map((field) => field.id);
 }

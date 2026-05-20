@@ -21,6 +21,7 @@ import {
   loadPdfFromFile,
   loadPdfPageCountFromFile,
 } from '../../../src/utils/pdf';
+import { BARCODE_FIELD_NAME_MARKER, QR_FIELD_NAME_MARKER } from '../../../src/utils/fields';
 
 type MockAnnotation = Record<string, unknown>;
 type MockFieldObject = Record<string, unknown>;
@@ -324,6 +325,34 @@ describe('pdf utils', () => {
     });
   });
 
+  it('preserves capitalized PDF.js text alignment values from uploaded fields', async () => {
+    const page = createMockPage({
+      annotations: [
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: 'centered_name',
+          rect: [10, 10, 110, 30],
+          textAlignment: 'Center',
+        },
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: 'right_value',
+          rect: [10, 40, 110, 60],
+          textAlign: ' Right ',
+        },
+      ],
+    });
+    const doc = createMockDoc({ pages: [page] });
+
+    const fields = await extractFieldsFromPdf(doc as any);
+
+    expect(fields).toHaveLength(2);
+    expect(fields[0]).toMatchObject({ name: 'centered_name', textAlign: 'center' });
+    expect(fields[1]).toMatchObject({ name: 'right_value', textAlign: 'right' });
+  });
+
   it('hydrates DullyPDF global appearance metadata and field overrides on re-upload', async () => {
     const metadataPayload = {
       schema: 'dullypdf.appearance.v1',
@@ -331,6 +360,7 @@ describe('pdf utils', () => {
         globalFieldFont: 'Times-Roman',
         globalFieldFontSize: 12,
         globalFieldFontColor: '#123456',
+        globalFieldAlignment: 'center',
       },
       fields: [
         {
@@ -338,6 +368,7 @@ describe('pdf utils', () => {
           page: 1,
           type: 'text',
           fontColor: '#abcdef',
+          textAlign: 'right',
         },
       ],
     };
@@ -379,11 +410,104 @@ describe('pdf utils', () => {
       globalFieldFont: 'Times-Roman',
       globalFieldFontSize: 12,
       globalFieldFontColor: '#123456',
+      globalFieldAlignment: 'center',
     });
     expect(fields).toHaveLength(2);
-    expect(fields[0]).toMatchObject({ name: 'notes', fontColor: '#abcdef' });
+    expect(fields[0]).toMatchObject({ name: 'notes', fontColor: '#abcdef', textAlign: 'right' });
     expect(fields[1]).toMatchObject({ name: 'inherited_global' });
     expect(fields[1]).not.toHaveProperty('fontColor');
+  });
+
+  it('rehydrates DullyPDF-only marker widgets using app-only metadata', async () => {
+    const markerName = `license${BARCODE_FIELD_NAME_MARKER}`;
+    const qrMarkerName = `verification${QR_FIELD_NAME_MARKER}`;
+    const metadataPayload = {
+      schema: 'dullypdf.appearance.v1',
+      appearance: {
+        globalFieldFont: 'default',
+        globalFieldFontSize: 'auto',
+        globalFieldFontColor: '#000000',
+        globalFieldAlignment: 'left',
+      },
+      fields: [],
+      appOnlyFields: [
+        {
+          id: 'barcode-id',
+          name: 'license',
+          markerName,
+          page: 1,
+          type: 'barcode',
+          rect: { x: 10, y: 10, width: 120, height: 40 },
+          value: '123456789',
+          barcodeSourceField: {
+            fieldId: 'source-id',
+            fieldName: 'ID Number',
+          },
+        },
+        {
+          id: 'qr-id',
+          name: 'verification',
+          markerName: qrMarkerName,
+          page: 1,
+          type: 'qr',
+          rect: { x: 140, y: 10, width: 80, height: 80 },
+          value: 'https://example.com/verify',
+          qrSourceField: {
+            fieldId: 'url-source-id',
+            fieldName: 'Verification URL',
+          },
+        },
+      ],
+    };
+    const page = createMockPage({
+      annotations: [
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: markerName,
+          rect: [10, 10, 130, 50],
+        },
+        {
+          subtype: 'Widget',
+          fieldType: 'Tx',
+          fieldName: qrMarkerName,
+          rect: [140, 10, 220, 90],
+        },
+      ],
+    });
+    const doc = createMockDoc({
+      pages: [page],
+      metadataInfo: {
+        Custom: {
+          DullyPDFAppearance: JSON.stringify(metadataPayload),
+        },
+      },
+    });
+
+    const metadata = await extractDullyPdfAppearanceMetadata(doc as any);
+    const fields = await extractFieldsFromPdf(doc as any, { dullyAppearanceMetadata: metadata });
+
+    expect(fields).toHaveLength(2);
+    expect(fields[0]).toMatchObject({
+      id: 'barcode-id',
+      name: 'license',
+      type: 'barcode',
+      value: '123456789',
+      barcodeSourceField: {
+        fieldId: 'source-id',
+        fieldName: 'ID Number',
+      },
+    });
+    expect(fields[1]).toMatchObject({
+      id: 'qr-id',
+      name: 'verification',
+      type: 'qr',
+      value: 'https://example.com/verify',
+      qrSourceField: {
+        fieldId: 'url-source-id',
+        fieldName: 'Verification URL',
+      },
+    });
   });
 
   it('extracts confidence tags and ignores confidence-only alternative text for names', async () => {

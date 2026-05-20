@@ -7,9 +7,13 @@ from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from backend.services.pdf_service import (
+    CALCULATION_COMPATIBLE_FIELD_TYPES,
+    normalize_calculation_metadata,
+    normalize_field_alignment_override,
     normalize_field_font_color_override,
     normalize_field_font_override,
     normalize_field_font_size_override,
+    normalize_numeric_value_type,
     normalize_optional_pdf_sha256,
 )
 
@@ -89,6 +93,14 @@ class TemplateOverlayField(BaseModel):
     fontName: Optional[str] = None
     fontSize: Optional[Any] = None
     fontColor: Optional[str] = None
+    textAlign: Optional[str] = None
+    readOnly: Optional[bool] = None
+    required: Optional[bool] = None
+    valueType: Optional[str] = None
+    calculation: Optional[Dict[str, Any]] = None
+    barcodeSourceField: Optional[Dict[str, Any]] = None
+    qrSourceField: Optional[Dict[str, Any]] = None
+    pdf417FieldMappings: Optional[Dict[str, Dict[str, Any]]] = None
 
     model_config = {"extra": "ignore"}
 
@@ -140,6 +152,44 @@ class TemplateOverlayField(BaseModel):
         if normalized is None:
             raise ValueError("fontColor must be global or a #rrggbb color")
         return normalized
+
+    @field_validator("textAlign", mode="before")
+    @classmethod
+    def _normalize_text_align(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        normalized = normalize_field_alignment_override(value)
+        if normalized is None:
+            raise ValueError("textAlign must be global, left, center, or right")
+        return normalized
+
+    @field_validator("type", mode="before")
+    @classmethod
+    def _normalize_field_type(cls, value: Any) -> str:
+        field_type = str(value or "text").strip().lower()
+        return "text" if field_type == "date" else field_type
+
+    @field_validator("valueType", mode="before")
+    @classmethod
+    def _normalize_value_type(cls, value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        normalized = normalize_numeric_value_type(value)
+        if normalized is None:
+            raise ValueError("valueType must be integer or decimal")
+        return normalized
+
+    @field_validator("calculation", mode="before")
+    @classmethod
+    def _normalize_calculation(cls, value: Any) -> Optional[Dict[str, Any]]:
+        return normalize_calculation_metadata(value)
+
+    @model_validator(mode="after")
+    def _validate_calculation_field_type(self) -> "TemplateOverlayField":
+        field_type = str(self.type or "text").strip().lower()
+        if (self.valueType is not None or self.calculation is not None) and field_type not in CALCULATION_COMPATIBLE_FIELD_TYPES:
+            raise ValueError("calculation metadata is only supported on text fields")
+        return self
 
 
 class SchemaMappingRequest(BaseModel):
