@@ -70,6 +70,12 @@ import {
   calculationRoleLabel,
   formatFormulaForDisplay,
 } from '../../utils/calculationFields';
+import {
+  readPanelDisclosureState,
+  writePanelDisclosureState,
+} from '../../utils/panelDisclosureState';
+
+const EDITOR_DESCRIPTION_DISCLOSURE_KEY = 'field-editor-description';
 
 type InspectorDraft = {
   name: string;
@@ -233,7 +239,9 @@ export function FieldInspectorPanel({
   const [bulkTextAlignmentValue, setBulkTextAlignmentValue] =
     useState<FieldTextAlignmentOverride>('global');
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false);
-  const [editorDescriptionOpen, setEditorDescriptionOpen] = useState(false);
+  const [editorDescriptionOpen, setEditorDescriptionOpen] = useState(() => (
+    readPanelDisclosureState(EDITOR_DESCRIPTION_DISCLOSURE_KEY)
+  ));
 
   useEffect(() => {
     if (selectedId === null || selectedName === null || selectedPage === null) {
@@ -646,6 +654,14 @@ export function FieldInspectorPanel({
     setDeleteAllDialogOpen(false);
   };
 
+  const toggleEditorDescription = () => {
+    setEditorDescriptionOpen((open) => {
+      const nextOpen = !open;
+      writePanelDisclosureState(EDITOR_DESCRIPTION_DISCLOSURE_KEY, nextOpen);
+      return nextOpen;
+    });
+  };
+
   return (
     <>
       <aside className="panel panel--inspector">
@@ -658,7 +674,7 @@ export function FieldInspectorPanel({
                   className="panel-title-toggle"
                   aria-expanded={editorDescriptionOpen}
                   aria-controls="field-editor-description"
-                  onClick={() => setEditorDescriptionOpen((open) => !open)}
+                  onClick={toggleEditorDescription}
                 >
                   Field Editor
                 </button>

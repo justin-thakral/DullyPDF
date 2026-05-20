@@ -3,7 +3,8 @@
 Field editing is centered around three coordinated areas: overlay (PDF), the left `Browser`, and the
 right `Field Editor`. The side panels keep instructional copy in collapsible description rows so the active controls
 stay compact while still exposing context for page navigation, display mode, global appearance, filters,
-field details, create tools, bulk style conversion, keyboard movement, history, and shortcuts.
+field details, create tools, bulk style conversion, keyboard movement, history, and shortcuts. The main
+`Browser` and `Field Editor` title descriptions remember their open/closed state locally.
 
 ## Display modes and toggles
 

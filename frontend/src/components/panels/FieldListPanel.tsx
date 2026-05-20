@@ -45,9 +45,14 @@ import {
 } from '../../utils/fieldFonts';
 import { formatSize } from '../../utils/fields';
 import { FIELD_TYPES, fieldTypeLabel } from '../../utils/fieldUi';
+import {
+  readPanelDisclosureState,
+  writePanelDisclosureState,
+} from '../../utils/panelDisclosureState';
 import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 
 const MIN_PAGE = 1;
+const BROWSER_DESCRIPTION_DISCLOSURE_KEY = 'field-browser-description';
 
 type SortMode = 'page' | 'name' | 'type' | 'confidence';
 export type FieldListDisplayPreset = 'review' | 'edit' | 'fill' | 'custom';
@@ -302,7 +307,9 @@ export function FieldListPanel({
   const [filterType, setFilterType] = useState<FieldType | 'all'>('all');
   const [sortMode, setSortMode] = useState<SortMode>('page');
   const [showAllPages, setShowAllPages] = useState(false);
-  const [browserDescriptionOpen, setBrowserDescriptionOpen] = useState(false);
+  const [browserDescriptionOpen, setBrowserDescriptionOpen] = useState(() => (
+    readPanelDisclosureState(BROWSER_DESCRIPTION_DISCLOSURE_KEY)
+  ));
   const [globalFieldFontSizeDraft, setGlobalFieldFontSizeDraft] = useState<FontSizeDraft>({
     source: globalFieldFontSize,
     value: fontSizeDraftValue(globalFieldFontSize),
@@ -449,6 +456,14 @@ export function FieldListPanel({
     panelBodyRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const toggleBrowserDescription = useCallback(() => {
+    setBrowserDescriptionOpen((open) => {
+      const nextOpen = !open;
+      writePanelDisclosureState(BROWSER_DESCRIPTION_DISCLOSURE_KEY, nextOpen);
+      return nextOpen;
+    });
+  }, []);
+
   const handleRevealSelected = useCallback(() => {
     if (!selectedOutsideFilters) return;
     setQuery('');
@@ -484,7 +499,7 @@ export function FieldListPanel({
                 className="panel-title-toggle"
                 aria-expanded={browserDescriptionOpen}
                 aria-controls="field-browser-description"
-                onClick={() => setBrowserDescriptionOpen((open) => !open)}
+                onClick={toggleBrowserDescription}
               >
                 Browser
               </button>
