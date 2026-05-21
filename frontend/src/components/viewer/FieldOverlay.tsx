@@ -1,12 +1,13 @@
 /**
  * Overlay layer for draggable/resizable field boxes.
  */
-import { type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from 'react';
+import { type PointerEvent as ReactPointerEvent, useEffect, useMemo, useRef, useState } from 'react';
 import type { CreateTool, FieldRect, FieldType, PdfField, PageSize, RadioGroupSuggestion } from '../../types';
-import { isCalculationCreateTool } from '../../utils/calculationFields';
+import { collectCalculationDependencyIds, isCalculationCreateTool } from '../../utils/calculationFields';
 import { fieldConfidenceTierForField, nameConfidenceTierForField } from '../../utils/confidence';
 import { clamp, clampRectToPage, toViewportRect } from '../../utils/coords';
-import { getDefaultFieldRect, getMinFieldSize } from '../../utils/fields';
+import { getDefaultFieldRect, getMinFieldSize, normalizeRectForFieldType } from '../../utils/fields';
+import { barcodeRectFromHeight, barcodeRectFromWidth, normalizeBarcodeFieldRect } from '../../utils/barcode';
 import { radioGroupSuggestionConfidenceTier } from '../../utils/radioGroupSuggestions';
 import {
   collectFieldSelection,
@@ -203,6 +204,36 @@ function resizeCornerWithAspectRatio(
   return { x: right - width, y: bottom - height, width, height };
 }
 
+function resizeBarcodeWithNineDigitAspect(
+  base: FieldRect,
+  proposed: FieldRect,
+  mode: Exclude<DragMode, 'move'>,
+  page: PageSize,
+  minSize: number,
+): FieldRect {
+  const right = base.x + base.width;
+  const bottom = base.y + base.height;
+  const usesHeightDriver = mode === 'resize-top' || mode === 'resize-bottom';
+  const adjusted = usesHeightDriver
+    ? barcodeRectFromHeight(proposed, page, minSize, 'center')
+    : barcodeRectFromWidth(proposed, page, minSize, 'center');
+
+  if (mode === 'resize-left' || mode === 'resize-tl' || mode === 'resize-bl') {
+    adjusted.x = right - adjusted.width;
+  }
+  if (mode === 'resize-right' || mode === 'resize-tr' || mode === 'resize-br') {
+    adjusted.x = base.x;
+  }
+  if (mode === 'resize-top' || mode === 'resize-tl' || mode === 'resize-tr') {
+    adjusted.y = bottom - adjusted.height;
+  }
+  if (mode === 'resize-bottom' || mode === 'resize-bl' || mode === 'resize-br') {
+    adjusted.y = base.y;
+  }
+
+  return clampRectToPage(adjusted, page, 1);
+}
+
 function isCreateClick(
   start: { x: number; y: number },
   current: { x: number; y: number },
@@ -252,16 +283,16 @@ function toDragRect(
     );
   }
 
-  return clampRectToPage(
-    {
-      x: Math.min(start.x, current.x),
-      y: Math.min(start.y, current.y),
-      width: Math.max(width, minSize),
-      height: Math.max(height, minSize),
-    },
-    page,
-    minSize,
-  );
+  const freeformRect = {
+    x: Math.min(start.x, current.x),
+    y: Math.min(start.y, current.y),
+    width: Math.max(width, minSize),
+    height: Math.max(height, minSize),
+  };
+  if (type === 'barcode') {
+    return normalizeBarcodeFieldRect(freeformRect, page, minSize);
+  }
+  return clampRectToPage(freeformRect, page, minSize);
 }
 
 function resolveFieldLabelMetrics(rect: FieldRect) {
@@ -464,7 +495,9 @@ export function FieldOverlay({
             : resizeCornerFreeform(base, dragState.mode, dx, dy, page, minSize);
         }
 
-        if (dragState.fieldType === 'checkbox' || dragState.fieldType === 'radio') {
+        if (dragState.fieldType === 'barcode') {
+          nextRect = resizeBarcodeWithNineDigitAspect(base, nextRect, dragState.mode, page, minSize);
+        } else if (dragState.fieldType === 'checkbox' || dragState.fieldType === 'radio') {
           const side = Math.max(nextRect.width, nextRect.height, minSize);
           nextRect = clampRectToPage(
             {
@@ -547,7 +580,9 @@ export function FieldOverlay({
       }
       const nextRect = dragPreviewRef.current?.fieldId === dragState.fieldId
         ? dragPreviewRef.current.rect
-        : dragState.startRect;
+        : dragState.fieldType === 'barcode'
+          ? normalizeRectForFieldType(dragState.startRect, 'barcode', pageRef.current)
+          : dragState.startRect;
       if (!rectsEqual(nextRect, dragState.startRect)) {
         onUpdateField(dragState.fieldId, { rect: nextRect });
       }
@@ -652,6 +687,13 @@ export function FieldOverlay({
     : null;
   const selectedRadioGroupId =
     selectedField?.type === 'radio' ? selectedField.radioGroupId || null : null;
+  const calculationDependencySets = useMemo(() => {
+    const dependencies = collectCalculationDependencyIds(fields, selectedFieldId);
+    return {
+      direct: new Set(dependencies.directDependencyIds),
+      indirect: new Set(dependencies.indirectDependencyIds),
+    };
+  }, [fields, selectedFieldId]);
   const pendingQuickRadioIdSet = new Set([...pendingQuickRadioFieldIds, ...previewQuickRadioFieldIds]);
   const pendingBulkTextStyleIdSet = new Set([
     ...pendingBulkTextStyleFieldIds,
@@ -714,12 +756,16 @@ export function FieldOverlay({
         const labelMetrics = resolveFieldLabelMetrics(rect);
         const confidenceTier = fieldConfidenceTierForField(field);
         const nameTier = nameConfidenceTierForField(field);
+        const directCalculationDependency = calculationDependencySets.direct.has(field.id);
+        const indirectCalculationDependency = calculationDependencySets.indirect.has(field.id);
         const className = [
           'field-box',
           `field-box--${field.type}`,
           `field-box--conf-${confidenceTier}`,
           !moveEnabled ? 'field-box--static' : '',
           selected ? 'field-box--active' : '',
+          directCalculationDependency ? 'field-box--calc-dependency' : '',
+          indirectCalculationDependency ? 'field-box--calc-dependency-indirect' : '',
           radioPeer ? 'field-box--radio-peer' : '',
           pendingQuickRadioIdSet.has(field.id) ? 'field-box--quick-radio-pending' : '',
           pendingBulkTextStyleIdSet.has(field.id) ? 'field-box--bulk-text-style-pending' : '',

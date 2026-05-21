@@ -1,7 +1,7 @@
 /**
  * Field inspector panel for editing geometry and metadata.
  */
-import { useEffect, useState, type ChangeEvent as ReactChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { ConfirmDialog } from '../ui/Dialog';
 import type { CalculationSetupIntent } from '../features/CalculationSetupDialog';
 import type {
@@ -42,6 +42,7 @@ import {
   sanitizeFieldTextAlignmentOverride,
   sanitizeGlobalFieldTextAlignment,
 } from '../../utils/fieldFonts';
+import { BARCODE_9_DIGIT_FIELD_ASPECT_RATIO } from '../../utils/barcode';
 import { getMinFieldSize } from '../../utils/fields';
 import {
   MAX_ARROW_KEY_MOVE_STEP,
@@ -63,12 +64,16 @@ import {
   shouldAutoApplyRadioGroupSuggestion,
 } from '../../utils/radioGroupSuggestions';
 import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
-import { IMAGE_ACCEPT, readImageFileAsDataUrl } from '../../utils/images';
+import { imageColorModeLabel } from '../../utils/images';
 import {
   CALCULATION_CREATE_TOOLS,
   calculationFieldsEnabled,
   calculationRoleLabel,
+  formulaDependencyIdsForField,
   formatFormulaForDisplay,
+  isCalculatedRole,
+  resolveCalculatedFieldPreviewValues,
+  validateFormula,
 } from '../../utils/calculationFields';
 import {
   readPanelDisclosureState,
@@ -114,7 +119,9 @@ type FieldInspectorPanelProps = {
   arrowKeyMoveStep: number;
   onUpdateField: (fieldId: string, updates: Partial<PdfField>) => void;
   onSetFieldType: (fieldId: string, type: FieldType) => void;
+  onSelectField: (fieldId: string) => void;
   onOpenCalculationSetup: (fieldId: string, intent?: CalculationSetupIntent) => void;
+  onOpenImageSetup: (fieldId: string) => void;
   onOpenBarcodeSetup: (fieldId: string) => void;
   onUpdateFieldDraft: (fieldId: string, updates: Partial<PdfField>) => void;
   onDeleteField: (fieldId: string) => void;
@@ -166,7 +173,9 @@ export function FieldInspectorPanel({
   arrowKeyMoveStep,
   onUpdateField,
   onSetFieldType,
+  onSelectField,
   onOpenCalculationSetup,
+  onOpenImageSetup,
   onOpenBarcodeSetup,
   onDeleteField,
   onDeleteAllFields,
@@ -208,9 +217,34 @@ export function FieldInspectorPanel({
   const selectedCalculationFormula = selected?.calculation?.formula
     ? formatFormulaForDisplay(selected.calculation.formula, fields)
     : null;
-  const selectedCalculationDependencies = selected?.calculation?.dependencies
-    ?.map((fieldId) => fields.find((field) => field.id === fieldId)?.name || 'Missing field')
-    .filter(Boolean) ?? [];
+  const calculationPreviewValues = resolveCalculatedFieldPreviewValues(fields);
+  const selectedCalculationPreviewValue = selected ? calculationPreviewValues.get(selected.id) : undefined;
+  const selectedCalculationDependencies = selected
+    ? formulaDependencyIdsForField(selected)
+      .map((fieldId) => fields.find((field) => field.id === fieldId) || null)
+      .filter((dependency): dependency is PdfField => dependency !== null)
+    : [];
+  const selectedCalculationStatus = (() => {
+    if (!selected || !selectedCalculationRole || selectedCalculationRole === 'none') return null;
+    if (isCalculatedRole(selectedCalculationRole)) {
+      const validation = validateFormula(selected.calculation?.formula, fields, selected.id);
+      if (!validation.valid) {
+        return { tone: 'warning' as const, label: `Needs setup: ${validation.errors[0]}` };
+      }
+      return { tone: 'success' as const, label: `Computed: ${selectedCalculationPreviewValue || 'blank'}` };
+    }
+    if (selectedCalculationRole === 'number_input') {
+      const rawValue = selected.value === null || selected.value === undefined ? '' : String(selected.value).trim();
+      return { tone: 'neutral' as const, label: `Current: ${rawValue || 'blank'}` };
+    }
+    if (selected.calculation?.imported?.supported === false) {
+      return { tone: 'warning' as const, label: 'Imported: rebuild recommended' };
+    }
+    return { tone: 'neutral' as const, label: 'Imported calculation' };
+  })();
+  const selectedCalculationFormulaPreview = selectedCalculationFormula && isCalculatedRole(selectedCalculationRole)
+    ? `${selectedCalculationFormula} = ${selectedCalculationPreviewValue || 'blank'}`
+    : selectedCalculationFormula;
   const selectedCanConvertToCalculation = Boolean(calculationsEnabled && selected && selected.type === 'text');
   const selectedMinSize = selected ? getMinFieldSize(selected.type) : getMinFieldSize('text');
   const selectedId = selected?.id ?? null;
@@ -384,9 +418,15 @@ export function FieldInspectorPanel({
     } else if (axis === 'y') {
       nextRect = normalizeRect({ y: Number(draft.y) || 0 });
     } else if (axis === 'width') {
-      nextRect = normalizeRect({ width: Math.max(selectedMinSize, Number(draft.width) || 0) });
+      const width = Math.max(selectedMinSize, Number(draft.width) || 0);
+      nextRect = normalizeRect(selected.type === 'barcode'
+        ? { width, height: width / BARCODE_9_DIGIT_FIELD_ASPECT_RATIO }
+        : { width });
     } else if (axis === 'height') {
-      nextRect = normalizeRect({ height: Math.max(selectedMinSize, Number(draft.height) || 0) });
+      const height = Math.max(selectedMinSize, Number(draft.height) || 0);
+      nextRect = normalizeRect(selected.type === 'barcode'
+        ? { width: height * BARCODE_9_DIGIT_FIELD_ASPECT_RATIO, height }
+        : { height });
     }
     if (!nextRect) return;
     setDraft((prev) => {
@@ -547,32 +587,6 @@ export function FieldInspectorPanel({
       updates.textAlign = fieldTextAlignmentUpdateValue(bulkTextAlignmentValue);
     }
     onApplyPendingBulkTextStyleSelection(updates);
-  };
-
-  const handleImageFileChange = async (event: ReactChangeEvent<HTMLInputElement>) => {
-    if (!selected || selected.type !== 'image') return;
-    const file = event.target.files?.[0] ?? null;
-    event.target.value = '';
-    if (!file) return;
-    onBeginFieldChange();
-    try {
-      const image = await readImageFileAsDataUrl(file);
-      onUpdateField(selected.id, { ...image, value: null });
-    } catch (error) {
-      onBlockedAction?.(error instanceof Error ? error.message : 'Unable to read this image file.');
-    } finally {
-      onCommitFieldChange();
-    }
-  };
-
-  const clearSelectedImage = () => {
-    if (!selected || selected.type !== 'image') return;
-    onUpdateField(selected.id, {
-      imageDataUrl: null,
-      imageMimeType: null,
-      imageName: null,
-      value: null,
-    });
   };
 
   const handleNumberInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
@@ -773,27 +787,63 @@ export function FieldInspectorPanel({
                     </div>
                     {selectedCalculationLabel ? (
                       <>
-                        {selectedCalculationFormula ? (
-                          <p className="panel__micro">Formula: {selectedCalculationFormula}</p>
+                        {selectedCalculationStatus ? (
+                          <p className={`panel-calculation-status panel-calculation-status--${selectedCalculationStatus.tone}`}>
+                            {selectedCalculationStatus.label}
+                          </p>
                         ) : null}
-                        {selectedCalculationDependencies.length ? (
-                          <p className="panel__micro">Depends on: {selectedCalculationDependencies.join(', ')}</p>
+                        {(selectedCalculationFormulaPreview || selectedCalculationDependencies.length) ? (
+                          <div className="panel-calculation-summary">
+                            {selectedCalculationFormulaPreview ? (
+                              <div className="panel-calculation-summary__item">
+                                <span className="panel-calculation-summary__label">Formula</span>
+                                <code className="panel-calculation-summary__value">{selectedCalculationFormulaPreview}</code>
+                              </div>
+                            ) : null}
+                            {selectedCalculationDependencies.length ? (
+                              <div className="panel-calculation-summary__item">
+                                <span className="panel-calculation-summary__label">Depends on</span>
+                                <div className="panel-calculation-dependencies">
+                                  {selectedCalculationDependencies.map((dependency) => {
+                                    const previewValue = calculationPreviewValues.get(dependency.id);
+                                    const rawValue =
+                                      dependency.value === null || dependency.value === undefined
+                                        ? ''
+                                        : String(dependency.value);
+                                    const displayValue = (previewValue ?? rawValue).trim() || 'blank';
+                                    return (
+                                      <button
+                                        key={dependency.id}
+                                        type="button"
+                                        className="panel-calculation-dependency"
+                                        onClick={() => onSelectField(dependency.id)}
+                                      >
+                                        <span>{dependency.name}</span>
+                                        <strong>{displayValue}</strong>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
                         ) : null}
                         {selected.calculation?.imported?.supported === false ? (
                           <p className="panel__micro panel__micro--warning">
                             Imported calculation metadata is locked until it is rebuilt in DullyPDF.
+                            {selected.calculation.imported.reason ? ` ${selected.calculation.imported.reason}` : ''}
                           </p>
                         ) : null}
                         <div className="panel__action-grid">
                           <button
                             type="button"
-                            className="ui-button ui-button--secondary ui-button--compact"
+                            className="ui-button ui-button--secondary ui-button--compact panel-calculation-action"
                             onClick={() => onOpenCalculationSetup(
                               selected.id,
                               selected.calculation?.role === 'external_imported_calculation' ? 'review_imported' : 'edit',
                             )}
                           >
-                            Edit calculation setup
+                            Edit Calculation Setup
                           </button>
                           {selected.calculation?.role === 'external_imported_calculation' ? (
                             <button
@@ -1053,36 +1103,20 @@ export function FieldInspectorPanel({
                     <details className="panel-disclosure">
                       <summary className="panel-disclosure__summary panel-disclosure__summary--section">Image</summary>
                       <p className="panel__micro panel-disclosure__body">
-                        Attach the image that this helper field should place on the page when DullyPDF
-                        materializes the template.
+                        Open setup to attach an image and choose its PDF export color scale.
                       </p>
                     </details>
-                    <label className="panel__label" htmlFor="field-image-file">
-                      File
-                    </label>
-                    <input
-                      id="field-image-file"
-                      name="field-image-file"
-                      className="panel__input"
-                      type="file"
-                      accept={IMAGE_ACCEPT}
-                      onChange={handleImageFileChange}
-                    />
-                    {selected.imageDataUrl ? (
-                      <div className="panel-image-preview">
-                        <img src={selected.imageDataUrl} alt="" />
-                        <span>{selected.imageName || 'Selected image'}</span>
-                      </div>
-                    ) : (
-                      <p className="panel__micro">No image selected.</p>
-                    )}
+                    <p className="panel__micro">
+                      {selected.imageDataUrl || selected.imageName
+                        ? `${selected.imageName || 'Selected image'} - ${imageColorModeLabel(selected.imageColorMode)}`
+                        : 'No image selected yet.'}
+                    </p>
                     <button
-                      className="ui-button ui-button--ghost ui-button--compact"
                       type="button"
-                      onClick={() => guardClick(!selected.imageDataUrl, 'No image to clear.', clearSelectedImage)}
-                      aria-disabled={!selected.imageDataUrl}
+                      className="ui-button ui-button--ghost ui-button--compact"
+                      onClick={() => onOpenImageSetup(selected.id)}
                     >
-                      Clear image
+                      Edit image setup…
                     </button>
                   </div>
                 ) : null}
@@ -1092,7 +1126,7 @@ export function FieldInspectorPanel({
                     <details className="panel-disclosure">
                       <summary className="panel-disclosure__summary panel-disclosure__summary--section">
                         {selected.type === 'pdf417' ? 'PDF417'
-                          : selected.type === 'barcode' ? '1D Barcode'
+                          : selected.type === 'barcode' ? '1D Code 128'
                           : 'QR Code'}
                       </summary>
                       <p className="panel__micro panel-disclosure__body">

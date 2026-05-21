@@ -543,6 +543,37 @@ def _resolve_transform_value(rule: Dict[str, Any], answers: Dict[str, Any]) -> A
     return None
 
 
+def _apply_image_answer_to_field(field: Dict[str, Any], value: Any) -> bool:
+    if isinstance(value, Mapping):
+        image_data_url = _coerce_text(value.get("imageDataUrl"))
+        image_path = _coerce_text(value.get("imagePath"))
+        image_mime_type = _coerce_text(value.get("imageMimeType"))
+        image_name = _coerce_text(value.get("imageName"))
+        if not image_data_url and not image_path:
+            return False
+        if image_data_url:
+            field["imageDataUrl"] = image_data_url
+            field["value"] = image_data_url
+        if image_path:
+            field["imagePath"] = image_path
+            field["value"] = image_path
+        if image_mime_type:
+            field["imageMimeType"] = image_mime_type
+        if image_name:
+            field["imageName"] = image_name
+        return True
+
+    image_text = _coerce_text(value)
+    if not image_text:
+        return False
+    field["value"] = image_text
+    if image_text.startswith("gs://"):
+        field["imagePath"] = image_text
+    elif image_text.lower().startswith("data:image/"):
+        field["imageDataUrl"] = image_text
+    return True
+
+
 def apply_fill_link_answers_to_fields(snapshot: Dict[str, Any], answers: Dict[str, Any]) -> List[Dict[str, Any]]:
     fields = [dict(entry) for entry in coerce_field_payloads(list(snapshot.get("fields") or []))]
     normalized_answers = _normalized_answers(answers)
@@ -632,6 +663,8 @@ def apply_fill_link_answers_to_fields(snapshot: Dict[str, Any], answers: Dict[st
                 break
         if value is None:
             continue
+        if field_type == "image" and _apply_image_answer_to_field(field, value):
+            continue
         if field_type == "date":
             date_value = _parse_date_value(value)
             if date_value:
@@ -682,8 +715,8 @@ def materialize_fill_link_response_download(
     cleanup_targets = [Path(source_name), Path(template_name), Path(output_name)]
     try:
         inject_fields(Path(source_name), Path(template_name), Path(output_name))
-        Path(output_name).write_bytes(stamp_image_fields_into_pdf(Path(output_name).read_bytes(), filled_fields))
         if resolved_export_mode == "flat":
+            Path(output_name).write_bytes(stamp_image_fields_into_pdf(Path(output_name).read_bytes(), filled_fields))
             Path(output_name).write_bytes(flatten_pdf_form_widgets(Path(output_name).read_bytes()))
     except Exception:
         for path in cleanup_targets:

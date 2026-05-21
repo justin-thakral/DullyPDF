@@ -193,6 +193,36 @@ def test_build_template_fill_link_download_snapshot_malformed_manifest_falls_bac
     assert snapshot["pageCount"] == 0
 
 
+def test_apply_fill_link_answers_to_fields_maps_image_path_answers() -> None:
+    fields = apply_fill_link_answers_to_fields(
+        {
+            "fields": [
+                {
+                    "name": "profile_photo",
+                    "type": "image",
+                    "page": 1,
+                    "rect": [10, 10, 80, 80],
+                }
+            ],
+            "checkboxRules": [],
+            "radioGroups": [],
+            "textTransformRules": [],
+        },
+        {
+            "profile_photo": {
+                "imagePath": "gs://forms/profile.png",
+                "imageMimeType": "image/png",
+                "imageName": "profile.png",
+            }
+        },
+    )
+
+    assert fields[0]["imagePath"] == "gs://forms/profile.png"
+    assert fields[0]["value"] == "gs://forms/profile.png"
+    assert fields[0]["imageMimeType"] == "image/png"
+    assert fields[0]["imageName"] == "profile.png"
+
+
 def test_build_group_fill_link_publish_snapshot_total_page_count_is_nonzero() -> None:
     """Regression for the Phase 7 walkthrough finding: a group bundle's
     templateSnapshots now carry real pageCount values, so
@@ -489,6 +519,8 @@ def test_materialize_fill_link_response_download_preserves_editable_app_only_mar
         assert metadata["appOnlyFields"][0]["markerName"] == marker_name
         assert metadata["appOnlyFields"][0]["value"] == "123456789"
         assert metadata["appOnlyFields"][0]["imageDataUrl"].startswith("data:image/png;base64,")
+        with fitz.open(str(output_path)) as document:
+            assert not document[0].get_images(full=True)
     finally:
         for path in cleanup_targets:
             path.unlink(missing_ok=True)

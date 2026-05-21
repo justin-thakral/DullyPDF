@@ -50,6 +50,8 @@ export type FieldTextAlignmentChoice = 'left' | 'center' | 'right';
 
 export type FieldTextAlignmentOverride = 'global' | FieldTextAlignmentChoice;
 
+export type ImageColorMode = 'original' | 'grayscale';
+
 export type NumericValueType = 'integer' | 'decimal';
 
 export type CalculationFieldRole =
@@ -198,8 +200,11 @@ export type PdfField = {
    * DullyPDF-only image payload used by image fields and generated barcode previews.
    */
   imageDataUrl?: string | null;
+  imagePath?: string | null;
+  imageSourcePath?: string | null;
   imageMimeType?: string | null;
   imageName?: string | null;
+  imageColorMode?: ImageColorMode | null;
   /**
    * DullyPDF-only PDF417 scan data and manual fallback values.
    */
@@ -214,7 +219,7 @@ export type PdfField = {
   pdf417FieldMappings?: Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> | null;
   /**
    * User-defined classes that drive the encoded contents of pdf417 / barcode /
-   * qr fields. Source of truth going forward; legacy pdf417*/qrSourceField/
+   * qr fields. Source of truth going forward; legacy PDF417, QR source, and
    * barcodeSourceField properties remain only for hydration migration.
    */
   barcodeClasses?: BarcodeClass[] | null;

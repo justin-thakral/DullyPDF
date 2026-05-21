@@ -34,6 +34,8 @@ _CHECK_WIDGET_TYPES = {
     fitz.PDF_WIDGET_TYPE_CHECKBOX,
     fitz.PDF_WIDGET_TYPE_RADIOBUTTON,
 }
+_APP_ONLY_FIELD_NAME_MARKERS = ("__CVTPF", "__CVTP4", "__CVTBC", "__CVTQR")
+_APP_ONLY_FIELD_VALUE_MARKERS = {"CVTPF#@&", "CVTP4#@&", "CVTBC#@&", "CVTQR#@&"}
 _PYMUPDF_BASE14_ALIASES = {
     "helv": "helv",
     "helvetica": "helv",
@@ -213,6 +215,17 @@ def _collect_widget_payload(widget) -> dict[str, Any]:
     }
 
 
+def _first_widget_value_line(value: Any) -> str:
+    return _coerce_widget_text(value).strip().splitlines()[0].strip() if _coerce_widget_text(value).strip() else ""
+
+
+def _is_dullypdf_app_only_marker_widget(widget) -> bool:
+    field_name = str(getattr(widget, "field_name", "") or "")
+    if any(marker in field_name for marker in _APP_ONLY_FIELD_NAME_MARKERS):
+        return True
+    return _first_widget_value_line(getattr(widget, "field_value", None)) in _APP_ONLY_FIELD_VALUE_MARKERS
+
+
 def _remove_acroform_catalog(pdf_bytes: bytes) -> bytes:
     """Drop stale AcroForm metadata after page widgets have been flattened."""
     reader = PdfReader(io.BytesIO(pdf_bytes))
@@ -231,7 +244,11 @@ def flatten_pdf_form_widgets(pdf_bytes: bytes) -> bytes:
     try:
         for page in document:
             widgets = list(page.widgets() or [])
-            payloads = [_collect_widget_payload(widget) for widget in widgets]
+            payloads = [
+                _collect_widget_payload(widget)
+                for widget in widgets
+                if not _is_dullypdf_app_only_marker_widget(widget)
+            ]
             for widget in widgets:
                 page.delete_widget(widget)
             for payload in payloads:

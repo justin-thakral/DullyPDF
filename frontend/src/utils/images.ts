@@ -1,10 +1,32 @@
+import type { CSSProperties } from 'react';
+import type { ImageColorMode } from '../types';
+
 export const IMAGE_ACCEPT = '.png,.jpg,.jpeg,image/png,image/jpeg';
+export const DEFAULT_IMAGE_COLOR_MODE: ImageColorMode = 'original';
+
+export const IMAGE_COLOR_MODE_OPTIONS: Array<{ value: ImageColorMode; label: string }> = [
+  { value: 'original', label: 'Original' },
+  { value: 'grayscale', label: 'Grayscale' },
+];
 
 export type ImageFieldPayload = {
   imageDataUrl: string;
   imageMimeType: string;
   imageName: string;
 };
+
+export function normalizeImageColorMode(value: unknown): ImageColorMode {
+  return value === 'grayscale' ? 'grayscale' : DEFAULT_IMAGE_COLOR_MODE;
+}
+
+export function imageColorModeLabel(value: unknown): string {
+  const mode = normalizeImageColorMode(value);
+  return IMAGE_COLOR_MODE_OPTIONS.find((entry) => entry.value === mode)?.label ?? 'Original';
+}
+
+export function imagePreviewStyleForColorMode(value: unknown): CSSProperties | undefined {
+  return normalizeImageColorMode(value) === 'grayscale' ? { filter: 'grayscale(1)' } : undefined;
+}
 
 export function isSupportedImageFile(file: File): boolean {
   const type = file.type.toLowerCase();

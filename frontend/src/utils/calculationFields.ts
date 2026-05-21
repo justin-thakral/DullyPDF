@@ -40,6 +40,13 @@ export type CalculationTopologicalSortResult = {
   cycleFieldIds: string[];
 };
 
+export type CalculationDependencyGraphSelection = {
+  directDependencyIds: string[];
+  indirectDependencyIds: string[];
+};
+
+export type CalculationPreviewValueOverrides = Record<string, unknown> | Map<string, unknown>;
+
 function envFlagEnabled(raw: unknown): boolean | null {
   if (typeof raw !== 'string' || !raw.trim()) return null;
   const normalized = raw.trim().toLowerCase();
@@ -286,10 +293,106 @@ export function evaluateFormula(
   };
 }
 
-function formulaDependenciesForField(field: PdfField): string[] {
+function calculationOutputOptions(field: PdfField): FormulaEvaluationOptions {
+  const output = field.calculation?.output;
+  return {
+    valueType: output?.valueType ?? field.calculation?.valueType ?? field.valueType,
+    rounding: output?.rounding,
+    blankInputBehavior: output?.blankInputBehavior,
+    divideByZeroBehavior: output?.divideByZeroBehavior,
+  };
+}
+
+function formatPreviewNumber(value: number | null): string {
+  if (value === null || !Number.isFinite(value)) return '';
+  if (Number.isInteger(value)) return String(value);
+  return String(Number(value.toFixed(12)));
+}
+
+export function resolveCalculatedFieldPreviewValues(
+  fields: PdfField[],
+  overrides?: CalculationPreviewValueOverrides,
+): Map<string, string> {
+  const previewValues = new Map<string, string>();
+  const fieldValues = new Map<string, unknown>();
+  for (const field of fields) {
+    fieldValues.set(field.id, field.value);
+  }
+  if (overrides instanceof Map) {
+    for (const [fieldId, value] of overrides.entries()) {
+      fieldValues.set(fieldId, value);
+    }
+  } else if (overrides) {
+    for (const [fieldId, value] of Object.entries(overrides)) {
+      fieldValues.set(fieldId, value);
+    }
+  }
+
+  const sorted = topologicallySortCalculatedFields(fields);
+  const cycleFieldIds = new Set(sorted.cycleFieldIds);
+  for (const field of sorted.orderedFields) {
+    if (cycleFieldIds.has(field.id)) continue;
+    const result = evaluateFormula(
+      field.calculation?.formula,
+      fieldValues,
+      calculationOutputOptions(field),
+    );
+    const rendered = result.ok ? formatPreviewNumber(result.value) : '';
+    previewValues.set(field.id, rendered);
+    fieldValues.set(field.id, rendered);
+  }
+  return previewValues;
+}
+
+export function formulaDependencyIdsForField(field: PdfField): string[] {
   const formulaDependencies = extractFormulaDependencies(field.calculation?.formula);
   if (formulaDependencies.length) return formulaDependencies;
   return Array.isArray(field.calculation?.dependencies) ? field.calculation.dependencies : [];
+}
+
+export function collectCalculationDependencyIds(
+  fields: PdfField[],
+  selectedFieldId: string | null | undefined,
+): CalculationDependencyGraphSelection {
+  if (!selectedFieldId) {
+    return { directDependencyIds: [], indirectDependencyIds: [] };
+  }
+  const fieldsById = new Map(fields.map((field) => [field.id, field]));
+  const selected = fieldsById.get(selectedFieldId);
+  if (!selected || !isCalculatedRole(selected.calculation?.role)) {
+    return { directDependencyIds: [], indirectDependencyIds: [] };
+  }
+  const direct = new Set(formulaDependencyIdsForField(selected).filter((fieldId) => fieldId !== selectedFieldId));
+  const indirect = new Set<string>();
+  const visited = new Set<string>();
+
+  // Walk the calculation graph once from the selected field. Complexity is O(V + E)
+  // across calculation fields and dependencies visible in the current field set.
+  const visit = (fieldId: string) => {
+    if (visited.has(fieldId)) return;
+    visited.add(fieldId);
+    const field = fieldsById.get(fieldId);
+    if (!field || !isCalculatedRole(field.calculation?.role)) return;
+    for (const dependencyId of formulaDependencyIdsForField(field)) {
+      if (dependencyId === selectedFieldId) continue;
+      if (!direct.has(dependencyId)) {
+        indirect.add(dependencyId);
+      }
+      visit(dependencyId);
+    }
+  };
+
+  for (const dependencyId of direct) {
+    visit(dependencyId);
+  }
+  for (const dependencyId of direct) {
+    indirect.delete(dependencyId);
+  }
+
+  return {
+    directDependencyIds: Array.from(direct),
+    indirectDependencyIds: Array.from(indirect),
+  };
 }
 
 export function wouldCreateCycle(fields: PdfField[], targetFieldId: string, dependencyId: string): boolean {
@@ -301,7 +404,7 @@ export function wouldCreateCycle(fields: PdfField[], targetFieldId: string, depe
     visited.add(fieldId);
     const field = fieldsById.get(fieldId);
     if (!field || !isCalculatedRole(field.calculation?.role)) return false;
-    return formulaDependenciesForField(field).some((nextId) => walk(nextId));
+    return formulaDependencyIdsForField(field).some((nextId) => walk(nextId));
   };
   return walk(dependencyId);
 }
@@ -393,7 +496,7 @@ export function topologicallySortCalculatedFields(fields: PdfField[]): Calculati
     const field = fieldsById.get(fieldId);
     if (!field || !calculatedIds.has(fieldId)) return;
     visiting.add(fieldId);
-    for (const dependencyId of formulaDependenciesForField(field)) {
+    for (const dependencyId of formulaDependencyIdsForField(field)) {
       if (calculatedIds.has(dependencyId)) {
         visit(dependencyId, [...path, fieldId]);
       }
@@ -428,4 +531,50 @@ function formatFormulaNode(formula: FormulaNode | undefined, fieldsById: Map<str
 export function formatFormulaForDisplay(formula: FormulaNode | undefined, fields: PdfField[]): string {
   const fieldsById = new Map(fields.map((field) => [field.id, field]));
   return formatFormulaNode(formula, fieldsById) || 'No formula set';
+}
+
+export function validateCalculationExportReadiness(fields: PdfField[]): string[] {
+  const messages: string[] = [];
+  const fieldsById = new Map(fields.map((field) => [field.id, field]));
+  const fieldValues = new Map<string, unknown>(fields.map((field) => [field.id, field.value]));
+  const sorted = topologicallySortCalculatedFields(fields);
+  if (sorted.cycleFieldIds.length) {
+    const cycleNames = sorted.cycleFieldIds
+      .map((fieldId) => fieldsById.get(fieldId)?.name || fieldId)
+      .join(', ');
+    messages.push(`Calculation cycle detected: ${cycleNames}.`);
+  }
+
+  for (const field of fields) {
+    if (field.calculation?.role !== 'number_input') continue;
+    const rawValue = field.value;
+    if (rawValue === null || rawValue === undefined || String(rawValue).trim() === '') continue;
+    const parsed = finiteNumber(rawValue);
+    if (parsed === null) {
+      messages.push(`${field.name}: Number input must be numeric.`);
+      continue;
+    }
+    if (!Number.isInteger(parsed)) {
+      messages.push(`${field.name}: Number input must be an integer.`);
+    }
+  }
+
+  const cycleFieldIds = new Set(sorted.cycleFieldIds);
+  for (const field of fields) {
+    if (!isCalculatedRole(field.calculation?.role)) continue;
+    const validation = validateFormula(field.calculation?.formula, fields, field.id);
+    for (const error of validation.errors) {
+      messages.push(`${field.name}: ${error}`);
+    }
+    if (!validation.valid || cycleFieldIds.has(field.id)) continue;
+    const evaluation = evaluateFormula(field.calculation?.formula, fieldValues, calculationOutputOptions(field));
+    if (!evaluation.ok) {
+      messages.push(`${field.name}: ${evaluation.error || 'Formula cannot be evaluated.'}`);
+      continue;
+    }
+    const rendered = formatPreviewNumber(evaluation.value);
+    fieldValues.set(field.id, rendered);
+  }
+
+  return Array.from(new Set(messages));
 }

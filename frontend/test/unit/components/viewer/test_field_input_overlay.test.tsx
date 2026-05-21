@@ -335,6 +335,60 @@ describe('FieldInputOverlay', () => {
     expect(onUpdateField).toHaveBeenCalledWith('date', { value: '' });
   });
 
+  it('previews calculated output values from current text inputs without making the output editable', async () => {
+    const user = userEvent.setup();
+    const onUpdateField = vi.fn();
+    render(
+      <StatefulOverlay
+        initialFields={[
+          makeField({
+            id: 'premium',
+            name: 'premium',
+            type: 'text',
+            value: '7',
+            valueType: 'integer',
+            calculation: { role: 'number_input', valueType: 'integer' },
+          }),
+          makeField({
+            id: 'total',
+            name: 'total',
+            type: 'text',
+            value: '',
+            valueType: 'integer',
+            calculation: {
+              role: 'calculated_output',
+              valueType: 'integer',
+              formula: {
+                kind: 'binary',
+                op: '+',
+                left: { kind: 'field', fieldId: 'premium' },
+                right: { kind: 'constant', value: 5 },
+              },
+              output: { valueType: 'integer', rounding: 'round' },
+            },
+          }),
+        ]}
+        onSelectField={vi.fn()}
+        onUpdateField={onUpdateField}
+      />,
+    );
+
+    const premiumInput = screen.getByLabelText('premium') as HTMLInputElement;
+    const totalInput = screen.getByLabelText('total') as HTMLInputElement;
+
+    expect(totalInput.value).toBe('12');
+    expect(totalInput.readOnly).toBe(true);
+
+    await user.clear(premiumInput);
+    await user.type(premiumInput, '9');
+
+    expect(totalInput.value).toBe('14');
+
+    await user.tab();
+    expect(onUpdateField).toHaveBeenCalledWith('premium', { value: '9' });
+    expect(onUpdateField).not.toHaveBeenCalledWith('total', expect.anything());
+  });
+
   it('normalizes barcode input and uploads image field previews', async () => {
     const onUpdateField = vi.fn();
     render(

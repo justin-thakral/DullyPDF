@@ -38,7 +38,7 @@ const AuthActionShell = ({
             {/* alt is meaningful for crawlers; aria-hidden prevents the screen
                 reader from reading "DullyPDF logo" + "DullyPDF" + the link
                 aria-label all at once. */}
-            <img src="/DullyPDFLogoImproved.png" alt="DullyPDF logo" aria-hidden="true" />
+            <img src="/DullyPDF_logo_social_full_bleed.png" alt="DullyPDF logo" aria-hidden="true" />
             <span>DullyPDF</span>
           </a>
           <span className="verify-action-support">{supportLabel}</span>

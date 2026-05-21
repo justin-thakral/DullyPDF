@@ -1,7 +1,7 @@
 /**
  * Auth page for email/password sign-in with FirebaseUI for OAuth providers.
  */
-import React, { startTransition, useEffect, useEffectEvent, useRef, useState } from 'react';
+import React, { startTransition, useEffect, useRef, useState } from 'react';
 import type { FirebaseError } from 'firebase/app';
 import {
   getAdditionalUserInfo,
@@ -74,6 +74,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const onAuthenticatedRef = useRef(onAuthenticated);
   const recaptchaSiteKey =
     typeof import.meta.env.VITE_RECAPTCHA_SITE_KEY === 'string'
       ? import.meta.env.VITE_RECAPTCHA_SITE_KEY.trim()
@@ -88,9 +89,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
     return true;
   })();
   const signupRecaptchaBlocked = mode === 'signup' && signupRecaptchaRequired && !recaptchaSiteKey;
-  const handleAuthenticated = useEffectEvent((options?: { isNewUser?: boolean }) => {
-    onAuthenticated?.(options);
-  });
+
+  useEffect(() => {
+    onAuthenticatedRef.current = onAuthenticated;
+  }, [onAuthenticated]);
 
   useEffect(() => {
     const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebaseAuth);
@@ -125,7 +127,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
             }
           }
           startTransition(() => {
-            handleAuthenticated({ isNewUser });
+            onAuthenticatedRef.current?.({ isNewUser });
           });
           return false;
         },
@@ -210,7 +212,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
         return;
       }
       startTransition(() => {
-        handleAuthenticated();
+        onAuthenticatedRef.current?.();
       });
     } catch (err) {
       if (err instanceof ApiError) {
@@ -244,8 +246,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onAuthenticated, onCancel }) => {
       <div className="auth-card">
         <div className="auth-brand">
           <picture>
-            <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
-            <img className="auth-logo-image" src="/DullyPDFLogoImproved.png" alt="DullyPDF" decoding="async" />
+            <source srcSet="/DullyPDF_logo_social_full_bleed.webp" type="image/webp" />
+            <img className="auth-logo-image" src="/DullyPDF_logo_social_full_bleed.png" alt="DullyPDF" decoding="async" />
           </picture>
           <div className="auth-brand-text">
             <h1>DullyPDF</h1>

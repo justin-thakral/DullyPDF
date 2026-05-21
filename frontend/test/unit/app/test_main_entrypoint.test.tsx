@@ -249,6 +249,9 @@ describe('main entrypoint', () => {
     ['/privacy-policy', 'privacy'],
     ['/terms', 'terms'],
     ['/terms-of-service', 'terms'],
+    ['/refund-policy', 'refund'],
+    ['/refund-and-return-policy', 'refund'],
+    ['/return-policy', 'refund'],
   ])('renders LegalPage kind=%s route=%s', async (pathname, kind) => {
     await importEntrypoint(pathname);
     await renderCapturedTree();

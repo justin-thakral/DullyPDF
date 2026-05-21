@@ -26,6 +26,20 @@ describe('fillLinkWebForm utils', () => {
     expect(questions.some((question) => question.requiredForRespondentIdentity)).toBe(true);
   });
 
+  it('uses image upload questions and omits generated barcode helpers', () => {
+    const questions = buildFillLinkQuestionsFromFields([
+      makeField({ id: 'photo', name: 'profile_photo', type: 'image' }),
+      makeField({ id: 'barcode', name: 'member_barcode', type: 'barcode' }),
+      makeField({ id: 'qr', name: 'verification_qr', type: 'qr' }),
+      makeField({ id: 'pdf417', name: 'license_pdf417', type: 'pdf417' }),
+    ]);
+
+    expect(questions.find((question) => question.key === 'profile_photo')?.type).toBe('image');
+    expect(questions.some((question) => question.key === 'member_barcode')).toBe(false);
+    expect(questions.some((question) => question.key === 'verification_qr')).toBe(false);
+    expect(questions.some((question) => question.key === 'license_pdf417')).toBe(false);
+  });
+
   it('groups explicit radio widgets into one single-choice web-form question', () => {
     const questions = buildFillLinkQuestionsFromFields([
       makeField({

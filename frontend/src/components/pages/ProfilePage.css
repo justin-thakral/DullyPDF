@@ -320,6 +320,47 @@
   color: #b45309;
 }
 
+.profile-payment-recovery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(245, 158, 11, 0.36);
+  background: linear-gradient(145deg, rgba(255, 251, 235, 0.96), rgba(255, 247, 237, 0.92));
+}
+
+.profile-payment-recovery__copy {
+  min-width: min(100%, 320px);
+  flex: 1 1 320px;
+}
+
+.profile-payment-recovery__copy h3 {
+  margin: 0;
+  color: #92400e;
+  font-size: 1rem;
+}
+
+.profile-payment-recovery__copy p {
+  margin: 0.35rem 0 0;
+  color: #78350f;
+  line-height: 1.55;
+}
+
+.profile-payment-recovery__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: min(100%, 240px);
+  color: #92400e;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .profile-billing-actions {
   display: flex;
   flex-wrap: wrap;

@@ -17,8 +17,14 @@ import { normaliseFormName, normalizeFieldValuesForMaterialize, prepareFieldsFor
 import { debugLog } from '../utils/debug';
 import { buildSavedFormEditorSnapshot } from '../utils/savedFormHydration';
 import { ApiError } from '../services/apiConfig';
-import type { MaterializePdfExportMode } from '../services/api';
+import type { MaterializePdfExportMode, PdfPageToolFinalPage } from '../services/api';
 import { ApiService } from '../services/api';
+import { validateCalculationExportReadiness } from '../utils/calculationFields';
+import {
+  buildPdfDownloadRequestId,
+  formatPdfDownloadLimitMessage,
+  isPdfDownloadLimitError,
+} from '../utils/pdfDownloadQuota';
 
 export interface UseSaveDownloadDeps {
   pdfDoc: PDFDocumentProxy | null;
@@ -63,6 +69,65 @@ export interface UseSaveDownloadDeps {
     globalFieldFontColor: FieldFontColorChoice,
     globalFieldAlignment: FieldTextAlignmentChoice,
   ) => void;
+}
+
+export type DownloadSelectedPagesOptions = {
+  pages: number[];
+  exportMode?: MaterializePdfExportMode;
+};
+
+function triggerGeneratedPdfDownload(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function normalizeSelectedDownloadPages(pages: number[], pageCount: number): number[] {
+  const seen = new Set<number>();
+  const normalized: number[] = [];
+  for (const rawPage of pages) {
+    const page = Number(rawPage);
+    if (!Number.isInteger(page) || page < 1 || page > pageCount) {
+      throw new Error(`Selected pages must be between 1 and ${pageCount}.`);
+    }
+    if (!seen.has(page)) {
+      seen.add(page);
+      normalized.push(page);
+    }
+  }
+  if (!normalized.length) {
+    throw new Error('Choose at least one page to download.');
+  }
+  return normalized;
+}
+
+function buildSelectedPagesFilename(
+  baseName: string,
+  pages: number[],
+  exportMode: MaterializePdfExportMode,
+): string {
+  const pageLabel = pages.length === 1 ? `page-${pages[0]}` : `${pages.length}-pages`;
+  return `${baseName}-${pageLabel}-${exportMode}.pdf`;
+}
+
+function remapFieldsForSelectedPages(fields: PdfField[], selectedPages: number[]): PdfField[] {
+  const nextPageByOriginalPage = new Map<number, number>();
+  selectedPages.forEach((page, index) => {
+    if (!nextPageByOriginalPage.has(page)) {
+      nextPageByOriginalPage.set(page, index + 1);
+    }
+  });
+
+  // This keeps selected-page export linear in field_count + selected_page_count.
+  return fields.flatMap((field) => {
+    const nextPage = nextPageByOriginalPage.get(field.page || 1);
+    return nextPage ? [{ ...field, page: nextPage }] : [];
+  });
 }
 
 export function useSaveDownload(deps: UseSaveDownloadDeps) {
@@ -239,55 +304,207 @@ export function useSaveDownload(deps: UseSaveDownloadDeps) {
     }
   }, [deps, saveFormToProfile]);
 
-  const handleDownload = useCallback(async (exportMode: MaterializePdfExportMode = 'editable') => {
-    if (!deps.pdfDoc) { deps.setLoadError('No PDF is loaded to download.'); return; }
+  const runDownloadPreflight = useCallback((fieldsToValidate: PdfField[] = deps.fields): boolean => {
+    if (!deps.pdfDoc) {
+      deps.setLoadError('No PDF is loaded to download.');
+      return false;
+    }
     if (!deps.verifiedUser && !deps.allowAnonymousDownload) {
       deps.setLoadError('Sign in to download this form.');
-      return;
+      return false;
+    }
+    const calculationIssues = validateCalculationExportReadiness(fieldsToValidate);
+    if (calculationIssues.length) {
+      const issueSummary = calculationIssues.slice(0, 3).join(' ');
+      const remainingCount = calculationIssues.length - 3;
+      deps.setLoadError(
+        `Fix calculation fields before download: ${issueSummary}${
+          remainingCount > 0 ? ` ${remainingCount} more issue${remainingCount === 1 ? '' : 's'}.` : ''
+        }`,
+      );
+      return false;
     }
     deps.setLoadError(null);
+    return true;
+  }, [deps]);
+
+  const resolveSourcePdfBlob = useCallback(async (): Promise<Blob> => {
+    if (deps.sourceFile) return deps.sourceFile;
+    if (!deps.pdfDoc) {
+      throw new Error('No PDF is loaded to download.');
+    }
+    const data = await deps.pdfDoc.getData();
+    return new Blob([new Uint8Array(data)], { type: 'application/pdf' });
+  }, [deps]);
+
+  const materializeDownloadBlob = useCallback(async (
+    sourceBlob: Blob,
+    sourceFields: PdfField[],
+    exportMode: MaterializePdfExportMode,
+  ): Promise<Blob> => {
+    const fieldsForDownload = prepareFieldsForMaterialize(
+      sourceFields,
+      deps.globalFieldFont,
+      deps.globalFieldFontColor,
+      { preserveAppOnlyFieldMarkers: exportMode === 'editable' },
+    );
+    return ApiService.materializeFormPdf(sourceBlob, fieldsForDownload, {
+      exportMode,
+      usageContext: 'workspace_download',
+      appearance: {
+        globalFieldFont: deps.globalFieldFont,
+        globalFieldFontSize: deps.globalFieldFontSize,
+        globalFieldFontColor: deps.globalFieldFontColor,
+        globalFieldAlignment: deps.globalFieldAlignment,
+      },
+    });
+  }, [deps]);
+
+  const downloadQuotaEnforcedBlob = useCallback(async (
+    sourceBlob: Blob,
+    sourceFields: PdfField[],
+    exportMode: MaterializePdfExportMode,
+    filename: string,
+  ): Promise<Blob> => {
+    const fieldsForDownload = prepareFieldsForMaterialize(
+      sourceFields,
+      deps.globalFieldFont,
+      deps.globalFieldFontColor,
+      { preserveAppOnlyFieldMarkers: exportMode === 'editable' },
+    );
+    return ApiService.downloadFormPdf(sourceBlob, fieldsForDownload, {
+      exportMode,
+      filename,
+      downloadRequestId: buildPdfDownloadRequestId(),
+      appearance: {
+        globalFieldFont: deps.globalFieldFont,
+        globalFieldFontSize: deps.globalFieldFontSize,
+        globalFieldFontColor: deps.globalFieldFontColor,
+        globalFieldAlignment: deps.globalFieldAlignment,
+      },
+    });
+  }, [deps]);
+
+  const refreshProfileAfterDownload = useCallback(() => {
+    void Promise.resolve()
+      .then(() => deps.refreshProfile?.())
+      .catch((error) => {
+        debugLog('Failed to refresh profile after PDF download quota event', error);
+      });
+  }, [deps]);
+
+  const handleDownload = useCallback(async (exportMode: MaterializePdfExportMode = 'editable') => {
+    if (!runDownloadPreflight(deps.fields)) return;
     setDownloadInProgress(true);
     try {
-      let blob: Blob;
-      if (deps.sourceFile) { blob = deps.sourceFile; }
-      else {
-        const data = await deps.pdfDoc.getData();
-        blob = new Blob([new Uint8Array(data)], { type: 'application/pdf' });
-      }
-      const fieldsForDownload = prepareFieldsForMaterialize(
-        deps.fields,
-        deps.globalFieldFont,
-        deps.globalFieldFontColor,
-        { preserveAppOnlyFieldMarkers: exportMode === 'editable' },
-      );
-      const generatedBlob = await ApiService.materializeFormPdf(blob, fieldsForDownload, {
-        exportMode,
-        appearance: {
-          globalFieldFont: deps.globalFieldFont,
-          globalFieldFontSize: deps.globalFieldFontSize,
-          globalFieldFontColor: deps.globalFieldFontColor,
-          globalFieldAlignment: deps.globalFieldAlignment,
-        },
-      });
+      const blob = await resolveSourcePdfBlob();
+      const sourceFilename = deps.sourceFileName || deps.sourceFile?.name || 'form.pdf';
+      const generatedBlob = deps.verifiedUser
+        ? await downloadQuotaEnforcedBlob(blob, deps.fields, exportMode, sourceFilename)
+        : await materializeDownloadBlob(blob, deps.fields, exportMode);
       const baseName = normaliseFormName(deps.activeSavedFormName || deps.sourceFileName || deps.sourceFile?.name);
       const filename = exportMode === 'flat'
         ? `${baseName}-flat.pdf`
         : `${baseName}-editable.pdf`;
-      const url = URL.createObjectURL(generatedBlob);
-      const link = document.createElement('a');
-      link.href = url; link.download = filename;
-      document.body.appendChild(link); link.click(); link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      triggerGeneratedPdfDownload(generatedBlob, filename);
+      if (deps.verifiedUser) {
+        refreshProfileAfterDownload();
+      }
     } catch (error) {
+      if (isPdfDownloadLimitError(error)) {
+        deps.setLoadError(formatPdfDownloadLimitMessage(error));
+        refreshProfileAfterDownload();
+        debugLog('PDF download quota limit reached', error);
+        return;
+      }
       const message = error instanceof Error ? error.message : 'Failed to download form.';
       deps.setLoadError(message); debugLog('Failed to download form', message);
     } finally { setDownloadInProgress(false); }
-  }, [deps]);
+  }, [
+    deps,
+    downloadQuotaEnforcedBlob,
+    materializeDownloadBlob,
+    refreshProfileAfterDownload,
+    resolveSourcePdfBlob,
+    runDownloadPreflight,
+  ]);
+
+  const handleDownloadSelectedPages = useCallback(async ({
+    pages,
+    exportMode = 'editable',
+  }: DownloadSelectedPagesOptions): Promise<boolean> => {
+    if (!deps.pdfDoc) {
+      deps.setLoadError('No PDF is loaded to download.');
+      return false;
+    }
+    if (!deps.verifiedUser) {
+      deps.setLoadError('Sign in to download specific pages.');
+      return false;
+    }
+    const pageCount = deps.pageCount || deps.pdfDoc?.numPages || 0;
+    let selectedPages: number[];
+    try {
+      selectedPages = normalizeSelectedDownloadPages(pages, pageCount);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Choose at least one page to download.';
+      deps.setLoadError(message);
+      return false;
+    }
+    const selectedFields = remapFieldsForSelectedPages(deps.fields, selectedPages);
+    if (!runDownloadPreflight(selectedFields)) return false;
+
+    setDownloadInProgress(true);
+    try {
+      const sourceBlob = await resolveSourcePdfBlob();
+      const finalPages: PdfPageToolFinalPage[] = selectedPages.map((page) => ({
+        source: 'current',
+        page,
+        rotate: 0,
+      }));
+      const filename = deps.sourceFileName || deps.sourceFile?.name || 'document.pdf';
+      const selectedSourceBlob = await ApiService.applyPdfPageTools(sourceBlob, finalPages, [], { filename });
+      const generatedBlob = await downloadQuotaEnforcedBlob(
+        selectedSourceBlob,
+        selectedFields,
+        exportMode,
+        filename,
+      );
+      const baseName = normaliseFormName(deps.activeSavedFormName || deps.sourceFileName || deps.sourceFile?.name);
+      triggerGeneratedPdfDownload(generatedBlob, buildSelectedPagesFilename(baseName, selectedPages, exportMode));
+      refreshProfileAfterDownload();
+      deps.setBannerNotice({
+        tone: 'success',
+        message: `Downloaded ${selectedPages.length} selected page${selectedPages.length === 1 ? '' : 's'}.`,
+        autoDismissMs: 5000,
+      });
+      return true;
+    } catch (error) {
+      if (isPdfDownloadLimitError(error)) {
+        deps.setLoadError(formatPdfDownloadLimitMessage(error));
+        refreshProfileAfterDownload();
+        debugLog('PDF download quota limit reached for selected pages', error);
+        return false;
+      }
+      const message = error instanceof Error ? error.message : 'Failed to download selected pages.';
+      deps.setLoadError(message);
+      debugLog('Failed to download selected pages', message);
+      return false;
+    } finally {
+      setDownloadInProgress(false);
+    }
+  }, [
+    deps,
+    downloadQuotaEnforcedBlob,
+    refreshProfileAfterDownload,
+    resolveSourcePdfBlob,
+    runDownloadPreflight,
+  ]);
 
   return {
     saveInProgress,
     downloadInProgress,
     handleSaveToProfile,
     handleDownload,
+    handleDownloadSelectedPages,
   };
 }

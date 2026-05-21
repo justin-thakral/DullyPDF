@@ -205,6 +205,18 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                     ))}
                   </ul>
                 ) : null}
+                {section.links?.length ? (
+                  <div className="blog-post__resource-links" aria-label={`${section.title} links`}>
+                    {section.links.map((link) => (
+                      <a key={`${section.id}-${link.href}`} href={link.href} className="blog-post__resource-link">
+                        <span className="blog-post__resource-link-label">{link.label}</span>
+                        {link.description ? (
+                          <span className="blog-post__resource-link-description">{link.description}</span>
+                        ) : null}
+                      </a>
+                    ))}
+                  </div>
+                ) : null}
               </section>
             ))}
 

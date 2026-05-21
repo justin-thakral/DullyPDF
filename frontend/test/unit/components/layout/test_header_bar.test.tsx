@@ -339,6 +339,27 @@ describe('HeaderBar', () => {
     expect(openSpy).toHaveBeenCalledWith('/usage-docs/rename-mapping', '_blank', 'noopener,noreferrer');
   });
 
+  it('closes the PDF tools menu when another header menu opens without a mouse down event', () => {
+    render(
+      <HeaderBar
+        {...createProps({
+          onOpenManagePages: vi.fn(),
+          onOpenOptimizePdf: vi.fn(),
+          canManagePages: true,
+          canOptimizePdf: true,
+        })}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /PDF Tools/i }));
+    expect(screen.getByRole('menu', { name: 'PDF tools' })).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: /^Schema/i }));
+
+    expect(screen.queryByRole('menu', { name: 'PDF tools' })).toBeNull();
+    expect(screen.getByRole('menu', { name: 'Choose data source' })).toBeTruthy();
+  });
+
   it('truncates long inline action hints so the header row stays compact', async () => {
     const user = userEvent.setup();
     render(
@@ -487,7 +508,6 @@ describe('HeaderBar', () => {
   });
 
   it('keeps demo-locked actions blocked except download', async () => {
-    const user = userEvent.setup();
     const onDemoLockedAction = vi.fn();
     const onRename = vi.fn();
     const onMapSchema = vi.fn();
@@ -573,6 +593,7 @@ describe('HeaderBar', () => {
   it('opens the download menu and wires format-specific download callbacks', async () => {
     const user = userEvent.setup();
     const onDownload = vi.fn();
+    const onOpenDownloadPages = vi.fn();
     const onDownloadGroup = vi.fn();
     const onSaveToProfile = vi.fn();
     const props = createProps({
@@ -583,6 +604,7 @@ describe('HeaderBar', () => {
       ],
       activeGroupTemplateId: 'tpl-a',
       onDownload,
+      onOpenDownloadPages,
       onDownloadGroup,
       onSaveToProfile,
       canDownloadGroup: true,
@@ -594,12 +616,15 @@ describe('HeaderBar', () => {
     await user.click(screen.getByRole('menuitem', { name: /Download flat PDF/i }));
     await user.click(screen.getByRole('button', { name: 'Download' }));
     await user.click(screen.getByRole('menuitem', { name: /Download editable PDF/i }));
+    await user.click(screen.getByRole('button', { name: 'Download' }));
+    await user.click(screen.getByRole('menuitem', { name: /Download specific pages/i }));
     await user.click(screen.getByRole('button', { name: 'Download Group' }));
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(onDownload).toHaveBeenCalledTimes(2);
     expect(onDownload).toHaveBeenNthCalledWith(1, 'flat');
     expect(onDownload).toHaveBeenNthCalledWith(2, 'editable');
+    await waitFor(() => expect(onOpenDownloadPages).toHaveBeenCalledTimes(1));
     expect(onDownloadGroup).toHaveBeenCalledTimes(1);
     await waitFor(() => expect(onSaveToProfile).toHaveBeenCalledTimes(1));
 

@@ -45,8 +45,8 @@ export function initializeGoogleAds(): void {
     document.head.appendChild(script);
   }
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function gtag() {
-    window.dataLayer?.push(arguments);
+  window.gtag = window.gtag || function gtag(...args: unknown[]) {
+    window.dataLayer?.push(args);
   };
   window.gtag('js', new Date());
   window.gtag('config', googleAdsTagId);
@@ -131,6 +131,9 @@ export function trackGoogleAdsBillingPurchase(options: {
   value?: number | null;
   currency?: string | null;
 }): boolean {
+  if (options.kind === 'free_trial') {
+    return false;
+  }
   const sendTo = options.kind === 'refill_500' ? refillPurchaseSendTo : proSubscriptionSendTo;
   return emitGoogleAdsConversion({
     sendTo,

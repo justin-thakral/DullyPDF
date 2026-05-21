@@ -6,13 +6,16 @@ import {
   defaultCalculationMetadata,
   evaluateFormula,
   extractFormulaDependencies,
-  formatFormulaForDisplay,
-  getFormulaDependencyFields,
   isCalculatedRole,
+  isFormulaDependencyCandidate,
+  resolveCalculatedFieldPreviewValues,
   validateFormula,
+  wouldCreateCycle,
   type FormulaBuilderRow,
   type FormulaOperator,
 } from '../../utils/calculationFields';
+import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
+import { FieldDependencyPicker, type FieldDependencyPickerOption } from './FieldDependencyPicker';
 import './CalculationSetupDialog.css';
 
 export type CalculationSetupIntent =
@@ -78,6 +81,44 @@ function roleSupportsReadOnlyToggle(role: CalculationFieldRole): boolean {
   return role === 'number_input';
 }
 
+function dependencyDisabledReason(candidate: PdfField, targetFieldId: string, fields: PdfField[]): string | null {
+  if (candidate.id === targetFieldId) return 'current field';
+  if (candidate.type !== 'text') return 'not a text field';
+  if (candidate.calculation?.role === 'external_imported_calculation' && candidate.calculation.imported?.supported === false) {
+    return 'rebuild imported calculation first';
+  }
+  if (!isFormulaDependencyCandidate(candidate, targetFieldId)) return 'not numeric';
+  if (wouldCreateCycle(fields, targetFieldId, candidate.id)) return 'would create a cycle';
+  return null;
+}
+
+function coerceDisplayValue(value: unknown): string {
+  if (value === null || value === undefined) return 'blank';
+  const normalized = String(value).trim();
+  return normalized.length ? normalized : 'blank';
+}
+
+function dependencyLabel(field: PdfField, previewValues: Map<string, unknown>): string {
+  return `${field.name} (${coerceDisplayValue(previewValues.get(field.id))})`;
+}
+
+function formatFormulaNodeWithValues(
+  formula: FormulaNode | undefined,
+  fieldsById: Map<string, PdfField>,
+  previewValues: Map<string, unknown>,
+): string {
+  if (!formula) return '';
+  if (formula.kind === 'constant') return String(formula.value);
+  if (formula.kind === 'field') {
+    const dependency = fieldsById.get(formula.fieldId);
+    return dependency ? dependencyLabel(dependency, previewValues) : 'Missing field';
+  }
+  if (formula.kind === 'unary') {
+    return `-${formatFormulaNodeWithValues(formula.value, fieldsById, previewValues)}`;
+  }
+  return `${formatFormulaNodeWithValues(formula.left, fieldsById, previewValues)} ${formula.op} ${formatFormulaNodeWithValues(formula.right, fieldsById, previewValues)}`;
+}
+
 function CalculationSetupDialogContent({
   open,
   field,
@@ -118,29 +159,57 @@ function CalculationSetupDialogContent({
 
   const importedReviewOnly = role === 'external_imported_calculation' && !editingImported;
   const effectiveRole = importedReviewOnly ? 'external_imported_calculation' : role;
+  const numberInputRole = effectiveRole === 'number_input';
+  const effectiveValueType: NumericValueType = numberInputRole ? 'integer' : valueType;
   const calculated = isCalculatedRole(effectiveRole);
+  const dependencyOptions = useMemo(
+    () => fields.map((entry) => ({
+      field: entry,
+      reason: dependencyDisabledReason(entry, field.id, fields),
+    })),
+    [field.id, fields],
+  );
   const dependencyFields = useMemo(
-    () => getFormulaDependencyFields(fields, field?.id ?? null),
-    [field?.id, fields],
+    () => dependencyOptions
+      .filter((option) => option.reason === null)
+      .map((option) => option.field),
+    [dependencyOptions],
   );
   const dependencyIds = new Set(dependencyFields.map((entry) => entry.id));
   const normalizedRows = formulaRows.filter((row) => (
     row.kind === 'constant' ? Number.isFinite(Number(row.value)) : Boolean(row.fieldId && dependencyIds.has(row.fieldId))
   ));
   const formula = buildLinearFormula(normalizedRows);
-  const formulaSummary = formatFormulaForDisplay(formula, fields);
   const validation = calculated
     ? validateFormula(formula, fields, field.id)
     : { valid: true, errors: [], dependencies: [] };
+  const fieldsById = useMemo(() => new Map(fields.map((entry) => [entry.id, entry])), [fields]);
   const previewValues = useMemo(() => {
-    return new Map(fields.map((entry) => [
+    const values = new Map<string, unknown>(fields.map((entry) => [
       entry.id,
       entry.id === field.id ? defaultValue : entry.value,
     ]));
+    const calculatedValues = resolveCalculatedFieldPreviewValues(fields, values);
+    for (const [fieldId, value] of calculatedValues.entries()) {
+      values.set(fieldId, value);
+    }
+    values.set(field.id, defaultValue);
+    return values;
   }, [defaultValue, field.id, fields]);
+  const dependencyPickerOptions = useMemo<FieldDependencyPickerOption[]>(
+    () => dependencyOptions.map((option) => ({
+      field: option.field,
+      label: dependencyLabel(option.field, previewValues),
+      meta: option.reason ? undefined : `Page ${option.field.page}`,
+      disabledReason: option.reason,
+      searchText: `${option.field.name} ${option.field.id} ${option.field.type}`,
+    })),
+    [dependencyOptions, previewValues],
+  );
+  const formulaSummary = formatFormulaNodeWithValues(formula, fieldsById, previewValues) || 'No formula set';
   const preview = calculated
     ? evaluateFormula(formula, previewValues, {
-        valueType,
+        valueType: effectiveValueType,
         rounding,
         blankInputBehavior,
         divideByZeroBehavior,
@@ -177,17 +246,18 @@ function CalculationSetupDialogContent({
     if (importedReviewOnly) return;
     const normalizedName = name.trim() || field.name;
     const normalizedRole = effectiveRole === 'external_imported_calculation' ? 'calculated_output' : effectiveRole;
+    const normalizedValueType: NumericValueType = normalizedRole === 'number_input' ? 'integer' : valueType;
     const normalizedReadOnly = roleSupportsReadOnlyToggle(normalizedRole) ? readOnly : true;
     const nextFormula = isCalculatedRole(normalizedRole) ? formula : undefined;
     if (nextFormula && !validateFormula(nextFormula, fields, field.id).valid) {
       return;
     }
-    const metadata = defaultCalculationMetadata(normalizedRole, valueType);
+    const metadata = defaultCalculationMetadata(normalizedRole, normalizedValueType);
     if (nextFormula) {
       metadata.formula = nextFormula;
       metadata.dependencies = Array.from(new Set(extractFormulaDependencies(nextFormula)));
       metadata.output = {
-        valueType,
+        valueType: normalizedValueType,
         rounding,
         blankInputBehavior,
         divideByZeroBehavior,
@@ -196,7 +266,7 @@ function CalculationSetupDialogContent({
     onSave(field.id, {
       name: normalizedName,
       type: 'text',
-      valueType,
+      valueType: normalizedValueType,
       required,
       readOnly: normalizedReadOnly,
       value: defaultValue,
@@ -222,7 +292,16 @@ function CalculationSetupDialogContent({
           <h2 id="calculation-setup-title">{title}</h2>
           <p>{field.name}</p>
         </div>
-        <DialogCloseButton onClick={onClose} label="Close calculation setup" />
+        <div className="calculation-setup-dialog__header-actions">
+          <button
+            type="button"
+            className="ui-button ui-button--ghost ui-button--compact"
+            onClick={() => openUsageDocsWindow(USAGE_DOCS_ROUTES.calculationFields)}
+          >
+            Usage Docs
+          </button>
+          <DialogCloseButton onClick={onClose} label="Close calculation setup" />
+        </div>
       </header>
 
       <div className="calculation-setup-dialog__body">
@@ -246,6 +325,9 @@ function CalculationSetupDialogContent({
             onChange={(event) => {
               const nextRole = event.target.value as CalculationFieldRole;
               setRole(nextRole);
+              if (nextRole === 'number_input') {
+                setValueType('integer');
+              }
               if (!roleSupportsReadOnlyToggle(nextRole)) {
                 setReadOnly(true);
               }
@@ -264,13 +346,16 @@ function CalculationSetupDialogContent({
           <label className="calculation-setup-dialog__field">
             <span>Numeric type</span>
             <select
-              value={valueType}
-              disabled={importedReviewOnly}
+              value={effectiveValueType}
+              disabled={importedReviewOnly || numberInputRole}
               onChange={(event) => setValueType(coerceValueType(event.target.value))}
             >
               <option value="integer">Integer</option>
               <option value="decimal">Decimal</option>
             </select>
+            {numberInputRole ? (
+              <span className="calculation-setup-dialog__hint">Number inputs are integer-only for this release.</span>
+            ) : null}
           </label>
           <label className="calculation-setup-dialog__field">
             <span>Default value</span>
@@ -314,7 +399,7 @@ function CalculationSetupDialogContent({
               <strong>Preview</strong>
               <span>{preview?.ok ? preview.value ?? 'Blank result' : preview?.error ?? 'Formula is incomplete.'}</span>
             </div>
-            <div className="calculation-setup-dialog__formula-add">
+            <div className="calculation-setup-dialog__formula-add calculation-setup-dialog__formula-add--field">
               <select
                 aria-label="Formula operator"
                 value={pendingOperator}
@@ -325,18 +410,18 @@ function CalculationSetupDialogContent({
                   <option key={operator} value={operator}>{operator}</option>
                 ))}
               </select>
-              <select
-                aria-label="Formula field"
-                value={pendingDependencyId}
-                onChange={(event) => setPendingDependencyId(event.target.value)}
-              >
-                <option value="">Choose numeric field</option>
-                {dependencyFields.map((entry) => (
-                  <option key={entry.id} value={entry.id}>{entry.name}</option>
-                ))}
-              </select>
+              <FieldDependencyPicker
+                label="Formula field"
+                placeholder="Filter by field name"
+                options={dependencyPickerOptions}
+                selectedFieldId={pendingDependencyId}
+                onSelect={(selectedField) => setPendingDependencyId(selectedField?.id ?? '')}
+                emptyMessage="No fields available."
+                noMatchesMessage="No fields match."
+                clearLabel="Clear"
+              />
               <button type="button" className="ui-button ui-button--secondary ui-button--compact" onClick={handleAddDependency}>
-                Add field
+                Add Field to equation
               </button>
             </div>
             <div className="calculation-setup-dialog__formula-add">
@@ -366,7 +451,11 @@ function CalculationSetupDialogContent({
                 const dependency = row.kind === 'field'
                   ? fields.find((entry) => entry.id === row.fieldId)
                   : null;
-                const rowLabel = row.kind === 'constant' ? String(row.value) : dependency?.name || 'Missing field';
+                const rowLabel = row.kind === 'constant'
+                  ? String(row.value)
+                  : dependency
+                    ? dependencyLabel(dependency, previewValues)
+                    : 'Missing field';
                 return (
                   <div className="calculation-setup-dialog__formula-row" key={`${row.kind || 'field'}-${row.fieldId || row.value}-${index}`}>
                     {index === 0 ? (

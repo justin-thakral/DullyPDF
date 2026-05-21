@@ -7,6 +7,7 @@ import {
   FIELD_TYPES,
   NATIVE_CREATE_TOOLS,
   fieldTypeLabel,
+  createToolLabel,
 } from '../../../src/utils/fieldUi';
 
 describe('fieldUi utils', () => {
@@ -39,8 +40,12 @@ describe('fieldUi utils', () => {
     expect(fieldTypeLabel('radio')).toBe('Radio');
     expect(fieldTypeLabel('image')).toBe('Image');
     expect(fieldTypeLabel('pdf417')).toBe('PDF417');
-    expect(fieldTypeLabel('barcode')).toBe('1D Barcode');
+    expect(fieldTypeLabel('barcode')).toBe('1D Code 128');
     expect(fieldTypeLabel('qr')).toBe('QR Code');
+  });
+
+  it('names barcode creation by its Code 128 symbology', () => {
+    expect(createToolLabel('barcode')).toBe('1D Code 128');
   });
 
   it('uses a generic fallback label for unknown field types', () => {

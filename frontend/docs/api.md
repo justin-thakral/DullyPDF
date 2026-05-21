@@ -201,7 +201,9 @@ Define the fill contract now so all later layers are built against it:
 - checkbox group with `enum` rule: one selected option key string
 - checkbox group with `list` rule: array of option keys
 - radio group: one selected option key string
+- image field: allowlisted `gs://` PNG/JPEG object path string
 - signature widgets are excluded from the API Fill schema; use the signing workflow for signature capture instead of the generic fill API
+- generated PDF417, 1D barcode, and QR helpers are excluded from the API Fill schema; the backend stamps them from configured source fields, calculated outputs, manual classes, or saved helper values
 
 Fail closed when the selected option key is invalid.
 

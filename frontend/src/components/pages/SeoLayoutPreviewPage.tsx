@@ -62,9 +62,9 @@ const SeoLayoutPreviewPage = () => {
         <div className="seo-layout-preview__masthead-inner">
           <a href="/" className="seo-layout-preview__brand">
             <picture>
-              <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
+              <source srcSet="/DullyPDF_logo_social_full_bleed.webp" type="image/webp" />
               <img
-                src="/DullyPDFLogoImproved.png"
+                src="/DullyPDF_logo_social_full_bleed.png"
                 alt="DullyPDF"
                 className="seo-layout-preview__brand-logo"
                 decoding="async"

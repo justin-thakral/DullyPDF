@@ -94,6 +94,13 @@ const resolveRoute = (): AppRoute => {
   if (normalizedPath === '/terms' || normalizedPath === '/terms-of-service') {
     return { kind: 'legal', legalKind: 'terms' };
   }
+  if (
+    normalizedPath === '/refund-policy' ||
+    normalizedPath === '/refund-and-return-policy' ||
+    normalizedPath === '/return-policy'
+  ) {
+    return { kind: 'legal', legalKind: 'refund' };
+  }
   if (normalizedPath === ACCOUNT_ACTION_ROUTE_PATH || normalizedPath === LEGACY_ACCOUNT_ACTION_ROUTE_PATH) {
     if (normalizedPath === LEGACY_ACCOUNT_ACTION_ROUTE_PATH || path !== ACCOUNT_ACTION_ROUTE_PATH) {
       replaceBrowserPath(ACCOUNT_ACTION_ROUTE_PATH);

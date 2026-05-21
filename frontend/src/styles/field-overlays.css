@@ -162,6 +162,17 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25), 0 12px 22px rgba(15, 23, 42, 0.2);
 }
 
+.field-box--calc-dependency {
+  border-color: rgba(20, 184, 166, 0.9);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.28), 0 10px 18px rgba(15, 23, 42, 0.16);
+}
+
+.field-box--calc-dependency-indirect {
+  border-color: rgba(14, 165, 233, 0.75);
+  outline: 2px dashed rgba(14, 165, 233, 0.65);
+  outline-offset: 2px;
+}
+
 .field-box--radio-peer {
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25), 0 8px 16px rgba(15, 23, 42, 0.14);
 }
@@ -276,6 +287,17 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 10px 18px rgba(15, 23, 42, 0.18);
 }
 
+.field-input-box--calc-dependency {
+  border-color: rgba(20, 184, 166, 0.85);
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.22);
+}
+
+.field-input-box--calc-dependency-indirect {
+  border-color: rgba(14, 165, 233, 0.72);
+  outline: 1.5px dashed rgba(14, 165, 233, 0.6);
+  outline-offset: 2px;
+}
+
 .field-input {
   width: 100%;
   height: 100%;
@@ -286,6 +308,12 @@
   font-size: var(--field-font-size, 10px);
   padding: 0.05rem 0.25rem;
   outline: none;
+}
+
+.field-input--calculation-readonly {
+  background: rgba(240, 253, 250, 0.86);
+  color: #0f766e;
+  cursor: default;
 }
 
 .field-input:focus {
@@ -508,7 +536,7 @@
 .field-barcode-preview img {
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: contain;
   display: block;
 }
 

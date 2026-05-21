@@ -54,8 +54,8 @@ export const IntentPageShell = ({
         <header className="intent-page__header">
           <div className="intent-page__brand">
             <picture>
-              <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
-              <img src="/DullyPDFLogoImproved.png" alt="DullyPDF" className="intent-page__logo" decoding="async" />
+              <source srcSet="/DullyPDF_logo_social_full_bleed.webp" type="image/webp" />
+              <img src="/DullyPDF_logo_social_full_bleed.png" alt="DullyPDF" className="intent-page__logo" decoding="async" />
             </picture>
             <div>
               <div className="intent-page__brand-name">DullyPDF</div>

@@ -42,8 +42,27 @@ type AbortableRequestOptions = {
 };
 
 export type MaterializePdfExportMode = 'editable' | 'flat';
+export type MaterializePdfUsageContext = 'workspace_download' | 'workspace_group_download';
 
 type ApiJsonObject = Record<string, unknown>;
+
+type PdfDownloadLimitDetail = {
+  code?: string;
+  message?: string;
+  monthlyLimit?: number;
+  currentMonthUsage?: number;
+  downloadsRemaining?: number;
+  monthKey?: string;
+  pdfCount?: number;
+};
+
+export type DownloadGroupPdfArchiveItem = {
+  sourceFile: Blob;
+  filename?: string;
+  fields: PdfField[];
+  exportMode?: MaterializePdfExportMode;
+  appearance?: SavedFormAppearance;
+};
 
 type TemplateFieldPayload = {
   name: string;
@@ -62,6 +81,26 @@ export type TemplateSessionResponse = {
   fieldCount: number;
   pageCount?: number;
   fields?: PdfField[];
+};
+
+export type PdfPageToolFinalPage =
+  | {
+      source: 'current';
+      page: number;
+      rotate?: 0 | 90 | 180 | 270;
+    }
+  | {
+      source: 'insert';
+      fileIndex: number;
+      page: number;
+      rotate?: 0 | 90 | 180 | 270;
+    };
+
+export type OptimizePdfResult = {
+  blob: Blob;
+  originalBytes: number;
+  optimizedBytes: number;
+  savedBytes: number;
 };
 
 type OpenAiJobPayload<T extends ApiJsonObject> = ApiJsonObject & {
@@ -204,6 +243,30 @@ function triggerBrowserDownload(blob: Blob, filename: string): void {
   link.click();
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function detailFromPdfDownloadPayload(payload: unknown): PdfDownloadLimitDetail | null {
+  if (!payload || typeof payload !== 'object') return null;
+  const raw = payload as Record<string, unknown>;
+  const detail = raw.detail;
+  if (detail && typeof detail === 'object') {
+    return detail as PdfDownloadLimitDetail;
+  }
+  return raw as PdfDownloadLimitDetail;
+}
+
+async function throwPdfDownloadLimitError(response: Response): Promise<never> {
+  const payload = await apiJsonFetch<{ detail?: PdfDownloadLimitDetail | string }>(response).catch(() => null);
+  const detail = detailFromPdfDownloadPayload(payload);
+  const monthlyLimit = typeof detail?.monthlyLimit === 'number' && Number.isFinite(detail.monthlyLimit)
+    ? Math.max(0, Math.floor(detail.monthlyLimit))
+    : 25;
+  throw new ApiError(
+    detail?.message || `You have used all ${monthlyLimit} generated PDF downloads for this month.`,
+    429,
+    detail?.code || 'pdf_download_limit_reached',
+    payload ?? undefined,
+  );
 }
 
 function sleepWithSignal(durationMs: number, signal?: AbortSignal): Promise<void> {
@@ -354,6 +417,7 @@ export type ProfileLimits = {
   templateApiMaxPages?: number;
   signingRequestsMonthlyMax?: number;
   structuredFillMonthlyMax?: number;
+  pdfDownloadsMonthlyMax?: number | null;
 };
 
 export type SearchFillSourceKind = 'csv' | 'excel' | 'sql' | 'json' | 'txt';
@@ -434,7 +498,18 @@ export type BillingProfileConfig = {
   cancelAtPeriodEnd?: boolean | null;
   cancelAt?: number | null;
   currentPeriodEnd?: number | null;
+  paymentRecovery?: BillingPaymentRecovery | null;
   trialUsed?: boolean;
+};
+
+export type BillingPaymentRecovery = {
+  status: string;
+  latestInvoiceId?: string | null;
+  latestInvoiceStatus?: string | null;
+  failureCode?: string | null;
+  failedAt?: number | null;
+  nextPaymentAttempt?: number | null;
+  recoveryDeadline?: number | null;
 };
 
 export type DowngradeRetentionTemplateSummary = {
@@ -522,6 +597,13 @@ export type UserProfile = {
   structuredFillCreditsThisMonth?: number | null;
   structuredFillCreditsRemaining?: number | null;
   structuredFillUsageMonth?: string | null;
+  pdfDownloadsThisMonth?: number | null;
+  pdfDownloadsRemaining?: number | null;
+  pdfDownloadUsageMonth?: string | null;
+  pdfDownloadWorkspaceThisMonth?: number | null;
+  pdfDownloadGroupThisMonth?: number | null;
+  pdfDownloadBatchesThisMonth?: number | null;
+  pdfDownloadResetAt?: string | null;
   creditPricing?: CreditPricingConfig;
   billing?: BillingProfileConfig;
   retention?: DowngradeRetentionSummary | null;
@@ -1594,6 +1676,38 @@ export class ApiService {
   }
 
   /**
+   * Create a Stripe Billing Portal session for payment-method management.
+   */
+  static async createBillingPortalSession(): Promise<{
+    success: boolean;
+    url: string;
+    customerId?: string | null;
+  }> {
+    const response = await apiFetch('POST', '/api/billing/portal-session');
+    return apiJsonFetch(response);
+  }
+
+  /**
+   * Sync a Portal-updated customer payment method onto the recovering subscription.
+   */
+  static async syncBillingPaymentMethodRecovery(): Promise<{
+    success: boolean;
+    customerId?: string | null;
+    subscriptionId?: string | null;
+    paymentMethodField?: string | null;
+    subscriptionPaymentMethodUpdated?: boolean;
+    latestInvoiceId?: string | null;
+    invoicePaymentAttempted?: boolean;
+    invoicePaymentSucceeded?: boolean;
+    invoiceStatus?: string | null;
+    invoicePaymentError?: string | null;
+    subscriptionStatus?: string | null;
+  }> {
+    const response = await apiFetch('POST', '/api/billing/payment-method-recovery/sync');
+    return apiJsonFetch(response);
+  }
+
+  /**
    * Store schema metadata (headers/types) for mapping.
    */
   static async createSchema(payload: {
@@ -2069,6 +2183,69 @@ export class ApiService {
   }
 
   /**
+   * Rewrite the active PDF pages using backend PDF tooling.
+   */
+  static async applyPdfPageTools(
+    blob: Blob,
+    finalPages: PdfPageToolFinalPage[],
+    insertFiles: File[] = [],
+    options?: AbortableRequestOptions & { filename?: string },
+  ): Promise<Blob> {
+    const formData = new FormData();
+    formData.append('pdf', blob, options?.filename || 'document.pdf');
+    formData.append('operations', JSON.stringify({ finalPages }));
+    insertFiles.forEach((file) => {
+      formData.append('insertPdfs', file, file.name);
+    });
+
+    const response = await apiFetch('POST', buildApiUrl('api', 'pdf', 'page-tools'), {
+      body: formData,
+      ...buildAbortOptions(options?.signal),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update PDF pages: ${response.statusText}`);
+    }
+
+    return response.blob();
+  }
+
+  /**
+   * Apply backend lossless PDF cleanup and compression.
+   */
+  static async optimizePdf(
+    blob: Blob,
+    options?: AbortableRequestOptions & { filename?: string },
+  ): Promise<OptimizePdfResult> {
+    const formData = new FormData();
+    formData.append('pdf', blob, options?.filename || 'document.pdf');
+
+    const response = await apiFetch('POST', buildApiUrl('api', 'pdf', 'optimize'), {
+      body: formData,
+      ...buildAbortOptions(options?.signal),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to optimize PDF: ${response.statusText}`);
+    }
+
+    const parseHeaderInt = (name: string): number => {
+      const parsed = Number(response.headers.get(name) || '');
+      return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+    };
+    const optimizedBlob = await response.blob();
+    const originalBytes = parseHeaderInt('X-DullyPDF-Original-Bytes') || blob.size;
+    const optimizedBytes = parseHeaderInt('X-DullyPDF-Optimized-Bytes') || optimizedBlob.size;
+    const savedBytes = parseHeaderInt('X-DullyPDF-Saved-Bytes') || Math.max(0, originalBytes - optimizedBytes);
+    return {
+      blob: optimizedBlob,
+      originalBytes,
+      optimizedBytes,
+      savedBytes,
+    };
+  }
+
+  /**
    * Download the source PDF for a session-backed workspace restore.
    */
   static async downloadSessionPdf(
@@ -2142,6 +2319,7 @@ export class ApiService {
     fields: PdfField[],
     options?: AbortableRequestOptions & {
       exportMode?: MaterializePdfExportMode;
+      usageContext?: MaterializePdfUsageContext;
       appearance?: SavedFormAppearance;
     },
   ): Promise<Blob> {
@@ -2154,6 +2332,9 @@ export class ApiService {
     if (options?.exportMode) {
       formData.append('exportMode', options.exportMode);
     }
+    if (options?.usageContext) {
+      formData.append('usageContext', options.usageContext);
+    }
 
     const response = await apiFetch('POST', buildApiUrl('api', 'forms', 'materialize'), {
       body: formData,
@@ -2162,6 +2343,92 @@ export class ApiService {
 
     if (!response.ok) {
       throw new Error(`Failed to generate fillable PDF: ${response.statusText}`);
+    }
+
+    return response.blob();
+  }
+
+  /**
+   * Materialize a user-triggered single-PDF download through quota enforcement.
+   */
+  static async downloadFormPdf(
+    blob: Blob,
+    fields: PdfField[],
+    options: AbortableRequestOptions & {
+      downloadRequestId: string;
+      exportMode?: MaterializePdfExportMode;
+      appearance?: SavedFormAppearance;
+      filename?: string;
+    },
+  ): Promise<Blob> {
+    const formData = new FormData();
+    formData.append('pdf', blob, options.filename || 'form.pdf');
+    formData.append('fields', JSON.stringify({
+      fields,
+      ...(options.appearance ? { appearance: options.appearance } : {}),
+    }));
+    formData.append('downloadRequestId', options.downloadRequestId);
+    if (options.exportMode) {
+      formData.append('exportMode', options.exportMode);
+    }
+
+    const response = await apiFetch('POST', buildApiUrl('api', 'forms', 'download'), {
+      body: formData,
+      allowStatuses: [429],
+      ...buildAbortOptions(options.signal),
+    });
+
+    if (response.status === 429) {
+      await throwPdfDownloadLimitError(response);
+    }
+    if (!response.ok) {
+      throw new Error(`Failed to download generated PDF: ${response.statusText}`);
+    }
+
+    return response.blob();
+  }
+
+  /**
+   * Materialize a group ZIP through one quota-enforced backend request.
+   */
+  static async downloadGroupPdfArchive(
+    payload: AbortableRequestOptions & {
+      downloadRequestId: string;
+      groupId?: string | null;
+      groupName?: string | null;
+      items: DownloadGroupPdfArchiveItem[];
+    },
+  ): Promise<Blob> {
+    const formData = new FormData();
+    const requestItems = payload.items.map((item, index) => {
+      const filename = item.filename || `form-${index + 1}.pdf`;
+      formData.append('pdfs', item.sourceFile, filename);
+      return {
+        fileIndex: index,
+        filename,
+        fields: item.fields,
+        appearance: item.appearance,
+        exportMode: item.exportMode || 'editable',
+      };
+    });
+    formData.append('payload', JSON.stringify({
+      downloadRequestId: payload.downloadRequestId,
+      groupId: payload.groupId ?? null,
+      groupName: payload.groupName ?? null,
+      items: requestItems,
+    }));
+
+    const response = await apiFetch('POST', buildApiUrl('api', 'forms', 'group-download'), {
+      body: formData,
+      allowStatuses: [429],
+      ...buildAbortOptions(payload.signal),
+    });
+
+    if (response.status === 429) {
+      await throwPdfDownloadLimitError(response);
+    }
+    if (!response.ok) {
+      throw new Error(`Failed to download group PDF archive: ${response.statusText}`);
     }
 
     return response.blob();

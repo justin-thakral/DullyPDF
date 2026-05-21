@@ -2,14 +2,26 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { PdfField } from '../../../src/types';
 import {
+  APP_ONLY_MARKER_METADATA_PREFIX,
+  BARCODE_FIELD_NAME_MARKER,
   PHOTO_FIELD_NAME_MARKER,
   buildTemplateFields,
+  convertAppOnlyMarkerFields,
   createField,
   ensureUniqueFieldName,
   formatSize,
   makeId,
   prepareFieldsForMaterialize,
 } from '../../../src/utils/fields';
+
+function markerLinesAndMetadata(value: unknown): { lines: string[]; metadata: Record<string, unknown> } {
+  const lines = String(value ?? '').split(/\r?\n/);
+  expect(lines[1].startsWith(APP_ONLY_MARKER_METADATA_PREFIX)).toBe(true);
+  return {
+    lines,
+    metadata: JSON.parse(lines[1].slice(APP_ONLY_MARKER_METADATA_PREFIX.length)) as Record<string, unknown>,
+  };
+}
 
 const existingField = (name: string): PdfField => ({
   id: `${name}-id`,
@@ -88,7 +100,7 @@ describe('fields utils', () => {
         {
           type: 'barcode' as const,
           expectedName: 'id_barcode',
-          expectedRect: { x: 140, y: 174, width: 220, height: 52 },
+          expectedRect: { x: 140, y: 160, width: 220, height: 79.60113960113961 },
         },
         {
           type: 'qr' as const,
@@ -188,7 +200,7 @@ describe('fields utils', () => {
     });
   });
 
-  it('adds blank marker text anchors when preserving app-only fields for editable exports', () => {
+  it('adds marker text anchors when preserving app-only fields for editable exports', () => {
     const imageField: PdfField = {
       id: 'photo-id',
       name: 'photo',
@@ -197,8 +209,10 @@ describe('fields utils', () => {
       rect: { x: 10, y: 20, width: 80, height: 60 },
       value: null,
       imageDataUrl: 'data:image/png;base64,abc',
+      imagePath: 'gs://bucket/photo.png',
       imageMimeType: 'image/png',
       imageName: 'photo.png',
+      imageColorMode: 'grayscale',
     };
 
     const fields = prepareFieldsForMaterialize(
@@ -214,14 +228,53 @@ describe('fields utils', () => {
       type: 'image',
       appOnlyMarkerName: `photo${PHOTO_FIELD_NAME_MARKER}`,
       imageDataUrl: 'data:image/png;base64,abc',
+      imageColorMode: 'grayscale',
     });
     expect(fields[1]).toMatchObject({
       id: 'photo-id_image_marker',
       name: `photo${PHOTO_FIELD_NAME_MARKER}`,
       type: 'text',
-      value: null,
       readOnly: true,
     });
+    const { lines, metadata } = markerLinesAndMetadata(fields[1].value);
+    expect(lines).toEqual(['CVTPF#@&', lines[1], 'photo.png', '(IMAGE)']);
+    expect(metadata).toMatchObject({
+      type: 'image',
+      imagePath: 'gs://bucket/photo.png',
+      imageMimeType: 'image/png',
+      imageName: 'photo.png',
+      imageColorMode: 'grayscale',
+    });
     expect(fields[1].imageDataUrl).toBeUndefined();
+    expect(fields[1].imageColorMode).toBeUndefined();
+  });
+
+  it('rehydrates short, metadata, and legacy readonly app-only marker suffixes from marker payloads', () => {
+    const baseMarker: PdfField = {
+      id: 'barcode-marker',
+      name: `id_barcode${BARCODE_FIELD_NAME_MARKER}`,
+      type: 'text',
+      page: 1,
+      rect: { x: 0, y: 0, width: 100, height: 40 },
+      value: 'CVTBC#@&\nDULLYPDF_META:{"barcodeSourceField":{"fieldId":"source-id","fieldName":"Member ID"},"type":"barcode","v":1}\n123456789\n(1D)',
+    };
+
+    expect(convertAppOnlyMarkerFields([baseMarker])[0]).toMatchObject({
+      name: 'id_barcode',
+      type: 'barcode',
+      value: '123456789',
+      barcodeSourceField: {
+        fieldId: 'source-id',
+        fieldName: 'Member ID',
+      },
+    });
+    expect(convertAppOnlyMarkerFields([{
+      ...baseMarker,
+      value: 'CVTBC#@&\n987654321\n(DO NOT CHANGE, CONVERTS TO barcode in DullyPDF)',
+    }])[0]).toMatchObject({
+      name: 'id_barcode',
+      type: 'barcode',
+      value: '987654321',
+    });
   });
 });

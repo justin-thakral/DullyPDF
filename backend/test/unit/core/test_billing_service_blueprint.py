@@ -82,6 +82,7 @@ def test_is_subscription_active_handles_expected_statuses() -> None:
     assert billing_service.is_subscription_active("trialing") is True
     assert billing_service.is_subscription_active("past_due") is True
     assert billing_service.is_subscription_active("canceled") is False
+    assert billing_service.is_subscription_active("unpaid") is False
     assert billing_service.is_subscription_active("") is False
 
 
@@ -122,7 +123,7 @@ def test_resolve_webhook_health_returns_healthy_when_enabled_endpoint_has_requir
                         "id": "we_123",
                         "url": "https://billing.example.com/api/billing/webhook",
                         "status": "enabled",
-                        "enabled_events": ["checkout.session.completed", "invoice.paid", "customer.subscription.updated", "customer.subscription.deleted"],
+                        "enabled_events": ["checkout.session.completed", "invoice.paid", "invoice.payment_failed", "invoice.updated", "customer.subscription.updated", "customer.subscription.deleted"],
                     }
                 ]
             }
@@ -162,7 +163,7 @@ def test_resolve_webhook_health_allows_alias_endpoint_match_during_cutover(
                         "id": "we_123",
                         "url": "https://dullypdf-backend-qa5udwbvvq-uc.a.run.app/api/billing/webhook",
                         "status": "enabled",
-                        "enabled_events": ["checkout.session.completed", "invoice.paid", "customer.subscription.updated", "customer.subscription.deleted"],
+                        "enabled_events": ["checkout.session.completed", "invoice.paid", "invoice.payment_failed", "invoice.updated", "customer.subscription.updated", "customer.subscription.deleted"],
                     }
                 ]
             }
@@ -298,7 +299,7 @@ def test_resolve_webhook_health_allows_fallback_endpoint_matching_when_enforceme
                         "id": "we_any",
                         "url": "https://other.example.com/api/billing/webhook",
                         "status": "enabled",
-                        "enabled_events": ["checkout.session.completed", "invoice.paid", "customer.subscription.updated", "customer.subscription.deleted"],
+                        "enabled_events": ["checkout.session.completed", "invoice.paid", "invoice.payment_failed", "invoice.updated", "customer.subscription.updated", "customer.subscription.deleted"],
                     }
                 ]
             }
@@ -367,6 +368,7 @@ def test_extract_price_ids_from_invoice_ignores_malformed_entries() -> None:
                 {"not_price": {"id": "ignored"}},
                 {"plan": {"id": "price_3"}},
                 {"plan": "price_4"},
+                {"pricing": {"price_details": {"price": "price_4b"}}},
                 "bad-entry",
                 {"price": {"id": "price_5"}},
             ]
@@ -378,6 +380,7 @@ def test_extract_price_ids_from_invoice_ignores_malformed_entries() -> None:
         "price_2",
         "price_3",
         "price_4",
+        "price_4b",
         "price_5",
     ]
 
@@ -538,6 +541,7 @@ def test_create_checkout_session_builds_subscription_payload_with_metadata(
     assert captured["cancel_url"] == "https://app.example.com/cancel?billing=cancel"
     assert captured["client_reference_id"] == "user_123"
     assert captured["customer"] == "cus_existing_123"
+    assert captured["branding_settings"] == {"display_name": "DullyPDF"}
     assert captured["metadata"] == {
         "userId": "user_123",
         "checkoutKind": "pro_monthly",
@@ -562,6 +566,7 @@ def test_create_checkout_session_builds_refill_payment_payload_without_subscript
     monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
     monkeypatch.setenv("STRIPE_PRICE_REFILL_500", "price_refill_123")
     monkeypatch.setenv("STRIPE_REFILL_CREDITS", "650")
+    monkeypatch.setenv("STRIPE_CHECKOUT_BRAND_ICON_FILE", "file_brand_icon_123")
     monkeypatch.delenv("STRIPE_CHECKOUT_SUCCESS_URL", raising=False)
     monkeypatch.delenv("STRIPE_CHECKOUT_CANCEL_URL", raising=False)
     captured: dict[str, object] = {}
@@ -637,6 +642,13 @@ def test_create_checkout_session_builds_refill_payment_payload_without_subscript
         "refillCredits": "650",
     }
     assert captured["customer"] == "cus_refill_123"
+    assert captured["branding_settings"] == {
+        "display_name": "DullyPDF",
+        "icon": {
+            "type": "file",
+            "file": "file_brand_icon_123",
+        },
+    }
     assert "subscription_data" not in captured
     assert "customer_email" not in captured
 
@@ -691,6 +703,350 @@ def test_create_checkout_session_preserves_existing_billing_query_params(
 
     assert captured["success_url"] == "https://app.example.com/success?billing=done"
     assert captured["cancel_url"] == "https://app.example.com/cancel?foo=1&billing=cancel"
+
+
+def test_create_billing_portal_session_uses_customer_and_return_url(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_portal")
+    monkeypatch.setenv("STRIPE_BILLING_PORTAL_RETURN_URL", "https://app.example.com/ui/profile")
+    monkeypatch.setenv("STRIPE_BILLING_PORTAL_CONFIGURATION_ID", " bpc_payment_recovery ")
+    captured: dict[str, object] = {}
+
+    class _FakePortalSession:
+        @staticmethod
+        def create(**kwargs):
+            captured.update(kwargs)
+            return {"url": "https://billing.stripe.com/p/session"}
+
+    class _FakeBillingPortal:
+        Session = _FakePortalSession
+
+    class _FakeStripe:
+        api_key = None
+        billing_portal = _FakeBillingPortal
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    session = billing_service.create_billing_portal_session(customer_id=" cus_123 ")
+
+    assert session.url == "https://billing.stripe.com/p/session"
+    assert session.customer_id == "cus_123"
+    assert captured == {
+        "customer": "cus_123",
+        "return_url": "https://app.example.com/ui/profile",
+        "flow_data": {
+            "type": "payment_method_update",
+            "after_completion": {
+                "type": "redirect",
+                "redirect": {
+                    "return_url": "https://app.example.com/ui/profile?billing=payment-method-updated",
+                },
+            },
+        },
+        "configuration": "bpc_payment_recovery",
+    }
+
+
+def test_create_billing_portal_session_derives_return_url_from_checkout_origin(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_portal")
+    monkeypatch.setenv("STRIPE_CHECKOUT_SUCCESS_URL", "https://dullypdf.com/?billing=success")
+    monkeypatch.delenv("STRIPE_BILLING_PORTAL_RETURN_URL", raising=False)
+    monkeypatch.delenv("STRIPE_BILLING_PORTAL_CONFIGURATION_ID", raising=False)
+    captured: dict[str, object] = {}
+
+    class _FakePortalSession:
+        @staticmethod
+        def create(**kwargs):
+            captured.update(kwargs)
+            return {"url": "https://billing.stripe.com/p/session"}
+
+    class _FakeBillingPortal:
+        Session = _FakePortalSession
+
+    class _FakeStripe:
+        api_key = None
+        billing_portal = _FakeBillingPortal
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    session = billing_service.create_billing_portal_session(customer_id="cus_123")
+
+    assert session.url == "https://billing.stripe.com/p/session"
+    assert captured["return_url"] == "https://dullypdf.com/ui/profile"
+    assert captured["flow_data"] == {
+        "type": "payment_method_update",
+        "after_completion": {
+            "type": "redirect",
+            "redirect": {
+                "return_url": "https://dullypdf.com/ui/profile?billing=payment-method-updated",
+            },
+        },
+    }
+
+
+def test_sync_subscription_payment_method_for_retry_copies_customer_default_to_subscription_and_pays_invoice(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_recovery")
+    calls: dict[str, list[dict[str, object]]] = {
+        "subscription_modify": [],
+        "invoice_pay": [],
+    }
+    subscription_retrieve_count = 0
+
+    class _FakeCustomer:
+        @staticmethod
+        def retrieve(customer_id):
+            assert customer_id == "cus_123"
+            return {
+                "id": "cus_123",
+                "invoice_settings": {"default_payment_method": "pm_new"},
+            }
+
+    class _FakeSubscription:
+        @staticmethod
+        def retrieve(subscription_id):
+            nonlocal subscription_retrieve_count
+            subscription_retrieve_count += 1
+            assert subscription_id == "sub_123"
+            return {
+                "id": "sub_123",
+                "customer": "cus_123",
+                "status": "active" if subscription_retrieve_count > 1 else "past_due",
+                "default_payment_method": "pm_old",
+                "latest_invoice": "in_123",
+            }
+
+        @staticmethod
+        def modify(subscription_id, **kwargs):
+            calls["subscription_modify"].append({"subscription_id": subscription_id, **kwargs})
+            return {
+                "id": "sub_123",
+                "customer": "cus_123",
+                "status": "past_due",
+                "default_payment_method": kwargs["default_payment_method"],
+                "latest_invoice": "in_123",
+            }
+
+    class _FakeInvoice:
+        @staticmethod
+        def retrieve(invoice_id):
+            assert invoice_id == "in_123"
+            return {
+                "id": "in_123",
+                "subscription": "sub_123",
+                "status": "open",
+            }
+
+        @staticmethod
+        def pay(invoice_id, **kwargs):
+            calls["invoice_pay"].append({"invoice_id": invoice_id, **kwargs})
+            return {
+                "id": "in_123",
+                "subscription": "sub_123",
+                "status": "paid",
+            }
+
+    class _FakeStripe:
+        api_key = None
+        Customer = _FakeCustomer
+        Subscription = _FakeSubscription
+        Invoice = _FakeInvoice
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    result = billing_service.sync_subscription_payment_method_for_retry(
+        customer_id=" cus_123 ",
+        subscription_id=" sub_123 ",
+        latest_invoice_id="in_123",
+    )
+
+    assert result.subscription_updated is True
+    assert result.payment_method_field == "default_payment_method"
+    assert result.invoice_payment_attempted is True
+    assert result.invoice_payment_succeeded is True
+    assert result.invoice_status == "paid"
+    assert result.invoice_payment_error is None
+    assert result.subscription_status == "active"
+    assert calls["subscription_modify"] == [
+        {
+            "subscription_id": "sub_123",
+            "default_payment_method": "pm_new",
+        }
+    ]
+    assert calls["invoice_pay"] == [{"invoice_id": "in_123", "payment_method": "pm_new"}]
+
+
+def test_sync_subscription_payment_method_for_retry_keeps_subscription_update_when_invoice_pay_declines(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_recovery")
+    calls: dict[str, list[dict[str, object]]] = {
+        "subscription_modify": [],
+        "invoice_pay": [],
+    }
+
+    class _DeclinedPaymentError(Exception):
+        http_status = 402
+        code = "card_declined"
+        user_message = "Your card was declined."
+
+    class _FakeCustomer:
+        @staticmethod
+        def retrieve(customer_id):
+            assert customer_id == "cus_123"
+            return {
+                "id": "cus_123",
+                "invoice_settings": {"default_payment_method": "pm_new_declined"},
+            }
+
+    class _FakeSubscription:
+        @staticmethod
+        def retrieve(subscription_id):
+            assert subscription_id == "sub_123"
+            return {
+                "id": "sub_123",
+                "customer": "cus_123",
+                "status": "past_due",
+                "default_payment_method": "pm_old",
+                "latest_invoice": "in_123",
+            }
+
+        @staticmethod
+        def modify(subscription_id, **kwargs):
+            calls["subscription_modify"].append({"subscription_id": subscription_id, **kwargs})
+            return {
+                "id": "sub_123",
+                "customer": "cus_123",
+                "status": "past_due",
+                "default_payment_method": kwargs["default_payment_method"],
+                "latest_invoice": "in_123",
+            }
+
+    class _FakeInvoice:
+        @staticmethod
+        def retrieve(invoice_id):
+            assert invoice_id == "in_123"
+            return {
+                "id": "in_123",
+                "subscription": "sub_123",
+                "status": "open",
+            }
+
+        @staticmethod
+        def pay(invoice_id, **kwargs):
+            calls["invoice_pay"].append({"invoice_id": invoice_id, **kwargs})
+            raise _DeclinedPaymentError("card declined")
+
+    class _FakeStripe:
+        api_key = None
+        Customer = _FakeCustomer
+        Subscription = _FakeSubscription
+        Invoice = _FakeInvoice
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    result = billing_service.sync_subscription_payment_method_for_retry(
+        customer_id="cus_123",
+        subscription_id="sub_123",
+        latest_invoice_id="in_123",
+    )
+
+    assert result.subscription_updated is True
+    assert result.invoice_payment_attempted is True
+    assert result.invoice_payment_succeeded is False
+    assert result.invoice_status == "open"
+    assert result.invoice_payment_error == "Your card was declined."
+    assert result.subscription_status == "past_due"
+    assert calls["subscription_modify"] == [
+        {"subscription_id": "sub_123", "default_payment_method": "pm_new_declined"}
+    ]
+    assert calls["invoice_pay"] == [{"invoice_id": "in_123", "payment_method": "pm_new_declined"}]
+
+
+def test_sync_subscription_payment_method_for_retry_treats_already_paid_invoice_as_recovered(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_recovery")
+    calls: dict[str, list[dict[str, object]]] = {
+        "subscription_modify": [],
+        "invoice_pay": [],
+    }
+    subscription_retrieve_count = 0
+
+    class _FakeCustomer:
+        @staticmethod
+        def retrieve(customer_id):
+            assert customer_id == "cus_123"
+            return {
+                "id": "cus_123",
+                "invoice_settings": {"default_payment_method": "pm_paid"},
+            }
+
+    class _FakeSubscription:
+        @staticmethod
+        def retrieve(subscription_id):
+            nonlocal subscription_retrieve_count
+            subscription_retrieve_count += 1
+            assert subscription_id == "sub_123"
+            return {
+                "id": "sub_123",
+                "customer": "cus_123",
+                "status": "active" if subscription_retrieve_count > 1 else "past_due",
+                "default_payment_method": "pm_old",
+                "latest_invoice": "in_123",
+            }
+
+        @staticmethod
+        def modify(subscription_id, **kwargs):
+            calls["subscription_modify"].append({"subscription_id": subscription_id, **kwargs})
+            return {
+                "id": "sub_123",
+                "customer": "cus_123",
+                "status": "past_due",
+                "default_payment_method": kwargs["default_payment_method"],
+                "latest_invoice": "in_123",
+            }
+
+    class _FakeInvoice:
+        @staticmethod
+        def retrieve(invoice_id):
+            assert invoice_id == "in_123"
+            return {
+                "id": "in_123",
+                "subscription": "sub_123",
+                "status": "paid",
+            }
+
+        @staticmethod
+        def pay(invoice_id, **kwargs):
+            calls["invoice_pay"].append({"invoice_id": invoice_id, **kwargs})
+            raise AssertionError("Paid invoices should not be paid again.")
+
+    class _FakeStripe:
+        api_key = None
+        Customer = _FakeCustomer
+        Subscription = _FakeSubscription
+        Invoice = _FakeInvoice
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    result = billing_service.sync_subscription_payment_method_for_retry(
+        customer_id="cus_123",
+        subscription_id="sub_123",
+        latest_invoice_id="in_123",
+    )
+
+    assert result.subscription_updated is True
+    assert result.invoice_payment_attempted is False
+    assert result.invoice_payment_succeeded is True
+    assert result.invoice_status == "paid"
+    assert result.subscription_status == "active"
+    assert calls["subscription_modify"] == [{"subscription_id": "sub_123", "default_payment_method": "pm_paid"}]
+    assert calls["invoice_pay"] == []
 
 
 def test_create_checkout_session_reuses_existing_open_pro_checkout(
@@ -819,6 +1175,76 @@ def test_create_checkout_session_reuses_existing_open_free_trial_checkout(
         "checkoutAttemptId": "attempt_trial_existing",
         "checkoutPriceId": "price_monthly_123",
     }
+
+
+def test_create_checkout_session_does_not_reuse_paid_monthly_checkout_for_free_trial(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_checkout")
+    monkeypatch.setenv("STRIPE_PRICE_PRO_MONTHLY", "price_monthly_123")
+
+    create_calls: list[dict[str, object]] = []
+
+    class _FakeCheckoutSession:
+        @staticmethod
+        def list(**kwargs):
+            assert kwargs == {"customer": "cus_123", "status": "open", "limit": 20}
+            return {
+                "data": [
+                    {
+                        "id": "cs_open_paid_monthly",
+                        "url": "https://checkout.stripe.test/open-paid-monthly",
+                        "client_reference_id": "user_123",
+                        "metadata": {
+                            "userId": "user_123",
+                            "checkoutKind": "pro_monthly",
+                            "checkoutPriceId": "price_monthly_123",
+                            "checkoutAttemptId": "attempt_paid_existing",
+                        },
+                    }
+                ]
+            }
+
+        @staticmethod
+        def create(**kwargs):
+            create_calls.append(kwargs)
+
+            class _Session:
+                id = "cs_new_trial"
+                url = "https://checkout.stripe.test/new-trial"
+
+            return _Session()
+
+    class _FakeCustomer:
+        @staticmethod
+        def list(email: str, limit: int):
+            assert email == "user@example.com"
+            assert limit == 25
+            return {"data": [{"id": "cus_123", "metadata": {"userId": "user_123"}}]}
+
+    class _FakeCheckout:
+        Session = _FakeCheckoutSession
+
+    class _FakeStripe:
+        api_key = None
+        checkout = _FakeCheckout
+        Customer = _FakeCustomer
+
+    monkeypatch.setattr(billing_service, "_load_stripe_module", lambda: _FakeStripe)
+
+    session = billing_service.create_checkout_session(
+        user_id="user_123",
+        user_email="user@example.com",
+        checkout_kind="free_trial",
+        checkout_attempt_id="attempt_new_trial",
+    )
+
+    assert session["sessionId"] == "cs_new_trial"
+    assert session["checkoutAttemptId"] == "attempt_new_trial"
+    assert session["checkoutPriceId"] == "price_monthly_123"
+    assert len(create_calls) == 1
+    assert create_calls[0]["metadata"]["checkoutKind"] == "free_trial"
+    assert create_calls[0]["subscription_data"]["trial_period_days"] == billing_service.DEFAULT_TRIAL_PERIOD_DAYS
 
 
 def test_create_checkout_session_does_not_reuse_open_pro_checkout_for_different_plan(

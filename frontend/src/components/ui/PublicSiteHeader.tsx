@@ -27,9 +27,9 @@ export const PublicSiteHeader = ({
     <div className="public-site-header__inner">
       <a href="/" className="public-site-header__brand" aria-label="DullyPDF home">
         <picture>
-          <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
+          <source srcSet="/DullyPDF_logo_social_full_bleed.webp" type="image/webp" />
           <img
-            src="/DullyPDFLogoImproved.png"
+            src="/DullyPDF_logo_social_full_bleed.png"
             alt="DullyPDF"
             className="public-site-header__logo"
             decoding="async"

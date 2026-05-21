@@ -165,6 +165,8 @@ function formatQuestionType(type: FillLinkQuestion['type']): string {
       return 'Multi select';
     case 'textarea':
       return 'Textarea';
+    case 'image':
+      return 'Image upload';
     default:
       return normalized.slice(0, 1).toUpperCase() + normalized.slice(1);
   }

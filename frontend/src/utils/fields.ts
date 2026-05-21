@@ -2,6 +2,7 @@
  * Field helpers for creation, naming, and formatting.
  */
 import type {
+  BarcodeClass,
   FieldDependencyRef,
   FieldFontChoice,
   FieldFontColorChoice,
@@ -13,7 +14,13 @@ import type {
   PdfField,
 } from '../types';
 import { clampRectToPage } from './coords';
-import { BARCODE_ID_LENGTH, barcodeDigitsFromValue, generateBarcodeDataUrl } from './barcode';
+import {
+  BARCODE_9_DIGIT_FIELD_ASPECT_RATIO,
+  BARCODE_ID_LENGTH,
+  barcodeDigitsFromValue,
+  generateBarcodeDataUrl,
+  normalizeBarcodeFieldRect,
+} from './barcode';
 import { buildPdf417ScanText, buildPdf417ScanTextFromClasses, generatePdf417DataUrl } from './pdf417';
 import { QR_VALUE_MAX_LENGTH, generateQrDataUrl, qrTextFromValue } from './qr';
 import { migrateFieldBarcodeClasses, resolveBarcodeClasses, resolveBarcodeValue, resolvePdf417Data, resolveQrValue } from './appOnlyFieldDependencies';
@@ -29,8 +36,12 @@ import {
 export const PHOTO_FIELD_NAME_MARKER = '__CVTPF';
 export const PHOTO_FIELD_VALUE_MARKER = 'CVTPF#@&';
 export const PDF417_FIELD_NAME_MARKER = '__CVTP4';
+export const PDF417_FIELD_VALUE_MARKER = 'CVTP4#@&';
 export const BARCODE_FIELD_NAME_MARKER = '__CVTBC';
+export const BARCODE_FIELD_VALUE_MARKER = 'CVTBC#@&';
 export const QR_FIELD_NAME_MARKER = '__CVTQR';
+export const QR_FIELD_VALUE_MARKER = 'CVTQR#@&';
+export const APP_ONLY_MARKER_METADATA_PREFIX = 'DULLYPDF_META:';
 
 type AppOnlyFieldType = Extract<FieldType, 'image' | 'pdf417' | 'barcode' | 'qr'>;
 
@@ -47,6 +58,23 @@ const APP_FIELD_MARKERS: AppOnlyFieldMarker[] = [
   { marker: QR_FIELD_NAME_MARKER, type: 'qr', fallback: 'qr_code' },
 ];
 
+const PDF417_DEPENDENCY_KEYS: Pdf417DependencyKey[] = [
+  'firstName',
+  'middleName',
+  'lastName',
+  'streetAddress',
+  'city',
+  'state',
+  'zip',
+  'dob',
+  'sex',
+  'eyeColor',
+  'height',
+  'customerId',
+  'issueDate',
+  'expirationDate',
+];
+
 export type DullyPdfAppOnlyFieldMetadata = {
   id?: string;
   name: string;
@@ -56,14 +84,18 @@ export type DullyPdfAppOnlyFieldMetadata = {
   rect?: FieldRect;
   value?: PdfField['value'];
   imageDataUrl?: string | null;
+  imagePath?: string | null;
+  imageSourcePath?: string | null;
   imageMimeType?: string | null;
   imageName?: string | null;
+  imageColorMode?: PdfField['imageColorMode'];
   pdf417Name?: string | null;
   pdf417Dob?: string | null;
   pdf417Data?: Pdf417ScanData | null;
   barcodeSourceField?: FieldDependencyRef | null;
   qrSourceField?: FieldDependencyRef | null;
   pdf417FieldMappings?: Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> | null;
+  barcodeClasses?: BarcodeClass[] | null;
 };
 
 export type PrepareFieldsForMaterializeOptions = {
@@ -117,7 +149,7 @@ const DEFAULT_SIZES: Record<FieldType, FieldRect> = {
   radio: { x: 0, y: 0, width: 14, height: 14 },
   image: { x: 0, y: 0, width: 180, height: 120 },
   pdf417: { x: 0, y: 0, width: 220, height: 78 },
-  barcode: { x: 0, y: 0, width: 220, height: 52 },
+  barcode: { x: 0, y: 0, width: 220, height: Math.round(220 / BARCODE_9_DIGIT_FIELD_ASPECT_RATIO) },
   qr: { x: 0, y: 0, width: 110, height: 110 },
 };
 
@@ -187,6 +219,10 @@ export function normalizeRectForFieldType(rect: FieldRect, type: FieldType, page
       pageSize,
       minSize,
     );
+  }
+
+  if (type === 'barcode') {
+    return normalizeBarcodeFieldRect(rect, pageSize, minSize);
   }
 
   return clampRectToPage(
@@ -324,6 +360,7 @@ export function buildTemplateFields(sourceFields: PdfField[]) {
     radioOptionKey: field.radioOptionKey,
     radioOptionLabel: field.radioOptionLabel,
     radioOptionOrder: field.radioOptionOrder,
+    imageColorMode: field.imageColorMode,
     barcodeSourceField: field.barcodeSourceField,
     qrSourceField: field.qrSourceField,
     pdf417FieldMappings: field.pdf417FieldMappings,
@@ -358,8 +395,11 @@ function buildMarkerTextField(field: PdfField, marker: AppOnlyFieldMarker, idSuf
     readOnly: true,
     required: false,
     imageDataUrl: undefined,
+    imagePath: undefined,
+    imageSourcePath: undefined,
     imageMimeType: undefined,
     imageName: undefined,
+    imageColorMode: undefined,
     pdf417Name: undefined,
     pdf417Dob: undefined,
     pdf417Data: undefined,
@@ -371,10 +411,123 @@ function buildMarkerTextField(field: PdfField, marker: AppOnlyFieldMarker, idSuf
   };
 }
 
+function appOnlyValueMarkerForType(type: AppOnlyFieldType): string {
+  if (type === 'image') return PHOTO_FIELD_VALUE_MARKER;
+  if (type === 'pdf417') return PDF417_FIELD_VALUE_MARKER;
+  if (type === 'barcode') return BARCODE_FIELD_VALUE_MARKER;
+  return QR_FIELD_VALUE_MARKER;
+}
+
+function appOnlyMarkerFooter(type: AppOnlyFieldType): string {
+  if (type === 'image') return '(IMAGE)';
+  if (type === 'pdf417') return '(PDF417)';
+  if (type === 'barcode') return '(1D)';
+  return '(QR)';
+}
+
+function legacyAppOnlyMarkerFooter(type: AppOnlyFieldType): string {
+  return `(DO NOT CHANGE, CONVERTS TO ${type} in DullyPDF)`;
+}
+
+function markerMetadataText(value: unknown): string | null {
+  if (value === null || value === undefined) return null;
+  const text = String(value).trim();
+  return text.length ? text : null;
+}
+
+function markerMetadataDependencyRef(value: unknown): FieldDependencyRef | null {
+  if (!value || typeof value !== 'object') return null;
+  const record = value as Record<string, unknown>;
+  const fieldId = markerMetadataText(record.fieldId) ?? '';
+  const fieldName = markerMetadataText(record.fieldName) ?? '';
+  if (!fieldId && !fieldName) return null;
+  return { fieldId, fieldName };
+}
+
+function markerMetadataPdf417Mappings(value: unknown): Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> | null {
+  if (!value || typeof value !== 'object') return null;
+  const record = value as Record<string, unknown>;
+  const mappings: Partial<Record<Pdf417DependencyKey, FieldDependencyRef>> = {};
+  for (const key of PDF417_DEPENDENCY_KEYS) {
+    const ref = markerMetadataDependencyRef(record[key]);
+    if (ref) mappings[key] = ref;
+  }
+  return Object.keys(mappings).length ? mappings : null;
+}
+
+function markerMetadataBarcodeClasses(value: unknown): BarcodeClass[] | null {
+  if (!Array.isArray(value)) return null;
+  const classes = value
+    .map((entry, index): BarcodeClass | null => {
+      if (!entry || typeof entry !== 'object') return null;
+      const record = entry as Record<string, unknown>;
+      const mode = markerMetadataText(record.mode) === 'field' ? 'field' : 'manual';
+      const fieldRef = mode === 'field' ? markerMetadataDependencyRef(record.fieldRef) : null;
+      const manualValue = mode === 'manual' ? markerMetadataText(record.manualValue) : null;
+      const label = markerMetadataText(record.label) ?? '';
+      const id = markerMetadataText(record.id) ?? `class_${index + 1}`;
+      if (!label && !fieldRef && !manualValue) return null;
+      return {
+        id,
+        label,
+        mode,
+        fieldRef,
+        manualValue,
+      };
+    })
+    .filter((entry): entry is BarcodeClass => entry !== null);
+  return classes.length ? classes : null;
+}
+
+function appOnlyMarkerMetadata(field: PdfField, marker: AppOnlyFieldMarker): Record<string, unknown> | null {
+  const metadata: Record<string, unknown> = { v: 1, type: marker.type };
+  for (const key of ['imagePath', 'imageSourcePath', 'imageMimeType', 'imageName', 'imageColorMode'] as const) {
+    const value = markerMetadataText(field[key]);
+    if (value) metadata[key] = value;
+  }
+  for (const key of ['pdf417Name', 'pdf417Dob'] as const) {
+    const value = markerMetadataText(field[key]);
+    if (value) metadata[key] = value;
+  }
+  if (field.pdf417Data && typeof field.pdf417Data === 'object') {
+    metadata.pdf417Data = field.pdf417Data;
+  }
+  if (field.barcodeSourceField) {
+    metadata.barcodeSourceField = field.barcodeSourceField;
+  }
+  if (field.qrSourceField) {
+    metadata.qrSourceField = field.qrSourceField;
+  }
+  if (field.pdf417FieldMappings) {
+    metadata.pdf417FieldMappings = field.pdf417FieldMappings;
+  }
+  if (Array.isArray(field.barcodeClasses) && field.barcodeClasses.length) {
+    metadata.barcodeClasses = field.barcodeClasses;
+  }
+  return Object.keys(metadata).length > 2 ? metadata : null;
+}
+
+function appOnlyMarkerPayload(field: PdfField, marker: AppOnlyFieldMarker): string {
+  const content = marker.type === 'image'
+    ? String(field.imageName || field.imageMimeType || 'image').trim()
+    : String(field.value ?? '').trim();
+  const metadata = appOnlyMarkerMetadata(field, marker);
+  return [
+    appOnlyValueMarkerForType(marker.type),
+    ...(metadata ? [`${APP_ONLY_MARKER_METADATA_PREFIX}${JSON.stringify(metadata)}`] : []),
+    ...(content ? [content] : []),
+    appOnlyMarkerFooter(marker.type),
+  ].join('\n');
+}
+
 function buildAppOnlyMarkerTextField(field: PdfField): PdfField | null {
   const marker = markerInfoForAppOnlyField(field.type);
   if (!marker) return null;
-  return buildMarkerTextField(field, marker, `${field.type}_marker`);
+  const markerField = buildMarkerTextField(field, marker, `${field.type}_marker`);
+  return {
+    ...markerField,
+    value: appOnlyMarkerPayload(field, marker),
+  };
 }
 
 function materializeAppOnlyField(field: PdfField, fields: PdfField[]): PdfField {
@@ -473,10 +626,76 @@ function appFieldMarkerInfo(field: PdfField): AppOnlyFieldMarker | null {
   for (const entry of APP_FIELD_MARKERS) {
     if (name.includes(entry.marker)) return entry;
   }
-  if (typeof field.value === 'string' && field.value.trim() === PHOTO_FIELD_VALUE_MARKER) {
+  if (typeof field.value === 'string' && field.value.trim().split(/\r?\n/, 1)[0] === PHOTO_FIELD_VALUE_MARKER) {
     return APP_FIELD_MARKERS[0];
   }
   return null;
+}
+
+function markerPayloadText(value: PdfField['value'], type: AppOnlyFieldType): string {
+  if (typeof value !== 'string') return '';
+  const marker = appOnlyValueMarkerForType(type);
+  const lines = value.split(/\r?\n/);
+  if (lines[0]?.trim() !== marker) {
+    return value;
+  }
+  const footer = appOnlyMarkerFooter(type);
+  const legacyFooter = legacyAppOnlyMarkerFooter(type);
+  return lines
+    .slice(1)
+    .filter((line) => {
+      const trimmed = line.trim();
+      return (
+        trimmed !== footer &&
+        trimmed !== legacyFooter &&
+        !trimmed.startsWith(APP_ONLY_MARKER_METADATA_PREFIX)
+      );
+    })
+    .join('\n')
+    .trim();
+}
+
+function markerMetadataFromPayload(value: PdfField['value']): Partial<DullyPdfAppOnlyFieldMetadata> | null {
+  if (typeof value !== 'string') return null;
+  const metadataLine = value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line.startsWith(APP_ONLY_MARKER_METADATA_PREFIX));
+  if (!metadataLine) return null;
+  try {
+    const record = JSON.parse(metadataLine.slice(APP_ONLY_MARKER_METADATA_PREFIX.length));
+    if (!record || typeof record !== 'object') return null;
+    const raw = record as Record<string, unknown>;
+    const metadata: Partial<DullyPdfAppOnlyFieldMetadata> = {};
+    for (const key of ['imagePath', 'imageSourcePath', 'imageMimeType', 'imageName'] as const) {
+      if (typeof raw[key] === 'string' || raw[key] === null) metadata[key] = raw[key];
+    }
+    if (raw.imageColorMode === 'grayscale' || raw.imageColorMode === 'original' || raw.imageColorMode === null) {
+      metadata.imageColorMode = raw.imageColorMode;
+    }
+    for (const key of ['pdf417Name', 'pdf417Dob'] as const) {
+      if (typeof raw[key] === 'string' || raw[key] === null) metadata[key] = raw[key];
+    }
+    if (raw.pdf417Data && typeof raw.pdf417Data === 'object') {
+      const data: Pdf417ScanData = {};
+      const rawData = raw.pdf417Data as Record<string, unknown>;
+      for (const key of PDF417_DEPENDENCY_KEYS) {
+        if (rawData[key] !== undefined) data[key] = rawData[key] === null ? null : String(rawData[key]);
+      }
+      metadata.pdf417Data = Object.keys(data).length ? data : null;
+    }
+    if (raw.barcodeSourceField !== undefined) metadata.barcodeSourceField = markerMetadataDependencyRef(raw.barcodeSourceField);
+    if (raw.qrSourceField !== undefined) metadata.qrSourceField = markerMetadataDependencyRef(raw.qrSourceField);
+    if (raw.pdf417FieldMappings !== undefined) {
+      metadata.pdf417FieldMappings = markerMetadataPdf417Mappings(raw.pdf417FieldMappings);
+    }
+    if (raw.barcodeClasses !== undefined) {
+      metadata.barcodeClasses = markerMetadataBarcodeClasses(raw.barcodeClasses);
+    }
+    return Object.keys(metadata).length ? metadata : null;
+  } catch {
+    return null;
+  }
 }
 
 function cleanFieldName(name: string, marker: string, fallback: string): string {
@@ -536,6 +755,7 @@ export function convertAppOnlyMarkerFields(
     if (!marker) return field;
     const cleanedName = cleanFieldName(field.name, marker.marker, marker.fallback);
     const markerMetadata = pickMarkerMetadata(field, marker, cleanedName, metadata, usedMetadataIndexes);
+    const payloadMetadata = markerMetadataFromPayload(field.value);
     const rect = markerMetadata?.rect ?? field.rect;
     const base: PdfField = {
       ...field,
@@ -543,36 +763,40 @@ export function convertAppOnlyMarkerFields(
       name: markerMetadata?.name || cleanedName,
       type: marker.type,
       rect,
-      value: markerMetadata?.value ?? null,
+      value: markerMetadata?.value ?? payloadMetadata?.value ?? null,
       appOnlyMarkerName: markerMetadata?.markerName ?? field.name,
     };
     if (marker.type === 'image') {
       return {
         ...base,
         imageDataUrl: markerMetadata?.imageDataUrl ?? null,
-        imageMimeType: markerMetadata?.imageMimeType ?? null,
-        imageName: markerMetadata?.imageName ?? null,
+        imagePath: markerMetadata?.imagePath ?? payloadMetadata?.imagePath ?? null,
+        imageSourcePath: markerMetadata?.imageSourcePath ?? payloadMetadata?.imageSourcePath ?? null,
+        imageMimeType: markerMetadata?.imageMimeType ?? payloadMetadata?.imageMimeType ?? null,
+        imageName: markerMetadata?.imageName ?? payloadMetadata?.imageName ?? null,
+        imageColorMode: markerMetadata?.imageColorMode ?? payloadMetadata?.imageColorMode ?? 'original',
       };
     }
     if (marker.type === 'pdf417') {
-      const valueText = typeof field.value === 'string' ? field.value : '';
+      const valueText = markerPayloadText(field.value, marker.type);
       const parsed = parsePdf417ScanText(valueText);
       return {
         ...base,
         imageDataUrl: markerMetadata?.imageDataUrl ?? null,
         imageMimeType: markerMetadata?.imageMimeType ?? null,
         imageName: markerMetadata?.imageName ?? null,
-        pdf417Name: markerMetadata?.pdf417Name ?? parsed.name,
-        pdf417Dob: markerMetadata?.pdf417Dob ?? parsed.dob,
-        pdf417Data: markerMetadata?.pdf417Data ?? parsed.data,
-        pdf417FieldMappings: markerMetadata?.pdf417FieldMappings ?? null,
+        pdf417Name: markerMetadata?.pdf417Name ?? payloadMetadata?.pdf417Name ?? parsed.name,
+        pdf417Dob: markerMetadata?.pdf417Dob ?? payloadMetadata?.pdf417Dob ?? parsed.dob,
+        pdf417Data: markerMetadata?.pdf417Data ?? payloadMetadata?.pdf417Data ?? parsed.data,
+        pdf417FieldMappings: markerMetadata?.pdf417FieldMappings ?? payloadMetadata?.pdf417FieldMappings ?? null,
+        barcodeClasses: markerMetadata?.barcodeClasses ?? payloadMetadata?.barcodeClasses ?? null,
       };
     }
     if (marker.type === 'barcode') {
       const digits = markerMetadata?.value !== undefined
         ? barcodeDigitsFromValue(markerMetadata.value)
         : typeof field.value === 'string'
-          ? barcodeDigitsFromValue(field.value)
+          ? barcodeDigitsFromValue(markerPayloadText(field.value, marker.type))
           : '';
       return {
         ...base,
@@ -580,14 +804,15 @@ export function convertAppOnlyMarkerFields(
         imageDataUrl: markerMetadata?.imageDataUrl ?? null,
         imageMimeType: markerMetadata?.imageMimeType ?? null,
         imageName: markerMetadata?.imageName ?? null,
-        barcodeSourceField: markerMetadata?.barcodeSourceField ?? null,
+        barcodeSourceField: markerMetadata?.barcodeSourceField ?? payloadMetadata?.barcodeSourceField ?? null,
+        barcodeClasses: markerMetadata?.barcodeClasses ?? payloadMetadata?.barcodeClasses ?? null,
       };
     }
     if (marker.type === 'qr') {
       const text = markerMetadata?.value !== undefined
         ? qrTextFromValue(markerMetadata.value)
         : typeof field.value === 'string'
-          ? qrTextFromValue(field.value)
+          ? qrTextFromValue(markerPayloadText(field.value, marker.type))
           : '';
       return {
         ...base,
@@ -595,7 +820,8 @@ export function convertAppOnlyMarkerFields(
         imageDataUrl: markerMetadata?.imageDataUrl ?? null,
         imageMimeType: markerMetadata?.imageMimeType ?? null,
         imageName: markerMetadata?.imageName ?? null,
-        qrSourceField: markerMetadata?.qrSourceField ?? null,
+        qrSourceField: markerMetadata?.qrSourceField ?? payloadMetadata?.qrSourceField ?? null,
+        barcodeClasses: markerMetadata?.barcodeClasses ?? payloadMetadata?.barcodeClasses ?? null,
       };
     }
     return field;

@@ -210,6 +210,18 @@ def require_prod_env() -> None:
         missing.append("STRIPE_CHECKOUT_CANCEL_URL")
     elif not checkout_cancel_url.lower().startswith("https://"):
         missing.append("STRIPE_CHECKOUT_CANCEL_URL (must use https)")
+    billing_portal_return_url = _env_value("STRIPE_BILLING_PORTAL_RETURN_URL")
+    if billing_portal_return_url and not billing_portal_return_url.lower().startswith("https://"):
+        missing.append("STRIPE_BILLING_PORTAL_RETURN_URL (must use https)")
+    payment_recovery_window_raw = _env_value("STRIPE_PAYMENT_RECOVERY_WINDOW_DAYS").strip()
+    if payment_recovery_window_raw:
+        try:
+            payment_recovery_window_days = int(payment_recovery_window_raw)
+        except ValueError:
+            missing.append("STRIPE_PAYMENT_RECOVERY_WINDOW_DAYS (must be a positive integer in prod)")
+        else:
+            if payment_recovery_window_days <= 0:
+                missing.append("STRIPE_PAYMENT_RECOVERY_WINDOW_DAYS (must be a positive integer in prod)")
     stripe_processed_cap_raw = _env_value("STRIPE_MAX_PROCESSED_EVENTS").strip()
     if not stripe_processed_cap_raw:
         missing.append("STRIPE_MAX_PROCESSED_EVENTS (must be a positive integer in prod)")

@@ -5,6 +5,13 @@ from __future__ import annotations
 from backend.services import fill_links_service as fls
 
 
+ONE_BY_ONE_PNG_DATA_URL = (
+    "data:image/png;base64,"
+    "iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAACXBIWXMAAA7EAAAOxAGVKw4b"
+    "AAAAC0lEQVR4nGNgQAYAAA4AAamRc7EAAAAASUVORK5CYII="
+)
+
+
 def test_dev_fill_link_secret_fallback_is_ephemeral_and_not_the_old_shared_literal(mocker, monkeypatch) -> None:
     monkeypatch.delenv("FILL_LINK_TOKEN_SECRET", raising=False)
     monkeypatch.delenv("ENV", raising=False)
@@ -116,6 +123,156 @@ def test_build_fill_link_web_form_schema_excludes_signature_questions_for_post_s
     assert "signature" in [question["key"] for question in stored_config["questions"]]
     assert "signature" not in [question["key"] for question in published_questions]
     assert "full_name" in [question["key"] for question in published_questions]
+
+
+def test_build_fill_link_questions_omits_calculated_outputs_and_keeps_number_inputs() -> None:
+    questions = fls.build_fill_link_questions(
+        [
+            {
+                "id": "base",
+                "name": "base_amount",
+                "type": "text",
+                "page": 1,
+                "rect": {"x": 10, "y": 10, "width": 80, "height": 20},
+                "calculation": {"role": "number_input", "valueType": "integer"},
+            },
+            {
+                "id": "subtotal",
+                "name": "subtotal",
+                "type": "text",
+                "page": 1,
+                "rect": {"x": 10, "y": 40, "width": 80, "height": 20},
+                "calculation": {
+                    "role": "calculated_intermediate",
+                    "valueType": "integer",
+                    "formula": {"kind": "field", "fieldId": "base"},
+                },
+            },
+            {
+                "id": "total",
+                "name": "total",
+                "type": "text",
+                "page": 1,
+                "rect": {"x": 10, "y": 70, "width": 80, "height": 20},
+                "calculation": {
+                    "role": "calculated_output",
+                    "valueType": "integer",
+                    "formula": {"kind": "field", "fieldId": "subtotal"},
+                },
+            },
+        ],
+    )
+
+    keys = [question["key"] for question in questions]
+    assert "base_amount" in keys
+    assert "subtotal" not in keys
+    assert "total" not in keys
+
+
+def test_build_fill_link_web_form_schema_drops_stale_calculated_output_questions() -> None:
+    default_questions = [
+        {
+            "id": "pdf_field:base_amount",
+            "key": "base_amount",
+            "label": "Base Amount",
+            "type": "text",
+            "sourceType": "pdf_field",
+            "sourceField": "base_amount",
+            "visible": True,
+            "required": False,
+            "order": 0,
+        }
+    ]
+    web_form_config = {
+        "questions": [
+            {
+                "id": "pdf_field:base_amount",
+                "key": "base_amount",
+                "label": "Base Amount",
+                "type": "text",
+                "sourceType": "pdf_field",
+                "sourceField": "base_amount",
+                "visible": True,
+                "required": False,
+                "order": 0,
+            },
+            {
+                "id": "pdf_field:total",
+                "key": "total",
+                "label": "Total",
+                "type": "text",
+                "sourceType": "pdf_field",
+                "sourceField": "total",
+                "visible": True,
+                "required": False,
+                "order": 1,
+            },
+        ]
+    }
+
+    stored_config, published_questions = fls.build_fill_link_web_form_schema(
+        default_questions,
+        web_form_config=web_form_config,
+    )
+
+    stored_keys = [question["key"] for question in stored_config["questions"]]
+    published_keys = [question["key"] for question in published_questions]
+    assert "base_amount" in stored_keys
+    assert "total" not in stored_keys
+    assert "base_amount" in published_keys
+    assert "total" not in published_keys
+
+
+def test_build_fill_link_questions_uses_image_uploads_and_omits_generated_helpers() -> None:
+    questions = fls.build_fill_link_questions(
+        [
+            {
+                "id": "photo",
+                "name": "profile_photo",
+                "type": "image",
+                "page": 1,
+                "rect": {"x": 10, "y": 10, "width": 80, "height": 60},
+            },
+            {
+                "id": "barcode",
+                "name": "member_barcode",
+                "type": "barcode",
+                "page": 1,
+                "rect": {"x": 10, "y": 80, "width": 120, "height": 40},
+            },
+            {
+                "id": "qr",
+                "name": "verification_qr",
+                "type": "qr",
+                "page": 1,
+                "rect": {"x": 10, "y": 130, "width": 80, "height": 80},
+            },
+            {
+                "id": "pdf417",
+                "name": "license_pdf417",
+                "type": "pdf417",
+                "page": 1,
+                "rect": {"x": 10, "y": 220, "width": 140, "height": 70},
+            },
+        ],
+    )
+
+    by_key = {question["key"]: question for question in questions}
+    assert by_key["profile_photo"]["type"] == "image"
+    assert "member_barcode" not in by_key
+    assert "verification_qr" not in by_key
+    assert "license_pdf417" not in by_key
+
+
+def test_coerce_fill_link_answers_accepts_image_upload_payload() -> None:
+    answers = fls.coerce_fill_link_answers(
+        {"profile_photo": {"imageDataUrl": ONE_BY_ONE_PNG_DATA_URL, "imageName": "profile.png"}},
+        [{"key": "profile_photo", "label": "Profile Photo", "type": "image"}],
+    )
+
+    assert answers["profile_photo"]["imageDataUrl"] == ONE_BY_ONE_PNG_DATA_URL
+    assert answers["profile_photo"]["imageMimeType"] == "image/png"
+    assert answers["profile_photo"]["imageName"] == "profile.png"
 
 
 def test_build_fill_link_questions_keeps_checkbox_groups_as_multi_select_until_converted() -> None:

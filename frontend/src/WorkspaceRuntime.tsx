@@ -27,6 +27,16 @@ import { HeaderBar } from './components/layout/HeaderBar';
 import LegacyHeader from './components/layout/LegacyHeader';
 import { CalculationSetupDialog, type CalculationSetupIntent } from './components/features/CalculationSetupDialog';
 import { BarcodeFieldModal } from './components/features/BarcodeFieldModal';
+import { ImageFieldModal } from './components/features/ImageFieldModal';
+import {
+  DownloadPagesDialog,
+  type DownloadPagesPayload,
+} from './components/features/DownloadPagesDialog';
+import {
+  ManagePagesDialog,
+  type ManagePagesApplyPayload,
+} from './components/features/ManagePagesDialog';
+import { OptimizePdfDialog } from './components/features/OptimizePdfDialog';
 import { FieldInspectorPanel } from './components/panels/FieldInspectorPanel';
 import { FieldListPanel, type FieldListDisplayPreset } from './components/panels/FieldListPanel';
 import { PdfViewer } from './components/viewer/PdfViewer';
@@ -95,6 +105,7 @@ import {
 } from './workspaceLazyComponents';
 import { clampRectToPage } from './utils/coords';
 import {
+  buildTemplateFields,
   createFieldWithRect,
   getMinFieldSize,
   normalizeRectForFieldType,
@@ -161,6 +172,7 @@ import {
   calculationFieldDefaultsForTool,
   isCalculationCreateTool,
 } from './utils/calculationFields';
+import { loadPageSizes, loadPdfFromFile } from './utils/pdf';
 
 /**
  * Launch actions that can be requested by the lightweight homepage shell.
@@ -195,6 +207,67 @@ type CreateToolDisplayState = {
 };
 
 const WORKSPACE_ERROR_AUTO_DISMISS_MS = 5000;
+
+function rotateRectForPageTool(
+  rect: PdfField['rect'],
+  pageSize: PageSize | undefined,
+  rotation: 0 | 90 | 180 | 270,
+): PdfField['rect'] {
+  if (!pageSize || rotation === 0) return rect;
+  const { x, y, width, height } = rect;
+  if (rotation === 90) {
+    return {
+      x: pageSize.height - (y + height),
+      y: x,
+      width: height,
+      height: width,
+    };
+  }
+  if (rotation === 180) {
+    return {
+      x: pageSize.width - (x + width),
+      y: pageSize.height - (y + height),
+      width,
+      height,
+    };
+  }
+  return {
+    x: y,
+    y: pageSize.width - (x + width),
+    width: height,
+    height: width,
+  };
+}
+
+// Page tools rewrite page order first, then remap fields by original page.
+// The pass is O(field_count + page_count) and intentionally drops fields from
+// deleted pages because inserted pages have no field metadata yet.
+function applyManagePagesToFields(
+  fields: PdfField[],
+  payload: ManagePagesApplyPayload,
+  previousPageSizes: Record<number, PageSize>,
+  nextPageSizes: Record<number, PageSize>,
+): PdfField[] {
+  const transformByPage = new Map(payload.currentTransforms.map((entry) => [entry.originalPage, entry]));
+  return fields.flatMap((field) => {
+    const transform = transformByPage.get(field.page);
+    if (!transform) return [];
+    const rotatedRect = rotateRectForPageTool(
+      field.rect,
+      previousPageSizes[field.page],
+      transform.rotate,
+    );
+    const pageSize = nextPageSizes[transform.nextPage];
+    const rect = pageSize
+      ? clampRectToPage(rotatedRect, pageSize, getMinFieldSize(field.type))
+      : rotatedRect;
+    return [{
+      ...field,
+      page: transform.nextPage,
+      rect,
+    }];
+  });
+}
 
 type SavedFormsBridge = {
   clearSavedFormsRetry: () => void;
@@ -319,6 +392,11 @@ function WorkspaceRuntime({
   const [showSearchFill, setShowSearchFill] = useState(false);
   const [showFillLinkManager, setShowFillLinkManager] = useState(false);
   const [showTemplateApiManager, setShowTemplateApiManager] = useState(false);
+  const [showManagePages, setShowManagePages] = useState(false);
+  const [managePagesApplying, setManagePagesApplying] = useState(false);
+  const [showOptimizePdf, setShowOptimizePdf] = useState(false);
+  const [optimizePdfApplying, setOptimizePdfApplying] = useState(false);
+  const [showDownloadPages, setShowDownloadPages] = useState(false);
   const [transformMode, setTransformMode] = useState(false);
   const [activeCreateTool, setActiveCreateTool] = useState<CreateTool | null>(null);
   const [calculationSetupState, setCalculationSetupState] = useState<{
@@ -326,6 +404,7 @@ function WorkspaceRuntime({
     intent: CalculationSetupIntent;
   } | null>(null);
   const [barcodeSetupFieldId, setBarcodeSetupFieldId] = useState<string | null>(null);
+  const [imageSetupFieldId, setImageSetupFieldId] = useState<string | null>(null);
   const [globalFieldFont, setGlobalFieldFont] = useState<FieldFontChoice>(DEFAULT_FIELD_FONT_CHOICE);
   const [globalFieldFontSize, setGlobalFieldFontSize] = useState<FieldFontSizeChoice>(
     DEFAULT_FIELD_FONT_SIZE_CHOICE,
@@ -503,6 +582,192 @@ function WorkspaceRuntime({
     globalFieldFontColor,
     globalFieldAlignment,
     resolveWorkspaceSourcePdfBytes,
+  ]);
+
+  const handleApplyManagePages = useCallback(async (payload: ManagePagesApplyPayload) => {
+    if (!pdfDoc) {
+      dialog.setBannerNotice({ tone: 'error', message: 'Load a PDF before managing pages.' });
+      return;
+    }
+    if (!auth.verifiedUser) {
+      dialog.setBannerNotice({ tone: 'error', message: 'Sign in to use PDF page tools.' });
+      return;
+    }
+
+    setManagePagesApplying(true);
+    setLoadError(null);
+    try {
+      const sourcePdfBytes = await resolveWorkspaceSourcePdfBytes();
+      const sourceBlob = new Blob([Uint8Array.from(sourcePdfBytes)], { type: 'application/pdf' });
+      const filename = sourceFileName || sourceFile?.name || 'document.pdf';
+      const updatedBlob = await ApiService.applyPdfPageTools(
+        sourceBlob,
+        payload.finalPages,
+        payload.insertFiles,
+        { filename },
+      );
+      const updatedFile = new File([updatedBlob], filename, { type: 'application/pdf' });
+      const nextDoc = await loadPdfFromFile(updatedFile);
+      const nextPageSizes = await loadPageSizes(nextDoc);
+      const nextFields = applyManagePagesToFields(
+        fieldHistory.fieldsRef.current,
+        payload,
+        pageSizes,
+        nextPageSizes,
+      );
+      const nextCurrentPage =
+        payload.currentTransforms.find((entry) => entry.originalPage === currentPage)?.nextPage ||
+        Math.min(currentPage, nextDoc.numPages);
+
+      setSourceFile(updatedFile);
+      setSourceFileName(filename);
+      setSourceFileIsDemo(false);
+      setPdfDoc(nextDoc);
+      setPageSizes(nextPageSizes);
+      setPageCount(nextDoc.numPages);
+      setCurrentPage(Math.max(1, nextCurrentPage));
+      setPendingPageJump(null);
+      setShowSearchFill(false);
+      setSearchFillSessionId((prev) => prev + 1);
+      setReviewedFillContext(null);
+      fieldHistory.resetFieldHistory(nextFields);
+      fieldState.setSelectedFieldId((selectedId) => (
+        selectedId && nextFields.some((field) => field.id === selectedId) ? selectedId : null
+      ));
+      detection.setDetectSessionId(null);
+      detection.setMappingSessionId(null);
+
+      if (nextFields.length) {
+        try {
+          const sessionPayload = await ApiService.createTemplateSession(updatedFile, {
+            fields: buildTemplateFields(nextFields),
+            pageCount: nextDoc.numPages,
+          });
+          if (sessionPayload?.sessionId) {
+            detection.setDetectSessionId(sessionPayload.sessionId);
+            detection.setMappingSessionId(sessionPayload.sessionId);
+          }
+        } catch (sessionError) {
+          debugLog('Failed to register page-edited template session', sessionError);
+          dialog.setBannerNotice({
+            tone: 'info',
+            message: 'Pages were updated. Rename/Map may be unavailable until this PDF is saved and reopened.',
+            autoDismissMs: 8000,
+          });
+        }
+      }
+
+      setShowManagePages(false);
+      dialog.setBannerNotice({
+        tone: 'success',
+        message: `Updated PDF pages. ${payload.removedCurrentPages.length ? `${payload.removedCurrentPages.length} page${payload.removedCurrentPages.length === 1 ? '' : 's'} removed. ` : ''}${nextDoc.numPages} page${nextDoc.numPages === 1 ? '' : 's'} now loaded.`,
+        autoDismissMs: 6000,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to update PDF pages.';
+      setLoadError(message);
+      dialog.setBannerNotice({ tone: 'error', message, autoDismissMs: 8000 });
+    } finally {
+      setManagePagesApplying(false);
+    }
+  }, [
+    auth.verifiedUser,
+    currentPage,
+    detection,
+    dialog,
+    fieldHistory,
+    fieldState,
+    pageSizes,
+    pdfDoc,
+    resolveWorkspaceSourcePdfBytes,
+    sourceFile,
+    sourceFileName,
+  ]);
+
+  const handleOptimizePdf = useCallback(async () => {
+    if (!pdfDoc) {
+      dialog.setBannerNotice({ tone: 'error', message: 'Load a PDF before optimizing it.' });
+      return;
+    }
+    if (!auth.verifiedUser) {
+      dialog.setBannerNotice({ tone: 'error', message: 'Sign in to optimize PDFs.' });
+      return;
+    }
+
+    setOptimizePdfApplying(true);
+    setLoadError(null);
+    try {
+      const sourcePdfBytes = await resolveWorkspaceSourcePdfBytes();
+      const sourceBlob = new Blob([Uint8Array.from(sourcePdfBytes)], { type: 'application/pdf' });
+      const filename = sourceFileName || sourceFile?.name || 'document.pdf';
+      const result = await ApiService.optimizePdf(sourceBlob, { filename });
+      const optimizedFile = new File([result.blob], filename, { type: 'application/pdf' });
+      const nextDoc = await loadPdfFromFile(optimizedFile);
+      const nextPageSizes = await loadPageSizes(nextDoc);
+
+      setSourceFile(optimizedFile);
+      setSourceFileName(filename);
+      setSourceFileIsDemo(false);
+      setPdfDoc(nextDoc);
+      setPageSizes(nextPageSizes);
+      setPageCount(nextDoc.numPages);
+      setCurrentPage((prev) => Math.min(Math.max(1, prev), nextDoc.numPages));
+      setPendingPageJump(null);
+      setShowSearchFill(false);
+      setSearchFillSessionId((prev) => prev + 1);
+      setReviewedFillContext(null);
+      detection.setDetectSessionId(null);
+      detection.setMappingSessionId(null);
+
+      const currentFields = fieldHistory.fieldsRef.current;
+      if (currentFields.length) {
+        try {
+          const sessionPayload = await ApiService.createTemplateSession(optimizedFile, {
+            fields: buildTemplateFields(currentFields),
+            pageCount: nextDoc.numPages,
+          });
+          if (sessionPayload?.sessionId) {
+            detection.setDetectSessionId(sessionPayload.sessionId);
+            detection.setMappingSessionId(sessionPayload.sessionId);
+          }
+        } catch (sessionError) {
+          debugLog('Failed to register optimized template session', sessionError);
+          dialog.setBannerNotice({
+            tone: 'info',
+            message: 'PDF was optimized. Rename/Map may be unavailable until this PDF is saved and reopened.',
+            autoDismissMs: 8000,
+          });
+        }
+      }
+
+      setShowOptimizePdf(false);
+      const savedKb = result.savedBytes / 1024;
+      const percentSaved = result.originalBytes > 0
+        ? Math.round((result.savedBytes / result.originalBytes) * 100)
+        : 0;
+      dialog.setBannerNotice({
+        tone: result.savedBytes > 0 ? 'success' : 'info',
+        message: result.savedBytes > 0
+          ? `Optimized PDF. Saved ${savedKb >= 10 ? savedKb.toFixed(0) : savedKb.toFixed(1)} KB (${percentSaved}%).`
+          : 'PDF is already optimized. DullyPDF kept the current file size.',
+        autoDismissMs: 7000,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to optimize PDF.';
+      setLoadError(message);
+      dialog.setBannerNotice({ tone: 'error', message, autoDismissMs: 8000 });
+    } finally {
+      setOptimizePdfApplying(false);
+    }
+  }, [
+    auth.verifiedUser,
+    detection,
+    dialog,
+    fieldHistory.fieldsRef,
+    pdfDoc,
+    resolveWorkspaceSourcePdfBytes,
+    sourceFile,
+    sourceFileName,
   ]);
 
   // ── OpenAI pipeline (uses detection state directly) ────────────────
@@ -1078,6 +1343,12 @@ function WorkspaceRuntime({
     allowAnonymousDownload: sourceFileIsDemo,
     onSaveSuccess: captureSavedFillLinkPublishFingerprint,
   });
+  const handleDownloadSelectedPages = useCallback(async (payload: DownloadPagesPayload) => {
+    const success = await saveDownload.handleDownloadSelectedPages(payload);
+    if (success) {
+      setShowDownloadPages(false);
+    }
+  }, [saveDownload]);
   const groupDownload = useGroupDownload({
     verifiedUser: auth.verifiedUser,
     activeGroupId,
@@ -1086,6 +1357,7 @@ function WorkspaceRuntime({
     activeSavedFormId: savedForms.activeSavedFormId,
     captureActiveGroupTemplateSnapshot,
     ensureGroupTemplateSnapshot,
+    refreshProfile: auth.loadUserProfile,
     setLoadError,
     setBannerNotice: dialog.setBannerNotice,
   });
@@ -1294,13 +1566,26 @@ function WorkspaceRuntime({
     setBarcodeSetupFieldId(fieldId);
   }, []);
 
+  const handleOpenImageSetup = useCallback((fieldId: string) => {
+    setImageSetupFieldId(fieldId);
+  }, []);
+
   const handleCloseBarcodeSetup = useCallback(() => {
     setBarcodeSetupFieldId(null);
+  }, []);
+
+  const handleCloseImageSetup = useCallback(() => {
+    setImageSetupFieldId(null);
   }, []);
 
   const handleSaveBarcodeSetup = useCallback((fieldId: string, updates: Partial<PdfField>) => {
     fieldState.handleUpdateField(fieldId, updates);
     setBarcodeSetupFieldId(null);
+  }, [fieldState]);
+
+  const handleSaveImageSetup = useCallback((fieldId: string, updates: Partial<PdfField>) => {
+    fieldState.handleUpdateField(fieldId, updates);
+    setImageSetupFieldId(null);
   }, [fieldState]);
 
   const handleCreateFieldWithRect = useCallback(
@@ -1337,6 +1622,8 @@ function WorkspaceRuntime({
             createdFieldId,
             type === 'number-input' ? 'number_input' : 'calculated_output',
           );
+        } else if (fieldType === 'image') {
+          handleOpenImageSetup(createdFieldId);
         } else if (fieldType === 'pdf417' || fieldType === 'barcode' || fieldType === 'qr') {
           handleOpenBarcodeSetup(createdFieldId);
         }
@@ -1345,7 +1632,7 @@ function WorkspaceRuntime({
         setManualRadioToolDraft(nextRadioDraft);
       }
     },
-    [fieldHistory, fieldState, handleOpenCalculationSetup, manualRadioToolDraft, pageSizes],
+    [fieldHistory, fieldState, handleOpenBarcodeSetup, handleOpenCalculationSetup, handleOpenImageSetup, manualRadioToolDraft, pageSizes],
   );
 
   const handleSetFieldType = useCallback(
@@ -1364,6 +1651,7 @@ function WorkspaceRuntime({
         imageDataUrl: type === 'image' ? current.imageDataUrl ?? null : undefined,
         imageMimeType: type === 'image' ? current.imageMimeType ?? null : undefined,
         imageName: type === 'image' ? current.imageName ?? null : undefined,
+        imageColorMode: type === 'image' ? current.imageColorMode ?? 'original' : undefined,
         pdf417Name: type === 'pdf417' ? current.pdf417Name ?? null : undefined,
         pdf417Dob: type === 'pdf417' ? current.pdf417Dob ?? null : undefined,
         pdf417Data: type === 'pdf417' ? current.pdf417Data ?? null : undefined,
@@ -1422,9 +1710,11 @@ function WorkspaceRuntime({
       });
       if (type === 'pdf417' || type === 'barcode' || type === 'qr') {
         handleOpenBarcodeSetup(fieldId);
+      } else if (type === 'image') {
+        handleOpenImageSetup(fieldId);
       }
     },
-    [fieldHistory.fieldsRef, fieldHistory, fieldState, handleOpenBarcodeSetup, pageSizes],
+    [fieldHistory.fieldsRef, fieldHistory, fieldState, handleOpenBarcodeSetup, handleOpenImageSetup, pageSizes],
   );
 
   const handleUpdateRadioToolDraft = useCallback(
@@ -2032,6 +2322,7 @@ function WorkspaceRuntime({
   const {
     billingCheckoutInProgressKind,
     billingCancelInProgress,
+    billingPortalInProgress,
     showDowngradeRetentionDialog,
     downgradeRetentionSaveInProgress,
     currentDowngradeRetention,
@@ -2040,6 +2331,7 @@ function WorkspaceRuntime({
     handleOpenDowngradeRetentionDialog,
     handleStartBillingCheckout,
     handleCancelBillingSubscription,
+    handleOpenBillingPortal,
     handleSaveDowngradeRetentionSelection,
     handleReactivateDowngradedAccount,
   } = useDowngradeRetentionRuntime({
@@ -2947,12 +3239,20 @@ function WorkspaceRuntime({
             structuredFillCreditsThisMonth={userProfile?.structuredFillCreditsThisMonth ?? 0}
             structuredFillCreditsRemaining={userProfile?.structuredFillCreditsRemaining ?? null}
             structuredFillUsageMonth={userProfile?.structuredFillUsageMonth ?? null}
+            pdfDownloadsThisMonth={userProfile?.pdfDownloadsThisMonth ?? 0}
+            pdfDownloadsRemaining={userProfile?.pdfDownloadsRemaining ?? null}
+            pdfDownloadUsageMonth={userProfile?.pdfDownloadUsageMonth ?? null}
+            pdfDownloadWorkspaceThisMonth={userProfile?.pdfDownloadWorkspaceThisMonth ?? null}
+            pdfDownloadGroupThisMonth={userProfile?.pdfDownloadGroupThisMonth ?? null}
+            pdfDownloadBatchesThisMonth={userProfile?.pdfDownloadBatchesThisMonth ?? null}
+            pdfDownloadResetAt={userProfile?.pdfDownloadResetAt ?? null}
             billingEnabled={typeof userProfile?.billing?.enabled === 'boolean' ? userProfile.billing.enabled : null}
             billingHasSubscription={userProfile?.billing?.hasSubscription === true}
             billingSubscriptionStatus={userProfile?.billing?.subscriptionStatus ?? null}
             billingCancelAtPeriodEnd={userProfile?.billing?.cancelAtPeriodEnd ?? null}
             billingCancelAt={userProfile?.billing?.cancelAt ?? null}
             billingCurrentPeriodEnd={userProfile?.billing?.currentPeriodEnd ?? null}
+            billingPaymentRecovery={userProfile?.billing?.paymentRecovery ?? null}
             billingTrialUsed={userProfile?.billing?.trialUsed ?? null}
             billingPlans={userProfile?.billing?.plans}
             retention={currentDowngradeRetention}
@@ -2965,8 +3265,10 @@ function WorkspaceRuntime({
             deletingFormId={deletingFormId}
             billingCheckoutInProgressKind={billingCheckoutInProgressKind}
             billingCancelInProgress={billingCancelInProgress}
+            billingPortalInProgress={billingPortalInProgress}
             onStartBillingCheckout={userProfile?.billing?.enabled === true ? handleStartBillingCheckout : undefined}
             onCancelBillingSubscription={userProfile?.billing?.enabled === true ? handleCancelBillingSubscription : undefined}
+            onOpenBillingPortal={userProfile?.billing?.enabled === true ? handleOpenBillingPortal : undefined}
             onOpenDowngradeRetention={currentDowngradeRetention ? handleOpenDowngradeRetentionDialog : undefined}
             onClose={auth.handleCloseProfile} onSignOut={handleSignOut} />
         </Suspense>
@@ -3087,6 +3389,32 @@ function WorkspaceRuntime({
     <div className={appShellClassName}>
       {shouldShowBannerAlert && bannerAlert ? <Alert tone={bannerAlert.tone} variant="banner" message={bannerAlert.message} onDismiss={handleDismissBanner} /> : null}
       {savedFormsLimitDialog}{fillLinkManagerDialog}{templateApiManagerDialog}{signatureRequestDialog}{downgradeRetentionDialog}{calculationSetupDialog}{demoCompletionDialog}{dialogContent}
+      <DownloadPagesDialog
+        open={showDownloadPages}
+        pageCount={pageCount}
+        currentPage={currentPage}
+        sourceFileName={sourceFileName || sourceFile?.name || null}
+        downloading={saveDownload.downloadInProgress}
+        onClose={() => setShowDownloadPages(false)}
+        onDownload={(payload) => { void handleDownloadSelectedPages(payload); }}
+      />
+      <ManagePagesDialog
+        open={showManagePages}
+        pageCount={pageCount}
+        currentPage={currentPage}
+        sourceFileName={sourceFileName || sourceFile?.name || null}
+        applying={managePagesApplying}
+        onClose={() => setShowManagePages(false)}
+        onApply={(payload) => { void handleApplyManagePages(payload); }}
+      />
+      <OptimizePdfDialog
+        open={showOptimizePdf}
+        sourceFileName={sourceFileName || sourceFile?.name || null}
+        sourceFileSize={sourceFile?.size || null}
+        optimizing={optimizePdfApplying}
+        onClose={() => setShowOptimizePdf(false)}
+        onOptimize={() => { void handleOptimizePdf(); }}
+      />
       <HeaderBar
         pageCount={pageCount} currentPage={currentPage} scale={scale} onScaleChange={setScale}
         onNavigateHome={handleNavigateHome} mappingInProgress={mappingInProgress}
@@ -3115,7 +3443,12 @@ function WorkspaceRuntime({
         renameAndMapGroupInProgress={groupRenameMapInProgress}
         renameAndMapGroupButtonLabel={groupRenameMapLabel}
         onOpenSearchFill={handleOpenSearchFill}
+        onOpenManagePages={verifiedUser ? () => setShowManagePages(true) : undefined}
+        onOpenOptimizePdf={verifiedUser ? () => setShowOptimizePdf(true) : undefined}
+        canManagePages={Boolean(pdfDoc && verifiedUser && !managePagesApplying)}
+        canOptimizePdf={Boolean(pdfDoc && verifiedUser && !optimizePdfApplying)}
         onOpenImageFill={!demoActive && detection.detectSessionId && fieldHistory.fields.length > 0 ? imageFill.openDialog : undefined}
+        onOpenDownloadPages={verifiedUser ? () => setShowDownloadPages(true) : undefined}
         onDownload={saveDownload.handleDownload}
         onDownloadGroup={activeGroupId ? groupDownload.handleDownloadGroup : undefined}
         onSaveToProfile={saveDownload.handleSaveToProfile}
@@ -3228,7 +3561,9 @@ function WorkspaceRuntime({
           arrowKeyMoveStep={arrowKeyMoveStep}
           onUpdateField={fieldState.handleUpdateField}
           onSetFieldType={handleSetFieldType}
+          onSelectField={handleSelectField}
           onOpenCalculationSetup={handleOpenCalculationSetup}
+          onOpenImageSetup={handleOpenImageSetup}
           onOpenBarcodeSetup={handleOpenBarcodeSetup}
           onUpdateFieldDraft={fieldState.handleUpdateFieldDraft}
           onDeleteField={fieldState.handleDeleteField}
@@ -3314,22 +3649,18 @@ function WorkspaceRuntime({
           />
         </Suspense>
       ) : null}
-      {calculationSetupState && calculationSetupField ? (
-        <CalculationSetupDialog
-          open
-          field={calculationSetupField}
-          fields={fields}
-          intent={calculationSetupState.intent}
-          onClose={handleCloseCalculationSetup}
-          onSave={handleSaveCalculationSetup}
-        />
-      ) : null}
       <BarcodeFieldModal
         open={Boolean(barcodeSetupFieldId)}
         field={fields.find((entry) => entry.id === barcodeSetupFieldId) ?? null}
         fields={fields}
         onClose={handleCloseBarcodeSetup}
         onSave={handleSaveBarcodeSetup}
+      />
+      <ImageFieldModal
+        open={Boolean(imageSetupFieldId)}
+        field={fields.find((entry) => entry.id === imageSetupFieldId) ?? null}
+        onClose={handleCloseImageSetup}
+        onSave={handleSaveImageSetup}
       />
       {dataSourceInputs}
       {showDemoTour ? (

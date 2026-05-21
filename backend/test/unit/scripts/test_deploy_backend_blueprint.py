@@ -139,7 +139,10 @@ def test_backend_prod_env_example_documents_stripe_as_required() -> None:
 def test_backend_prod_env_example_documents_stripe_idempotency_and_event_history_knobs() -> None:
     text = _prod_env_example_text()
     assert "STRIPE_CHECKOUT_IDEMPOTENCY_WINDOW_SECONDS=300" in text
+    assert "STRIPE_CHECKOUT_DISPLAY_NAME=DullyPDF" in text
+    assert "STRIPE_CHECKOUT_BRAND_ICON_FILE=" in text
     assert "STRIPE_MAX_PROCESSED_EVENTS=256" in text
+    assert "STRIPE_PAYMENT_RECOVERY_WINDOW_DAYS=7" in text
 
 
 def test_backend_prod_env_example_documents_adc_only_and_fill_link_placeholder_rules() -> None:

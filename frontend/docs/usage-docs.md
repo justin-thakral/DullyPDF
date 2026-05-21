@@ -55,9 +55,13 @@ Unknown slugs (for example `/usage-docs/typo`) are treated as not found:
 - The `Save / Download` docs page includes Stripe billing plan behavior from Profile:
   - `pro_monthly` and `pro_yearly` are recurring subscriptions with labels/pricing sourced from backend Stripe metadata
   - `refill_500` (Pro-only) is a one-time credit refill with label/pricing sourced from backend Stripe metadata
+  - free accounts include 25 generated PDF downloads per month, premium accounts include unlimited generated PDF downloads, and the counter resets on the backend by UTC month.
+  - Profile surfaces the total used/remaining quota, workspace-download vs group-ZIP PDF split counts, successful download batches, and the next UTC reset timestamp.
+  - saving templates, API Fill outputs, respondent downloads, and signing artifacts use their own workflow limits and are not charged against the workspace generated PDF download quota.
   - checkout and payment transactions are processed securely via Stripe Checkout.
   - opening a Checkout Session is not the entitlement boundary; Pro access and trial usage are granted only after completed Stripe checkout/subscription fulfillment.
   - subscription linkage/status + cancellation schedule metadata from backend profile state.
+  - failed subscription payments keep `past_due` Pro access active during Stripe Smart Retries, show a Profile payment-recovery banner, route payment-method updates through Stripe Customer Portal, then sync the updated payment method onto the recovering subscription before retrying the latest open invoice.
   - refill-credit retention across downgrades/upgrades.
 
 ## Responsive behavior
@@ -72,10 +76,12 @@ Unknown slugs (for example `/usage-docs/typo`) are treated as not found:
 - Mobile homepage CTA stack includes one `Docs & Privacy & Terms` button that routes to `/usage-docs`.
 - Workspace `Schema` dropdown includes `Usage Docs`, which opens `/usage-docs/search-fill` in a new browser tab/window.
 - Workspace `Rename or Remap` dropdown includes `Usage Docs`, which opens `/usage-docs/rename-mapping` in a new browser tab/window.
-- Workspace `Fill from information extracted from images and documents`, `Fill By Web Form Link + Sign`, `Send PDF for Signature by email`, and `API Fill` dialogs expose a `Usage Docs` button immediately left of the red close control, and each button opens its matching `/usage-docs/*` route in a new browser tab/window.
+- Workspace `Download specific pages`, `Fill from information extracted from images and documents`, calculation setup, `Fill By Web Form Link + Sign`, `Send PDF for Signature by email`, and `API Fill` dialogs expose a `Usage Docs` button immediately left of the red close control, and each button opens its matching `/usage-docs/*` route in a new browser tab/window.
 - Workspace Browser and Field Editor headers expose right-aligned `Usage Docs` buttons that open `/usage-docs/editor-workflow` in a new browser tab/window without disturbing the active editor state.
 
 ## Output guidance
 
 - The Fill By Link docs explicitly recommend flat PDF outputs for external recipients, respondent receipts, and final records because the completed values are baked into page content instead of depending on a mobile or browser PDF viewer to preserve editable AcroForm styling.
 - Editable PDF downloads remain documented as the right choice when a recipient needs to keep working with live fields after download.
+- Selected-page downloads are documented as the right choice when an operator needs an ad hoc page subset without modifying the active workspace PDF.
+- The Save / Download docs distinguish quota-charged signed-in workspace downloads from save, API Fill, respondent, and signing artifact materialization paths.

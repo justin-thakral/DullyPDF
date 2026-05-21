@@ -293,6 +293,18 @@ def upload_session_pdf_bytes(pdf_bytes: bytes, destination_path: str) -> str:
     return f"gs://{bucket_name}/{safe_destination}"
 
 
+def upload_session_file_bytes(file_bytes: bytes, destination_path: str, *, content_type: str) -> str:
+    """Upload non-PDF session bytes to the session bucket."""
+    bucket_name = _require_session_bucket_config()
+    safe_destination = _assert_safe_object_path(destination_path)
+    bucket = get_storage_bucket(bucket_name)
+    blob = bucket.blob(safe_destination)
+    blob.cache_control = "private, no-store"
+    blob.upload_from_string(file_bytes, content_type=content_type or "application/octet-stream")
+    logger.debug("Uploaded session file bytes: %s", safe_destination)
+    return f"gs://{bucket_name}/{safe_destination}"
+
+
 def upload_signing_pdf_bytes(pdf_bytes: bytes, destination_path: str) -> str:
     """Upload immutable signing PDF bytes to the signing bucket."""
     bucket_name = _require_signing_bucket_config()

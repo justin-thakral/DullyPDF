@@ -1,12 +1,13 @@
 import { act, render } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGroupDownload } from '../../../src/hooks/useGroupDownload';
+import { ApiError } from '../../../src/services/apiConfig';
 
-const materializeFormPdfMock = vi.hoisted(() => vi.fn());
+const downloadGroupPdfArchiveMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../../../src/services/api', () => ({
   ApiService: {
-    materializeFormPdf: materializeFormPdfMock,
+    downloadGroupPdfArchive: downloadGroupPdfArchiveMock,
   },
 }));
 
@@ -51,28 +52,24 @@ function createSnapshot(formId: string, templateName: string, sourceFile: File) 
 
 describe('useGroupDownload', () => {
   beforeEach(() => {
-    materializeFormPdfMock.mockReset();
+    downloadGroupPdfArchiveMock.mockReset();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it('downloads the current group as a zip archive of materialized PDFs', async () => {
+  it('downloads the current group through one quota-enforced zip endpoint', async () => {
     const setLoadError = vi.fn();
     const setBannerNotice = vi.fn();
+    const refreshProfile = vi.fn().mockResolvedValue(undefined);
     const ensureGroupTemplateSnapshot = vi.fn();
     const activeFile = new File(['alpha'], 'Alpha Packet.pdf', { type: 'application/pdf' });
     const cachedFile = new File(['bravo'], 'Bravo Intake.pdf', { type: 'application/pdf' });
     const activeSnapshot = createSnapshot('tpl-a', 'Alpha Packet', activeFile);
     const cachedSnapshot = createSnapshot('tpl-b', 'Bravo Intake', cachedFile);
     ensureGroupTemplateSnapshot.mockResolvedValue(cachedSnapshot);
-    const createBlobLike = (value: string) => ({
-      arrayBuffer: vi.fn().mockResolvedValue(new TextEncoder().encode(value).buffer),
-    });
-    materializeFormPdfMock
-      .mockResolvedValueOnce(createBlobLike('alpha-pdf'))
-      .mockResolvedValueOnce(createBlobLike('bravo-pdf'));
+    downloadGroupPdfArchiveMock.mockResolvedValue(new Blob(['zip'], { type: 'application/zip' }));
 
     const createObjectUrlSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:group-download');
     const revokeObjectUrlSpy = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
@@ -91,6 +88,7 @@ describe('useGroupDownload', () => {
         activeSavedFormId: 'tpl-a',
         captureActiveGroupTemplateSnapshot: () => activeSnapshot as any,
         ensureGroupTemplateSnapshot,
+        refreshProfile,
         setLoadError,
         setBannerNotice,
       });
@@ -108,19 +106,28 @@ describe('useGroupDownload', () => {
     });
 
     expect(setLoadError.mock.calls).toEqual([[null]]);
-    expect(materializeFormPdfMock).toHaveBeenNthCalledWith(1, activeFile, expect.any(Array), {
+    expect(downloadGroupPdfArchiveMock).toHaveBeenCalledTimes(1);
+    const callPayload = downloadGroupPdfArchiveMock.mock.calls[0][0];
+    expect(callPayload).toMatchObject({
+      groupId: 'group-1',
+      groupName: 'Admissions',
+      downloadRequestId: expect.stringMatching(/^pdf_download_/),
+    });
+    expect(callPayload.items).toHaveLength(2);
+    expect(callPayload.items[0]).toMatchObject({
+      sourceFile: activeFile,
+      filename: 'Alpha Packet.pdf',
+      exportMode: 'editable',
       appearance: {
         globalFieldFont: undefined,
         globalFieldFontSize: undefined,
         globalFieldFontColor: undefined,
       },
     });
-    expect(materializeFormPdfMock).toHaveBeenNthCalledWith(2, cachedFile, expect.any(Array), {
-      appearance: {
-        globalFieldFont: undefined,
-        globalFieldFontSize: undefined,
-        globalFieldFontColor: undefined,
-      },
+    expect(callPayload.items[1]).toMatchObject({
+      sourceFile: cachedFile,
+      filename: 'Bravo Intake.pdf',
+      exportMode: 'editable',
     });
     expect(ensureGroupTemplateSnapshot).toHaveBeenCalledWith('tpl-b', 'Bravo Intake');
     expect(clickSpy).toHaveBeenCalledTimes(1);
@@ -128,5 +135,65 @@ describe('useGroupDownload', () => {
     expect(setLoadError).toHaveBeenCalledWith(null);
     expect(setBannerNotice).not.toHaveBeenCalled();
     expect(createObjectUrlSpy).toHaveBeenCalledWith(expect.objectContaining({ type: 'application/zip' }));
+    expect(refreshProfile).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows quota copy when a group download would exceed the monthly PDF limit', async () => {
+    const setLoadError = vi.fn();
+    const setBannerNotice = vi.fn();
+    const refreshProfile = vi.fn().mockResolvedValue(undefined);
+    const activeFile = new File(['alpha'], 'Alpha Packet.pdf', { type: 'application/pdf' });
+    const activeSnapshot = createSnapshot('tpl-a', 'Alpha Packet', activeFile);
+    downloadGroupPdfArchiveMock.mockRejectedValue(new ApiError(
+      'limit',
+      429,
+      'pdf_download_limit_reached',
+      {
+        detail: {
+          code: 'pdf_download_limit_reached',
+          monthlyLimit: 25,
+          currentMonthUsage: 24,
+          downloadsRemaining: 1,
+          monthKey: '2026-05',
+          pdfCount: 2,
+        },
+      },
+    ));
+
+    let latest: ReturnType<typeof useGroupDownload> | null = null;
+    function Harness() {
+      latest = useGroupDownload({
+        verifiedUser: { uid: 'user-1' },
+        activeGroupId: 'group-1',
+        activeGroupName: 'Admissions',
+        activeGroupTemplates: [
+          { id: 'tpl-a', name: 'Alpha Packet' },
+          { id: 'tpl-b', name: 'Bravo Intake' },
+        ],
+        activeSavedFormId: 'tpl-a',
+        captureActiveGroupTemplateSnapshot: () => activeSnapshot as any,
+        ensureGroupTemplateSnapshot: vi.fn().mockResolvedValue(createSnapshot(
+          'tpl-b',
+          'Bravo Intake',
+          new File(['bravo'], 'Bravo Intake.pdf', { type: 'application/pdf' }),
+        )),
+        refreshProfile,
+        setLoadError,
+        setBannerNotice,
+      });
+      return null;
+    }
+
+    render(<Harness />);
+
+    await act(async () => {
+      await latest?.handleDownloadGroup();
+    });
+
+    expect(setLoadError).toHaveBeenCalledWith(
+      'You have used all 25 generated PDF downloads for this month. Upgrade to Premium for unlimited downloads. This group export needs 2 downloads.',
+    );
+    expect(refreshProfile).toHaveBeenCalledTimes(1);
+    expect(setBannerNotice).not.toHaveBeenCalled();
   });
 });

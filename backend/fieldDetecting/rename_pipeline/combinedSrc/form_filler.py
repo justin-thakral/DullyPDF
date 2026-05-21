@@ -1848,14 +1848,18 @@ def _field_app_only_metadata(field: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     for key in (
         "value",
         "imageDataUrl",
+        "imagePath",
+        "imageSourcePath",
         "imageMimeType",
         "imageName",
+        "imageColorMode",
         "pdf417Name",
         "pdf417Dob",
         "pdf417Data",
         "barcodeSourceField",
         "qrSourceField",
         "pdf417FieldMappings",
+        "barcodeClasses",
     ):
         if key in field:
             metadata[key] = field.get(key)

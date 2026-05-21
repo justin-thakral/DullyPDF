@@ -871,3 +871,44 @@ def test_set_and_lookup_user_billing_subscription_fields(mocker) -> None:
     assert record.cancel_at == 1775000000
     assert record.current_period_end == 1775000000
     assert adb.find_user_id_by_subscription_id(" sub_123 ") == "uid-billing"
+
+
+def test_set_and_clear_user_billing_payment_recovery(mocker) -> None:
+    client = FakeFirestoreClient()
+    mocker.patch("backend.firebaseDB.user_database.get_firestore_client", return_value=client)
+    mocker.patch("backend.firebaseDB.user_database.now_iso", return_value="ts-payment-recovery")
+
+    adb.set_user_billing_subscription(
+        "uid-billing-recovery",
+        customer_id="cus_recovery",
+        subscription_id="sub_recovery",
+        subscription_status="past_due",
+        subscription_price_id="price_monthly",
+    )
+    adb.set_user_billing_payment_recovery(
+        "uid-billing-recovery",
+        status="payment_failed",
+        latest_invoice_id=" in_123 ",
+        latest_invoice_status="open",
+        failure_code="insufficient_funds",
+        failure_message="Card declined",
+        failed_at=1775000100,
+        next_payment_attempt=1775086500,
+        recovery_deadline=1775604900,
+    )
+
+    record = adb.get_user_billing_record("uid-billing-recovery")
+    assert record is not None
+    assert record.payment_recovery is not None
+    assert record.payment_recovery.status == "payment_failed"
+    assert record.payment_recovery.latest_invoice_id == "in_123"
+    assert record.payment_recovery.failure_code == "insufficient_funds"
+    assert record.payment_recovery.failed_at == 1775000100
+    assert record.payment_recovery.next_payment_attempt == 1775086500
+    assert record.payment_recovery.recovery_deadline == 1775604900
+
+    adb.clear_user_billing_payment_recovery("uid-billing-recovery")
+
+    cleared = adb.get_user_billing_record("uid-billing-recovery")
+    assert cleared is not None
+    assert cleared.payment_recovery is None

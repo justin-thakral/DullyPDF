@@ -1,10 +1,15 @@
 import { useCallback, useState } from 'react';
 import type { BannerNotice } from '../types';
 import type { GroupTemplateWorkspaceSnapshot } from './useGroupTemplateCache';
+import type { DownloadGroupPdfArchiveItem } from '../services/api';
 import { ApiService } from '../services/api';
 import { debugLog } from '../utils/debug';
 import { normaliseFormName, prepareFieldsForMaterialize } from '../utils/fields';
-import { buildStoredZipArchive } from '../utils/zip';
+import {
+  buildPdfDownloadRequestId,
+  formatPdfDownloadLimitMessage,
+  isPdfDownloadLimitError,
+} from '../utils/pdfDownloadQuota';
 
 type GroupDownloadTemplate = {
   id: string;
@@ -22,6 +27,7 @@ type UseGroupDownloadDeps = {
     formId: string,
     templateNameHint?: string | null,
   ) => Promise<GroupTemplateWorkspaceSnapshot>;
+  refreshProfile?: () => Promise<unknown> | void;
   setLoadError: (message: string | null) => void;
   setBannerNotice: (notice: BannerNotice | null) => void;
 };
@@ -76,41 +82,42 @@ export function useGroupDownload(deps: UseGroupDownloadDeps) {
     deps.setLoadError(null);
 
     try {
-      const folderName = sanitizeArchiveSegment(deps.activeGroupName, 'group');
       const usedNames = new Set<string>();
-      const archiveEntries: Array<{ name: string; data: Uint8Array }> = [];
+      const archiveItems: DownloadGroupPdfArchiveItem[] = [];
 
       for (const template of deps.activeGroupTemplates) {
         const activeSnapshot = template.id === deps.activeSavedFormId
           ? deps.captureActiveGroupTemplateSnapshot()
           : null;
         const snapshot = activeSnapshot ?? await deps.ensureGroupTemplateSnapshot(template.id, template.name);
-        const materializedBlob = await ApiService.materializeFormPdf(
-          snapshot.sourceFile,
-          prepareFieldsForMaterialize(
+        archiveItems.push({
+          sourceFile: snapshot.sourceFile,
+          filename: ensureUniqueArchiveName(
+            buildPdfArchiveName(snapshot.templateName || template.name),
+            usedNames,
+          ),
+          fields: prepareFieldsForMaterialize(
             snapshot.fields,
             snapshot.globalFieldFont,
             snapshot.globalFieldFontColor,
             { preserveAppOnlyFieldMarkers: true },
           ),
-          {
-            appearance: {
-              globalFieldFont: snapshot.globalFieldFont,
-              globalFieldFontSize: snapshot.globalFieldFontSize,
-              globalFieldFontColor: snapshot.globalFieldFontColor,
-              globalFieldAlignment: snapshot.globalFieldAlignment,
-            },
+          exportMode: 'editable' as const,
+          appearance: {
+            globalFieldFont: snapshot.globalFieldFont,
+            globalFieldFontSize: snapshot.globalFieldFontSize,
+            globalFieldFontColor: snapshot.globalFieldFontColor,
+            globalFieldAlignment: snapshot.globalFieldAlignment,
           },
-        );
-        const bytes = new Uint8Array(await materializedBlob.arrayBuffer());
-        const fileName = ensureUniqueArchiveName(
-          buildPdfArchiveName(snapshot.templateName || template.name),
-          usedNames,
-        );
-        archiveEntries.push({ name: `${folderName}/${fileName}`, data: bytes });
+        });
       }
 
-      const archiveBlob = buildStoredZipArchive(archiveEntries);
+      const archiveBlob = await ApiService.downloadGroupPdfArchive({
+        groupId: deps.activeGroupId,
+        groupName: deps.activeGroupName,
+        downloadRequestId: buildPdfDownloadRequestId(),
+        items: archiveItems,
+      });
       const archiveName = `${sanitizeArchiveSegment(deps.activeGroupName, 'group')}.zip`;
       const url = URL.createObjectURL(archiveBlob);
       const link = document.createElement('a');
@@ -120,7 +127,22 @@ export function useGroupDownload(deps: UseGroupDownloadDeps) {
       link.click();
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      void Promise.resolve()
+        .then(() => deps.refreshProfile?.())
+        .catch((error) => {
+          debugLog('Failed to refresh profile after group PDF download quota event', error);
+        });
     } catch (error) {
+      if (isPdfDownloadLimitError(error)) {
+        deps.setLoadError(formatPdfDownloadLimitMessage(error, { groupDownload: true }));
+        void Promise.resolve()
+          .then(() => deps.refreshProfile?.())
+          .catch((refreshError) => {
+            debugLog('Failed to refresh profile after group PDF download quota limit', refreshError);
+          });
+        debugLog('PDF download quota limit reached for group archive', error);
+        return;
+      }
       const message = error instanceof Error ? error.message : 'Failed to download this group.';
       deps.setLoadError(message);
       debugLog('Failed to download group archive', error);

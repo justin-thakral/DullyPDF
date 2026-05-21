@@ -5,6 +5,7 @@ import React, { useMemo, useState } from 'react';
 import './ProfilePage.css';
 import type {
   BillingCheckoutKind,
+  BillingPaymentRecovery,
   BillingPlanCatalogItem,
   CreditPricingConfig,
   DowngradeRetentionSummary,
@@ -23,6 +24,13 @@ interface ProfilePageProps {
   structuredFillCreditsThisMonth?: number | null;
   structuredFillCreditsRemaining?: number | null;
   structuredFillUsageMonth?: string | null;
+  pdfDownloadsThisMonth?: number | null;
+  pdfDownloadsRemaining?: number | null;
+  pdfDownloadUsageMonth?: string | null;
+  pdfDownloadWorkspaceThisMonth?: number | null;
+  pdfDownloadGroupThisMonth?: number | null;
+  pdfDownloadBatchesThisMonth?: number | null;
+  pdfDownloadResetAt?: string | null;
   isLoading?: boolean;
   limits: ProfileLimits;
   savedForms: SavedFormSummary[];
@@ -39,6 +47,7 @@ interface ProfilePageProps {
   billingCancelAtPeriodEnd?: boolean | null;
   billingCancelAt?: number | null;
   billingCurrentPeriodEnd?: number | null;
+  billingPaymentRecovery?: BillingPaymentRecovery | null;
   billingTrialUsed?: boolean | null;
   billingPlans?: Partial<Record<BillingCheckoutKind, BillingPlanCatalogItem>>;
   retention?: DowngradeRetentionSummary | null;
@@ -46,6 +55,8 @@ interface ProfilePageProps {
   creditPricing?: CreditPricingConfig | null;
   onStartBillingCheckout?: (kind: BillingCheckoutKind) => void;
   onCancelBillingSubscription?: () => void;
+  billingPortalInProgress?: boolean;
+  onOpenBillingPortal?: () => void;
   onOpenDowngradeRetention?: () => void;
   onClose: () => void;
   onSignOut?: () => void;
@@ -71,6 +82,12 @@ type ProfileLimitCard = {
 };
 
 const numberFormatter = new Intl.NumberFormat();
+const utcResetDateFormatter = new Intl.DateTimeFormat(undefined, {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
 
 function formatPlanPrice(plan?: BillingPlanCatalogItem): string | null {
   if (!plan) return null;
@@ -110,6 +127,33 @@ function formatTimestampLabel(value?: string | null): string | null {
   }
 }
 
+function formatUnixDateTimeLabel(value?: number | null): string | null {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) return null;
+  try {
+    return new Date(value * 1000).toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+  } catch {
+    return null;
+  }
+}
+
+function formatUtcResetDateLabel(value?: string | null): string | null {
+  const raw = (value || '').trim();
+  if (!raw) return null;
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) return null;
+  try {
+    return `${utcResetDateFormatter.format(parsed)} UTC`;
+  } catch {
+    return null;
+  }
+}
+
 function formatCountLabel(value: number | null | undefined): string {
   return numberFormatter.format(value ?? 0);
 }
@@ -117,6 +161,11 @@ function formatCountLabel(value: number | null | undefined): string {
 function formatLimitValue(value: number | null | undefined): string {
   if (typeof value !== 'number' || Number.isNaN(value)) return 'Unavailable';
   return formatCountLabel(value);
+}
+
+function formatNullableLimitValue(value: number | null | undefined, unlimited: boolean): string {
+  if (unlimited || value === null) return 'Unlimited';
+  return formatLimitValue(value);
 }
 
 function resolveSavedFormAccessStatus(
@@ -180,6 +229,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   structuredFillCreditsThisMonth = null,
   structuredFillCreditsRemaining = null,
   structuredFillUsageMonth = null,
+  pdfDownloadsThisMonth = null,
+  pdfDownloadsRemaining = null,
+  pdfDownloadUsageMonth = null,
+  pdfDownloadWorkspaceThisMonth = null,
+  pdfDownloadGroupThisMonth = null,
+  pdfDownloadBatchesThisMonth = null,
+  pdfDownloadResetAt = null,
   isLoading = false,
   limits,
   savedForms,
@@ -196,6 +252,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   billingCancelAtPeriodEnd = null,
   billingCancelAt = null,
   billingCurrentPeriodEnd = null,
+  billingPaymentRecovery = null,
   billingTrialUsed = null,
   billingPlans,
   retention = null,
@@ -203,6 +260,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   creditPricing,
   onStartBillingCheckout,
   onCancelBillingSubscription,
+  billingPortalInProgress = false,
+  onOpenBillingPortal,
   onOpenDowngradeRetention,
   onClose,
   onSignOut,
@@ -219,13 +278,38 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     typeof billingCancelAt === 'number'
       ? billingCancelAt
       : (typeof billingCurrentPeriodEnd === 'number' ? billingCurrentPeriodEnd : null);
-  const billingBusy = billingCheckoutInProgressKind !== null || billingCancelInProgress;
+  const billingBusy = billingCheckoutInProgressKind !== null || billingCancelInProgress || billingPortalInProgress;
   const cancelButtonLabel = billingCancelInProgress
     ? 'Canceling...'
     : (cancelScheduled ? 'Cancelled' : (isPro ? 'Cancel Pro Subscription' : 'Cancel Subscription'));
   const resolvedAvailableCredits =
     typeof availableCredits === 'number' ? availableCredits : (creditsRemaining ?? 0);
   const fillLinkResponsesMonthlyLimit = limits.fillLinkResponsesMonthlyMax;
+  const pdfDownloadMonthlyLimit = limits.pdfDownloadsMonthlyMax;
+  const pdfDownloadsUnlimited = isGod || isPro || pdfDownloadMonthlyLimit === null;
+  const pdfDownloadsUsed = Math.max(0, pdfDownloadsThisMonth ?? 0);
+  const pdfDownloadsRemainingLabel = pdfDownloadsUnlimited
+    ? 'Unlimited'
+    : formatCountLabel(
+      typeof pdfDownloadsRemaining === 'number'
+        ? pdfDownloadsRemaining
+        : Math.max(0, (pdfDownloadMonthlyLimit ?? 0) - pdfDownloadsUsed),
+    );
+  const pdfDownloadsMonthlyLabel = formatNullableLimitValue(pdfDownloadMonthlyLimit, pdfDownloadsUnlimited);
+  const pdfDownloadsStatValue = pdfDownloadsUnlimited
+    ? 'Unlimited'
+    : `${formatCountLabel(pdfDownloadsUsed)} / ${pdfDownloadsMonthlyLabel}`;
+  const hasPdfDownloadBreakdown =
+    typeof pdfDownloadWorkspaceThisMonth === 'number'
+    || typeof pdfDownloadGroupThisMonth === 'number'
+    || typeof pdfDownloadBatchesThisMonth === 'number';
+  const pdfDownloadWorkspaceUsed = Math.max(0, pdfDownloadWorkspaceThisMonth ?? 0);
+  const pdfDownloadGroupUsed = Math.max(0, pdfDownloadGroupThisMonth ?? 0);
+  const pdfDownloadBatchesUsed = Math.max(0, pdfDownloadBatchesThisMonth ?? 0);
+  const pdfDownloadResetLabel = formatUtcResetDateLabel(pdfDownloadResetAt);
+  const pdfDownloadChipLabel = pdfDownloadsUnlimited
+    ? 'Unlimited PDF downloads'
+    : `${formatCountLabel(pdfDownloadsUsed)} / ${pdfDownloadsMonthlyLabel} PDF downloads`;
   const creditsLabel = isGod ? 'Unlimited' : formatCountLabel(resolvedAvailableCredits);
   const monthlyLabel = isGod ? 'Unlimited' : formatCountLabel(monthlyCreditsRemaining);
   const refillLabel = isGod ? 'Unlimited' : formatCountLabel(refillCreditsRemaining);
@@ -248,6 +332,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const monthlyPlanLabel = formatPlanLabel(monthlyPlan, 'Pro Monthly');
   const yearlyPlanLabel = formatPlanLabel(yearlyPlan, 'Pro Yearly');
   const refillPlanLabel = formatPlanLabel(refillPlan, 'Refill 500 Credits');
+  const paymentRecovery = billingPaymentRecovery ?? null;
+  const normalizedBillingStatus = (billingStatus || '').trim().toLowerCase();
+  const billingStatusRecovered = normalizedBillingStatus === 'active' || normalizedBillingStatus === 'trialing';
+  const paymentRecoveryActive = normalizedBillingStatus === 'past_due' || (
+    hasBillingSubscription && !billingStatusRecovered && paymentRecovery?.status === 'payment_failed'
+  );
+  const nextPaymentAttemptLabel = formatUnixDateTimeLabel(paymentRecovery?.nextPaymentAttempt);
+  const recoveryDeadlineLabel = formatUnixDateTimeLabel(paymentRecovery?.recoveryDeadline);
+  const paymentFailureReasonLabel = toSentenceCase(paymentRecovery?.failureCode);
   const isTrialEligible = !isGod && !isPro && !hasBillingSubscription && billingTrialUsed !== true;
   const cancelEffectiveDateLabel = useMemo(() => {
     if (!cancelEffectiveAt) return null;
@@ -303,6 +396,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       : 'Upgrade and storage decisions are driven from this profile page, with backend-enforced limits for PDFs, saved forms, Fill By Link, API Fill, signing, and credits kept in sync.';
   const subscriptionSummary = isGod
     ? 'Bypassed for God tier'
+    : paymentRecoveryActive
+      ? 'Retrying payment'
     : hasBillingSubscription
       ? `${cancelScheduled ? 'Cancels' : 'Active'}${cancelEffectiveDateLabel ? ` ${cancelScheduled ? 'on' : 'through'} ${cancelEffectiveDateLabel}` : ''}`
       : 'No active subscription';
@@ -326,6 +421,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       label: 'Saved templates',
       value: `${formatCountLabel(savedForms.length)} / ${formatCountLabel(limits.savedFormsMax)}`,
       note: 'Templates stored in your profile and available to reopen or publish.',
+    },
+    {
+      label: 'PDF downloads / month',
+      value: pdfDownloadsStatValue,
+      note: pdfDownloadsUnlimited
+        ? 'Premium access includes unlimited generated PDF downloads.'
+        : `Generated PDF exports available this month${pdfDownloadResetLabel ? `; resets ${pdfDownloadResetLabel}` : pdfDownloadUsageMonth ? ` (${pdfDownloadUsageMonth})` : ''}.`,
     },
     {
       label: 'Fill By Link / month',
@@ -357,6 +459,39 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           label: 'Fillable pages / PDF',
           value: formatLimitValue(limits.fillableMaxPages),
         },
+        {
+          label: 'Generated PDF downloads / month',
+          value: pdfDownloadsUnlimited
+            ? 'Unlimited'
+            : `${formatCountLabel(pdfDownloadsUsed)} used / ${pdfDownloadsMonthlyLabel} max`,
+          tone: 'accent',
+        },
+        ...(hasPdfDownloadBreakdown
+          ? [
+            {
+              label: 'Workspace PDF downloads',
+              value: formatCountLabel(pdfDownloadWorkspaceUsed),
+            },
+            {
+              label: 'Group ZIP PDFs',
+              value: formatCountLabel(pdfDownloadGroupUsed),
+            },
+            {
+              label: 'Download requests this month',
+              value: formatCountLabel(pdfDownloadBatchesUsed),
+            },
+          ]
+          : []),
+        {
+          label: 'PDF downloads remaining',
+          value: pdfDownloadsRemainingLabel,
+        },
+        ...(pdfDownloadUsageMonth
+          ? [{ label: 'PDF download usage month', value: pdfDownloadUsageMonth }]
+          : []),
+        ...(pdfDownloadResetLabel
+          ? [{ label: 'PDF quota reset', value: pdfDownloadResetLabel }]
+          : []),
       ],
     },
     {
@@ -411,7 +546,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     {
       title: 'Search & Fill monthly credits',
       description:
-        'Row-driven fills from CSV, Excel, SQL, JSON, or TXT count against a separate monthly pool. Group fills charge one credit per matched PDF.',
+        'Row-driven fills from CSV, Excel, or JSON count against a separate monthly pool. SQL and TXT imports are schema-only. Group fills charge one credit per matched PDF.',
       items: [
         {
           label: 'Monthly cap',
@@ -437,6 +572,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     { label: 'Role', value: `${normalizedRole} tier`, tone: 'accent' },
     { label: 'Email', value: email || 'No email on file' },
     { label: 'Saved forms', value: formatCountLabel(savedForms.length) },
+    { label: 'PDF quota', value: pdfDownloadsUnlimited ? 'Unlimited' : `${pdfDownloadsRemainingLabel} remaining` },
+    ...(pdfDownloadResetLabel ? [{ label: 'PDF quota reset', value: pdfDownloadResetLabel }] : []),
     { label: 'Billing', value: billingSummary, tone: billingEnabled === false ? 'warning' : 'default' },
     { label: 'Subscription', value: subscriptionSummary },
     ...(subscriptionStatusLabel ? [{ label: 'Status', value: subscriptionStatusLabel }] : []),
@@ -464,6 +601,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               <div className="profile-chip-row">
                 <span className="profile-chip profile-chip--accent">{normalizedRole} tier</span>
                 <span className="profile-chip">{formatCountLabel(savedForms.length)} saved forms</span>
+                <span className="profile-chip">{pdfDownloadChipLabel}</span>
                 <span className="profile-chip">{formatLimitValue(fillLinkResponsesMonthlyLimit)} Fill By Link responses / month</span>
               </div>
             </div>
@@ -538,6 +676,30 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     <p>Manage Pro access and refill purchases without leaving the profile workspace.</p>
                   </div>
                 </div>
+                {paymentRecoveryActive ? (
+                  <div className="profile-payment-recovery" role="status">
+                    <div className="profile-payment-recovery__copy">
+                      <h3>Payment retry in progress</h3>
+                      <p>
+                        Your latest payment failed. Stripe will retry automatically.
+                        Update your payment method to avoid losing Pro access.
+                      </p>
+                    </div>
+                    <div className="profile-payment-recovery__details">
+                      {paymentFailureReasonLabel ? <span>Reason: {paymentFailureReasonLabel}</span> : null}
+                      {nextPaymentAttemptLabel ? <span>Next retry: {nextPaymentAttemptLabel}</span> : null}
+                      {recoveryDeadlineLabel ? <span>Recovery deadline: {recoveryDeadlineLabel}</span> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className="profile-button profile-button--secondary"
+                      onClick={() => onOpenBillingPortal?.()}
+                      disabled={!onOpenBillingPortal || billingBusy || !hasBillingSubscription}
+                    >
+                      {billingPortalInProgress ? 'Opening billing portal...' : 'Update payment method'}
+                    </button>
+                  </div>
+                ) : null}
                 <div className="profile-billing-actions">
                   {isTrialEligible ? (
                     <button
@@ -555,13 +717,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     type="button"
                     className="profile-button"
                     onClick={() => onStartBillingCheckout?.('pro_monthly')}
-                    disabled={!onStartBillingCheckout || billingBusy || isPro || !monthlyPlanAvailable}
+                    disabled={!onStartBillingCheckout || billingBusy || hasBillingSubscription || !monthlyPlanAvailable}
                   >
                     {!monthlyPlanAvailable
                       ? 'Pro Monthly unavailable'
                       : (billingCheckoutInProgressKind === 'pro_monthly'
                         ? 'Starting checkout...'
-                        : (isPro
+                        : (hasBillingSubscription
                           ? `${monthlyPlanLabel} (cancel current first)`
                           : `Upgrade to ${monthlyPlanLabel}`))}
                   </button>
@@ -569,13 +731,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     type="button"
                     className="profile-button profile-button--secondary"
                     onClick={() => onStartBillingCheckout?.('pro_yearly')}
-                    disabled={!onStartBillingCheckout || billingBusy || isPro || !yearlyPlanAvailable}
+                    disabled={!onStartBillingCheckout || billingBusy || hasBillingSubscription || !yearlyPlanAvailable}
                   >
                     {!yearlyPlanAvailable
                       ? 'Pro Yearly unavailable'
                       : (billingCheckoutInProgressKind === 'pro_yearly'
                         ? 'Starting checkout...'
-                        : (isPro
+                        : (hasBillingSubscription
                           ? `${yearlyPlanLabel} (cancel current first)`
                           : `Upgrade to ${yearlyPlanLabel}`))}
                   </button>
@@ -583,7 +745,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     type="button"
                     className="profile-button"
                     onClick={() => onStartBillingCheckout?.('refill_500')}
-                    disabled={!onStartBillingCheckout || !isPro || billingBusy || !refillPlanAvailable}
+                    disabled={!onStartBillingCheckout || !isPro || billingBusy || !refillPlanAvailable || paymentRecoveryActive}
                   >
                     {!refillPlanAvailable
                       ? 'Refill unavailable'
@@ -614,9 +776,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                       Cancellation is scheduled for period end{cancelEffectiveDateLabel ? ` (${cancelEffectiveDateLabel})` : ''}.
                     </p>
                   ) : null}
-                  {isPro && hasBillingSubscription && !cancelScheduled ? (
+                  {isPro && hasBillingSubscription && !cancelScheduled && !paymentRecoveryActive ? (
                     <p className="profile-note">
                       Active Pro subscription detected. Cancel the current subscription before starting a new Pro checkout.
+                    </p>
+                  ) : null}
+                  {paymentRecoveryActive ? (
+                    <p className="profile-note">
+                      {isPro
+                        ? 'Pro access stays active while payment retries are in progress. Credit refills are paused until the subscription payment recovers.'
+                        : 'Payment retries are in progress for the linked subscription. Pro checkout and credit refills stay unavailable until the subscription state recovers.'}
                     </p>
                   ) : null}
                   {!hasBillingSubscription ? (

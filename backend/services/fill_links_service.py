@@ -13,6 +13,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from backend.env_utils import env_value as _env_value
 from backend.logging_config import get_logger
+from backend.services.pdf_images import ImageFieldPayloadError, decode_image_data_url_payload
 
 
 _NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
@@ -58,6 +59,8 @@ _FILL_LINK_WEB_FORM_SCHEMA_VERSION = 2
 _FILL_LINK_TEXT_TYPES = frozenset({"text", "textarea", "date", "email", "phone"})
 _FILL_LINK_OPTION_TYPES = frozenset({"radio", "multi_select", "select"})
 _FILL_LINK_BOOLEAN_TYPES = frozenset({"boolean", "checkbox"})
+_FILL_LINK_IMAGE_TYPES = frozenset({"image"})
+_GENERATED_APP_ONLY_FIELD_TYPES = frozenset({"pdf417", "barcode", "qr"})
 _GENERIC_RADIO_OPTION_KEY_RE = re.compile(r"^option_\d+(?:_\d+)?$")
 logger = get_logger(__name__)
 _DEV_FILL_LINK_TOKEN_SECRET = secrets.token_urlsafe(48)
@@ -355,11 +358,15 @@ def _question_is_boolean(question_type: Optional[str]) -> bool:
     return normalize_fill_link_key(question_type) in _FILL_LINK_BOOLEAN_TYPES
 
 
+def _question_is_image(question_type: Optional[str]) -> bool:
+    return normalize_fill_link_key(question_type) in _FILL_LINK_IMAGE_TYPES
+
+
 def _normalize_question_type(question_type: Optional[str]) -> str:
     normalized = normalize_fill_link_key(question_type) or "text"
     if normalized == "checkbox":
         return "boolean"
-    if normalized in _FILL_LINK_TEXT_TYPES | _FILL_LINK_OPTION_TYPES | _FILL_LINK_BOOLEAN_TYPES:
+    if normalized in _FILL_LINK_TEXT_TYPES | _FILL_LINK_OPTION_TYPES | _FILL_LINK_BOOLEAN_TYPES | _FILL_LINK_IMAGE_TYPES:
         return normalized
     return "text"
 
@@ -395,6 +402,8 @@ def _question_looks_like_phone(question: Dict[str, Any]) -> bool:
 
 def _infer_text_question_type(field_type: Optional[str], source_field: Optional[str]) -> str:
     normalized_field_type = normalize_fill_link_key(field_type) or "text"
+    if normalized_field_type == "image":
+        return "image"
     probe = {
         "type": normalized_field_type,
         "key": source_field,
@@ -476,6 +485,8 @@ def build_fill_link_questions(
 
     for field in ordered_fields:
         field_type = normalize_fill_link_key(field.get("type")) or "text"
+        if field_type == "signature" or field_type in _GENERATED_APP_ONLY_FIELD_TYPES:
+            continue
         if field_type == "radio":
             raw_group_key = (
                 _coerce_text_answer(field.get("radioGroupKey"))
@@ -619,6 +630,8 @@ def _merge_fill_link_question_type(left_type: str, right_type: str) -> str:
         return "select"
     if "radio" in normalized:
         return "radio"
+    if normalized == {"image"}:
+        return "image"
     if normalized == {"date"}:
         return "date"
     if "boolean" in normalized and len(normalized) == 1:
@@ -1011,6 +1024,54 @@ def _coerce_multi_value_answer(value: Any) -> List[str]:
     return deduped
 
 
+def _coerce_image_answer(value: Any, *, label: str) -> Optional[Dict[str, str]]:
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        data_url = _coerce_text_answer(value.get("imageDataUrl"))
+        image_path = _coerce_text_answer(value.get("imagePath"))
+        image_name = _coerce_text_answer(value.get("imageName"))
+        image_mime_type = _coerce_text_answer(value.get("imageMimeType"))
+        if not data_url and not image_path:
+            return None
+        normalized: Dict[str, str] = {}
+        if data_url:
+            try:
+                _image_bytes, detected_mime_type = decode_image_data_url_payload(data_url)
+            except ImageFieldPayloadError as exc:
+                raise ValueError(f"{label}: {exc}") from exc
+            normalized["imageDataUrl"] = data_url
+            normalized["imageMimeType"] = image_mime_type or detected_mime_type
+        if image_path:
+            if not image_path.startswith("gs://"):
+                raise ValueError(f"{label} must be uploaded as a PNG or JPEG image.")
+            normalized["imagePath"] = image_path
+            if image_mime_type and "imageMimeType" not in normalized:
+                normalized["imageMimeType"] = image_mime_type
+        if image_name:
+            normalized["imageName"] = image_name
+        return normalized
+
+    text = _coerce_text_answer(value)
+    if text is None:
+        return None
+    if text.lower().startswith("data:image/"):
+        try:
+            _image_bytes, detected_mime_type = decode_image_data_url_payload(text)
+        except ImageFieldPayloadError as exc:
+            raise ValueError(f"{label}: {exc}") from exc
+        return {"imageDataUrl": text, "imageMimeType": detected_mime_type}
+    if text.startswith("gs://"):
+        return {"imagePath": text}
+    raise ValueError(f"{label} must be uploaded as a PNG or JPEG image.")
+
+
+def _image_answer_is_present(value: Any) -> bool:
+    if not isinstance(value, dict):
+        return False
+    return bool(_coerce_text_answer(value.get("imageDataUrl")) or _coerce_text_answer(value.get("imagePath")))
+
+
 def _resolve_allowed_option_keys(question: Dict[str, Any]) -> List[str]:
     options = question.get("options")
     if not isinstance(options, list):
@@ -1061,6 +1122,11 @@ def coerce_fill_link_answers(
         question_type = _normalize_question_type(question.get("type"))
         raw_value = payload.get(key)
         max_chars = _normalize_positive_int(question.get("maxLength"), maximum=limits.max_value_chars) or limits.max_value_chars
+        if question_type == "image":
+            coerced = _coerce_image_answer(raw_value, label=label)
+            if coerced is not None:
+                normalized[key] = coerced
+            continue
         if question_type == "boolean":
             coerced = _coerce_boolean_answer(raw_value)
             if coerced is not None:
@@ -1138,6 +1204,10 @@ def list_missing_required_fill_link_questions(
             continue
         if question_type == "multi_select":
             if not _coerce_multi_value_answer(raw_value):
+                missing.append(label)
+            continue
+        if question_type == "image":
+            if not _image_answer_is_present(raw_value):
                 missing.append(label)
             continue
         if question_type in {"radio", "select"}:
@@ -1221,6 +1291,10 @@ def derive_fill_link_respondent_label(
                 selected = _coerce_boolean_answer(raw_value)
                 if selected is not None:
                     return label, "Yes" if selected else "No"
+            if question_type == "image" and isinstance(raw_value, dict):
+                image_label = _coerce_text_answer(raw_value.get("imageName")) or _coerce_text_answer(raw_value.get("imagePath"))
+                if image_label:
+                    return label, image_label
         preview = _coerce_text_answer(answers.get(first_key))
         if preview:
             return preview, None
@@ -1244,7 +1318,7 @@ def has_fill_link_respondent_identifier(
             continue
         question_type = normalize_fill_link_key(question.get("type")) or "text"
         raw_value = payload.get(key)
-        if question_type == "boolean":
+        if question_type in {"boolean", "image"}:
             continue
         if question_type == "multi_select":
             if _coerce_multi_value_answer(raw_value):
@@ -1261,6 +1335,11 @@ def build_fill_link_search_text(answers: Dict[str, Any], respondent_label: str) 
         fragments.append(str(key))
         if isinstance(value, list):
             fragments.extend(str(entry) for entry in value)
+        elif isinstance(value, dict):
+            fragments.extend(
+                str(value.get(entry) or "")
+                for entry in ("imageName", "imagePath", "imageMimeType")
+            )
         else:
             fragments.append(str(value))
     return " ".join(fragment for fragment in fragments if fragment).strip().lower()

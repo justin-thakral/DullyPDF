@@ -3,6 +3,7 @@
  */
 import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 import type {
+  BarcodeClass,
   FieldDependencyRef,
   FieldFontChoice,
   FieldFontColorChoice,
@@ -247,6 +248,31 @@ function normalizeMetadataPdf417Mappings(
   return Object.keys(entries).length ? entries : null;
 }
 
+function normalizeMetadataBarcodeClasses(value: unknown): BarcodeClass[] | null {
+  if (!Array.isArray(value)) return null;
+  const classes = value
+    .map((entry, index): BarcodeClass | null => {
+      const record = metadataRecord(entry);
+      const id = typeof record.id === 'string' && record.id.trim() ? record.id.trim() : `class_${index + 1}`;
+      const label = typeof record.label === 'string' ? record.label : '';
+      const mode = record.mode === 'field' ? 'field' : 'manual';
+      const fieldRef = mode === 'field' ? normalizeMetadataDependencyRef(record.fieldRef) : null;
+      const manualValue = mode === 'manual' && typeof record.manualValue === 'string'
+        ? record.manualValue
+        : null;
+      if (!label && !fieldRef && !manualValue) return null;
+      return {
+        id,
+        label,
+        mode,
+        fieldRef,
+        manualValue,
+      };
+    })
+    .filter((entry): entry is BarcodeClass => entry !== null);
+  return classes.length ? classes : null;
+}
+
 function normalizeDullyPdfAppOnlyFieldMetadata(value: unknown): DullyPdfAppOnlyFieldMetadata[] {
   if (!Array.isArray(value)) return [];
   return value
@@ -280,11 +306,20 @@ function normalizeDullyPdfAppOnlyFieldMetadata(value: unknown): DullyPdfAppOnlyF
       if (typeof record.imageDataUrl === 'string' || record.imageDataUrl === null) {
         metadata.imageDataUrl = record.imageDataUrl;
       }
+      if (typeof record.imagePath === 'string' || record.imagePath === null) {
+        metadata.imagePath = record.imagePath;
+      }
+      if (typeof record.imageSourcePath === 'string' || record.imageSourcePath === null) {
+        metadata.imageSourcePath = record.imageSourcePath;
+      }
       if (typeof record.imageMimeType === 'string' || record.imageMimeType === null) {
         metadata.imageMimeType = record.imageMimeType;
       }
       if (typeof record.imageName === 'string' || record.imageName === null) {
         metadata.imageName = record.imageName;
+      }
+      if (record.imageColorMode === 'grayscale' || record.imageColorMode === 'original' || record.imageColorMode === null) {
+        metadata.imageColorMode = record.imageColorMode;
       }
       if (typeof record.pdf417Name === 'string' || record.pdf417Name === null) {
         metadata.pdf417Name = record.pdf417Name;
@@ -296,6 +331,7 @@ function normalizeDullyPdfAppOnlyFieldMetadata(value: unknown): DullyPdfAppOnlyF
       metadata.barcodeSourceField = normalizeMetadataDependencyRef(record.barcodeSourceField);
       metadata.qrSourceField = normalizeMetadataDependencyRef(record.qrSourceField);
       metadata.pdf417FieldMappings = normalizeMetadataPdf417Mappings(record.pdf417FieldMappings);
+      metadata.barcodeClasses = normalizeMetadataBarcodeClasses(record.barcodeClasses);
       return metadata;
     })
     .filter((entry): entry is DullyPdfAppOnlyFieldMetadata => entry !== null);

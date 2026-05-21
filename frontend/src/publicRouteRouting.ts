@@ -33,6 +33,14 @@ export function resolveHydratablePublicRoute(pathname: string): HydratablePublic
     return { kind: 'legal', legalKind: 'terms' };
   }
 
+  if (
+    normalizedPath === '/refund-policy' ||
+    normalizedPath === '/refund-and-return-policy' ||
+    normalizedPath === '/return-policy'
+  ) {
+    return { kind: 'legal', legalKind: 'refund' };
+  }
+
   if (normalizedPath === '/blog') {
     return { kind: 'blog-index' };
   }

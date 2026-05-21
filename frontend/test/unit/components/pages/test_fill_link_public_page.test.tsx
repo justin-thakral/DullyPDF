@@ -118,6 +118,57 @@ describe('FillLinkPublicPage', () => {
     expect(await screen.findByText('Thanks, Ada Lovelace. Your response was submitted.')).toBeTruthy();
   });
 
+  it('submits image questions as uploaded image payloads', async () => {
+    const user = userEvent.setup();
+    apiMocks.getPublicFillLink.mockResolvedValue({
+      status: 'active',
+      requireAllFields: true,
+      questions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+        { key: 'profile_photo', label: 'Profile Photo', type: 'image' },
+      ],
+    });
+    apiMocks.submitPublicFillLink.mockResolvedValue({
+      success: true,
+      responseId: 'resp-image',
+      respondentLabel: 'Ada Lovelace',
+      link: {
+        status: 'active',
+        requireAllFields: true,
+        questions: [
+          { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+          { key: 'profile_photo', label: 'Profile Photo', type: 'image' },
+        ],
+      },
+    });
+
+    render(<FillLinkPublicPage token="token-1" />);
+
+    await waitForPublicFillLinkReady();
+    await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
+    const imageFile = new File([new Uint8Array([1, 2, 3])], 'profile.png', { type: 'image/png' });
+    await user.upload(screen.getByLabelText('Profile Photo'), imageFile);
+    expect(await screen.findByText('profile.png')).toBeTruthy();
+
+    await user.click(screen.getByRole('button', { name: 'Submit response' }));
+
+    await waitFor(() => {
+      expect(apiMocks.submitPublicFillLink).toHaveBeenCalledWith('token-1', {
+        answers: {
+          full_name: 'Ada Lovelace',
+          profile_photo: expect.objectContaining({
+            imageDataUrl: expect.stringMatching(/^data:image\/png;base64,/),
+            imageMimeType: 'image/png',
+            imageName: 'profile.png',
+          }),
+        },
+        recaptchaToken: 'recaptcha-token',
+        recaptchaAction: 'fill_link_submit',
+        attemptId: expect.any(String),
+      });
+    });
+  });
+
   it('replaces the form with a completion state after submit until the respondent starts another response', async () => {
     const user = userEvent.setup();
     apiMocks.getPublicFillLink.mockResolvedValue({

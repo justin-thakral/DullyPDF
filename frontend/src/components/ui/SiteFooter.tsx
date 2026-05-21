@@ -9,13 +9,13 @@ const PRODUCT_LINKS = [
 
 const RESOURCE_LINKS = [
   { label: 'Blog', href: '/blog' },
-  { label: 'Form Catalog', href: '/forms' },
   { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
 ];
 
 const LEGAL_LINKS = [
   { label: 'Privacy Policy', href: '/privacy' },
   { label: 'Terms of Service', href: '/terms' },
+  { label: 'Refund Policy', href: '/refund-policy' },
 ];
 
 const SOLUTION_LINKS = [

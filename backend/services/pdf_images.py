@@ -9,6 +9,8 @@ from typing import Any
 
 import fitz
 
+from backend.firebaseDB.storage_service import download_storage_bytes, is_gcs_path
+
 SUPPORTED_IMAGE_MIME_TYPES = {"image/png", "image/jpeg", "image/jpg"}
 MAX_IMAGE_FIELD_BYTES = 10 * 1024 * 1024
 DATA_URL_RE = re.compile(r"^data:(?P<mime>image/[a-z0-9.+-]+);base64,(?P<data>.*)$", re.IGNORECASE | re.DOTALL)
@@ -22,21 +24,61 @@ def _field_type(field: dict[str, Any]) -> str:
     return str(field.get("type") or "").strip().lower()
 
 
+def _image_color_mode(field: dict[str, Any]) -> str:
+    mode = str(field.get("imageColorMode") or "original").strip().lower()
+    if mode in {"grayscale", "grey scale", "gray scale", "greyscale"}:
+        return "grayscale"
+    return "original"
+
+
 def _image_data_url(field: dict[str, Any]) -> str | None:
     data_url = field.get("imageDataUrl")
     if isinstance(data_url, str) and data_url.strip():
         return data_url.strip()
     value = field.get("value")
+    if isinstance(value, dict):
+        nested_data_url = value.get("imageDataUrl")
+        if isinstance(nested_data_url, str) and nested_data_url.strip():
+            return nested_data_url.strip()
     if isinstance(value, str) and value.strip().lower().startswith("data:image/"):
         return value.strip()
     return None
 
 
-def _decode_image_data_url(field: dict[str, Any]) -> bytes | None:
-    data_url = _image_data_url(field)
-    if not data_url:
-        return None
+def _image_path(field: dict[str, Any]) -> str | None:
+    for key in ("imagePath", "imageSourcePath"):
+        value = field.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    value = field.get("value")
+    if isinstance(value, dict):
+        nested_path = value.get("imagePath") or value.get("imageSourcePath")
+        if isinstance(nested_path, str) and nested_path.strip():
+            return nested_path.strip()
+    if isinstance(value, str) and value.strip().startswith("gs://"):
+        return value.strip()
+    return None
 
+
+def _image_mime_type_from_bytes(image_bytes: bytes) -> str:
+    if image_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
+        return "image/png"
+    if image_bytes.startswith(b"\xff\xd8\xff"):
+        return "image/jpeg"
+    raise ImageFieldPayloadError("Only PNG and JPEG image helper fields are supported.")
+
+
+def _validate_image_bytes(image_bytes: bytes) -> bytes:
+    if not image_bytes:
+        raise ImageFieldPayloadError("Image helper field data is empty.")
+    if len(image_bytes) > MAX_IMAGE_FIELD_BYTES:
+        raise ImageFieldPayloadError("Image helper field exceeds the 10MB image limit.")
+    _image_mime_type_from_bytes(image_bytes)
+    return image_bytes
+
+
+def decode_image_data_url_payload(data_url: str) -> tuple[bytes, str]:
+    """Decode and validate a PNG/JPEG data URL supplied by an image field."""
     match = DATA_URL_RE.match(data_url)
     if not match:
         raise ImageFieldPayloadError("Image helper fields must contain a PNG or JPEG data URL.")
@@ -51,11 +93,31 @@ def _decode_image_data_url(field: dict[str, Any]) -> bytes | None:
     except (binascii.Error, ValueError) as exc:
         raise ImageFieldPayloadError("Image helper field data is not valid base64.") from exc
 
-    if not image_bytes:
-        raise ImageFieldPayloadError("Image helper field data is empty.")
-    if len(image_bytes) > MAX_IMAGE_FIELD_BYTES:
-        raise ImageFieldPayloadError("Image helper field exceeds the 10MB image limit.")
+    return _validate_image_bytes(image_bytes), "image/jpeg" if mime_type == "image/jpg" else mime_type
+
+
+def _decode_image_data_url(field: dict[str, Any]) -> bytes | None:
+    data_url = _image_data_url(field)
+    if not data_url:
+        return None
+    image_bytes, _mime_type = decode_image_data_url_payload(data_url)
     return image_bytes
+
+
+def _decode_image_path(field: dict[str, Any]) -> bytes | None:
+    path = _image_path(field)
+    if not path:
+        return None
+    if not is_gcs_path(path):
+        raise ImageFieldPayloadError("Image helper field paths must use allowlisted gs:// storage objects.")
+    return _validate_image_bytes(download_storage_bytes(path))
+
+
+def _decode_image_payload(field: dict[str, Any]) -> bytes | None:
+    image_bytes = _decode_image_data_url(field)
+    if image_bytes is not None:
+        return image_bytes
+    return _decode_image_path(field)
 
 
 def _grayscale_image_bytes(image_bytes: bytes) -> bytes:
@@ -112,10 +174,12 @@ def stamp_image_fields_into_pdf(pdf_bytes: bytes, fields: list[dict[str, Any]]) 
         stamped_any = False
         for field in image_fields:
             field_type = _field_type(field)
-            image_bytes = _decode_image_data_url(field)
+            image_bytes = _decode_image_payload(field)
             if image_bytes is None:
                 continue
-            if field_type not in {"image", "signature"}:
+            if field_type not in {"image", "signature"} or (
+                field_type == "image" and _image_color_mode(field) == "grayscale"
+            ):
                 image_bytes = _grayscale_image_bytes(image_bytes)
             try:
                 page_index = int(field.get("page") or 1) - 1
@@ -132,7 +196,7 @@ def stamp_image_fields_into_pdf(pdf_bytes: bytes, fields: list[dict[str, Any]]) 
                 page.insert_image(
                     target_rect,
                     stream=image_bytes,
-                    keep_proportion=field_type in {"image", "qr", "signature"},
+                    keep_proportion=field_type in {"image", "barcode", "qr", "signature"},
                     overlay=True,
                 )
             except Exception as exc:

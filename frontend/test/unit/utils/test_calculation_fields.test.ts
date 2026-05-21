@@ -4,11 +4,14 @@ import type { FormulaNode, PdfField } from '../../../src/types';
 import {
   buildLinearFormula,
   calculationFieldDefaultsForTool,
+  collectCalculationDependencyIds,
   evaluateFormula,
   extractFormulaDependencies,
   formatFormulaForDisplay,
   getFormulaDependencyFields,
+  resolveCalculatedFieldPreviewValues,
   topologicallySortCalculatedFields,
+  validateCalculationExportReadiness,
   validateFormula,
   wouldCreateCycle,
 } from '../../../src/utils/calculationFields';
@@ -139,6 +142,47 @@ describe('calculation field helpers', () => {
     ]))).toEqual({ ok: true, value: -18 });
   });
 
+  it('resolves chained calculated field preview values with draft overrides', () => {
+    const previewValues = resolveCalculatedFieldPreviewValues([
+      textField('premium', 'Premium', {
+        value: '10',
+        valueType: 'integer',
+        calculation: { role: 'number_input', valueType: 'integer' },
+      }),
+      textField('subtotal', 'Subtotal', {
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_intermediate',
+          valueType: 'integer',
+          formula: {
+            kind: 'binary',
+            op: '+',
+            left: { kind: 'field', fieldId: 'premium' },
+            right: { kind: 'constant', value: 5 },
+          },
+          output: { valueType: 'integer', rounding: 'round' },
+        },
+      }),
+      textField('total', 'Total', {
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: {
+            kind: 'binary',
+            op: '*',
+            left: { kind: 'field', fieldId: 'subtotal' },
+            right: { kind: 'constant', value: 2 },
+          },
+          output: { valueType: 'integer', rounding: 'round' },
+        },
+      }),
+    ], { premium: '12' });
+
+    expect(previewValues.get('subtotal')).toBe('17');
+    expect(previewValues.get('total')).toBe('34');
+  });
+
   it('validates missing fields, invalid operators, and dependency cycles', () => {
     const fields = [
       textField('target', 'Total', {
@@ -235,5 +279,84 @@ describe('calculation field helpers', () => {
     const result = topologicallySortCalculatedFields([left, right]);
 
     expect(new Set(result.cycleFieldIds)).toEqual(new Set(['left', 'right']));
+  });
+
+  it('collects direct and nested dependencies for selected calculated fields', () => {
+    const fields = [
+      textField('premium', 'Premium', { valueType: 'integer' }),
+      textField('subtotal', 'Subtotal', {
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_intermediate',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'premium' },
+        },
+      }),
+      textField('total', 'Total', {
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'subtotal' },
+        },
+      }),
+    ];
+
+    expect(collectCalculationDependencyIds(fields, 'total')).toEqual({
+      directDependencyIds: ['subtotal'],
+      indirectDependencyIds: ['premium'],
+    });
+  });
+
+  it('reports calculation export readiness issues for invalid formulas', () => {
+    const issues = validateCalculationExportReadiness([
+      textField('total', 'Total', {
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+        },
+      }),
+    ]);
+
+    expect(issues).toEqual(['Total: Add at least one formula item.']);
+  });
+
+  it('reports export readiness issues for invalid numeric inputs and evaluation failures', () => {
+    const issues = validateCalculationExportReadiness([
+      textField('premium', 'Premium', {
+        value: '10.25',
+        valueType: 'integer',
+        calculation: { role: 'number_input', valueType: 'integer' },
+      }),
+      textField('divisor', 'Divisor', {
+        value: '0',
+        valueType: 'integer',
+        calculation: { role: 'number_input', valueType: 'integer' },
+      }),
+      textField('total', 'Total', {
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: {
+            kind: 'binary',
+            op: '/',
+            left: { kind: 'field', fieldId: 'premium' },
+            right: { kind: 'field', fieldId: 'divisor' },
+          },
+          output: {
+            valueType: 'integer',
+            rounding: 'round',
+            divideByZeroBehavior: 'validation_error',
+          },
+        },
+      }),
+    ]);
+
+    expect(issues).toEqual(expect.arrayContaining([
+      'Premium: Number input must be an integer.',
+      'Total: Formula divides by zero.',
+    ]));
   });
 });

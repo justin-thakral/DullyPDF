@@ -52,7 +52,7 @@ function main() {
   <link href="${SITE_ORIGIN}/blog" rel="alternate" type="text/html"/>
   <id>${SITE_ORIGIN}/blog</id>
   <updated>${updated}</updated>
-  <icon>${SITE_ORIGIN}/DullyPDFLogoImproved.png</icon>
+  <icon>${SITE_ORIGIN}/DullyPDF_logo_social_full_bleed.png</icon>
 ${entries.join('\n')}
 </feed>
 `;

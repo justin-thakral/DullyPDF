@@ -33,8 +33,12 @@ if [[ ! -d "${CATALOG_ROOT}" ]]; then
 fi
 
 TMP_CORS_FILE="$(mktemp)"
+TMP_SYNC_ROOT=""
 cleanup() {
   rm -f "${TMP_CORS_FILE}" || true
+  if [[ -n "${TMP_SYNC_ROOT}" ]]; then
+    rm -rf "${TMP_SYNC_ROOT}" || true
+  fi
 }
 trap cleanup EXIT
 
@@ -59,8 +63,57 @@ EOF
 echo "Generating incremental form catalog thumbnails..."
 python3 scripts/generate-form-catalog-thumbnails.py --catalog-root "${CATALOG_ROOT}"
 
-PDF_COUNT="$(find "${CATALOG_ROOT}" -type f -name '*.pdf' | wc -l | tr -d ' ')"
-WEBP_COUNT="$(find "${CATALOG_ROOT}" -type f -name '*.webp' | wc -l | tr -d ' ')"
+MANIFEST_PATH="${CATALOG_ROOT}/manifest.json"
+if [[ ! -f "${MANIFEST_PATH}" ]]; then
+  echo "Missing ${MANIFEST_PATH}; cannot determine public catalog asset set." >&2
+  exit 1
+fi
+
+echo "Staging manifest-listed form catalog assets..."
+TMP_SYNC_ROOT="$(mktemp -d)"
+python3 - "${CATALOG_ROOT}" "${TMP_SYNC_ROOT}" <<'PY'
+import json
+import os
+import shutil
+import sys
+from pathlib import Path
+
+catalog_root = Path(sys.argv[1]).resolve()
+sync_root = Path(sys.argv[2]).resolve()
+manifest = json.loads((catalog_root / "manifest.json").read_text())
+forms = [
+    entry
+    for entry in manifest.get("forms", [])
+    if entry.get("ok") is True and entry.get("section") and entry.get("filename")
+]
+missing: list[str] = []
+
+for entry in forms:
+    pdf_path = catalog_root / entry["section"] / entry["filename"]
+    webp_path = pdf_path.with_suffix(".webp")
+    for source_path in (pdf_path, webp_path):
+        if not source_path.is_file():
+            missing.append(str(source_path.relative_to(catalog_root)))
+            continue
+        destination_path = sync_root / source_path.relative_to(catalog_root)
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            os.link(source_path, destination_path)
+        except OSError:
+            shutil.copy2(source_path, destination_path)
+
+if missing:
+    for rel_path in missing[:25]:
+        print(f"Missing manifest asset: {rel_path}", file=sys.stderr)
+    if len(missing) > 25:
+        print(f"... {len(missing) - 25} more missing manifest assets", file=sys.stderr)
+    raise SystemExit(1)
+
+print(f"Staged {len(forms)} PDFs and {len(forms)} thumbnails from manifest.json")
+PY
+
+PDF_COUNT="$(find "${TMP_SYNC_ROOT}" -type f -name '*.pdf' | wc -l | tr -d ' ')"
+WEBP_COUNT="$(find "${TMP_SYNC_ROOT}" -type f -name '*.webp' | wc -l | tr -d ' ')"
 if [[ "${PDF_COUNT}" != "${WEBP_COUNT}" ]]; then
   echo "Thumbnail generation incomplete: pdfs=${PDF_COUNT} webp=${WEBP_COUNT}" >&2
   exit 1
@@ -89,11 +142,11 @@ gcloud storage buckets add-iam-policy-binding "${FORM_CATALOG_BUCKET_URL}" \
   --role roles/storage.objectViewer >/dev/null
 
 echo "Syncing PDFs and thumbnails to ${FORM_CATALOG_BUCKET_URL}..."
-gcloud storage rsync "${CATALOG_ROOT}" "${FORM_CATALOG_BUCKET_URL}" \
+gcloud storage rsync "${TMP_SYNC_ROOT}" "${FORM_CATALOG_BUCKET_URL}" \
   --project "${PROJECT_ID}" \
   --recursive \
   --delete-unmatched-destination-objects \
-  --exclude '.*\.(json|py|pyc|md|txt|mjs)$' \
+  --exclude '.*\.(json|py|pyc|md|txt|mjs|log)$' \
   --cache-control 'public,max-age=31536000,immutable'
 
 if command -v gsutil >/dev/null 2>&1; then

@@ -25,6 +25,7 @@ SUPPORTED_CHECKOUT_KINDS = {
 }
 
 DEFAULT_TRIAL_PERIOD_DAYS = 7
+DEFAULT_CHECKOUT_DISPLAY_NAME = "DullyPDF"
 
 ACTIVE_SUBSCRIPTION_STATUSES = {"active", "trialing", "past_due"}
 REFILL_PRICE_CREDIT_ENV_MAP: tuple[tuple[str, str], ...] = (
@@ -40,6 +41,8 @@ MAX_RECONCILE_CHECKOUT_EVENTS_LIMIT = 500
 REQUIRED_STRIPE_WEBHOOK_EVENTS = {
     "checkout.session.completed",
     "invoice.paid",
+    "invoice.payment_failed",
+    "invoice.updated",
     "customer.subscription.updated",
     "customer.subscription.deleted",
 }
@@ -57,6 +60,10 @@ class BillingCheckoutSessionNotFoundError(RuntimeError):
     """Raised when a targeted Stripe checkout session no longer exists."""
 
 
+class BillingPaymentRecoveryError(RuntimeError):
+    """Raised when a failed-payment recovery sync cannot be completed."""
+
+
 @dataclass(frozen=True)
 class CheckoutPlan:
     kind: str
@@ -72,6 +79,27 @@ class CancelSubscriptionResult:
     current_period_end: Optional[int]
     customer_id: Optional[str]
     price_id: Optional[str]
+
+
+@dataclass(frozen=True)
+class BillingPortalSessionResult:
+    url: str
+    customer_id: str
+
+
+@dataclass(frozen=True)
+class BillingPaymentMethodRecoveryResult:
+    customer_id: str
+    subscription_id: str
+    payment_method_id: Optional[str]
+    payment_method_field: Optional[str]
+    subscription_updated: bool
+    latest_invoice_id: Optional[str]
+    invoice_payment_attempted: bool
+    invoice_payment_succeeded: bool
+    invoice_status: Optional[str]
+    invoice_payment_error: Optional[str]
+    subscription_status: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -140,6 +168,15 @@ def _default_cancel_url() -> str:
     return "http://localhost:5173/?billing=cancel"
 
 
+def _default_billing_portal_return_url() -> str:
+    checkout_success_url = env_value("STRIPE_CHECKOUT_SUCCESS_URL")
+    if checkout_success_url:
+        parsed = urlsplit(checkout_success_url)
+        if parsed.scheme and parsed.netloc:
+            return urlunsplit((parsed.scheme, parsed.netloc, "/ui/profile", "", ""))
+    return "http://localhost:5173/ui/profile"
+
+
 def _resolve_checkout_urls() -> tuple[str, str]:
     success_url = env_value("STRIPE_CHECKOUT_SUCCESS_URL") or _default_success_url()
     cancel_url = env_value("STRIPE_CHECKOUT_CANCEL_URL") or _default_cancel_url()
@@ -147,6 +184,15 @@ def _resolve_checkout_urls() -> tuple[str, str]:
         _append_billing_state_param(success_url, state="success"),
         _append_billing_state_param(cancel_url, state="cancel"),
     )
+
+
+def _resolve_billing_portal_return_url() -> str:
+    return env_value("STRIPE_BILLING_PORTAL_RETURN_URL") or _default_billing_portal_return_url()
+
+
+def _resolve_billing_portal_configuration_id() -> Optional[str]:
+    raw = env_value("STRIPE_BILLING_PORTAL_CONFIGURATION_ID")
+    return (raw or "").strip() or None
 
 
 def _append_billing_state_param(url: str, *, state: str) -> str:
@@ -224,6 +270,18 @@ def _resolve_checkout_label(kind: str) -> str:
     if normalized_kind == CHECKOUT_KIND_FREE_TRIAL:
         return "Free Trial"
     return "Checkout Plan"
+
+
+def _resolve_checkout_branding_settings() -> Dict[str, Any]:
+    display_name = (env_value("STRIPE_CHECKOUT_DISPLAY_NAME") or "").strip() or DEFAULT_CHECKOUT_DISPLAY_NAME
+    branding_settings: Dict[str, Any] = {"display_name": display_name}
+    icon_file = (env_value("STRIPE_CHECKOUT_BRAND_ICON_FILE") or "").strip()
+    if icon_file:
+        branding_settings["icon"] = {
+            "type": "file",
+            "file": icon_file,
+        }
+    return branding_settings
 
 
 def _coerce_optional_int(value: Any) -> Optional[int]:
@@ -469,18 +527,23 @@ def _find_open_pro_checkout_session(
     stripe: Any,
     user_id: str,
     customer_id: Optional[str],
+    checkout_kind: Optional[str] = None,
     checkout_attempt_id: Optional[str] = None,
     checkout_price_id: Optional[str] = None,
 ) -> Optional[Dict[str, Optional[str]]]:
+    normalized_kind = (checkout_kind or "").strip().lower()
+    allowed_kinds = {
+        CHECKOUT_KIND_PRO_MONTHLY,
+        CHECKOUT_KIND_PRO_YEARLY,
+        CHECKOUT_KIND_FREE_TRIAL,
+    }
+    if normalized_kind in allowed_kinds:
+        allowed_kinds = {normalized_kind}
     return _find_open_checkout_session(
         stripe=stripe,
         user_id=user_id,
         customer_id=customer_id,
-        allowed_checkout_kinds={
-            CHECKOUT_KIND_PRO_MONTHLY,
-            CHECKOUT_KIND_PRO_YEARLY,
-            CHECKOUT_KIND_FREE_TRIAL,
-        },
+        allowed_checkout_kinds=allowed_kinds,
         expected_checkout_attempt_id=checkout_attempt_id,
         expected_checkout_price_id=checkout_price_id,
     )
@@ -1106,6 +1169,7 @@ def create_checkout_session(
             stripe=stripe,
             user_id=metadata["userId"],
             customer_id=resolved_customer_id,
+            checkout_kind=plan.kind,
             checkout_price_id=plan.price_id,
         )
         if existing_open_pro_checkout:
@@ -1126,6 +1190,7 @@ def create_checkout_session(
                 stripe=stripe,
                 user_id=metadata["userId"],
                 customer_id=existing_customer_id,
+                checkout_kind=plan.kind,
                 checkout_price_id=plan.price_id,
             )
             if existing_open_pro_checkout:
@@ -1160,6 +1225,7 @@ def create_checkout_session(
         "cancel_url": cancel_url,
         "client_reference_id": metadata["userId"],
         "metadata": metadata,
+        "branding_settings": _resolve_checkout_branding_settings(),
     }
     if plan.mode == "subscription":
         subscription_data: Dict[str, Any] = {"metadata": metadata}
@@ -1256,6 +1322,214 @@ def cancel_subscription_at_period_end(*, subscription_id: str) -> CancelSubscrip
     )
 
 
+def _resolve_stripe_id(value: Any) -> Optional[str]:
+    if isinstance(value, dict):
+        return str(value.get("id") or "").strip() or None
+    return str(value or "").strip() or None
+
+
+def _resolve_customer_payment_method_for_retries(customer_payload: Dict[str, Any]) -> tuple[Optional[str], Optional[str]]:
+    invoice_settings = customer_payload.get("invoice_settings")
+    if not isinstance(invoice_settings, dict):
+        invoice_settings = _stripe_object_to_dict(invoice_settings)
+    payment_method_id = _resolve_stripe_id(invoice_settings.get("default_payment_method"))
+    if payment_method_id:
+        return "default_payment_method", payment_method_id
+    source_id = _resolve_stripe_id(customer_payload.get("default_source"))
+    if source_id:
+        return "default_source", source_id
+    return None, None
+
+
+def _stripe_invoice_payment_error_is_decline(exc: Exception) -> bool:
+    exc_name = exc.__class__.__name__.strip().lower()
+    if exc_name == "carderror" or "carderror" in exc_name:
+        return True
+    try:
+        http_status = int(getattr(exc, "http_status", 0) or 0)
+    except (TypeError, ValueError):
+        http_status = 0
+    if http_status == 402:
+        return True
+    code = str(getattr(exc, "code", "") or "").strip().lower()
+    decline_code = str(getattr(exc, "decline_code", "") or "").strip().lower()
+    decline_codes = {
+        "authentication_required",
+        "card_declined",
+        "expired_card",
+        "incorrect_cvc",
+        "insufficient_funds",
+        "payment_intent_authentication_failure",
+        "payment_method_provider_decline",
+        "processing_error",
+    }
+    return any(value in decline_codes for value in (code, decline_code) if value)
+
+
+def _resolve_stripe_payment_error_message(exc: Exception) -> Optional[str]:
+    return first_nonempty(
+        [
+            str(getattr(exc, "user_message", "") or ""),
+            str(getattr(exc, "message", "") or ""),
+            str(exc),
+        ]
+    )
+
+
+def sync_subscription_payment_method_for_retry(
+    *,
+    customer_id: str,
+    subscription_id: str,
+    latest_invoice_id: Optional[str] = None,
+) -> BillingPaymentMethodRecoveryResult:
+    """Copy Portal-updated customer payment details onto a subscription and retry the open invoice.
+
+    Stripe Customer Portal's payment-method update flow writes the new card to
+    ``customer.invoice_settings.default_payment_method``. Smart Retries check the
+    subscription default first, so the recovering subscription must be updated
+    before retrying payment.
+    """
+    normalized_customer_id = (customer_id or "").strip()
+    normalized_subscription_id = (subscription_id or "").strip()
+    if not normalized_customer_id:
+        raise BillingPaymentRecoveryError("Missing Stripe customer id.")
+    if not normalized_subscription_id:
+        raise BillingPaymentRecoveryError("Missing Stripe subscription id.")
+
+    stripe = _load_stripe_module()
+    secret_key = env_value("STRIPE_SECRET_KEY")
+    if not secret_key:
+        raise BillingConfigError("Missing STRIPE_SECRET_KEY.")
+    stripe.api_key = secret_key
+
+    customer_payload = _stripe_object_to_dict(stripe.Customer.retrieve(normalized_customer_id))
+    payment_method_field, payment_method_id = _resolve_customer_payment_method_for_retries(customer_payload)
+    if not payment_method_id or not payment_method_field:
+        raise BillingPaymentRecoveryError(
+            "No default payment method is available on the Stripe customer after portal update."
+        )
+
+    subscription_payload = _stripe_object_to_dict(stripe.Subscription.retrieve(normalized_subscription_id))
+    subscription_customer_id = _resolve_stripe_id(subscription_payload.get("customer"))
+    if subscription_customer_id and subscription_customer_id != normalized_customer_id:
+        raise BillingPaymentRecoveryError("Stripe subscription does not belong to the linked customer.")
+
+    subscription_updated = False
+    current_subscription_method = _resolve_stripe_id(subscription_payload.get(payment_method_field))
+    if current_subscription_method != payment_method_id:
+        subscription_payload = _stripe_object_to_dict(
+            stripe.Subscription.modify(
+                normalized_subscription_id,
+                **{payment_method_field: payment_method_id},
+            )
+        )
+        subscription_updated = True
+
+    resolved_invoice_id = (latest_invoice_id or "").strip() or _resolve_stripe_id(
+        subscription_payload.get("latest_invoice")
+    )
+    invoice_payment_attempted = False
+    invoice_payment_succeeded = False
+    invoice_status: Optional[str] = None
+    invoice_payment_error: Optional[str] = None
+    if resolved_invoice_id:
+        invoice_payload = _stripe_object_to_dict(stripe.Invoice.retrieve(resolved_invoice_id))
+        invoice_status = str(invoice_payload.get("status") or "").strip().lower() or None
+        invoice_subscription_id = _resolve_stripe_id(invoice_payload.get("subscription"))
+        if invoice_subscription_id and invoice_subscription_id != normalized_subscription_id:
+            raise BillingPaymentRecoveryError("Latest invoice does not belong to the linked subscription.")
+        if invoice_status == "open":
+            invoice_payment_attempted = True
+            pay_kwargs = (
+                {"payment_method": payment_method_id}
+                if payment_method_field == "default_payment_method"
+                else {"source": payment_method_id}
+            )
+            try:
+                invoice_payload = _stripe_object_to_dict(stripe.Invoice.pay(resolved_invoice_id, **pay_kwargs))
+            except Exception as exc:
+                if not _stripe_invoice_payment_error_is_decline(exc):
+                    raise
+                invoice_payment_error = _resolve_stripe_payment_error_message(exc)
+                try:
+                    invoice_payload = _stripe_object_to_dict(stripe.Invoice.retrieve(resolved_invoice_id))
+                except Exception:
+                    invoice_payload = {}
+            invoice_status = str(invoice_payload.get("status") or "").strip().lower() or invoice_status
+            invoice_payment_succeeded = invoice_status == "paid"
+            if invoice_payment_succeeded:
+                subscription_payload = _stripe_object_to_dict(stripe.Subscription.retrieve(normalized_subscription_id))
+        elif invoice_status == "paid":
+            invoice_payment_succeeded = True
+            subscription_payload = _stripe_object_to_dict(stripe.Subscription.retrieve(normalized_subscription_id))
+
+    subscription_status = str(subscription_payload.get("status") or "").strip().lower() or None
+    return BillingPaymentMethodRecoveryResult(
+        customer_id=normalized_customer_id,
+        subscription_id=normalized_subscription_id,
+        payment_method_id=payment_method_id,
+        payment_method_field=payment_method_field,
+        subscription_updated=subscription_updated,
+        latest_invoice_id=resolved_invoice_id,
+        invoice_payment_attempted=invoice_payment_attempted,
+        invoice_payment_succeeded=invoice_payment_succeeded,
+        invoice_status=invoice_status,
+        invoice_payment_error=invoice_payment_error,
+        subscription_status=subscription_status,
+    )
+
+
+def create_billing_portal_session(*, customer_id: str) -> BillingPortalSessionResult:
+    """Create a Stripe-hosted Customer Portal session for payment-method updates."""
+    normalized_customer_id = (customer_id or "").strip()
+    if not normalized_customer_id:
+        raise BillingConfigError("Missing Stripe customer id.")
+
+    stripe = _load_stripe_module()
+    secret_key = env_value("STRIPE_SECRET_KEY")
+    if not secret_key:
+        raise BillingConfigError("Missing STRIPE_SECRET_KEY.")
+
+    stripe.api_key = secret_key
+    portal = getattr(stripe, "billing_portal", None)
+    portal_session_api = getattr(portal, "Session", None)
+    create_session = getattr(portal_session_api, "create", None)
+    if not callable(create_session):
+        raise BillingConfigError("Stripe SDK does not expose billing portal session creation.")
+
+    create_kwargs: Dict[str, Any] = {
+        "customer": normalized_customer_id,
+        "return_url": _resolve_billing_portal_return_url(),
+        "flow_data": {
+            "type": "payment_method_update",
+            "after_completion": {
+                "type": "redirect",
+                "redirect": {
+                    "return_url": _append_billing_state_param(
+                        _resolve_billing_portal_return_url(),
+                        state="payment-method-updated",
+                    ),
+                },
+            },
+        },
+    }
+    configuration_id = _resolve_billing_portal_configuration_id()
+    if configuration_id:
+        create_kwargs["configuration"] = configuration_id
+
+    session = create_session(**create_kwargs)
+    payload = _stripe_object_to_dict(session)
+    portal_url = first_nonempty(
+        [
+            str(payload.get("url") or ""),
+            str(getattr(session, "url", "") or ""),
+        ]
+    )
+    if not portal_url:
+        raise BillingConfigError("Stripe Billing Portal did not return a redirect URL.")
+    return BillingPortalSessionResult(url=portal_url, customer_id=normalized_customer_id)
+
+
 def construct_webhook_event(*, payload: bytes, signature: str) -> Dict[str, Any]:
     """Validate and decode a Stripe webhook event."""
     stripe = _load_stripe_module()
@@ -1297,6 +1571,11 @@ def extract_price_ids_from_invoice(invoice: Dict[str, Any]) -> list[str]:
                 price_id = str(plan.get("id") or "").strip() or None
             elif plan:
                 price_id = str(plan).strip() or None
+        if not price_id:
+            pricing = entry.get("pricing")
+            price_details = pricing.get("price_details") if isinstance(pricing, dict) else None
+            if isinstance(price_details, dict):
+                price_id = str(price_details.get("price") or "").strip() or None
         if price_id:
             price_ids.append(price_id)
     return price_ids

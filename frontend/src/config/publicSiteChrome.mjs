@@ -12,6 +12,7 @@ export const PUBLIC_SITE_FOOTER_GROUPS = [
     key: 'product',
     title: 'Product',
     links: [
+      { label: 'Form Catalog', href: '/forms' },
       { label: 'Getting Started', href: '/usage-docs/getting-started' },
       { label: 'Usage Docs', href: '/usage-docs' },
     ],
@@ -30,6 +31,7 @@ export const PUBLIC_SITE_FOOTER_GROUPS = [
     links: [
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Terms of Service', href: '/terms' },
+      { label: 'Refund Policy', href: '/refund-policy' },
     ],
   },
   {

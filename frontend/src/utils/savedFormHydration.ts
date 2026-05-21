@@ -31,6 +31,7 @@ import {
 } from './fieldFonts';
 import { buildRadioGroups } from './radioGroups';
 import { deriveRadioGroupSuggestionsFromCheckboxRules } from './openAiFields';
+import { normalizeImageColorMode } from './images';
 
 type FillRulesSource = {
   fillRules?: {
@@ -315,12 +316,23 @@ function normalizeField(value: unknown): PdfField | null {
   if (type === 'text' && record.textAlign !== undefined && record.textAlign !== null) {
     field.textAlign = sanitizeFieldTextAlignmentOverride(record.textAlign, 'global');
   }
-  for (const key of ['imageDataUrl', 'imageMimeType', 'imageName', 'pdf417Name', 'pdf417Dob'] as const) {
+  for (const key of [
+    'imageDataUrl',
+    'imagePath',
+    'imageSourcePath',
+    'imageMimeType',
+    'imageName',
+    'pdf417Name',
+    'pdf417Dob',
+  ] as const) {
     const raw = record[key];
     if (raw === undefined) {
       continue;
     }
     field[key] = raw === null ? null : String(raw);
+  }
+  if (record.imageColorMode !== undefined && record.imageColorMode !== null) {
+    field.imageColorMode = normalizeImageColorMode(record.imageColorMode);
   }
   if (record.pdf417Data === null) {
     field.pdf417Data = null;

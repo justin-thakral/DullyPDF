@@ -1,8 +1,10 @@
 from fastapi import HTTPException
 from starlette import status
 
+from backend.firebaseDB.pdf_download_database import PdfDownloadMonthlyUsageRecord
 from backend.firebaseDB.user_database import (
     UserBillingRecord,
+    UserBillingPaymentRecoveryRecord,
     UserDowngradeRetentionRecord,
     UserProfileRecord,
 )
@@ -88,6 +90,21 @@ def test_profile_response_shape_for_base_and_god(
     )
     mocker.patch.object(
         app_main,
+        "get_pdf_download_monthly_usage",
+        return_value=PdfDownloadMonthlyUsageRecord(
+            id="user_base__2026-05",
+            user_id=base_user.app_user_id,
+            month_key="2026-05",
+            download_count=7,
+            event_count=4,
+            workspace_download_count=3,
+            group_download_pdf_count=4,
+            created_at="2026-05-01T00:00:00+00:00",
+            updated_at="2026-05-20T00:00:00+00:00",
+        ),
+    )
+    mocker.patch.object(
+        app_main,
         "_resolve_role_limits",
         return_value={
             "detectMaxPages": 5,
@@ -98,6 +115,7 @@ def test_profile_response_shape_for_base_and_god(
             "templateApiRequestsMonthlyMax": 250,
             "templateApiMaxPages": 25,
             "signingRequestsMonthlyMax": 25,
+            "pdfDownloadsMonthlyMax": 25,
         },
     )
     response = client.get("/api/profile", headers=auth_headers)
@@ -112,6 +130,14 @@ def test_profile_response_shape_for_base_and_god(
     assert response.json()["limits"]["fillLinkResponsesMonthlyMax"] == 25
     assert response.json()["limits"]["templateApiActiveMax"] == 1
     assert response.json()["limits"]["signingRequestsMonthlyMax"] == 25
+    assert response.json()["limits"]["pdfDownloadsMonthlyMax"] == 25
+    assert response.json()["pdfDownloadsThisMonth"] == 7
+    assert response.json()["pdfDownloadsRemaining"] == 18
+    assert response.json()["pdfDownloadUsageMonth"] == "2026-05"
+    assert response.json()["pdfDownloadWorkspaceThisMonth"] == 3
+    assert response.json()["pdfDownloadGroupThisMonth"] == 4
+    assert response.json()["pdfDownloadBatchesThisMonth"] == 4
+    assert response.json()["pdfDownloadResetAt"] == "2026-06-01T00:00:00+00:00"
     assert response.json()["retention"]["status"] == "grace_period"
     assert response.json()["retention"]["pendingDeleteTemplateIds"] == ["tpl-9"]
     assert response.json()["billing"] == {
@@ -122,6 +148,7 @@ def test_profile_response_shape_for_base_and_god(
         "cancelAtPeriodEnd": None,
         "cancelAt": None,
         "currentPeriodEnd": None,
+        "paymentRecovery": None,
         "trialUsed": False,
     }
     assert response.json()["creditPricing"]["pageBucketSize"] >= 1
@@ -188,6 +215,7 @@ def test_profile_response_shape_for_pro_includes_full_limit_matrix(
             "templateApiRequestsMonthlyMax": 10000,
             "templateApiMaxPages": 250,
             "signingRequestsMonthlyMax": 10000,
+            "pdfDownloadsMonthlyMax": None,
         },
     )
 
@@ -212,7 +240,15 @@ def test_profile_response_shape_for_pro_includes_full_limit_matrix(
         "templateApiRequestsMonthlyMax": 10000,
         "templateApiMaxPages": 250,
         "signingRequestsMonthlyMax": 10000,
+        "pdfDownloadsMonthlyMax": None,
     }
+    assert payload["pdfDownloadsThisMonth"] == 0
+    assert payload["pdfDownloadsRemaining"] is None
+    assert payload["pdfDownloadUsageMonth"] is None
+    assert payload["pdfDownloadWorkspaceThisMonth"] == 0
+    assert payload["pdfDownloadGroupThisMonth"] == 0
+    assert payload["pdfDownloadBatchesThisMonth"] == 0
+    assert payload["pdfDownloadResetAt"]
     sync_mock.assert_not_called()
 
 
@@ -328,6 +364,65 @@ def test_profile_includes_billing_catalog_when_enabled(
     assert payload["billing"]["currentPeriodEnd"] is None
     assert payload["billing"]["plans"]["pro_monthly"]["unitAmount"] == 1000
     assert payload["creditPricing"]["renameBaseCost"] >= 1
+
+
+def test_profile_includes_payment_recovery_state_when_subscription_is_past_due(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=True)
+    mocker.patch.object(app_main, "sync_user_downgrade_retention", return_value=None)
+    mocker.patch.object(app_main, "resolve_checkout_catalog", return_value={})
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="pro",
+            openai_credits_remaining=500,
+        ),
+    )
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid=base_user.app_user_id,
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_123",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="Card declined",
+                failed_at=1775000100,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775604900,
+            ),
+        ),
+    )
+
+    response = client.get("/api/profile", headers=auth_headers)
+
+    assert response.status_code == 200
+    recovery = response.json()["billing"]["paymentRecovery"]
+    assert recovery == {
+        "status": "payment_failed",
+        "latestInvoiceId": "in_123",
+        "latestInvoiceStatus": "open",
+        "failureCode": "insufficient_funds",
+        "failedAt": 1775000100,
+        "nextPaymentAttempt": 1775086500,
+        "recoveryDeadline": 1775604900,
+    }
 
 
 def test_profile_marks_inactive_subscription_as_not_subscribed(

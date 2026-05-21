@@ -86,6 +86,7 @@ const defaultLimits: ProfileLimits = {
   templateApiRequestsMonthlyMax: 250,
   templateApiMaxPages: 25,
   signingRequestsMonthlyMax: 25,
+  pdfDownloadsMonthlyMax: 25,
 };
 
 const defaultSavedForms: SavedFormSummary[] = [
@@ -148,7 +149,7 @@ function resolveHarnessScenario(targetWindow: HarnessWindow): HarnessScenario {
   };
 }
 
-function HarnessApp() {
+export function HarnessApp() {
   const scenario = useMemo(() => resolveHarnessScenario(harnessWindow), []);
   const { retention, limits, savedForms, profile, billingEnabled, dialogInitiallyOpen, options } = scenario;
   const [open, setOpen] = useState(dialogInitiallyOpen);

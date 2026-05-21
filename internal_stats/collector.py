@@ -8,11 +8,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import json
 import logging
 import os
+import re
 from typing import Any, Dict, Optional
 
-from firebase_admin import credentials, firestore, get_app, initialize_app
+from firebase_admin import credentials, firestore, get_app, initialize_app, storage
 
 from backend.ai.status import OPENAI_JOB_STATUS_COMPLETE
 from backend.firebaseDB.detection_database import DETECTION_REQUESTS_COLLECTION
@@ -21,6 +23,13 @@ from backend.firebaseDB.fill_link_database import (
     FILL_LINKS_COLLECTION,
 )
 from backend.firebaseDB.openai_job_database import OPENAI_JOBS_COLLECTION
+from backend.firebaseDB.pdf_download_database import (
+    PDF_DOWNLOAD_EVENTS_COLLECTION,
+    PDF_DOWNLOAD_USAGE_COUNTERS_COLLECTION,
+    STATUS_COMMITTED as PDF_DOWNLOAD_STATUS_COMMITTED,
+    STATUS_REJECTED_INVALID as PDF_DOWNLOAD_STATUS_REJECTED_INVALID,
+    STATUS_REJECTED_LIMIT as PDF_DOWNLOAD_STATUS_REJECTED_LIMIT,
+)
 from backend.firebaseDB.signing_database import SIGNING_REQUESTS_COLLECTION
 from backend.firebaseDB.structured_fill_database import (
     STATUS_COMMITTED,
@@ -45,10 +54,36 @@ logger = logging.getLogger(__name__)
 PROD_FIREBASE_PROJECT_ID = "dullypdf"
 SIGNING_STATUS_COMPLETED = "completed"
 _APP_NAME = "internal-stats"
+PROD_STORAGE_BUCKETS = frozenset(
+    {
+        "dullypdf-forms-east4",
+        "dullypdf-templates-east4",
+        "dullypdf-sessions-east4",
+    }
+)
+SAVED_FORM_EDITOR_SNAPSHOT_METADATA_KEY = "editorSnapshot"
+CALCULATION_FIELD_ROLES = frozenset(
+    {
+        "number_input",
+        "calculated_output",
+        "calculated_intermediate",
+        "external_imported_calculation",
+    }
+)
+DEFAULT_GLOBAL_FIELD_FONT = "default"
+DEFAULT_GLOBAL_FIELD_FONT_SIZE = "auto"
+DEFAULT_GLOBAL_FIELD_FONT_COLOR = "#000000"
+PDF_DOWNLOAD_BASE_MONTHLY_LIMIT = 25
+PDF_DOWNLOAD_BASE_EIGHTY_PERCENT_THRESHOLD = 20
+PDF_DOWNLOAD_HIGH_VOLUME_PRO_THRESHOLD = 100
 
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def _current_month_key() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m")
 
 
 def _coerce_text(value: Any) -> Optional[str]:
@@ -108,16 +143,20 @@ def require_prod_project_configuration() -> None:
             )
 
 
-def _get_firestore_client() -> firestore.Client:
+def _get_firebase_app():
     require_prod_project_configuration()
     try:
-        app = get_app(_APP_NAME)
+        return get_app(_APP_NAME)
     except ValueError:
-        app = initialize_app(
+        return initialize_app(
             credentials.ApplicationDefault(),
             {"projectId": PROD_FIREBASE_PROJECT_ID},
             name=_APP_NAME,
         )
+
+
+def _get_firestore_client() -> firestore.Client:
+    app = _get_firebase_app()
     client = firestore.client(app=app)
     actual_project = _coerce_text(getattr(client, "project", None))
     if actual_project != PROD_FIREBASE_PROJECT_ID:
@@ -126,6 +165,17 @@ def _get_firestore_client() -> firestore.Client:
             f"{PROD_FIREBASE_PROJECT_ID}, got {actual_project or 'unset'}."
         )
     return client
+
+
+def _download_storage_json(bucket_path: str) -> Any:
+    match = re.match(r"^gs://([^/]+)/(.+)$", str(bucket_path or "").strip())
+    if not match:
+        raise ValueError("Invalid editor snapshot storage path.")
+    bucket_name, object_path = match.groups()
+    if bucket_name not in PROD_STORAGE_BUCKETS:
+        raise ValueError(f"Refusing to read non-production stats bucket: {bucket_name}")
+    body = storage.bucket(bucket_name, app=_get_firebase_app()).blob(object_path).download_as_bytes()
+    return json.loads(body.decode("utf-8"))
 
 
 @dataclass
@@ -137,6 +187,21 @@ class UserStatsAccumulator:
     detections: int = 0
     detection_pages: int = 0
     saved_templates: int = 0
+    downloaded_pdfs: int = 0
+    downloaded_editable_pdfs: int = 0
+    downloaded_flat_pdfs: int = 0
+    downloaded_group_pdfs: int = 0
+    downloaded_pdfs_this_month: int = 0
+    pdf_download_limit_rejections: int = 0
+    pdf_download_invalid_rejections: int = 0
+    pdf_downloads_remaining_this_month: Optional[int] = None
+    qr_barcodes_created: int = 0
+    pdf417_barcodes_created: int = 0
+    one_d_barcodes_created: int = 0
+    calculation_fields: int = 0
+    custom_appearance_templates: int = 0
+    custom_appearance_field_overrides: int = 0
+    has_custom_appearance: bool = False
     credits_used: int = 0
     fill_links: int = 0
     active_fill_links: int = 0
@@ -172,6 +237,12 @@ class UserStatsAccumulator:
         return (
             self.detections
             + self.saved_templates
+            + self.downloaded_pdfs
+            + self.downloaded_pdfs_this_month
+            + self.qr_barcodes_created
+            + self.pdf417_barcodes_created
+            + self.one_d_barcodes_created
+            + self.calculation_fields
             + self.credits_used
             + self.fill_links
             + self.fill_link_responses
@@ -191,6 +262,26 @@ class UserStatsAccumulator:
             "detections": self.detections,
             "detectionPages": self.detection_pages,
             "savedTemplates": self.saved_templates,
+            "downloadedPdfs": self.downloaded_pdfs,
+            "downloadedEditablePdfs": self.downloaded_editable_pdfs,
+            "downloadedFlatPdfs": self.downloaded_flat_pdfs,
+            "downloadedGroupPdfs": self.downloaded_group_pdfs,
+            "downloadedPdfsThisMonth": self.downloaded_pdfs_this_month,
+            "pdfDownloadLimitRejections": self.pdf_download_limit_rejections,
+            "pdfDownloadInvalidRejections": self.pdf_download_invalid_rejections,
+            "pdfDownloadsRemainingThisMonth": self.pdf_downloads_remaining_this_month,
+            "qrBarcodesCreated": self.qr_barcodes_created,
+            "pdf417BarcodesCreated": self.pdf417_barcodes_created,
+            "oneDBarcodesCreated": self.one_d_barcodes_created,
+            "barcodeFieldsCreated": (
+                self.qr_barcodes_created
+                + self.pdf417_barcodes_created
+                + self.one_d_barcodes_created
+            ),
+            "calculationFields": self.calculation_fields,
+            "customAppearanceTemplates": self.custom_appearance_templates,
+            "customAppearanceFieldOverrides": self.custom_appearance_field_overrides,
+            "hasCustomAppearance": self.has_custom_appearance,
             "creditsUsed": self.credits_used,
             "fillLinks": self.fill_links,
             "activeFillLinks": self.active_fill_links,
@@ -270,11 +361,106 @@ def _scan_detection_requests(
     return total_requests, total_pages
 
 
+def _template_editor_snapshot_path(metadata: Any) -> Optional[str]:
+    if not isinstance(metadata, dict):
+        return None
+    manifest = metadata.get(SAVED_FORM_EDITOR_SNAPSHOT_METADATA_KEY)
+    if not isinstance(manifest, dict):
+        return None
+    return _coerce_text(manifest.get("path"))
+
+
+def _field_has_calculation_metadata(field: Any) -> bool:
+    if not isinstance(field, dict):
+        return False
+    calculation = field.get("calculation")
+    if not isinstance(calculation, dict):
+        return False
+    return str(calculation.get("role") or "").strip() in CALCULATION_FIELD_ROLES
+
+
+def _has_global_appearance_change(appearance: Any) -> bool:
+    if not isinstance(appearance, dict):
+        return False
+    global_font = str(appearance.get("globalFieldFont") or DEFAULT_GLOBAL_FIELD_FONT).strip()
+    global_size = str(appearance.get("globalFieldFontSize") or DEFAULT_GLOBAL_FIELD_FONT_SIZE).strip()
+    global_color = str(appearance.get("globalFieldFontColor") or DEFAULT_GLOBAL_FIELD_FONT_COLOR).strip().lower()
+    return (
+        global_font != DEFAULT_GLOBAL_FIELD_FONT
+        or global_size != DEFAULT_GLOBAL_FIELD_FONT_SIZE
+        or global_color != DEFAULT_GLOBAL_FIELD_FONT_COLOR
+    )
+
+
+def _field_has_appearance_override(field: Any) -> bool:
+    if not isinstance(field, dict) or str(field.get("type") or "text").strip().lower() != "text":
+        return False
+    font_name = str(field.get("fontName") or "").strip()
+    if font_name and font_name != "global":
+        return True
+    font_size = str(field.get("fontSize") or "").strip()
+    if font_size and font_size not in {"global", DEFAULT_GLOBAL_FIELD_FONT_SIZE}:
+        return True
+    font_color = str(field.get("fontColor") or "").strip().lower()
+    if font_color and font_color not in {"global", DEFAULT_GLOBAL_FIELD_FONT_COLOR}:
+        return True
+    return False
+
+
+def _analyze_editor_snapshot(snapshot: Any) -> Dict[str, int | bool]:
+    """Count feature-bearing fields in a saved-form editor snapshot.
+
+    The scan is O(F) for F fields in the snapshot. The caller performs the
+    storage read once per template because editor snapshots are stored as JSON
+    blobs instead of inline Firestore fields.
+    """
+
+    fields = snapshot.get("fields") if isinstance(snapshot, dict) else None
+    field_list = fields if isinstance(fields, list) else []
+    qr_count = 0
+    pdf417_count = 0
+    one_d_count = 0
+    calculation_count = 0
+    appearance_override_count = 0
+    for field in field_list:
+        if not isinstance(field, dict):
+            continue
+        field_type = str(field.get("type") or "text").strip().lower()
+        if field_type == "qr":
+            qr_count += 1
+        elif field_type == "pdf417":
+            pdf417_count += 1
+        elif field_type == "barcode":
+            one_d_count += 1
+        if _field_has_calculation_metadata(field):
+            calculation_count += 1
+        if _field_has_appearance_override(field):
+            appearance_override_count += 1
+    global_appearance_changed = _has_global_appearance_change(
+        snapshot.get("appearance") if isinstance(snapshot, dict) else None
+    )
+    return {
+        "qrBarcodes": qr_count,
+        "pdf417Barcodes": pdf417_count,
+        "oneDBarcodes": one_d_count,
+        "calculationFields": calculation_count,
+        "appearanceFieldOverrides": appearance_override_count,
+        "hasCustomAppearance": bool(global_appearance_changed or appearance_override_count > 0),
+    }
+
+
 def _scan_saved_templates(
     client: firestore.Client,
     accumulators: Dict[str, UserStatsAccumulator],
-) -> int:
+) -> Dict[str, int]:
     total_templates = 0
+    total_qr_barcodes = 0
+    total_pdf417_barcodes = 0
+    total_one_d_barcodes = 0
+    total_calculation_fields = 0
+    total_custom_appearance_templates = 0
+    total_custom_appearance_field_overrides = 0
+    total_snapshot_load_failures = 0
     for snapshot in client.collection(TEMPLATES_COLLECTION).stream():
         data = snapshot.to_dict() or {}
         user_id = _coerce_text(data.get("user_id"))
@@ -284,7 +470,157 @@ def _scan_saved_templates(
         user = _get_user(accumulators, user_id)
         user.saved_templates += 1
         user.touch(data.get("updated_at"), data.get("created_at"))
-    return total_templates
+        snapshot_path = _template_editor_snapshot_path(data.get("metadata"))
+        if not snapshot_path:
+            continue
+        try:
+            editor_snapshot = _download_storage_json(snapshot_path)
+        except Exception as exc:
+            total_snapshot_load_failures += 1
+            logger.warning(
+                "Failed to load saved-form editor snapshot for stats template=%s path=%s error=%s",
+                snapshot.id,
+                snapshot_path,
+                exc,
+            )
+            continue
+
+        feature_stats = _analyze_editor_snapshot(editor_snapshot)
+        qr_barcodes = _coerce_non_negative_int(feature_stats.get("qrBarcodes"))
+        pdf417_barcodes = _coerce_non_negative_int(feature_stats.get("pdf417Barcodes"))
+        one_d_barcodes = _coerce_non_negative_int(feature_stats.get("oneDBarcodes"))
+        calculation_fields = _coerce_non_negative_int(feature_stats.get("calculationFields"))
+        appearance_overrides = _coerce_non_negative_int(feature_stats.get("appearanceFieldOverrides"))
+        has_custom_appearance = bool(feature_stats.get("hasCustomAppearance"))
+
+        total_qr_barcodes += qr_barcodes
+        total_pdf417_barcodes += pdf417_barcodes
+        total_one_d_barcodes += one_d_barcodes
+        total_calculation_fields += calculation_fields
+        total_custom_appearance_field_overrides += appearance_overrides
+        if has_custom_appearance:
+            total_custom_appearance_templates += 1
+
+        user.qr_barcodes_created += qr_barcodes
+        user.pdf417_barcodes_created += pdf417_barcodes
+        user.one_d_barcodes_created += one_d_barcodes
+        user.calculation_fields += calculation_fields
+        user.custom_appearance_field_overrides += appearance_overrides
+        if has_custom_appearance:
+            user.custom_appearance_templates += 1
+            user.has_custom_appearance = True
+
+    return {
+        "totalTemplates": total_templates,
+        "totalQrBarcodes": total_qr_barcodes,
+        "totalPdf417Barcodes": total_pdf417_barcodes,
+        "totalOneDBarcodes": total_one_d_barcodes,
+        "totalBarcodeFields": total_qr_barcodes + total_pdf417_barcodes + total_one_d_barcodes,
+        "totalCalculationFields": total_calculation_fields,
+        "totalCustomAppearanceTemplates": total_custom_appearance_templates,
+        "totalCustomAppearanceFieldOverrides": total_custom_appearance_field_overrides,
+        "totalTemplateSnapshotLoadFailures": total_snapshot_load_failures,
+    }
+
+
+def _scan_pdf_download_events(
+    client: firestore.Client,
+    accumulators: Dict[str, UserStatsAccumulator],
+) -> Dict[str, int]:
+    total_downloaded_pdfs = 0
+    total_editable_pdfs = 0
+    total_flat_pdfs = 0
+    total_group_pdfs = 0
+    total_limit_rejections = 0
+    total_invalid_rejections = 0
+    for snapshot in client.collection(PDF_DOWNLOAD_EVENTS_COLLECTION).stream():
+        data = snapshot.to_dict() or {}
+        user_id = _coerce_text(data.get("user_id"))
+        if not user_id:
+            continue
+        status = _coerce_text(data.get("status")) or PDF_DOWNLOAD_STATUS_COMMITTED
+        pdf_count = _coerce_non_negative_int(data.get("pdf_count"))
+        if pdf_count <= 0:
+            continue
+        user = _get_user(accumulators, user_id)
+        if status == PDF_DOWNLOAD_STATUS_REJECTED_LIMIT:
+            total_limit_rejections += 1
+            user.pdf_download_limit_rejections += 1
+            user.touch(data.get("created_at"))
+            continue
+        if status == PDF_DOWNLOAD_STATUS_REJECTED_INVALID:
+            total_invalid_rejections += 1
+            user.pdf_download_invalid_rejections += 1
+            user.touch(data.get("created_at"))
+            continue
+        if status != PDF_DOWNLOAD_STATUS_COMMITTED:
+            continue
+        export_mode = _coerce_text(data.get("export_mode")) or "editable"
+        source = _coerce_text(data.get("source")) or ""
+        total_downloaded_pdfs += pdf_count
+        user.downloaded_pdfs += pdf_count
+        if export_mode == "flat":
+            total_flat_pdfs += pdf_count
+            user.downloaded_flat_pdfs += pdf_count
+        elif export_mode == "editable":
+            total_editable_pdfs += pdf_count
+            user.downloaded_editable_pdfs += pdf_count
+        if source == "workspace_group_download":
+            total_group_pdfs += pdf_count
+            user.downloaded_group_pdfs += pdf_count
+        user.touch(data.get("created_at"))
+    return {
+        "totalDownloadedPdfs": total_downloaded_pdfs,
+        "totalDownloadedEditablePdfs": total_editable_pdfs,
+        "totalDownloadedFlatPdfs": total_flat_pdfs,
+        "totalDownloadedGroupPdfs": total_group_pdfs,
+        "totalPdfDownloadLimitRejections": total_limit_rejections,
+        "totalPdfDownloadInvalidRejections": total_invalid_rejections,
+    }
+
+
+def _scan_pdf_download_usage_counters(
+    client: firestore.Client,
+    accumulators: Dict[str, UserStatsAccumulator],
+) -> Dict[str, int]:
+    month_key = _current_month_key()
+    total_current_month_downloads = 0
+    users_with_current_month_downloads = 0
+    base_users_at_eighty_percent = 0
+    pro_users_high_volume = 0
+
+    for snapshot in client.collection(PDF_DOWNLOAD_USAGE_COUNTERS_COLLECTION).stream():
+        data = snapshot.to_dict() or {}
+        if (_coerce_text(data.get("month_key")) or "") != month_key:
+            continue
+        user_id = _coerce_text(data.get("user_id"))
+        if not user_id:
+            continue
+        download_count = _coerce_non_negative_int(data.get("download_count"))
+        total_current_month_downloads += download_count
+        if download_count > 0:
+            users_with_current_month_downloads += 1
+        user = _get_user(accumulators, user_id)
+        user.downloaded_pdfs_this_month = max(user.downloaded_pdfs_this_month, download_count)
+        user.touch(data.get("updated_at"), data.get("created_at"))
+
+        if user.role == ROLE_BASE:
+            user.pdf_downloads_remaining_this_month = max(0, PDF_DOWNLOAD_BASE_MONTHLY_LIMIT - download_count)
+            if download_count >= PDF_DOWNLOAD_BASE_EIGHTY_PERCENT_THRESHOLD:
+                base_users_at_eighty_percent += 1
+        elif user.role == ROLE_PRO:
+            user.pdf_downloads_remaining_this_month = None
+            if download_count >= PDF_DOWNLOAD_HIGH_VOLUME_PRO_THRESHOLD:
+                pro_users_high_volume += 1
+        else:
+            user.pdf_downloads_remaining_this_month = None
+
+    return {
+        "totalPdfDownloadsThisMonth": total_current_month_downloads,
+        "totalPdfDownloadUsersThisMonth": users_with_current_month_downloads,
+        "totalBaseUsersAt80PctPdfDownloads": base_users_at_eighty_percent,
+        "totalProUsersHighPdfDownloadVolume": pro_users_high_volume,
+    }
 
 
 def _scan_openai_jobs(
@@ -472,15 +808,19 @@ def build_internal_stats_snapshot() -> Dict[str, Any]:
     """Build one in-memory snapshot by scanning each usage collection once.
 
     The dashboard is an operator-only local tool, so an O(C + D + T + J + L + R)
-    full-collection pass is an acceptable tradeoff here. Reusing a single
-    Firestore client keeps the work to one auth/session setup per refresh.
+    full-collection pass is an acceptable tradeoff here. Saved-template feature
+    adoption also reads one editor-snapshot JSON blob per saved template, making
+    that portion O(T + F) for T templates and F total fields. Reusing a single
+    Firebase app keeps the work to one auth/session setup per refresh.
     """
 
     client = _get_firestore_client()
     accumulators: Dict[str, UserStatsAccumulator] = {}
     role_counts = _scan_users(client, accumulators)
     total_detections, total_detection_pages = _scan_detection_requests(client, accumulators)
-    total_saved_templates = _scan_saved_templates(client, accumulators)
+    saved_template_totals = _scan_saved_templates(client, accumulators)
+    pdf_download_totals = _scan_pdf_download_events(client, accumulators)
+    pdf_download_counter_totals = _scan_pdf_download_usage_counters(client, accumulators)
     total_credits_used = _scan_openai_jobs(client, accumulators)
     total_fill_links, total_active_fill_links = _scan_fill_links(client, accumulators)
     total_fill_link_responses = _scan_fill_link_responses(client, accumulators)
@@ -513,7 +853,26 @@ def build_internal_stats_snapshot() -> Dict[str, Any]:
             "roleCounts": role_counts,
             "totalDetections": total_detections,
             "totalDetectionPages": total_detection_pages,
-            "totalSavedTemplates": total_saved_templates,
+            "totalSavedTemplates": saved_template_totals["totalTemplates"],
+            "totalDownloadedPdfs": pdf_download_totals["totalDownloadedPdfs"],
+            "totalDownloadedEditablePdfs": pdf_download_totals["totalDownloadedEditablePdfs"],
+            "totalDownloadedFlatPdfs": pdf_download_totals["totalDownloadedFlatPdfs"],
+            "totalDownloadedGroupPdfs": pdf_download_totals["totalDownloadedGroupPdfs"],
+            "totalPdfDownloadsThisMonth": pdf_download_counter_totals["totalPdfDownloadsThisMonth"],
+            "totalPdfDownloadUsersThisMonth": pdf_download_counter_totals["totalPdfDownloadUsersThisMonth"],
+            "totalBaseUsersAt80PctPdfDownloads": pdf_download_counter_totals["totalBaseUsersAt80PctPdfDownloads"],
+            "totalProUsersHighPdfDownloadVolume": pdf_download_counter_totals["totalProUsersHighPdfDownloadVolume"],
+            "totalPdfDownloadLimitRejections": pdf_download_totals["totalPdfDownloadLimitRejections"],
+            "totalPdfDownloadInvalidRejections": pdf_download_totals["totalPdfDownloadInvalidRejections"],
+            "totalQrBarcodesCreated": saved_template_totals["totalQrBarcodes"],
+            "totalPdf417BarcodesCreated": saved_template_totals["totalPdf417Barcodes"],
+            "totalOneDBarcodesCreated": saved_template_totals["totalOneDBarcodes"],
+            "totalBarcodeFieldsCreated": saved_template_totals["totalBarcodeFields"],
+            "totalCalculationFields": saved_template_totals["totalCalculationFields"],
+            "totalUsersWithCustomAppearance": sum(1 for user in users if bool(user.get("hasCustomAppearance"))),
+            "totalCustomAppearanceTemplates": saved_template_totals["totalCustomAppearanceTemplates"],
+            "totalCustomAppearanceFieldOverrides": saved_template_totals["totalCustomAppearanceFieldOverrides"],
+            "totalTemplateSnapshotLoadFailures": saved_template_totals["totalTemplateSnapshotLoadFailures"],
             "totalCreditsUsed": total_credits_used,
             "totalFillLinks": total_fill_links,
             "totalActiveFillLinks": total_active_fill_links,

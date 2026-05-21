@@ -440,6 +440,102 @@ def test_build_template_api_schema_excludes_signature_widgets_from_public_contra
     assert "signature" not in schema["exampleData"]
 
 
+def test_build_template_api_schema_excludes_calculated_outputs_from_public_contract() -> None:
+    snapshot = {
+        "version": 1,
+        "defaultExportMode": "flat",
+        "fields": [
+            {
+                "id": "base",
+                "name": "base_amount",
+                "type": "text",
+                "page": 1,
+                "rect": [1, 2, 3, 4],
+                "calculation": {"role": "number_input", "valueType": "integer"},
+            },
+            {
+                "id": "subtotal",
+                "name": "subtotal",
+                "type": "text",
+                "page": 1,
+                "rect": [5, 6, 7, 8],
+                "calculation": {
+                    "role": "calculated_intermediate",
+                    "valueType": "integer",
+                    "formula": {"kind": "field", "fieldId": "base"},
+                },
+            },
+            {
+                "id": "total",
+                "name": "total",
+                "type": "text",
+                "page": 1,
+                "rect": [9, 10, 11, 12],
+                "calculation": {
+                    "role": "calculated_output",
+                    "valueType": "integer",
+                    "formula": {"kind": "field", "fieldId": "subtotal"},
+                },
+            },
+        ],
+        "checkboxRules": [],
+        "radioGroups": [],
+    }
+
+    schema = template_api_service.build_template_api_schema(snapshot)
+
+    assert schema["fields"] == [{"key": "base_amount", "fieldName": "base_amount", "type": "text", "page": 1}]
+    assert schema["exampleData"] == {"base_amount": "<base_amount>"}
+    assert template_api_service.resolve_template_api_request_data(
+        snapshot,
+        {"base_amount": "5", "total": "999"},
+        strict=False,
+    ) == {"base_amount": "5"}
+    with pytest.raises(template_api_service.HTTPException, match="Unknown API Fill keys"):
+        template_api_service.resolve_template_api_request_data(
+            snapshot,
+            {"total": "999"},
+            strict=True,
+        )
+
+
+def test_build_template_api_schema_exposes_image_paths_and_excludes_generated_helpers() -> None:
+    snapshot = {
+        "version": 1,
+        "defaultExportMode": "flat",
+        "fields": [
+            {"name": "profile_photo", "type": "image", "page": 1, "rect": [1, 2, 3, 4]},
+            {"name": "member_barcode", "type": "barcode", "page": 1, "rect": [5, 6, 7, 8]},
+            {"name": "verification_qr", "type": "qr", "page": 1, "rect": [9, 10, 11, 12]},
+            {"name": "license_pdf417", "type": "pdf417", "page": 1, "rect": [13, 14, 15, 16]},
+        ],
+        "checkboxRules": [],
+        "radioGroups": [],
+    }
+
+    schema = template_api_service.build_template_api_schema(snapshot)
+
+    assert schema["fields"] == [{"key": "profile_photo", "fieldName": "profile_photo", "type": "image", "page": 1}]
+    assert schema["exampleData"] == {"profile_photo": "gs://<bucket>/path/to-profile_photo.png"}
+    assert template_api_service.resolve_template_api_request_data(
+        snapshot,
+        {"profile_photo": "gs://forms/profile.png"},
+        strict=True,
+    ) == {"profile_photo": "gs://forms/profile.png"}
+    with pytest.raises(template_api_service.HTTPException, match="gs://"):
+        template_api_service.resolve_template_api_request_data(
+            snapshot,
+            {"profile_photo": "/tmp/profile.png"},
+            strict=True,
+        )
+    with pytest.raises(template_api_service.HTTPException, match="Unknown API Fill keys"):
+        template_api_service.resolve_template_api_request_data(
+            snapshot,
+            {"member_barcode": "123456789"},
+            strict=True,
+        )
+
+
 def test_build_template_api_schema_surfaces_implicit_checkbox_groups_without_rules() -> None:
     schema = template_api_service.build_template_api_schema(
         {
@@ -870,6 +966,16 @@ def _checkbox_field(name: str) -> dict:
     }
 
 
+def _image_field(name: str) -> dict:
+    return {
+        "id": f"field-{name}",
+        "name": name,
+        "type": "image",
+        "page": 1,
+        "rect": {"x": 10, "y": 10, "width": 80, "height": 80},
+    }
+
+
 def test_build_group_template_api_snapshot_returns_bundle_with_canonical_schema() -> None:
     template_records = [
         _gcs_template_record("tpl-1", "Form A"),
@@ -961,6 +1067,35 @@ def test_build_group_template_api_schema_emits_strict_json_schema() -> None:
     assert schema["properties"]["dob"]["type"] == "string"
     assert "format" not in schema["properties"]["dob"]
     assert schema["properties"]["patient_name"]["x-dullypdf-templates"] == ["tpl-1"]
+
+
+def test_build_group_template_api_schema_marks_image_path_fields() -> None:
+    bundle = template_api_service.build_group_template_api_snapshot(
+        group_id="grp-1",
+        template_records=[_gcs_template_record("tpl-1", "Form A")],
+        template_sources=[
+            {
+                "templateId": "tpl-1",
+                "templateName": "Form A",
+                "fields": [_image_field("profile_photo")],
+                "checkboxRules": [],
+            }
+        ],
+    )
+
+    schema = template_api_service.build_group_template_api_schema(bundle)
+    assert schema["properties"]["profile_photo"]["x-dullypdf-image"] is True
+    assert template_api_service.resolve_group_template_api_request_data(
+        bundle,
+        {"profile_photo": "gs://forms/profile.png"},
+        strict=True,
+    ) == {"profile_photo": "gs://forms/profile.png"}
+    with pytest.raises(template_api_service.HTTPException, match="gs://"):
+        template_api_service.resolve_group_template_api_request_data(
+            bundle,
+            {"profile_photo": "/tmp/profile.png"},
+            strict=True,
+        )
 
 
 def test_resolve_group_template_api_request_data_accepts_known_keys() -> None:

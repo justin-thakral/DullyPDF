@@ -38,6 +38,15 @@ Pass criteria:
 - `robots.txt` should allow public crawling, block `/api/`, and reference only the sitemap index at `https://dullypdf.com/sitemap.xml`.
 - `llms.txt` is the canonical AI-crawler summary file. Firebase redirects `/llm.txt` to `/llms.txt` for singular-path probes, but the public content should be maintained in `frontend/public/llms.txt`.
 
+## SEO Route Image QA
+
+- Every new SEO route should include at least one route-specific proof image in `frontend/public/seo`, usually named `<route-key>-overview.webp` with a `.png` source beside it.
+- Routes may reuse supporting screenshots or source-document examples, but the first visible workflow figure and route-level Open Graph image should not be shared-only across the new batch.
+- Prefer first-party product screenshots, generated first-party workflow composites, or official blank-form/source-document captures over generic stock imagery. The image should prove the workflow or document decision the page is ranking for.
+- Before shipping a batch, audit `INTENT_VISUALS` by page and confirm every newly added intent route has at least one image that is not referenced by another page. Shared generic screenshots are fine only after that page-specific image exists.
+- For high-value workflow pages, keep 1440x900 overview assets crisp enough for social previews and article figures. Check contact sheets for visual repetition, text overflow, clipped UI, and low-contrast labels before committing assets.
+- When a workflow depends on editor-specific controls, capture actual DullyPDF UI screenshots with Playwright from a representative PDF at 1440x900. Keep raw captures under `output/playwright/` and copy proof screenshots to `mcp/debugging/mcp-screenshots/` before promoting the best versions into `frontend/public/seo`.
+
 ## Weekly Search Console workflow
 
 Run this every week for the previous 7 days:
@@ -59,6 +68,71 @@ Run this every week for the previous 7 days:
    - `ueta electronic signature workflow`
    - `electronic signature compliance workflow`
    - `fillable form field name`
+   - `pdf calculation fields`
+   - `calculated fields pdf form`
+   - `pdf form calculations not working`
+   - `add calculated field to pdf`
+   - `fillable pdf total field`
+   - `api fill calculated pdf`
+   - `acrobat javascript calculation alternative`
+   - `pdf calculation order`
+   - `pdf invoice calculation template`
+   - `pdf order form calculations`
+   - `pdf estimate calculation template`
+   - `calculated pdf from csv`
+   - `fill by link calculated pdf`
+   - `flat vs editable calculated pdf`
+   - `pdf expense report calculations`
+   - `pdf timesheet calculations`
+   - `pdf purchase order calculations`
+   - `pdf construction bid calculations`
+   - `pdf change order calculations`
+   - `pdf mileage reimbursement calculation`
+   - `pdf inspection score calculations`
+   - `ai pdf field renaming`
+   - `pdf schema mapping`
+   - `fill pdf from image`
+   - `save reusable pdf template`
+   - `pdf packet workflow`
+   - `merge fillable pdf forms`
+   - `combine fillable pdf forms`
+   - `merge pdf forms without losing fields`
+   - `reorder fillable pdf pages`
+   - `reorder pdf pages with form fields`
+   - `organize fillable pdf pages`
+   - `split fillable pdf forms`
+   - `download specific pages from fillable pdf`
+   - `split pdf form without losing fields`
+   - `delete pages from fillable pdf`
+   - `remove pages from pdf form`
+   - `delete pages without losing pdf fields`
+   - `compress fillable pdf forms`
+   - `compress pdf without losing fields`
+   - `reduce fillable pdf size`
+   - `web form to signed pdf`
+   - `pdf signature audit trail`
+   - `flat vs editable pdf`
+   - `search and fill pdf`
+   - `openai pdf data privacy`
+   - `no code pdf automation`
+   - `fill pdf from google sheets`
+   - `airtable to pdf template`
+   - `google forms to filled pdf`
+   - `microsoft forms to filled pdf`
+   - `webhook json to pdf form`
+   - `power automate fill pdf template`
+   - `zapier webhook to pdf`
+   - `make webhook to pdf`
+   - `php fill pdf api`
+   - `java fill pdf api`
+   - `c# fill pdf api`
+   - `go fill pdf api`
+   - `ruby fill pdf api`
+   - `flatten filled pdf form`
+   - `filled pdf fields not showing`
+   - `pdf checkbox values csv`
+   - `pdf radio button values json`
+   - `duplicate pdf field names`
    - `automate medical intake forms`
    - `dental intake form automation`
    - `acord form automation`
@@ -129,12 +203,84 @@ Authority growth is not a one-time code change. Use this recurring plan:
 ## Query-to-page mapping
 
 - `/pdf-to-fillable-form`: convert raw PDFs to fillable templates and absorb existing-PDF builder intent (`pdf form builder`, `fillable pdf builder`, `build fillable form from pdf`) until a dedicated builder page is warranted.
+- `/pdf-field-types/image-qr-barcode-fields`: advanced PDF helper-field intent for `add image field to PDF`, `QR code PDF form field`, `PDF417 barcode field PDF`, `1D barcode PDF form field`, and broader `add barcode to PDF form` searches.
+- `/add-image-field-to-pdf`: focused image-field intent for `add image field to PDF`, `fillable PDF image field`, `photo upload field PDF form`, and image-field versus static-image searchers.
+- `/add-qr-code-field-to-pdf`: focused QR intent for `add QR code field to PDF`, `QR code PDF form field`, `PDF form QR code generator`, and verification-link PDF searches.
+- `/add-pdf417-barcode-field-to-pdf`: focused PDF417 intent for `add PDF417 barcode field to PDF`, `PDF417 barcode field PDF`, `PDF417 from form fields`, and dense structured barcode payload workflows.
+- `/add-1d-barcode-field-to-pdf`: focused 1D barcode intent for `1D barcode PDF form field`, `Code 128 PDF barcode`, `asset tag barcode PDF`, and short internal identifier searches.
+- `/add-barcode-to-pdf-form`: broad barcode intent for `add barcode to PDF form`, `create barcode in PDF form`, `PDF form barcode generator`, and users comparing QR, PDF417, and 1D barcode helpers.
+- `/pdf417-vs-qr-code-pdf-forms`: comparison intent for `PDF417 vs QR Code`, `barcode vs QR code PDF form`, and choosing between dense structured payloads and URL/mobile scanning.
+- `/generate-pdf-barcodes-from-csv`: data-driven barcode intent for `generate PDF barcodes from CSV`, `barcode PDF from database`, `CSV to PDF barcode`, and batch/API barcode generation workflows.
+- `/image-upload-fields-pdf-forms`: educational image-upload intent for `image upload fields PDF forms`, `PDF form image upload field`, and static-image versus reusable-image-field searches.
+- `/add-code-128-barcode-to-pdf`: focused Code 128 intent for `Code 128 PDF barcode`, `add Code 128 barcode to PDF`, and short internal ID barcode workflows.
+- `/work-order-barcode-pdf`: field-service intent for `work order barcode PDF`, `service order barcode PDF`, `work order QR code PDF`, and scanner-assisted work-order lookup.
+- `/asset-tag-barcode-pdf-form`: asset and inventory intent for `asset tag barcode PDF form`, `equipment barcode PDF`, and maintenance/inspection asset ID workflows.
+- `/qr-code-verification-pdf`: verification intent for `QR code verification PDF`, `document verification QR code`, signed PDF validation, and QR-backed record checks.
+- `/qr-code-payment-link-pdf`: invoice/payment intent for `payment QR code PDF invoice`, `add QR code to invoice PDF`, and payment-link PDF workflows.
+- `/qr-code-record-lookup-pdf`: record-lookup intent for `record lookup QR code PDF`, `PDF QR code record link`, portal links, shipment lookup, invoice lookup, and case lookup URLs.
+- `/scannable-pdf-form`: broad scannable-form intent for `scannable PDF form`, `machine readable PDF form`, and PDF workflows comparing QR, PDF417, and 1D barcode output.
+- `/pdf-photo-upload-field`: photo-field intent for `PDF photo upload field`, `headshot upload field PDF`, `profile photo field PDF`, and badge/applicant photo workflows.
+- `/id-photo-field-pdf-form`: identity-image intent for `ID photo field PDF form`, `ID image upload PDF form`, credential photo fields, and onboarding identity packets.
+- `/receipt-upload-field-pdf-form`: receipt-image intent for `receipt upload field PDF form`, `expense receipt upload PDF`, reimbursement receipt forms, and audit proof workflows.
 - `/pdf-to-database-template`: map fields to database/schema columns.
 - `/fill-pdf-from-csv`: row-based PDF filling from CSV/XLSX/JSON.
 - `/batch-fill-pdf-forms`: grouped packet workflows plus repeated row-driven filling for queries such as `fill multiple pdf documents at once`, `fill entire pdf packet from spreadsheet row`, and `search and fill multiple pdfs`.
 - `/fill-information-in-pdf`: broad informational fill intent.
 - `/esign-ueta-pdf-workflow`: legal-intent searches around E-SIGN, UETA, immutable record signing, consumer consent, and excluded-category guardrails for supported U.S. business workflows.
 - `/fillable-form-field-name`: field naming normalization and mapping quality.
+- `/pdf-calculation-fields`: DullyPDF-managed number inputs, calculated outputs, safe formulas, precomputed values, and Adobe-first editable calculation compatibility.
+- `/pdf-form-calculations-not-working`: troubleshooting for calculated fields that fail in Chrome, Preview, mobile viewers, or stale editable outputs.
+- `/add-calculated-field-to-pdf`: how-to intent for adding a calculated output to an existing PDF template.
+- `/fillable-pdf-total-field`: narrow total-field intent for subtotals, tax, deposits, balance due, and grand totals.
+- `/api-fill-calculated-pdf`: developer/API intent for JSON source inputs with server-computed calculated PDF outputs.
+- `/pdf-form-javascript-calculation-alternative`: safe formula positioning versus arbitrary Acrobat JavaScript calculation scripts.
+- `/pdf-calculation-order`: dependency-order intent for chained calculated fields and cycle prevention.
+- `/pdf-invoice-calculation-template`: invoice-specific calculated field workflows for subtotal, tax, amount paid, and balance due.
+- `/pdf-order-form-calculations`: order-form quantity, price, shipping, tax, discount, and grand-total workflows.
+- `/pdf-estimate-quote-calculations`: estimate and quote workflows for labor, materials, markup, deposits, and balances.
+- `/calculated-pdf-from-csv`: spreadsheet-source intent where CSV/Excel rows fill source number inputs and DullyPDF computes outputs.
+- `/fill-by-link-calculated-pdf`: respondent-link intent where web forms collect source values and DullyPDF generates calculated PDFs.
+- `/flat-vs-editable-calculated-pdf`: output-mode decision intent for calculated PDFs that need either live editing or stable final records.
+- `/pdf-expense-report-calculations`: expense-report and reimbursement total workflows.
+- `/pdf-timesheet-calculations`: numeric-hour, rate, adjustment, and total workflows with clear no-date-math boundaries.
+- `/pdf-purchase-order-calculations`: purchase order line total, subtotal, tax, shipping, discount, and grand-total workflows.
+- `/pdf-construction-bid-calculations`: contractor bid and construction estimate calculation workflows.
+- `/pdf-change-order-calculations`: construction/legal operations change-order calculations, revised totals, and signing handoff.
+- `/pdf-mileage-reimbursement-calculation`: mileage, rate, tolls, parking, adjustment, and reimbursement workflows.
+- `/pdf-inspection-score-calculations`: numeric inspection, audit, checklist, and scoring workflows.
+- `/ai-pdf-field-renaming`: AI-assisted field rename, schema mapping, confidence review, and checkbox/radio rule setup before production fill.
+- `/fill-pdf-from-image`: vision-assisted filling from photos, IDs, invoices, receipts, or scanned documents into reviewed PDF templates.
+- `/save-reusable-pdf-template`: saved-template persistence, editor snapshots, mappings, fill rules, and reuse across links, API, groups, and signing.
+- `/pdf-packet-workflow`: saved template groups for multi-document packets, group Fill By Link, batch Rename + Map, and group API ZIP output.
+- `/merge-fillable-pdf-forms`: page insertion, reorder/delete/rotate, merge QA, and the decision between one combined source PDF versus saved template groups.
+- `/reorder-fillable-pdf-pages`: staged Manage Pages ordering, fields moving with current source pages, page dependency review, and QA before saving, publishing, API Fill, or signing.
+- `/rotate-fillable-pdf-pages`: staged 90-degree rotation through Manage Pages, fields moving with rotated source pages, and geometry review before saving, publishing, API Fill, or signing.
+- `/split-fillable-pdf-forms`: selected-page flat/editable downloads, source-PDF trimming through Manage Pages, and field-review guidance for partial PDF outputs.
+- `/delete-pages-from-fillable-pdf`: source-page deletion, stale-field cleanup, selected-page-output alternatives, and QA before saving, publishing, or signing a trimmed template.
+- `/compress-fillable-pdf-forms`: lossless PDF cleanup, object-stream rewriting, stream deflate, larger-result avoidance, and QA guidance for reducing fillable PDF size without changing pages or field geometry.
+- `/fill-pdf-link-signature`: Fill By Link workflows that collect respondent answers first, materialize the filled PDF, and then route the record for signature.
+- `/pdf-signature-audit-trail`: immutable source freeze, retained audit evidence, signed artifacts, audit receipts, and public verification pages.
+- `/flat-vs-editable-pdf`: general output-mode intent for editable live fields versus flat final records across viewers.
+- `/search-fill-pdf-review`: row selection, stored respondent review, fill validation, and fail-closed QA before download, save, signing, or scale.
+- `/openai-pdf-data-privacy`: workflow-specific AI payload boundaries for rename/map, Fill from Images, Search & Fill, and API Fill.
+- `/mobile-fillable-pdf-form`: mobile-friendly PDF answering through Fill By Link instead of asking phones to render fillable PDFs in a viewer.
+- `/stored-fill-by-link-responses`: reusing stored respondent submissions as record sources for Search & Fill, packets, signing, or API materialization.
+- `/group-api-fill-zip-packet`: group-scoped JSON-to-ZIP API endpoint that returns per-template PDFs for back-office packet workflows.
+- `/batch-rename-map-pdf-group`: AI rename and schema mapping applied across every saved template in a group for consistent packet field names.
+- `/verify-signed-pdf`: public DullyPDF validation page that lets recipients re-check completed signing records through a retained token URL.
+- `/no-code-pdf-automation`: broad no-code workflow entry point for existing PDFs, with internal links into setup, fill, link, API, group, and signing routes.
+- `/fill-pdf-from-google-sheets`: Google Sheets export or API-intent searches where rows fill reviewed PDF templates.
+- `/airtable-to-pdf-template`: Airtable record-to-PDF searches that need CSV export or API Fill rather than a native connector claim.
+- `/google-forms-to-filled-pdf`: Google Forms response workflows that bridge through Sheets export, Search & Fill, API Fill, or DullyPDF Fill By Link.
+- `/microsoft-forms-to-filled-pdf`: Microsoft Forms response workflows that bridge through Excel rows or Power Automate API Fill.
+- `/power-automate-fill-pdf-template`: Microsoft 365 automation intent where Power Automate calls a DullyPDF API Fill endpoint.
+- `/webhook-json-to-pdf-form`: generic webhook/API intent for sending JSON into an existing PDF template.
+- `/zapier-webhook-to-pdf` and `/make-webhook-to-pdf`: no-code HTTP workflow pages that avoid claiming native app modules.
+- `/php-fill-pdf-api`, `/java-fill-pdf-api`, `/csharp-fill-pdf-api`, `/go-fill-pdf-api`, and `/ruby-fill-pdf-api`: language-specific API Fill pages beyond the existing Node/Python/curl cluster.
+- `/one-web-form-fill-multiple-pdfs` and `/one-json-fill-multiple-pdfs`: packet searches where one respondent record or JSON payload fills a saved template group.
+- `/flatten-filled-pdf-form`, `/filled-pdf-fields-not-showing`, and `/make-pdf-read-only-after-filling`: output/viewer troubleshooting searches tied to flat versus editable DullyPDF output.
+- `/pdf-checkbox-values-csv`, `/pdf-radio-button-values-json`, `/pdf-date-format-csv-fill`, and `/duplicate-pdf-field-names`: mapping troubleshooting pages for common Search & Fill and API Fill failures.
+- `/respondent-download-filled-pdf`, `/online-form-to-signed-pdf`, and `/pdf-template-versioning`: operational workflow pages for respondent copies, form-to-signature handoff, and template revision QA.
 - `/healthcare-pdf-automation`: healthcare and dental intake, registration, and HIPAA/consent forms.
 - `/acord-form-automation`: ACORD-first workflows (ACORD 25/24/27/28/126/140) and certificate processing.
 - `/insurance-pdf-automation`: broader insurance PDF automation for ACORD plus carrier-specific forms.
@@ -146,6 +292,11 @@ Authority growth is not a one-time code change. Use this recurring plan:
 - `/education-form-automation`: student application and enrollment workflow coverage.
 - `/nonprofit-pdf-form-automation`: grants, volunteer, and nonprofit intake workflows.
 - `/logistics-pdf-automation`: bill of lading, delivery, and transport paperwork workflows.
+- `/manufacturing-pdf-automation`: manufacturing quality, work-order, lot/batch barcode, production traveler, yield calculation, and defect-rate PDF workflows.
+- `/field-service-pdf-automation`: field service work orders, service tickets, asset QR/barcode lookup, labor/parts totals, and customer signoff PDFs.
+- `/warehouse-inventory-pdf-automation`: warehouse cycle counts, receiving forms, SKU/bin barcodes, inventory variance calculations, and supervisor review workflows.
+- `/procurement-pdf-automation`: purchase orders, vendor packets, procurement approval forms, PO barcodes, and subtotal/tax/freight calculations.
+- `/utilities-energy-pdf-automation`: meter reads, utility service forms, asset QR codes, inspection scores, usage deltas, and energy field-team PDFs.
 
 ## Reporting template
 

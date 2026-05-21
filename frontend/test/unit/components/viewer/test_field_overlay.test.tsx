@@ -91,6 +91,65 @@ describe('FieldOverlay', () => {
     expect(onSelectField).toHaveBeenCalledWith('text-field');
   });
 
+  it('highlights direct and nested calculation dependencies for the selected field', () => {
+    const fields = [
+      makeField({
+        id: 'premium',
+        name: 'Premium',
+        type: 'text',
+        valueType: 'integer',
+        calculation: { role: 'number_input', valueType: 'integer' },
+      }),
+      makeField({
+        id: 'subtotal',
+        name: 'Subtotal',
+        type: 'text',
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_intermediate',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'premium' },
+        },
+      }),
+      makeField({
+        id: 'total',
+        name: 'Total',
+        type: 'text',
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'subtotal' },
+        },
+      }),
+    ];
+
+    const { container } = render(
+      <FieldOverlay
+        fields={fields}
+        pageSize={{ width: 200, height: 120 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled={false}
+        activeCreateTool={null}
+        showFieldNames={false}
+        selectedFieldId="total"
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={vi.fn()}
+        onQuickRadioSelect={vi.fn()}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    expect((container.querySelector('[data-field-id="subtotal"]') as HTMLDivElement).className)
+      .toContain('field-box--calc-dependency');
+    expect((container.querySelector('[data-field-id="premium"]') as HTMLDivElement).className)
+      .toContain('field-box--calc-dependency-indirect');
+  });
+
   it('handles move drag with page-bound clamping and begin/commit callbacks', () => {
     const onUpdateField = vi.fn();
     const onBeginFieldChange = vi.fn();
@@ -267,6 +326,41 @@ describe('FieldOverlay', () => {
       width: 70,
       height: 55,
     });
+  });
+
+  it('keeps 1D barcode create drags on the 9 digit aspect ratio', () => {
+    const onCreateFieldWithRect = vi.fn();
+    const { container } = render(
+      <FieldOverlay
+        fields={[]}
+        pageSize={{ width: 300, height: 200 }}
+        scale={1}
+        moveEnabled={false}
+        resizeEnabled={false}
+        createEnabled
+        activeCreateTool="barcode"
+        showFieldNames={false}
+        selectedFieldId={null}
+        pendingQuickRadioFieldIds={[]}
+        radioSuggestionByFieldId={new Map()}
+        onSelectField={vi.fn()}
+        onUpdateField={vi.fn()}
+        onCreateFieldWithRect={onCreateFieldWithRect}
+        onQuickRadioSelect={vi.fn()}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const surface = container.querySelector('.field-create-surface') as HTMLDivElement;
+    fireEvent.pointerDown(surface, { clientX: 20, clientY: 20, pointerId: 1 });
+    pointerMove(260, 160, 1);
+    pointerUp(1);
+
+    const rect = onCreateFieldWithRect.mock.calls[0]?.[1];
+    expect(onCreateFieldWithRect.mock.calls[0]?.[0]).toBe('barcode');
+    expect(Math.round(rect.width)).toBe(240);
+    expect(Math.round(rect.height)).toBe(87);
   });
 
   it('uses the bulk style tool to marquee-select text fields only', () => {
@@ -469,6 +563,46 @@ describe('FieldOverlay', () => {
       expect(onCommitFieldChange).toHaveBeenCalledTimes(1);
       unmount();
     }
+  });
+
+  it('keeps 1D barcode resizing on the 9 digit aspect ratio', () => {
+    const onUpdateField = vi.fn();
+    const field = makeField({
+      id: 'barcode-field',
+      name: 'Barcode',
+      type: 'barcode',
+      rect: { x: 10, y: 10, width: 220, height: 80 },
+    });
+    const { container } = render(
+      <FieldOverlay
+        fields={[field]}
+        pageSize={{ width: 400, height: 240 }}
+        scale={1}
+        moveEnabled
+        resizeEnabled
+        createEnabled={false}
+        activeCreateTool={null}
+        showFieldNames={false}
+        selectedFieldId={field.id}
+        pendingQuickRadioFieldIds={[]}
+        radioSuggestionByFieldId={new Map()}
+        onSelectField={vi.fn()}
+        onUpdateField={onUpdateField}
+        onCreateFieldWithRect={vi.fn()}
+        onQuickRadioSelect={vi.fn()}
+        onBeginFieldChange={vi.fn()}
+        onCommitFieldChange={vi.fn()}
+      />,
+    );
+
+    const handle = container.querySelector('.field-handle--right') as HTMLSpanElement;
+    fireEvent.pointerDown(handle, { clientX: 230, clientY: 50, pointerId: 1 });
+    pointerMove(340, 50, 1);
+    pointerUp(1);
+
+    const rect = onUpdateField.mock.calls[0]?.[1].rect;
+    expect(Math.round(rect.width)).toBe(330);
+    expect(Math.round(rect.height)).toBe(119);
   });
 
   it('marks low-confidence radio suggestions with a review class', () => {

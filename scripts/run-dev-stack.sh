@@ -243,7 +243,7 @@ if [[ -z "${BACKEND_HEALTH_HOST}" ]]; then
 fi
 BACKEND_HEALTH_URL="http://${BACKEND_HEALTH_HOST}:${BACKEND_PORT}/api/health"
 FORWARD_TO="${STRIPE_DEV_FORWARD_URL:-http://${BACKEND_HEALTH_HOST}:${BACKEND_PORT}/api/billing/webhook}"
-EVENTS="${STRIPE_DEV_FORWARD_EVENTS:-checkout.session.completed,invoice.paid,customer.subscription.updated,customer.subscription.deleted}"
+EVENTS="${STRIPE_DEV_FORWARD_EVENTS:-checkout.session.completed,invoice.paid,invoice.payment_failed,invoice.updated,customer.subscription.updated,customer.subscription.deleted}"
 ENABLE_LISTENER_RAW="${STRIPE_DEV_LISTEN_ENABLED:-true}"
 ENABLE_LISTENER="$(printf '%s' "$ENABLE_LISTENER_RAW" | tr '[:upper:]' '[:lower:]')"
 STACK_WEBHOOK_ENDPOINT_URL="${STRIPE_WEBHOOK_ENDPOINT_URL:-${FORWARD_TO}}"

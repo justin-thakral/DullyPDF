@@ -55,7 +55,7 @@ export type FillLinkQuestion = {
   id?: string;
   key: string;
   label?: string;
-  type: 'text' | 'textarea' | 'date' | 'boolean' | 'radio' | 'multi_select' | 'select' | 'email' | 'phone' | string;
+  type: 'text' | 'textarea' | 'date' | 'boolean' | 'radio' | 'multi_select' | 'select' | 'email' | 'phone' | 'image' | string;
   sourceType?: 'pdf_field' | 'checkbox_group' | 'radio_group' | 'custom' | 'synthetic' | string;
   requiredForRespondentIdentity?: boolean;
   required?: boolean;
@@ -167,14 +167,32 @@ export type FillLinkResponse = {
 };
 
 export type FillLinkTemplateFieldPayload = {
+  id?: string;
   name: string;
   type?: string;
   page?: number;
   rect?: { x: number; y: number; width: number; height: number };
+  value?: unknown;
+  readOnly?: boolean;
+  required?: boolean;
+  valueType?: string;
+  calculation?: Record<string, unknown> | null;
   fontName?: string;
   fontSize?: string | number;
   fontColor?: string;
   textAlign?: string;
+  imageDataUrl?: string | null;
+  imagePath?: string | null;
+  imageMimeType?: string | null;
+  imageName?: string | null;
+  imageColorMode?: string | null;
+  pdf417Name?: string | null;
+  pdf417Dob?: string | null;
+  pdf417Data?: Record<string, unknown> | null;
+  barcodeSourceField?: Record<string, unknown> | null;
+  qrSourceField?: Record<string, unknown> | null;
+  pdf417FieldMappings?: Record<string, Record<string, unknown>> | null;
+  barcodeClasses?: Array<Record<string, unknown>> | null;
   groupKey?: string;
   optionKey?: string;
   optionLabel?: string;

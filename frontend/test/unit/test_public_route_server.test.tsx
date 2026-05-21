@@ -68,5 +68,8 @@ describe('renderPublicRouteHtml', () => {
     expect(countH1Tags(html)).toBe(1);
     expect(html).toMatch(/<h1 class="form-catalog__hero-title">W-9 — .*Request for Taxpayer Identification Number<\/h1>/);
     expect(html).toContain('<p class="form-catalog-detail__meta-title">Request for Taxpayer Identification Number</p>');
+    expect(html).toContain('class="form-catalog-detail__preview-image"');
+    expect(html).toContain('src="/form-catalog-assets/hr_onboarding/w-9__fw9.webp"');
+    expect(html).toContain('alt="W-9 fillable PDF first-page preview of Request for Taxpayer Identification Number"');
   });
 });

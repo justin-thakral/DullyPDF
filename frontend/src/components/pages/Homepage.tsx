@@ -139,6 +139,83 @@ const HOMEPAGE_LAYOUT_READY_ATTRIBUTE = 'data-homepage-layout-ready';
 const HOMEPAGE_HYDRATION_COVER_ATTRIBUTE = 'data-homepage-hydration-cover';
 const HOMEPAGE_HYDRATION_COVER_ELEMENT_ID = 'homepage-hydration-cover';
 
+type LaunchReviewLink = {
+  label: string;
+  href: string;
+  variant: string;
+  imageSrc?: string;
+  imageAlt?: string;
+};
+
+const LAUNCH_REVIEW_LINKS: LaunchReviewLink[] = [
+  {
+    label: 'SaaSCity',
+    href: 'https://saascity.io/live/dullypdf',
+    variant: 'saascity',
+    imageSrc: 'https://saascity.io/badges/featured-dark.svg',
+    imageAlt: 'Featured on SaaSCity',
+  },
+  {
+    label: 'G2',
+    href: 'https://www.g2.com/products/dullypdf/reviews',
+    variant: 'g2',
+  },
+  {
+    label: 'Product Hunt',
+    href: 'https://www.producthunt.com/products/dullypdf',
+    variant: 'product-hunt',
+    imageSrc: 'https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=950935&theme=light',
+    imageAlt: 'Find us on Product Hunt',
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/justin-thakral/DullyPDF',
+    variant: 'github',
+  },
+];
+
+const LaunchReviewCard = () => (
+  <div className="launch-review-card" aria-labelledby="launch-review-title">
+    <div className="launch-review-copy-row">
+      <span className="launch-review-title" id="launch-review-title">
+        Launches / Review
+      </span>
+      <span className="launch-review-copy">
+        Free users can help by liking DullyPDF or leaving an honest review.
+      </span>
+    </div>
+    <div className="launch-review-links-row">
+      <span className="launch-review-links-label">Links:</span>
+      <div className="launch-review-links">
+        {LAUNCH_REVIEW_LINKS.map((link) => (
+          <a
+            key={link.href}
+            className={`launch-review-link launch-review-link--${link.variant}${link.imageSrc ? ' launch-review-link--badge' : ''}`}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.imageAlt ?? link.label}
+          >
+            {link.imageSrc ? (
+              <img
+                className="launch-review-badge-image"
+                src={link.imageSrc}
+                alt={link.imageAlt}
+                width={link.variant === 'product-hunt' ? 250 : 150}
+                height={54}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              link.label
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 /**
  * Landing page describing the end-to-end workflow.
  */
@@ -160,6 +237,7 @@ const Homepage: React.FC<HomepageProps> = ({
   const [demoFocusActive, setDemoFocusActive] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [desktopFitScale, setDesktopFitScale] = useState(1);
+  const [desktopActionScale, setDesktopActionScale] = useState(1);
   const userInitial = useMemo(() => (userEmail ? userEmail.charAt(0).toUpperCase() : null), [userEmail]);
 
   const activeStep = DEMO_WALKTHROUGH[activeDemoIndex];
@@ -217,6 +295,7 @@ const Homepage: React.FC<HomepageProps> = ({
     if (typeof window === 'undefined') return;
     if (window.matchMedia('(max-width: 1020px)').matches) {
       setDesktopFitScale(1);
+      setDesktopActionScale(1);
       return;
     }
 
@@ -248,6 +327,28 @@ const Homepage: React.FC<HomepageProps> = ({
     }
     const roundedScale = Number(nextScale.toFixed(3));
     setDesktopFitScale((prev) => (Math.abs(prev - roundedScale) < 0.004 ? prev : roundedScale));
+
+    const leftPanelRect = leftPanel.getBoundingClientRect();
+    const rightPanelRect = rightPanel.getBoundingClientRect();
+    const leftPanelStyles = window.getComputedStyle(leftPanel);
+    const rightPanelStyles = window.getComputedStyle(rightPanel);
+    const leftVisualTop = leftPanelRect.top + (parseFloat(leftPanelStyles.paddingTop) || 0);
+    const rightVisualTop = rightPanelRect.top + (parseFloat(rightPanelStyles.paddingTop) || 0);
+    const leftVisualBottom = leftVisualTop + leftContent.scrollHeight * roundedScale;
+    const targetRightHeight = Math.max(0, leftVisualBottom - rightVisualTop);
+    const rawActionScale = rightContent.scrollHeight > 0 ? targetRightHeight / rightContent.scrollHeight : roundedScale;
+    const minActionScale =
+      window.innerHeight <= 680
+        ? 0.68
+        : window.innerHeight <= 760
+          ? 0.72
+          : window.innerHeight <= 900
+            ? 0.76
+            : 0.82;
+    const maxActionScale = window.innerWidth >= 1440 ? 1.06 : 1;
+    const nextActionScale = Math.max(minActionScale, Math.min(maxActionScale, rawActionScale));
+    const roundedActionScale = Number(nextActionScale.toFixed(3));
+    setDesktopActionScale((prev) => (Math.abs(prev - roundedActionScale) < 0.004 ? prev : roundedActionScale));
   }, []);
 
   useEffect(() => {
@@ -404,8 +505,11 @@ const Homepage: React.FC<HomepageProps> = ({
   }, []);
 
   const homepageStyle = useMemo(
-    () => ({ '--homepage-fit-scale': desktopFitScale } as CSSProperties),
-    [desktopFitScale],
+    () => ({
+      '--homepage-fit-scale': desktopFitScale,
+      '--homepage-action-scale': desktopActionScale,
+    } as CSSProperties),
+    [desktopActionScale, desktopFitScale],
   );
 
   const authAction = userEmail ? (
@@ -439,10 +543,10 @@ const Homepage: React.FC<HomepageProps> = ({
             {authAction}
             <div className="homepage-mobile-logo">
               <picture>
-                <source srcSet="/DullyPDFLogoImproved.webp" type="image/webp" />
+                <source srcSet="/DullyPDF_logo_social_full_bleed.webp" type="image/webp" />
                 <img
                   className="homepage-logo-image"
-                  src="/DullyPDFLogoImproved.png"
+                  src="/DullyPDF_logo_social_full_bleed.png"
                   alt="DullyPDF"
                   fetchPriority="high"
                   decoding="async"
@@ -477,17 +581,17 @@ const Homepage: React.FC<HomepageProps> = ({
             Database Map Fields and U.S. E-Sign Workflows
           </h2>
           <p className="mobile-description">
-            This software converts raw PDFs into fillable forms using
+            DullyPDF converts raw PDFs into fillable forms using
             {' '}
             <CommonFormsAttribution />
             {' '}
-            for field detections with writable areas at input fields.
-            It supports text fields, checkbox groups, radio groups, dates, and signatures in the editor.
-            Once your form is ready, you can upload a CSV, Excel, JSON, or TXT schema file, map PDF fields to
-            database headers, and fill the PDF from matching database rows in Search &amp; Fill; publish a DullyPDF
-            Fill By Link web form for clients to answer so their responses can fill the PDF later; expose a
-            template-scoped API Fill endpoint; or route eligible records into DullyPDF&apos;s supported U.S. e-sign
-            workflow. Database rows stay in browser for Search &amp; Fill.
+            for field detection with writable areas at input fields.
+            Editor fields can be text, checkbox, radio, date, signature, image, barcode, QR/PDF417, or calculated,
+            with global or per-field fonts, sizes, colors, and alignment.
+            Once your form is ready, upload CSV, Excel, JSON, or TXT schema files, map PDF fields to database headers,
+            and fill the PDF from Search &amp; Fill rows; publish a DullyPDF Fill By Link form so responses can fill
+            the PDF later; expose API Fill; or route supported records into U.S. e-sign workflows.
+            Database rows stay in browser for Search &amp; Fill.
           </p>
         </div>
 
@@ -507,11 +611,10 @@ const Homepage: React.FC<HomepageProps> = ({
             <div className="feature-item">
               <span className="feature-number">2</span>
               <div className="feature-content">
-                <h4>Interactive Visual Editing</h4>
+                <h4>Editing, PDF Tools, and Smart Fields</h4>
                 <p>
-                  Review and refine detected fields using the Form Field Editor.
-                  Resize, rename, reposition, and adjust field properties with precision tools for
-                  accurate, production-ready templates.
+                  Review detected fields, then resize, rename, reposition, style fonts/sizes/colors,
+                  merge, delete pages, compress PDFs, add image or barcode helpers, and configure calculated outputs.
                 </p>
               </div>
             </div>
@@ -611,17 +714,17 @@ const Homepage: React.FC<HomepageProps> = ({
 
               <div className="description-text">
                 <p className="lead-description">
-                  This software converts raw PDFs into fillable forms using 
+                  DullyPDF converts raw PDFs into fillable forms using
                   {' '}
                   <CommonFormsAttribution />
                   {' '}
-                  for field detections with writable areas at input fields.
-                  It supports text fields, checkbox groups, radio groups, dates, and signatures in the editor.
-                  Once your form is ready, you can upload a CSV, Excel, JSON, or TXT schema file, map PDF fields to
-                  database headers, and fill the PDF from matching database rows in Search &amp; Fill; publish a DullyPDF
-                  Fill By Link web form for clients to answer so their responses can fill the PDF later; expose a
-                  template-scoped API Fill endpoint; or route eligible records into DullyPDF&apos;s supported U.S. e-sign
-                  workflow. Database rows stay in browser for Search &amp; Fill.
+                  for field detection with writable areas at input fields.
+                  Editor fields can be text, checkbox, radio, date, signature, image, barcode, QR/PDF417, or calculated,
+                  with global or per-field fonts, sizes, colors, and alignment.
+                  Once your form is ready, upload CSV, Excel, JSON, or TXT schema files, map PDF fields to database headers,
+                  and fill the PDF from Search &amp; Fill rows; publish a DullyPDF Fill By Link form so responses can fill
+                  the PDF later; expose API Fill; or route supported records into U.S. e-sign workflows.
+                  Database rows stay in browser for Search &amp; Fill.
                 </p>
 
                 <div className="features-section">
@@ -642,11 +745,10 @@ const Homepage: React.FC<HomepageProps> = ({
                     <div className="feature-item">
                       <span className="feature-number">2</span>
                       <div className="feature-content">
-                        <h4>Interactive Visual Editing</h4>
+                        <h4>Editing, PDF Tools, and Smart Fields</h4>
                         <p>
-                          Review and refine detected fields using the Form Field Editor.
-                          Resize, rename, reposition, and adjust field properties with precision tools for
-                          accurate, production-ready templates.
+                          Review detected fields, then resize, rename, reposition, style fonts/sizes/colors,
+                          merge, delete pages, compress PDFs, add image or barcode helpers, and configure calculated outputs.
                         </p>
                       </div>
                     </div>
@@ -753,6 +855,8 @@ const Homepage: React.FC<HomepageProps> = ({
                     <span className="info-cta">View</span>
                   </a>
                 </div>
+
+                <LaunchReviewCard />
               </div>
 
             </div>

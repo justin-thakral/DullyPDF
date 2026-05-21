@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 const helperDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(helperDir, '..', '..', '..', '..');
 const frontendEnvPaths = [
-  path.join(repoRoot, 'frontend/.env.local'),
   path.join(repoRoot, 'env/frontend.dev.env'),
+  path.join(repoRoot, 'frontend/.env.local'),
 ];
 
 function readFrontendEnvValue(key) {
@@ -26,7 +26,7 @@ function readFrontendEnvValue(key) {
   throw new Error(`Missing ${key} in frontend env files: ${frontendEnvPaths.join(', ')}`);
 }
 
-function runBackendPython(script, extraEnv = {}) {
+export function runBackendPython(script, extraEnv = {}) {
   const backendEnvFile = process.env.PW_BACKEND_ENV_FILE || 'env/backend.dev.env';
   const bashScript = `
 set -euo pipefail

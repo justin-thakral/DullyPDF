@@ -115,7 +115,6 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
         ? WEB_FORM_AND_SIGN_DEMO_VIDEO
         : pageKey === 'pdf-signature-workflow'
           || pageKey === 'esign-ueta-pdf-workflow'
-          || pageKey === 'pdf-fill-api'
           ? ESIGN_PIPELINE_DEMO_VIDEO
           : null;
 

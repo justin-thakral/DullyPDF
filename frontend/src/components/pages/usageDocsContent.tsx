@@ -114,6 +114,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li>OpenAI actions require sign-in and credits. Rename and Map pricing is bucketed by page count (default 5 pages per bucket).</li>
             <li>Rename/Map credits formula: total = baseCost x ceil(pageCount / bucketSize). Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
             <li>Fill from Images and Documents credits: each image costs 1 credit; each PDF document costs 1 credit per 5 pages.</li>
+            <li>Free accounts include 25 generated PDF downloads per month. Premium accounts include unlimited generated PDF downloads.</li>
             <li>Billing runs through Stripe from Profile: Pro Monthly, Pro Yearly, and a Pro-only 500-credit refill pack.</li>
             <li>Public plan explainers live at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a>.</li>
           </ul>
@@ -178,7 +179,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         body: (
           <ul>
             <li>Template setup: start with <a href="/usage-docs/getting-started">Getting Started</a> when you need one recurring PDF to reach its first safe fill quickly.</li>
-            <li>Row-based filling: start with <a href="/usage-docs/search-fill">Search &amp; Fill</a> when the record already exists in CSV, SQL, XLSX, JSON, or a stored respondent submission.</li>
+            <li>Row-based filling: start with <a href="/usage-docs/search-fill">Search &amp; Fill</a> when the record already exists in CSV, XLSX, JSON, or a stored respondent submission. Use SQL and TXT files for schema mapping only.</li>
             <li>Respondent collection: start with <a href="/usage-docs/fill-by-link">Fill By Link</a> when the row does not exist yet and someone must submit it first.</li>
           </ul>
         ),
@@ -573,6 +574,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
               Use Field Editor create tools to draw text, signature, checkbox, and radio fields directly on-canvas,
               including quick-radio helpers for common single-select groups.
             </li>
+            <li>DullyPDF-only create tools include Image, PDF417, 1D Code 128, and QR Code helpers.</li>
             <li>Activating a create tool exits <code>Transform</code> and <code>Info</code> so drawing gestures stay deterministic.</li>
             <li>Turning the create tool off restores the previous viewer mode and visibility toggles.</li>
             <li>Click once to place a default-size field, or drag past the click threshold to size the field from the gesture.</li>
@@ -584,6 +586,21 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
         ),
       },
       {
+        id: 'pdf-tools',
+        title: 'PDF tools',
+        body: (
+          <ul>
+            <li>The workspace header exposes <code>PDF Tools</code> with a <code>Manage Pages</code> action for source-PDF page changes.</li>
+            <li><code>Manage Pages</code> stages delete, reorder, rotate, and insert-from-PDF changes before it rewrites the active PDF.</li>
+            <li><code>Compress / Optimize PDF</code> applies lossless backend cleanup, object-stream rewriting, and stream/font/image deflate without intentionally lowering image quality.</li>
+            <li>Deleting a source page removes fields on that page. Reordering a source page moves that page's fields with it.</li>
+            <li>Rotating a source page also rotates the field rectangles on that page so overlays stay aligned with the new page orientation.</li>
+            <li>Inserted pages start without detected fields. Add fields manually or rerun the broader template workflow when those pages need detection.</li>
+            <li>After page changes, DullyPDF refreshes the active PDF bytes and creates a fresh backend session when possible so Rename/Map can continue against the updated document.</li>
+          </ul>
+        ),
+      },
+      {
         id: 'calculation-fields',
         title: 'Calculation fields',
         body: (
@@ -591,9 +608,24 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             <li><code>Number Input</code> creates an integer text field that users or data sources can fill.</li>
             <li><code>Calculated Output</code> creates a read-only text field whose value comes from a DullyPDF formula.</li>
             <li>Formulas are built from numeric field references, constants, unary minus, and <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. DullyPDF stores the formula model, not user-authored JavaScript.</li>
+            <li>The calculation setup dialog includes a <em>Usage Docs</em> button that opens this section in a new browser tab/window.</li>
+            <li>Use <code>Add Field to equation</code> to append a selected numeric field to the equation builder.</li>
             <li>The setup dialog blocks missing dependencies, invalid operators, and dependency cycles before the formula is saved.</li>
             <li>Editable PDFs include generated Acrobat calculation actions for Adobe compatibility, but DullyPDF also precomputes the visible value before export.</li>
             <li>For completed records, use a flat PDF when the recipient does not need to keep editing live fields.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'dullypdf-only-helpers',
+        title: 'DullyPDF-only helpers',
+        body: (
+          <ul>
+            <li>Image, PDF417, 1D Code 128, and QR Code helpers are template helpers, not native AcroForm widget types.</li>
+            <li>Editable downloads preserve those helpers as readonly text marker fields so DullyPDF can restore them when the PDF is reopened.</li>
+            <li>The first marker line is the helper code, the middle lines hold the image name or encoded barcode payload, and the last line is a short readonly type label: <code>(IMAGE)</code>, <code>(PDF417)</code>, <code>(1D)</code>, or <code>(QR)</code>.</li>
+            <li>DullyPDF converts helpers back from the helper code and payload. The short type label is only there so people can recognize the readonly marker field.</li>
+            <li>Flat downloads, Fill By Link response downloads, and API Fill outputs stamp the final image, PDF417, Code 128, or QR visual into the PDF page content.</li>
           </ul>
         ),
       },
@@ -670,8 +702,8 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             </p>
             <ul>
               <li>
-                <strong>Connected SQL (Search &amp; Fill)</strong> — the data source dropdown. Click it to load a CSV, Excel, JSON, SQL, or TXT
-                file as your schema and record source. Once loaded, the button label updates to show the connected source type
+                <strong>Connected source (Search &amp; Fill)</strong> — the data source dropdown. Click it to load CSV, Excel, or JSON
+                as a schema and record source, or SQL/TXT as a schema-only source. Once loaded, the button label updates to show the connected source type
                 (for example &quot;Connected CSV&quot;). The dropdown also contains <em>Search &amp; Fill</em> (opens the Search &amp; Fill
                 modal when rows are available), <em>Clear Field Information</em> (clears the current field values without disconnecting
                 the source), <em>Disconnect Data Source</em> (disconnects the current source), and <em>Usage Docs</em> (opens these
@@ -716,7 +748,7 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
             </p>
             <ul>
               <li>Fill By Link respondent submissions are stored as structured records and can be selected from the workspace just like local rows.</li>
-              <li>CSV/XLSX/JSON/SQL parsers cap records at 5,000 rows per import.</li>
+              <li>CSV/XLSX/JSON parsers cap records at 5,000 rows per import. SQL and TXT parsers expose schema columns only.</li>
               <li>Duplicate headers are auto-renamed with numeric suffixes (<code>name</code>, <code>name_2</code>, <code>name_3</code>, ...).</li>
               <li>Header normalization trims whitespace, converts to lowercase, replaces spaces and hyphens with underscores, and removes other punctuation.</li>
               <li>Schema type inference samples up to 200 rows when detecting column types automatically.</li>
@@ -1170,7 +1202,7 @@ email`}</pre>
           <ul>
             <li>Base accounts can publish links from any accessible saved template and accept up to 25 responses per month across the account.</li>
             <li>Premium accounts can publish links across their saved-template library and accept up to 10,000 responses per month across the account.</li>
-            <li>Current plan pages at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a> also summarize saved-form, API Fill, signing, and credit limits.</li>
+            <li>Current plan pages at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a> also summarize saved-form, generated PDF download, API Fill, signing, and credit limits.</li>
             <li>Preview the public form before you share it so required fields and labels match what respondents should submit.</li>
             <li>The owner builder popup ignores outside clicks; use the red X or <code>Escape</code> when you intentionally want to leave and discard in-progress edits.</li>
           </ul>
@@ -1450,7 +1482,10 @@ email`}</pre>
         title: 'Download vs save',
         body: (
           <ul>
-            <li>Download when you need a one-off generated output immediately. The workspace download menu now offers both a flat PDF and an editable PDF with fields preserved.</li>
+            <li>Download when you need a one-off generated output immediately. The workspace download menu offers flat PDF, editable PDF, and selected-page PDF outputs.</li>
+            <li><code>Download specific pages</code> opens a page-selection dialog, accepts the same page range syntax as PDF tools, and exports only those pages without changing the active workspace PDF.</li>
+            <li>Signed-in workspace downloads count against the generated PDF download quota. Free accounts include 25 generated PDF downloads per month, and Premium accounts include unlimited generated PDF downloads.</li>
+            <li>The monthly counter resets on the backend by UTC month. Saving templates, API Fill outputs, respondent downloads, and signing artifacts use their own workflow limits and are not charged against this workspace download quota.</li>
             <li>Save to profile when the template will be reused or shared within your account context.</li>
             <li>Saved forms persist template metadata including checkbox rules, radio groups, text transform rules, and calculation metadata.</li>
             <li>Fill By Link starts from a saved form or an open group because the public respondent link is tied to the owner account and saved template set.</li>
@@ -1521,6 +1556,7 @@ email`}</pre>
               no active Fill By Link cap, {formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month,
               {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, `}
               {formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} API pages per request, {formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month,
+              {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads per month, `}
               and a base OpenAI pool that tops back up to {formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.
             </p>
             <p>
@@ -1529,6 +1565,7 @@ email`}</pre>
               no active Fill By Link cap, {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month,
               {` ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, `}
               {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} API pages per request, {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month,
+              unlimited generated PDF downloads,
               and a recurring {formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool before refill packs.
             </p>
             <p>
@@ -1553,9 +1590,11 @@ email`}</pre>
             <ul>
               <li>Pro Monthly (`pro_monthly`) and Pro Yearly (`pro_yearly`) are recurring Stripe subscriptions.</li>
               <li>Starting Checkout does not grant Pro access by itself; DullyPDF grants Pro and records trial usage only after Stripe confirms a completed checkout or active subscription lifecycle event.</li>
+              <li>Premium access bypasses the generated PDF download cap immediately after webhook or reconciliation fulfillment; opening Checkout alone does not bypass the cap.</li>
               <li>Refill 500 (`refill_500`) is a Pro-only one-time credit pack and uses backend-provided Stripe plan metadata.</li>
               <li>Payments are handled through Stripe Checkout for secure transaction processing.</li>
-              <li>Canceling Pro schedules cancellation at period end; Pro access remains active until that date.</li>
+              <li>Failed renewal payments keep `past_due` Pro access active during Stripe Smart Retries, refresh retry timing from Stripe invoice updates, show payment-recovery details in Profile, and send payment-method updates through Stripe Customer Portal.</li>
+              <li>Canceling Pro schedules cancellation at period end; Pro access remains active until that date. Terminal subscription states downgrade to base and immediately reapply the current-month generated PDF download cap without resetting the stored counter.</li>
               <li>
                 If an account downgrades to base while holding more saved forms than the base tier allows, DullyPDF keeps
                 the earliest-created saved forms up to the base cap accessible and marks the rest locked in place instead

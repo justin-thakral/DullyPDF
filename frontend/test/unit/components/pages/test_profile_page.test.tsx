@@ -18,6 +18,7 @@ const limits: ProfileLimits = {
   templateApiRequestsMonthlyMax: 250,
   templateApiMaxPages: 25,
   signingRequestsMonthlyMax: 12,
+  pdfDownloadsMonthlyMax: 25,
 };
 
 const savedForms: SavedFormSummary[] = [
@@ -111,6 +112,13 @@ describe('ProfilePage', () => {
         availableCredits={8}
         billingEnabled={billingConfig.enabled}
         billingPlans={billingConfig.plans}
+        pdfDownloadsThisMonth={7}
+        pdfDownloadsRemaining={18}
+        pdfDownloadUsageMonth="2026-05"
+        pdfDownloadWorkspaceThisMonth={3}
+        pdfDownloadGroupThisMonth={4}
+        pdfDownloadBatchesThisMonth={4}
+        pdfDownloadResetAt="2026-06-01T00:00:00+00:00"
         limits={limits}
         savedForms={savedForms}
         onSelectSavedForm={vi.fn()}
@@ -132,6 +140,24 @@ describe('ProfilePage', () => {
     expect(screen.getAllByText(String(limits.templateApiMaxPages)).length).toBeGreaterThan(0);
     expect(screen.getByText('Signing requests / month')).toBeTruthy();
     expect(screen.getAllByText(String(limits.signingRequestsMonthlyMax)).length).toBeGreaterThan(0);
+    expect(screen.getAllByText('PDF downloads / month').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('7 / 25').length).toBeGreaterThan(0);
+    expect(screen.getByText('7 used / 25 max')).toBeTruthy();
+    expect(screen.getByText('Workspace PDF downloads')).toBeTruthy();
+    expect(screen.getByText('Group ZIP PDFs')).toBeTruthy();
+    expect(screen.getByText('Download requests this month')).toBeTruthy();
+    expect(screen.getAllByText('PDF quota reset').length).toBeGreaterThan(0);
+    expect(screen.getByText('PDF quota')).toBeTruthy();
+    expect(screen.getByText('18 remaining')).toBeTruthy();
+    const workspaceDownloadRow = screen.getByText('Workspace PDF downloads').closest('.profile-summary-row');
+    const groupDownloadRow = screen.getByText('Group ZIP PDFs').closest('.profile-summary-row');
+    const batchDownloadRow = screen.getByText('Download requests this month').closest('.profile-summary-row');
+    expect(workspaceDownloadRow?.textContent).toContain('3');
+    expect(groupDownloadRow?.textContent).toContain('4');
+    expect(batchDownloadRow?.textContent).toContain('4');
+    expect(screen.getAllByText(/2026 UTC/).length).toBeGreaterThan(0);
+    expect(screen.getByText('PDF download usage month')).toBeTruthy();
+    expect(screen.getAllByText('2026-05').length).toBeGreaterThan(0);
     expect(screen.getByRole('heading', { name: 'All enforced limits' })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Upgrade to Pro Monthly/ })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Upgrade to Pro Yearly/ })).toBeTruthy();
@@ -149,7 +175,10 @@ describe('ProfilePage', () => {
         billingEnabled={billingConfig.enabled}
         billingHasSubscription
         billingPlans={billingConfig.plans}
-        limits={limits}
+        pdfDownloadsThisMonth={31}
+        pdfDownloadsRemaining={null}
+        pdfDownloadUsageMonth="2026-05"
+        limits={{ ...limits, pdfDownloadsMonthlyMax: null }}
         savedForms={savedForms}
         onSelectSavedForm={vi.fn()}
         onClose={vi.fn()}
@@ -162,6 +191,7 @@ describe('ProfilePage', () => {
     expect(screen.getByText(String(limits.templateApiRequestsMonthlyMax))).toBeTruthy();
     expect(screen.getByText(String(limits.signingRequestsMonthlyMax))).toBeTruthy();
     expect(screen.getAllByText('Unlimited').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('PDF downloads / month').length).toBeGreaterThan(0);
     expect(screen.queryByRole('heading', { name: 'Stripe billing controls' })).toBeNull();
   });
 
@@ -543,5 +573,171 @@ describe('ProfilePage', () => {
 
     expect(screen.getByRole('button', { name: 'Starting checkout...' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Canceling...' })).toBeTruthy();
+  });
+
+  it('shows payment recovery state and opens the billing portal', async () => {
+    const user = userEvent.setup();
+    const onOpenBillingPortal = vi.fn();
+
+    render(
+      <ProfilePage
+        email="billing-retry@example.com"
+        role="pro"
+        creditsRemaining={10}
+        monthlyCreditsRemaining={8}
+        refillCreditsRemaining={2}
+        availableCredits={10}
+        billingEnabled={billingConfig.enabled}
+        billingHasSubscription
+        billingSubscriptionStatus="past_due"
+        billingPaymentRecovery={{
+          status: 'payment_failed',
+          latestInvoiceId: 'in_123',
+          latestInvoiceStatus: 'open',
+          failureCode: 'insufficient_funds',
+          failedAt: 1775000100,
+          nextPaymentAttempt: 1775086500,
+          recoveryDeadline: 1775604900,
+        }}
+        billingPlans={billingConfig.plans}
+        limits={limits}
+        savedForms={savedForms}
+        onSelectSavedForm={vi.fn()}
+        onStartBillingCheckout={vi.fn()}
+        onCancelBillingSubscription={vi.fn()}
+        onOpenBillingPortal={onOpenBillingPortal}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('Payment retry in progress')).toBeTruthy();
+    expect(screen.getByText(/Stripe will retry automatically/)).toBeTruthy();
+    expect(screen.getByText('Reason: Insufficient Funds')).toBeTruthy();
+
+    const refillButton = screen.getByRole('button', { name: /Refill 500 Credits/ }) as HTMLButtonElement;
+    expect(refillButton.disabled).toBe(true);
+
+    await user.click(screen.getByRole('button', { name: 'Update payment method' }));
+
+    expect(onOpenBillingPortal).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores stale payment recovery metadata without an active subscription', () => {
+    render(
+      <ProfilePage
+        email="billing-stale@example.com"
+        role="base"
+        creditsRemaining={10}
+        monthlyCreditsRemaining={0}
+        refillCreditsRemaining={0}
+        availableCredits={10}
+        billingEnabled={billingConfig.enabled}
+        billingHasSubscription={false}
+        billingSubscriptionStatus="unpaid"
+        billingPaymentRecovery={{
+          status: 'payment_failed',
+          latestInvoiceId: 'in_stale',
+          latestInvoiceStatus: 'open',
+          failureCode: 'insufficient_funds',
+          failedAt: 1775000100,
+          nextPaymentAttempt: 1775086500,
+          recoveryDeadline: 1775604900,
+        }}
+        billingPlans={billingConfig.plans}
+        limits={limits}
+        savedForms={savedForms}
+        onSelectSavedForm={vi.fn()}
+        onStartBillingCheckout={vi.fn()}
+        onCancelBillingSubscription={vi.fn()}
+        onOpenBillingPortal={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByText('Payment retry in progress')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Update payment method' })).toBeNull();
+    expect(screen.getByText('No active subscription')).toBeTruthy();
+  });
+
+  it('blocks new Pro checkout buttons when a base profile still has a linked subscription', () => {
+    render(
+      <ProfilePage
+        email="billing-linked@example.com"
+        role="base"
+        creditsRemaining={10}
+        monthlyCreditsRemaining={0}
+        refillCreditsRemaining={0}
+        availableCredits={10}
+        billingEnabled={billingConfig.enabled}
+        billingHasSubscription
+        billingSubscriptionStatus="past_due"
+        billingPaymentRecovery={{
+          status: 'payment_failed',
+          latestInvoiceId: 'in_linked',
+          latestInvoiceStatus: 'open',
+          failureCode: 'insufficient_funds',
+          failedAt: 1775000100,
+          nextPaymentAttempt: 1775086500,
+          recoveryDeadline: 1775604900,
+        }}
+        billingPlans={billingConfig.plans}
+        limits={limits}
+        savedForms={savedForms}
+        onSelectSavedForm={vi.fn()}
+        onStartBillingCheckout={vi.fn()}
+        onCancelBillingSubscription={vi.fn()}
+        onOpenBillingPortal={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const monthlyButton = screen.getByRole('button', {
+      name: /Pro Monthly.*cancel current first/,
+    }) as HTMLButtonElement;
+    const yearlyButton = screen.getByRole('button', {
+      name: /Pro Yearly.*cancel current first/,
+    }) as HTMLButtonElement;
+    expect(monthlyButton.disabled).toBe(true);
+    expect(yearlyButton.disabled).toBe(true);
+    expect(screen.getByText('A subscription is linked to this profile. You can still cancel it while role sync catches up.')).toBeTruthy();
+    expect(screen.getByText('Payment retries are in progress for the linked subscription. Pro checkout and credit refills stay unavailable until the subscription state recovers.')).toBeTruthy();
+    expect(screen.queryByText(/Pro access stays active/)).toBeNull();
+  });
+
+  it('ignores stale payment recovery metadata after the subscription is active again', () => {
+    render(
+      <ProfilePage
+        email="billing-recovered@example.com"
+        role="pro"
+        creditsRemaining={10}
+        monthlyCreditsRemaining={8}
+        refillCreditsRemaining={2}
+        availableCredits={10}
+        billingEnabled={billingConfig.enabled}
+        billingHasSubscription
+        billingSubscriptionStatus="active"
+        billingPaymentRecovery={{
+          status: 'payment_failed',
+          latestInvoiceId: 'in_recovered',
+          latestInvoiceStatus: 'open',
+          failureCode: 'insufficient_funds',
+          failedAt: 1775000100,
+          nextPaymentAttempt: 1775086500,
+          recoveryDeadline: 1775604900,
+        }}
+        billingPlans={billingConfig.plans}
+        limits={limits}
+        savedForms={savedForms}
+        onSelectSavedForm={vi.fn()}
+        onStartBillingCheckout={vi.fn()}
+        onCancelBillingSubscription={vi.fn()}
+        onOpenBillingPortal={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByText('Payment retry in progress')).toBeNull();
+    const refillButton = screen.getByRole('button', { name: /Refill 500 Credits/ }) as HTMLButtonElement;
+    expect(refillButton.disabled).toBe(false);
   });
 });

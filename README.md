@@ -156,8 +156,9 @@ Rename and schema mapping require `OPENAI_API_KEY`. If the key is missing, those
 
 ### Plan limit messaging
 
-- Free defaults are 5 saved forms, 5 detect pages, 50 fillable pages, no active Fill By Link cap with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 successful fills/month and 25 pages/request, 25 sent signing requests/month, and 10 starter credits.
-- Premium defaults are 100 saved forms, 100 detect pages, 1,000 fillable pages, no active Fill By Link cap with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 successful fills/month and 250 pages/request, 10,000 sent signing requests/month, and a 500-credit monthly pool before refill packs.
+- Free defaults are 5 saved forms, 5 detect pages, 50 fillable pages, no active Fill By Link cap with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 successful fills/month and 50 pages/request, 50 Fill by File credits/month, 25 sent signing requests/month, 25 generated PDF downloads/month, and 10 starter credits.
+- Premium defaults are 100 saved forms, 100 detect pages, 1,000 fillable pages, no active Fill By Link cap with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 successful fills/month and 500 pages/request, 10,000 Fill by File credits/month, 10,000 sent signing requests/month, unlimited generated PDF downloads, and a 500-credit monthly pool before refill packs.
+- Workspace generated PDF downloads reset on the backend by UTC month. Saving templates, API Fill outputs, respondent downloads, and signing artifacts use their own workflow limits and are not charged against that workspace download quota.
 - Respondents fill a DullyPDF-hosted HTML form. The final PDF is generated later when the owner selects a respondent inside the workspace.
 - Public plan summaries are available at `/free-features` and `/premium-features`.
 

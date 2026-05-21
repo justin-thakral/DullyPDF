@@ -8,21 +8,29 @@ const TRUSTED_BILLING_CHECKOUT_HOSTS = new Set([
 ]);
 
 export function resolveTrustedBillingCheckoutUrl(rawUrl: unknown): string {
+  return resolveTrustedStripeBillingUrl(rawUrl, 'checkout');
+}
+
+export function resolveTrustedBillingPortalUrl(rawUrl: unknown): string {
+  return resolveTrustedStripeBillingUrl(rawUrl, 'billing portal');
+}
+
+function resolveTrustedStripeBillingUrl(rawUrl: unknown, label: string): string {
   const normalizedUrl = typeof rawUrl === 'string' ? rawUrl.trim() : '';
   if (!normalizedUrl) {
-    throw new Error('Stripe checkout URL is missing.');
+    throw new Error(`Stripe ${label} URL is missing.`);
   }
   let parsedUrl: URL;
   try {
     parsedUrl = new URL(normalizedUrl);
   } catch {
-    throw new Error('Stripe checkout URL is invalid.');
+    throw new Error(`Stripe ${label} URL is invalid.`);
   }
   if (parsedUrl.protocol !== 'https:') {
-    throw new Error('Stripe checkout URL must use HTTPS.');
+    throw new Error(`Stripe ${label} URL must use HTTPS.`);
   }
   if (!TRUSTED_BILLING_CHECKOUT_HOSTS.has(parsedUrl.hostname.toLowerCase())) {
-    throw new Error('Stripe checkout URL is not trusted.');
+    throw new Error(`Stripe ${label} URL is not trusted.`);
   }
   return parsedUrl.toString();
 }
@@ -55,5 +63,23 @@ export async function createTrustedBillingCheckoutForUser(
   return {
     ...payload,
     checkoutUrl,
+  };
+}
+
+export async function createTrustedBillingPortalSessionForUser(
+  userId: string,
+): Promise<{
+    success: boolean;
+    url: string;
+    customerId?: string | null;
+  }> {
+  const normalizedUserId = userId.trim();
+  if (!normalizedUserId) {
+    throw new Error('Sign in again before updating your payment method.');
+  }
+  const payload = await ApiService.createBillingPortalSession();
+  return {
+    ...payload,
+    url: resolveTrustedBillingPortalUrl(payload?.url),
   };
 }

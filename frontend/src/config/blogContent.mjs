@@ -43,6 +43,246 @@ const BLOG_FIGURE_LIBRARY = {
     src: '/blog/jotform-official-og.png',
     alt: 'An official Jotform social preview image downloaded from Jotform page metadata.',
   },
+  uscisI485Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/immigration/i-485__i-485.webp',
+    alt: 'First page preview of USCIS Form I-485 from the DullyPDF public form catalog.',
+  },
+  uscisI765Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/immigration/i-765__i-765.webp',
+    alt: 'First page preview of USCIS Form I-765 from the DullyPDF public form catalog.',
+  },
+  uscisI130Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/immigration/i-130__i-130.webp',
+    alt: 'First page preview of USCIS Form I-130 from the DullyPDF public form catalog.',
+  },
+  va21526ezCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/veterans/va_21-526ez__vba-21-526ez-are.webp',
+    alt: 'First page preview of VA Form 21-526EZ from the DullyPDF public form catalog.',
+  },
+  va214142Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/veterans/va_21-4142__vba-21-4142-are.webp',
+    alt: 'First page preview of VA Form 21-4142 from the DullyPDF public form catalog.',
+  },
+  va200995Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/veterans/va_20-0995__vba-20-0995-are.webp',
+    alt: 'First page preview of VA Form 20-0995 from the DullyPDF public form catalog.',
+  },
+  ssa3368Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/social_security/ssa-3368-bk__ssa-3368-bk.webp',
+    alt: 'First page preview of SSA-3368-BK from the DullyPDF public form catalog.',
+  },
+  ssa827Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/social_security/ssa-827__ssa-827.webp',
+    alt: 'First page preview of SSA-827 from the DullyPDF public form catalog.',
+  },
+  ssa3441Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/social_security/ssa-3441-bk__ssa-3441.webp',
+    alt: 'First page preview of SSA-3441-BK from the DullyPDF public form catalog.',
+  },
+  irsW9Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/hr_onboarding/w-9__fw9.webp',
+    alt: 'First page preview of IRS Form W-9 from the DullyPDF public form catalog.',
+  },
+  irs1099NecCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/1099-nec__f1099nec.webp',
+    alt: 'First page preview of IRS Form 1099-NEC from the DullyPDF public form catalog.',
+  },
+  irsW8BenECatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/hr_onboarding/w-8ben-e__fw8bene.webp',
+    alt: 'First page preview of IRS Form W-8BEN-E from the DullyPDF public form catalog.',
+  },
+  sba1919Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/small_business/sba_form_1919-borrower__2025.02.27_Form_1919_-_Updates_FINAL__03-12-2025_1_.webp',
+    alt: 'First page preview of SBA Form 1919 from the DullyPDF public form catalog.',
+  },
+  sba413Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/small_business/sba_form_413-personal__SBAForm413.webp',
+    alt: 'First page preview of SBA Form 413 from the DullyPDF public form catalog.',
+  },
+  sba5Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/small_business/sba_form_5-disaster__SBA-Disaster-Form-5.webp',
+    alt: 'First page preview of SBA Form 5 from the DullyPDF public form catalog.',
+  },
+  cms855aCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/healthcare/cms-855a__cms855a.webp',
+    alt: 'First page preview of CMS-855A from the DullyPDF public form catalog.',
+  },
+  cms855iCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/healthcare/cms-855i__cms855i.webp',
+    alt: 'First page preview of CMS-855I from the DullyPDF public form catalog.',
+  },
+  cms588Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/healthcare/cms-588__cms588.webp',
+    alt: 'First page preview of CMS-588 from the DullyPDF public form catalog.',
+  },
+  ds11Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/state_department/ds-11__ds11_pdf.webp',
+    alt: 'First page preview of State Department Form DS-11 from the DullyPDF public form catalog.',
+  },
+  ds82Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/state_department/ds-82__ds82_pdf.webp',
+    alt: 'First page preview of State Department Form DS-82 from the DullyPDF public form catalog.',
+  },
+  ds3053Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/state_department/ds-3053__ds3053.webp',
+    alt: 'First page preview of State Department Form DS-3053 from the DullyPDF public form catalog.',
+  },
+  form990Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/nonprofit/990__f990.webp',
+    alt: 'First page preview of IRS Form 990 from the DullyPDF public form catalog.',
+  },
+  form990ScheduleACatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/nonprofit/990_schedule_a__f990sa.webp',
+    alt: 'First page preview of IRS Form 990 Schedule A from the DullyPDF public form catalog.',
+  },
+  form990ScheduleOCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/nonprofit/990_schedule_o__f990so.webp',
+    alt: 'First page preview of IRS Form 990 Schedule O from the DullyPDF public form catalog.',
+  },
+  form941Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_payroll/941__f941.webp',
+    alt: 'First page preview of IRS Form 941 from the DullyPDF public form catalog.',
+  },
+  formW2Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_payroll/w-2__fw2.webp',
+    alt: 'First page preview of IRS Form W-2 from the DullyPDF public form catalog.',
+  },
+  form940Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_payroll/940__f940.webp',
+    alt: 'First page preview of IRS Form 940 from the DullyPDF public form catalog.',
+  },
+  dpt104Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/practice_intake/dpt_104__dental_new_patient_registration_form.webp',
+    alt: 'First page preview of a dental new patient registration form from the DullyPDF public form catalog.',
+  },
+  dpt102Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/practice_intake/dpt_102__adult_medical_history_questionnaire.webp',
+    alt: 'First page preview of an adult medical history questionnaire from the DullyPDF public form catalog.',
+  },
+  dpt108Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/practice_intake/dpt_108__consent_to_treat_and_financial_responsibility_form.webp',
+    alt: 'First page preview of a consent to treat and financial responsibility form from the DullyPDF public form catalog.',
+  },
+  form1040Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/1040__f1040.webp',
+    alt: 'First page preview of IRS Form 1040 from the DullyPDF public form catalog.',
+  },
+  form1040Schedule1Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/1040_schedule_1__f1040s1.webp',
+    alt: 'First page preview of IRS Form 1040 Schedule 1 from the DullyPDF public form catalog.',
+  },
+  form1040xCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/1040-x__f1040x.webp',
+    alt: 'First page preview of IRS Form 1040-X from the DullyPDF public form catalog.',
+  },
+  form1120Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_business/1120__f1120.webp',
+    alt: 'First page preview of IRS Form 1120 from the DullyPDF public form catalog.',
+  },
+  form1120sCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_business/1120-s__f1120s.webp',
+    alt: 'First page preview of IRS Form 1120-S from the DullyPDF public form catalog.',
+  },
+  form1065Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_business/1065__f1065.webp',
+    alt: 'First page preview of IRS Form 1065 from the DullyPDF public form catalog.',
+  },
+  irs656Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/656__f656.webp',
+    alt: 'First page preview of IRS Form 656 from the DullyPDF public form catalog.',
+  },
+  irs433aCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/433-a__f433a.webp',
+    alt: 'First page preview of IRS Form 433-A from the DullyPDF public form catalog.',
+  },
+  irs433bCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/tax_individual/433-b__f433b.webp',
+    alt: 'First page preview of IRS Form 433-B from the DullyPDF public form catalog.',
+  },
+  cms40bCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/patient_intake/cms_40b__cms40b-e.webp',
+    alt: 'First page preview of CMS-40B from the DullyPDF public form catalog.',
+  },
+  cms1490sCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/patient_intake/cms_1490s__cms1490s-english.webp',
+    alt: 'First page preview of CMS-1490S from the DullyPDF public form catalog.',
+  },
+  cms20027Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/patient_intake/cms_20027__cms20027.webp',
+    alt: 'First page preview of CMS-20027 from the DullyPDF public form catalog.',
+  },
+  wh380eCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/wh-380-e__wh-380-e.webp',
+    alt: 'First page preview of DOL Form WH-380-E from the DullyPDF public form catalog.',
+  },
+  wh381Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/wh-381__wh-381.webp',
+    alt: 'First page preview of DOL Form WH-381 from the DullyPDF public form catalog.',
+  },
+  wh382Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/wh-382__wh-382.webp',
+    alt: 'First page preview of DOL Form WH-382 from the DullyPDF public form catalog.',
+  },
+  ca1Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/ca-1__ca-1.webp',
+    alt: 'First page preview of DOL Form CA-1 from the DullyPDF public form catalog.',
+  },
+  ca7Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/ca-7__ca-7.webp',
+    alt: 'First page preview of DOL Form CA-7 from the DullyPDF public form catalog.',
+  },
+  ca17Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/ca-17__ca-17.webp',
+    alt: 'First page preview of DOL Form CA-17 from the DullyPDF public form catalog.',
+  },
+  of306Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/of_306__declaration-for-federal-employment-optional-form-august-2023.webp',
+    alt: 'First page preview of OPM Optional Form 306 from the DullyPDF public form catalog.',
+  },
+  sf85pCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/sf_85p__sf85p.webp',
+    alt: 'First page preview of OPM Standard Form 85P from the DullyPDF public form catalog.',
+  },
+  sf86Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/labor_employment/sf_86__sf86.webp',
+    alt: 'First page preview of OPM Standard Form 86 from the DullyPDF public form catalog.',
+  },
+  bankruptcyB101Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/bankruptcy/b_101__form_b_101_0624_fillable_clean.webp',
+    alt: 'First page preview of Bankruptcy Form B 101 from the DullyPDF public form catalog.',
+  },
+  bankruptcyB106abCatalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/bankruptcy/b_106a_b__form_b106ab.webp',
+    alt: 'First page preview of Bankruptcy Form B 106A/B from the DullyPDF public form catalog.',
+  },
+  bankruptcyB122a2Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/bankruptcy/b_122a-2__b_122a-2_0425-form.webp',
+    alt: 'First page preview of Bankruptcy Form B 122A-2 from the DullyPDF public form catalog.',
+  },
+  cbp3461Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/customs_logistics/cbp_3461__cbp_form_3461.webp',
+    alt: 'First page preview of CBP Form 3461 from the DullyPDF public form catalog.',
+  },
+  cbp7501Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/customs_logistics/cbp_7501__cbp_form_7501.webp',
+    alt: 'First page preview of CBP Form 7501 from the DullyPDF public form catalog.',
+  },
+  cbp5106Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/customs_logistics/cbp_5106__cbp_form_5106.webp',
+    alt: 'First page preview of CBP Form 5106 from the DullyPDF public form catalog.',
+  },
+  hud50059Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/real_estate_housing/50059.webp',
+    alt: 'First page preview of HUD-50059 from the DullyPDF public form catalog.',
+  },
+  hud9887Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/real_estate_housing/9887.webp',
+    alt: 'First page preview of HUD-9887 from the DullyPDF public form catalog.',
+  },
+  rd4104Catalog: {
+    src: 'https://storage.googleapis.com/dullypdf-form-catalog-assets-east4/real_estate_housing/rd_410-4__rd410-4.webp',
+    alt: 'First page preview of USDA RD Form 410-4 from the DullyPDF public form catalog.',
+  },
   detectionOverlay: {
     src: '/demo/mobile-commonforms.png',
     alt: 'DullyPDF showing AI-detected field overlays on top of a source PDF inside the product.',
@@ -133,9 +373,3648 @@ const section = (id, title, paragraphs, extras = {}) => ({
   paragraphs,
   ...(extras.bullets?.length ? { bullets: extras.bullets } : {}),
   ...(extras.figures?.length ? { figures: extras.figures } : {}),
+  ...(extras.links?.length ? { links: extras.links } : {}),
 });
 
-export const BLOG_POSTS = [
+const BLOG_POSTS_BY_AUTHORING_PRIORITY = [
+  {
+    slug: 'uscis-immigration-packet-automation',
+    title: 'USCIS Immigration Packet Automation: Fill Repeated Forms From One Intake Record',
+    seoTitle: 'USCIS Immigration Packet Automation for Repeated PDF Forms',
+    seoDescription:
+      'How to reuse applicant, sponsor, preparer, and address data across USCIS PDFs such as I-485, I-765, I-130, I-131, I-864, I-90, G-28, and G-1145.',
+    seoKeywords: [
+      'uscis form automation',
+      'immigration packet automation',
+      'fill uscis forms online',
+      'i-485 i-765 packet',
+      'immigration pdf workflow',
+      'fillable uscis forms',
+      'uscis pdf forms from intake',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Immigration packets are difficult because the same applicant, sponsor, preparer, attorney, and address details often appear across several fixed USCIS PDFs. The useful automation pattern is not changing the forms; it is collecting the record once, mapping it carefully, and generating the official-looking PDFs from a reviewed template set.',
+    sections: [
+      section(
+        'why-uscis-packets-repeat-data',
+        'USCIS packet work is really repeated data work across fixed PDFs',
+        [
+          'A common USCIS workflow rarely stops at one PDF. A team may need an application, petition, work authorization form, travel document form, affidavit of support, attorney appearance notice, or receipt notification sheet. Each PDF has its own layout, but the underlying record is often the same person, household, sponsor, preparer, address history, and contact data repeated in slightly different places.',
+          'That is the exact type of workflow where a reusable PDF template system helps. DullyPDF should not decide eligibility, filing strategy, or supporting evidence. Its job is narrower: keep the blank PDF layout intact, detect and clean the fillable fields, map those fields to stable data names, and make repeated packet generation less manual.',
+        ],
+        {
+          figures: [
+            figure(
+              'uscisI485Catalog',
+              'Form I-485 is a dense example from the catalog: the form layout stays fixed, while applicant and address data can come from a controlled intake record.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with a small packet set before you try to automate every immigration PDF',
+        [
+          'The DullyPDF catalog currently mirrors a broad set of USCIS forms, but the first pass should be practical. Pick the forms that appear repeatedly in your actual workflow, validate the field layer on each one, then connect them through shared schema names. A narrow, reviewed packet is more useful than a large library of half-cleaned templates.',
+          'A strong first set is I-485 for adjustment of status, I-765 for employment authorization, I-130 for family petitions, I-131 for travel documents, I-864 for affidavits of support, I-90 for permanent resident card replacement, G-28 for attorney or accredited representative appearance, and G-1145 for application or petition acceptance notification. Those forms cover different use cases, but they expose the same operational problem: the PDF structure is fixed while record data repeats.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open I-485 in the catalog',
+              href: '/forms/i-485',
+              description: 'Application to Register Permanent Residence catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open I-765 in the catalog',
+              href: '/forms/i-765',
+              description: 'Employment authorization catalog page for building and testing a reusable template.',
+            },
+            {
+              label: 'Open I-130 in the catalog',
+              href: '/forms/i-130',
+              description: 'Petition for Alien Relative catalog page with the mirrored blank PDF.',
+            },
+            {
+              label: 'Open I-131 in the catalog',
+              href: '/forms/i-131',
+              description: 'Travel document catalog page for packet workflows that include travel authorization forms.',
+            },
+            {
+              label: 'Open I-864 in the catalog',
+              href: '/forms/i-864',
+              description: 'Affidavit of Support catalog page for sponsor-data mapping.',
+            },
+            {
+              label: 'Open I-90 in the catalog',
+              href: '/forms/i-90',
+              description: 'Permanent resident card replacement catalog page.',
+            },
+            {
+              label: 'Open G-28 in the catalog',
+              href: '/forms/g-28',
+              description: 'Attorney or accredited representative appearance catalog page.',
+            },
+            {
+              label: 'Open G-1145 in the catalog',
+              href: '/forms/g-1145',
+              description: 'Receipt notification catalog page for front-of-packet notification workflows.',
+            },
+          ],
+          bullets: [
+            'I-485 - Application to Register Permanent Residence, 24 pages in the current catalog entry.',
+            'I-765 - Application for Employment Authorization, 7 pages in the current catalog entry.',
+            'I-130 - Petition for Alien Relative, 12 pages in the current catalog entry.',
+            'I-131 - Application for Travel Document, 14 pages in the current catalog entry.',
+            'I-864 - Affidavit of Support Under Section 213A, 12 pages in the current catalog entry.',
+            'I-90 - Application to Replace Permanent Resident Card, 7 pages in the current catalog entry.',
+            'G-28 - Notice of Entry of Appearance as Attorney, 4 pages in the current catalog entry.',
+            'G-1145 - E-Notification of Application/Petition Acceptance, 1 page in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'uscisI765Catalog',
+              'Form I-765 is a good second template because work authorization details often reuse identity and contact fields already collected for a larger packet.',
+            ),
+            figure(
+              'uscisI130Catalog',
+              'Form I-130 shows why petition and beneficiary data should be named deliberately before the same record is reused across related forms.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'schema-first-field-names',
+        'The schema should name the record, not the PDF coordinates',
+        [
+          'The most important setup choice is how the fields are named. A field named Text42 may technically fill, but it is not a reusable packet field. A field named applicant_family_name or sponsor_mailing_city gives the operator and any later API caller a stable idea of what value belongs there.',
+          'For USCIS-style packets, the schema should group data by person and role. Applicant, petitioner, beneficiary, sponsor, household member, preparer, attorney, and interpreter data should not blur together. That role-based naming makes Search and Fill easier to review, and it reduces the chance that one person address or date is mapped into the wrong section of a later PDF.',
+        ],
+        {
+          bullets: [
+            'Identity fields: `applicant_family_name`, `applicant_given_name`, `a_number`, `uscis_online_account_number`.',
+            'Contact fields: `mailing_street`, `mailing_city`, `mailing_state`, `mailing_postal_code`, `daytime_phone`, `email`.',
+            'Role fields: `petitioner_full_name`, `beneficiary_full_name`, `sponsor_full_name`, `attorney_full_name`, `preparer_full_name`.',
+            'Packet controls: `form_language`, `signature_date`, `prepared_by`, `review_status`, `source_record_id`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Rename and mapping are the critical packet setup steps because the same human-readable field names can be reused across several USCIS PDFs.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'fill-by-link-for-intake',
+        'Use Fill By Link when the applicant or sponsor still needs to provide the data',
+        [
+          'Many packet workflows start before the data is clean enough to fill. The applicant, sponsor, or representative may still need to provide identity details, contact information, address history, employment facts, or consent responses. In that situation, asking someone to edit the PDF directly is usually the wrong first step.',
+          'The better flow is to collect the record through a respondent-facing web form, review it inside the workspace, then generate the USCIS PDFs from the stored response. That keeps the respondent experience simpler while preserving the official PDF output the team needs for review, printing, signing, or filing according to the relevant USCIS instructions.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link lets the owner collect structured answers first, then decide which reviewed USCIS templates should be generated from that response.',
+            ),
+            figure(
+              'mockWebForm',
+              'A web-form-first intake is easier for respondents than direct PDF editing, especially when the same answers need to populate several packet documents.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'quality-control-before-output',
+        'Quality control matters more than speed when the form family is sensitive',
+        [
+          'Immigration PDFs are a bad place for blind automation. Every template should be tested with representative data, reviewed at the field level, and checked for obvious role mistakes before it is trusted. That includes text fields, dates, checkboxes, radio groups, signature-adjacent fields, and any repeated-name sections where two people in the same packet can be confused.',
+          'A good validation loop is simple: open the blank catalog PDF, run detection, rename and map fields, fill a realistic test record, export a flat review copy, and inspect the result against the blank source. Only after that should the template become part of a saved packet, Fill By Link flow, or API Fill endpoint.',
+        ],
+        {
+          bullets: [
+            'Review low-confidence detections first, especially around checkbox groups and dense address blocks.',
+            'Validate repeated identity fields across every form in the packet.',
+            'Use flat output for external review copies when editable PDF viewer behavior could cause confusion.',
+            'Keep the official USCIS source page as the authority for the latest edition, fee, filing address, and instruction requirements.',
+          ],
+          figures: [
+            figure(
+              'fieldList',
+              'A reviewed field list is the difference between a detected PDF and a packet template that staff can safely reuse.',
+            ),
+            figure(
+              'filledPreview',
+              'A final filled preview should be inspected before the workflow is saved or published to a respondent or API caller.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'what-dullypdf-does-not-do',
+        'DullyPDF prepares the PDF workflow; it does not make immigration decisions',
+        [
+          'This distinction should stay explicit. DullyPDF can help turn official-source PDFs into reusable templates, collect structured answers, fill repeated fields, and produce downloadable outputs. It does not submit forms to USCIS, choose which immigration benefit applies, decide who qualifies, calculate legal consequences, or replace the official instructions.',
+          'Before any real filing, the team should verify the current USCIS form page, edition date, filing address, fee rules, signature requirements, and supporting-evidence instructions. If the choice is legal or strategic rather than operational, it belongs with USCIS guidance or a qualified immigration professional, not with a PDF automation tool.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official USCIS I-485 page',
+              href: 'https://www.uscis.gov/i-485',
+              description: 'Current USCIS source for Form I-485 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS I-765 page',
+              href: 'https://www.uscis.gov/i-765',
+              description: 'Current USCIS source for Form I-765 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS I-130 page',
+              href: 'https://www.uscis.gov/i-130',
+              description: 'Current USCIS source for Form I-130 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS I-131 page',
+              href: 'https://www.uscis.gov/i-131',
+              description: 'Current USCIS source for Form I-131 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS I-864 page',
+              href: 'https://www.uscis.gov/i-864',
+              description: 'Current USCIS source for Form I-864 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS I-90 page',
+              href: 'https://www.uscis.gov/i-90',
+              description: 'Current USCIS source for Form I-90 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS G-28 page',
+              href: 'https://www.uscis.gov/g-28',
+              description: 'Current USCIS source for Form G-28 details, downloads, and filing guidance.',
+            },
+            {
+              label: 'Official USCIS G-1145 page',
+              href: 'https://www.uscis.gov/g-1145',
+              description: 'Current USCIS source for Form G-1145 details, downloads, and filing guidance.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'government-form-automation',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+      'batch-fill-pdf-forms',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-by-link', 'api-fill'],
+  },
+  {
+    slug: 'va-disability-claim-packet-automation',
+    title: 'VA Disability Claim Packet Automation for Repeated Claimant Data',
+    seoTitle: 'VA Disability Claim Packet Automation for Repeated PDF Forms',
+    seoDescription:
+      'How to reuse claimant, representative, medical-release, unemployability, supplemental-claim, and appeal data across VA disability claim PDFs.',
+    seoKeywords: [
+      'va disability form fillable',
+      'va claim packet forms',
+      'va 21-526ez fillable pdf',
+      'va disability claim packet',
+      'va form automation',
+      'veterans claim pdf workflow',
+      'va supplemental claim form automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'VA disability paperwork often repeats the same claimant, representative, medical provider, employment, issue, and decision-review details across several fixed forms. A useful workflow keeps the official VA PDFs intact while giving teams a safer way to collect, map, review, and reuse the data behind the packet.',
+    sections: [
+      section(
+        'why-va-claim-packets-repeat-data',
+        'VA claim packets repeat claimant data across several official PDFs',
+        [
+          'A VA disability workflow may start with a primary compensation application, then add medical-release forms, traumatic-event statements, unemployability forms, supplemental claim forms, or Board Appeal paperwork depending on what the claimant and representative need to prepare. Each document has a different purpose, but the same claimant identity, contact details, file numbers, service details, representatives, providers, and decision references can appear again and again.',
+          'DullyPDF is a fit for the document-preparation part of that process. It should not decide eligibility, tell a claimant which review lane to choose, or replace VA instructions. The product value is narrower: turn the blank official PDF into a reviewed reusable template, map repeated fields to stable record names, and make the output easier to check before anyone uses it outside the workspace.',
+        ],
+        {
+          figures: [
+            figure(
+              'va21526ezCatalog',
+              'VA Form 21-526EZ is the anchor document for many disability-compensation packet workflows, and it benefits from careful field naming before any repeated fill process is trusted.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the claim forms that actually recur in your workflow',
+        [
+          'The Veterans category in the catalog has many forms, but a first automation pass should stay focused. Pick the documents that repeat for your team, review one representative fill for each, and only then group them into a packet workflow. A smaller set of validated templates is more useful than a broad form library where nobody has checked field names and output behavior.',
+          'A strong starting set is VA 21-526EZ for disability compensation, VA 21-4142 for authorization to disclose information to VA, VA 21-0781 for mental-health traumatic-event details, VA 21-8940 for unemployability compensation, VA 20-0995 for supplemental claims, and VA 10182 for Board Appeals. Those forms support different stages, but they share the same operational need: claimant and supporting-party data should be collected once and reused deliberately.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open VA 21-526EZ in the catalog',
+              href: '/forms/va-21-526ez',
+              description: 'Application for Disability Compensation catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open VA 21-4142 in the catalog',
+              href: '/forms/va-21-4142',
+              description: 'Authorization to Disclose Information to VA catalog page for release-form workflows.',
+            },
+            {
+              label: 'Open VA 21-0781 in the catalog',
+              href: '/forms/va-21-0781',
+              description: 'Statement in Support of PTSD Claim catalog page for supporting statement workflows.',
+            },
+            {
+              label: 'Open VA 21-8940 in the catalog',
+              href: '/forms/va-21-8940',
+              description: 'Unemployability compensation catalog page for employment-history mapping.',
+            },
+            {
+              label: 'Open VA 20-0995 in the catalog',
+              href: '/forms/va-20-0995',
+              description: 'Supplemental Claim catalog page for decision-review packet workflows.',
+            },
+            {
+              label: 'Open VA 10182 in the catalog',
+              href: '/forms/va-10182',
+              description: 'Board Appeal catalog page for notice-of-disagreement packet workflows.',
+            },
+          ],
+          bullets: [
+            'VA 21-526EZ - Application for Disability Compensation, 15 pages in the current catalog entry.',
+            'VA 21-4142 - Authorization to Disclose Information to the Department of Veterans Affairs, 5 pages in the current catalog entry.',
+            'VA 21-0781 - Statement in Support of PTSD Claim, 7 pages in the current catalog entry.',
+            'VA 21-8940 - Application for Increased Compensation Based on Unemployability, 4 pages in the current catalog entry.',
+            'VA 20-0995 - Decision Review Request: Supplemental Claim, 7 pages in the current catalog entry.',
+            'VA 10182 - Decision Review Request: Board Appeal, 3 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'va214142Catalog',
+              'VA Form 21-4142 is a good example of why authorization forms need exact signer, provider, and disclosure field mapping.',
+            ),
+            figure(
+              'va200995Catalog',
+              'VA Form 20-0995 shows how decision-review details can become part of a repeatable packet workflow once the underlying record names are stable.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'claimant-centered-schema',
+        'Use a claimant-centered schema instead of one-off PDF field names',
+        [
+          'The field names should describe the claimant record and the packet role, not the source PDF coordinate. Names such as veteran_full_name, claimant_file_number, representative_name, provider_name, employment_start_date, and issue_decision_date are easier to reuse than generic labels copied from one page at a time.',
+          'VA packets also need careful role separation. The veteran, claimant, surviving claimant, representative, provider, employer, witness, and signer may not all be the same person. If those roles are blurred in the template, Search and Fill can appear to work while putting the right value in the wrong person section.',
+        ],
+        {
+          bullets: [
+            'Claimant fields: `veteran_full_name`, `claimant_full_name`, `va_file_number`, `date_of_birth`, `preferred_phone`, `mailing_address`.',
+            'Representative fields: `representative_name`, `organization_name`, `representative_phone`, `representative_email`.',
+            'Medical-release fields: `provider_name`, `provider_address`, `treatment_start_date`, `treatment_end_date`, `release_signature_date`.',
+            'Decision-review fields: `decision_date`, `issue_description`, `review_option`, `new_evidence_description`, `hearing_preference`.',
+            'Employment fields: `employer_name`, `job_title`, `last_day_worked`, `hours_per_week`, `monthly_earnings`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Rename and mapping work should happen before packet reuse because the same claimant-centered schema has to survive across several VA PDFs.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'intake-and-review',
+        'Use intake first when the claimant or representative still needs to provide data',
+        [
+          'Many VA packet workflows start with incomplete information. A claimant, VSO, attorney, claims agent, medical provider, or employer may need to provide details before the packet can be filled cleanly. In those cases, the right first step is often a structured intake flow rather than direct PDF editing.',
+          'Fill By Link can collect answers through a simpler respondent-facing form. Search and Fill can then use that stored response or a spreadsheet row to populate the reviewed templates. This keeps the respondent experience simpler while letting the owner inspect the final PDF layout before exporting, signing, or using the packet under the current VA instructions.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link gives the owner a way to collect claimant or supporting-party answers before generating the fixed VA PDFs.',
+            ),
+            figure(
+              'mockWebForm',
+              'A web-form-first intake can be easier for outside respondents while the workspace still controls the final PDF packet.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'packet-quality-control',
+        'Validate the packet before it becomes a saved workflow',
+        [
+          'VA disability forms are a poor fit for blind fill automation. Every form in the packet should be tested with realistic data, reviewed for role mistakes, and checked around signature-adjacent fields, authorization language, checkbox groups, repeated names, and date blocks. The point is to reduce repeated manual entry, not to remove human review from a sensitive workflow.',
+          'A practical validation loop is to open each blank catalog PDF, run field detection, rename and map the fields, fill one representative claimant record, export a flat review copy, and compare it against the blank form. After that, the team can save the forms as templates, group them, or publish a narrower API Fill endpoint for a stable internal process.',
+        ],
+        {
+          bullets: [
+            'Review field detections around dense instruction pages, tables, checkboxes, and signature areas.',
+            'Validate that veteran, claimant, representative, provider, and employer data do not cross roles.',
+            'Use flat PDFs for review copies when the recipient does not need to edit AcroForm fields.',
+            'Keep VA.gov as the source of truth for current editions, submission options, signatures, evidence, and appeal/review deadlines.',
+          ],
+          figures: [
+            figure(
+              'fieldList',
+              'A clean field list makes repeated VA packet generation easier to inspect before a template is trusted.',
+            ),
+            figure(
+              'filledPreview',
+              'A completed PDF preview should be checked with realistic data before the saved packet is used again.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'what-dullypdf-does-not-do',
+        'DullyPDF prepares the PDF workflow; it does not decide VA benefits strategy',
+        [
+          'This page is about document workflow, not benefits advice. DullyPDF can help prepare reusable templates, collect structured answers, fill repeated fields, export review copies, and support packet-style PDF workflows. It does not file VA claims, choose a claim or appeal path, determine eligibility, identify required evidence, or replace the current VA instructions.',
+          'Before using a completed packet outside the workspace, verify the official VA form page, revision date, submission method, signature requirements, supporting evidence instructions, and any time-sensitive review or appeal rules. If the question is about eligibility, deadlines, evidence, or legal strategy, it belongs with VA guidance or an accredited representative, attorney, or claims agent.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official VA 21-526EZ page',
+              href: 'https://www.va.gov/forms/21-526ez',
+              description: 'VA source for disability compensation form details, downloads, online options, and related guidance.',
+            },
+            {
+              label: 'Official VA 21-4142 page',
+              href: 'https://www.va.gov/forms/21-4142',
+              description: 'VA source for authorization-to-disclose form details and related medical-release guidance.',
+            },
+            {
+              label: 'Official VA 21-0781 page',
+              href: 'https://www.va.gov/forms/21-0781',
+              description: 'VA source for mental-health traumatic-event statement form details and current guidance.',
+            },
+            {
+              label: 'Official VA 21-8940 page',
+              href: 'https://www.va.gov/forms/21-8940',
+              description: 'VA source for unemployability compensation form details and related employment-information guidance.',
+            },
+            {
+              label: 'Official VA Supplemental Claims page',
+              href: 'https://www.va.gov/decision-reviews/supplemental-claim',
+              description: 'VA source for Supplemental Claim workflow details, including VA Form 20-0995 references.',
+            },
+            {
+              label: 'Official VA 10182 page',
+              href: 'https://www.va.gov/forms/va10182/',
+              description: 'VA source for Board Appeal form details, downloads, online options, and related appeal guidance.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'government-form-automation',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+      'batch-fill-pdf-forms',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-by-link', 'create-group'],
+  },
+  {
+    slug: 'social-security-disability-packet-automation',
+    title: 'Social Security Disability PDF Packet Automation',
+    seoTitle: 'Social Security Disability PDF Packet Automation',
+    seoDescription:
+      'How to reuse claimant, representative, medical-source, work-history, authorization, reconsideration, and appeal data across SSA disability PDFs.',
+    seoKeywords: [
+      'ssa disability forms pdf',
+      'ssa-827 fillable',
+      'social security disability packet',
+      'ssa form automation',
+      'ssa-3368-bk fillable pdf',
+      'disability report adult pdf',
+      'social security pdf workflow',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Social Security disability paperwork is often a packet problem, not a single-form problem. Claimant identity, medical sources, work history, representative data, authorization signatures, and appeal details can repeat across several fixed SSA PDFs. DullyPDF helps with the document workflow: template setup, field naming, mapping, review, and reusable packet output.',
+    sections: [
+      section(
+        'why-ssa-disability-packets-repeat-data',
+        'SSA disability packets combine claimant data, medical-source data, and authorization forms',
+        [
+          'A Social Security disability workflow can involve an adult disability report, an application for disability insurance benefits, an authorization to disclose information, representative appointment paperwork, request-for-reconsideration forms, and appeal reports. Those forms are not interchangeable, but the same claimant and supporting-party details often need to move through more than one PDF.',
+          'That makes the operational challenge similar to other government packet workflows. The PDF layout should remain intact, but the data behind the layout should be collected and mapped once. DullyPDF is useful when a team wants to make those PDFs reusable without turning the process into generic form-builder content or changing the official SSA layout.',
+        ],
+        {
+          figures: [
+            figure(
+              'ssa3368Catalog',
+              'SSA-3368-BK is a dense disability-report example: medical conditions, treatment sources, work details, and contact data all need stable field names before repeat filling is useful.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the SSA forms that define the packet stage',
+        [
+          'The Social Security category in the catalog includes identity, benefit, representative, appeal, and disability-report forms. A practical first workflow should focus on the forms that recur for the same type of case, then validate those templates with realistic data before expanding the packet.',
+          'For an adult disability packet, the strongest starting set is SSA-3368-BK for the adult disability report, SSA-827 for authorization to disclose information to SSA, SSA-16 for disability insurance benefits, SSA-1696 for appointment of representative, SSA-561 for reconsideration requests, and SSA-3441-BK for disability-report appeal updates. Child disability workflows can add SSA-3820-BK, and function-report workflows may add SSA-3373-BK.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open SSA-3368-BK in the catalog',
+              href: '/forms/ssa-3368-bk',
+              description: 'Disability Report - Adult catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open SSA-827 in the catalog',
+              href: '/forms/ssa-827',
+              description: 'Authorization to Disclose Information to SSA catalog page for medical-release workflows.',
+            },
+            {
+              label: 'Open SSA-16 in the catalog',
+              href: '/forms/ssa-16',
+              description: 'Application for Disability Insurance Benefits catalog page.',
+            },
+            {
+              label: 'Open SSA-1696 in the catalog',
+              href: '/forms/ssa-1696',
+              description: 'Claimant Appointment of Representative catalog page.',
+            },
+            {
+              label: 'Open SSA-561 in the catalog',
+              href: '/forms/ssa-561',
+              description: 'Request for Reconsideration catalog page for appeal packet workflows.',
+            },
+            {
+              label: 'Open SSA-3441-BK in the catalog',
+              href: '/forms/ssa-3441-bk',
+              description: 'Disability Report - Appeal catalog page for appeal update workflows.',
+            },
+          ],
+          bullets: [
+            'SSA-3368-BK - Disability Report - Adult, 15 pages in the current catalog entry.',
+            'SSA-827 - Authorization to Disclose Information to the Social Security Administration, 2 pages in the current catalog entry.',
+            'SSA-16 - Application for Disability Insurance Benefits, 7 pages in the current catalog entry.',
+            'SSA-1696 - Claimant Appointment of Representative, 6 pages in the current catalog entry.',
+            'SSA-561 - Request for Reconsideration, 3 pages in the current catalog entry.',
+            'SSA-3441-BK - Disability Report - Appeal, 11 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'ssa827Catalog',
+              'SSA-827 is central to disability packet workflows because authorization fields need exact claimant, signer, witness, and contact handling.',
+            ),
+            figure(
+              'ssa3441Catalog',
+              'SSA-3441-BK is a strong appeal-stage template because it updates disability, treatment, and work data from the original claim record.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'claimant-and-source-schema',
+        'The schema should separate claimant, representative, source, and appeal roles',
+        [
+          'SSA forms make role separation important. The claimant, number holder, representative, medical source, employer, contact person, witness, parent, guardian, or other signer may be different people. A template that only has generic name and phone fields can fill technically while still making the packet risky to review.',
+          'A better schema names the record by role. The same claimant_full_name can repeat across several forms, while provider_1_name, employer_1_name, representative_rep_id, witness_phone, and appeal_decision_date describe the specific part of the packet each value belongs to.',
+        ],
+        {
+          bullets: [
+            'Claimant fields: `claimant_full_name`, `claimant_ssn_last4`, `date_of_birth`, `mailing_address`, `daytime_phone`, `preferred_language`.',
+            'Medical-source fields: `provider_1_name`, `provider_1_address`, `treatment_start_date`, `treatment_end_date`, `condition_treated`.',
+            'Work-history fields: `employer_1_name`, `job_title`, `work_start_date`, `work_end_date`, `hours_per_day`, `duties_description`.',
+            'Representative fields: `representative_name`, `representative_rep_id`, `representative_phone`, `representative_email`.',
+            'Appeal fields: `decision_date`, `issue_being_appealed`, `reconsideration_reason`, `new_or_changed_condition`, `new_treatment_source`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Role-aware rename and mapping lets the same claimant record support application, authorization, representative, and appeal forms without relying on vague PDF field names.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'authorization-signature-handling',
+        'Authorization forms need extra review before they enter a repeat workflow',
+        [
+          'SSA-827 deserves special handling because it controls disclosure of medical, educational, and other information for the disability determination process. The PDF workflow should make signer identity, signature date, address, phone, witness, and representative fields easy to review. It should not hide those details behind an automatic fill that nobody checks.',
+          'For respondent workflows, collect the structured data first and then generate the authorization PDF for review. If the final packet needs a signature workflow, freeze the reviewed PDF before sending it out. That keeps the authorization artifact tied to the exact values the signer saw rather than to an editable draft that can drift after the fact.',
+        ],
+        {
+          figures: [
+            figure(
+              'signatureWorkflow',
+              'Signature workflows should happen after the authorization PDF is filled and reviewed, so the signer receives one stable record rather than an evolving draft.',
+            ),
+            figure(
+              'filledPreview',
+              'A filled preview helps catch signer, witness, and contact mistakes before an authorization form is used outside the workspace.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'intake-before-pdf-fill',
+        'Use intake first when claimant details are still incomplete',
+        [
+          'Disability packets often start with incomplete information. A claimant, family member, representative, employer, or medical office may need to provide details before the PDF packet can be filled cleanly. Asking someone to edit a long disability PDF directly is usually a poor intake experience.',
+          'A better flow is to collect answers through Fill By Link or import a reviewed spreadsheet row, map those values into the saved SSA templates, and inspect the completed PDFs before export. That keeps the respondent-facing step simpler while preserving the fixed SSA PDF outputs required for paper or review workflows.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link can collect claimant and supporting-party data before the owner decides which SSA packet documents to generate.',
+            ),
+            figure(
+              'mockWebForm',
+              'A web-form-first intake avoids asking respondents to navigate a long fixed PDF while still producing the official-layout PDF afterward.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'packet-quality-control',
+        'Run a field-level review before the packet becomes reusable',
+        [
+          'SSA disability PDFs are sensitive enough that blind fill automation is the wrong goal. The useful target is a reviewed workflow that reduces repeated typing while keeping the operator in control. Every template should be tested with realistic data and checked for role mistakes, missing date fields, medical-source row alignment, authorization signer fields, and appeal-stage details.',
+          'A practical validation loop is to open each blank catalog PDF, run field detection, rename and map the fields, fill one representative claimant record, export a flat review copy, and inspect the result against the blank source. After that, the team can save the templates, group related forms, and reuse the workflow with more confidence.',
+        ],
+        {
+          bullets: [
+            'Review low-confidence detections around dense medical-source sections, work-history tables, checkboxes, and signature areas.',
+            'Validate that claimant, representative, provider, employer, witness, and signer values do not cross roles.',
+            'Use flat output for final review copies when recipients do not need live editable fields.',
+            'Keep SSA.gov as the authority for current form editions, submission options, appeal deadlines, signature rules, and eligibility instructions.',
+          ],
+          figures: [
+            figure(
+              'fieldList',
+              'A clean field list makes it easier to validate long disability forms before they become part of a saved packet workflow.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'what-dullypdf-does-not-do',
+        'DullyPDF prepares the PDF workflow; it does not decide Social Security benefits',
+        [
+          'This page is about PDF workflow mechanics, not disability benefits advice. DullyPDF can help prepare reusable templates, collect structured answers, fill repeated fields, export review copies, and support packet-style workflows. It does not submit SSA applications, determine eligibility, decide appeal strategy, calculate deadlines, or replace SSA instructions.',
+          'Before using a completed packet outside the workspace, verify the current SSA form page or PDF, revision date, submission path, signature requirements, evidence instructions, and any appeal or reconsideration deadlines. If the question is about eligibility, evidence, deadlines, or representation strategy, it belongs with SSA guidance or a qualified representative.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official SSA-3368-BK PDF',
+              href: 'https://www.ssa.gov/forms/ssa-3368-bk.pdf',
+              description: 'SSA source for the Disability Report - Adult PDF.',
+            },
+            {
+              label: 'Official SSA-827 information page',
+              href: 'https://www.ssa.gov/disability/professionals/ssa827_informationpage.htm',
+              description: 'SSA source explaining Form SSA-827 and its disclosure purpose.',
+            },
+            {
+              label: 'Official SSA-16 page',
+              href: 'https://www.ssa.gov/forms/ssa-16.html',
+              description: 'SSA source for information needed to apply for disability benefits.',
+            },
+            {
+              label: 'Official SSA-1696 page',
+              href: 'https://www.ssa.gov/online/ssa-1696.html',
+              description: 'SSA source for appointing a representative.',
+            },
+            {
+              label: 'Official SSA reconsideration page',
+              href: 'https://www.ssa.gov/apply/appeal-decision-we-made/request-reconsideration',
+              description: 'SSA source for requesting reconsideration and SSA-561 references.',
+            },
+            {
+              label: 'Official SSA-3441 page',
+              href: 'https://www.ssa.gov/forms/ssa-3441.html',
+              description: 'SSA source for Disability Report - Appeal and related appeal forms.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'government-form-automation',
+      'pdf-signature-workflow',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-by-link', 'signature-workflow'],
+  },
+  {
+    slug: 'contractor-tax-onboarding-packet',
+    title: 'Contractor Tax Onboarding Packet: W-9, 1099, W-8, and EIN Forms',
+    seoTitle: 'Contractor Tax Onboarding Packet for W-9, 1099, W-8, and EIN PDFs',
+    seoDescription:
+      'How to collect contractor tax details once and reuse them across W-9, 1099-NEC, 1099-MISC, 1096, W-8BEN, W-8BEN-E, and SS-4 PDF workflows.',
+    seoKeywords: [
+      'contractor onboarding tax forms',
+      'w-9 1099 packet',
+      'fill w-9 from contractor intake',
+      'contractor tax packet pdf',
+      'w-8ben-e onboarding workflow',
+      '1099 nec pdf automation',
+      'vendor tax form automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Contractor onboarding is usually a repeated data problem: legal name, taxpayer identification, address, classification, backup withholding, payer details, and year-end reporting data move through several fixed tax PDFs. A high-quality workflow collects the record once, maps it carefully, and keeps IRS source rules outside the PDF automation layer.',
+    sections: [
+      section(
+        'why-contractor-tax-packets-repeat-data',
+        'Contractor onboarding repeats tax identity data before and after payment',
+        [
+          'A contractor or vendor workflow often begins with a W-9, but the same record can later drive 1099-NEC, 1099-MISC, 1096, W-8BEN, W-8BEN-E, SS-4, reporting-agent, or internal payer documents. The layout of each PDF is different, but the operating data is familiar: payee legal name, business name, tax classification, TIN, mailing address, payer details, account number, and withholding status.',
+          'DullyPDF fits the workflow layer, not the tax-decision layer. It can turn the recurring PDFs into reviewed templates, collect contractor details through Fill By Link, and fill the official-layout documents from the same structured record. It should not decide whether a worker is a contractor, whether a payment is reportable, or which IRS copy must be filed.',
+        ],
+        {
+          figures: [
+            figure(
+              'irsW9Catalog',
+              'Form W-9 is the best starting template because it captures the payee identity details that later reporting workflows rely on.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the forms that define contractor identity, recipient reporting, and foreign-status review',
+        [
+          'The practical first packet is not every IRS form. It is the set that actually recurs in your onboarding and year-end process. For U.S. payees, W-9 is the intake anchor and 1099-NEC is often the year-end reporting output. 1099-MISC and 1096 may appear for other information-return or paper-transmittal workflows.',
+          'For foreign-status workflows, W-8BEN and W-8BEN-E need stricter role and entity handling. SS-4 is useful when an entity still needs EIN application data organized before the accounting team stores the contractor record. These forms should be linked by a stable schema, not by copy-paste from one PDF to the next.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open W-9 in the catalog',
+              href: '/forms/w-9',
+              description: 'Request for Taxpayer Identification Number catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open 1099-NEC in the catalog',
+              href: '/forms/1099-nec',
+              description: 'Nonemployee Compensation catalog page for recipient-copy and review workflows.',
+            },
+            {
+              label: 'Open 1099-MISC in the catalog',
+              href: '/forms/1099-misc',
+              description: 'Miscellaneous Information catalog page for broader information-return workflows.',
+            },
+            {
+              label: 'Open 1096 in the catalog',
+              href: '/forms/1096',
+              description: 'Annual Summary and Transmittal catalog page for paper information-return packets.',
+            },
+            {
+              label: 'Open W-8BEN in the catalog',
+              href: '/forms/w-8ben',
+              description: 'Foreign-status individual certificate catalog page.',
+            },
+            {
+              label: 'Open W-8BEN-E in the catalog',
+              href: '/forms/w-8ben-e',
+              description: 'Foreign-status entity certificate catalog page.',
+            },
+            {
+              label: 'Open SS-4 in the catalog',
+              href: '/forms/ss-4',
+              description: 'Employer Identification Number application catalog page.',
+            },
+          ],
+          bullets: [
+            'W-9 - Request for Taxpayer Identification Number, 6 pages in the current catalog entry.',
+            '1099-NEC - Nonemployee Compensation, 6 pages in the current catalog entry.',
+            '1099-MISC - Miscellaneous Information, 6 pages in the current catalog entry.',
+            '1096 - Annual Summary and Transmittal of U.S. Information Returns, 3 pages in the current catalog entry.',
+            'W-8BEN - Certificate of Foreign Status for individuals, 1 page in the current catalog entry.',
+            'W-8BEN-E - Certificate of Foreign Status for entities, 8 pages in the current catalog entry.',
+            'SS-4 - Application for Employer Identification Number, 2 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'irs1099NecCatalog',
+              'Form 1099-NEC is a separate output template from the contractor intake, so its recipient and payer fields should be mapped from a reviewed record rather than retyped.',
+            ),
+            figure(
+              'irsW8BenECatalog',
+              'Form W-8BEN-E is a role-sensitive entity form, making clear beneficial-owner, chapter-status, treaty, and signer field names important before reuse.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'schema-for-payee-and-payer-data',
+        'Use a payee-centered schema that keeps payer, recipient, and withholding fields separate',
+        [
+          'A contractor packet should not be named around PDF coordinates. Names such as vendor_legal_name, vendor_business_name, vendor_tin, vendor_tax_classification, payer_name, payer_tin, reportable_amount, and backup_withholding_amount are easier to reuse across intake, review, and reporting outputs.',
+          'The schema also needs foreign-status separation. A U.S. contractor W-9 workflow and a W-8BEN-E entity workflow may share address and contact fields, but entity classification, chapter 3 status, chapter 4 status, treaty claim, and signer capacity should not be collapsed into generic checkbox names.',
+        ],
+        {
+          bullets: [
+            'Payee identity fields: `vendor_legal_name`, `vendor_business_name`, `vendor_tin`, `tax_classification`, `exempt_payee_code`.',
+            'Payer fields: `payer_name`, `payer_tin`, `payer_address`, `account_number`, `reporting_year`.',
+            '1099 fields: `nonemployee_compensation`, `misc_rents`, `federal_tax_withheld`, `state_tax_withheld`, `recipient_account_number`.',
+            'Foreign-status fields: `beneficial_owner_name`, `country_of_incorporation`, `chapter_3_status`, `chapter_4_status`, `treaty_country`, `signer_capacity`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Rename and mapping keep the tax packet tied to stable business meanings instead of brittle PDF field names.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'intake-before-year-end-output',
+        'Collect contractor details first, then generate the PDFs after review',
+        [
+          'Many contractor packets fail because onboarding and year-end reporting are treated as separate manual events. The stronger pattern is to collect the contractor or vendor record through Fill By Link, review the submitted details, save the clean template mapping, and later reuse the same record when a 1099 output or internal packet is needed.',
+          'For spreadsheet-driven teams, Search and Fill can use a vendor export as the source of truth. The operator searches the row, fills W-9 review copies or year-end forms, and validates the output before download. That keeps a human review loop around tax-sensitive data while still eliminating repeated typing.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link is useful when contractor details need to come from the payee before the accounting team can review and store the record.',
+            ),
+            figure(
+              'csvCalcScreenshot',
+              'A contractor or vendor export becomes more useful when its columns line up with saved PDF field names.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'Keep IRS source rules, Copy A handling, and filing choices outside the automation claim',
+        [
+          'Tax forms have rules that a PDF filler should not blur. DullyPDF can help prepare templates, collect values, and fill official-layout PDFs for review. It does not determine reportability, substitute-form acceptability, withholding obligations, filing deadlines, e-file requirements, or whether an IRS copy can be printed from a downloaded PDF.',
+          'Before using any completed form outside the workspace, verify the current IRS form page, revision date, instructions, Copy A rules, payer and recipient copy rules, and any e-file or paper-submission requirements. If the decision is about tax treatment rather than PDF workflow, it belongs with IRS guidance or a qualified tax professional.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official IRS W-9 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-w-9',
+              description: 'IRS source for Form W-9 current revision and instructions.',
+            },
+            {
+              label: 'Official IRS 1099-NEC page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1099-nec',
+              description: 'IRS source for Form 1099-NEC current revision and instructions.',
+            },
+            {
+              label: 'Official IRS 1099-MISC page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1099-misc',
+              description: 'IRS source for Form 1099-MISC current revision and instructions.',
+            },
+            {
+              label: 'Official IRS 1096 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1096',
+              description: 'IRS source for Form 1096 current revision and instructions.',
+            },
+            {
+              label: 'Official IRS W-8BEN page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-w-8-ben',
+              description: 'IRS source for Form W-8BEN current revision and instructions.',
+            },
+            {
+              label: 'Official IRS W-8BEN-E page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-w-8-ben-e',
+              description: 'IRS source for Form W-8BEN-E current revision and instructions.',
+            },
+            {
+              label: 'Official IRS SS-4 page',
+              href: 'https://www.irs.gov/formss4',
+              description: 'IRS source for Form SS-4 current revision, instructions, and EIN application guidance.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'hr-pdf-automation',
+      'accounting-tax-pdf-automation',
+      'fill-pdf-by-link',
+      'batch-fill-pdf-forms',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-by-link', 'create-group'],
+  },
+  {
+    slug: 'sba-loan-application-packet-automation',
+    title: 'SBA Loan Application Packet Automation',
+    seoTitle: 'SBA Loan Application Packet Automation for Borrower and Financial PDFs',
+    seoDescription:
+      'How to map borrower, owner, financial-statement, tax-transcript, liability, and disaster-loan data across SBA Form 1919, 413, 4506-C, 2202, 912, and Form 5 PDFs.',
+    seoKeywords: [
+      'sba loan application forms',
+      'sba form 413 fillable',
+      'sba 1919 borrower information form',
+      'sba loan packet automation',
+      'sba borrower pdf workflow',
+      'sba disaster loan form 5',
+      'sba 4506-c automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'SBA loan packets often repeat borrower, owner, lender, debt, asset, liability, transcript, and disclosure data across several fixed PDFs. A good automation workflow keeps each SBA source document intact while building a reviewed data map that can drive the packet from a CRM row, spreadsheet export, or intake response.',
+    sections: [
+      section(
+        'why-sba-packets-repeat-data',
+        'SBA packets are borrower-data workflows spread across several fixed PDFs',
+        [
+          'An SBA workflow may involve a borrower information form, personal financial statement, tax transcript authorization, schedule of liabilities, statement of personal history, or disaster loan application. Those documents support different programs and stages, but the same borrower identity, business profile, ownership, contact, debt, asset, and lender details often repeat.',
+          'DullyPDF should stay focused on the document-preparation layer. It can build reusable templates from the official PDFs, map the fields to a stable loan record, and generate reviewed outputs. It should not decide eligibility, program fit, collateral treatment, creditworthiness, or required SBA submission contents.',
+        ],
+        {
+          figures: [
+            figure(
+              'sba1919Catalog',
+              'SBA Form 1919 is a strong packet anchor because it collects borrower, owner, loan request, government financing, and disclosure details.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the SBA forms that recur in your loan or disaster workflow',
+        [
+          'A lender, packager, or consultant should not automate every SBA PDF at once. Start with the documents that appear repeatedly for the same program, validate each template with realistic data, and only then group them into a saved packet. That keeps review focused and prevents one weak form map from hiding inside a broad automation claim.',
+          'For 7(a)-style borrower workflows, SBA Form 1919 and SBA Form 413 are often the core pair. Disaster workflows may add Form 5, Form 4506-C, and Schedule of Liabilities. Form 912 can appear when personal-history details need to be collected and reviewed in a fixed SBA layout.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open SBA Form 1919 in the catalog',
+              href: '/forms/sba-form-1919-borrower',
+              description: 'Borrower Information Form catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open SBA Form 413 in the catalog',
+              href: '/forms/sba-form-413-personal',
+              description: 'Personal Financial Statement catalog page for owner and guarantor financial workflows.',
+            },
+            {
+              label: 'Open SBA Form 4506-C in the catalog',
+              href: '/forms/sba-form-4506-c',
+              description: 'IRS transcript authorization catalog page for SBA disaster loan workflows.',
+            },
+            {
+              label: 'Open SBA Form 2202 in the catalog',
+              href: '/forms/sba-form-2202-schedule',
+              description: 'Schedule of Liabilities catalog page for balance-sheet support.',
+            },
+            {
+              label: 'Open SBA Form 912 in the catalog',
+              href: '/forms/sba-form-912-statement',
+              description: 'Statement of Personal History catalog page.',
+            },
+            {
+              label: 'Open SBA Form 5 in the catalog',
+              href: '/forms/sba-form-5-disaster',
+              description: 'Disaster Business Loan Application catalog page.',
+            },
+          ],
+          bullets: [
+            'SBA Form 1919 - Borrower Information Form, 7 pages in the current catalog entry.',
+            'SBA Form 413 - Personal Financial Statement, 6 pages in the current catalog entry.',
+            'SBA Form 4506-C - IRS Form 4506-C for SBA disaster loan workflows, 1 page in the current catalog entry.',
+            'SBA Form 2202 - Schedule of Liabilities, 1 page in the current catalog entry.',
+            'SBA Form 912 - Statement of Personal History, 2 pages in the current catalog entry.',
+            'SBA Form 5 - Disaster Business Loan Application, 22 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'sba413Catalog',
+              'SBA Form 413 is a financial-statement template where asset, liability, income, and owner fields should be named before any repeat fill process is trusted.',
+            ),
+            figure(
+              'sba5Catalog',
+              'SBA Form 5 is a long disaster-loan application, which makes field-level review and realistic test data especially important.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'loan-packet-schema',
+        'Use a schema that separates business, owner, financial, debt, and transcript data',
+        [
+          'The schema should reflect the loan record, not the page coordinates. Borrower legal name, DBA, EIN, NAICS, ownership percentage, owner SSN last four, lender contact, requested amount, existing debt, real estate, cash, securities, and contingent liabilities all need clear names before a packet can be reused.',
+          'SBA packets also need careful role handling. The applicant business, affiliate, principal, guarantor, spouse, lender, tax-transcript signer, and preparer may be different parties. If those roles collapse into generic name and address fields, the workflow can fill while still producing a packet that is hard to trust.',
+        ],
+        {
+          bullets: [
+            'Business fields: `business_legal_name`, `business_dba`, `business_ein`, `business_address`, `naics_code`, `loan_purpose`.',
+            'Owner fields: `owner_1_full_name`, `owner_1_percent_owned`, `owner_1_address`, `owner_1_title`, `guarantor_required`.',
+            'Financial fields: `cash_on_hand`, `accounts_receivable`, `real_estate_value`, `notes_payable`, `contingent_liabilities`.',
+            'Debt fields: `creditor_name`, `original_amount`, `current_balance`, `monthly_payment`, `maturity_date`, `collateral_description`.',
+            'Transcript fields: `taxpayer_name`, `taxpayer_id`, `tax_year_1`, `tax_year_2`, `signature_date`, `authorized_representative`.',
+          ],
+          figures: [
+            figure(
+              'databaseSchema',
+              'Loan packet automation becomes more reliable when the PDF templates map to a schema that a CRM, spreadsheet, or intake form can reuse.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'crm-spreadsheet-api-workflows',
+        'Use Search and Fill for operator review, then API Fill only after the packet is stable',
+        [
+          'For lenders and packagers, Search and Fill is usually the first useful workflow. Import or connect a reviewed borrower export, search the applicant record, fill one document at a time or the saved packet, and inspect the output before export. That review loop catches naming and role mistakes before the packet becomes a repeated process.',
+          'API Fill becomes more attractive after the packet is stable. If a lender portal or internal CRM already has the borrower record and the template map has been tested, a template-scoped endpoint can generate the PDFs without rekeying. The API should be published only after the schema and output have been validated with realistic loan data.',
+        ],
+        {
+          figures: [
+            figure(
+              'fieldList',
+              'Field-level review is where teams catch owner, applicant, signer, and lender role mistakes before publishing a recurring SBA packet workflow.',
+            ),
+            figure(
+              'filledPreview',
+              'A filled preview with realistic borrower data should be reviewed before a packet is saved, grouped, or exposed through API Fill.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'SBA and lender requirements remain the source of truth',
+        [
+          'SBA forms change by program and date, and lenders can require their own supporting documents. DullyPDF can help build templates, collect values, fill official-layout PDFs, export flat review copies, and support packet workflows. It does not determine eligibility, required program forms, credit decisions, collateral sufficiency, or submission strategy.',
+          'Before a completed packet leaves the workspace, verify the current SBA document page, effective date, program guidance, lender instructions, signatures, attachments, and any disaster-specific requirements. If the question is about program eligibility or lending judgment, it belongs with SBA guidance, the participating lender, or a qualified advisor.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official SBA Form 1919 page',
+              href: 'https://www.sba.gov/document/sba-form-1919-borrower-information-form',
+              description: 'SBA source for Borrower Information Form details, effective date, and downloads.',
+            },
+            {
+              label: 'Official SBA Form 413 page',
+              href: 'https://www.sba.gov/document/sba-form-413-personal-financial-statement',
+              description: 'SBA source for Personal Financial Statement details and downloads.',
+            },
+            {
+              label: 'Official SBA Form 4506-C page',
+              href: 'https://www.sba.gov/document/sba-form-4506-c-irs-form-4506-c-sba-disaster-loan',
+              description: 'SBA source for the pre-filled IRS Form 4506-C used in disaster loan workflows.',
+            },
+            {
+              label: 'Official SBA Form 2202 page',
+              href: 'https://www.sba.gov/document/sba-form-2202-schedule-liabilities',
+              description: 'SBA source for Schedule of Liabilities details and downloads.',
+            },
+            {
+              label: 'Official SBA Form 912 page',
+              href: 'https://www.sba.gov/document/sba-form-912-statement-personal-history',
+              description: 'SBA source for Statement of Personal History details and downloads.',
+            },
+            {
+              label: 'Official SBA Form 5 page',
+              href: 'https://www.sba.gov/document/sba-form-5-disaster-business-loan-application',
+              description: 'SBA source for Disaster Business Loan Application details and downloads.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'finance-loan-pdf-automation',
+      'pdf-fill-api',
+      'pdf-to-database-template',
+      'batch-fill-pdf-forms',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'create-group', 'api-fill'],
+  },
+  {
+    slug: 'medicare-provider-enrollment-credentialing-packet',
+    title: 'Medicare Provider Enrollment and Credentialing PDF Automation',
+    seoTitle: 'Medicare Provider Enrollment PDF Automation for CMS-855 Packets',
+    seoDescription:
+      'How to map provider, supplier, ownership, practice-location, EFT, and participation data across CMS-855A, 855B, 855I, 855S, 855O, CMS-460, and CMS-588 PDFs.',
+    seoKeywords: [
+      'cms 855 automation',
+      'medicare provider enrollment forms',
+      'credentialing pdf forms',
+      'cms 855a fillable pdf',
+      'cms 588 eft authorization',
+      'provider enrollment pdf workflow',
+      'medicare credentialing packet automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Medicare enrollment and credentialing packets repeat provider, supplier, practice-location, ownership, managing-control, contact, EFT, and participation data across long CMS PDFs. DullyPDF can help operations teams prepare reviewed templates and fill them from a stable credentialing record while CMS and PECOS remain the authority for submission requirements.',
+    sections: [
+      section(
+        'why-provider-enrollment-packets-repeat-data',
+        'CMS enrollment packets repeat the same provider and organization data across long PDFs',
+        [
+          'Provider enrollment work is often framed as a form problem, but the recurring burden is the data behind the forms. A hospital, clinic, group practice, physician, non-physician practitioner, DMEPOS supplier, ordering or certifying provider, or billing entity may need to repeat legal names, NPIs, tax IDs, practice locations, ownership, contacts, EFT banking data, and signer details across several CMS PDFs.',
+          'DullyPDF is useful when a team has to preserve the official fixed layout but wants a cleaner way to prepare, map, and review the packet. It should not replace PECOS, decide which CMS-855 application applies, determine billing privileges, or validate compliance with Medicare enrollment rules.',
+        ],
+        {
+          figures: [
+            figure(
+              'cms855aCatalog',
+              'CMS-855A is a long institutional-provider enrollment form, making it a strong example of why reusable field naming matters before repeat filling.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Treat the CMS-855 family as related templates, not as one generic enrollment PDF',
+        [
+          'The CMS-855 forms serve different provider and supplier types. A high-quality workflow should build one reviewed template per form type and keep the shared schema stable where fields overlap. That lets a credentialing team reuse provider data without pretending that institutional providers, clinics, physicians, ordering providers, and DMEPOS suppliers all have the same packet.',
+          'CMS-460 and CMS-588 often sit next to the enrollment application. CMS-460 handles the participating physician or supplier agreement, while CMS-588 handles EFT authorization. These supporting documents should be mapped deliberately because signer, banking, and organization fields carry review risk.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open CMS-855A in the catalog',
+              href: '/forms/cms-855a',
+              description: 'Institutional Provider enrollment catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open CMS-855B in the catalog',
+              href: '/forms/cms-855b',
+              description: 'Clinics, Group Practices, and Certain Other Suppliers catalog page.',
+            },
+            {
+              label: 'Open CMS-855I in the catalog',
+              href: '/forms/cms-855i',
+              description: 'Physicians and Non-Physician Practitioners catalog page.',
+            },
+            {
+              label: 'Open CMS-855S in the catalog',
+              href: '/forms/cms-855s',
+              description: 'DMEPOS Suppliers catalog page.',
+            },
+            {
+              label: 'Open CMS-855O in the catalog',
+              href: '/forms/cms-855o',
+              description: 'Ordering and Referring Physicians catalog page.',
+            },
+            {
+              label: 'Open CMS-460 in the catalog',
+              href: '/forms/cms-460',
+              description: 'Medicare Participating Physician or Supplier Agreement catalog page.',
+            },
+            {
+              label: 'Open CMS-588 in the catalog',
+              href: '/forms/cms-588',
+              description: 'EFT Authorization Agreement catalog page.',
+            },
+          ],
+          bullets: [
+            'CMS-855A - Institutional Provider enrollment, 72 pages in the current catalog entry.',
+            'CMS-855B - Clinics, Group Practices, and Certain Other Suppliers enrollment, 49 pages in the current catalog entry.',
+            'CMS-855I - Physicians and Non-Physician Practitioners enrollment, 26 pages in the current catalog entry.',
+            'CMS-855S - DMEPOS Suppliers enrollment, 39 pages in the current catalog entry.',
+            'CMS-855O - Ordering and Referring Physicians enrollment, 11 pages in the current catalog entry.',
+            'CMS-460 - Medicare Participating Physician or Supplier Agreement, 3 pages in the current catalog entry.',
+            'CMS-588 - EFT Authorization Agreement, 4 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'cms855iCatalog',
+              'CMS-855I is a provider-centered template where NPI, license, practice-location, reassignment, and contact fields need clear schema names.',
+            ),
+            figure(
+              'cms588Catalog',
+              'CMS-588 needs extra review because EFT fields combine organization identity, banking details, contacts, and signatures.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'credentialing-schema',
+        'Use a credentialing schema that separates provider, supplier, location, owner, and EFT roles',
+        [
+          'Credentialing packets are role-heavy. The provider or supplier, legal business entity, delegated official, authorized official, managing employee, owner, adverse legal action contact, practice location, billing agency, and EFT account holder may not be the same party. The field map should make those roles explicit.',
+          'A schema organized around credentialing records also makes spreadsheet and API workflows more realistic. Instead of mapping to Text1 and Text2, the team can map provider_npi, organization_legal_name, tax_identification_number, practice_location_1_address, owner_1_percent_interest, eft_routing_number, and authorized_official_signature_date.',
+        ],
+        {
+          bullets: [
+            'Provider fields: `provider_full_name`, `provider_npi`, `license_number`, `specialty_code`, `date_of_birth`.',
+            'Organization fields: `organization_legal_name`, `doing_business_as`, `tax_identification_number`, `ptan`, `chain_home_office`.',
+            'Location fields: `practice_location_1_address`, `medical_record_storage_address`, `correspondence_address`, `billing_agency_name`.',
+            'Ownership fields: `owner_1_name`, `owner_1_type`, `owner_1_percent_interest`, `managing_employee_name`, `authorized_official_name`.',
+            'EFT fields: `financial_institution_name`, `routing_number`, `account_number`, `account_type`, `eft_contact_name`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Role-aware rename and mapping are essential because CMS enrollment forms repeat similar identity fields for different parties.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'spreadsheet-and-api-workflows',
+        'Use spreadsheet review first, then API Fill for stable internal credentialing systems',
+        [
+          'For many credentialing teams, the first useful workflow is Search and Fill from a spreadsheet or exported provider roster. The operator searches the provider or organization row, fills the reviewed CMS template, and validates the long PDF before export. That keeps review close to the output while reducing repeated typing.',
+          'API Fill becomes useful when a credentialing platform, internal CRM, or provider data system already owns the record and the template map is stable. A template-scoped API can generate the PDF packet, but only after field names, role rules, and output behavior have been tested with realistic provider data.',
+        ],
+        {
+          figures: [
+            figure(
+              'csvCalcScreenshot',
+              'A provider roster can drive CMS PDFs only after columns have been normalized to the same schema used by the templates.',
+            ),
+            figure(
+              'databaseSchema',
+              'Credentialing API workflows depend on stable schema names because the PDF output becomes a downstream record, not an ad hoc edit.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'CMS, PECOS, and MAC instructions remain the authority',
+        [
+          'CMS explains that providers and suppliers can enroll online using PECOS, and the paper forms have submission and signature requirements. DullyPDF can help teams prepare and review paper-style PDFs when those documents are part of their workflow. It does not replace PECOS, determine the correct application, validate enrollment eligibility, or submit documents to a Medicare Administrative Contractor.',
+          'Before using a completed packet outside the workspace, verify the current CMS enrollment page, form revision, required supporting documentation, handwritten signature rules, EFT requirements, PECOS options, and the correct enrollment contractor. If the decision is about Medicare enrollment compliance rather than PDF preparation, use CMS guidance or qualified credentialing counsel.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official CMS enrollment applications page',
+              href: 'https://www.cms.gov/Medicare/Provider-Enrollment-and-Certification/Enrollment-Applications',
+              description: 'CMS source for PECOS, paper enrollment applications, CMS-855 links, CMS-460, and CMS-588.',
+            },
+            {
+              label: 'Official CMS-855A PDF',
+              href: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855A.pdf',
+              description: 'CMS source PDF for institutional provider enrollment.',
+            },
+            {
+              label: 'Official CMS-855B PDF',
+              href: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855B.pdf',
+              description: 'CMS source PDF for clinics, group practices, and certain other suppliers.',
+            },
+            {
+              label: 'Official CMS-855I PDF',
+              href: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS855I.pdf',
+              description: 'CMS source PDF for physicians and non-physician practitioners.',
+            },
+            {
+              label: 'Official CMS-588 PDF',
+              href: 'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS588.pdf',
+              description: 'CMS source PDF for EFT Authorization Agreement.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'healthcare-pdf-automation',
+      'pdf-to-database-template',
+      'fill-pdf-from-csv',
+      'pdf-fill-api',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'api-fill'],
+  },
+  {
+    slug: 'passport-ds-form-workflow',
+    title: 'Passport and Consular DS Form Workflow for Reusable Identity Data',
+    seoTitle: 'Passport DS Form Workflow for Reusable Identity and Consent PDFs',
+    seoDescription:
+      'How to reuse traveler, parent, guardian, consent, contact, and correction data across DS-11, DS-82, DS-3053, DS-5504, DS-2029, and DS-5525 passport PDFs.',
+    seoKeywords: [
+      'ds-11 fillable pdf',
+      'passport application pdf',
+      'state department ds forms',
+      'passport form automation',
+      'ds-82 renewal pdf workflow',
+      'ds-3053 consent form fillable',
+      'consular form pdf workflow',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Passport and consular workflows reuse identity, parent, guardian, contact, citizenship, consent, and correction data across fixed DS PDFs. DullyPDF can help prepare and review reusable PDF templates, but State Department instructions still control signatures, photos, appointments, mailing, and submission method.',
+    sections: [
+      section(
+        'why-ds-form-workflows-repeat-data',
+        'Passport packets repeat identity and consent data across separate DS forms',
+        [
+          'Passport workflows can involve a first-time application, renewal, minor consent form, correction form, consular report of birth abroad, or special family-circumstances statement. These forms have different submission rules, but the same person and family details often repeat: applicant name, birth details, address, parent or guardian identity, contact information, travel document numbers, and signer details.',
+          'A PDF automation workflow should preserve the DS form layout and make the repeated data easier to review. It should not tell a traveler which form to submit, whether they qualify for renewal, when to sign, how to handle photos, or where to apply. Those decisions belong with State Department guidance.',
+        ],
+        {
+          figures: [
+            figure(
+              'ds11Catalog',
+              'DS-11 is the anchor first-time passport application template and should be handled as an official-layout PDF, not rebuilt as a generic web form.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the DS forms that match a real passport or consular workflow',
+        [
+          'The State Department form family is broad, so a first DullyPDF workflow should stay focused. Build templates only for the DS forms that your team repeatedly prepares, test each one with realistic identity data, and keep a separate review checklist for signature, photo, appointment, and mailing requirements.',
+          'DS-11 and DS-82 cover many adult application and renewal workflows. DS-3053 and DS-5525 are special minor-passport support forms. DS-5504 covers some name changes, corrections, and limited-validity replacements. DS-2029 is a consular report of birth abroad application and should be treated as its own family-data workflow.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open DS-11 in the catalog',
+              href: '/forms/ds-11',
+              description: 'Application for a U.S. Passport catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open DS-82 in the catalog',
+              href: '/forms/ds-82',
+              description: 'Passport Renewal Application catalog page.',
+            },
+            {
+              label: 'Open DS-3053 in the catalog',
+              href: '/forms/ds-3053',
+              description: 'Statement of Consent or Special Circumstances catalog page.',
+            },
+            {
+              label: 'Open DS-5504 in the catalog',
+              href: '/forms/ds-5504',
+              description: 'Name Change, Data Correction, and Limited Passport Book Replacement catalog page.',
+            },
+            {
+              label: 'Open DS-2029 in the catalog',
+              href: '/forms/ds-2029',
+              description: 'Consular Report of Birth Abroad application catalog page.',
+            },
+            {
+              label: 'Open DS-5525 in the catalog',
+              href: '/forms/ds-5525',
+              description: 'Statement of Exigent or Special Family Circumstances catalog page.',
+            },
+          ],
+          bullets: [
+            'DS-11 - Application for a U.S. Passport, 6 pages in the current catalog entry.',
+            'DS-82 - U.S. Passport Renewal Application for Eligible Individuals, 6 pages in the current catalog entry.',
+            'DS-3053 - Statement of Consent or Special Circumstances for a minor passport, 2 pages in the current catalog entry.',
+            'DS-5504 - Name Change, Data Correction, and Limited Passport Book Replacement, 6 pages in the current catalog entry.',
+            'DS-2029 - Consular Report of Birth Abroad application, 8 pages in the current catalog entry.',
+            'DS-5525 - Statement of Exigent or Special Family Circumstances, 2 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'ds82Catalog',
+              'DS-82 is a renewal-focused template where prior passport, identity, contact, and mailing fields should be mapped separately from first-time application data.',
+            ),
+            figure(
+              'ds3053Catalog',
+              'DS-3053 shows why consent forms need exact parent, guardian, child, notary, and signature-adjacent field review.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'traveler-and-family-schema',
+        'Use a traveler and family schema rather than one-off DS field labels',
+        [
+          'Passport forms are role-sensitive. The applicant, child, parent, guardian, consenting parent, non-applying parent, emergency contact, notary, and preparer may be different people. A reusable template should name those roles directly so the same identity record does not spill into the wrong section.',
+          'Clear schema names also make review faster. Fields like applicant_full_name, applicant_date_of_birth, parent_1_full_name, parent_2_phone, prior_passport_number, consent_parent_signature_date, and mailing_address are easier to inspect than generic PDF field names.',
+        ],
+        {
+          bullets: [
+            'Applicant fields: `applicant_full_name`, `applicant_date_of_birth`, `applicant_place_of_birth`, `applicant_ssn_last4`, `applicant_email`.',
+            'Passport fields: `prior_passport_number`, `prior_passport_issue_date`, `prior_passport_book_or_card`, `correction_reason`.',
+            'Parent and guardian fields: `parent_1_full_name`, `parent_1_birthplace`, `parent_2_full_name`, `guardian_relationship`.',
+            'Consent fields: `non_applying_parent_name`, `consent_child_name`, `consent_parent_phone`, `notary_commission_expiration`.',
+            'Contact fields: `mailing_address`, `permanent_address`, `emergency_contact_name`, `emergency_contact_phone`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Role-aware mapping makes DS packet review more dependable because parent, child, traveler, and consent values stay distinct.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'print-and-review-workflow',
+        'Passport forms often need print-ready review, not just browser completion',
+        [
+          'State Department passport workflows often require printing, signing at the correct time, mailing, or appearing at an acceptance facility. A DullyPDF workflow should therefore optimize for clean review output: fill from a saved record, inspect the completed PDF, and export a version that staff can check against the current State Department instructions.',
+          'For respondent intake, Fill By Link can collect identity details first, but the owner should still review the generated DS PDF before it is used outside the workspace. That separation keeps the respondent experience simple while preserving the official form layout for final review.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link can collect traveler or parent details before the owner generates and reviews the fixed DS PDF.',
+            ),
+            figure(
+              'filledPreview',
+              'A filled preview should be compared against the State Department form instructions before printing, signing, or mailing.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'State Department instructions control signatures, photos, fees, appointments, and submission',
+        [
+          'DullyPDF can help prepare reusable DS templates, collect data, fill fields, and export review copies. It does not submit passport forms, determine form eligibility, calculate fees, validate citizenship evidence, decide when to sign, or replace appointment and acceptance-facility instructions.',
+          'Before using a completed DS PDF, verify the current State Department passport forms page, eForms PDF, processing times, photo requirements, fees, signature instructions, and where to apply. The PDF workflow should make preparation cleaner without changing the official passport process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official State Department passport forms page',
+              href: 'https://travel.state.gov/content/travel/en/passports/how-apply/forms.html',
+              description: 'State Department source for DS form selection, printing, signing, and passport form guidance.',
+            },
+            {
+              label: 'Official DS-11 PDF',
+              href: 'https://eforms.state.gov/Forms/ds11_pdf.PDF',
+              description: 'State Department eForms source PDF for DS-11.',
+            },
+            {
+              label: 'Official DS-82 PDF',
+              href: 'https://eforms.state.gov/Forms/ds82_pdf.PDF',
+              description: 'State Department eForms source PDF for DS-82.',
+            },
+            {
+              label: 'Official DS-3053 PDF',
+              href: 'https://eforms.state.gov/Forms/ds3053.PDF',
+              description: 'State Department eForms source PDF for DS-3053.',
+            },
+            {
+              label: 'Official State Department where-to-apply page',
+              href: 'https://travel.state.gov/content/travel/en/passports/how-apply/where-to-apply.html',
+              description: 'State Department source for acceptance facilities, mail, agency, and online renewal submission options.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'government-form-automation',
+      'pdf-to-fillable-form',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'fill-by-link', 'search-fill'],
+  },
+  {
+    slug: 'nonprofit-990-filing-packet-automation',
+    title: 'Nonprofit Form 990 Packet Automation for Annual Filing Workflows',
+    seoTitle: 'Nonprofit Form 990 Packet Automation for Annual IRS PDF Workflows',
+    seoDescription:
+      'How to organize nonprofit organization, governance, compensation, grant, fundraising, public-support, and related-organization data across Form 990 and major schedules.',
+    seoKeywords: [
+      'form 990 schedule automation',
+      'nonprofit tax form pdf',
+      '990 packet workflow',
+      'form 990 fillable pdf',
+      'nonprofit annual filing forms',
+      '990 schedule o automation',
+      'nonprofit pdf form automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Nonprofit annual reporting can involve Form 990, 990-EZ, 990-PF, and schedules for public support, supplemental financial statements, fundraising, grants, compensation, narrative explanations, and related organizations. DullyPDF can help organize and fill the PDF packet from reviewed data, while tax preparation and filing positions remain outside the tool.',
+    sections: [
+      section(
+        'why-990-packets-repeat-data',
+        'Form 990 work repeats organization data across the return and schedules',
+        [
+          'A nonprofit annual filing workflow is not just one PDF. Organization name, EIN, address, tax year, exempt purpose, officer and director details, grant rows, fundraising activity, compensation details, public-support figures, and narrative explanations can move across the main return and several schedules.',
+          'DullyPDF is useful when the team already has reviewed accounting, governance, donor, grant, or program data and needs to place it into fixed IRS PDFs for review. It does not prepare the tax return, choose filing positions, decide which schedules apply, validate public-support tests, or submit an e-file.',
+        ],
+        {
+          figures: [
+            figure(
+              'form990Catalog',
+              'Form 990 is the anchor template for many exempt-organization annual reporting workflows and should be mapped around organization and tax-year data first.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the main return and the schedules your organization actually files',
+        [
+          'A high-quality 990 packet should not be a blind template dump. Start with the form family your organization or client type actually uses, then validate the schedules that recur. Form 990, 990-EZ, and 990-PF serve different filing contexts, and schedules should be added only when the underlying filing workflow needs them.',
+          'Schedule A, D, G, I, J, O, and R are strong examples because they cover public charity status, supplemental financial statements, fundraising or gaming, grants, compensation, narrative explanations, and related organizations. Those areas often draw from structured data sources that can be mapped into repeatable PDF fields.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open Form 990 in the catalog',
+              href: '/forms/990',
+              description: 'Return of Organization Exempt From Income Tax catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open Form 990-EZ in the catalog',
+              href: '/forms/990-ez',
+              description: 'Short Form Return of Organization Exempt catalog page.',
+            },
+            {
+              label: 'Open Form 990-PF in the catalog',
+              href: '/forms/990-pf',
+              description: 'Return of Private Foundation catalog page.',
+            },
+            {
+              label: 'Open Schedule A in the catalog',
+              href: '/forms/990-schedule-a',
+              description: 'Public Charity Status and Public Support catalog page.',
+            },
+            {
+              label: 'Open Schedule I in the catalog',
+              href: '/forms/990-schedule-i',
+              description: 'Grants and Other Assistance catalog page.',
+            },
+            {
+              label: 'Open Schedule O in the catalog',
+              href: '/forms/990-schedule-o',
+              description: 'Supplemental Information catalog page.',
+            },
+            {
+              label: 'Open Schedule R in the catalog',
+              href: '/forms/990-schedule-r',
+              description: 'Related Organizations and Unrelated Partnerships catalog page.',
+            },
+          ],
+          bullets: [
+            'Form 990 - Return of Organization Exempt From Income Tax, 12 pages in the current catalog entry.',
+            'Form 990-EZ - Short Form Return of Organization Exempt, 4 pages in the current catalog entry.',
+            'Form 990-PF - Return of Private Foundation, 13 pages in the current catalog entry.',
+            'Schedule A - Public Charity Status and Public Support, 8 pages in the current catalog entry.',
+            'Schedule D - Supplemental Financial Statements, 5 pages in the current catalog entry.',
+            'Schedule G - Fundraising or Gaming Activities, 3 pages in the current catalog entry.',
+            'Schedule I - Grants and Other Assistance, 2 pages in the current catalog entry.',
+            'Schedule J - Compensation Information, 3 pages in the current catalog entry.',
+            'Schedule O - Supplemental Information, 1 page in the current catalog entry.',
+            'Schedule R - Related Organizations and Unrelated Partnerships, 5 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'form990ScheduleACatalog',
+              'Schedule A is a good example of why public-support and organization-status data should be mapped from reviewed source records.',
+            ),
+            figure(
+              'form990ScheduleOCatalog',
+              'Schedule O often carries narrative explanations, so the template needs clear text-field handling and final review before filing use.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'nonprofit-filing-schema',
+        'Use a nonprofit filing schema organized by organization, governance, finance, grants, and narratives',
+        [
+          'The schema should be organized around the nonprofit record, not the PDF field order. Core values like organization legal name, EIN, tax year, accounting method, principal officer, website, mission, and exempt status should be mapped once and reused across the return and schedules.',
+          'Schedules need their own repeated-row structures. Grants, officers, directors, contractors, fundraising events, related organizations, and narrative statements all behave differently from single-value header fields. The template map should make those repeated sections explicit so spreadsheet-driven fills can be reviewed without guessing.',
+        ],
+        {
+          bullets: [
+            'Organization fields: `organization_legal_name`, `ein`, `tax_year_begin`, `tax_year_end`, `address`, `website`, `mission_summary`.',
+            'Governance fields: `principal_officer_name`, `voting_board_member_count`, `independent_board_member_count`, `policy_conflict_of_interest`.',
+            'Compensation fields: `officer_1_name`, `officer_1_title`, `hours_per_week`, `reportable_compensation`, `other_compensation`.',
+            'Grant fields: `grant_recipient_name`, `grant_recipient_ein`, `grant_amount`, `grant_purpose`, `cash_or_noncash`.',
+            'Narrative fields: `schedule_o_reference`, `schedule_o_explanation`, `program_service_description`, `public_support_explanation`.',
+          ],
+          figures: [
+            figure(
+              'csvCalcScreenshot',
+              '990 schedule rows are a natural fit for spreadsheet review when grant, compensation, or related-organization data already exists in structured exports.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'spreadsheet-and-packet-review',
+        'Use spreadsheet fills for schedule rows, then review the full packet before any filing step',
+        [
+          'Search and Fill works well when the nonprofit or preparer has a reviewed data export. The operator can select the organization row, fill the main return, then inspect schedule templates with repeated rows and narrative fields. This keeps the PDF output close to the source data review instead of turning the return into manual retyping.',
+          'For larger organizations or firms, group workflows can keep the main return and schedules together. The key is still review discipline: validate the template map with a representative return, check repeated rows, inspect narrative overflow, and export a flat review copy before anyone relies on the packet outside the workspace.',
+        ],
+        {
+          figures: [
+            figure(
+              'groupManager',
+              'A saved group can keep a Form 990 packet organized once each member template has been reviewed on its own.',
+            ),
+            figure(
+              'filledPreview',
+              'A final filled preview should be checked for row alignment, narrative fields, and repeated organization data before the packet leaves the workspace.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'DullyPDF fills PDFs; it does not prepare nonprofit tax returns',
+        [
+          'The 990 family is a tax-return workflow, so the boundary should stay explicit. DullyPDF can prepare reusable PDF templates, map fields, fill reviewed values, and export packets. It does not determine which return or schedules apply, calculate filing thresholds, validate public-support tests, prepare tax positions, or e-file the return.',
+          'Before using a completed packet, verify the current IRS Form 990 page, form revision, instructions, schedule requirements, e-file rules, public-inspection requirements, and preparer review process. If the question is about tax law or filing judgment, it belongs with IRS guidance or a qualified tax professional.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official IRS Form 990 page',
+              href: 'https://www.irs.gov/form990',
+              description: 'IRS source for Form 990 current revision, instructions, and major schedules.',
+            },
+            {
+              label: 'Official IRS Form 990-EZ page',
+              href: 'https://www.irs.gov/form990ez',
+              description: 'IRS source for Form 990-EZ current revision and instructions.',
+            },
+            {
+              label: 'Official IRS Form 990-PF page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-990-pf',
+              description: 'IRS source for Form 990-PF current revision and instructions.',
+            },
+            {
+              label: 'Official IRS exempt organizations e-file page',
+              href: 'https://www.irs.gov/charities-non-profits/exempt-organizations-e-file-eligibility-and-availability',
+              description: 'IRS source for exempt-organization e-file eligibility and availability.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'nonprofit-pdf-form-automation',
+      'accounting-tax-pdf-automation',
+      'fill-pdf-from-csv',
+      'batch-fill-pdf-forms',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'create-group'],
+  },
+  {
+    slug: 'payroll-quarter-year-end-form-automation',
+    title: 'Payroll Quarter-End and Year-End PDF Form Automation',
+    seoTitle: 'Payroll Quarter-End and Year-End PDF Automation for 941, W-2, W-3, and 940',
+    seoDescription:
+      'How payroll and accounting teams map employer, employee, quarter, wage, tax, reporting-agent, and e-file authorization data across 941, 941-X, 940, W-2, W-3, 945, 8879-EMP, and 8655 PDFs.',
+    seoKeywords: [
+      'payroll tax form automation',
+      'form 941 fillable pdf',
+      'w-2 w-3 packet',
+      'payroll pdf workflow',
+      'quarter end payroll forms',
+      'year end payroll pdf automation',
+      'form 940 941 automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Payroll teams already have structured data in payroll systems, exports, and reports. The hard part is moving employer, quarter, wage, tax, employee, authorization, and reporting-agent data into fixed IRS PDFs for review without retyping every field at quarter-end or year-end.',
+    sections: [
+      section(
+        'why-payroll-packets-repeat-data',
+        'Payroll PDFs repeat employer, period, wage, tax, and authorization data',
+        [
+          'Quarter-end and year-end payroll work is usually data-rich before anyone opens a PDF. Employer name, EIN, address, quarter, tax year, wages, deposits, adjustments, employee wage statements, reporting-agent authorization, and e-file signature details already live in payroll systems or accounting exports.',
+          'The operational pain is the last mile: placing that data into fixed IRS PDFs for review, records, clients, or internal workflows. DullyPDF can help with template setup, field naming, Search and Fill, batch packet generation, and review exports. It should not determine tax liability, filing obligations, e-file format acceptance, or Copy A rules.',
+        ],
+        {
+          figures: [
+            figure(
+              'form941Catalog',
+              'Form 941 is the quarter-end anchor because it repeats employer, quarter, wages, tax, deposit, and signer data every filing cycle.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the payroll forms that repeat every quarter or year',
+        [
+          'A payroll PDF workflow should begin with the forms your team touches constantly. Form 941 and 941-X are quarter-end and correction templates. Form 940 is the annual FUTA return. W-2 and W-3 are year-end wage statement and transmittal forms. Form 945, Form 8879-EMP, and Form 8655 support withholding, e-file authorization, and reporting-agent workflows.',
+          'Do not collapse employee wage statements, employer tax returns, and reporting-agent authorization into one generic template. They have different record shapes. Build one reviewed template per form, then connect them through a schema that payroll exports can actually supply.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open Form 941 in the catalog',
+              href: '/forms/941',
+              description: 'Employer Quarterly Federal Tax Return catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open Form 941-X in the catalog',
+              href: '/forms/941-x',
+              description: 'Adjusted Employer Quarterly Federal Tax Return catalog page.',
+            },
+            {
+              label: 'Open Form 940 in the catalog',
+              href: '/forms/940',
+              description: 'Employer Annual FUTA Tax Return catalog page.',
+            },
+            {
+              label: 'Open W-2 in the catalog',
+              href: '/forms/w-2',
+              description: 'Wage and Tax Statement catalog page.',
+            },
+            {
+              label: 'Open W-3 in the catalog',
+              href: '/forms/w-3',
+              description: 'Transmittal of Wage and Tax Statements catalog page.',
+            },
+            {
+              label: 'Open Form 945 in the catalog',
+              href: '/forms/945',
+              description: 'Annual Return of Withheld Federal Income Tax catalog page.',
+            },
+            {
+              label: 'Open Form 8879-EMP in the catalog',
+              href: '/forms/8879-emp',
+              description: 'Employment Tax e-file Signature Authorization catalog page.',
+            },
+            {
+              label: 'Open Form 8655 in the catalog',
+              href: '/forms/8655',
+              description: 'Reporting Agent Authorization catalog page.',
+            },
+          ],
+          bullets: [
+            'Form 941 - Employer Quarterly Federal Tax Return, 3 pages in the current catalog entry.',
+            'Form 941-X - Adjusted Employer Quarterly Federal Tax Return, 6 pages in the current catalog entry.',
+            'Form 940 - Employer Annual FUTA Tax Return, 3 pages in the current catalog entry.',
+            'Form W-2 - Wage and Tax Statement, 11 pages in the current catalog entry.',
+            'Form W-3 - Transmittal of Wage and Tax Statements, 2 pages in the current catalog entry.',
+            'Form 945 - Annual Return of Withheld Federal Income Tax, 3 pages in the current catalog entry.',
+            'Form 8879-EMP - Employment Tax e-file Signature Authorization, 2 pages in the current catalog entry.',
+            'Form 8655 - Reporting Agent Authorization, 3 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'formW2Catalog',
+              'W-2 templates need employee-level row handling, which is a different record shape from employer-level quarterly returns.',
+            ),
+            figure(
+              'form940Catalog',
+              'Form 940 is a year-end employer return and should be mapped separately from quarter-specific Form 941 workflows.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'payroll-schema',
+        'Use a payroll schema that separates employer return data from employee wage statement rows',
+        [
+          'Payroll PDFs combine several data shapes. Employer returns are period-level records. W-2s are employee-level records. Reporting-agent and e-file authorization forms are role and signer records. A reusable schema needs to separate those shapes instead of forcing every field into one flat set.',
+          'For Search and Fill, this means an employer-quarter row can fill Form 941, an employer-year row can fill Form 940, and employee-year rows can fill W-2 templates. For packet workflows, the group should preserve that distinction while keeping shared employer fields consistent.',
+        ],
+        {
+          bullets: [
+            'Employer fields: `employer_legal_name`, `employer_ein`, `employer_address`, `trade_name`, `contact_phone`.',
+            'Period fields: `tax_year`, `quarter`, `month_1_liability`, `month_2_liability`, `month_3_liability`, `total_deposits`.',
+            'Wage and tax fields: `wages_subject_to_income_tax`, `social_security_wages`, `medicare_wages`, `federal_income_tax_withheld`.',
+            'Employee fields: `employee_full_name`, `employee_ssn_last4`, `employee_address`, `state_wages`, `local_wages`.',
+            'Authorization fields: `authorized_signer_name`, `signer_title`, `ero_firm_name`, `reporting_agent_ein`, `signature_date`.',
+          ],
+          figures: [
+            figure(
+              'csvCalcScreenshot',
+              'Payroll exports can drive PDFs when employer, period, and employee rows are normalized before mapping.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'search-fill-batch-review',
+        'Use Search and Fill for review, then batch only after the template is proven',
+        [
+          'For quarter-end returns, Search and Fill gives payroll staff a practical QA loop. Search the employer and period row, fill Form 941 or 940, inspect the output, correct the mapping, and export the reviewed PDF. That keeps a person close to the numbers instead of turning an untested template into a bulk generator.',
+          'Batch filling is useful once the field map has survived realistic data. W-2-style outputs and client payroll packets can then be generated from multiple rows or saved groups. The sequence matters: one clean template, one realistic review, then repeat output.',
+        ],
+        {
+          figures: [
+            figure(
+              'fieldList',
+              'The field list is where quarter, year, wage, tax, signer, and employee fields should be audited before repeated payroll fills.',
+            ),
+            figure(
+              'groupManager',
+              'Saved groups can organize employer returns, wage statements, and authorization forms after each template has been validated separately.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'IRS and SSA filing rules remain outside the PDF automation layer',
+        [
+          'Payroll PDFs carry filing and copy rules that a PDF tool should not overstate. DullyPDF can prepare templates, map payroll exports, fill PDFs, export review copies, and support packet workflows. It does not calculate taxes, validate deposit schedules, submit employment tax returns, certify e-file acceptance, or determine whether a printed Copy A can be filed.',
+          'Before using any completed payroll form outside the workspace, verify the current IRS form page, instructions, e-file guidance, due dates, copy requirements, and SSA wage reporting requirements where applicable. For tax judgment, use IRS guidance, SSA guidance, payroll counsel, or a qualified tax professional.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official IRS Form 941 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-941',
+              description: 'IRS source for Form 941 current revision and instructions.',
+            },
+            {
+              label: 'Official IRS Form 941-X page',
+              href: 'https://www.irs.gov/form941X',
+              description: 'IRS source for Form 941-X current revision and instructions.',
+            },
+            {
+              label: 'Official IRS Form 940 page',
+              href: 'https://www.irs.gov/form940',
+              description: 'IRS source for Form 940 current revision and instructions.',
+            },
+            {
+              label: 'Official IRS Form W-2 page',
+              href: 'https://www.irs.gov/formw2',
+              description: 'IRS source for Form W-2 and W-3 current revisions and instructions.',
+            },
+            {
+              label: 'Official IRS Form 8879-EMP page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-8879-emp',
+              description: 'IRS source for employment tax e-file signature authorization.',
+            },
+            {
+              label: 'Official IRS Form 8655 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-8655',
+              description: 'IRS source for Reporting Agent Authorization.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'hr-pdf-automation',
+      'accounting-tax-pdf-automation',
+      'batch-fill-pdf-forms',
+      'fill-pdf-from-csv',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'create-group'],
+  },
+  {
+    slug: 'medical-dental-intake-template-library',
+    title: 'Medical and Dental Intake Template Library: Turn Repeated Patient Forms Into Fillable PDFs',
+    seoTitle: 'Medical and Dental Intake Template Library for Fillable Patient PDFs',
+    seoDescription:
+      'How clinics can turn repeated dental registration, adult medical history, consent, release, telehealth, insurance verification, and patient-service forms into reusable PDF templates.',
+    seoKeywords: [
+      'medical intake form template pdf',
+      'dental intake form pdf',
+      'new patient packet automation',
+      'patient intake pdf workflow',
+      'dental registration form template',
+      'telehealth consent pdf template',
+      'clinic intake form automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Medical and dental intake work is full of recurring PDFs: registration, history, consent, release, telehealth, checklists, insurance verification, and service recovery forms. The best workflow does not rebuild every clinic document from scratch. It turns stable source PDFs into reviewed templates, collects patient answers in a simpler flow, and generates the PDF packet for staff review.',
+    sections: [
+      section(
+        'why-intake-libraries-matter',
+        'Patient intake is a template-library problem, not a single-form problem',
+        [
+          'A clinic rarely has one intake form. A new patient packet may include demographic registration, medical or dental history, financial responsibility, consent to treat, records release, telehealth consent, insurance verification, treatment-specific questionnaires, and internal staff checklists. The patient data repeats, but each PDF has its own layout and review purpose.',
+          'DullyPDF is useful when the clinic wants to keep the existing PDF designs while reducing manual entry. The system can detect fields, rename and map them, collect answers through Fill By Link, and generate completed PDFs for staff review. It should not decide clinical content, treatment consent language, billing policy, or privacy compliance procedure.',
+        ],
+        {
+          figures: [
+            figure(
+              'dpt104Catalog',
+              'A dental new patient registration form is a strong first template because identity, contact, insurance, and responsible-party fields often repeat across the rest of the packet.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Build a small intake library around the forms staff actually touch every day',
+        [
+          'The practice intake catalog is useful because it shows first-party healthcare-style templates, not only government forms. A clinic can start with a registration form, medical history questionnaire, consent to treat, records release, telehealth consent, new-patient checklist, insurance verification, and patient-service follow-up form.',
+          'That set is broad enough to prove the workflow without turning the first rollout into a huge template project. Each form should be validated independently, then grouped into a new-patient or specialty packet only after the field names and output behavior are clean.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open dental registration in the catalog',
+              href: '/forms/dpt-104',
+              description: 'Dental New Patient Registration Form catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open adult medical history in the catalog',
+              href: '/forms/dpt-102',
+              description: 'Adult Medical History Questionnaire catalog page.',
+            },
+            {
+              label: 'Open consent to treat in the catalog',
+              href: '/forms/dpt-108',
+              description: 'Consent to Treat and Financial Responsibility Form catalog page.',
+            },
+            {
+              label: 'Open records release in the catalog',
+              href: '/forms/dpt-110',
+              description: 'Authorization to Release Medical or Dental Records catalog page.',
+            },
+            {
+              label: 'Open telehealth consent in the catalog',
+              href: '/forms/dpt-123',
+              description: 'Telehealth Registration and Consent Form catalog page.',
+            },
+            {
+              label: 'Open new patient checklist in the catalog',
+              href: '/forms/dpt-340',
+              description: 'New Patient Packet Checklist catalog page.',
+            },
+            {
+              label: 'Open insurance verification in the catalog',
+              href: '/forms/dpt-344',
+              description: 'Insurance Verification and Benefits Review Form catalog page.',
+            },
+            {
+              label: 'Open patient complaint form in the catalog',
+              href: '/forms/dpt-346',
+              description: 'Patient Complaint and Service Recovery Form catalog page.',
+            },
+          ],
+          bullets: [
+            'DPT 104 - Dental New Patient Registration Form, 1 page in the current catalog entry.',
+            'DPT 102 - Adult Medical History Questionnaire, 2 pages in the current catalog entry.',
+            'DPT 108 - Consent to Treat and Financial Responsibility Form, 1 page in the current catalog entry.',
+            'DPT 110 - Authorization to Release Medical or Dental Records, 1 page in the current catalog entry.',
+            'DPT 123 - Telehealth Registration and Consent Form, 1 page in the current catalog entry.',
+            'DPT 340 - New Patient Packet Checklist, 2 pages in the current catalog entry.',
+            'DPT 344 - Insurance Verification and Benefits Review Form, 2 pages in the current catalog entry.',
+            'DPT 346 - Patient Complaint and Service Recovery Form, 2 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'dpt102Catalog',
+              'An adult medical history questionnaire needs careful checkbox, medication, allergy, condition, and provider field review before repeat use.',
+            ),
+            figure(
+              'dpt108Catalog',
+              'Consent and financial responsibility forms should be reviewed as final patient-facing records, not just as data-entry screens.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'patient-intake-schema',
+        'Use a patient-centered schema that separates patient, guarantor, insurance, clinical history, and consent data',
+        [
+          'A patient packet should not use vague field names copied from each PDF. Names should describe the intake record and role: patient_full_name, date_of_birth, guardian_name, responsible_party_phone, primary_insurance_member_id, allergy_list, medication_list, consent_signature_date, and release_recipient_name.',
+          'Role separation is especially important in healthcare intake. The patient, parent, guardian, guarantor, subscriber, emergency contact, referring provider, records recipient, and staff reviewer may all be different people. Clear schema names reduce the chance that the right value lands in the wrong person block.',
+        ],
+        {
+          bullets: [
+            'Patient fields: `patient_full_name`, `date_of_birth`, `preferred_name`, `phone`, `email`, `address`.',
+            'Responsible-party fields: `guardian_name`, `guarantor_name`, `relationship_to_patient`, `responsible_party_phone`.',
+            'Insurance fields: `primary_payer_name`, `member_id`, `group_number`, `subscriber_name`, `subscriber_date_of_birth`.',
+            'Clinical-history fields: `allergy_list`, `medication_list`, `condition_diabetes`, `condition_heart_disease`, `primary_care_provider`.',
+            'Consent fields: `consent_to_treat`, `financial_responsibility_acknowledged`, `release_recipient_name`, `signature_date`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Patient intake templates become reusable when fields are named by patient, guarantor, insurance, history, and consent roles.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'fill-by-link-patient-workflow',
+        'Use Fill By Link for patient answers, then generate the PDF packet for staff review',
+        [
+          'Patients should not have to edit a dense PDF directly on a phone. Fill By Link can collect answers through a respondent-facing web form, while the clinic keeps control over how those answers map into its official intake PDFs. Staff can review the generated packet, correct the template if needed, and export a final record.',
+          'For internal repeat work, Search and Fill can use a roster, insurance verification list, or appointment export. The same saved templates can support both patient-submitted answers and staff-driven fills as long as the schema is stable.',
+        ],
+        {
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'A hosted intake link is a better first patient experience than asking someone to complete the fixed PDF directly.',
+            ),
+            figure(
+              'mockWebForm',
+              'The respondent-facing form can stay simple while DullyPDF uses the saved template map to generate the completed patient packet.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'privacy-and-review-boundaries',
+        'Treat healthcare intake as a privacy and review workflow, not just a convenience workflow',
+        [
+          'Medical and dental forms can contain protected health information, insurance identifiers, signatures, and sensitive history. DullyPDF can help with form detection, mapping, respondent intake, and PDF generation, but each clinic still needs its own compliance process for access, storage, disclosure, retention, and patient communications.',
+          'Search and Fill row data stays in the browser, which is useful for some local review workflows. Saved respondent workflows, exports, and any downstream storage should still follow the clinic policy and applicable privacy requirements. If the question is about HIPAA, consent language, clinical appropriateness, or records policy, it belongs with the clinic compliance team or qualified counsel.',
+        ],
+        {
+          links: [
+            {
+              label: 'HHS HIPAA Privacy Rule',
+              href: 'https://www.hhs.gov/hipaa/for-professionals/privacy/index.html',
+              description: 'HHS source explaining the HIPAA Privacy Rule and protected health information safeguards.',
+            },
+            {
+              label: 'Healthcare PDF automation',
+              href: '/healthcare-pdf-automation',
+              description: 'DullyPDF healthcare workflow page for patient, provider, claims, and intake automation.',
+            },
+            {
+              label: 'Automate medical intake forms',
+              href: '/blog/automate-medical-intake-forms',
+              description: 'Related DullyPDF guide on medical intake form automation.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'healthcare-pdf-automation',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+      'batch-fill-pdf-forms',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'fill-by-link', 'search-fill', 'create-group'],
+  },
+  {
+    slug: 'individual-tax-return-packet-automation',
+    title: 'Individual Tax Return Packet Automation for 1040, Schedules, Estimates, and Amendments',
+    seoTitle: 'Individual Tax Return PDF Packet Automation for 1040 Workflows',
+    seoDescription:
+      'How to organize taxpayer, spouse, dependent, income, payment, estimated-tax, and amendment data across Form 1040, schedules, 1040-SR, 1040-NR, 1040-ES, 1040-X, and 1040-V PDFs.',
+    seoKeywords: [
+      '1040 fillable pdf automation',
+      'individual tax return packet',
+      'form 1040 schedule automation',
+      '1040-x amended return pdf',
+      '1040-es payment voucher workflow',
+      'tax preparer pdf workflow',
+      'irs 1040 packet automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Individual tax workflows often reuse the same taxpayer, spouse, dependent, address, payment, adjustment, credit, estimated-tax, and amendment details across several IRS PDFs. DullyPDF can help prepare and review the PDF packet while tax preparation, calculations, filing, and official IRS instructions remain outside the tool.',
+    sections: [
+      section(
+        'why-1040-packets-repeat-data',
+        'The 1040 workflow is a repeated-data packet, not just a two-page return',
+        [
+          'Form 1040 may be the anchor, but the work around it often includes numbered schedules, senior or nonresident variants, estimated-tax vouchers, payment vouchers, and amended-return forms. Each PDF has a different purpose, yet taxpayer names, SSNs, address, filing year, spouse details, dependents, payments, credits, and preparer data can repeat across the packet.',
+          'The automation target should be narrow and honest: keep the IRS PDF layout intact, map fields to a reviewed taxpayer record, and reduce retyping during preparation or review. DullyPDF should not calculate tax, choose filing status, prepare the return, validate eligibility for credits, or submit anything to the IRS.',
+        ],
+        {
+          figures: [
+            figure(
+              'form1040Catalog',
+              'Form 1040 is the anchor template for individual tax packet review, but the same taxpayer record often needs to drive supporting PDFs.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with 1040, the numbered schedules, estimates, payments, and amendments',
+        [
+          'A practical first workflow should focus on the PDFs that recur for the same taxpayer record. Form 1040 and Schedules 1, 2, and 3 cover core income, tax, credits, and payments. Form 1040-SR and 1040-NR support specific taxpayer types. Form 1040-ES, 1040-V, and 1040-X support estimates, payments, and amendments.',
+          'Each template should be validated with realistic data before the packet is grouped. A small set of reviewed 1040 templates is more useful than a large tax-form library where nobody has checked field names, repeated taxpayer blocks, or final output behavior.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open Form 1040 in the catalog',
+              href: '/forms/1040',
+              description: 'U.S. Individual Income Tax Return catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open Schedule 1 in the catalog',
+              href: '/forms/1040-schedule-1',
+              description: 'Additional Income and Adjustments to Income catalog page.',
+            },
+            {
+              label: 'Open Schedule 2 in the catalog',
+              href: '/forms/1040-schedule-2',
+              description: 'Additional Taxes catalog page.',
+            },
+            {
+              label: 'Open Schedule 3 in the catalog',
+              href: '/forms/1040-schedule-3',
+              description: 'Additional Credits and Payments catalog page.',
+            },
+            {
+              label: 'Open Form 1040-ES in the catalog',
+              href: '/forms/1040-es',
+              description: 'Estimated Tax for Individuals catalog page.',
+            },
+            {
+              label: 'Open Form 1040-X in the catalog',
+              href: '/forms/1040-x',
+              description: 'Amended U.S. Individual Income Tax Return catalog page.',
+            },
+          ],
+          bullets: [
+            'Form 1040 - U.S. Individual Income Tax Return, 2 pages in the current catalog entry.',
+            'Schedule 1 - Additional Income and Adjustments to Income, 2 pages in the current catalog entry.',
+            'Schedule 2 - Additional Taxes, 2 pages in the current catalog entry.',
+            'Schedule 3 - Additional Credits and Payments, 1 page in the current catalog entry.',
+            'Form 1040-SR - U.S. Tax Return for Seniors, 4 pages in the current catalog entry.',
+            'Form 1040-NR - U.S. Nonresident Alien Income Tax Return, 2 pages in the current catalog entry.',
+            'Form 1040-ES - Estimated Tax for Individuals, 16 pages in the current catalog entry.',
+            'Form 1040-X - Amended U.S. Individual Income Tax Return, 2 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'form1040Schedule1Catalog',
+              'Schedule 1 shows why adjustment and additional-income fields should map to named data, not page-position labels.',
+            ),
+            figure(
+              'form1040xCatalog',
+              'Form 1040-X is a separate amendment workflow where original amount, net change, corrected amount, and explanation fields need clear review.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'taxpayer-schema-and-review',
+        'Use a taxpayer schema that separates identity, return year, schedules, payments, and amendments',
+        [
+          'The field names should describe the return record. Names like taxpayer_full_name, spouse_full_name, tax_year, filing_status, dependent_1_name, estimated_payment_q1, amended_original_amount, and preparer_ptin are easier to review than generic form field labels.',
+          'Search and Fill is useful when the source record comes from a preparer spreadsheet, organizer export, or internal review file. The operator can select one taxpayer row, fill the reviewed templates, inspect the PDF output, and correct the field map before any repeat workflow is trusted.',
+        ],
+        {
+          bullets: [
+            'Identity fields: `taxpayer_full_name`, `spouse_full_name`, `taxpayer_ssn_last4`, `mailing_address`, `filing_status`.',
+            'Schedule fields: `additional_income_total`, `adjustment_total`, `additional_tax_total`, `credit_total`, `other_payment_total`.',
+            'Payment fields: `estimated_payment_q1`, `estimated_payment_q2`, `amount_paid_with_extension`, `payment_voucher_amount`.',
+            'Amendment fields: `original_amount`, `net_change`, `corrected_amount`, `amendment_explanation`, `signature_date`.',
+          ],
+          figures: [
+            figure(
+              'csvCalcScreenshot',
+              'A preparer export becomes useful for PDF filling only after its taxpayer, year, schedule, and payment columns are normalized.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'IRS instructions remain the authority for forms, filing, and tax positions',
+        [
+          'DullyPDF can prepare templates, map values, fill official-layout PDFs, and export review copies. It does not prepare tax returns, determine filing status, calculate tax, choose schedules, decide whether a taxpayer qualifies for a credit, submit e-files, or replace IRS instructions.',
+          'Before using any completed 1040 packet outside the workspace, verify the current IRS form page, revision date, instructions, filing addresses, e-file guidance, signature requirements, and any preparer review process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official IRS Form 1040 page',
+              href: 'https://www.irs.gov/Form1040',
+              description: 'IRS source for Form 1040, Form 1040-SR, numbered schedules, and current instructions.',
+            },
+            {
+              label: 'Official IRS Form 1040-ES page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1040-es',
+              description: 'IRS source for estimated tax forms and instructions.',
+            },
+            {
+              label: 'Official IRS Form 1040-X page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1040x',
+              description: 'IRS source for amended individual return details and instructions.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'accounting-tax-pdf-automation',
+      'fill-pdf-from-csv',
+      'batch-fill-pdf-forms',
+      'pdf-to-database-template',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'create-group'],
+  },
+  {
+    slug: 'business-tax-return-packet-automation',
+    title: 'Business Tax Return Packet Automation for 1120, 1120-S, 1065, 1041, K-1, and Extensions',
+    seoTitle: 'Business Tax Return PDF Packet Automation for IRS Forms 1120, 1065, 1041, and K-1',
+    seoDescription:
+      'How to organize entity, owner, partner, shareholder, beneficiary, income, deduction, K-1, and extension data across recurring business tax PDFs.',
+    seoKeywords: [
+      'business tax return pdf automation',
+      '1120 fillable pdf workflow',
+      '1065 k-1 packet automation',
+      '1120-s tax form automation',
+      'form 7004 extension pdf',
+      'business tax packet workflow',
+      'entity tax pdf forms',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Business and fiduciary tax workflows often reuse entity, owner, partner, shareholder, beneficiary, address, EIN, tax year, income, deduction, K-1, extension, and preparer details across several IRS PDFs. The useful automation layer is field mapping and review, not tax preparation or filing advice.',
+    sections: [
+      section(
+        'why-business-tax-packets-repeat-data',
+        'Business tax packets repeat entity and ownership data across returns and schedules',
+        [
+          'A business tax workflow may involve Form 1120 for corporations, 1120-S for S corporations, 1065 for partnerships, 1041 for estates and trusts, Schedule K-1 variants, Form 7004 extensions, and supporting schedules. The entity type changes the return, but many operational details repeat: legal name, EIN, address, tax year, accounting method, officer or partner data, preparer details, and signer fields.',
+          'DullyPDF can help turn these IRS PDFs into reviewed templates that fill from a structured record. It does not choose entity classification, prepare returns, calculate taxable income, allocate K-1 amounts, file extensions, or submit e-files.',
+        ],
+        {
+          figures: [
+            figure(
+              'form1120Catalog',
+              'Form 1120 is a corporation-return anchor where entity, officer, tax-year, and income fields need stable names before reuse.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the entity return, K-1 outputs, and extension form that recur for your firm',
+        [
+          'A tax practice or finance team should pick the return family it repeats most often. Corporation workflows may start with Form 1120 and supporting schedules. S corporation and partnership workflows often need Schedule K-1 output handling. Estates and trusts may need Form 1041 and Schedule K-1 for beneficiaries. Form 7004 is a separate extension workflow that should not be mixed into final-return fields.',
+          'A narrow template set with realistic QA data is the better first launch. Once each return type fills correctly on its own, the team can group related forms or connect the workflow to a spreadsheet, organizer export, or API process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open Form 1120 in the catalog',
+              href: '/forms/1120',
+              description: 'U.S. Corporation Income Tax Return catalog page with blank PDF and editor handoff.',
+            },
+            {
+              label: 'Open Form 1120-S in the catalog',
+              href: '/forms/1120-s',
+              description: 'S Corporation income tax return catalog page.',
+            },
+            {
+              label: 'Open Form 1065 in the catalog',
+              href: '/forms/1065',
+              description: 'Partnership income return catalog page.',
+            },
+            {
+              label: 'Open Schedule K-1 1065 in the catalog',
+              href: '/forms/1065-schedule-k-1',
+              description: 'Partner share of income, deductions, and credits catalog page.',
+            },
+            {
+              label: 'Open Form 1041 in the catalog',
+              href: '/forms/1041',
+              description: 'Estate and trust income tax return catalog page.',
+            },
+            {
+              label: 'Open Form 7004 in the catalog',
+              href: '/forms/7004',
+              description: 'Business return extension catalog page.',
+            },
+          ],
+          bullets: [
+            'Form 1120 - U.S. Corporation Income Tax Return, 6 pages in the current catalog entry.',
+            'Form 1120-S - U.S. Income Tax Return for an S Corporation, 5 pages in the current catalog entry.',
+            'Form 1065 - U.S. Return of Partnership Income, 6 pages in the current catalog entry.',
+            'Schedule K-1 (Form 1065) - Partner share statement, 1 page in the current catalog entry.',
+            'Form 1041 - U.S. Income Tax Return for Estates and Trusts, 3 pages in the current catalog entry.',
+            'Schedule K-1 (Form 1041) - Beneficiary share statement, 2 pages in the current catalog entry.',
+            'Form 7004 - Application for Automatic Extension of Time for business returns, 1 page in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'form1120sCatalog',
+              'Form 1120-S needs shareholder and pass-through fields that should stay separate from ordinary corporation-return fields.',
+            ),
+            figure(
+              'form1065Catalog',
+              'Form 1065 and Schedule K-1 workflows benefit from explicit partner, partnership representative, ownership, and allocation field names.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'entity-schema',
+        'Use an entity schema that separates corporation, partnership, trust, owner, and extension fields',
+        [
+          'A reusable business tax packet should not flatten every person into a generic name field. Entity legal name, EIN, tax year, officer, partner, shareholder, beneficiary, fiduciary, preparer, signer, and extension records should be clearly separated.',
+          'This matters most for K-1 and extension workflows. K-1 outputs are owner-specific rows, while Form 7004 is an entity-level extension request. A good schema lets a spreadsheet or API payload drive those shapes without hiding role mistakes.',
+        ],
+        {
+          bullets: [
+            'Entity fields: `entity_legal_name`, `ein`, `tax_year_begin`, `tax_year_end`, `accounting_method`, `business_activity_code`.',
+            'Corporation fields: `officer_name`, `officer_title`, `total_assets`, `cost_of_goods_sold`, `compensation_of_officers`.',
+            'Partnership fields: `partner_1_name`, `partner_1_ein_or_ssn_last4`, `profit_percentage`, `capital_percentage`, `partnership_representative`.',
+            'Fiduciary fields: `estate_or_trust_name`, `fiduciary_name`, `beneficiary_1_name`, `beneficiary_1_share`, `distribution_deduction`.',
+            'Extension fields: `return_code`, `extension_tax_year`, `tentative_tax`, `total_payments`, `balance_due`.',
+          ],
+          figures: [
+            figure(
+              'databaseSchema',
+              'Business tax packet automation depends on a stable schema because entity, owner, K-1, and extension records have different shapes.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'DullyPDF fills reviewed PDFs; it does not prepare or file business returns',
+        [
+          'The boundary is especially important for business tax forms. DullyPDF can help map fields, fill official-layout PDFs, export review copies, and support packet generation. It does not determine entity type, calculate taxable income, prepare K-1 allocations, file extensions, submit returns, or give tax advice.',
+          'Before using any completed packet, verify the current IRS form page, instructions, revision date, e-file rules, signature requirements, extension instructions, and preparer review process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official IRS Form 1120 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1120',
+              description: 'IRS source for corporation return current revision and instructions.',
+            },
+            {
+              label: 'Official IRS Form 1120-S page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1120-s',
+              description: 'IRS source for S corporation return current revision and instructions.',
+            },
+            {
+              label: 'Official IRS Form 1065 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1065',
+              description: 'IRS source for partnership return and Schedule K-1 details.',
+            },
+            {
+              label: 'Official IRS Form 1041 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-1041',
+              description: 'IRS source for estate and trust income tax return details.',
+            },
+            {
+              label: 'Official IRS Form 7004 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-7004',
+              description: 'IRS source for automatic extension form details and instructions.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'accounting-tax-pdf-automation',
+      'pdf-to-database-template',
+      'fill-pdf-from-csv',
+      'pdf-fill-api',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'api-fill'],
+  },
+  {
+    slug: 'irs-collection-offer-in-compromise-packet-automation',
+    title: 'IRS Collection and Offer in Compromise Packet Automation',
+    seoTitle: 'IRS Collection and Offer in Compromise PDF Packet Automation',
+    seoDescription:
+      'How to organize taxpayer, business, income, asset, liability, installment, refund, abatement, and advocate-assistance data across IRS Forms 433, 656, 843, and 911.',
+    seoKeywords: [
+      'irs offer in compromise packet',
+      'form 656 automation',
+      'irs 433-a fillable pdf',
+      'irs 433-b pdf workflow',
+      'tax resolution pdf packet',
+      'irs collection information statement',
+      'form 911 taxpayer advocate workflow',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'IRS collection and resolution packets are document-heavy: financial statements, offer forms, installment agreements, refund or abatement claims, and taxpayer advocate requests all reuse identity, tax-period, income, expense, asset, liability, and representative data. DullyPDF can help prepare and review the PDFs, but collection strategy and eligibility decisions remain outside the tool.',
+    sections: [
+      section(
+        'why-collection-packets-repeat-data',
+        'Collection packets repeat taxpayer, financial, and tax-period data across several IRS PDFs',
+        [
+          'A tax resolution workflow may include Form 433-A or 433-F for individual financial information, Form 433-B for business collection information, Form 656 or the 656-B booklet for offer in compromise workflows, Form 433-D for installment agreement setup, Form 843 for refund or abatement claims, and Form 911 for Taxpayer Advocate Service assistance.',
+          'Those forms are sensitive and should not be blindly automated. The useful DullyPDF workflow is narrower: prepare reviewed templates, map the repeated fields, fill from a structured case record, and export a review packet. DullyPDF does not decide eligibility, settlement amount, ability to pay, appeals strategy, or communication with the IRS.',
+        ],
+        {
+          figures: [
+            figure(
+              'irs656Catalog',
+              'Form 656 is the visible offer form, but the real packet depends on financial and supporting data that should be mapped carefully.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the financial statement and request forms that match the case type',
+        [
+          'Individual and business cases need different templates. A wage earner, self-employed taxpayer, and business taxpayer can share identity fields, but the income, asset, liability, and operating detail sections differ enough that they should be mapped separately.',
+          'A practical packet set starts with Form 433-A, 433-B, 433-F, 433-D, 656, 656-B, 843, and 911. Add other IRS collection forms only after the core financial-statement and request templates have been validated with realistic data and supporting-document review.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open Form 433-A in the catalog',
+              href: '/forms/433-a',
+              description: 'Collection Information Statement for Wage Earners catalog page.',
+            },
+            {
+              label: 'Open Form 433-B in the catalog',
+              href: '/forms/433-b',
+              description: 'Collection Information Statement for Businesses catalog page.',
+            },
+            {
+              label: 'Open Form 433-F in the catalog',
+              href: '/forms/433-f',
+              description: 'Collection Information Statement catalog page.',
+            },
+            {
+              label: 'Open Form 433-D in the catalog',
+              href: '/forms/433-d',
+              description: 'Installment Agreement catalog page.',
+            },
+            {
+              label: 'Open Form 656 in the catalog',
+              href: '/forms/656',
+              description: 'Offer in Compromise catalog page.',
+            },
+            {
+              label: 'Open Form 843 in the catalog',
+              href: '/forms/843',
+              description: 'Claim for Refund and Request for Abatement catalog page.',
+            },
+            {
+              label: 'Open Form 911 in the catalog',
+              href: '/forms/911',
+              description: 'Taxpayer Advocate Service assistance request catalog page.',
+            },
+          ],
+          bullets: [
+            'Form 433-A - Collection Information Statement for Wage Earners, 6 pages in the current catalog entry.',
+            'Form 433-B - Collection Information Statement for Businesses, 6 pages in the current catalog entry.',
+            'Form 433-F - Collection Information Statement, 4 pages in the current catalog entry.',
+            'Form 433-D - Installment Agreement, 4 pages in the current catalog entry.',
+            'Form 656 - Offer in Compromise, 8 pages in the current catalog entry.',
+            'Form 656-B - Offer in Compromise Booklet, 32 pages in the current catalog entry.',
+            'Form 843 - Claim for Refund and Request for Abatement, 2 pages in the current catalog entry.',
+            'Form 911 - Request for Taxpayer Advocate Service Assistance, 4 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'irs433aCatalog',
+              'Form 433-A needs exact taxpayer, household, income, expense, asset, and liability field naming before reuse.',
+            ),
+            figure(
+              'irs433bCatalog',
+              'Form 433-B separates business financial details from individual taxpayer data, which makes role-aware mapping essential.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'case-schema-and-quality-control',
+        'Use a case schema that separates taxpayer, business, assets, debts, tax periods, and requested action',
+        [
+          'Collection forms need clear schema boundaries. The taxpayer, spouse, business, authorized representative, employer, bank account, vehicle, real estate, secured creditor, tax period, and requested IRS action should not be represented by generic name and amount fields.',
+          'Quality control should be stricter than ordinary data-entry automation. Fill one representative case, inspect every asset and liability row, verify signer and representative blocks, and compare the output with the current IRS source instructions before using the template again.',
+        ],
+        {
+          bullets: [
+            'Taxpayer fields: `taxpayer_full_name`, `spouse_full_name`, `tin_last4`, `mailing_address`, `tax_periods_at_issue`.',
+            'Financial fields: `monthly_income_total`, `monthly_expenses_total`, `cash_on_hand`, `bank_account_balance`, `vehicle_value`.',
+            'Business fields: `business_legal_name`, `business_ein`, `gross_monthly_receipts`, `accounts_receivable`, `payroll_tax_deposits_current`.',
+            'Resolution fields: `requested_action`, `offer_amount`, `payment_option`, `installment_amount`, `abatement_reason`, `tas_hardship_summary`.',
+          ],
+          figures: [
+            figure(
+              'fieldList',
+              'A clean field list is required for tax resolution packets because wrong role or amount fields can change the meaning of the final PDF.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'IRS collection guidance and qualified tax judgment remain the source of truth',
+        [
+          'DullyPDF can prepare templates, fill repeated fields, organize packets, and export review copies. It does not determine whether an offer should be filed, whether the taxpayer qualifies, what amount to offer, whether to request abatement, or how to communicate with the IRS.',
+          'Before using a completed packet, verify the current IRS form pages, Offer in Compromise instructions, fees, payment rules, eligibility requirements, mailing or online submission options, and representative review process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official IRS Offer in Compromise page',
+              href: 'https://www.irs.gov/payments/offer-in-compromise',
+              description: 'IRS source for offer eligibility, application package details, fees, and process notes.',
+            },
+            {
+              label: 'Official IRS Form 656 page',
+              href: 'https://www.irs.gov/forms-pubs/about-form-656',
+              description: 'IRS source for Form 656 and related OIC forms.',
+            },
+            {
+              label: 'Official IRS Offer in Compromise FAQs',
+              href: 'https://www.irs.gov/businesses/small-businesses-self-employed/offer-in-compromise-faqs',
+              description: 'IRS source for common OIC questions and post-application topics.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'accounting-tax-pdf-automation',
+      'legal-pdf-workflow-automation',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'fill-by-link', 'search-fill'],
+  },
+  {
+    slug: 'medicare-beneficiary-enrollment-appeals-packet',
+    title: 'Medicare Beneficiary Enrollment and Appeals PDF Packet Automation',
+    seoTitle: 'Medicare Beneficiary Enrollment and Appeals PDF Packet Automation',
+    seoDescription:
+      'How to reuse beneficiary, employer, representative, claim, appeal, authorization, and coverage data across CMS-40B, CMS-L564, CMS-1490S, CMS-20027, CMS-20033, CMS-1696, and CMS-10106 PDFs.',
+    seoKeywords: [
+      'medicare forms pdf automation',
+      'cms 40b l564 packet',
+      'medicare appeal form cms 20027',
+      'cms 1490s fillable pdf',
+      'medicare beneficiary pdf workflow',
+      'cms 1696 appointment representative',
+      'medicare authorization form automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Medicare beneficiary workflows often combine enrollment, employer information, patient claim requests, appeals, representative appointment, and privacy authorization forms. DullyPDF can help prepare reusable PDF templates and fill them from reviewed beneficiary data while CMS and Medicare instructions remain the authority for eligibility, deadlines, and submission.',
+    sections: [
+      section(
+        'why-medicare-packets-repeat-data',
+        'Medicare beneficiary forms repeat person, coverage, employer, claim, appeal, and representative data',
+        [
+          'A Medicare beneficiary workflow may include a Part B enrollment request, employment information, a patient request for medical payment, a redetermination request, a reconsideration request, an appointment of representative, or authorization to disclose personal health information. The forms differ, but beneficiary name, Medicare number, address, employer, claim details, representative, and signature fields recur.',
+          'DullyPDF should support the preparation and review layer only. It can map and fill the PDFs, collect answers through Fill By Link, and generate packets for staff review. It does not decide enrollment eligibility, appeal deadlines, coverage rights, representative authority, or claim outcomes.',
+        ],
+        {
+          figures: [
+            figure(
+              'cms40bCatalog',
+              'CMS-40B is a common enrollment template where beneficiary, contact, and signature fields should map from a reviewed record.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with enrollment, claim, appeal, representative, and authorization forms',
+        [
+          'The catalog has a useful Medicare beneficiary cluster. CMS-40B and CMS-L564 support Part B enrollment and employment information workflows. CMS-1490S supports patient requests for medical payment. CMS-20027 and CMS-20033 support first-level and second-level appeal workflows. CMS-1696 and CMS-10106 handle representative and disclosure authorization data.',
+          'These forms should not be treated as interchangeable. Enrollment fields, claim fields, appeal fields, representative fields, and privacy authorization fields have different roles and review risks. Build and validate one template at a time, then group them only for workflows that genuinely recur.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open CMS-40B in the catalog',
+              href: '/forms/cms-40b',
+              description: 'Request for Enrollment in Medicare Part B catalog page.',
+            },
+            {
+              label: 'Open CMS-L564 in the catalog',
+              href: '/forms/cms-l564',
+              description: 'Request for Employment Information catalog page.',
+            },
+            {
+              label: 'Open CMS-1490S in the catalog',
+              href: '/forms/cms-1490s',
+              description: 'Patient Request for Medical Payment catalog page.',
+            },
+            {
+              label: 'Open CMS-20027 in the catalog',
+              href: '/forms/cms-20027',
+              description: 'Medicare Redetermination Request catalog page.',
+            },
+            {
+              label: 'Open CMS-20033 in the catalog',
+              href: '/forms/cms-20033',
+              description: 'Medicare Reconsideration Request catalog page.',
+            },
+            {
+              label: 'Open CMS-1696 in the catalog',
+              href: '/forms/cms-1696',
+              description: 'Appointment of Representative catalog page.',
+            },
+            {
+              label: 'Open CMS-10106 in the catalog',
+              href: '/forms/cms-10106',
+              description: 'Authorization to Disclose Personal Health Information catalog page.',
+            },
+          ],
+          bullets: [
+            'CMS-40B - Request for Enrollment in Medicare Part B, 3 pages in the current catalog entry.',
+            'CMS-L564 - Medicare Request for Employment Information, 2 pages in the current catalog entry.',
+            'CMS-1490S - Patient Request for Medical Payment, 18 pages in the current catalog entry.',
+            'CMS-20027 - Medicare Redetermination Request, 1 page in the current catalog entry.',
+            'CMS-20033 - Medicare Reconsideration Request, 1 page in the current catalog entry.',
+            'CMS-1696 - Appointment of Representative, 2 pages in the current catalog entry.',
+            'CMS-10106 - Authorization to Disclose Personal Health Information, 6 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'cms1490sCatalog',
+              'CMS-1490S is a longer claim request form where claim, provider, service, charge, and attachment references need review.',
+            ),
+            figure(
+              'cms20027Catalog',
+              'CMS-20027 is a compact appeal form, but its determination date, item or service, evidence, and signer fields need exact mapping.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'beneficiary-schema',
+        'Use a beneficiary schema that separates enrollment, employer, claim, appeal, representative, and authorization roles',
+        [
+          'Medicare packets have several roles: beneficiary, employer, provider, supplier, representative, deceased-person requestor, appeal party, and signer. A reusable template should name those roles directly instead of relying on repeated generic fields.',
+          'Fill By Link can collect beneficiary or representative details first, but staff should review the generated PDFs before submission. For spreadsheet workflows, a case row should clearly separate enrollment data from claim and appeal data.',
+        ],
+        {
+          bullets: [
+            'Beneficiary fields: `beneficiary_full_name`, `medicare_number`, `date_of_birth`, `mailing_address`, `phone`.',
+            'Employer fields: `employer_name`, `employment_start_date`, `group_health_plan_start_date`, `employer_contact_name`.',
+            'Claim fields: `provider_name`, `date_of_service`, `item_or_service`, `amount_charged`, `attachment_reference`.',
+            'Appeal fields: `initial_determination_date`, `contractor_name`, `appeal_reason`, `evidence_attached`, `late_filing_reason`.',
+            'Representative fields: `representative_name`, `relationship_or_status`, `representative_phone`, `authorization_signature_date`.',
+          ],
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link can collect beneficiary or representative details before staff generate and inspect the official-layout CMS PDFs.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'CMS and Medicare instructions control eligibility, deadlines, privacy, and submission',
+        [
+          'DullyPDF can prepare templates, map values, fill PDFs, and export review copies. It does not decide Medicare eligibility, enrollment timing, appeal deadlines, claim validity, representative authority, privacy authorization scope, or submission channel.',
+          'Before using a completed packet, verify the current CMS form source, Medicare appeal page, deadlines, instructions, signature requirements, and mailing or online submission options.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official CMS Forms page',
+              href: 'https://www.cms.gov/medicare/forms-notices/cms-forms',
+              description: 'CMS source for program forms and notices.',
+            },
+            {
+              label: 'Official CMS redetermination page',
+              href: 'https://www.cms.gov/Medicare/Appeals-and-Grievances/OrgMedFFSAppeals/RedeterminationbyaMedicareContractor.html',
+              description: 'CMS source for first-level Original Medicare appeal details and CMS-20027 references.',
+            },
+            {
+              label: 'Official CMS fee-for-service appeals page',
+              href: 'https://www.cms.gov/medicare/appeals-grievances/fee-for-service',
+              description: 'CMS source for Original Medicare appeal levels and process overview.',
+            },
+            {
+              label: 'Official CMS-10106 page',
+              href: 'https://www.cms.gov/cms10106-authorization-disclose-personal-health-information',
+              description: 'CMS source for the authorization to disclose personal health information release form.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'healthcare-pdf-automation',
+      'fill-pdf-by-link',
+      'pdf-to-database-template',
+      'pdf-signature-workflow',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'fill-by-link', 'signature-workflow'],
+  },
+  {
+    slug: 'fmla-leave-certification-packet-automation',
+    title: 'FMLA Leave Certification Packet Automation for WH-380, WH-381, WH-382, WH-384, and WH-385',
+    seoTitle: 'FMLA Leave Certification PDF Packet Automation',
+    seoDescription:
+      'How HR teams can organize employee, family member, provider, leave, notice, designation, military-family, and caregiver data across DOL FMLA forms.',
+    seoKeywords: [
+      'fmla form automation',
+      'wh-380-e fillable pdf',
+      'wh-381 wh-382 workflow',
+      'fmla certification packet',
+      'hr leave forms pdf',
+      'family medical leave pdf workflow',
+      'dol fmla forms automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'FMLA administration can involve employee medical certification, family-member certification, eligibility notices, designation notices, and military-family leave forms. DullyPDF can help HR teams prepare reusable PDF templates and collect structured answers while DOL rules and employer policy control leave decisions.',
+    sections: [
+      section(
+        'why-fmla-packets-repeat-data',
+        'FMLA packets repeat employee, leave, provider, family, and notice data',
+        [
+          'An FMLA workflow may begin with an employee request, then require certification, eligibility notice, rights and responsibilities notice, designation notice, and sometimes military-family leave documentation. The same employee identity, employer contact, job, leave dates, provider contact, family relationship, and case reference can repeat across the forms.',
+          'DullyPDF should not approve or deny leave, decide whether FMLA applies, interpret medical certification sufficiency, or replace employer notice obligations. It can help prepare, fill, and review the PDF packet so HR staff spend less time retyping repeated values.',
+        ],
+        {
+          figures: [
+            figure(
+              'wh380eCatalog',
+              'WH-380-E is an employee serious-health-condition certification template where employee, provider, condition, and leave schedule fields need careful naming.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the DOL optional-use certification and notice forms your HR process actually uses',
+        [
+          'The DOL FMLA forms cluster splits into certification forms and notice forms. WH-380-E and WH-380-F cover employee and family-member serious health conditions. WH-384, WH-385, and WH-385-V cover qualifying exigency and military caregiver leave. WH-381 and WH-382 support eligibility, rights, responsibilities, and designation notices.',
+          'Because medical and leave data is sensitive, each template should be reviewed with realistic but non-production test data before it is used in an employee workflow. Staff should also keep the current DOL forms page as the authority for optional-use form status and employer obligations.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open WH-380-E in the catalog',
+              href: '/forms/wh-380-e',
+              description: 'Employee serious health condition certification catalog page.',
+            },
+            {
+              label: 'Open WH-380-F in the catalog',
+              href: '/forms/wh-380-f',
+              description: 'Family member serious health condition certification catalog page.',
+            },
+            {
+              label: 'Open WH-381 in the catalog',
+              href: '/forms/wh-381',
+              description: 'Notice of Eligibility and Rights and Responsibilities catalog page.',
+            },
+            {
+              label: 'Open WH-382 in the catalog',
+              href: '/forms/wh-382',
+              description: 'Designation Notice catalog page.',
+            },
+            {
+              label: 'Open WH-384 in the catalog',
+              href: '/forms/wh-384',
+              description: 'Qualifying Exigency for Military Family Leave catalog page.',
+            },
+            {
+              label: 'Open WH-385 in the catalog',
+              href: '/forms/wh-385',
+              description: 'Serious Injury or Illness of Covered Servicemember catalog page.',
+            },
+            {
+              label: 'Open WH-385-V in the catalog',
+              href: '/forms/wh-385-v',
+              description: 'Serious Injury or Illness of a Veteran catalog page.',
+            },
+          ],
+          bullets: [
+            'WH-380-E - Certification for employee serious health condition, 4 pages in the current catalog entry.',
+            'WH-380-F - Certification for family member serious health condition, 4 pages in the current catalog entry.',
+            'WH-381 - Notice of Eligibility and Rights and Responsibilities, 4 pages in the current catalog entry.',
+            'WH-382 - Designation Notice, 2 pages in the current catalog entry.',
+            'WH-384 - Certification of Qualifying Exigency for Military Family Leave, 4 pages in the current catalog entry.',
+            'WH-385 - Certification for Serious Injury or Illness of Covered Servicemember, 4 pages in the current catalog entry.',
+            'WH-385-V - Certification for Serious Injury or Illness of a Veteran, 5 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'wh381Catalog',
+              'WH-381 notice workflows need clear employee, employer, eligibility, rights, and follow-up fields.',
+            ),
+            figure(
+              'wh382Catalog',
+              'WH-382 designation workflows need exact approval, denial, incomplete-certification, and leave-counting fields.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'leave-schema-and-intake',
+        'Use a leave-case schema that separates employee, provider, family member, employer, and decision fields',
+        [
+          'FMLA packets need role separation. The employee, family member, health care provider, HR contact, military member, servicemember, veteran, and employer signer may all be different people. Field names should reflect those roles rather than generic name and date labels.',
+          'Fill By Link can collect employee or provider-supplied information, but HR should review the final PDF before it is used in an employment decision. Search and Fill can also work from an HRIS or leave-management export when case data already exists internally.',
+        ],
+        {
+          bullets: [
+            'Employee fields: `employee_full_name`, `employee_id`, `job_title`, `worksite`, `leave_request_date`.',
+            'Leave fields: `leave_start_date`, `leave_end_date`, `intermittent_leave_expected`, `reduced_schedule_description`, `case_reference`.',
+            'Provider fields: `provider_name`, `provider_type`, `provider_phone`, `certification_date`, `estimated_duration`.',
+            'Family fields: `family_member_name`, `relationship_to_employee`, `care_needed_description`, `military_member_status`.',
+            'Notice fields: `eligibility_status`, `required_documents_due_date`, `designation_decision`, `fmla_hours_counted`.',
+          ],
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'A respondent link can collect leave-case details before HR generates and reviews the official-layout DOL PDFs.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'DOL rules and employer policy control FMLA decisions',
+        [
+          'DullyPDF can prepare templates, collect structured answers, fill fields, and export review copies. It does not decide eligibility, certify medical facts, approve or deny leave, interpret FMLA regulations, or replace required employer notices.',
+          'Before using a completed packet, verify the current DOL FMLA forms page, employer policy, notice requirements, privacy process, and any legal review needed for leave decisions.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official DOL FMLA forms page',
+              href: 'https://www.dol.gov/agencies/whd/fmla/forms',
+              description: 'DOL source for optional-use FMLA certification and notice forms.',
+            },
+            {
+              label: 'Official DOL FMLA overview',
+              href: 'https://www.dol.gov/agencies/whd/fmla',
+              description: 'DOL source for FMLA rights, responsibilities, and guidance.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'hr-pdf-automation',
+      'healthcare-pdf-automation',
+      'fill-pdf-by-link',
+      'pdf-signature-workflow',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'fill-by-link', 'signature-workflow'],
+  },
+  {
+    slug: 'feca-owcp-federal-worker-injury-packet-automation',
+    title: 'FECA and OWCP Federal Worker Injury Packet Automation',
+    seoTitle: 'FECA and OWCP Federal Worker Injury PDF Packet Automation',
+    seoDescription:
+      'How to organize employee, employing-agency, incident, occupational disease, compensation, medical, duty-status, and reimbursement data across DOL CA and OWCP forms.',
+    seoKeywords: [
+      'owcp form automation',
+      'ca-1 ca-2 packet',
+      'feca claim forms pdf',
+      'federal worker injury forms',
+      'ca-7 compensation claim workflow',
+      'ca-17 duty status report',
+      'owcp medical reimbursement pdf',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Federal worker injury workflows can involve traumatic injury notices, occupational disease claims, compensation claims, time analysis, duty status reports, physician reports, medical reimbursement, and travel reimbursement. DullyPDF can help prepare and review the PDF packet while OWCP, ECOMP, agency procedure, and FECA rules control filing and benefits decisions.',
+    sections: [
+      section(
+        'why-feca-packets-repeat-data',
+        'FECA and OWCP packets repeat employee, agency, incident, medical, and claim data',
+        [
+          'A federal employee injury workflow can start with CA-1 for traumatic injury or CA-2 for occupational disease, then later require CA-7 compensation claims, CA-7A time analysis, CA-17 duty status reports, CA-20 physician reports, OWCP-915 medical reimbursement, or OWCP-957 travel refund requests. The forms serve different moments, but employee identity, agency, supervisor, claim number, injury date, treating provider, duty status, and reimbursement details repeat.',
+          'DullyPDF should support document preparation and review only. It does not file through ECOMP, determine compensability, authorize treatment, calculate wage loss, or replace agency and OWCP instructions.',
+        ],
+        {
+          figures: [
+            figure(
+              'ca1Catalog',
+              'CA-1 is a common traumatic-injury starting form where employee, incident, supervisor, witness, and agency fields need exact mapping.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the forms that match the injury, compensation, duty status, and reimbursement workflow',
+        [
+          'A first FECA packet should be built around the case stage. CA-1 and CA-2 are initial notice forms. CA-7 and CA-7A support compensation and time analysis. CA-17 and CA-20 support medical and duty-status reporting. OWCP-915 and OWCP-957A or OWCP-957B support reimbursement workflows.',
+          'These forms should be validated with non-production test data before they are used with a real claim. The review should focus on role separation, claim number fields, dates, provider data, agency contact fields, and signature-adjacent fields.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open CA-1 in the catalog',
+              href: '/forms/ca-1',
+              description: 'Federal Notice of Traumatic Injury catalog page.',
+            },
+            {
+              label: 'Open CA-2 in the catalog',
+              href: '/forms/ca-2',
+              description: 'Occupational Disease and Claim for Compensation catalog page.',
+            },
+            {
+              label: 'Open CA-7 in the catalog',
+              href: '/forms/ca-7',
+              description: 'Claim for Compensation catalog page.',
+            },
+            {
+              label: 'Open CA-7A in the catalog',
+              href: '/forms/ca-7a',
+              description: 'Time Analysis Form catalog page.',
+            },
+            {
+              label: 'Open CA-17 in the catalog',
+              href: '/forms/ca-17',
+              description: 'Duty Status Report catalog page.',
+            },
+            {
+              label: 'Open CA-20 in the catalog',
+              href: '/forms/ca-20',
+              description: 'Attending Physician Report catalog page.',
+            },
+            {
+              label: 'Open OWCP-915 in the catalog',
+              href: '/forms/owcp-915',
+              description: 'Claim for Medical Reimbursement catalog page.',
+            },
+          ],
+          bullets: [
+            'CA-1 - Federal Notice of Traumatic Injury, 4 pages in the current catalog entry.',
+            'CA-2 - Notice of Occupational Disease and Claim for Compensation, 5 pages in the current catalog entry.',
+            'CA-7 - Claim for Compensation, 4 pages in the current catalog entry.',
+            'CA-7A - Time Analysis Form, 2 pages in the current catalog entry.',
+            'CA-17 - Duty Status Report, 3 pages in the current catalog entry.',
+            'CA-20 - Attending Physician Report, 4 pages in the current catalog entry.',
+            'OWCP-915 - Claim for Medical Reimbursement, 3 pages in the current catalog entry.',
+            'OWCP-957A - Medical Travel Refund Request for Mileage, 3 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'ca7Catalog',
+              'CA-7 compensation workflows need clean claim, wage-loss, leave-buy-back, schedule-award, and pay-period fields.',
+            ),
+            figure(
+              'ca17Catalog',
+              'CA-17 duty status reporting depends on accurate job-duty, restriction, physician, and agency field mapping.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'claim-schema',
+        'Use a claim schema that separates employee, agency, incident, medical, compensation, and reimbursement roles',
+        [
+          'FECA packets are role-heavy. The injured worker, supervisor, employing agency reviewer, physician, pharmacy, mileage claimant, pay office, and OWCP case record should be named distinctly in the schema.',
+          'Search and Fill can use a case export when claim data already exists. Fill By Link can collect supporting details, but staff should review the generated PDFs against the official DOL source before upload, mailing, or retention.',
+        ],
+        {
+          bullets: [
+            'Employee fields: `employee_full_name`, `date_of_birth`, `job_title`, `agency_name`, `work_location`.',
+            'Incident fields: `date_of_injury`, `time_of_injury`, `place_of_injury`, `cause_of_injury`, `witness_name`.',
+            'Claim fields: `owcp_claim_number`, `claim_type`, `continuation_of_pay_requested`, `time_loss_start_date`.',
+            'Medical fields: `provider_name`, `diagnosis_summary`, `duty_status`, `work_restrictions`, `next_appointment_date`.',
+            'Reimbursement fields: `date_of_service`, `provider_or_pharmacy`, `amount_paid`, `mileage_total`, `receipt_attached`.',
+          ],
+          figures: [
+            figure(
+              'fieldList',
+              'A field-level review catches role mistakes before a sensitive injury packet becomes a saved workflow.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'OWCP, ECOMP, and employing-agency instructions control filing and benefits decisions',
+        [
+          'DullyPDF can fill and organize PDFs for review. It does not submit forms through ECOMP, decide compensability, calculate benefits, authorize care, or advise on FECA rights. Some forms may need to be filed electronically by agencies or handled through specific OWCP processes.',
+          'Before using a completed packet, verify the current DOL forms page, ECOMP requirements, agency instructions, filing deadlines, signature requirements, and claim-specific OWCP guidance.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official DOL OWCP forms page',
+              href: 'https://www.dol.gov/index.php/agencies/owcp/FECA/regs/compliance/forms',
+              description: 'DOL source for Federal Employees Program forms and form notes.',
+            },
+            {
+              label: 'Official DOL information for employers',
+              href: 'https://www.dol.gov/agencies/owcp/FECA/regs/compliance/infoemp',
+              description: 'DOL source for employing agency guidance, ECOMP filing notes, and mailing information.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'hr-pdf-automation',
+      'government-form-automation',
+      'healthcare-pdf-automation',
+      'fill-pdf-by-link',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-by-link'],
+  },
+  {
+    slug: 'federal-employment-security-clearance-form-packet',
+    title: 'Federal Employment and Security Clearance Form Packet Automation',
+    seoTitle: 'Federal Employment and Security Clearance PDF Packet Automation',
+    seoDescription:
+      'How to organize applicant, federal employment, veterans preference, appointment, public trust, national security, and medical exam data across OF-306, SF-85P, SF-86, SF-15, SF-61, SF-52, and OF-178 PDFs.',
+    seoKeywords: [
+      'sf-86 fillable pdf workflow',
+      'federal employment forms automation',
+      'of-306 declaration federal employment',
+      'sf-85p public trust packet',
+      'security clearance pdf form',
+      'federal onboarding forms',
+      'opm forms automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Federal employment and investigation paperwork can include declarations for employment, appointment affidavits, veterans preference applications, public-trust questionnaires, national-security questionnaires, personnel actions, and medical-exam forms. DullyPDF can help with PDF preparation and review, but hiring, suitability, investigation, and clearance decisions remain with the responsible agency.',
+    sections: [
+      section(
+        'why-federal-employment-packets-repeat-data',
+        'Federal employment packets repeat applicant identity, employment history, preference, investigation, and signer data',
+        [
+          'A federal onboarding or investigation workflow can involve OF-306, SF-61, SF-15, SF-52, SF-85P, SF-85P-S, SF-86, and OF-178. These forms collect different levels of detail, but names, addresses, identifiers, employment history, military service, education, contacts, signer details, and agency references can repeat.',
+          'Because these forms are sensitive, DullyPDF should be used as a controlled preparation and review layer only. It does not determine federal employment eligibility, veterans preference, suitability, public trust eligibility, clearance eligibility, medical qualification, or agency submission method.',
+        ],
+        {
+          figures: [
+            figure(
+              'of306Catalog',
+              'OF-306 is a common federal employment declaration form where applicant identity, background, and certification fields should be named deliberately.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the employment, preference, appointment, and investigation forms your agency workflow actually uses',
+        [
+          'A practical first template library should be scoped to the role and agency process. OF-306, SF-61, SF-15, and SF-52 are employment and personnel-action oriented. SF-85P and SF-85P-S support public trust investigations. SF-86 supports national security positions. OF-178 supports medical examination workflows.',
+          'Do not treat these forms as casual intake forms. Long investigation questionnaires contain highly sensitive personal data. Use non-production test records for template validation, lock down who can access saved templates and responses, and verify the official OPM or agency source before use.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open OF-306 in the catalog',
+              href: '/forms/of-306-b690ec40',
+              description: 'Declaration for Federal Employment catalog page.',
+            },
+            {
+              label: 'Open SF-85P in the catalog',
+              href: '/forms/sf-85p-d2f5168d',
+              description: 'Questionnaire for Public Trust Positions catalog page.',
+            },
+            {
+              label: 'Open SF-86 in the catalog',
+              href: '/forms/sf-86-973e23e3',
+              description: 'Questionnaire for National Security Positions catalog page.',
+            },
+            {
+              label: 'Open SF-15 in the catalog',
+              href: '/forms/sf-15-4e545151',
+              description: 'Application for 10-Point Veterans Preference catalog page.',
+            },
+            {
+              label: 'Open SF-61 in the catalog',
+              href: '/forms/sf-61-d196bccb',
+              description: 'Appointment Affidavits catalog page.',
+            },
+            {
+              label: 'Open OF-178 in the catalog',
+              href: '/forms/of-178-5b0ac635',
+              description: 'Certificate of Medical Examination catalog page.',
+            },
+          ],
+          bullets: [
+            'OF-306 - Declaration for Federal Employment, 3 pages in the current catalog entry.',
+            'SF-85P - Questionnaire for Public Trust Positions, 95 pages in the current catalog entry.',
+            'SF-85P-S - Supplemental Questionnaire for Selected Positions, 16 pages in the current catalog entry.',
+            'SF-86 - Questionnaire for National Security Positions, 136 pages in the current catalog entry.',
+            'SF-15 - Application for 10-Point Veterans Preference, 2 pages in the current catalog entry.',
+            'SF-61 - Appointment Affidavits, 1 page in the current catalog entry.',
+            'OF-178 - Certificate of Medical Examination, 7 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'sf85pCatalog',
+              'SF-85P is a long public-trust questionnaire, making stable section and role naming important before any repeat workflow is attempted.',
+            ),
+            figure(
+              'sf86Catalog',
+              'SF-86 is highly sensitive and should be handled with strict review, access, and official-source controls.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'applicant-schema-and-sensitivity',
+        'Use an applicant schema, but treat investigation data as sensitive controlled content',
+        [
+          'The schema should separate applicant identity, employment history, residence history, education, references, military service, preference claim, agency action, and medical-exam data. Those categories should not collapse into generic rows because each form asks about different time periods and contexts.',
+          'For long forms like SF-85P and SF-86, template validation should focus on navigation and review rather than blind automation. A team should prove that generated values land in the right section, that long narratives fit, and that the final PDF is reviewed by the responsible human before any agency process uses it.',
+        ],
+        {
+          bullets: [
+            'Applicant fields: `applicant_full_name`, `date_of_birth`, `place_of_birth`, `current_address`, `contact_phone`.',
+            'History fields: `residence_1_address`, `employment_1_employer`, `education_1_school`, `reference_1_name`.',
+            'Federal employment fields: `agency_name`, `position_title`, `announcement_number`, `appointment_date`, `personnel_action_reason`.',
+            'Preference fields: `veterans_preference_claimed`, `service_connected_disability_percent`, `supporting_document_reference`.',
+            'Medical fields: `examiner_name`, `exam_date`, `medical_limitation_summary`, `certificate_signature_date`.',
+          ],
+          figures: [
+            figure(
+              'renameMapUi',
+              'Long federal employment forms need section-aware field names so sensitive applicant history does not land in the wrong part of the packet.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'OPM and the requesting agency control form use, submission, and decisions',
+        [
+          'DullyPDF can prepare templates, collect or import values, fill PDFs, and export review copies. It does not conduct background investigations, verify facts, decide suitability, grant clearances, determine veterans preference, or submit forms to agency systems.',
+          'Before using a completed packet, verify the current OPM form source, agency instructions, electronic investigation system requirements, privacy notices, signature requirements, and data-handling rules.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official OPM federal investigation forms page',
+              href: 'https://www.opm.gov/forms/Federal-Investigation-Forms/',
+              description: 'OPM source for SF-85, SF-85P, SF-85P-S, SF-86, and related investigation forms.',
+            },
+            {
+              label: 'Official OPM SF-86 PDF',
+              href: 'https://www.opm.gov/forms/pdf_fill/SF86.pdf',
+              description: 'OPM source PDF for Questionnaire for National Security Positions.',
+            },
+            {
+              label: 'Official OPM forms page',
+              href: 'https://www.opm.gov/forms/',
+              description: 'OPM source for federal forms and downloads.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'hr-pdf-automation',
+      'government-form-automation',
+      'pdf-to-database-template',
+      'fill-pdf-by-link',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'fill-by-link', 'search-fill'],
+  },
+  {
+    slug: 'bankruptcy-petition-schedules-packet-automation',
+    title: 'Bankruptcy Petition and Schedules PDF Packet Automation',
+    seoTitle: 'Bankruptcy Petition and Schedules PDF Packet Automation',
+    seoDescription:
+      'How to organize debtor, property, creditor, income, expense, means-test, filing-fee, and declaration data across official bankruptcy petition and schedule PDFs.',
+    seoKeywords: [
+      'bankruptcy forms packet',
+      'bankruptcy petition pdf automation',
+      'b 101 bankruptcy form',
+      'bankruptcy schedules fillable pdf',
+      'chapter 7 means test pdf',
+      'official bankruptcy forms workflow',
+      'debtor schedule packet automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Official bankruptcy forms are a packet workflow: petition, asset schedules, secured and unsecured creditor schedules, income and expense schedules, statement of financial affairs, means-test forms, filing-fee forms, and declarations all reuse debtor, household, property, creditor, income, and case data. DullyPDF can help prepare and review PDFs, not provide bankruptcy advice or court filing services.',
+    sections: [
+      section(
+        'why-bankruptcy-packets-repeat-data',
+        'Bankruptcy petitions repeat debtor, household, property, creditor, income, and expense data',
+        [
+          'An individual bankruptcy packet can involve B 101, B 106 Summary, B 106A/B through B 106J, B 107, B 121, B 122A-1, B 122A-2, B 103A, B 103B, and declarations. The forms are separate, but the debtor name, joint debtor details, addresses, household, property, secured creditors, unsecured creditors, income, expenses, and case chapter can repeat.',
+          'DullyPDF can make the document workflow easier to prepare and review. It should not decide whether someone should file bankruptcy, choose a chapter, calculate exemptions, apply means-test rules, or file with a court.',
+        ],
+        {
+          figures: [
+            figure(
+              'bankruptcyB101Catalog',
+              'Form B 101 is the individual debtor petition anchor and should be mapped around debtor, case, address, and chapter fields first.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with the petition, schedules, means-test forms, and filing-fee forms',
+        [
+          'The strongest first workflow is a reviewed packet for one specific case type. For many individual-debtor workflows, that begins with B 101, B 106 Summary, B 106A/B, B 106D, B 106E/F, B 106I, B 106J, B 107, B 122A-1, B 122A-2, B 103A, and B 103B.',
+          'Each template should be validated independently before grouping. Bankruptcy schedules are dense, and repeated rows for property, secured debts, unsecured debts, income, and expenses need more than a superficial fill check.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open B 101 in the catalog',
+              href: '/forms/b-101',
+              description: 'Voluntary Petition for Individuals Filing for Bankruptcy catalog page.',
+            },
+            {
+              label: 'Open B 106 Summary in the catalog',
+              href: '/forms/b-106-summary',
+              description: 'Summary of Assets and Liabilities catalog page.',
+            },
+            {
+              label: 'Open B 106A/B in the catalog',
+              href: '/forms/b-106a-b',
+              description: 'Property schedule catalog page.',
+            },
+            {
+              label: 'Open B 106D in the catalog',
+              href: '/forms/b-106d',
+              description: 'Secured creditor schedule catalog page.',
+            },
+            {
+              label: 'Open B 106E/F in the catalog',
+              href: '/forms/b-106e-f',
+              description: 'Unsecured creditor schedule catalog page.',
+            },
+            {
+              label: 'Open B 122A-2 in the catalog',
+              href: '/forms/b-122a-2',
+              description: 'Chapter 7 Means Test Calculation catalog page.',
+            },
+          ],
+          bullets: [
+            'B 101 - Voluntary Petition for Individuals Filing for Bankruptcy, 9 pages in the current catalog entry.',
+            'B 106 Summary - Summary of Assets and Liabilities, 2 pages in the current catalog entry.',
+            'B 106A/B - Schedule A/B: Property, 10 pages in the current catalog entry.',
+            'B 106D - Schedule D: Creditors Holding Secured Claims, 3 pages in the current catalog entry.',
+            'B 106E/F - Schedule E/F: Creditors With Unsecured Claims, 6 pages in the current catalog entry.',
+            'B 107 - Statement of Financial Affairs, 12 pages in the current catalog entry.',
+            'B 122A-1 - Chapter 7 Current Monthly Income, 3 pages in the current catalog entry.',
+            'B 122A-2 - Chapter 7 Means Test Calculation, 9 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'bankruptcyB106abCatalog',
+              'B 106A/B shows why property rows, ownership shares, values, and exemption-adjacent fields need exact mapping.',
+            ),
+            figure(
+              'bankruptcyB122a2Catalog',
+              'B 122A-2 is a calculation-heavy means-test form and should never be treated as unchecked PDF autofill.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'debtor-schema-and-review',
+        'Use a debtor schema that separates identity, household, assets, creditors, income, expenses, and means-test inputs',
+        [
+          'A bankruptcy packet schema should reflect the case record. Debtor and joint debtor fields should stay separate from creditor, property, secured debt, unsecured debt, household, income, expense, and declaration fields.',
+          'The review loop should be strict: fill a realistic test case, inspect repeated rows, compare schedules to source records, validate signatures and declarations, and use flat output for review copies when live PDF fields could confuse recipients.',
+        ],
+        {
+          bullets: [
+            'Debtor fields: `debtor_full_name`, `joint_debtor_full_name`, `mailing_address`, `county`, `chapter_selected`.',
+            'Property fields: `property_1_description`, `property_1_owner`, `property_1_current_value`, `property_1_secured_claim`.',
+            'Creditor fields: `creditor_1_name`, `creditor_1_address`, `claim_amount`, `claim_type`, `collateral_description`.',
+            'Income and expense fields: `gross_monthly_income`, `spouse_income`, `rent_or_mortgage_expense`, `food_expense`, `transportation_expense`.',
+            'Means-test fields: `household_size`, `current_monthly_income`, `deduction_category`, `presumption_result_reference`.',
+          ],
+          figures: [
+            figure(
+              'groupManager',
+              'A saved group can keep petition and schedule templates together after each member form has been validated.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'U.S. Courts forms and bankruptcy counsel remain the authority',
+        [
+          'DullyPDF can prepare templates, fill values, organize packet groups, and export review copies. It does not provide bankruptcy advice, choose chapters, calculate exemptions, perform means-test analysis, or file in court.',
+          'Before using a completed packet, verify the current U.S. Courts form, local court requirements, filing rules, signatures, fee requirements, and qualified legal review.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official U.S. Courts bankruptcy forms page',
+              href: 'https://www.uscourts.gov/forms-rules/forms/bankruptcy-forms',
+              description: 'U.S. Courts source for official bankruptcy forms and categories.',
+            },
+            {
+              label: 'Official B 101 page',
+              href: 'https://www.uscourts.gov/forms/individual-debtors/voluntary-petition-individuals-filing-bankruptcy',
+              description: 'U.S. Courts source for Form B 101 details and downloads.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'legal-pdf-workflow-automation',
+      'government-form-automation',
+      'batch-fill-pdf-forms',
+      'pdf-to-database-template',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'create-group'],
+  },
+  {
+    slug: 'cbp-import-entry-logistics-packet-automation',
+    title: 'CBP Import Entry and Logistics PDF Packet Automation',
+    seoTitle: 'CBP Import Entry PDF Packet Automation for Brokers and Logistics Teams',
+    seoDescription:
+      'How to reuse importer, consignee, broker, entry, manifest, foreign-trade-zone, ACH, and shipment data across CBP 3461, 7501, 5106, 7512, 214, 216, 400, and 6059B PDFs.',
+    seoKeywords: [
+      'cbp form 7501 automation',
+      'cbp 3461 fillable pdf',
+      'import entry pdf workflow',
+      'customs broker form automation',
+      'cbp 5106 importer identity form',
+      'customs logistics pdf forms',
+      'entry summary pdf automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Customs and logistics teams often repeat importer, consignee, broker, filer, entry, manifest, bond, foreign-trade-zone, ACH, and shipment details across CBP forms. DullyPDF can help map and fill recurring PDF packets while CBP systems, ACE, broker procedures, and trade compliance rules remain authoritative.',
+    sections: [
+      section(
+        'why-cbp-packets-repeat-data',
+        'CBP packets repeat importer, broker, entry, shipment, and account data',
+        [
+          'A customs workflow may include CBP 3461 for entry or immediate delivery, CBP 7501 for entry summary, CBP 5106 for importer identity, CBP 7512 for transportation entry and manifest, CBP 214 or 216 for foreign-trade-zone workflows, CBP 400 for ACH debit, or CBP 6059B for traveler declaration contexts.',
+          'The forms serve different trade processes, but importer of record, consignee, broker, filer code, entry number, port, carrier, manifest, bond, account, and shipment details often repeat. DullyPDF can reduce retyping, but it should not decide classification, valuation, admissibility, duty, ACE filing, or compliance treatment.',
+        ],
+        {
+          figures: [
+            figure(
+              'cbp7501Catalog',
+              'CBP Form 7501 is a dense entry-summary form where importer, entry, line-item, duty, and continuation data need careful field mapping.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with importer identity, entry, entry summary, transportation, FTZ, and ACH forms',
+        [
+          'A customs broker or logistics team should start with the CBP forms that recur in its specific operations. CBP 5106, 3461, and 7501 are strong anchors for importer identity and entry workflows. CBP 7512 and 7512A support transportation entry and continuation. CBP 214 and 216 support foreign-trade-zone workflows. CBP 400 supports ACH debit setup.',
+          'Because CBP forms can be updated frequently, templates should be checked against the current CBP forms page before reuse. A saved template should include a source date and a test record that exercises importer, consignee, carrier, port, and line-item edge cases.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open CBP 3461 in the catalog',
+              href: '/forms/cbp-3461',
+              description: 'Entry/Immediate Delivery for ACE catalog page.',
+            },
+            {
+              label: 'Open CBP 7501 in the catalog',
+              href: '/forms/cbp-7501',
+              description: 'Entry Summary with continuation sheets catalog page.',
+            },
+            {
+              label: 'Open CBP 5106 in the catalog',
+              href: '/forms/cbp-5106',
+              description: 'Create/Update Importer Identity Form catalog page.',
+            },
+            {
+              label: 'Open CBP 7512 in the catalog',
+              href: '/forms/cbp-7512',
+              description: 'Transportation Entry and Manifest catalog page.',
+            },
+            {
+              label: 'Open CBP 214 in the catalog',
+              href: '/forms/cbp-214',
+              description: 'Foreign-Trade Zone Admission catalog page.',
+            },
+            {
+              label: 'Open CBP 400 in the catalog',
+              href: '/forms/cbp-400',
+              description: 'ACH Debit Application catalog page.',
+            },
+          ],
+          bullets: [
+            'CBP 3461 - Entry/Immediate Delivery for ACE, 8 pages in the current catalog entry.',
+            'CBP 7501 - Entry Summary with Continuation Sheets, 27 pages in the current catalog entry.',
+            'CBP 5106 - Create/Update Importer Identity Form, 5 pages in the current catalog entry.',
+            'CBP 7512 - Transportation Entry and Manifest, 2 pages in the current catalog entry.',
+            'CBP 7512A - Transportation Entry Continuation Sheet, 2 pages in the current catalog entry.',
+            'CBP 214 - Foreign-Trade Zone Admission and Status Designation, 1 page in the current catalog entry.',
+            'CBP 216 - Foreign-Trade Zone Activity Permit, 1 page in the current catalog entry.',
+            'CBP 400 - ACH Debit Application, 5 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'cbp3461Catalog',
+              'CBP 3461 is a practical entry-template starting point for importer, port, manifest, and release fields.',
+            ),
+            figure(
+              'cbp5106Catalog',
+              'CBP 5106 should be mapped around importer identity, contact, address, and account fields before reuse.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'trade-schema-and-api-fill',
+        'Use a trade schema that separates importer identity, broker, entry, shipment, and line-item fields',
+        [
+          'Customs packets are a good fit for structured data because many teams already have shipment, broker, ERP, or TMS exports. The template schema should separate importer identity, consignee, filer, port, entry, carrier, bill of lading, manifest, FTZ status, ACH account, and line-item details.',
+          'Search and Fill is a good first review loop. API Fill can become useful later when a broker system or internal logistics app has a clean JSON record and needs a reviewed PDF output for a stable process.',
+        ],
+        {
+          bullets: [
+            'Party fields: `importer_name`, `importer_number`, `consignee_name`, `broker_name`, `filer_code`, `surety_code`.',
+            'Entry fields: `entry_number`, `entry_type`, `port_code`, `arrival_date`, `release_date`, `bond_type`.',
+            'Shipment fields: `carrier_name`, `vessel_or_flight`, `bill_of_lading`, `container_number`, `country_of_origin`.',
+            'Line fields: `hts_number`, `goods_description`, `entered_value`, `duty_rate`, `duty_amount`, `quantity`.',
+            'Account fields: `ach_payer_name`, `routing_number`, `account_number`, `payment_contact`, `pms_activation_flag`.',
+          ],
+          figures: [
+            figure(
+              'databaseSchema',
+              'A trade schema helps broker, ERP, or logistics records drive the same reviewed PDF templates through Search and Fill or API Fill.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'CBP and ACE rules control submission, classification, valuation, and compliance',
+        [
+          'DullyPDF can prepare templates, map values, fill PDFs, and export review copies. It does not file through ACE, classify merchandise, calculate duty, decide admissibility, register importers, or provide customs broker advice.',
+          'Before using a completed packet, verify the current CBP forms page, ACE or broker-system requirements, form revision, instructions, signature rules, and trade compliance review process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official CBP Forms page',
+              href: 'https://www.cbp.gov/newsroom/publications/forms',
+              description: 'CBP source for digital fillable CBP forms.',
+            },
+            {
+              label: 'Official CBP entry summary process page',
+              href: 'https://www.cbp.gov/trade/programs-administration/entry-summary-and-post-release-processes',
+              description: 'CBP source for entry summary and post-release process guidance.',
+            },
+            {
+              label: 'Official CBP Form 5106 FAQ',
+              href: 'https://www.cbp.gov/trade/programs-administration/entry-summary/cbp-form-5106/importer-createupdate-identity-5106-faq',
+              description: 'CBP source for importer identity form questions and formatting notes.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'logistics-pdf-automation',
+      'government-form-automation',
+      'pdf-fill-api',
+      'fill-pdf-from-csv',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'api-fill'],
+  },
+  {
+    slug: 'hud-usda-housing-assistance-packet-automation',
+    title: 'HUD and USDA Housing Assistance PDF Packet Automation',
+    seoTitle: 'HUD and USDA Housing Assistance PDF Packet Automation',
+    seoDescription:
+      'How to organize tenant, applicant, household, income, release, inspection, special-claim, multifamily, and rural housing loan data across HUD and USDA housing PDFs.',
+    seoKeywords: [
+      'hud form automation',
+      'hud 50059 fillable pdf',
+      'hud 9887 tenant release form',
+      'housing assistance pdf workflow',
+      'section 8 forms automation',
+      'usda rd 410-4 pdf',
+      'tenant certification packet automation',
+    ],
+    publishedDate: '2026-05-20',
+    updatedDate: '2026-05-20',
+    author: 'DullyPDF Team',
+    summary:
+      'Housing assistance workflows can involve tenant certification, consent to release information, supplemental application forms, move-in and move-out inspections, Section 8 special claims, multifamily project applications, and USDA rural housing loan forms. DullyPDF helps with PDF template preparation and review, not housing eligibility or program administration decisions.',
+    sections: [
+      section(
+        'why-housing-packets-repeat-data',
+        'Housing assistance packets repeat tenant, household, property, income, consent, and claim data',
+        [
+          'A housing program workflow may involve HUD-50059 tenant eligibility certification, HUD-9887 consent to release information, HUD-92006 supplemental application data, HUD-90106 inspection records, HUD-52671 special claim forms, HUD-92013 multifamily project applications, and USDA RD 410-4 or RD 3550-1 rural housing forms. The forms differ, but household, property, income, applicant, unit, owner, lender, and consent details recur.',
+          'DullyPDF can help agencies, owners, managers, packagers, and housing teams prepare reusable templates and reduce repeated entry. It does not decide eligibility, rent, subsidy, program compliance, underwriting, inspection outcomes, or claim approval.',
+        ],
+        {
+          figures: [
+            figure(
+              'hud50059Catalog',
+              'HUD-50059 is an owner certification template where tenant, household, income, rent, assistance, and unit data should map from a reviewed record.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'forms-worth-starting-with',
+        'Start with tenant certification, release, inspection, special claim, and loan application forms',
+        [
+          'Housing teams should start with the packet they repeat most often. HUD-50059 and HUD-9887 are useful tenant-certification anchors. HUD-92006 and HUD-90106 support supplemental application and inspection workflows. HUD-52671-A/B/C support special-claim contexts. USDA RD 410-4 and RD 3550-1 support rural housing loan and authorization workflows.',
+          'These forms should be mapped one at a time. Tenant certification, income verification, release authorization, inspection, special claims, and loan applications have different record shapes and should not share vague field names.',
+        ],
+        {
+          links: [
+            {
+              label: 'Open HUD-50059 in the catalog',
+              href: '/forms/hud-50059',
+              description: 'Tenant eligibility certification catalog page.',
+            },
+            {
+              label: 'Open HUD-9887 in the catalog',
+              href: '/forms/hud-9887',
+              description: 'Applicant and tenant consent release catalog page.',
+            },
+            {
+              label: 'Open HUD-92006 in the catalog',
+              href: '/forms/hud-92006',
+              description: 'Supplement to Application for Federally Assisted Housing catalog page.',
+            },
+            {
+              label: 'Open HUD-90106 in the catalog',
+              href: '/forms/hud-90106',
+              description: 'Move-In/Move-Out Inspection Form catalog page.',
+            },
+            {
+              label: 'Open HUD-52671-A in the catalog',
+              href: '/forms/hud-52671-a',
+              description: 'Section 8 Special Claims for Unpaid Rent or Damages catalog page.',
+            },
+            {
+              label: 'Open RD 410-4 in the catalog',
+              href: '/forms/rd-410-4',
+              description: 'USDA Uniform Residential Loan Application catalog page.',
+            },
+            {
+              label: 'Open RD 3550-1 in the catalog',
+              href: '/forms/rd-3550-1',
+              description: 'USDA Authorization to Release Information catalog page.',
+            },
+          ],
+          bullets: [
+            'HUD-50059 - Owner certification for tenant eligibility and rent procedures, 3 pages in the current catalog entry.',
+            'HUD-9887 - Applicant or tenant consent to release information, 6 pages in the current catalog entry.',
+            'HUD-92006 - Supplement to Application for Federally Assisted Housing, 1 page in the current catalog entry.',
+            'HUD-90106 - Move-In/Move-Out Inspection Form, 4 pages in the current catalog entry.',
+            'HUD-52671-A - Section 8 special claims for unpaid rent or damages, 1 page in the current catalog entry.',
+            'HUD-92013 - Application for Multifamily Housing Project, 8 pages in the current catalog entry.',
+            'RD 410-4 - Uniform Residential Loan Application, 10 pages in the current catalog entry.',
+            'RD 3550-1 - Authorization to Release Information, 3 pages in the current catalog entry.',
+          ],
+          figures: [
+            figure(
+              'hud9887Catalog',
+              'HUD-9887 authorization workflows need exact applicant, tenant, household member, owner, and agency field review.',
+            ),
+            figure(
+              'rd4104Catalog',
+              'USDA RD 410-4 is a loan application template where borrower, property, employment, asset, liability, and lender data should be mapped deliberately.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'housing-schema',
+        'Use a housing schema that separates tenant, household, property, owner, claim, inspection, and borrower data',
+        [
+          'A housing assistance packet schema should preserve role differences. Applicant, tenant, co-tenant, household member, owner, management agent, public housing agency, lender, borrower, inspector, and claim contact are not interchangeable.',
+          'Search and Fill can drive tenant certification or special claim PDFs from property-management exports. Fill By Link can collect applicant or tenant data first, but staff should review the generated PDF against program requirements before it is used outside the workspace.',
+        ],
+        {
+          bullets: [
+            'Tenant fields: `tenant_full_name`, `household_member_1_name`, `household_size`, `unit_number`, `effective_date`.',
+            'Income fields: `employment_income`, `benefit_income`, `asset_income`, `deductions_total`, `annual_income_total`.',
+            'Property fields: `property_name`, `contract_number`, `owner_name`, `management_agent`, `pha_contact`.',
+            'Inspection fields: `move_in_date`, `move_out_date`, `room_condition`, `damage_description`, `tenant_signature_date`.',
+            'Loan fields: `borrower_full_name`, `property_address`, `loan_amount_requested`, `employment_history`, `asset_total`, `liability_total`.',
+          ],
+          figures: [
+            figure(
+              'fillLinkBuilder',
+              'Fill By Link can collect applicant or tenant details first while staff still control the final HUD or USDA PDF output.',
+            ),
+          ],
+        },
+      ),
+      section(
+        'official-source-boundaries',
+        'HUD, USDA, and program administrators remain the authority for eligibility and submission',
+        [
+          'DullyPDF can prepare templates, map values, fill PDFs, and export review copies. It does not determine housing eligibility, calculate rent or subsidy, approve special claims, inspect units, underwrite loans, or submit forms to program systems.',
+          'Before using a completed packet, verify the current HUD or USDA source, program handbook or administrator instructions, signature requirements, privacy rules, supporting-document requirements, and review process.',
+        ],
+        {
+          links: [
+            {
+              label: 'Official HUD forms page',
+              href: 'https://www.hud.gov/hudclips/forms',
+              description: 'HUD source for HUD forms, including HUD-50059 and HUD-9887 references.',
+            },
+            {
+              label: 'Official USDA RD 410-4 PDF',
+              href: 'https://forms.sc.egov.usda.gov/efcommon/eFileServices/eForms/RD410-4.PDF',
+              description: 'USDA source PDF for Uniform Residential Loan Application.',
+            },
+            {
+              label: 'Official USDA RD 3550-1 PDF',
+              href: 'https://forms.sc.egov.usda.gov/efcommon/eFileServices/eFormsAdmin/RD3550-0001.pdf',
+              description: 'USDA source PDF for Authorization to Release Information.',
+            },
+          ],
+        },
+      ),
+    ],
+    relatedIntentPages: [
+      'real-estate-pdf-automation',
+      'government-form-automation',
+      'finance-loan-pdf-automation',
+      'fill-pdf-by-link',
+    ],
+    relatedDocs: ['getting-started', 'rename-mapping', 'search-fill', 'fill-by-link'],
+  },
   {
     slug: 'customizable-fillable-form-templates-fonts-colors-sizes',
     title: 'How to Build Highly Customizable Fillable Form Templates',
@@ -1814,7 +5693,7 @@ export const BLOG_POSTS = [
         'API Fill and web form fill are where the cost and workflow model diverge',
         [
           'If the team needs API fill, the economics change fast, and this is one of the clearest reasons to favor DullyPDF. As of April 11, 2026, Anvil lists a free plan at $0, but also notes that it is a UI-only plan and that API key access requires adding a card or moving into paid usage. The same pricing page lists PDF fill or generation over API at $0.10 per usage. That means Anvil free is not really a serious low-friction API fill evaluation path for teams that already know their future is automated PDF output.',
-          'DullyPDF’s model is materially better to enter because API Fill is part of the product surface even on the free tier. The current DullyPDF defaults in this repo include one active API Fill endpoint, 250 successful fills per month, and 25 pages per request on free. The same free tier also supports native web form fill through Fill By Link with no active-link cap and 25 accepted responses per month. In practice, that means DullyPDF gives many teams a real working automation system before Anvil reaches its first meaningful paid tier.',
+          'DullyPDF’s model is materially better to enter because API Fill is part of the product surface even on the free tier. The current DullyPDF defaults in this repo include one active API Fill endpoint, 250 successful fills per month, and 50 pages per request on free. The same free tier also supports native web form fill through Fill By Link with no active-link cap and 25 accepted responses per month. In practice, that means DullyPDF gives many teams a real working automation system before Anvil reaches its first meaningful paid tier.',
         ],
         {
           figures: [
@@ -1877,8 +5756,8 @@ export const BLOG_POSTS = [
             'Anvil Free: $0, 2 users, unlimited templates, but the pricing page labels it a UI-only plan and says API key access requires a card or higher plan.',
             'Anvil AI Pack: $99 per month, 5 users, programmatic Document AI, AI schema mapping, and the same metered API PDF fill pricing starting at $0.10 per call.',
             'Anvil Product Pack: $425 per month, white labeling, interactive signing, and workflow features, with integrated workflow submissions listed at $1.00 each and integrated e-sign packets at $1.50 each.',
-            'DullyPDF Free: 1 active API Fill endpoint, 250 successful API fills per month, 25 pages per request, no active Fill By Link cap, 25 accepted web form responses per month, and 25 sent signing requests per month.',
-            'DullyPDF Premium: 20 active API Fill endpoints, 10,000 successful API fills per month, 250 pages per request, 10,000 accepted Fill By Link responses per month, and 10,000 sent signing requests per month plus monthly AI credits.',
+            'DullyPDF Free: 1 active API Fill endpoint, 250 successful API fills per month, 50 pages per request, no active Fill By Link cap, 25 accepted web form responses per month, and 25 sent signing requests per month.',
+            'DullyPDF Premium: 20 active API Fill endpoints, 10,000 successful API fills per month, 500 pages per request, 10,000 accepted Fill By Link responses per month, and 10,000 sent signing requests per month plus monthly AI credits.',
           ],
         },
       ),
@@ -1967,4 +5846,32 @@ export const BLOG_POSTS = [
     relatedIntentPages: ['pdf-to-fillable-form', 'pdf-field-detection-tool', 'education-form-automation'],
     relatedDocs: ['getting-started', 'detection', 'editor-workflow'],
   },
+];
+
+const CATALOG_PACKET_BLOG_SLUGS = new Set([
+  'uscis-immigration-packet-automation',
+  'va-disability-claim-packet-automation',
+  'social-security-disability-packet-automation',
+  'contractor-tax-onboarding-packet',
+  'sba-loan-application-packet-automation',
+  'medicare-provider-enrollment-credentialing-packet',
+  'passport-ds-form-workflow',
+  'nonprofit-990-filing-packet-automation',
+  'payroll-quarter-year-end-form-automation',
+  'medical-dental-intake-template-library',
+  'individual-tax-return-packet-automation',
+  'business-tax-return-packet-automation',
+  'irs-collection-offer-in-compromise-packet-automation',
+  'medicare-beneficiary-enrollment-appeals-packet',
+  'fmla-leave-certification-packet-automation',
+  'feca-owcp-federal-worker-injury-packet-automation',
+  'federal-employment-security-clearance-form-packet',
+  'bankruptcy-petition-schedules-packet-automation',
+  'cbp-import-entry-logistics-packet-automation',
+  'hud-usda-housing-assistance-packet-automation',
+]);
+
+export const BLOG_POSTS = [
+  ...BLOG_POSTS_BY_AUTHORING_PRIORITY.filter((post) => !CATALOG_PACKET_BLOG_SLUGS.has(post.slug)),
+  ...BLOG_POSTS_BY_AUTHORING_PRIORITY.filter((post) => CATALOG_PACKET_BLOG_SLUGS.has(post.slug)),
 ];

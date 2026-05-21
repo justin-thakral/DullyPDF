@@ -11,6 +11,7 @@ const createBillingCheckoutSessionMock = vi.hoisted(() => vi.fn());
 const cancelBillingSubscriptionMock = vi.hoisted(() => vi.fn());
 const updateDowngradeRetentionMock = vi.hoisted(() => vi.fn());
 const reconcileBillingCheckoutFulfillmentMock = vi.hoisted(() => vi.fn());
+const syncBillingPaymentMethodRecoveryMock = vi.hoisted(() => vi.fn());
 const trackGoogleAdsBillingPurchaseMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../../../src/services/api', () => ({
@@ -19,6 +20,7 @@ vi.mock('../../../src/services/api', () => ({
     cancelBillingSubscription: cancelBillingSubscriptionMock,
     updateDowngradeRetention: updateDowngradeRetentionMock,
     reconcileBillingCheckoutFulfillment: reconcileBillingCheckoutFulfillmentMock,
+    syncBillingPaymentMethodRecovery: syncBillingPaymentMethodRecoveryMock,
   },
 }));
 
@@ -158,6 +160,7 @@ describe('useDowngradeRetentionRuntime', () => {
     cancelBillingSubscriptionMock.mockReset();
     updateDowngradeRetentionMock.mockReset();
     reconcileBillingCheckoutFulfillmentMock.mockReset();
+    syncBillingPaymentMethodRecoveryMock.mockReset();
     trackGoogleAdsBillingPurchaseMock.mockReset();
   });
 
@@ -329,6 +332,69 @@ describe('useDowngradeRetentionRuntime', () => {
     expect(window.location.search.includes('billing=')).toBe(false);
   });
 
+  it('reconciles free trial checkout returns without tracking a paid purchase conversion', async () => {
+    const startedAt = Date.now();
+    window.history.replaceState({}, '', '/?billing=success');
+    window.sessionStorage.setItem('dullypdf.pendingBillingCheckout', JSON.stringify({
+      userId: 'user-1',
+      requestedKind: 'free_trial',
+      sessionId: 'cs_trial_pending_123',
+      attemptId: 'attempt_trial_pending_123',
+      checkoutPriceId: 'price_trial_monthly',
+      startedAt,
+    }));
+    reconcileBillingCheckoutFulfillmentMock.mockResolvedValue({
+      success: true,
+      dryRun: false,
+      scope: 'self',
+      auditedEventCount: 1,
+      candidateEventCount: 1,
+      pendingReconciliationCount: 1,
+      reconciledCount: 1,
+      alreadyProcessedCount: 0,
+      processingCount: 0,
+      retryableCount: 0,
+      failedCount: 0,
+      invalidCount: 0,
+      skippedForUserCount: 0,
+      events: [
+        {
+          eventId: 'checkout_session:cs_trial_pending_123',
+          checkoutSessionId: 'cs_trial_pending_123',
+          checkoutAttemptId: 'attempt_trial_pending_123',
+          checkoutKind: 'free_trial',
+          checkoutPriceId: 'price_trial_monthly',
+          billingEventStatus: null,
+        },
+      ],
+    });
+    const profile = makeProfile({ retention: null, role: 'pro' });
+    const deps = createDeps({
+      verifiedUser: { uid: 'user-1' } as any,
+      initialUserProfile: profile,
+      loadUserProfile: vi.fn().mockResolvedValue(profile),
+    });
+
+    renderHookHarness(deps);
+
+    await waitFor(() => {
+      expect(reconcileBillingCheckoutFulfillmentMock).toHaveBeenCalledWith({
+        lookbackHours: 72,
+        dryRun: false,
+        sessionId: 'cs_trial_pending_123',
+        attemptId: 'attempt_trial_pending_123',
+      });
+    });
+    await waitFor(() => {
+      expect(window.sessionStorage.getItem('dullypdf.pendingBillingCheckout')).toBeNull();
+    });
+    expect(trackGoogleAdsBillingPurchaseMock).not.toHaveBeenCalled();
+    expect(deps.setBannerNotice).toHaveBeenLastCalledWith(expect.objectContaining({
+      tone: 'success',
+      message: expect.stringContaining('Recovered 1 missed billing event'),
+    }));
+  });
+
   it('ignores and preserves a pending checkout marker that belongs to a different user', async () => {
     const startedAt = Date.now();
     window.history.replaceState({}, '', '/?billing=success');
@@ -498,6 +564,66 @@ describe('useDowngradeRetentionRuntime', () => {
     });
     expect(reconcileBillingCheckoutFulfillmentMock).not.toHaveBeenCalled();
     expect(window.sessionStorage.getItem('dullypdf.pendingBillingCheckout')).toContain('"sessionId":"cs_cancel_pending_123"');
+    expect(window.location.search.includes('billing=')).toBe(false);
+  });
+
+  it('refreshes profile after returning from a payment method update', async () => {
+    window.history.replaceState({}, '', '/ui/profile?billing=payment-method-updated');
+    syncBillingPaymentMethodRecoveryMock.mockResolvedValue({
+      success: true,
+      subscriptionPaymentMethodUpdated: true,
+      invoicePaymentAttempted: true,
+      invoicePaymentSucceeded: true,
+      subscriptionStatus: 'active',
+    });
+    const profile = makeProfile({ retention: null, role: 'pro' });
+    const deps = createDeps({
+      verifiedUser: { uid: 'user-1' } as any,
+      initialUserProfile: profile,
+      loadUserProfile: vi.fn().mockResolvedValue(profile),
+    });
+
+    renderHookHarness(deps);
+
+    await waitFor(() => {
+      expect(deps.loadUserProfile).toHaveBeenCalled();
+    });
+    expect(syncBillingPaymentMethodRecoveryMock).toHaveBeenCalledTimes(1);
+    expect(deps.setBannerNotice).toHaveBeenLastCalledWith(expect.objectContaining({
+      tone: 'success',
+      message: expect.stringContaining('Subscription retries now use the updated payment method'),
+    }));
+    expect(window.location.search.includes('billing=')).toBe(false);
+  });
+
+  it('shows pending recovery copy when the immediate invoice retry still fails', async () => {
+    window.history.replaceState({}, '', '/ui/profile?billing=payment-method-updated');
+    syncBillingPaymentMethodRecoveryMock.mockResolvedValue({
+      success: true,
+      subscriptionPaymentMethodUpdated: true,
+      invoicePaymentAttempted: true,
+      invoicePaymentSucceeded: false,
+      invoicePaymentError: 'Your card was declined.',
+      invoiceStatus: 'open',
+      subscriptionStatus: 'past_due',
+    });
+    const profile = makeProfile({ retention: null, role: 'pro' });
+    const deps = createDeps({
+      verifiedUser: { uid: 'user-1' } as any,
+      initialUserProfile: profile,
+      loadUserProfile: vi.fn().mockResolvedValue(profile),
+    });
+
+    renderHookHarness(deps);
+
+    await waitFor(() => {
+      expect(deps.loadUserProfile).toHaveBeenCalled();
+    });
+    expect(syncBillingPaymentMethodRecoveryMock).toHaveBeenCalledTimes(1);
+    expect(deps.setBannerNotice).toHaveBeenLastCalledWith(expect.objectContaining({
+      tone: 'info',
+      message: expect.stringContaining('latest invoice retry is still pending'),
+    }));
     expect(window.location.search.includes('billing=')).toBe(false);
   });
 });

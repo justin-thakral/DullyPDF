@@ -2,6 +2,12 @@ import type { BillingCheckoutKind } from '../services/api';
 
 export const PENDING_BILLING_CHECKOUT_STORAGE_KEY = 'dullypdf.pendingBillingCheckout';
 export const PENDING_BILLING_CHECKOUT_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+const PENDING_BILLING_CHECKOUT_KINDS = new Set<BillingCheckoutKind>([
+  'pro_monthly',
+  'pro_yearly',
+  'refill_500',
+  'free_trial',
+]);
 
 export type PendingBillingCheckout = {
   userId: string;
@@ -47,7 +53,7 @@ export function peekPendingBillingCheckout(): PendingBillingCheckout | null {
       ? parsed.startedAt
       : NaN;
     if (!userId || !sessionId || !requestedKind || !Number.isFinite(startedAt) || startedAt <= 0) return null;
-    if (!['pro_monthly', 'pro_yearly', 'refill_500'].includes(requestedKind)) return null;
+    if (!PENDING_BILLING_CHECKOUT_KINDS.has(requestedKind as BillingCheckoutKind)) return null;
     return {
       userId,
       requestedKind: requestedKind as BillingCheckoutKind,

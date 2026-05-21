@@ -144,6 +144,33 @@ describe('Homepage', () => {
     expect(screen.getByText('Premium Feats:')).toBeTruthy();
   });
 
+  it('renders launch and review links including the GitHub repo', () => {
+    render(<Homepage onStartWorkflow={vi.fn()} />);
+
+    const card = screen.getByText('Launches / Review').closest('.launch-review-card');
+    if (!card) {
+      throw new Error('Launch review card not found');
+    }
+
+    const launchCard = within(card as HTMLElement);
+    expect(launchCard.getByText('Free users can help by liking DullyPDF or leaving an honest review.')).toBeTruthy();
+    expect(launchCard.queryByText(/upvoting/i)).toBeNull();
+
+    const expectedLinks = [
+      { name: 'Featured on SaaSCity', href: 'https://saascity.io/live/dullypdf' },
+      { name: 'G2', href: 'https://www.g2.com/products/dullypdf/reviews' },
+      { name: 'Find us on Product Hunt', href: 'https://www.producthunt.com/products/dullypdf' },
+      { name: 'GitHub', href: 'https://github.com/justin-thakral/DullyPDF' },
+    ];
+
+    expectedLinks.forEach(({ name, href }) => {
+      const link = launchCard.getByRole('link', { name });
+      expect(link.getAttribute('href')).toBe(href);
+      expect(link.getAttribute('target')).toBe('_blank');
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    });
+  });
+
   it('navigates mobile walkthrough steps with proper boundaries', async () => {
     const user = userEvent.setup();
     render(<Homepage onStartWorkflow={vi.fn()} />);

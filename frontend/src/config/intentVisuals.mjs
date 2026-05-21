@@ -1,3 +1,63 @@
+const HIGH_INTENT_OPPORTUNITY_VISUALS = [
+  ['fill-pdf-from-google-sheets', 'Google Sheets workflow'],
+  ['airtable-to-pdf-template', 'Airtable workflow'],
+  ['google-forms-to-filled-pdf', 'Google Forms workflow'],
+  ['microsoft-forms-to-filled-pdf', 'Microsoft Forms workflow'],
+  ['typeform-to-pdf-template', 'Typeform workflow'],
+  ['hubspot-to-pdf-template', 'HubSpot workflow'],
+  ['notion-database-to-pdf-form', 'Notion workflow'],
+  ['salesforce-to-pdf-template', 'Salesforce workflow'],
+  ['power-automate-fill-pdf-template', 'Power Automate workflow'],
+  ['zapier-webhook-to-pdf', 'Zapier workflow'],
+  ['make-webhook-to-pdf', 'Make workflow'],
+  ['webhook-json-to-pdf-form', 'Webhook workflow'],
+  ['php-fill-pdf-api', 'PHP API client'],
+  ['java-fill-pdf-api', 'Java API client'],
+  ['csharp-fill-pdf-api', 'C# API client'],
+  ['go-fill-pdf-api', 'Go API client'],
+  ['ruby-fill-pdf-api', 'Ruby API client'],
+  ['turn-pdf-into-online-form', 'Online form workflow'],
+  ['one-web-form-fill-multiple-pdfs', 'Multi-PDF web form'],
+  ['one-json-fill-multiple-pdfs', 'Multi-PDF API'],
+  ['respondent-download-filled-pdf', 'Respondent download'],
+  ['online-form-to-signed-pdf', 'Form to signature'],
+  ['excel-to-fillable-pdf-template', 'Excel workflow'],
+  ['sql-database-to-pdf-form-api', 'SQL-backed workflow'],
+  ['flatten-filled-pdf-form', 'Flat PDF output'],
+  ['filled-pdf-fields-not-showing', 'Viewer troubleshooting'],
+  ['make-pdf-read-only-after-filling', 'Read-only output'],
+  ['pdf-checkbox-values-csv', 'Checkbox mapping'],
+  ['pdf-radio-button-values-json', 'Radio mapping'],
+  ['pdf-date-format-csv-fill', 'Date mapping'],
+  ['duplicate-pdf-field-names', 'Field naming cleanup'],
+  ['pdf-template-versioning', 'Template QA'],
+];
+
+const HIGH_INTENT_OPPORTUNITY_VISUAL_ENTRIES = Object.fromEntries(
+  HIGH_INTENT_OPPORTUNITY_VISUALS.map(([key, eyebrow]) => {
+    const src = `/seo/${key}-overview.webp`;
+    return [
+      key,
+      {
+        hubImage: {
+          src,
+          alt: `DullyPDF public workflow page screenshot for ${eyebrow}.`,
+          objectPosition: 'center top',
+          eyebrow,
+        },
+        articleFigures: [
+          {
+            src,
+            alt: `DullyPDF public workflow page screenshot for ${eyebrow}.`,
+            caption: 'Each new workflow page uses a route-specific DullyPDF UI screenshot captured from the local app, rather than stock art or duplicated generic imagery.',
+            objectPosition: 'center top',
+          },
+        ],
+      },
+    ];
+  }),
+);
+
 export const INTENT_VISUALS = {
   'pdf-to-fillable-form': {
     hubImage: {
@@ -16,6 +76,478 @@ export const INTENT_VISUALS = {
         src: '/demo/mobile-commonforms.webp',
         alt: 'Detected fields overlaid across a patient intake PDF inside DullyPDF.',
         caption: 'The conversion becomes reusable after field detection is reviewed and cleaned up into a dependable template.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-image-qr-barcode-fields': {
+    hubImage: {
+      src: '/seo/advanced-pdf-fields-overview.webp',
+      alt: 'DullyPDF template editor preview with image, QR Code, PDF417, and 1D barcode helper fields on one PDF.',
+      objectPosition: 'center center',
+      eyebrow: 'Advanced fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/advanced-pdf-fields-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing image, QR Code, PDF417, and 1D barcode field regions.',
+        caption: 'Advanced helper fields are useful when a recurring PDF needs scannable or visual output, not only typed AcroForm values.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF inside DullyPDF before helper fields are added.',
+        caption: 'Start by cleaning the ordinary field set, then add image and barcode helpers where the final rendered output belongs.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final document generated from a saved template.',
+        caption: 'The value of these helpers appears after the template can render a repeatable final PDF from data, responses, or API input.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-image-field-to-pdf': {
+    hubImage: {
+      src: '/seo/add-image-field-to-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing image fields for photos, logos, and attachment images on a PDF.',
+      objectPosition: 'center center',
+      eyebrow: 'Image fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/add-image-field-to-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing uploaded photo, reusable image placeholder, and logo image field regions.',
+        caption: 'Image fields are for visual values that belong inside the completed PDF, such as photos, logos, ID images, receipts, or supporting attachments.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF inside DullyPDF before image helper fields are added.',
+        caption: 'Image fields use the same helper-field model as other DullyPDF-only visual outputs: the template keeps placement metadata, then DullyPDF renders the result into the final PDF.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after template values have been applied.',
+        caption: 'The quality check is the final PDF output, not just whether an image looked acceptable while editing the template.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-qr-code-field-to-pdf': {
+    hubImage: {
+      src: '/seo/add-qr-code-field-to-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a QR Code helper field connected to a source field on a PDF.',
+      objectPosition: 'center center',
+      eyebrow: 'QR fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/add-qr-code-field-to-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a record URL source field generating a QR Code field.',
+        caption: 'QR Code fields are strongest when a completed PDF needs to connect a printed record to a verification URL, portal, payment page, or status lookup.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF inside DullyPDF before QR helper fields are added.',
+        caption: 'QR Code is one helper-field option. Use PDF417 for denser structured payloads and 1D barcode for short internal identifiers.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after template values have been applied.',
+        caption: 'The QR setup is only reliable after the generated PDF scans correctly at the final size users will print, email, or archive.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-pdf417-barcode-field-to-pdf': {
+    hubImage: {
+      src: '/seo/add-pdf417-barcode-field-to-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a PDF417 barcode helper field built from multiple labeled source values.',
+      objectPosition: 'center center',
+      eyebrow: 'PDF417 fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/add-pdf417-barcode-field-to-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing multiple source values combined into one PDF417 barcode field.',
+        caption: 'PDF417 helper fields are useful when one scannable block should carry several structured record facts from the template.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF inside DullyPDF before PDF417 helper fields are added.',
+        caption: 'Use PDF417 when the encoded payload is denser than a QR link or a short 1D identifier.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after template values have been applied.',
+        caption: 'The real test is the completed PDF: the PDF417 code needs to scan at the final printed or shared size.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-1d-barcode-field-to-pdf': {
+    hubImage: {
+      src: '/seo/add-1d-barcode-field-to-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a 1D barcode helper field for a short internal record identifier.',
+      objectPosition: 'center center',
+      eyebrow: '1D barcode fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/add-1d-barcode-field-to-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a 1D barcode field generated from a short numeric source value.',
+        caption: '1D barcode helper fields fit short internal identifiers such as asset tags, work orders, member IDs, and tracking references.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF inside DullyPDF before 1D barcode helpers are added.',
+        caption: 'Choose 1D barcode for a compact ID, PDF417 for denser structured data, and QR Code for URLs or mobile-friendly scanning.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after template values have been applied.',
+        caption: 'Scan testing should happen on the final generated PDF, not only inside the editor preview.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-barcode-to-pdf-form': {
+    hubImage: {
+      src: '/seo/add-barcode-to-pdf-form-overview.webp',
+      alt: 'DullyPDF template editor preview showing QR Code, PDF417, and 1D barcode helper fields inside one PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Barcode fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/add-barcode-to-pdf-form-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing barcode helper fields placed into a reusable PDF form.',
+        caption: 'Barcode fields should be placed as part of the reusable template, then generated from the same record data that fills the PDF.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF before scannable helper regions are added.',
+        caption: 'QR Code handles link and lookup intent; PDF417 and 1D barcode cover denser payloads and shorter identifiers.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final barcode-enabled output after template values have been applied.',
+        caption: 'A broad barcode page should still explain which barcode type matches the user workflow.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf417-vs-qr-code-pdf-forms': {
+    hubImage: {
+      src: '/seo/pdf417-vs-qr-code-pdf-forms-overview.webp',
+      alt: 'DullyPDF comparison preview showing PDF417 and QR Code helper fields side by side on a PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Barcode comparison',
+    },
+    articleFigures: [
+      {
+        src: '/seo/pdf417-vs-qr-code-pdf-forms-overview.webp',
+        alt: 'A DullyPDF PDF template comparison showing PDF417 for structured data and QR Code for a verification URL.',
+        caption: 'PDF417 and QR Code can both live in PDFs, but they answer different scanning jobs.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-rename-remap.webp',
+        alt: 'Rename and schema mapping view for a saved PDF template before barcode helper output is generated.',
+        caption: 'PDF417 is better when the scan text should include several labeled values from the document record.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after barcode or QR values have been applied.',
+        caption: 'QR Code is usually stronger for URLs, mobile scanning, and printed-to-digital handoff.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'generate-pdf-barcodes-from-csv': {
+    hubImage: {
+      src: '/seo/generate-pdf-barcodes-from-csv-overview.webp',
+      alt: 'DullyPDF template preview showing mapped row data generating QR Code, PDF417, and 1D barcode output in a PDF.',
+      objectPosition: 'center center',
+      eyebrow: 'Data-driven barcodes',
+    },
+    articleFigures: [
+      {
+        src: '/seo/generate-pdf-barcodes-from-csv-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing CSV or database values feeding barcode helper fields.',
+        caption: 'Barcode output is most useful when it comes from the same mapped row data that fills the rest of the template.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-rename-remap.webp',
+        alt: 'Rename and schema mapping view for a saved PDF template.',
+        caption: 'Data-driven barcode workflows depend on stable field names and schema mapping before batch generation starts.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after template values have been applied.',
+        caption: 'Validate one representative row end to end before using a barcode-enabled template across a batch.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'image-upload-fields-pdf-forms': {
+    hubImage: {
+      src: '/seo/image-upload-fields-pdf-forms-overview.webp',
+      alt: 'DullyPDF template editor preview showing image upload fields for a photo, ID image, and receipt on a PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Image upload fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/image-upload-fields-pdf-forms-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing image upload fields for variable document images.',
+        caption: 'Image upload fields reserve reviewed PDF regions for visual values that change from one completed record to the next.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'Detected fields overlaid on a source PDF before reusable image upload regions are added.',
+        caption: 'The field is reusable template metadata, not just one image pasted onto one PDF.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final output after template values have been applied.',
+        caption: 'The final output should be checked for cropping, aspect ratio, readability, and sensitive visual content.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-code-128-barcode-to-pdf': {
+    hubImage: {
+      src: '/seo/add-code-128-barcode-to-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a Code 128 barcode helper field generated from an internal ID.',
+      objectPosition: 'center center',
+      eyebrow: 'Code 128 fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/add-code-128-barcode-to-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a Code 128 barcode field generated from a short internal source value.',
+        caption: 'Code 128 helper fields fit controlled internal identifiers that should scan from the final PDF.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-rename-remap.webp',
+        alt: 'Rename and schema mapping view for a saved PDF template before Code 128 output is connected to a source value.',
+        caption: 'Code 128 is the focused 1D path; use the broader 1D page when comparing linear barcode options.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'work-order-barcode-pdf': {
+    hubImage: {
+      src: '/seo/work-order-barcode-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a work order PDF with a barcode field tied to the work order ID.',
+      objectPosition: 'center center',
+      eyebrow: 'Work order barcode',
+    },
+    articleFigures: [
+      {
+        src: '/seo/work-order-barcode-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a work order barcode field generated from a work order source value.',
+        caption: 'Work order barcodes are strongest when the scannable ID matches the human-readable work order details on the PDF.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final work order output after mapped values have been applied.',
+        caption: 'Use a linear barcode for scanner-driven IDs and a QR code when the document should open a web record.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'asset-tag-barcode-pdf-form': {
+    hubImage: {
+      src: '/seo/asset-tag-barcode-pdf-form-overview.webp',
+      alt: 'DullyPDF template editor preview showing an asset tag barcode field inside a PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Asset tag barcode',
+    },
+    articleFigures: [
+      {
+        src: '/seo/asset-tag-barcode-pdf-form-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing an asset tag barcode field with mapped location and inspection fields.',
+        caption: 'Asset tag barcode PDFs work best when the barcode, visible ID, and mapped asset data all come from the same source record.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-rename-remap.webp',
+        alt: 'Rename and schema mapping view for a saved PDF template before asset tag barcode output is connected to source data.',
+        caption: 'Short controlled asset IDs are a natural fit for Code 128 style helper output.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'qr-code-verification-pdf': {
+    hubImage: {
+      src: '/seo/qr-code-verification-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a PDF verification QR code linked to a validation URL.',
+      objectPosition: 'center center',
+      eyebrow: 'Verification QR',
+    },
+    articleFigures: [
+      {
+        src: '/seo/qr-code-verification-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a verification QR code field generated from a validation URL.',
+        caption: 'A verification QR code should point to a stable validation page, not try to prove document authenticity by itself.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final verified document output after mapped values have been applied.',
+        caption: 'Verification is one high-value QR use case alongside payment links, record lookup, and portal handoff.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'qr-code-payment-link-pdf': {
+    hubImage: {
+      src: '/seo/qr-code-payment-link-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a payment QR code field on a PDF invoice.',
+      objectPosition: 'center center',
+      eyebrow: 'Payment QR',
+    },
+    articleFigures: [
+      {
+        src: '/seo/qr-code-payment-link-pdf-overview.webp',
+        alt: 'A DullyPDF PDF invoice template preview showing a payment QR code generated from a payment link field.',
+        caption: 'Payment QR codes make sense when the invoice template already contains a stable payment URL or portal link.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-rename-remap.webp',
+        alt: 'Rename and schema mapping view for a saved PDF invoice template before payment-link QR output is generated.',
+        caption: 'Invoice QR output is easiest to trust when it is generated from the same mapped row data as the invoice number and balance.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'qr-code-record-lookup-pdf': {
+    hubImage: {
+      src: '/seo/qr-code-record-lookup-pdf-overview.webp',
+      alt: 'DullyPDF template editor preview showing a record lookup QR code connected to a source record URL.',
+      objectPosition: 'center center',
+      eyebrow: 'Record lookup QR',
+    },
+    articleFigures: [
+      {
+        src: '/seo/qr-code-record-lookup-pdf-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a QR code field generated from a record lookup URL.',
+        caption: 'Record lookup QR codes help printed PDFs connect back to a portal, case, shipment, invoice, or work order record.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final PDF with a lookup URL value applied.',
+        caption: 'Use a source-field QR value when every completed PDF needs its own lookup URL or token.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'scannable-pdf-form': {
+    hubImage: {
+      src: '/seo/scannable-pdf-form-overview.webp',
+      alt: 'DullyPDF template editor preview showing QR Code, PDF417, and 1D barcode helper fields on a scannable PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Scannable forms',
+    },
+    articleFigures: [
+      {
+        src: '/seo/scannable-pdf-form-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing QR Code, PDF417, and 1D barcode helper output in one scannable PDF form.',
+        caption: 'A scannable PDF form should pair machine-readable output with human-readable fallback fields.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final scannable output after template values have been applied.',
+        caption: 'The right scannable field depends on the payload: URL, structured data, or short identifier.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-photo-upload-field': {
+    hubImage: {
+      src: '/seo/pdf-photo-upload-field-overview.webp',
+      alt: 'DullyPDF template editor preview showing a photo upload field in a PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Photo field',
+    },
+    articleFigures: [
+      {
+        src: '/seo/pdf-photo-upload-field-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a photo upload field beside applicant details.',
+        caption: 'Photo upload fields are for variable visual content that belongs in the completed PDF, not permanent decoration.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final document after image field values have been applied.',
+        caption: 'A photo field is one focused image-upload use case in the broader visual-field workflow.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'id-photo-field-pdf-form': {
+    hubImage: {
+      src: '/seo/id-photo-field-pdf-form-overview.webp',
+      alt: 'DullyPDF template editor preview showing an ID photo field inside a PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'ID photo field',
+    },
+    articleFigures: [
+      {
+        src: '/seo/id-photo-field-pdf-form-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing an ID photo field beside ID number and expiration fields.',
+        caption: 'ID photo fields need final-output review because ID images can expose sensitive details and crop differently by source image.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final document after ID image field values have been applied.',
+        caption: 'DullyPDF image helpers render selected PNG/JPEG content into the final PDF page.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'receipt-upload-field-pdf-form': {
+    hubImage: {
+      src: '/seo/receipt-upload-field-pdf-form-overview.webp',
+      alt: 'DullyPDF template editor preview showing a receipt upload field inside an expense PDF form.',
+      objectPosition: 'center center',
+      eyebrow: 'Receipt image field',
+    },
+    articleFigures: [
+      {
+        src: '/seo/receipt-upload-field-pdf-form-overview.webp',
+        alt: 'A DullyPDF PDF template preview showing a receipt upload field beside vendor, amount, and expense-date fields.',
+        caption: 'Receipt image fields are useful when the completed PDF needs the expense proof beside structured reimbursement details.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final reimbursement document after receipt image values have been applied.',
+        caption: 'Receipt uploads should be checked for readability, cropping, and sensitive details before the template is published.',
         objectPosition: 'center top',
       },
     ],
@@ -218,6 +750,843 @@ export const INTENT_VISUALS = {
         src: '/demo/field-appearance-individual-editor.png',
         alt: 'Individual field inspector showing Helvetica Bold, custom size 10, and black color overriding the global appearance.',
         caption: 'Per-field overrides are stored with the field metadata so one widget can write a different /DA font, size, or color from the global default.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-calculation-fields': {
+    hubImage: {
+      src: '/seo/calculation-fields-overview.webp',
+      alt: 'DullyPDF field editor with Number Input and Calculated Output controls visible beside a PDF form.',
+      objectPosition: 'center top',
+      eyebrow: 'Calculation fields',
+    },
+    articleFigures: [
+      {
+        src: '/seo/calculation-fields-overview.webp',
+        alt: 'DullyPDF field editor showing calculation field creation controls for number inputs and calculated outputs.',
+        caption: 'Calculation setup starts in the same editor used for the rest of the template, so numeric inputs and computed outputs stay tied to the PDF field model.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'A filled PDF preview after template values have been applied.',
+        caption: 'DullyPDF precomputes visible values before materializing output, so final records do not depend on the recipient viewer running live JavaScript.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF export with values baked into the page content.',
+        caption: 'Flat output is the safer final-record mode when recipients only need the completed values, not live editable widgets.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-form-calculations-not-working': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-form-calculations-not-working-overview.webp',
+        alt: 'DullyPDF calculation troubleshooting preview showing viewer-sensitive totals replaced by a reviewed computed PDF value.',
+        caption: 'When a calculated PDF behaves differently across viewers, first verify the template fields and formula logic, then choose the right output mode.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output with completed values baked into the page content.',
+        caption: 'Flat PDF output is the safer final-record path because completed values no longer depend on live viewer recalculation.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'add-calculated-field-to-pdf': {
+    articleFigures: [
+      {
+        src: '/seo/add-calculated-field-to-pdf-overview.webp',
+        alt: 'DullyPDF template editor preview showing a calculated output added to an existing PDF form.',
+        caption: 'Add the source number inputs first, then place the calculated output where the derived value belongs on the existing PDF.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after source values and computed outputs have been applied.',
+        caption: 'The practical quality check is the generated PDF, not only whether the formula looked correct while editing.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'fillable-pdf-total-field': {
+    articleFigures: [
+      {
+        src: '/seo/fillable-pdf-total-field-overview.webp',
+        alt: 'DullyPDF total-field preview showing source payment fields connected to a read-only balance due output.',
+        caption: 'A total field should usually be read-only so the final number is derived from the source inputs instead of typed manually.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output showing completed field values rendered into the final document.',
+        caption: 'For customer-facing totals and final records, flat output avoids depending on the recipient viewer to rerun calculations.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'api-fill-calculated-pdf': {
+    hubImage: {
+      src: '/seo/api-fill-calculated-pdf-overview.webp',
+      alt: 'DullyPDF API Fill preview showing JSON source values sent into a calculated PDF endpoint.',
+      eyebrow: 'Server computed PDF',
+      objectPosition: 'center top',
+    },
+    articleFigures: [
+      {
+        src: '/seo/api-fill-calculated-pdf-overview.webp',
+        alt: 'DullyPDF API Fill preview showing JSON source values sent into a calculated PDF endpoint.',
+        caption: 'API callers should send source values while the saved template computes totals and other derived fields server-side.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-rename-remap.webp',
+        alt: 'DullyPDF template editor showing calculation-field controls before publishing an API Fill endpoint.',
+        caption: 'Publish the API only after the template fields, formulas, and output behavior have been reviewed.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-form-javascript-calculation-alternative': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-form-javascript-calculation-alternative-overview.webp',
+        alt: 'DullyPDF safe-formula preview showing structured calculation rules instead of arbitrary Acrobat JavaScript.',
+        caption: 'DullyPDF keeps the editable business rule in a safe formula model instead of asking users to maintain arbitrary PDF JavaScript.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview generated from a reusable template.',
+        caption: 'Generated Acrobat-compatible actions can support editable output, but DullyPDF still computes final values before delivery.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-calculation-order': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-calculation-order-overview.webp',
+        alt: 'DullyPDF calculation order preview showing dependent calculated outputs resolved from source fields.',
+        caption: 'Calculation order is easiest to reason about when formula dependencies are stored as structured template data.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after dependent values have been applied to a template.',
+        caption: 'For final output, DullyPDF computes the dependency chain before writing the PDF.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-invoice-calculation-template': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-invoice-calculation-template-overview.webp',
+        alt: 'DullyPDF invoice calculation template preview showing line items, tax, amount paid, and amount due.',
+        caption: 'Invoice templates are strongest when the PDF layout is fixed and the repeated job is filling known fields plus calculated totals.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/database-schema.png',
+        alt: 'Database schema diagram representing invoice source values sent into a PDF template.',
+        caption: 'Spreadsheet rows or API JSON should provide source invoice values while the template computes subtotal, tax, and balance due.',
+      },
+    ],
+  },
+  'pdf-order-form-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-order-form-calculations-overview.webp',
+        alt: 'DullyPDF order form calculation preview showing quantity, price, shipping, and grand total fields.',
+        caption: 'Order forms should ask for source values and let the template compute read-only totals.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mock-form.webp',
+        alt: 'Respondent-facing web form generated from a saved PDF template.',
+        caption: 'Fill By Link can collect source order details before DullyPDF generates the completed order PDF.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-estimate-quote-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-estimate-quote-calculations-overview.webp',
+        alt: 'DullyPDF estimate and quote calculation preview showing labor, materials, markup, and deposit outputs.',
+        caption: 'Quote templates can keep labor, materials, markup, discounts, deposits, and balances as reusable calculation rules.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output with completed values rendered into the page.',
+        caption: 'A customer-facing quote is usually safest as a flat PDF once the computed totals have been reviewed.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'calculated-pdf-from-csv': {
+    articleFigures: [
+      {
+        src: '/seo/calculated-pdf-from-csv-overview.webp',
+        alt: 'DullyPDF calculated PDF from CSV preview showing row values mapped into source fields and a computed reimbursement output.',
+        caption: 'The spreadsheet should provide source facts; the PDF template should own the calculated outputs.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/csv-calc-screenshot.png',
+        alt: 'Spreadsheet source data used to fill source number inputs before DullyPDF computes calculated PDF outputs.',
+        caption: 'After mapping, DullyPDF computes read-only outputs during materialization instead of trusting spreadsheet totals blindly.',
+      },
+    ],
+  },
+  'fill-by-link-calculated-pdf': {
+    articleFigures: [
+      {
+        src: '/seo/fill-by-link-calculated-pdf-overview.webp',
+        alt: 'DullyPDF Fill By Link calculated PDF preview showing respondent number inputs feeding a computed total.',
+        caption: 'Fill By Link should collect source values from respondents while calculated outputs stay out of the public question list.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mock-form.webp',
+        alt: 'DullyPDF field editor showing calculation fields that are computed after respondent submission.',
+        caption: 'The completed PDF is generated after DullyPDF computes the calculated outputs from submitted source answers.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'flat-vs-editable-calculated-pdf': {
+    articleFigures: [
+      {
+        src: '/seo/flat-vs-editable-calculated-pdf-overview.webp',
+        alt: 'DullyPDF flat versus editable calculated PDF preview comparing live fields with stable rendered values.',
+        caption: 'Editable output is useful when another person must keep working inside live fields, especially in Adobe Acrobat or Reader.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output with final values baked into the page content.',
+        caption: 'Flat output is the safer final-record mode when calculated values should look the same across viewers.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-expense-report-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-expense-report-calculations-overview.webp',
+        alt: 'DullyPDF expense report calculation preview showing receipt amounts, mileage, advances, and reimbursement due.',
+        caption: 'Expense workflows often start from rows of source amounts, mileage, advances, and adjustments.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output used as a stable final reimbursement record.',
+        caption: 'Final reimbursement records should usually be flat so the approved amount does not depend on live PDF viewer behavior.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-timesheet-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-timesheet-calculations-overview.webp',
+        alt: 'DullyPDF timesheet calculation preview showing regular hours, overtime hours, rate, and gross pay.',
+        caption: 'Timesheet calculations should use numeric hours and rates, not unsupported clock-in or clock-out time parsing.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after numeric source values have been applied to a reusable template.',
+        caption: 'The PDF is the output layer after numeric source values and payroll-policy decisions are already known.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-purchase-order-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-purchase-order-calculations-overview.webp',
+        alt: 'DullyPDF purchase order calculation preview showing subtotal, freight, tax, and grand total outputs.',
+        caption: 'Purchase order PDFs work well when source values come from a spreadsheet, procurement export, or API payload.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/database-schema.png',
+        alt: 'Database schema diagram representing procurement source values used to generate purchase order PDFs.',
+        caption: 'Fixed purchase order layouts can compute line totals and grand totals from explicit source fields.',
+      },
+    ],
+  },
+  'pdf-construction-bid-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-construction-bid-calculations-overview.webp',
+        alt: 'DullyPDF construction bid calculation preview showing labor, materials, markup, and bid total fields.',
+        caption: 'Construction bid PDFs are strongest when the layout is stable and source pricing values have already been reviewed.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/pdf-construction-bid-calculations-overview.webp',
+        alt: 'DullyPDF construction bid calculation preview showing labor, materials, markup, and bid total fields.',
+        caption: 'Use read-only calculated outputs for bid totals while keeping pricing assumptions as explicit source fields.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-change-order-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-change-order-calculations-overview.webp',
+        alt: 'DullyPDF change order calculation preview showing original contract, added cost, credit, and revised total.',
+        caption: 'Change orders often become approval or signature records, so the final calculated PDF should be frozen after review.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output with final values rendered into the page.',
+        caption: 'Flat output keeps revised totals stable before customer review or signature.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-mileage-reimbursement-calculation': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-mileage-reimbursement-calculation-overview.webp',
+        alt: 'DullyPDF mileage reimbursement calculation preview showing miles, rate, tolls, and reimbursement total.',
+        caption: 'Mileage reimbursement forms should keep miles, rate, tolls, parking, and adjustments as explicit source fields.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mock-form.webp',
+        alt: 'Respondent-facing web form that can collect source reimbursement values.',
+        caption: 'Employees can submit source values by link, then DullyPDF can generate the calculated reimbursement PDF after review.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-inspection-score-calculations': {
+    articleFigures: [
+      {
+        src: '/seo/pdf-inspection-score-calculations-overview.webp',
+        alt: 'DullyPDF inspection score calculation preview showing checklist scores, critical defects, and final score output.',
+        caption: 'Inspection score PDFs should use explicit numeric score inputs and read-only calculated outputs.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output suitable for stable audit and inspection records.',
+        caption: 'Flat output preserves the reviewed score as page content for audit or recordkeeping use.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'ai-pdf-field-renaming': {
+    hubImage: {
+      src: '/seo/ai-pdf-field-renaming-overview.webp',
+      alt: 'DullyPDF AI field renaming preview showing unclear PDF widget labels converted into stable field names.',
+      objectPosition: 'center top',
+      eyebrow: 'Rename + map',
+    },
+    articleFigures: [
+      {
+        src: '/seo/ai-pdf-field-renaming-overview.webp',
+        alt: 'DullyPDF AI field renaming preview showing unclear PDF widget labels converted into stable field names.',
+        caption: 'AI rename is most useful after field geometry is reviewed and before the template depends on stable names.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/blog/patient-intake-remap-1.png',
+        alt: 'DullyPDF mapping workflow aligning renamed PDF fields to schema headers.',
+        caption: 'Mapping connects the reviewed template to the data headers that will drive Search & Fill, API Fill, and respondent records.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'fill-pdf-from-image': {
+    hubImage: {
+      src: '/seo/fill-pdf-from-image-overview.webp',
+      alt: 'DullyPDF Fill from Images preview showing uploaded source evidence converted into reviewed PDF field suggestions.',
+      objectPosition: 'center top',
+      eyebrow: 'Vision extraction',
+    },
+    articleFigures: [
+      {
+        src: '/seo/fill-pdf-from-image-overview.webp',
+        alt: 'DullyPDF Fill from Images preview showing uploaded source evidence converted into reviewed PDF field suggestions.',
+        caption: 'Image-based fill is strongest when the source evidence is a photo, scan, invoice, ID, or supporting document rather than clean row data.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after extracted values have been applied to a reviewed template.',
+        caption: 'The extracted values still need operator review inside the final PDF output before download, save, signature, or archive.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'save-reusable-pdf-template': {
+    hubImage: {
+      src: '/seo/save-reusable-pdf-template-overview.webp',
+      alt: 'DullyPDF saved template preview showing stored fields, mappings, fill rules, and reusable workflow state.',
+      objectPosition: 'center top',
+      eyebrow: 'Saved templates',
+    },
+    articleFigures: [
+      {
+        src: '/seo/save-reusable-pdf-template-overview.webp',
+        alt: 'DullyPDF saved template preview showing stored fields, mappings, fill rules, and reusable workflow state.',
+        caption: 'A saved template preserves the reviewed field model so the next fill starts from a trusted setup.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-inspector.webp',
+        alt: 'DullyPDF field inspector showing editable metadata for one saved PDF field.',
+        caption: 'Template quality comes from the saved metadata: field type, name, geometry, mapping, appearance, and fill behavior.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-packet-workflow': {
+    hubImage: {
+      src: '/seo/pdf-packet-workflow-overview.webp',
+      alt: 'DullyPDF packet workflow preview showing one selected record driving several saved PDF templates.',
+      objectPosition: 'center top',
+      eyebrow: 'Template groups',
+    },
+    articleFigures: [
+      {
+        src: '/seo/pdf-packet-workflow-overview.webp',
+        alt: 'DullyPDF packet workflow preview showing one selected record driving several saved PDF templates.',
+        caption: 'Groups turn isolated saved templates into repeat packet workflows that can share one record context.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/csv-calc-screenshot.png',
+        alt: 'Spreadsheet row representing one record that can populate several PDFs in a packet.',
+        caption: 'Packet automation is strongest when one reviewed record can drive several related templates consistently.',
+      },
+    ],
+  },
+  'merge-fillable-pdf-forms': {
+    hubImage: {
+      src: '/seo/merge-fillable-pdf-forms-overview.webp',
+      alt: 'DullyPDF merge fillable PDF forms preview showing inserted source pages, review pass status, and output validation.',
+      objectPosition: 'center top',
+      eyebrow: 'Page tools',
+    },
+    articleFigures: [
+      {
+        src: '/seo/merge-fillable-pdf-forms-overview.webp',
+        alt: 'DullyPDF merge fillable PDF forms preview showing inserted source pages, review pass status, and output validation.',
+        caption: 'Before merging fillable forms, decide whether the documents should become one source PDF or remain separate saved templates in a group.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list showing reviewed field metadata after a PDF template is prepared.',
+        caption: 'After page insertion, the field model still needs review because inserted pages do not automatically inherit DullyPDF field definitions.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after a reviewed DullyPDF template has generated output.',
+        caption: 'The final proof is a generated PDF after page changes, field cleanup, and any Fill By Link, API Fill, or signature handoff.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'reorder-fillable-pdf-pages': {
+    hubImage: {
+      src: '/seo/reorder-fillable-pdf-pages-overview.webp',
+      alt: 'DullyPDF Manage Pages dialog showing page 2 moved ahead of page 1 in the 1915 fillable PDF.',
+      objectPosition: 'center top',
+      eyebrow: 'Page order',
+    },
+    articleFigures: [
+      {
+        src: '/seo/reorder-fillable-pdf-pages-overview.webp',
+        alt: 'DullyPDF Manage Pages dialog showing page 2 moved ahead of page 1 in the 1915 fillable PDF.',
+        caption: 'Manage Pages stages the final page order before rewriting the active source PDF, so operators can inspect the sequence before applying changes.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list used to review field metadata after reordering PDF pages.',
+        caption: 'After reordering, review the field model because fields can move with their pages while workflow context still needs validation.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after reordered pages have been reviewed and generated.',
+        caption: 'The final proof is a generated PDF after page order, fields, and output behavior are stable.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'rotate-fillable-pdf-pages': {
+    hubImage: {
+      src: '/demo/mobile-raw-pdf.webp',
+      alt: 'DullyPDF mobile preview of a raw PDF page used to evaluate orientation before staging rotation in Manage Pages.',
+      objectPosition: 'center top',
+      eyebrow: 'Page orientation',
+    },
+    articleFigures: [
+      {
+        src: '/demo/mobile-raw-pdf.webp',
+        alt: 'DullyPDF mobile preview of a raw PDF page used to evaluate orientation before staging rotation in Manage Pages.',
+        caption: 'Orientation is checked against the actual rendered page before staging a 90-degree rotation in Manage Pages.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/reorder-fillable-pdf-pages-overview.webp',
+        alt: 'DullyPDF Manage Pages dialog used to stage page edits, including 90-degree rotation for the active source PDF.',
+        caption: 'Manage Pages stages rotation alongside reorder, delete, and insert-from-PDF operations before the active source PDF is rewritten.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list used to review field metadata after rotating PDF pages.',
+        caption: 'After rotation, review the field model because overlays move with the page while signature anchors and image helpers still need verification.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'split-fillable-pdf-forms': {
+    hubImage: {
+      src: '/seo/split-fillable-pdf-forms-overview.webp',
+      alt: 'DullyPDF Download Specific Pages dialog selecting page 1 from the 1915 fillable PDF for flat output.',
+      objectPosition: 'center top',
+      eyebrow: 'Selected pages',
+    },
+    articleFigures: [
+      {
+        src: '/seo/split-fillable-pdf-forms-overview.webp',
+        alt: 'DullyPDF Download Specific Pages dialog selecting page 1 from the 1915 fillable PDF for flat output.',
+        caption: 'Download specific pages is the one-off split path: choose the page subset, choose flat or editable output, and keep the active template unchanged.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list showing reviewed field metadata before selected-page export.',
+        caption: 'A split output is safer after the underlying template has reviewed field names, types, mappings, and output behavior.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after selected-page output has been reviewed.',
+        caption: 'Use Manage Pages when the source PDF itself should be trimmed; use selected-page download when only the output should be split.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'delete-pages-from-fillable-pdf': {
+    hubImage: {
+      src: '/seo/delete-pages-from-fillable-pdf-overview.webp',
+      alt: 'DullyPDF Manage Pages dialog showing page 2 removed from the 1915 fillable PDF.',
+      objectPosition: 'center top',
+      eyebrow: 'Page deletion',
+    },
+    articleFigures: [
+      {
+        src: '/seo/delete-pages-from-fillable-pdf-overview.webp',
+        alt: 'DullyPDF Manage Pages dialog showing page 2 removed from the 1915 fillable PDF.',
+        caption: 'Manage Pages stages deletion before rewriting the source PDF, so the operator can review the final page count before applying changes.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list used to review remaining fields after deleting source PDF pages.',
+        caption: 'After deleting pages, review the remaining field model so stale fields, broken groups, or missing dependencies do not reach saved workflows.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after page cleanup and field review.',
+        caption: 'Use selected-page download when only the output should omit pages; use Manage Pages when the source template should actually lose pages.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'compress-fillable-pdf-forms': {
+    hubImage: {
+      src: '/seo/compress-fillable-pdf-forms-overview.webp',
+      alt: 'DullyPDF Compress / Optimize PDF dialog showing lossless cleanup for a fillable PDF.',
+      objectPosition: 'center top',
+      eyebrow: 'Lossless cleanup',
+    },
+    articleFigures: [
+      {
+        src: '/seo/compress-fillable-pdf-forms-overview.webp',
+        alt: 'DullyPDF Compress / Optimize PDF dialog showing lossless cleanup for a fillable PDF.',
+        caption: 'Compression in DullyPDF is a conservative cleanup pass: rewrite object streams, deflate streams, keep pages and field geometry stable, and avoid larger replacements.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview after page cleanup and final optimization.',
+        caption: 'If file size comes from unnecessary pages, remove or split the structure first, then optimize the reviewed template.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list used to review field metadata after PDF optimization.',
+        caption: 'After optimization, field QA still matters because the useful result is a smaller stable template, not compression alone.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'fill-pdf-link-signature': {
+    hubImage: {
+      src: '/seo/fill-pdf-link-signature-overview.webp',
+      alt: 'DullyPDF Fill By Link to signature preview showing respondent answers materialized into a PDF before signing.',
+      objectPosition: 'center top',
+      eyebrow: 'Link + sign',
+    },
+    articleFigures: [
+      {
+        src: '/seo/fill-pdf-link-signature-overview.webp',
+        alt: 'DullyPDF Fill By Link to signature preview showing respondent answers materialized into a PDF before signing.',
+        caption: 'The web form collects structured answers first so the final PDF can be materialized before signature.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/Signature.webp',
+        alt: 'DullyPDF signing workflow after a filled PDF record is prepared.',
+        caption: 'Signature capture belongs in the signing ceremony after the filled record is fixed, not in a generic respondent question.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'pdf-signature-audit-trail': {
+    hubImage: {
+      src: '/seo/pdf-signature-audit-trail-overview.webp',
+      alt: 'DullyPDF signature audit trail preview showing source hash, signer identity, ceremony time, and verification URL evidence.',
+      objectPosition: 'center top',
+      eyebrow: 'Audit evidence',
+    },
+    articleFigures: [
+      {
+        src: '/seo/pdf-signature-audit-trail-overview.webp',
+        alt: 'DullyPDF signature audit trail preview showing source hash, signer identity, ceremony time, and verification URL evidence.',
+        caption: 'A useful audit trail starts when the source PDF is frozen before the signing invite is sent.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/pdf-signature-audit-trail-overview.webp',
+        alt: 'DullyPDF signature audit trail preview showing retained ceremony, signer, and artifact evidence.',
+        caption: 'Completed signing workflows should retain evidence for the owner while keeping the public receipt focused and readable.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'flat-vs-editable-pdf': {
+    hubImage: {
+      src: '/seo/flat-vs-editable-pdf-overview.webp',
+      alt: 'DullyPDF flat versus editable PDF preview comparing live AcroForm fields with stable rendered output.',
+      objectPosition: 'center top',
+      eyebrow: 'Output mode',
+    },
+    articleFigures: [
+      {
+        src: '/seo/flat-vs-editable-pdf-overview.webp',
+        alt: 'DullyPDF flat versus editable PDF preview comparing live AcroForm fields with stable rendered output.',
+        caption: 'Editable PDFs are useful when another person must keep working inside live fields in a compatible viewer.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/field-colors-flat-export.png',
+        alt: 'Flat PDF output with field values rendered into page content.',
+        caption: 'Flat PDFs are usually safer for final records because the values no longer depend on live field rendering.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'search-fill-pdf-review': {
+    hubImage: {
+      src: '/seo/search-fill-pdf-review-overview.webp',
+      alt: 'DullyPDF Search and Fill review preview showing a selected row mapped into a PDF with pass/fail output checks.',
+      objectPosition: 'center top',
+      eyebrow: 'Review loop',
+    },
+    articleFigures: [
+      {
+        src: '/seo/search-fill-pdf-review-overview.webp',
+        alt: 'DullyPDF Search and Fill review preview showing a selected row mapped into a PDF with pass/fail output checks.',
+        caption: 'Search & Fill should start from a selected record, not a blind export of every row.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/csv-calc-screenshot.png',
+        alt: 'Spreadsheet row source data prepared for Search and Fill PDF review.',
+        caption: 'The review step catches mapping and output issues before the document is downloaded, signed, or reused.',
+      },
+    ],
+  },
+  'openai-pdf-data-privacy': {
+    hubImage: {
+      src: '/seo/openai-pdf-data-privacy-overview.webp',
+      alt: 'DullyPDF OpenAI data boundary preview showing which PDF workflow context is sent for rename, images, rows, and API fill.',
+      objectPosition: 'center top',
+      eyebrow: 'AI boundaries',
+    },
+    articleFigures: [
+      {
+        src: '/seo/openai-pdf-data-privacy-overview.webp',
+        alt: 'DullyPDF OpenAI data boundary preview showing which PDF workflow context is sent for rename, images, rows, and API fill.',
+        caption: 'Rename and mapping use PDF and schema context, while Search & Fill row values stay out of those OpenAI requests.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/Extract_Images.webp',
+        alt: 'DullyPDF Fill from Images workflow where uploaded source documents are intentionally used as AI input.',
+        caption: 'Fill from Images has a different data path because the uploaded source image or document is what the model needs to read.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'mobile-fillable-pdf-form': {
+    hubImage: {
+      src: '/demo/mobile-rename-remap.webp',
+      alt: 'DullyPDF mobile-friendly rename and remap UI shown on a phone-sized viewport.',
+      objectPosition: 'center top',
+      eyebrow: 'Mobile UX',
+    },
+    articleFigures: [
+      {
+        src: '/demo/mobile-commonforms.webp',
+        alt: 'DullyPDF detection step on a mobile-sized viewport.',
+        caption: 'The workspace remains usable on phone-sized viewports for owners reviewing fields and templates between desktop sessions.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-field-list.webp',
+        alt: 'DullyPDF field list on a mobile-sized viewport.',
+        caption: 'Respondents complete a hosted form on their phone instead of editing a downloaded PDF in a mobile viewer.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview rendered after a mobile-collected response.',
+        caption: 'The filled PDF is generated on the owner side after collection, with flat output recommended for mobile delivery.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'stored-fill-by-link-responses': {
+    hubImage: {
+      src: '/demo/mock-form.webp',
+      alt: 'DullyPDF mock respondent form preview representing a submission record that can be reused as a fill source.',
+      objectPosition: 'center top',
+      eyebrow: 'Stored responses',
+    },
+    articleFigures: [
+      {
+        src: '/demo/mock-form.webp',
+        alt: 'DullyPDF mock respondent form preview representing a submission record that can be reused as a fill source.',
+        caption: 'Each respondent submission stays attached to the saved template or open group instead of disappearing into a one-shot download.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/link-generated.webp',
+        alt: 'DullyPDF Fill By Link generated state used to publish a hosted respondent form.',
+        caption: 'A published link collects structured responses that the owner can later treat as fill source records.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'group-api-fill-zip-packet': {
+    hubImage: {
+      src: '/demo/workflow-library/checkbox-card.webp',
+      alt: 'DullyPDF workflow library preview representing the per-template structure that a group ZIP endpoint returns.',
+      objectPosition: 'center top',
+      eyebrow: 'Group API',
+    },
+    articleFigures: [
+      {
+        src: '/demo/workflow-library/checkbox-card.webp',
+        alt: 'DullyPDF workflow library preview representing the per-template structure that a group ZIP endpoint returns.',
+        caption: 'The group ZIP endpoint keeps each member template as its own PDF inside one response archive.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/create-group.webp',
+        alt: 'DullyPDF Create Group UI used to assemble saved templates into a reusable packet workflow.',
+        caption: 'The packet endpoint reflects the assembled group: one JSON record fills every member template into per-template PDFs.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'batch-rename-map-pdf-group': {
+    hubImage: {
+      src: '/demo/workflow-library/commonforms-card.webp',
+      alt: 'DullyPDF detection preview representing the per-template field set that a group rename and map pass cleans up.',
+      objectPosition: 'center top',
+      eyebrow: 'Group rename + map',
+    },
+    articleFigures: [
+      {
+        src: '/demo/workflow-library/commonforms-card.webp',
+        alt: 'DullyPDF detection preview representing the per-template field set that a group rename and map pass cleans up.',
+        caption: 'Rename + Map Group runs across every saved template in the active group so the packet shares consistent field names.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/ai-pdf-field-renaming-overview.webp',
+        alt: 'DullyPDF AI rename and schema mapping dialog for a single PDF template.',
+        caption: 'Single-template rename and group-level rename share the same review loop; the group action just spans every member.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'verify-signed-pdf': {
+    hubImage: {
+      src: '/demo/workflow-library/field-list-card.webp',
+      alt: 'DullyPDF field list preview representing the retained record metadata that the public verification page reflects.',
+      objectPosition: 'center top',
+      eyebrow: 'Public verification',
+    },
+    articleFigures: [
+      {
+        src: '/demo/workflow-library/field-list-card.webp',
+        alt: 'DullyPDF field list preview representing the retained record metadata that the public verification page reflects.',
+        caption: 'The public verification page reflects retained ceremony metadata without depending on the recipient PDF viewer trust chain.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/seo/pdf-signature-audit-trail-overview.webp',
+        alt: 'DullyPDF signature audit trail preview showing retained ceremony, signer, and artifact evidence.',
+        caption: 'The validation page is the public surface of the broader audit evidence model retained on the owner side.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'no-code-pdf-automation': {
+    hubImage: {
+      src: '/seo/no-code-pdf-automation-overview.webp',
+      alt: 'DullyPDF no-code PDF automation preview showing detected fields, saved template state, fill methods, and final output.',
+      objectPosition: 'center top',
+      eyebrow: 'No-code workflow',
+    },
+    articleFigures: [
+      {
+        src: '/seo/no-code-pdf-automation-overview.webp',
+        alt: 'DullyPDF no-code PDF automation preview showing detected fields, saved template state, fill methods, and final output.',
+        caption: 'No-code PDF automation still begins with a reviewed field model, not blind document output.',
+        objectPosition: 'center top',
+      },
+      {
+        src: '/demo/mock-form.webp',
+        alt: 'Respondent-facing DullyPDF web form generated from a saved PDF template.',
+        caption: 'Once the template is trusted, it can support respondent collection, row-based fill, API generation, groups, or signing.',
         objectPosition: 'center top',
       },
     ],
@@ -444,15 +1813,17 @@ export const INTENT_VISUALS = {
   },
   'finance-loan-pdf-automation': {
     hubImage: {
-      src: '/seo/online-loan-application.jpg',
-      alt: 'Loan application and borrower paperwork representing finance PDFs that need repeat data entry.',
+      src: '/demo/mobile-filled.webp',
+      alt: 'DullyPDF filled PDF preview representing borrower packet output after structured data is applied.',
       eyebrow: 'Borrower mapping',
+      objectPosition: 'center top',
     },
     articleFigures: [
       {
-        src: '/seo/online-loan-application.jpg',
-        alt: 'Borrower application workflow that mirrors the data finance teams later need in fixed PDFs.',
+        src: '/demo/mobile-filled.webp',
+        alt: 'DullyPDF filled PDF preview representing borrower packet output after structured data is applied.',
         caption: 'Loan and finance workflows get more dependable after borrower and disclosure fields are normalized into one stable schema instead of being reinterpreted on each packet.',
+        objectPosition: 'center top',
       },
       {
         src: '/demo/mobile-filled.webp',
@@ -492,15 +1863,17 @@ export const INTENT_VISUALS = {
   },
   'legal-pdf-workflow-automation': {
     hubImage: {
-      src: '/seo/legal-contract-signature.jpg',
-      alt: 'Signed legal contract with a pen representing a reviewed final record.',
+      src: '/seo/pdf-signature-audit-trail-overview.webp',
+      alt: 'DullyPDF signature audit trail preview representing controlled legal PDF record evidence.',
       eyebrow: 'Record control',
+      objectPosition: 'center top',
     },
     articleFigures: [
       {
-        src: '/seo/legal-contract-signature.jpg',
-        alt: 'Legal contract and signature block representing the final document that must stay controlled.',
+        src: '/seo/pdf-signature-audit-trail-overview.webp',
+        alt: 'DullyPDF signature audit trail preview representing controlled legal PDF record evidence.',
         caption: 'Legal template work becomes safer when the document is normalized before it is routed into review, signature, or archive under deadline pressure.',
+        objectPosition: 'center top',
       },
       {
         src: '/demo/Signature.webp',
@@ -532,15 +1905,17 @@ export const INTENT_VISUALS = {
   },
   'nonprofit-pdf-form-automation': {
     hubImage: {
-      src: '/seo/volunteer-application-form.jpg',
-      alt: 'Volunteer or program application form used as a recurring nonprofit intake document.',
+      src: '/demo/create-group.webp',
+      alt: 'DullyPDF saved-template group manager representing recurring nonprofit intake packet templates.',
       eyebrow: 'Program intake',
+      objectPosition: 'center top',
     },
     articleFigures: [
       {
-        src: '/seo/volunteer-application-form.jpg',
-        alt: 'Volunteer application form representing nonprofit intake information collected once and reused later.',
+        src: '/demo/create-group.webp',
+        alt: 'DullyPDF saved-template group manager representing recurring nonprofit intake packet templates.',
         caption: 'Nonprofit teams often save time when volunteer or client information is collected once and then reused across recurring packet documents.',
+        objectPosition: 'center top',
       },
       {
         src: '/demo/create-group.webp',
@@ -552,15 +1927,17 @@ export const INTENT_VISUALS = {
   },
   'logistics-pdf-automation': {
     hubImage: {
-      src: '/seo/bill-of-lading.jpg',
-      alt: 'Bill of lading document representing shipment paperwork that needs repeat filling.',
+      src: '/seo/qr-code-record-lookup-pdf-overview.webp',
+      alt: 'DullyPDF logistics-style record lookup preview with a QR code tied to shipment data.',
       eyebrow: 'Shipment output',
+      objectPosition: 'center top',
     },
     articleFigures: [
       {
-        src: '/seo/bill-of-lading.jpg',
-        alt: 'Shipment document and bill of lading used as a logistics workflow example.',
+        src: '/seo/qr-code-record-lookup-pdf-overview.webp',
+        alt: 'DullyPDF logistics-style record lookup preview with a QR code tied to shipment data.',
         caption: 'Dispatch and back-office teams gain leverage when recurring shipment and receipt documents can be filled from route data instead of rebuilt by hand.',
+        objectPosition: 'center top',
       },
       {
         src: '/demo/Signature.webp',
@@ -572,15 +1949,17 @@ export const INTENT_VISUALS = {
   },
   'construction-pdf-automation': {
     hubImage: {
-      src: '/seo/paperwork-desk.jpg',
-      alt: 'Construction staff reviewing and signing recurring site paperwork at a job location.',
+      src: '/seo/pdf-change-order-calculations-overview.webp',
+      alt: 'DullyPDF construction change order calculation preview showing revised total output.',
       eyebrow: 'Project packets',
+      objectPosition: 'center top',
     },
     articleFigures: [
       {
-        src: '/seo/paperwork-desk.jpg',
-        alt: 'Construction workers filling out and reviewing recurring project paperwork.',
+        src: '/seo/pdf-change-order-calculations-overview.webp',
+        alt: 'DullyPDF construction change order calculation preview showing revised total output.',
         caption: 'Construction workflows become easier to maintain when recurring permit, inspection, and change-order documents are treated as reusable templates instead of ad hoc project files.',
+        objectPosition: 'center top',
       },
       {
         src: '/demo/create-group.webp',
@@ -630,6 +2009,114 @@ export const INTENT_VISUALS = {
         src: '/demo/Extract_Images.webp',
         alt: 'Fill from Images workflow preview in DullyPDF.',
         caption: 'DullyPDF bridges that gap by reading the invoice semantically and suggesting values for the mapped destination fields before the operator commits them.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'manufacturing-pdf-automation': {
+    hubImage: {
+      src: '/seo/manufacturing-pdf-automation-overview.webp',
+      alt: 'DullyPDF manufacturing PDF automation preview with lot barcode and yield calculation fields.',
+      objectPosition: 'center center',
+      eyebrow: 'Manufacturing templates',
+    },
+    articleFigures: [
+      {
+        src: '/seo/manufacturing-pdf-automation-overview.webp',
+        alt: 'A manufacturing PDF template preview showing lot barcode, inspection fields, defect count, and yield calculation output.',
+        caption: 'Manufacturing templates often need custom fields, lot or batch barcodes, and calculated quality metrics in one reviewed PDF layout.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final manufacturing PDF output after mapped quality values have been applied.',
+        caption: 'Inspection and quality forms become easier to reuse when score, pass rate, and yield outputs are calculated from source inputs.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'field-service-pdf-automation': {
+    hubImage: {
+      src: '/seo/field-service-pdf-automation-overview.webp',
+      alt: 'DullyPDF field service PDF automation preview with service ticket barcode and total due calculation.',
+      objectPosition: 'center center',
+      eyebrow: 'Field service templates',
+    },
+    articleFigures: [
+      {
+        src: '/seo/field-service-pdf-automation-overview.webp',
+        alt: 'A field service work order PDF preview showing asset barcode, labor and parts fields, and total due calculation.',
+        caption: 'Field service forms are strong candidates for barcode lookup, technician notes, labor and parts calculations, and final customer signoff.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final field service output after mapped work order values have been applied.',
+        caption: 'A work order barcode or QR code gives the field team a fast route back to the asset, ticket, or service record.',
+        objectPosition: 'center top',
+      },
+    ],
+  },
+  'warehouse-inventory-pdf-automation': {
+    hubImage: {
+      src: '/seo/warehouse-inventory-pdf-automation-overview.webp',
+      alt: 'DullyPDF warehouse inventory PDF automation preview with SKU barcode and variance calculation.',
+      objectPosition: 'center center',
+      eyebrow: 'Warehouse templates',
+    },
+    articleFigures: [
+      {
+        src: '/seo/warehouse-inventory-pdf-automation-overview.webp',
+        alt: 'A warehouse inventory PDF template preview showing SKU barcode, count fields, and variance calculation.',
+        caption: 'Warehouse PDFs often combine SKU or bin barcodes with count sheets, receiving forms, variance calculations, and supervisor review.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/seo/csv-calc-screenshot.png',
+        alt: 'Spreadsheet source rows representing warehouse inventory values before barcode and quantity outputs are generated.',
+        caption: 'Inventory templates are strongest when barcode fields and quantities come from the same mapped row data.',
+      },
+    ],
+  },
+  'procurement-pdf-automation': {
+    hubImage: {
+      src: '/seo/procurement-pdf-automation-overview.webp',
+      alt: 'DullyPDF procurement PDF automation preview with purchase order barcode and PO total calculation.',
+      objectPosition: 'center center',
+      eyebrow: 'Procurement templates',
+    },
+    articleFigures: [
+      {
+        src: '/seo/procurement-pdf-automation-overview.webp',
+        alt: 'A procurement PDF template preview showing PO barcode, vendor fields, approval fields, and purchase order total calculation.',
+        caption: 'Procurement PDFs benefit from reusable vendor fields, PO barcodes, approval metadata, and total calculations tied to the same record.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/seo/database-schema.png',
+        alt: 'Database schema diagram representing procurement source values used to generate purchase order PDFs.',
+        caption: 'Purchase orders and quote requests usually need calculations before the final PDF is ready for approval or vendor delivery.',
+      },
+    ],
+  },
+  'utilities-energy-pdf-automation': {
+    hubImage: {
+      src: '/seo/utilities-energy-pdf-automation-overview.webp',
+      alt: 'DullyPDF utilities and energy PDF automation preview with meter lookup QR code and usage calculation.',
+      objectPosition: 'center center',
+      eyebrow: 'Utilities templates',
+    },
+    articleFigures: [
+      {
+        src: '/seo/utilities-energy-pdf-automation-overview.webp',
+        alt: 'A utilities and energy PDF template preview showing meter QR code, inspection fields, and usage delta calculation.',
+        caption: 'Utilities and energy teams often need fixed service forms with asset lookup codes, meter readings, inspection scores, and calculated usage deltas.',
+        objectPosition: 'center center',
+      },
+      {
+        src: '/demo/mobile-filled.webp',
+        alt: 'Filled PDF preview representing a final utilities or energy service PDF after mapped asset values have been applied.',
+        caption: 'QR record lookup works well for meter, site, and asset records that need to connect the PDF back to the operational system.',
         objectPosition: 'center top',
       },
     ],
@@ -714,4 +2201,5 @@ export const INTENT_VISUALS = {
       },
     ],
   },
+  ...HIGH_INTENT_OPPORTUNITY_VISUAL_ENTRIES,
 };

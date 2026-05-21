@@ -111,6 +111,17 @@
   line-height: 1.72;
 }
 
+.legal-section a {
+  color: var(--blue-700);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.legal-section a:hover {
+  color: var(--blue-900);
+}
+
 .legal-section ul {
   margin: 0.55rem 0 0.25rem 1.25rem;
   padding: 0;

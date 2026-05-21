@@ -7,14 +7,15 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 1. Load a PDF (detection upload, fillable upload, saved form, or a saved-form group that opens the alphabetically first template first unless a direct group route requests a specific template).
 2. Detect fields with CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)) via `/detect-fields`, or import embedded AcroForm widgets.
 3. Optionally run OpenAI rename and schema mapping.
-4. Edit fields in the overlay, Browser, and Field Editor panels, including optional text-safe PDF Base 14 font, point-size, font-color choices, and safe calculation setup for numeric text fields.
-5. Save the template, optionally add it to a named saved-form group, then either publish a native Fill By Link for the active template or publish one merged Fill By Link for the open group before loading local CSV/Excel/JSON rows.
-6. Reopen templates from the upload screen through the saved-form browser, which supports group filtering, an `Open groups` toggle, inline group deletion, and a stable selected-group label while the group list refreshes.
-7. When a group is open, switch between member templates from the header and run batch Rename + Map across every saved form in that group.
-8. Run Search & Fill from CSV/Excel/JSON rows or stored Fill By Link respondent records.
-9. Download either a `Flat PDF` (field values baked into page content) or an `Editable PDF` (widgets preserved for later editing), or save the current state to the signed-in profile. Selected text-safe Base 14 fonts, font sizes, font colors, and DullyPDF-managed calculation values are carried into both download modes.
-10. Persist and replay deterministic fill rules (`fillRules`) including text split/join transforms.
-11. Persist a versioned saved-form editor snapshot so reopened templates and group switches can hydrate fields/page sizes/appearance without re-extracting them on every open.
+4. Optionally use `PDF Tools` to manage pages or run lossless PDF optimization before final field cleanup.
+5. Edit fields in the overlay, Browser, and Field Editor panels, including optional text-safe PDF Base 14 font, point-size, font-color choices, and safe calculation setup for numeric text fields.
+6. Save the template, optionally add it to a named saved-form group, then either publish a native Fill By Link for the active template or publish one merged Fill By Link for the open group before loading local CSV/Excel/JSON rows.
+7. Reopen templates from the upload screen through the saved-form browser, which supports group filtering, an `Open groups` toggle, inline group deletion, and a stable selected-group label while the group list refreshes.
+8. When a group is open, switch between member templates from the header and run batch Rename + Map across every saved form in that group.
+9. Run Search & Fill from CSV/Excel/JSON rows or stored Fill By Link respondent records.
+10. Download either a `Flat PDF` (field values baked into page content), an `Editable PDF` (widgets preserved for later editing), or a selected-page subset in either mode, or save the current state to the signed-in profile. Signed-in workspace downloads go through the generated PDF download quota endpoint; saving templates and other internal materialization paths do not. Selected text-safe Base 14 fonts, font sizes, font colors, and DullyPDF-managed calculation values are carried into download modes.
+11. Persist and replay deterministic fill rules (`fillRules`) including text split/join transforms.
+12. Persist a versioned saved-form editor snapshot so reopened templates and group switches can hydrate fields/page sizes/appearance without re-extracting them on every open.
 
 ## Public usage docs
 
@@ -24,6 +25,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - The docs include dedicated pages for detection, rename/mapping, editor workflow, Search & Fill, Fill from Images and Documents, Fill By Link, signature workflow, API Fill, Create Group workflows, save/download/Profile behavior, and troubleshooting.
 - Workspace action menus and dialogs now expose direct `Usage Docs` shortcuts that open the matching `/usage-docs/*` route in a new browser tab/window so operators can keep the active editor state intact while reading instructions.
 - Route handling lives in `frontend/src/main.tsx` alongside legal page route handling.
+- Public legal routes include `/privacy`, `/terms`, and `/refund-policy`; the refund route is intended to satisfy payment-provider refund/return-policy URL requirements for the digital SaaS subscription and refill-credit model.
 - Unknown public URLs should resolve to a noindex 404 experience instead of falling back to the app homepage.
 
 ## Workspace routing
@@ -58,6 +60,47 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
   - `/fillable-form-field-name`
   - `/fillable-pdf-fonts-colors`
   - `/acroform-field-appearance`
+  - `/pdf-calculation-fields`
+  - `/pdf-form-calculations-not-working`
+  - `/add-calculated-field-to-pdf`
+  - `/fillable-pdf-total-field`
+  - `/api-fill-calculated-pdf`
+  - `/pdf-form-javascript-calculation-alternative`
+  - `/pdf-calculation-order`
+  - `/pdf-invoice-calculation-template`
+  - `/pdf-order-form-calculations`
+  - `/pdf-estimate-quote-calculations`
+  - `/calculated-pdf-from-csv`
+  - `/fill-by-link-calculated-pdf`
+  - `/flat-vs-editable-calculated-pdf`
+  - `/pdf-expense-report-calculations`
+  - `/pdf-timesheet-calculations`
+  - `/pdf-purchase-order-calculations`
+  - `/pdf-construction-bid-calculations`
+  - `/pdf-change-order-calculations`
+  - `/pdf-mileage-reimbursement-calculation`
+  - `/pdf-inspection-score-calculations`
+  - `/ai-pdf-field-renaming`
+  - `/fill-pdf-from-image`
+  - `/save-reusable-pdf-template`
+  - `/pdf-packet-workflow`
+  - `/merge-fillable-pdf-forms`
+  - `/reorder-fillable-pdf-pages`
+  - `/rotate-fillable-pdf-pages`
+  - `/split-fillable-pdf-forms`
+  - `/delete-pages-from-fillable-pdf`
+  - `/compress-fillable-pdf-forms`
+  - `/fill-pdf-link-signature`
+  - `/pdf-signature-audit-trail`
+  - `/flat-vs-editable-pdf`
+  - `/search-fill-pdf-review`
+  - `/openai-pdf-data-privacy`
+  - `/mobile-fillable-pdf-form`
+  - `/stored-fill-by-link-responses`
+  - `/group-api-fill-zip-packet`
+  - `/batch-rename-map-pdf-group`
+  - `/verify-signed-pdf`
+  - `/no-code-pdf-automation`
 - Industry-specific SEO routes are available for:
   - `/healthcare-pdf-automation`
   - `/acord-form-automation`
@@ -73,11 +116,16 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Each route has unique canonical metadata and FAQ structured data.
 - The workflow route `/pdf-form-catalog` now explains what the catalog contains, what each entry exposes, and how the blank forms connect to the main DullyPDF workflow.
 - Selected catalog-backed industry pages also render curated real-form thumbnails and ten-document examples pulled from the DullyPDF catalog, with editor deep links (`/upload?catalogSlug=...`) plus Search & Fill, API Fill, Fill By Link, and signature guidance.
+- The catalog now includes first-party operational template sections for long-tail form searches such as automotive service, beauty/wellness, business operations, construction/trades, education/childcare, events/waivers, field service, finance/accounting, home services, HR/onboarding, insurance claims, legal/admin, logistics/transport, manufacturing quality, nonprofit/community, pet services, real estate/property, and safety/compliance workflows. These are DullyPDF-authored blank PDFs, separate from mirrored public-domain government forms and external-link-only restricted sources.
 - In local dev those catalog PDFs and thumbnails are served from the repo-level `form_catalog/` directory through Vite at `/form-catalog-assets/*`. In prod they resolve through `VITE_FORM_CATALOG_ASSET_BASE`, which is expected to point at a public mirrored GCS bucket.
 - Catalog cards now use pre-generated first-page `.webp` thumbnails instead of fetching PDFs in-browser just to render previews. Signed-in detail pages still fetch the real PDF when the user opens a specific form preview or sends it into the editor.
 - Selected workflow routes and docs pages can also surface embedded YouTube walkthroughs when a focused demo adds search-intent context without bloating the homepage.
 - Authority-style intent routes can also render inline legal footnotes and explicit source sections when the page needs statute or policy references instead of summary-only marketing copy.
 - Field-appearance intent routes now cover fillable PDF fonts, font sizes, colors, saved template persistence, and the AcroForm `/DA`/`/DR`/`/AP`/`/V` mechanics behind editable exports.
+- The `/pdf-calculation-fields` route covers number inputs, calculated outputs, safe formulas, server-side precomputation, editable Adobe compatibility, and flat final-record output.
+- Supporting calculation routes cover troubleshooting viewer-specific calculation failures, adding calculated fields, total fields, API-computed calculated PDFs, safer formula alternatives to arbitrary PDF JavaScript, calculation order, CSV-filled calculations, Fill By Link calculations, flat-vs-editable output choice, expense reports, timesheets, purchase orders, construction bids, change orders, mileage reimbursement, inspection scores, invoice totals, order-form totals, and estimate/quote totals.
+- DullyPDF highlight routes now cover broader product areas that were underrepresented in search: AI field renaming/schema mapping, Fill from Images, saved reusable templates, PDF packet groups, page insertion and merge QA, staged page reordering, selected-page split output, page deletion cleanup, lossless PDF optimization, Fill By Link plus post-submit signing, signature audit trails, general flat-vs-editable output choice, Search & Fill QA, OpenAI data boundaries, and no-code automation for existing PDFs.
+- High-intent opportunity routes now cover source-system, automation, developer-language, packet, and troubleshooting searches such as Google Sheets to PDF, Airtable to PDF, Google/Microsoft Forms to PDF, Power Automate, Zapier, Make, webhook JSON, PHP/Java/C#/Go/Ruby API clients, one web form or JSON payload filling multiple PDFs, respondent PDF downloads, flattening/read-only output, blank field troubleshooting, checkbox/radio/date mapping, duplicate field names, and reusable template versioning.
 - The `/fill-pdf-by-link` route now positions Fill By Link as the recommended external-recipient workflow when teams want mobile-friendly data collection plus flat, viewer-friendly completed PDFs instead of asking respondents to edit the PDF directly.
 - The blog includes a customizable fillable form template guide that reuses the `/fillable-pdf-fonts-colors` workflow images to explain automatic field detection, global field appearance, individual overrides, editable outputs, and flat outputs.
 - Two hub routes aggregate intent pages for cleaner global navigation:
@@ -123,7 +171,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - When post-submit signing is enabled for a template link, the owner must choose which visible question supplies the signer's full name and which visible email question receives the signing invite. Those mapped signer-identity questions are automatically treated as required while signing stays enabled. The builder now also shows a compact readiness summary for those mappings, the selected category, the e-sign attestation, company-binding mode, consumer disclosures when required, whether the template still contains usable signature anchors before publish, and a small warning that existing saved PDF field values can still carry into the frozen signer copy when the web form does not overwrite them. The backend creates the signing request from the stored response snapshot, materializes the immutable filled PDF server-side, then sends the signing invite to the mapped signer email instead of returning a live signer link to the current browser. Once the signer opens that emailed `/sign/:token` route, the first step is email verification for that session, just like the owner-created email-signing flow.
 - If that email delivery fails transiently, the respondent success screen now exposes a resend action that reuses the stored Fill By Link response instead of asking them to refill the form. When the response already has a sent/completed retained signing request, resend can keep using that retained request even after the owner later deletes or loses the source saved form; only draft/new requests become unavailable and those now show a sender-contact message instead of an endless retry prompt.
 - Owners review stored respondent submissions inside the workspace and materialize the final PDF only when they select a respondent and run Search & Fill against the target template or group. Template links can also optionally expose a post-submit PDF download for the respondent's own submitted copy, with a publish-time choice between the flat default and an editable-with-fields variant.
-- Tier messaging exposed in the marketing/docs surface now covers the full enforced defaults instead of only Fill By Link copy. Free defaults are 5 saved forms, 5 detect pages, 50 fillable pages, unlimited active Fill By Links with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 successful fills/month and 25 pages/request, 25 sent signing requests/month, and a base OpenAI pool that tops back up to 10 each month when the balance is below 10. Premium defaults are 100 saved forms, 100 detect pages, 1,000 fillable pages, unlimited active Fill By Links with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 successful fills/month and 250 pages/request, 10,000 sent signing requests/month, and a 500-credit monthly pool before refill packs.
+- Tier messaging exposed in the marketing/docs surface now covers the full enforced defaults instead of only Fill By Link copy. Free defaults are 5 saved forms, 5 detect pages, 50 fillable pages, unlimited active Fill By Links with 25 accepted responses/month across the account, 1 API Fill endpoint with 250 successful fills/month and 50 pages/request, 50 Fill by File credits/month, 25 sent signing requests/month, 25 generated PDF downloads/month, and a base OpenAI pool that tops back up to 10 each month when the balance is below 10. Premium defaults are 100 saved forms, 100 detect pages, 1,000 fillable pages, unlimited active Fill By Links with 10,000 accepted responses/month across the account, 20 API Fill endpoints with 10,000 successful fills/month and 500 pages/request, 10,000 Fill by File credits/month, 10,000 sent signing requests/month, unlimited generated PDF downloads, and a 500-credit monthly pool before refill packs. The workspace generated PDF download counter resets by backend UTC month and does not include saving templates, API Fill outputs, respondent downloads, or signing artifacts.
 
 ## Auth and profile
 
@@ -138,7 +186,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Verification success now routes back through `/upload` and stores a short-lived onboarding marker in that browser, so newly verified password accounts resume the free-vs-trial onboarding choice even if Firebase makes them sign in again before the workspace can reopen.
 - Legacy `/verify-email` links still normalize into `/account-action` so older emails continue working.
 - Verification email resend is throttled in the UI (60-second cooldown, max 5 sends per day per account on that browser).
-- Profile view shows the full enforced limit set, including PDF page caps, saved-form/storage caps, Fill By Link caps, API Fill caps, signing limits, credits, Stripe billing/subscription status, and template-access lock state when applicable. When a downgraded base account has locked saved forms, the retention summary also calls out how many signing drafts are blocked from send until the owner upgrades again, while sent/completed signing requests tied to those forms stay retained.
+- Profile view shows the full enforced limit set, including PDF page caps, saved-form/storage caps, generated PDF download usage with workspace/group split counts and the next UTC quota reset, Fill By Link caps, API Fill caps, signing limits, credits, Stripe billing/subscription status, payment-recovery state, and template-access lock state when applicable. When Stripe marks a Pro subscription `past_due`, Profile keeps Pro access visible, shows the failed-payment retry banner with next retry/deadline details when available, pauses refill purchases, and opens Stripe's hosted billing portal for payment-method updates. When a downgraded base account has locked saved forms, the retention summary also calls out how many signing drafts are blocked from send until the owner upgrades again, while sent/completed signing requests tied to those forms stay retained.
 - On mobile, profile browsing remains available, but the workspace stays on the marketing/mobile-safe shell below the 900px breakpoint. Direct `/upload`, `/ui`, `/ui/forms/*`, and `/ui/groups/*` routes therefore fall back to the homepage shell instead of mounting the runtime, and resizing an active desktop workspace below 900px hides the editor until the viewport is widened again.
 - When a Pro account downgrades to free and exceeds the free saved-form cap, the profile payload includes a compatibility retention summary that now describes lock-based access instead of deletion. The backend keeps the oldest-created saved forms up to the base cap accessible, marks the rest locked in place, and automatically reopens downgrade-managed Fill By Link records when the source template becomes accessible again after an upgrade.
 

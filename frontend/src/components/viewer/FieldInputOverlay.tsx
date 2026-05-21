@@ -19,11 +19,16 @@ import {
   resolveEffectiveFieldFontSize,
   resolveEffectiveFieldTextAlignment,
 } from '../../utils/fieldFonts';
-import { IMAGE_ACCEPT, readImageFileAsDataUrl } from '../../utils/images';
+import { IMAGE_ACCEPT, imagePreviewStyleForColorMode, readImageFileAsDataUrl } from '../../utils/images';
 import { buildPdf417ScanText, generatePdf417DataUrl } from '../../utils/pdf417';
 import { BARCODE_ID_LENGTH, barcodeDigitsFromValue, generateBarcodeDataUrl, isCompleteBarcodeValue } from '../../utils/barcode';
 import { generateQrDataUrl, isCompleteQrValue } from '../../utils/qr';
 import { resolveBarcodeValue, resolvePdf417Data, resolveQrValue } from '../../utils/appOnlyFieldDependencies';
+import {
+  collectCalculationDependencyIds,
+  isCalculatedRole,
+  resolveCalculatedFieldPreviewValues,
+} from '../../utils/calculationFields';
 
 type FieldInputOverlayProps = {
   fields: PdfField[];
@@ -99,6 +104,17 @@ export function FieldInputOverlay({
       return acc;
     }, {});
   }, [draftValues, fields]);
+  const calculatedPreviewValues = useMemo(
+    () => resolveCalculatedFieldPreviewValues(fields, activeDraftValues),
+    [activeDraftValues, fields],
+  );
+  const calculationDependencySets = useMemo(() => {
+    const dependencies = collectCalculationDependencyIds(fields, selectedFieldId);
+    return {
+      direct: new Set(dependencies.directDependencyIds),
+      indirect: new Set(dependencies.indirectDependencyIds),
+    };
+  }, [fields, selectedFieldId]);
 
   /**
    * Generate focus handlers that keep selection in sync.
@@ -229,6 +245,8 @@ export function FieldInputOverlay({
           `field-input-box--${field.type}`,
           `field-input-box--conf-${confidenceTier}`,
           selected ? 'field-input-box--active' : '',
+          calculationDependencySets.direct.has(field.id) ? 'field-input-box--calc-dependency' : '',
+          calculationDependencySets.indirect.has(field.id) ? 'field-input-box--calc-dependency-indirect' : '',
         ]
           .filter(Boolean)
           .join(' ');
@@ -236,6 +254,17 @@ export function FieldInputOverlay({
         const trimmedName = field.name.trim();
         const inputName = trimmedName || field.id;
         const inputId = `field-input-${field.id}`;
+        const calculationRole = field.calculation?.role;
+        const isReadOnlyTextField = Boolean(
+          field.readOnly ||
+          isCalculatedRole(calculationRole) ||
+          calculationRole === 'external_imported_calculation',
+        );
+        const calculationReadOnly = Boolean(isTextLikeField && isReadOnlyTextField && calculationRole);
+        const textInputValue =
+          calculatedPreviewValues.get(field.id) ??
+          activeDraftValues[field.id] ??
+          coerceToString(field.value);
         const resolvedBarcode = field.type === 'barcode' ? resolveBarcodeValue(field, fields) : null;
         const resolvedPdf417 = field.type === 'pdf417' ? resolvePdf417Data(field, fields) : null;
         const resolvedQr = field.type === 'qr' ? resolveQrValue(field, fields) : null;
@@ -302,7 +331,7 @@ export function FieldInputOverlay({
                 onClick={() => onSelectField(field.id)}
               >
                 {field.imageDataUrl ? (
-                  <img src={field.imageDataUrl} alt="" />
+                  <img src={field.imageDataUrl} alt="" style={imagePreviewStyleForColorMode(field.imageColorMode)} />
                 ) : (
                   <span>Image</span>
                 )}
@@ -377,13 +406,14 @@ export function FieldInputOverlay({
             ) : (
               <input
                 {...commonInputProps}
-                className="field-input"
+                className={`field-input${calculationReadOnly ? ' field-input--calculation-readonly' : ''}`}
                 type="text"
                 style={inputTextStyle}
-                value={activeDraftValues[field.id] ?? coerceToString(field.value)}
-                onChange={handleTextChange(field)}
+                value={textInputValue}
+                readOnly={isReadOnlyTextField}
+                onChange={isReadOnlyTextField ? undefined : handleTextChange(field)}
                 placeholder=""
-                onBlur={handleBlur(field)}
+                onBlur={isReadOnlyTextField ? undefined : handleBlur(field)}
               />
             )}
           </div>

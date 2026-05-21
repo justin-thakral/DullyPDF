@@ -59,14 +59,28 @@ export function buildFillLinkTemplateFields(
     DEFAULT_FIELD_TEXT_ALIGNMENT,
   );
   return fields.map((field) => ({
+    id: field.id,
     name: field.name,
     type: field.type,
     page: field.page,
     rect: field.rect,
+    value: field.value,
     readOnly: field.readOnly,
     required: field.required,
     valueType: field.valueType,
     calculation: field.calculation,
+    imageDataUrl: field.imageDataUrl,
+    imagePath: (field as PdfField & { imagePath?: string | null }).imagePath,
+    imageMimeType: field.imageMimeType,
+    imageName: field.imageName,
+    imageColorMode: field.imageColorMode,
+    pdf417Name: field.pdf417Name,
+    pdf417Dob: field.pdf417Dob,
+    pdf417Data: field.pdf417Data,
+    barcodeSourceField: field.barcodeSourceField,
+    qrSourceField: field.qrSourceField,
+    pdf417FieldMappings: field.pdf417FieldMappings,
+    barcodeClasses: field.barcodeClasses,
     fontName:
       textFieldSupportsFont(field)
         ? resolveEffectiveFieldFont(field, globalFieldFont) || undefined

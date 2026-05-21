@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 from pathlib import Path
@@ -16,7 +17,7 @@ from backend.firebaseDB.fill_link_database import (
     submit_fill_link_response,
 )
 from backend.firebaseDB.signing_database import get_signing_request_for_user
-from backend.firebaseDB.storage_service import download_storage_bytes
+from backend.firebaseDB.storage_service import download_storage_bytes, upload_session_file_bytes
 from backend.firebaseDB.user_database import get_user_profile
 from backend.env_utils import int_env as _int_env
 from backend.logging_config import get_logger
@@ -55,8 +56,9 @@ from backend.services.fill_links_service import (
     resolve_fill_link_submit_rate_limits,
     resolve_fill_link_view_rate_limits,
 )
+from backend.services.pdf_images import ImageFieldPayloadError, decode_image_data_url_payload
 from backend.services.pdf_service import cleanup_paths
-from backend.services.pdf_service import safe_pdf_download_filename
+from backend.services.pdf_service import safe_pdf_download_filename, sanitize_basename_segment
 from backend.services.signing_consumer_consent_service import persist_consumer_disclosure_artifact
 from backend.services.signing_invite_service import (
     SIGNING_INVITE_DELIVERY_FAILED,
@@ -202,6 +204,75 @@ def _resolve_fill_link_owner_display_name(user_id: str) -> str | None:
         return None
     display_name = str(profile.display_name or "").strip()
     return display_name or None
+
+
+def _safe_storage_segment(value: Any, fallback: str) -> str:
+    safe = sanitize_basename_segment(str(value or ""), fallback).strip(".")
+    return (safe or fallback)[:120]
+
+
+def _image_extension_for_mime_type(mime_type: str) -> str:
+    return ".png" if mime_type == "image/png" else ".jpg"
+
+
+def _stage_fill_link_image_answers(
+    record,
+    answers: Dict[str, Any],
+    *,
+    attempt_id: str,
+) -> Dict[str, Any]:
+    """Upload public image answers to GCS before storing the response document."""
+    image_keys = {
+        str(question.get("key") or "").strip()
+        for question in getattr(record, "questions", []) or []
+        if isinstance(question, dict) and str(question.get("type") or "").strip().lower() == "image"
+    }
+    if not image_keys:
+        return answers
+
+    staged = dict(answers)
+    link_id = _safe_storage_segment(getattr(record, "id", ""), "link")
+    user_id = _safe_storage_segment(getattr(record, "user_id", ""), "owner")
+    attempt_segment = _safe_storage_segment(attempt_id, "attempt")
+    for key in sorted(image_keys):
+        answer = staged.get(key)
+        if not isinstance(answer, dict):
+            continue
+        data_url = str(answer.get("imageDataUrl") or "").strip()
+        if not data_url:
+            continue
+        try:
+            image_bytes, mime_type = decode_image_data_url_payload(data_url)
+        except ImageFieldPayloadError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        digest = hashlib.sha256(image_bytes).hexdigest()
+        extension = _image_extension_for_mime_type(mime_type)
+        filename = sanitize_basename_segment(
+            str(answer.get("imageName") or "").strip() or f"{key}{extension}",
+            f"{key}{extension}",
+        )
+        if not filename.lower().endswith((".png", ".jpg", ".jpeg")):
+            filename = f"{filename}{extension}"
+        object_path = "/".join(
+            [
+                "fill-link-response-images",
+                user_id,
+                link_id,
+                attempt_segment,
+                f"{_safe_storage_segment(key, 'image')}-{digest[:16]}-{filename[:160]}",
+            ]
+        )
+        image_path = upload_session_file_bytes(
+            image_bytes,
+            object_path,
+            content_type=mime_type,
+        )
+        staged[key] = {
+            "imagePath": image_path,
+            "imageMimeType": mime_type,
+            "imageName": filename,
+        }
+    return staged
 
 
 def _serialize_post_submit_signing_payload(record, *, message: str | None = None, error_message: str | None = None) -> Dict[str, Any]:
@@ -558,6 +629,11 @@ async def submit_public_fill_link(
                 status_code=409,
                 detail="This signing-enabled form is misconfigured. Contact the sender to update the signer fields.",
             ) from exc
+    answers = _stage_fill_link_image_answers(
+        record,
+        answers,
+        attempt_id=normalized_attempt_id or hashlib.sha256(str(answers).encode("utf-8")).hexdigest()[:16],
+    )
     respondent_label, respondent_secondary_label = derive_fill_link_respondent_label(
         answers,
         record.questions,

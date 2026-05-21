@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { getBlogPosts } from '../../../src/config/blogPosts';
 
+const LOCAL_PUBLIC_ASSET_PATTERN = /^\/(demo|blog|seo)\//;
+const FORM_CATALOG_ASSET_PATTERN =
+  /^https:\/\/storage\.googleapis\.com\/dullypdf-form-catalog-assets-east4\/.+\.webp$/;
+
 describe('blog post content', () => {
   it('keeps every post in article format with supporting figures', () => {
     const posts = getBlogPosts();
@@ -24,7 +28,10 @@ describe('blog post content', () => {
         }
 
         for (const figure of section.figures ?? []) {
-          expect(figure.src, `${post.slug}/${section.id} figure src should point at a public asset`).toMatch(/^\/(demo|blog|seo)\//);
+          expect(
+            LOCAL_PUBLIC_ASSET_PATTERN.test(figure.src) || FORM_CATALOG_ASSET_PATTERN.test(figure.src),
+            `${post.slug}/${section.id} figure src should point at a public asset`,
+          ).toBe(true);
           expect(figure.alt.length, `${post.slug}/${section.id} figure alt text should be descriptive`).toBeGreaterThan(20);
           expect(figure.caption.length, `${post.slug}/${section.id} figure captions should add context`).toBeGreaterThan(20);
         }

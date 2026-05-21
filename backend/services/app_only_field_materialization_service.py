@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import io
+import json
 import re
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
@@ -16,11 +17,22 @@ import pdf417gen
 PHOTO_FIELD_NAME_MARKER = "__CVTPF"
 PHOTO_FIELD_VALUE_MARKER = "CVTPF#@&"
 PDF417_FIELD_NAME_MARKER = "__CVTP4"
+PDF417_FIELD_VALUE_MARKER = "CVTP4#@&"
 BARCODE_FIELD_NAME_MARKER = "__CVTBC"
+BARCODE_FIELD_VALUE_MARKER = "CVTBC#@&"
 QR_FIELD_NAME_MARKER = "__CVTQR"
+QR_FIELD_VALUE_MARKER = "CVTQR#@&"
+APP_ONLY_MARKER_METADATA_PREFIX = "DULLYPDF_META:"
 
 APP_ONLY_FIELD_TYPES = {"image", "pdf417", "barcode", "qr"}
+APP_ONLY_FIELD_VALUE_MARKERS = {
+    PHOTO_FIELD_VALUE_MARKER,
+    PDF417_FIELD_VALUE_MARKER,
+    BARCODE_FIELD_VALUE_MARKER,
+    QR_FIELD_VALUE_MARKER,
+}
 BARCODE_ID_LENGTH = 9
+BARCODE_9_DIGIT_FIELD_ASPECT_RATIO = 351 / 127
 MAX_PDF417_TEXT_LENGTH = 2000
 MAX_QR_TEXT_LENGTH = 2000
 
@@ -80,14 +92,15 @@ def generate_code128_png_data_url(value: str) -> str:
     pattern = _code128_pattern(value)
     module_px = 3
     quiet_modules = 10
-    height_px = 72
     width_units = quiet_modules * 2
     for char in pattern:
         if "A" <= char <= "Z":
             width_units += ord(char) - ord("A") + 1
         elif "a" <= char <= "z":
             width_units += ord(char) - ord("a") + 1
-    image = Image.new("RGB", (max(width_units * module_px, 1), height_px), "white")
+    image_width = max(width_units * module_px, 1)
+    height_px = max(1, round(image_width / BARCODE_9_DIGIT_FIELD_ASPECT_RATIO))
+    image = Image.new("RGB", (image_width, height_px), "white")
     draw = ImageDraw.Draw(image)
     x = quiet_modules * module_px
     for char in pattern:
@@ -172,6 +185,50 @@ def _resolve_dependency_value(
     return ""
 
 
+def _normalize_barcode_classes(field: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    raw_classes = field.get("barcodeClasses")
+    if not isinstance(raw_classes, list):
+        return []
+    normalized: List[Dict[str, Any]] = []
+    for entry in raw_classes:
+        if not isinstance(entry, Mapping):
+            continue
+        mode = "field" if _clean_text(entry.get("mode")) == "field" else "manual"
+        normalized.append(
+            {
+                "label": _clean_text(entry.get("label")) or "VALUE",
+                "mode": mode,
+                "fieldRef": entry.get("fieldRef") if isinstance(entry.get("fieldRef"), Mapping) else None,
+                "manualValue": _clean_text(entry.get("manualValue")),
+            }
+        )
+    return normalized
+
+
+def _resolve_barcode_class_values(
+    field: Mapping[str, Any],
+    fields: Iterable[Mapping[str, Any]],
+) -> List[Tuple[str, str]]:
+    values: List[Tuple[str, str]] = []
+    for entry in _normalize_barcode_classes(field):
+        if entry["mode"] == "field":
+            value = _resolve_dependency_value(entry.get("fieldRef"), fields, field.get("id"))
+        else:
+            value = _clean_text(entry.get("manualValue"))
+        if value:
+            values.append((_clean_text(entry.get("label")) or "VALUE", value))
+    return values
+
+
+def _scan_text_from_barcode_classes(class_values: Iterable[Tuple[str, str]]) -> str:
+    lines = []
+    for label, value in class_values:
+        clean_value = _clean_text(value)
+        if clean_value:
+            lines.append(f"{(_clean_text(label) or 'VALUE').upper()}: {clean_value}")
+    return "\n".join(lines)
+
+
 def _split_manual_name(value: Any) -> Dict[str, str]:
     parts = [part for part in _clean_text(value).split() if part]
     if not parts:
@@ -240,6 +297,130 @@ def _app_only_marker_info(field_type: str) -> Tuple[str, str] | None:
     return None
 
 
+def _app_only_value_marker(field_type: str) -> str:
+    if field_type == "image":
+        return PHOTO_FIELD_VALUE_MARKER
+    if field_type == "pdf417":
+        return PDF417_FIELD_VALUE_MARKER
+    if field_type == "barcode":
+        return BARCODE_FIELD_VALUE_MARKER
+    if field_type == "qr":
+        return QR_FIELD_VALUE_MARKER
+    return ""
+
+
+def _editable_marker_footer(field_type: str) -> str:
+    if field_type == "image":
+        return "(IMAGE)"
+    if field_type == "pdf417":
+        return "(PDF417)"
+    if field_type == "barcode":
+        return "(1D)"
+    if field_type == "qr":
+        return "(QR)"
+    return ""
+
+
+def _metadata_text(value: Any) -> str | None:
+    text = _clean_text(value)
+    return text or None
+
+
+def _metadata_dependency_ref(value: Any) -> Dict[str, str] | None:
+    if not isinstance(value, Mapping):
+        return None
+    field_id = _metadata_text(value.get("fieldId")) or ""
+    field_name = _metadata_text(value.get("fieldName")) or ""
+    if not field_id and not field_name:
+        return None
+    return {"fieldId": field_id, "fieldName": field_name}
+
+
+def _metadata_pdf417_mappings(value: Any) -> Dict[str, Dict[str, str]] | None:
+    if not isinstance(value, Mapping):
+        return None
+    mappings: Dict[str, Dict[str, str]] = {}
+    for key, ref in value.items():
+        normalized = _metadata_dependency_ref(ref)
+        if normalized is not None:
+            mappings[str(key)] = normalized
+    return mappings or None
+
+
+def _metadata_barcode_classes(value: Any) -> List[Dict[str, Any]] | None:
+    if not isinstance(value, list):
+        return None
+    classes: List[Dict[str, Any]] = []
+    for index, entry in enumerate(value):
+        if not isinstance(entry, Mapping):
+            continue
+        mode = "field" if _clean_text(entry.get("mode")) == "field" else "manual"
+        normalized: Dict[str, Any] = {
+            "id": _metadata_text(entry.get("id")) or f"class_{index + 1}",
+            "label": _metadata_text(entry.get("label")) or "",
+            "mode": mode,
+        }
+        if mode == "field":
+            normalized["fieldRef"] = _metadata_dependency_ref(entry.get("fieldRef"))
+            normalized["manualValue"] = None
+        else:
+            normalized["fieldRef"] = None
+            normalized["manualValue"] = _metadata_text(entry.get("manualValue")) or ""
+        if normalized["label"] or normalized.get("fieldRef") or normalized.get("manualValue"):
+            classes.append(normalized)
+    return classes or None
+
+
+def _editable_marker_metadata(field: Mapping[str, Any]) -> Dict[str, Any] | None:
+    field_type = _field_type(field)
+    metadata: Dict[str, Any] = {"v": 1, "type": field_type}
+    for key in ("imagePath", "imageSourcePath", "imageMimeType", "imageName", "imageColorMode"):
+        value = _metadata_text(field.get(key))
+        if value is not None:
+            metadata[key] = value
+    for key in ("pdf417Name", "pdf417Dob"):
+        value = _metadata_text(field.get(key))
+        if value is not None:
+            metadata[key] = value
+    if isinstance(field.get("pdf417Data"), Mapping):
+        metadata["pdf417Data"] = {
+            str(key): None if value is None else _clean_text(value)
+            for key, value in field.get("pdf417Data", {}).items()
+        }
+    barcode_source = _metadata_dependency_ref(field.get("barcodeSourceField"))
+    if barcode_source is not None:
+        metadata["barcodeSourceField"] = barcode_source
+    qr_source = _metadata_dependency_ref(field.get("qrSourceField"))
+    if qr_source is not None:
+        metadata["qrSourceField"] = qr_source
+    pdf417_mappings = _metadata_pdf417_mappings(field.get("pdf417FieldMappings"))
+    if pdf417_mappings is not None:
+        metadata["pdf417FieldMappings"] = pdf417_mappings
+    barcode_classes = _metadata_barcode_classes(field.get("barcodeClasses"))
+    if barcode_classes is not None:
+        metadata["barcodeClasses"] = barcode_classes
+    return metadata if len(metadata) > 2 else None
+
+
+def _editable_marker_payload(field: Mapping[str, Any]) -> str:
+    field_type = _field_type(field)
+    marker = _app_only_value_marker(field_type)
+    if field_type == "image":
+        content = _clean_text(field.get("imageName")) or _clean_text(field.get("imageMimeType")) or "image"
+    else:
+        content = _clean_text(field.get("value"))
+    parts = [marker]
+    marker_metadata = _editable_marker_metadata(field)
+    if marker_metadata is not None:
+        parts.append(
+            f"{APP_ONLY_MARKER_METADATA_PREFIX}{json.dumps(marker_metadata, ensure_ascii=True, separators=(',', ':'), sort_keys=True)}"
+        )
+    if content:
+        parts.append(content)
+    parts.append(_editable_marker_footer(field_type))
+    return "\n".join(parts)
+
+
 def _marker_name(field: Mapping[str, Any], marker: str, fallback: str) -> str:
     name = _clean_text(field.get("name")) or fallback
     return name if marker in name else f"{name}{marker}"
@@ -250,24 +431,29 @@ def _build_marker_text_field(field: Mapping[str, Any], marker_name: str) -> Dict
     marker["id"] = f"{_clean_text(field.get('id')) or 'field'}_{_field_type(field)}_marker"
     marker["name"] = marker_name
     marker["type"] = "text"
-    marker["value"] = None
+    marker["value"] = _editable_marker_payload(field)
     marker["readOnly"] = True
     marker["required"] = False
     marker.pop("imageDataUrl", None)
+    marker.pop("imagePath", None)
+    marker.pop("imageSourcePath", None)
     marker.pop("imageMimeType", None)
     marker.pop("imageName", None)
+    marker.pop("imageColorMode", None)
     marker.pop("pdf417Name", None)
     marker.pop("pdf417Dob", None)
     marker.pop("pdf417Data", None)
     marker.pop("barcodeSourceField", None)
     marker.pop("qrSourceField", None)
     marker.pop("pdf417FieldMappings", None)
+    marker.pop("barcodeClasses", None)
     marker.pop("appOnlyMarkerName", None)
     return marker
 
 
 def _enrich_barcode_field(field: Dict[str, Any], fields: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
-    source_value = (
+    class_values = _resolve_barcode_class_values(field, fields)
+    source_value = class_values[0][1] if class_values else (
         _resolve_dependency_value(field.get("barcodeSourceField"), fields, field.get("id"))
         if field.get("barcodeSourceField") is not None
         else _clean_text(field.get("value"))
@@ -282,6 +468,17 @@ def _enrich_barcode_field(field: Dict[str, Any], fields: Iterable[Mapping[str, A
 
 
 def _enrich_pdf417_field(field: Dict[str, Any], fields: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
+    class_values = _resolve_barcode_class_values(field, fields)
+    if class_values:
+        scan_text = _scan_text_from_barcode_classes(class_values)[:MAX_PDF417_TEXT_LENGTH]
+        if not scan_text:
+            return field
+        field["value"] = scan_text
+        field["imageDataUrl"] = generate_pdf417_png_data_url(scan_text)
+        field["imageMimeType"] = "image/png"
+        field["imageName"] = f"{_clean_text(field.get('name')) or 'pdf417'}.png"
+        return field
+
     direct_value = _clean_text(field.get("value"))
     has_structured_intent = any(
         field.get(key) is not None
@@ -303,7 +500,8 @@ def _enrich_pdf417_field(field: Dict[str, Any], fields: Iterable[Mapping[str, An
 
 
 def _enrich_qr_field(field: Dict[str, Any], fields: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
-    source_value = (
+    class_values = _resolve_barcode_class_values(field, fields)
+    source_value = class_values[0][1] if class_values else (
         _resolve_dependency_value(field.get("qrSourceField"), fields, field.get("id"))
         if field.get("qrSourceField") is not None
         else _clean_text(field.get("value"))
@@ -337,10 +535,13 @@ def _is_existing_marker_field(field: Mapping[str, Any]) -> bool:
     if _field_type(field) != "text":
         return False
     name = _clean_text(field.get("name"))
-    return any(
+    if any(
         marker in name
         for marker in (PHOTO_FIELD_NAME_MARKER, PDF417_FIELD_NAME_MARKER, BARCODE_FIELD_NAME_MARKER, QR_FIELD_NAME_MARKER)
-    )
+    ):
+        return True
+    first_value_line = _clean_text(field.get("value")).splitlines()[0].strip() if _clean_text(field.get("value")) else ""
+    return first_value_line in APP_ONLY_FIELD_VALUE_MARKERS
 
 
 def prepare_app_only_fields_for_materialization(
@@ -357,14 +558,21 @@ def prepare_app_only_fields_for_materialization(
     indexes that must stay in sync with mutations during the pass.
     """
 
-    existing_marker_names = {
-        _clean_text(field.get("name"))
-        for field in fields
-        if _is_existing_marker_field(field)
-    }
+    app_only_marker_names = set()
+    for field in fields:
+        field_type = _field_type(field)
+        marker_info = _app_only_marker_info(field_type)
+        if marker_info is not None:
+            app_only_marker_names.add(_marker_name(field, marker_info[0], marker_info[1]))
+
+    generated_marker_names = set()
     prepared: List[Dict[str, Any]] = []
     for field in fields:
         field_type = _field_type(field)
+        if not include_markers and _is_existing_marker_field(field):
+            continue
+        if include_markers and _is_existing_marker_field(field) and _clean_text(field.get("name")) in app_only_marker_names:
+            continue
         if field_type not in APP_ONLY_FIELD_TYPES:
             prepared.append(dict(field))
             continue
@@ -373,7 +581,7 @@ def prepare_app_only_fields_for_materialization(
         if not include_markers:
             continue
         marker_name = _clean_text(enriched.get("appOnlyMarkerName"))
-        if marker_name and marker_name not in existing_marker_names:
+        if marker_name and marker_name not in generated_marker_names:
             prepared.append(_build_marker_text_field(enriched, marker_name))
-            existing_marker_names.add(marker_name)
+            generated_marker_names.add(marker_name)
     return prepared

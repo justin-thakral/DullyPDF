@@ -46,6 +46,7 @@ def test_resolve_role_limits_aggregates_helpers(app_main, mocker) -> None:
     mocker.patch.object(app_main, "_resolve_template_api_max_pages", return_value=25)
     mocker.patch.object(app_main, "_resolve_signing_requests_monthly_limit", return_value=25)
     mocker.patch.object(app_main, "_resolve_structured_fill_monthly_limit", return_value=50)
+    mocker.patch.object(app_main, "_resolve_pdf_downloads_monthly_limit", return_value=25)
     assert app_main._resolve_role_limits("base") == {
         "detectMaxPages": 7,
         "fillableMaxPages": 55,
@@ -56,6 +57,7 @@ def test_resolve_role_limits_aggregates_helpers(app_main, mocker) -> None:
         "templateApiMaxPages": 25,
         "signingRequestsMonthlyMax": 25,
         "structuredFillMonthlyMax": 50,
+        "pdfDownloadsMonthlyMax": 25,
     }
 
 
@@ -67,6 +69,22 @@ def test_signing_request_monthly_limit_defaults_for_free_and_pro(app_main, monke
     assert app_main._resolve_signing_requests_monthly_limit("base") == 25
     assert app_main._resolve_signing_requests_monthly_limit("pro") == 10000
     assert app_main._resolve_signing_requests_monthly_limit("god") == 100000
+
+
+def test_pdf_download_monthly_limit_defaults_for_free_pro_and_god(app_main, monkeypatch) -> None:
+    monkeypatch.delenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_BASE", raising=False)
+    monkeypatch.delenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO", raising=False)
+    monkeypatch.delenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_GOD", raising=False)
+
+    assert app_main._resolve_pdf_downloads_monthly_limit("base") == 25
+    assert app_main._resolve_pdf_downloads_monthly_limit("pro") is None
+    assert app_main._resolve_pdf_downloads_monthly_limit("god") is None
+
+    monkeypatch.setenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO", "250")
+    monkeypatch.setenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_GOD", "1000")
+    assert app_main._resolve_pdf_downloads_monthly_limit("pro") == 250
+    assert app_main._resolve_pdf_downloads_monthly_limit("god") == 1000
+
 
 def test_saved_forms_limit_defaults_for_free_pro_and_god(app_main, monkeypatch) -> None:
     monkeypatch.delenv("SANDBOX_SAVED_FORMS_MAX_BASE", raising=False)
@@ -107,6 +125,9 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_BASE",
         "SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_PRO",
         "SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_GOD",
+        "SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_BASE",
+        "SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO",
+        "SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_GOD",
     ):
         monkeypatch.delenv(env_name, raising=False)
 
@@ -123,6 +144,7 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "templateApiMaxPages": 50,
         "signingRequestsMonthlyMax": 25,
         "structuredFillMonthlyMax": 50,
+        "pdfDownloadsMonthlyMax": 25,
     }
     assert app_main._resolve_role_limits("pro") == {
         "detectMaxPages": 100,
@@ -134,6 +156,7 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "templateApiMaxPages": 500,
         "signingRequestsMonthlyMax": 10000,
         "structuredFillMonthlyMax": 10000,
+        "pdfDownloadsMonthlyMax": None,
     }
     assert app_main._resolve_role_limits("god") == {
         "detectMaxPages": 100,
@@ -145,4 +168,5 @@ def test_resolve_role_limits_default_matrix_for_all_roles(app_main, monkeypatch)
         "templateApiMaxPages": 2000,
         "signingRequestsMonthlyMax": 100000,
         "structuredFillMonthlyMax": 100000,
+        "pdfDownloadsMonthlyMax": None,
     }

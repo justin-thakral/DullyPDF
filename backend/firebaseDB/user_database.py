@@ -36,6 +36,7 @@ STRIPE_SUBSCRIPTION_PRICE_ID_FIELD = "stripe_subscription_price_id"
 STRIPE_CANCEL_AT_PERIOD_END_FIELD = "stripe_cancel_at_period_end"
 STRIPE_CANCEL_AT_FIELD = "stripe_cancel_at"
 STRIPE_CURRENT_PERIOD_END_FIELD = "stripe_current_period_end"
+STRIPE_PAYMENT_RECOVERY_FIELD = "stripe_payment_recovery"
 STRIPE_PROCESSED_EVENT_IDS_FIELD = "stripe_processed_event_ids"
 # Billing event docs remain the primary idempotency record. This inline recent-id
 # history is bounded so repeated billing activity cannot bloat the Firestore user
@@ -78,6 +79,20 @@ class UserBillingRecord:
     cancel_at_period_end: Optional[bool] = None
     cancel_at: Optional[int] = None
     current_period_end: Optional[int] = None
+    payment_recovery: Optional["UserBillingPaymentRecoveryRecord"] = None
+
+
+@dataclass(frozen=True)
+class UserBillingPaymentRecoveryRecord:
+    status: str
+    latest_invoice_id: Optional[str]
+    latest_invoice_status: Optional[str]
+    failure_code: Optional[str]
+    failure_message: Optional[str]
+    failed_at: Optional[int]
+    next_payment_attempt: Optional[int]
+    recovery_deadline: Optional[int]
+    updated_at: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -242,6 +257,25 @@ def _normalize_downgrade_retention(raw: Any) -> Optional[UserDowngradeRetentionR
         pending_delete_template_ids=_coerce_string_list(raw.get("pending_delete_template_ids")),
         pending_delete_link_ids=_coerce_string_list(raw.get("pending_delete_link_ids")),
         billing_state_deferred=bool(_coerce_optional_bool(raw.get("billing_state_deferred"))),
+        updated_at=str(raw.get("updated_at") or "").strip() or None,
+    )
+
+
+def _normalize_payment_recovery(raw: Any) -> Optional[UserBillingPaymentRecoveryRecord]:
+    if not isinstance(raw, dict):
+        return None
+    status = str(raw.get("status") or "").strip().lower()
+    if not status:
+        return None
+    return UserBillingPaymentRecoveryRecord(
+        status=status,
+        latest_invoice_id=str(raw.get("latest_invoice_id") or "").strip() or None,
+        latest_invoice_status=str(raw.get("latest_invoice_status") or "").strip() or None,
+        failure_code=str(raw.get("failure_code") or "").strip() or None,
+        failure_message=str(raw.get("failure_message") or "").strip() or None,
+        failed_at=_coerce_optional_unix_timestamp(raw.get("failed_at")),
+        next_payment_attempt=_coerce_optional_unix_timestamp(raw.get("next_payment_attempt")),
+        recovery_deadline=_coerce_optional_unix_timestamp(raw.get("recovery_deadline")),
         updated_at=str(raw.get("updated_at") or "").strip() or None,
     )
 
@@ -799,6 +833,60 @@ def set_user_billing_subscription(
     client.collection(USERS_COLLECTION).document(uid).set(updates, merge=True)
 
 
+def set_user_billing_payment_recovery(
+    uid: str,
+    *,
+    status: str,
+    latest_invoice_id: Optional[str] = None,
+    latest_invoice_status: Optional[str] = None,
+    failure_code: Optional[str] = None,
+    failure_message: Optional[str] = None,
+    failed_at: Optional[int] = None,
+    next_payment_attempt: Optional[int] = None,
+    recovery_deadline: Optional[int] = None,
+) -> None:
+    """Persist the latest Stripe payment-recovery state without changing entitlement."""
+    if not uid:
+        raise ValueError("Missing firebase uid")
+    normalized_status = (status or "").strip().lower()
+    if not normalized_status:
+        raise ValueError("Missing payment recovery status")
+    updated_at = now_iso()
+    payload = {
+        "status": normalized_status,
+        "latest_invoice_id": (latest_invoice_id or "").strip() or None,
+        "latest_invoice_status": (latest_invoice_status or "").strip() or None,
+        "failure_code": (failure_code or "").strip() or None,
+        "failure_message": (failure_message or "").strip() or None,
+        "failed_at": _coerce_optional_unix_timestamp(failed_at),
+        "next_payment_attempt": _coerce_optional_unix_timestamp(next_payment_attempt),
+        "recovery_deadline": _coerce_optional_unix_timestamp(recovery_deadline),
+        "updated_at": updated_at,
+    }
+    client = get_firestore_client()
+    client.collection(USERS_COLLECTION).document(uid).set(
+        {
+            STRIPE_PAYMENT_RECOVERY_FIELD: payload,
+            "updated_at": updated_at,
+        },
+        merge=True,
+    )
+
+
+def clear_user_billing_payment_recovery(uid: str) -> None:
+    """Clear stale Stripe failed-payment recovery state for a user."""
+    if not uid:
+        raise ValueError("Missing firebase uid")
+    client = get_firestore_client()
+    client.collection(USERS_COLLECTION).document(uid).set(
+        {
+            STRIPE_PAYMENT_RECOVERY_FIELD: firebase_firestore.DELETE_FIELD,
+            "updated_at": now_iso(),
+        },
+        merge=True,
+    )
+
+
 def get_user_downgrade_retention(uid: str) -> Optional[UserDowngradeRetentionRecord]:
     normalized_uid = (uid or "").strip()
     if not normalized_uid:
@@ -893,6 +981,7 @@ def get_user_billing_record(uid: str) -> Optional[UserBillingRecord]:
     cancel_at_period_end = _coerce_optional_bool(data.get(STRIPE_CANCEL_AT_PERIOD_END_FIELD))
     cancel_at = _coerce_optional_unix_timestamp(data.get(STRIPE_CANCEL_AT_FIELD))
     current_period_end = _coerce_optional_unix_timestamp(data.get(STRIPE_CURRENT_PERIOD_END_FIELD))
+    payment_recovery = _normalize_payment_recovery(data.get(STRIPE_PAYMENT_RECOVERY_FIELD))
     return UserBillingRecord(
         uid=normalized_uid,
         customer_id=customer_id,
@@ -902,6 +991,7 @@ def get_user_billing_record(uid: str) -> Optional[UserBillingRecord]:
         cancel_at_period_end=cancel_at_period_end,
         cancel_at=cancel_at,
         current_period_end=current_period_end,
+        payment_recovery=payment_recovery,
     )
 
 

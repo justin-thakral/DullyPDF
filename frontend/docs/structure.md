@@ -38,7 +38,7 @@ frontend/
 - `frontend/src/config/intentPages.ts`: Content + FAQ + SEO metadata config for public intent and industry landing routes.
 - `frontend/src/config/formCatalogAssetBase.mjs`: Shared resolver for the public form-catalog asset origin. Dev defaults to `/form-catalog-assets`; prod reads `VITE_FORM_CATALOG_ASSET_BASE`.
 - `frontend/src/config/intentCatalogShowcases.mjs`: Curated real-form examples for selected industry landing routes, including thumbnail assets, catalog/editor deep links, and reusable workflow-step copy for Search & Fill, API Fill, Fill By Link, and signatures.
-- `frontend/src/config/formCatalogCategories.mjs`, `frontend/src/config/formCatalogData.mjs`, `frontend/src/config/formCatalogExternalSources.mjs`: Auto-generated datasets behind `/forms`. The external-sources file is built from copyright-restricted `form_catalog/*/links.txt` manifests so restricted categories remain browsable without mirroring protected PDFs, while mirrored categories store relative asset paths that are rebound through `formCatalogAssetBase.mjs` at runtime.
+- `frontend/src/config/formCatalogCategories.mjs`, `frontend/src/config/formCatalogData.mjs`, `frontend/src/config/formCatalogExternalSources.mjs`: Auto-generated datasets behind `/forms`. The public catalog currently exposes 5,467 hosted entries, including mirrored public-domain government PDFs and DullyPDF-authored practice/operational templates. The external-sources file is built from copyright-restricted `form_catalog/*/links.txt` manifests so restricted categories remain browsable without mirroring protected PDFs, while mirrored categories store relative asset paths that are rebound through `formCatalogAssetBase.mjs` at runtime.
 - `frontend/src/config/publicRouteSeoData.mjs`: Shared source of truth for public route metadata and build-time static body content used by the runtime SEO adapter plus the static HTML and sitemap generators.
 - `frontend/src/config/routeSeo.ts`: Typed runtime adapter over the shared public route SEO dataset for all indexable public pages (`/`, legal, `/usage-docs/*`, intent pages, hub pages, and blog routes).
 - `frontend/src/publicRouteRouting.ts`: Shared matcher for indexable public routes that should be prerendered and hydrated instead of mounted as empty client-only shells.
@@ -49,8 +49,11 @@ frontend/
 - `frontend/src/components/panels/FieldListPanel.tsx`: Browser panel with page navigation, filter/search, display toggles, and workspace appearance controls.
 - `frontend/src/components/panels/FieldInspectorPanel.tsx`: Field Editor panel with selected-field metadata/geometry editing, create/delete actions, undo/redo controls, and collapsible guidance.
 - `frontend/src/components/features/SearchFillModal.tsx`: Record search and field fill logic.
+- `frontend/src/components/features/ManagePagesDialog.tsx`: Staged PDF page management dialog for deleting, reordering, rotating, and inserting pages from another PDF before the active workspace PDF is rewritten.
+- `frontend/src/components/features/OptimizePdfDialog.tsx`: Small PDF compression dialog that applies backend lossless optimization to the active source PDF and refreshes the workspace file bytes.
+- `frontend/src/components/features/DownloadPagesDialog.tsx`: Download-menu dialog for selecting a page subset and exporting only those pages as flat or editable PDFs.
 - `frontend/src/components/features/UploadView.tsx`: Upload + saved-form selection UI and OpenAI preflight modal entry.
-- `frontend/src/components/pages/*.tsx`: Homepage, auth pages, profile page, legal pages, public usage docs pages (`/usage-docs/*`), and intent landing pages.
+- `frontend/src/components/pages/*.tsx`: Homepage, auth pages, profile page, legal pages (`/privacy`, `/terms`, `/refund-policy`), public usage docs pages (`/usage-docs/*`), and intent landing pages.
 - `frontend/src/components/pages/FormCatalogIndexPage.tsx`: Public `/forms` catalog browser, including hosted-form search/pagination and external-source link lists for ACORD, HIPAA, and NAR / Realtor.
 - `frontend/src/components/pages/FormCatalogFormPage.tsx`: Individual form-catalog detail route with preview metadata and “Open in DullyPDF” editor handoff.
 - `frontend/src/components/pages/FormCatalogThumbnail.tsx`: Shared catalog/intent-card thumbnail renderer that now prefers static `.webp` previews and only falls back to a text badge when the image cannot load.
@@ -66,13 +69,17 @@ frontend/
 - `frontend/src/components/pages/SeoLayoutPreviewPage.tsx`: Internal noindex preview route for testing alternate editorial/article-style shells before changing live public intent pages.
 - `frontend/src/config/appConstants.tsx`: Shared app-level constants (history limits, demo assets/steps, processing copy).
 - `frontend/src/utils/pdf.ts`: PDF.js loading, page size extraction, and AcroForm field extraction. On Windows, Excel/Microsoft 365 exports are reopened with embedded-font preference to reduce Office-export render drift.
+- `frontend/src/utils/pdfPageRanges.ts`: Shared parser for `all`, single page, `last`, and forward/reverse page range inputs used by PDF page tools and selected-page downloads.
 - `frontend/src/styles/*.css` + `frontend/src/components/**/*.css`: Shared shell styles and component-scoped styles.
 - `internal_stats/`: Standalone local-only production stats tool served by `npm run stats` on `127.0.0.1:5174`. It lives outside `frontend/src` specifically so it cannot be bundled into the deployed app.
 - `scripts/seo-route-data.mjs`: Build-time re-export bridge for the shared public route SEO dataset. Existing scripts import this path, but `frontend/src/config/publicRouteSeoData.mjs` is the source of truth.
 - `frontend/src/ssr/publicRouteRenderer.ts` + `frontend/vite.public-ssr.config.ts`: Tiny SSR build entry used by `scripts/generate-static-html.mjs` to prerender the homepage and SEO/public routes from the same React components the browser hydrates.
 - `scripts/generate-static-html.mjs`: Converts the raw Vite `index.html` into two deploy artifacts: a neutral `frontend/dist/app-shell.html` for Firebase rewrite targets and the prerendered `frontend/dist/index.html` plus route-specific `*/index.html` files for homepage/SEO delivery.
 - `scripts/build-form-catalog-index.mjs`: Rebuilds the catalog datasets consumed by `/forms`, including the external-link manifests generated from restricted-category `links.txt` files and the relative asset paths that are later joined against the runtime asset base.
+- `scripts/rebuild-form-catalog-manifest.py`: Rebuilds ignored `form_catalog/manifest.json` from the PDFs actually present on disk, using tracked public allowlist ranges so local deploys only publish intended hosted assets.
+- `scripts/generate-form-catalog-longtail-templates.py`: Generates original DullyPDF operational templates for long-tail catalog categories such as construction, field service, facilities, property management, logistics, education, nonprofit, finance, legal-office, hospitality, agriculture, utilities, and retail workflows.
+- `scripts/generate-form-catalog-first-party-templates.py`: Generates the newer DullyPDF first-party catalog templates for automotive service, business operations, events/waivers, home services, legal/admin, safety/compliance, and expanded existing operational categories.
 - `scripts/generate-form-catalog-thumbnails.py`: Renders first-page `.webp` previews for every mirrored PDF under `form_catalog/`.
-- `scripts/deploy-form-catalog-assets.sh`: Prod deploy helper that generates missing thumbnails, validates counts, configures the public GCS bucket/CORS, and syncs mirrored PDFs plus thumbnails before the frontend hosting deploy runs.
+- `scripts/deploy-form-catalog-assets.sh`: Prod deploy helper that generates missing thumbnails, validates counts, configures the public GCS bucket/CORS, and syncs manifest-listed PDFs plus thumbnails before the frontend hosting deploy runs.
 
 For the hook interaction map, see `frontend/docs/app-hooks.md`.

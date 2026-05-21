@@ -33,23 +33,49 @@ const OUT_SLUG_REDIRECTS = resolve(ROOT, 'form_catalog/slug_redirects.json');
 
 const CATEGORY_LABELS = {
   acord: 'ACORD (Insurance)',
+  agriculture_food: 'Agriculture & Food Templates',
+  automotive_service: 'Automotive Service Templates',
   bankruptcy: 'Bankruptcy',
+  beauty_wellness: 'Beauty & Wellness Templates',
+  business_operations: 'Business Operations Templates',
   civil_litigation: 'Federal Civil Litigation',
+  construction_trades: 'Construction & Trades Templates',
   contracts_procurement: 'Contracts & Procurement',
   criminal_justice: 'Federal Criminal',
   customs_logistics: 'Customs & Logistics',
   disaster_emergency: 'Disaster Recovery & FEMA',
+  education_childcare: 'Education & Childcare Templates',
+  events_waivers: 'Events & Waivers Templates',
+  facilities_maintenance: 'Facilities & Maintenance Templates',
   federal_specialized: 'Federal — Specialized Agencies',
+  field_service: 'Field Service Templates',
+  finance_accounting: 'Finance & Accounting Templates',
+  finance_lending: 'Finance & Lending Templates',
   healthcare: 'Healthcare & Medicine',
   hipaa: 'HIPAA',
+  home_services: 'Home Services Templates',
+  hospitality_events: 'Hospitality & Events Templates',
   hr_onboarding: 'HR & Onboarding',
+  hr_operations: 'HR Operations Templates',
   immigration: 'Immigration & USCIS',
+  insurance_claims: 'Insurance & Claims Templates',
   labor_employment: 'Labor & Employment',
+  legal_admin: 'Legal Admin Templates',
+  legal_office: 'Legal Office Templates',
+  logistics_transport: 'Logistics & Transportation Templates',
+  manufacturing_quality: 'Manufacturing & Quality Templates',
   nar_realtor: 'NAR / Realtor',
   nonprofit: 'Nonprofit',
+  nonprofit_community: 'Nonprofit & Community Templates',
+  nonprofit_events: 'Nonprofit & Events Templates',
   patient_intake: 'Patient Health & Appeals',
+  pet_services: 'Pet Services Templates',
+  property_management: 'Property Management Templates',
   practice_intake: 'Practice Intake Templates',
+  real_estate_property: 'Real Estate & Property Templates',
   real_estate_housing: 'Real Estate & Housing',
+  retail_operations: 'Retail Operations Templates',
+  safety_compliance: 'Safety & Compliance Templates',
   small_business: 'Small Business',
   social_security: 'Social Security',
   state_courts: 'State Courts',
@@ -59,6 +85,7 @@ const CATEGORY_LABELS = {
   tax_business: 'Tax — Business',
   tax_individual: 'Tax — Individual',
   tax_payroll: 'Tax — Payroll',
+  utilities_energy: 'Utilities & Energy Templates',
   veterans: 'Veterans (VA)',
 };
 
@@ -86,22 +113,142 @@ const CATEGORY_SECTION_GROUPS = {
   healthcare: ['healthcare', 'patient_intake'],
 };
 
+const PUBLIC_BASE_SECTIONS = new Set([
+  'bankruptcy',
+  'civil_litigation',
+  'customs_logistics',
+  'disaster_emergency',
+  'federal_specialized',
+  'healthcare',
+  'immigration',
+  'labor_employment',
+  'nonprofit',
+  'patient_intake',
+  'real_estate_housing',
+  'small_business',
+  'social_security',
+  'state_courts',
+  'state_department',
+  'state_dmv',
+  'state_tax',
+  'tax_business',
+  'tax_individual',
+  'tax_payroll',
+  'veterans',
+]);
+
+const PUBLIC_LOCAL_TEMPLATE_RANGES = {
+  agriculture_food: { prefix: 'DAF', min: 2300, max: 2361 },
+  automotive_service: { prefix: 'DAS', min: 2100, max: 2149 },
+  beauty_wellness: [
+    { prefix: 'DBW', min: 100, max: 189 },
+    { prefix: 'DBW', min: 2300, max: 2344 },
+  ],
+  business_operations: { prefix: 'DBO', min: 1755, max: 1809 },
+  construction_trades: [
+    { prefix: 'DCF', min: 100, max: 199 },
+    { prefix: 'DCT', min: 1000, max: 1062 },
+    { prefix: 'DCT', min: 1100, max: 1174 },
+  ],
+  education_childcare: [
+    { prefix: 'DEY', min: 100, max: 189 },
+    { prefix: 'DEC', min: 1400, max: 1469 },
+    { prefix: 'DEC', min: 1600, max: 1662 },
+  ],
+  events_waivers: { prefix: 'DEW', min: 1800, max: 1854 },
+  facilities_maintenance: { prefix: 'DFM', min: 1200, max: 1262 },
+  field_service: [
+    { prefix: 'DHS', min: 100, max: 189 },
+    { prefix: 'DFS', min: 1100, max: 1162 },
+    { prefix: 'DFM', min: 1200, max: 1274 },
+  ],
+  finance_accounting: [
+    { prefix: 'DFA', min: 100, max: 169 },
+    { prefix: 'DFA', min: 1700, max: 1754 },
+  ],
+  finance_lending: { prefix: 'DFL', min: 1900, max: 1961 },
+  home_services: { prefix: 'DHS', min: 2400, max: 2444 },
+  hospitality_events: { prefix: 'DHE', min: 2200, max: 2261 },
+  hr_onboarding: { prefix: 'DHR', min: 100, max: 169 },
+  hr_operations: { prefix: 'DHR', min: 1800, max: 1861 },
+  insurance_claims: [
+    { prefix: 'DIC', min: 100, max: 179 },
+    { prefix: 'DIC', min: 1600, max: 1654 },
+    { prefix: 'DIC', min: 2000, max: 2061 },
+  ],
+  legal_admin: { prefix: 'DLP', min: 1500, max: 1559 },
+  legal_office: { prefix: 'DLO', min: 2100, max: 2161 },
+  logistics_transport: [
+    { prefix: 'DLT', min: 100, max: 169 },
+    { prefix: 'DLT', min: 1500, max: 1562 },
+    { prefix: 'DLD', min: 2200, max: 2249 },
+  ],
+  manufacturing_quality: [
+    { prefix: 'DMQ', min: 100, max: 179 },
+    { prefix: 'DMQ', min: 1400, max: 1462 },
+    { prefix: 'DMQ', min: 1810, max: 1864 },
+  ],
+  nonprofit_community: [
+    { prefix: 'DNE', min: 100, max: 179 },
+    { prefix: 'DNV', min: 1900, max: 1949 },
+  ],
+  nonprofit_events: { prefix: 'DNE', min: 1700, max: 1762 },
+  pet_services: [
+    { prefix: 'DPS', min: 100, max: 179 },
+    { prefix: 'DVP', min: 2000, max: 2059 },
+  ],
+  property_management: { prefix: 'DPM', min: 1300, max: 1362 },
+  real_estate_property: [
+    { prefix: 'DPM', min: 100, max: 199 },
+    { prefix: 'DPM', min: 1000, max: 1079 },
+  ],
+  retail_operations: { prefix: 'DRO', min: 2500, max: 2561 },
+  safety_compliance: { prefix: 'DSC', min: 1300, max: 1364 },
+  utilities_energy: { prefix: 'DUE', min: 2400, max: 2461 },
+};
+
 const SECTION_DESCRIPTION_FALLBACKS = {
+  agriculture_food: 'farm operations, food-safety, traceability, equipment, livestock, and produce handling workflows',
+  automotive_service: 'vehicle repair, inspections, authorizations, estimates, fleet, towing, and service-tracking workflows',
   bankruptcy: 'bankruptcy petitions, schedules, claims, reaffirmation, and chapter-plan workflows',
+  beauty_wellness: 'salon, spa, med-spa, wellness, consent, aftercare, and client intake workflows',
+  business_operations: 'client onboarding, vendor, approval, request, review, and internal operations workflows',
   civil_litigation: 'federal civil complaints, fee waivers, summonses, subpoenas, magistrate-consent, judgment, and pro se litigation workflows',
+  construction_trades: 'construction, remodeling, subcontractor, site, safety, and trade-service workflows',
   contracts_procurement: 'federal procurement, solicitation, contract modification, and vendor payment setup workflows',
   criminal_justice: 'criminal complaints, warrants, subpoenas, bonds, judgments, and supervision workflows',
   customs_logistics: 'customs, cargo, vessel, traveler, and import/export workflows',
   disaster_emergency: 'FEMA public assistance, flood insurance, map revision, damage, and recovery workflows',
+  education_childcare: 'student enrollment, school permission, tutoring, childcare, camp, classroom, and family communication workflows',
+  events_waivers: 'event registration, participant waivers, vendor setup, incident, and attendee-tracking workflows',
+  facilities_maintenance: 'building maintenance, preventive service, vendor visits, inspections, incident, and asset-tracking workflows',
   federal_specialized: 'FAA, FCC, OSHA, EPA, NLRB, CPSC, USDA, USPS, and other specialized federal agency workflows',
+  field_service: 'technician dispatch, inspection, repair, service-ticket, installation, and maintenance workflows',
+  finance_accounting: 'bookkeeping, tax-prep, accounting, expense, invoice, loan, and client-finance workflows',
+  finance_lending: 'borrower intake, loan-office, account-change, payment-plan, KYC, and risk-review workflows',
   healthcare: 'Medicare, VA health benefits, provider enrollment, claims, patient intake, and appeals workflows',
+  home_services: 'cleaning, installation, repair, estimate, inspection, and home-service completion workflows',
   hr_onboarding: 'hiring, withholding, personnel-security, benefits, and onboarding workflows',
+  hospitality_events: 'venue, catering, lodging, guest-service, event-operations, and staff-coordination workflows',
+  hr_operations: 'employee request, training, equipment, time-off, payroll-change, and workplace-record workflows',
   immigration: 'immigration petitions, applications, and status workflows',
+  insurance_claims: 'claim intake, incident reporting, policyholder, certificate-request, and risk-review workflows',
   labor_employment: 'leave, workers compensation, federal employment screening, and workplace safety workflows',
+  legal_admin: 'family law, document review, consultation, filing, intake, and legal-office admin workflows',
+  legal_office: 'law-office intake, conflict-check, matter-opening, document-request, filing, and admin-tracking workflows',
+  logistics_transport: 'dispatch, delivery, fleet, freight, vehicle, warehouse, and transport workflows',
+  manufacturing_quality: 'production, quality-control, nonconformance, maintenance, calibration, and release workflows',
   nonprofit: 'nonprofit tax exemption, excise tax, and reporting workflows',
+  nonprofit_community: 'volunteer, donor, grant, program intake, outreach, and community-service workflows',
+  nonprofit_events: 'volunteer, donation, sponsorship, event, membership, fundraiser, and community-program workflows',
   patient_intake: 'patient enrollment, coverage, consent, complaint, and appeals workflows',
+  pet_services: 'pet boarding, grooming, daycare, sitting, medication, training, and owner-instruction workflows',
+  property_management: 'rental maintenance, move-in, move-out, lease-renewal, tenant, and property-inspection workflows',
   practice_intake: 'first-party medical, specialty, therapy, wellness, telehealth, imaging, fertility, and office intake workflows',
+  real_estate_property: 'rental, property-management, inspection, maintenance, leasing, and tenant workflow templates',
   real_estate_housing: 'HUD housing, USDA rural housing, mortgage, community development, and property workflows',
+  retail_operations: 'store opening, closing, inventory, cash-handling, return, receiving, audit, and staff-training workflows',
+  safety_compliance: 'incident, hazard, PPE, inspection, training, corrective-action, and compliance follow-up workflows',
   small_business: 'SBA lending, certification, servicing, and compliance workflows',
   state_courts: 'state court civil, small claims, family law, probate, and landlord-tenant workflows across all 50 states',
   state_department: 'passport, visa, citizenship, consular, and State Department personnel workflows',
@@ -110,6 +257,7 @@ const SECTION_DESCRIPTION_FALLBACKS = {
   tax_business: 'business, estate, trust, and exempt-organization tax workflows',
   tax_individual: 'individual federal tax filing workflows',
   tax_payroll: 'payroll, withholding, and benefit-plan reporting workflows',
+  utilities_energy: 'solar, EV charging, energy audit, outage, utility service, meter, water, and generator workflows',
   veterans: 'VA claims, appeals, pension, education, housing, debt, insurance, and memorial workflows',
 };
 
@@ -144,6 +292,12 @@ function slugify(raw) {
 }
 
 function buildSlug(entry, usedSlugs) {
+  const titleSlug = !String(entry.form_number || '').trim() ? slugify(entry.title || '') : '';
+  if (titleSlug && !usedSlugs.has(titleSlug)) {
+    usedSlugs.add(titleSlug);
+    return titleSlug;
+  }
+
   const formNumberSlug = slugify(entry.form_number || '');
   if (formNumberSlug && !usedSlugs.has(formNumberSlug)) {
     usedSlugs.add(formNumberSlug);
@@ -474,14 +628,14 @@ function stripRedundantFormPrefix(title, formNumber) {
   if (!trimmedTitle || !trimmedFormNumber) return trimmedTitle;
 
   const patterns = [
-    new RegExp(`^${escapeRegExp(trimmedFormNumber)}\\s*[-:]\s*`, 'i'),
-    new RegExp(`^Form\\s+${escapeRegExp(trimmedFormNumber)}\\s*[-:]\s*`, 'i'),
+    new RegExp(`^${escapeRegExp(trimmedFormNumber)}\\s*[-:]\\s*`, 'i'),
+    new RegExp(`^Form\\s+${escapeRegExp(trimmedFormNumber)}\\s*[-:]\\s*`, 'i'),
   ];
 
   const agencyMatch = trimmedFormNumber.match(/^([A-Z]{2,})[-\s]+(.+)$/);
   if (agencyMatch) {
     const [, agency, rest] = agencyMatch;
-    patterns.push(new RegExp(`^${escapeRegExp(agency)}\\s+Form\\s+${escapeRegExp(rest)}\\s*[-:]\s*`, 'i'));
+    patterns.push(new RegExp(`^${escapeRegExp(agency)}\\s+Form\\s+${escapeRegExp(rest)}\\s*[-:]\\s*`, 'i'));
   }
 
   for (const pattern of patterns) {
@@ -514,6 +668,14 @@ function toSentencePhrase(title) {
       return chunk;
     })
     .join('');
+}
+
+function cleanGeneratedTemplateTitle(title) {
+  return String(title || '')
+    .trim()
+    .replace(/\b(\w+)\s+\1\b/gi, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function isUsefulDescriptionTitle(entry, title) {
@@ -567,6 +729,9 @@ function normaliseCatalogIdentity(entry, currentTitleLookup, titleOverrides) {
   } else if (isGeneratedFormNumber(formNumber)) {
     formNumber = humaniseGeneratedIdentifier(formNumber.split('__')[0]);
   }
+  if (!entry.url && entry.section !== 'practice_intake') {
+    formNumber = '';
+  }
 
   let title = overrideTitle || stripRedundantFormPrefix(rawTitle, formNumber || rawFormNumber);
   if (overrideTitle) {
@@ -579,6 +744,10 @@ function normaliseCatalogIdentity(entry, currentTitleLookup, titleOverrides) {
 
   if (entry.is_prior_year && year && title && !/\b20\d{2}\b/.test(title)) {
     title = `${title} (${year})`;
+  }
+
+  if (!entry.url) {
+    title = cleanGeneratedTemplateTitle(title);
   }
 
   return {
@@ -667,6 +836,53 @@ function resolveCategorySections(key) {
   return [key];
 }
 
+function generatedFormNumberParts(entry) {
+  const source = String(entry.form_number || '').trim();
+  const match = source.match(/^([A-Z]{2,4})\s+(\d+)$/i);
+  if (!match) return null;
+  return {
+    prefix: match[1].toUpperCase(),
+    number: Number.parseInt(match[2], 10),
+  };
+}
+
+function isWithinLocalTemplateRange(entry, rule) {
+  const parts = generatedFormNumberParts(entry);
+  return (
+    parts?.prefix === rule.prefix &&
+    Number.isInteger(parts.number) &&
+    parts.number >= rule.min &&
+    parts.number <= rule.max
+  );
+}
+
+function localTemplateRules(section) {
+  const rules = PUBLIC_LOCAL_TEMPLATE_RANGES[section];
+  if (!rules) return [];
+  return Array.isArray(rules) ? rules : [rules];
+}
+
+function isWithinAnyLocalTemplateRange(entry, rules) {
+  return rules.some((rule) => isWithinLocalTemplateRange(entry, rule));
+}
+
+function isPublicCatalogRawEntry(entry) {
+  if (entry.section === 'practice_intake') return true;
+
+  const localRules = localTemplateRules(entry.section);
+  if (entry.section === 'hr_onboarding') {
+    const parts = generatedFormNumberParts(entry);
+    return parts && localRules.some((rule) => parts.prefix === rule.prefix)
+      ? isWithinAnyLocalTemplateRange(entry, localRules)
+      : true;
+  }
+
+  if (PUBLIC_BASE_SECTIONS.has(entry.section)) return true;
+  if (!localRules.length) return false;
+
+  return isWithinAnyLocalTemplateRange(entry, localRules);
+}
+
 function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLookup, titleOverrides, usedSlugs, legacyUsedSlugs) {
   const descriptionKey = `${rawEntry.section}/${rawEntry.filename}`;
   const desc = descriptionsLookup[descriptionKey] || {};
@@ -711,14 +927,20 @@ function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLo
 
 async function main() {
   if (!existsSync(MANIFEST_PATH)) {
-    throw new Error(`Missing manifest at ${MANIFEST_PATH}. Run form_catalog/scraper.py first.`);
+    throw new Error(`Missing manifest at ${MANIFEST_PATH}. Run scripts/rebuild-form-catalog-manifest.py first.`);
   }
   const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8'));
   const descriptions = loadDescriptions();
   const titleOverrides = loadTitleOverrides();
 
   const rawForms = Array.isArray(manifest?.forms) ? manifest.forms : [];
-  const okForms = rawForms.filter((f) => f?.ok === true && f.section && f.filename);
+  // The raw form_catalog directory may contain experimental generated PDFs from
+  // parallel research passes. This O(n) allowlist keeps the public index stable:
+  // official hosted sections, practice templates, and the selected
+  // operational-template number ranges.
+  const okForms = rawForms.filter(
+    (f) => f?.ok === true && f.section && f.filename && isPublicCatalogRawEntry(f),
+  );
 
   const pageCountCache = await resolvePageCounts(okForms);
   // Prior-year IRS files rebuilt from disk often only preserve filename-like slugs.
@@ -773,7 +995,7 @@ async function main() {
   for (const entry of entries) {
     sectionCounts.set(entry.section, (sectionCounts.get(entry.section) || 0) + 1);
   }
-  const knownKeys = new Set([...Object.keys(CATEGORY_LABELS)]);
+  const knownKeys = new Set([...Object.keys(EMPTY_CATEGORY_REASONS)]);
   for (const key of sectionCounts.keys()) knownKeys.add(key);
 
   const categories = [...knownKeys]

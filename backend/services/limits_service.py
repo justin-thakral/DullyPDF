@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
+from backend.env_utils import env_value as _env_value
 from backend.env_utils import int_env as _int_env
 from backend.firebaseDB.user_database import ROLE_GOD, ROLE_PRO, normalize_role
 
@@ -169,7 +170,27 @@ def resolve_structured_fill_monthly_limit(role: Optional[str]) -> int:
     return max(0, _int_env("SANDBOX_STRUCTURED_FILL_MONTHLY_MAX_BASE", 50))
 
 
-def resolve_role_limits(role: Optional[str]) -> Dict[str, int]:
+def _optional_positive_int_env(name: str) -> Optional[int]:
+    raw = _env_value(name)
+    if not raw:
+        return None
+    try:
+        parsed = int(raw)
+    except ValueError:
+        return None
+    return parsed if parsed > 0 else None
+
+
+def resolve_pdf_downloads_monthly_limit(role: Optional[str]) -> Optional[int]:
+    normalized = normalize_role(role)
+    if normalized == ROLE_GOD:
+        return _optional_positive_int_env("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_GOD")
+    if normalized == ROLE_PRO:
+        return _optional_positive_int_env("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO")
+    return max(0, _int_env("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_BASE", 25))
+
+
+def resolve_role_limits(role: Optional[str]) -> Dict[str, Optional[int]]:
     return {
         "detectMaxPages": resolve_detect_max_pages(role),
         "fillableMaxPages": resolve_fillable_max_pages(role),
@@ -180,4 +201,5 @@ def resolve_role_limits(role: Optional[str]) -> Dict[str, int]:
         "templateApiMaxPages": resolve_template_api_max_pages(role),
         "signingRequestsMonthlyMax": resolve_signing_requests_monthly_limit(role),
         "structuredFillMonthlyMax": resolve_structured_fill_monthly_limit(role),
+        "pdfDownloadsMonthlyMax": resolve_pdf_downloads_monthly_limit(role),
     }

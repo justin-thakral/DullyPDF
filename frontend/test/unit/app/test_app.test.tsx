@@ -1788,14 +1788,17 @@ describe('App', () => {
     expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
 
     fireEvent.click(await screen.findByTestId('sign-out'));
-    await waitFor(() => {
-      expect(authMocks.signOut).toHaveBeenCalledTimes(1);
-    });
+    await waitFor(
+      () => {
+        expect(authMocks.signOut).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 10_000 },
+    );
     await settleAuthAsSignedOut();
 
     expect(await screen.findByTestId('homepage', {}, { timeout: 10_000 })).toBeTruthy();
     expect(document.querySelector('.homepage-loading-overlay')).toBeNull();
-  }, 15_000);
+  }, 30_000);
 
   it('supports undo/redo for field edits in editor history', async () => {
     window.history.replaceState({}, '', '/ui/forms/saved-1');

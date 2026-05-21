@@ -1,10 +1,11 @@
 .barcode-modal {
-  width: min(960px, 92vw);
-  max-height: 92vh;
+  width: min(960px, calc(100vw - 32px));
+  max-height: min(760px, calc(100vh - 32px));
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px 24px;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
 }
 
 .barcode-modal__header {
@@ -12,57 +13,81 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .barcode-modal__header h2 {
   margin: 0 0 4px;
-  font-size: 18px;
+  color: var(--ink-900);
+  font-size: 1.1rem;
 }
 
 .barcode-modal__header p {
   margin: 0;
-  color: var(--ui-text-muted, #5a6376);
-  font-size: 13px;
-  max-width: 540px;
+  color: var(--ink-500);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  max-width: 620px;
 }
 
 .barcode-modal__body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
-  gap: 20px;
+  gap: 16px;
   flex: 1 1 auto;
   min-height: 0;
+  padding: 18px 20px;
   overflow: auto;
 }
 
 @media (max-width: 720px) {
   .barcode-modal__body {
     grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+    align-content: start;
   }
 }
 
-.barcode-modal__config,
-.barcode-modal__preview {
+.barcode-modal__panel {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-1);
+  padding: 14px;
   min-height: 0;
+}
+
+.barcode-modal__section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.barcode-modal__section-header h3 {
+  margin: 0;
+  color: var(--ink-900);
+  font-size: 0.95rem;
+}
+
+.barcode-modal__section-header p {
+  margin: 3px 0 0;
+  color: var(--ink-500);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.barcode-modal__section-header .ui-button {
+  flex-shrink: 0;
 }
 
 .barcode-modal__config h3,
 .barcode-modal__preview h3 {
-  margin: 0;
-  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ui-text-muted, #5a6376);
-}
-
-.barcode-modal__config-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
 }
 
 .barcode-modal__class-list {
@@ -70,15 +95,16 @@
   margin: 0;
   padding: 0;
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   gap: 12px;
-  overflow: auto;
+  overflow: visible;
 }
 
 .barcode-modal__class-row {
-  background: var(--ui-surface-muted, #f5f7fb);
-  border: 1px solid var(--ui-border-subtle, #e3e7ef);
-  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -89,11 +115,20 @@
   display: grid;
   grid-template-columns: minmax(120px, 1fr) auto minmax(160px, 1.5fr);
   gap: 10px;
-  align-items: end;
+  align-items: start;
+}
+
+.barcode-modal__class-grid > * {
+  min-width: 0;
+}
+
+.barcode-modal__class-grid--single {
+  grid-template-columns: auto minmax(180px, 1fr);
 }
 
 @media (max-width: 640px) {
-  .barcode-modal__class-grid {
+  .barcode-modal__class-grid,
+  .barcode-modal__class-grid--single {
     grid-template-columns: 1fr;
   }
 }
@@ -103,36 +138,48 @@
   flex-direction: column;
   gap: 4px;
   font-size: 12px;
-  color: var(--ui-text-muted, #5a6376);
+  font-weight: 700;
+  color: var(--ink-700);
 }
 
 .barcode-modal__label input,
 .barcode-modal__label select {
   font: inherit;
-  padding: 6px 8px;
-  border: 1px solid var(--ui-border-strong, #c5cbd6);
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
-  color: var(--ui-text, #1f2733);
+  background: var(--surface-1);
+  color: var(--ink-900);
 }
 
 .barcode-modal__mode-group {
   display: inline-flex;
-  border: 1px solid var(--ui-border-strong, #c5cbd6);
+  min-height: 36px;
+  border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
-  align-self: end;
+  align-self: start;
+  margin-top: 20px;
+  background: var(--surface-1);
+}
+
+@media (max-width: 640px) {
+  .barcode-modal__mode-group {
+    margin-top: 0;
+  }
 }
 
 .barcode-modal__mode {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 10px;
+  padding: 0 10px;
   cursor: pointer;
   font-size: 12px;
-  color: var(--ui-text, #1f2733);
-  background: #fff;
+  font-weight: 700;
+  color: var(--ink-700);
+  background: var(--surface-1);
 }
 
 .barcode-modal__mode input {
@@ -140,7 +187,7 @@
 }
 
 .barcode-modal__mode--active {
-  background: var(--ui-accent, #1f7be8);
+  background: #2563eb;
   color: #fff;
 }
 
@@ -148,8 +195,9 @@
   align-self: flex-end;
   background: transparent;
   border: none;
-  color: var(--ui-danger, #c04040);
+  color: #b91c1c;
   font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
   padding: 4px 6px;
 }
@@ -157,13 +205,25 @@
 .barcode-modal__empty {
   margin: 0;
   font-size: 13px;
-  color: var(--ui-text-muted, #5a6376);
+  color: var(--ink-500);
+}
+
+.barcode-modal__validation {
+  margin: 0;
+  border: 1px solid rgba(185, 28, 28, 0.22);
+  border-radius: 6px;
+  background: rgba(254, 242, 242, 0.9);
+  color: #991b1b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  padding: 8px 10px;
 }
 
 .barcode-modal__preview-image {
-  background: var(--ui-surface-muted, #f5f7fb);
-  border: 1px solid var(--ui-border-subtle, #e3e7ef);
-  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   min-height: 120px;
   display: flex;
   align-items: center;
@@ -179,7 +239,7 @@
 }
 
 .barcode-modal__preview-empty {
-  color: var(--ui-text-muted, #5a6376);
+  color: var(--ink-500);
   font-size: 13px;
   text-align: center;
 }
@@ -187,10 +247,10 @@
 .barcode-modal__preview-text {
   font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   padding: 8px;
-  border: 1px solid var(--ui-border-subtle, #e3e7ef);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
-  color: var(--ui-text, #1f2733);
+  background: var(--surface-1);
+  color: var(--ink-900);
   resize: vertical;
 }
 
@@ -198,7 +258,7 @@
   list-style: disc;
   padding-left: 18px;
   margin: 0;
-  color: var(--ui-warning, #b06b00);
+  color: #92400e;
   font-size: 12px;
 }
 
@@ -206,4 +266,6 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  padding: 14px 20px 20px;
+  border-top: 1px solid var(--border);
 }

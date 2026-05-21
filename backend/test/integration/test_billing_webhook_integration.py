@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 import backend.main as main
 import backend.api.routes.billing as billing_routes
 import backend.firebaseDB.billing_database as billing_database
+import backend.firebaseDB.pdf_download_database as pdf_download_database
 import backend.firebaseDB.user_database as user_database
 from backend.test.integration.billing_webhook_test_support import (
     encode_event as _encode_event,
@@ -19,14 +20,102 @@ from backend.test.integration.billing_webhook_test_support import (
 from backend.test.unit.firebase._fakes import FakeFirestoreClient
 
 
-def _active_pro_billing_record(uid: str = "integration-user") -> user_database.UserBillingRecord:
+def _active_pro_billing_record(
+    uid: str = "integration-user",
+    *,
+    subscription_id: str = "sub_integration",
+) -> user_database.UserBillingRecord:
     return user_database.UserBillingRecord(
         uid=uid,
         customer_id="cus_integration",
-        subscription_id="sub_integration",
+        subscription_id=subscription_id,
         subscription_status="active",
         subscription_price_id="price_pro_monthly",
     )
+
+
+def _seed_integration_user(
+    fake_client: FakeFirestoreClient,
+    *,
+    role: str,
+    subscription_id: str | None = None,
+    subscription_status: str | None = None,
+) -> None:
+    payload = {
+        "email": "integration@example.com",
+        "displayName": "Integration User",
+        user_database.ROLE_FIELD: role,
+        user_database.OPENAI_CREDITS_FIELD: user_database.BASE_OPENAI_CREDITS,
+        user_database.OPENAI_CREDITS_BASE_CYCLE_FIELD: "2026-05",
+        "created_at": "2026-05-01T00:00:00+00:00",
+        "updated_at": "2026-05-01T00:00:00+00:00",
+    }
+    if subscription_id is not None:
+        payload[user_database.STRIPE_CUSTOMER_ID_FIELD] = "cus_integration"
+        payload[user_database.STRIPE_SUBSCRIPTION_ID_FIELD] = subscription_id
+        payload[user_database.STRIPE_SUBSCRIPTION_STATUS_FIELD] = subscription_status or "active"
+        payload[user_database.STRIPE_SUBSCRIPTION_PRICE_ID_FIELD] = "price_pro_monthly"
+    fake_client.collection(user_database.USERS_COLLECTION).document("integration-user").seed(payload)
+
+
+def _seed_pdf_download_usage(
+    fake_client: FakeFirestoreClient,
+    *,
+    download_count: int = 25,
+) -> None:
+    fake_client.collection(pdf_download_database.PDF_DOWNLOAD_USAGE_COUNTERS_COLLECTION).document(
+        pdf_download_database._usage_counter_doc_id("integration-user", "2026-05")
+    ).seed(
+        {
+            "user_id": "integration-user",
+            "month_key": "2026-05",
+            "download_count": download_count,
+            "event_count": download_count,
+            "workspace_download_count": download_count,
+            "group_download_pdf_count": 0,
+            "created_at": "2026-05-01T00:00:00+00:00",
+            "updated_at": "2026-05-20T00:00:00+00:00",
+        }
+    )
+
+
+def _pdf_download_usage(fake_client: FakeFirestoreClient) -> dict:
+    return (
+        fake_client.collection(pdf_download_database.PDF_DOWNLOAD_USAGE_COUNTERS_COLLECTION)
+        .document(pdf_download_database._usage_counter_doc_id("integration-user", "2026-05"))
+        .get()
+        .to_dict()
+    )
+
+
+def _install_pdf_quota_billing_fakes(mocker, fake_client: FakeFirestoreClient) -> None:
+    mocker.patch.object(user_database, "get_firestore_client", return_value=fake_client)
+    mocker.patch.object(pdf_download_database, "get_firestore_client", return_value=fake_client)
+    mocker.patch.object(user_database.firebase_firestore, "transactional", side_effect=lambda fn: fn)
+    mocker.patch.object(pdf_download_database.firebase_firestore, "transactional", side_effect=lambda fn: fn)
+    mocker.patch.object(user_database, "_current_month_cycle_key", return_value="2026-05")
+    mocker.patch.object(user_database, "now_iso", return_value="2026-05-20T12:00:00+00:00")
+    mocker.patch.object(pdf_download_database, "_current_month_key", return_value="2026-05")
+    mocker.patch.object(pdf_download_database, "now_iso", return_value="2026-05-20T12:00:00+00:00")
+    mocker.patch.object(billing_routes, "start_billing_event", return_value=True)
+    mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
+    mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
+    mocker.patch.object(
+        billing_routes,
+        "get_user_billing_record",
+        side_effect=lambda uid: user_database.get_user_billing_record(uid),
+    )
+    mocker.patch.object(
+        billing_routes,
+        "resolve_price_id_for_checkout_kind",
+        return_value="price_pro_monthly",
+    )
+    mocker.patch.object(
+        billing_routes,
+        "is_pro_price_id",
+        side_effect=lambda value: value == "price_pro_monthly",
+    )
+
 
 @pytest.fixture
 def client() -> TestClient:
@@ -346,7 +435,7 @@ def test_webhook_invoice_paid_dispatches_pro_activation(
     mocker.patch.object(
         billing_routes,
         "get_user_billing_record",
-        return_value=_active_pro_billing_record(),
+        return_value=_active_pro_billing_record(subscription_id="sub_integration_invoice"),
     )
     activate_mock = mocker.patch.object(
         billing_routes,
@@ -376,6 +465,93 @@ def test_webhook_invoice_paid_dispatches_pro_activation(
     assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_integration_invoice"
     assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
     complete_mock.assert_called_once_with("evt_integration_invoice_paid")
+    clear_mock.assert_not_called()
+
+
+def test_webhook_invoice_payment_failed_records_recovery_with_valid_signature(
+    client: TestClient,
+    webhook_secret: str,
+    mocker,
+) -> None:
+    event = {
+        "id": "evt_integration_invoice_failed",
+        "type": "invoice.payment_failed",
+        "created": 1775000200,
+        "data": {
+            "object": {
+                "id": "in_integration_failed",
+                "subscription": None,
+                "customer": "cus_integration",
+                "status": "open",
+                "created": 1775000100,
+                "next_payment_attempt": 1775086500,
+                "parent": {
+                    "type": "subscription_details",
+                    "subscription_details": {
+                        "subscription": "sub_integration",
+                        "metadata": {"userId": "integration-user"},
+                    },
+                },
+                "last_payment_error": {
+                    "decline_code": "insufficient_funds",
+                    "message": "The card has insufficient funds.",
+                },
+                "lines": {
+                    "data": [
+                        {
+                            "pricing": {
+                                "type": "price_details",
+                                "price_details": {"price": "price_pro_monthly"},
+                            },
+                        },
+                    ],
+                },
+            }
+        },
+    }
+    payload = _encode_event(event)
+    signature = _sign_stripe_payload(payload, secret=webhook_secret)
+
+    mocker.patch.object(billing_routes, "start_billing_event", return_value=True)
+    mocker.patch.object(
+        billing_routes,
+        "is_pro_price_id",
+        side_effect=lambda value: value == "price_pro_monthly",
+    )
+    mocker.patch.object(
+        billing_routes,
+        "get_user_billing_record",
+        return_value=_active_pro_billing_record(),
+    )
+    set_subscription_mock = mocker.patch.object(
+        billing_routes,
+        "set_user_billing_subscription",
+        return_value=None,
+    )
+    set_recovery_mock = mocker.patch.object(
+        billing_routes,
+        "set_user_billing_payment_recovery",
+        return_value=None,
+    )
+    complete_mock = mocker.patch.object(billing_routes, "complete_billing_event", return_value=None)
+    clear_mock = mocker.patch.object(billing_routes, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=payload,
+        headers={"Stripe-Signature": signature},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"received": True}
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "past_due"
+    assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+    set_recovery_mock.assert_called_once()
+    assert set_recovery_mock.call_args.args[0] == "integration-user"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_id"] == "in_integration_failed"
+    assert set_recovery_mock.call_args.kwargs["failure_code"] == "insufficient_funds"
+    assert set_recovery_mock.call_args.kwargs["failed_at"] == 1775000200
+    complete_mock.assert_called_once_with("evt_integration_invoice_failed")
     clear_mock.assert_not_called()
 
 
@@ -477,6 +653,195 @@ def test_webhook_invoice_paid_does_not_reset_consumed_pro_credits_after_checkout
     assert stored_user[user_database.OPENAI_CREDITS_MONTHLY_FIELD] == 363
     assert stored_user[user_database.OPENAI_CREDITS_MONTHLY_CYCLE_FIELD] == "2026-03"
     assert stored_user[user_database.STRIPE_SUBSCRIPTION_ID_FIELD] == "sub_integration_pro"
+
+
+def test_webhook_pro_checkout_bypasses_existing_pdf_download_monthly_cap(
+    client: TestClient,
+    webhook_secret: str,
+    mocker,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_BASE", "25")
+    monkeypatch.delenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO", raising=False)
+    fake_client = FakeFirestoreClient()
+    _install_pdf_quota_billing_fakes(mocker, fake_client)
+    _seed_integration_user(fake_client, role=user_database.ROLE_BASE)
+    _seed_pdf_download_usage(fake_client, download_count=25)
+
+    event = {
+        "id": "evt_integration_pdf_quota_pro_checkout",
+        "type": "checkout.session.completed",
+        "data": {
+            "object": {
+                "id": "cs_integration_pdf_quota_pro",
+                "client_reference_id": "integration-user",
+                "metadata": {
+                    "userId": "integration-user",
+                    "checkoutKind": "pro_monthly",
+                    "checkoutPriceId": "price_pro_monthly",
+                },
+                "subscription": "sub_integration_pdf_quota_pro",
+                "customer": "cus_integration",
+                "payment_status": "paid",
+            }
+        },
+    }
+    payload = _encode_event(event)
+    response = client.post(
+        "/api/billing/webhook",
+        content=payload,
+        headers={"Stripe-Signature": _sign_stripe_payload(payload, secret=webhook_secret)},
+    )
+
+    assert response.status_code == 200
+    stored_user = (
+        fake_client.collection(user_database.USERS_COLLECTION)
+        .document("integration-user")
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.ROLE_FIELD] == user_database.ROLE_PRO
+    assert _pdf_download_usage(fake_client)["download_count"] == 25
+
+    result = pdf_download_database.commit_pdf_download_usage(
+        user_id="integration-user",
+        role=stored_user[user_database.ROLE_FIELD],
+        request_id="post-checkout-download",
+        source="workspace_download",
+        export_mode="editable",
+        pdf_count=1,
+    )
+
+    assert result.monthly_limit is None
+    assert result.current_month_usage == 26
+    assert _pdf_download_usage(fake_client)["download_count"] == 26
+
+
+def test_webhook_terminal_subscription_downgrade_reapplies_pdf_download_cap_without_reset(
+    client: TestClient,
+    webhook_secret: str,
+    mocker,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_BASE", "25")
+    monkeypatch.delenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO", raising=False)
+    fake_client = FakeFirestoreClient()
+    _install_pdf_quota_billing_fakes(mocker, fake_client)
+    _seed_integration_user(
+        fake_client,
+        role=user_database.ROLE_PRO,
+        subscription_id="sub_integration_pdf_quota_terminal",
+        subscription_status="active",
+    )
+    _seed_pdf_download_usage(fake_client, download_count=25)
+
+    event = {
+        "id": "evt_integration_pdf_quota_terminal",
+        "type": "customer.subscription.updated",
+        "data": {
+            "object": {
+                "id": "sub_integration_pdf_quota_terminal",
+                "customer": "cus_integration",
+                "status": "unpaid",
+                "metadata": {"userId": "integration-user"},
+                "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+            }
+        },
+    }
+    payload = _encode_event(event)
+    response = client.post(
+        "/api/billing/webhook",
+        content=payload,
+        headers={"Stripe-Signature": _sign_stripe_payload(payload, secret=webhook_secret)},
+    )
+
+    assert response.status_code == 200
+    stored_user = (
+        fake_client.collection(user_database.USERS_COLLECTION)
+        .document("integration-user")
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.ROLE_FIELD] == user_database.ROLE_BASE
+    assert stored_user[user_database.STRIPE_SUBSCRIPTION_STATUS_FIELD] == "unpaid"
+
+    with pytest.raises(pdf_download_database.PdfDownloadMonthlyLimitExceededError) as exc_info:
+        pdf_download_database.commit_pdf_download_usage(
+            user_id="integration-user",
+            role=stored_user[user_database.ROLE_FIELD],
+            request_id="post-terminal-download",
+            source="workspace_download",
+            export_mode="flat",
+            pdf_count=1,
+        )
+
+    detail = exc_info.value.to_api_detail()
+    assert detail["monthlyLimit"] == 25
+    assert detail["currentMonthUsage"] == 25
+    assert detail["downloadsRemaining"] == 0
+    assert _pdf_download_usage(fake_client)["download_count"] == 25
+
+
+def test_webhook_past_due_subscription_keeps_pdf_downloads_unlimited(
+    client: TestClient,
+    webhook_secret: str,
+    mocker,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_BASE", "25")
+    monkeypatch.delenv("SANDBOX_PDF_DOWNLOADS_MONTHLY_MAX_PRO", raising=False)
+    fake_client = FakeFirestoreClient()
+    _install_pdf_quota_billing_fakes(mocker, fake_client)
+    _seed_integration_user(
+        fake_client,
+        role=user_database.ROLE_PRO,
+        subscription_id="sub_integration_pdf_quota_past_due",
+        subscription_status="active",
+    )
+    _seed_pdf_download_usage(fake_client, download_count=25)
+
+    event = {
+        "id": "evt_integration_pdf_quota_past_due",
+        "type": "customer.subscription.updated",
+        "data": {
+            "object": {
+                "id": "sub_integration_pdf_quota_past_due",
+                "customer": "cus_integration",
+                "status": "past_due",
+                "metadata": {"userId": "integration-user"},
+                "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+            }
+        },
+    }
+    payload = _encode_event(event)
+    response = client.post(
+        "/api/billing/webhook",
+        content=payload,
+        headers={"Stripe-Signature": _sign_stripe_payload(payload, secret=webhook_secret)},
+    )
+
+    assert response.status_code == 200
+    stored_user = (
+        fake_client.collection(user_database.USERS_COLLECTION)
+        .document("integration-user")
+        .get()
+        .to_dict()
+    )
+    assert stored_user[user_database.ROLE_FIELD] == user_database.ROLE_PRO
+    assert stored_user[user_database.STRIPE_SUBSCRIPTION_STATUS_FIELD] == "past_due"
+
+    result = pdf_download_database.commit_pdf_download_usage(
+        user_id="integration-user",
+        role=stored_user[user_database.ROLE_FIELD],
+        request_id="post-past-due-download",
+        source="workspace_download",
+        export_mode="editable",
+        pdf_count=1,
+    )
+
+    assert result.monthly_limit is None
+    assert result.current_month_usage == 26
+    assert _pdf_download_usage(fake_client)["download_count"] == 26
 
 
 def test_webhook_invoice_paid_missing_user_returns_retryable(

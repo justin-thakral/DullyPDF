@@ -194,7 +194,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
   <head>
     ${viteAssets.headScriptTags.join('\n    ')}
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/DullyPDFLogoImproved.png" />
+    <link rel="icon" type="image/png" href="/DullyPDF_logo_social_full_bleed.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${esc(seo.title)}</title>
     <meta name="description" content="${esc(seo.description)}" />

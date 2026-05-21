@@ -21,6 +21,7 @@ CanonicalFieldType = Literal[
     "radio_group",
     "signature",
     "number",
+    "image",
 ]
 """Canonical type vocabulary used by the group schema.
 
@@ -37,6 +38,8 @@ Mapping from the existing fill-link question types:
   schema when callers feed signature fields directly).
 - ``number`` is reserved for numeric fields and currently unused by the
   fill-link pipeline; it lets the API Fill JSON schema be type-precise.
+- ``image`` is an image upload/path field; API Fill values must be allowlisted
+  ``gs://`` PNG or JPEG image paths.
 """
 
 

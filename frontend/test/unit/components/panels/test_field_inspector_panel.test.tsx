@@ -48,7 +48,9 @@ function createProps(overrides: Partial<FieldInspectorPanelProps> = {}): FieldIn
     arrowKeyMoveStep: 5,
     onUpdateField: vi.fn(),
     onSetFieldType: vi.fn(),
+    onSelectField: vi.fn(),
     onOpenCalculationSetup: vi.fn(),
+    onOpenImageSetup: vi.fn(),
     onOpenBarcodeSetup: vi.fn(),
     onUpdateFieldDraft: vi.fn(),
     onDeleteField: vi.fn(),
@@ -386,6 +388,70 @@ describe('FieldInspectorPanel', () => {
     expect(onRedo).toHaveBeenCalledTimes(1);
   });
 
+  it('shows calculation metadata in a structured block and opens setup from a clear action', async () => {
+    const user = userEvent.setup();
+    const onOpenCalculationSetup = vi.fn();
+    const onSelectField = vi.fn();
+    const joeyField: PdfField = {
+      ...SAMPLE_FIELD,
+      id: 'joey',
+      name: 'Joey',
+      value: '7',
+      valueType: 'integer',
+      calculation: { role: 'number_input', valueType: 'integer' },
+    };
+    const jtField: PdfField = {
+      ...SAMPLE_FIELD,
+      id: 'jt',
+      name: 'JT',
+      value: '5',
+      valueType: 'integer',
+      calculation: { role: 'number_input', valueType: 'integer' },
+    };
+    const calculatedField: PdfField = {
+      ...SAMPLE_FIELD,
+      id: 'total',
+      name: 'Total',
+      valueType: 'integer',
+      readOnly: true,
+      calculation: {
+        role: 'calculated_output',
+        valueType: 'integer',
+        dependencies: ['joey', 'jt'],
+        formula: {
+          kind: 'binary',
+          op: '+',
+          left: { kind: 'field', fieldId: 'joey' },
+          right: { kind: 'field', fieldId: 'jt' },
+        },
+        output: { valueType: 'integer' },
+      },
+    };
+
+    render(
+      <FieldInspectorPanel
+        {...createProps({
+          fields: [joeyField, jtField, calculatedField],
+          selectedFieldId: calculatedField.id,
+          selectedField: calculatedField,
+          onOpenCalculationSetup,
+          onSelectField,
+        })}
+      />,
+    );
+
+    expect(screen.getByText('Formula')).toBeTruthy();
+    expect(screen.getByText('Joey + JT = 12')).toBeTruthy();
+    expect(screen.getByText('Computed: 12')).toBeTruthy();
+    expect(screen.getByText('Depends on')).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: /Joey 7/i }));
+    expect(onSelectField).toHaveBeenCalledWith('joey');
+
+    await user.click(screen.getByRole('button', { name: 'Edit Calculation Setup' }));
+
+    expect(onOpenCalculationSetup).toHaveBeenCalledWith('total', 'edit');
+  });
+
   it('activates bulk font conversion and applies a selected style to pending text fields', async () => {
     const user = userEvent.setup();
     const onCreateToolChange = vi.fn();
@@ -596,5 +662,34 @@ describe('FieldInspectorPanel', () => {
     );
     await user.click(screen.getByRole('button', { name: /Edit barcode classes/i }));
     expect(onOpenBarcodeSetup).toHaveBeenCalledWith(qrField.id);
+  });
+
+  it('opens the image setup modal for image fields', async () => {
+    const user = userEvent.setup();
+    const onOpenImageSetup = vi.fn();
+    const imageField: PdfField = {
+      id: 'image',
+      name: 'Profile Image',
+      type: 'image',
+      page: 1,
+      rect: { x: 10, y: 10, width: 180, height: 120 },
+      imageName: 'profile.png',
+      imageColorMode: 'grayscale',
+    };
+
+    render(
+      <FieldInspectorPanel
+        {...createProps({
+          fields: [imageField],
+          selectedFieldId: imageField.id,
+          selectedField: imageField,
+          onOpenImageSetup,
+        })}
+      />,
+    );
+
+    expect(screen.getByText(/profile.png - Grayscale/i)).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: /Edit image setup/i }));
+    expect(onOpenImageSetup).toHaveBeenCalledWith(imageField.id);
   });
 });

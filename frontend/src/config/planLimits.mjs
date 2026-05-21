@@ -29,6 +29,7 @@ export const FREE_PLAN_LIMITS = Object.freeze({
   templateApiMaxPages: 50,
   signingRequestsMonthlyMax: 25,
   structuredFillMonthlyMax: 50,
+  pdfDownloadsMonthlyMax: 25,
 });
 
 export const PREMIUM_PLAN_LIMITS = Object.freeze({
@@ -41,6 +42,7 @@ export const PREMIUM_PLAN_LIMITS = Object.freeze({
   templateApiMaxPages: 500,
   signingRequestsMonthlyMax: 10000,
   structuredFillMonthlyMax: 10000,
+  pdfDownloadsMonthlyMax: null,
 });
 
 export const GOD_PLAN_LIMITS = Object.freeze({
@@ -53,6 +55,7 @@ export const GOD_PLAN_LIMITS = Object.freeze({
   templateApiMaxPages: 2000,
   signingRequestsMonthlyMax: 100000,
   structuredFillMonthlyMax: 100000,
+  pdfDownloadsMonthlyMax: null,
 });
 
 export const FREE_PLAN_CREDITS = Object.freeze({

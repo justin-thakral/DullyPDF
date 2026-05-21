@@ -18,6 +18,7 @@ const limits: ProfileLimits = {
   templateApiRequestsMonthlyMax: 250,
   templateApiMaxPages: 25,
   signingRequestsMonthlyMax: 12,
+  pdfDownloadsMonthlyMax: 25,
 };
 
 const savedForms: SavedFormSummary[] = [];

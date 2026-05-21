@@ -8,6 +8,10 @@ yarn-error.log*
 pnpm-debug.log*
 frontend/dist/
 frontend/.vite/
+frontend/coverage/
+coverage/
+.nyc_output/
+.turbo/
 playwright-report/
 frontend/output/
 frontend/test/playwright/run_homepage_instant_render.mjs
@@ -18,11 +22,13 @@ frontend/test/playwright/run_homepage_instant_render.mjs
 !frontend/public/demo/*.pdf
 !quickTestFiles/
 !quickTestFiles/**
+/quickTestFiles/*-fillable*.pdf
 
 # Env files (local-only)
 /env/
 /.env
 /.env.*
+/.envrc
 !/.env.db.example
 /.env.cloudsql
 backend/.env
@@ -30,6 +36,10 @@ backend/.env.*
 frontend/.env
 frontend/.env.*
 frontend/.env.*.local
+/config/*.env
+/config/**/*.local.env
+/config/**/*secret*.env
+/config/**/*private*.env
 
 # Python artifacts
 __pycache__/
@@ -39,6 +49,8 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.hypothesis/
+htmlcov/
 .venv/
 .venv-*/
 backend/.venv/
@@ -90,6 +102,12 @@ mcp/.env.*.local
 /security_full_audit_report_*.md
 
 # Local implementation plans
+*plan*.md
+*Plan*.md
+*PLAN*.md
+*audit*.md
+*Audit*.md
+*AUDIT*.md
 /DIFFERENT_FONT_IMPLEMENTATION_PLAN.md
 /FONT_SIZE_SETTINGS_IMPLEMENTATION_PLAN.md
 /GROUP_FILL_MIGRATION_PLAN.md
@@ -122,15 +140,39 @@ Thumbs.db
 
 # Local scratch screenshots
 /image.png
+/debug-state.*
+/debug-*.png
+/*-debug.png
 
 # Private keys and certificates
 *.pem
+*.key
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.p8
+*.jks
+*.keystore
+*.kdbx
+.npmrc
+.pypirc
+.netrc
 
 # Service account credentials
 .gcloud/
 firebase-adminsdk-*.json
 *service_account*.json
+*service-account*.json
+*serviceAccount*.json
+*credentials*.json
+*credential*.json
+*client_secret*.json
+*private-key*.json
 serviceAccounts/
+secrets/
+.secrets/
 
 # IDE + local scratch
 /.vscode/
@@ -157,6 +199,8 @@ serviceAccounts/
 # Local SEO analytics exports (ahrefs, GSC, etc.)
 /ahref/
 /ahrefs/
+/SEO_FIELD_SUPPORT_PAGES.md
+/frontend/docs/high-intent-seo-opportunity-pages.md
 
 # Video assets (local recordings)
 /youtube/

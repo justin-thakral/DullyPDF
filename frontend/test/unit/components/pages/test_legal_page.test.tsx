@@ -25,6 +25,7 @@ describe('LegalPage', () => {
     const usageDocsLinks = screen.getAllByRole('link', { name: 'Usage Docs' });
     expect(privacyLink.className.includes('legal-nav__link--active')).toBe(true);
     expect(termsLink.className.includes('legal-nav__link--active')).toBe(false);
+    expect(getLegalNavLink('Refund Policy').className.includes('legal-nav__link--active')).toBe(false);
     expect(usageDocsLinks.some((link) => link.getAttribute('href') === '/usage-docs')).toBe(true);
 
     expect(screen.getByText(/justin@dullypdf\.com/i)).toBeTruthy();
@@ -41,7 +42,21 @@ describe('LegalPage', () => {
     const usageDocsLinks = screen.getAllByRole('link', { name: 'Usage Docs' });
     expect(privacyLink.className.includes('legal-nav__link--active')).toBe(false);
     expect(termsLink.className.includes('legal-nav__link--active')).toBe(true);
+    expect(getLegalNavLink('Refund Policy').className.includes('legal-nav__link--active')).toBe(false);
     expect(usageDocsLinks.some((link) => link.getAttribute('href') === '/usage-docs')).toBe(true);
+  });
+
+  it('renders refund copy with active refund navigation', () => {
+    render(<LegalPage kind="refund" />);
+
+    expect(screen.getByRole('heading', { name: 'Refund and Return Policy' })).toBeTruthy();
+    expect(screen.getByText('Last updated: May 21, 2026')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Subscription refund eligibility' })).toBeTruthy();
+    expect(screen.getByText(/capped at one month of subscription fees/i)).toBeTruthy();
+
+    expect(getLegalNavLink('Privacy Policy').className.includes('legal-nav__link--active')).toBe(false);
+    expect(getLegalNavLink('Terms of Service').className.includes('legal-nav__link--active')).toBe(false);
+    expect(getLegalNavLink('Refund Policy').className.includes('legal-nav__link--active')).toBe(true);
   });
 
   it('updates document title per legal page kind', () => {
@@ -52,6 +67,10 @@ describe('LegalPage', () => {
     rerender(<LegalPage kind="terms" />);
     expect(document.title).toBe('Terms of Service | DullyPDF');
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/terms');
+
+    rerender(<LegalPage kind="refund" />);
+    expect(document.title).toBe('Refund and Return Policy | DullyPDF');
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/refund-policy');
   });
 
   it('renders legal section ids for in-page anchors', () => {
@@ -64,5 +83,10 @@ describe('LegalPage', () => {
 
     expect(document.querySelector('section#acceptable-use')).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Acceptable use' })).toBeTruthy();
+
+    rerender(<LegalPage kind="refund" />);
+
+    expect(document.querySelector('section#subscription-refunds')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Subscription refund eligibility' })).toBeTruthy();
   });
 });

@@ -21,13 +21,13 @@ describe('generate-static-html', () => {
     const html = generatePageHtml(
       route!,
       EMPTY_VITE_ASSETS,
-      '<main><h1>Fill PDF From CSV, SQL, Excel, or JSON Data</h1><a href="/">Try DullyPDF Now</a></main>',
+      '<main><h1>Fill PDF From CSV, Excel, or JSON Data</h1><a href="/">Try DullyPDF Now</a></main>',
     );
 
     expect(html).toContain('data-seo-jsonld="true"');
-    expect(html).toContain('Fill PDF From CSV, SQL, Excel, or JSON Data');
+    expect(html).toContain('Fill PDF From CSV, Excel, or JSON Data');
     expect(html).toContain('Try DullyPDF Now');
-    expect(html).toContain('<div id="root"><main><h1>Fill PDF From CSV, SQL, Excel, or JSON Data</h1><a href="/">Try DullyPDF Now</a></main></div>');
+    expect(html).toContain('<div id="root"><main><h1>Fill PDF From CSV, Excel, or JSON Data</h1><a href="/">Try DullyPDF Now</a></main></div>');
   });
 
   it('adds the homepage-only hydration cover tags', () => {

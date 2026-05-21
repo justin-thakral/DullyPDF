@@ -141,6 +141,7 @@ def test_trial_checkout_and_activation(
     assert stored_user[user_database.TRIAL_USED_FIELD] is True
     assert stored_user[user_database.STRIPE_CUSTOMER_ID_FIELD] == "cus_trial_123"
     assert stored_user[user_database.STRIPE_SUBSCRIPTION_ID_FIELD] == "sub_trial_123"
+    assert stored_user[user_database.STRIPE_SUBSCRIPTION_STATUS_FIELD] == "trialing"
 
     profile_response = client.get(
         "/api/profile",

@@ -7,6 +7,7 @@
 
 .homepage-container {
   --homepage-fit-scale: 1;
+  --homepage-action-scale: var(--homepage-fit-scale);
   background: #ffffff;
   display: flex;
   flex-direction: column;
@@ -152,7 +153,7 @@
 /* Right Panel - Call to Action */
 .action-panel {
   background: #ffffff;
-  padding: clamp(1.5rem, 2.2vw, 2.5rem) clamp(1.5rem, 2.6vw, 2.75rem);
+  padding: clamp(1.25rem, 2vw, 2.2rem) clamp(1.25rem, 2.3vw, 2.45rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -179,7 +180,7 @@
   }
 
   .action-content {
-    transform: scale(var(--homepage-fit-scale));
+    transform: scale(var(--homepage-action-scale));
     transform-origin: top center;
     will-change: transform;
   }
@@ -219,7 +220,7 @@
 }
 
 .cta-section {
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   width: 100%;
 }
 
@@ -236,24 +237,24 @@
 
 .cta-description {
   color: #4b5563;
-  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
-  line-height: 1.6;
-  margin: 0 auto 1.5rem;
+  font-size: clamp(0.95rem, 0.86rem + 0.42vw, 1.12rem);
+  line-height: 1.5;
+  margin: 0 auto 1.1rem;
   text-align: left;
   width: min(100%, 43ch);
   text-wrap: pretty;
 }
 
 .cta-buttons {
-  --cta-button-height: clamp(44px, 4vw, 54px);
-  --cta-button-pad-x: clamp(1.1rem, 1.6vw, 2rem);
-  --cta-button-font: clamp(0.95rem, 0.85rem + 0.4vw, 1.1rem);
+  --cta-button-height: clamp(40px, 3.6vw, 50px);
+  --cta-button-pad-x: clamp(0.95rem, 1.4vw, 1.75rem);
+  --cta-button-font: clamp(0.9rem, 0.8rem + 0.35vw, 1.02rem);
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 0.65rem;
-  margin: 0 0 0.75rem;
+  gap: 0.55rem;
+  margin: 0 0 0.58rem;
   width: 100%;
 }
 
@@ -323,9 +324,9 @@
 
 .cta-catalog-intro {
   color: #4b5563;
-  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
-  line-height: 1.5;
-  margin: 0.5rem 0 0.6rem;
+  font-size: clamp(0.92rem, 0.84rem + 0.38vw, 1.08rem);
+  line-height: 1.42;
+  margin: 0.4rem 0 0.5rem;
   text-align: left;
   width: 100%;
   text-wrap: pretty;
@@ -355,9 +356,9 @@
 .quick-info {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.52rem;
   background: #ffffff;
-  padding: 1.5rem;
+  padding: 1rem 1.12rem;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -398,13 +399,13 @@
 .info-label {
   color: #6b7280;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.82rem;
 }
 
 .info-value {
   color: #000000;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   text-align: right;
   max-width: 18rem;
 }
@@ -422,6 +423,141 @@
   font-size: 0.72rem;
   font-weight: 700;
   flex-shrink: 0;
+}
+
+.launch-review-card {
+  --launch-review-gap: 0.46rem;
+  --launch-review-margin-top: 0.58rem;
+  --launch-review-pad-x: 0.9rem;
+  --launch-review-pad-y: 0.78rem;
+  --launch-review-copy-gap: 0.45rem;
+  --launch-review-title-font: 0.78rem;
+  --launch-review-copy-font: 0.74rem;
+  --launch-review-copy-line: 1.28;
+  --launch-review-links-row-gap: 0.5rem;
+  --launch-review-links-gap: 0.34rem;
+  --launch-review-link-height: 1.42rem;
+  --launch-review-link-pad-x: 0.46rem;
+  --launch-review-link-font: 0.62rem;
+  --launch-review-badge-max-width: 6.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--launch-review-gap);
+  width: 100%;
+  margin-top: var(--launch-review-margin-top);
+  padding: var(--launch-review-pad-y) var(--launch-review-pad-x);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+.launch-review-copy-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--launch-review-copy-gap);
+}
+
+.launch-review-title {
+  color: #0f172a;
+  font-size: var(--launch-review-title-font);
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.launch-review-copy {
+  min-width: 0;
+  color: #64748b;
+  font-size: var(--launch-review-copy-font);
+  font-weight: 600;
+  line-height: var(--launch-review-copy-line);
+}
+
+.launch-review-links-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--launch-review-links-row-gap);
+  min-width: 0;
+}
+
+.launch-review-links-label {
+  position: absolute;
+  left: 0;
+  color: #6b7280;
+  font-size: var(--launch-review-copy-font);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.launch-review-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--launch-review-links-gap);
+  min-width: 0;
+}
+
+.launch-review-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--launch-review-link-height);
+  min-width: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 0 var(--launch-review-link-pad-x);
+  background: #ffffff;
+  color: #334155;
+  text-decoration: none;
+  font-size: var(--launch-review-link-font);
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.launch-review-link:hover {
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.launch-review-link:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+.launch-review-link--badge {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  line-height: 0;
+}
+
+.launch-review-link--g2 {
+  border-color: #ff492c;
+  color: #ff492c;
+}
+
+.launch-review-link--product-hunt {
+  color: #ff6154;
+}
+
+.launch-review-link--github {
+  border-color: #24292f;
+  color: #24292f;
+}
+
+.launch-review-badge-image {
+  display: block;
+  width: auto;
+  height: var(--launch-review-link-height);
+  max-width: var(--launch-review-badge-max-width);
 }
 
 /* Mobile-only header + walkthrough */
@@ -891,12 +1027,12 @@
   }
 
   .cta-section {
-    margin-bottom: 1.2rem;
+    margin-bottom: 0;
   }
 
   .quick-info {
-    padding: 1.2rem;
-    gap: 0.6rem;
+    padding: 0.78rem 0.9rem;
+    gap: 0.44rem;
   }
 
   .info-item {
@@ -909,6 +1045,19 @@
 
   .info-main {
     align-items: flex-start;
+  }
+
+  .launch-review-card {
+    --launch-review-gap: 0.38rem;
+    --launch-review-margin-top: 0.48rem;
+    --launch-review-pad-x: 0.78rem;
+    --launch-review-pad-y: 0.68rem;
+    --launch-review-title-font: 0.72rem;
+    --launch-review-copy-font: 0.68rem;
+    --launch-review-link-height: 1.24rem;
+    --launch-review-link-pad-x: 0.36rem;
+    --launch-review-link-font: 0.54rem;
+    --launch-review-badge-max-width: 5.75rem;
   }
 
 }
@@ -968,23 +1117,28 @@
   }
 
   .cta-description {
-    font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.3rem);
+    font-size: clamp(0.98rem, 0.9rem + 0.45vw, 1.16rem);
   }
 
   .cta-buttons {
-    --cta-button-height: clamp(46px, 3.4vw, 56px);
-    --cta-button-pad-x: clamp(1.2rem, 1.8vw, 2.2rem);
-    --cta-button-font: clamp(1rem, 0.9rem + 0.35vw, 1.15rem);
+    --cta-button-height: clamp(42px, 3.2vw, 52px);
+    --cta-button-pad-x: clamp(1.05rem, 1.6vw, 1.9rem);
+    --cta-button-font: clamp(0.94rem, 0.84rem + 0.32vw, 1.06rem);
   }
 
   .quick-info {
-    padding: 1rem 1.5rem;
-    gap: 0.6rem;
+    padding: 0.92rem 1.1rem;
+    gap: 0.5rem;
   }
 
   .info-label,
   .info-value {
-    font-size: 0.95rem;
+    font-size: 0.84rem;
+  }
+
+  .launch-review-card {
+    --launch-review-pad-x: 0.9rem;
+    --launch-review-pad-y: 0.74rem;
   }
 
 }
@@ -1009,7 +1163,7 @@
   }
 
   .cta-section {
-    margin-bottom: 2.5rem;
+    margin-bottom: 0;
   }
 }
 
@@ -1069,12 +1223,12 @@
   }
 
   .cta-section {
-    margin-bottom: 1.25rem;
+    margin-bottom: 0;
   }
 
   .quick-info {
-    padding: 1.25rem;
-    gap: 0.6rem;
+    padding: 0.86rem 0.98rem;
+    gap: 0.48rem;
   }
 
 }
@@ -1119,12 +1273,25 @@
   }
 
   .cta-section {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
   }
 
   .quick-info {
-    padding: 1rem 1.25rem;
-    gap: 0.6rem;
+    padding: 0.82rem 0.96rem;
+    gap: 0.46rem;
+  }
+
+  .launch-review-card {
+    --launch-review-gap: 0.38rem;
+    --launch-review-margin-top: 0.48rem;
+    --launch-review-pad-x: 0.78rem;
+    --launch-review-pad-y: 0.68rem;
+    --launch-review-title-font: 0.72rem;
+    --launch-review-copy-font: 0.68rem;
+    --launch-review-link-height: 1.24rem;
+    --launch-review-link-pad-x: 0.36rem;
+    --launch-review-link-font: 0.54rem;
+    --launch-review-badge-max-width: 5.75rem;
   }
 
 }
@@ -1322,6 +1489,23 @@
     gap: 0.44rem;
   }
 
+  .launch-review-card {
+    --launch-review-gap: 0.3rem;
+    --launch-review-margin-top: 0.44rem;
+    --launch-review-pad-x: 0.68rem;
+    --launch-review-pad-y: 0.58rem;
+    --launch-review-copy-gap: 0.34rem;
+    --launch-review-title-font: 0.66rem;
+    --launch-review-copy-font: 0.62rem;
+    --launch-review-copy-line: 1.18;
+    --launch-review-links-row-gap: 0.38rem;
+    --launch-review-links-gap: 0.24rem;
+    --launch-review-link-height: 1.08rem;
+    --launch-review-link-pad-x: 0.28rem;
+    --launch-review-link-font: 0.5rem;
+    --launch-review-badge-max-width: 5rem;
+  }
+
   .info-item,
   .info-main {
     align-items: flex-start;
@@ -1427,6 +1611,23 @@
     gap: 0.34rem;
   }
 
+  .launch-review-card {
+    --launch-review-gap: 0.26rem;
+    --launch-review-margin-top: 0.36rem;
+    --launch-review-pad-x: 0.58rem;
+    --launch-review-pad-y: 0.5rem;
+    --launch-review-copy-gap: 0.28rem;
+    --launch-review-title-font: 0.6rem;
+    --launch-review-copy-font: 0.56rem;
+    --launch-review-copy-line: 1.14;
+    --launch-review-links-row-gap: 0.3rem;
+    --launch-review-links-gap: 0.2rem;
+    --launch-review-link-height: 0.96rem;
+    --launch-review-link-pad-x: 0.22rem;
+    --launch-review-link-font: 0.46rem;
+    --launch-review-badge-max-width: 4.45rem;
+  }
+
   .info-label,
   .info-value {
     font-size: 0.68rem;
@@ -1470,6 +1671,18 @@
   .quick-info {
     padding: 0.56rem 0.68rem;
     gap: 0.3rem;
+  }
+
+  .launch-review-card {
+    --launch-review-gap: 0.22rem;
+    --launch-review-margin-top: 0.32rem;
+    --launch-review-pad-x: 0.52rem;
+    --launch-review-pad-y: 0.44rem;
+    --launch-review-title-font: 0.56rem;
+    --launch-review-copy-font: 0.52rem;
+    --launch-review-link-height: 0.9rem;
+    --launch-review-link-font: 0.42rem;
+    --launch-review-badge-max-width: 4.16rem;
   }
 }
 
@@ -1551,6 +1764,12 @@
     gap: 0.58rem;
   }
 
+  .launch-review-card {
+    --launch-review-margin-top: 0.5rem;
+    --launch-review-pad-x: 0.78rem;
+    --launch-review-pad-y: 0.68rem;
+  }
+
   .info-label,
   .info-value {
     font-size: 0.76rem;
@@ -1629,44 +1848,52 @@
     padding: 0.78rem 0.86rem;
     gap: 0.44rem;
   }
+
+  .launch-review-card {
+    --launch-review-gap: 0.3rem;
+    --launch-review-margin-top: 0.42rem;
+    --launch-review-pad-x: 0.66rem;
+    --launch-review-pad-y: 0.56rem;
+    --launch-review-title-font: 0.64rem;
+    --launch-review-copy-font: 0.6rem;
+    --launch-review-link-height: 1.02rem;
+    --launch-review-link-pad-x: 0.26rem;
+    --launch-review-link-font: 0.48rem;
+    --launch-review-badge-max-width: 4.72rem;
+  }
 }
 
-@media (min-width: 1021px) and (max-height: 700px) {
-  .homepage-shell {
-    height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow: visible;
+@media (min-width: 1320px) and (max-width: 1439px) and (max-height: 740px) {
+  .lead-description {
+    margin-bottom: 1.18rem;
   }
 
-  .landing-main,
-  .homepage-container,
-  .homepage-content-shell,
-  .homepage-content {
-    height: auto;
-    min-height: 0;
-    overflow: visible;
+  .features-section h3 {
+    margin-bottom: 0.72rem;
   }
 
-  .homepage-container {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    min-height: 100%;
+  .feature-list {
+    gap: 1.15rem 1.05rem;
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 1919px) and (min-height: 850px) {
+  .feature-list {
+    gap: 0.88rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .lead-description {
+    margin-bottom: 1.95rem;
   }
 
-  .homepage-content {
-    align-items: stretch;
+  .features-section h3 {
+    margin-bottom: 0.92rem;
   }
 
-  .description-panel,
-  .action-panel {
-    overflow: visible;
-  }
-
-  .description-content,
-  .action-content {
-    transform: none;
+  .feature-list {
+    gap: 1rem;
   }
 }
 
@@ -1795,6 +2022,19 @@
     gap: 0.38rem;
   }
 
+  .launch-review-card {
+    --launch-review-gap: 0.24rem;
+    --launch-review-margin-top: 0.34rem;
+    --launch-review-pad-x: 0.54rem;
+    --launch-review-pad-y: 0.46rem;
+    --launch-review-title-font: 0.58rem;
+    --launch-review-copy-font: 0.54rem;
+    --launch-review-link-height: 0.92rem;
+    --launch-review-link-pad-x: 0.2rem;
+    --launch-review-link-font: 0.42rem;
+    --launch-review-badge-max-width: 4.26rem;
+  }
+
   .info-item,
   .info-main {
     gap: 0.4rem;
@@ -1904,6 +2144,19 @@
   .quick-info {
     padding: 0.58rem 0.7rem;
     gap: 0.3rem;
+  }
+
+  .launch-review-card {
+    --launch-review-gap: 0.2rem;
+    --launch-review-margin-top: 0.3rem;
+    --launch-review-pad-x: 0.46rem;
+    --launch-review-pad-y: 0.38rem;
+    --launch-review-title-font: 0.54rem;
+    --launch-review-copy-font: 0.5rem;
+    --launch-review-link-height: 0.86rem;
+    --launch-review-link-pad-x: 0.18rem;
+    --launch-review-link-font: 0.4rem;
+    --launch-review-badge-max-width: 3.98rem;
   }
 
   .info-label,

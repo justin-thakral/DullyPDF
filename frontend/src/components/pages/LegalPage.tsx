@@ -5,7 +5,7 @@ import { applyRouteSeo } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
 import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 
-export type LegalPageKind = 'privacy' | 'terms';
+export type LegalPageKind = 'privacy' | 'terms' | 'refund';
 
 type LegalSection = {
   id: string;
@@ -16,16 +16,17 @@ type LegalSection = {
 type LegalCopy = {
   title: string;
   summary: string;
+  lastUpdated: string;
   sections: LegalSection[];
 };
 
-const LAST_UPDATED = 'March 9, 2026';
 const SUPPORT_EMAIL = 'justin@dullypdf.com';
 
 const PRIVACY_COPY: LegalCopy = {
   title: 'Privacy Policy',
   summary:
     'DullyPDF helps you turn PDFs into editable templates and fill them with local data. This policy explains what we collect, why we collect it, and how you can control it.',
+  lastUpdated: 'March 9, 2026',
   sections: [
     {
       id: 'information-we-collect',
@@ -210,6 +211,7 @@ const TERMS_COPY: LegalCopy = {
   title: 'Terms of Service',
   summary:
     'These terms govern your use of DullyPDF. By accessing or using the service, you agree to these terms.',
+  lastUpdated: 'May 21, 2026',
   sections: [
     {
       id: 'operator',
@@ -318,6 +320,10 @@ const TERMS_COPY: LegalCopy = {
             Prices and plan availability are shown at checkout and may change over time. Payment processing is subject
             to Stripe's terms and policies in addition to these terms.
           </p>
+          <p>
+            Refunds, return questions, and cancellation-related refund requests are governed by the{' '}
+            <a href="/refund-policy">Refund and Return Policy</a>.
+          </p>
         </>
       ),
     },
@@ -381,9 +387,140 @@ const TERMS_COPY: LegalCopy = {
   ],
 };
 
+const REFUND_COPY: LegalCopy = {
+  title: 'Refund and Return Policy',
+  summary:
+    'DullyPDF is a digital PDF automation service. This policy explains how subscription cancellations, limited refunds, and non-returnable digital services work.',
+  lastUpdated: 'May 21, 2026',
+  sections: [
+    {
+      id: 'digital-service',
+      title: 'Digital service and returns',
+      body: (
+        <>
+          <p>
+            DullyPDF provides digital access to PDF field detection, template editing, Search &amp; Fill, Fill By Link,
+            API Fill, signing workflows, generated PDF downloads, and related account features. Because DullyPDF does
+            not sell physical goods, physical returns, return shipping, and exchanges do not apply.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'cancellations',
+      title: 'Subscription cancellations',
+      body: (
+        <>
+          <p>
+            You can cancel an active subscription from the profile billing section. Cancellation is normally scheduled
+            for the end of the current billing period, and paid access remains available until that scheduled end date.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'subscription-refunds',
+      title: 'Subscription refund eligibility',
+      body: (
+        <>
+          <p>
+            We are happy to review refund requests for users who were charged for a paid subscription period but did
+            not use paid DullyPDF features during that period. To request a refund, contact us within 30 days of the
+            charge.
+          </p>
+          <p>
+            Eligible subscription refunds are limited to the most recent paid period and are capped at one month of
+            subscription fees, unless applicable law requires otherwise. We do not refund earlier billing periods.
+          </p>
+          <p>
+            For this policy, paid feature use means successful use of paid-plan capacity such as generated PDF
+            downloads, API Fill runs, accepted Fill By Link responses, sent signing requests, paid AI/refill credits,
+            or other Pro-only quota consumption. Logging in, viewing documentation, browsing public pages, or using
+            unpaid features does not by itself count as paid feature use.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'credit-refills',
+      title: 'Credit refill purchases',
+      body: (
+        <>
+          <p>
+            Pro-only refill credit purchases are digital, one-time purchases. Unused refill purchases may be reviewed
+            for refund within 30 days of purchase. Refill credits that have been consumed, partially consumed, or tied
+            to completed AI processing are not refundable except where required by law.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'billing-errors',
+      title: 'Billing errors and duplicate charges',
+      body: (
+        <>
+          <p>
+            If you believe there was a duplicate charge, billing error, or unauthorized transaction, contact us as soon
+            as possible at {SUPPORT_EMAIL}. We review these requests separately from ordinary unused-service refund
+            requests.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'how-to-request',
+      title: 'How to request a refund',
+      body: (
+        <>
+          <p>
+            Send refund requests to {SUPPORT_EMAIL} from the email address associated with your DullyPDF account.
+            Include the account email, approximate charge date, and a short explanation of the request so we can
+            locate the Stripe payment and review account usage.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'processing-time',
+      title: 'Refund processing time',
+      body: (
+        <>
+          <p>
+            Approved refunds are issued back to the original payment method through Stripe when possible. Your bank or
+            card issuer controls when the credit appears on your statement after the refund is submitted.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'limits',
+      title: 'Policy limits',
+      body: (
+        <>
+          <p>
+            We may decline refund requests that involve meaningful paid feature use, repeated refund abuse, chargeback
+            misuse, violation of the Terms of Service, or requests outside the time limits described above. Nothing in
+            this policy limits any mandatory rights you may have under applicable law.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'contact',
+      title: 'Contact',
+      body: (
+        <>
+          <p>Questions about refunds, returns, or subscription cancellation can be sent to {SUPPORT_EMAIL}.</p>
+        </>
+      ),
+    },
+  ],
+};
+
 const LEGAL_COPY: Record<LegalPageKind, LegalCopy> = {
   privacy: PRIVACY_COPY,
   terms: TERMS_COPY,
+  refund: REFUND_COPY,
 };
 
 type LegalPageProps = {
@@ -412,6 +549,12 @@ const LegalPage = ({ kind }: LegalPageProps) => {
         >
           Terms of Service
         </a>
+        <a
+          href="/refund-policy"
+          className={kind === 'refund' ? 'legal-nav__link legal-nav__link--active' : 'legal-nav__link'}
+        >
+          Refund Policy
+        </a>
         <a href="/usage-docs" className="legal-nav__link">Usage Docs</a>
       </div>
 
@@ -425,7 +568,7 @@ const LegalPage = ({ kind }: LegalPageProps) => {
           />
           <span className="legal-kicker">Legal</span>
           <h1 className="legal-title">{copy.title}</h1>
-          <div className="legal-updated">Last updated: {LAST_UPDATED}</div>
+          <div className="legal-updated">Last updated: {copy.lastUpdated}</div>
           <p className="legal-summary">{copy.summary}</p>
         </section>
 

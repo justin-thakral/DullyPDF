@@ -82,6 +82,7 @@ _FILL_LINK_TYPE_TO_CANONICAL: Dict[str, CanonicalFieldType] = {
     "multi_select": "radio_group",
     "signature": "signature",
     "number": "number",
+    "image": "image",
 }
 
 
@@ -90,8 +91,9 @@ _CANONICAL_TYPE_PRECEDENCE: Dict[CanonicalFieldType, int] = {
     "radio_group": 1,
     "date": 2,
     "number": 3,
-    "checkbox": 4,
-    "text": 5,
+    "image": 4,
+    "checkbox": 5,
+    "text": 6,
 }
 """Soft-mode tiebreaker order. Lower index wins.
 
@@ -460,6 +462,10 @@ def _canonical_field_to_property(field: GroupCanonicalField) -> Dict[str, Any]:
         base["x-dullypdf-signature"] = True
     elif field_type == "number":
         base["type"] = "number"
+    elif field_type == "image":
+        base["type"] = "string"
+        base["x-dullypdf-image"] = True
+        base["description"] = "Allowlisted gs:// PNG or JPEG image path."
     return base
 
 

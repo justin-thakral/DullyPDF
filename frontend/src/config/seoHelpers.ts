@@ -66,7 +66,7 @@ export const buildTechArticleSchema = (
     sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE_ORIGIN}/DullyPDFLogoImproved.png`,
+      url: `${SITE_ORIGIN}/DullyPDF_logo_social_full_bleed.png`,
     },
   },
 });

@@ -1,7 +1,9 @@
 import io
 import hashlib
 import json
+import zipfile
 from pathlib import Path
+from types import SimpleNamespace
 
 from fastapi import HTTPException
 import pytest
@@ -381,6 +383,182 @@ def test_materialize_empty_fields_fast_path_and_invalid_upload(
     cleanup_mock.assert_called()
 
 
+def test_download_materialized_form_commits_quota_and_sets_usage_headers(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+    tmp_path: Path,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    temp_pdf = tmp_path / "download.pdf"
+    temp_pdf.write_bytes(b"%PDF-1.4\nfake")
+    mocker.patch.object(app_main, "_write_upload_to_temp", return_value=temp_pdf)
+    mocker.patch.object(app_main.fitz, "open", return_value=_FakePdfDoc(page_count=2))
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+    commit_mock = mocker.patch.object(
+        app_main,
+        "commit_pdf_download_usage",
+        return_value=SimpleNamespace(
+            month_key="2026-05",
+            current_month_usage=1,
+            monthly_limit=25,
+            downloads_remaining=24,
+        ),
+    )
+
+    response = client.post(
+        "/api/forms/download",
+        files={"pdf": ("x.pdf", b"%PDF-1.4\n", "application/pdf")},
+        data={"fields": "[]", "exportMode": "editable", "downloadRequestId": "download-req-1"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    assert response.headers["x-dullypdf-download-usage-month"] == "2026-05"
+    assert response.headers["x-dullypdf-download-count"] == "1"
+    assert response.headers["x-dullypdf-download-limit"] == "25"
+    assert response.headers["x-dullypdf-download-remaining"] == "24"
+    assert response.headers["cache-control"] == "private, no-store"
+    call_kwargs = commit_mock.call_args.kwargs
+    assert call_kwargs["user_id"] == base_user.app_user_id
+    assert call_kwargs["role"] == "base"
+    assert call_kwargs["request_id"] == "download-req-1"
+    assert call_kwargs["source"] == "workspace_download"
+    assert call_kwargs["export_mode"] == "editable"
+    assert call_kwargs["pdf_count"] == 1
+    assert call_kwargs["page_count"] == 2
+    assert call_kwargs["field_count"] == 0
+
+
+def test_download_materialized_form_returns_structured_quota_error_and_cleans_temp(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+    tmp_path: Path,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    temp_pdf = tmp_path / "quota-error.pdf"
+    temp_pdf.write_bytes(b"%PDF-1.4\nfake")
+    mocker.patch.object(app_main, "_write_upload_to_temp", return_value=temp_pdf)
+    mocker.patch.object(app_main.fitz, "open", return_value=_FakePdfDoc(page_count=1))
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+    cleanup_mock = mocker.patch.object(app_main, "_cleanup_paths", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "commit_pdf_download_usage",
+        side_effect=app_main.PdfDownloadMonthlyLimitExceededError(
+            monthly_limit=25,
+            current_month_usage=25,
+            downloads_remaining=0,
+            month_key="2026-05",
+            pdf_count=1,
+        ),
+    )
+
+    response = client.post(
+        "/api/forms/download",
+        files={"pdf": ("x.pdf", b"%PDF-1.4\n", "application/pdf")},
+        data={"fields": "[]", "exportMode": "editable", "downloadRequestId": "download-req-2"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 429
+    detail = response.json()["detail"]
+    assert detail["code"] == "pdf_download_limit_reached"
+    assert detail["monthlyLimit"] == 25
+    assert detail["currentMonthUsage"] == 25
+    assert detail["downloadsRemaining"] == 0
+    assert detail["monthKey"] == "2026-05"
+    cleanup_mock.assert_called_once()
+
+
+def test_group_download_commits_one_quota_unit_per_pdf_in_zip(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+    tmp_path: Path,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    first_pdf = tmp_path / "first.pdf"
+    second_pdf = tmp_path / "second.pdf"
+    first_pdf.write_bytes(b"%PDF-1.4\nfirst")
+    second_pdf.write_bytes(b"%PDF-1.4\nsecond")
+    materialize_mock = mocker.patch.object(
+        app_main,
+        "_materialize_form_pdf_to_path",
+        side_effect=[
+            app_main.GeneratedFormPdf(
+                output_path=first_pdf,
+                cleanup_targets=[first_pdf],
+                filename="first.pdf",
+                export_mode="editable",
+                page_count=2,
+                field_count=3,
+            ),
+            app_main.GeneratedFormPdf(
+                output_path=second_pdf,
+                cleanup_targets=[second_pdf],
+                filename="second.pdf",
+                export_mode="flat",
+                page_count=1,
+                field_count=4,
+            ),
+        ],
+    )
+    commit_mock = mocker.patch.object(
+        app_main,
+        "commit_pdf_download_usage",
+        return_value=SimpleNamespace(
+            month_key="2026-05",
+            current_month_usage=12,
+            monthly_limit=25,
+            downloads_remaining=13,
+        ),
+    )
+    payload = {
+        "downloadRequestId": "group-download-1",
+        "groupId": "group-1",
+        "groupName": "Client Packet",
+        "items": [
+            {"fileIndex": 0, "filename": "alpha.pdf", "fields": [], "exportMode": "editable"},
+            {"fileIndex": 1, "filename": "beta.pdf", "fields": [], "exportMode": "flat"},
+        ],
+    }
+
+    response = client.post(
+        "/api/forms/group-download",
+        files=[
+            ("pdfs", ("alpha.pdf", b"%PDF-1.4\n", "application/pdf")),
+            ("pdfs", ("beta.pdf", b"%PDF-1.4\n", "application/pdf")),
+        ],
+        data={"payload": json.dumps(payload)},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("application/zip")
+    assert response.headers["x-dullypdf-download-count"] == "12"
+    assert response.headers["x-dullypdf-download-remaining"] == "13"
+    with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+        assert sorted(archive.namelist()) == ["alpha.pdf", "beta.pdf"]
+    assert materialize_mock.call_count == 2
+    call_kwargs = commit_mock.call_args.kwargs
+    assert call_kwargs["user_id"] == base_user.app_user_id
+    assert call_kwargs["request_id"] == "group-download-1"
+    assert call_kwargs["source"] == "workspace_group_download"
+    assert call_kwargs["export_mode"] == "zip"
+    assert call_kwargs["pdf_count"] == 2
+    assert call_kwargs["page_count"] == 3
+    assert call_kwargs["field_count"] == 7
+    assert call_kwargs["metadata"] == {"groupId": "group-1", "groupName": "Client Packet"}
+
+
 def test_materialize_inject_fields_path_and_filename_sanitization(
     client,
     app_main,
@@ -458,6 +636,49 @@ def test_materialize_form_uses_font_size_payload_in_editable_field_appearances(
     default_appearances = _field_default_appearances(response.content)
     assert default_appearances["full_name"] == "/Helv 15 Tf 0 0 0 rg"
     assert default_appearances["policy_number"] == "/Helv 9 Tf 0 0 0 rg"
+
+
+def test_materialize_form_editable_app_only_fields_stay_as_text_markers(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "_resolve_fillable_max_pages", return_value=10)
+    payload = {
+        "fields": [
+            {
+                "id": "barcode-id",
+                "name": "member_barcode",
+                "type": "barcode",
+                "page": 1,
+                "rect": [20, 20, 160, 60],
+                "value": "123456789",
+            }
+        ],
+    }
+
+    response = client.post(
+        "/api/forms/materialize",
+        files={"pdf": ("barcode-editable.pdf", _blank_pdf_bytes(), "application/pdf")},
+        data={"fields": json.dumps(payload), "exportMode": "editable"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    field_values = _field_values_and_flags(response.content)
+    marker_value = field_values["member_barcode__CVTBC"][0]
+    marker_lines = marker_value.splitlines()
+    assert marker_lines[0] == "CVTBC#@&"
+    assert marker_lines[2:] == ["123456789", "(1D)"]
+    assert marker_lines[1].startswith("DULLYPDF_META:")
+    marker_metadata = json.loads(marker_lines[1].removeprefix("DULLYPDF_META:"))
+    assert marker_metadata["type"] == "barcode"
+    assert marker_metadata["imageName"] == "member_barcode.png"
+    with fitz.open(stream=response.content, filetype="pdf") as document:
+        assert not document[0].get_images(full=True)
 
 
 def test_materialize_flat_mode_flattens_generated_output(
@@ -595,6 +816,7 @@ def test_materialize_form_evaluates_calculation_fields_for_editable_and_flat_exp
     )
 
     assert editable.status_code == 200
+    assert pdf_has_form_widgets(editable.content) is True
     field_values = _field_values_and_flags(editable.content)
     assert field_values["premium_total"] == ("12", 1)
     assert "12" in _appearance_streams(editable.content)

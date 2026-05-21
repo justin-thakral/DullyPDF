@@ -3,7 +3,11 @@ from types import SimpleNamespace
 import pytest
 from fastapi import HTTPException
 
-from backend.firebaseDB.user_database import UserBillingRecord, UserProfileRecord
+from backend.firebaseDB.user_database import (
+    UserBillingPaymentRecoveryRecord,
+    UserBillingRecord,
+    UserProfileRecord,
+)
 from backend.services.billing_service import BillingCheckoutSessionNotFoundError
 
 
@@ -734,6 +738,176 @@ def test_cancel_subscription_allows_non_pro_user_when_subscription_record_exists
     assert set_subscription_mock.call_args.kwargs["cancel_at"] == 1775000000
     assert set_subscription_mock.call_args.kwargs["current_period_end"] == 1775000000
     downgrade_mock.assert_not_called()
+
+
+def test_billing_portal_session_returns_hosted_url(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="pro",
+            openai_credits_remaining=500,
+        ),
+    )
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid=base_user.app_user_id,
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    portal_mock = mocker.patch.object(
+        app_main,
+        "create_billing_portal_session",
+        return_value=SimpleNamespace(url="https://billing.stripe.com/p/session", customer_id="cus_123"),
+    )
+
+    response = client.post("/api/billing/portal-session", headers=auth_headers)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "success": True,
+        "url": "https://billing.stripe.com/p/session",
+        "customerId": "cus_123",
+    }
+    portal_mock.assert_called_once_with(customer_id="cus_123")
+
+
+def test_billing_portal_session_requires_linked_customer(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="base",
+            openai_credits_remaining=10,
+        ),
+    )
+    mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    portal_mock = mocker.patch.object(app_main, "create_billing_portal_session")
+
+    response = client.post("/api/billing/portal-session", headers=auth_headers)
+
+    assert response.status_code == 409
+    assert "No Stripe customer" in response.text
+    portal_mock.assert_not_called()
+
+
+def test_payment_method_recovery_sync_updates_subscription_default_and_retries_latest_invoice(
+    client,
+    app_main,
+    base_user,
+    mocker,
+    auth_headers,
+) -> None:
+    _patch_auth(mocker, app_main, base_user)
+    mocker.patch.object(app_main, "billing_enabled", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_profile",
+        return_value=UserProfileRecord(
+            uid=base_user.app_user_id,
+            email=base_user.email,
+            display_name=base_user.display_name,
+            role="pro",
+            openai_credits_remaining=500,
+        ),
+    )
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid=base_user.app_user_id,
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_retry_123",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message=None,
+                failed_at=1775000100,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775604900,
+            ),
+        ),
+    )
+    sync_mock = mocker.patch.object(
+        app_main,
+        "sync_subscription_payment_method_for_retry",
+        return_value=SimpleNamespace(
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            payment_method_field="default_payment_method",
+            subscription_updated=True,
+            latest_invoice_id="in_retry_123",
+            invoice_payment_attempted=True,
+            invoice_payment_succeeded=True,
+            invoice_status="paid",
+            invoice_payment_error=None,
+            subscription_status="active",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    restore_links_mock = mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=[])
+
+    response = client.post("/api/billing/payment-method-recovery/sync", headers=auth_headers)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "success": True,
+        "customerId": "cus_123",
+        "subscriptionId": "sub_123",
+        "paymentMethodField": "default_payment_method",
+        "subscriptionPaymentMethodUpdated": True,
+        "latestInvoiceId": "in_retry_123",
+        "invoicePaymentAttempted": True,
+        "invoicePaymentSucceeded": True,
+        "invoiceStatus": "paid",
+        "invoicePaymentError": None,
+        "subscriptionStatus": "active",
+    }
+    sync_mock.assert_called_once_with(
+        customer_id="cus_123",
+        subscription_id="sub_123",
+        latest_invoice_id="in_retry_123",
+    )
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "active"
+    activate_mock.assert_called_once()
+    assert activate_mock.call_args.kwargs["stripe_event_id"] == "payment_method_recovery:in_retry_123"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
+    clear_recovery_mock.assert_called_once_with(base_user.app_user_id)
+    restore_links_mock.assert_called_once_with(base_user.app_user_id)
 
 
 def test_cancel_subscription_returns_503_when_billing_not_configured(
@@ -2476,6 +2650,183 @@ def test_billing_webhook_pro_checkout_restores_downgrade_managed_links_after_act
     clear_mock.assert_not_called()
 
 
+def test_billing_webhook_pro_checkout_does_not_clear_newer_payment_recovery(client, app_main, mocker) -> None:
+    event_id = "evt_pro_checkout_older_than_recovery"
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": event_id,
+            "type": "checkout.session.completed",
+            "created": 1775000100,
+            "data": {
+                "object": {
+                    "id": "cs_old_pro",
+                    "client_reference_id": "user-1",
+                    "created": 1775000000,
+                    "metadata": {
+                        "userId": "user-1",
+                        "checkoutKind": "pro_monthly",
+                        "checkoutPriceId": "price_pro_monthly",
+                    },
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "payment_status": "paid",
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_new_failed",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="The card has insufficient funds.",
+                failed_at=1775000200,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775605000,
+            ),
+        ),
+    )
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+    clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"received": True}
+    activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with(event_id)
+    clear_mock.assert_not_called()
+
+
+def test_billing_webhook_pro_checkout_skips_different_active_local_subscription(client, app_main, mocker) -> None:
+    event_id = "evt_pro_checkout_duplicate_active_subscription"
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": event_id,
+            "type": "checkout.session.completed",
+            "created": 1775000100,
+            "data": {
+                "object": {
+                    "id": "cs_duplicate_active",
+                    "client_reference_id": "user-1",
+                    "created": 1775000100,
+                    "metadata": {
+                        "userId": "user-1",
+                        "checkoutKind": "pro_monthly",
+                        "checkoutPriceId": "price_pro_monthly",
+                    },
+                    "subscription": "sub_duplicate",
+                    "customer": "cus_123",
+                    "payment_status": "paid",
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "resolve_price_id_for_checkout_kind", return_value="price_pro_monthly")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_current",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    restore_links_mock = mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"received": True}
+    activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    restore_links_mock.assert_not_called()
+    complete_mock.assert_called_once_with(event_id)
+
+
+def test_billing_webhook_pro_checkout_missing_subscription_linkage_is_retryable(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    event_id = "evt_pro_checkout_missing_subscription"
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": event_id,
+            "type": "checkout.session.completed",
+            "data": {
+                "object": {
+                    "id": "cs_missing_subscription",
+                    "client_reference_id": "user-1",
+                    "metadata": {
+                        "userId": "user-1",
+                        "checkoutKind": "pro_monthly",
+                        "checkoutPriceId": "price_pro_monthly",
+                    },
+                    "customer": "cus_123",
+                    "payment_status": "paid",
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+    clear_mock = mocker.patch.object(app_main, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 503
+    assert "missing subscription linkage" in response.text
+    activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
+    complete_mock.assert_not_called()
+    clear_mock.assert_called_once_with(event_id)
+
+
 def test_billing_webhook_subscription_deletion_downgrades_to_base(client, app_main, mocker) -> None:
     mocker.patch.object(
         app_main,
@@ -2571,6 +2922,221 @@ def test_billing_webhook_subscription_updated_cancel_at_period_end_keeps_pro_rol
     clear_mock.assert_not_called()
 
 
+def test_billing_webhook_subscription_updated_past_due_keeps_pro_during_retries(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_past_due_retry",
+            "type": "customer.subscription.updated",
+            "data": {
+                "object": {
+                    "id": "sub_1",
+                    "status": "past_due",
+                    "cancel_at_period_end": False,
+                    "metadata": {"userId": "user-1"},
+                    "customer": "cus_1",
+                    "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "past_due"
+    activate_mock.assert_called_once()
+    assert activate_mock.call_args.args[0] == "user-1"
+    assert activate_mock.call_args.kwargs["reset_monthly_credits"] is False
+    clear_recovery_mock.assert_not_called()
+    downgrade_mock.assert_not_called()
+
+
+def test_billing_webhook_subscription_updated_incomplete_does_not_downgrade_or_apply_retention(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_incomplete_initial_checkout",
+            "type": "customer.subscription.updated",
+            "data": {
+                "object": {
+                    "id": "sub_incomplete",
+                    "status": "incomplete",
+                    "cancel_at_period_end": False,
+                    "metadata": {"userId": "user-1"},
+                    "customer": "cus_1",
+                    "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+    apply_retention_mock = mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "incomplete"
+    activate_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    downgrade_mock.assert_not_called()
+    apply_retention_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_incomplete_initial_checkout")
+
+
+def test_billing_webhook_subscription_incomplete_expired_without_prior_pro_does_not_apply_retention(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_incomplete_expired_initial_checkout",
+            "type": "customer.subscription.updated",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "sub_incomplete",
+                    "status": "incomplete_expired",
+                    "cancel_at_period_end": False,
+                    "metadata": {"userId": "user-1"},
+                    "customer": "cus_1",
+                    "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_1",
+            subscription_id="sub_incomplete",
+            subscription_status="incomplete",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+    apply_retention_mock = mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "incomplete_expired"
+    clear_recovery_mock.assert_called_once_with("user-1")
+    downgrade_mock.assert_not_called()
+    apply_retention_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_incomplete_expired_initial_checkout")
+
+
+def test_billing_webhook_terminal_subscription_event_does_not_replace_newer_payment_recovery(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_terminal_older_than_recovery",
+            "type": "customer.subscription.updated",
+            "created": 1775000100,
+            "data": {
+                "object": {
+                    "id": "sub_123",
+                    "status": "unpaid",
+                    "cancel_at_period_end": False,
+                    "metadata": {"userId": "user-1"},
+                    "customer": "cus_123",
+                    "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_new_failed",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="The card has insufficient funds.",
+                failed_at=1775000200,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775605000,
+            ),
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+    apply_retention_mock = mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    downgrade_mock.assert_not_called()
+    apply_retention_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_terminal_older_than_recovery")
+
+
 def test_billing_webhook_subscription_updated_active_restores_downgrade_managed_links(client, app_main, mocker) -> None:
     mocker.patch.object(
         app_main,
@@ -2614,6 +3180,61 @@ def test_billing_webhook_subscription_updated_active_restores_downgrade_managed_
     restore_links_mock.assert_called_once_with("user-1")
     complete_mock.assert_called_once_with("evt_3b_restore")
     clear_mock.assert_not_called()
+
+
+def test_billing_webhook_subscription_lifecycle_skips_different_active_local_subscription(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_subscription_old_after_new_active",
+            "type": "customer.subscription.deleted",
+            "data": {
+                "object": {
+                    "id": "sub_old",
+                    "status": "canceled",
+                    "metadata": {"userId": "user-1"},
+                    "customer": "cus_old",
+                    "items": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", side_effect=lambda value: value == "price_pro_monthly")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_current",
+            subscription_id="sub_current",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+    apply_retention_mock = mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value={"status": "grace_period"})
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_not_called()
+    activate_mock.assert_not_called()
+    downgrade_mock.assert_not_called()
+    apply_retention_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_subscription_old_after_new_active")
 
 
 def test_billing_webhook_subscription_lifecycle_ignores_non_pro_subscription_events(client, app_main, mocker) -> None:
@@ -2870,6 +3491,575 @@ def test_billing_webhook_subscription_lifecycle_non_pro_missing_user_is_noop(cli
     clear_mock.assert_not_called()
 
 
+def test_billing_webhook_invoice_payment_failed_records_recovery_without_downgrade(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_failed_retry",
+            "type": "invoice.payment_failed",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_failed_123",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "next_payment_attempt": 1775086500,
+                    "metadata": {"userId": "user-1"},
+                    "last_payment_error": {
+                        "decline_code": "insufficient_funds",
+                        "message": "The card has insufficient funds.",
+                    },
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "past_due"
+    set_recovery_mock.assert_called_once()
+    assert set_recovery_mock.call_args.args[0] == "user-1"
+    assert set_recovery_mock.call_args.kwargs["status"] == "payment_failed"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_id"] == "in_failed_123"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_status"] == "open"
+    assert set_recovery_mock.call_args.kwargs["failure_code"] == "insufficient_funds"
+    assert set_recovery_mock.call_args.kwargs["failed_at"] == 1775000200
+    assert set_recovery_mock.call_args.kwargs["next_payment_attempt"] == 1775086500
+    assert set_recovery_mock.call_args.kwargs["recovery_deadline"] == 1775605000
+    downgrade_mock.assert_not_called()
+
+
+def test_billing_webhook_invoice_payment_failed_supports_parent_subscription_shape(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_failed_parent_subscription",
+            "type": "invoice.payment_failed",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_failed_parent",
+                    "subscription": None,
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "next_payment_attempt": 1775086500,
+                    "parent": {
+                        "type": "subscription_details",
+                        "subscription_details": {
+                            "subscription": "sub_123",
+                            "metadata": {},
+                        },
+                    },
+                    "lines": {
+                        "data": [
+                            {
+                                "parent": {
+                                    "type": "subscription_item_details",
+                                    "subscription_item_details": {"subscription": "sub_123"},
+                                },
+                                "pricing": {
+                                    "type": "price_details",
+                                    "price_details": {"price": "price_pro_monthly"},
+                                },
+                                "metadata": {},
+                            },
+                            {
+                                "metadata": {"userId": "user-1"},
+                            }
+                        ]
+                    },
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value=None)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "past_due"
+    assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+    set_recovery_mock.assert_called_once()
+    assert set_recovery_mock.call_args.args[0] == "user-1"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_id"] == "in_failed_parent"
+    downgrade_mock.assert_not_called()
+
+
+def test_billing_webhook_invoice_payment_failed_marks_past_due_without_local_subscription_record(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_failed_no_local_record",
+            "type": "invoice.payment_failed",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_failed_no_local_record",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "metadata": {"userId": "user-1"},
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.args[0] == "user-1"
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "past_due"
+    set_recovery_mock.assert_called_once()
+
+
+def test_billing_webhook_initial_invoice_payment_failed_marks_incomplete_without_downgrade(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_initial_invoice_failed",
+            "type": "invoice.payment_failed",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_initial_failed",
+                    "billing_reason": "subscription_create",
+                    "subscription": "sub_initial",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "next_payment_attempt": 1775086500,
+                    "metadata": {"userId": "user-1"},
+                    "last_payment_error": {
+                        "decline_code": "card_declined",
+                        "message": "Your card was declined.",
+                    },
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+    apply_retention_mock = mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.args[0] == "user-1"
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_initial"
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "incomplete"
+    set_recovery_mock.assert_called_once()
+    assert set_recovery_mock.call_args.args[0] == "user-1"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_id"] == "in_initial_failed"
+    assert set_recovery_mock.call_args.kwargs["failure_code"] == "card_declined"
+    downgrade_mock.assert_not_called()
+    apply_retention_mock.assert_not_called()
+
+
+def test_billing_webhook_invoice_payment_failed_skips_different_active_local_subscription(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_failed_old_subscription",
+            "type": "invoice.payment_failed",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_failed_old_subscription",
+                    "subscription": "sub_old",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "metadata": {"userId": "user-1"},
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_current",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_not_called()
+    set_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_invoice_failed_old_subscription")
+
+
+def test_billing_webhook_invoice_payment_failed_skips_terminal_local_subscription(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_failed_after_unpaid",
+            "type": "invoice.payment_failed",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_failed_after_unpaid",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "metadata": {"userId": "user-1"},
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="unpaid",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_not_called()
+    set_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_invoice_failed_after_unpaid")
+
+
+def test_billing_webhook_invoice_payment_failed_does_not_replace_newer_recovery(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_failed_older_than_recovery",
+            "type": "invoice.payment_failed",
+            "created": 1775000100,
+            "data": {
+                "object": {
+                    "id": "in_old_failed",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000000,
+                    "metadata": {"userId": "user-1"},
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_new_failed",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="The card has insufficient funds.",
+                failed_at=1775000200,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775605000,
+            ),
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_not_called()
+    set_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_invoice_failed_older_than_recovery")
+
+
+def test_billing_webhook_invoice_updated_refreshes_existing_payment_recovery_retry_time(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_updated_retry_time",
+            "type": "invoice.updated",
+            "created": 1775000300,
+            "data": {
+                "object": {
+                    "id": "in_failed_123",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "created": 1775000100,
+                    "next_payment_attempt": 1775090000,
+                    "metadata": {"userId": "user-1"},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value="user-1")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_failed_123",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="The card has insufficient funds.",
+                failed_at=1775000200,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775605000,
+            ),
+        ),
+    )
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    downgrade_mock = mocker.patch.object(app_main, "downgrade_to_base_membership", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_not_called()
+    activate_mock.assert_not_called()
+    downgrade_mock.assert_not_called()
+    set_recovery_mock.assert_called_once()
+    assert set_recovery_mock.call_args.args[0] == "user-1"
+    assert set_recovery_mock.call_args.kwargs["status"] == "payment_failed"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_id"] == "in_failed_123"
+    assert set_recovery_mock.call_args.kwargs["latest_invoice_status"] == "open"
+    assert set_recovery_mock.call_args.kwargs["failure_code"] == "insufficient_funds"
+    assert set_recovery_mock.call_args.kwargs["failed_at"] == 1775000200
+    assert set_recovery_mock.call_args.kwargs["next_payment_attempt"] == 1775090000
+    assert set_recovery_mock.call_args.kwargs["recovery_deadline"] == 1775605000
+    complete_mock.assert_called_once_with("evt_invoice_updated_retry_time")
+
+
+def test_billing_webhook_invoice_updated_ignores_nonmatching_recovery_invoice(
+    client,
+    app_main,
+    mocker,
+) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_updated_other_invoice",
+            "type": "invoice.updated",
+            "created": 1775000300,
+            "data": {
+                "object": {
+                    "id": "in_other",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "status": "open",
+                    "next_payment_attempt": 1775090000,
+                    "metadata": {"userId": "user-1"},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value="user-1")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_failed_123",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="The card has insufficient funds.",
+                failed_at=1775000200,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775605000,
+            ),
+        ),
+    )
+    set_recovery_mock = mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_invoice_updated_other_invoice")
+
+
 def test_billing_webhook_invoice_paid_syncs_pro_membership_without_forcing_pool_reset(client, app_main, mocker) -> None:
     mocker.patch.object(
         app_main,
@@ -2897,6 +4087,7 @@ def test_billing_webhook_invoice_paid_syncs_pro_membership_without_forcing_pool_
         return_value=True,
     )
     set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
     mocker.patch.object(app_main, "complete_billing_event", return_value=None)
     mocker.patch.object(app_main, "clear_billing_event", return_value=None)
 
@@ -2913,6 +4104,284 @@ def test_billing_webhook_invoice_paid_syncs_pro_membership_without_forcing_pool_
     set_subscription_mock.assert_called_once()
     assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
     assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+    clear_recovery_mock.assert_called_once_with("user-1")
+
+
+def test_billing_webhook_invoice_paid_preserves_scheduled_cancellation(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_invoice_paid_after_cancel_scheduled",
+            "type": "invoice.paid",
+            "data": {
+                "object": {
+                    "subscription": "sub_cancel_scheduled",
+                    "customer": "cus_123",
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value="user-1")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_cancel_scheduled",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+            cancel_at_period_end=True,
+            cancel_at=1777600000,
+            current_period_end=1777600000,
+        ),
+    )
+    mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+    mocker.patch.object(app_main, "clear_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    set_subscription_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_status"] == "active"
+    assert "cancel_at_period_end" not in set_subscription_mock.call_args.kwargs
+    assert "cancel_at" not in set_subscription_mock.call_args.kwargs
+    assert "current_period_end" not in set_subscription_mock.call_args.kwargs
+
+
+def test_billing_webhook_invoice_paid_supports_parent_subscription_shape(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_paid_parent_subscription",
+            "type": "invoice.paid",
+            "data": {
+                "object": {
+                    "subscription": None,
+                    "customer": "cus_123",
+                    "parent": {
+                        "type": "subscription_details",
+                        "subscription_details": {
+                            "subscription": "sub_123",
+                            "metadata": {"userId": "user-1"},
+                        },
+                    },
+                    "lines": {
+                        "data": [
+                            {
+                                "parent": {
+                                    "type": "subscription_item_details",
+                                    "subscription_item_details": {"subscription": "sub_123"},
+                                },
+                                "pricing": {
+                                    "type": "price_details",
+                                    "price_details": {"price": "price_pro_monthly"},
+                                },
+                            }
+                        ]
+                    },
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value=None)
+    mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    activate_mock.assert_called_once()
+    assert set_subscription_mock.call_args.kwargs["subscription_id"] == "sub_123"
+    assert set_subscription_mock.call_args.kwargs["subscription_price_id"] == "price_pro_monthly"
+    clear_recovery_mock.assert_called_once_with("user-1")
+
+
+def test_billing_webhook_invoice_paid_does_not_clear_newer_payment_failure(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_paid_older_than_recovery",
+            "type": "invoice.paid",
+            "created": 1775000100,
+            "data": {
+                "object": {
+                    "id": "in_old_paid",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "created": 1775000000,
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(app_main, "find_user_id_by_subscription_id", return_value="user-1")
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="past_due",
+            subscription_price_id="price_pro_monthly",
+            payment_recovery=UserBillingPaymentRecoveryRecord(
+                status="payment_failed",
+                latest_invoice_id="in_new_failed",
+                latest_invoice_status="open",
+                failure_code="insufficient_funds",
+                failure_message="The card has insufficient funds.",
+                failed_at=1775000200,
+                next_payment_attempt=1775086500,
+                recovery_deadline=1775605000,
+            ),
+        ),
+    )
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_paid_older_than_recovery")
+
+
+def test_billing_webhook_invoice_paid_skips_different_active_local_subscription(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_paid_old_subscription",
+            "type": "invoice.paid",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_paid_old_subscription",
+                    "subscription": "sub_old",
+                    "customer": "cus_old",
+                    "created": 1775000100,
+                    "metadata": {"userId": "user-1"},
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_current",
+            subscription_id="sub_current",
+            subscription_status="active",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_paid_old_subscription")
+
+
+def test_billing_webhook_invoice_paid_skips_terminal_local_subscription(client, app_main, mocker) -> None:
+    mocker.patch.object(
+        app_main,
+        "construct_webhook_event",
+        return_value={
+            "id": "evt_paid_after_unpaid",
+            "type": "invoice.paid",
+            "created": 1775000200,
+            "data": {
+                "object": {
+                    "id": "in_paid_after_unpaid",
+                    "subscription": "sub_123",
+                    "customer": "cus_123",
+                    "created": 1775000100,
+                    "metadata": {"userId": "user-1"},
+                    "lines": {"data": [{"price": {"id": "price_pro_monthly"}}]},
+                }
+            },
+        },
+    )
+    mocker.patch.object(app_main, "start_billing_event", return_value=True)
+    mocker.patch.object(app_main, "extract_price_ids_from_invoice", return_value=["price_pro_monthly"])
+    mocker.patch.object(app_main, "is_pro_price_id", return_value=True)
+    mocker.patch.object(
+        app_main,
+        "get_user_billing_record",
+        return_value=UserBillingRecord(
+            uid="user-1",
+            customer_id="cus_123",
+            subscription_id="sub_123",
+            subscription_status="unpaid",
+            subscription_price_id="price_pro_monthly",
+        ),
+    )
+    activate_mock = mocker.patch.object(app_main, "activate_pro_membership", return_value=True)
+    set_subscription_mock = mocker.patch.object(app_main, "set_user_billing_subscription", return_value=None)
+    clear_recovery_mock = mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
+    complete_mock = mocker.patch.object(app_main, "complete_billing_event", return_value=None)
+
+    response = client.post(
+        "/api/billing/webhook",
+        content=b"{}",
+        headers={"Stripe-Signature": "sig"},
+    )
+
+    assert response.status_code == 200
+    activate_mock.assert_not_called()
+    set_subscription_mock.assert_not_called()
+    clear_recovery_mock.assert_not_called()
+    complete_mock.assert_called_once_with("evt_paid_after_unpaid")
 
 
 def test_billing_webhook_invoice_paid_restores_downgrade_managed_links(client, app_main, mocker) -> None:

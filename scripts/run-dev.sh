@@ -33,7 +33,7 @@ fi
 
 BACKEND_PORT="${PORT:-8000}"
 FORWARD_TO="${STRIPE_DEV_FORWARD_URL:-http://localhost:${BACKEND_PORT}/api/billing/webhook}"
-EVENTS="${STRIPE_DEV_FORWARD_EVENTS:-checkout.session.completed,invoice.paid,customer.subscription.updated,customer.subscription.deleted}"
+EVENTS="${STRIPE_DEV_FORWARD_EVENTS:-checkout.session.completed,invoice.paid,invoice.payment_failed,invoice.updated,customer.subscription.updated,customer.subscription.deleted}"
 RUNNER_COMMAND="${DEV_RUN_COMMAND:-npm run dev:core}"
 ENABLE_LISTENER_RAW="${STRIPE_DEV_LISTEN_ENABLED:-true}"
 ENABLE_LISTENER="$(printf '%s' "$ENABLE_LISTENER_RAW" | tr '[:upper:]' '[:lower:]')"

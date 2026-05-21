@@ -1,13 +1,20 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
+import type { User } from 'firebase/auth';
+import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useSaveDownload, type UseSaveDownloadDeps } from '../../../src/hooks/useSaveDownload';
+import { ApiError } from '../../../src/services/apiConfig';
 
 const materializeFormPdfMock = vi.hoisted(() => vi.fn());
+const downloadFormPdfMock = vi.hoisted(() => vi.fn());
 const saveFormToProfileMock = vi.hoisted(() => vi.fn());
+const applyPdfPageToolsMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../../../src/services/api', () => ({
   ApiService: {
+    applyPdfPageTools: applyPdfPageToolsMock,
+    downloadFormPdf: downloadFormPdfMock,
     materializeFormPdf: materializeFormPdfMock,
     saveFormToProfile: saveFormToProfileMock,
   },
@@ -17,7 +24,8 @@ function createDeps(overrides: Partial<UseSaveDownloadDeps> = {}): UseSaveDownlo
   return {
     pdfDoc: {
       getData: vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3])),
-    } as any,
+      numPages: 1,
+    } as Partial<PDFDocumentProxy> as PDFDocumentProxy,
     sourceFile: new File(['pdf'], 'template.pdf', { type: 'application/pdf' }),
     sourceFileName: 'template.pdf',
     fields: [{
@@ -31,6 +39,7 @@ function createDeps(overrides: Partial<UseSaveDownloadDeps> = {}): UseSaveDownlo
     globalFieldFont: 'default',
     globalFieldFontSize: 'auto',
     globalFieldFontColor: '#000000',
+    globalFieldAlignment: 'left',
     pageSizes: {
       1: { width: 612, height: 792 },
     },
@@ -46,7 +55,7 @@ function createDeps(overrides: Partial<UseSaveDownloadDeps> = {}): UseSaveDownlo
     activeGroupName: 'Admissions',
     savedFormsCount: 1,
     savedFormsMax: 10,
-    verifiedUser: { uid: 'user-1' } as any,
+    verifiedUser: { uid: 'user-1' } as Partial<User> as User,
     setBannerNotice: vi.fn(),
     setLoadError: vi.fn(),
     requestConfirm: vi.fn().mockResolvedValue(true),
@@ -65,27 +74,13 @@ function createDeps(overrides: Partial<UseSaveDownloadDeps> = {}): UseSaveDownlo
 }
 
 function renderHookHarness(deps: UseSaveDownloadDeps) {
-  let latest: ReturnType<typeof useSaveDownload> | null = null;
-
-  function Harness() {
-    latest = useSaveDownload(deps);
-    return null;
-  }
-
-  render(<Harness />);
-
-  return {
-    get current() {
-      if (!latest) {
-        throw new Error('hook not initialized');
-      }
-      return latest;
-    },
-  };
+  return renderHook(() => useSaveDownload(deps)).result;
 }
 
 describe('useSaveDownload', () => {
   beforeEach(() => {
+    applyPdfPageToolsMock.mockReset();
+    downloadFormPdfMock.mockReset();
     materializeFormPdfMock.mockReset();
     saveFormToProfileMock.mockReset();
   });
@@ -230,7 +225,7 @@ describe('useSaveDownload', () => {
   });
 
   it('downloads a flat PDF when requested and names the file accordingly', async () => {
-    materializeFormPdfMock.mockResolvedValue(new Blob(['flat-pdf']));
+    downloadFormPdfMock.mockResolvedValue(new Blob(['flat-pdf']));
     const createObjectUrlSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:flat-download');
     vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
     let clickedDownloadName: string | null = null;
@@ -244,21 +239,262 @@ describe('useSaveDownload', () => {
       await hook.current.handleDownload('flat');
     });
 
-    expect(materializeFormPdfMock).toHaveBeenCalledWith(
+    expect(downloadFormPdfMock).toHaveBeenCalledWith(
       deps.sourceFile,
       expect.any(Array),
       {
         exportMode: 'flat',
+        filename: 'template.pdf',
+        downloadRequestId: expect.stringMatching(/^pdf_download_/),
         appearance: {
           globalFieldFont: 'default',
           globalFieldFontSize: 'auto',
           globalFieldFontColor: '#000000',
+          globalFieldAlignment: 'left',
         },
       },
     );
+    expect(materializeFormPdfMock).not.toHaveBeenCalled();
     expect(createObjectUrlSpy).toHaveBeenCalledWith(expect.any(Blob));
     expect(clickSpy).toHaveBeenCalledTimes(1);
     expect(clickedDownloadName).toBe('Template A-flat.pdf');
     expect(deps.setLoadError).toHaveBeenCalledWith(null);
+    expect(deps.refreshProfile).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps anonymous demo downloads on the internal materializer', async () => {
+    materializeFormPdfMock.mockResolvedValue(new Blob(['demo-pdf']));
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:demo-download');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    const deps = createDeps({
+      verifiedUser: null,
+      allowAnonymousDownload: true,
+    });
+    const hook = renderHookHarness(deps);
+
+    await act(async () => {
+      await hook.current.handleDownload('editable');
+    });
+
+    expect(downloadFormPdfMock).not.toHaveBeenCalled();
+    expect(materializeFormPdfMock).toHaveBeenCalledWith(
+      deps.sourceFile,
+      expect.any(Array),
+      expect.objectContaining({
+        exportMode: 'editable',
+        usageContext: 'workspace_download',
+      }),
+    );
+    expect(deps.refreshProfile).not.toHaveBeenCalled();
+  });
+
+  it('shows upgrade-focused copy when the monthly PDF download quota is exhausted', async () => {
+    downloadFormPdfMock.mockRejectedValue(new ApiError(
+      'server limit',
+      429,
+      'pdf_download_limit_reached',
+      {
+        detail: {
+          code: 'pdf_download_limit_reached',
+          monthlyLimit: 25,
+          currentMonthUsage: 25,
+          downloadsRemaining: 0,
+          monthKey: '2026-05',
+          pdfCount: 1,
+        },
+      },
+    ));
+    const deps = createDeps();
+    const hook = renderHookHarness(deps);
+
+    await act(async () => {
+      await hook.current.handleDownload('editable');
+    });
+
+    expect(deps.setLoadError).toHaveBeenCalledWith(
+      'You have used all 25 generated PDF downloads for this month. Upgrade to Premium for unlimited downloads.',
+    );
+    expect(deps.refreshProfile).toHaveBeenCalledTimes(1);
+  });
+
+  it('blocks downloads when calculation fields are not export-ready', async () => {
+    const deps = createDeps({
+      fields: [{
+        id: 'total',
+        name: 'Total',
+        type: 'text',
+        page: 1,
+        rect: { x: 10, y: 10, width: 100, height: 20 },
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+        },
+      }],
+    });
+    const hook = renderHookHarness(deps);
+
+    await act(async () => {
+      await hook.current.handleDownload('editable');
+    });
+
+    expect(deps.setLoadError).toHaveBeenCalledWith(
+      'Fix calculation fields before download: Total: Add at least one formula item.',
+    );
+    expect(downloadFormPdfMock).not.toHaveBeenCalled();
+    expect(materializeFormPdfMock).not.toHaveBeenCalled();
+  });
+
+  it('downloads only selected pages after source-page subsetting and field remapping', async () => {
+    const selectedSourceBlob = new Blob(['selected-source']);
+    const generatedBlob = new Blob(['selected-generated']);
+    applyPdfPageToolsMock.mockResolvedValue(selectedSourceBlob);
+    downloadFormPdfMock.mockResolvedValue(generatedBlob);
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:selected-download');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    let clickedDownloadName: string | null = null;
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function recordDownloadName(this: HTMLAnchorElement) {
+      clickedDownloadName = this.download;
+    });
+    const deps = createDeps({
+      pageCount: 3,
+      fields: [
+        {
+          id: 'page-1-field',
+          name: 'Page 1 Field',
+          type: 'text',
+          page: 1,
+          rect: { x: 10, y: 10, width: 100, height: 20 },
+          value: 'ignore',
+        },
+        {
+          id: 'page-2-field',
+          name: 'Page 2 Field',
+          type: 'text',
+          page: 2,
+          rect: { x: 20, y: 20, width: 100, height: 20 },
+          value: 'include',
+        },
+      ],
+    });
+    const hook = renderHookHarness(deps);
+
+    let result = false;
+    await act(async () => {
+      result = await hook.current.handleDownloadSelectedPages({ pages: [2], exportMode: 'flat' });
+    });
+
+    expect(result).toBe(true);
+    expect(applyPdfPageToolsMock).toHaveBeenCalledWith(
+      deps.sourceFile,
+      [{ source: 'current', page: 2, rotate: 0 }],
+      [],
+      { filename: 'template.pdf' },
+    );
+    expect(downloadFormPdfMock).toHaveBeenCalledWith(
+      selectedSourceBlob,
+      [
+        expect.objectContaining({
+          id: 'page-2-field',
+          page: 1,
+        }),
+      ],
+      expect.objectContaining({
+        exportMode: 'flat',
+        filename: 'template.pdf',
+        downloadRequestId: expect.stringMatching(/^pdf_download_/),
+      }),
+    );
+    expect(materializeFormPdfMock).not.toHaveBeenCalled();
+    expect(clickedDownloadName).toBe('Template A-page-2-flat.pdf');
+    expect(deps.refreshProfile).toHaveBeenCalledTimes(1);
+    expect(deps.setBannerNotice).toHaveBeenCalledWith(expect.objectContaining({
+      tone: 'success',
+      message: 'Downloaded 1 selected page.',
+    }));
+  });
+
+  it('does not block selected-page download on broken calculations from unselected pages', async () => {
+    applyPdfPageToolsMock.mockResolvedValue(new Blob(['selected-source']));
+    downloadFormPdfMock.mockResolvedValue(new Blob(['selected-generated']));
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:selected-download');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    const deps = createDeps({
+      pageCount: 2,
+      fields: [
+        {
+          id: 'broken-total',
+          name: 'Broken Total',
+          type: 'text',
+          page: 1,
+          rect: { x: 10, y: 10, width: 100, height: 20 },
+          valueType: 'integer',
+          calculation: {
+            role: 'calculated_output',
+            valueType: 'integer',
+          },
+        },
+        {
+          id: 'safe-field',
+          name: 'Safe Field',
+          type: 'text',
+          page: 2,
+          rect: { x: 20, y: 20, width: 100, height: 20 },
+          value: 'ok',
+        },
+      ],
+    });
+    const hook = renderHookHarness(deps);
+
+    let result = false;
+    await act(async () => {
+      result = await hook.current.handleDownloadSelectedPages({ pages: [2], exportMode: 'editable' });
+    });
+
+    expect(result).toBe(true);
+    expect(applyPdfPageToolsMock).toHaveBeenCalledTimes(1);
+    expect(downloadFormPdfMock).toHaveBeenCalledWith(
+      expect.any(Blob),
+      [expect.objectContaining({ id: 'safe-field', page: 1 })],
+      expect.objectContaining({ exportMode: 'editable' }),
+    );
+    expect(deps.setLoadError).toHaveBeenLastCalledWith(null);
+  });
+
+  it('blocks selected-page download before calling authenticated page tools when only anonymous demo download is allowed', async () => {
+    const deps = createDeps({
+      verifiedUser: null,
+      allowAnonymousDownload: true,
+    });
+    const hook = renderHookHarness(deps);
+
+    let result = true;
+    await act(async () => {
+      result = await hook.current.handleDownloadSelectedPages({ pages: [1], exportMode: 'editable' });
+    });
+
+    expect(result).toBe(false);
+    expect(deps.setLoadError).toHaveBeenCalledWith('Sign in to download specific pages.');
+    expect(applyPdfPageToolsMock).not.toHaveBeenCalled();
+    expect(downloadFormPdfMock).not.toHaveBeenCalled();
+    expect(materializeFormPdfMock).not.toHaveBeenCalled();
+  });
+
+  it('rejects non-integer selected pages instead of truncating them', async () => {
+    const deps = createDeps({ pageCount: 3 });
+    const hook = renderHookHarness(deps);
+
+    let result = true;
+    await act(async () => {
+      result = await hook.current.handleDownloadSelectedPages({ pages: [1.5], exportMode: 'editable' });
+    });
+
+    expect(result).toBe(false);
+    expect(deps.setLoadError).toHaveBeenCalledWith('Selected pages must be between 1 and 3.');
+    expect(applyPdfPageToolsMock).not.toHaveBeenCalled();
+    expect(downloadFormPdfMock).not.toHaveBeenCalled();
+    expect(materializeFormPdfMock).not.toHaveBeenCalled();
   });
 });

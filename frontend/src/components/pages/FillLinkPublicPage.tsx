@@ -17,6 +17,7 @@ import {
   fillLinkQuestionSupportsTextLimit,
   normalizeFillLinkQuestionType,
 } from '../../utils/fillLinkWebForm';
+import { IMAGE_ACCEPT, readImageFileAsDataUrl } from '../../utils/images';
 import { getRecaptchaToken, loadRecaptcha } from '../../utils/recaptcha';
 import { Alert } from '../ui/Alert';
 import '../../styles/ui-buttons.css';
@@ -24,6 +25,13 @@ import './FillLinkPublicPage.css';
 
 type FillLinkPublicPageProps = {
   token: string;
+};
+
+type FillLinkImageAnswer = {
+  imageDataUrl?: string | null;
+  imagePath?: string | null;
+  imageMimeType?: string | null;
+  imageName?: string | null;
 };
 
 function isRecaptchaRequired(): boolean {
@@ -45,7 +53,30 @@ function getRecaptchaSiteKey(): string {
 function toFieldValue(value: unknown): string {
   if (value === null || value === undefined) return '';
   if (Array.isArray(value)) return value.join(', ');
+  if (isImageAnswer(value)) return value.imageName || value.imagePath || '';
   return String(value);
+}
+
+function isImageAnswer(value: unknown): value is FillLinkImageAnswer {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return false;
+  }
+  const record = value as FillLinkImageAnswer;
+  return Boolean(
+    String(record.imageDataUrl || '').trim()
+    || String(record.imagePath || '').trim()
+    || String(record.imageName || '').trim(),
+  );
+}
+
+function imageAnswerIsPresent(value: unknown): boolean {
+  if (typeof value === 'string') {
+    return value.trim().length > 0;
+  }
+  if (!isImageAnswer(value)) {
+    return false;
+  }
+  return Boolean(String(value.imageDataUrl || value.imagePath || '').trim());
 }
 
 function buildFillLinkSubmitAttemptId(): string {
@@ -79,6 +110,8 @@ function seedAnswers(questions: FillLinkQuestion[] | undefined): Record<string, 
     const normalizedType = normalizeFillLinkQuestionType(question.type);
     if (normalizedType === 'multi_select') {
       seededAnswers[question.key] = [];
+    } else if (normalizedType === 'image') {
+      seededAnswers[question.key] = null;
     } else if (fillLinkQuestionIsBoolean(normalizedType)) {
       seededAnswers[question.key] = false;
     } else {
@@ -107,6 +140,9 @@ function sanitizeAnswerForQuestion(question: FillLinkQuestion, value: unknown): 
     if (allowed.size && !allowed.has(normalized)) return '';
     return normalized;
   }
+  if (normalizedType === 'image') {
+    return imageAnswerIsPresent(value) ? value : null;
+  }
   return value;
 }
 
@@ -129,6 +165,9 @@ function isQuestionAnswered(question: FillLinkQuestion, value: unknown): boolean
   }
   if (normalizedType === 'multi_select') {
     return Array.isArray(value) && value.length > 0;
+  }
+  if (normalizedType === 'image') {
+    return imageAnswerIsPresent(value);
   }
   if (Array.isArray(value)) {
     return value.some((entry) => String(entry ?? '').trim().length > 0);
@@ -313,6 +352,36 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
         [question.key]: next,
       };
     });
+  };
+
+  const handleImageFileChange = async (
+    question: FillLinkQuestion,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0] || null;
+    clearSubmitFeedback();
+    submitAttemptIdRef.current = null;
+    if (!file) {
+      setAnswers((prev) => ({ ...prev, [question.key]: null }));
+      return;
+    }
+    try {
+      const imagePayload = await readImageFileAsDataUrl(file);
+      event.target.value = '';
+      setError(null);
+      setAnswers((prev) => ({
+        ...prev,
+        [question.key]: imagePayload,
+      }));
+    } catch (imageError) {
+      event.target.value = '';
+      setAnswers((prev) => ({ ...prev, [question.key]: null }));
+      setError(imageError instanceof Error ? imageError.message : 'Unable to read this image.');
+    }
+  };
+
+  const handleImageClear = (question: FillLinkQuestion) => {
+    handleAnswerChange(question, null);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -693,7 +762,34 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
                       {question.helpText && !(normalizedType === 'radio' || normalizedType === 'multi_select' || fillLinkQuestionIsBoolean(normalizedType)) ? (
                         <span id={helpId} className="fill-link-public-page__field-help">{question.helpText}</span>
                       ) : null}
-                      {normalizedType === 'date' ? (
+                      {normalizedType === 'image' ? (
+                        <div className="fill-link-public-page__image-upload">
+                          <input
+                            id={fieldId}
+                            name={fieldName}
+                            type="file"
+                            accept={IMAGE_ACCEPT}
+                            aria-label={questionLabel}
+                            aria-required={isQuestionRequired(link, question)}
+                            aria-describedby={describedBy}
+                            onChange={(event) => {
+                              void handleImageFileChange(question, event);
+                            }}
+                          />
+                          {isImageAnswer(answers[question.key]) ? (
+                            <div className="fill-link-public-page__image-selection">
+                              <span>{toFieldValue(answers[question.key]) || 'Selected image'}</span>
+                              <button
+                                type="button"
+                                className="ui-button ui-button--ghost ui-button--compact"
+                                onClick={() => handleImageClear(question)}
+                              >
+                                Clear
+                              </button>
+                            </div>
+                          ) : null}
+                        </div>
+                      ) : normalizedType === 'date' ? (
                         <input
                           id={fieldId}
                           name={fieldName}

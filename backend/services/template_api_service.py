@@ -468,6 +468,12 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             # because the PDF fill engine does not materialize arbitrary text
             # into signature widgets the way it does for text fields.
             continue
+        if field_type in {"barcode", "qr", "pdf417"}:
+            # Barcode-like helper fields are generated from their configured
+            # source fields or saved manual values, then stamped into flat PDFs.
+            # Exposing them as writable API inputs would let callers override
+            # the dependency graph and diverge from Fill By Link behavior.
+            continue
         if _is_calculated_output_field(field):
             # Calculated outputs are materialized server-side from formula
             # dependencies. Advertising them as writable scalar inputs would
@@ -551,7 +557,10 @@ def build_template_api_schema(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     explicit_checkbox_group_keys: set[str] = set()
 
     for entry in scalar_fields:
-        example_data.setdefault(entry["key"], f"<{entry['key']}>")
+        if entry.get("type") == "image":
+            example_data.setdefault(entry["key"], f"gs://<bucket>/path/to-{entry['key']}.png")
+        else:
+            example_data.setdefault(entry["key"], f"<{entry['key']}>")
     for entry in checkbox_fields:
         example_data.setdefault(entry["key"], True)
 
@@ -666,7 +675,12 @@ def resolve_template_api_request_data(
         schema = build_template_api_schema(snapshot)
     except ValueError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
-    scalar_keys = {str(entry.get("key") or "") for entry in schema.get("fields") or [] if isinstance(entry, dict)}
+    scalar_field_map = {
+        str(entry.get("key") or ""): dict(entry)
+        for entry in schema.get("fields") or []
+        if isinstance(entry, dict) and str(entry.get("key") or "").strip()
+    }
+    scalar_keys = set(scalar_field_map.keys())
     checkbox_field_map = {
         str(entry.get("key") or ""): dict(entry)
         for entry in schema.get("checkboxFields") or []
@@ -710,6 +724,12 @@ def resolve_template_api_request_data(
             if isinstance(raw_value, (dict, list)):
                 errors.append(f"{normalized_key} expects a scalar value.")
                 continue
+            scalar_type = str(scalar_field_map.get(normalized_key, {}).get("type") or "").strip().lower()
+            if scalar_type == "image":
+                image_path = _coerce_text(raw_value)
+                if image_path and not image_path.startswith("gs://"):
+                    errors.append(f"{normalized_key} expects an allowlisted gs:// PNG or JPEG image path.")
+                    continue
             resolved[normalized_key] = raw_value
             continue
         if normalized_key in checkbox_field_map:
@@ -993,9 +1013,15 @@ def resolve_group_template_api_request_data(
         )
 
     enum_violations: List[str] = []
+    image_path_violations: List[str] = []
     for key, value in data.items():
         field = canonical_keys.get(key)
         if not field:
+            continue
+        if field.get("type") == "image":
+            image_path = _coerce_text(value)
+            if image_path and not image_path.startswith("gs://"):
+                image_path_violations.append(key)
             continue
         if field.get("type") != "radio_group":
             continue
@@ -1008,6 +1034,11 @@ def resolve_group_template_api_request_data(
     if enum_violations:
         errors.append(
             f"Out-of-enum value(s): {'; '.join(enum_violations[:_MAX_TEMPLATE_API_ERROR_ITEMS])}."
+        )
+    if image_path_violations:
+        errors.append(
+            "Image field(s) must be allowlisted gs:// PNG or JPEG paths: "
+            f"{', '.join(image_path_violations[:_MAX_TEMPLATE_API_ERROR_ITEMS])}."
         )
 
     if errors:

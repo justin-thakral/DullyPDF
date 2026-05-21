@@ -44,6 +44,7 @@ import backend.services.pdf_service as pdf_service
 import backend.services.template_api_service as template_api_service
 import backend.firebaseDB.billing_database as billing_database
 import backend.firebaseDB.fill_link_database as fill_link_database
+import backend.firebaseDB.pdf_download_database as pdf_download_database
 import backend.firebaseDB.structured_fill_database as structured_fill_database
 import backend.firebaseDB.template_api_endpoint_database as template_api_endpoint_database
 
@@ -157,6 +158,7 @@ def app_main():
         template_api_service,
         billing_database,
         fill_link_database,
+        pdf_download_database,
         structured_fill_database,
         template_api_endpoint_database,
     ]
@@ -217,8 +219,11 @@ def stub_retention_defaults(mocker, app_main) -> None:
     mocker.patch.object(app_main, "restore_user_downgrade_managed_links", return_value=[])
     mocker.patch.object(app_main, "apply_user_downgrade_retention", return_value={"status": "grace_period"})
     mocker.patch.object(app_main, "get_user_billing_record", return_value=None)
+    mocker.patch.object(app_main, "set_user_billing_payment_recovery", return_value=None)
+    mocker.patch.object(app_main, "clear_user_billing_payment_recovery", return_value=None)
     mocker.patch.object(app_main, "get_openai_job", return_value=None)
     mocker.patch.object(app_main, "get_structured_fill_monthly_usage", return_value=None)
+    mocker.patch.object(app_main, "get_pdf_download_monthly_usage", return_value=None)
     mocker.patch.object(app_main, "close_fill_link_if_scope_invalid", side_effect=lambda record: record)
     mocker.patch.object(app_main, "preview_fill_link_if_scope_invalid", side_effect=lambda record: record)
     mocker.patch.object(app_main, "get_fill_link_for_group", return_value=None)

@@ -23,6 +23,7 @@ from backend.firebaseDB.user_database import (
     ROLE_PRO,
     activate_pro_membership,
     add_refill_openai_credits,
+    clear_user_billing_payment_recovery,
     downgrade_to_base_membership,
     ensure_user,
     find_user_id_by_subscription_id,
@@ -30,6 +31,7 @@ from backend.firebaseDB.user_database import (
     get_user_billing_record,
     get_user_profile,
     normalize_role,
+    set_user_billing_payment_recovery,
     set_user_billing_subscription,
 )
 from backend.services.auth_service import require_user
@@ -38,6 +40,7 @@ from backend.services.billing_service import (
     BillingCheckoutConflictError,
     BillingConfigError,
     BillingCheckoutSessionNotFoundError,
+    BillingPaymentRecoveryError,
     CHECKOUT_KIND_FREE_TRIAL,
     CHECKOUT_KIND_PRO_MONTHLY,
     CHECKOUT_KIND_PRO_YEARLY,
@@ -45,6 +48,7 @@ from backend.services.billing_service import (
     billing_enabled,
     cancel_subscription_at_period_end,
     construct_webhook_event,
+    create_billing_portal_session,
     create_checkout_session,
     extract_price_ids_from_invoice,
     first_nonempty,
@@ -55,6 +59,7 @@ from backend.services.billing_service import (
     resolve_webhook_health,
     resolve_price_id_for_checkout_kind,
     resolve_refill_credit_pack_size_for_price,
+    sync_subscription_payment_method_for_retry,
     webhook_health_enforced_for_checkout,
 )
 from backend.services.downgrade_retention_service import (
@@ -170,6 +175,202 @@ def _coerce_positive_int(value: Any) -> Optional[int]:
     return parsed if parsed > 0 else None
 
 
+def _resolve_invoice_subscription_id(invoice_obj: Dict[str, Any]) -> Optional[str]:
+    subscription_details = (
+        invoice_obj.get("subscription_details")
+        if isinstance(invoice_obj.get("subscription_details"), dict)
+        else {}
+    )
+    parent = invoice_obj.get("parent") if isinstance(invoice_obj.get("parent"), dict) else {}
+    parent_subscription_details = (
+        parent.get("subscription_details")
+        if isinstance(parent.get("subscription_details"), dict)
+        else {}
+    )
+    candidates: list[Optional[str]] = [
+        str(invoice_obj.get("subscription") or ""),
+        str(subscription_details.get("subscription") or ""),
+        str(parent_subscription_details.get("subscription") or ""),
+    ]
+
+    lines = invoice_obj.get("lines") if isinstance(invoice_obj.get("lines"), dict) else {}
+    line_items = lines.get("data") if isinstance(lines.get("data"), list) else []
+    for entry in line_items:
+        if not isinstance(entry, dict):
+            continue
+        candidates.append(str(entry.get("subscription") or ""))
+        line_parent = entry.get("parent") if isinstance(entry.get("parent"), dict) else {}
+        subscription_item_details = (
+            line_parent.get("subscription_item_details")
+            if isinstance(line_parent.get("subscription_item_details"), dict)
+            else {}
+        )
+        candidates.append(str(subscription_item_details.get("subscription") or ""))
+    return first_nonempty(candidates)
+
+
+def _resolve_invoice_metadata_user_id(invoice_obj: Dict[str, Any]) -> Optional[str]:
+    metadata = invoice_obj.get("metadata") if isinstance(invoice_obj.get("metadata"), dict) else {}
+    subscription_details = (
+        invoice_obj.get("subscription_details")
+        if isinstance(invoice_obj.get("subscription_details"), dict)
+        else {}
+    )
+    subscription_metadata = (
+        subscription_details.get("metadata")
+        if isinstance(subscription_details.get("metadata"), dict)
+        else {}
+    )
+    parent = invoice_obj.get("parent") if isinstance(invoice_obj.get("parent"), dict) else {}
+    parent_subscription_details = (
+        parent.get("subscription_details")
+        if isinstance(parent.get("subscription_details"), dict)
+        else {}
+    )
+    parent_subscription_metadata = (
+        parent_subscription_details.get("metadata")
+        if isinstance(parent_subscription_details.get("metadata"), dict)
+        else {}
+    )
+    line_metadata_candidates: list[Dict[str, Any]] = []
+    lines = invoice_obj.get("lines") if isinstance(invoice_obj.get("lines"), dict) else {}
+    line_items = lines.get("data") if isinstance(lines.get("data"), list) else []
+    for entry in line_items:
+        if isinstance(entry, dict) and isinstance(entry.get("metadata"), dict):
+            line_metadata_candidates.append(entry["metadata"])
+    candidate_values = [
+        metadata.get("userId"),
+        metadata.get("user_id"),
+        subscription_metadata.get("userId"),
+        subscription_metadata.get("user_id"),
+        parent_subscription_metadata.get("userId"),
+        parent_subscription_metadata.get("user_id"),
+    ]
+    for line_metadata in line_metadata_candidates:
+        candidate_values.extend([line_metadata.get("userId"), line_metadata.get("user_id")])
+    return first_nonempty(
+        candidate_values
+    )
+
+
+def _resolve_payment_failure_details(invoice_obj: Dict[str, Any]) -> tuple[Optional[str], Optional[str]]:
+    error_candidates: list[Dict[str, Any]] = []
+    direct_error = invoice_obj.get("last_payment_error")
+    if isinstance(direct_error, dict):
+        error_candidates.append(direct_error)
+    payment_intent = invoice_obj.get("payment_intent")
+    if isinstance(payment_intent, dict):
+        intent_error = payment_intent.get("last_payment_error")
+        if isinstance(intent_error, dict):
+            error_candidates.append(intent_error)
+    charge = invoice_obj.get("charge")
+    if isinstance(charge, dict):
+        outcome = charge.get("outcome")
+        if isinstance(outcome, dict):
+            error_candidates.append(outcome)
+
+    for error in error_candidates:
+        code = first_nonempty(
+            [
+                str(error.get("decline_code") or ""),
+                str(error.get("code") or ""),
+                str(error.get("type") or ""),
+            ]
+        )
+        message = first_nonempty([str(error.get("message") or ""), str(error.get("seller_message") or "")])
+        if code or message:
+            return code, message
+    return None, None
+
+
+def _resolve_payment_recovery_deadline(invoice_obj: Dict[str, Any], *, failed_at: Optional[int] = None) -> Optional[int]:
+    resolved_failed_at = failed_at or _coerce_positive_int(invoice_obj.get("created"))
+    if resolved_failed_at is None:
+        resolved_failed_at = int(time.time())
+    window_days = _safe_positive_int_env("STRIPE_PAYMENT_RECOVERY_WINDOW_DAYS", 7)
+    return resolved_failed_at + (window_days * 24 * 60 * 60)
+
+
+def _resolve_failed_invoice_subscription_status(
+    invoice_obj: Dict[str, Any],
+    billing_record,
+    *,
+    subscription_id: str,
+) -> str:
+    billing_reason = str(invoice_obj.get("billing_reason") or "").strip().lower()
+    stored_subscription_id = (billing_record.subscription_id or "").strip() if billing_record else ""
+    previous_status = (billing_record.subscription_status or "").strip().lower() if billing_record else ""
+    if (
+        billing_reason == "subscription_create"
+        and (not stored_subscription_id or stored_subscription_id == subscription_id)
+        and not is_subscription_active(previous_status)
+    ):
+        return "incomplete"
+    return "past_due"
+
+
+def _stored_payment_recovery_is_newer_than_event(
+    billing_record,
+    *,
+    event_created: Optional[int],
+) -> bool:
+    payment_recovery = getattr(billing_record, "payment_recovery", None)
+    if payment_recovery is None:
+        return False
+    recovery_failed_at = _coerce_positive_int(getattr(payment_recovery, "failed_at", None))
+    event_at = _coerce_positive_int(event_created)
+    return bool(recovery_failed_at and event_at and event_at < recovery_failed_at)
+
+
+def _invoice_paid_is_older_than_stored_recovery(
+    invoice_obj: Dict[str, Any],
+    billing_record,
+    *,
+    stripe_event_created: Optional[int] = None,
+) -> bool:
+    payment_recovery = getattr(billing_record, "payment_recovery", None)
+    if payment_recovery is None:
+        return False
+    recovery_invoice_id = str(getattr(payment_recovery, "latest_invoice_id", "") or "").strip()
+    paid_invoice_id = str(invoice_obj.get("id") or "").strip()
+    if recovery_invoice_id and paid_invoice_id and recovery_invoice_id == paid_invoice_id:
+        return False
+    paid_event_at = stripe_event_created or _coerce_positive_int(invoice_obj.get("created"))
+    return _stored_payment_recovery_is_newer_than_event(billing_record, event_created=paid_event_at)
+
+
+def _checkout_completed_is_older_than_stored_recovery(
+    session_obj: Dict[str, Any],
+    billing_record,
+    *,
+    subscription_id: Optional[str],
+    stripe_event_created: Optional[int] = None,
+) -> bool:
+    stored_subscription_id = (getattr(billing_record, "subscription_id", None) or "").strip()
+    normalized_subscription_id = (subscription_id or "").strip()
+    if stored_subscription_id and normalized_subscription_id and stored_subscription_id != normalized_subscription_id:
+        return False
+    checkout_event_at = stripe_event_created or _coerce_positive_int(session_obj.get("created"))
+    return _stored_payment_recovery_is_newer_than_event(billing_record, event_created=checkout_event_at)
+
+
+def _invoice_payment_failed_is_older_than_stored_recovery(
+    invoice_obj: Dict[str, Any],
+    billing_record,
+    *,
+    stripe_event_created: Optional[int] = None,
+) -> bool:
+    payment_recovery = getattr(billing_record, "payment_recovery", None)
+    if payment_recovery is None:
+        return False
+    recovery_invoice_id = str(getattr(payment_recovery, "latest_invoice_id", "") or "").strip()
+    failed_invoice_id = str(invoice_obj.get("id") or "").strip()
+    if recovery_invoice_id and failed_invoice_id and recovery_invoice_id == failed_invoice_id:
+        return False
+    failed_event_at = stripe_event_created or _coerce_positive_int(invoice_obj.get("created"))
+    return _stored_payment_recovery_is_newer_than_event(billing_record, event_created=failed_event_at)
+
+
 def _resolve_checkout_session_price_id(session_obj: Dict[str, Any], *, metadata_dict: Dict[str, Any]) -> Optional[str]:
     metadata_price_id = first_nonempty(
         [
@@ -247,7 +448,12 @@ def _resolve_refill_checkout_credits(session_obj: Dict[str, Any], *, metadata_di
     raise ValueError("Unable to resolve refill credits for the Stripe checkout price.")
 
 
-def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_event_id: str) -> None:
+def _handle_checkout_session_completed(
+    session_obj: Dict[str, Any],
+    *,
+    stripe_event_id: str,
+    stripe_event_created: Optional[int] = None,
+) -> None:
     metadata = session_obj.get("metadata") if isinstance(session_obj, dict) else None
     metadata_dict = metadata if isinstance(metadata, dict) else {}
     processing_key = _resolve_checkout_processing_key(session_obj, fallback_event_id=stripe_event_id)
@@ -271,7 +477,47 @@ def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_ev
             return
         subscription_id = str(session_obj.get("subscription") or "").strip() or None
         customer_id = str(session_obj.get("customer") or "").strip() or None
+        if not subscription_id or not customer_id:
+            raise RetryableWebhookProcessingError(
+                "Stripe checkout.session.completed is missing subscription linkage; awaiting complete session payload.",
+            )
         subscription_price_id = resolve_price_id_for_checkout_kind(checkout_kind)
+        billing_record = get_user_billing_record(user_id)
+        stored_subscription_id = (billing_record.subscription_id or "").strip() if billing_record else ""
+        previous_status = (billing_record.subscription_status or "").strip().lower() if billing_record else ""
+        if (
+            billing_record
+            and stored_subscription_id
+            and subscription_id
+            and stored_subscription_id != subscription_id
+            and is_subscription_active(previous_status)
+        ):
+            logger.info(
+                "Skipping Stripe checkout.session.completed because a different local subscription is active.",
+                extra={
+                    "stripeEventId": stripe_event_id,
+                    "checkoutSessionId": str(session_obj.get("id") or "").strip() or None,
+                    "checkoutSubscriptionId": subscription_id,
+                    "localSubscriptionId": stored_subscription_id,
+                    "subscriptionStatus": previous_status,
+                },
+            )
+            return
+        if billing_record and _checkout_completed_is_older_than_stored_recovery(
+            session_obj,
+            billing_record,
+            subscription_id=subscription_id,
+            stripe_event_created=stripe_event_created,
+        ):
+            logger.info(
+                "Skipping Stripe checkout.session.completed because a newer payment recovery record is stored.",
+                extra={
+                    "stripeEventId": stripe_event_id,
+                    "checkoutSessionId": str(session_obj.get("id") or "").strip() or None,
+                    "subscriptionId": subscription_id,
+                },
+            )
+            return
         # Checkout is the explicit purchase boundary, so it is responsible for
         # granting the fresh monthly Pro pool. Stripe subscription metadata is
         # synced in a separate write so later invoice lifecycle events can heal
@@ -285,12 +531,13 @@ def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_ev
             user_id,
             customer_id=customer_id,
             subscription_id=subscription_id,
-            subscription_status="active",
+            subscription_status="trialing" if checkout_kind == CHECKOUT_KIND_FREE_TRIAL else "active",
             subscription_price_id=subscription_price_id,
             cancel_at_period_end=False,
             cancel_at=None,
             current_period_end=None,
         )
+        clear_user_billing_payment_recovery(user_id)
         restore_user_downgrade_managed_links(user_id)
         return
     if checkout_kind == CHECKOUT_KIND_REFILL_500:
@@ -314,20 +561,22 @@ def _handle_checkout_session_completed(session_obj: Dict[str, Any], *, stripe_ev
         )
 
 
-def _handle_invoice_paid(invoice_obj: Dict[str, Any], *, stripe_event_id: str) -> None:
-    subscription_id = str(invoice_obj.get("subscription") or "").strip()
+def _handle_invoice_paid(
+    invoice_obj: Dict[str, Any],
+    *,
+    stripe_event_id: str,
+    stripe_event_created: Optional[int] = None,
+) -> None:
+    subscription_id = _resolve_invoice_subscription_id(invoice_obj)
     if not subscription_id:
         return
 
     price_ids = extract_price_ids_from_invoice(invoice_obj)
     pro_price_id = next((price_id for price_id in price_ids if is_pro_price_id(price_id)), None)
 
-    metadata = invoice_obj.get("metadata") if isinstance(invoice_obj, dict) else None
-    metadata_dict = metadata if isinstance(metadata, dict) else {}
     user_id = first_nonempty(
         [
-            metadata_dict.get("userId"),
-            metadata_dict.get("user_id"),
+            _resolve_invoice_metadata_user_id(invoice_obj),
             find_user_id_by_subscription_id(subscription_id),
         ]
     )
@@ -357,6 +606,54 @@ def _handle_invoice_paid(invoice_obj: Dict[str, Any], *, stripe_event_id: str) -
     if not pro_price_id:
         return
 
+    stored_subscription_id = (billing_record.subscription_id or "").strip() if billing_record else ""
+    previous_status = (billing_record.subscription_status or "").strip().lower() if billing_record else ""
+    if (
+        billing_record
+        and stored_subscription_id
+        and stored_subscription_id != subscription_id
+        and is_subscription_active(previous_status)
+    ):
+        logger.info(
+            "Skipping Stripe invoice.paid because a different local subscription is active.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "invoiceSubscriptionId": subscription_id,
+                "localSubscriptionId": stored_subscription_id,
+                "subscriptionStatus": previous_status,
+            },
+        )
+        return
+    if (
+        billing_record
+        and stored_subscription_id == subscription_id
+        and previous_status in TERMINAL_SUBSCRIPTION_STATUSES
+    ):
+        logger.info(
+            "Skipping Stripe invoice.paid because the local subscription is already terminal.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "subscriptionStatus": previous_status,
+            },
+        )
+        return
+
+    if _invoice_paid_is_older_than_stored_recovery(
+        invoice_obj,
+        billing_record,
+        stripe_event_created=stripe_event_created,
+    ):
+        logger.info(
+            "Skipping Stripe invoice.paid because a newer payment recovery record is stored.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "invoiceId": str(invoice_obj.get("id") or "").strip() or None,
+                "subscriptionId": subscription_id,
+            },
+        )
+        return
+
     customer_id = str(invoice_obj.get("customer") or "").strip() or None
     # Invoice settlement confirms an active subscription and should heal role
     # or billing linkage, but it must not blindly reset a Pro pool that was
@@ -372,17 +669,208 @@ def _handle_invoice_paid(invoice_obj: Dict[str, Any], *, stripe_event_id: str) -
         subscription_id=subscription_id,
         subscription_status="active",
         subscription_price_id=pro_price_id,
-        cancel_at_period_end=False,
-        cancel_at=None,
-        current_period_end=None,
     )
+    clear_user_billing_payment_recovery(user_id)
     restore_user_downgrade_managed_links(user_id)
+
+
+def _handle_invoice_payment_failed(
+    invoice_obj: Dict[str, Any],
+    *,
+    stripe_event_id: str,
+    stripe_event_created: Optional[int] = None,
+) -> None:
+    subscription_id = _resolve_invoice_subscription_id(invoice_obj)
+    if not subscription_id:
+        return
+
+    price_ids = extract_price_ids_from_invoice(invoice_obj)
+    pro_price_id = next((price_id for price_id in price_ids if is_pro_price_id(price_id)), None)
+    user_id = first_nonempty(
+        [
+            _resolve_invoice_metadata_user_id(invoice_obj),
+            find_user_id_by_subscription_id(subscription_id),
+        ]
+    )
+    if not user_id:
+        if pro_price_id or not price_ids:
+            raise RetryableWebhookProcessingError(
+                "Unable to resolve user for Stripe invoice.payment_failed event; awaiting subscription linkage.",
+            )
+        logger.info(
+            "Skipping non-Pro invoice.payment_failed event with unresolved user.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "priceIds": price_ids,
+            },
+        )
+        return
+
+    billing_record = get_user_billing_record(user_id)
+    if not pro_price_id and billing_record:
+        if (
+            (billing_record.subscription_id or "").strip() == subscription_id
+            and is_pro_price_id(billing_record.subscription_price_id)
+        ):
+            pro_price_id = billing_record.subscription_price_id
+    if not pro_price_id:
+        return
+
+    customer_id = str(invoice_obj.get("customer") or "").strip() or None
+    stored_subscription_id = (billing_record.subscription_id or "").strip() if billing_record else ""
+    previous_status = (billing_record.subscription_status or "").strip().lower() if billing_record else ""
+    if (
+        billing_record
+        and stored_subscription_id
+        and stored_subscription_id != subscription_id
+        and is_subscription_active(previous_status)
+    ):
+        logger.info(
+            "Skipping Stripe invoice.payment_failed because a different local subscription is active.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "invoiceSubscriptionId": subscription_id,
+                "localSubscriptionId": stored_subscription_id,
+                "subscriptionStatus": previous_status,
+            },
+        )
+        return
+    if (
+        billing_record
+        and stored_subscription_id == subscription_id
+        and previous_status in TERMINAL_SUBSCRIPTION_STATUSES
+    ):
+        logger.info(
+            "Skipping Stripe invoice.payment_failed because the local subscription is already terminal.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "subscriptionStatus": previous_status,
+            },
+        )
+        return
+    if billing_record and _invoice_payment_failed_is_older_than_stored_recovery(
+        invoice_obj,
+        billing_record,
+        stripe_event_created=stripe_event_created,
+    ):
+        logger.info(
+            "Skipping Stripe invoice.payment_failed because a newer payment recovery record is stored.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "invoiceId": str(invoice_obj.get("id") or "").strip() or None,
+                "subscriptionId": subscription_id,
+            },
+        )
+        return
+    failed_subscription_status = _resolve_failed_invoice_subscription_status(
+        invoice_obj,
+        billing_record,
+        subscription_id=subscription_id,
+    )
+    set_user_billing_subscription(
+        user_id,
+        customer_id=customer_id,
+        subscription_id=subscription_id,
+        subscription_status=failed_subscription_status,
+        subscription_price_id=pro_price_id,
+    )
+    failure_code, failure_message = _resolve_payment_failure_details(invoice_obj)
+    failed_at = stripe_event_created or _coerce_positive_int(invoice_obj.get("created"))
+    set_user_billing_payment_recovery(
+        user_id,
+        status="payment_failed",
+        latest_invoice_id=str(invoice_obj.get("id") or "").strip() or None,
+        latest_invoice_status=str(invoice_obj.get("status") or "").strip() or None,
+        failure_code=failure_code,
+        failure_message=failure_message,
+        failed_at=failed_at,
+        next_payment_attempt=_coerce_positive_int(invoice_obj.get("next_payment_attempt")),
+        recovery_deadline=_resolve_payment_recovery_deadline(invoice_obj, failed_at=failed_at),
+    )
+
+
+def _handle_invoice_updated(
+    invoice_obj: Dict[str, Any],
+    *,
+    stripe_event_id: str,
+    stripe_event_created: Optional[int] = None,
+) -> None:
+    subscription_id = _resolve_invoice_subscription_id(invoice_obj)
+    invoice_id = str(invoice_obj.get("id") or "").strip()
+    if not subscription_id or not invoice_id:
+        return
+    user_id = first_nonempty(
+        [
+            _resolve_invoice_metadata_user_id(invoice_obj),
+            find_user_id_by_subscription_id(subscription_id),
+        ]
+    )
+    if not user_id:
+        logger.info(
+            "Skipping Stripe invoice.updated because the user could not be resolved.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "invoiceId": invoice_id,
+            },
+        )
+        return
+
+    billing_record = get_user_billing_record(user_id)
+    if not billing_record:
+        return
+    stored_subscription_id = (billing_record.subscription_id or "").strip()
+    if stored_subscription_id != subscription_id:
+        return
+    payment_recovery = getattr(billing_record, "payment_recovery", None)
+    if payment_recovery is None:
+        return
+    recovery_invoice_id = str(getattr(payment_recovery, "latest_invoice_id", "") or "").strip()
+    if not recovery_invoice_id or recovery_invoice_id != invoice_id:
+        return
+    if _stored_payment_recovery_is_newer_than_event(
+        billing_record,
+        event_created=stripe_event_created or _coerce_positive_int(invoice_obj.get("created")),
+    ):
+        logger.info(
+            "Skipping Stripe invoice.updated because a newer payment recovery record is stored.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "invoiceId": invoice_id,
+            },
+        )
+        return
+
+    invoice_status = str(invoice_obj.get("status") or "").strip().lower() or getattr(
+        payment_recovery,
+        "latest_invoice_status",
+        None,
+    )
+    next_payment_attempt = _coerce_positive_int(invoice_obj.get("next_payment_attempt"))
+    if next_payment_attempt is None:
+        next_payment_attempt = getattr(payment_recovery, "next_payment_attempt", None)
+
+    set_user_billing_payment_recovery(
+        user_id,
+        status=str(getattr(payment_recovery, "status", "") or "payment_failed"),
+        latest_invoice_id=recovery_invoice_id,
+        latest_invoice_status=invoice_status,
+        failure_code=getattr(payment_recovery, "failure_code", None),
+        failure_message=getattr(payment_recovery, "failure_message", None),
+        failed_at=getattr(payment_recovery, "failed_at", None),
+        next_payment_attempt=next_payment_attempt,
+        recovery_deadline=getattr(payment_recovery, "recovery_deadline", None),
+    )
 
 
 def _handle_subscription_lifecycle(
     subscription_obj: Dict[str, Any],
     *,
     stripe_event_id: Optional[str] = None,
+    stripe_event_created: Optional[int] = None,
 ) -> None:
     subscription_id = str(subscription_obj.get("id") or "").strip()
     if not subscription_id:
@@ -433,6 +921,43 @@ def _handle_subscription_lifecycle(
     if not has_pro_price:
         return
 
+    stored_subscription_id = (billing_record.subscription_id or "").strip() if billing_record else ""
+    previous_status = (billing_record.subscription_status or "").strip().lower() if billing_record else ""
+    if (
+        status in TERMINAL_SUBSCRIPTION_STATUSES
+        and billing_record
+        and stored_subscription_id == subscription_id
+        and _stored_payment_recovery_is_newer_than_event(
+            billing_record,
+            event_created=stripe_event_created,
+        )
+    ):
+        logger.info(
+            "Skipping Stripe terminal subscription lifecycle because a newer payment recovery record is stored.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "subscriptionStatus": status,
+            },
+        )
+        return
+    if (
+        billing_record
+        and stored_subscription_id
+        and stored_subscription_id != subscription_id
+        and is_subscription_active(previous_status)
+    ):
+        logger.info(
+            "Skipping Stripe subscription lifecycle because a different local subscription is active.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "eventSubscriptionId": subscription_id,
+                "localSubscriptionId": stored_subscription_id,
+                "subscriptionStatus": previous_status,
+            },
+        )
+        return
+
     set_user_billing_subscription(
         user_id,
         customer_id=customer_id,
@@ -444,12 +969,35 @@ def _handle_subscription_lifecycle(
         current_period_end=current_period_end,
     )
     if is_subscription_active(status):
+        if status in {"active", "trialing"}:
+            clear_user_billing_payment_recovery(user_id)
         activate_pro_membership(
             user_id,
             stripe_event_id=stripe_event_id,
             reset_monthly_credits=False,
         )
         restore_user_downgrade_managed_links(user_id)
+        return
+    if status not in TERMINAL_SUBSCRIPTION_STATUSES:
+        logger.info(
+            "Recorded non-active Stripe subscription lifecycle status without local downgrade.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "subscriptionStatus": status,
+            },
+        )
+        return
+    clear_user_billing_payment_recovery(user_id)
+    if status == "incomplete_expired" and not is_subscription_active(previous_status):
+        logger.info(
+            "Recorded incomplete_expired subscription lifecycle without local downgrade because Pro access was never active.",
+            extra={
+                "stripeEventId": stripe_event_id,
+                "subscriptionId": subscription_id,
+                "previousSubscriptionStatus": previous_status,
+            },
+        )
         return
     downgrade_to_base_membership(user_id)
     apply_user_downgrade_retention(user_id)
@@ -491,6 +1039,7 @@ def _resolve_billing_route_rate_limit(scope: str) -> tuple[int, int]:
     defaults = {
         "checkout": (300, 12),
         "cancel": (300, 10),
+        "portal": (300, 12),
         "reconcile": (300, 24),
     }
     default_window, default_limit = defaults.get(normalized_scope, (300, 12))
@@ -591,7 +1140,11 @@ def _reconcile_checkout_session_object(*, session_obj: Dict[str, Any], processin
         return "already_processed"
 
     try:
-        _handle_checkout_session_completed(session_obj, stripe_event_id=processing_key)
+        _handle_checkout_session_completed(
+            session_obj,
+            stripe_event_id=processing_key,
+            stripe_event_created=_coerce_positive_int(session_obj.get("created")),
+        )
         complete_billing_event(processing_key)
         return "reconciled"
     except RetryableWebhookProcessingError:
@@ -626,7 +1179,11 @@ def _reconcile_checkout_event(*, event_payload: Dict[str, Any]) -> str:
 
     try:
         session_obj = _resolve_event_session_object(event_payload)
-        _handle_checkout_session_completed(session_obj, stripe_event_id=event_id)
+        _handle_checkout_session_completed(
+            session_obj,
+            stripe_event_id=event_id,
+            stripe_event_created=_coerce_positive_int(event_payload.get("created")),
+        )
         complete_billing_event(event_id)
         return "reconciled"
     except RetryableWebhookProcessingError:
@@ -1055,6 +1612,119 @@ async def cancel_subscription(
     return response
 
 
+@router.post("/api/billing/portal-session")
+async def create_portal_session(
+    request: Request,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    """Create a Stripe Billing Portal session for the authenticated user."""
+    if not billing_enabled():
+        raise HTTPException(status_code=503, detail="Stripe billing is not configured.")
+
+    user = _resolve_user_from_request(request, authorization)
+    profile = get_user_profile(user.app_user_id)
+    role = normalize_role(profile.role if profile else user.role)
+    if role != ROLE_GOD:
+        _enforce_billing_route_rate_limit(scope="portal", user_id=user.app_user_id)
+    billing_record = get_user_billing_record(user.app_user_id)
+    customer_id = billing_record.customer_id if billing_record else None
+    if not customer_id:
+        raise HTTPException(status_code=409, detail="No Stripe customer is linked to this profile yet.")
+
+    try:
+        session = create_billing_portal_session(customer_id=customer_id)
+    except BillingConfigError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Failed to create Stripe Billing Portal session.") from exc
+
+    return {
+        "success": True,
+        "url": session.url,
+        "customerId": session.customer_id,
+    }
+
+
+@router.post("/api/billing/payment-method-recovery/sync")
+async def sync_payment_method_recovery(
+    request: Request,
+    authorization: Optional[str] = Header(default=None),
+) -> Dict[str, Any]:
+    """Copy a Portal-updated payment method onto the subscription and retry payment."""
+    if not billing_enabled():
+        raise HTTPException(status_code=503, detail="Stripe billing is not configured.")
+
+    user = _resolve_user_from_request(request, authorization)
+    profile = get_user_profile(user.app_user_id)
+    role = normalize_role(profile.role if profile else user.role)
+    if role != ROLE_GOD:
+        _enforce_billing_route_rate_limit(scope="portal", user_id=user.app_user_id)
+
+    billing_record = get_user_billing_record(user.app_user_id)
+    customer_id = billing_record.customer_id if billing_record else None
+    subscription_id = billing_record.subscription_id if billing_record else None
+    if not customer_id or not subscription_id:
+        raise HTTPException(status_code=409, detail="No recoverable Stripe subscription is linked to this profile.")
+
+    payment_recovery = getattr(billing_record, "payment_recovery", None)
+    latest_invoice_id = getattr(payment_recovery, "latest_invoice_id", None)
+    try:
+        recovery = sync_subscription_payment_method_for_retry(
+            customer_id=customer_id,
+            subscription_id=subscription_id,
+            latest_invoice_id=latest_invoice_id,
+        )
+    except BillingPaymentRecoveryError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except BillingConfigError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception(
+            "Failed to synchronize Stripe payment method recovery.",
+            extra={"userId": user.app_user_id, "subscriptionId": subscription_id},
+        )
+        raise HTTPException(status_code=500, detail="Failed to synchronize Stripe payment recovery.") from exc
+
+    if recovery.subscription_status:
+        try:
+            set_user_billing_subscription(
+                user.app_user_id,
+                customer_id=recovery.customer_id,
+                subscription_id=recovery.subscription_id,
+                subscription_status=recovery.subscription_status,
+                subscription_price_id=billing_record.subscription_price_id if billing_record else None,
+            )
+        except Exception:
+            logger.warning(
+                "Stripe payment recovery sync succeeded but local billing status sync failed.",
+                extra={"userId": user.app_user_id, "subscriptionId": subscription_id},
+                exc_info=True,
+            )
+
+    if recovery.invoice_payment_succeeded and is_subscription_active(recovery.subscription_status):
+        activate_pro_membership(
+            user.app_user_id,
+            stripe_event_id=f"payment_method_recovery:{recovery.latest_invoice_id or recovery.subscription_id}",
+            reset_monthly_credits=False,
+        )
+        clear_user_billing_payment_recovery(user.app_user_id)
+        restore_user_downgrade_managed_links(user.app_user_id)
+
+    return {
+        "success": True,
+        "customerId": recovery.customer_id,
+        "subscriptionId": recovery.subscription_id,
+        "paymentMethodField": recovery.payment_method_field,
+        "subscriptionPaymentMethodUpdated": recovery.subscription_updated,
+        "latestInvoiceId": recovery.latest_invoice_id,
+        "invoicePaymentAttempted": recovery.invoice_payment_attempted,
+        "invoicePaymentSucceeded": recovery.invoice_payment_succeeded,
+        "invoiceStatus": recovery.invoice_status,
+        "invoicePaymentError": recovery.invoice_payment_error,
+        "subscriptionStatus": recovery.subscription_status,
+    }
+
+
 @router.post("/api/billing/webhook")
 async def stripe_webhook(
     request: Request,
@@ -1098,11 +1768,35 @@ async def stripe_webhook(
         payload_object = event_object if isinstance(event_object, dict) else {}
 
         if event_type == "checkout.session.completed":
-            _handle_checkout_session_completed(payload_object, stripe_event_id=event_id)
+            _handle_checkout_session_completed(
+                payload_object,
+                stripe_event_id=event_id,
+                stripe_event_created=_coerce_positive_int(event.get("created")),
+            )
         elif event_type == "invoice.paid":
-            _handle_invoice_paid(payload_object, stripe_event_id=event_id)
+            _handle_invoice_paid(
+                payload_object,
+                stripe_event_id=event_id,
+                stripe_event_created=_coerce_positive_int(event.get("created")),
+            )
+        elif event_type == "invoice.payment_failed":
+            _handle_invoice_payment_failed(
+                payload_object,
+                stripe_event_id=event_id,
+                stripe_event_created=_coerce_positive_int(event.get("created")),
+            )
+        elif event_type == "invoice.updated":
+            _handle_invoice_updated(
+                payload_object,
+                stripe_event_id=event_id,
+                stripe_event_created=_coerce_positive_int(event.get("created")),
+            )
         elif event_type in {"customer.subscription.updated", "customer.subscription.deleted"}:
-            _handle_subscription_lifecycle(payload_object, stripe_event_id=event_id)
+            _handle_subscription_lifecycle(
+                payload_object,
+                stripe_event_id=event_id,
+                stripe_event_created=_coerce_positive_int(event.get("created")),
+            )
         else:
             logger.warning(
                 "Received unsupported Stripe webhook event type; no action taken.",

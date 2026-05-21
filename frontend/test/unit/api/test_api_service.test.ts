@@ -9,10 +9,14 @@ const apiConfigMocks = vi.hoisted(() => ({
 vi.mock('../../../src/services/apiConfig', () => ({
   ApiError: class ApiError extends Error {
     status: number;
+    code?: string;
+    payload?: unknown;
 
-    constructor(message: string, status: number) {
+    constructor(message: string, status: number, code?: string, payload?: unknown) {
       super(message);
       this.status = status;
+      this.code = code;
+      this.payload = payload;
     }
   },
   apiFetch: apiConfigMocks.apiFetch,
@@ -993,7 +997,8 @@ describe('ApiService', () => {
     apiConfigMocks.apiFetch
       .mockResolvedValueOnce({ id: 'billing-response' })
       .mockResolvedValueOnce({ id: 'reconcile-response' })
-      .mockResolvedValueOnce({ id: 'cancel-response' });
+      .mockResolvedValueOnce({ id: 'cancel-response' })
+      .mockResolvedValueOnce({ id: 'portal-response' });
     apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
       success: true,
       kind: 'pro_yearly',
@@ -1027,11 +1032,16 @@ describe('ApiService', () => {
       subscriptionId: 'sub_123',
       status: 'active',
       cancelAtPeriodEnd: true,
+    }).mockResolvedValueOnce({
+      success: true,
+      url: 'https://billing.stripe.com/p/session',
+      customerId: 'cus_123',
     });
 
     const response = await ApiService.createBillingCheckoutSession('pro_yearly');
     const reconcileResponse = await ApiService.reconcileBillingCheckoutFulfillment({ lookbackHours: 24 });
     const cancelResponse = await ApiService.cancelBillingSubscription();
+    const portalResponse = await ApiService.createBillingPortalSession();
 
     expect(response.success).toBe(true);
     expect(response.kind).toBe('pro_yearly');
@@ -1044,6 +1054,7 @@ describe('ApiService', () => {
     expect(cancelResponse.success).toBe(true);
     expect(cancelResponse.subscriptionId).toBe('sub_123');
     expect(cancelResponse.cancelAtPeriodEnd).toBe(true);
+    expect(portalResponse.url).toBe('https://billing.stripe.com/p/session');
     expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith('POST', '/api/billing/checkout-session', {
       headers: { 'Content-Type': 'application/json' },
       body: expect.any(String),
@@ -1061,6 +1072,26 @@ describe('ApiService', () => {
       }),
     });
     expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith('POST', '/api/billing/subscription/cancel');
+    expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith('POST', '/api/billing/portal-session');
+  });
+
+  it('wires payment method recovery sync endpoint', async () => {
+    apiConfigMocks.apiFetch.mockResolvedValueOnce({ id: 'payment-method-recovery-response' });
+    apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
+      success: true,
+      subscriptionPaymentMethodUpdated: true,
+      invoicePaymentAttempted: true,
+      invoicePaymentSucceeded: true,
+      invoicePaymentError: null,
+      subscriptionStatus: 'active',
+    });
+
+    const response = await ApiService.syncBillingPaymentMethodRecovery();
+
+    expect(response.subscriptionPaymentMethodUpdated).toBe(true);
+    expect(response.invoicePaymentSucceeded).toBe(true);
+    expect(response.invoicePaymentError).toBeNull();
+    expect(apiConfigMocks.apiFetch).toHaveBeenCalledWith('POST', '/api/billing/payment-method-recovery/sync');
   });
 
   it('wires rename/map endpoints and payload shape through buildApiUrl', async () => {
@@ -1444,6 +1475,7 @@ describe('ApiService', () => {
       },
     ] as any, {
       signal,
+      usageContext: 'workspace_download',
       appearance: { globalFieldFont: 'Times-Roman', globalFieldFontSize: 12 },
     });
 
@@ -1498,6 +1530,7 @@ describe('ApiService', () => {
         appearance: { globalFieldFont: 'Times-Roman', globalFieldFontSize: 12 },
       }),
     );
+    expect(materializeBody.get('usageContext')).toBe('workspace_download');
     expect(apiConfigMocks.apiFetch.mock.calls[2][2]).toMatchObject({ signal });
   });
 
@@ -1521,6 +1554,108 @@ describe('ApiService', () => {
         },
       ] as any),
     ).rejects.toThrow('Failed to generate fillable PDF: Unprocessable Entity');
+  });
+
+  it('builds quota-enforced single and group download FormData payloads', async () => {
+    apiConfigMocks.apiFetch
+      .mockResolvedValueOnce({ ok: true, status: 200, blob: vi.fn().mockResolvedValue(new Blob(['pdf'])) })
+      .mockResolvedValueOnce({ ok: true, status: 200, blob: vi.fn().mockResolvedValue(new Blob(['zip'])) });
+
+    const sourceBlob = new Blob(['source'], { type: 'application/pdf' });
+    const sourceFile = new File(['group-source'], 'packet.pdf', { type: 'application/pdf' });
+    const fields = [{
+      id: 'f-1',
+      name: 'First Name',
+      type: 'text',
+      page: 1,
+      rect: { x: 0, y: 0, width: 10, height: 10 },
+      value: 'Alex',
+    }] as any;
+
+    const single = await ApiService.downloadFormPdf(sourceBlob, fields, {
+      downloadRequestId: 'pdf-download-1',
+      exportMode: 'flat',
+      filename: 'source.pdf',
+      appearance: { globalFieldFont: 'Times-Roman', globalFieldFontSize: 12 },
+    });
+    const group = await ApiService.downloadGroupPdfArchive({
+      downloadRequestId: 'pdf-group-download-1',
+      groupId: 'group-1',
+      groupName: 'Client Packet',
+      items: [
+        {
+          sourceFile,
+          filename: 'packet.pdf',
+          fields,
+          exportMode: 'editable',
+          appearance: { globalFieldFont: 'Helvetica', globalFieldFontSize: 'auto' },
+        },
+      ],
+    });
+
+    expect(single).toBeInstanceOf(Blob);
+    expect(group).toBeInstanceOf(Blob);
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(
+      1,
+      'POST',
+      'https://api.local/api/forms/download',
+      expect.objectContaining({ allowStatuses: [429] }),
+    );
+    const singleBody = apiConfigMocks.apiFetch.mock.calls[0][2].body as FormData;
+    expect((singleBody.get('pdf') as File).name).toBe('source.pdf');
+    expect(singleBody.get('downloadRequestId')).toBe('pdf-download-1');
+    expect(singleBody.get('exportMode')).toBe('flat');
+    expect(singleBody.get('fields')).toBe(JSON.stringify({
+      fields,
+      appearance: { globalFieldFont: 'Times-Roman', globalFieldFontSize: 12 },
+    }));
+
+    expect(apiConfigMocks.apiFetch).toHaveBeenNthCalledWith(
+      2,
+      'POST',
+      'https://api.local/api/forms/group-download',
+      expect.objectContaining({ allowStatuses: [429] }),
+    );
+    const groupBody = apiConfigMocks.apiFetch.mock.calls[1][2].body as FormData;
+    expect((groupBody.getAll('pdfs')[0] as File).name).toBe('packet.pdf');
+    expect(JSON.parse(String(groupBody.get('payload')))).toEqual({
+      downloadRequestId: 'pdf-group-download-1',
+      groupId: 'group-1',
+      groupName: 'Client Packet',
+      items: [
+        {
+          fileIndex: 0,
+          filename: 'packet.pdf',
+          fields,
+          appearance: { globalFieldFont: 'Helvetica', globalFieldFontSize: 'auto' },
+          exportMode: 'editable',
+        },
+      ],
+    });
+  });
+
+  it('throws ApiError with pdf download quota code for quota-enforced download 429s', async () => {
+    apiConfigMocks.apiFetch.mockResolvedValueOnce({ ok: false, status: 429 });
+    apiConfigMocks.apiJsonFetch.mockResolvedValueOnce({
+      detail: {
+        code: 'pdf_download_limit_reached',
+        message: 'Limit reached.',
+        monthlyLimit: 25,
+        currentMonthUsage: 25,
+        downloadsRemaining: 0,
+        monthKey: '2026-05',
+        pdfCount: 1,
+      },
+    });
+
+    await expect(ApiService.downloadFormPdf(new Blob(['source']), [] as any, {
+      downloadRequestId: 'pdf-download-limit',
+      exportMode: 'editable',
+    })).rejects.toMatchObject({
+      status: 429,
+      code: 'pdf_download_limit_reached',
+      message: 'Limit reached.',
+    });
   });
 
   it('precheckSearchFillUsage builds the query string and returns the payload', async () => {

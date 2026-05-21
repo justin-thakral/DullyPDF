@@ -52,4 +52,21 @@ describe('googleAds', () => {
       currency: 'USD',
     });
   });
+
+  it('does not track free trial checkouts as paid billing purchases', async () => {
+    vi.stubEnv('VITE_GOOGLE_ADS_TAG_ID', 'AW-17999798747');
+    vi.stubEnv('VITE_GOOGLE_ADS_PRO_PURCHASE_LABEL', 'JkL_MNOPIlYUcENvD_IZD');
+    const gtag = vi.fn();
+    window.gtag = gtag;
+
+    const { trackGoogleAdsBillingPurchase } = await import('../../../src/utils/googleAds');
+
+    expect(trackGoogleAdsBillingPurchase({
+      kind: 'free_trial',
+      transactionId: 'cs_trial_123',
+      value: 10,
+      currency: 'usd',
+    })).toBe(false);
+    expect(gtag).not.toHaveBeenCalled();
+  });
 });

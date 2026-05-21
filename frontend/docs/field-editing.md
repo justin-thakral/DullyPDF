@@ -30,7 +30,7 @@ field details, create tools, bulk style conversion, keyboard movement, history, 
 ## Creating and selecting fields
 
 - Use Field Editor create tools (`Text`, `Signature`, `Checkbox`, `Radio`, `Quick Radio`) to draw fields directly on the PDF.
-- DullyPDF-only create tools (`Image`, `PDF417`, `1D Barcode`, `QR Code`) sit below the native field tools. They are editor template helpers rather than native AcroForm widget types; editable exports store tagged text anchors plus DullyPDF metadata so the helpers can be restored when the PDF is reopened, and flat exports render their final visuals into page content.
+- DullyPDF-only create tools (`Image`, `PDF417`, `1D Code 128`, `QR Code`) sit below the native field tools. They are editor template helpers rather than native AcroForm widget types; editable exports store tagged text anchors plus DullyPDF metadata so the helpers can be restored when the PDF is reopened, and flat exports render their final visuals into page content.
 - Calculation create tools (`Number Input`, `Calculated Output`) create text fields with DullyPDF calculation metadata. Number inputs stay editable numeric text fields, while calculated outputs are read-only text fields whose values are computed from a safe formula model.
 - Activating a create tool exits `Transform` and `Info` so drawing does not compete with drag handles or inline inputs.
 - Turning the create tool off restores the previous viewer display mode/toggles.
@@ -43,6 +43,19 @@ field details, create tools, bulk style conversion, keyboard movement, history, 
 - Selecting a field in the list can jump pages when needed.
 - If the selected field is outside active list filters, the panel shows a `Reveal selected` action.
 
+## PDF tools
+
+- The workspace header includes a compact `PDF Tools` menu. `Manage Pages` opens a staged page-management dialog instead of adding another permanent panel to the already dense editor.
+- `Manage Pages` supports deleting source pages, moving pages up/down, rotating pages clockwise in 90-degree steps, and inserting selected page ranges from another PDF.
+- Existing widget annotations on rewritten pages are reattached into the output AcroForm tree so fillable source pages stay structurally fillable after page operations.
+- `Compress / Optimize PDF` applies lossless backend cleanup, object-stream rewriting, and stream/font/image deflate. It keeps the active PDF unchanged when the optimized bytes would be larger.
+- Page range input accepts `all`, comma/space-separated pages, ranges such as `2-4`, reverse ranges such as `4-2`, and `last`.
+- The workspace `Download` menu includes `Download specific pages`, which opens a page-selection dialog and exports only those pages as a flat or editable PDF.
+- Signed-in workspace downloads are counted against the generated PDF download quota: free accounts include 25 generated PDF downloads per backend UTC month, while premium accounts include unlimited generated PDF downloads. Saving a template, API Fill output, respondent download, or signing artifact is governed by its own workflow limit instead of this workspace download quota.
+- Applying page changes rewrites the active source PDF bytes, reloads page sizes, clears field edit undo history, and refreshes the active backend template session when possible.
+- Fields on deleted source pages are removed. Fields on reordered source pages move with those pages. Fields on rotated source pages have their rectangles transformed for the new orientation.
+- Inserted pages start without field metadata, and embedded widgets from inserted PDFs are stripped so unmanaged live fields do not hide inside the workspace. Add fields manually after insertion, or rerun the broader template workflow if the inserted pages need detector-generated candidates.
+
 ## Moving, resizing, and geometry
 
 - Move and resize are enabled only while `Transform` is on.
@@ -50,6 +63,7 @@ field details, create tools, bulk style conversion, keyboard movement, history, 
 - Drag corner or edge handles to resize standard fields.
 - Corner resizing defaults to standard freeform behavior (width and height change independently).
 - Hold `Shift` while corner-resizing to preserve aspect ratio for that drag.
+- `1D Barcode` helper fields always keep the generated 9-digit Code 128 aspect ratio during drawing, resizing, and direct width/height edits.
 - Standard fields expose four corners (`TL`, `TR`, `BL`, `BR`) plus edge handles (`left`, `right`, `top`, `bottom`).
 - Small fields (for example tiny checkboxes) use a single bottom-right handle and a larger move hit area.
 - Geometry is clamped to page bounds with a minimum size.
@@ -64,18 +78,23 @@ field details, create tools, bulk style conversion, keyboard movement, history, 
 - Text fields can set field-specific font colors. `Use global` inherits the workspace color; `Custom` stores a per-field hex color that overrides the global color in preview, editable downloads, flat downloads, Fill By Link, and API Fill materialization.
 - Text fields can set field-specific alignment. `Use global` inherits the workspace alignment; `Left`, `Center`, and `Right` store a per-field alignment override that applies in preview, editable downloads, flat downloads, Fill By Link, and API Fill materialization.
 - Text fields can be configured as calculation fields. `number_input` fields accept integer values in v1; `calculated_output` and `calculated_intermediate` fields are read-only and store formulas built from numeric fields, constants, unary minus, and `+`, `-`, `*`, `/`.
-- The formula setup dialog stores an AST, not user-authored JavaScript. DullyPDF validates missing dependencies, unsupported nodes/operators, and dependency cycles before saving calculated fields.
+- In the `Info` overlay, calculated outputs and calculated intermediates preview their current computed value from the active number-input values. The preview is read-only and updates while number-input drafts are being edited.
+- The formula setup dialog stores an AST, not user-authored JavaScript. DullyPDF validates missing dependencies, unsupported nodes/operators, and dependency cycles before saving calculated fields. Dependency choices are filterable by typing, show the current dependency value beside each field name, include values resolved from reusable calculated fields, and keep invalid choices visible but disabled with a reason.
+- Selecting a calculated field highlights its direct and nested dependencies in the Browser and PDF overlays. The Field Editor calculation summary shows the computed value, dependency jump controls, and setup status before export.
 - Calculated values are precomputed by DullyPDF before editable downloads, flat downloads, Fill By Link response downloads, API Fill outputs, and signing source materialization. Editable PDFs also include generated Acrobat JavaScript and `/AcroForm /CO` order for Adobe live recalculation, but the precomputed field value remains the cross-viewer source of truth.
+- Downloads are blocked when DullyPDF calculation formulas are incomplete, invalid, or cyclic so editable and flat exports do not silently materialize stale calculated values.
 - Unsupported imported AcroForm JavaScript is shown as locked external calculation metadata. DullyPDF summarizes the imported behavior and can rebuild it through the formula setup flow, but it does not display arbitrary JavaScript as editable source.
-- Image fields expose PNG/JPEG upload, preview, and clear controls in the Field Editor.
-- PDF417 fields expose basic manual name/DOB fallback inputs, source-field selectors for scan data, generated preview, and read-only scan text so the app-only barcode payload can be checked while designing a template.
-- 1D Barcode fields expose either a 9-digit manual value or one source-field dependency. Dependency values resolve by field ID first and fall back to field name when an older mapping no longer has the same ID.
+- Image fields open an Image Setup dialog with PNG/JPEG upload, preview, clear, and color-scale controls. Flat exports can stamp the image in original color or grayscale.
+- Fill By Link renders image fields as PNG/JPEG upload controls for respondents. API Fill exposes image fields as string inputs that must be allowlisted `gs://` PNG/JPEG object paths; callers should upload images to configured storage first rather than sending local filesystem paths.
+- PDF417 fields expose manual classes, source-field selectors for scan data, generated preview, and read-only scan text so the app-only barcode payload can be checked while designing a template.
+- 1D Barcode fields expose either a 9-digit manual value or one source-field dependency. Manual setup input accepts digits only, and the field geometry is locked to the generated 9-digit Code 128 aspect ratio. Dependency values resolve by field ID first and fall back to field name when an older mapping no longer has the same ID.
 - QR Code fields expose either manual text or one source-field dependency. Dependency values resolve by field ID first and fall back to field name when an older mapping no longer has the same ID.
+- PDF417, 1D Barcode, and QR Code helpers share the same setup dialog structure: encoded content on the left, generated preview and encoded text on the right, typed source-field filtering, and type-specific save labels.
 - DullyPDF-only dependencies can target standard PDF fields only. Image, PDF417, 1D Barcode, and QR Code helper fields are intentionally excluded as dependency sources to avoid self-dependencies and obvious cycles.
 - Font, font-size, font-color, and alignment choices persist in saved templates and are applied when DullyPDF materializes editable or flat PDFs, including Fill By Link and API Fill outputs that reuse the saved snapshot.
 - DullyPDF-generated editable PDFs include a small appearance metadata record so re-uploading that PDF can restore the global color/alignment and keep true per-field color/alignment overrides marked as custom in the Field Editor.
-- DullyPDF-only helper metadata is written only for editable round-trip exports. Flat editor exports keep the final stamped image/barcode/PDF417/QR page content and should not depend on DullyPDF-specific metadata for viewing.
-- Fill By Link, group Fill By Link downloads, and Template API fills generate 1D barcode, PDF417, and QR image payloads on the backend before stamping, so public/API exports do not depend on the browser-only editor preview generator.
+- DullyPDF-only helper metadata is written only for editable round-trip exports. Editable exports keep image, PDF417, 1D barcode, and QR helpers as readonly tagged text marker fields instead of stamping the final visual. Each marker stores the helper code on the first line, may include a compact `DULLYPDF_META:` JSON line for setup such as image paths, source fields, and barcode classes, stores the encoded/display payload after that, and ends with a short readonly suffix: `(IMAGE)`, `(PDF417)`, `(1D)`, or `(QR)`. DullyPDF restores helpers from embedded metadata first, then from the marker code/payload fallback. Flat editor exports stamp the final image/barcode/PDF417/QR page content, remove live widgets, and strip DullyPDF marker widgets so marker codes are not baked into the final PDF.
+- Fill By Link, group Fill By Link downloads, and Template API fills generate 1D barcode, PDF417, and QR image payloads on the backend before stamping, so public/API exports do not depend on the browser-only editor preview generator. Those generated helpers are intentionally omitted from public web-form and API Fill input schemas; they stamp from configured source fields, calculated values, manual classes, or preexisting helper values.
 - Editable exports store text values, selected font settings, and widget-owned appearance streams on the AcroForm fields instead of adding a separate page-content text layer under the field. Exported AcroFields use short Base 14 font resource aliases in `/DA` so the inactive value and the focused typing state resolve the same selected font in stricter PDF viewers.
 - Editable calculation exports store calculated fields as normal `/FT /Tx` AcroForm text fields with `/V`, `/DV`, `/AP`, generated `/AA` actions, and DullyPDF calculation metadata. Live recalculation is Adobe-first; browser and mobile viewers may only show the precomputed value.
 - Flat calculation exports bake the computed value into page content and remove live widgets, making them the most reliable final-record output.

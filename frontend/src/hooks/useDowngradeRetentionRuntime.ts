@@ -13,7 +13,10 @@ import {
   readPendingBillingCheckoutForUser,
   type PendingBillingCheckout,
 } from '../utils/billingCheckoutState';
-import { createTrustedBillingCheckoutForUser } from '../utils/billingCheckout';
+import {
+  createTrustedBillingCheckoutForUser,
+  createTrustedBillingPortalSessionForUser,
+} from '../utils/billingCheckout';
 import { debugLog } from '../utils/debug';
 import { trackGoogleAdsBillingPurchase } from '../utils/googleAds';
 const ZERO_DECIMAL_CURRENCIES = new Set([
@@ -53,15 +56,21 @@ function findMatchingBillingCheckoutEvent(
   }) ?? null;
 }
 
+function isPaidBillingCheckoutKind(value: string | null | undefined): value is Exclude<BillingCheckoutKind, 'free_trial'> {
+  return value === 'pro_monthly' || value === 'pro_yearly' || value === 'refill_500';
+}
+
 function resolveTrackedBillingKind(
   event: BillingReconcileEvent | null,
   pendingCheckout: PendingBillingCheckout | null,
 ): BillingCheckoutKind | null {
   const eventKind = (event?.checkoutKind || '').trim();
-  if (eventKind === 'pro_monthly' || eventKind === 'pro_yearly' || eventKind === 'refill_500') {
+  if (isPaidBillingCheckoutKind(eventKind)) {
     return eventKind;
   }
-  return pendingCheckout?.requestedKind ?? null;
+  return isPaidBillingCheckoutKind(pendingCheckout?.requestedKind)
+    ? pendingCheckout.requestedKind
+    : null;
 }
 
 function resolveBillingPlanForTracking(
@@ -115,6 +124,7 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
   } = deps;
   const [billingCheckoutInProgressKind, setBillingCheckoutInProgressKind] = useState<BillingCheckoutKind | null>(null);
   const [billingCancelInProgress, setBillingCancelInProgress] = useState(false);
+  const [billingPortalInProgress, setBillingPortalInProgress] = useState(false);
   const [showDowngradeRetentionDialog, setShowDowngradeRetentionDialog] = useState(false);
   const [downgradeRetentionSaveInProgress, setDowngradeRetentionSaveInProgress] = useState(false);
   const openedDowngradeRetentionKeyRef = useRef<string | null>(null);
@@ -184,7 +194,7 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
 
   const handleStartBillingCheckout = useCallback(
     async (kind: BillingCheckoutKind) => {
-      if (billingCancelInProgress) return;
+      if (billingCancelInProgress || billingPortalInProgress) return;
       if (!verifiedUser?.uid) {
         setBannerNotice({
           tone: 'error',
@@ -213,11 +223,11 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
         setBillingCheckoutInProgressKind(null);
       }
     },
-    [billingCancelInProgress, setBannerNotice, userProfile?.billing?.enabled, verifiedUser?.uid],
+    [billingCancelInProgress, billingPortalInProgress, setBannerNotice, userProfile?.billing?.enabled, verifiedUser?.uid],
   );
 
   const handleCancelBillingSubscription = useCallback(async () => {
-    if (billingCheckoutInProgressKind !== null) return;
+    if (billingCheckoutInProgressKind !== null || billingPortalInProgress) return;
     if (!userProfile?.billing?.enabled) {
       setBannerNotice({
         tone: 'error',
@@ -289,11 +299,58 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
     }
   }, [
     billingCheckoutInProgressKind,
+    billingPortalInProgress,
     refreshProfileAfterBillingAction,
     setBannerNotice,
     userProfile?.billing?.cancelAtPeriodEnd,
     userProfile?.billing?.enabled,
     userProfile?.billing?.hasSubscription,
+  ]);
+
+  const handleOpenBillingPortal = useCallback(async () => {
+    if (billingCheckoutInProgressKind !== null || billingCancelInProgress || billingPortalInProgress) return;
+    if (!verifiedUser?.uid) {
+      setBannerNotice({
+        tone: 'error',
+        message: 'Sign in again before updating your payment method.',
+        autoDismissMs: 8000,
+      });
+      return;
+    }
+    if (!userProfile?.billing?.enabled) {
+      setBannerNotice({
+        tone: 'error',
+        message: 'Stripe billing is currently unavailable.',
+        autoDismissMs: 8000,
+      });
+      return;
+    }
+    if (!userProfile?.billing?.hasSubscription) {
+      setBannerNotice({
+        tone: 'info',
+        message: 'No active subscription is linked to this profile yet.',
+        autoDismissMs: 7000,
+      });
+      return;
+    }
+    setBillingPortalInProgress(true);
+    try {
+      const payload = await createTrustedBillingPortalSessionForUser(verifiedUser.uid);
+      window.location.assign(payload.url);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to open Stripe Billing Portal.';
+      setBannerNotice({ tone: 'error', message, autoDismissMs: 8000 });
+    } finally {
+      setBillingPortalInProgress(false);
+    }
+  }, [
+    billingCancelInProgress,
+    billingCheckoutInProgressKind,
+    billingPortalInProgress,
+    setBannerNotice,
+    userProfile?.billing?.enabled,
+    userProfile?.billing?.hasSubscription,
+    verifiedUser?.uid,
   ]);
 
   const handleSaveDowngradeRetentionSelection = useCallback(async (keptTemplateIds: string[]) => {
@@ -370,6 +427,50 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
       });
       url.searchParams.delete('billing');
       window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      return;
+    }
+    if (billingState === 'payment-method-updated') {
+      void (async () => {
+        let syncSucceeded = false;
+        let invoiceRetryStillPending = false;
+        if (verifiedUser) {
+          try {
+            const recoverySync = await ApiService.syncBillingPaymentMethodRecovery();
+            syncSucceeded = true;
+            invoiceRetryStillPending = Boolean(
+              recoverySync?.invoicePaymentAttempted
+              && recoverySync.invoicePaymentSucceeded === false,
+            );
+          } catch (error) {
+            const message = error instanceof Error
+              ? error.message
+              : 'Payment method was updated, but DullyPDF could not sync the subscription retry settings.';
+            setBannerNotice({ tone: 'error', message, autoDismissMs: 9000 });
+            url.searchParams.delete('billing');
+            window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+            return;
+          }
+        }
+        const refreshedProfile = verifiedUser
+          ? await refreshProfileAfterBillingAction({ attempts: 2, retryDelayMs: 1200 })
+          : null;
+        const paymentUpdateMessage = refreshedProfile
+          ? (
+            syncSucceeded && invoiceRetryStillPending
+              ? 'Payment method updated. The latest invoice retry is still pending, and Stripe will keep retrying automatically.'
+              : syncSucceeded
+                ? 'Payment method updated. Subscription retries now use the updated payment method.'
+                : 'Payment method updated. Your billing profile was refreshed.'
+          )
+          : 'Payment method update completed. Reopen Profile in a moment to verify billing status.';
+        setBannerNotice({
+          tone: refreshedProfile && !invoiceRetryStillPending ? 'success' : 'info',
+          message: paymentUpdateMessage,
+          autoDismissMs: 8000,
+        });
+        url.searchParams.delete('billing');
+        window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      })();
       return;
     }
     if (billingState !== 'success') {
@@ -490,6 +591,7 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
   return {
     billingCheckoutInProgressKind,
     billingCancelInProgress,
+    billingPortalInProgress,
     showDowngradeRetentionDialog,
     downgradeRetentionSaveInProgress,
     currentDowngradeRetention,
@@ -498,6 +600,7 @@ export function useDowngradeRetentionRuntime(deps: UseDowngradeRetentionRuntimeD
     handleOpenDowngradeRetentionDialog,
     handleStartBillingCheckout,
     handleCancelBillingSubscription,
+    handleOpenBillingPortal,
     handleSaveDowngradeRetentionSelection,
     handleReactivateDowngradedAccount,
   };

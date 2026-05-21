@@ -84,9 +84,9 @@ describe('UsageDocsPage', () => {
     render(<UsageDocsPage pageKey="search-fill" />);
 
     expect(
-      screen.getByRole('heading', { name: 'Fill PDF from CSV, Excel, JSON, SQL, or TXT' }),
+      screen.getByRole('heading', { name: 'Fill PDF from CSV, Excel, or JSON' }),
     ).toBeTruthy();
-    expect(screen.getByTitle('Fill PDF from CSV, Excel, JSON, SQL, or TXT')).toBeTruthy();
+    expect(screen.getByTitle('Fill PDF from CSV, Excel, or JSON')).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Watch on YouTube' }).getAttribute('href')).toBe(
       'https://youtu.be/CT3IEzh4p10',
     );

@@ -122,6 +122,44 @@ def _normalize_pdf417_field_mappings(value: Any) -> Optional[Dict[str, Dict[str,
     return normalized or None
 
 
+def _normalize_barcode_classes(value: Any) -> Optional[list[Dict[str, Any]]]:
+    if value is None:
+        return None
+    if not isinstance(value, list):
+        return None
+    normalized: list[Dict[str, Any]] = []
+    for index, entry in enumerate(value):
+        if not isinstance(entry, dict):
+            continue
+        mode = str(entry.get("mode") or "manual").strip()
+        mode = "field" if mode == "field" else "manual"
+        label = str(entry.get("label") or "").strip()
+        field_ref = _normalize_dependency_ref(entry.get("fieldRef")) if mode == "field" else None
+        manual_value = str(entry.get("manualValue") or "").strip() if mode == "manual" else None
+        class_id = str(entry.get("id") or "").strip() or f"class_{index + 1}"
+        if not label and not field_ref and not manual_value:
+            continue
+        normalized.append(
+            {
+                "id": class_id,
+                "label": label,
+                "mode": mode,
+                "fieldRef": field_ref,
+                "manualValue": manual_value,
+            }
+        )
+    return normalized
+
+
+def _normalize_image_color_mode(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    mode = str(value).strip().lower()
+    if mode in {"original", "grayscale"}:
+        return mode
+    return None
+
+
 def _normalize_appearance(value: Any) -> Dict[str, Any]:
     if value is None:
         return {
@@ -242,6 +280,8 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
         "radioOptionLabel",
         "radioGroupSource",
         "imageDataUrl",
+        "imagePath",
+        "imageSourcePath",
         "imageMimeType",
         "imageName",
         "pdf417Name",
@@ -251,6 +291,11 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
         if raw is None:
             continue
         normalized[key] = str(raw)
+
+    if "imageColorMode" in value:
+        image_color_mode = _normalize_image_color_mode(value.get("imageColorMode"))
+        if image_color_mode is not None:
+            normalized["imageColorMode"] = image_color_mode
 
     raw_pdf417_data = value.get("pdf417Data")
     if raw_pdf417_data is None:
@@ -270,6 +315,9 @@ def _normalize_field(value: Any) -> Dict[str, Any]:
 
     if "pdf417FieldMappings" in value:
         normalized["pdf417FieldMappings"] = _normalize_pdf417_field_mappings(value.get("pdf417FieldMappings"))
+
+    if "barcodeClasses" in value:
+        normalized["barcodeClasses"] = _normalize_barcode_classes(value.get("barcodeClasses"))
 
     for key in ("fieldConfidence", "mappingConfidence", "renameConfidence", "radioOptionOrder"):
         raw = value.get(key)

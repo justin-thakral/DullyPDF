@@ -34,7 +34,7 @@ export function fieldTypeLabel(type: FieldType) {
     case 'pdf417':
       return 'PDF417';
     case 'barcode':
-      return '1D Barcode';
+      return '1D Code 128';
     case 'qr':
       return 'QR Code';
     default:

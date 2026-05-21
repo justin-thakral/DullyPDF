@@ -29,6 +29,43 @@ describe('IntentHubPage', () => {
     );
   });
 
+  it('keeps only the strongest new workflow pages in the screenshot preview section', () => {
+    render(<IntentHubPage hubKey="workflows" />);
+
+    const previewPanel = screen.getByRole('heading', { level: 2, name: 'All workflow pages' }).closest('section');
+    const morePanel = screen.getByRole('heading', { level: 2, name: 'More workflow pages' }).closest('section');
+
+    expect(previewPanel).toBeTruthy();
+    expect(morePanel).toBeTruthy();
+    if (!previewPanel || !morePanel) {
+      throw new Error('Workflow hub panels not found');
+    }
+
+    expect(
+      within(previewPanel).getByRole('link', { name: /Image, QR, PDF417 & 1D Barcode Fields/i }).getAttribute('href'),
+    ).toBe('/pdf-field-types/image-qr-barcode-fields');
+    expect(within(previewPanel).getByRole('link', { name: /PDF Calculation Fields/i }).getAttribute('href')).toBe(
+      '/pdf-calculation-fields',
+    );
+    expect(within(previewPanel).getByRole('link', { name: /PDF Packet Workflow/i }).getAttribute('href')).toBe(
+      '/pdf-packet-workflow',
+    );
+
+    expect(within(previewPanel).queryByRole('link', { name: /Add Image Field to PDF/i })).toBeNull();
+    expect(within(previewPanel).queryByRole('link', { name: /Fill PDF From Image/i })).toBeNull();
+    expect(within(previewPanel).queryByRole('link', { name: /No-Code PDF Automation/i })).toBeNull();
+
+    expect(within(morePanel).getByRole('link', { name: /Add Image Field to PDF/i }).getAttribute('href')).toBe(
+      '/add-image-field-to-pdf',
+    );
+    expect(within(morePanel).getByRole('link', { name: /Fill PDF From Image/i }).getAttribute('href')).toBe(
+      '/fill-pdf-from-image',
+    );
+    expect(within(morePanel).getByRole('link', { name: /No-Code PDF Automation/i }).getAttribute('href')).toBe(
+      '/no-code-pdf-automation',
+    );
+  });
+
   it('renders industry hub copy and links', () => {
     render(<IntentHubPage hubKey="industries" />);
 

@@ -3,6 +3,18 @@ const METRIC_OPTIONS = [
   { key: 'activityScore', label: 'Activity Score' },
   { key: 'detections', label: 'Detections' },
   { key: 'savedTemplates', label: 'Saved Templates' },
+  { key: 'downloadedPdfs', label: 'Downloaded PDFs' },
+  { key: 'downloadedPdfsThisMonth', label: 'PDF Downloads This Month' },
+  { key: 'downloadedFlatPdfs', label: 'Flat PDF Downloads' },
+  { key: 'downloadedEditablePdfs', label: 'Editable PDF Downloads' },
+  { key: 'downloadedGroupPdfs', label: 'Group PDF Downloads' },
+  { key: 'pdfDownloadLimitRejections', label: 'PDF Download Limit Blocks' },
+  { key: 'barcodeFieldsCreated', label: 'Barcode Fields' },
+  { key: 'qrBarcodesCreated', label: 'QR Fields' },
+  { key: 'pdf417BarcodesCreated', label: 'PDF417 Fields' },
+  { key: 'oneDBarcodesCreated', label: '1D Barcode Fields' },
+  { key: 'calculationFields', label: 'Calculation Fields' },
+  { key: 'customAppearanceTemplates', label: 'Appearance Templates' },
   { key: 'fillLinkResponses', label: 'Fill Link Responses' },
   { key: 'apiFills', label: 'API Fills' },
   { key: 'signingRequests', label: 'Signing Requests' },
@@ -94,6 +106,36 @@ function renderCards(globalStats = {}) {
     ['Overall Users', globalStats.totalUsers, `${formatCount(globalStats.activeUsers)} active users`],
     ['Detections', globalStats.totalDetections, `${formatCount(globalStats.totalDetectionPages)} detected pages`],
     ['Saved Templates', globalStats.totalSavedTemplates, `${formatCount(globalStats.totalFillLinks)} fill links published`],
+    [
+      'Downloaded PDFs',
+      globalStats.totalDownloadedPdfs,
+      `Flat ${formatCount(globalStats.totalDownloadedFlatPdfs)} · Editable ${formatCount(globalStats.totalDownloadedEditablePdfs)} · Group ${formatCount(globalStats.totalDownloadedGroupPdfs)}`,
+    ],
+    [
+      'PDF Downloads This Month',
+      globalStats.totalPdfDownloadsThisMonth,
+      `${formatCount(globalStats.totalPdfDownloadUsersThisMonth)} users · ${formatCount(globalStats.totalBaseUsersAt80PctPdfDownloads)} base users at 80%+`,
+    ],
+    [
+      'PDF Download Blocks',
+      globalStats.totalPdfDownloadLimitRejections,
+      `${formatCount(globalStats.totalPdfDownloadInvalidRejections)} invalid rejects · ${formatCount(globalStats.totalProUsersHighPdfDownloadVolume)} high-volume pro users`,
+    ],
+    [
+      'Barcode Fields',
+      globalStats.totalBarcodeFieldsCreated,
+      `QR ${formatCount(globalStats.totalQrBarcodesCreated)} · PDF417 ${formatCount(globalStats.totalPdf417BarcodesCreated)} · 1D ${formatCount(globalStats.totalOneDBarcodesCreated)}`,
+    ],
+    [
+      'Calculation Fields',
+      globalStats.totalCalculationFields,
+      `${formatCount(globalStats.totalTemplateSnapshotLoadFailures)} saved-template snapshots unavailable`,
+    ],
+    [
+      'Appearance Changed',
+      globalStats.totalUsersWithCustomAppearance,
+      `${formatCount(globalStats.totalCustomAppearanceTemplates)} templates · ${formatCount(globalStats.totalCustomAppearanceFieldOverrides)} field overrides`,
+    ],
     ['Credits Used', globalStats.totalCreditsUsed, `${formatCount(globalStats.totalApiFills)} API fills recorded`],
     ['Fill Link Responses', globalStats.totalFillLinkResponses, `${formatCount(globalStats.totalActiveFillLinks)} active links`],
     ['API Endpoints', globalStats.totalApiEndpoints, `${formatCount(globalStats.totalActiveApiEndpoints)} active endpoints`],
@@ -188,7 +230,7 @@ function renderTable() {
   const users = getSortedUsers();
   if (users.length === 0) {
     const row = document.createElement('tr');
-    row.innerHTML = '<td colspan="11" class="empty-state">No users match the current search.</td>';
+    row.innerHTML = '<td colspan="17" class="empty-state">No users match the current search.</td>';
     userRows.appendChild(row);
     return;
   }
@@ -205,6 +247,12 @@ function renderTable() {
       <td><span class="role-tag role-tag--${String(user.role || 'unknown')}">${String(user.role || 'unknown')}</span></td>
       <td>${formatCount(user.detections)}</td>
       <td>${formatCount(user.savedTemplates)}</td>
+      <td>${formatCount(user.downloadedPdfs)}</td>
+      <td>${formatCount(user.downloadedPdfsThisMonth)}</td>
+      <td>${formatCount(user.pdfDownloadLimitRejections)}</td>
+      <td>${formatCount(user.barcodeFieldsCreated)}</td>
+      <td>${formatCount(user.calculationFields)}</td>
+      <td>${user.hasCustomAppearance ? 'Yes' : 'No'}</td>
       <td>${formatCount(user.creditsUsed)}</td>
       <td>${formatCount(user.fillLinkResponses)}</td>
       <td>${formatCount(user.apiFills)}</td>

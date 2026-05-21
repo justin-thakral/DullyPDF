@@ -443,7 +443,7 @@ const FormCatalogIndexPage = ({
           <div className="form-catalog__hero-kicker">Form catalog</div>
           <h1 className="form-catalog__hero-title">Pre-made fillable PDF templates</h1>
           <p className="form-catalog__hero-summary">
-            Browse {ENTRIES.length.toLocaleString()} free, public-domain government and industry forms across{' '}
+            Browse {ENTRIES.length.toLocaleString()} free public-domain government PDFs and DullyPDF-authored templates across{' '}
             {CATEGORIES.filter((c) => !c.empty).length} categories. Pick a category to search within it, then
             open any form directly in the DullyPDF editor to fill, save, or auto-fill from your data.
           </p>

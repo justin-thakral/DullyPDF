@@ -56,6 +56,10 @@ type HeaderBarProps = {
   renameAndMapGroupButtonLabel?: string;
   onOpenSearchFill?: () => void;
   onOpenImageFill?: () => void;
+  onOpenManagePages?: () => void;
+  onOpenOptimizePdf?: () => void;
+  canManagePages?: boolean;
+  canOptimizePdf?: boolean;
   onOpenFillLink?: () => void;
   canFillLink?: boolean;
   onOpenSignatureRequest?: () => void;
@@ -63,6 +67,7 @@ type HeaderBarProps = {
   onOpenTemplateApi?: () => void;
   canOpenTemplateApi?: boolean;
   onDownload?: (mode?: 'editable' | 'flat') => void;
+  onOpenDownloadPages?: () => void;
   onDownloadGroup?: () => void;
   onSaveToProfile?: () => void;
   downloadInProgress?: boolean;
@@ -178,6 +183,10 @@ export function HeaderBar({
   renameAndMapGroupButtonLabel,
   onOpenSearchFill,
   onOpenImageFill,
+  onOpenManagePages,
+  onOpenOptimizePdf,
+  canManagePages = false,
+  canOptimizePdf = false,
   onOpenFillLink,
   canFillLink = false,
   onOpenSignatureRequest,
@@ -185,6 +194,7 @@ export function HeaderBar({
   onOpenTemplateApi,
   canOpenTemplateApi = false,
   onDownload,
+  onOpenDownloadPages,
   onDownloadGroup,
   onSaveToProfile,
   downloadInProgress = false,
@@ -202,7 +212,7 @@ export function HeaderBar({
   onBlockedAction,
 }: HeaderBarProps) {
   const hasMappingControls = Boolean(
-    onChooseDataSource || onMapSchema || onRename || onRenameAndMap || onRenameAndMapGroup || onOpenSearchFill || onOpenFillLink,
+    onOpenManagePages || onOpenOptimizePdf || onChooseDataSource || onMapSchema || onRename || onRenameAndMap || onRenameAndMapGroup || onOpenSearchFill || onOpenFillLink,
   );
   const hasGroupContext = Boolean(groupName && groupTemplates.length > 0);
   const userInitial = userEmail ? userEmail.charAt(0).toUpperCase() : null;
@@ -234,6 +244,9 @@ export function HeaderBar({
   const disableFillLink = demoOverride ? true : !canFillLink || outputWorkflowBusy;
   const disableSendForSignature = !canSendForSignature || outputWorkflowBusy;
   const disableTemplateApi = demoOverride ? true : !canOpenTemplateApi || outputWorkflowBusy;
+  const disableManagePages = demoOverride ? true : !canManagePages || outputWorkflowBusy || downloadInProgress || downloadGroupInProgress;
+  const disableOptimizePdf = demoOverride ? true : !canOptimizePdf || outputWorkflowBusy || downloadInProgress || downloadGroupInProgress;
+  const disablePdfTools = disableManagePages && disableOptimizePdf;
   const showDemoFillLinkDocs = demoLocked && Boolean(demoFillLinkDocsHref);
   const showDemoCreateGroupDocs = demoLocked && Boolean(demoCreateGroupDocsHref);
   const showDemoFillFromImagesDocs = demoLocked && Boolean(demoFillFromImagesDocsHref);
@@ -313,6 +326,7 @@ export function HeaderBar({
   const [showGroupMenu, setShowGroupMenu] = useState(false);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const [showRenameMenu, setShowRenameMenu] = useState(false);
+  const [showPdfToolsMenu, setShowPdfToolsMenu] = useState(false);
   const [zoomPercentInput, setZoomPercentInput] = useState(String(Math.round(scale * 100)));
   const isConnected = dataSourceKind !== 'none';
   const connectedKind =
@@ -329,6 +343,7 @@ export function HeaderBar({
   const groupMenuRef = useRef<HTMLDivElement | null>(null);
   const downloadMenuRef = useRef<HTMLDivElement | null>(null);
   const renameMenuRef = useRef<HTMLDivElement | null>(null);
+  const pdfToolsMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -338,6 +353,7 @@ export function HeaderBar({
       const clickedInsideGroupMenu = groupMenuRef.current?.contains(target) ?? false;
       const clickedInsideDownloadMenu = downloadMenuRef.current?.contains(target) ?? false;
       const clickedInsideRenameMenu = renameMenuRef.current?.contains(target) ?? false;
+      const clickedInsidePdfToolsMenu = pdfToolsMenuRef.current?.contains(target) ?? false;
       if (!clickedInsideDataSource) {
         setShowDataMenu(false);
       }
@@ -350,6 +366,9 @@ export function HeaderBar({
       if (!clickedInsideRenameMenu) {
         setShowRenameMenu(false);
       }
+      if (!clickedInsidePdfToolsMenu) {
+        setShowPdfToolsMenu(false);
+      }
     };
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
@@ -357,8 +376,9 @@ export function HeaderBar({
       setShowGroupMenu(false);
       setShowDownloadMenu(false);
       setShowRenameMenu(false);
+      setShowPdfToolsMenu(false);
     };
-    if (showDataMenu || showGroupMenu || showDownloadMenu || showRenameMenu) {
+    if (showDataMenu || showGroupMenu || showDownloadMenu || showRenameMenu || showPdfToolsMenu) {
       window.addEventListener('mousedown', handleClick);
       window.addEventListener('keydown', handleEscape);
     }
@@ -366,7 +386,7 @@ export function HeaderBar({
       window.removeEventListener('mousedown', handleClick);
       window.removeEventListener('keydown', handleEscape);
     };
-  }, [showDataMenu, showGroupMenu, showDownloadMenu, showRenameMenu]);
+  }, [showDataMenu, showGroupMenu, showDownloadMenu, showRenameMenu, showPdfToolsMenu]);
 
   useEffect(() => {
     setShowGroupMenu(false);
@@ -477,6 +497,9 @@ export function HeaderBar({
                   title={activeGroupTemplateFullLabel}
                   onClick={() => {
                     setShowDataMenu(false);
+                    setShowDownloadMenu(false);
+                    setShowRenameMenu(false);
+                    setShowPdfToolsMenu(false);
                     setShowGroupMenu((previous) => !previous);
                   }}
                 >
@@ -607,6 +630,72 @@ export function HeaderBar({
         <div className="ui-header__actions-bottom">
           {hasMappingControls ? (
             <div className="ui-header__tools">
+              {onOpenManagePages || onOpenOptimizePdf ? (
+                <div className="data-source data-source--compact" ref={pdfToolsMenuRef}>
+                  <button
+                    className="ui-button ui-button--ghost ui-button--compact data-source__button"
+                    type="button"
+                    onClick={() => guardClick(disablePdfTools, busyReason || 'Load a PDF to use PDF tools.', () => {
+                      setShowDataMenu(false);
+                      setShowGroupMenu(false);
+                      setShowRenameMenu(false);
+                      setShowDownloadMenu(false);
+                      setShowPdfToolsMenu((prev) => !prev);
+                    })}
+                    aria-disabled={disablePdfTools}
+                    aria-haspopup="menu"
+                    aria-expanded={showPdfToolsMenu}
+                  >
+                    <span className="data-source__title">PDF Tools</span>
+                    <span className="data-source__caret" aria-hidden="true">
+                      ▾
+                    </span>
+                  </button>
+                  {showPdfToolsMenu ? (
+                    <div className="data-source__menu" role="menu" aria-label="PDF tools">
+                      {onOpenManagePages ? (
+                        <button
+                          type="button"
+                          className="data-source__item"
+                          role="menuitem"
+                          onClick={() => guardClick(disableManagePages, busyReason || 'Load a PDF to manage pages.', () => {
+                            setShowPdfToolsMenu(false);
+                            runDeferredHeaderAction(onOpenManagePages);
+                          })}
+                          aria-disabled={disableManagePages}
+                        >
+                          Manage Pages
+                        </button>
+                      ) : null}
+                      {onOpenOptimizePdf ? (
+                        <button
+                          type="button"
+                          className="data-source__item"
+                          role="menuitem"
+                          onClick={() => guardClick(disableOptimizePdf, busyReason || 'Load a PDF to optimize.', () => {
+                            setShowPdfToolsMenu(false);
+                            runDeferredHeaderAction(onOpenOptimizePdf);
+                          })}
+                          aria-disabled={disableOptimizePdf}
+                        >
+                          Compress / Optimize PDF
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        className="data-source__item"
+                        role="menuitem"
+                        onClick={() => {
+                          setShowPdfToolsMenu(false);
+                          openUsageDocsWindow(USAGE_DOCS_ROUTES.pdfTools);
+                        }}
+                      >
+                        Usage Docs
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
               <div className="data-source" ref={dataSourceMenuRef}>
                 <button
                   className="ui-button ui-button--ghost ui-button--compact data-source__button"
@@ -615,6 +704,8 @@ export function HeaderBar({
                   onClick={() => guardClick(disableDataSource, busyReason || 'Data source is unavailable right now.', () => {
                     setShowGroupMenu(false);
                     setShowRenameMenu(false);
+                    setShowDownloadMenu(false);
+                    setShowPdfToolsMenu(false);
                     setShowDataMenu((prev) => !prev);
                   })}
                   aria-disabled={disableDataSource}
@@ -791,6 +882,7 @@ export function HeaderBar({
                     setShowDataMenu(false);
                     setShowGroupMenu(false);
                     setShowDownloadMenu(false);
+                    setShowPdfToolsMenu(false);
                     setShowRenameMenu((prev) => !prev);
                   })}
                   aria-disabled={Boolean(busyReason) || demoOverride}
@@ -985,6 +1077,7 @@ export function HeaderBar({
                       setShowDataMenu(false);
                       setShowGroupMenu(false);
                       setShowRenameMenu(false);
+                      setShowPdfToolsMenu(false);
                       setShowDownloadMenu((previous) => !previous);
                     })}
                     aria-disabled={disableDownload}
@@ -1016,8 +1109,24 @@ export function HeaderBar({
                         }}
                       >
                         <span className="ui-header__download-item-title">Download editable PDF</span>
-                        <span className="ui-header__download-item-copy">Keep the form fields intact for later editing.</span>
+                        <span className="ui-header__download-item-copy">
+                          Keep fields editable; calculated outputs stay read-only and live updates work best in Adobe.
+                        </span>
                       </button>
+                      {onOpenDownloadPages ? (
+                        <button
+                          type="button"
+                          className="ui-header__download-item"
+                          role="menuitem"
+                          onClick={() => {
+                            setShowDownloadMenu(false);
+                            runDeferredHeaderAction(onOpenDownloadPages);
+                          }}
+                        >
+                          <span className="ui-header__download-item-title">Download specific pages</span>
+                          <span className="ui-header__download-item-copy">Choose pages first, then export a flat or editable PDF subset.</span>
+                        </button>
+                      ) : null}
                     </div>
                   ) : null}
                 </div>

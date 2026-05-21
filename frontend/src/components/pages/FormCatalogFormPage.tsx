@@ -173,6 +173,16 @@ function formatFormDisplayName(entry: FormCatalogEntry): string {
   return entry.formNumber ? `${entry.formNumber} — ${entry.title}` : entry.title;
 }
 
+function buildPreviewAltText(entry: FormCatalogEntry): string {
+  if (entry.formNumber && entry.title) {
+    return `${entry.formNumber} fillable PDF first-page preview of ${entry.title}`;
+  }
+  if (entry.title) {
+    return `${entry.title} fillable PDF first-page preview`;
+  }
+  return 'Fillable PDF form first-page preview';
+}
+
 const FormCatalogFormPage = ({
   slug,
   verifiedUser = null,
@@ -393,6 +403,8 @@ const FormCatalogFormPage = ({
   const sourceLabel = entry.sourceUrl
     ? getStableSourceLabel(stableSourceUrl || entry.sourceUrl)
     : null;
+  const previewAltText = buildPreviewAltText(entry);
+  const hasCanvasPreview = !previewLoading && !previewError;
 
   return (
     <div className="form-catalog">
@@ -411,18 +423,35 @@ const FormCatalogFormPage = ({
 
         <div className="form-catalog-detail__grid">
           <div className="form-catalog-detail__preview">
+            <div className="form-catalog-detail__preview-frame">
+              <img
+                className="form-catalog-detail__preview-image"
+                src={entry.thumbnailUrl}
+                alt={previewAltText}
+                loading="eager"
+                decoding="async"
+                width="850"
+                height="1100"
+                aria-hidden={hasCanvasPreview ? true : undefined}
+              />
+              <canvas
+                ref={canvasRef}
+                className="form-catalog-detail__preview-canvas"
+                role="img"
+                aria-label={`High-resolution PDF preview of ${entry.formNumber || entry.title}`}
+                aria-hidden={hasCanvasPreview ? undefined : true}
+              />
+            </div>
+            {previewLoading ? (
+              <span className="form-catalog-detail__preview-status" role="status">
+                Loading PDF preview...
+              </span>
+            ) : null}
             {previewError ? (
-              <span>Preview unavailable ({previewError})</span>
-            ) : (
-              <>
-                {previewLoading ? <span>Loading preview…</span> : null}
-                <canvas
-                  ref={canvasRef}
-                  aria-label={`Preview of ${entry.formNumber || entry.title}`}
-                  style={previewLoading ? { display: 'none' } : undefined}
-                />
-              </>
-            )}
+              <span className="form-catalog-detail__preview-status" role="status">
+                PDF canvas preview unavailable; showing thumbnail.
+              </span>
+            ) : null}
           </div>
 
           <aside className="form-catalog-detail__meta">
@@ -488,7 +517,7 @@ const FormCatalogFormPage = ({
                 </a>
                 , then reuse the template across workflows:{' '}
                 <a href="/fill-pdf-from-csv">
-                  fill from CSV, Excel, JSON, or SQL
+                  fill from CSV, Excel, or JSON rows
                 </a>{' '}
                 with Search &amp; Fill;{' '}
                 <a href="/fill-pdf-by-link">publish a shareable web form</a>{' '}
@@ -551,8 +580,9 @@ const FormCatalogFormPage = ({
             </li>
             <li>
               <strong>Data fill:</strong> map the detected fields to CSV,
-              Excel, JSON, or SQL-backed schema headers so the same reviewed
-              PDF can be filled from repeat records.
+              Excel, or JSON row headers so the same reviewed PDF can be filled
+              from repeat records. Use SQL or TXT imports for schema mapping,
+              not direct row filling.
             </li>
             <li>
               <strong>Output paths:</strong> download the completed PDF, collect

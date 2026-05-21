@@ -6,9 +6,9 @@ import {
 const ACTIVE_FORM_CATALOG_CATEGORIES = FORM_CATALOG_CATEGORIES.filter((category) => !category.empty);
 
 const FORM_CATALOG_INDEX_TITLE =
-  `Free Fillable PDF Form Catalog — ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()}+ Official Forms | DullyPDF`;
+  `Free Fillable PDF Form Catalog — ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()}+ Forms & Templates | DullyPDF`;
 const FORM_CATALOG_INDEX_DESCRIPTION =
-  `Browse ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms across ${
+  `Browse ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free official PDFs and DullyPDF-authored fillable templates across ${
     ACTIVE_FORM_CATALOG_CATEGORIES.length
   } categories. Open any form in DullyPDF to fill online, auto-detect fields, or e-sign.`;
 const FORM_CATALOG_INDEX_KEYWORDS = [
@@ -29,7 +29,7 @@ const FORM_CATALOG_INDEX_KEYWORDS = [
 ];
 
 const FORM_CATALOG_INDEX_OG_IMAGE_PATH = '/blog/irs-w4-official-1.png';
-const FORM_CATALOG_INDEX_OG_IMAGE_ALT = 'Official blank form preview from the DullyPDF form catalog.';
+const FORM_CATALOG_INDEX_OG_IMAGE_ALT = 'Blank form preview from the DullyPDF form catalog.';
 
 const FORM_CATALOG_CATEGORY_BY_KEY = new Map(
   FORM_CATALOG_CATEGORIES.map((category) => [category.key, category]),

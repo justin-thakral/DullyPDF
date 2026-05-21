@@ -46,6 +46,11 @@ import {
 import { formatSize } from '../../utils/fields';
 import { FIELD_TYPES, fieldTypeLabel } from '../../utils/fieldUi';
 import {
+  calculationRoleLabel,
+  collectCalculationDependencyIds,
+  isCalculatedRole,
+} from '../../utils/calculationFields';
+import {
   readPanelDisclosureState,
   writePanelDisclosureState,
 } from '../../utils/panelDisclosureState';
@@ -53,8 +58,16 @@ import { openUsageDocsWindow, USAGE_DOCS_ROUTES } from '../../utils/usageDocs';
 
 const MIN_PAGE = 1;
 const BROWSER_DESCRIPTION_DISCLOSURE_KEY = 'field-browser-description';
+const CALCULATION_FILTER_LABELS: Record<CalculationFilter, string> = {
+  all: 'All calculation fields',
+  number_input: 'Number inputs',
+  calculated: 'Calculated outputs',
+  imported: 'Imported calculations',
+};
 
 type SortMode = 'page' | 'name' | 'type' | 'confidence';
+type CalculationFilter = 'all' | 'number_input' | 'calculated' | 'imported';
+type CalculationDependencyKind = 'direct' | 'indirect' | null;
 export type FieldListDisplayPreset = 'review' | 'edit' | 'fill' | 'custom';
 
 type FontSizeDraft = {
@@ -74,6 +87,7 @@ type PreparedFieldRow = {
   fieldConfidenceText: string | null;
   nameConfidenceText: string | null;
   nameClassName: string;
+  calculationLabel: string | null;
 };
 
 type FieldListPanelProps = {
@@ -171,6 +185,9 @@ function prepareFieldRow(field: PdfField): PreparedFieldRow {
       : null;
   const nameClassName =
     nameTier && nameTier !== 'high' ? `field-row__name--conf-${nameTier}` : '';
+  const calculationLabel = field.calculation?.role && field.calculation.role !== 'none'
+    ? calculationRoleLabel(field.calculation.role)
+    : null;
 
   const radioSearchTokens = field.type === 'radio'
     ? [
@@ -185,7 +202,7 @@ function prepareFieldRow(field: PdfField): PreparedFieldRow {
 
   return {
     field,
-    searchName: `${field.name} ${radioSearchTokens}`.trim().toLowerCase(),
+    searchName: `${field.name} ${radioSearchTokens} ${calculationLabel || ''}`.trim().toLowerCase(),
     typeLabel: fieldTypeLabel(field.type),
     sizeLabel: formatSize(field.rect),
     fieldConfidenceValue: fieldConfidence ?? -1,
@@ -195,24 +212,37 @@ function prepareFieldRow(field: PdfField): PreparedFieldRow {
     fieldConfidenceText,
     nameConfidenceText,
     nameClassName,
+    calculationLabel,
   };
+}
+
+function matchesCalculationFilter(field: PdfField, filter: CalculationFilter): boolean {
+  if (filter === 'all') return true;
+  const role = field.calculation?.role;
+  if (filter === 'number_input') return role === 'number_input';
+  if (filter === 'calculated') return isCalculatedRole(role);
+  return role === 'external_imported_calculation';
 }
 
 type FieldListRowProps = {
   row: PreparedFieldRow;
   isSelected: boolean;
+  calculationDependencyKind: CalculationDependencyKind;
   onActivate: (fieldId: string, page: number) => void;
 };
 
 const FieldListRow = memo(function FieldListRow({
   row,
   isSelected,
+  calculationDependencyKind,
   onActivate,
 }: FieldListRowProps) {
   const rowClassName = [
     'field-row',
     isSelected ? 'field-row--active' : '',
     `field-row--conf-${row.fieldTier}`,
+    calculationDependencyKind === 'direct' ? 'field-row--calc-dependency' : '',
+    calculationDependencyKind === 'indirect' ? 'field-row--calc-dependency-indirect' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -235,6 +265,14 @@ const FieldListRow = memo(function FieldListRow({
           {row.field.type === 'radio' && row.field.radioGroupLabel ? (
             <span className="field-row__group">
               {row.field.radioGroupLabel}
+            </span>
+          ) : null}
+          {row.calculationLabel ? (
+            <span className="field-row__calculation">{row.calculationLabel}</span>
+          ) : null}
+          {calculationDependencyKind ? (
+            <span className="field-row__dependency">
+              {calculationDependencyKind === 'direct' ? 'Direct dependency' : 'Nested dependency'}
             </span>
           ) : null}
           {row.showConfidence ? (
@@ -260,7 +298,12 @@ const FieldListRow = memo(function FieldListRow({
       <span className="field-row__size">{row.sizeLabel}</span>
     </button>
   );
-}, (prev, next) => prev.row === next.row && prev.isSelected === next.isSelected && prev.onActivate === next.onActivate);
+}, (prev, next) => (
+  prev.row === next.row
+  && prev.isSelected === next.isSelected
+  && prev.calculationDependencyKind === next.calculationDependencyKind
+  && prev.onActivate === next.onActivate
+));
 
 /**
  * Render the field list UI with filtering and selection.
@@ -305,6 +348,7 @@ export function FieldListPanel({
   };
   const [query, setQuery] = useState('');
   const [filterType, setFilterType] = useState<FieldType | 'all'>('all');
+  const [calculationFilter, setCalculationFilter] = useState<CalculationFilter>('all');
   const [sortMode, setSortMode] = useState<SortMode>('page');
   const [showAllPages, setShowAllPages] = useState(false);
   const [browserDescriptionOpen, setBrowserDescriptionOpen] = useState(() => (
@@ -339,10 +383,11 @@ export function FieldListPanel({
     const lowered = deferredQuery.trim().toLowerCase();
     return baseFields.filter((row) => {
       if (filterType !== 'all' && row.field.type !== filterType) return false;
+      if (!matchesCalculationFilter(row.field, calculationFilter)) return false;
       if (!lowered) return true;
       return row.searchName.includes(lowered);
     });
-  }, [baseFields, deferredQuery, filterType]);
+  }, [baseFields, calculationFilter, deferredQuery, filterType]);
 
   const sorted = useMemo(() => sortFields(filtered, sortMode), [filtered, sortMode]);
 
@@ -369,9 +414,18 @@ export function FieldListPanel({
     return `Confidence: ${enabled.join(', ')}`;
   }, [confidenceFilter]);
 
+  const calculationDependencySets = useMemo(() => {
+    const dependencies = collectCalculationDependencyIds(fields, selectedFieldId);
+    return {
+      direct: new Set(dependencies.directDependencyIds),
+      indirect: new Set(dependencies.indirectDependencyIds),
+    };
+  }, [fields, selectedFieldId]);
+
   const hasActiveFilters =
     query.trim().length > 0 ||
     filterType !== 'all' ||
+    calculationFilter !== 'all' ||
     sortMode !== 'page' ||
     showAllPages ||
     Boolean(confidenceChipLabel);
@@ -447,6 +501,7 @@ export function FieldListPanel({
   const clearFilters = useCallback(() => {
     setQuery('');
     setFilterType('all');
+    setCalculationFilter('all');
     setSortMode('page');
     setShowAllPages(false);
     onResetConfidenceFilters();
@@ -468,6 +523,7 @@ export function FieldListPanel({
     if (!selectedOutsideFilters) return;
     setQuery('');
     setFilterType('all');
+    setCalculationFilter('all');
     setSortMode('page');
     setShowAllPages(true);
     onResetConfidenceFilters();
@@ -877,6 +933,23 @@ export function FieldListPanel({
                 </select>
               </div>
               <div>
+                <label className="panel__label" htmlFor="field-calculation-filter">
+                  Calculation
+                </label>
+                <select
+                  id="field-calculation-filter"
+                  name="field-calculation-filter"
+                  className="panel__select"
+                  value={calculationFilter}
+                  onChange={(event) => setCalculationFilter(event.target.value as CalculationFilter)}
+                >
+                  <option value="all">All calculation states</option>
+                  <option value="number_input">Number inputs</option>
+                  <option value="calculated">Calculated outputs</option>
+                  <option value="imported">Imported calculations</option>
+                </select>
+              </div>
+              <div>
                 <label className="panel__label" htmlFor="field-sort">
                   Sort
                 </label>
@@ -903,6 +976,9 @@ export function FieldListPanel({
               <div className="panel-filter-summary">
                 {query.trim().length > 0 ? <span className="panel-filter-chip">Search: {query.trim()}</span> : null}
                 {filterType !== 'all' ? <span className="panel-filter-chip">Type: {fieldTypeLabel(filterType)}</span> : null}
+                {calculationFilter !== 'all' ? (
+                  <span className="panel-filter-chip">Calculation: {CALCULATION_FILTER_LABELS[calculationFilter]}</span>
+                ) : null}
                 {showAllPages ? <span className="panel-filter-chip">Scope: all pages</span> : null}
                 {sortMode !== 'page' ? <span className="panel-filter-chip">Sort: {sortMode}</span> : null}
                 {confidenceChipLabel ? <span className="panel-filter-chip">{confidenceChipLabel}</span> : null}
@@ -938,11 +1014,18 @@ export function FieldListPanel({
               <p className="panel__empty">{emptyMessage}</p>
             ) : (
               sorted.map((row) => {
+                const calculationDependencyKind: CalculationDependencyKind =
+                  calculationDependencySets.direct.has(row.field.id)
+                    ? 'direct'
+                    : calculationDependencySets.indirect.has(row.field.id)
+                      ? 'indirect'
+                      : null;
                 return (
                   <FieldListRow
                     key={row.field.id}
                     row={row}
                     isSelected={row.field.id === selectedFieldId}
+                    calculationDependencyKind={calculationDependencyKind}
                     onActivate={handleActivateField}
                   />
                 );

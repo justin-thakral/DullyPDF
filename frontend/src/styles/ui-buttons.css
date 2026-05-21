@@ -19,6 +19,19 @@
   box-shadow: 0 16px 30px rgba(37, 99, 235, 0.45);
 }
 
+.ui-button--secondary {
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.34);
+  color: #1d4ed8;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.14);
+}
+
+.ui-button--secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 14px 24px rgba(37, 99, 235, 0.2);
+}
+
 .ui-button--ghost {
   background: var(--surface-1);
   border: 1px solid rgba(148, 163, 184, 0.6);
@@ -66,4 +79,3 @@
   transform: none;
   box-shadow: none;
 }
-

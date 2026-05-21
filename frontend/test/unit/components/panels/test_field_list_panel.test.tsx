@@ -145,6 +145,65 @@ describe('FieldListPanel', () => {
     expect(screen.getByText('No fields on page 3.')).toBeTruthy();
   });
 
+  it('filters by calculation role and highlights selected calculation dependencies', async () => {
+    const user = userEvent.setup();
+    const fields: PdfField[] = [
+      {
+        id: 'premium',
+        name: 'Premium',
+        type: 'text',
+        page: 1,
+        rect: { x: 10, y: 10, width: 80, height: 20 },
+        valueType: 'integer',
+        calculation: { role: 'number_input', valueType: 'integer' },
+      },
+      {
+        id: 'subtotal',
+        name: 'Subtotal',
+        type: 'text',
+        page: 1,
+        rect: { x: 10, y: 40, width: 80, height: 20 },
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_intermediate',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'premium' },
+        },
+      },
+      {
+        id: 'total',
+        name: 'Total',
+        type: 'text',
+        page: 1,
+        rect: { x: 10, y: 70, width: 80, height: 20 },
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'subtotal' },
+        },
+      },
+    ];
+
+    render(
+      <FieldListPanel
+        {...createProps({
+          fields,
+          selectedFieldId: 'total',
+          selectedField: fields[2],
+        })}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: /Subtotal/i }).className).toContain('field-row--calc-dependency');
+    expect(screen.getByRole('button', { name: /Premium/i }).className).toContain('field-row--calc-dependency-indirect');
+
+    await user.selectOptions(screen.getByLabelText('Calculation'), 'number_input');
+
+    expect(screen.getByRole('button', { name: /Premium/i })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /Subtotal/i })).toBeNull();
+  });
+
   it('wires Fields/Names/All/Info/Clear controls and respects clear disabled state', async () => {
     const user = userEvent.setup();
     const onShowFieldsChange = vi.fn();

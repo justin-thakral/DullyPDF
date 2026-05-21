@@ -26,15 +26,26 @@ import {
   buildFormCatalogIndexSeo,
 } from './formCatalogSeo.mjs';
 import { INTENT_VISUALS } from './intentVisuals.mjs';
+import { DULLYPDF_HIGHLIGHT_INTENT_PAGES } from './dullypdfHighlightIntentPages.mjs';
+import { HIGH_INTENT_OPPORTUNITY_PAGES } from './highIntentOpportunityPages.mjs';
 
 export const SITE_ORIGIN = 'https://dullypdf.com';
-export const DEFAULT_SOCIAL_IMAGE_PATH = '/DullyPDFLogoImproved.png';
+export const DEFAULT_SOCIAL_IMAGE_PATH = '/DullyPDF_logo_social_full_bleed.png';
 const OFFICIAL_PUBLIC_PROFILE_URLS = [
   'https://www.linkedin.com/company/dullypdf',
   'https://github.com/justin-thakral/DullyPDF',
   'https://www.youtube.com/@DullyPDF',
   'https://x.com/DullyPDF',
 ];
+
+const ROUTE_DESCRIPTION_BUDGET = 155;
+
+const truncateRouteDescription = (text, maxLength = ROUTE_DESCRIPTION_BUDGET) => {
+  if (text.length <= maxLength) return text;
+  const cutoff = text.lastIndexOf(' ', maxLength - 1);
+  const sliceEnd = cutoff > 20 ? cutoff : maxLength - 1;
+  return text.slice(0, sliceEnd).trimEnd() + '…';
+};
 
 const resolveIntentPrimaryImage = (pageKey) => {
   const visuals = INTENT_VISUALS[pageKey];
@@ -165,6 +176,2372 @@ const INTENT_PAGES = [
     relatedDocs: ['getting-started', 'detection', 'editor-workflow'],
   },
   {
+    key: 'pdf-image-qr-barcode-fields',
+    category: 'workflow',
+    path: '/pdf-field-types/image-qr-barcode-fields',
+    navLabel: 'Image, QR, PDF417 & 1D Barcode Fields',
+    heroTitle: 'PDF Image, QR Code, PDF417 & 1D Barcode Fields',
+    heroSummary:
+      'Add image, QR code, PDF417, and 1D barcode helper fields to fillable PDF templates, then populate them from form data or mapped records.',
+    seoTitle: 'Create Fillable PDFs With Image, QR Code and Barcode Fields',
+    seoDescription:
+      'Add image fields, QR codes, PDF417 barcodes, and 1D barcode helpers to fillable PDF templates, then populate them from mapped records.',
+    seoKeywords: [
+      'pdf image field',
+      'add image field to pdf',
+      'fillable pdf image field',
+      'pdf form image upload field',
+      'add qr code field to pdf',
+      'qr code pdf form field',
+      'pdf417 barcode field pdf',
+      'add pdf417 barcode to pdf',
+      '1d barcode pdf form field',
+      'add barcode field to pdf',
+      'pdf barcode form field',
+      'code 128 pdf barcode',
+      'create fillable pdf with barcode',
+      'pdf qr code generator for forms',
+      'fillable pdf advanced fields',
+    ],
+    valuePoints: [
+      'Use one saved PDF template for ordinary text fields plus visual helper outputs such as photos, logos, QR links, PDF417 payloads, and 1D IDs.',
+      'Connect barcode and QR helper fields to manual values or source fields so scannable output follows the same data used by the rest of the PDF.',
+      'Keep the document layout fixed while DullyPDF renders images and codes into the final PDF page content.',
+    ],
+    proofPoints: [
+      'DullyPDF supports image, PDF417, 1D barcode, and QR Code as template helper field types in the editor.',
+      'PDF417 fields can combine multiple labeled classes into one scan text payload; QR and 1D barcode helpers encode one configured value.',
+      'The current 1D barcode helper generates Code 128 from a 9 digit value, which fits internal IDs better than retail UPC/EAN labeling workflows.',
+      'Editable exports keep these helpers tagged for DullyPDF reopen; final exports and generated fills render the image or code into page content.',
+    ],
+    articleSections: [
+      {
+        title: 'Why this page is different from a generic barcode generator',
+        paragraphs: [
+          'Most search results for QR codes or barcodes solve a narrow task: generate an image that you can download and paste somewhere. That is useful for one-off labels, but it does not solve a recurring PDF form workflow. A team still has to place the code on the right page, keep it aligned with the rest of the PDF, and regenerate it whenever the underlying record changes.',
+          'DullyPDF is strongest when the image or barcode belongs inside a reusable PDF template. The operator can detect and clean the ordinary fields first, add helper regions for image, QR Code, PDF417, or 1D barcode output, then connect those helpers to manual values or source fields. The goal is not just a barcode image. The goal is a repeatable PDF workflow where the scannable output stays tied to the same data that fills the document.',
+        ],
+        bullets: [
+          'Best fit: recurring PDFs that need photos, logos, verification QR codes, dense PDF417 data, or internal barcode IDs placed in a stable layout.',
+          'Poor fit: retail barcode licensing, product packaging labels, or native Acrobat JavaScript barcode fields that must stay interactive inside Acrobat.',
+        ],
+      },
+      {
+        title: 'Image fields are for variable visual content, not static decoration',
+        paragraphs: [
+          'An image field is useful when a PDF needs visual content that changes by record: a profile photo, ID scan, company logo, receipt image, inspection photo, or supporting document thumbnail. That is different from putting a permanent logo in the PDF design. The field exists because the final value changes from one completed PDF to the next.',
+          'Adobe lists Image Field as a form component in Acrobat, which matches the search intent behind “add image field to PDF” and “PDF image upload field.”[^adobe-image-fields] In DullyPDF, image fields are template helpers. The image is selected or supplied through the workflow and then rendered into the output where the template says it belongs.',
+        ],
+      },
+      {
+        title: 'QR code fields work best for URLs, lookup pages, and verification links',
+        paragraphs: [
+          'QR Code is the best choice when the PDF needs to connect a printed document to a digital destination. Common examples include verification pages, customer portals, payment pages, intake links, shipment status pages, audit receipts, or an internal record lookup URL. GS1 also describes QR Code as a 2D barcode commonly used to link users to web information through a mobile scan.[^gs1-barcode-types]',
+          'That makes QR useful on PDF forms because the code can carry a URL or compact text value while the rest of the PDF remains readable as a normal document. GS1 Digital Link is one standards-backed example of using a web-compatible URI inside a 2D barcode.[^gs1-digital-link] In DullyPDF, QR helpers encode one configured value from manual text or a source field, so the same template can generate different QR codes for different records.',
+        ],
+      },
+      {
+        title: 'PDF417 is for dense structured data on the page',
+        paragraphs: [
+          'PDF417 is usually a better fit when the document needs more structured data in one scannable block. It appears in workflows such as IDs, transport documents, government forms, shipping records, event credentials, access badges, and other paper processes where a scanner needs more than a short URL or single numeric ID.',
+          'Adobe barcode field documentation specifically lists PDF417 as a selectable barcode symbology for Acrobat barcode fields.[^adobe-barcode-fields] DullyPDF uses the same practical distinction in its own helper model: PDF417 helpers can combine multiple labeled classes into one scan text payload, so a single code can represent a compact set of record facts.',
+        ],
+      },
+      {
+        title: '1D barcode fields are best for short identifiers',
+        paragraphs: [
+          'A 1D barcode is the familiar linear barcode made of vertical bars. GS1 describes UPC-A, EAN-13, GS1-128, UPC-E, and EAN-8 as linear or 1D barcode examples, with use cases ranging from retail point of sale to logistics and distribution.[^gs1-barcode-types] In PDF form workflows, the practical 1D use case is usually shorter: encode an internal ID, asset tag, member number, work order, or tracking reference.',
+          'DullyPDF currently generates Code 128 style output for the 1D barcode helper from a 9 digit value. That is intentionally narrow. It works well for internal IDs and controlled template workflows. It should not be presented as a replacement for GS1 licensing, product packaging standards, or point-of-sale barcode validation.',
+        ],
+      },
+      {
+        title: 'How DullyPDF stores and exports these helper fields',
+        paragraphs: [
+          'Image, PDF417, 1D barcode, and QR Code are DullyPDF-only helper fields, not universal native AcroForm field types. Standard text, checkbox, radio, and signature fields are the fields a normal PDF viewer understands directly. The helper fields are different because DullyPDF needs to generate visual output from template metadata before the final PDF is delivered.',
+          'That distinction is important for accuracy. Editable exports keep these helper regions tagged so DullyPDF can recognize and restore them when the file is reopened. Final downloads, Fill By Link generation, and API Fill materialization render the image, barcode, or QR output into PDF page content, which is the behavior users expect when they print, share, or archive the completed document.',
+        ],
+      },
+      {
+        title: 'A high-quality setup order for advanced fields',
+        paragraphs: [
+          'Do not start by drawing the barcode. Start by making the base template reliable. Detect ordinary fields, clean the geometry, normalize names, and confirm the text and checkbox values fill correctly. Then add image and barcode helpers where the final visual output belongs. That order keeps the template from becoming a pile of visual widgets on top of an untrusted field set.',
+          'After the helper is placed, configure the encoded content. For QR and 1D barcode helpers, choose the one value that should scan. For PDF417, define each labeled class in the order it should appear in the scan text. For image fields, test a realistic image aspect ratio so the output does not crop awkwardly or look stretched on the final document.',
+        ],
+        bullets: [
+          'Clean the ordinary field set first.',
+          'Add helper field regions only where the final output belongs.',
+          'Connect helper values to stable source fields when possible.',
+          'Export one representative record and scan the result before publishing the template.',
+        ],
+      },
+      {
+        title: 'Scannable PDF output needs a real QA pass',
+        paragraphs: [
+          'A code that looks good on screen can still fail when printed, resized, compressed, or scanned under poor lighting. The safest QA loop is to generate a completed PDF, open it outside DullyPDF, print or zoom it at the expected size, and scan it with the same device or scanner the workflow will use in production.',
+          'That review should include negative cases too. Test a blank source value, a long QR value, a PDF417 payload with several classes, and a 1D barcode with an invalid ID length. The template is ready only when the operator can predict what happens when source data is missing or malformed.',
+        ],
+      },
+      {
+        title: 'When Acrobat or a specialist barcode tool is the better choice',
+        paragraphs: [
+          'There are cases where DullyPDF is not the right primary tool. If your requirement is a native Acrobat barcode field that recalculates from selected form fields using Acrobat JavaScript, Acrobat is the more direct match because Adobe exposes that workflow inside Barcode Field Properties.[^adobe-barcode-fields] If your requirement is a standards-certified retail barcode, logistics label, or packaging workflow, use the right GS1 and label-generation process instead of treating a PDF helper as the source of truth.',
+          'For DullyPDF, the strong use case is operational PDF templates: forms that already exist, need a stable page layout, and benefit from visual helper outputs tied to record data. That is the intent this page should rank for.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-image-fields',
+        label: 'Adobe Acrobat | Create forms and supported form components',
+        href: 'https://helpx.adobe.com/sg/acrobat/desktop/work-with-pdf-forms/create-forms/create.html',
+      },
+      {
+        id: 'gs1-barcode-types',
+        label: 'GS1 US | Barcode types, 1D barcodes, QR Code, UPC, EAN, and GS1-128',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+      {
+        id: 'adobe-barcode-fields',
+        label: 'Adobe Acrobat | Add and test barcode fields, including PDF417 and QR Code symbologies',
+        href: 'https://helpx.adobe.com/in/acrobat/desktop/work-with-pdf-forms/insert-barcodes/add-barcode-fields.html',
+      },
+      {
+        id: 'gs1-digital-link',
+        label: 'GS1 Support | QR Code and GS1 Digital Link guidance',
+        href: 'https://support.gs1.org/support/solutions/articles/43000756000-what-is-the-difference-between-the-2d-barcode-options-gs1-datamatrix-data-matrix-with-gs1-digital-l',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these DullyPDF docs when you are moving from search intent into the actual editor sequence. The page above explains field-type strategy; the docs explain the operator steps around field cleanup, mapping, generated output, and publishing.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add an image field to a fillable PDF online?',
+        answer:
+          'Yes. DullyPDF supports image helper fields for variable visual content such as photos, IDs, receipts, or logos that should be rendered into the final PDF output.',
+      },
+      {
+        question: 'Can DullyPDF add QR codes and barcodes to PDF forms?',
+        answer:
+          'Yes. DullyPDF supports QR Code, PDF417, and 1D barcode helper fields that can encode manual values or source-field values from the template.',
+      },
+      {
+        question: 'Are these native PDF barcode form fields?',
+        answer:
+          'No. Image, PDF417, 1D barcode, and QR Code are DullyPDF template helpers. DullyPDF restores them when reopening tagged editable exports and renders the final image or code into PDF page content during generated output.',
+      },
+      {
+        question: 'Should I use QR Code, PDF417, or a 1D barcode?',
+        answer:
+          'Use QR Code for URLs or compact text, PDF417 for denser structured payloads, and 1D barcode for short identifiers such as internal IDs, asset tags, or tracking references.',
+      },
+      {
+        question: 'Can advanced field output be generated from CSV, Fill By Link, or API Fill data?',
+        answer:
+          'Yes. Once the saved template is configured, helper fields can use values connected to the same record data that drives Search & Fill, respondent-generated PDFs, or API-generated PDFs.',
+      },
+    ],
+    relatedIntentPages: ['pdf-to-fillable-form', 'pdf-field-detection-tool', 'fill-pdf-from-csv', 'pdf-fill-api', 'fill-pdf-by-link'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'fill-by-link', 'api-fill'],
+  },
+  {
+    key: 'add-image-field-to-pdf',
+    category: 'workflow',
+    path: '/add-image-field-to-pdf',
+    navLabel: 'Add Image Field to PDF',
+    heroTitle: 'Add Image Fields to Fillable PDFs Online',
+    heroSummary:
+      'Add image fields to fillable PDFs for photos, logos, IDs, and receipts. Upload PNG/JPEG images in DullyPDF and render them into final PDF output.',
+    seoTitle: 'Add Image Fields to Fillable PDFs Online | DullyPDF',
+    seoDescription:
+      'Add image fields to fillable PDFs for photos, logos, IDs, and receipts. Upload PNG/JPEG images in DullyPDF and render them into final PDF output.',
+    seoKeywords: [
+      'add image field to pdf',
+      'pdf image field',
+      'fillable pdf image field',
+      'add photo field to pdf',
+      'pdf form image upload field',
+      'insert image field into pdf form',
+      'add image to fillable pdf',
+      'pdf image upload field online',
+      'create pdf form with image upload',
+      'add logo field to pdf form',
+      'add receipt image to pdf',
+      'photo upload field pdf form',
+      'image field pdf editor',
+    ],
+    valuePoints: [
+      'Place photo, logo, ID, receipt, or attachment-image regions directly on an existing PDF layout.',
+      'Upload PNG/JPEG content in the editor and preview it inside the exact field region before export.',
+      'Save the image-field placement with the template so future output uses the same reviewed geometry.',
+    ],
+    proofPoints: [
+      'Image fields expose PNG/JPEG upload, preview, and clear controls in the Field Editor.',
+      'DullyPDF-only helper metadata lets editable round-trip exports restore image field placement when reopened in DullyPDF.',
+      'Flat exports stamp the selected image into PDF page content so the final file does not depend on a live image widget.',
+      'Image fields are intentionally separate from standard AcroForm text, checkbox, radio, and signature fields.',
+    ],
+    articleSections: [
+      {
+        title: 'What an image field solves in a fillable PDF',
+        paragraphs: [
+          'A normal fillable PDF is mostly text, checkboxes, radio choices, dates, and signatures. That covers many forms, but it does not cover every visual value that belongs in a completed document. Some workflows need a photo, ID image, receipt, company logo, inspection image, or attachment preview to land in a precise place on the PDF.',
+          'That is the intent behind an image field. It is not just decoration. It is a reserved region in a reusable PDF template where a specific visual value can be uploaded, previewed, cleared, saved, and rendered into final output.',
+        ],
+        bullets: [
+          'Use an image field when the image changes by workflow or completed record.',
+          'Use the original PDF design when the image is permanent branding that should never change.',
+        ],
+      },
+      {
+        title: 'Image field versus adding a static image to a PDF',
+        paragraphs: [
+          'Search results often blur two jobs together: insert an image into a PDF and add an image field to a PDF form. Inserting a static image is a one-time edit. It is useful when you already know the exact image and do not need to reuse the placement later. An image field is different because the template keeps a reusable box where image content can be replaced or cleared during the workflow.',
+          'DullyPDF is built around the second job. You start from the existing PDF, create or review fields, draw the image helper where the visual content belongs, upload PNG/JPEG content, and export a completed PDF that has the image stamped into the page.',
+        ],
+      },
+      {
+        title: 'How DullyPDF image fields work',
+        paragraphs: [
+          'Image fields are DullyPDF-only helper fields. They are not universal native AcroForm fields like text, checkbox, radio, or signature fields. The helper field stores placement metadata and image data so DullyPDF can preview and materialize the visual output when the template is exported.',
+          'In the editor, image fields expose PNG/JPEG upload, preview, and clear controls. The same field box can be resized and repositioned like other fields, which means the image placement is reviewed as part of the template rather than pasted into the document as a loose one-off object.',
+        ],
+      },
+      {
+        title: 'Where image fields are strongest',
+        paragraphs: [
+          'Image fields are strongest in recurring documents where the layout stays stable but the visual content changes. Membership forms may need a headshot. Vendor packets may need a logo. Reimbursement or inspection forms may need receipt and site photos. Identity workflows may need an ID image beside the typed identity fields.',
+          'They are less useful when the image is part of the base document design. A permanent header logo or background watermark should usually live in the source PDF itself. An image field should be reserved for content that the operator may need to upload, replace, or clear as part of a fill workflow.',
+        ],
+      },
+      {
+        title: 'Setup order for a reliable image-field template',
+        paragraphs: [
+          'The safest setup order is to make the base template dependable first. Detect or create ordinary text and checkbox fields, clean the geometry, and confirm the document fills correctly. Then add image fields where visual content belongs. That keeps image placement from distracting from the more basic question of whether the form itself is a reliable reusable template.',
+          'After placing the image field, upload a realistic sample image. Test a portrait photo, a landscape receipt, or whatever format the workflow will actually use. Resize the field until the final output looks intentional rather than stretched, cropped, or misaligned.',
+        ],
+        bullets: [
+          'Clean ordinary fields first.',
+          'Draw the image field where the final image should appear.',
+          'Upload a realistic PNG/JPEG sample.',
+          'Export and review the completed PDF outside the editor.',
+        ],
+      },
+      {
+        title: 'Aspect ratio and image quality matter',
+        paragraphs: [
+          'An image field can be placed correctly and still produce poor output if the source image shape does not match the field shape. Tall portrait photos, wide logos, square thumbnails, and scanned receipts all behave differently. The template should be tested with the same class of image that real users will upload.',
+          'The practical QA rule is simple: inspect the final PDF, not only the editor preview. Open the exported file in a normal PDF viewer, zoom in, print if the workflow expects paper, and confirm the image remains readable at the intended size.',
+        ],
+      },
+      {
+        title: 'Why Adobe and PDF editors talk about layers and image components',
+        paragraphs: [
+          'Adobe describes form creation as placing fields as a layer on top of the existing form rather than changing what is underneath.[^adobe-workforms] Adobe also lists Image Field as a form component when creating fillable forms.[^adobe-image-field] That matches the basic search intent: users want a dedicated place in the PDF where image content can be supplied.',
+          'DullyPDF follows the reusable-template version of that idea. The source PDF layout stays intact. The image field sits on top as reviewed template metadata. During final output, DullyPDF renders the selected image into the PDF page content so the result is easy to print, share, or archive.',
+        ],
+      },
+      {
+        title: 'Privacy and operational review for uploaded images',
+        paragraphs: [
+          'Images can carry sensitive information that plain text fields do not expose as obviously: faces, IDs, receipts, medical details, signatures, addresses, and background context. Teams should only upload what the document actually needs and should review saved templates before sharing them with other users.',
+          'If your image workflow includes regulated data, legal records, or protected health information, validate the full operational and compliance requirements before using any self-serve PDF tool. The image field is a placement and export mechanism; it is not a substitute for document-retention, access-control, or regulatory review.',
+        ],
+      },
+      {
+        title: 'When a different tool is the better fit',
+        paragraphs: [
+          'Use a general PDF editor when the job is simply to paste one static image into one file. Use a design tool when you are rebuilding the page layout itself. Use DullyPDF when the image belongs in a repeatable PDF template and should sit beside other fields, saved geometry, Search & Fill review, or later PDF output workflows.',
+          'That distinction is what keeps this page focused. The goal is not to compete with every image-to-PDF tool. The goal is to help teams create reusable fillable PDF templates that include visual fields where the completed record needs them.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-workforms',
+        label: 'Adobe Experience League | Work with form fields in Acrobat',
+        href: 'https://experienceleague.adobe.com/en/docs/document-cloud-learn/acrobat-learning/advanced-tasks/forms/workforms',
+      },
+      {
+        id: 'adobe-image-field',
+        label: 'Adobe Acrobat | Create forms and add form components, including Image Field',
+        href: 'https://helpx.adobe.com/sg/acrobat/desktop/work-with-pdf-forms/create-forms/create.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these DullyPDF docs to move from image-field intent into the exact editor behavior for creating fields, uploading image content, saving templates, and exporting final PDFs.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Getting Started', href: '/usage-docs/getting-started' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add an image field to a PDF online?',
+        answer:
+          'Yes. DullyPDF lets you draw image helper fields on an existing PDF and upload PNG/JPEG content for the selected field in the editor.',
+      },
+      {
+        question: 'Is an image field the same as inserting a static image into a PDF?',
+        answer:
+          'No. A static image edit is one-time page content. An image field is a reusable template region where image content can be uploaded, previewed, cleared, saved, and rendered into final output.',
+      },
+      {
+        question: 'What image formats does DullyPDF support for image fields?',
+        answer:
+          'Image fields use PNG/JPEG upload controls in the editor.',
+      },
+      {
+        question: 'Are image fields native PDF form fields?',
+        answer:
+          'No. DullyPDF image fields are helper fields. Editable round-trip exports keep metadata for DullyPDF to restore them, while flat final exports stamp the selected image into the page content.',
+      },
+      {
+        question: 'What should I test before using an image-field template?',
+        answer:
+          'Test the final exported PDF with realistic images. Check aspect ratio, cropping, readability, print quality, and whether sensitive image content should be stored or shared.',
+      },
+    ],
+    relatedIntentPages: ['pdf-image-qr-barcode-fields', 'pdf-to-fillable-form', 'fillable-pdf-fonts-colors', 'acroform-field-appearance'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'getting-started'],
+  },
+  {
+    key: 'add-qr-code-field-to-pdf',
+    category: 'workflow',
+    path: '/add-qr-code-field-to-pdf',
+    navLabel: 'Add QR Code Field to PDF',
+    heroTitle: 'Add QR Code Fields to Fillable PDFs',
+    heroSummary:
+      'Add QR code fields to fillable PDF templates for verification links, portals, payment pages, record lookup, and status pages. Encode manual text or source-field values.',
+    seoTitle: 'Add QR Code Fields to Fillable PDFs | DullyPDF',
+    seoDescription:
+      'Add QR code fields to fillable PDF templates for verification links, portals, payments, record lookup, and status pages.',
+    seoKeywords: [
+      'add qr code field to pdf',
+      'qr code pdf form field',
+      'add qr code to pdf form',
+      'fillable pdf qr code',
+      'pdf qr code field',
+      'create qr code in pdf form',
+      'qr code from pdf form data',
+      'pdf form qr code generator',
+      'add scannable qr code to pdf',
+      'qr code verification pdf',
+      'qr code payment link pdf',
+      'qr code record lookup pdf',
+      'pdf barcode field qr code',
+    ],
+    valuePoints: [
+      'Place QR Code helper fields inside existing PDF layouts instead of pasting one-off QR images into each file.',
+      'Encode manual text or connect the QR payload to a standard source field such as a record URL, portal link, or tracking value.',
+      'Render the generated QR code into final PDF page content so printed, emailed, and archived files remain scannable.',
+    ],
+    proofPoints: [
+      'DullyPDF QR helpers encode one configured value from manual text or a source field.',
+      'QR text is normalized and capped for reliable preview generation in the editor.',
+      'DullyPDF-only helper metadata lets editable round-trip exports restore QR field placement when reopened in DullyPDF.',
+      'Final exports and generated fills stamp the QR image into PDF page content instead of depending on a live Acrobat barcode widget.',
+    ],
+    articleSections: [
+      {
+        title: 'Why a QR code field is different from a QR image generator',
+        paragraphs: [
+          'A generic QR generator creates an image. That is useful when you need a standalone code for a poster, label, or web page. A QR code field inside a PDF template solves a different problem: the QR code must sit in the right place on the document and change predictably when the underlying record changes.',
+          'DullyPDF is built for the reusable-template version of that workflow. You draw the QR helper field where the code belongs, decide whether the payload is manual text or another field value, preview the generated code, and export a PDF where the code is stamped into the page content.',
+        ],
+        bullets: [
+          'Best fit: recurring PDFs where each completed record needs a different URL, lookup key, or verification code.',
+          'Less ideal: one-off QR image downloads, retail packaging standards, or Acrobat JavaScript barcode fields that must stay interactive inside Acrobat.',
+        ],
+      },
+      {
+        title: 'Where QR code fields make sense in PDF workflows',
+        paragraphs: [
+          'QR Code is strongest when a printed or archived PDF needs to point back to a digital destination. Common examples include verification pages, payment links, customer portals, appointment pages, delivery status, warranty lookup, audit receipts, work order lookup, and internal record search.',
+          'DENSO WAVE describes QR Code as a two-dimensional code with error correction, which is part of why QR codes are practical for real-world scanning when a printed document might be handled, copied, or lightly damaged.[^denso-qr-code] GS1 also describes QR Code as a 2D barcode often used to link users to web information through a mobile scan.[^gs1-barcode-types]',
+        ],
+      },
+      {
+        title: 'How DullyPDF QR code fields work',
+        paragraphs: [
+          'QR Code fields are DullyPDF-only helper fields. They are not standard text, checkbox, radio, or signature AcroForm fields. The helper stores placement and payload metadata so DullyPDF can generate the QR image during preview and materialization.',
+          'In the QR setup dialog, the template creator chooses one payload. That payload can be manual text or a source field on the form. The source-field pattern is useful when a normal field already contains the URL, tracking number, or record identifier that should be encoded into the QR code.',
+        ],
+      },
+      {
+        title: 'Manual QR values versus source-field QR values',
+        paragraphs: [
+          'Manual values are best for fixed destinations: a support page, a public instructions page, a generic portal URL, or a static payment page. Source-field values are better when each completed PDF should encode a record-specific value such as a verification URL, invoice URL, claim ID, shipment ID, or member lookup link.',
+          'That distinction keeps templates cleaner. If the QR value changes per record, store the changing value in a normal field and point the QR helper at that field. If the QR value is the same every time, a manual QR value is simpler.',
+        ],
+      },
+      {
+        title: 'Static QR code payloads and dynamic destinations',
+        paragraphs: [
+          'A generated QR code encodes the text value available at export time. If that value is a direct URL, the QR code itself is static because the encoded characters are fixed in the PDF. If the URL points to a redirect or resolver that your system controls, the destination behind that URL can change later, but the QR payload in the PDF does not rewrite itself.',
+          'That is an important operational distinction. Use stable URLs when the completed PDF will be printed or archived. If you need later routing changes, encode a stable redirect URL that your own system can resolve instead of encoding a temporary destination directly. GS1 Digital Link is one standards-backed example of using web technology to make barcode scanning connect to richer online information.[^gs1-digital-link]',
+        ],
+      },
+      {
+        title: 'QR Code versus PDF417 and 1D barcode in a PDF',
+        paragraphs: [
+          'Adobe barcode field documentation lists QR Code, PDF417, and Data Matrix as selectable symbologies for Acrobat barcode fields.[^adobe-barcode-fields] In DullyPDF, QR Code, PDF417, and 1D barcode are helper fields with different practical strengths.',
+          'Use QR Code for URLs or compact text that people may scan with phones. Use PDF417 when a single code needs to carry a denser structured payload. Use 1D barcode when the code should represent a short internal identifier such as an asset tag, member ID, or tracking reference.',
+        ],
+      },
+      {
+        title: 'QR code size, contrast, and scan testing',
+        paragraphs: [
+          'A QR code that renders on screen can still fail in the real workflow if the code is too small, compressed, low contrast, or placed where the document will be folded, stamped, or clipped. The safest check is to generate a final PDF, view it outside DullyPDF, print or zoom to the expected size, and scan it with the same phones or scanners the team will use.',
+          'Test the longest realistic URL, not only a short demo string. Longer QR payloads create denser patterns, and dense codes need more physical space. If the scan is slow or unreliable, shorten the URL, use a redirect, increase the field size, or move the code to a cleaner area of the page.',
+        ],
+      },
+      {
+        title: 'Privacy and security review for QR links',
+        paragraphs: [
+          'A QR code can expose sensitive context faster than plain text because anyone with a scanner can open the encoded destination. Avoid encoding private data directly into the QR value unless the workflow truly requires it. In many cases, a short record URL or opaque lookup token is safer than embedding personal information in the QR code itself.',
+          'If the QR code opens a payment page, verification page, medical portal, or legal record, the destination system still needs its own authentication, expiration, logging, and access-control review. The QR field places a scannable value in the PDF; it does not secure the destination behind that value.',
+        ],
+      },
+      {
+        title: 'When Acrobat or a specialist QR tool is the better choice',
+        paragraphs: [
+          'Use Acrobat when you specifically need a native Acrobat barcode field that recalculates from selected form fields using Acrobat barcode properties and JavaScript. That is a different workflow from DullyPDF stamping a generated helper image into final output.[^adobe-barcode-fields]',
+          'Use a specialist QR or label system when the QR code must comply with retail, packaging, ticketing, or regulated label standards. Use DullyPDF when the QR code belongs inside a reusable PDF template alongside field detection, cleanup, saved geometry, Search & Fill, Fill By Link, or API Fill workflows.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'denso-qr-code',
+        label: 'DENSO WAVE | What is a QR Code?',
+        href: 'https://www.denso-wave.com/en/system/qr/fundamental/qrcode/qrc/index.html',
+      },
+      {
+        id: 'gs1-barcode-types',
+        label: 'GS1 US | Barcode types and QR Code barcode guidance',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+      {
+        id: 'adobe-barcode-fields',
+        label: 'Adobe Acrobat | PDF barcode form fields with QR Code symbology',
+        href: 'https://helpx.adobe.com/in/acrobat/using/pdf-barcode-form-fields.html',
+      },
+      {
+        id: 'gs1-digital-link',
+        label: 'GS1 | Digital Link and web-connected barcode scanning',
+        href: 'https://www.gs1.org/resources/articles/gs1-digital-link-brings-scanning-21st-century',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these DullyPDF docs when you are ready to create QR helper fields inside a real template and test the generated output against mapped records or published workflows.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a QR code field to a PDF form?',
+        answer:
+          'Yes. DullyPDF lets you draw QR Code helper fields on an existing PDF template and encode either manual text or one source-field value.',
+      },
+      {
+        question: 'Can a QR code field use data from another PDF field?',
+        answer:
+          'Yes. QR helper fields can connect to a standard source field, such as a field containing a record URL, tracking value, or lookup token.',
+      },
+      {
+        question: 'Is the QR code field a native Acrobat barcode field?',
+        answer:
+          'No. DullyPDF QR fields are helper fields. Editable round-trip exports keep metadata for DullyPDF to restore them, while final exports stamp the generated QR image into PDF page content.',
+      },
+      {
+        question: 'Should I use QR Code or PDF417 in a PDF?',
+        answer:
+          'Use QR Code for URLs and compact text that people may scan with phones. Use PDF417 when the code needs to carry denser structured data inside the document.',
+      },
+      {
+        question: 'Can I make a dynamic QR code in a PDF?',
+        answer:
+          'The PDF contains the QR payload generated at export time. To make the destination changeable later, encode a stable redirect or resolver URL that your system controls.',
+      },
+    ],
+    relatedIntentPages: ['pdf-image-qr-barcode-fields', 'add-image-field-to-pdf', 'pdf-fill-api', 'fill-pdf-by-link', 'fill-pdf-from-csv'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'fill-by-link', 'api-fill'],
+  },
+  {
+    key: 'add-pdf417-barcode-field-to-pdf',
+    category: 'workflow',
+    path: '/add-pdf417-barcode-field-to-pdf',
+    navLabel: 'Add PDF417 Barcode Field to PDF',
+    heroTitle: 'Add PDF417 Barcode Fields to Fillable PDFs',
+    heroSummary:
+      'Add PDF417 barcode helper fields to fillable PDF templates for dense structured data, ID-style records, transport paperwork, and machine-readable document workflows.',
+    seoTitle: 'Add PDF417 Barcode Fields to Fillable PDFs | DullyPDF',
+    seoDescription:
+      'Create reusable PDF templates with PDF417 barcode helper fields that combine labeled record values and render scannable output into final PDFs.',
+    seoKeywords: [
+      'add pdf417 barcode field to pdf',
+      'pdf417 barcode field pdf',
+      'add pdf417 barcode to pdf',
+      'fillable pdf pdf417 barcode',
+      'pdf form pdf417 generator',
+      'pdf417 from form fields',
+      'create pdf417 barcode in pdf form',
+      'pdf417 barcode document workflow',
+      'machine readable pdf form',
+      'pdf barcode field pdf417',
+      'pdf417 shipping form pdf',
+      'pdf417 id form pdf',
+      'generate pdf417 barcode in pdf',
+    ],
+    valuePoints: [
+      'Place PDF417 helper regions on an existing PDF template without rebuilding the document layout.',
+      'Combine multiple labeled source values into one scan text payload when a code needs more than a single URL or short ID.',
+      'Render the generated PDF417 code into final PDF page content for printed, emailed, and archived output.',
+    ],
+    proofPoints: [
+      'DullyPDF PDF417 helpers can combine every configured barcode class into one generated scan text value.',
+      'PDF417 helper placement is stored with the saved template so repeat fills keep the same reviewed geometry.',
+      'Editable round-trip exports keep helper metadata for DullyPDF reopen; flat final exports stamp the PDF417 image into the page.',
+      'Adobe Acrobat barcode-field documentation lists PDF417 as a supported barcode symbology, but DullyPDF renders a helper image rather than creating an Acrobat JavaScript barcode field.',
+    ],
+    articleSections: [
+      {
+        title: 'What a PDF417 barcode field solves in a PDF form',
+        paragraphs: [
+          'PDF417 is useful when a completed PDF needs one scannable block that carries several pieces of structured record data. A QR code often points to a URL. A 1D barcode often carries a short identifier. PDF417 sits in the middle: it can represent a denser payload on the page without requiring the recipient to retype the facts printed elsewhere in the document.',
+          'In DullyPDF, a PDF417 barcode field is a template helper. You draw the helper region on the existing PDF, configure the labeled values that should be included, preview the generated code, and export final PDFs where the code is stamped into the page content.',
+        ],
+        bullets: [
+          'Best fit: IDs, transport records, shipping paperwork, credential packets, government forms, and operational documents where a scanner needs structured facts.',
+          'Poor fit: retail product barcode licensing, packaging labels, or Acrobat-native barcode fields that must recalculate inside Acrobat.',
+        ],
+      },
+      {
+        title: 'PDF417 versus a generic barcode image',
+        paragraphs: [
+          'A generic PDF417 generator can create an image. That is fine for a one-off code, but it does not solve template placement, data mapping, or repeat output. The code still has to be manually pasted into the PDF, aligned with the form, and regenerated every time a record changes.',
+          'DullyPDF targets the repeatable PDF workflow instead. The PDF417 field stays attached to the template geometry and can be filled from the same reviewed data layer used by Search & Fill, Fill By Link, or API Fill. The output is the complete PDF, not just a downloaded barcode image.',
+        ],
+      },
+      {
+        title: 'How DullyPDF builds the PDF417 payload',
+        paragraphs: [
+          'DullyPDF PDF417 helpers use configured barcode classes. Each class has a label and a value source. At generation time, DullyPDF combines the configured classes into the scan text used to render the PDF417 image. This is why PDF417 is the right helper when one code needs to carry several record facts instead of a single field value.',
+          'That power also creates a quality requirement. The class labels and order should be intentional. A scanner or downstream system should receive predictable text, not a pile of unrelated values. Start with the minimum fields the receiving workflow needs, then add more only when the scanner process can use them.',
+        ],
+      },
+      {
+        title: 'Acrobat barcode fields and DullyPDF helper fields are different',
+        paragraphs: [
+          'Adobe Acrobat exposes Barcode Field Properties and lets form authors choose barcode symbologies including PDF417 and QR Code.[^adobe-barcode-fields] That Acrobat workflow is native to Acrobat and can use selected fields or custom JavaScript inside the PDF.',
+          'DullyPDF PDF417 helpers are different by design. They are DullyPDF template metadata that render into page content during final output. That is the right model when the completed PDF should print, email, and archive with a visible scannable code. It is not the right model if the requirement is an editable Acrobat barcode field that keeps recalculating after the file leaves DullyPDF.',
+        ],
+      },
+      {
+        title: 'Layout and scan QA for PDF417 in PDFs',
+        paragraphs: [
+          'PDF417 codes can become dense quickly. A code that looks acceptable in the editor can scan poorly after compression, printing, or resizing. The safest setup is to test the longest realistic payload, export a completed PDF, and scan it at the final physical size with the same devices the workflow will use.',
+          'Leave enough white space around the code, avoid placing it where the page will be folded or stamped, and keep the field large enough for the payload. If scan quality is weak, reduce the encoded data, increase the field area, or move long record details behind a QR URL and keep PDF417 for the values the scanner truly needs offline.',
+        ],
+      },
+      {
+        title: 'When a PDF417 page should link to data workflows',
+        paragraphs: [
+          'The strongest PDF417 use cases are data workflows, not manual drawing workflows. If the values are already in CSV rows, JSON records, database exports, or a respondent submission, connect the template fields first, then let the PDF417 helper render from those values. That keeps the barcode synchronized with the human-readable fields on the page.',
+          'This is also where DullyPDF can outrank generic barcode tools. The content should answer the real operator question: how do I place a PDF417 barcode inside a reusable PDF form and keep it tied to record data?',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-barcode-fields',
+        label: 'Adobe Acrobat | Add barcode fields, including PDF417 and QR Code symbologies',
+        href: 'https://helpx.adobe.com/in/acrobat/desktop/work-with-pdf-forms/insert-barcodes/add-barcode-fields.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these DullyPDF docs when you are ready to configure PDF417 helper fields against real template data and verify the generated output.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a PDF417 barcode field to a PDF form?',
+        answer:
+          'Yes. DullyPDF lets you draw PDF417 helper fields on an existing PDF template and generate a PDF417 image from configured barcode classes.',
+      },
+      {
+        question: 'Can a PDF417 field include more than one value?',
+        answer:
+          'Yes. DullyPDF PDF417 helpers can combine multiple labeled classes into one scan text payload.',
+      },
+      {
+        question: 'Is this a native Acrobat PDF417 barcode field?',
+        answer:
+          'No. DullyPDF uses helper metadata and renders the PDF417 output into the final PDF page content. Use Acrobat when you need a native Acrobat barcode field that recalculates inside Acrobat.',
+      },
+      {
+        question: 'When should I use PDF417 instead of QR Code?',
+        answer:
+          'Use PDF417 when the code needs to carry denser structured data. Use QR Code when the main job is a URL, verification link, portal link, or mobile-friendly lookup.',
+      },
+      {
+        question: 'What should I test before publishing a PDF417 template?',
+        answer:
+          'Export a final PDF with the longest realistic payload, print or zoom it at the expected size, and scan it with the same devices the workflow will use.',
+      },
+    ],
+    relatedIntentPages: ['pdf417-vs-qr-code-pdf-forms', 'add-barcode-to-pdf-form', 'generate-pdf-barcodes-from-csv', 'add-qr-code-field-to-pdf', 'pdf-image-qr-barcode-fields'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
+  },
+  {
+    key: 'add-1d-barcode-field-to-pdf',
+    category: 'workflow',
+    path: '/add-1d-barcode-field-to-pdf',
+    navLabel: 'Add 1D Barcode Field to PDF',
+    heroTitle: 'Add 1D Barcode Fields to Fillable PDFs',
+    heroSummary:
+      'Add 1D barcode helper fields to reusable PDF templates for short internal IDs, asset tags, work orders, member numbers, and tracking references.',
+    seoTitle: 'Add 1D Barcode Fields to Fillable PDFs | DullyPDF',
+    seoDescription:
+      'Create reusable PDF templates with 1D barcode helper fields for short identifiers, then render the barcode into final PDF output.',
+    seoKeywords: [
+      'add 1d barcode field to pdf',
+      '1d barcode pdf form field',
+      'add linear barcode to pdf form',
+      'code 128 pdf barcode',
+      'barcode field pdf form',
+      'asset tag barcode pdf',
+      'tracking barcode pdf form',
+      'work order barcode pdf',
+      'fillable pdf barcode field',
+      'generate barcode from pdf form field',
+      'add barcode field to pdf',
+      'internal id barcode pdf',
+      '1d barcode template pdf',
+    ],
+    valuePoints: [
+      'Place a linear barcode helper on an existing PDF form where a short identifier needs to scan.',
+      'Connect the 1D barcode helper to one configured value instead of pasting a static barcode image into each file.',
+      'Render barcode output into final PDFs while keeping editable exports restorable inside DullyPDF.',
+    ],
+    proofPoints: [
+      'DullyPDF 1D barcode helpers encode one configured source value.',
+      'The current DullyPDF 1D helper generates Code 128 style output from exactly 9 digits, which fits controlled internal ID workflows.',
+      'The helper is not a retail UPC/EAN issuance, licensing, packaging, or point-of-sale validation system.',
+      'Final generated PDFs stamp the barcode image into page content so the delivered file remains scannable outside the editor.',
+    ],
+    articleSections: [
+      {
+        title: 'What a 1D barcode field is best for',
+        paragraphs: [
+          'A 1D barcode is the familiar linear barcode made of vertical bars. GS1 describes UPC, EAN, and GS1-128 as examples of linear or 1D barcodes used across retail and distribution workflows.[^gs1-barcode-types] In PDF form automation, the most practical 1D job is narrower: place a scannable short identifier on a completed document.',
+          'Use a 1D barcode field when the PDF needs an asset tag, work order number, member ID, ticket number, internal tracking code, or controlled record identifier. If the code needs to carry a URL, QR Code is usually better. If it needs to carry several structured facts, PDF417 is usually better.',
+        ],
+      },
+      {
+        title: 'DullyPDF scope for 1D barcode helpers',
+        paragraphs: [
+          'DullyPDF currently keeps the 1D helper intentionally narrow. It generates Code 128 style output from a 9 digit value. That makes the workflow easier to validate for internal identifiers because the allowed value shape is predictable.',
+          'This is not a replacement for GS1 company prefixes, UPC/EAN product assignment, retail packaging labels, or point-of-sale barcode validation. If the barcode will be scanned by a retail or logistics network with formal standards, use the appropriate GS1 and label-generation process first, then use the PDF only where that process allows it.',
+        ],
+      },
+      {
+        title: 'Why not just paste a barcode image into the PDF',
+        paragraphs: [
+          'Pasting a barcode image works for one file. It breaks down when a team needs the same PDF layout filled for many records. Somebody has to create the image, paste it, align it, and remember to replace it when the ID changes.',
+          'A DullyPDF 1D barcode helper keeps the placement inside the template and generates from the configured value at output time. That is the difference between a static PDF edit and a repeatable PDF form workflow.',
+        ],
+      },
+      {
+        title: 'How to set up a 1D barcode field cleanly',
+        paragraphs: [
+          'Start with the human-readable ID field. Name it clearly, map it to your schema if you are using row data, and test that normal filling works. Then add the 1D barcode helper where the scannable ID should appear and connect it to the source value.',
+          'Keep the printed text near the barcode when possible. Scanners fail, labels get damaged, and support teams still need a readable fallback. The barcode should accelerate lookup, not be the only way to understand the document.',
+        ],
+        bullets: [
+          'Use short, stable identifiers.',
+          'Keep a readable text version of the same ID nearby.',
+          'Test valid and invalid ID lengths before publishing the template.',
+        ],
+      },
+      {
+        title: '1D barcode versus QR Code and PDF417',
+        paragraphs: [
+          'A 1D barcode is strongest when the scanned value is short and scanner workflows expect a linear code. QR Code is stronger for URLs, mobile phone scanning, verification pages, payment links, and portal handoff. PDF417 is stronger when a scanner needs multiple structured values from the document.',
+          'The right choice should come from the receiving workflow. If a warehouse scanner expects a short numeric ID, 1D barcode may be the cleanest output. If a customer or field worker will scan with a phone, QR Code is usually more recognizable. If the recipient needs a compact data block, PDF417 may be a better fit.',
+        ],
+      },
+      {
+        title: 'Final-output scan testing',
+        paragraphs: [
+          'A 1D barcode can look crisp on screen and still fail after it is printed small, compressed in email, or placed over a busy background. Export the completed PDF, view it outside DullyPDF, and scan it at the final size.',
+          'Do not only test the perfect example. Test missing values, invalid lengths, and the longest expected identifier. A barcode-enabled template is ready when operators understand what happens when the source ID is wrong or absent.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-barcode-types',
+        label: 'GS1 US | Barcode types, including linear 1D barcode examples',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these DullyPDF docs when the barcode value should come from cleaned fields, mapped rows, or generated PDF workflows.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a 1D barcode field to a PDF form?',
+        answer:
+          'Yes. DullyPDF lets you place a 1D barcode helper field on a PDF template and generate barcode output from one configured value.',
+      },
+      {
+        question: 'What 1D barcode values work in DullyPDF?',
+        answer:
+          'The current DullyPDF 1D helper is designed for exactly 9 digits and generates Code 128 style output.',
+      },
+      {
+        question: 'Can I use DullyPDF to create UPC or EAN retail barcodes?',
+        answer:
+          'No. DullyPDF 1D helpers are for controlled PDF template workflows, not retail barcode issuance, UPC/EAN licensing, or packaging compliance.',
+      },
+      {
+        question: 'Should I use 1D barcode or QR Code?',
+        answer:
+          'Use 1D barcode for short internal identifiers. Use QR Code when the scanned value should be a URL, portal link, payment link, or mobile-friendly lookup.',
+      },
+      {
+        question: 'Does the final PDF depend on a live barcode widget?',
+        answer:
+          'No. Final exports and generated fills stamp the barcode image into the PDF page content.',
+      },
+    ],
+    relatedIntentPages: ['add-barcode-to-pdf-form', 'generate-pdf-barcodes-from-csv', 'add-pdf417-barcode-field-to-pdf', 'add-qr-code-field-to-pdf', 'pdf-image-qr-barcode-fields'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
+  },
+  {
+    key: 'add-barcode-to-pdf-form',
+    category: 'workflow',
+    path: '/add-barcode-to-pdf-form',
+    navLabel: 'Add Barcode to PDF Form',
+    heroTitle: 'Add a Barcode to a PDF Form Online',
+    heroSummary:
+      'Add QR Code, PDF417, or 1D barcode helper fields to reusable PDF forms, then generate scannable output from manual values, source fields, or mapped record data.',
+    seoTitle: 'Add a Barcode to a PDF Form Online | DullyPDF',
+    seoDescription:
+      'Create barcode-enabled PDF templates with QR Code, PDF417, and 1D barcode helper fields tied to form values or mapped records.',
+    seoKeywords: [
+      'add barcode to pdf form',
+      'add barcode field to pdf',
+      'create barcode in pdf form',
+      'pdf form barcode generator',
+      'fillable pdf barcode field',
+      'add qr code to pdf form',
+      'add pdf417 barcode to pdf',
+      'add 1d barcode to pdf',
+      'barcode from pdf form field',
+      'scannable barcode pdf form',
+      'generate barcode in pdf',
+      'pdf barcode workflow',
+      'barcode enabled pdf template',
+    ],
+    valuePoints: [
+      'Choose QR Code, PDF417, or 1D barcode based on the scan job instead of treating every barcode as the same output.',
+      'Keep barcode placement inside the saved PDF template so repeated fills use reviewed geometry.',
+      'Generate final PDFs where the barcode image is stamped into the page content for print, email, and archive workflows.',
+    ],
+    proofPoints: [
+      'DullyPDF supports QR Code, PDF417, and 1D barcode helper fields in the PDF editor.',
+      'QR and 1D helpers encode one configured value; PDF417 helpers can combine multiple labeled values.',
+      'Helper fields are DullyPDF template metadata, not native Acrobat barcode fields.',
+      'Generated final PDFs render the scannable output into page content so recipients do not need DullyPDF to scan the result.',
+    ],
+    articleSections: [
+      {
+        title: 'Start with the barcode job, not the barcode shape',
+        paragraphs: [
+          'The broad search query “add barcode to PDF form” hides several different jobs. Some users need a QR code that opens a verification URL. Some need a PDF417 block that carries structured document data. Some need a linear 1D barcode for a short internal ID. Treating those as one generic barcode task leads to the wrong tool and the wrong output.',
+          'DullyPDF handles the reusable-template version of this problem. The barcode field sits inside the PDF layout, the payload comes from manual configuration or form data, and the final output is a completed PDF with scannable page content.',
+        ],
+      },
+      {
+        title: 'Barcode field choices in DullyPDF',
+        paragraphs: [
+          'Use QR Code when the PDF should bridge to a web destination, such as a portal, verification page, payment page, status lookup, or record URL. GS1 describes QR Code as a 2D barcode used to connect users to web information through a mobile scan.[^gs1-barcode-types]',
+          'Use PDF417 when the code should carry multiple structured values inside one scannable block. Use 1D barcode when a short internal identifier should scan quickly in a workflow that expects a linear code.',
+        ],
+      },
+      {
+        title: 'How this differs from Acrobat barcode fields',
+        paragraphs: [
+          'Adobe Acrobat supports barcode fields and lets authors choose symbologies such as PDF417 and QR Code in Barcode Field Properties.[^adobe-barcode-fields] That is a native Acrobat form-authoring workflow, often with field selection or JavaScript inside the PDF.',
+          'DullyPDF helper fields are different. They are designed for saved templates that DullyPDF fills and materializes. Editable exports keep metadata so DullyPDF can reopen the helpers; final exports and generated fills stamp the generated QR or barcode into page content.',
+        ],
+      },
+      {
+        title: 'Static barcode images versus data-driven barcode fields',
+        paragraphs: [
+          'A static barcode image belongs on a one-off PDF or a fixed label. A data-driven barcode field belongs on a recurring PDF template where the scanned value changes by record. The difference matters because a static image can silently become wrong when the document data changes.',
+          'With a template helper, the operator reviews the placement once and then supplies the payload from the same workflow that fills the rest of the PDF. That can be manual input, Search & Fill row data, Fill By Link responses, or API Fill JSON depending on how the template is used.',
+        ],
+      },
+      {
+        title: 'Quality checklist before publishing a barcode PDF form',
+        paragraphs: [
+          'Barcode QA needs to happen on the generated PDF, not only in the editor. Export a representative completed document, open it outside DullyPDF, print or zoom it at the expected size, and scan with the same device or scanner used in production.',
+          'Test blank values, invalid values, and the longest realistic payload. If a QR code becomes too dense, shorten the URL or encode a stable redirect. If PDF417 is unreliable, reduce the class set or increase the field size. If a 1D barcode is invalid, correct the source ID shape before publishing.',
+        ],
+        bullets: [
+          'Confirm the barcode type matches the receiving scanner workflow.',
+          'Keep enough quiet space around the code.',
+          'Keep a readable text fallback near the barcode when the identifier matters to humans.',
+          'Do not use a PDF helper as the source of truth for regulated labels or retail barcode issuance.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-barcode-types',
+        label: 'GS1 US | Barcode types, 1D barcodes, QR Code, UPC, EAN, and GS1-128',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+      {
+        id: 'adobe-barcode-fields',
+        label: 'Adobe Acrobat | Add barcode fields and select symbology',
+        href: 'https://helpx.adobe.com/in/acrobat/desktop/work-with-pdf-forms/insert-barcodes/add-barcode-fields.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these docs after you decide which barcode type belongs in the template and need to connect it to real PDF output workflows.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a barcode to a PDF form online?',
+        answer:
+          'Yes. DullyPDF lets you add QR Code, PDF417, and 1D barcode helper fields to existing PDF templates and render the generated code into final PDFs.',
+      },
+      {
+        question: 'Which barcode type should I use in a PDF form?',
+        answer:
+          'Use QR Code for URLs and mobile scans, PDF417 for denser structured data, and 1D barcode for short internal identifiers.',
+      },
+      {
+        question: 'Can barcode fields use data from other PDF fields?',
+        answer:
+          'Yes. QR and 1D barcode helpers can encode one configured source value, and PDF417 helpers can combine multiple labeled source values.',
+      },
+      {
+        question: 'Are DullyPDF barcode fields native Acrobat fields?',
+        answer:
+          'No. They are DullyPDF helper fields that render into final page content. Use Acrobat when you specifically need native Acrobat barcode field behavior.',
+      },
+      {
+        question: 'Can I use these barcode fields for retail product labels?',
+        answer:
+          'Not as the source of truth. Retail, logistics, and packaging barcode standards should be handled through the appropriate GS1 or label-generation process.',
+      },
+    ],
+    relatedIntentPages: ['add-qr-code-field-to-pdf', 'add-pdf417-barcode-field-to-pdf', 'add-1d-barcode-field-to-pdf', 'generate-pdf-barcodes-from-csv', 'pdf-image-qr-barcode-fields'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'fill-by-link', 'api-fill'],
+  },
+  {
+    key: 'pdf417-vs-qr-code-pdf-forms',
+    category: 'workflow',
+    path: '/pdf417-vs-qr-code-pdf-forms',
+    navLabel: 'PDF417 vs QR Code for PDF Forms',
+    heroTitle: 'PDF417 vs QR Code for PDF Forms',
+    heroSummary:
+      'Compare PDF417 and QR Code for fillable PDF workflows so each template uses the right scannable output for dense data, URLs, verification, and mobile scanning.',
+    seoTitle: 'PDF417 vs QR Code for PDF Forms | DullyPDF',
+    seoDescription:
+      'Learn when to use PDF417 versus QR Code in PDF forms, including dense structured payloads, verification URLs, mobile scans, and generated PDF output.',
+    seoKeywords: [
+      'pdf417 vs qr code pdf forms',
+      'pdf417 vs qr code',
+      'pdf form pdf417 or qr code',
+      'barcode vs qr code pdf form',
+      'pdf417 barcode field pdf',
+      'qr code pdf form field',
+      'pdf barcode comparison',
+      'best barcode for pdf form',
+      'pdf417 structured data pdf',
+      'qr code verification pdf',
+      '2d barcode pdf form',
+      'pdf form barcode type',
+    ],
+    valuePoints: [
+      'Use PDF417 when one code needs to carry multiple structured values directly inside the completed PDF.',
+      'Use QR Code when the PDF should connect to a URL, verification page, portal, payment page, or mobile-friendly lookup.',
+      'Keep both options as template helpers so DullyPDF can render the selected code into generated PDF output.',
+    ],
+    proofPoints: [
+      'Adobe Acrobat lists PDF417 and QR Code as available barcode symbologies for Acrobat barcode fields.',
+      'DullyPDF QR helpers encode one configured value; PDF417 helpers can combine multiple labeled classes.',
+      'GS1 describes QR Code as a 2D barcode used for web information and mobile scanning.',
+      'DullyPDF final outputs stamp generated helper images into page content instead of requiring a live barcode widget.',
+    ],
+    articleSections: [
+      {
+        title: 'Short answer: PDF417 is data-heavy, QR Code is link-friendly',
+        paragraphs: [
+          'Use PDF417 when the scan should carry structured document facts directly in the code. Use QR Code when the scan should send someone to a URL or compact lookup value. Both can appear inside PDF forms, but they are not interchangeable for every workflow.',
+          'This distinction is important because many barcode tools sell every option as another downloadable image. A PDF form workflow needs a choice that matches the recipient scanner, the payload length, the printed size, and whether the document should work offline or point back online.',
+        ],
+      },
+      {
+        title: 'When PDF417 is the better fit',
+        paragraphs: [
+          'PDF417 is a strong fit when the document needs to carry several values in one scannable block: ID records, credential packets, transport paperwork, shipping records, government forms, ticketing documents, or other workflows where a scanner reads more than a short link.',
+          'DullyPDF PDF417 helpers can combine multiple labeled classes into one scan text payload. That makes PDF417 a practical choice when the generated code should reflect several fields already reviewed in the PDF template.',
+        ],
+      },
+      {
+        title: 'When QR Code is the better fit',
+        paragraphs: [
+          'QR Code is usually better for URLs, mobile scans, verification pages, portals, payment links, status pages, and public lookup flows. DENSO WAVE describes QR Code as a two-dimensional code with error correction, which helps explain why it is widely used for real-world scans.[^denso-qr-code]',
+          'GS1 also frames QR Code as a 2D barcode that can connect users to web information by scan.[^gs1-barcode-types] If the PDF needs to move a person from paper to a web destination, QR Code is usually the clearer choice.',
+        ],
+      },
+      {
+        title: 'Payload design matters more than barcode preference',
+        paragraphs: [
+          'Do not choose based only on which code looks more familiar. Start with the payload. If the payload is a stable record URL, QR Code is direct and recognizable. If the payload is a set of labeled facts that need to be read by a scanner without opening a web page, PDF417 is more defensible.',
+          'If you are tempted to put private personal data directly inside either code, pause. A scannable code can expose data quickly to anyone with a scanner. For sensitive workflows, encode an opaque lookup token or authenticated URL instead of raw protected details when the process allows it.',
+        ],
+      },
+      {
+        title: 'How Acrobat and DullyPDF handle the choice',
+        paragraphs: [
+          'Adobe Acrobat barcode-field tools let authors select barcode symbologies such as PDF417 and QR Code.[^adobe-barcode-fields] That is useful when the requirement is a native Acrobat form field configured inside Acrobat.',
+          'DullyPDF focuses on template-driven final output. QR Code and PDF417 are helper fields, and the generated code is stamped into the completed PDF during export or generated fill. That model fits Search & Fill, Fill By Link, and API Fill workflows where the final PDF is the record users print, email, or archive.',
+        ],
+      },
+      {
+        title: 'Decision checklist for PDF templates',
+        paragraphs: [
+          'Choose the code after answering four questions: who scans it, what device scans it, what data must be recovered, and whether the document needs to work without a web lookup. Those answers usually decide the field type more clearly than a generic barcode comparison.',
+          'Then test the final PDF. QR codes with long URLs become dense. PDF417 payloads can become too large for the space available on the form. Generate a representative record and scan the result under the same print, email, or archive conditions the workflow will use.',
+        ],
+        bullets: [
+          'Choose QR Code for URLs, lookup pages, portals, and phone scanning.',
+          'Choose PDF417 for denser structured payloads that should scan directly from the page.',
+          'Use a stable redirect URL when a QR destination may need to change later.',
+          'Reduce payload length or increase field size when scans are slow or unreliable.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'denso-qr-code',
+        label: 'DENSO WAVE | What is a QR Code?',
+        href: 'https://www.denso-wave.com/en/system/qr/fundamental/qrcode/qrc/index.html',
+      },
+      {
+        id: 'gs1-barcode-types',
+        label: 'GS1 US | Barcode types and QR Code barcode guidance',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+      {
+        id: 'adobe-barcode-fields',
+        label: 'Adobe Acrobat | Add barcode fields and choose barcode symbology',
+        href: 'https://helpx.adobe.com/in/acrobat/desktop/work-with-pdf-forms/insert-barcodes/add-barcode-fields.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these docs once the barcode choice is clear and you need to configure the template, map record values, or generate final PDFs.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is PDF417 better than QR Code for PDF forms?',
+        answer:
+          'Neither is universally better. PDF417 is better for denser structured data, while QR Code is better for URLs, verification links, portals, and mobile scanning.',
+      },
+      {
+        question: 'Can DullyPDF add both PDF417 and QR Code fields?',
+        answer:
+          'Yes. DullyPDF supports both PDF417 and QR Code helper fields, and each can be placed where the final PDF needs scannable output.',
+      },
+      {
+        question: 'Which barcode should I use for a verification link?',
+        answer:
+          'Use QR Code for verification links because it is widely recognized by phone cameras and works well for URL payloads.',
+      },
+      {
+        question: 'Which barcode should I use for several fields of data?',
+        answer:
+          'Use PDF417 when one code needs to carry multiple structured values from the document record.',
+      },
+      {
+        question: 'Do PDF417 and QR Code fields stay editable in any PDF viewer?',
+        answer:
+          'No. In DullyPDF they are helper fields. Final exports stamp the generated code into the page, while editable round-trip exports preserve metadata for DullyPDF reopen.',
+      },
+    ],
+    relatedIntentPages: ['add-pdf417-barcode-field-to-pdf', 'add-qr-code-field-to-pdf', 'add-barcode-to-pdf-form', 'generate-pdf-barcodes-from-csv', 'pdf-image-qr-barcode-fields'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
+  },
+  {
+    key: 'generate-pdf-barcodes-from-csv',
+    category: 'workflow',
+    path: '/generate-pdf-barcodes-from-csv',
+    navLabel: 'Generate PDF Barcodes From CSV',
+    heroTitle: 'Generate PDF Barcodes From CSV or Database Fields',
+    heroSummary:
+      'Generate QR Code, PDF417, and 1D barcode output in PDFs from mapped CSV rows, database columns, Fill By Link responses, or API Fill JSON records.',
+    seoTitle: 'Generate PDF Barcodes From CSV or Database Fields | DullyPDF',
+    seoDescription:
+      'Map row data to PDF templates, then generate QR Code, PDF417, or 1D barcode fields in completed PDFs from CSV, database, or API values.',
+    seoKeywords: [
+      'generate pdf barcodes from csv',
+      'barcode pdf from csv',
+      'generate barcode in pdf from database',
+      'pdf barcode from form data',
+      'csv to pdf barcode',
+      'database barcode pdf form',
+      'pdf qr code from csv',
+      'pdf417 from csv',
+      'batch generate barcodes in pdf',
+      'fill pdf barcode from spreadsheet',
+      'pdf barcode automation',
+      'api generate barcode pdf',
+    ],
+    valuePoints: [
+      'Tie barcode output to mapped record data instead of manually creating barcode images for each PDF.',
+      'Use QR Code for record URLs, PDF417 for structured payloads, and 1D barcode for short internal IDs.',
+      'Generate final PDFs through Search & Fill, Fill By Link, or API Fill with scannable helper output rendered on the page.',
+    ],
+    proofPoints: [
+      'DullyPDF templates can map PDF fields to CSV, spreadsheet, JSON, or API schema headers.',
+      'QR and 1D barcode helpers encode one configured value from the template data layer.',
+      'PDF417 helpers can combine multiple labeled classes into one generated payload.',
+      'Generated output stamps barcode helper images into PDF page content so recipients can scan outside DullyPDF.',
+    ],
+    articleSections: [
+      {
+        title: 'Why CSV-to-PDF barcode workflows are different',
+        paragraphs: [
+          'A barcode generator turns one value into one image. A CSV-to-PDF barcode workflow turns many records into completed documents where each barcode matches the row that filled the PDF. That requires mapping, validation, and repeatable output, not only image generation.',
+          'DullyPDF is built around the template-and-data version of the problem. The source PDF stays fixed, the field names are cleaned and mapped, and barcode helpers render from the same record values that populate the rest of the document.',
+        ],
+      },
+      {
+        title: 'Map the source value before drawing the barcode',
+        paragraphs: [
+          'The reliable order is field cleanup first, schema mapping second, barcode helper setup third. If the source value is not stable, the generated barcode will not be stable either. Start by making sure the PDF field names match the CSV headers, database columns, or JSON keys that will drive the workflow.',
+          'For QR and 1D barcode helpers, choose one mapped value. For PDF417, configure the labeled classes that should be included in the scan text. Keep class names consistent with the downstream scanner or import process so the code output is predictable.',
+        ],
+      },
+      {
+        title: 'Barcode examples by data source',
+        paragraphs: [
+          'CSV and spreadsheet rows are a good fit when an operator is filling a batch of documents from exported business data. A QR code might encode a portal URL column, a 1D barcode might encode a nine-digit asset ID column, and a PDF417 field might combine several columns into one scan text payload.',
+          'API Fill is a better fit when barcode-enabled PDFs should be generated from an application, job queue, or backend workflow. The same template still matters: the API should send values into a reviewed field contract rather than trying to draw barcodes directly on each PDF.',
+        ],
+      },
+      {
+        title: 'How Acrobat barcode field behavior differs',
+        paragraphs: [
+          'Acrobat barcode field tools can encode selected fields or custom JavaScript inside a native Acrobat barcode field.[^adobe-barcode-fields] That is useful when the PDF itself must contain Acrobat-managed barcode logic.',
+          'DullyPDF approaches the problem at generation time. The template stores helper metadata, the data source supplies values, and DullyPDF stamps the generated barcode into the final PDF. That works well for batch output, hosted response workflows, and server-side JSON-to-PDF generation.',
+        ],
+      },
+      {
+        title: 'Batch QA before generating many PDFs',
+        paragraphs: [
+          'Barcode mistakes scale quickly. Before using a template across a whole CSV or database export, generate one representative PDF for each important edge case: missing values, longest URLs, invalid 1D barcode values, and dense PDF417 payloads.',
+          'Scan the outputs outside DullyPDF. Confirm the scanned value matches the row data, the human-readable field on the PDF, and the downstream system expectation. Only then should the template be used for a large batch.',
+        ],
+        bullets: [
+          'Validate field names and schema headers before barcode setup.',
+          'Keep source columns dedicated and predictable.',
+          'Scan representative generated PDFs, not only editor previews.',
+          'Use API Fill when barcode PDFs should be generated from a backend system.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-barcode-fields',
+        label: 'Adobe Acrobat | Add barcode fields and encode selected form fields',
+        href: 'https://helpx.adobe.com/in/acrobat/desktop/work-with-pdf-forms/insert-barcodes/add-barcode-fields.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these docs to map row data, test Search & Fill, or publish barcode-enabled templates through API Fill.',
+        ],
+        links: [
+          { label: 'Rename + Mapping', href: '/usage-docs/rename-mapping' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I generate PDF barcodes from a CSV file?',
+        answer:
+          'Yes. In DullyPDF, map CSV or spreadsheet data to a saved template, configure barcode helper fields, and generate completed PDFs where each barcode uses the mapped row value.',
+      },
+      {
+        question: 'Can barcode fields use database or API values?',
+        answer:
+          'Yes. API Fill can send JSON record values to a published template, and barcode helpers can render from the configured template values.',
+      },
+      {
+        question: 'Can PDF417 include multiple CSV columns?',
+        answer:
+          'Yes. DullyPDF PDF417 helpers can combine multiple labeled classes into one scan text payload.',
+      },
+      {
+        question: 'Can QR codes be generated from a URL column?',
+        answer:
+          'Yes. QR helpers can encode one source value, such as a URL, record lookup token, payment link, or portal link.',
+      },
+      {
+        question: 'What should I test before batch generation?',
+        answer:
+          'Generate and scan representative final PDFs for missing values, long values, invalid barcode values, and the exact print or email conditions the batch will use.',
+      },
+    ],
+    relatedIntentPages: ['fill-pdf-from-csv', 'pdf-to-database-template', 'add-barcode-to-pdf-form', 'add-pdf417-barcode-field-to-pdf', 'add-qr-code-field-to-pdf'],
+    relatedDocs: ['rename-mapping', 'search-fill', 'api-fill', 'fill-by-link'],
+  },
+  {
+    key: 'image-upload-fields-pdf-forms',
+    category: 'workflow',
+    path: '/image-upload-fields-pdf-forms',
+    navLabel: 'Image Upload Fields in PDF Forms',
+    heroTitle: 'Image Upload Fields in PDF Forms',
+    heroSummary:
+      'Create reusable image upload fields in PDF templates for photos, IDs, receipts, logos, and visual attachments that need to appear in final PDF output.',
+    seoTitle: 'Image Upload Fields in PDF Forms | DullyPDF',
+    seoDescription:
+      'Learn how image upload fields differ from static images in PDFs and how DullyPDF renders uploaded PNG/JPEG content into final PDF templates.',
+    seoKeywords: [
+      'image upload fields pdf forms',
+      'pdf form image upload field',
+      'fillable pdf image field',
+      'add image field to pdf',
+      'photo upload field pdf form',
+      'upload image in pdf form',
+      'pdf image field online',
+      'create pdf form with image upload',
+      'add id photo field to pdf',
+      'receipt image field pdf',
+      'image field vs static image pdf',
+      'visual attachment pdf form',
+    ],
+    valuePoints: [
+      'Reserve reviewed PDF regions for images that change by completed record, such as photos, IDs, logos, receipts, or supporting attachments.',
+      'Upload PNG/JPEG content in the editor, preview it in the field box, and clear or replace it before export.',
+      'Render the selected image into final PDF page content while preserving DullyPDF metadata for editable round-trip exports.',
+    ],
+    proofPoints: [
+      'DullyPDF image fields support PNG/JPEG upload, preview, and clear controls in the Field Editor.',
+      'Image fields are helper metadata, not standard AcroForm text, checkbox, radio, or signature fields.',
+      'Editable exports can preserve helper placement for DullyPDF reopen, while flat final exports stamp the selected image into page content.',
+      'Adobe Acrobat documentation lists Image Field as a form component, which matches the user intent for a dedicated image area in a PDF form.',
+    ],
+    articleSections: [
+      {
+        title: 'Image upload field versus static image',
+        paragraphs: [
+          'Adding a static image to a PDF is a one-time edit. It is useful for a permanent logo, fixed watermark, or image that should always be part of the document design. An image upload field is different because the image changes from one completed record to the next.',
+          'Use an image upload field for a headshot, ID photo, receipt, inspection image, company logo supplied by the respondent, or visual attachment preview. The field exists because the template needs a reusable region where an image can be supplied, reviewed, and rendered into final output.',
+        ],
+      },
+      {
+        title: 'How DullyPDF image upload fields work',
+        paragraphs: [
+          'DullyPDF image fields are helper fields. The template stores the image field geometry and image data needed for DullyPDF to preview and materialize the output. In the editor, the selected image field exposes PNG/JPEG upload, preview, and clear controls.',
+          'When the final PDF is generated, DullyPDF renders the selected image into the page content. When an editable round-trip export is reopened in DullyPDF, helper metadata can restore the placement so the template remains editable in the DullyPDF workflow.',
+        ],
+      },
+      {
+        title: 'Where image upload fields make the most sense',
+        paragraphs: [
+          'Image upload fields are strongest in recurring PDF workflows where the layout is stable but the visual content changes. Healthcare forms may need ID images. HR onboarding packets may need supporting documents. Reimbursement workflows may need receipts. Inspection reports may need site photos. Vendor packets may need a logo or certificate image.',
+          'They are weaker for one-off page decoration. If the image never changes, put it in the source PDF design. If the entire page layout needs to change, use a design tool first and bring the final PDF into DullyPDF after the layout is stable.',
+        ],
+      },
+      {
+        title: 'Acrobat form components and DullyPDF helper fields',
+        paragraphs: [
+          'Adobe Acrobat lists Image Field as a form component when creating forms.[^adobe-image-field] That confirms the general user need: a PDF form may need a dedicated image area, not only text boxes and checkboxes.',
+          'DullyPDF implements image upload as a template helper tied to its own editor and generation pipeline. That difference matters for expectations. The final output is meant to display the image reliably as page content, while the editable helper behavior belongs to DullyPDF reopen and saved-template workflows.',
+        ],
+      },
+      {
+        title: 'Image quality, cropping, and privacy checks',
+        paragraphs: [
+          'Image fields need a visual QA pass. Test realistic image sizes and aspect ratios before publishing a template. A square headshot, wide receipt, and tall ID image can all behave differently inside the same field box. The exported PDF should be checked outside DullyPDF for cropping, readability, and print quality.',
+          'Images can also contain sensitive information that is easy to overlook: faces, addresses, IDs, medical details, receipts, signatures, or background context. Only collect image content the document actually needs, and validate retention and access-control requirements for regulated workflows.',
+        ],
+        bullets: [
+          'Use image fields for variable visual content, not permanent page decoration.',
+          'Test realistic image aspect ratios before publishing.',
+          'Check the flat final PDF because that is what recipients print, share, and archive.',
+          'Avoid collecting sensitive images unless the workflow has a clear need and review process.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-image-field',
+        label: 'Adobe Acrobat | Create forms and add form components, including Image Field',
+        href: 'https://helpx.adobe.com/sg/acrobat/desktop/work-with-pdf-forms/create-forms/create.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        paragraphs: [
+          'Use these docs to place image fields in the editor, save templates, and export final PDFs with image content rendered into the page.',
+        ],
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Getting Started', href: '/usage-docs/getting-started' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is an image upload field in a PDF form?',
+        answer:
+          'It is a reusable field region where variable image content, such as a photo, ID, receipt, logo, or attachment image, can be uploaded and rendered into the final PDF.',
+      },
+      {
+        question: 'Is an image upload field the same as pasting an image onto a PDF?',
+        answer:
+          'No. Pasting an image is a static one-time edit. An image upload field is reusable template metadata for visual content that can change by completed record.',
+      },
+      {
+        question: 'Which image formats does DullyPDF support for image fields?',
+        answer:
+          'DullyPDF image fields use PNG/JPEG upload controls in the editor.',
+      },
+      {
+        question: 'Are DullyPDF image fields native AcroForm fields?',
+        answer:
+          'No. They are DullyPDF helper fields. Final exports stamp the selected image into page content, while editable round-trip exports preserve metadata for DullyPDF reopen.',
+      },
+      {
+        question: 'What should I check before using image upload fields with real records?',
+        answer:
+          'Check the final PDF for cropping, aspect ratio, readability, print quality, and whether the image content creates privacy or retention obligations.',
+      },
+    ],
+    relatedIntentPages: ['add-image-field-to-pdf', 'pdf-image-qr-barcode-fields', 'pdf-to-fillable-form', 'fillable-pdf-fonts-colors', 'acroform-field-appearance'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'getting-started'],
+  },
+  {
+    key: 'add-code-128-barcode-to-pdf',
+    category: 'workflow',
+    path: '/add-code-128-barcode-to-pdf',
+    navLabel: 'Add Code 128 Barcode to PDF',
+    heroTitle: 'Add Code 128 Barcodes to PDF Forms',
+    heroSummary:
+      'Add Code 128 style 1D barcode helper fields to reusable PDF templates for internal IDs, work orders, asset tags, and tracking references.',
+    seoTitle: 'Add Code 128 Barcodes to PDF Forms | DullyPDF',
+    seoDescription:
+      'Create reusable PDF templates with Code 128 style barcode helper fields for short internal IDs, then render scannable output into final PDFs.',
+    seoKeywords: [
+      'add code 128 barcode to pdf',
+      'code 128 pdf barcode',
+      'code 128 barcode pdf form',
+      'add code128 barcode to pdf',
+      'barcode field pdf code 128',
+      'create code 128 barcode in pdf',
+      'code 128 from pdf form field',
+      'internal id barcode pdf',
+      'asset id code 128 pdf',
+      'work order code 128 barcode',
+      'tracking code 128 pdf',
+      '1d barcode pdf form field',
+    ],
+    valuePoints: [
+      'Place a Code 128 style helper region inside an existing PDF layout instead of pasting one-off barcode images.',
+      'Generate the barcode from one controlled source value so the scannable ID matches the visible PDF record.',
+      'Render the barcode into final PDF page content for print, email, archive, and scanner workflows.',
+    ],
+    proofPoints: [
+      'DullyPDF 1D barcode helpers currently generate Code 128 style output from exactly 9 digits.',
+      'Code 128 style output is a strong fit for internal IDs, asset tags, work order numbers, and tracking references.',
+      'This is not a GS1-128, UPC, EAN, retail packaging, or point-of-sale barcode issuance workflow.',
+      'Editable exports preserve helper metadata for DullyPDF reopen; final exports stamp barcode output into page content.',
+    ],
+    articleSections: [
+      {
+        title: 'When Code 128 belongs in a PDF form',
+        paragraphs: [
+          'Code 128 is a practical linear barcode choice when the value is a short controlled identifier. In PDF workflows, that usually means an internal ID, asset number, work order number, member ID, ticket number, or tracking reference that a scanner should recover quickly from the completed document.',
+          'DullyPDF supports the reusable-template version of that workflow. The barcode field lives on the PDF template, the payload comes from one configured source value, and the final PDF contains the rendered barcode image where the scanner expects it.',
+        ],
+      },
+      {
+        title: 'Code 128 versus GS1-128, UPC, and EAN',
+        paragraphs: [
+          'This distinction matters. GS1 US describes GS1-128 as a subset of Code 128 that can carry supply-chain attribute data and uses GS1-specific structures such as FNC1 and Application Identifiers.[^gs1-128] That is not the same as generating an internal Code 128 style barcode for a PDF workflow.',
+          'DullyPDF should be used for controlled internal template output, not as the authority for retail product barcodes, GS1 logistics labels, or packaging compliance. If the barcode will be used by external trading partners, validate the relevant GS1 or scanner requirements before putting it into a PDF.',
+        ],
+      },
+      {
+        title: 'How to set up a Code 128 PDF helper cleanly',
+        paragraphs: [
+          'Start with the human-readable ID field. Make sure the ID is present, named clearly, and mapped to the right schema column if the template will be filled from CSV, API, or a database. Then add the 1D barcode helper and connect it to that same value.',
+          'Keep the readable ID near the barcode. Barcode scans fail, paper gets damaged, and support teams still need a fallback. The best PDF output lets the scanner and the human reviewer confirm the same value.',
+        ],
+        bullets: [
+          'Use short stable IDs, not long paragraphs or URLs.',
+          'Keep the barcode on a clean background with enough quiet space.',
+          'Test valid and invalid ID values before publishing the template.',
+        ],
+      },
+      {
+        title: 'Why this is more useful than a static Code 128 image',
+        paragraphs: [
+          'Static barcode generators are useful for one-off output. They are weaker for recurring PDFs because someone still has to generate the image, paste it, align it, and replace it when the source value changes.',
+          'A DullyPDF helper keeps the placement in the saved template. When the source ID changes by record, the generated PDF changes with it. That is the workflow intent this page should satisfy.',
+        ],
+      },
+      {
+        title: 'Final scan testing',
+        paragraphs: [
+          'Do not judge a Code 128 field only by the editor preview. Export a completed PDF, open it outside DullyPDF, print or zoom it at the expected size, and scan it with the same device the team will use in production.',
+          'If the scan fails, the fix is usually one of four things: clean the source value, increase the barcode size, add quiet space, or move the code away from visual clutter on the page.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-128',
+        label: 'GS1 US | What is a GS1-128 barcode?',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/gs1-128',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a Code 128 barcode to a PDF form?',
+        answer:
+          'Yes. DullyPDF can place a 1D barcode helper field on a PDF template and render Code 128 style output from one configured source value.',
+      },
+      {
+        question: 'What values work best for Code 128 PDF output?',
+        answer:
+          'Short controlled identifiers work best, such as internal IDs, asset tags, work order numbers, and tracking references.',
+      },
+      {
+        question: 'Is this a GS1-128 barcode generator?',
+        answer:
+          'No. DullyPDF 1D barcode helpers are for internal PDF template workflows, not GS1-128 logistics labels, UPC/EAN issuance, or retail barcode compliance.',
+      },
+      {
+        question: 'Does the barcode stay scannable after export?',
+        answer:
+          'Final exports and generated fills stamp the barcode image into page content. You should still scan-test the final PDF at the expected size.',
+      },
+    ],
+    relatedIntentPages: ['add-1d-barcode-field-to-pdf', 'asset-tag-barcode-pdf-form', 'work-order-barcode-pdf', 'generate-pdf-barcodes-from-csv', 'add-barcode-to-pdf-form'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
+  },
+  {
+    key: 'work-order-barcode-pdf',
+    category: 'workflow',
+    path: '/work-order-barcode-pdf',
+    navLabel: 'Work Order Barcode PDF',
+    heroTitle: 'Add Barcodes to Work Order PDFs',
+    heroSummary:
+      'Create work order PDF templates with barcode or QR helper fields so technicians, dispatch teams, and back-office staff can scan the right record quickly.',
+    seoTitle: 'Add Barcodes to Work Order PDFs | DullyPDF',
+    seoDescription:
+      'Add barcode and QR helper fields to work order PDF templates for work order IDs, service records, customer lookup, and field operations.',
+    seoKeywords: [
+      'work order barcode pdf',
+      'add barcode to work order pdf',
+      'work order pdf barcode',
+      'work order qr code pdf',
+      'service order barcode pdf',
+      'field service barcode pdf',
+      'maintenance work order barcode',
+      'barcode work order form',
+      'scan work order pdf',
+      'work order record lookup qr',
+      'pdf work order template barcode',
+    ],
+    valuePoints: [
+      'Tie a work order ID, lookup URL, or tracking reference to the PDF template itself.',
+      'Use 1D barcode for short scanner IDs or QR Code for web record lookup and field-team portals.',
+      'Generate final work order PDFs from mapped data so the code and visible work order details stay synchronized.',
+    ],
+    proofPoints: [
+      'DullyPDF barcode helpers can render QR, PDF417, and 1D barcode output into final PDF page content.',
+      'QR and 1D helpers encode one configured source value, which fits work order IDs and lookup URLs.',
+      'Search & Fill and API Fill can drive completed PDFs from structured work order records.',
+      'Static code images are weaker because the code can drift from the visible work order data.',
+    ],
+    articleSections: [
+      {
+        title: 'Why work order PDFs are a strong barcode use case',
+        paragraphs: [
+          'Work orders often travel between dispatch, field staff, customers, and back-office teams. The PDF may contain service details, customer information, technician notes, dates, and asset references. A scannable code helps the team jump back to the right operational record instead of manually searching by name or job number.',
+          'The key is to make the code part of the template workflow, not a pasted decoration. If the barcode or QR value comes from the same work order data as the rest of the PDF, the completed document is easier to scan and easier to audit later.',
+        ],
+      },
+      {
+        title: 'Choose 1D barcode for scanner IDs and QR Code for record lookup',
+        paragraphs: [
+          'If the receiving workflow uses handheld scanners and expects a short work order ID, a 1D barcode can be the best fit. If field staff or customers need to open a portal, upload evidence, check status, or view a web record, QR Code is usually the better choice.',
+          'DENSO WAVE describes QR Code as a two-dimensional code with error correction, which helps explain why QR is common for real-world mobile scanning.[^denso-qr-code] Work order PDFs often need that phone-friendly scan path.',
+        ],
+      },
+      {
+        title: 'How to keep the barcode and work order data aligned',
+        paragraphs: [
+          'Map the work order ID or lookup URL as a normal source field first. Then point the helper field at that source value. That makes the barcode output a generated view of the record data rather than a second manually maintained value.',
+          'For repeated work order output, use one canonical template per document type. If every crew or region has a slightly different PDF, decide whether those are real layout differences or just legacy variations that should be consolidated.',
+        ],
+      },
+      {
+        title: 'Final PDF scan testing for field conditions',
+        paragraphs: [
+          'Work order PDFs are often printed, folded, photographed, emailed, or viewed on mobile devices. Test the final PDF under the conditions the field team will actually use. A QR code that scans in a browser preview may fail after being printed too small or placed near a smudged stamp.',
+          'Keep a human-readable work order ID near the code. The barcode should speed up lookup, not become the only way to identify the job.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'denso-qr-code',
+        label: 'DENSO WAVE | What is a QR Code?',
+        href: 'https://www.denso-wave.com/en/system/qr/fundamental/qrcode/qrc/index.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a barcode to a work order PDF?',
+        answer:
+          'Yes. DullyPDF can add 1D barcode or QR Code helper fields to a work order PDF template and render them into final output.',
+      },
+      {
+        question: 'Should a work order use a barcode or QR code?',
+        answer:
+          'Use a 1D barcode for short scanner IDs. Use QR Code when the scan should open a work order page, portal, or record lookup URL.',
+      },
+      {
+        question: 'Can the barcode come from a work order database field?',
+        answer:
+          'Yes. Map the work order ID or lookup URL to the template, then connect the helper field to that source value.',
+      },
+    ],
+    relatedIntentPages: ['qr-code-record-lookup-pdf', 'add-code-128-barcode-to-pdf', 'generate-pdf-barcodes-from-csv', 'logistics-pdf-automation', 'construction-pdf-automation'],
+    relatedDocs: ['search-fill', 'api-fill', 'editor-workflow'],
+  },
+  {
+    key: 'asset-tag-barcode-pdf-form',
+    category: 'workflow',
+    path: '/asset-tag-barcode-pdf-form',
+    navLabel: 'Asset Tag Barcode PDF Form',
+    heroTitle: 'Add Asset Tag Barcodes to PDF Forms',
+    heroSummary:
+      'Create asset inspection, maintenance, inventory, and handoff PDF templates with scannable asset tag barcode fields tied to structured records.',
+    seoTitle: 'Add Asset Tag Barcodes to PDF Forms | DullyPDF',
+    seoDescription:
+      'Add asset tag barcode helper fields to PDF forms for maintenance, inspection, inventory, and equipment handoff workflows.',
+    seoKeywords: [
+      'asset tag barcode pdf form',
+      'asset tag barcode pdf',
+      'equipment barcode pdf form',
+      'inventory barcode pdf form',
+      'maintenance asset barcode pdf',
+      'add asset barcode to pdf',
+      'asset inspection barcode pdf',
+      'barcode asset tracking pdf',
+      'pdf form asset tag field',
+      'scan asset tag from pdf',
+      'code 128 asset tag pdf',
+    ],
+    valuePoints: [
+      'Place asset tag barcode fields beside equipment, location, inspection, or condition fields.',
+      'Generate the barcode from the same asset record that fills the visible PDF values.',
+      'Use final PDF output for maintenance packets, inspection forms, asset transfer records, and inventory workflows.',
+    ],
+    proofPoints: [
+      'GS1 describes barcodes as useful for tracking products and assets across supply chains, but DullyPDF focuses on internal PDF template output.',
+      'DullyPDF 1D barcode helpers fit short controlled asset IDs; QR helpers fit asset portal or record lookup URLs.',
+      'Final exports stamp helper output into page content so the PDF remains scannable outside DullyPDF.',
+      'Human-readable asset IDs should stay near the barcode for fallback review.',
+    ],
+    articleSections: [
+      {
+        title: 'Why asset tag PDFs need both visible data and scannable data',
+        paragraphs: [
+          'Asset workflows often need a person to read the form and a scanner to recover the ID. A maintenance form may show equipment name, location, inspection date, and condition, while the barcode carries the asset tag that opens or identifies the record.',
+          'A DullyPDF template can keep both layers aligned. The visible values and the barcode value come from the same asset record, which reduces the risk of a copied barcode image drifting away from the details printed on the PDF.',
+        ],
+      },
+      {
+        title: '1D barcode versus QR Code for asset forms',
+        paragraphs: [
+          'Use a 1D barcode when the scanner workflow expects a short asset ID. Use QR Code when the scan should open a web asset record, maintenance history, warranty page, or mobile portal. The right choice depends on the scanner and the destination.',
+          'GS1 US notes that GS1-128 can include asset identifiers and supply-chain attributes, but those standards workflows are different from DullyPDF internal helper fields.[^gs1-128] If your asset labels must meet a formal external standard, validate that process separately.',
+        ],
+      },
+      {
+        title: 'How to build a reusable asset-tag template',
+        paragraphs: [
+          'Start with the asset ID field and map it to the data source. Then add the barcode helper where the scan should happen. Keep a readable version of the asset ID nearby, and include the location or equipment description so the PDF still makes sense if the code cannot be scanned.',
+          'This setup is useful for inspection reports, equipment transfer forms, maintenance records, inventory worksheets, and return-to-service paperwork.',
+        ],
+      },
+      {
+        title: 'Asset barcode QA',
+        paragraphs: [
+          'Scan one final PDF for a normal asset, one for the longest asset ID, and one with missing or invalid data. That catches the failures that usually appear only after a template is used across many records.',
+          'If you plan to print the PDF and attach it to equipment, validate paper size, contrast, and durability requirements. DullyPDF generates the PDF output; it is not a label-material or industrial marking system.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-128',
+        label: 'GS1 US | GS1-128 barcodes and asset identifiers',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/gs1-128',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF add asset tag barcodes to PDF forms?',
+        answer:
+          'Yes. DullyPDF can add 1D barcode or QR Code helper fields to asset, inventory, maintenance, and inspection PDF templates.',
+      },
+      {
+        question: 'Should asset forms use 1D barcode or QR Code?',
+        answer:
+          'Use 1D barcode for short scanner IDs and QR Code for record lookup URLs or asset portal links.',
+      },
+      {
+        question: 'Is this an industrial asset-label printing system?',
+        answer:
+          'No. DullyPDF renders scannable output into PDF templates. Validate label stock, durability, and external barcode standards separately.',
+      },
+    ],
+    relatedIntentPages: ['add-code-128-barcode-to-pdf', 'work-order-barcode-pdf', 'qr-code-record-lookup-pdf', 'add-1d-barcode-field-to-pdf', 'generate-pdf-barcodes-from-csv'],
+    relatedDocs: ['search-fill', 'api-fill', 'editor-workflow'],
+  },
+  {
+    key: 'qr-code-verification-pdf',
+    category: 'workflow',
+    path: '/qr-code-verification-pdf',
+    navLabel: 'QR Code Verification PDF',
+    heroTitle: 'Add QR Code Verification Links to PDFs',
+    heroSummary:
+      'Add verification QR code fields to PDF templates so a printed or archived document can point back to a stable validation URL, record page, or signing receipt.',
+    seoTitle: 'Add QR Code Verification Links to PDFs | DullyPDF',
+    seoDescription:
+      'Create PDF templates with QR code verification links for signing receipts, validation pages, document lookup, and record review workflows.',
+    seoKeywords: [
+      'qr code verification pdf',
+      'pdf verification qr code',
+      'add verification qr code to pdf',
+      'document verification qr code pdf',
+      'qr code document verification',
+      'pdf authenticity qr code',
+      'qr code validation link pdf',
+      'signed pdf verification qr code',
+      'pdf qr code verification link',
+      'scan pdf to verify document',
+      'qr-backed validation pdf',
+    ],
+    valuePoints: [
+      'Place a QR helper field that encodes a stable validation URL or record lookup link.',
+      'Use QR verification for signed records, audit receipts, certificates, approvals, and controlled document workflows.',
+      'Render the QR code into final PDF page content so recipients can scan the archived file later.',
+    ],
+    proofPoints: [
+      'DullyPDF signature receipts already use QR-backed validation links for public record checks.',
+      'A QR code alone does not prove authenticity; it should point to a controlled validation page or record system.',
+      'QR helpers encode one configured value, which is a good fit for verification URLs and lookup tokens.',
+      'Final generated PDFs stamp the QR image into page content.',
+    ],
+    articleSections: [
+      {
+        title: 'A verification QR code is a link, not proof by itself',
+        paragraphs: [
+          'A QR code printed on a PDF can make verification easier, but the code itself is only a scannable payload. Anyone can copy a QR image. The trust comes from what the QR code points to: a controlled validation page, signed-record receipt, audit trail, or system that can compare the scanned record against retained evidence.',
+          'That is the honest way to target “QR code verification PDF” intent. DullyPDF can render a verification QR value into the final PDF, and signing workflows can point recipients to a validation page. The QR should be treated as the entry point to verification, not the whole verification system.',
+        ],
+      },
+      {
+        title: 'Where verification QR codes fit',
+        paragraphs: [
+          'Verification QR codes fit documents that may be printed, emailed, archived, or forwarded: signed forms, approvals, certificates, inspection records, audit receipts, and controlled internal records. The code gives the recipient a fast path from the static PDF back to a current validation view.',
+          'Products in the market commonly pair verification URLs and QR codes for signed or validated PDFs.[^checkmysign-verification] DullyPDF uses the same practical pattern for QR-backed signing validation, while QR helper fields can support other stable validation URLs or lookup tokens.',
+        ],
+      },
+      {
+        title: 'How to design a verification URL',
+        paragraphs: [
+          'Use a stable URL that your system controls. Avoid encoding sensitive personal data directly into the QR payload. In most workflows, the QR code should carry an opaque token or validation URL, while the destination page handles authentication, expiration, retained evidence, or public-safe status display.',
+          'If the PDF is a signed DullyPDF output, the validation page should be the source of truth. If the PDF is an operational template, the source field should contain a link to the trusted system that owns the verification state.',
+        ],
+      },
+      {
+        title: 'Verification QR QA',
+        paragraphs: [
+          'Test the final PDF outside DullyPDF. Scan the QR code, confirm the destination resolves, and check whether the destination still works after the PDF is emailed, printed, or archived. A beautiful QR code is not useful if the target URL expires too soon or opens the wrong record.',
+          'Also test what a recipient sees without being signed in. Verification pages often need different public and private states, and the QR destination should make that distinction intentionally.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'checkmysign-verification',
+        label: 'CheckMySign | PDF verification URL and QR code pattern',
+        href: 'https://checkmysign.app/',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Signature Workflow', href: '/usage-docs/signature-workflow' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a verification QR code to a PDF?',
+        answer:
+          'Yes. DullyPDF can render a QR helper field that points to a verification URL, record lookup page, or signing validation page.',
+      },
+      {
+        question: 'Does a QR code prove a PDF is authentic?',
+        answer:
+          'No. A QR code is only a scannable link or payload. Verification depends on the destination system and retained evidence behind that link.',
+      },
+      {
+        question: 'What should the verification QR code contain?',
+        answer:
+          'Use a stable URL or opaque token that points to a controlled validation page. Avoid embedding sensitive personal data directly in the QR text.',
+      },
+    ],
+    relatedIntentPages: ['add-qr-code-field-to-pdf', 'qr-code-record-lookup-pdf', 'pdf-signature-workflow', 'esign-ueta-pdf-workflow', 'scannable-pdf-form'],
+    relatedDocs: ['signature-workflow', 'editor-workflow', 'api-fill'],
+  },
+  {
+    key: 'qr-code-payment-link-pdf',
+    category: 'workflow',
+    path: '/qr-code-payment-link-pdf',
+    navLabel: 'QR Code Payment Link PDF',
+    heroTitle: 'Add Payment QR Codes to PDF Invoices',
+    heroSummary:
+      'Add QR code helper fields to PDF invoice templates so a payment link, invoice portal, or approval page can be scanned from the final PDF.',
+    seoTitle: 'Add Payment QR Codes to PDF Invoices | DullyPDF',
+    seoDescription:
+      'Create invoice PDF templates with payment QR code fields connected to payment links, invoice portals, or mapped billing records.',
+    seoKeywords: [
+      'qr code payment link pdf',
+      'add payment qr code to pdf invoice',
+      'invoice pdf qr code payment',
+      'pdf invoice payment qr code',
+      'add qr code to invoice pdf',
+      'qr code invoice pdf',
+      'payment link qr code pdf',
+      'scan to pay invoice pdf',
+      'invoice portal qr code pdf',
+      'pdf invoice qr code field',
+    ],
+    valuePoints: [
+      'Encode a payment link, invoice portal, approval URL, or billing lookup URL from a source field.',
+      'Keep the QR code placement inside the saved invoice template instead of pasting one-off QR images.',
+      'Render final invoice PDFs where the payment QR code, invoice number, and balance come from the same mapped record.',
+    ],
+    proofPoints: [
+      'Invoice software commonly uses QR codes on invoice PDFs so customers can open invoices or pay from a phone scan.',
+      'DullyPDF QR helpers encode one configured source value, which fits payment links and invoice portal URLs.',
+      'The payment processor or billing portal remains responsible for authentication, payment status, and fraud controls.',
+      'Final exports stamp the QR image into the PDF page content.',
+    ],
+    articleSections: [
+      {
+        title: 'Why payment QR codes work well on invoice PDFs',
+        paragraphs: [
+          'Invoices are one of the clearest PDF-to-web handoff workflows. The PDF is still useful as a record, but the customer often needs to pay, approve, or view the invoice online. A QR code can bridge that gap from printed or emailed invoice to payment destination.',
+          'Zoho Invoice documents adding QR codes to invoice PDFs, which confirms the commercial intent behind invoice QR workflows.[^zoho-invoice-qr] DullyPDF targets the reusable-template version of that same need.',
+        ],
+      },
+      {
+        title: 'How DullyPDF should generate invoice QR output',
+        paragraphs: [
+          'The clean setup is to map invoice fields first: invoice number, customer, balance due, due date, and payment link. Then add a QR helper field that encodes the payment link or portal URL. This keeps the scannable output tied to the same source record as the visible invoice details.',
+          'Do not use the QR field as the payment system itself. DullyPDF places the scannable link in the PDF. The payment portal still needs to handle payment status, authentication, expiration, redirects, and security.',
+        ],
+      },
+      {
+        title: 'Static payment URL versus per-invoice payment link',
+        paragraphs: [
+          'A static payment URL can work when every invoice sends customers to the same portal login page. A per-invoice payment link is better when the scan should open the exact invoice or payment session. If your billing system creates unique payment links, store that link as a source field and point the QR helper at it.',
+          'If payment destinations may change later, use a stable redirect URL controlled by your system rather than embedding a temporary destination directly into the PDF.',
+        ],
+      },
+      {
+        title: 'Payment QR safety checks',
+        paragraphs: [
+          'Scan the generated invoice before sending it. Confirm the QR code opens the expected destination, the invoice number and balance match the visible PDF, and the payment page handles unauthenticated or expired access correctly.',
+          'Treat QR links on invoices as customer-facing payment surface. A wrong destination is not just a formatting issue; it can create support, fraud, and collection problems.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'zoho-invoice-qr',
+        label: 'Zoho Invoice | Add QR Code on Invoices',
+        href: 'https://www.zoho.com/us/invoice/kb/invoices/add-qr-code.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a payment QR code to a PDF invoice?',
+        answer:
+          'Yes. DullyPDF can add a QR helper field that encodes a payment link, invoice portal URL, or billing lookup value into the final PDF.',
+      },
+      {
+        question: 'Can the QR code change for each invoice?',
+        answer:
+          'Yes. Use a source field such as payment_link or invoice_url, then connect the QR helper to that field so each generated invoice can encode a different URL.',
+      },
+      {
+        question: 'Does DullyPDF process payments?',
+        answer:
+          'No. DullyPDF renders the QR code into the PDF. Your payment processor or billing portal controls payment handling and security.',
+      },
+    ],
+    relatedIntentPages: ['add-qr-code-field-to-pdf', 'invoice-pdf-processing', 'generate-pdf-barcodes-from-csv', 'qr-code-record-lookup-pdf', 'pdf-fill-api'],
+    relatedDocs: ['search-fill', 'api-fill', 'editor-workflow'],
+  },
+  {
+    key: 'qr-code-record-lookup-pdf',
+    category: 'workflow',
+    path: '/qr-code-record-lookup-pdf',
+    navLabel: 'QR Code Record Lookup PDF',
+    heroTitle: 'Add Record Lookup QR Codes to PDFs',
+    heroSummary:
+      'Create PDF templates with QR code fields that point to record lookup pages, customer portals, shipment pages, invoice URLs, or case records.',
+    seoTitle: 'Add Record Lookup QR Codes to PDFs | DullyPDF',
+    seoDescription:
+      'Add QR code record lookup fields to PDF templates so printed and archived documents can connect back to the right portal or record URL.',
+    seoKeywords: [
+      'qr code record lookup pdf',
+      'record lookup qr code pdf',
+      'add qr code lookup to pdf',
+      'pdf qr code record link',
+      'customer portal qr code pdf',
+      'case lookup qr code pdf',
+      'shipment lookup qr code pdf',
+      'invoice lookup qr code pdf',
+      'pdf record url qr code',
+      'dynamic record qr code pdf',
+      'qr code source field pdf',
+    ],
+    valuePoints: [
+      'Encode record-specific URLs or opaque lookup tokens from mapped source fields.',
+      'Use one saved PDF template while each generated record gets its own QR destination.',
+      'Keep the QR payload small by pointing to a lookup URL instead of embedding the entire record in the QR code.',
+    ],
+    proofPoints: [
+      'DullyPDF QR helpers encode one configured source value, which fits record URLs and lookup tokens.',
+      'GS1 Digital Link is an example of using web-compatible identifiers to make scans connect to richer online information.',
+      'A QR code in a PDF is static after export; use a stable redirect or resolver URL if destination behavior must change later.',
+      'Final PDF output stamps the QR image into page content.',
+    ],
+    articleSections: [
+      {
+        title: 'Why record lookup QR codes beat embedding too much data',
+        paragraphs: [
+          'A QR code can carry text directly, but putting a whole record inside the code is often the wrong design. The QR becomes dense, hard to scan, and may expose information that should not be readable by anyone with a phone.',
+          'A record lookup QR is cleaner. The PDF encodes a stable URL or opaque token, and the destination system decides what the scanner is allowed to see. That keeps the PDF scannable while leaving access control and current record state where they belong.',
+        ],
+      },
+      {
+        title: 'Where record lookup QR codes fit',
+        paragraphs: [
+          'Good fits include customer portals, invoice pages, shipment tracking, work orders, case records, inspection reports, warranty lookup, approval records, and internal review pages. In each case, the PDF remains the document of record while the QR code provides a fast path back to the live system.',
+          'GS1 describes Digital Link as a web-compatible way for barcode scanning to connect to richer online information.[^gs1-digital-link] DullyPDF uses the same practical idea in template form: encode a web lookup value as a QR helper field.',
+        ],
+      },
+      {
+        title: 'Static PDF, dynamic destination',
+        paragraphs: [
+          'The QR code printed into a PDF is static after export because it encodes characters. If you need the destination behavior to change later, encode a stable URL that your system controls. The URL can route to different content later, but the PDF itself will not rewrite the QR payload.',
+          'This is a better answer than promising magic “dynamic QR” behavior inside the PDF. The dynamic layer belongs behind the URL, not in the archived document.',
+        ],
+      },
+      {
+        title: 'How to configure the source field',
+        paragraphs: [
+          'Create or map a source field such as record_url, portal_url, shipment_url, invoice_url, case_lookup_url, or lookup_token. Then point the QR helper field at that source value. This keeps each generated PDF tied to the row, response, or API payload that produced it.',
+          'Before publishing the template, scan a generated PDF for a normal record, a missing URL, and a long URL. Long URLs make denser QR codes, so use short stable links when possible.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-digital-link',
+        label: 'GS1 | Digital Link and web-connected barcode scanning',
+        href: 'https://www.gs1.org/resources/articles/gs1-digital-link-brings-scanning-21st-century',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a PDF QR code point to a different record for each generated PDF?',
+        answer:
+          'Yes. Put the record URL or lookup token in a mapped source field, then connect the QR helper to that source value.',
+      },
+      {
+        question: 'Is a record lookup QR code dynamic?',
+        answer:
+          'The QR payload in the PDF is static after export. The destination can behave dynamically if the encoded URL points to a resolver or portal your system controls.',
+      },
+      {
+        question: 'Should I encode private data directly into a QR code?',
+        answer:
+          'Usually no. Use an opaque lookup token or authenticated URL when the record contains sensitive data.',
+      },
+    ],
+    relatedIntentPages: ['add-qr-code-field-to-pdf', 'qr-code-verification-pdf', 'qr-code-payment-link-pdf', 'work-order-barcode-pdf', 'generate-pdf-barcodes-from-csv'],
+    relatedDocs: ['search-fill', 'api-fill', 'fill-by-link'],
+  },
+  {
+    key: 'scannable-pdf-form',
+    category: 'workflow',
+    path: '/scannable-pdf-form',
+    navLabel: 'Scannable PDF Form',
+    heroTitle: 'Create Scannable PDF Forms With QR and Barcode Fields',
+    heroSummary:
+      'Build reusable PDF forms with QR Code, PDF417, and 1D barcode helper fields so completed PDFs can be scanned back into operational workflows.',
+    seoTitle: 'Create Scannable PDF Forms With QR and Barcode Fields | DullyPDF',
+    seoDescription:
+      'Create scannable PDF forms with QR Code, PDF417, and 1D barcode helper fields tied to source data, mapped records, or API payloads.',
+    seoKeywords: [
+      'scannable pdf form',
+      'create scannable pdf form',
+      'pdf form with barcode',
+      'pdf form with qr code',
+      'machine readable pdf form',
+      'scan data from pdf form',
+      'qr barcode pdf form',
+      'barcode enabled pdf form',
+      'fillable pdf with barcode',
+      'pdf form scan workflow',
+      'scannable form template',
+    ],
+    valuePoints: [
+      'Choose QR Code for URLs, PDF417 for structured payloads, and 1D barcode for short identifiers.',
+      'Keep machine-readable output inside the same saved template as the human-readable PDF fields.',
+      'Generate final PDFs that can be printed, emailed, archived, and scanned without relying on a live editor widget.',
+    ],
+    proofPoints: [
+      'DullyPDF supports QR Code, PDF417, 1D barcode, and image helper fields in PDF templates.',
+      'PDF417 helpers can combine multiple labeled values; QR and 1D helpers encode one configured source value.',
+      'GS1 US explains barcode types across linear 1D barcodes and 2D codes such as QR Code.',
+      'Final exports stamp helper output into page content for recipient scanning.',
+    ],
+    articleSections: [
+      {
+        title: 'What makes a PDF form scannable',
+        paragraphs: [
+          'A scannable PDF form has more than fillable text boxes. It includes machine-readable output that a scanner, phone, or downstream system can recover from the completed document. That might be a QR code for a URL, a PDF417 block for structured data, or a 1D barcode for a short identifier.',
+          'GS1 US explains barcode types across linear 1D barcodes and 2D codes such as QR Code.[^gs1-barcodes] In DullyPDF, those scannable outputs are helper fields rendered into the final PDF page.',
+        ],
+      },
+      {
+        title: 'Scannable output should mirror reviewed data',
+        paragraphs: [
+          'The most common mistake is treating scannable output as a separate artifact. A barcode image is generated somewhere else, pasted onto the form, and no one knows whether it still matches the visible fields. That is fragile.',
+          'A stronger template uses the same source data for both layers. The human-readable fields show the record details, and the scannable helper encodes the matching URL, structured payload, or short ID.',
+        ],
+      },
+      {
+        title: 'Choosing the right scannable field',
+        paragraphs: [
+          'Use QR Code for portals, payment links, verification pages, and lookup URLs. Use PDF417 when the document needs a denser structured payload on the page. Use 1D barcode when the workflow expects a short scanner ID. Use image fields when the scannable process also needs visual proof such as an ID or receipt image.',
+          'A scannable PDF form can contain more than one helper type, but every helper should have a clear job. Avoid filling the page with codes that no downstream process will actually scan.',
+        ],
+      },
+      {
+        title: 'QA for scannable PDFs',
+        paragraphs: [
+          'Generate a final PDF with realistic data, open it outside DullyPDF, and scan each code with the actual devices the workflow will use. Test print size, email compression, missing values, and long payloads.',
+          'Also keep a human-readable fallback near important codes. If the scanner fails, a support user should still be able to read the ID or URL context without reverse-engineering the page.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-barcodes',
+        label: 'GS1 US | Barcode types and scannable identifiers',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF create scannable PDF forms?',
+        answer:
+          'Yes. DullyPDF can add QR Code, PDF417, and 1D barcode helper fields to saved PDF templates and render them into final output.',
+      },
+      {
+        question: 'What barcode type should a scannable PDF use?',
+        answer:
+          'Use QR Code for URLs, PDF417 for structured payloads, and 1D barcode for short IDs.',
+      },
+      {
+        question: 'Do recipients need DullyPDF to scan the output?',
+        answer:
+          'No. Final generated PDFs contain rendered barcode or QR images in page content.',
+      },
+    ],
+    relatedIntentPages: ['add-barcode-to-pdf-form', 'pdf417-vs-qr-code-pdf-forms', 'qr-code-record-lookup-pdf', 'add-code-128-barcode-to-pdf', 'pdf-image-qr-barcode-fields'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
+  },
+  {
+    key: 'pdf-photo-upload-field',
+    category: 'workflow',
+    path: '/pdf-photo-upload-field',
+    navLabel: 'PDF Photo Upload Field',
+    heroTitle: 'Add Photo Upload Fields to PDF Forms',
+    heroSummary:
+      'Add reusable photo image fields to PDF templates for headshots, profile photos, applicant images, badge photos, and intake packets.',
+    seoTitle: 'Add Photo Upload Fields to PDF Forms | DullyPDF',
+    seoDescription:
+      'Create PDF templates with photo upload helper fields for headshots, profile photos, badge photos, and applicant intake images.',
+    seoKeywords: [
+      'pdf photo upload field',
+      'photo upload field pdf form',
+      'add photo field to pdf',
+      'pdf form photo upload',
+      'fillable pdf photo field',
+      'profile photo field pdf',
+      'headshot upload field pdf',
+      'badge photo pdf form',
+      'applicant photo pdf form',
+      'add picture upload field to pdf',
+      'image upload pdf form photo',
+    ],
+    valuePoints: [
+      'Reserve a reviewed PDF region for a photo that changes by record.',
+      'Upload PNG/JPEG image content, preview it in the field box, and render it into final PDF output.',
+      'Use photo fields for applicant packets, membership forms, ID workflows, HR records, and credential templates.',
+    ],
+    proofPoints: [
+      'DullyPDF image fields support PNG/JPEG upload, preview, and clear controls in the editor.',
+      'Image fields are DullyPDF helper metadata rather than universal native AcroForm fields.',
+      'Adobe Acrobat lists Image Field as a form component, confirming the form-builder intent behind dedicated image areas.',
+      'Final flat exports stamp the selected image into PDF page content.',
+    ],
+    articleSections: [
+      {
+        title: 'Photo upload field versus pasted photo',
+        paragraphs: [
+          'A pasted photo is a one-time edit. A photo upload field is a reusable template region where a different photo can be supplied for each completed record. That distinction matters for applicant packets, badge forms, membership records, student forms, patient intake, and HR workflows.',
+          'DullyPDF image helpers let the template preserve the photo region while the actual image changes by record or editing session.',
+        ],
+      },
+      {
+        title: 'How DullyPDF photo fields work',
+        paragraphs: [
+          'Photo fields use the same image helper model as other DullyPDF image outputs. The field stores placement metadata, exposes PNG/JPEG upload controls, previews the selected image, and renders it into the completed PDF.',
+          'Adobe lists Image Field as a PDF form component in Acrobat.[^adobe-image-field] DullyPDF implements the template-output version of that need: the final PDF should display the selected photo reliably as page content.',
+        ],
+      },
+      {
+        title: 'Photo quality and aspect ratio',
+        paragraphs: [
+          'Photos vary. A square headshot, a wide camera image, and a portrait crop will not behave the same inside one field box. Test realistic source images before publishing the template, and check the final PDF for cropping, stretching, and print quality.',
+          'If the photo must meet a formal ID, badge, or credential standard, define the image requirements outside the PDF template too. DullyPDF places and renders the photo; it does not validate passport-photo or credential-photo rules.',
+        ],
+      },
+      {
+        title: 'Privacy review for photo fields',
+        paragraphs: [
+          'Photos can expose identities and sensitive context more quickly than text fields. Only collect photo content that the document actually needs, and make sure storage, sharing, and retention rules match the workflow.',
+          'For regulated or high-risk records, validate the operational controls before making a photo-enabled template public or widely shared.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-image-field',
+        label: 'Adobe Acrobat | Create forms and add form components, including Image Field',
+        href: 'https://helpx.adobe.com/sg/acrobat/desktop/work-with-pdf-forms/create-forms/create.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Getting Started', href: '/usage-docs/getting-started' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a photo upload field to a PDF form?',
+        answer:
+          'Yes. DullyPDF image helpers can reserve a PDF region for a photo and render uploaded PNG/JPEG content into final output.',
+      },
+      {
+        question: 'Is a photo upload field the same as pasting a photo onto a PDF?',
+        answer:
+          'No. A photo upload field is reusable template metadata. Pasting a photo is a one-time static edit.',
+      },
+      {
+        question: 'What should I test before using photo fields?',
+        answer:
+          'Test realistic image aspect ratios, cropping, print quality, and privacy requirements in the final exported PDF.',
+      },
+    ],
+    relatedIntentPages: ['image-upload-fields-pdf-forms', 'add-image-field-to-pdf', 'id-photo-field-pdf-form', 'receipt-upload-field-pdf-form', 'pdf-to-fillable-form'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'getting-started'],
+  },
+  {
+    key: 'id-photo-field-pdf-form',
+    category: 'workflow',
+    path: '/id-photo-field-pdf-form',
+    navLabel: 'ID Photo Field PDF Form',
+    heroTitle: 'Add ID Photo Fields to PDF Forms',
+    heroSummary:
+      'Create PDF templates with ID photo image fields for onboarding, identity review, credential packets, membership forms, and compliance workflows.',
+    seoTitle: 'Add ID Photo Fields to PDF Forms | DullyPDF',
+    seoDescription:
+      'Add ID photo helper fields to fillable PDF templates and render uploaded ID images beside names, ID numbers, and expiration fields.',
+    seoKeywords: [
+      'id photo field pdf form',
+      'add id photo field to pdf',
+      'pdf form id photo upload',
+      'fillable pdf id photo field',
+      'identity document image field pdf',
+      'id image upload pdf form',
+      'driver license photo field pdf',
+      'passport image field pdf',
+      'membership id photo pdf',
+      'credential photo pdf form',
+    ],
+    valuePoints: [
+      'Place an ID image field beside identity details such as name, ID number, expiration, or document type.',
+      'Preview the uploaded ID image inside the reviewed field geometry before final export.',
+      'Render the ID image into final PDF page content for identity packets, onboarding, or credential workflows.',
+    ],
+    proofPoints: [
+      'DullyPDF image helpers support PNG/JPEG upload, preview, and clear behavior.',
+      'ID photo fields should be treated as sensitive visual content and tested carefully before template sharing.',
+      'Image helper metadata is restorable in DullyPDF editable exports, while flat final exports stamp the image into page content.',
+      'The source PDF layout stays fixed; DullyPDF adds the reviewed image region on top.',
+    ],
+    articleSections: [
+      {
+        title: 'When an ID photo field is worth a dedicated PDF region',
+        paragraphs: [
+          'ID photo fields are useful when a completed PDF needs visual identity evidence next to structured identity data. Examples include onboarding packets, membership forms, credential requests, student records, vendor verification, and internal compliance checklists.',
+          'The field is not just a photo placeholder. It reserves a reviewed region where the ID image should appear in the final record, alongside the typed fields that explain what the image represents.',
+        ],
+      },
+      {
+        title: 'ID image fields need stronger review than generic photos',
+        paragraphs: [
+          'An ID image can expose names, addresses, document numbers, dates of birth, signatures, and faces. That makes it more sensitive than many other image fields. The template should only collect and store ID images when the workflow truly requires them.',
+          'DullyPDF can place and render the image. Your process still needs to handle access control, retention, redaction, and regulatory requirements where they apply.',
+        ],
+      },
+      {
+        title: 'How to place the ID photo field',
+        paragraphs: [
+          'Keep the ID image near the related structured fields: legal name, ID type, ID number, expiration date, or issuing authority. That makes final review easier because the image and extracted facts are visible together.',
+          'Test several realistic image shapes. ID photos are often landscape, while profile photos are often portrait or square. A field sized for the wrong aspect ratio can crop important information.',
+        ],
+      },
+      {
+        title: 'Final output checks',
+        paragraphs: [
+          'Open the exported PDF outside DullyPDF and check whether the ID image is readable at normal zoom and print size. Confirm that the image did not stretch, crop the document number, or become too compressed to review.',
+          'If a workflow needs machine-readable ID extraction or document authentication, handle that with a dedicated verification process. The DullyPDF field is for placement and final PDF rendering.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-image-field',
+        label: 'Adobe Acrobat | Image Field as a form component',
+        href: 'https://helpx.adobe.com/sg/acrobat/desktop/work-with-pdf-forms/create-forms/create.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Fill from Images', href: '/usage-docs/fill-from-images' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add an ID photo field to a PDF form?',
+        answer:
+          'Yes. DullyPDF image helpers can reserve a reviewed region for ID images and render PNG/JPEG content into final PDF output.',
+      },
+      {
+        question: 'Does DullyPDF verify the ID document?',
+        answer:
+          'No. DullyPDF places and renders the image field. Identity verification, authentication, and regulatory review belong to the surrounding process.',
+      },
+      {
+        question: 'What should I check before publishing an ID photo template?',
+        answer:
+          'Check readability, cropping, aspect ratio, print quality, access control, and whether the workflow is allowed to collect and store ID images.',
+      },
+    ],
+    relatedIntentPages: ['pdf-photo-upload-field', 'image-upload-fields-pdf-forms', 'add-image-field-to-pdf', 'healthcare-pdf-automation', 'hr-pdf-automation'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'fill-from-images'],
+  },
+  {
+    key: 'receipt-upload-field-pdf-form',
+    category: 'workflow',
+    path: '/receipt-upload-field-pdf-form',
+    navLabel: 'Receipt Upload Field PDF Form',
+    heroTitle: 'Add Receipt Upload Fields to PDF Forms',
+    heroSummary:
+      'Create reimbursement, expense, invoice, and audit PDF templates with receipt image fields rendered beside structured vendor, amount, and date data.',
+    seoTitle: 'Add Receipt Upload Fields to PDF Forms | DullyPDF',
+    seoDescription:
+      'Add receipt image helper fields to PDF forms for reimbursements, expenses, invoices, and audit packets, then render the uploaded receipt into final output.',
+    seoKeywords: [
+      'receipt upload field pdf form',
+      'add receipt image to pdf form',
+      'pdf form receipt upload',
+      'expense receipt upload pdf',
+      'reimbursement receipt pdf form',
+      'invoice receipt image field pdf',
+      'fillable pdf receipt field',
+      'receipt image upload field',
+      'audit receipt pdf form',
+      'expense proof image pdf',
+    ],
+    valuePoints: [
+      'Reserve a PDF region for receipt proof while keeping vendor, amount, date, and category fields structured.',
+      'Preview the uploaded receipt image before export and render it into the final PDF page.',
+      'Use receipt image fields for reimbursement packets, expense approval, invoice support, and audit records.',
+    ],
+    proofPoints: [
+      'DullyPDF image helpers support PNG/JPEG upload, preview, and clear controls.',
+      'Receipt fields are useful when the final PDF needs visual evidence beside structured expense data.',
+      'Final exports stamp the image into page content so recipients do not need DullyPDF to view the receipt.',
+      'Image fields are helper metadata, not generic native AcroForm text fields.',
+    ],
+    articleSections: [
+      {
+        title: 'Why receipt uploads belong beside structured fields',
+        paragraphs: [
+          'Expense and reimbursement PDFs often need two layers of evidence: the structured values a reviewer can search or validate, and the receipt image that proves the purchase. If the receipt is only attached somewhere else, the PDF record can become harder to review later.',
+          'A receipt upload field keeps the visual proof inside the final PDF next to vendor, amount, date, category, and approval fields.',
+        ],
+      },
+      {
+        title: 'Receipt field versus attachment workflow',
+        paragraphs: [
+          'An attachment workflow can be fine when the review system manages files separately. A receipt image field is better when the PDF itself is the record that needs to circulate, print, archive, or be approved by someone outside the source system.',
+          'DullyPDF does not turn the receipt into structured data by magic on this page. It places and renders the visual evidence. Use structured fields and mapping for the values that need to drive Search & Fill or API output.',
+        ],
+      },
+      {
+        title: 'How to place receipt images in a PDF template',
+        paragraphs: [
+          'Give the receipt enough room. Receipts are often tall, narrow, and low contrast. A field that works for a logo or profile photo may crop a receipt badly. Test realistic images before using the template for live records.',
+          'Keep the amount, vendor, date, and reimbursement fields close enough to the receipt that reviewers can compare them quickly. The field layout should support review, not only storage.',
+        ],
+      },
+      {
+        title: 'Privacy and compliance checks',
+        paragraphs: [
+          'Receipts can expose card fragments, addresses, medical purchases, travel details, and employee behavior. Only collect the visual proof the process needs, and validate retention requirements for finance, HR, legal, or regulated expense workflows.',
+          'Before publishing the template, export one final PDF with a realistic receipt image and confirm the output is readable without exposing more information than the process requires.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-image-field',
+        label: 'Adobe Acrobat | Create forms and add Image Field components',
+        href: 'https://helpx.adobe.com/sg/acrobat/desktop/work-with-pdf-forms/create-forms/create.html',
+      },
+    ],
+    supportSections: [
+      {
+        title: 'Related setup docs',
+        links: [
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a receipt upload field to a PDF form?',
+        answer:
+          'Yes. DullyPDF image helpers can reserve a receipt image region and render uploaded PNG/JPEG content into the final PDF.',
+      },
+      {
+        question: 'Is a receipt image field better than attaching a receipt separately?',
+        answer:
+          'It depends on the workflow. Use a receipt image field when the completed PDF itself should contain the visual proof next to structured expense fields.',
+      },
+      {
+        question: 'What should I test with receipt fields?',
+        answer:
+          'Test tall receipts, low-contrast images, cropping, readability, print quality, and sensitive details such as card fragments or personal information.',
+      },
+    ],
+    relatedIntentPages: ['image-upload-fields-pdf-forms', 'add-image-field-to-pdf', 'pdf-photo-upload-field', 'invoice-pdf-processing', 'accounting-tax-pdf-automation'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'save-download-profile'],
+  },
+  {
     key: 'pdf-to-database-template',
     category: 'workflow',
     path: '/pdf-to-database-template',
@@ -187,7 +2564,7 @@ const INTENT_PAGES = [
       'pdf field column alignment tool',
     ],
     valuePoints: [
-      'Map detected fields to CSV/SQL/XLSX/JSON schema headers.',
+      'Map detected fields to CSV, XLSX, JSON, SQL, or application schema headers.',
       'Use OpenAI rename + mapping for faster standardization.',
       'Keep checkbox groups and option keys aligned to data columns.',
     ],
@@ -391,12 +2768,12 @@ const INTENT_PAGES = [
     category: 'workflow',
     path: '/fill-pdf-from-csv',
     navLabel: 'Fill PDF From CSV',
-    heroTitle: 'Fill PDF From CSV, SQL, Excel, or JSON Data',
+    heroTitle: 'Fill PDF From CSV, Excel, or JSON Data',
     heroSummary:
       'Search your records, pick a row, and fill mapped PDF templates in seconds for repeat data-entry workflows.',
-    seoTitle: 'Fill PDF Forms From CSV, SQL, Excel, or JSON — Map Fields in Minutes',
+    seoTitle: 'Fill PDF Forms From CSV, Excel, or JSON — Map Fields in Minutes',
     seoDescription:
-      'Upload a PDF and a spreadsheet, map columns to form fields, and batch-fill hundreds of PDFs in one click. Works with CSV, Excel, JSON, and SQL. Free tier available.',
+      'Upload a PDF, map columns to form fields, and fill records from CSV, Excel, or JSON rows. Use SQL/TXT imports for schema mapping only.',
     seoKeywords: [
       'fill pdf from csv',
       'free pdf fill from csv',
@@ -1109,7 +3486,7 @@ const INTENT_PAGES = [
       'If you need to fill information in PDF forms repeatedly, DullyPDF helps you map once and populate forms from searchable records.',
     seoTitle: 'Fill Out Any PDF Form Online — Map Fields and Auto-Fill',
     seoDescription:
-      'Upload a PDF, map the form fields to your data source, and fill it instantly. Pull from CSV, Excel, JSON, or SQL — no special software required.',
+      'Upload a PDF, map the form fields to your data source, and fill it instantly from CSV, Excel, or JSON rows. SQL/TXT imports are schema-only.',
     seoKeywords: [
       'fill information in pdf',
       'free automatic pdf form filling',
@@ -1488,6 +3865,1704 @@ const INTENT_PAGES = [
     relatedIntentPages: ['fillable-pdf-fonts-colors', 'pdf-to-fillable-form', 'pdf-field-detection-tool', 'pdf-fill-api'],
     relatedDocs: ['editor-workflow', 'save-download-profile', 'api-fill', 'troubleshooting'],
   },
+  {
+    key: 'pdf-calculation-fields',
+    category: 'workflow',
+    path: '/pdf-calculation-fields',
+    navLabel: 'PDF Calculation Fields',
+    heroTitle: 'Create PDF Calculation Fields Without JavaScript',
+    heroSummary:
+      'Create number inputs and calculated outputs in reusable PDF templates. DullyPDF stores safe formulas and precomputes final values for every output.',
+    seoTitle: 'PDF Calculation Fields Without Acrobat JavaScript | DullyPDF',
+    seoDescription:
+      'Create number inputs and calculated output fields in reusable PDF templates. DullyPDF stores safe formulas and precomputes final values.',
+    seoKeywords: [
+      'pdf calculation fields',
+      'calculated fields pdf form',
+      'fillable pdf calculations',
+      'add calculation field to pdf',
+      'pdf form calculated total',
+      'pdf number input field',
+      'calculated output pdf field',
+      'acrobat calculation fields alternative',
+      'pdf form formulas',
+      'pdf calculated field without javascript',
+      'fillable pdf total field',
+      'server computed pdf fields',
+    ],
+    valuePoints: [
+      'Create editable number inputs and read-only calculated outputs inside the template editor.',
+      'Build formulas from numeric field references, constants, unary minus, and basic arithmetic.',
+      'Validate missing dependencies, invalid operators, divide-by-zero behavior, and calculation cycles before export.',
+      'Precompute calculated values for Search & Fill, Fill By Link, API Fill, editable downloads, flat downloads, and signing source freezes.',
+    ],
+    proofPoints: [
+      'DullyPDF stores a safe formula model instead of exposing arbitrary user-authored Acrobat JavaScript.',
+      'Editable PDF exports can include generated Acrobat calculation actions and calculation order for Adobe compatibility.',
+      'Flat PDF outputs bake computed values into page content so final records do not depend on live viewer recalculation.',
+      'API Fill and Fill By Link omit calculated outputs from required caller/respondent inputs because DullyPDF computes them from source values.',
+    ],
+    articleSections: [
+      {
+        title: 'Why calculation fields belong in the template, not in ad hoc PDF edits',
+        paragraphs: [
+          'Most PDF calculation-field work is not about one clever total box. It is about recurring forms that need the same numeric relationships every time: subtotals, fees, balances, deductibles, order totals, estimate totals, or derived values that should not be typed by hand. If those rules live only in a one-off export, the next fill starts over from an unreliable baseline.',
+          'DullyPDF treats calculations as template metadata. Number inputs, calculated outputs, formula dependencies, and output rules stay with the saved template so the same PDF can be filled from a spreadsheet row, a respondent web form, or an API request without rebuilding the formula logic each time.',
+        ],
+      },
+      {
+        title: 'Safe formulas instead of arbitrary Acrobat JavaScript',
+        paragraphs: [
+          'Traditional PDF calculations often rely on Acrobat JavaScript. That model is powerful, but it also creates a hard product boundary: arbitrary scripts are difficult to inspect safely, difficult to preserve across viewers, and easy to break when field names or calculation order drift. Adobe documents calculation fields and calculation order because dependent fields need a predictable sequence to produce correct results.[^adobe-calculation-fields]',
+          'DullyPDF takes a narrower path. The editor stores a safe formula model built from numeric field references, constants, unary minus, and +, -, *, and /. Generated Acrobat JavaScript can be written into editable exports for Adobe compatibility, but that generated script is not the source of truth. The saved DullyPDF formula is.',
+        ],
+      },
+      {
+        title: 'Number inputs and calculated outputs have different jobs',
+        paragraphs: [
+          'A number input is still an editable text-style field. Users, Search & Fill records, Fill By Link respondents, or API callers can provide its value. A calculated output is different: it is read-only and receives its value from the formula. That distinction prevents callers or respondents from overwriting a value that should be derived from the source inputs.',
+          'Reusable calculated intermediates can also support chained formulas when one derived value should feed another. The important rule is that the dependency graph must stay valid. DullyPDF blocks missing dependencies and cycles before the formula is saved so the template does not silently export stale or impossible values.',
+        ],
+      },
+      {
+        title: 'Precomputed values are the reliable cross-viewer baseline',
+        paragraphs: [
+          'Editable PDF live recalculation is still Adobe-first. Acrobat and Reader are the practical targets for live calculated widgets after download. Browser viewers, mobile viewers, and email previews can vary in how much AcroForm JavaScript they run, especially for chained calculations or custom behaviors.',
+          'That is why DullyPDF precomputes visible calculated values before materializing every output. Editable PDFs get the current value in the field and can include generated calculation actions for compatible viewers. Flat PDFs bake the computed value into page content, which is the safer output for final records, respondent receipts, signed packets, and external recipients who do not need live editing.',
+        ],
+      },
+      {
+        title: 'How calculations behave across DullyPDF workflows',
+        paragraphs: [
+          'Search & Fill fills source number inputs from the selected record, then DullyPDF recomputes calculated outputs during PDF materialization. Fill By Link publishes number inputs as questions while keeping calculated outputs out of the respondent form. API Fill exposes number inputs in the schema and omits calculated outputs from required caller input by default.',
+          'The result is one calculation rule across several entry points. Whether the source values come from a CSV row, a web-form response, or JSON sent to an endpoint, the final PDF should compute the same derived values from the same inputs.',
+        ],
+      },
+      {
+        title: 'A practical setup order for reliable calculation fields',
+        paragraphs: [
+          'Start by cleaning the ordinary field set. Rename source fields clearly, confirm the numeric inputs are placed correctly, and test one representative record before adding too much formula logic. Then add calculated outputs where the final value belongs on the PDF, build formulas from named inputs, and inspect the computed preview.',
+          'Before rollout, export both an editable PDF and a flat PDF. Use editable output when the next person must keep working inside live fields, and use flat output when the completed record should be viewer-stable. That check is especially important before publishing a Fill By Link, API Fill endpoint, or signing workflow that depends on computed values.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations and set calculation order',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF create calculated fields in a PDF?',
+        answer:
+          'Yes. DullyPDF can create number inputs and read-only calculated outputs in reusable templates, with formulas stored as safe DullyPDF metadata.',
+      },
+      {
+        question: 'Do PDF calculation fields work in every viewer?',
+        answer:
+          'No. Editable live recalculation is Adobe-first. DullyPDF precomputes values before export, and flat PDFs are the safer final-record output for recipients who do not need live fields.',
+      },
+      {
+        question: 'Does DullyPDF let users write arbitrary Acrobat JavaScript?',
+        answer:
+          'No. DullyPDF stores a safe formula model and can generate Acrobat-compatible calculation actions for editable exports without making arbitrary user-authored JavaScript editable.',
+      },
+      {
+        question: 'Can API Fill compute calculated PDF fields?',
+        answer:
+          'Yes. API callers provide source number inputs, and DullyPDF computes calculated outputs during backend materialization instead of requiring callers to send derived values.',
+      },
+    ],
+    relatedIntentPages: ['fill-pdf-from-csv', 'fill-pdf-by-link', 'pdf-fill-api', 'acroform-field-appearance', 'fillable-pdf-fonts-colors'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'fill-by-link', 'api-fill', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-form-calculations-not-working',
+    category: 'workflow',
+    path: '/pdf-form-calculations-not-working',
+    navLabel: 'PDF Calculations Not Working',
+    heroTitle: 'PDF Form Calculations Not Working in Chrome, Preview, or Mobile?',
+    heroSummary:
+      'Troubleshoot calculated PDF fields that work in one viewer but fail in another. DullyPDF precomputes values and recommends flat output for final records.',
+    seoTitle: 'PDF Form Calculations Not Working in Chrome or Preview | DullyPDF',
+    seoDescription:
+      'Troubleshoot PDF form calculations that fail in browsers, Preview, or mobile viewers. Learn when to use editable Acrobat output versus flat PDFs.',
+    seoKeywords: [
+      'pdf form calculations not working',
+      'pdf calculations not working in chrome',
+      'fillable pdf calculations not working',
+      'pdf calculated fields not updating',
+      'acrobat calculation field not working',
+      'pdf form total not calculating',
+      'pdf javascript not working in browser',
+      'pdf calculations preview mac',
+      'pdf calculations mobile viewer',
+      'calculated pdf field not saving',
+    ],
+    valuePoints: [
+      'Separate source-input problems from viewer compatibility problems.',
+      'Understand why editable live recalculation is primarily an Adobe Acrobat/Reader workflow.',
+      'Use DullyPDF precomputed values and flat PDFs when the recipient only needs the final record.',
+    ],
+    proofPoints: [
+      'DullyPDF stores the current computed value before editable and flat PDF generation.',
+      'Search & Fill, Fill By Link, API Fill, and signing all materialize calculated values server-side.',
+      'Flat PDF output removes live-widget dependency by baking the computed value into the page content.',
+    ],
+    articleSections: [
+      {
+        title: 'First decide whether the formula is wrong or the viewer is wrong',
+        paragraphs: [
+          'When a PDF total does not update, the failure can come from two different places. The formula may be invalid, the source field may be blank, the dependency order may be wrong, or the value may contain a number format the calculation does not expect. But it can also be a viewer problem: the same file may behave differently in Acrobat, a browser PDF viewer, a mobile preview, or an email attachment preview.',
+          'That distinction matters because the fix is different. Formula and data problems should be fixed in the template. Viewer problems should change the output strategy. If the document is a final record, the most reliable answer is usually a flat PDF that already contains the computed value.',
+        ],
+      },
+      {
+        title: 'Why browser and mobile PDF viewers are risky for live calculations',
+        paragraphs: [
+          'PDF calculation fields often depend on AcroForm JavaScript and calculation order. Adobe documents both the calculation setup and the order controls because dependent fields need a predictable sequence.[^adobe-calculation-fields] Browser and mobile viewers may display the PDF correctly while supporting only part of that live form behavior.',
+          'That is why DullyPDF does not treat live viewer recalculation as the final source of truth. Editable exports can include generated Acrobat-compatible actions, but DullyPDF also writes the precomputed current value into the output so the document opens with the expected result even when the viewer does not rerun every calculation.',
+        ],
+      },
+      {
+        title: 'A practical diagnosis checklist',
+        paragraphs: [
+          'Start with the source inputs. Confirm the number fields contain valid numeric values, not labels, currency text, commas, or blanks that the formula model does not expect. Then check whether the calculated output is actually read-only and whether all dependencies are still present after rename, mapping, or template edits.',
+          'Next, test the same PDF in Acrobat Reader and in the viewer where the problem appeared. If Acrobat updates the field but the browser does not, the formula is likely viable and the output strategy should change. If Acrobat fails too, the template calculation needs to be rebuilt or the dependency order needs review.',
+        ],
+        bullets: [
+          'Check source number inputs first.',
+          'Check formula dependencies and missing fields.',
+          'Check calculation order for chained totals.',
+          'Compare Acrobat Reader against the target browser or mobile viewer.',
+          'Export flat when the recipient does not need to keep editing live fields.',
+        ],
+      },
+      {
+        title: 'Why DullyPDF precomputes values before every output',
+        paragraphs: [
+          'DullyPDF computes calculated outputs during materialization. That means the value is produced before editable download, flat download, Fill By Link response download, API Fill output, and signing source freeze. The PDF viewer can still provide live recalculation in compatible editable workflows, but the generated document does not start from an empty or stale calculated field.',
+          'This approach is especially important for external recipients. A customer, patient, applicant, signer, or accounting contact may open the PDF in whatever viewer their device chooses. A flat PDF keeps the completed value stable because the value is part of the page content rather than a script-dependent widget.',
+        ],
+      },
+      {
+        title: 'When to rebuild the calculation in DullyPDF',
+        paragraphs: [
+          'If the PDF came from a third-party tool with custom calculation JavaScript, DullyPDF does not trust or expose that script as editable source. The safer path is to rebuild the calculation through the DullyPDF formula model. That gives the template a known dependency graph, known source fields, and known output behavior.',
+          'Rebuilding is worth it when the form will be reused. It is not just a one-time repair. It turns a fragile viewer-specific calculation into a template rule that can be reused by Search & Fill, Fill By Link, API Fill, and signing workflows.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations and set calculation order',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Why do PDF calculations work in Acrobat but not Chrome?',
+        answer:
+          'The file may rely on AcroForm JavaScript or calculation-order behavior that Acrobat supports more completely than the browser viewer. Use Acrobat for live editing or export a flat PDF for final records.',
+      },
+      {
+        question: 'Why does my calculated total not update after filling a PDF?',
+        answer:
+          'Check the source numeric fields, formula dependencies, calculation order, and viewer. If the PDF is being opened in a browser or mobile preview, live recalculation may be limited.',
+      },
+      {
+        question: 'How does DullyPDF avoid stale calculated values?',
+        answer:
+          'DullyPDF computes calculated fields before materializing outputs and writes the visible result into editable and flat PDF outputs.',
+      },
+      {
+        question: 'Should I send an editable or flat PDF when calculations matter?',
+        answer:
+          'Use editable output when the recipient must keep filling live fields in a compatible viewer. Use flat output when the recipient only needs the completed final record.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'acroform-field-appearance', 'fillable-pdf-fonts-colors', 'fill-pdf-by-link'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'fill-by-link', 'troubleshooting'],
+  },
+  {
+    key: 'add-calculated-field-to-pdf',
+    category: 'workflow',
+    path: '/add-calculated-field-to-pdf',
+    navLabel: 'Add Calculated Field to PDF',
+    heroTitle: 'Add a Calculated Field to an Existing PDF Form',
+    heroSummary:
+      'Upload an existing PDF, add number inputs, build a safe formula, and place a read-only calculated output where the result belongs.',
+    seoTitle: 'Add a Calculated Field to a PDF Form | DullyPDF',
+    seoDescription:
+      'Add calculated fields to existing PDF forms without writing Acrobat JavaScript. Build safe formulas from number inputs and export editable or flat PDFs.',
+    seoKeywords: [
+      'add calculated field to pdf',
+      'add calculation field to pdf',
+      'create calculated pdf field',
+      'add formula field to pdf',
+      'make pdf field calculate',
+      'pdf calculated output field',
+      'add total field to pdf form',
+      'fillable pdf formula field',
+      'pdf form calculation builder',
+    ],
+    valuePoints: [
+      'Start from the PDF layout you already use instead of redesigning the document.',
+      'Add number inputs and calculated outputs as field metadata layered over the PDF.',
+      'Choose editable output for Adobe-first live workflows or flat output for completed records.',
+    ],
+    proofPoints: [
+      'The formula setup dialog stores a safe formula model, not arbitrary script text.',
+      'DullyPDF validates dependencies before the calculated field can be saved.',
+      'Saved templates keep calculation metadata for reopen, Fill By Link, API Fill, and future downloads.',
+    ],
+    articleSections: [
+      {
+        title: 'Start by making the source PDF a reliable template',
+        paragraphs: [
+          'Do not begin by drawing the total field. Start by uploading the existing PDF and cleaning the ordinary fields first. If the source number inputs are missing, poorly named, or placed on the wrong lines, the calculated output will only hide a weaker template underneath.',
+          'A good first pass is to detect or add the source fields, rename them clearly, and test one representative fill. Once the numeric inputs are trustworthy, the calculated field can be added with less guesswork.',
+        ],
+      },
+      {
+        title: 'Add number inputs before calculated outputs',
+        paragraphs: [
+          'A calculated output needs dependable inputs. In DullyPDF, number inputs are editable fields that users, data rows, respondents, or API callers can fill. The calculated output is read-only and should receive its value only from the formula.',
+          'That separation keeps the workflow predictable. If a user can type directly into the total, the template can drift away from the formula. If the total is read-only, the output remains derived from the source numbers.',
+        ],
+      },
+      {
+        title: 'Build the formula from field references',
+        paragraphs: [
+          'The formula should reference actual template fields, not visual labels on the page. DullyPDF uses a safe formula model with field references, constants, unary minus, and basic arithmetic. The editor can then validate missing dependencies and detect cycles before the template is saved.',
+          'This is narrower than custom Acrobat scripting by design. It covers the common calculation jobs most recurring forms need while keeping the formula inspectable and reusable across browser, backend, and PDF export workflows.',
+        ],
+      },
+      {
+        title: 'Preview the result before export',
+        paragraphs: [
+          'After the formula is saved, fill the source inputs and inspect the calculated output preview. This catches wrong dependencies, reversed operands, missing values, and formatting assumptions before the PDF is downloaded or published.',
+          'For reusable templates, test more than one record. A formula that works for a small example can still expose divide-by-zero behavior, blank-input behavior, or field-name mistakes when real data arrives.',
+        ],
+      },
+      {
+        title: 'Choose editable or flat output based on the recipient',
+        paragraphs: [
+          'If the next person needs to keep filling live fields in Acrobat, export an editable PDF. If the document is finished, export a flat PDF so the computed value is baked into the page. This is the same recommendation DullyPDF uses for Fill By Link receipts, external recipients, and signing source documents.',
+          'The right output mode depends on the job after export, not on the fact that the source template contains calculations.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations and set calculation order',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I add a calculated field to an existing PDF?',
+        answer:
+          'Yes. DullyPDF adds calculation-capable fields as template metadata over the existing PDF layout, then materializes the computed value during export.',
+      },
+      {
+        question: 'Do I need to write Acrobat JavaScript?',
+        answer:
+          'No. DullyPDF uses a safe formula builder. Editable exports can include generated Acrobat-compatible actions, but users do not write arbitrary JavaScript.',
+      },
+      {
+        question: 'Can calculated fields use values from CSV or JSON?',
+        answer:
+          'Yes. Source data fills number inputs, and DullyPDF computes calculated outputs during materialization.',
+      },
+      {
+        question: 'Can respondents fill calculated outputs in Fill By Link?',
+        answer:
+          'No. Respondents answer number inputs and other visible questions. Calculated outputs are computed by DullyPDF when the PDF is generated.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'fillable-pdf-total-field', 'pdf-to-fillable-form', 'fillable-form-field-name'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'save-download-profile'],
+  },
+  {
+    key: 'fillable-pdf-total-field',
+    category: 'workflow',
+    path: '/fillable-pdf-total-field',
+    navLabel: 'Fillable PDF Total Field',
+    heroTitle: 'Create a Total Field in a Fillable PDF',
+    heroSummary:
+      'Build subtotal, tax, discount, shipping, deposit, balance, and grand-total fields into reusable fillable PDF templates.',
+    seoTitle: 'Create a Total Field in a Fillable PDF | DullyPDF',
+    seoDescription:
+      'Create fillable PDF total fields for invoices, order forms, quotes, and worksheets. Use safe formulas and precomputed final values.',
+    seoKeywords: [
+      'fillable pdf total field',
+      'pdf form total field',
+      'pdf subtotal field',
+      'pdf grand total field',
+      'pdf form sum field',
+      'pdf calculated total',
+      'fillable pdf invoice total',
+      'pdf order form total',
+      'pdf tax total field',
+    ],
+    valuePoints: [
+      'Model common totals such as subtotal, tax, discount, shipping, amount paid, and balance due.',
+      'Keep totals read-only so final values come from the formula instead of manual typing.',
+      'Reuse the same total logic across Search & Fill, Fill By Link, API Fill, downloads, and signing.',
+    ],
+    proofPoints: [
+      'DullyPDF calculates outputs from number inputs and formula dependencies before PDF materialization.',
+      'Flat exports are viewer-stable for completed totals sent to customers or external recipients.',
+      'Editable exports preserve current values and can include Acrobat-compatible calculation actions.',
+    ],
+    articleSections: [
+      {
+        title: 'The total field is usually a workflow control, not a cosmetic field',
+        paragraphs: [
+          'A total field is important because it represents a value the operator should not retype. The more often a form repeats, the more likely manual totals become a source of mistakes. A reusable template should define the relationship once and let the output compute from source inputs.',
+          'That is true for invoices, order forms, estimates, reimbursement sheets, fee worksheets, and internal approval forms. The printed result may look like one number, but the workflow value is the repeatable rule behind it.',
+        ],
+      },
+      {
+        title: 'Common total-field patterns',
+        paragraphs: [
+          'Most total fields are built from a small set of patterns. A line total multiplies quantity by unit price. A subtotal combines line totals. A grand total adds tax and shipping or subtracts discounts. A balance due subtracts deposit or amount paid from the total.',
+          'Those patterns are simple enough for a safe formula model, but they still need careful field naming. A formula is easier to verify when the inputs are named like quantity, unit_price, subtotal, tax, deposit, and balance_due instead of Text1 or Field_17.',
+        ],
+        bullets: [
+          'Line total: quantity times unit price.',
+          'Grand total: subtotal plus tax plus shipping minus discount.',
+          'Balance due: total minus deposit or amount paid.',
+          'Fee total: base fee plus add-ons minus credits.',
+        ],
+      },
+      {
+        title: 'Why the total should usually be read-only',
+        paragraphs: [
+          'If a total can be typed manually, the template no longer guarantees that the value matches the source inputs. DullyPDF calculated outputs are read-only so the total remains derived from the formula. That is the safer default for repeat operations and customer-facing records.',
+          'If a business truly needs a manual adjustment, model it as an input field. For example, use discount, adjustment, or override_amount as source fields, then let the total calculate from those explicit inputs.',
+        ],
+      },
+      {
+        title: 'What to test before publishing a total field',
+        paragraphs: [
+          'Test one ordinary record, one record with blank optional values, and one record with a discount or deposit. If division is involved, test zero and blank input behavior. Those cases expose most total-field mistakes before the template is used by respondents or API callers.',
+          'Also inspect the final output mode. Editable PDFs are useful when live fields must remain editable. Flat PDFs are better when the completed total is the final number that should appear consistently in every viewer.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I create a subtotal or grand total in a fillable PDF?',
+        answer:
+          'Yes. DullyPDF can create read-only calculated outputs from source number inputs such as line totals, tax, shipping, discounts, and deposits.',
+      },
+      {
+        question: 'Should a PDF total field be editable?',
+        answer:
+          'Usually no. Keep the total read-only and model any manual adjustment as a separate input so the final total still comes from the formula.',
+      },
+      {
+        question: 'Can a total field work with Fill By Link responses?',
+        answer:
+          'Yes. Respondents provide source values, and DullyPDF computes the total when the PDF is generated.',
+      },
+      {
+        question: 'What output mode is best for completed totals?',
+        answer:
+          'Flat PDF output is best for final records because the total is baked into page content instead of relying on live recalculation in the recipient viewer.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'add-calculated-field-to-pdf', 'pdf-invoice-calculation-template', 'pdf-order-form-calculations'],
+    relatedDocs: ['editor-workflow', 'save-download-profile', 'fill-by-link'],
+  },
+  {
+    key: 'api-fill-calculated-pdf',
+    category: 'workflow',
+    path: '/api-fill-calculated-pdf',
+    navLabel: 'API Fill Calculated PDF',
+    heroTitle: 'Fill a Calculated PDF From JSON and Let the Server Compute Totals',
+    heroSummary:
+      'Publish a JSON-to-PDF endpoint where callers send source number inputs and DullyPDF computes calculated outputs during backend materialization.',
+    seoTitle: 'API Fill for Calculated PDFs From JSON | DullyPDF',
+    seoDescription:
+      'Send JSON source values to a saved PDF template and let DullyPDF compute calculated fields server-side before returning the filled PDF.',
+    seoKeywords: [
+      'api fill calculated pdf',
+      'generate pdf with calculated fields',
+      'json to calculated pdf',
+      'pdf api calculated fields',
+      'server computed pdf fields',
+      'pdf fill api totals',
+      'json to pdf total field',
+      'calculated pdf generation api',
+      'api generate invoice pdf total',
+    ],
+    valuePoints: [
+      'Publish a saved template as a JSON-to-PDF endpoint after calculation fields are reviewed.',
+      'Expose source number inputs in the API schema while omitting calculated outputs from required caller input.',
+      'Compute totals, balances, and derived values server-side so callers do not duplicate template formulas.',
+    ],
+    proofPoints: [
+      'API Fill uses the frozen saved-template schema and endpoint key, not browser session state.',
+      'Strict mode rejects calculated-output keys as unknown inputs when they should be computed.',
+      'Non-strict mode can ignore caller-provided calculated outputs while computed values win.',
+    ],
+    articleSections: [
+      {
+        title: 'The caller should send inputs, not derived totals',
+        paragraphs: [
+          'A calculated PDF API is most reliable when the external system sends the source facts and the template computes the derived fields. If every caller sends its own total, the PDF template no longer owns the calculation rule. Different services can drift, round differently, or accidentally send stale values.',
+          'DullyPDF keeps the template in charge. The API schema should expose number inputs such as quantity, rate, tax, discount, or deposit. Calculated outputs such as subtotal, total, and balance due are computed when the backend materializes the PDF.',
+        ],
+      },
+      {
+        title: 'Why API Fill is different from browser Search and Fill',
+        paragraphs: [
+          'Search & Fill is an operator workflow: a user chooses a row in the browser and reviews the output. API Fill is a server workflow: another system sends JSON to a published endpoint and receives a PDF. Calculation fields work in both flows, but the trust boundary is different.',
+          'That is why a published calculated template needs a stable schema and endpoint contract. Once the endpoint is live, caller expectations should not change accidentally because someone renamed a field or changed a formula without republishing intentionally.',
+        ],
+      },
+      {
+        title: 'Example request shape',
+        paragraphs: [
+          'A caller should send only the source fields the template expects. For an invoice, that might be customer_name, quantity_1, unit_price_1, tax_rate, discount, and amount_paid. The response PDF can include line_total_1, subtotal, tax_amount, grand_total, and balance_due even though the caller did not send those derived fields.',
+          'This separation makes the endpoint easier to validate. Missing source inputs are request errors. Calculated output inputs are either rejected in strict mode or ignored in non-strict mode because the template formula owns those values.',
+        ],
+      },
+      {
+        title: 'Where calculated API outputs fit best',
+        paragraphs: [
+          'Calculated API Fill is a good fit when another system already owns the source record: billing software, a CRM, an internal admin portal, a loan intake system, or an order management tool. The system can call one endpoint and let the template handle the PDF-specific math.',
+          'It is not a replacement for a general document-generation engine with dynamic page layout. It is strongest when the PDF layout is fixed and the repeated job is filling known fields and computing known derived values.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can API callers send calculated output values?',
+        answer:
+          'They should not need to. DullyPDF computes calculated outputs from source number inputs during backend materialization.',
+      },
+      {
+        question: 'What happens if a caller sends a calculated-output key?',
+        answer:
+          'Strict mode rejects it as an unknown input. Non-strict mode can ignore it so the computed template value wins.',
+      },
+      {
+        question: 'Does the API require a browser session to calculate fields?',
+        answer:
+          'No. Published API Fill endpoints run on the backend from a saved template snapshot.',
+      },
+      {
+        question: 'Can this generate invoices or order forms with totals?',
+        answer:
+          'Yes, when the source PDF has a fixed layout and the saved template defines source number inputs plus calculated outputs.',
+      },
+    ],
+    relatedIntentPages: ['pdf-fill-api', 'pdf-fill-api-nodejs', 'pdf-fill-api-python', 'pdf-fill-api-curl', 'pdf-calculation-fields'],
+    relatedDocs: ['api-fill', 'editor-workflow', 'search-fill'],
+  },
+  {
+    key: 'pdf-form-javascript-calculation-alternative',
+    category: 'workflow',
+    path: '/pdf-form-javascript-calculation-alternative',
+    navLabel: 'PDF JavaScript Alternative',
+    heroTitle: 'A Safer Alternative to Acrobat JavaScript Calculations',
+    heroSummary:
+      'Use DullyPDF safe formulas for common PDF calculations instead of maintaining arbitrary Acrobat JavaScript across templates and viewers.',
+    seoTitle: 'Acrobat JavaScript Calculation Alternative for PDF Forms | DullyPDF',
+    seoDescription:
+      'Replace fragile custom PDF calculation scripts with safe DullyPDF formulas, server-side precomputation, and Adobe-compatible editable exports.',
+    seoKeywords: [
+      'acrobat javascript calculation alternative',
+      'pdf form javascript calculation',
+      'safe pdf formulas',
+      'pdf calculation without javascript',
+      'acroform javascript alternative',
+      'pdf custom calculation script alternative',
+      'replace pdf javascript calculations',
+      'pdf formula builder',
+      'secure pdf calculations',
+    ],
+    valuePoints: [
+      'Keep calculation behavior inspectable with a safe formula model.',
+      'Generate Acrobat-compatible actions for editable exports without exposing arbitrary script editing.',
+      'Use backend precomputation as the output source of truth.',
+    ],
+    proofPoints: [
+      'DullyPDF imported-calculation handling does not execute or trust third-party PDF JavaScript.',
+      'Formula validation blocks unsupported nodes, invalid dependencies, and cycles before export.',
+      'Materialization computes values consistently for browser, API, web-form, download, and signing flows.',
+    ],
+    articleSections: [
+      {
+        title: 'Acrobat JavaScript is powerful, but it is a heavy contract',
+        paragraphs: [
+          'Acrobat JavaScript can support complex form behavior, and Adobe exposes calculation-field setup for users who need that model.[^adobe-calculation-fields] The tradeoff is that script logic becomes part of the PDF runtime. Someone has to understand the script, preserve it through edits, manage field-name drift, and test it in the viewers that will actually open the file.',
+          'For many business forms, that is more power than the workflow needs. A subtotal, fee, balance, or quote total should not require maintaining arbitrary script text when a safe arithmetic formula is enough.',
+        ],
+      },
+      {
+        title: 'DullyPDF stores formulas as data',
+        paragraphs: [
+          'DullyPDF stores a formula model rather than user-authored script. The model contains known node types: numeric constants, field references, unary minus, and basic arithmetic. That makes the formula easier to validate, easier to display, and easier to evaluate server-side.',
+          'Because the formula is structured data, the app can extract dependencies, detect cycles, block unsupported references, and compute outputs without asking a PDF viewer to run code.',
+        ],
+      },
+      {
+        title: 'Generated Acrobat JavaScript is an export layer',
+        paragraphs: [
+          'Editable PDF exports can still include generated Acrobat-compatible calculation actions. That is useful when the recipient continues editing the PDF in Acrobat or Reader. But the generated script is not where DullyPDF keeps the business rule. The saved formula metadata is the durable source.',
+          'This distinction keeps the template workflow easier to reason about. If the template is reopened, filled from a CSV row, published as a web form, called by API Fill, or frozen for signing, the same DullyPDF formula can be evaluated before the PDF is delivered.',
+        ],
+      },
+      {
+        title: 'Imported third-party scripts should stay locked until rebuilt',
+        paragraphs: [
+          'A PDF uploaded from another tool may already contain calculation JavaScript. DullyPDF can identify that calculation behavior, but it should not display arbitrary script as editable source or silently treat it as trusted business logic. The safer workflow is to summarize it and rebuild supported calculations through the formula setup flow.',
+          'That is a deliberate product boundary. It favors repeatable, inspectable calculations over preserving every possible script trick a PDF might contain.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations and set calculation order',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is DullyPDF a full Acrobat JavaScript editor?',
+        answer:
+          'No. DullyPDF intentionally uses safe formulas for supported calculations instead of exposing arbitrary script editing.',
+      },
+      {
+        question: 'Can editable PDFs still recalculate in Acrobat?',
+        answer:
+          'Yes. DullyPDF can generate Acrobat-compatible calculation actions for editable exports, while still storing the safe formula as the source of truth.',
+      },
+      {
+        question: 'What happens to imported custom calculation scripts?',
+        answer:
+          'DullyPDF does not execute or trust arbitrary imported scripts. Unsupported calculations should be rebuilt in the safe formula builder.',
+      },
+      {
+        question: 'Why is a formula model safer than script text?',
+        answer:
+          'A formula model has known node types and dependencies, which makes it easier to validate, compute server-side, and reuse across workflows.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'pdf-form-calculations-not-working', 'pdf-calculation-order', 'acroform-field-appearance'],
+    relatedDocs: ['editor-workflow', 'troubleshooting', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-calculation-order',
+    category: 'workflow',
+    path: '/pdf-calculation-order',
+    navLabel: 'PDF Calculation Order',
+    heroTitle: 'PDF Calculation Order for Dependent Fields',
+    heroSummary:
+      'Understand why chained PDF calculations need a dependency order, how cycles break totals, and how DullyPDF computes values before export.',
+    seoTitle: 'PDF Calculation Order for Dependent Fields | DullyPDF',
+    seoDescription:
+      'Learn why PDF calculated fields need the right calculation order, how dependency chains work, and why DullyPDF validates formulas before export.',
+    seoKeywords: [
+      'pdf calculation order',
+      'acroform calculation order',
+      'calculated field dependency order',
+      'pdf dependent calculations',
+      'pdf calculated field order',
+      'set field calculation order',
+      'pdf calculation cycle',
+      'pdf formula dependencies',
+      'acroform co array',
+    ],
+    valuePoints: [
+      'Model chained calculations as a dependency graph instead of a manual guess.',
+      'Block circular references before they can become broken exported PDFs.',
+      'Generate calculation order for editable Adobe workflows while still precomputing final values.',
+    ],
+    proofPoints: [
+      'DullyPDF extracts formula dependencies from the safe formula model.',
+      'Validation catches missing fields and cycles before calculated fields are saved.',
+      'Editable exports can write DullyPDF-owned calculated fields in dependency order.',
+    ],
+    articleSections: [
+      {
+        title: 'Order matters whenever one calculated field depends on another',
+        paragraphs: [
+          'A simple total can often compute directly from source inputs. A chained calculation is different. If field C depends on A plus B, and field E depends on C times D, then C has to be computed before E. Otherwise E may read a stale or blank value.',
+          'Adobe exposes calculation order controls for this exact reason.[^adobe-calculation-fields] DullyPDF approaches the same problem from the template model: formulas declare dependencies, and the app can derive the order rather than asking the operator to maintain it manually.',
+        ],
+      },
+      {
+        title: 'Think of formulas as a graph',
+        paragraphs: [
+          'Each number input or calculated output is a node. Each formula reference is an edge from the output to the field it needs. A valid calculation graph has a path from source inputs to outputs without looping back on itself.',
+          'That model makes the error cases clearer. A missing field is a broken edge. A circular reference is a loop. A reusable intermediate is valid only when everything it needs can be computed before any field that depends on it.',
+        ],
+      },
+      {
+        title: 'Cycles should fail before export',
+        paragraphs: [
+          'A cycle means there is no stable first value. For example, total_a depends on total_b while total_b depends on total_a. A PDF viewer might show a stale result, fail to update, or behave differently depending on which field it evaluates first.',
+          'DullyPDF blocks cycles before calculated fields are saved. That is a better failure mode than exporting a PDF that looks correct in one test case and breaks later when real records arrive.',
+        ],
+      },
+      {
+        title: 'Editable PDF order is compatibility, not the only computation path',
+        paragraphs: [
+          'Editable PDF exports can write DullyPDF-owned calculated fields into the PDF calculation order so Adobe-style viewers have a reasonable live recalculation path. That supports recipients who need to keep editing the PDF after download.',
+          'The same export still carries precomputed values. Browser and mobile viewers may not perform the full live calculation sequence, so the PDF should open with the value DullyPDF already computed during materialization.',
+        ],
+      },
+      {
+        title: 'A simple QA path for chained totals',
+        paragraphs: [
+          'Test each level of the chain. Fill source inputs first, inspect the first derived field, then inspect the final total. Change one source value and repeat the same check in editable output if live recalculation matters.',
+          'For final records, verify the flat output too. A flat PDF should show the same computed chain result without depending on any viewer-side calculation order.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations and set calculation order',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is PDF calculation order?',
+        answer:
+          'It is the sequence in which calculated fields are evaluated, which matters when one calculated field depends on another.',
+      },
+      {
+        question: 'Can DullyPDF detect circular calculation dependencies?',
+        answer:
+          'Yes. DullyPDF validates formula dependencies and blocks cycles before saving calculated fields.',
+      },
+      {
+        question: 'Does calculation order matter for flat PDFs?',
+        answer:
+          'DullyPDF computes the final value before flat output, then bakes it into page content. Calculation order mainly matters for editable live recalculation compatibility.',
+      },
+      {
+        question: 'What is a reusable calculated intermediate?',
+        answer:
+          'It is a read-only calculated value that can be referenced by another formula, useful for multi-step totals or chained calculations.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'add-calculated-field-to-pdf', 'pdf-form-javascript-calculation-alternative', 'pdf-form-calculations-not-working'],
+    relatedDocs: ['editor-workflow', 'troubleshooting', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-invoice-calculation-template',
+    category: 'workflow',
+    path: '/pdf-invoice-calculation-template',
+    navLabel: 'Invoice Calculation Template',
+    heroTitle: 'PDF Invoice Calculation Template for Subtotals, Tax, and Amount Due',
+    heroSummary:
+      'Turn a fixed invoice PDF into a reusable template with line totals, subtotal, discount, tax, payments, and balance due.',
+    seoTitle: 'PDF Invoice Calculation Template With Totals | DullyPDF',
+    seoDescription:
+      'Create reusable invoice PDF templates with calculated line totals, subtotal, tax, amount paid, and balance due. Fill from CSV, JSON, or API.',
+    seoKeywords: [
+      'pdf invoice calculation template',
+      'invoice pdf calculated fields',
+      'fillable invoice total field',
+      'pdf invoice subtotal tax total',
+      'invoice pdf formula fields',
+      'generate invoice pdf with totals',
+      'invoice pdf fill api totals',
+      'csv to invoice pdf total',
+      'invoice amount due pdf field',
+    ],
+    valuePoints: [
+      'Define line-item inputs and calculated invoice totals on a fixed PDF layout.',
+      'Fill invoice source values from spreadsheet rows, respondent records, or API JSON.',
+      'Export flat invoices when customers only need the finalized amount due.',
+    ],
+    proofPoints: [
+      'DullyPDF supports row-based filling from CSV, Excel, and JSON sources, with SQL/TXT imports reserved for schema mapping.',
+      'API Fill can compute derived invoice values server-side from source fields.',
+      'Flat PDF output keeps customer-facing invoice totals stable across viewers.',
+    ],
+    articleSections: [
+      {
+        title: 'When an invoice PDF should become a calculated template',
+        paragraphs: [
+          'A static invoice PDF is workable for one customer. It becomes fragile when the same layout is reused every week with different quantities, prices, discounts, taxes, payments, or balances. The repeated work is not just filling text. It is making sure the math follows the same rule each time.',
+          'DullyPDF is a good fit when the invoice layout is stable and the repeated job is populating known fields. The template can hold line-item inputs and calculated outputs while the source data comes from a spreadsheet, billing export, or API call.',
+        ],
+      },
+      {
+        title: 'Typical invoice calculation fields',
+        paragraphs: [
+          'Most invoice templates need a predictable set of fields: customer details, invoice number, dates, item description, quantity, unit price, line total, subtotal, discount, tax amount, amount paid, and balance due. The source inputs should stay editable. The derived amounts should usually be read-only calculated outputs.',
+          'If the invoice has a fixed number of line-item rows, a PDF template can work well. If the number of line items changes dramatically from invoice to invoice, a dynamic document-generation system may be the better fit because fixed PDFs do not add pages or rows automatically.',
+        ],
+      },
+      {
+        title: 'Spreadsheet and API paths for invoice data',
+        paragraphs: [
+          'Small teams may start from CSV or Excel exports. An operator searches the invoice row, fills the template, reviews the totals, and downloads the final PDF. Engineering teams can publish the same template through API Fill so an internal system sends JSON and receives a computed invoice PDF.',
+          'In both cases, the template should own the PDF-specific formula fields. The source system sends quantity, price, tax rate, discount, and amount paid. DullyPDF computes subtotal, total, and balance due during materialization.',
+        ],
+      },
+      {
+        title: 'Final invoices should usually be flat PDFs',
+        paragraphs: [
+          'A customer usually does not need live editable invoice widgets. They need a stable record of what was billed and what is due. For that external-recipient workflow, flat PDF output is usually safer because the computed values are baked into the page content.',
+          'Editable output still has a role for internal drafts or workflows where another person must continue filling the PDF. The final customer copy should be chosen based on viewer stability, not on whether the source template used calculations.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate invoice totals?',
+        answer:
+          'Yes. A saved template can define source number inputs and calculated outputs for line totals, subtotal, tax, discount, amount paid, and balance due.',
+      },
+      {
+        question: 'Can I fill invoice PDFs from CSV rows?',
+        answer:
+          'Yes. Search & Fill can use spreadsheet-style data sources, then DullyPDF computes calculated outputs during materialization.',
+      },
+      {
+        question: 'Can an API generate calculated invoice PDFs?',
+        answer:
+          'Yes. API Fill can accept source JSON values and compute invoice totals server-side from the saved template.',
+      },
+      {
+        question: 'Is this for variable-length invoices?',
+        answer:
+          'DullyPDF is strongest for fixed PDF layouts. Highly variable line-item counts may need a dynamic document-generation system.',
+      },
+    ],
+    relatedIntentPages: ['invoice-pdf-processing', 'pdf-calculation-fields', 'api-fill-calculated-pdf', 'fill-pdf-from-csv'],
+    relatedDocs: ['search-fill', 'api-fill', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-order-form-calculations',
+    category: 'workflow',
+    path: '/pdf-order-form-calculations',
+    navLabel: 'PDF Order Form Calculations',
+    heroTitle: 'PDF Order Form Calculations for Quantity, Price, Shipping, and Total',
+    heroSummary:
+      'Build reusable order-form PDF templates with quantity, unit price, line total, shipping, tax, discount, and grand-total calculations.',
+    seoTitle: 'PDF Order Form Calculations for Totals | DullyPDF',
+    seoDescription:
+      'Create fillable PDF order forms with calculated quantities, prices, shipping, tax, discounts, and grand totals. Fill from forms, CSV, or API.',
+    seoKeywords: [
+      'pdf order form calculations',
+      'fillable order form total',
+      'pdf quantity price total field',
+      'order form pdf calculated fields',
+      'pdf order total formula',
+      'fillable pdf order total',
+      'order form spreadsheet to pdf',
+      'pdf order form tax shipping total',
+    ],
+    valuePoints: [
+      'Calculate line totals, shipping, tax, discounts, and grand totals from source order inputs.',
+      'Collect customer order details through Fill By Link or fill staff-generated orders from internal data.',
+      'Use flat PDFs for final order confirmations and editable PDFs for internal drafts.',
+    ],
+    proofPoints: [
+      'Fill By Link can expose number inputs as web-form questions while DullyPDF computes read-only totals.',
+      'Search & Fill can populate order forms from structured rows and leave computed fields to materialization.',
+      'API Fill can generate fixed-layout order PDFs from JSON source values.',
+    ],
+    articleSections: [
+      {
+        title: 'Order forms need calculation rules because customers change inputs',
+        paragraphs: [
+          'A reusable order form usually combines customer-entered or staff-entered values with derived totals. Quantity, unit price, shipping, discount, tax, and deposit can all affect the amount due. Manual totals are easy to mistype when orders repeat.',
+          'DullyPDF lets the order form keep the fixed PDF layout while the template stores calculation rules. That makes the form useful across web-form collection, spreadsheet filling, and API generation without asking each workflow to recalculate totals separately.',
+        ],
+      },
+      {
+        title: 'Choose the right source for order data',
+        paragraphs: [
+          'Fill By Link is useful when customers or field staff need to enter the order details themselves. The public web form should ask for the source values, such as quantity and selected options, while calculated outputs stay hidden from direct entry. DullyPDF computes the totals when the PDF is generated.',
+          'Search & Fill is better when orders already exist in a spreadsheet or export. API Fill is better when an internal ordering system should generate the PDF directly from JSON.',
+        ],
+      },
+      {
+        title: 'Fixed PDF layouts are not unlimited carts',
+        paragraphs: [
+          'A PDF order form usually has a fixed number of rows. If every order fits that layout, a reusable calculated template can work well. If an order can contain one item or fifty items, a dynamic page-generation workflow may be more appropriate than a fixed source PDF.',
+          'This is a good constraint to state clearly on the public page. DullyPDF is strongest when the layout is stable and the automation job is repeated field filling with known calculation rules.',
+        ],
+      },
+      {
+        title: 'Final order copies should be viewer-stable',
+        paragraphs: [
+          'Customers usually need a confirmation, receipt, or work order that preserves the final numbers. A flat PDF is often the safer output because the values are drawn into the page. Editable PDFs are better when an internal team still needs to adjust live fields before finalization.',
+          'That output choice should happen after one realistic test order has been filled and reviewed end to end.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a Fill By Link order form include totals?',
+        answer:
+          'Yes. Respondents fill the source questions, and DullyPDF computes read-only totals when the PDF is generated.',
+      },
+      {
+        question: 'Can order forms be filled from spreadsheets?',
+        answer:
+          'Yes. Search & Fill can populate source order fields from CSV, Excel, or JSON rows. SQL and TXT imports are schema-only mapping aids.',
+      },
+      {
+        question: 'What if my order has variable line-item counts?',
+        answer:
+          'Fixed PDF templates work best when the number of rows is stable. Highly variable carts may need dynamic document generation.',
+      },
+      {
+        question: 'Can the grand total be read-only?',
+        answer:
+          'Yes. Calculated outputs are read-only so the grand total remains derived from source inputs.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'fillable-pdf-total-field', 'fill-pdf-by-link', 'fill-pdf-from-csv', 'batch-fill-pdf-forms'],
+    relatedDocs: ['fill-by-link', 'search-fill', 'editor-workflow'],
+  },
+  {
+    key: 'pdf-estimate-quote-calculations',
+    category: 'workflow',
+    path: '/pdf-estimate-quote-calculations',
+    navLabel: 'Estimate and Quote Calculations',
+    heroTitle: 'PDF Estimate and Quote Calculations for Labor, Materials, and Deposits',
+    heroSummary:
+      'Create reusable estimate and quote PDF templates with calculated labor, materials, markup, discounts, deposits, and balance due.',
+    seoTitle: 'PDF Estimate and Quote Calculations | DullyPDF',
+    seoDescription:
+      'Build reusable PDF estimates and quotes with calculated labor, materials, markup, discounts, deposits, totals, and balance due.',
+    seoKeywords: [
+      'pdf estimate calculation template',
+      'quote pdf calculated fields',
+      'fillable estimate total',
+      'pdf quote total field',
+      'estimate pdf formula fields',
+      'labor materials quote pdf',
+      'pdf deposit balance due field',
+      'service estimate pdf calculations',
+      'calculated quote pdf template',
+    ],
+    valuePoints: [
+      'Calculate labor, materials, markup, discount, deposit, total, and balance due in a fixed PDF estimate.',
+      'Reuse one reviewed template for repeated customer quotes instead of rebuilding totals by hand.',
+      'Generate customer-facing flat PDFs after review, or editable PDFs for internal draft work.',
+    ],
+    proofPoints: [
+      'DullyPDF templates preserve calculation metadata after save and reopen.',
+      'Fill By Link can collect request data before staff generate the quote PDF.',
+      'API Fill can generate fixed-layout quote PDFs from CRM or estimating-system data.',
+    ],
+    articleSections: [
+      {
+        title: 'Estimates and quotes mix customer data with calculation rules',
+        paragraphs: [
+          'A service quote is rarely just contact information. It often combines labor hours, hourly rate, materials, markup, discount, deposit, and balance due. Those values need to be consistent because the PDF is often the document the customer approves or signs.',
+          'A reusable calculated template helps when the visual quote layout stays the same. Staff can fill source values, inspect the computed totals, and send a customer-facing PDF without retyping the same math for every job.',
+        ],
+      },
+      {
+        title: 'Good fields make quote formulas easier to audit',
+        paragraphs: [
+          'Use explicit source inputs such as labor_hours, labor_rate, material_cost, markup_amount, discount, deposit, and expiration_date. Then use read-only calculated outputs for subtotal, total, and balance_due. Clear naming makes the formula easier to review and easier to map from source systems.',
+          'If the business needs a discretionary adjustment, include that adjustment as a source input rather than editing the total directly. That keeps the final quote explainable.',
+        ],
+      },
+      {
+        title: 'Fill By Link can collect request details before the quote is generated',
+        paragraphs: [
+          'Some quote workflows start with a customer request form. Fill By Link can collect the customer-facing answers while staff retain control over the reviewed PDF output. Calculation fields should still be computed by DullyPDF when the final quote is generated.',
+          'This works best when customer-entered values are source facts, not final prices. Staff can review or adjust source inputs before producing the PDF quote.',
+        ],
+      },
+      {
+        title: 'Use flat output for customer-facing quote records',
+        paragraphs: [
+          'Once a quote is ready to send, a flat PDF is usually the better customer copy. The computed values are part of the page, so the document does not depend on the customer PDF viewer running live calculation behavior.',
+          'Editable PDF output remains useful for internal drafts or workflows where another team member must continue editing the fields before final review.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate labor and material totals?',
+        answer:
+          'Yes. A quote template can use source number inputs for labor, rates, materials, markup, discounts, and deposits, then compute read-only outputs.',
+      },
+      {
+        question: 'Can customers submit quote request data through a link?',
+        answer:
+          'Yes. Fill By Link can collect source request data, and the owner can generate the calculated PDF after review.',
+      },
+      {
+        question: 'Can an internal CRM generate calculated quote PDFs?',
+        answer:
+          'Yes. API Fill can send JSON source values into a saved template and receive a filled PDF with computed outputs.',
+      },
+      {
+        question: 'Should the customer quote be editable?',
+        answer:
+          'Usually no. A flat PDF is safer for customer-facing final quotes because the computed values are baked into the page.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'fillable-pdf-total-field', 'api-fill-calculated-pdf', 'fill-pdf-by-link'],
+    relatedDocs: ['editor-workflow', 'fill-by-link', 'api-fill', 'save-download-profile'],
+  },
+  {
+    key: 'calculated-pdf-from-csv',
+    category: 'workflow',
+    path: '/calculated-pdf-from-csv',
+    navLabel: 'Calculated PDF From CSV',
+    heroTitle: 'Fill Calculated PDF Fields From CSV or Excel Rows',
+    heroSummary:
+      'Map spreadsheet columns to source number inputs, search a row, and let DullyPDF compute read-only calculated outputs when the PDF is generated.',
+    seoTitle: 'Fill Calculated PDF Fields From CSV or Excel | DullyPDF',
+    seoDescription:
+      'Fill source number inputs from CSV, Excel, or JSON row data and let DullyPDF compute calculated PDF outputs during materialization.',
+    seoKeywords: [
+      'calculated pdf from csv',
+      'fill calculated pdf from csv',
+      'spreadsheet to calculated pdf',
+      'csv to pdf calculated fields',
+      'excel to calculated pdf',
+      'fill pdf totals from spreadsheet',
+      'search and fill calculated pdf',
+      'pdf calculated fields from excel',
+    ],
+    valuePoints: [
+      'Use spreadsheet rows for source number inputs while keeping totals and derived fields read-only.',
+      'Avoid duplicating total formulas in every spreadsheet export or downstream process.',
+      'Review one selected row in the workspace before downloading an editable or flat PDF.',
+    ],
+    proofPoints: [
+      'Search & Fill populates source values and leaves calculated outputs to DullyPDF materialization.',
+      'The same saved template can later support Fill By Link, API Fill, editable downloads, and flat downloads.',
+      'Flat PDF output keeps computed values viewer-stable for final records.',
+    ],
+    articleSections: [
+      {
+        title: 'CSV should provide source facts, not final calculated fields',
+        paragraphs: [
+          'A spreadsheet can already contain totals, but copying those totals into a PDF creates two sources of truth. If the spreadsheet formula changes, if a column is stale, or if an operator edits one value by hand, the PDF can stop matching the source inputs.',
+          'DullyPDF works better when the spreadsheet provides the source values and the template computes the derived values. Quantity, rate, hours, fee, discount, and deposit can come from the row. Subtotal, grand total, amount due, or score total can be calculated by the PDF template when the file is generated.',
+        ],
+      },
+      {
+        title: 'Map number inputs clearly before importing rows',
+        paragraphs: [
+          'The field names in the template should align with the spreadsheet headers. Clear names such as labor_hours, unit_price, mileage_rate, and adjustment are easier to map and easier to audit than generic PDF widget names.',
+          'After mapping, test one realistic row end to end. Long values, blanks, discounts, and zero inputs are more useful than a perfectly clean demo row because they expose calculation behavior before the template is used repeatedly.',
+        ],
+      },
+      {
+        title: 'When to use flat versus editable output',
+        paragraphs: [
+          'Editable output is useful when someone still needs to review or adjust live fields in a compatible viewer. Flat output is usually better when the spreadsheet row has already produced the final record. The values are baked into the page and do not depend on the recipient viewer running calculation JavaScript.',
+          'That distinction matters for invoices, reimbursement forms, order forms, and internal worksheets where the completed PDF may move through email, preview panes, or mobile devices.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a CSV row fill calculated PDF fields?',
+        answer:
+          'The row should fill source number inputs. DullyPDF then computes calculated outputs during materialization.',
+      },
+      {
+        question: 'Can this work with Excel or JSON too?',
+        answer:
+          'Yes. The same Search & Fill workflow supports CSV, Excel, and JSON row sources. SQL and TXT imports are schema-only mapping aids.',
+      },
+      {
+        question: 'Should calculated outputs be mapped to spreadsheet columns?',
+        answer:
+          'Usually no. Keep calculated outputs derived from template formulas so the PDF owns the final calculation rule.',
+      },
+    ],
+    relatedIntentPages: ['fill-pdf-from-csv', 'pdf-calculation-fields', 'fillable-pdf-total-field', 'batch-fill-pdf-forms'],
+    relatedDocs: ['search-fill', 'editor-workflow', 'save-download-profile'],
+  },
+  {
+    key: 'fill-by-link-calculated-pdf',
+    category: 'workflow',
+    path: '/fill-by-link-calculated-pdf',
+    navLabel: 'Fill By Link Calculated PDF',
+    heroTitle: 'Collect Number Inputs by Link and Generate Calculated PDFs',
+    heroSummary:
+      'Publish a web form from a saved PDF template, collect source number answers, and let DullyPDF compute calculated outputs for the generated PDF.',
+    seoTitle: 'Fill By Link for Calculated PDF Forms | DullyPDF',
+    seoDescription:
+      'Collect source number inputs through a hosted web form and generate PDFs with server-computed calculated fields, totals, and balances.',
+    seoKeywords: [
+      'fill by link calculated pdf',
+      'web form calculated pdf',
+      'calculated pdf web form',
+      'online form to calculated pdf',
+      'respondent calculated pdf',
+      'pdf totals from web form',
+      'fillable pdf link with calculations',
+      'generate calculated pdf from form responses',
+    ],
+    valuePoints: [
+      'Ask respondents for source inputs without exposing read-only calculated outputs as questions.',
+      'Generate the completed PDF after DullyPDF computes totals, balances, or scores from submitted answers.',
+      'Use flat respondent copies when the completed values should be viewer-stable.',
+    ],
+    proofPoints: [
+      'Fill By Link publishes number inputs as normal respondent questions.',
+      'Calculated outputs and calculated intermediates stay out of the respondent-facing question list.',
+      'Stored responses can later be selected in the workspace and materialized through the same calculation logic.',
+    ],
+    articleSections: [
+      {
+        title: 'The public form should collect inputs, not totals',
+        paragraphs: [
+          'A respondent-facing form should ask for the facts the respondent can provide: quantities, hours, rates, counts, mileage, fees, or scores. It should not ask them to type a total that the template can calculate.',
+          'DullyPDF keeps that boundary by publishing number inputs as questions while keeping calculated outputs out of the web form. The generated PDF receives computed values after submission.',
+        ],
+      },
+      {
+        title: 'Why this is better than asking recipients to edit a PDF directly',
+        paragraphs: [
+          'Many external recipients are on phones, browser previews, or email clients where editable PDF behavior is inconsistent. A hosted web form is easier to complete, and the final PDF can be generated after DullyPDF has the structured answers.',
+          'That workflow is especially useful when totals matter. The respondent provides source values in a normal form, and the owner can generate a flat PDF where completed values are already baked into the document.',
+        ],
+      },
+      {
+        title: 'Good calculated-link use cases',
+        paragraphs: [
+          'Calculated Fill By Link workflows work well for quote requests, reimbursement forms, simple order forms, inspection scores, membership dues, and application worksheets where the respondent supplies numeric inputs but the organization owns the final calculation.',
+          'They are a poor fit for complex calculators that require date math, variable-length tables, or business rules outside DullyPDF’s safe formula model. Those should be handled in the source system or a dedicated calculator before the PDF is generated.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can Fill By Link include calculated PDF fields?',
+        answer:
+          'Yes. The public form collects source inputs, and DullyPDF computes calculated outputs when generating the PDF.',
+      },
+      {
+        question: 'Do respondents see calculated outputs as questions?',
+        answer:
+          'No. Calculated outputs and calculated intermediates stay out of the respondent-facing question list.',
+      },
+      {
+        question: 'What output should respondents receive?',
+        answer:
+          'Flat PDF output is usually best for respondent receipts and final records because computed values are baked into the page.',
+      },
+    ],
+    relatedIntentPages: ['fill-pdf-by-link', 'pdf-calculation-fields', 'fillable-pdf-total-field', 'pdf-estimate-quote-calculations'],
+    relatedDocs: ['fill-by-link', 'editor-workflow', 'save-download-profile'],
+  },
+  {
+    key: 'flat-vs-editable-calculated-pdf',
+    category: 'workflow',
+    path: '/flat-vs-editable-calculated-pdf',
+    navLabel: 'Flat vs Editable Calculated PDF',
+    heroTitle: 'Flat vs Editable PDFs When Calculated Fields Matter',
+    heroSummary:
+      'Choose editable PDFs for Adobe-first live field work and flat PDFs for final calculated records that must look the same across viewers.',
+    seoTitle: 'Flat vs Editable PDF for Calculated Fields | DullyPDF',
+    seoDescription:
+      'Learn when to export editable calculated PDFs for Acrobat and when to export flat PDFs so computed values stay stable across browsers and mobile viewers.',
+    seoKeywords: [
+      'flat vs editable calculated pdf',
+      'editable pdf calculations',
+      'flat pdf calculated fields',
+      'pdf calculated fields final record',
+      'flatten calculated pdf',
+      'editable calculated pdf acrobat',
+      'calculated pdf viewer compatibility',
+      'pdf calculations browser compatibility',
+    ],
+    valuePoints: [
+      'Use editable output when someone must keep filling live fields in a compatible viewer.',
+      'Use flat output when the calculated PDF is a final record, receipt, signed source, or external copy.',
+      'Avoid confusing viewer issues by choosing output mode based on the next workflow step.',
+    ],
+    proofPoints: [
+      'DullyPDF precomputes calculated values before both editable and flat downloads.',
+      'Editable exports can include generated Acrobat calculation actions for Adobe compatibility.',
+      'Flat exports remove live widget dependency by drawing final values into page content.',
+    ],
+    articleSections: [
+      {
+        title: 'Editable calculated PDFs are for continued field work',
+        paragraphs: [
+          'Editable PDFs are useful when the next user needs to keep changing source values inside the PDF. In that workflow, Adobe Acrobat or Reader is the practical live-recalculation target because browser and mobile PDF viewers vary in form JavaScript support.',
+          'DullyPDF can write current values and generated Acrobat-compatible actions into editable exports. That helps the file open with the expected calculated value while still supporting live editing in compatible viewers.',
+        ],
+      },
+      {
+        title: 'Flat calculated PDFs are for final records',
+        paragraphs: [
+          'A flat PDF is usually the right choice once the document is ready to send, store, sign, or archive. The computed value is part of the page content, not a live widget waiting for a viewer to rerun a script.',
+          'That is the safer path for customers, respondents, signers, and external recipients who may open the PDF in a browser, mobile preview, or email client.',
+        ],
+      },
+      {
+        title: 'A simple decision rule',
+        paragraphs: [
+          'If the recipient needs to keep editing fields, use editable output and tell them to use a compatible PDF viewer. If the recipient needs the completed result, use flat output. The fact that a template contains calculations does not automatically mean the final PDF should remain editable.',
+          'This is also why DullyPDF Fill By Link and signing workflows lean toward flat copies for external records. The goal is a stable completed document, not a live form that behaves differently across viewers.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do flat PDFs keep calculated values?',
+        answer:
+          'Yes. DullyPDF computes the values before export and draws them into the page content for flat PDFs.',
+      },
+      {
+        question: 'Do editable PDFs recalculate live everywhere?',
+        answer:
+          'No. Live recalculation is primarily Adobe-first. Browser and mobile viewers may only preserve the precomputed value.',
+      },
+      {
+        question: 'Which output should I send to customers?',
+        answer:
+          'Usually flat PDF, unless the customer must continue editing live fields in a compatible viewer.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'pdf-form-calculations-not-working', 'fill-pdf-by-link', 'pdf-signature-workflow'],
+    relatedDocs: ['save-download-profile', 'fill-by-link', 'signature-workflow'],
+  },
+  {
+    key: 'pdf-expense-report-calculations',
+    category: 'workflow',
+    path: '/pdf-expense-report-calculations',
+    navLabel: 'Expense Report Calculations',
+    heroTitle: 'PDF Expense Report Calculations for Reimbursements and Totals',
+    heroSummary:
+      'Create reusable expense report PDFs with source expense lines, mileage, adjustments, reimbursement totals, and flat final copies.',
+    seoTitle: 'PDF Expense Report Calculations and Reimbursement Totals | DullyPDF',
+    seoDescription:
+      'Build expense report PDF templates with calculated reimbursement totals from source expense lines, mileage, adjustments, and payments.',
+    seoKeywords: [
+      'pdf expense report calculations',
+      'expense report pdf total',
+      'reimbursement pdf calculated fields',
+      'fillable expense report total',
+      'expense reimbursement pdf template',
+      'pdf expense total field',
+      'csv expense report pdf',
+      'calculated reimbursement pdf',
+    ],
+    valuePoints: [
+      'Calculate reimbursement totals from itemized expense and mileage inputs.',
+      'Fill staff-generated expense reports from spreadsheet exports or collect source values by link.',
+      'Use flat PDFs for final reimbursement records and receipts.',
+    ],
+    proofPoints: [
+      'DullyPDF supports source number inputs plus read-only calculated outputs.',
+      'Search & Fill can populate expense templates from structured rows.',
+      'Fill By Link can collect source expense values before generating the completed PDF.',
+    ],
+    articleSections: [
+      {
+        title: 'Expense reports are a natural fit for source inputs plus totals',
+        paragraphs: [
+          'Expense reports usually combine itemized amounts, mileage, advances, adjustments, and a final reimbursement total. The source values may come from an employee, a spreadsheet, or an internal system. The final total should be computed consistently.',
+          'A calculated PDF template keeps the math attached to the report layout. That helps teams avoid manually retyping totals into a static PDF after the source values are already known.',
+        ],
+      },
+      {
+        title: 'Model adjustments explicitly',
+        paragraphs: [
+          'If an expense report needs a manual correction, do not edit the total directly. Add explicit source fields such as adjustment, advance_paid, non_reimbursable_amount, or approved_amount. Then let the reimbursement total calculate from those fields.',
+          'This makes the final record easier to audit because every change that affects the total has its own field.',
+        ],
+      },
+      {
+        title: 'Use flat output for reimbursement records',
+        paragraphs: [
+          'A completed expense report is usually a record, not a live calculator. Flat output is therefore a better fit for reimbursement approval, accounting storage, and external sharing because the values do not depend on the next PDF viewer.',
+          'Editable output still makes sense for internal drafts where another reviewer must adjust source fields before approval.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate expense reimbursement totals?',
+        answer:
+          'Yes. Expense report templates can use source number inputs and read-only calculated outputs for reimbursement totals.',
+      },
+      {
+        question: 'Can employees submit expense values by link?',
+        answer:
+          'Yes. Fill By Link can collect source values, and DullyPDF can generate the calculated PDF later.',
+      },
+      {
+        question: 'Can I fill expense reports from a spreadsheet?',
+        answer:
+          'Yes. Search & Fill can populate source expense fields from structured data and compute totals during materialization.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'calculated-pdf-from-csv', 'fill-by-link-calculated-pdf', 'pdf-mileage-reimbursement-calculation'],
+    relatedDocs: ['search-fill', 'fill-by-link', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-timesheet-calculations',
+    category: 'workflow',
+    path: '/pdf-timesheet-calculations',
+    navLabel: 'PDF Timesheet Calculations',
+    heroTitle: 'PDF Timesheet Calculations for Hours, Rates, and Totals',
+    heroSummary:
+      'Create fixed-layout timesheet PDFs with numeric hour inputs, rate fields, calculated pay totals, and flat final records.',
+    seoTitle: 'PDF Timesheet Calculations for Hours and Rates | DullyPDF',
+    seoDescription:
+      'Build timesheet PDF templates with numeric hours, rates, adjustments, and calculated totals. Fill from rows, web forms, or API data.',
+    seoKeywords: [
+      'pdf timesheet calculations',
+      'timesheet pdf total hours',
+      'fillable timesheet calculated fields',
+      'pdf hours rate total',
+      'timesheet pdf formula fields',
+      'employee timesheet pdf total',
+      'calculated timesheet pdf',
+      'pdf payroll hours calculation',
+    ],
+    valuePoints: [
+      'Use numeric hour and rate inputs instead of relying on unsupported date/time math.',
+      'Calculate totals, adjustments, or amount due in a fixed timesheet layout.',
+      'Keep payroll policy, tax, and compliance decisions outside the PDF formula page.',
+    ],
+    proofPoints: [
+      'DullyPDF v1 formulas support numeric arithmetic, not date/time duration parsing.',
+      'Calculated outputs can be frozen into flat PDFs for final approval records.',
+      'Source timesheet values can come from Search & Fill, Fill By Link, or API Fill.',
+    ],
+    articleSections: [
+      {
+        title: 'Use numeric hours, not time parsing',
+        paragraphs: [
+          'Timesheets are useful calculation pages only when the source values are numeric. For example, regular_hours, overtime_hours, hourly_rate, adjustment, and total_due can work well. Clock-in and clock-out time parsing is a different problem and should be handled before the PDF is filled.',
+          'This constraint keeps the template reliable. DullyPDF’s safe formula model is intended for numeric arithmetic, not payroll law, tax withholding, time-zone logic, or date/time duration rules.',
+        ],
+      },
+      {
+        title: 'Separate policy from PDF math',
+        paragraphs: [
+          'The PDF can calculate from inputs, but the business still owns the policy behind those inputs. Overtime rules, approvals, payroll classifications, and compliance requirements should be handled by the source system or reviewed by the responsible team.',
+          'The PDF template is strongest as the output layer: it receives reviewed numeric values and computes simple derived totals for the document record.',
+        ],
+      },
+      {
+        title: 'Common timesheet PDF fields',
+        paragraphs: [
+          'Useful source fields include employee_name, pay_period, regular_hours, overtime_hours, rate, overtime_rate, adjustment, and advance_paid. Useful calculated outputs include regular_total, overtime_total, gross_total, and balance_due.',
+          'For final approvals or records, a flat PDF is usually safer because the calculated values are baked into the page after review.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate total hours from clock-in and clock-out times?',
+        answer:
+          'No. DullyPDF calculation fields are for numeric arithmetic. Convert time ranges into numeric hour values before filling the PDF.',
+      },
+      {
+        question: 'Can a timesheet PDF multiply hours by rate?',
+        answer:
+          'Yes. Numeric hour and rate inputs can feed calculated outputs such as regular total, overtime total, or gross total.',
+      },
+      {
+        question: 'Does DullyPDF handle payroll compliance?',
+        answer:
+          'No. DullyPDF can fill and compute PDF fields, but payroll rules and compliance decisions belong in your payroll process or source system.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'calculated-pdf-from-csv', 'fill-by-link-calculated-pdf', 'flat-vs-editable-calculated-pdf'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'fill-by-link'],
+  },
+  {
+    key: 'pdf-purchase-order-calculations',
+    category: 'workflow',
+    path: '/pdf-purchase-order-calculations',
+    navLabel: 'Purchase Order Calculations',
+    heroTitle: 'PDF Purchase Order Calculations for Line Items and Totals',
+    heroSummary:
+      'Create purchase order PDF templates with line totals, subtotal, tax, shipping, discounts, and grand-total calculated outputs.',
+    seoTitle: 'PDF Purchase Order Calculations With Line Totals | DullyPDF',
+    seoDescription:
+      'Build purchase order PDF templates with calculated line totals, subtotal, tax, shipping, discounts, and grand totals from source inputs.',
+    seoKeywords: [
+      'pdf purchase order calculations',
+      'purchase order pdf totals',
+      'po pdf line total',
+      'fillable purchase order total field',
+      'purchase order calculated pdf',
+      'pdf po subtotal tax shipping',
+      'purchase order pdf from csv',
+      'api purchase order pdf totals',
+    ],
+    valuePoints: [
+      'Compute line totals and order totals from fixed purchase order inputs.',
+      'Fill purchase orders from spreadsheets, procurement exports, or API JSON.',
+      'Generate flat vendor-facing copies once the PO has been reviewed.',
+    ],
+    proofPoints: [
+      'DullyPDF is strongest for fixed PDF purchase order layouts with known row counts.',
+      'API Fill can generate purchase order PDFs from source JSON values.',
+      'Flat output preserves final totals across vendor viewers and email previews.',
+    ],
+    articleSections: [
+      {
+        title: 'Purchase orders need stable line-item assumptions',
+        paragraphs: [
+          'A purchase order PDF usually has a fixed number of line-item rows. If the layout matches the procurement workflow, a calculated template can compute line totals, subtotal, tax, shipping, discount, and grand total from source inputs.',
+          'If line-item counts vary widely, a dynamic document-generation system may be a better fit. DullyPDF is strongest when the PDF layout is stable and the repeated job is filling known fields.',
+        ],
+      },
+      {
+        title: 'Use source values from procurement systems',
+        paragraphs: [
+          'Procurement data often already exists in a spreadsheet, database export, or internal system. Instead of manually entering values into a PDF, map source fields such as vendor_name, item_description, quantity, unit_cost, shipping, tax, and discount.',
+          'The PDF template can then compute derived fields while preserving the official purchase order layout used by the business.',
+        ],
+      },
+      {
+        title: 'Vendor-facing copies should usually be flat',
+        paragraphs: [
+          'A vendor does not usually need to edit the purchase order’s live fields. A flat PDF keeps totals and source values stable across viewer software. Editable output is better reserved for internal drafts or review workflows.',
+          'This reduces the chance that a purchase order total appears differently because the recipient viewer handles live form fields differently.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate purchase order line totals?',
+        answer:
+          'Yes. Source fields such as quantity and unit cost can feed read-only calculated line totals and grand totals.',
+      },
+      {
+        question: 'Can purchase orders be generated from API data?',
+        answer:
+          'Yes. API Fill can send JSON source values to a saved purchase order template and receive a calculated PDF.',
+      },
+      {
+        question: 'Does this handle unlimited line items?',
+        answer:
+          'No. DullyPDF is best for fixed-layout PDFs with a known number of line-item rows.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'api-fill-calculated-pdf', 'calculated-pdf-from-csv', 'fillable-pdf-total-field'],
+    relatedDocs: ['api-fill', 'search-fill', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-construction-bid-calculations',
+    category: 'workflow',
+    path: '/pdf-construction-bid-calculations',
+    navLabel: 'Construction Bid Calculations',
+    heroTitle: 'PDF Construction Bid Calculations for Labor, Materials, and Markup',
+    heroSummary:
+      'Create reusable construction bid PDF templates with calculated labor, material, equipment, markup, tax, deposit, and total fields.',
+    seoTitle: 'PDF Construction Bid Calculations and Totals | DullyPDF',
+    seoDescription:
+      'Build construction bid PDF templates with calculated labor, materials, equipment, markup, tax, deposits, and totals from source values.',
+    seoKeywords: [
+      'pdf construction bid calculations',
+      'construction bid pdf total',
+      'construction estimate pdf calculated fields',
+      'contractor bid pdf template calculations',
+      'labor materials markup pdf',
+      'construction quote pdf totals',
+      'change order bid pdf calculations',
+      'contractor estimate pdf total',
+    ],
+    valuePoints: [
+      'Calculate bid totals from explicit labor, materials, equipment, markup, and adjustment fields.',
+      'Reuse reviewed bid templates across repeated contractor or project workflows.',
+      'Generate flat customer-facing bid PDFs after internal review.',
+    ],
+    proofPoints: [
+      'DullyPDF supports fixed-layout construction PDFs through the same template and calculation model.',
+      'Source bid values can come from staff entry, spreadsheets, or API payloads.',
+      'Flat outputs keep customer-facing totals stable when bids are emailed or printed.',
+    ],
+    articleSections: [
+      {
+        title: 'Construction bid PDFs need explainable totals',
+        paragraphs: [
+          'A construction bid often combines labor, materials, equipment, markup, permits, discounts, deposits, and exclusions. The customer-facing total needs to match the reviewed source values, not a manually typed number at the bottom of a PDF.',
+          'A calculated template helps when the bid layout is stable. Staff can fill source fields, inspect calculated outputs, and deliver a flat PDF once the quote is approved.',
+        ],
+      },
+      {
+        title: 'Keep estimating logic and legal terms separate',
+        paragraphs: [
+          'DullyPDF can compute numeric fields in the PDF, but it is not an estimating engine or a contract review system. Pricing models, scope assumptions, licensing requirements, and contract terms still belong in the business process that prepares the source values and text.',
+          'The PDF calculation layer is best used for visible arithmetic that the final bid document needs to display consistently.',
+        ],
+      },
+      {
+        title: 'When to choose API or spreadsheet filling',
+        paragraphs: [
+          'A small contractor may fill bids from a spreadsheet. A larger operation may send source values from a CRM or estimating system through API Fill. In both cases, the PDF template can own the final display calculations for the fixed bid layout.',
+          'The best fit is repeated document generation from a stable form, not highly variable proposals that need dynamic pages and sections.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate labor and material totals in a construction bid?',
+        answer:
+          'Yes. Source fields for labor, materials, equipment, markup, and adjustments can feed read-only calculated outputs.',
+      },
+      {
+        question: 'Is DullyPDF a construction estimating system?',
+        answer:
+          'No. It fills and computes PDF fields. Estimating rules, contract terms, and pricing decisions remain outside DullyPDF.',
+      },
+      {
+        question: 'Should customer-facing bids be flat PDFs?',
+        answer:
+          'Usually yes. A flat PDF preserves the reviewed totals across viewers and devices.',
+      },
+    ],
+    relatedIntentPages: ['construction-pdf-automation', 'pdf-estimate-quote-calculations', 'pdf-change-order-calculations', 'pdf-calculation-fields'],
+    relatedDocs: ['editor-workflow', 'api-fill', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-change-order-calculations',
+    category: 'workflow',
+    path: '/pdf-change-order-calculations',
+    navLabel: 'Change Order Calculations',
+    heroTitle: 'PDF Change Order Calculations for Added Cost, Credits, and Revised Total',
+    heroSummary:
+      'Create change order PDF templates with added labor, materials, credits, prior contract amount, revised total, and balance fields.',
+    seoTitle: 'PDF Change Order Calculations for Revised Totals | DullyPDF',
+    seoDescription:
+      'Build change order PDF templates with calculated added costs, credits, prior contract amount, revised total, and balance due.',
+    seoKeywords: [
+      'pdf change order calculations',
+      'change order pdf total',
+      'construction change order calculated fields',
+      'change order revised total pdf',
+      'pdf change order cost calculation',
+      'change order template totals',
+      'contract change order pdf calculation',
+    ],
+    valuePoints: [
+      'Calculate added cost, credits, revised contract amount, and balance due from explicit source fields.',
+      'Keep final change order totals read-only and derived from visible inputs.',
+      'Use flat PDFs for customer-facing approvals or signed records.',
+    ],
+    proofPoints: [
+      'Change orders can reuse the same calculation model as bids and estimates.',
+      'Signing workflows can freeze the reviewed flat source PDF before the signer ceremony.',
+      'Calculated values are materialized before the final PDF is delivered.',
+    ],
+    articleSections: [
+      {
+        title: 'Change orders need totals that match the visible inputs',
+        paragraphs: [
+          'A change order may add labor, materials, fees, or time, and it may also include credits or prior payments. The revised total should be derived from those explicit source fields instead of typed manually after the fact.',
+          'A calculated PDF template makes that relationship visible. The source values can be reviewed, and the calculated total can be locked as a read-only output.',
+        ],
+      },
+      {
+        title: 'Use source fields for credits and adjustments',
+        paragraphs: [
+          'Credits, owner allowances, prior payments, or manual adjustments should each have their own source field. That keeps the revised total explainable and avoids hiding important decisions inside one overwritten total.',
+          'The PDF calculation should display the arithmetic, not replace the business approval process around the change order.',
+        ],
+      },
+      {
+        title: 'Freeze the final version before signature',
+        paragraphs: [
+          'If the change order is sent for signature, the exact filled PDF should be frozen first. DullyPDF signing workflows use an immutable source artifact so the signer reviews the same calculated record the owner intends to retain.',
+          'That is another reason flat output is useful for final change orders: it avoids live viewer behavior changing what the signer or customer sees.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a change order PDF calculate a revised contract total?',
+        answer:
+          'Yes. Source fields such as prior amount, added cost, credits, and adjustments can feed a read-only revised total.',
+      },
+      {
+        question: 'Can change orders be signed after calculation?',
+        answer:
+          'Yes. The reviewed filled PDF can be frozen for DullyPDF signing workflows after calculated values are materialized.',
+      },
+      {
+        question: 'Does DullyPDF provide contract advice?',
+        answer:
+          'No. DullyPDF handles PDF field filling, calculations, and signing workflow mechanics, not legal or contract advice.',
+      },
+    ],
+    relatedIntentPages: ['construction-pdf-automation', 'pdf-construction-bid-calculations', 'pdf-signature-workflow', 'pdf-calculation-fields'],
+    relatedDocs: ['signature-workflow', 'editor-workflow', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-mileage-reimbursement-calculation',
+    category: 'workflow',
+    path: '/pdf-mileage-reimbursement-calculation',
+    navLabel: 'Mileage Reimbursement Calculation',
+    heroTitle: 'PDF Mileage Reimbursement Calculation Forms',
+    heroSummary:
+      'Create mileage reimbursement PDF templates with miles, rate, tolls, parking, advances, adjustments, and reimbursement totals.',
+    seoTitle: 'PDF Mileage Reimbursement Calculation Form | DullyPDF',
+    seoDescription:
+      'Build mileage reimbursement PDF forms with calculated mileage totals, tolls, parking, advances, adjustments, and final reimbursement.',
+    seoKeywords: [
+      'pdf mileage reimbursement calculation',
+      'mileage reimbursement pdf total',
+      'fillable mileage form calculated fields',
+      'miles rate reimbursement pdf',
+      'travel reimbursement pdf calculation',
+      'mileage expense pdf total',
+      'calculated mileage reimbursement form',
+    ],
+    valuePoints: [
+      'Calculate miles times reimbursement rate plus tolls, parking, or adjustments.',
+      'Collect mileage source values by link or fill them from spreadsheet rows.',
+      'Use flat PDFs for final reimbursement records.',
+    ],
+    proofPoints: [
+      'DullyPDF can compute basic numeric formulas from source number inputs.',
+      'Expense and mileage workflows can reuse Search & Fill or Fill By Link.',
+      'Flat output preserves the final reimbursement amount across viewers.',
+    ],
+    articleSections: [
+      {
+        title: 'Mileage forms should make the rate and adjustment explicit',
+        paragraphs: [
+          'Mileage reimbursement is usually a simple calculation, but it still benefits from explicit source fields. Miles, rate, tolls, parking, advances, and adjustments should be visible as inputs. The reimbursement total should be read-only and derived from those fields.',
+          'That makes the final record easier to review. If the rate changes, the template or source value can be updated intentionally instead of overwriting a total manually.',
+        ],
+      },
+      {
+        title: 'DullyPDF handles PDF arithmetic, not reimbursement policy',
+        paragraphs: [
+          'The business still owns reimbursement policy, rate selection, approvals, and tax handling. DullyPDF can apply the numeric formula inside the PDF template after the source values are chosen.',
+          'That boundary keeps the public claim accurate: this is a PDF workflow page, not reimbursement advice.',
+        ],
+      },
+      {
+        title: 'Common mileage reimbursement fields',
+        paragraphs: [
+          'Useful fields include employee_name, trip_date, purpose, miles, mileage_rate, tolls, parking, advance_paid, adjustment, and reimbursement_total. Source fields can come from a spreadsheet, a respondent web form, or an internal system.',
+          'For final records, flat PDF output is usually the right delivery mode because the reimbursement amount is baked into the page.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate miles times rate?',
+        answer:
+          'Yes. Numeric miles and rate inputs can feed a read-only calculated reimbursement total.',
+      },
+      {
+        question: 'Does DullyPDF choose the mileage rate?',
+        answer:
+          'No. Your business or source system chooses the rate. DullyPDF applies the numeric formula in the PDF.',
+      },
+      {
+        question: 'Can employees submit mileage values by link?',
+        answer:
+          'Yes. Fill By Link can collect source values, and DullyPDF can generate the calculated PDF afterward.',
+      },
+    ],
+    relatedIntentPages: ['pdf-expense-report-calculations', 'fill-by-link-calculated-pdf', 'calculated-pdf-from-csv', 'pdf-calculation-fields'],
+    relatedDocs: ['fill-by-link', 'search-fill', 'save-download-profile'],
+  },
+  {
+    key: 'pdf-inspection-score-calculations',
+    category: 'workflow',
+    path: '/pdf-inspection-score-calculations',
+    navLabel: 'Inspection Score Calculations',
+    heroTitle: 'PDF Inspection Score Calculations for Checklists and Audits',
+    heroSummary:
+      'Create inspection and audit PDF templates with numeric score inputs, weighted sections, deductions, pass/fail thresholds, and final scores.',
+    seoTitle: 'PDF Inspection Score Calculations for Forms | DullyPDF',
+    seoDescription:
+      'Build inspection PDF templates with numeric score inputs, deductions, weighted sections, and calculated final scores from source values.',
+    seoKeywords: [
+      'pdf inspection score calculations',
+      'inspection form pdf score total',
+      'audit checklist pdf calculated score',
+      'pdf scoring form calculated fields',
+      'fillable inspection form total score',
+      'pdf checklist score calculation',
+      'calculated audit pdf form',
+      'numeric score pdf form',
+    ],
+    valuePoints: [
+      'Calculate section scores, deductions, and final numeric totals from explicit score inputs.',
+      'Use Fill By Link for field inspections or Search & Fill for staff-entered score records.',
+      'Keep complex business rules outside the PDF when they exceed safe arithmetic formulas.',
+    ],
+    proofPoints: [
+      'DullyPDF formulas can combine numeric fields and constants with basic arithmetic.',
+      'Scores can be materialized into flat PDFs for stable audit records.',
+      'The same template can be reused across respondents, spreadsheet rows, and API calls.',
+    ],
+    articleSections: [
+      {
+        title: 'Inspection scoring works best with numeric source fields',
+        paragraphs: [
+          'A scoring PDF should use explicit numeric inputs for each scored section, deduction, or bonus. Those values can then feed read-only calculated outputs such as section total, final score, or adjusted score.',
+          'This is different from trying to calculate directly from arbitrary checkbox behavior. If checkboxes represent scores, convert that decision into numeric source fields or handle the complex logic before the PDF is generated.',
+        ],
+      },
+      {
+        title: 'Keep thresholds and policy clear',
+        paragraphs: [
+          'DullyPDF can compute numeric totals, but pass/fail policy, regulatory interpretation, and audit conclusions should stay in the organization’s review process. The PDF can display the score, deductions, and final result after source values are chosen.',
+          'That separation is important for safety and clarity. The template should not pretend to replace professional judgment or compliance review.',
+        ],
+      },
+      {
+        title: 'Good uses for calculated inspection PDFs',
+        paragraphs: [
+          'Good fits include safety checklists with numeric section scores, quality audits with deductions, property inspections with weighted categories, and program reviews where a final score must appear on a fixed PDF layout.',
+          'If the scoring logic requires loops, dynamic tables, conditional branching, or rules outside basic arithmetic, compute those values in the source system and use DullyPDF to place the final values into the PDF.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF calculate inspection scores?',
+        answer:
+          'Yes, when the score inputs are numeric fields and the formula fits DullyPDF’s safe arithmetic model.',
+      },
+      {
+        question: 'Can DullyPDF calculate scores from checkboxes automatically?',
+        answer:
+          'Not as a general rule. Use numeric score inputs or compute complex checkbox scoring before filling the PDF.',
+      },
+      {
+        question: 'Should final inspection records be flat PDFs?',
+        answer:
+          'Usually yes. Flat output preserves the computed score as page content for audit or recordkeeping use.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'fill-by-link-calculated-pdf', 'calculated-pdf-from-csv', 'flat-vs-editable-calculated-pdf'],
+    relatedDocs: ['editor-workflow', 'fill-by-link', 'search-fill'],
+  },
+  ...DULLYPDF_HIGHLIGHT_INTENT_PAGES,
+  ...HIGH_INTENT_OPPORTUNITY_PAGES,
   {
     key: 'healthcare-pdf-automation',
     category: 'industry',
@@ -2609,7 +6684,7 @@ const INTENT_PAGES = [
       {
         question: 'Is this only for spreadsheet-driven packet fills?',
         answer:
-          'No. Search & Fill works with CSV, XLSX, JSON, SQL-backed row data, and stored Fill By Link responses. After the packet is reviewed, the same group can also be published as group API Fill or group Fill By Link.',
+          'No. Search & Fill works with CSV, XLSX, JSON row data, and stored Fill By Link responses. After the packet is reviewed, the same group can also be published as group API Fill or group Fill By Link.',
       },
       {
         question: 'Does DullyPDF behave like a blind bulk generator?',
@@ -3091,6 +7166,462 @@ const INTENT_PAGES = [
     ],
     relatedIntentPages: ['accounting-tax-pdf-automation', 'fill-information-in-pdf', 'finance-loan-pdf-automation'],
     relatedDocs: ['fill-from-images', 'search-fill', 'rename-mapping'],
+  },
+  {
+    key: 'manufacturing-pdf-automation',
+    category: 'industry',
+    path: '/manufacturing-pdf-automation',
+    navLabel: 'Manufacturing PDF Automation',
+    heroTitle: 'Manufacturing PDF Automation for Quality, Work Orders, and Lot Records',
+    heroSummary:
+      'Build highly customizable manufacturing PDF templates with lot barcodes, inspection fields, yield calculations, defect counts, and final flat PDF records.',
+    seoTitle: 'Manufacturing PDF Automation With Barcodes and Calculations | DullyPDF',
+    seoDescription:
+      'Automate manufacturing PDFs with customizable fields, lot and batch barcodes, quality inspection forms, yield calculations, and reusable template output.',
+    seoKeywords: [
+      'manufacturing pdf automation',
+      'manufacturing fillable pdf forms',
+      'quality inspection pdf automation',
+      'manufacturing work order pdf',
+      'lot barcode pdf form',
+      'batch record barcode pdf',
+      'manufacturing calculation fields pdf',
+      'production traveler pdf automation',
+      'defect count pdf form',
+      'yield calculation pdf form',
+      'manufacturing quality form template',
+    ],
+    valuePoints: [
+      'Turn production travelers, inspection records, nonconformance forms, and batch paperwork into reusable PDF templates.',
+      'Add lot, batch, serial, or work-order barcode helper fields tied to the same data that fills the PDF.',
+      'Use calculation fields for yield, defect rate, score, quantity, labor, and final-review totals.',
+    ],
+    proofPoints: [
+      'DullyPDF supports customizable field appearance, image helpers, barcode helpers, and calculation fields in saved templates.',
+      'GS1 explains barcode types across 1D and 2D codes, which helps manufacturing teams choose between short IDs and richer lookup links.',
+      'Flat output is useful for final quality records because completed values and generated codes are baked into the page.',
+    ],
+    articleSections: [
+      {
+        title: 'Why manufacturing PDFs need more than basic text boxes',
+        paragraphs: [
+          'Manufacturing paperwork often combines several field types in one record: text fields for part and lot details, checkboxes for quality gates, signatures for operator review, barcodes for lot or serial lookup, and calculated outputs for yield or defect rate. A generic fillable PDF editor can create boxes, but it usually does not model the workflow behind those boxes.',
+          'DullyPDF is a stronger fit when the plant already has fixed PDFs and needs a reusable template layer on top. The source layout stays stable, while the template captures field geometry, names, helper codes, formulas, and export behavior.',
+        ],
+      },
+      {
+        title: 'Barcode fields for lots, serials, and production travelers',
+        paragraphs: [
+          'Manufacturing teams can use 1D barcode helpers for short lot, batch, serial, or work-order IDs. QR codes fit better when the PDF should open a record URL, inspection portal, or traceability page. PDF417 can work when a dense structured payload needs to travel with the page.',
+          'The important rule is alignment: the code should be generated from the same mapped value visible elsewhere on the form. A pasted barcode image can drift from the printed record, while a DullyPDF helper field stays connected to template data.',
+        ],
+      },
+      {
+        title: 'Calculation fields for quality and production math',
+        paragraphs: [
+          'Manufacturing templates often need simple but important math: units passed, units failed, scrap count, yield percentage, rework quantity, inspection score, or labor totals. DullyPDF calculation fields let the template own those formulas instead of asking each operator or caller to type a derived value manually.',
+          'Adobe documents calculation fields and calculation order in Acrobat because dependent form math needs a predictable sequence.[^adobe-calculation-fields] DullyPDF uses a structured formula model and precomputes values before final output, which is usually safer for final records.',
+        ],
+      },
+      {
+        title: 'How to phase a manufacturing template rollout',
+        paragraphs: [
+          'Start with one high-volume form: a production traveler, first article inspection, nonconformance report, or equipment checklist. Clean the ordinary fields first, then add barcode helpers and calculation outputs. Test one realistic record, one missing-data record, and one edge-case record before publishing the template.',
+          'After that, expand to adjacent forms. A small library of trusted manufacturing templates is more useful than dozens of half-configured PDFs that operators do not trust.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'gs1-barcode-types',
+        label: 'GS1 US | Barcode types and 1D/2D barcode guidance',
+        href: 'https://www.gs1us.org/upcs-barcodes-prefixes/barcode-types',
+      },
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF automate manufacturing quality PDFs?',
+        answer:
+          'Yes. Manufacturing teams can create reusable templates with field cleanup, barcode helpers, image fields, calculation outputs, and flat final PDF exports.',
+      },
+      {
+        question: 'Can manufacturing PDFs include lot or serial barcodes?',
+        answer:
+          'Yes. DullyPDF supports 1D barcode, QR Code, and PDF417 helper fields depending on whether the code should carry a short ID, URL, or denser payload.',
+      },
+      {
+        question: 'Can DullyPDF calculate yield or defect rate on a PDF?',
+        answer:
+          'Yes. Calculation fields can compute derived outputs from source number inputs before the PDF is generated.',
+      },
+    ],
+    relatedIntentPages: ['pdf-calculation-fields', 'add-code-128-barcode-to-pdf', 'scannable-pdf-form', 'pdf-inspection-score-calculations'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
+  },
+  {
+    key: 'field-service-pdf-automation',
+    category: 'industry',
+    path: '/field-service-pdf-automation',
+    navLabel: 'Field Service PDF Automation',
+    heroTitle: 'Field Service PDF Automation for Work Orders, Assets, and Service Totals',
+    heroSummary:
+      'Create customizable field service PDF templates with work order barcodes, asset QR codes, labor and parts calculations, technician notes, and customer signoff.',
+    seoTitle: 'Field Service PDF Automation With Barcodes and Calculations | DullyPDF',
+    seoDescription:
+      'Automate field service work order PDFs with asset barcodes, QR lookup links, labor and parts totals, technician notes, and reusable templates.',
+    seoKeywords: [
+      'field service pdf automation',
+      'field service fillable pdf',
+      'work order pdf automation',
+      'service ticket barcode pdf',
+      'asset qr code field service pdf',
+      'labor parts total pdf form',
+      'field service work order template pdf',
+      'technician service form pdf',
+      'maintenance service pdf automation',
+      'customer signoff work order pdf',
+    ],
+    valuePoints: [
+      'Standardize recurring work orders, service tickets, maintenance forms, and customer signoff PDFs.',
+      'Use barcodes or QR codes for work order IDs, asset records, service sites, and record lookup URLs.',
+      'Calculate labor, parts, fees, tax, discounts, and total due before the final service PDF is delivered.',
+    ],
+    proofPoints: [
+      'SafetyCulture describes work order forms as covering job details, labor, materials, costs, signatures, and shareable PDF output.',
+      'DullyPDF QR and 1D barcode helpers can render work order IDs or lookup URLs into final PDF page content.',
+      'Calculation fields reduce manual math for labor and parts totals in fixed-layout service forms.',
+    ],
+    articleSections: [
+      {
+        title: 'Field service forms mix operational lookup and customer-facing output',
+        paragraphs: [
+          'A field service work order is both an internal operations record and a customer-facing document. It may need asset details, service site information, technician notes, parts, labor, totals, signatures, and a record lookup path. That mix is why field service PDFs benefit from a more customizable template model.',
+          'DullyPDF lets teams keep the existing PDF layout while adding the field metadata, barcode helpers, and calculations needed to generate repeatable service documents.',
+        ],
+      },
+      {
+        title: 'Work order barcodes and asset QR codes',
+        paragraphs: [
+          'Use a 1D barcode when the field team scans a short work order or asset ID. Use a QR code when the PDF should open an asset page, customer portal, work order record, or service history. The code should come from the same source field that fills the visible work order details.',
+          'That avoids the common problem where a pasted code image no longer matches the work order number printed on the document.',
+        ],
+      },
+      {
+        title: 'Labor and parts calculations',
+        paragraphs: [
+          'Field service forms often need labor hours times rate, parts subtotals, trip charges, tax, discounts, deposits, and total due. Those values are easy to mistype when a technician or dispatcher is completing several forms quickly.',
+          'Calculation fields let the template own those formulas. Source values can come from Search & Fill, Fill By Link, or API Fill, while DullyPDF computes the derived totals during materialization.',
+        ],
+      },
+      {
+        title: 'A practical rollout order for service teams',
+        paragraphs: [
+          'Start with the most common work order PDF. Normalize the fields, add the work order or asset barcode, configure the labor and parts calculations, and export one realistic service record. Only after that should the team publish the form to field staff or connect it to API generation.',
+          'For external customer copies, flat PDFs are usually safer because the final values and codes are baked into the page and do not rely on the recipient PDF viewer.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'safetyculture-work-order',
+        label: 'SafetyCulture | Work order form guidance and PDF report output',
+        href: 'https://safetyculture.com/forms/work-order',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF automate field service work order PDFs?',
+        answer:
+          'Yes. Field service teams can build reusable work order templates with custom fields, barcodes, QR codes, calculations, and customer signoff sections.',
+      },
+      {
+        question: 'Can a service PDF include an asset QR code?',
+        answer:
+          'Yes. QR helper fields can encode an asset URL, service record URL, or lookup token from a mapped source field.',
+      },
+      {
+        question: 'Can DullyPDF calculate labor and parts totals?',
+        answer:
+          'Yes. Calculation fields can compute labor, parts, fees, tax, discounts, and totals from source number inputs.',
+      },
+    ],
+    relatedIntentPages: ['work-order-barcode-pdf', 'asset-tag-barcode-pdf-form', 'pdf-calculation-fields', 'qr-code-record-lookup-pdf'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'fill-by-link'],
+  },
+  {
+    key: 'warehouse-inventory-pdf-automation',
+    category: 'industry',
+    path: '/warehouse-inventory-pdf-automation',
+    navLabel: 'Warehouse Inventory PDF Automation',
+    heroTitle: 'Warehouse Inventory PDF Automation for Counts, Barcodes, and Variance Forms',
+    heroSummary:
+      'Build warehouse and inventory PDF templates with SKU barcodes, bin locations, cycle count fields, quantity variance calculations, receiving forms, and supervisor review.',
+    seoTitle: 'Warehouse Inventory PDF Automation With Barcodes | DullyPDF',
+    seoDescription:
+      'Automate warehouse inventory PDFs with SKU and bin barcodes, cycle count forms, receiving records, quantity variance calculations, and reusable templates.',
+    seoKeywords: [
+      'warehouse inventory pdf automation',
+      'warehouse fillable pdf forms',
+      'inventory count pdf automation',
+      'cycle count pdf template',
+      'sku barcode pdf form',
+      'bin location barcode pdf',
+      'warehouse receiving pdf automation',
+      'inventory variance calculation pdf',
+      'stock count pdf form',
+      'warehouse checklist pdf automation',
+    ],
+    valuePoints: [
+      'Create reusable templates for cycle counts, receiving, pick/pack review, transfers, and warehouse inspection forms.',
+      'Render SKU, bin, location, transfer, or receipt barcodes from mapped source values.',
+      'Calculate variance, recount differences, totals, and inventory review fields before export.',
+    ],
+    proofPoints: [
+      'CRS warehouse guidance lists common warehouse forms such as tally sheets, warehouse inspection checklists, and physical inventory forms.',
+      'DullyPDF barcode helpers are useful for SKU, bin, location, and receiving identifiers in fixed PDF layouts.',
+      'Calculation fields can compute inventory variance from system quantity and physical count inputs.',
+    ],
+    articleSections: [
+      {
+        title: 'Warehouse forms are usually fixed, but the record data changes constantly',
+        paragraphs: [
+          'Warehouse teams still use recurring documents for cycle counts, receiving, transfers, pick/pack exceptions, inspection checklists, and inventory variance review. The layouts may stay consistent while SKU, bin, lot, quantity, and supervisor data change every day.',
+          'That makes warehouse paperwork a strong fit for reusable PDF templates. DullyPDF can keep the fixed document layout while generating barcode fields and calculated values from mapped data.',
+        ],
+      },
+      {
+        title: 'SKU and bin barcodes inside PDF workflows',
+        paragraphs: [
+          'A warehouse PDF may need SKU barcodes, bin location codes, pallet IDs, receiving references, or transfer numbers. A 1D barcode works well for short identifiers. A QR code works better when the scan should open a WMS page, shipment page, or inventory record URL.',
+          'The best template keeps the scannable code near a human-readable fallback field. If the barcode scan fails, the operator still needs to identify the SKU, bin, or transfer quickly.',
+        ],
+      },
+      {
+        title: 'Quantity and variance calculations',
+        paragraphs: [
+          'Inventory count sheets often need system quantity, physical count, variance, recount result, and adjustment reason. The variance itself should not be typed manually when the template can calculate it from source inputs.',
+          'DullyPDF calculation fields can handle that fixed-form math. The final PDF can show the computed variance while preserving the source quantities used to reach it.',
+        ],
+      },
+      {
+        title: 'How to roll out inventory PDF templates',
+        paragraphs: [
+          'Start with one count or receiving form that repeats frequently. Map SKU, bin, and quantity fields first. Add barcode helpers only after the human-readable fields are reliable. Then test a normal count, a zero count, a negative variance, and a missing source value.',
+          'That QA sequence catches the problems that usually appear only after a warehouse team starts using the template across many locations.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'crs-warehouse-forms',
+        label: 'CRS Emergency Field Operations Manual | Warehouse forms',
+        href: 'https://efom.crs.org/logistics-introduction/a-basic-warehousing-department/warehouse-forms/',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF automate warehouse inventory count PDFs?',
+        answer:
+          'Yes. Warehouse teams can build reusable count and receiving templates with SKU fields, barcode helpers, variance calculations, and supervisor review fields.',
+      },
+      {
+        question: 'Can inventory PDFs include SKU or bin barcodes?',
+        answer:
+          'Yes. DullyPDF can render 1D barcode or QR helper fields from mapped SKU, bin, location, transfer, or receiving values.',
+      },
+      {
+        question: 'Can DullyPDF calculate inventory variance?',
+        answer:
+          'Yes. Calculation fields can compute variance from system quantity and physical count inputs.',
+      },
+    ],
+    relatedIntentPages: ['generate-pdf-barcodes-from-csv', 'asset-tag-barcode-pdf-form', 'add-code-128-barcode-to-pdf', 'pdf-calculation-fields'],
+    relatedDocs: ['search-fill', 'api-fill', 'editor-workflow'],
+  },
+  {
+    key: 'procurement-pdf-automation',
+    category: 'industry',
+    path: '/procurement-pdf-automation',
+    navLabel: 'Procurement PDF Automation',
+    heroTitle: 'Procurement PDF Automation for Purchase Orders, Vendor Forms, and Approvals',
+    heroSummary:
+      'Create customizable procurement PDF templates with PO barcodes, vendor fields, approval checkboxes, subtotal and tax calculations, and final purchase records.',
+    seoTitle: 'Procurement PDF Automation for Purchase Orders and Vendor Forms | DullyPDF',
+    seoDescription:
+      'Automate procurement PDFs with purchase order barcodes, vendor packets, approval fields, line-item totals, tax, freight, and reusable PDF templates.',
+    seoKeywords: [
+      'procurement pdf automation',
+      'purchase order pdf automation',
+      'vendor form pdf automation',
+      'procurement fillable pdf',
+      'po barcode pdf form',
+      'purchase order calculation pdf',
+      'vendor onboarding pdf automation',
+      'procurement approval pdf form',
+      'rfq pdf automation',
+      'purchase requisition pdf automation',
+    ],
+    valuePoints: [
+      'Standardize purchase orders, purchase requisitions, RFQs, vendor onboarding forms, and approval packets.',
+      'Add PO barcodes or QR lookup fields tied to the procurement record.',
+      'Use calculation fields for subtotal, discount, freight, tax, deposits, and PO total.',
+    ],
+    proofPoints: [
+      'DullyPDF supports fixed-layout purchase order calculations through safe formulas and precomputed outputs.',
+      'Barcode helpers can make PO, vendor, or approval records scannable from the final PDF.',
+      'API Fill can generate purchase PDFs from JSON records after the template is published.',
+    ],
+    articleSections: [
+      {
+        title: 'Procurement PDFs are fixed records with changing commercial data',
+        paragraphs: [
+          'Procurement teams often reuse fixed PDFs for purchase orders, requisitions, vendor onboarding, RFQs, approvals, and internal controls. The form layout may be stable, but vendor details, line items, budget codes, approvals, and totals change for every record.',
+          'DullyPDF helps when the organization wants to keep the existing PDF but make it reusable, scannable, and calculation-aware.',
+        ],
+      },
+      {
+        title: 'PO barcodes and procurement lookup links',
+        paragraphs: [
+          'A purchase order PDF can include a short PO barcode for scanner workflows or a QR code that opens the procurement record, approval page, vendor packet, or invoice-matching view. The code should be generated from the same mapped PO number or URL visible in the document.',
+          'That keeps the final PDF connected to the record without forcing the team to paste static barcode images into every purchase order.',
+        ],
+      },
+      {
+        title: 'Purchase-order calculations',
+        paragraphs: [
+          'PO and requisition PDFs often need line totals, subtotal, discount, freight, tax, deposits, and grand total. These calculations are simple enough that they should live in the template rather than being typed manually on every order.',
+          'DullyPDF calculation fields can compute those values before output. For final vendor copies, flat PDF output is usually safer because totals are baked into the page content.',
+        ],
+      },
+      {
+        title: 'When procurement should use API Fill',
+        paragraphs: [
+          'If purchase order data already lives in an ERP, procurement system, spreadsheet, or internal app, API Fill can generate the final PDF from JSON. The caller sends source fields, while the template computes derived totals and renders helper codes.',
+          'Search & Fill is still a good first QA workflow because it lets staff validate one row at a time before the template becomes a server-side endpoint.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'adobe-calculation-fields',
+        label: 'Adobe Acrobat Help | Configure form fields for calculations',
+        href: 'https://helpx.adobe.com/ca/acrobat/desktop/work-with-pdf-forms/customize-form-fields/set-calculation-fields.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF automate purchase order PDFs?',
+        answer:
+          'Yes. Procurement teams can create reusable PO templates with vendor fields, approval fields, barcode helpers, and calculated totals.',
+      },
+      {
+        question: 'Can a purchase order PDF include a PO barcode?',
+        answer:
+          'Yes. A 1D barcode or QR helper can encode the PO number, approval URL, or procurement record URL.',
+      },
+      {
+        question: 'Can API Fill generate purchase order PDFs?',
+        answer:
+          'Yes. Published templates can accept JSON source values and generate final PDFs with computed totals and rendered helper fields.',
+      },
+    ],
+    relatedIntentPages: ['pdf-purchase-order-calculations', 'add-code-128-barcode-to-pdf', 'pdf-fill-api', 'qr-code-record-lookup-pdf'],
+    relatedDocs: ['api-fill', 'search-fill', 'editor-workflow'],
+  },
+  {
+    key: 'utilities-energy-pdf-automation',
+    category: 'industry',
+    path: '/utilities-energy-pdf-automation',
+    navLabel: 'Utilities & Energy PDF Automation',
+    heroTitle: 'Utilities and Energy PDF Automation for Meter, Asset, and Service Forms',
+    heroSummary:
+      'Build utilities and energy PDF templates with meter lookup QR codes, asset barcodes, inspection fields, reading deltas, usage calculations, and crew signoff.',
+    seoTitle: 'Utilities and Energy PDF Automation With QR Codes and Calculations | DullyPDF',
+    seoDescription:
+      'Automate utilities and energy PDFs with meter QR codes, asset barcodes, service forms, inspection scores, usage deltas, and reusable PDF templates.',
+    seoKeywords: [
+      'utilities pdf automation',
+      'energy pdf automation',
+      'meter reading pdf form',
+      'meter qr code pdf',
+      'utility service form pdf automation',
+      'energy inspection pdf automation',
+      'asset barcode utility pdf',
+      'usage calculation pdf form',
+      'field crew service pdf',
+      'utility work order pdf automation',
+    ],
+    valuePoints: [
+      'Create reusable templates for meter reads, service forms, asset inspections, field reports, and crew signoff packets.',
+      'Add QR or barcode helper fields for meter IDs, asset records, service locations, and lookup URLs.',
+      'Calculate reading deltas, usage, inspection scores, fees, and review totals before final export.',
+    ],
+    proofPoints: [
+      'QR Code is a strong fit when field crews need to scan a PDF back to a live meter, asset, or service record.',
+      'Calculation fields can compute usage deltas from previous and current readings.',
+      'Flat final PDFs preserve completed readings, codes, and calculated values across mobile and desktop viewers.',
+    ],
+    articleSections: [
+      {
+        title: 'Utilities and energy PDFs connect field assets to fixed records',
+        paragraphs: [
+          'Utilities and energy teams often work with fixed service forms, inspection sheets, meter-read records, outage reports, and asset maintenance PDFs. The document may be fixed, but the meter, site, reading, crew, and service details change constantly.',
+          'A customizable DullyPDF template can hold that fixed layout while adding mapped fields, QR lookup codes, calculations, and final output controls.',
+        ],
+      },
+      {
+        title: 'Meter QR codes and asset barcodes',
+        paragraphs: [
+          'A QR code is useful when a crew member or reviewer should scan the PDF and open a meter, asset, site, or service record. A 1D barcode is better when the scanner workflow expects a short controlled asset or work order ID.',
+          'DENSO WAVE describes QR Code as a two-dimensional code with error correction, which is part of why it is practical for mobile scanning in field workflows.[^denso-qr-code]',
+        ],
+      },
+      {
+        title: 'Reading and usage calculations',
+        paragraphs: [
+          'Meter and service PDFs often need previous reading, current reading, usage delta, score, fee, or inspection total. Those values should be computed from source inputs so the final record is consistent across Search & Fill, Fill By Link, API Fill, and download workflows.',
+          'For final service or compliance records, flat PDF output is often the safest choice because the completed values do not rely on a mobile PDF viewer to run formulas.',
+        ],
+      },
+      {
+        title: 'Field-team rollout',
+        paragraphs: [
+          'Start with one form that crews already use: a meter read, inspection checklist, outage report, or service completion record. Map the core fields first, add the QR or barcode helper, then configure the reading or score calculations.',
+          'Export and scan a real example before publishing. Field documents are often printed, photographed, or opened on mobile devices, so final-output QA matters more than the editor preview.',
+        ],
+      },
+    ],
+    footnotes: [
+      {
+        id: 'denso-qr-code',
+        label: 'DENSO WAVE | What is a QR Code?',
+        href: 'https://www.denso-wave.com/en/system/qr/fundamental/qrcode/qrc/index.html',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can DullyPDF automate meter reading PDFs?',
+        answer:
+          'Yes. Utilities teams can build reusable templates with meter fields, QR lookup codes, reading calculations, and crew review fields.',
+      },
+      {
+        question: 'Can utility service PDFs include QR codes?',
+        answer:
+          'Yes. QR helpers can encode meter, asset, service, or record lookup URLs from mapped source fields.',
+      },
+      {
+        question: 'Can DullyPDF calculate usage from meter readings?',
+        answer:
+          'Yes. Calculation fields can compute usage deltas or related totals from previous and current reading inputs.',
+      },
+    ],
+    relatedIntentPages: ['qr-code-record-lookup-pdf', 'asset-tag-barcode-pdf-form', 'pdf-inspection-score-calculations', 'field-service-pdf-automation'],
+    relatedDocs: ['editor-workflow', 'search-fill', 'api-fill'],
   },
   // ---------------------------------------------------------------------------
   // Developer-focused SEO landing pages.
@@ -3778,6 +8309,73 @@ const INTENT_PAGES = [
   },
 ];
 
+const estimateIntentPageWords = (page) => {
+  const parts = [
+    page.heroTitle,
+    page.heroSummary,
+    ...(page.valuePoints ?? []),
+    ...(page.proofPoints ?? []),
+  ];
+  for (const section of page.articleSections ?? []) {
+    parts.push(section.title, ...(section.paragraphs ?? []), ...(section.bullets ?? []));
+  }
+  for (const faq of page.faqs ?? []) {
+    parts.push(faq.question, faq.answer);
+  }
+  for (const section of page.supportSections ?? []) {
+    parts.push(section.title, ...(section.paragraphs ?? []));
+    for (const link of section.links ?? []) {
+      parts.push(link.label, link.description);
+    }
+  }
+  return (parts.join(' ').match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*/g) ?? []).length;
+};
+
+const buildThinIntentEnrichmentSections = (page) => {
+  const pageLabel = page.navLabel.toLowerCase();
+  const workflowLabel = page.category === 'industry'
+    ? `${pageLabel} rollout`
+    : `${pageLabel} workflow`;
+
+  return [
+    {
+      title: `Validate the ${workflowLabel} with one real record`,
+      paragraphs: [
+        `A useful ${pageLabel} test starts with one document your team already recognizes, not a perfect demo PDF. Open the existing file, review detection, rename ambiguous fields, confirm checkbox and radio behavior, and save the template only after the field list matches the way the document is used in practice.`,
+        'Then fill one representative record end to end. Include long names, blank optional values, dates, yes/no choices, and any calculated or scannable fields the page depends on. That single controlled run exposes most template issues before they become repeated output problems.',
+      ],
+    },
+    {
+      title: `Choose data and output paths for ${pageLabel}`,
+      paragraphs: [
+        'Search & Fill is the right first path when an operator should pick a record and inspect the result before export. It works with row data from CSV, XLSX, JSON, or stored respondent records. SQL and TXT files should be treated as schema-only mapping inputs; database-backed production workflows should query the database elsewhere and send JSON through API Fill.',
+        'Output mode matters too. Editable PDFs are useful when someone will continue working in live fields. Flat PDFs are safer when the completed record goes to customers, employees, agencies, signers, or archive systems because the visible values are baked into the page instead of depending on the recipient PDF viewer.',
+      ],
+    },
+    {
+      title: `Production checklist for ${pageLabel}`,
+      paragraphs: [
+        `The ${workflowLabel} is ready to reuse when a teammate can clear the document, rerun the same source record, and produce the same visible PDF without remembering hidden cleanup steps. If the result depends on one person knowing which field to fix manually, the template still needs review before it belongs in a repeat workflow.`,
+      ],
+      bullets: [
+        'The saved template uses stable field names and reviewed field types.',
+        'Source headers or API keys match the template schema without ambiguous duplicates.',
+        'Checkbox, radio, calculated, image, barcode, and signature fields have been tested if the workflow uses them.',
+        'At least one flat output and one editable output have been opened in the PDF viewers recipients are likely to use.',
+      ],
+    },
+  ];
+};
+
+for (const page of INTENT_PAGES) {
+  if (estimateIntentPageWords(page) < 650) {
+    page.articleSections = [
+      ...(page.articleSections ?? []),
+      ...buildThinIntentEnrichmentSections(page),
+    ];
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Usage docs
 // ---------------------------------------------------------------------------
@@ -3830,8 +8428,8 @@ const USAGE_DOCS_PAGES = [
     navLabel: 'Editor Workflow',
     title: 'Editor Workflow',
     summary: 'How to use overlay, field list, and inspector together for fast, high-confidence template cleanup.',
-    relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-checkbox-automation'],
-    sectionTitles: ['Three-panel model', 'Review, Edit, and Fill modes', 'Editing actions', 'Ten-minute cleanup order', 'Recommended quality loop', 'History and clear behavior', 'Keyboard shortcuts'],
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-checkbox-automation', 'pdf-calculation-fields'],
+    sectionTitles: ['Three-panel model', 'Review, Edit, and Fill modes', 'Editing actions', 'PDF tools', 'Calculation fields', 'Ten-minute cleanup order', 'Recommended quality loop', 'History and clear behavior', 'Keyboard shortcuts'],
   },
   {
     key: 'search-fill',
@@ -3840,7 +8438,7 @@ const USAGE_DOCS_PAGES = [
     navLabel: 'Search & Fill',
     title: 'Search & Fill',
     summary: 'Connect local data sources or Fill By Link respondent records, search a record, and populate mapped fields with predictable behavior.',
-    relatedWorkflowKeys: ['fill-pdf-from-csv', 'batch-fill-pdf-forms'],
+    relatedWorkflowKeys: ['fill-pdf-from-csv', 'batch-fill-pdf-forms', 'pdf-calculation-fields'],
     sectionTitles: ['Toolbar buttons overview', 'Data source support', 'CSV file format', 'JSON file format', 'SQL file format', 'TXT schema file format', 'Excel file format', 'Fill flow', 'Guardrails', 'Search & Fill versus Fill By Link versus API Fill', 'Field resolution heuristics (non-checkbox)', 'Checkbox groups and aliases', 'Why partial fills happen'],
   },
   {
@@ -3880,7 +8478,7 @@ const USAGE_DOCS_PAGES = [
     navLabel: 'API Fill',
     title: 'API Fill',
     summary: 'How DullyPDF publishes frozen JSON-to-PDF endpoints from saved templates, enforces hosted limits, and keeps API Fill distinct from browser-local Search & Fill.',
-    relatedWorkflowKeys: ['pdf-fill-api', 'pdf-to-database-template'],
+    relatedWorkflowKeys: ['pdf-fill-api', 'pdf-to-database-template', 'pdf-calculation-fields'],
     sectionTitles: ['What API Fill is', 'Owner manager flow', 'Payload and fill behavior', 'When to use API Fill instead of Search and Fill'],
   },
   {
@@ -3899,7 +8497,7 @@ const USAGE_DOCS_PAGES = [
     path: '/usage-docs/save-download-profile',
     navLabel: 'Save / Download',
     title: 'Save, Download, and Profile',
-    summary: 'Understand when to download flat or editable PDFs immediately versus saving templates to your profile for reuse, Fill By Link publishing, and respondent management.',
+    summary: 'Understand when to download flat, editable, or selected-page PDFs immediately versus saving templates to your profile for reuse, Fill By Link publishing, and respondent management.',
     relatedWorkflowKeys: ['pdf-to-fillable-form', 'fill-pdf-by-link'],
     sectionTitles: ['Download vs save', 'Saved form workflow', 'What must be saved before publishing or API use', 'Fill By Link owner flow', 'Limits and credits', 'Stripe billing plans', 'Replace vs new save'],
   },
@@ -3922,16 +8520,17 @@ const FEATURE_PLAN_PAGES = [
     navLabel: 'Free Features',
     heroTitle: 'Free DullyPDF Features for PDF-to-Form Setup',
     heroSummary:
-      `Start with unlimited PDF-to-form setup and validate one repeat workflow under the free account limits: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File (Search & Fill) credits per month, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
+      `Start with unlimited PDF-to-form setup and validate one repeat workflow under the free account limits: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File (Search & Fill) credits per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads per month, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
     seoTitle: 'Free PDF Form Builder Features | DullyPDF',
     seoDescription:
-      `Free DullyPDF: unlimited PDF-to-form setup, ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} signing requests, ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File credits, ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} monthly OpenAI credits.`,
+      `Free DullyPDF: unlimited PDF-to-form setup, ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads/month, Fill By Link, API Fill, signing, Fill by File credits, and monthly OpenAI credits.`,
     seoKeywords: ['free pdf form builder', 'free pdf to form tool', 'free fillable pdf builder', 'free pdf workflow software'],
     valuePoints: [
       'Unlimited PDF-to-form setup and access to the form builder.',
       `Up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} pages when reopening an already-fillable PDF.`,
       `Native Fill By Link plus API Fill on free: no active-link cap, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} fills per month, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} API pages per request.`,
-      `Fill by File (Search & Fill from CSV, Excel, SQL, JSON, or TXT rows) is included on free with ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} credits per month across the account. A single-template fill charges 1 credit; a group fill charges 1 credit per matched PDF; no-match and schema-only fills are free.`,
+      `Fill by File (Search & Fill from CSV, Excel, or JSON rows) is included on free with ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} credits per month across the account. A single-template fill charges 1 credit; a group fill charges 1 credit per matched PDF; no-match and schema-only imports are free.`,
+      `Free accounts include ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads per backend UTC month for signed-in workspace exports.`,
       `Signing stays available on free with ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
     ],
     detailSections: [
@@ -3945,6 +8544,7 @@ const FEATURE_PLAN_PAGES = [
           `Fill By Link: no active-link cap and ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account.`,
           `API Fill: ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} pages per request.`,
           `Fill by File (Search & Fill): ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} credits per month across the account. One credit per single-template fill, one credit per matched PDF in a group fill, zero for no-match and schema-only fills.`,
+          `Generated PDF downloads: ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} signed-in workspace downloads per backend UTC month.`,
           `Signing: up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month.`,
           `Credits: base OpenAI credits top back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when the balance is below that floor.`,
         ],
@@ -3952,12 +8552,13 @@ const FEATURE_PLAN_PAGES = [
       { title: 'How to validate the free tier properly', items: ['Build one recurring template and test it with a real document before judging the product.', 'Use the free tier to verify detection quality, editor cleanup, schema mapping readiness, and one complete fill loop.', 'Treat free as a workflow-validation tier, not as the final benchmark for high-volume operations.'] },
       { title: 'When free is enough and when it is not', items: ['Free is enough when you are proving one workflow, training on a representative document, or running light respondent/API traffic.', 'Free becomes limiting when several templates need to stay saved, monthly response/API volume rises, or teams need a recurring credit budget.', 'The right upgrade moment is when the workflow is already validated and usage, not uncertainty, becomes the bottleneck.'] },
       { title: 'Free tier rollout path', items: ['Start with one canonical document instead of uploading every packet variation on day one.', 'Run detection, cleanup, rename or map if needed, then verify one representative fill before you judge the result.', 'Only after the template passes that QA loop should you publish a link, group related forms, or invite teammates into the workflow.'] },
-      { title: 'What stays free versus what consumes credits', items: ['Detection, editor cleanup, saving, Fill By Link publishing, API Fill publishing, and the general template-building workflow stay available on free within the account caps above.', 'Rename, Map, and Rename + Map consume OpenAI credits according to the page-bucket formula shown in Profile.', 'Fill from Images and Documents consumes credits per uploaded file: 1 credit per image, 1 credit per 5 pages for PDF documents.', `Fill by File (Search & Fill from CSV, Excel, SQL, JSON, or TXT) consumes its own dedicated monthly credit pool — ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} credits on free. It is counted separately from OpenAI credits, Fill By Link responses, API Fill quota, and signing, so heavy spreadsheet filling does not starve the other workflows.`, 'Saved-form count, live Fill By Link/API Fill capacity, Fill by File monthly credits, signer volume, and OpenAI credit pool size are the main reasons the free tier eventually stops being enough for production traffic.'] },
+      { title: 'What stays free versus what consumes credits', items: ['Detection, editor cleanup, saving, Fill By Link publishing, API Fill publishing, and the general template-building workflow stay available on free within the account caps above.', 'Rename, Map, and Rename + Map consume OpenAI credits according to the page-bucket formula shown in Profile.', 'Fill from Images and Documents consumes credits per uploaded file: 1 credit per image, 1 credit per 5 pages for PDF documents.', `Workspace generated PDF downloads consume their own monthly pool - ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} downloads on free. Saving templates, API Fill outputs, respondent downloads, and signing artifacts use separate workflow limits and do not charge this download pool.`, `Fill by File (Search & Fill from CSV, Excel, or JSON rows) consumes its own dedicated monthly credit pool - ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} credits on free. SQL and TXT schema-only imports do not provide row data. It is counted separately from OpenAI credits, Fill By Link responses, API Fill quota, and signing, so heavy spreadsheet filling does not starve the other workflows.`, 'Saved-form count, live Fill By Link/API Fill capacity, generated PDF download volume, Fill by File monthly credits, signer volume, and OpenAI credit pool size are the main reasons the free tier eventually stops being enough for production traffic.'] },
       { title: 'Upgrade triggers worth watching', items: ['You need more than one live respondent workflow or more than one live API Fill endpoint at a time.', 'Response or API volume is high enough that the free caps block normal operations.', 'Several templates are already validated and the team now needs more saved-template capacity, recurring credits, or higher signing/publishing throughput rather than more experimentation.'] },
     ],
     faqs: [
       { question: 'Does free still let me convert PDFs into fillable templates?', answer: 'Yes. Free includes unlimited PDF-to-form setup plus the form builder so you can detect, clean up, and save reusable templates.' },
       { question: 'What is the main free-tier Fill By Link limit?', answer: `Free supports account-level Fill By Link collection with up to ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month.` },
+      { question: 'How many generated PDF downloads are included on free?', answer: `Free accounts include ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads per backend UTC month. Saving templates, API Fill outputs, respondent downloads, and signing artifacts are governed by their own workflow limits.` },
       { question: 'How do Fill by File (Search & Fill) credits work on free?', answer: `Free includes ${formatPlanLimitCount(FREE_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File credits per month. A single-template fill charges 1 credit when at least one field matches. A group fill charges 1 credit per matched PDF (unmatched PDFs in the group are free). No-match runs and schema-only imports charge 0. The pool is separate from OpenAI credits and refreshes monthly.` },
       { question: 'What are the main free API Fill and signing limits?', answer: `Free keeps API Fill at ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} pages per request, while signing stays at ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month.` },
       { question: 'Where do I confirm my current limits?', answer: 'The signed-in Profile view shows your effective account limits, billing status, and remaining credits.' },
@@ -3975,16 +8576,17 @@ const FEATURE_PLAN_PAGES = [
     navLabel: 'Premium Features',
     heroTitle: 'Premium DullyPDF Features for Higher-Usage Workflows',
     heroSummary:
-      `Premium is the higher-usage tier for teams running repeat PDF automation across more saved templates, more live links, higher API traffic, larger signing volume, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File (Search & Fill) credits per month, and a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit OpenAI pool.`,
+      `Premium is the higher-usage tier for teams running repeat PDF automation across more saved templates, more live links, higher API traffic, larger signing volume, unlimited generated PDF downloads, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File (Search & Fill) credits per month, and a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit OpenAI pool.`,
     seoTitle: 'Premium PDF Automation Features and Billing | DullyPDF',
     seoDescription:
-      `Premium DullyPDF: ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} signing requests, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File credits, ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly OpenAI credits.`,
+      'Premium DullyPDF: higher saved-form, Fill By Link, API Fill, signing, Fill by File, unlimited generated PDF downloads, and OpenAI credit limits for recurring PDF automation.',
     seoKeywords: ['premium pdf automation software', 'pdf form builder subscription', 'fill by link premium plan', 'stripe pdf software billing'],
     valuePoints: [
       `Up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} pages for already-fillable template uploads.`,
       `No active Fill By Link cap and up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account.`,
       `Up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active API Fill endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} pages per request.`,
-      `Fill by File (Search & Fill from CSV, Excel, SQL, JSON, or TXT) scales to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} credits per month across the account — one credit per single-template fill, one credit per matched PDF in a group fill, zero for no-match and schema-only runs.`,
+      `Fill by File (Search & Fill from CSV, Excel, or JSON rows) scales to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} credits per month across the account - one credit per single-template fill, one credit per matched PDF in a group fill, zero for no-match and schema-only runs.`,
+      'Premium accounts include unlimited generated PDF downloads for signed-in workspace exports.',
       `Signing scales to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, plus a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly OpenAI pool.`,
       'Stripe-backed monthly or yearly purchase options when you are signed in.',
     ],
@@ -3997,11 +8599,12 @@ const FEATURE_PLAN_PAGES = [
           `Fill By Link: no active-link cap and up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month across the account.`,
           `API Fill: up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} pages per request.`,
           `Fill by File (Search & Fill): ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} credits per month across the account. One credit per single-template fill, one credit per matched PDF in a group fill, zero for no-match and schema-only fills. Counted separately from OpenAI credits.`,
+          'Generated PDF downloads: unlimited signed-in workspace downloads.',
           `Signing: up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month.`,
           `OpenAI credits: ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} recurring monthly credits, with ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs available from Profile.`,
         ],
       },
-      { title: 'OpenAI and billing', items: ['Pro billing actions run through Stripe Checkout with monthly and yearly subscriptions.', `Premium profiles receive a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly OpenAI pool, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs remain available from Profile.`, 'OpenAI credits are shared across Rename, Map, Rename + Map, and Fill from Images and Documents operations.', 'Fill from Images and Documents costs 1 credit per uploaded image and 1 credit per 5 pages for uploaded PDF documents.', `Fill by File (Search & Fill) runs against a separate ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)}-credit monthly pool — not the OpenAI pool — so heavy spreadsheet-driven filling never starves Rename/Map or Fill from Images.`, 'Cancellation is managed from the signed-in profile billing section and is scheduled for period end.'] },
+      { title: 'OpenAI and billing', items: ['Pro billing actions run through Stripe Checkout with monthly and yearly subscriptions.', 'Premium bypasses the generated PDF download cap after webhook or reconciliation fulfillment; opening Checkout alone does not change entitlement.', `Premium profiles receive a recurring ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly OpenAI pool, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.refillPackCredits)}-credit refill packs remain available from Profile.`, 'OpenAI credits are shared across Rename, Map, Rename + Map, and Fill from Images and Documents operations.', 'Fill from Images and Documents costs 1 credit per uploaded image and 1 credit per 5 pages for uploaded PDF documents.', `Fill by File (Search & Fill) runs against a separate ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)}-credit monthly pool — not the OpenAI pool — so heavy spreadsheet-driven filling never starves Rename/Map or Fill from Images.`, 'Cancellation is managed from the signed-in profile billing section and is scheduled for period end. Terminal subscription states downgrade to free and immediately reapply the current-month generated PDF download cap without resetting stored usage.'] },
       { title: 'Best fit for', items: ['Teams operating repeat intake or packet workflows across many saved templates.', 'Owners publishing multiple public respondent links at once.', 'Accounts that need higher sustained usage instead of one-off free-tier validation.'] },
       { title: 'Operational gains premium is meant to unlock', items: ['Premium is about removing usage friction after the workflow already works, not about replacing setup discipline.', 'The biggest gains usually come from running more saved templates, more live links and endpoints, larger respondent/API volume, recurring credits, and fewer publish-capacity constraints.', 'It is best for teams that already know which templates matter and need higher throughput rather than more experimentation.'] },
       { title: 'How to decide between monthly and yearly billing', items: ['Choose monthly when the workflow is recent, seasonal, or still being proven across the team.', 'Choose yearly when the template library is already part of ongoing operations and usage is expected to remain steady.', 'Billing decisions should follow proven recurring usage, not just interest in the feature list.'] },
@@ -4012,7 +8615,8 @@ const FEATURE_PLAN_PAGES = [
     faqs: [
       { question: 'What is the biggest premium Fill By Link difference?', answer: `Premium keeps the same no-active-link model as free but raises account-level Fill By Link capacity to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted responses per month.` },
       { question: 'How much API Fill capacity comes with premium?', answer: `Premium supports up to ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful fills per month, and ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} pages per request.` },
-      { question: 'How many Fill by File (Search & Fill) credits does premium include?', answer: `Premium includes ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File credits per month across the account. A single-template fill charges 1 credit when at least one field matches; a group fill charges 1 credit per matched PDF; no-match and schema-only runs charge 0. The pool is counted separately from the ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly OpenAI credits, so heavy CSV/Excel/SQL/JSON/TXT filling cannot starve Rename, Map, Rename + Map, or Fill from Images.` },
+      { question: 'Are generated PDF downloads unlimited on premium?', answer: 'Yes. Premium accounts include unlimited generated PDF downloads for signed-in workspace exports. The historical monthly counter is preserved, so downgrading later reapplies the free cap using the current-month usage already stored.' },
+      { question: 'How many Fill by File (Search & Fill) credits does premium include?', answer: `Premium includes ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.structuredFillMonthlyMax)} Fill by File credits per month across the account. A single-template fill charges 1 credit when at least one field matches; a group fill charges 1 credit per matched PDF; no-match and schema-only runs charge 0. The pool is counted separately from the ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly OpenAI credits, so heavy CSV/Excel/JSON filling cannot starve Rename, Map, Rename + Map, or Fill from Images.` },
       { question: 'Can I buy premium from this page?', answer: 'Yes. When you are signed in and billing is available, this page can launch the Stripe Checkout flow for monthly or yearly premium.' },
       { question: 'What if I already have premium?', answer: 'The page will show that the current account already has premium access instead of offering another upgrade button.' },
       { question: 'When is premium worth the upgrade?', answer: 'Premium is usually worth it once the workflow is already validated and the limiting factor becomes saved-template capacity, live link or endpoint count, response volume, signing volume, recurring credits, or the need to operate many workflows in parallel.' },
@@ -4081,7 +8685,7 @@ const buildTechArticleSchema = (headline, description, path) => ({
     sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE_ORIGIN}/DullyPDFLogoImproved.png`,
+      url: `${SITE_ORIGIN}/DullyPDF_logo_social_full_bleed.png`,
     },
   },
 });
@@ -4100,7 +8704,7 @@ const buildVideoObjectSchema = (video) => ({
     name: 'DullyPDF',
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE_ORIGIN}/DullyPDFLogoImproved.png`,
+      url: `${SITE_ORIGIN}/DullyPDF_logo_social_full_bleed.png`,
     },
   },
 });
@@ -4113,7 +8717,7 @@ const buildYouTubeWatchUrl = (videoId) => `https://www.youtube.com/watch?v=${vid
 // frontend/src/config/publicVideoContent.ts.
 const PACKET_SEARCH_FILL_VIDEO = {
   videoId: 'RIxRmZvVnVw',
-  name: 'Fill an Entire PDF Packet from One Spreadsheet Row (CSV, SQL, JSON, EXCEL, JSON) API or Web Form',
+  name: 'Fill an Entire PDF Packet from One Spreadsheet Row, API Payload, or Web Form',
   description:
     'See how DullyPDF applies one structured record across a grouped packet of saved PDFs, then reuses that same reviewed packet for group API Fill or Fill By Link when the source data should come from another system or respondent.',
   contentUrl: buildYouTubeWatchUrl('RIxRmZvVnVw'),
@@ -4140,7 +8744,6 @@ const VIDEO_BY_INTENT_KEY = {
   'pdf-signature-workflow': ESIGN_PIPELINE_VIDEO,
   'esign-ueta-pdf-workflow': ESIGN_PIPELINE_VIDEO,
   'fill-pdf-by-link': ESIGN_PIPELINE_VIDEO,
-  'pdf-fill-api': ESIGN_PIPELINE_VIDEO,
 };
 
 // Blog posts that should emit focused workflow videos alongside BlogPosting.
@@ -4175,7 +8778,7 @@ const buildIntentCatalogHowToSchema = (page, showcase) => ({
   '@type': 'HowTo',
   name: `How to automate ${page.navLabel.toLowerCase()} PDFs in DullyPDF`,
   description:
-    `Open blank ${page.navLabel.toLowerCase()} PDFs, map fields once, fill them from CSV, XLSX, JSON, or SQL-backed schemas, publish API and web-form flows, and route the completed record into signature.`,
+    `Open blank ${page.navLabel.toLowerCase()} PDFs, map fields once, fill them from CSV, XLSX, or JSON rows, publish API and web-form flows, and route the completed record into signature.`,
   url: `${SITE_ORIGIN}${page.path}`,
   step: buildIntentCatalogWorkflowSteps(showcase).map((step, index) => ({
     '@type': 'HowToStep',
@@ -4189,7 +8792,7 @@ const buildIntentCatalogHowToSchema = (page, showcase) => ({
 const HOME_ROUTE_SEO = {
   title: 'DullyPDF — Automatic PDF to Fillable Form With Search & Fill',
   description:
-    'Turn any PDF into a fillable template, then Search & Fill from CSV, Excel, JSON, or SQL. Collect answers by web form or API and add US e-signatures.',
+    'Turn any PDF into a fillable template, then Search & Fill from CSV, Excel, or JSON rows. Collect answers by web form or API and add US e-signatures.',
   canonicalPath: '/',
   keywords: ['pdf automation platform', 'ai pdf workflow software', 'fillable pdf automation', 'pdf workflow software', 'structured data to pdf', 'pdf intake automation'],
   structuredData: [
@@ -4209,7 +8812,7 @@ const HOME_ROUTE_SEO = {
       '@type': 'Organization',
       name: 'DullyPDF',
       url: 'https://dullypdf.com/',
-      logo: 'https://dullypdf.com/DullyPDFLogoImproved.png',
+      logo: 'https://dullypdf.com/DullyPDF_logo_social_full_bleed.png',
       sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
       contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: 'justin@dullypdf.com' },
     },
@@ -4228,7 +8831,7 @@ const HOME_ROUTE_SEO = {
       { title: 'Upload the Existing PDF', description: 'Start from the real document your team already uses instead of rebuilding the form from scratch.' },
       { title: 'Review AI Field Detection', description: 'The detection pipeline identifies likely inputs with confidence cues so cleanup starts from a draft rather than a blank canvas.' },
       { title: 'Clean Geometry and Field Types', description: 'Resize, rename, reposition, and normalize text, checkbox, radio, date, and signature fields before anyone relies on the template.' },
-      { title: 'Map to Structured Data', description: 'Align the field set to CSV, SQL, Excel, JSON, or application-style schema headers so the document can be filled predictably later.' },
+      { title: 'Map to Structured Data', description: 'Align the field set to CSV, Excel, JSON, SQL, or application-style schema headers so the document can be filled predictably later.' },
       { title: 'Fill From Rows or Respondents', description: 'Use Search & Fill for local records or Fill By Link when the record needs to be collected from a respondent first.' },
       { title: 'Publish or Route the Final Output', description: 'Once the template is stable, turn it into a repeat fill workflow, a hosted API endpoint, or a supported signature-ready record path.' },
       { title: 'Who DullyPDF Is For', description: 'Best fit: operations teams handling recurring packets, intake forms, certificates, permits, acknowledgments, and other PDFs that repeat under the same layout.' },
@@ -4270,6 +8873,16 @@ const LEGAL_ROUTE_SEO = {
     bodyContent: {
       heading: 'Terms of Service',
       paragraphs: ['Review the DullyPDF terms of service governing accounts, features, billing, and acceptable use.'],
+    },
+  },
+  refund: {
+    title: 'Refund and Return Policy | DullyPDF',
+    description: 'Review DullyPDF refund rules for unused subscription periods, digital service returns, refill credits, and cancellation requests.',
+    canonicalPath: '/refund-policy',
+    keywords: ['dullypdf refund policy', 'dullypdf return policy', 'pdf automation refund policy'],
+    bodyContent: {
+      heading: 'Refund and Return Policy',
+      paragraphs: ['Review the DullyPDF refund and return policy for subscriptions, digital services, refill credits, and cancellation-related requests.'],
     },
   },
 };
@@ -4449,7 +9062,7 @@ for (const page of USAGE_DOCS_PAGES) {
     },
     'save-download-profile': {
       title: 'Save Reusable PDF Templates and Download Outputs | DullyPDF Docs',
-      description: 'Learn when to download generated files or save templates to your DullyPDF profile for reuse, Fill By Link publishing, billing, and collaboration.',
+      description: 'Learn when to download full or selected-page generated files, or save templates to your DullyPDF profile for reuse, Fill By Link publishing, billing, and collaboration.',
       keywords: ['save pdf template', 'download filled pdf', 'reusable pdf templates'],
       bodyParagraphs: [
         page.summary,
@@ -4480,7 +9093,7 @@ for (const page of USAGE_DOCS_PAGES) {
       ];
   USAGE_DOCS_ROUTE_SEO[page.key] = {
     title: seo.title,
-    description: seo.description,
+    description: truncateRouteDescription(seo.description),
     canonicalPath: page.path,
     keywords: seo.keywords,
     structuredData: appendStructuredData(
@@ -4527,7 +9140,7 @@ for (const page of INTENT_PAGES) {
 
   INTENT_ROUTE_SEO[page.key] = {
     title: buildIntentSeoTitle(page.heroTitle),
-    description: buildIntentSeoDescription(page.heroSummary),
+    description: truncateRouteDescription(buildIntentSeoDescription(page.heroSummary)),
     canonicalPath: page.path,
     keywords: page.seoKeywords,
     ...(intentPrimaryImage ? {
@@ -4671,17 +9284,17 @@ for (const page of FEATURE_PLAN_PAGES) {
   const planBodyParagraphs = page.key === 'free-features'
     ? [
         page.heroSummary,
-        `Free keeps the workflow surface broad but the account caps deliberate: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} live API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
+        `Free keeps the workflow surface broad but the account caps deliberate: ${formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} live API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads per month, ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, and a base OpenAI pool that tops back up to ${formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.`,
         'That makes the page more than a pricing summary. It explains when free is strategically enough and when saved-template capacity, publish limits, signer volume, or credit pool size, not setup uncertainty, should trigger an upgrade.',
       ]
     : [
         page.heroSummary,
-        `Premium raises the working ceiling across the product: ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly credits before refill packs.`,
+        `Premium raises the working ceiling across the product: ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} Fill By Link responses per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month, unlimited generated PDF downloads, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, and ${formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} monthly credits before refill packs.`,
         'That means the page should help buyers self-qualify operationally, not just compare labels. The key question is whether the workflow is already proven and ready for higher-usage execution across saved templates, live links, API traffic, and signing volume.',
       ];
   FEATURE_PLAN_ROUTE_SEO[page.key] = {
     title: page.seoTitle,
-    description: page.seoDescription,
+    description: truncateRouteDescription(page.seoDescription),
     canonicalPath: page.path,
     keywords: page.seoKeywords,
     structuredData: appendStructuredData(
@@ -4713,11 +9326,11 @@ const ACTIVE_FORM_CATALOG_CATEGORIES = FORM_CATALOG_CATEGORIES.filter((category)
 const FORM_CATALOG_INDEX_FAQS = [
   {
     question: 'How many forms are in the DullyPDF form catalog?',
-    answer: `The catalog currently hosts ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms across ${ACTIVE_FORM_CATALOG_CATEGORIES.length} categories, including tax, immigration, healthcare, real estate, HR, bankruptcy, veterans, and small-business documents.`,
+    answer: `The catalog currently hosts ${FORM_CATALOG_TOTAL_COUNT.toLocaleString()} free fillable PDF forms and templates across ${ACTIVE_FORM_CATALOG_CATEGORIES.length} categories, including tax, immigration, healthcare, real estate, HR, construction, education, field service, insurance, bankruptcy, veterans, and small-business documents.`,
   },
   {
     question: 'Are the form catalog PDFs free to download?',
-    answer: 'Yes. Every hosted form comes from a public-domain government source. You can download the blank PDF, or open it inside DullyPDF to auto-detect fields, fill from a spreadsheet, collect answers from a web form, or route the filled record into a signature workflow.',
+    answer: 'Yes. Hosted files are either public government forms or original DullyPDF-authored blank templates. You can download the blank PDF, or open it inside DullyPDF to auto-detect fields, fill from a spreadsheet, collect answers from a web form, or route the filled record into a signature workflow.',
   },
   {
     question: 'Can I fill these forms automatically?',
@@ -4762,10 +9375,13 @@ const FORM_CATALOG_INDEX_STRUCTURED_DATA = [
   ...toFaqSchema(FORM_CATALOG_INDEX_FAQS),
 ];
 
+const FORM_CATALOG_INDEX_SEO = buildFormCatalogIndexSeo();
+
 const FORM_CATALOG_INDEX_ROUTE = {
   path: '/forms',
   seo: {
-    ...buildFormCatalogIndexSeo(),
+    ...FORM_CATALOG_INDEX_SEO,
+    description: truncateRouteDescription(FORM_CATALOG_INDEX_SEO.description),
     structuredData: FORM_CATALOG_INDEX_STRUCTURED_DATA,
   },
   kind: 'form-catalog-index',
@@ -5023,6 +9639,7 @@ export const ALL_ROUTES = [
   { path: '/', seo: HOME_ROUTE_SEO, kind: 'home' },
   { path: '/privacy', seo: LEGAL_ROUTE_SEO.privacy, kind: 'legal', pageKey: 'privacy' },
   { path: '/terms', seo: LEGAL_ROUTE_SEO.terms, kind: 'legal', pageKey: 'terms' },
+  { path: '/refund-policy', seo: LEGAL_ROUTE_SEO.refund, kind: 'legal', pageKey: 'refund' },
   { path: '/workflows', seo: INTENT_HUB_ROUTE_SEO.workflows, kind: 'intent-hub', pageKey: 'workflows' },
   { path: '/industries', seo: INTENT_HUB_ROUTE_SEO.industries, kind: 'intent-hub', pageKey: 'industries' },
   ...FEATURE_PLAN_PAGES.map((page) => ({
@@ -5064,12 +9681,12 @@ export const FOOTER_LINKS = {
   industries: INTENT_PAGES.filter((p) => p.category === 'industry').map((p) => ({ label: p.navLabel, href: p.path })),
   resources: [
     { label: 'Blog', href: '/blog' },
-    { label: 'Form Catalog', href: '/forms' },
     { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
   ],
   legal: [
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Terms of Service', href: '/terms' },
+    { label: 'Refund Policy', href: '/refund-policy' },
   ],
 };
 
@@ -5086,7 +9703,7 @@ const BLOG_INDEX_ROUTE = {
   path: '/blog',
   seo: {
     title: 'PDF Automation Guides and Tutorials — DullyPDF Blog',
-    description: 'Step-by-step guides for converting PDFs to fillable forms, auto-filling from spreadsheets, setting up e-signatures, and eliminating manual data entry.',
+    description: truncateRouteDescription('Step-by-step guides for converting PDFs to fillable forms, auto-filling from spreadsheets, setting up e-signatures, and eliminating manual data entry.'),
     canonicalPath: '/blog',
     keywords: ['pdf automation blog', 'fillable form guides', 'pdf form tutorials'],
     ...(BLOG_INDEX_PRIMARY_FIGURE ? {
@@ -5187,7 +9804,7 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
       '@type': 'Organization',
       name: 'DullyPDF',
       sameAs: OFFICIAL_PUBLIC_PROFILE_URLS,
-      logo: { '@type': 'ImageObject', url: 'https://dullypdf.com/DullyPDFLogoImproved.png' },
+      logo: { '@type': 'ImageObject', url: 'https://dullypdf.com/DullyPDF_logo_social_full_bleed.png' },
     },
   }], buildBreadcrumbSchema([
     { label: 'Home', href: '/' },
@@ -5203,7 +9820,7 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
     path: `/blog/${post.slug}`,
     seo: {
       title: post.seoTitle,
-      description: post.seoDescription,
+      description: truncateRouteDescription(post.seoDescription),
       canonicalPath: `/blog/${post.slug}`,
       keywords: post.seoKeywords,
       ...(primaryFigure ? {

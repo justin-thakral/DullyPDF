@@ -8,12 +8,19 @@ export type BlogPostFigure = {
   caption: string;
 };
 
+export type BlogPostSectionLink = {
+  label: string;
+  href: string;
+  description?: string;
+};
+
 export type BlogPostSection = {
   id: string;
   title: string;
   paragraphs: string[];
   bullets?: string[];
   figures?: BlogPostFigure[];
+  links?: BlogPostSectionLink[];
 };
 
 export type BlogPost = {

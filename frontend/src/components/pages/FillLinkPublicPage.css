@@ -277,6 +277,7 @@
 .fill-link-public-page__field input[type='email'],
 .fill-link-public-page__field input[type='tel'],
 .fill-link-public-page__field input[type='date'],
+.fill-link-public-page__field input[type='file'],
 .fill-link-public-page__field textarea,
 .fill-link-public-page__field select {
   box-sizing: border-box;
@@ -294,6 +295,7 @@
 .fill-link-public-page__field input[type='email']:focus,
 .fill-link-public-page__field input[type='tel']:focus,
 .fill-link-public-page__field input[type='date']:focus,
+.fill-link-public-page__field input[type='file']:focus,
 .fill-link-public-page__field textarea:focus,
 .fill-link-public-page__field select:focus {
   outline: none;
@@ -315,6 +317,27 @@
 
 .fill-link-public-page__char-count {
   text-align: right;
+}
+
+.fill-link-public-page__image-upload {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.fill-link-public-page__image-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  color: var(--ink-700);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.fill-link-public-page__image-selection span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .fill-link-public-page__options,

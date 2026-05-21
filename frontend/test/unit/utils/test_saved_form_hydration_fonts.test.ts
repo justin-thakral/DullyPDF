@@ -78,8 +78,11 @@ describe('saved form font hydration', () => {
           rect: { x: 10, y: 10, width: 120, height: 80 },
           value: null,
           imageDataUrl: 'data:image/png;base64,abc',
+          imagePath: 'gs://bucket/profile.png',
+          imageSourcePath: 'forms/profile.png',
           imageMimeType: 'image/png',
           imageName: 'profile.png',
+          imageColorMode: 'grayscale',
         },
         {
           id: 'pdf417-1',
@@ -119,8 +122,11 @@ describe('saved form font hydration', () => {
     expect(snapshot?.fields[0]).toMatchObject({
       type: 'image',
       imageDataUrl: 'data:image/png;base64,abc',
+      imagePath: 'gs://bucket/profile.png',
+      imageSourcePath: 'forms/profile.png',
       imageMimeType: 'image/png',
       imageName: 'profile.png',
+      imageColorMode: 'grayscale',
     });
     expect(snapshot?.fields[1]).toMatchObject({
       type: 'pdf417',

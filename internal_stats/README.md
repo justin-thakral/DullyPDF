@@ -33,3 +33,9 @@ gcloud auth application-default login
 - The collector pins Firestore to the `dullypdf` project.
 - The process binds to `127.0.0.1` by default.
 - The code is not wired into the shipped backend router or frontend route tree.
+
+## Metrics
+
+- Workspace PDF downloads are counted from `pdf_download_events`; only explicit download calls opt in, so save/signing materializations are excluded. Current-month usage and near-limit support indicators are read from `pdf_download_usage_counters`, while `rejected_limit` events show quota blocks.
+- PDF download support fields include current-month total downloads, users with current-month usage, base users at or above 80% of the 25/month cap, Pro users with 100+ current-month downloads, group ZIP PDF counts, and quota rejection counts.
+- Barcode, calculation-field, and appearance-adoption counts are derived from saved-form editor snapshots in production storage. If a snapshot cannot be loaded, the dashboard still renders and reports the unavailable snapshot count.

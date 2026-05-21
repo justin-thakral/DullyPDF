@@ -7,7 +7,7 @@ MODE="prod"
 OVERRIDE_FILE="${ENV_FILE:-}"
 ENV_FILE="frontend/.env.local"
 CRITICAL_WEBP_ASSETS=(
-  "/DullyPDFLogoImproved.webp"
+  "/DullyPDF_logo_social_full_bleed.webp"
   "/demo/mobile-raw-pdf.webp"
   "/demo/mobile-commonforms.webp"
   "/demo/mobile-inspector.webp"
@@ -212,6 +212,11 @@ if command -v convert >/dev/null 2>&1; then
   bash scripts/convert-webp-assets.sh
 else
   echo "Warning: ImageMagick 'convert' not found; skipping auto-generation and relying on committed WebP assets." >&2
+fi
+
+if [[ -d form_catalog ]]; then
+  echo "Rebuilding form catalog manifest from local PDFs..."
+  python3 scripts/rebuild-form-catalog-manifest.py --catalog-root form_catalog
 fi
 
 bash scripts/deploy-form-catalog-assets.sh

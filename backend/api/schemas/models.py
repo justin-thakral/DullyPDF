@@ -81,6 +81,7 @@ class TemplateOverlayField(BaseModel):
     type: Optional[str] = "text"
     page: Optional[int] = None
     rect: Optional[Dict[str, float]] = None
+    value: Optional[Any] = None
     groupKey: Optional[str] = None
     optionKey: Optional[str] = None
     optionLabel: Optional[str] = None
@@ -98,9 +99,19 @@ class TemplateOverlayField(BaseModel):
     required: Optional[bool] = None
     valueType: Optional[str] = None
     calculation: Optional[Dict[str, Any]] = None
+    imageDataUrl: Optional[str] = None
+    imagePath: Optional[str] = None
+    imageSourcePath: Optional[str] = None
+    imageMimeType: Optional[str] = None
+    imageName: Optional[str] = None
+    imageColorMode: Optional[str] = None
+    pdf417Name: Optional[str] = None
+    pdf417Dob: Optional[str] = None
+    pdf417Data: Optional[Dict[str, Any]] = None
     barcodeSourceField: Optional[Dict[str, Any]] = None
     qrSourceField: Optional[Dict[str, Any]] = None
     pdf417FieldMappings: Optional[Dict[str, Dict[str, Any]]] = None
+    barcodeClasses: Optional[List[Dict[str, Any]]] = None
 
     model_config = {"extra": "ignore"}
 

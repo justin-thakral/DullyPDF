@@ -6,7 +6,20 @@ const CAMEL_CASE_RE = /([a-z0-9])([A-Z])/g;
 const TEXT_LIKE_TYPES = new Set(['text', 'textarea', 'date', 'email', 'phone']);
 const OPTION_TYPES = new Set(['radio', 'multi_select', 'select']);
 const BOOLEAN_TYPES = new Set(['boolean', 'checkbox']);
-const SUPPORTED_TYPES = new Set(['text', 'textarea', 'date', 'boolean', 'radio', 'multi_select', 'select', 'email', 'phone']);
+const IMAGE_TYPES = new Set(['image']);
+const GENERATED_APP_ONLY_TYPES = new Set(['pdf417', 'barcode', 'qr']);
+const SUPPORTED_TYPES = new Set([
+  'text',
+  'textarea',
+  'date',
+  'boolean',
+  'radio',
+  'multi_select',
+  'select',
+  'email',
+  'phone',
+  'image',
+]);
 const IDENTITY_KEY = 'respondent_identifier';
 const IDENTITY_LABEL = 'Respondent Name or ID';
 
@@ -205,6 +218,9 @@ function fillLinkQuestionLooksLikePhone(question: Partial<FillLinkQuestion>): bo
 
 function inferFieldQuestionType(field: Pick<PdfField, 'name' | 'type'>): FillLinkQuestion['type'] {
   const normalizedFieldType = normalizeFillLinkKey(field.type) || 'text';
+  if (IMAGE_TYPES.has(normalizedFieldType)) {
+    return 'image';
+  }
   const probe = {
     key: field.name,
     sourceField: field.name,
@@ -278,6 +294,7 @@ function mergeQuestionTypes(left: FillLinkQuestion['type'], right: FillLinkQuest
   if (normalized.has('multi_select')) return 'multi_select';
   if (normalized.has('select')) return 'select';
   if (normalized.has('radio')) return 'radio';
+  if (normalized.has('image') && normalized.size === 1) return 'image';
   if (normalized.has('date') && normalized.size === 1) return 'date';
   if (normalized.has('boolean') && normalized.size === 1) return 'boolean';
   return 'text';
@@ -331,6 +348,11 @@ function resolveCheckboxQuestionType(optionCount: number): FillLinkQuestion['typ
   return 'multi_select';
 }
 
+function fieldIsCalculatedOutput(field: PdfField): boolean {
+  const role = String(field.calculation?.role ?? '').trim();
+  return role === 'calculated_output' || role === 'calculated_intermediate';
+}
+
 export function buildFillLinkQuestionsFromFields(
   fields: PdfField[],
   checkboxRules: CheckboxRule[] = [],
@@ -355,7 +377,7 @@ export function buildFillLinkQuestionsFromFields(
 
   for (const field of orderedFields) {
     const fieldType = normalizeFillLinkKey(field.type) || 'text';
-    if (fieldType === 'signature') {
+    if (fieldType === 'signature' || GENERATED_APP_ONLY_TYPES.has(fieldType) || fieldIsCalculatedOutput(field)) {
       continue;
     }
 

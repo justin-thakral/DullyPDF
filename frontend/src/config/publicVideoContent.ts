@@ -42,14 +42,14 @@ export const FULL_FEATURE_DEMO_VIDEO: PublicVideoContent = {
 
 export const FILL_PDF_FROM_FILE_DEMO_VIDEO: PublicVideoContent = {
   eyebrow: 'Fill from file demo',
-  title: 'Fill PDF from CSV, Excel, JSON, SQL, or TXT',
+  title: 'Fill PDF from CSV, Excel, or JSON',
   description:
-    'This walkthrough shows how to load a saved PDF template and auto-fill it from a CSV, Excel (XLSX), JSON, SQL query result, or TXT data source without leaving the browser.',
+    'This walkthrough shows how to load a saved PDF template and auto-fill it from CSV, Excel (XLSX), or JSON rows without leaving the browser. SQL and TXT imports are schema-only mapping aids.',
   videoId: 'CT3IEzh4p10',
   youtubeUrl: buildYouTubeShareUrl('CT3IEzh4p10'),
   durationLabel: 'Fill by file walkthrough',
   caption:
-    'Use this video when you need to prove that DullyPDF can fill the same template from CSV, XLSX, JSON, SQL, and TXT payloads before rolling the workflow out to the rest of the team.',
+    'Use this video when you need to prove that DullyPDF can fill the same template from CSV, XLSX, and JSON rows before rolling the workflow out to the rest of the team.',
 };
 
 export const PDF_PACKET_SEARCH_FILL_DEMO_VIDEO: PublicVideoContent = {

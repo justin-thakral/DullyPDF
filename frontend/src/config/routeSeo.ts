@@ -7,7 +7,7 @@ import {
   SITE_ORIGIN as SHARED_SITE_ORIGIN,
 } from './publicRouteSeoData.mjs';
 
-export type LegalRouteKey = 'privacy' | 'terms';
+export type LegalRouteKey = 'privacy' | 'terms' | 'refund';
 export type IntentHubRouteKey = 'workflows' | 'industries';
 
 export type PublicRouteSeoTarget =

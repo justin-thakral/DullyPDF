@@ -62,8 +62,11 @@ def test_normalize_saved_form_editor_snapshot_payload_preserves_app_only_fields(
             "rect": {"x": 10, "y": 12, "width": 120, "height": 80},
             "value": None,
             "imageDataUrl": "data:image/png;base64,abc",
+            "imagePath": "gs://bucket/profile.png",
+            "imageSourcePath": "forms/profile.png",
             "imageMimeType": "image/png",
             "imageName": "profile.png",
+            "imageColorMode": "grayscale",
         },
         {
             "id": "pdf417-1",
@@ -93,6 +96,20 @@ def test_normalize_saved_form_editor_snapshot_payload_preserves_app_only_fields(
             "rect": {"x": 10, "y": 220, "width": 220, "height": 52},
             "value": "123456789",
             "barcodeSourceField": {"fieldId": "source-id", "fieldName": "Member ID"},
+            "barcodeClasses": [
+                {
+                    "id": "member",
+                    "label": "Member ID",
+                    "mode": "field",
+                    "fieldRef": {"fieldId": "source-id", "fieldName": "Member ID"},
+                },
+                {
+                    "id": "manual",
+                    "label": "Manual",
+                    "mode": "manual",
+                    "manualValue": "fallback",
+                },
+            ],
         },
         {
             "id": "qr-1",
@@ -109,8 +126,11 @@ def test_normalize_saved_form_editor_snapshot_payload_preserves_app_only_fields(
 
     assert normalized["fields"][0]["type"] == "image"
     assert normalized["fields"][0]["imageDataUrl"] == "data:image/png;base64,abc"
+    assert normalized["fields"][0]["imagePath"] == "gs://bucket/profile.png"
+    assert normalized["fields"][0]["imageSourcePath"] == "forms/profile.png"
     assert normalized["fields"][0]["imageMimeType"] == "image/png"
     assert normalized["fields"][0]["imageName"] == "profile.png"
+    assert normalized["fields"][0]["imageColorMode"] == "grayscale"
     assert normalized["fields"][1]["type"] == "pdf417"
     assert normalized["fields"][1]["pdf417Name"] == "Ada Lovelace"
     assert normalized["fields"][1]["pdf417Dob"] == "1815-12-10"
@@ -129,6 +149,22 @@ def test_normalize_saved_form_editor_snapshot_payload_preserves_app_only_fields(
         "fieldId": "source-id",
         "fieldName": "Member ID",
     }
+    assert normalized["fields"][2]["barcodeClasses"] == [
+        {
+            "id": "member",
+            "label": "Member ID",
+            "mode": "field",
+            "fieldRef": {"fieldId": "source-id", "fieldName": "Member ID"},
+            "manualValue": None,
+        },
+        {
+            "id": "manual",
+            "label": "Manual",
+            "mode": "manual",
+            "fieldRef": None,
+            "manualValue": "fallback",
+        },
+    ]
     assert normalized["fields"][3]["type"] == "qr"
     assert normalized["fields"][3]["value"] == "https://example.com/verify/abc"
     assert normalized["fields"][3]["qrSourceField"] == {

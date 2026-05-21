@@ -4,7 +4,8 @@ This script targets a running backend (typically local dev) and validates:
 1) signature enforcement (valid/invalid/expired),
 2) duplicate event short-circuit behavior,
 3) card outcome event acceptance for checkout session completion,
-4) subscription cancellation lifecycle event acceptance.
+4) invoice payment-failure event acceptance,
+5) subscription cancellation lifecycle event acceptance.
 
 It does not require Stripe CLI; signatures are generated with the configured
 `STRIPE_WEBHOOK_SECRET`.
@@ -20,6 +21,7 @@ import os
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -35,6 +37,16 @@ class CaseResult:
     name: str
     passed: bool
     detail: str
+
+
+def _is_local_smoke_base_url(base_url: str) -> bool:
+    """Return True for loopback-only smoke targets."""
+    try:
+        parsed = urlsplit(base_url)
+    except Exception:
+        return False
+    hostname = (parsed.hostname or "").strip().lower()
+    return hostname in {"localhost", "127.0.0.1", "0.0.0.0", "::1"} or hostname.endswith(".localhost")
 
 
 def _json_bytes(payload: Dict[str, Any]) -> bytes:
@@ -110,6 +122,73 @@ def _subscription_event(
                 "cancel_at_period_end": event_type == "customer.subscription.updated",
                 "metadata": {"userId": user_id},
                 "items": {"data": [{"price": {"id": "price_smoke"}}]},
+            }
+        },
+    }
+
+
+def _invoice_payment_failed_event(
+    *,
+    event_id: str,
+    user_id: str = "billing-smoke-user",
+) -> Dict[str, Any]:
+    return {
+        "id": event_id,
+        "type": "invoice.payment_failed",
+        "created": int(time.time()),
+        "data": {
+            "object": {
+                "id": f"in_{event_id}",
+                "subscription": None,
+                "customer": "cus_smoke_123",
+                "status": "open",
+                "created": int(time.time()),
+                "next_payment_attempt": int(time.time()) + 86400,
+                "parent": {
+                    "type": "subscription_details",
+                    "subscription_details": {
+                        "subscription": "sub_smoke_123",
+                        "metadata": {"userId": user_id},
+                    },
+                },
+                "lines": {
+                    "data": [
+                        {
+                            "pricing": {
+                                "type": "price_details",
+                                "price_details": {"price": "price_smoke"},
+                            },
+                        },
+                    ],
+                },
+            }
+        },
+    }
+
+
+def _invoice_updated_event(
+    *,
+    event_id: str,
+    user_id: str = "billing-smoke-user",
+) -> Dict[str, Any]:
+    return {
+        "id": event_id,
+        "type": "invoice.updated",
+        "created": int(time.time()),
+        "data": {
+            "object": {
+                "id": f"in_{event_id}",
+                "subscription": None,
+                "customer": "cus_smoke_123",
+                "status": "open",
+                "next_payment_attempt": int(time.time()) + 86400,
+                "parent": {
+                    "type": "subscription_details",
+                    "subscription_details": {
+                        "subscription": "sub_smoke_123",
+                        "metadata": {"userId": user_id},
+                    },
+                },
             }
         },
     }
@@ -261,6 +340,24 @@ def run_smoke(
                 ok, detail = _assert_json_flag(response, key="received", expected=True)
                 results.append(CaseResult(name=case_name, passed=ok, detail=detail))
 
+        failed_invoice_response = _post_webhook(
+            client=client,
+            endpoint=endpoint,
+            event_payload=_invoice_payment_failed_event(event_id=f"evt_smoke_invoice_failed_{run_id}"),
+            webhook_secret=webhook_secret,
+        )
+        ok, detail = _assert_json_flag(failed_invoice_response, key="received", expected=True)
+        results.append(CaseResult(name="invoice_payment_failed_acceptance", passed=ok, detail=detail))
+
+        invoice_updated_response = _post_webhook(
+            client=client,
+            endpoint=endpoint,
+            event_payload=_invoice_updated_event(event_id=f"evt_smoke_invoice_updated_{run_id}"),
+            webhook_secret=webhook_secret,
+        )
+        ok, detail = _assert_json_flag(invoice_updated_response, key="received", expected=True)
+        results.append(CaseResult(name="invoice_updated_acceptance", passed=ok, detail=detail))
+
         # Cancellation lifecycle webhook acceptance.
         for event_type, status in (
             ("customer.subscription.updated", "active"),
@@ -289,11 +386,22 @@ def main() -> int:
     parser.add_argument("--webhook-path", default="/api/billing/webhook", help="Webhook path")
     parser.add_argument("--webhook-secret", default=os.getenv("STRIPE_WEBHOOK_SECRET", ""), help="Stripe webhook signing secret")
     parser.add_argument("--timeout-seconds", type=float, default=15.0, help="Request timeout")
+    parser.add_argument(
+        "--allow-non-local",
+        action="store_true",
+        help="Allow signed smoke events against a non-local endpoint.",
+    )
     args = parser.parse_args()
 
     webhook_secret = (args.webhook_secret or "").strip()
     if not webhook_secret:
         print("Missing webhook secret. Provide --webhook-secret or STRIPE_WEBHOOK_SECRET in env.")
+        return 2
+    if not args.allow_non_local and not _is_local_smoke_base_url(args.base_url):
+        print(
+            "Refusing to send signed Stripe smoke events to a non-local endpoint. "
+            "Use --allow-non-local only for an isolated staging backend."
+        )
         return 2
 
     results = run_smoke(
