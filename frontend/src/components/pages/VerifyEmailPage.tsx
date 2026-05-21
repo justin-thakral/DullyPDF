@@ -136,7 +136,7 @@ const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({ email, onRefresh, onS
       setResendThrottle(updatedState);
       saveResendThrottle(email, updatedState);
       setInfo('Verification email sent. Check your inbox and spam folder.');
-    } catch (err) {
+    } catch {
       setError('Unable to resend the verification email. Please try again shortly.');
     } finally {
       setIsSending(false);
@@ -149,7 +149,7 @@ const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({ email, onRefresh, onS
     setIsChecking(true);
     try {
       await onRefresh?.();
-    } catch (err) {
+    } catch {
       setError('We could not confirm verification yet. Please try again.');
     } finally {
       setIsChecking(false);
