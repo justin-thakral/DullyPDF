@@ -11,7 +11,9 @@ type IntentPageShellProps = {
   heroTitle: string;
   heroSummary: string;
   activeNavKey?: PublicSiteHeaderNavKey | null;
+  hideFormCatalog?: boolean;
   usePublicChrome?: boolean;
+  locale?: 'en' | 'es';
   children: ReactNode;
 };
 
@@ -21,12 +23,32 @@ export const IntentPageShell = ({
   heroTitle,
   heroSummary,
   activeNavKey = null,
+  hideFormCatalog = false,
   usePublicChrome = false,
+  locale = 'en',
   children,
 }: IntentPageShellProps) => {
+  const isSpanish = locale === 'es';
+  const ctaCopy = isSpanish
+    ? {
+        primaryLabel: 'Probar DullyPDF',
+        primaryHref: '/es',
+        secondaryLabel: 'Ver documentación de uso',
+      }
+    : {
+        primaryLabel: 'Try DullyPDF Now',
+        primaryHref: '/',
+        secondaryLabel: 'View Getting Started Docs',
+      };
+
   if (usePublicChrome) {
     return (
-      <PublicSiteFrame activeNavKey={activeNavKey} bodyClassName="intent-page__content intent-page__content--public">
+      <PublicSiteFrame
+        activeNavKey={activeNavKey}
+        bodyClassName="intent-page__content intent-page__content--public"
+        hideFormCatalog={hideFormCatalog}
+        locale={locale}
+      >
         <Breadcrumbs items={breadcrumbItems} />
 
         <section className="intent-page__hero">
@@ -34,11 +56,11 @@ export const IntentPageShell = ({
           <h1>{heroTitle}</h1>
           <p>{heroSummary}</p>
           <div className="intent-page__cta-row">
-            <a href="/" className="intent-page__cta intent-page__cta--primary">
-              Try DullyPDF Now
+            <a href={ctaCopy.primaryHref} className="intent-page__cta intent-page__cta--primary">
+              {ctaCopy.primaryLabel}
             </a>
-            <a href="/usage-docs/getting-started" className="intent-page__cta intent-page__cta--secondary">
-              View Getting Started Docs
+            <a href="/es/usage-docs/getting-started" className="intent-page__cta intent-page__cta--secondary">
+              {ctaCopy.secondaryLabel}
             </a>
           </div>
         </section>
@@ -64,7 +86,7 @@ export const IntentPageShell = ({
           </div>
           <nav className="intent-page__nav" aria-label="Primary navigation">
             <a href="/" className="intent-page__nav-link">Home</a>
-            <a href="/usage-docs" className="intent-page__nav-link">Usage Docs</a>
+            <a href="/es/usage-docs" className="intent-page__nav-link">Usage Docs</a>
             <a href="/privacy" className="intent-page__nav-link">Privacy</a>
             <a href="/terms" className="intent-page__nav-link">Terms</a>
           </nav>
@@ -78,11 +100,11 @@ export const IntentPageShell = ({
             <h1>{heroTitle}</h1>
             <p>{heroSummary}</p>
             <div className="intent-page__cta-row">
-              <a href="/" className="intent-page__cta intent-page__cta--primary">
-                Try DullyPDF Now
+              <a href={ctaCopy.primaryHref} className="intent-page__cta intent-page__cta--primary">
+                {ctaCopy.primaryLabel}
               </a>
-              <a href="/usage-docs/getting-started" className="intent-page__cta intent-page__cta--secondary">
-                View Getting Started Docs
+              <a href="/es/usage-docs/getting-started" className="intent-page__cta intent-page__cta--secondary">
+                {ctaCopy.secondaryLabel}
               </a>
             </div>
           </section>
@@ -90,7 +112,7 @@ export const IntentPageShell = ({
           {children}
         </main>
 
-        <SiteFooter />
+        <SiteFooter hideFormCatalog={hideFormCatalog} locale={locale} />
       </div>
     </div>
   );

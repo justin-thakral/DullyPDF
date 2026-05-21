@@ -44,7 +44,7 @@ type ActionLink = {
 
 const VERIFY_EMAIL_SUCCESS_MESSAGE = 'Your email address has been verified. You can continue to DullyPDF now.';
 const HELP_ACTION: ActionLink = {
-  href: '/usage-docs/getting-started',
+  href: '/es/usage-docs/getting-started',
   label: 'Open setup guide',
 };
 const DEFAULT_VERIFY_CONTINUE_PATH = '/upload';

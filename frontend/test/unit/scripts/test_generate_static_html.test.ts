@@ -42,6 +42,20 @@ describe('generate-static-html', () => {
     expect(html).toContain('<div id="homepage-hydration-cover" aria-hidden="true"></div>');
   });
 
+  it('emits homepage hreflang alternates for localized homepages', () => {
+    const route = ALL_ROUTES.find((entry) => entry.path === '/es');
+    expect(route).toBeTruthy();
+
+    const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, '<main>Spanish homepage prerender</main>');
+
+    expect(html).toContain('<html lang="es">');
+    expect(html).toContain('<link rel="canonical" href="https://dullypdf.com/es" />');
+    expect(html).toContain('<link rel="alternate" hreflang="es" href="https://dullypdf.com/es" />');
+    expect(html).toContain('<link rel="alternate" hreflang="en" href="https://dullypdf.com/" />');
+    expect(html).toContain('<link rel="alternate" hreflang="en-IN" href="https://dullypdf.com/in" />');
+    expect(html).toContain('<link rel="alternate" hreflang="x-default" href="https://dullypdf.com/" />');
+  });
+
   it('does not leak the dev homepage cover bootstrap into shared Vite head assets', () => {
     const assets = extractViteAssetTags(`<!doctype html>
 <html lang="en">
@@ -88,7 +102,7 @@ describe('generate-static-html', () => {
   });
 
   it('includes head SEO signals for usage docs pages', () => {
-    const route = ALL_ROUTES.find((entry) => entry.path === '/usage-docs/getting-started');
+    const route = ALL_ROUTES.find((entry) => entry.path === '/es/usage-docs/getting-started');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, '<main>Usage docs prerender</main>');
@@ -133,7 +147,7 @@ describe('generate-static-html', () => {
   });
 
   it('includes head SEO signals for blog index', () => {
-    const route = ALL_ROUTES.find((entry) => entry.path === '/blog');
+    const route = ALL_ROUTES.find((entry) => entry.path === '/es/blog');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, '<main>Blog prerender</main>');
@@ -141,5 +155,17 @@ describe('generate-static-html', () => {
     expect(html).toContain('<title>');
     expect(html).toContain('name="description"');
     expect(html).toContain('data-seo-jsonld="true"');
+  });
+
+  it('includes India blog canonical and language signals', () => {
+    const route = ALL_ROUTES.find((entry) => entry.path === '/in/blog');
+    expect(route).toBeTruthy();
+
+    const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, '<main>India blog prerender</main>');
+
+    expect(html).toContain('<html lang="en-IN">');
+    expect(html).toContain('<link rel="canonical" href="https://dullypdf.com/in/blog" />');
+    expect(html).toContain('<meta name="robots" content="index,follow" />');
+    expect(html).toContain('India PDF Form Automation Guides');
   });
 });

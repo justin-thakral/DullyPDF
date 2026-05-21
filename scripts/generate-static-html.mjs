@@ -81,11 +81,11 @@ function esc(str) {
 function mapSeoRouteToHydratableRoute(route) {
   switch (route.kind) {
     case 'home':
-      return { kind: 'home' };
+      return { kind: 'home', market: route.pageKey === 'india' || route.pageKey === 'spanish' ? route.pageKey : 'global' };
     case 'legal':
       return { kind: 'legal', legalKind: route.pageKey };
     case 'intent-hub':
-      return { kind: 'intent-hub', hubKey: route.pageKey };
+      return { kind: 'intent-hub', hubKey: route.pageKey, ...(route.locale ? { locale: route.locale } : {}) };
     case 'feature-plan':
       return { kind: 'feature-plan', planKey: route.pageKey };
     case 'usage-docs':
@@ -93,9 +93,9 @@ function mapSeoRouteToHydratableRoute(route) {
     case 'intent':
       return { kind: 'intent', intentKey: route.pageKey };
     case 'blog-index':
-      return { kind: 'blog-index' };
+      return { kind: 'blog-index', ...(route.locale ? { locale: route.locale } : {}) };
     case 'blog-post':
-      return { kind: 'blog-post', slug: route.slug };
+      return { kind: 'blog-post', slug: route.slug, ...(route.locale ? { locale: route.locale } : {}) };
     case 'form-catalog-index':
       return { kind: 'form-catalog-index' };
     case 'form-catalog-form':
@@ -158,6 +158,15 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
   const ogDescription = seo.ogDescription || seo.description;
   const twitterTitle = seo.twitterTitle || ogTitle;
   const twitterDescription = seo.twitterDescription || ogDescription;
+  const htmlLang = seo.htmlLang || 'en';
+  const alternateLanguageTags = (seo.alternates || [])
+    .map((alternate) => {
+      const href = /^https?:\/\//i.test(alternate.path)
+        ? alternate.path
+        : `${SITE_ORIGIN}${alternate.path}`;
+      return `<link rel="alternate" hreflang="${esc(alternate.hreflang)}" href="${esc(href)}" />`;
+    })
+    .join('\n    ');
 
   const structuredDataScripts = (seo.structuredData || [])
     .map((entry, index) =>
@@ -190,7 +199,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     : '';
 
   return `<!doctype html>
-<html lang="en">
+<html lang="${esc(htmlLang)}">
   <head>
     ${viteAssets.headScriptTags.join('\n    ')}
     <meta charset="UTF-8" />
@@ -201,6 +210,7 @@ function generatePageHtml(route, viteAssets, prerenderedMarkup) {
     <meta name="keywords" content="${esc(seo.keywords.join(', '))}" />
     <meta name="robots" content="${route.lowValue ? 'noindex,follow' : 'index,follow'}" />
     <link rel="canonical" href="${esc(canonicalUrl)}" />
+    ${alternateLanguageTags}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="DullyPDF" />
     <meta property="og:title" content="${esc(ogTitle)}" />

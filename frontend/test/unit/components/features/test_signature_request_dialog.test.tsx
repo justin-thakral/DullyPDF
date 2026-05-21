@@ -40,7 +40,7 @@ describe('SignatureRequestDialog', () => {
 
     await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/usage-docs/signature-workflow', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/signature-workflow', '_blank', 'noopener,noreferrer');
     openSpy.mockRestore();
   });
 

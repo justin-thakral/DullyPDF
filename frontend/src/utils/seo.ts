@@ -34,6 +34,12 @@ const ensureCanonicalLink = (): HTMLLinkElement => {
   return link;
 };
 
+const clearRouteAlternateLinks = (): void => {
+  document.head.querySelectorAll('link[rel="alternate"][data-route-hreflang="true"]').forEach((node) => {
+    node.remove();
+  });
+};
+
 const toAbsoluteUrl = (path: string): string => {
   if (/^https?:\/\//i.test(path)) return path;
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
@@ -69,6 +75,7 @@ export const applySeoMetadata = (metadata: RouteSeoMetadata): void => {
   const imageUrl = toAbsoluteUrl(metadata.ogImagePath ?? DEFAULT_SOCIAL_IMAGE_PATH);
   const imageAlt = metadata.ogImageAlt ?? DEFAULT_SOCIAL_IMAGE_ALT;
 
+  document.documentElement.lang = metadata.htmlLang ?? 'en';
   document.title = metadata.title;
 
   ensureMetaByName('description').setAttribute('content', metadata.description);
@@ -76,6 +83,15 @@ export const applySeoMetadata = (metadata: RouteSeoMetadata): void => {
   ensureMetaByName('robots').setAttribute('content', 'index,follow');
 
   ensureCanonicalLink().setAttribute('href', canonicalUrl);
+  clearRouteAlternateLinks();
+  metadata.alternates?.forEach((alternate) => {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'alternate');
+    link.setAttribute('hreflang', alternate.hreflang);
+    link.setAttribute('href', toAbsoluteUrl(alternate.path));
+    link.setAttribute('data-route-hreflang', 'true');
+    document.head.appendChild(link);
+  });
 
   ensureMetaByProperty('og:type').setAttribute('content', 'website');
   ensureMetaByProperty('og:site_name').setAttribute('content', 'DullyPDF');
@@ -112,9 +128,11 @@ type NoIndexSeoOptions = {
 export const applyNoIndexSeo = (options: NoIndexSeoOptions): void => {
   if (typeof document === 'undefined') return;
 
+  document.documentElement.lang = 'en';
   document.title = options.title;
   ensureMetaByName('description').setAttribute('content', options.description);
   ensureMetaByName('robots').setAttribute('content', 'noindex,follow');
   ensureCanonicalLink().setAttribute('href', toAbsoluteUrl(options.canonicalPath));
+  clearRouteAlternateLinks();
   clearSeoJsonLdScripts();
 };

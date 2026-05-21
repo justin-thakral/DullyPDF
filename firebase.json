@@ -28,12 +28,22 @@
       },
       {
         "source": "/docs",
-        "destination": "/usage-docs",
+        "destination": "/es/usage-docs",
         "type": 301
       },
       {
         "source": "/docs/:slug*",
-        "destination": "/usage-docs/:slug",
+        "destination": "/es/usage-docs/:slug",
+        "type": 301
+      },
+      {
+        "source": "/usage-docs",
+        "destination": "/es/usage-docs",
+        "type": 301
+      },
+      {
+        "source": "/usage-docs/:slug*",
+        "destination": "/es/usage-docs/:slug",
         "type": 301
       },
       {

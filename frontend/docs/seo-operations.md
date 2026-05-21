@@ -4,7 +4,7 @@ This playbook covers ongoing work that complements route-level SEO implementatio
 
 ## Canonical URL and slash policy
 
-- Canonical public URLs use non-trailing slash style for all non-root routes (for example `/usage-docs`, `/fill-pdf-from-csv`).
+- Canonical public URLs use non-trailing slash style for all non-root routes (for example `/es/usage-docs`, `/fill-pdf-from-csv`).
 - Firebase Hosting must keep `trailingSlash: false` in `firebase.json`.
 - Unknown public URLs must fall through to hosting `404.html`. Do not reintroduce a catch-all `** -> /index.html` rewrite, or Google will see soft 404s.
 - Keep redirects one-way only (legacy path -> canonical path). Do not add paired slash redirects that can create `/path` <-> `/path/` loops.
@@ -195,13 +195,70 @@ Authority growth is not a one-time code change. Use this recurring plan:
 - Spot-check 3-5 SEO routes with and without trailing slash and verify one canonical hop at most.
 - Spot-check an invalid public path (for example `/this-path-should-not-exist`) and confirm hosting serves the 404 page instead of homepage HTML.
 - Confirm prerendered route HTML contains visible route markup inside `#root`, not an empty root plus a separate placeholder shell.
-- Confirm the hydrated page matches the JS-disabled prerender visually on representative routes (homepage, legal, blog, workflow).
-- Validate `/workflows` and `/industries` are present in `sitemap-main.xml` and serve route-specific static HTML on direct requests.
+- Confirm the hydrated page matches the JS-disabled prerender visually on representative routes (homepage, legal, `/in/blog`, `/in/fill-pdf-from-excel`, `/es/blog`, `/es/crear-formulario-pdf-rellenable`).
+- Validate `/in`, `/in/blog`, representative `/in/*` workflow/industry pages, `/es/flujos-de-trabajo`, `/es/industrias`, `/es/blog`, and representative `/es/*` workflow/industry pages are present in `sitemap-main.xml` and serve route-specific static HTML on direct requests.
 - Validate `sitemap.xml` downloads as a sitemap index and child sitemap entries resolve to canonical non-trailing slash URLs.
 - Validate `/robots.txt`, `/llms.txt`, and `/llm.txt` after deploy. `/llm.txt` should return a single 301 to `/llms.txt`.
 
 ## Query-to-page mapping
 
+- `/in`: English-language India homepage for KYC, vendor onboarding, HR joining, GST invoice, school, clinic, finance, branch, logistics, property, and procurement PDF automation demand.
+- `/in/blog`: India blog index for the ten evidence-heavy PDF automation support guides.
+- `/in/blog/india-pdf-form-automation-guide`: India guide tying the homepage, workflow pages, industry pages, spreadsheet mapping, Fill By Link, and API Fill into one localized implementation path.
+- `/in/blog/fill-indian-pdf-forms-from-excel`: Spreadsheet-to-PDF guide for branch, vendor, HR, school, clinic, finance, and procurement source rows.
+- `/in/blog/india-kyc-pdf-automation-checklist`: KYC checklist guide for PAN, GSTIN, branch, account, address, document status, and reviewer fields.
+- `/in/blog/vendor-onboarding-pdf-india`: Vendor onboarding guide for supplier master records, GSTIN, PAN, IFSC, MSME/Udyam references, and approvals.
+- `/in/blog/gst-invoice-pdf-automation-india`: GST invoice guide for invoice numbers, line items, taxable values, totals, and finance review.
+- `/in/blog/hr-joining-pdf-automation-india`: HR joining guide for employee IDs, branch assignment, bank details, emergency contacts, and onboarding packets.
+- `/in/blog/school-admission-pdf-automation-india`: School admission guide for student, parent, class, fee, and office-review workflows.
+- `/in/blog/clinic-intake-pdf-automation-india`: Clinic intake guide for patient, appointment, visit, payment or insurance reference, and desk-review fields.
+- `/in/blog/delivery-challan-pdf-automation-india`: Delivery challan guide for dispatch rows, branch codes, item details, quantities, and logistics handoffs.
+- `/in/blog/india-pdf-fill-api-guide`: API Fill guide for moving reviewed India templates from spreadsheet QA into JSON-to-PDF generation.
+- `/in/pdf-to-fillable-form`: India workflow demand for turning recurring local PDFs into reusable templates.
+- `/in/fill-pdf-from-excel`: India workflow demand for filling reviewed PDF templates from branch, vendor, HR, school, clinic, finance, or procurement Excel rows.
+- `/in/fill-pdf-from-csv`: India workflow demand for CSV exports and operational trackers that fill reviewed PDFs.
+- `/in/fill-by-link`: India workflow demand for collecting respondent data through a web form before generating the PDF.
+- `/in/pdf-fill-api`: India developer/API demand for JSON-to-PDF automation on reviewed templates.
+- `/in/pdf-field-detection`: India workflow demand for detecting fields before local template cleanup.
+- `/in/rename-map-pdf-fields`: India workflow demand for field naming and spreadsheet/API mapping.
+- `/in/fill-pdf-from-documents`: India workflow demand for extracting data from uploaded documents before PDF generation.
+- `/in/pdf-packet-workflow`: India workflow demand for filling related PDF packets from one reviewed record.
+- `/in/pdf-calculations`: India workflow demand for calculated PDF totals in operational forms.
+- `/in/kyc-pdf-automation`: India KYC, PAN, GSTIN, branch, account, and customer/vendor review demand.
+- `/in/vendor-onboarding-pdf-automation`: India supplier setup, GSTIN, PAN, IFSC, Udyam/MSME, and vendor-master demand.
+- `/in/hr-joining-pdf-automation`: India HR joining, employee ID, branch assignment, and onboarding packet demand.
+- `/in/gst-invoice-pdf-automation`: India GST invoice, tax value, line item, and finance review demand.
+- `/in/school-admissions-pdf-automation`: India school admission and student record PDF demand.
+- `/in/clinic-intake-pdf-automation`: India clinic intake and appointment record PDF demand.
+- `/in/loan-application-pdf-automation`: India finance and loan-application packet PDF demand.
+- `/in/delivery-challan-pdf-automation`: India logistics, dispatch, delivery challan, and branch handoff PDF demand.
+- `/in/tenant-onboarding-pdf-automation`: India property and tenant onboarding PDF demand.
+- `/in/purchase-order-pdf-automation`: India purchase order, procurement, and approval PDF demand.
+- `/es`: Generic Spanish-language homepage for `formularios PDF rellenables`, `rellenar formularios PDF`, `PDF a formulario rellenable`, `rellenar PDF desde Excel/CSV`, and Spanish workflow examples such as admisión, inscripción, altas de clientes, solicitudes, órdenes de trabajo, facturas, clínica, escuela, and RR. HH. Keep this as language-only Spanish until country-specific pricing, legal, terminology, or search-intent differences justify separate country routes.
+- `/es/flujos-de-trabajo`: Spanish workflow hub for the ten active workflow-library pages.
+- `/es/industrias`: Spanish industry hub for the ten active industry-solution pages.
+- `/es/blog`: Spanish blog index for the ten active PDF automation guides.
+- `/es/crear-formulario-pdf-rellenable`: Spanish workflow demand for creating reusable fillable PDF forms from existing PDFs.
+- `/es/rellenar-pdf-desde-excel`: Spanish workflow demand for filling PDFs from Excel rows and reviewed spreadsheets.
+- `/es/rellenar-pdf-desde-csv`: Spanish workflow demand for filling PDFs from CSV exports and operational trackers.
+- `/es/formulario-pdf-con-link`: Spanish workflow demand for Fill By Link collection without asking recipients to edit PDFs directly.
+- `/es/api-rellenar-pdf`: Spanish developer/API demand for JSON-to-PDF automation on reviewed templates.
+- `/es/detectar-campos-pdf-ia`: Spanish workflow demand for AI-assisted PDF field detection before template cleanup.
+- `/es/renombrar-campos-pdf-ia`: Spanish workflow demand for AI-assisted field naming and review.
+- `/es/mapear-datos-a-pdf`: Spanish workflow demand for mapping spreadsheet/API fields to PDF fields.
+- `/es/plantilla-pdf-reutilizable`: Spanish workflow demand for reusable PDF templates and controlled updates.
+- `/es/rellenar-paquetes-pdf`: Spanish workflow demand for filling multiple PDFs from one reviewed row or record.
+- `/es/automatizacion-pdf-salud`: Spanish healthcare intake and clinic PDF automation demand.
+- `/es/automatizacion-pdf-recursos-humanos`: Spanish HR onboarding and employee packet demand.
+- `/es/automatizacion-pdf-inmobiliaria`: Spanish real estate and property PDF automation demand.
+- `/es/automatizacion-pdf-educacion`: Spanish education, enrollment, and student-form demand.
+- `/es/automatizacion-pdf-finanzas-prestamos`: Spanish finance and loan-packet PDF automation demand.
+- `/es/automatizacion-pdf-logistica`: Spanish logistics, dispatch, and delivery-form demand.
+- `/es/automatizacion-pdf-contabilidad-facturas`: Spanish accounting, invoice, and AP/AR PDF automation demand.
+- `/es/automatizacion-pdf-construccion`: Spanish construction quote, change order, and field PDF demand.
+- `/es/automatizacion-pdf-servicios-campo`: Spanish field-service work order and inspection PDF demand.
+- `/es/automatizacion-pdf-compras-proveedores`: Spanish procurement and supplier onboarding PDF demand.
+- Legacy global English intent routes below are low-value/noindex compatibility records and should not be treated as active sitemap targets while the India and Spanish clusters are the active localized SEO focus.
 - `/pdf-to-fillable-form`: convert raw PDFs to fillable templates and absorb existing-PDF builder intent (`pdf form builder`, `fillable pdf builder`, `build fillable form from pdf`) until a dedicated builder page is warranted.
 - `/pdf-field-types/image-qr-barcode-fields`: advanced PDF helper-field intent for `add image field to PDF`, `QR code PDF form field`, `PDF417 barcode field PDF`, `1D barcode PDF form field`, and broader `add barcode to PDF form` searches.
 - `/add-image-field-to-pdf`: focused image-field intent for `add image field to PDF`, `fillable PDF image field`, `photo upload field PDF form`, and image-field versus static-image searchers.

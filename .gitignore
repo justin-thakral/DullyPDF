@@ -70,6 +70,7 @@ backend/temp/
 backend/scripts/leads/
 backend/scripts/outbound_email_playbook.md
 backend/scripts/send_gmail_once.py
+backend/scripts/user_email_campaign.py
 backend/test/unit/scripts/test_send_gmail_once_blueprint.py
 
 # ML training datasets (raw PDFs, images, tiles)
@@ -201,6 +202,7 @@ secrets/
 /ahrefs/
 /SEO_FIELD_SUPPORT_PAGES.md
 /frontend/docs/high-intent-seo-opportunity-pages.md
+/backlinks/
 
 # Video assets (local recordings)
 /youtube/

@@ -58,6 +58,241 @@ const HIGH_INTENT_OPPORTUNITY_VISUAL_ENTRIES = Object.fromEntries(
   }),
 );
 
+const INDIA_WORKFLOW_VISUALS = [
+  [
+    'india-pdf-to-fillable-form',
+    'India template setup',
+    '/demo/mobile-raw-pdf.webp',
+    'DullyPDF mobile preview of a raw PDF before field detection and template cleanup.',
+    'India PDF-to-fillable-form work starts from the fixed operations PDF the team already uses.',
+  ],
+  [
+    'india-fill-pdf-from-excel',
+    'India Excel rows',
+    '/seo/excel-to-fillable-pdf-template-overview.webp',
+    'DullyPDF Excel-to-PDF workflow preview with spreadsheet rows mapped into a reusable PDF template.',
+    'Excel-to-PDF workflows need stable headers for PAN, GSTIN, branch, employee, student, invoice, or vendor fields.',
+  ],
+  [
+    'india-fill-pdf-from-csv',
+    'India CSV rows',
+    '/seo/search-fill-pdf-review-overview.webp',
+    'DullyPDF Search and Fill review preview for choosing a source row before PDF output.',
+    'CSV-to-PDF workflows are strongest when operators inspect one exported row before adding volume.',
+  ],
+  [
+    'india-fill-by-link',
+    'India intake link',
+    '/demo/mock-form.webp',
+    'DullyPDF respondent form preview for collecting structured answers before PDF generation.',
+    'Fill By Link lets Indian respondents submit structured details while staff still reviews the final PDF output.',
+  ],
+  [
+    'india-pdf-fill-api',
+    'India API fill',
+    '/seo/database-schema.webp',
+    'Database schema diagram representing JSON source data mapped to a PDF Fill API template.',
+    'API Fill should use the same reviewed schema already tested through the saved India PDF template.',
+  ],
+  [
+    'india-pdf-field-detection',
+    'India field detection',
+    '/demo/mobile-commonforms.webp',
+    'DullyPDF preview showing detected field overlays on top of a source PDF.',
+    'Field detection is the first draft of the field layer; Indian forms still need human review before mapping.',
+  ],
+  [
+    'india-rename-map-pdf-fields',
+    'India field mapping',
+    '/seo/ai-pdf-field-renaming-overview.webp',
+    'DullyPDF field renaming and mapping preview for standardizing template field names.',
+    'Rename and mapping work turns generic detected labels into stable fields such as PAN, GSTIN, branch, vendor, and invoice keys.',
+  ],
+  [
+    'india-fill-pdf-from-documents',
+    'India document extraction',
+    '/seo/fill-pdf-from-image-overview.webp',
+    'DullyPDF fill-from-documents preview for extracting candidate values before filling a PDF template.',
+    'Document-to-PDF workflows help when Indian source values arrive as scans, attachments, invoices, statements, or photos instead of clean rows.',
+  ],
+  [
+    'india-pdf-packet-workflow',
+    'India PDF packets',
+    '/seo/pdf-packet-workflow-overview.webp',
+    'DullyPDF packet workflow preview for filling multiple PDFs from one record.',
+    'Packet workflows let one Indian record fill several KYC, HR, vendor, loan, school, clinic, or branch PDFs.',
+  ],
+  [
+    'india-pdf-calculations',
+    'India calculations',
+    '/seo/calculation-fields-overview.webp',
+    'DullyPDF calculation-field preview for producing reviewed totals inside a fixed PDF layout.',
+    'Calculation workflows are useful for GST, PO, fee, delivery, score, and total fields after the source inputs are reviewed.',
+  ],
+];
+
+const INDIA_WORKFLOW_VISUAL_ENTRIES = Object.fromEntries(
+  INDIA_WORKFLOW_VISUALS.map(([key, eyebrow, src, alt, caption]) => [
+    key,
+    {
+      hubImage: {
+        src,
+        alt,
+        objectPosition: 'center top',
+        eyebrow,
+      },
+      articleFigures: [
+        {
+          src,
+          alt,
+          caption,
+          objectPosition: 'center top',
+        },
+      ],
+    },
+  ]),
+);
+
+const INDIA_INDUSTRY_VISUALS = [
+  [
+    'india-kyc-pdf-automation',
+    'India KYC',
+    '/seo/id-photo-field-pdf-form-overview.webp',
+    'DullyPDF template preview with identity-photo and structured field regions for a KYC-style PDF.',
+    'KYC templates need explicit identifier, address, branch, reviewer, and supporting-document fields before they can be reused safely.',
+  ],
+  [
+    'india-vendor-onboarding-pdf-automation',
+    'India vendors',
+    '/seo/procurement-pdf-automation-overview.webp',
+    'DullyPDF procurement template preview with vendor, purchase, barcode, and total fields.',
+    'Vendor onboarding pages reuse procurement mechanics, but focus the field set on GSTIN, PAN, bank, IFSC, Udyam, and vendor-master review.',
+  ],
+  [
+    'india-hr-joining-pdf-automation',
+    'India HR',
+    '/seo/pdf-packet-workflow-overview.webp',
+    'DullyPDF grouped packet workflow preview for filling several PDFs from one record.',
+    'HR joining work is packet-heavy, so one reviewed employee row should fill joining, bank, nominee, policy, and asset forms consistently.',
+  ],
+  [
+    'india-gst-invoice-pdf-automation',
+    'GST invoice',
+    '/blog/invoice-sample-1.webp',
+    'Invoice PDF sample with fixed fields for invoice details, amounts, and totals.',
+    'GST invoice PDFs need explicit GSTIN, HSN or SAC, place of supply, taxable value, tax amount, round off, and total fields.',
+  ],
+  [
+    'india-school-admissions-pdf-automation',
+    'India admissions',
+    '/blog/homework-worksheet-detected-fields.webp',
+    'Education PDF example with detected fields over a fixed school document layout.',
+    'School admission packets work best when student, parent, class, campus, transport, hostel, and fee fields use stable names across the packet.',
+  ],
+  [
+    'india-clinic-intake-pdf-automation',
+    'India clinics',
+    '/demo/mock-form.webp',
+    'DullyPDF respondent form preview for collecting intake answers before generating a PDF.',
+    'Clinic intake can start from a patient-submitted web form, then staff can review and generate the final OPD or registration PDF.',
+  ],
+  [
+    'india-loan-application-pdf-automation',
+    'India loans',
+    '/seo/online-loan-application.jpg',
+    'Loan application form preview with applicant and financial fields.',
+    'Loan packet templates need applicant, co-applicant, branch, repayment, KYC, document-status, and review fields kept separate.',
+  ],
+  [
+    'india-delivery-challan-pdf-automation',
+    'India dispatch',
+    '/seo/warehouse-inventory-pdf-automation-overview.webp',
+    'Warehouse PDF automation preview with item, inventory, barcode, and status fields.',
+    'Delivery challan workflows benefit from separate challan, LR, e-way bill reference, vehicle, SKU, warehouse, and delivery-status fields.',
+  ],
+  [
+    'india-tenant-onboarding-pdf-automation',
+    'India tenants',
+    '/seo/paperwork-desk.jpg',
+    'Desk with paperwork representing a fixed tenant onboarding PDF workflow.',
+    'Tenant onboarding pages should map property, unit, rent, deposit, move-in, maintenance, and verification-reference details without importing another market workflow.',
+  ],
+  [
+    'india-purchase-order-pdf-automation',
+    'India PO',
+    '/seo/pdf-purchase-order-calculations-overview.webp',
+    'Purchase order calculation template preview with line totals and grand total fields.',
+    'Purchase order templates need supplier GSTIN, PO number, HSN or SAC, cost centre, line totals, tax fields, and approval metadata.',
+  ],
+];
+
+const INDIA_INDUSTRY_VISUAL_ENTRIES = Object.fromEntries(
+  INDIA_INDUSTRY_VISUALS.map(([key, eyebrow, src, alt, caption]) => [
+    key,
+    {
+      hubImage: {
+        src,
+        alt,
+        objectPosition: 'center top',
+        eyebrow,
+      },
+      articleFigures: [
+        {
+          src,
+          alt,
+          caption,
+          objectPosition: 'center top',
+        },
+      ],
+    },
+  ]),
+);
+
+const SPANISH_VISUALS = [
+  ['es-create-fillable-pdf-form', 'PDF rellenable', '/blog/patient-intake-source-1.webp', 'PDF existente antes de convertirse en plantilla rellenable.', 'La plantilla empieza con el PDF existente y agrega una capa de campos revisados para reutilizar el documento.'],
+  ['es-fill-pdf-from-excel', 'Excel a PDF', '/blog/patient-intake-remap-1.webp', 'Formulario PDF mapeado a una fuente de datos estructurada.', 'Excel funciona mejor cuando cada columna tiene un campo PDF claro y probado.'],
+  ['es-fill-pdf-from-csv', 'CSV a PDF', '/seo/database-schema.webp', 'Esquema de datos usado para mapear registros CSV a campos PDF.', 'CSV es una buena fuente para exportaciones recurrentes y pruebas antes de API.'],
+  ['es-fill-pdf-by-link', 'PDF por enlace', '/demo/mock-form.webp', 'Formulario web para capturar respuestas antes de generar un PDF.', 'Fill By Link separa la captura de respuestas del PDF final.'],
+  ['es-pdf-fill-api', 'API PDF', '/seo/database-schema.webp', 'Diagrama de esquema JSON para rellenar PDFs por API.', 'La API necesita un contrato estable entre claves JSON y campos PDF.'],
+  ['es-ai-pdf-field-detection', 'Detección IA', '/demo/mobile-commonforms.webp', 'Detección de campos en un PDF dentro de DullyPDF.', 'La detección crea un borrador de campos que debe revisarse antes de guardar la plantilla.'],
+  ['es-ai-pdf-field-renaming', 'Renombrar campos', '/blog/patient-intake-rename-1.webp', 'Campos PDF renombrados con etiquetas más claras.', 'Nombres claros facilitan mapear Excel, CSV, respuestas por enlace y API.'],
+  ['es-map-data-to-pdf', 'Mapeo de datos', '/blog/patient-intake-remap-1.webp', 'Formulario PDF con campos alineados a datos estructurados.', 'El mapeo guarda qué dato llena cada campo para que el flujo se pueda repetir.'],
+  ['es-reusable-pdf-template', 'Plantilla PDF', '/seo/save-reusable-pdf-template-overview.webp', 'Vista de plantilla PDF reutilizable en DullyPDF.', 'Guardar la plantilla conserva campos, nombres y mapeos para futuros registros.'],
+  ['es-pdf-packet-workflow', 'Paquetes PDF', '/seo/pdf-packet-workflow-overview.webp', 'Vista de flujo para rellenar varios PDFs desde un registro.', 'Los paquetes usan nombres consistentes para que un registro pueda generar varios documentos.'],
+  ['es-healthcare-pdf-automation', 'Clínicas', '/blog/dental-intake-form-1.webp', 'Formulario clínico PDF fijo con secciones de admisión y datos de paciente.', 'Las clínicas necesitan plantillas estables para admisión, historial, seguros y registros.'],
+  ['es-hr-pdf-automation', 'RR. HH.', '/seo/pdf-packet-workflow-overview.webp', 'Vista de paquete PDF para documentos de ingreso de empleados.', 'RR. HH. suele reutilizar datos de empleado en varios documentos del paquete de ingreso.'],
+  ['es-real-estate-pdf-automation', 'Inmobiliaria', '/seo/paperwork-desk.jpg', 'Escritorio con documentos que representa expedientes inmobiliarios repetidos.', 'Los flujos inmobiliarios necesitan mapear propiedad, unidad, cliente, importes y fechas.'],
+  ['es-education-pdf-automation', 'Educación', '/blog/homework-worksheet-detected-fields.webp', 'Documento escolar con campos detectados sobre un PDF.', 'Escuelas y administración educativa pueden reutilizar plantillas de admisión, inscripción y autorización.'],
+  ['es-finance-loan-pdf-automation', 'Préstamos', '/seo/online-loan-application.jpg', 'Solicitud de préstamo con campos de solicitante y operación financiera.', 'Los préstamos necesitan separar solicitante, producto, monto, plazo, sucursal y revisión.'],
+  ['es-logistics-pdf-automation', 'Logística', '/seo/warehouse-inventory-pdf-automation-overview.webp', 'Plantilla PDF de almacén con campos de inventario y operación.', 'Logística usa PDFs repetidos para órdenes, inventarios, guías y comprobantes.'],
+  ['es-accounting-invoice-pdf-automation', 'Facturas', '/blog/invoice-sample-1.webp', 'Factura PDF con campos de cliente, conceptos, impuestos y total.', 'Contabilidad necesita mapear importes y datos de factura sin recaptura manual.'],
+  ['es-construction-pdf-automation', 'Construcción', '/seo/pdf-construction-bid-calculations-overview.webp', 'Plantilla de presupuesto de construcción con campos de costos y totales.', 'Construcción usa formularios repetidos para presupuestos, cambios, inspecciones y reportes.'],
+  ['es-field-service-pdf-automation', 'Campo', '/seo/field-service-pdf-automation-overview.webp', 'Vista de orden de trabajo PDF para servicio de campo.', 'Servicios de campo necesitan mapear cliente, activo, técnico, ubicación y resultado.'],
+  ['es-procurement-pdf-automation', 'Compras', '/seo/procurement-pdf-automation-overview.webp', 'Plantilla de compras con campos de proveedor, orden y aprobación.', 'Compras reutiliza datos de proveedor, orden, centro de costo, totales y aprobadores.'],
+];
+
+const SPANISH_VISUAL_ENTRIES = Object.fromEntries(
+  SPANISH_VISUALS.map(([key, eyebrow, src, alt, caption]) => [
+    key,
+    {
+      hubImage: {
+        src,
+        alt,
+        objectPosition: 'center top',
+        eyebrow,
+      },
+      articleFigures: [
+        {
+          src,
+          alt,
+          caption,
+          objectPosition: 'center top',
+        },
+      ],
+    },
+  ]),
+);
+
 export const INTENT_VISUALS = {
   'pdf-to-fillable-form': {
     hubImage: {
@@ -2201,5 +2436,8 @@ export const INTENT_VISUALS = {
       },
     ],
   },
+  ...INDIA_WORKFLOW_VISUAL_ENTRIES,
+  ...INDIA_INDUSTRY_VISUAL_ENTRIES,
+  ...SPANISH_VISUAL_ENTRIES,
   ...HIGH_INTENT_OPPORTUNITY_VISUAL_ENTRIES,
 };

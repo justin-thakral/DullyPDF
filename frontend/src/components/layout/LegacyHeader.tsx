@@ -13,6 +13,14 @@ interface LegacyHeaderProps {
   onOpenProfile?: () => void;
   onSignOut?: () => void;
   onSignIn?: () => void;
+  homepageCopy?: {
+    title: string;
+    description: string;
+    docsLabel: string;
+    signInLabel: string;
+    signOutLabel: string;
+    profileTitle: string;
+  };
 }
 
 /**
@@ -27,6 +35,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
   onOpenProfile,
   onSignOut,
   onSignIn,
+  homepageCopy,
 }) => {
   /**
    * Map view names to display titles.
@@ -34,7 +43,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
   const getTitle = () => {
     switch (currentView) {
       case 'homepage':
-        return 'PDF Form Generator';
+        return homepageCopy?.title ?? 'PDF Form Generator';
       case 'upload':
         return 'Upload PDF Document';
       case 'processing':
@@ -52,7 +61,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
   const getDescription = () => {
     switch (currentView) {
       case 'homepage':
-        return 'Transform PDFs into interactive forms with AI-powered field detection';
+        return homepageCopy?.description ?? 'Transform PDFs into interactive forms with AI-powered field detection';
       case 'upload':
         return 'Select a PDF file to begin automatic form field detection';
       case 'processing':
@@ -89,8 +98,8 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
 
         <div className="header-right">
           <div className="header-link-group">
-            <a className="header-link-button" href="/usage-docs">
-              Docs &amp; Privacy &amp; Terms
+            <a className="header-link-button" href="/es/usage-docs">
+              {homepageCopy?.docsLabel ?? 'Docs & Privacy & Terms'}
             </a>
           </div>
           {userEmail ? (
@@ -100,7 +109,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
                   type="button"
                   className="header-account__button header-account__button--interactive"
                   onClick={onOpenProfile}
-                  title="Open profile"
+                  title={homepageCopy?.profileTitle ?? 'Open profile'}
                 >
                   <div className="user-avatar" aria-hidden="true">
                     {userInitial}
@@ -125,7 +134,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
               )}
               {onSignOut && (
                 <button type="button" className="signout-button" onClick={onSignOut}>
-                  Sign out
+                  {homepageCopy?.signOutLabel ?? 'Sign out'}
                 </button>
               )}
             </div>
@@ -137,7 +146,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
               disabled={authPending || !onSignIn}
               aria-busy={authPending || undefined}
             >
-              Sign in
+              {homepageCopy?.signInLabel ?? 'Sign in'}
             </button>
           ) : null}
           <div className="header-logo">

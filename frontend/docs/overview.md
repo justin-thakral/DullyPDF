@@ -19,11 +19,11 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 
 ## Public usage docs
 
-- End-user documentation is available at canonical `/usage-docs/*` URLs.
-- Legacy `/docs/*` URLs are compatibility redirects (HTTP 301) to `/usage-docs/*`.
+- End-user documentation is available at canonical `/es/usage-docs/*` URLs.
+- Legacy `/docs/*` URLs are compatibility redirects (HTTP 301) to `/es/usage-docs/*`.
 - Canonical style is non-trailing slash for non-root routes; `/path/` should only 301 once to `/path` (never loop).
 - The docs include dedicated pages for detection, rename/mapping, editor workflow, Search & Fill, Fill from Images and Documents, Fill By Link, signature workflow, API Fill, Create Group workflows, save/download/Profile behavior, and troubleshooting.
-- Workspace action menus and dialogs now expose direct `Usage Docs` shortcuts that open the matching `/usage-docs/*` route in a new browser tab/window so operators can keep the active editor state intact while reading instructions.
+- Workspace action menus and dialogs now expose direct `Usage Docs` shortcuts that open the matching `/es/usage-docs/*` route in a new browser tab/window so operators can keep the active editor state intact while reading instructions.
 - Route handling lives in `frontend/src/main.tsx` alongside legal page route handling.
 - Public legal routes include `/privacy`, `/terms`, and `/refund-policy`; the refund route is intended to satisfy payment-provider refund/return-policy URL requirements for the digital SaaS subscription and refill-credit model.
 - Unknown public URLs should resolve to a noindex 404 experience instead of falling back to the app homepage.
@@ -31,6 +31,11 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 ## Workspace routing
 
 - `/` is the marketing shell only.
+- `/in` is the localized English India homepage for KYC, vendor, HR, GST invoice, school, clinic, finance, branch, logistics, property, and procurement PDF automation demand.
+- `/in/blog` and `/in/blog/:slug` are the public India blog routes. The ten India guides link back into the `/in/*` workflow and industry cluster.
+- `/es` is the generic Spanish-language homepage for Spanish-speaking search demand. It uses the same no-scroll shell, targets the `formularios PDF rellenables` keyword cluster, avoids U.S.-only e-signature positioning, and sends setup traffic to usage docs instead of the form catalog.
+- `/es/flujos-de-trabajo` and `/es/industrias` are the Spanish workflow and industry hubs. They each expose ten localized intent pages and are the hub routes used by public navigation, static HTML, and sitemap generation.
+- `/es/blog` and `/es/blog/:slug` are the public Spanish blog routes. The exported blog dataset contains ten Spanish guides that link back into the Spanish workflow and industry cluster.
 - Firebase Hosting rewrites dynamic app and public-ceremony routes (`/forms`, `/forms/:slug`, `/upload`, `/ui*`, `/respond/:token`, `/sign/:token`, `/verify-signing/:token`, `/account-action`) to a neutral `app-shell.html` SPA bootstrap instead of the prerendered homepage `index.html`.
 - The prerendered homepage `index.html` is reserved for `/` and SEO/public static-route generation, so homepage-only cover markup does not leak into Fill By Link or signing routes.
 - `/forms` is the public form catalog index.
@@ -50,69 +55,51 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 
 ## SEO landing routes
 
-- Public intent landing pages cover commercial search intents:
-  - `/pdf-to-fillable-form`
-  - `/pdf-to-database-template`
-  - `/pdf-form-catalog`
-  - `/fill-pdf-from-csv`
-  - `/fill-pdf-by-link`
-  - `/fill-information-in-pdf`
-  - `/fillable-form-field-name`
-  - `/fillable-pdf-fonts-colors`
-  - `/acroform-field-appearance`
-  - `/pdf-calculation-fields`
-  - `/pdf-form-calculations-not-working`
-  - `/add-calculated-field-to-pdf`
-  - `/fillable-pdf-total-field`
-  - `/api-fill-calculated-pdf`
-  - `/pdf-form-javascript-calculation-alternative`
-  - `/pdf-calculation-order`
-  - `/pdf-invoice-calculation-template`
-  - `/pdf-order-form-calculations`
-  - `/pdf-estimate-quote-calculations`
-  - `/calculated-pdf-from-csv`
-  - `/fill-by-link-calculated-pdf`
-  - `/flat-vs-editable-calculated-pdf`
-  - `/pdf-expense-report-calculations`
-  - `/pdf-timesheet-calculations`
-  - `/pdf-purchase-order-calculations`
-  - `/pdf-construction-bid-calculations`
-  - `/pdf-change-order-calculations`
-  - `/pdf-mileage-reimbursement-calculation`
-  - `/pdf-inspection-score-calculations`
-  - `/ai-pdf-field-renaming`
-  - `/fill-pdf-from-image`
-  - `/save-reusable-pdf-template`
-  - `/pdf-packet-workflow`
-  - `/merge-fillable-pdf-forms`
-  - `/reorder-fillable-pdf-pages`
-  - `/rotate-fillable-pdf-pages`
-  - `/split-fillable-pdf-forms`
-  - `/delete-pages-from-fillable-pdf`
-  - `/compress-fillable-pdf-forms`
-  - `/fill-pdf-link-signature`
-  - `/pdf-signature-audit-trail`
-  - `/flat-vs-editable-pdf`
-  - `/search-fill-pdf-review`
-  - `/openai-pdf-data-privacy`
-  - `/mobile-fillable-pdf-form`
-  - `/stored-fill-by-link-responses`
-  - `/group-api-fill-zip-packet`
-  - `/batch-rename-map-pdf-group`
-  - `/verify-signed-pdf`
-  - `/no-code-pdf-automation`
-- Industry-specific SEO routes are available for:
-  - `/healthcare-pdf-automation`
-  - `/acord-form-automation`
-  - `/insurance-pdf-automation`
-  - `/real-estate-pdf-automation`
-  - `/government-form-automation`
-  - `/finance-loan-pdf-automation`
-  - `/hr-pdf-automation`
-  - `/legal-pdf-workflow-automation`
-  - `/education-form-automation`
-  - `/nonprofit-pdf-form-automation`
-  - `/logistics-pdf-automation`
+- Current indexable India workflow landing pages are:
+  - `/in/pdf-to-fillable-form`
+  - `/in/fill-pdf-from-excel`
+  - `/in/fill-pdf-from-csv`
+  - `/in/fill-by-link`
+  - `/in/pdf-fill-api`
+  - `/in/pdf-field-detection`
+  - `/in/rename-map-pdf-fields`
+  - `/in/fill-pdf-from-documents`
+  - `/in/pdf-packet-workflow`
+  - `/in/pdf-calculations`
+- Current indexable India industry landing pages are:
+  - `/in/kyc-pdf-automation`
+  - `/in/vendor-onboarding-pdf-automation`
+  - `/in/hr-joining-pdf-automation`
+  - `/in/gst-invoice-pdf-automation`
+  - `/in/school-admissions-pdf-automation`
+  - `/in/clinic-intake-pdf-automation`
+  - `/in/loan-application-pdf-automation`
+  - `/in/delivery-challan-pdf-automation`
+  - `/in/tenant-onboarding-pdf-automation`
+  - `/in/purchase-order-pdf-automation`
+- Current indexable Spanish workflow landing pages are:
+  - `/es/crear-formulario-pdf-rellenable`
+  - `/es/rellenar-pdf-desde-excel`
+  - `/es/rellenar-pdf-desde-csv`
+  - `/es/formulario-pdf-con-link`
+  - `/es/api-rellenar-pdf`
+  - `/es/detectar-campos-pdf-ia`
+  - `/es/renombrar-campos-pdf-ia`
+  - `/es/mapear-datos-a-pdf`
+  - `/es/plantilla-pdf-reutilizable`
+  - `/es/rellenar-paquetes-pdf`
+- Current indexable Spanish industry-specific SEO routes are:
+  - `/es/automatizacion-pdf-salud`
+  - `/es/automatizacion-pdf-recursos-humanos`
+  - `/es/automatizacion-pdf-inmobiliaria`
+  - `/es/automatizacion-pdf-educacion`
+  - `/es/automatizacion-pdf-finanzas-prestamos`
+  - `/es/automatizacion-pdf-logistica`
+  - `/es/automatizacion-pdf-contabilidad-facturas`
+  - `/es/automatizacion-pdf-construccion`
+  - `/es/automatizacion-pdf-servicios-campo`
+  - `/es/automatizacion-pdf-compras-proveedores`
+- Legacy global English intent-page datasets remain in the shared route data for compatibility, but the route adapter marks them low-value/noindex and excludes them from sitemap output while the India and Spanish clusters are active.
 - Each route has unique canonical metadata and FAQ structured data.
 - The workflow route `/pdf-form-catalog` now explains what the catalog contains, what each entry exposes, and how the blank forms connect to the main DullyPDF workflow.
 - Selected catalog-backed industry pages also render curated real-form thumbnails and ten-document examples pulled from the DullyPDF catalog, with editor deep links (`/upload?catalogSlug=...`) plus Search & Fill, API Fill, Fill By Link, and signature guidance.
@@ -127,10 +114,10 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - DullyPDF highlight routes now cover broader product areas that were underrepresented in search: AI field renaming/schema mapping, Fill from Images, saved reusable templates, PDF packet groups, page insertion and merge QA, staged page reordering, selected-page split output, page deletion cleanup, lossless PDF optimization, Fill By Link plus post-submit signing, signature audit trails, general flat-vs-editable output choice, Search & Fill QA, OpenAI data boundaries, and no-code automation for existing PDFs.
 - High-intent opportunity routes now cover source-system, automation, developer-language, packet, and troubleshooting searches such as Google Sheets to PDF, Airtable to PDF, Google/Microsoft Forms to PDF, Power Automate, Zapier, Make, webhook JSON, PHP/Java/C#/Go/Ruby API clients, one web form or JSON payload filling multiple PDFs, respondent PDF downloads, flattening/read-only output, blank field troubleshooting, checkbox/radio/date mapping, duplicate field names, and reusable template versioning.
 - The `/fill-pdf-by-link` route now positions Fill By Link as the recommended external-recipient workflow when teams want mobile-friendly data collection plus flat, viewer-friendly completed PDFs instead of asking respondents to edit the PDF directly.
-- The blog includes a customizable fillable form template guide that reuses the `/fillable-pdf-fonts-colors` workflow images to explain automatic field detection, global field appearance, individual overrides, editable outputs, and flat outputs.
+- The India blog includes ten evidence-heavy PDF automation guides for KYC, Excel filling, vendor onboarding, GST invoices, HR joining, school admissions, clinic intake, delivery challans, and API rollout. The Spanish blog includes ten PDF automation guides that reuse existing proof images where appropriate and link to matching localized workflow or industry routes.
 - Two hub routes aggregate intent pages for cleaner global navigation:
-  - `/workflows` lists workflow-intent pages.
-  - `/industries` lists industry-intent pages.
+  - `/es/flujos-de-trabajo` lists Spanish workflow-intent pages.
+  - `/es/industrias` lists Spanish industry-intent pages.
 - Hub routes are part of the build-time static HTML and sitemap generation, so direct requests should serve route-specific HTML before React loads.
 
 ## Data source behavior

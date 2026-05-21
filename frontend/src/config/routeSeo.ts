@@ -9,16 +9,18 @@ import {
 
 export type LegalRouteKey = 'privacy' | 'terms' | 'refund';
 export type IntentHubRouteKey = 'workflows' | 'industries';
+export type HomeRouteMarket = 'global' | 'india' | 'spanish';
+export type PublicRouteLocale = 'es' | 'in';
 
 export type PublicRouteSeoTarget =
-  | { kind: 'app' }
+  | { kind: 'app'; market?: HomeRouteMarket }
   | { kind: 'legal'; legalKind: LegalRouteKey }
-  | { kind: 'intent-hub'; hubKey: IntentHubRouteKey }
+  | { kind: 'intent-hub'; hubKey: IntentHubRouteKey; locale?: 'es' }
   | { kind: 'feature-plan'; planKey: FeaturePlanPageKey }
   | { kind: 'usage-docs'; pageKey: UsageDocsPageKey }
   | { kind: 'intent'; intentKey: IntentPageKey }
-  | { kind: 'blog-index' }
-  | { kind: 'blog-post'; slug: string };
+  | { kind: 'blog-index'; locale?: PublicRouteLocale }
+  | { kind: 'blog-post'; slug: string; locale?: PublicRouteLocale };
 
 export type RouteSeoMetadata = {
   title: string;
@@ -32,6 +34,11 @@ export type RouteSeoMetadata = {
   twitterTitle?: string;
   twitterDescription?: string;
   structuredData?: Record<string, unknown>[];
+  htmlLang?: string;
+  alternates?: Array<{
+    hreflang: string;
+    path: string;
+  }>;
 };
 
 export type RouteBodyLink = {
@@ -78,6 +85,7 @@ type SharedPublicRouteKind =
   | 'blog-post';
 
 type SharedPublicRoutePageKey =
+  | HomeRouteMarket
   | LegalRouteKey
   | IntentHubRouteKey
   | FeaturePlanPageKey
@@ -89,6 +97,8 @@ type SharedPublicRouteEntry = {
   kind: SharedPublicRouteKind;
   pageKey?: SharedPublicRoutePageKey;
   slug?: string;
+  locale?: PublicRouteLocale;
+  lowValue?: boolean;
   seo: RouteSeoMetadata & { bodyContent?: RouteSeoBodyContent };
 };
 
@@ -98,7 +108,8 @@ const resolveSharedRoute = (
   predicate: (route: SharedPublicRouteEntry) => boolean,
   description: string,
 ): SharedPublicRouteEntry => {
-  const route = PUBLIC_ROUTE_ENTRIES.find(predicate);
+  const route = PUBLIC_ROUTE_ENTRIES.find((entry) => predicate(entry) && !entry.lowValue)
+    ?? PUBLIC_ROUTE_ENTRIES.find(predicate);
   if (!route) {
     throw new Error(`Missing public SEO route for ${description}`);
   }
@@ -108,25 +119,48 @@ const resolveSharedRoute = (
 const resolveSeoByKindAndPageKey = (
   kind: SharedPublicRouteKind,
   pageKey: SharedPublicRoutePageKey,
+  locale?: 'es',
 ): RouteSeoMetadata => resolveSharedRoute(
-  (route) => route.kind === kind && route.pageKey === pageKey,
+  (route) => route.kind === kind && route.pageKey === pageKey && (!locale || route.locale === locale),
   `${kind}:${pageKey}`,
 ).seo;
 
-const BLOG_INDEX_ROUTE = resolveSharedRoute((route) => route.kind === 'blog-index', 'blog-index');
+const resolveBlogIndexSeoRoute = (locale: PublicRouteLocale = 'es'): SharedPublicRouteEntry => (
+  resolveSharedRoute(
+    (route) => route.kind === 'blog-index' && ((route.locale ?? 'es') === locale),
+    `blog-index:${locale}`,
+  )
+);
+
+const BLOG_INDEX_ROUTE = resolveBlogIndexSeoRoute('es');
+const resolveHomeSeoRoute = (market: HomeRouteMarket = 'global'): SharedPublicRouteEntry => (
+  resolveSharedRoute(
+    (route) => route.kind === 'home' && (route.pageKey ?? 'global') === market,
+    `home:${market}`,
+  )
+);
 
 export const SITE_ORIGIN: string = SHARED_SITE_ORIGIN;
 export const DEFAULT_SOCIAL_IMAGE_PATH: string = SHARED_DEFAULT_SOCIAL_IMAGE_PATH;
 export const DEFAULT_SOCIAL_IMAGE_ALT = 'DullyPDF logo';
 export const BLOG_INDEX_SEO: RouteSeoMetadata = BLOG_INDEX_ROUTE.seo;
 
-export const INDEXABLE_PUBLIC_ROUTE_PATHS: string[] = PUBLIC_ROUTE_ENTRIES.map((route) => route.path);
+export const INDEXABLE_PUBLIC_ROUTE_PATHS: string[] = PUBLIC_ROUTE_ENTRIES
+  .filter((route) => !route.lowValue)
+  .map((route) => route.path);
 
-export const resolveBlogRouteSeo = (slug: string | undefined): RouteSeoMetadata | null => {
-  if (!slug) return BLOG_INDEX_SEO;
+export const resolveBlogRouteSeo = (
+  slug: string | undefined,
+  locale?: PublicRouteLocale,
+): RouteSeoMetadata | null => {
+  if (!slug) return resolveBlogIndexSeoRoute(locale ?? 'es').seo;
 
   const blogRoute = PUBLIC_ROUTE_ENTRIES.find(
-    (route) => route.kind === 'blog-post' && route.slug === slug,
+    (route) => (
+      route.kind === 'blog-post'
+      && route.slug === slug
+      && (!locale || (route.locale ?? 'es') === locale)
+    ),
   );
 
   return blogRoute?.seo ?? null;
@@ -137,17 +171,21 @@ export const resolveRouteSeoBodyContent = (
 ): RouteSeoBodyContent | null => {
   if (target.kind === 'blog-post') {
     const blogRoute = PUBLIC_ROUTE_ENTRIES.find(
-      (route) => route.kind === 'blog-post' && route.slug === target.slug,
+      (route) => (
+        route.kind === 'blog-post'
+        && route.slug === target.slug
+        && (!target.locale || (route.locale ?? 'es') === target.locale)
+      ),
     );
     return blogRoute?.seo.bodyContent ?? null;
   }
 
   if (target.kind === 'blog-index') {
-    return BLOG_INDEX_ROUTE.seo.bodyContent ?? null;
+    return resolveBlogIndexSeoRoute(target.locale ?? 'es').seo.bodyContent ?? null;
   }
 
   if (target.kind === 'app') {
-    return resolveSharedRoute((route) => route.kind === 'home', 'home').seo.bodyContent ?? null;
+    return resolveHomeSeoRoute(target.market).seo.bodyContent ?? null;
   }
 
   if (target.kind === 'legal') {
@@ -159,7 +197,7 @@ export const resolveRouteSeoBodyContent = (
 
   if (target.kind === 'intent-hub') {
     return resolveSharedRoute(
-      (route) => route.kind === 'intent-hub' && route.pageKey === target.hubKey,
+      (route) => route.kind === 'intent-hub' && route.pageKey === target.hubKey && (!target.locale || route.locale === target.locale),
       `intent-hub:${target.hubKey}`,
     ).seo.bodyContent ?? null;
   }
@@ -186,7 +224,7 @@ export const resolveRouteSeoBodyContent = (
 
 export const resolveRouteSeo = (target: PublicRouteSeoTarget): RouteSeoMetadata => {
   if (target.kind === 'app') {
-    return resolveSharedRoute((route) => route.kind === 'home', 'home').seo;
+    return resolveHomeSeoRoute(target.market).seo;
   }
 
   if (target.kind === 'legal') {
@@ -194,7 +232,7 @@ export const resolveRouteSeo = (target: PublicRouteSeoTarget): RouteSeoMetadata 
   }
 
   if (target.kind === 'intent-hub') {
-    return resolveSeoByKindAndPageKey('intent-hub', target.hubKey);
+    return resolveSeoByKindAndPageKey('intent-hub', target.hubKey, target.locale);
   }
 
   if (target.kind === 'feature-plan') {
@@ -210,8 +248,8 @@ export const resolveRouteSeo = (target: PublicRouteSeoTarget): RouteSeoMetadata 
   }
 
   if (target.kind === 'blog-index') {
-    return BLOG_INDEX_SEO;
+    return resolveBlogIndexSeoRoute(target.locale ?? 'es').seo;
   }
 
-  return resolveBlogRouteSeo(target.slug) ?? BLOG_INDEX_SEO;
+  return resolveBlogRouteSeo(target.slug, target.locale) ?? resolveBlogIndexSeoRoute(target.locale ?? 'es').seo;
 };

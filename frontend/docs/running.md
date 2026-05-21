@@ -99,7 +99,7 @@ follow-up requests do not get blocked after `gtag.js` loads.
 
 ## Public routes worth checking during local dev
 
-- `http://localhost:5173/usage-docs` and child `/usage-docs/*` routes for public documentation copy.
+- `http://localhost:5173/es/usage-docs` and child `/es/usage-docs/*` routes for public documentation copy.
 - `http://localhost:5173/free-features` and `http://localhost:5173/premium-features` for public plan messaging, including saved-form, Fill By Link, API Fill, signing, and credit limits plus the signed-in premium purchase CTA behavior.
 - Intent/SEO routes such as `/pdf-to-fillable-form`, `/fill-pdf-from-csv`, and `/fill-pdf-by-link`.
 - Fill By Link respondent routes under `/respond/:token`. The route shell is public and mobile-friendly; live submissions still depend on the backend being available.

@@ -181,9 +181,34 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
     [pageKey],
   );
   const routeFocusLabel = page.navLabel.toLowerCase();
+  const isIndiaIntentPage = page.path.startsWith('/in/');
+  const isSpanishIntentPage = page.path.startsWith('/es/');
+  const spanishHubLabel = page.category === 'industry' ? 'Industrias' : 'Flujos de trabajo';
+  const spanishHubHref = page.category === 'industry' ? '/es/industrias' : '/es/flujos-de-trabajo';
+  const breadcrumbItems = isIndiaIntentPage
+    ? [
+      { label: 'Home', href: '/' },
+      { label: 'India', href: '/in' },
+      { label: page.navLabel },
+    ]
+    : isSpanishIntentPage
+      ? [
+        { label: 'Inicio', href: '/es' },
+        { label: spanishHubLabel, href: spanishHubHref },
+        { label: page.navLabel },
+      ]
+    : [
+      { label: 'Home', href: '/' },
+      { label: page.category === 'industry' ? 'Industries' : 'Workflows' },
+      { label: page.navLabel },
+    ];
   const relatedRoutesSummary = page.category === 'industry'
-    ? `These adjacent routes cover neighboring document workflows and team use cases that usually get evaluated alongside ${routeFocusLabel}.`
-    : `These adjacent workflow pages cover nearby search intents teams compare while evaluating ${routeFocusLabel}.`;
+    ? isSpanishIntentPage
+      ? `Estas rutas cercanas cubren flujos de documentos que suelen evaluarse junto con ${routeFocusLabel}.`
+      : `These adjacent routes cover neighboring document workflows and team use cases that usually get evaluated alongside ${routeFocusLabel}.`
+    : isSpanishIntentPage
+      ? `Estas rutas de flujo cubren búsquedas cercanas que los equipos comparan al evaluar ${routeFocusLabel}.`
+      : `These adjacent workflow pages cover nearby search intents teams compare while evaluating ${routeFocusLabel}.`;
 
   const renderFootnotedText = (text: string) => {
     const parts: ReactNode[] = [];
@@ -236,20 +261,22 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
 
   return (
     <IntentPageShell
-      breadcrumbItems={[
-        { label: 'Home', href: '/' },
-        { label: page.category === 'industry' ? 'Industries' : 'Workflows' },
-        { label: page.navLabel },
-      ]}
-      activeNavKey={page.category === 'industry' ? 'industries' : 'workflows'}
+      breadcrumbItems={breadcrumbItems}
+      activeNavKey={isIndiaIntentPage ? null : page.category === 'industry' ? 'industries' : 'workflows'}
+      hideFormCatalog={isIndiaIntentPage || isSpanishIntentPage}
       usePublicChrome
-      heroKicker={page.category === 'industry' ? 'Industry workflow page' : 'Commercial workflow page'}
+      locale={isSpanishIntentPage ? 'es' : 'en'}
+      heroKicker={isIndiaIntentPage
+        ? page.category === 'industry' ? 'India industry workflow page' : 'India workflow page'
+        : isSpanishIntentPage
+          ? page.category === 'industry' ? 'Página de industria en español' : 'Página de flujo en español'
+          : page.category === 'industry' ? 'Industry workflow page' : 'Commercial workflow page'}
       heroTitle={page.heroTitle}
       heroSummary={page.heroSummary}
     >
       {articleFigures.length ? (
         <section className="intent-page__panel">
-          <h2>Workflow examples for {page.navLabel}</h2>
+          <h2>{isSpanishIntentPage ? `Ejemplos de flujo para ${page.navLabel}` : `Workflow examples for ${page.navLabel}`}</h2>
           <div className="intent-page__figure-grid">
             {articleFigures.map((figure) => (
               <figure key={`${figure.src}-${figure.caption}`} className="intent-page__figure">
@@ -463,7 +490,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
 
       <section className="intent-page__grid">
         <article className="intent-page__panel">
-          <h2>Why teams use {page.navLabel}</h2>
+          <h2>{isSpanishIntentPage ? `Por qué los equipos usan ${page.navLabel}` : `Why teams use ${page.navLabel}`}</h2>
           <ul>
             {page.valuePoints.map((point) => (
               <li key={point}>{renderFootnotedText(point)}</li>
@@ -472,28 +499,33 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
         </article>
 
         <article className="intent-page__panel">
-          <h2>Implementation signals for {page.navLabel}</h2>
+          <h2>{isSpanishIntentPage ? `Señales de implementación para ${page.navLabel}` : `Implementation signals for ${page.navLabel}`}</h2>
           <ul>
             {page.proofPoints.map((point) => (
               <li key={point}>{renderFootnotedText(point)}</li>
             ))}
           </ul>
           <p>
-            Need deeper technical details about {routeFocusLabel}? Use the
+            {isSpanishIntentPage
+              ? `Para validar detalles técnicos sobre ${routeFocusLabel}, usa la `
+              : `Need deeper technical details about ${routeFocusLabel}? Use the `}
+            <a href="/es/usage-docs/rename-mapping">
+              {isSpanishIntentPage ? 'documentación de Rename + Mapping' : 'Rename + Mapping docs'}
+            </a>
             {' '}
-            <a href="/usage-docs/rename-mapping">Rename + Mapping docs</a>
+            {isSpanishIntentPage ? 'y la' : 'and'}
             {' '}
-            and
+            <a href="/es/usage-docs/search-fill">
+              {isSpanishIntentPage ? 'documentación de Search & Fill' : 'Search & Fill docs'}
+            </a>
             {' '}
-            <a href="/usage-docs/search-fill">Search &amp; Fill docs</a>
-            {' '}
-            to validate exact behavior.
+            {isSpanishIntentPage ? 'para confirmar el comportamiento exacto.' : 'to validate exact behavior.'}
           </p>
         </article>
       </section>
 
       <section className="intent-page__panel">
-        <h2>Frequently asked questions about {page.navLabel}</h2>
+        <h2>{isSpanishIntentPage ? `Preguntas frecuentes sobre ${page.navLabel}` : `Frequently asked questions about ${page.navLabel}`}</h2>
         <div className="intent-page__faq-list">
           {page.faqs.map((faq) => (
             <article key={faq.question} className="intent-page__faq-item">
@@ -506,7 +538,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
 
       {page.footnotes?.length ? (
         <section className="intent-page__panel intent-page__panel--article">
-          <h2>Legal footnotes and sources for {page.navLabel}</h2>
+          <h2>{isSpanishIntentPage ? `Fuentes y notas para ${page.navLabel}` : `Legal footnotes and sources for ${page.navLabel}`}</h2>
           <ol className="intent-page__footnote-list">
             {page.footnotes.map((footnote, index) => (
               <li key={footnote.id} id={`footnote-${footnote.id}`} className="intent-page__footnote-item">
@@ -560,10 +592,11 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
 
       {relatedGuides.length > 0 ? (
         <section className="intent-page__panel">
-          <h2>Guides for {page.navLabel}</h2>
+          <h2>{isSpanishIntentPage ? `Guías para ${page.navLabel}` : `Guides for ${page.navLabel}`}</h2>
           <p>
-            These walkthroughs and comparison posts cover the same workflow cluster from an operator point of view,
-            which helps you move from a route summary into a more specific implementation path.
+            {isSpanishIntentPage
+              ? 'Estas guías cubren el mismo grupo de flujos desde un punto de vista operativo para pasar de la explicación a la implementación.'
+              : 'These walkthroughs and comparison posts cover the same workflow cluster from an operator point of view, which helps you move from a route summary into a more specific implementation path.'}
           </p>
           <ul>
             {relatedGuides.map((guide) => (
@@ -576,10 +609,11 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
       ) : null}
 
       <section className="intent-page__panel">
-        <h2>Docs for {page.navLabel}</h2>
+        <h2>{isSpanishIntentPage ? `Documentación para ${page.navLabel}` : `Docs for ${page.navLabel}`}</h2>
         <p>
-          Use these docs pages to verify the exact DullyPDF behavior behind {routeFocusLabel} before you ship it as a
-          repeat workflow.
+          {isSpanishIntentPage
+            ? `Usa estas páginas para verificar el comportamiento de DullyPDF detrás de ${routeFocusLabel} antes de convertirlo en un flujo repetido.`
+            : `Use these docs pages to verify the exact DullyPDF behavior behind ${routeFocusLabel} before you ship it as a repeat workflow.`}
         </p>
         <div className="intent-page__related-links">
           {relatedDocs.map((doc) => (
@@ -591,7 +625,7 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
       </section>
 
       <section className="intent-page__panel">
-        <h2>Related routes for {page.navLabel}</h2>
+        <h2>{isSpanishIntentPage ? `Rutas relacionadas con ${page.navLabel}` : `Related routes for ${page.navLabel}`}</h2>
         <p>
           {relatedRoutesSummary}
         </p>

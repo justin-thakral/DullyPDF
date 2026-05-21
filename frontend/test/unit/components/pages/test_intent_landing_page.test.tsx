@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import IntentLandingPage from '../../../../src/components/pages/IntentLandingPage';
 
 describe('IntentLandingPage', () => {
@@ -13,6 +13,48 @@ describe('IntentLandingPage', () => {
     expect(screen.getByRole('link', { name: 'PDF to Database Template' }).getAttribute('href')).toBe(
       '/pdf-to-database-template',
     );
+  });
+
+  it('renders India intent pages with /in breadcrumbs and India-cluster related routes', () => {
+    const { container } = render(<IntentLandingPage pageKey="india-kyc-pdf-automation" />);
+
+    const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' });
+    expect(within(breadcrumb).getByRole('link', { name: 'Home' }).getAttribute('href')).toBe('/');
+    expect(within(breadcrumb).getByRole('link', { name: 'India' }).getAttribute('href')).toBe('/in');
+    expect(within(breadcrumb).queryByText('Industries')).toBeNull();
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'India KYC PDF Automation for PAN, GSTIN, Branch, and Customer Files',
+      }),
+    ).toBeTruthy();
+    expect(screen.getByText('India industry workflow page')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'India Vendor Onboarding PDF Automation' }).getAttribute('href')).toBe(
+      '/in/vendor-onboarding-pdf-automation',
+    );
+    expect(container.textContent).not.toMatch(/Form Catalog|Pre-Made Form Catalog/i);
+  });
+
+  it('renders India workflow pages with workflow-specific kicker and related routes', () => {
+    const { container } = render(<IntentLandingPage pageKey="india-fill-pdf-from-excel" />);
+
+    const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' });
+    expect(within(breadcrumb).getByRole('link', { name: 'India' }).getAttribute('href')).toBe('/in');
+    expect(within(breadcrumb).queryByText('Workflows')).toBeNull();
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Fill Indian PDF Forms From Excel Rows',
+      }),
+    ).toBeTruthy();
+    expect(screen.getByText('India workflow page')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'India CSV to PDF Forms' }).getAttribute('href')).toBe(
+      '/in/fill-pdf-from-csv',
+    );
+    expect(screen.getByRole('link', { name: 'India KYC PDF Automation' }).getAttribute('href')).toBe(
+      '/in/kyc-pdf-automation',
+    );
+    expect(container.textContent).not.toMatch(/Form Catalog|Pre-Made Form Catalog/i);
   });
 
   it('renders long-form article sections for expanded landing pages', () => {
@@ -435,7 +477,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why generic PDF merging breaks down for form workflows' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Create Group docs' }).getAttribute('href')).toBe(
-      '/usage-docs/create-group',
+      '/es/usage-docs/create-group',
     );
   });
 
@@ -477,7 +519,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why splitting fillable PDFs needs more care than cutting pages' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Save & Download docs' }).getAttribute('href')).toBe(
-      '/usage-docs/save-download-profile',
+      '/es/usage-docs/save-download-profile',
     );
   });
 
@@ -497,7 +539,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why deleting pages from a fillable PDF is not just page cleanup' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Editor workflow docs' }).getAttribute('href')).toBe(
-      '/usage-docs/editor-workflow',
+      '/es/usage-docs/editor-workflow',
     );
   });
 
@@ -517,7 +559,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why compression is different for fillable PDF workflows' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Save & Download docs' }).getAttribute('href')).toBe(
-      '/usage-docs/save-download-profile',
+      '/es/usage-docs/save-download-profile',
     );
   });
 
@@ -680,9 +722,9 @@ describe('IntentLandingPage', () => {
     expect(screen.queryByRole('heading', { level: 2, name: /Workflow examples for /i })).toBeNull();
     expect(screen.queryByRole('link', { name: 'Watch on YouTube' })).toBeNull();
     expect(screen.queryByTitle(/E-Sign Pipeline/i)).toBeNull();
-    expect(screen.getByRole('link', { name: 'API Fill' }).getAttribute('href')).toBe('/usage-docs/api-fill');
-    expect(screen.getByRole('link', { name: 'Rename + Mapping' }).getAttribute('href')).toBe(
-      '/usage-docs/rename-mapping',
+    expect(screen.getByRole('link', { name: 'API Fill' }).getAttribute('href')).toBe('/es/usage-docs/api-fill');
+    expect(screen.getByRole('link', { name: 'Renombrar y Mapear Campos' }).getAttribute('href')).toBe(
+      '/es/usage-docs/rename-mapping',
     );
   });
 
@@ -764,10 +806,10 @@ describe('IntentLandingPage', () => {
     expect(screen.getByText('10 specific forms to automate on this route')).toBeTruthy();
     expect(
       screen.getByRole('link', { name: 'API Fill docs' }).getAttribute('href'),
-    ).toBe('/usage-docs/api-fill');
+    ).toBe('/es/usage-docs/api-fill');
     expect(
       screen.getByRole('link', { name: 'Signature workflow docs' }).getAttribute('href'),
-    ).toBe('/usage-docs/signature-workflow');
+    ).toBe('/es/usage-docs/signature-workflow');
   });
 
   it('keeps public catalog CTAs crawl-safe and removes direct government file URLs from official-source links', () => {

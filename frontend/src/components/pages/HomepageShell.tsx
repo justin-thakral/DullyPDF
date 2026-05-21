@@ -1,5 +1,5 @@
 import LegacyHeader from '../layout/LegacyHeader';
-import Homepage from './Homepage';
+import Homepage, { type HomepageMarket } from './Homepage';
 
 type HomepageShellProps = {
   userEmail?: string | null;
@@ -9,6 +9,22 @@ type HomepageShellProps = {
   onSignIn?: () => void;
   onOpenProfile?: () => void;
   onSignOut?: () => void;
+  market?: HomepageMarket;
+};
+
+const getHeaderCopy = (market: HomepageMarket) => {
+  if (market === 'spanish') {
+    return {
+      title: 'Generador de formularios PDF',
+      description: 'Convierte PDFs en formularios rellenables con detección de campos por IA',
+      docsLabel: 'Docs, privacidad y términos',
+      signInLabel: 'Iniciar sesión',
+      signOutLabel: 'Cerrar sesión',
+      profileTitle: 'Abrir perfil',
+    };
+  }
+
+  return undefined;
 };
 
 export function HomepageShell({
@@ -19,7 +35,10 @@ export function HomepageShell({
   onSignIn,
   onOpenProfile,
   onSignOut,
+  market = 'global',
 }: HomepageShellProps) {
+  const headerCopy = getHeaderCopy(market);
+
   return (
     <>
       <div className="homepage-shell">
@@ -32,6 +51,7 @@ export function HomepageShell({
           onOpenProfile={onOpenProfile}
           onSignOut={onSignOut}
           onSignIn={onSignIn}
+          homepageCopy={headerCopy}
         />
         <main className="landing-main">
           <Homepage
@@ -41,6 +61,7 @@ export function HomepageShell({
             authPending={authPending}
             onSignIn={onSignIn}
             onOpenProfile={onOpenProfile}
+            market={market}
           />
         </main>
       </div>

@@ -62,6 +62,44 @@ describe('renderPublicRouteHtml', () => {
     expect(html).toContain('<h1 class="homepage-main-title">');
   });
 
+  it('renders the India homepage shell with localized copy', () => {
+    const html = renderPublicRouteHtml({ kind: 'home', market: 'india' });
+
+    expect(countH1Tags(html)).toBe(1);
+    expect(html).toContain('India PDF Form Automation for KYC, Vendor, HR, and Invoice Workflows');
+    expect(html).toContain('PAN, GSTIN, vendor codes');
+    expect(html).not.toMatch(/Pre-Made Form Catalog|Form Catalog|e-?sign|signature|UETA/i);
+  });
+
+  it('renders the Spanish homepage shell with localized copy', () => {
+    const html = renderPublicRouteHtml({ kind: 'home', market: 'spanish' });
+
+    expect(countH1Tags(html)).toBe(1);
+    expect(html).toContain('Crear formularios PDF rellenables con IA');
+    expect(html).toContain('Ver la documentación de uso');
+    expect(html).toContain('Generador de formularios PDF');
+    expect(html).not.toMatch(/Pre-Made Form Catalog|Form Catalog|\bE-SIGN\b|\bUETA\b|\bsignature\b|\be-signature\b|\be-sign\b|\bfirma\b|\bfirmar\b|\bfirmas\b/i);
+  });
+
+  it('renders the India blog guide as static public HTML', () => {
+    const html = renderPublicRouteHtml({
+      kind: 'blog-post',
+      slug: 'india-pdf-form-automation-guide',
+      locale: 'in',
+    });
+
+    expect(countH1Tags(html)).toBe(1);
+    const footerHtml = html.match(/<footer[\s\S]*<\/footer>/)?.[0] ?? '';
+
+    expect(html).toContain('PDF Form Automation in India: KYC, Vendor, HR, GST, and Branch Workflows');
+    expect(html).toContain('Start with one India document family');
+    expect(html).toContain('/in/fill-pdf-from-excel');
+    expect(footerHtml).toContain('/in/blog');
+    expect(footerHtml).not.toContain('/es/blog');
+    expect(footerHtml).not.toMatch(/India/i);
+    expect(html).not.toMatch(/Form Catalog|ACORD|\bIRS\b|W-9|1099|W-8|Medicare|Medicaid|HIPAA|E-SIGN|UETA|United States|U\.S\./i);
+  });
+
   it('renders form catalog detail pages with a single h1', () => {
     const html = renderPublicRouteHtml({ kind: 'form-catalog-form', slug: 'w-9' });
 

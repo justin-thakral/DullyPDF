@@ -130,10 +130,6 @@ const resolveRoute = (): AppRoute => {
     }
   }
 
-  if (normalizedPath === '/blog') {
-    if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
-    return { kind: 'blog-index' };
-  }
   if (normalizedPath === '/blog/layout-preview') {
     if (path !== normalizedPath) replaceBrowserPath(normalizedPath);
     return { kind: 'seo-layout-preview' };

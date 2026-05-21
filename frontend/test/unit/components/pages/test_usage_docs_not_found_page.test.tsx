@@ -4,13 +4,13 @@ import UsageDocsNotFoundPage from '../../../../src/components/pages/UsageDocsNot
 
 describe('UsageDocsNotFoundPage', () => {
   it('renders docs 404 content and applies noindex metadata', () => {
-    render(<UsageDocsNotFoundPage requestedPath="/usage-docs/not-a-real-page" />);
+    render(<UsageDocsNotFoundPage requestedPath="/es/usage-docs/not-a-real-page" />);
 
-    expect(screen.getByRole('heading', { name: 'Usage docs page not found' })).toBeTruthy();
-    expect(screen.getByText('/usage-docs/not-a-real-page')).toBeTruthy();
-    expect(screen.getByRole('link', { name: 'Go to Usage Docs Overview' }).getAttribute('href')).toBe('/usage-docs');
-    expect(document.title).toBe('Usage Docs Not Found (404) | DullyPDF');
+    expect(screen.getByRole('heading', { name: 'Página de documentación no encontrada' })).toBeTruthy();
+    expect(screen.getByText('/es/usage-docs/not-a-real-page')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Ir a la documentación' }).getAttribute('href')).toBe('/es/usage-docs');
+    expect(document.title).toBe('Documentación no encontrada (404) | DullyPDF');
     expect(document.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex,follow');
-    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/usage-docs');
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/es/usage-docs');
   });
 });

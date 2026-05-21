@@ -1,192 +1,120 @@
 # DullyPDF
 
-> AI-powered PDF form automation: convert existing PDFs into fillable templates, fill them from data, collect answers by web form or API, and add U.S. e-signatures.
+> PDF form automation for reusable fillable templates, spreadsheet/API filling, Fill By Link collection, and reviewed PDF output.
 
-DullyPDF turns raw PDFs into reusable fillable templates using AI field detection. It is built for recurring document workflows — not one-time edits or page redesign. Upload a PDF, review detected fields, clean the template in the editor, then fill it from structured data, respondent submissions, or API calls.
+DullyPDF turns existing PDFs into reusable fillable templates using AI field detection. Teams upload a PDF, review detected fields, clean names and geometry in the editor, then fill the template from Excel, CSV, JSON, respondent submissions, or API calls. The current localized public SEO clusters are India under `/in/*` and Spanish under `/es/*`.
 
-## Core Workflows
+## India Homepage
 
-- [PDF to Fillable Form](https://dullypdf.com/pdf-to-fillable-form): Upload a raw PDF, detect candidate fields with AI, refine geometry and names in the editor, and save a reusable template.
-- [Image, QR, PDF417 & 1D Barcode Fields](https://dullypdf.com/pdf-field-types/image-qr-barcode-fields): Add image, QR Code, PDF417, and 1D barcode helper fields to reusable PDF templates and populate them from record data.
-- [Add Image Field to PDF](https://dullypdf.com/add-image-field-to-pdf): Add photo, logo, ID, or receipt image fields to fillable PDF templates and render uploaded PNG/JPEG content into final output.
-- [Add QR Code Field to PDF](https://dullypdf.com/add-qr-code-field-to-pdf): Add QR Code helper fields to PDF templates and encode manual text, verification URLs, portal links, or source-field values.
-- [Add PDF417 Barcode Field to PDF](https://dullypdf.com/add-pdf417-barcode-field-to-pdf): Add PDF417 helper fields for dense structured record data, ID-style documents, transport paperwork, and machine-readable PDF workflows.
-- [Add 1D Barcode Field to PDF](https://dullypdf.com/add-1d-barcode-field-to-pdf): Add linear barcode helper fields for short internal IDs, asset tags, work orders, member numbers, and tracking references.
-- [Add Barcode to PDF Form](https://dullypdf.com/add-barcode-to-pdf-form): Choose QR Code, PDF417, or 1D barcode helpers based on the scan job and render the generated code into final PDFs.
-- [PDF417 vs QR Code for PDF Forms](https://dullypdf.com/pdf417-vs-qr-code-pdf-forms): Compare PDF417 for dense structured payloads against QR Code for URLs, verification links, portals, and mobile scans.
-- [Generate PDF Barcodes From CSV](https://dullypdf.com/generate-pdf-barcodes-from-csv): Map CSV, database, or API values into barcode-enabled PDF templates and generate scannable final output.
-- [Image Upload Fields in PDF Forms](https://dullypdf.com/image-upload-fields-pdf-forms): Explain and implement reusable image upload fields for photos, IDs, receipts, logos, and other variable visual content.
-- [Add Code 128 Barcode to PDF](https://dullypdf.com/add-code-128-barcode-to-pdf): Add Code 128 style helper fields for short internal IDs, asset tags, work orders, and tracking references.
-- [Work Order Barcode PDF](https://dullypdf.com/work-order-barcode-pdf): Add barcode or QR helper fields to work order PDF templates for service IDs, field lookup, and technician workflows.
-- [Asset Tag Barcode PDF Form](https://dullypdf.com/asset-tag-barcode-pdf-form): Add scannable asset tag fields to inventory, inspection, maintenance, and equipment handoff PDFs.
-- [QR Code Verification PDF](https://dullypdf.com/qr-code-verification-pdf): Add verification QR links to PDFs for validation pages, signing receipts, certificates, and record checks.
-- [QR Code Payment Link PDF](https://dullypdf.com/qr-code-payment-link-pdf): Add payment-link QR codes to invoice PDF templates from mapped billing records.
-- [QR Code Record Lookup PDF](https://dullypdf.com/qr-code-record-lookup-pdf): Add QR codes that point PDFs back to record lookup pages, portals, shipments, invoices, work orders, or case records.
-- [Scannable PDF Form](https://dullypdf.com/scannable-pdf-form): Create PDF forms with QR Code, PDF417, and 1D barcode helper fields plus human-readable fallback fields.
-- [PDF Photo Upload Field](https://dullypdf.com/pdf-photo-upload-field): Add reusable photo regions to PDF templates for headshots, profiles, applicant images, and badge workflows.
-- [ID Photo Field PDF Form](https://dullypdf.com/id-photo-field-pdf-form): Add ID image fields to PDF forms for onboarding, identity review, credential packets, and sensitive visual-content workflows.
-- [Receipt Upload Field PDF Form](https://dullypdf.com/receipt-upload-field-pdf-form): Add receipt image fields to reimbursement, expense, invoice, and audit PDF templates.
-- [Search & Fill from CSV](https://dullypdf.com/fill-pdf-from-csv): Map PDF fields to CSV, Excel, JSON, or TXT schema headers, then search rows and fill the template. Data stays in the browser.
-- [Fill By Link](https://dullypdf.com/fill-pdf-by-link): Publish a hosted web form for respondents to answer. Their responses fill the PDF when the owner generates it.
-- [API Fill](https://dullypdf.com/pdf-fill-api): Expose a template-scoped JSON-to-PDF endpoint with auth key management, rate limiting, and schema downloads.
-- [E-Sign Workflow](https://dullypdf.com/esign-ueta-pdf-workflow): Route filled PDFs into email-based signature requests with immutable record freezing under U.S. E-SIGN and UETA.
-- [PDF Form Catalog](https://dullypdf.com/forms): Browse 1,807 public-domain blank PDF forms, download the source PDF, or open a form in DullyPDF for field detection, filling, API output, and signing.
-- [Catalog Workflow](https://dullypdf.com/pdf-form-catalog): Use the form catalog as a starting point for reusable PDF templates instead of uploading a local blank form.
-- [Fill from Images](https://dullypdf.com/usage-docs/fill-from-images): Upload photos of IDs, invoices, or scanned documents and let AI vision extract data into template fields.
-- [Batch Fill](https://dullypdf.com/batch-fill-pdf-forms): Fill multiple records or entire document packets from a single data source.
-- [Fillable PDF Fonts and Colors](https://dullypdf.com/fillable-pdf-fonts-colors): Set global or per-field fonts, sizes, and colors for fillable text/date fields; saved templates keep those colors on editable and flat exports.
-- [AcroForm Field Appearance](https://dullypdf.com/acroform-field-appearance): Learn how `/DA`, `/DR`, `/AP`, and `/V` keep editable PDF field values and appearance inside the fields.
-- [PDF Calculation Fields](https://dullypdf.com/pdf-calculation-fields): Create number inputs and calculated outputs with safe formulas, server-side precomputation, editable Adobe compatibility, and flat final-record output.
-- [PDF Calculations Not Working](https://dullypdf.com/pdf-form-calculations-not-working): Troubleshoot calculated PDF fields that work in Acrobat but fail in Chrome, Preview, mobile, or email-preview viewers.
-- [Add Calculated Field to PDF](https://dullypdf.com/add-calculated-field-to-pdf): Add number inputs and read-only calculated outputs to existing PDF forms without writing Acrobat JavaScript.
-- [Fillable PDF Total Field](https://dullypdf.com/fillable-pdf-total-field): Build subtotal, tax, discount, shipping, deposit, balance, and grand-total fields into reusable PDF templates.
-- [API Fill Calculated PDF](https://dullypdf.com/api-fill-calculated-pdf): Send JSON source values to a saved template and let DullyPDF compute calculated outputs server-side.
-- [PDF JavaScript Calculation Alternative](https://dullypdf.com/pdf-form-javascript-calculation-alternative): Use safe DullyPDF formulas instead of maintaining arbitrary Acrobat JavaScript calculation scripts.
-- [PDF Calculation Order](https://dullypdf.com/pdf-calculation-order): Understand dependent calculated fields, cycle prevention, and editable PDF calculation order.
-- [Invoice Calculation Template](https://dullypdf.com/pdf-invoice-calculation-template): Create invoice PDF templates with line totals, subtotal, tax, amount paid, and balance due.
-- [Order Form Calculations](https://dullypdf.com/pdf-order-form-calculations): Build order-form PDFs with quantity, price, shipping, tax, discount, and grand-total calculations.
-- [Estimate and Quote Calculations](https://dullypdf.com/pdf-estimate-quote-calculations): Create estimate and quote PDFs with labor, materials, markup, discounts, deposits, totals, and balances.
-- [Calculated PDF From CSV](https://dullypdf.com/calculated-pdf-from-csv): Fill source number inputs from CSV or Excel rows and let DullyPDF compute read-only calculated outputs.
-- [Fill By Link Calculated PDF](https://dullypdf.com/fill-by-link-calculated-pdf): Collect source number values by hosted web form and generate calculated PDFs after submission.
-- [Flat vs Editable Calculated PDF](https://dullypdf.com/flat-vs-editable-calculated-pdf): Choose editable output for Adobe-first live field work or flat output for stable calculated final records.
-- [Expense Report Calculations](https://dullypdf.com/pdf-expense-report-calculations): Generate reimbursement PDFs with calculated expense totals, mileage, advances, and adjustments.
-- [Timesheet Calculations](https://dullypdf.com/pdf-timesheet-calculations): Build numeric-hour timesheet PDFs with calculated rate totals while keeping date/time math outside DullyPDF.
-- [Purchase Order Calculations](https://dullypdf.com/pdf-purchase-order-calculations): Create purchase order PDFs with calculated line totals, subtotal, tax, shipping, discounts, and grand totals.
-- [Construction Bid Calculations](https://dullypdf.com/pdf-construction-bid-calculations): Build contractor bid PDFs with calculated labor, materials, markup, deposits, and totals.
-- [Change Order Calculations](https://dullypdf.com/pdf-change-order-calculations): Create change order PDFs with added costs, credits, revised totals, and signing-ready flat output.
-- [Mileage Reimbursement Calculation](https://dullypdf.com/pdf-mileage-reimbursement-calculation): Calculate mileage reimbursement PDFs from miles, rate, tolls, parking, advances, and adjustments.
-- [Inspection Score Calculations](https://dullypdf.com/pdf-inspection-score-calculations): Create inspection and audit PDFs with numeric score inputs, deductions, weighted sections, and final scores.
-- [AI PDF Field Renaming](https://dullypdf.com/ai-pdf-field-renaming): Use AI to clean PDF field names, map schema headers, and review checkbox/radio behavior before repeat filling.
-- [Fill PDF From Image](https://dullypdf.com/fill-pdf-from-image): Extract values from photos, IDs, invoices, receipts, and scanned documents into reviewed PDF templates.
-- [Reusable PDF Templates](https://dullypdf.com/save-reusable-pdf-template): Save reviewed field metadata, mappings, appearance, fill rules, and editor snapshots for repeat workflows.
-- [PDF Packet Workflow](https://dullypdf.com/pdf-packet-workflow): Group saved PDF templates into repeat packets for shared records, merged links, and group API ZIP output.
-- [Merge Fillable PDF Forms](https://dullypdf.com/merge-fillable-pdf-forms): Insert pages from another PDF, reorder, delete, rotate, and review fields before saving one combined DullyPDF template.
-- [Reorder Fillable PDF Pages](https://dullypdf.com/reorder-fillable-pdf-pages): Move pages inside a fillable PDF with staged Manage Pages controls, keep current-page fields with their pages, and review output before reuse.
-- [Rotate Fillable PDF Pages](https://dullypdf.com/rotate-fillable-pdf-pages): Rotate sideways or misoriented pages in 90-degree steps with staged Manage Pages controls, keep current-page fields with the rotated pages, and review geometry before reuse.
-- [Split Fillable PDF Forms](https://dullypdf.com/split-fillable-pdf-forms): Download selected PDF pages as flat or editable output, or trim the active source PDF through reviewed page tools.
-- [Delete Pages From Fillable PDF](https://dullypdf.com/delete-pages-from-fillable-pdf): Remove source PDF pages through Manage Pages, drop fields on deleted pages, and review the remaining template before reuse.
-- [Compress Fillable PDF Forms](https://dullypdf.com/compress-fillable-pdf-forms): Run lossless PDF cleanup after template review, keeping pages and field geometry stable and original bytes when optimization would be larger.
-- [Fill Link + Signature](https://dullypdf.com/fill-pdf-link-signature): Collect respondent answers by hosted form, materialize the filled PDF, and route the record for signature.
-- [PDF Signature Audit Trail](https://dullypdf.com/pdf-signature-audit-trail): Freeze source records, retain signing evidence, and expose public verification links for completed signature workflows.
-- [Flat vs Editable PDF](https://dullypdf.com/flat-vs-editable-pdf): Choose editable output for live field work or flat output for stable final records across viewers.
-- [Search & Fill Review](https://dullypdf.com/search-fill-pdf-review): Select records, validate mapped PDF output, and catch fill issues before download, signing, or scale.
-- [OpenAI PDF Data Boundaries](https://dullypdf.com/openai-pdf-data-privacy): Understand which DullyPDF AI actions use PDF, schema, image, or row data.
-- [Mobile-Friendly Fillable PDF Forms](https://dullypdf.com/mobile-fillable-pdf-form): Collect mobile PDF answers in a hosted web form, skip phone PDF viewer quirks, and generate the filled PDF on the owner side.
-- [Stored Fill By Link Responses](https://dullypdf.com/stored-fill-by-link-responses): Reuse stored respondent submissions as a record source for Search & Fill, packets, signing, or API materialization.
-- [Group API ZIP Packet](https://dullypdf.com/group-api-fill-zip-packet): Publish a group-scoped JSON-to-ZIP API endpoint that returns per-template PDFs for back-office packet workflows.
-- [Batch Rename + Map for PDF Groups](https://dullypdf.com/batch-rename-map-pdf-group): Apply AI rename and schema mapping across every saved template in a group so packet field names stay consistent.
-- [Verify Signed PDF Online](https://dullypdf.com/verify-signed-pdf): Public DullyPDF validation page lets recipients re-check completed signing records via a retained token URL.
-- [No-Code PDF Automation](https://dullypdf.com/no-code-pdf-automation): Automate existing PDFs through detection, mapping, filling, links, API endpoints, groups, and signing.
-- [Google Sheets to PDF](https://dullypdf.com/fill-pdf-from-google-sheets): Fill reviewed PDF templates from Google Sheets rows through CSV/XLSX export, Search & Fill, or API Fill.
-- [Airtable to PDF Template](https://dullypdf.com/airtable-to-pdf-template): Fill existing PDF templates from Airtable records via CSV export or JSON sent to API Fill.
-- [Google Forms to Filled PDF](https://dullypdf.com/google-forms-to-filled-pdf): Use Google Forms response rows as source data for fixed DullyPDF templates or switch to Fill By Link.
-- [Microsoft Forms to Filled PDF](https://dullypdf.com/microsoft-forms-to-filled-pdf): Fill existing PDFs from Microsoft Forms responses through Excel rows or Power Automate API calls.
-- [Power Automate PDF Fill](https://dullypdf.com/power-automate-fill-pdf-template): Use Microsoft 365 flows to send JSON to DullyPDF API Fill and store or email the returned PDF.
-- [Webhook JSON to PDF](https://dullypdf.com/webhook-json-to-pdf-form): Send JSON from webhook-capable systems into saved DullyPDF templates.
-- [Zapier Webhook to PDF](https://dullypdf.com/zapier-webhook-to-pdf): Use a Zapier webhook or custom request to call DullyPDF API Fill.
-- [Make Webhook to PDF](https://dullypdf.com/make-webhook-to-pdf): Build a Make scenario that maps incoming records to a DullyPDF API Fill request.
-- [PHP PDF Fill API](https://dullypdf.com/php-fill-pdf-api): Fill existing PDFs from PHP or Laravel with a JSON-to-PDF endpoint.
-- [Java PDF Fill API](https://dullypdf.com/java-fill-pdf-api): Fill existing PDFs from Java or Spring Boot with a DullyPDF API endpoint.
-- [C# PDF Fill API](https://dullypdf.com/csharp-fill-pdf-api): Fill existing PDFs from C# or ASP.NET Core with HTTP JSON.
-- [Go PDF Fill API](https://dullypdf.com/go-fill-pdf-api): Fill existing PDFs from Go services through a lightweight HTTP API call.
-- [Ruby PDF Fill API](https://dullypdf.com/ruby-fill-pdf-api): Fill existing PDFs from Ruby or Rails and attach the returned PDF to app records.
-- [PDF to Online Form](https://dullypdf.com/turn-pdf-into-online-form): Publish a hosted respondent form from an existing reviewed PDF template.
-- [One Web Form Multiple PDFs](https://dullypdf.com/one-web-form-fill-multiple-pdfs): Collect one respondent record and fill a saved DullyPDF template group.
-- [One JSON Multiple PDFs](https://dullypdf.com/one-json-fill-multiple-pdfs): Send one API payload to generate a ZIP packet from a saved template group.
-- [Respondent PDF Download](https://dullypdf.com/respondent-download-filled-pdf): Let respondents download supported flat PDF copies after submitting a Fill By Link form.
-- [Online Form to Signed PDF](https://dullypdf.com/online-form-to-signed-pdf): Collect answers first, materialize the filled PDF, and route the record into signing.
-- [Excel to Fillable PDF](https://dullypdf.com/excel-to-fillable-pdf-template): Fill reusable PDF templates from XLSX rows with Search & Fill.
-- [SQL Database to PDF](https://dullypdf.com/sql-database-to-pdf-form-api): Map database-style schemas and fill PDFs from exported rows or backend API JSON.
-- [Flatten Filled PDF](https://dullypdf.com/flatten-filled-pdf-form): Bake completed values into PDF page content for final sharing.
-- [Filled PDF Fields Not Showing](https://dullypdf.com/filled-pdf-fields-not-showing): Troubleshoot blank or disappearing field values across PDF viewers.
-- [Make PDF Read-Only After Filling](https://dullypdf.com/make-pdf-read-only-after-filling): Choose flat output when a completed PDF should not behave like an editable form.
-- [PDF Checkbox CSV Values](https://dullypdf.com/pdf-checkbox-values-csv): Map CSV, Excel, JSON, or API values to PDF checkboxes with reviewed rules.
-- [PDF Radio JSON Values](https://dullypdf.com/pdf-radio-button-values-json): Fill PDF radio groups from one selected JSON or CSV value.
-- [PDF Date CSV Fill](https://dullypdf.com/pdf-date-format-csv-fill): Normalize spreadsheet date values before filling PDF date-like fields.
-- [Duplicate PDF Field Names](https://dullypdf.com/duplicate-pdf-field-names): Rename copied or repeated PDF field names before Search & Fill or API publication.
-- [PDF Template Versioning](https://dullypdf.com/pdf-template-versioning): QA reusable DullyPDF templates when source PDFs, schemas, links, or API snapshots change.
+- [DullyPDF India](https://dullypdf.com/in): English-language India homepage for KYC, vendor onboarding, HR joining, GST invoice, school, clinic, finance, branch, logistics, property, and procurement PDF automation.
 
-## Detection and Editing
+## India Workflow Library
 
-- AI field detection uses the CommonForms model with confidence scoring for text, checkbox, radio, date, and signature fields.
-- The visual editor supports resize, rename, reposition, type normalization, text-safe Base 14 fonts, field font sizes, field colors, checkbox group management, and radio button editing.
-- OpenAI-powered Rename + Map aligns field names to schema headers automatically.
+- [India PDF to Fillable Form](https://dullypdf.com/in/pdf-to-fillable-form): Convert recurring Indian PDFs into reviewed reusable templates.
+- [Fill Indian PDF Forms From Excel Rows](https://dullypdf.com/in/fill-pdf-from-excel): Fill reviewed India templates from Excel rows.
+- [India CSV to PDF Forms](https://dullypdf.com/in/fill-pdf-from-csv): Fill PDF templates from CSV exports and operational trackers.
+- [India Fill By Link](https://dullypdf.com/in/fill-by-link): Collect respondent data through a web form before generating PDFs.
+- [India PDF Fill API](https://dullypdf.com/in/pdf-fill-api): Send JSON to reviewed India templates and generate PDF output.
+- [India PDF Packet Workflow](https://dullypdf.com/in/pdf-packet-workflow): Fill related PDF packets from one reviewed source record.
 
-## Industry Solutions
+## India Industry Solutions
 
-- [Healthcare](https://dullypdf.com/healthcare-pdf-automation): Medicare enrollment, patient-health claims and appeals, dental intake, and HIPAA-adjacent healthcare workflows.
-- [Insurance](https://dullypdf.com/insurance-pdf-automation): ACORD 25/24/27/28/126/140 certificates and carrier-specific forms.
-- [ACORD Forms](https://dullypdf.com/acord-form-automation): Certificate of insurance and ACORD-first workflows.
-- [Real Estate](https://dullypdf.com/real-estate-pdf-automation): Rental applications, lease agreements, mortgage packets.
-- [Government](https://dullypdf.com/government-form-automation): Permits, tax forms, licensing applications.
-- [Finance & Loans](https://dullypdf.com/finance-loan-pdf-automation): Loan applications and financial disclosure workflows.
-- [HR & Onboarding](https://dullypdf.com/hr-pdf-automation): New hire paperwork, benefits enrollment, compliance forms.
-- [Legal](https://dullypdf.com/legal-pdf-workflow-automation): Contracts, filings, and case packet automation.
-- [Education](https://dullypdf.com/education-form-automation): Student applications and enrollment workflows.
-- [Nonprofit](https://dullypdf.com/nonprofit-pdf-form-automation): Grant applications, volunteer intake, donor forms.
-- [Logistics](https://dullypdf.com/logistics-pdf-automation): Bills of lading, delivery receipts, transport paperwork.
-- [Manufacturing](https://dullypdf.com/manufacturing-pdf-automation): Quality inspections, production travelers, lot and batch barcodes, yield calculations, and final PDF records.
-- [Field Service](https://dullypdf.com/field-service-pdf-automation): Work orders, asset QR codes, technician service forms, labor and parts totals, and customer signoff PDFs.
-- [Warehouse Inventory](https://dullypdf.com/warehouse-inventory-pdf-automation): Cycle counts, receiving forms, SKU and bin barcodes, quantity variance calculations, and supervisor review.
-- [Procurement](https://dullypdf.com/procurement-pdf-automation): Purchase orders, vendor packets, PO barcodes, approval fields, and subtotal/tax/freight calculations.
-- [Utilities & Energy](https://dullypdf.com/utilities-energy-pdf-automation): Meter reads, utility service forms, asset QR lookup, inspection scores, and usage delta calculations.
+- [India KYC PDF Automation](https://dullypdf.com/in/kyc-pdf-automation): PAN, GSTIN, branch, account, and customer or vendor review workflows.
+- [India Vendor Onboarding PDF Automation](https://dullypdf.com/in/vendor-onboarding-pdf-automation): Supplier master, GSTIN, PAN, IFSC, Udyam/MSME, and approval workflows.
+- [India HR Joining PDF Automation](https://dullypdf.com/in/hr-joining-pdf-automation): Employee joining, branch assignment, and onboarding packet workflows.
+- [India GST Invoice PDF Automation](https://dullypdf.com/in/gst-invoice-pdf-automation): Invoice, tax value, line item, and finance review workflows.
+- [India Purchase Order PDF Automation](https://dullypdf.com/in/purchase-order-pdf-automation): Procurement, PO, and approval PDF workflows.
 
-## Documentation
+## India Blog
 
-- [Getting Started](https://dullypdf.com/usage-docs/getting-started): End-to-end quick start from upload to filled PDF.
-- [Detection](https://dullypdf.com/usage-docs/detection): Field detection confidence, cleanup, and review.
-- [Editor Workflow](https://dullypdf.com/usage-docs/editor-workflow): Editor tools, field properties, and template refinement.
-- [Rename & Mapping](https://dullypdf.com/usage-docs/rename-mapping): AI field renaming and schema alignment.
-- [Search & Fill](https://dullypdf.com/usage-docs/search-fill): Row-based filling from structured data sources.
-- [Fill By Link](https://dullypdf.com/usage-docs/fill-by-link): Respondent form publishing and answer collection.
-- [API Fill](https://dullypdf.com/usage-docs/api-fill): Endpoint management, auth keys, and schema.
-- [Signature Workflow](https://dullypdf.com/usage-docs/signature-workflow): Signing process, guardrails, and compliance scope.
-- [Template Groups](https://dullypdf.com/usage-docs/create-group): Batch operations across document packets.
-- [Fill from Images](https://dullypdf.com/usage-docs/fill-from-images): Vision-based extraction from photos and scanned documents.
-- [Save & Download](https://dullypdf.com/usage-docs/save-download-profile): Template persistence, profiles, and collaboration.
-- [Troubleshooting](https://dullypdf.com/usage-docs/troubleshooting): Detection, mapping, and fill issue diagnosis.
+- [India Blog](https://dullypdf.com/in/blog): Index for the ten India PDF automation guides.
+- [PDF Form Automation in India](https://dullypdf.com/in/blog/india-pdf-form-automation-guide): KYC, vendor, HR, GST, and branch workflow guide.
+- [Fill Indian PDF Forms From Excel](https://dullypdf.com/in/blog/fill-indian-pdf-forms-from-excel): Spreadsheet-to-PDF guide for branch, vendor, HR, school, clinic, finance, and procurement rows.
+- [India KYC PDF Automation Checklist](https://dullypdf.com/in/blog/india-kyc-pdf-automation-checklist): PAN, GSTIN, branch, account, and reviewer field checklist.
+- [Vendor Onboarding PDF Automation in India](https://dullypdf.com/in/blog/vendor-onboarding-pdf-india): GSTIN, PAN, IFSC, bank, MSME, and approval workflow guide.
+- [GST Invoice PDF Automation in India](https://dullypdf.com/in/blog/gst-invoice-pdf-automation-india): Line item, tax value, total, and finance review guide.
+- [HR Joining PDF Automation in India](https://dullypdf.com/in/blog/hr-joining-pdf-automation-india): Employee, branch, bank, emergency contact, and asset packet guide.
+- [School Admission PDF Automation in India](https://dullypdf.com/in/blog/school-admission-pdf-automation-india): Student, parent, class, fee, and office review workflow guide.
+- [Clinic Intake PDF Automation in India](https://dullypdf.com/in/blog/clinic-intake-pdf-automation-india): Patient, appointment, visit, and clinic review field guide.
+- [Delivery Challan PDF Automation in India](https://dullypdf.com/in/blog/delivery-challan-pdf-automation-india): Dispatch, branch, item, quantity, and logistics handoff guide.
+- [India PDF Fill API Guide](https://dullypdf.com/in/blog/india-pdf-fill-api-guide): JSON-to-PDF API rollout guide after spreadsheet review.
+
+## Spanish Homepage
+
+- [DullyPDF en Espanol](https://dullypdf.com/es): Generic Spanish-language homepage for formularios PDF rellenables, rellenar PDF desde Excel o CSV, Fill By Link, API Fill, and reusable PDF templates.
+
+## Spanish Workflow Library
+
+- [Flujos de Trabajo](https://dullypdf.com/es/flujos-de-trabajo): Hub for the ten Spanish workflow-library pages.
+- [Crear Formulario PDF Rellenable](https://dullypdf.com/es/crear-formulario-pdf-rellenable): Convert an existing PDF into a reviewed reusable fillable form.
+- [Rellenar PDF desde Excel](https://dullypdf.com/es/rellenar-pdf-desde-excel): Fill reviewed PDF templates from Excel rows.
+- [Rellenar PDF desde CSV](https://dullypdf.com/es/rellenar-pdf-desde-csv): Fill PDF templates from CSV exports and operational trackers.
+- [Formulario PDF con Link](https://dullypdf.com/es/formulario-pdf-con-link): Collect answers through a web form and generate the completed PDF from a reviewed template.
+- [API para Rellenar PDF](https://dullypdf.com/es/api-rellenar-pdf): Send JSON to a template-scoped endpoint and receive a completed PDF.
+- [Detectar Campos PDF con IA](https://dullypdf.com/es/detectar-campos-pdf-ia): Find candidate PDF fields before template cleanup.
+- [Renombrar Campos PDF con IA](https://dullypdf.com/es/renombrar-campos-pdf-ia): Clean field names and prepare them for mapping.
+- [Mapear Datos a PDF](https://dullypdf.com/es/mapear-datos-a-pdf): Align spreadsheet or API fields with PDF field names.
+- [Plantilla PDF Reutilizable](https://dullypdf.com/es/plantilla-pdf-reutilizable): Save reviewed templates for repeat PDF work.
+- [Rellenar Paquetes PDF](https://dullypdf.com/es/rellenar-paquetes-pdf): Fill multiple PDFs from one reviewed record.
+
+## Spanish Industry Solutions
+
+- [Industrias](https://dullypdf.com/es/industrias): Hub for the ten Spanish industry-solution pages.
+- [Automatizacion PDF para Salud](https://dullypdf.com/es/automatizacion-pdf-salud): Patient intake, registration, and clinic PDF workflows.
+- [Automatizacion PDF para Recursos Humanos](https://dullypdf.com/es/automatizacion-pdf-recursos-humanos): Employee onboarding and HR packet workflows.
+- [Automatizacion PDF Inmobiliaria](https://dullypdf.com/es/automatizacion-pdf-inmobiliaria): Real estate, tenant, and property PDF workflows.
+- [Automatizacion PDF para Educacion](https://dullypdf.com/es/automatizacion-pdf-educacion): Student, enrollment, and school-form workflows.
+- [Automatizacion PDF para Finanzas y Prestamos](https://dullypdf.com/es/automatizacion-pdf-finanzas-prestamos): Loan, finance, and document packet workflows.
+- [Automatizacion PDF para Logistica](https://dullypdf.com/es/automatizacion-pdf-logistica): Dispatch, delivery, and transport PDF workflows.
+- [Automatizacion PDF para Contabilidad y Facturas](https://dullypdf.com/es/automatizacion-pdf-contabilidad-facturas): Invoice, AP/AR, and accounting PDF workflows.
+- [Automatizacion PDF para Construccion](https://dullypdf.com/es/automatizacion-pdf-construccion): Construction bids, change orders, and field paperwork.
+- [Automatizacion PDF para Servicios de Campo](https://dullypdf.com/es/automatizacion-pdf-servicios-campo): Work orders, inspections, and service reports.
+- [Automatizacion PDF para Compras y Proveedores](https://dullypdf.com/es/automatizacion-pdf-compras-proveedores): Procurement, supplier onboarding, and purchase-order PDFs.
+
+## Spanish Blog
+
+- [Blog en Espanol](https://dullypdf.com/es/blog): Index for the ten Spanish PDF automation guides.
+- [Como Crear un Formulario PDF Rellenable](https://dullypdf.com/es/blog/como-crear-formulario-pdf-rellenable): Build a reusable fillable PDF from an existing document.
+- [Rellenar PDF desde Excel](https://dullypdf.com/es/blog/rellenar-pdf-desde-excel-guia): Prepare spreadsheet rows for PDF filling.
+- [Automatizar Formularios PDF para Clinicas](https://dullypdf.com/es/blog/automatizar-formularios-pdf-clinicas): Organize clinic intake and patient PDFs.
+- [Formularios PDF de Recursos Humanos](https://dullypdf.com/es/blog/formularios-pdf-recursos-humanos): Automate onboarding and employee documents.
+- [Mapear Campos PDF a Excel](https://dullypdf.com/es/blog/mapear-campos-pdf-a-excel): Match PDF field names to spreadsheet columns.
+- [Plantillas PDF Reutilizables](https://dullypdf.com/es/blog/plantillas-pdf-reutilizables): Avoid rebuilding the same document repeatedly.
+- [Rellenar un PDF por Enlace](https://dullypdf.com/es/blog/rellenar-pdf-por-enlace): Choose Fill By Link when recipients should answer a web form.
+- [API para Rellenar PDFs](https://dullypdf.com/es/blog/api-para-rellenar-pdf): Prepare templates before integrating the API.
+- [Rellenar Varios PDFs desde una Sola Fila](https://dullypdf.com/es/blog/paquetes-pdf-desde-una-fila): Generate packets from one reviewed row.
+- [Detectar Campos PDF con IA](https://dullypdf.com/es/blog/detectar-campos-pdf-con-ia): Review AI-detected fields before trusting a template.
+
+## Documentación
+
+- [Primeros pasos](https://dullypdf.com/es/usage-docs/getting-started): Ruta desde subir un PDF hasta validar la primera salida rellenada.
+- [Detección](https://dullypdf.com/es/usage-docs/detection): Confianza, geometría y revisión de campos detectados.
+- [Flujo del editor](https://dullypdf.com/es/usage-docs/editor-workflow): Herramientas para mover, renombrar, cambiar tipos y guardar plantillas.
+- [Renombrar y mapear](https://dullypdf.com/es/usage-docs/rename-mapping): Nombres de campos, columnas de datos y reglas de casillas/radios.
+- [Search & Fill](https://dullypdf.com/es/usage-docs/search-fill): Relleno desde CSV, Excel, JSON o respuestas guardadas.
+- [Fill By Link](https://dullypdf.com/es/usage-docs/fill-by-link): Publicación de formularios web y revisión de respuestas.
+- [API Fill](https://dullypdf.com/es/usage-docs/api-fill): Endpoints JSON-a-PDF, esquemas, claves y límites.
+- [Grupos](https://dullypdf.com/es/usage-docs/create-group): Paquetes de varios PDFs desde un mismo registro.
+- [Imágenes y documentos](https://dullypdf.com/es/usage-docs/fill-from-images): Extracción con IA desde fotos, facturas, recibos o escaneos.
+- [Guardar y descargar](https://dullypdf.com/es/usage-docs/save-download-profile): Plantillas guardadas, descargas, Profile y límites.
+- [Solución de problemas](https://dullypdf.com/es/usage-docs/troubleshooting): Diagnóstico de detección, mapeo, relleno y salida.
 
 ## Plans
 
 - **Free**: 5 saved forms, 5 detect pages, 50 fillable pages, 25 Fill By Link responses/month, 1 API endpoint (250 fills/month), 25 signing requests/month.
 - **Premium**: 100 saved forms, 100 detect pages, 1,000 fillable pages, 10,000 Fill By Link responses/month, 20 API endpoints (10,000 fills/month), 10,000 signing requests/month.
 
-## Blog
-
-- [Blog Index](https://dullypdf.com/blog)
-- [USCIS Immigration Packet Automation](https://dullypdf.com/blog/uscis-immigration-packet-automation): Use cataloged USCIS PDFs as reusable templates and fill repeated applicant, sponsor, preparer, and attorney fields from one reviewed intake record.
-- [VA Disability Claim Packet Automation](https://dullypdf.com/blog/va-disability-claim-packet-automation): Reuse claimant, representative, medical-release, unemployability, supplemental-claim, and appeal data across cataloged VA PDFs.
-- [Social Security Disability Packet Automation](https://dullypdf.com/blog/social-security-disability-packet-automation): Prepare reusable SSA disability packet templates for claimant, representative, medical-source, authorization, reconsideration, and appeal data.
-- [Contractor Tax Onboarding Packet](https://dullypdf.com/blog/contractor-tax-onboarding-packet): Collect contractor, vendor, payer, withholding, and foreign-status details once and reuse them across W-9, 1099, W-8, and EIN PDF workflows.
-- [SBA Loan Application Packet Automation](https://dullypdf.com/blog/sba-loan-application-packet-automation): Map borrower, owner, financial-statement, tax-transcript, liability, and disaster-loan data across cataloged SBA PDFs.
-- [Medicare Provider Enrollment and Credentialing PDF Automation](https://dullypdf.com/blog/medicare-provider-enrollment-credentialing-packet): Reuse provider, supplier, location, ownership, EFT, and participation data across CMS-855 and supporting Medicare enrollment PDFs.
-- [Passport and Consular DS Form Workflow](https://dullypdf.com/blog/passport-ds-form-workflow): Prepare reusable DS form templates for traveler identity, parent or guardian details, consent, correction, and consular report workflows.
-- [Nonprofit Form 990 Packet Automation](https://dullypdf.com/blog/nonprofit-990-filing-packet-automation): Organize nonprofit annual return and schedule PDFs around organization, governance, compensation, grant, fundraising, public-support, and narrative data.
-- [Payroll Quarter-End and Year-End PDF Form Automation](https://dullypdf.com/blog/payroll-quarter-year-end-form-automation): Fill quarter-end and year-end payroll PDFs from employer, employee, period, wage, tax, authorization, and reporting-agent records.
-- [Medical and Dental Intake Template Library](https://dullypdf.com/blog/medical-dental-intake-template-library): Turn repeated patient registration, history, consent, release, telehealth, insurance, and service-recovery PDFs into reusable intake templates.
-- [Individual Tax Return Packet Automation](https://dullypdf.com/blog/individual-tax-return-packet-automation): Organize taxpayer, spouse, dependent, schedule, estimated-tax, payment, and amendment data across Form 1040 family PDFs.
-- [Business Tax Return Packet Automation](https://dullypdf.com/blog/business-tax-return-packet-automation): Map entity, owner, partner, shareholder, beneficiary, K-1, and extension data across 1120, 1120-S, 1065, 1041, and 7004 PDFs.
-- [IRS Collection and Offer in Compromise Packet Automation](https://dullypdf.com/blog/irs-collection-offer-in-compromise-packet-automation): Prepare reviewed IRS collection, financial-statement, offer, installment, abatement, and Taxpayer Advocate PDF packets.
-- [Medicare Beneficiary Enrollment and Appeals PDF Packet Automation](https://dullypdf.com/blog/medicare-beneficiary-enrollment-appeals-packet): Reuse beneficiary, employer, claim, appeal, representative, and authorization data across CMS beneficiary forms.
-- [FMLA Leave Certification Packet Automation](https://dullypdf.com/blog/fmla-leave-certification-packet-automation): Organize employee, provider, family-member, notice, designation, and military-family leave fields across DOL FMLA PDFs.
-- [FECA and OWCP Federal Worker Injury Packet Automation](https://dullypdf.com/blog/feca-owcp-federal-worker-injury-packet-automation): Prepare federal worker injury, compensation, duty-status, medical, and reimbursement PDFs from reviewed claim data.
-- [Federal Employment and Security Clearance Form Packet Automation](https://dullypdf.com/blog/federal-employment-security-clearance-form-packet): Handle sensitive federal employment, public trust, national security, veterans preference, appointment, and medical-exam PDF workflows.
-- [Bankruptcy Petition and Schedules PDF Packet Automation](https://dullypdf.com/blog/bankruptcy-petition-schedules-packet-automation): Organize debtor, property, creditor, income, expense, means-test, filing-fee, and declaration data across official bankruptcy PDFs.
-- [CBP Import Entry and Logistics PDF Packet Automation](https://dullypdf.com/blog/cbp-import-entry-logistics-packet-automation): Map importer, broker, consignee, shipment, entry, line-item, foreign-trade-zone, and ACH data across CBP PDFs.
-- [HUD and USDA Housing Assistance PDF Packet Automation](https://dullypdf.com/blog/hud-usda-housing-assistance-packet-automation): Reuse tenant, household, property, income, consent, inspection, special-claim, and rural housing loan data across HUD and USDA PDFs.
-
 ## Links
 
 - [Homepage](https://dullypdf.com/)
-- [Free Features](https://dullypdf.com/free-features)
-- [Premium Features](https://dullypdf.com/premium-features)
-- [Workflow Library](https://dullypdf.com/workflows)
-- [Industry Solutions](https://dullypdf.com/industries)
+- [DullyPDF India](https://dullypdf.com/in)
+- [India Blog](https://dullypdf.com/in/blog)
+- [DullyPDF en Espanol](https://dullypdf.com/es)
+- [Spanish Workflow Library](https://dullypdf.com/es/flujos-de-trabajo)
+- [Spanish Industry Solutions](https://dullypdf.com/es/industrias)
+- [Spanish Blog](https://dullypdf.com/es/blog)
 - [PDF Form Catalog](https://dullypdf.com/forms)
 - [Sitemap Index](https://dullypdf.com/sitemap.xml)
 - [Privacy Policy](https://dullypdf.com/privacy)
 - [Terms of Service](https://dullypdf.com/terms)
 - [LinkedIn](https://www.linkedin.com/company/dullypdf)
-- [GitHub](https://github.com/justin-thakral/DullyPDF)
-- [YouTube](https://www.youtube.com/@DullyPDF)
-- [X](https://x.com/DullyPDF)

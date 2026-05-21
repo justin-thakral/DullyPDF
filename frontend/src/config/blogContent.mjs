@@ -1,3 +1,6 @@
+import { SPANISH_BLOG_POSTS } from './spanishBlogPosts.mjs';
+import { INDIA_BLOG_POSTS } from './indiaBlogPosts.mjs';
+
 const BLOG_FIGURE_LIBRARY = {
   rawPatientIntake: {
     src: '/blog/patient-intake-source-1.png',
@@ -5872,6 +5875,6 @@ const CATALOG_PACKET_BLOG_SLUGS = new Set([
 ]);
 
 export const BLOG_POSTS = [
-  ...BLOG_POSTS_BY_AUTHORING_PRIORITY.filter((post) => !CATALOG_PACKET_BLOG_SLUGS.has(post.slug)),
-  ...BLOG_POSTS_BY_AUTHORING_PRIORITY.filter((post) => CATALOG_PACKET_BLOG_SLUGS.has(post.slug)),
+  ...INDIA_BLOG_POSTS,
+  ...SPANISH_BLOG_POSTS.map((post) => ({ ...post, locale: 'es' })),
 ];

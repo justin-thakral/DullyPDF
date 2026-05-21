@@ -3478,10 +3478,10 @@ function WorkspaceRuntime({
         onSignOut={verifiedUser ? handleSignOut : undefined}
         demoLocked={demoUiLocked}
         onDemoLockedAction={handleDemoLockedAction}
-        demoFillLinkDocsHref="/usage-docs/fill-by-link"
-        demoCreateGroupDocsHref="/usage-docs/create-group"
-        demoFillFromImagesDocsHref="/usage-docs/fill-from-images"
-        demoSignatureDocsHref="/usage-docs/signature-workflow"
+        demoFillLinkDocsHref="/es/usage-docs/fill-by-link"
+        demoCreateGroupDocsHref="/es/usage-docs/create-group"
+        demoFillFromImagesDocsHref="/es/usage-docs/fill-from-images"
+        demoSignatureDocsHref="/es/usage-docs/signature-workflow"
         onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}
       />
       <div className="app-shell">

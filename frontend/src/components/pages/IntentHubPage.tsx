@@ -16,6 +16,7 @@ type IntentHubKey = 'workflows' | 'industries';
 
 type IntentHubPageProps = {
   hubKey: IntentHubKey;
+  locale?: 'es';
 };
 
 const HUB_BREADCRUMB_LABEL: Record<IntentHubKey, string> = {
@@ -23,25 +24,34 @@ const HUB_BREADCRUMB_LABEL: Record<IntentHubKey, string> = {
   industries: 'Industries',
 };
 
-const IntentHubPage = ({ hubKey }: IntentHubPageProps) => {
-  const bodyContent = resolveRouteSeoBodyContent({ kind: 'intent-hub', hubKey });
+const IntentHubPage = ({ hubKey, locale }: IntentHubPageProps) => {
+  const isSpanish = locale === 'es';
+  const bodyContent = resolveRouteSeoBodyContent({ kind: 'intent-hub', hubKey, locale });
   const pageSections = (bodyContent?.sections ?? []) as RouteBodySection[];
-  const featuredPages = hubKey === 'workflows'
-    ? getFeaturedWorkflowIntentPages()
-    : getFeaturedIndustryIntentPages();
-  const hubVideo = hubKey === 'workflows' ? FULL_FEATURE_DEMO_VIDEO : null;
+  const featuredPages = isSpanish
+    ? []
+    : hubKey === 'workflows'
+      ? getFeaturedWorkflowIntentPages()
+      : getFeaturedIndustryIntentPages();
+  const hubVideo = hubKey === 'workflows' && !isSpanish ? FULL_FEATURE_DEMO_VIDEO : null;
   const featuredHrefSet = new Set(featuredPages.map((page) => page.path));
-  const supplementalSections = pageSections.filter((section) => !featuredHrefSet.has(section.href ?? ''));
+  const supplementalSections = featuredPages.length
+    ? pageSections.filter((section) => !featuredHrefSet.has(section.href ?? ''))
+    : [];
 
   useEffect(() => {
-    applyRouteSeo({ kind: 'intent-hub', hubKey });
-  }, [hubKey]);
+    applyRouteSeo({ kind: 'intent-hub', hubKey, locale });
+  }, [hubKey, locale]);
 
   return (
     <IntentPageShell
-      breadcrumbItems={[{ label: 'Home', href: '/' }, { label: HUB_BREADCRUMB_LABEL[hubKey] }]}
+      breadcrumbItems={isSpanish
+        ? [{ label: 'Inicio', href: '/es' }, { label: hubKey === 'workflows' ? 'Flujos de trabajo' : 'Industrias' }]
+        : [{ label: 'Home', href: '/' }, { label: HUB_BREADCRUMB_LABEL[hubKey] }]}
       activeNavKey={hubKey === 'workflows' ? 'workflows' : 'industries'}
       usePublicChrome
+      locale={isSpanish ? 'es' : 'en'}
+      hideFormCatalog={isSpanish}
       heroKicker={bodyContent?.heroKicker ?? 'Hub'}
       heroTitle={bodyContent?.heading ?? 'Public route library'}
       heroSummary={bodyContent?.paragraphs?.[0] ?? ''}
@@ -84,7 +94,7 @@ const IntentHubPage = ({ hubKey }: IntentHubPageProps) => {
 
       {hubVideo ? <PublicVideoPanel {...hubVideo} /> : null}
 
-      {hubKey === 'workflows' ? (
+      {hubKey === 'workflows' && !isSpanish ? (
         <PublicProfileLinksPanel
           title="Follow DullyPDF outside the workflow library"
           description="Use the official profiles for company updates, public demos, release notes, and the open-source codebase while this route stays focused on search-intent workflow pages."
@@ -93,11 +103,15 @@ const IntentHubPage = ({ hubKey }: IntentHubPageProps) => {
 
       {supplementalSections.length ? (
         <section className="intent-page__panel">
-          <h2>{hubKey === 'workflows' ? 'More workflow pages' : 'More industry pages'}</h2>
+          <h2>{isSpanish ? hubKey === 'workflows' ? 'Más flujos' : 'Más industrias' : hubKey === 'workflows' ? 'More workflow pages' : 'More industry pages'}</h2>
           <p>
-            {hubKey === 'workflows'
-              ? 'These route pages stay in the library too, even when they do not need a larger screenshot treatment.'
-              : 'These industry routes remain part of the public library even when the top section already highlights the main vertical entry points.'}
+            {isSpanish
+              ? hubKey === 'workflows'
+                ? 'Estas rutas permanecen en la biblioteca aunque no necesiten una vista destacada más grande.'
+                : 'Estas rutas por industria permanecen en la biblioteca aunque la sección principal ya muestre las entradas principales.'
+              : hubKey === 'workflows'
+                ? 'These route pages stay in the library too, even when they do not need a larger screenshot treatment.'
+                : 'These industry routes remain part of the public library even when the top section already highlights the main vertical entry points.'}
           </p>
           <div className="intent-page__related-links">
             {supplementalSections.map((section) => (

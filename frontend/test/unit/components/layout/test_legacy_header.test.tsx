@@ -116,7 +116,7 @@ describe('LegacyHeader', () => {
     render(<LegacyHeader {...createProps()} />);
 
     const docsLink = screen.getByRole('link', { name: 'Docs & Privacy & Terms' });
-    expect(docsLink.getAttribute('href')).toBe('/usage-docs');
+    expect(docsLink.getAttribute('href')).toBe('/es/usage-docs');
 
     const headerLinks = screen
       .getAllByRole('link')

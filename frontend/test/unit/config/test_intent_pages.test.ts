@@ -89,6 +89,8 @@ describe('intentPages config', () => {
     expect(resolveIntentPath('/pdf-radio-button-editor')).toBe('pdf-radio-button-editor');
     expect(resolveIntentPath('/healthcare-pdf-automation')).toBe('healthcare-pdf-automation');
     expect(resolveIntentPath('/acord-form-automation')).toBe('acord-form-automation');
+    expect(resolveIntentPath('/es/crear-formulario-pdf-rellenable')).toBe('es-create-fillable-pdf-form');
+    expect(resolveIntentPath('/es/automatizacion-pdf-salud')).toBe('es-healthcare-pdf-automation');
     expect(resolveIntentPath('/not-an-intent')).toBeNull();
   });
 

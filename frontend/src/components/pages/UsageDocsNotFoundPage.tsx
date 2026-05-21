@@ -9,10 +9,10 @@ type UsageDocsNotFoundPageProps = {
 const UsageDocsNotFoundPage = ({ requestedPath }: UsageDocsNotFoundPageProps) => {
   useEffect(() => {
     applyNoIndexSeo({
-      title: 'Usage Docs Not Found (404) | DullyPDF',
+      title: 'Documentación no encontrada (404) | DullyPDF',
       description:
-        'The requested DullyPDF usage docs page was not found. Use the canonical usage docs index to continue.',
-      canonicalPath: '/usage-docs',
+        'La página de documentación de DullyPDF solicitada no existe. Usa el índice de documentación en español para continuar.',
+      canonicalPath: '/es/usage-docs',
     });
   }, []);
 
@@ -20,12 +20,12 @@ const UsageDocsNotFoundPage = ({ requestedPath }: UsageDocsNotFoundPageProps) =>
     <div className="usage-docs-not-found-page">
       <div className="usage-docs-not-found-card">
         <p className="usage-docs-not-found-code">404</p>
-        <h1>Usage docs page not found</h1>
+        <h1>Página de documentación no encontrada</h1>
         <p>
-          No usage docs page exists at <code>{requestedPath}</code>.
+          No existe una página de documentación en <code>{requestedPath}</code>.
         </p>
-        <a href="/usage-docs" className="usage-docs-not-found-link">
-          Go to Usage Docs Overview
+        <a href="/es/usage-docs" className="usage-docs-not-found-link">
+          Ir a la documentación
         </a>
       </div>
     </div>

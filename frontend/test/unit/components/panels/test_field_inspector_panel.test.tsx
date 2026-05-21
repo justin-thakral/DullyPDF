@@ -96,7 +96,7 @@ describe('FieldInspectorPanel', () => {
 
     await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/usage-docs/editor-workflow', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/editor-workflow', '_blank', 'noopener,noreferrer');
     openSpy.mockRestore();
   });
 

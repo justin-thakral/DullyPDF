@@ -8,6 +8,7 @@ export type PublicVideoPanelProps = {
   youtubeUrl: string;
   durationLabel?: string;
   caption?: string;
+  linkLabel?: string;
 };
 
 const buildEmbedSrc = (videoId: string): string => (
@@ -22,6 +23,7 @@ const PublicVideoPanel = ({
   youtubeUrl,
   durationLabel,
   caption,
+  linkLabel = 'Watch on YouTube',
 }: PublicVideoPanelProps) => (
   <section className="public-video-panel">
     <div className="public-video-panel__layout">
@@ -32,7 +34,7 @@ const PublicVideoPanel = ({
         <div className="public-video-panel__meta">
           {durationLabel ? <span className="public-video-panel__duration">{durationLabel}</span> : null}
           <a href={youtubeUrl} target="_blank" rel="noreferrer">
-            Watch on YouTube
+            {linkLabel}
           </a>
         </div>
       </div>

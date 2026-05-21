@@ -16,7 +16,6 @@ import {
   FILL_PDF_FROM_FILE_DEMO_VIDEO,
   FULL_FEATURE_DEMO_VIDEO,
   PDF_TO_FILLABLE_DEMO_VIDEO,
-  WEB_FORM_AND_SIGN_DEMO_VIDEO,
 } from '../../config/publicVideoContent';
 import PublicVideoPanel from './PublicVideoPanel';
 import PublicProfileLinksPanel from './PublicProfileLinksPanel';
@@ -29,14 +28,42 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
   const page = getUsageDocsPage(pageKey);
   const pages = getUsageDocsPages();
   const pageVideo = pageKey === 'index'
-    ? FULL_FEATURE_DEMO_VIDEO
+    ? {
+        ...FULL_FEATURE_DEMO_VIDEO,
+        eyebrow: 'Recorrido en video',
+        title: 'Recorrido de 7 minutos por DullyPDF',
+        description:
+          'Este video muestra el flujo principal: preparar una plantilla, rellenar desde datos, guardar formularios, publicar Fill By Link y usar API Fill.',
+        durationLabel: '7 minutos',
+        caption:
+          'Úsalo para entender el producto antes de entrar en una guía operativa concreta.',
+        linkLabel: 'Ver en YouTube',
+      }
     : pageKey === 'getting-started'
-      ? PDF_TO_FILLABLE_DEMO_VIDEO
+      ? {
+          ...PDF_TO_FILLABLE_DEMO_VIDEO,
+          eyebrow: 'Demo enfocada',
+          title: 'Recorrido de 3 minutos: PDF a formulario rellenable',
+          description:
+            'Este video se centra en la ruta base: subir un PDF, detectar campos, limpiar la plantilla y guardarla para reutilizarla.',
+          durationLabel: '3 minutos',
+          caption:
+            'Úsalo cuando quieras validar una sola plantilla antes de ampliar el flujo.',
+          linkLabel: 'Ver en YouTube',
+        }
       : pageKey === 'search-fill'
-        ? FILL_PDF_FROM_FILE_DEMO_VIDEO
-        : pageKey === 'fill-by-link'
-          ? WEB_FORM_AND_SIGN_DEMO_VIDEO
-          : null;
+        ? {
+            ...FILL_PDF_FROM_FILE_DEMO_VIDEO,
+            eyebrow: 'Demo de archivo',
+            title: 'Rellenar PDF desde CSV, Excel o JSON',
+            description:
+              'Este video muestra cómo abrir una plantilla guardada y rellenarla desde filas CSV, Excel o JSON sin salir del navegador.',
+            durationLabel: 'Recorrido de Fill by File',
+            caption:
+              'Úsalo para validar el relleno desde archivos antes de llevar el flujo al resto del equipo.',
+            linkLabel: 'Ver en YouTube',
+          }
+        : null;
 
   const relatedWorkflows = useMemo(() => {
     const keys: IntentPageKey[] = page.relatedWorkflowKeys ?? [];
@@ -59,29 +86,29 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
   }, [pageKey]);
 
   const breadcrumbItems = pageKey === 'index'
-    ? [{ label: 'Home', href: '/' }, { label: 'Usage Docs' }]
-    : [{ label: 'Home', href: '/' }, { label: 'Usage Docs', href: '/usage-docs' }, { label: page.title }];
+    ? [{ label: 'Inicio', href: '/es' }, { label: 'Documentación' }]
+    : [{ label: 'Inicio', href: '/es' }, { label: 'Documentación', href: usageDocsHref('index') }, { label: page.title }];
 
   return (
-    <PublicSiteFrame activeNavKey="usage-docs" bodyClassName="usage-docs-page">
-      <div className="usage-docs-page__local-nav" aria-label="Usage docs utility navigation">
-        <a href="/usage-docs" className="usage-docs-page__local-link usage-docs-page__local-link--active">Usage Docs</a>
-        <a href="/privacy" className="usage-docs-page__local-link">Privacy Policy</a>
-        <a href="/terms" className="usage-docs-page__local-link">Terms of Service</a>
+    <PublicSiteFrame activeNavKey="usage-docs" bodyClassName="usage-docs-page" locale="es">
+      <div className="usage-docs-page__local-nav" aria-label="Navegación auxiliar de documentación">
+        <a href={usageDocsHref('index')} className="usage-docs-page__local-link usage-docs-page__local-link--active">Documentación</a>
+        <a href="/privacy" className="usage-docs-page__local-link">Privacidad</a>
+        <a href="/terms" className="usage-docs-page__local-link">Términos</a>
       </div>
 
       <div className="usage-docs-page__surface">
         <section className="usage-docs-hero">
           <Breadcrumbs items={breadcrumbItems} />
-          <span className="usage-docs-kicker">Usage docs</span>
+          <span className="usage-docs-kicker">Documentación de uso</span>
           <h1 className="usage-docs-title">{page.title}</h1>
           <p className="usage-docs-summary">{page.summary}</p>
         </section>
 
         <div className="usage-docs-layout">
-          <aside className="usage-docs-sidebar" aria-label="Usage docs sidebar">
+          <aside className="usage-docs-sidebar" aria-label="Barra lateral de documentación">
             <div className="usage-docs-sidebar__group">
-              <h2>Pages</h2>
+              <h2>Páginas</h2>
               <div className="usage-docs-sidebar__pages">
                 {pages.map((entry) => {
                   const active = entry.key === page.key;
@@ -100,7 +127,7 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
             </div>
 
             <div className="usage-docs-sidebar__group">
-              <h2>On this page</h2>
+              <h2>En esta página</h2>
               <div className="usage-docs-sidebar__sections">
                 {page.sections.map((section) => (
                   <a key={section.id} href={`#${section.id}`} className="usage-docs-sidebar__section-link">
@@ -113,16 +140,15 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
 
           <main className="usage-docs-content">
             <section className="usage-docs-section">
-              <h2>How to use this docs page</h2>
+              <h2>Cómo usar esta página</h2>
               <p>
-                This page is meant to answer one operational stage of the DullyPDF workflow well enough that you can
-                run a controlled test without guessing. Read the sections below, validate the behavior against one
-                representative document, and only then move to the next linked page.
+                Esta página cubre una etapa operativa del flujo de DullyPDF para que puedas hacer una prueba controlada
+                sin adivinar. Lee las secciones, valida con un documento representativo y luego pasa a la página
+                relacionada.
               </p>
               <p>
-                That order matters because most setup failures come from mixing detection, mapping, fill validation,
-                and sharing into one unstructured pass. A narrower review loop keeps troubleshooting faster and makes
-                the template easier to trust once you save it for reuse.
+                Ese orden importa porque la mayoría de los problemas nacen al mezclar detección, mapeo, relleno y
+                publicación en una sola pasada. Un ciclo pequeño facilita diagnosticar y confiar en la plantilla.
               </p>
             </section>
 
@@ -130,8 +156,8 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
 
             {pageKey === 'index' ? (
               <PublicProfileLinksPanel
-                title="Official DullyPDF profiles"
-                description="These links help operators move between the public docs, product demos, company presence, and open-source implementation without falling back to the homepage."
+                title="Perfiles oficiales de DullyPDF"
+                description="Estos enlaces conectan la documentación pública, demos del producto, presencia de la empresa e implementación abierta sin volver a la página principal."
               />
             ) : null}
 
@@ -144,10 +170,10 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
 
             {adjacentDocs.length > 0 && (
               <section className="usage-docs-section usage-docs-section--related">
-                <h2>Continue through the docs</h2>
+                <h2>Continuar en la documentación</h2>
                 <p>
-                  Move to the next closest docs page instead of skipping ahead to unrelated features. That keeps the
-                  rollout sequence easier to validate and reduces setup drift between templates.
+                  Pasa a la página más cercana en vez de saltar a funciones no relacionadas. Así la secuencia de
+                  despliegue se valida con menos desvíos entre plantillas.
                 </p>
                 <ul>
                   {adjacentDocs.map((entry) => (
@@ -161,10 +187,10 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
 
             {relatedWorkflows.length > 0 && (
               <section className="usage-docs-section usage-docs-section--related">
-                <h2>Related workflows</h2>
+                <h2>Flujos relacionados</h2>
                 <p>
-                  These workflow pages explain the public search-intent side of the same feature area, which is useful
-                  when you need a higher-level route summary before returning to the operational docs.
+                  Estas páginas explican el caso de uso público del mismo flujo antes de volver a los detalles
+                  operativos.
                 </p>
                 <ul>
                   {relatedWorkflows.map((link) => (
@@ -178,10 +204,10 @@ const UsageDocsPage = ({ pageKey }: UsageDocsPageProps) => {
 
             {relatedGuides.length > 0 && (
               <section className="usage-docs-section usage-docs-section--related">
-                <h2>Related guides</h2>
+                <h2>Guías relacionadas</h2>
                 <p>
-                  These blog posts show concrete rollout examples and comparisons for the same workflow area, which is
-                  useful when you want a narrower example before returning to the operational docs.
+                  Estas guías muestran ejemplos concretos del mismo flujo cuando necesitas contexto antes de volver a la
+                  documentación operativa.
                 </p>
                 <ul>
                   {relatedGuides.map((guide) => (

@@ -1,5 +1,5 @@
 import type { UsageDocsPageKey } from '../components/pages/usageDocsContent';
-import { getBlogPosts, type BlogPost } from './blogPosts';
+import { getBlogPostLocale, getBlogPosts, type BlogPost } from './blogPosts';
 import type { IntentPageKey } from './intentPages';
 
 export type BlogGuideLink = {
@@ -16,10 +16,14 @@ const compareBlogPostsByFreshness = (left: BlogPost, right: BlogPost): number =>
   || right.publishedDate.localeCompare(left.publishedDate)
   || left.title.localeCompare(right.title);
 
+const getBlogPostBasePath = (post: BlogPost): string => (
+  getBlogPostLocale(post) === 'in' ? '/in/blog' : '/es/blog'
+);
+
 const buildBlogGuideLink = (post: BlogPost): BlogGuideLink => ({
   slug: post.slug,
   title: post.title,
-  href: `/blog/${post.slug}`,
+  href: `${getBlogPostBasePath(post)}/${post.slug}`,
   summary: post.summary,
 });
 
@@ -67,8 +71,9 @@ export const getRelatedBlogGuideLinksForPost = (slug: string, limit = 4): BlogGu
 
   const relatedIntentKeySet = new Set(post.relatedIntentPages);
   const relatedDocKeySet = new Set(post.relatedDocs);
+  const postLocale = getBlogPostLocale(post);
   const rankedGuides = BLOG_POSTS
-    .filter((candidate) => candidate.slug !== post.slug)
+    .filter((candidate) => candidate.slug !== post.slug && getBlogPostLocale(candidate) === postLocale)
     .map((candidate) => {
       const sharedIntentCount = countSharedValues(candidate.relatedIntentPages, relatedIntentKeySet);
       const sharedDocCount = countSharedValues(candidate.relatedDocs, relatedDocKeySet);
@@ -90,7 +95,11 @@ export const getRelatedBlogGuideLinksForPost = (slug: string, limit = 4): BlogGu
     ...BLOG_POSTS
       .slice()
       .sort(compareBlogPostsByFreshness)
-      .filter((candidate) => candidate.slug !== post.slug && !seenSlugs.has(candidate.slug))
+      .filter((candidate) => (
+        candidate.slug !== post.slug
+        && getBlogPostLocale(candidate) === postLocale
+        && !seenSlugs.has(candidate.slug)
+      ))
       .map(buildBlogGuideLink),
   ].slice(0, limit);
 };

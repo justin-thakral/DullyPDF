@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getIntentPages } from '../../../src/config/intentPages';
-import { getBlogPost, getBlogPosts } from '../../../src/config/blogPosts';
+import { getBlogPost, getBlogPostLocale, getBlogPosts } from '../../../src/config/blogPosts';
 import { getBlogPostSeo } from '../../../src/config/blogSeo';
 import { getFeaturePlanPages } from '../../../src/config/featurePlanPages';
 import { getUsageDocsPages } from '../../../src/components/pages/usageDocsContent';
@@ -30,6 +30,183 @@ describe('routeSeo config', () => {
     expect(organizationEntry?.sameAs).toContain('https://github.com/justin-thakral/DullyPDF');
   });
 
+  it('resolves India homepage metadata without e-signature or form catalog positioning', () => {
+    const metadata = resolveRouteSeo({ kind: 'app', market: 'india' });
+    const serialized = JSON.stringify(metadata);
+
+    expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain('/in');
+    expect(metadata.canonicalPath).toBe('/in');
+    expect(metadata.htmlLang).toBe('en-IN');
+    expect(metadata.title).toContain('India PDF Form Automation');
+    expect(metadata.keywords).toContain('pdf form automation india');
+    expect(serialized).not.toMatch(/e-?sign|signature|UETA|form catalog/i);
+  });
+
+  it('keeps India industry solution pages indexable with localized route metadata', () => {
+    const cases = [
+      ['india-kyc-pdf-automation', '/in/kyc-pdf-automation', 'india kyc pdf automation', '/seo/id-photo-field-pdf-form-overview.webp'],
+      ['india-vendor-onboarding-pdf-automation', '/in/vendor-onboarding-pdf-automation', 'india vendor onboarding pdf automation', '/seo/procurement-pdf-automation-overview.webp'],
+      ['india-hr-joining-pdf-automation', '/in/hr-joining-pdf-automation', 'india hr joining pdf automation', '/seo/pdf-packet-workflow-overview.webp'],
+      ['india-gst-invoice-pdf-automation', '/in/gst-invoice-pdf-automation', 'india gst invoice pdf automation', '/blog/invoice-sample-1.webp'],
+      ['india-school-admissions-pdf-automation', '/in/school-admissions-pdf-automation', 'india school admissions pdf automation', '/blog/homework-worksheet-detected-fields.webp'],
+      ['india-clinic-intake-pdf-automation', '/in/clinic-intake-pdf-automation', 'india clinic intake pdf automation', '/demo/mock-form.webp'],
+      ['india-loan-application-pdf-automation', '/in/loan-application-pdf-automation', 'india loan application pdf automation', '/seo/online-loan-application.jpg'],
+      ['india-delivery-challan-pdf-automation', '/in/delivery-challan-pdf-automation', 'india delivery challan pdf automation', '/seo/warehouse-inventory-pdf-automation-overview.webp'],
+      ['india-tenant-onboarding-pdf-automation', '/in/tenant-onboarding-pdf-automation', 'india tenant onboarding pdf automation', '/seo/paperwork-desk.jpg'],
+      ['india-purchase-order-pdf-automation', '/in/purchase-order-pdf-automation', 'india purchase order pdf automation', '/seo/pdf-purchase-order-calculations-overview.webp'],
+    ] as const;
+    const runtimePages = getIntentPages();
+
+    cases.forEach(([intentKey, canonicalPath, keyword, ogImagePath]) => {
+      const page = runtimePages.find((entry) => entry.key === intentKey);
+      const metadata = resolveRouteSeo({ kind: 'intent', intentKey });
+      const serialized = JSON.stringify({ metadata, page });
+      const breadcrumbEntry = metadata.structuredData?.find((entry) => entry['@type'] === 'BreadcrumbList');
+      const breadcrumbNames = (breadcrumbEntry?.itemListElement ?? []).map((item) => item.name);
+
+      expect(page?.category).toBe('industry');
+      expect(page?.path).toBe(canonicalPath);
+      expect(page?.relatedIntentPages).toHaveLength(9);
+      expect(page?.relatedIntentPages?.every((key) => key.startsWith('india-'))).toBe(true);
+      expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain(canonicalPath);
+      expect(ALL_ROUTES.find((route) => route.path === canonicalPath)?.lowValue).not.toBe(true);
+      expect(metadata.canonicalPath).toBe(canonicalPath);
+      expect(metadata.keywords).toContain(keyword);
+      expect(metadata.ogImagePath).toBe(ogImagePath);
+      expect(breadcrumbNames).toEqual(['Home', 'India', page?.navLabel]);
+      expect(serialized).not.toMatch(/ACORD|\bIRS\b|W-9|1099|W-8|Medicare|Medicaid|HIPAA|E-SIGN|UETA|United States|U\.S\./i);
+    });
+  });
+
+  it('keeps India workflow library pages indexable with localized route metadata', () => {
+    const cases = [
+      ['india-pdf-to-fillable-form', '/in/pdf-to-fillable-form', 'india pdf to fillable form', '/demo/mobile-raw-pdf.webp'],
+      ['india-fill-pdf-from-excel', '/in/fill-pdf-from-excel', 'fill pdf from excel india', '/seo/excel-to-fillable-pdf-template-overview.webp'],
+      ['india-fill-pdf-from-csv', '/in/fill-pdf-from-csv', 'fill pdf from csv india', '/seo/search-fill-pdf-review-overview.webp'],
+      ['india-fill-by-link', '/in/fill-by-link', 'fill by link india', '/demo/mock-form.webp'],
+      ['india-pdf-fill-api', '/in/pdf-fill-api', 'india pdf fill api', '/seo/database-schema.webp'],
+      ['india-pdf-field-detection', '/in/pdf-field-detection', 'india pdf field detection', '/demo/mobile-commonforms.webp'],
+      ['india-rename-map-pdf-fields', '/in/rename-map-pdf-fields', 'rename pdf fields india', '/seo/ai-pdf-field-renaming-overview.webp'],
+      ['india-fill-pdf-from-documents', '/in/fill-pdf-from-documents', 'fill pdf from documents india', '/seo/fill-pdf-from-image-overview.webp'],
+      ['india-pdf-packet-workflow', '/in/pdf-packet-workflow', 'india pdf packet workflow', '/seo/pdf-packet-workflow-overview.webp'],
+      ['india-pdf-calculations', '/in/pdf-calculations', 'india pdf calculations', '/seo/calculation-fields-overview.webp'],
+    ] as const;
+    const runtimePages = getIntentPages();
+
+    cases.forEach(([intentKey, canonicalPath, keyword, ogImagePath]) => {
+      const page = runtimePages.find((entry) => entry.key === intentKey);
+      const metadata = resolveRouteSeo({ kind: 'intent', intentKey });
+      const serialized = JSON.stringify({ metadata, page });
+      const breadcrumbEntry = metadata.structuredData?.find((entry) => entry['@type'] === 'BreadcrumbList');
+      const breadcrumbNames = (breadcrumbEntry?.itemListElement ?? []).map((item) => item.name);
+
+      expect(page?.category).toBe('workflow');
+      expect(page?.path).toBe(canonicalPath);
+      expect(page?.relatedIntentPages).toHaveLength(9);
+      expect(page?.relatedIntentPages?.every((key) => key.startsWith('india-'))).toBe(true);
+      expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain(canonicalPath);
+      expect(ALL_ROUTES.find((route) => route.path === canonicalPath)?.lowValue).not.toBe(true);
+      expect(metadata.canonicalPath).toBe(canonicalPath);
+      expect(metadata.keywords).toContain(keyword);
+      expect(metadata.ogImagePath).toBe(ogImagePath);
+      expect(breadcrumbNames).toEqual(['Home', 'India', page?.navLabel]);
+      expect(serialized).not.toMatch(/Form Catalog|ACORD|\bIRS\b|W-9|1099|W-8|Medicare|Medicaid|HIPAA|E-SIGN|UETA|United States|U\.S\./i);
+    });
+  });
+
+  it('resolves Spanish homepage metadata with language alternates and no e-signature or form catalog positioning', () => {
+    const metadata = resolveRouteSeo({ kind: 'app', market: 'spanish' });
+    const serialized = JSON.stringify(metadata);
+
+    expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain('/es');
+    expect(metadata.canonicalPath).toBe('/es');
+    expect(metadata.htmlLang).toBe('es');
+    expect(metadata.title).toContain('Formularios PDF Rellenables');
+    expect(metadata.keywords).toContain('formularios pdf rellenables');
+    expect(metadata.alternates).toEqual(
+      expect.arrayContaining([
+        { hreflang: 'x-default', path: '/' },
+        { hreflang: 'en', path: '/' },
+        { hreflang: 'en-IN', path: '/in' },
+        { hreflang: 'es', path: '/es' },
+      ]),
+    );
+    expect(serialized).not.toMatch(/e-?sign|signature|UETA|form catalog/i);
+  });
+
+  it('adds 10 Spanish workflow pages and 10 Spanish industry pages under /es', () => {
+    const spanishPages = getIntentPages().filter((page) => page.path.startsWith('/es/'));
+    const spanishWorkflowPages = spanishPages.filter((page) => page.category === 'workflow');
+    const spanishIndustryPages = spanishPages.filter((page) => page.category === 'industry');
+
+    expect(spanishWorkflowPages).toHaveLength(10);
+    expect(spanishIndustryPages).toHaveLength(10);
+    expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toEqual(
+      expect.arrayContaining([
+        '/es/crear-formulario-pdf-rellenable',
+        '/es/rellenar-pdf-desde-excel',
+        '/es/api-rellenar-pdf',
+        '/es/automatizacion-pdf-salud',
+        '/es/automatizacion-pdf-compras-proveedores',
+        '/es/flujos-de-trabajo',
+        '/es/industrias',
+      ]),
+    );
+
+    for (const page of spanishPages) {
+      const metadata = resolveRouteSeo({ kind: 'intent', intentKey: page.key });
+      const serialized = JSON.stringify({ page, metadata });
+
+      expect(metadata.canonicalPath).toBe(page.path);
+      expect(metadata.htmlLang).toBe('es');
+      expect(page.relatedIntentPages?.every((key) => key.startsWith('es-'))).toBe(true);
+      expect(serialized).not.toMatch(/\b(e-?sign|signature|firma|firmar|firmas|UETA|form catalog|catálogo de formularios)\b/i);
+    }
+  });
+
+  it('adds the India blog index and ten guides as indexable en-IN routes', () => {
+    const indexMetadata = resolveRouteSeo({ kind: 'blog-index', locale: 'in' });
+    const indiaPosts = getBlogPosts().filter((entry) => getBlogPostLocale(entry) === 'in');
+    const post = getBlogPost('india-pdf-form-automation-guide', 'in');
+
+    expect(post).toBeTruthy();
+    expect(indiaPosts).toHaveLength(10);
+    expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain('/in/blog');
+    expect(indexMetadata.canonicalPath).toBe('/in/blog');
+    expect(indexMetadata.htmlLang).toBe('en-IN');
+    expect(indexMetadata.title).toContain('India PDF Form Automation Guides');
+
+    for (const indiaPost of indiaPosts) {
+      const postPath = `/in/blog/${indiaPost.slug}`;
+      const metadata = resolveRouteSeo({
+        kind: 'blog-post',
+        slug: indiaPost.slug,
+        locale: 'in',
+      });
+
+      expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain(postPath);
+      expect(metadata.canonicalPath).toBe(postPath);
+      expect(metadata.htmlLang).toBe('en-IN');
+      expect(metadata.structuredData?.some((entry) => entry['@type'] === 'BlogPosting')).toBe(true);
+    }
+
+    const postMetadata = resolveRouteSeo({
+      kind: 'blog-post',
+      slug: 'india-pdf-form-automation-guide',
+      locale: 'in',
+    });
+    const serialized = JSON.stringify({ post, indexMetadata, postMetadata });
+    const breadcrumbEntry = postMetadata.structuredData?.find((entry) => entry['@type'] === 'BreadcrumbList');
+    const breadcrumbNames = (breadcrumbEntry?.itemListElement ?? []).map((item) => item.name);
+
+    expect(postMetadata.canonicalPath).toBe('/in/blog/india-pdf-form-automation-guide');
+    expect(postMetadata.htmlLang).toBe('en-IN');
+    expect(postMetadata.keywords).toContain('pdf form automation india');
+    expect(postMetadata.structuredData?.some((entry) => entry['@type'] === 'BlogPosting')).toBe(true);
+    expect(breadcrumbNames).toEqual(['Home', 'India', 'Blog', post?.title]);
+    expect(serialized).not.toMatch(/Form Catalog|ACORD|\bIRS\b|W-9|1099|W-8|Medicare|Medicaid|HIPAA|E-SIGN|UETA|United States|U\.S\.|e-?sign|signature/i);
+  });
+
   it('resolves canonical refund policy metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'legal', legalKind: 'refund' });
     expect(metadata.canonicalPath).toBe('/refund-policy');
@@ -39,26 +216,26 @@ describe('routeSeo config', () => {
 
   it('resolves canonical usage docs metadata by page key', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'search-fill' });
-    expect(metadata.canonicalPath).toBe('/usage-docs/search-fill');
-    expect(metadata.title).toContain('Search & Fill');
+    expect(metadata.canonicalPath).toBe('/es/usage-docs/search-fill');
+    expect(metadata.title).toContain('Rellenar PDFs');
   });
 
   it('resolves dedicated Create Group docs metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'create-group' });
-    expect(metadata.canonicalPath).toBe('/usage-docs/create-group');
-    expect(metadata.title).toContain('Create Group');
+    expect(metadata.canonicalPath).toBe('/es/usage-docs/create-group');
+    expect(metadata.title).toContain('Crear Grupos');
   });
 
   it('resolves dedicated signature docs metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'signature-workflow' });
-    expect(metadata.canonicalPath).toBe('/usage-docs/signature-workflow');
-    expect(metadata.title).toContain('Signature');
+    expect(metadata.canonicalPath).toBe('/es/usage-docs/signature-workflow');
+    expect(metadata.title).toContain('EE. UU.');
   });
 
   it('resolves dedicated API Fill docs metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'api-fill' });
-    expect(metadata.canonicalPath).toBe('/usage-docs/api-fill');
-    expect(metadata.title).toContain('API Fill');
+    expect(metadata.canonicalPath).toBe('/es/usage-docs/api-fill');
+    expect(metadata.title).toContain('API para Rellenar PDFs');
   });
 
   it('resolves canonical intent metadata by key', () => {
@@ -456,10 +633,15 @@ describe('routeSeo config', () => {
 
   it('resolves canonical hub metadata by key', () => {
     const metadata = resolveRouteSeo({ kind: 'intent-hub', hubKey: 'workflows' });
-    expect(metadata.canonicalPath).toBe('/workflows');
-    expect(metadata.title).toBe('PDF Automation Workflows — Templates, Filling, Signing, and API');
+    expect(metadata.canonicalPath).toBe('/es/flujos-de-trabajo');
+    expect(metadata.htmlLang).toBe('es');
+    expect(metadata.title).toBe('Flujos para Formularios PDF Rellenables | DullyPDF en Español');
+    const spanishMetadata = resolveRouteSeo({ kind: 'intent-hub', hubKey: 'workflows', locale: 'es' });
+    expect(spanishMetadata.canonicalPath).toBe('/es/flujos-de-trabajo');
+    expect(spanishMetadata.htmlLang).toBe('es');
+    expect(spanishMetadata.title).toBe('Flujos para Formularios PDF Rellenables | DullyPDF en Español');
     expect(
-      metadata.structuredData?.some((entry) => entry['@type'] === 'CollectionPage'),
+      spanishMetadata.structuredData?.some((entry) => entry['@type'] === 'CollectionPage'),
     ).toBe(true);
   });
 
@@ -484,7 +666,7 @@ describe('routeSeo config', () => {
 
   it('keeps build-time static routes aligned with the runtime indexable route list', () => {
     const runtimePaths = [...INDEXABLE_PUBLIC_ROUTE_PATHS].sort();
-    const staticPaths = ALL_ROUTES.map((route) => route.path).sort();
+    const staticPaths = ALL_ROUTES.filter((route) => !route.lowValue).map((route) => route.path).sort();
     expect(staticPaths).toEqual(runtimePaths);
   });
 
@@ -590,12 +772,13 @@ describe('routeSeo config', () => {
   });
 
   it('adds blog article and breadcrumb structured data with the modified date', () => {
-    const post = getBlogPost('auto-fill-pdf-from-spreadsheet');
+    const post = getBlogPosts()[0];
     expect(post).toBeTruthy();
+    expect(getBlogPost(post!.slug)).toBe(post);
     const metadata = getBlogPostSeo(post!);
     expect(
       metadata.structuredData?.some(
-        (entry) => entry['@type'] === 'BlogPosting' && entry['dateModified'] === '2026-04-08',
+        (entry) => entry['@type'] === 'BlogPosting' && entry['dateModified'] === post!.updatedDate,
       ),
     ).toBe(true);
     expect(

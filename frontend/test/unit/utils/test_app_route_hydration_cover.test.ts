@@ -33,7 +33,7 @@ describe('appRouteHydrationCover', () => {
     ['/industries', '', false],
     ['/blog', '', false],
     ['/blog/post-slug', '', false],
-    ['/usage-docs/getting-started', '', false],
+    ['/es/usage-docs/getting-started', '', false],
     ['/ui/forms/nested/path', '', false],
     ['/respond/nested/token', '', false],
   ])('returns %s for %s%s', (pathname, search, expected) => {

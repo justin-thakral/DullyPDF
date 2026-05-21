@@ -128,7 +128,7 @@ for required_path in \
   "${REPO_ROOT}/frontend/dist/app-shell.html" \
   "${REPO_ROOT}/frontend/dist/healthcare-pdf-automation/index.html" \
   "${REPO_ROOT}/frontend/dist/pdf-to-fillable-form/index.html" \
-  "${REPO_ROOT}/frontend/dist/usage-docs/index.html" \
+  "${REPO_ROOT}/frontend/dist/es/usage-docs/index.html" \
   "${REPO_ROOT}/frontend/dist/sitemap.xml" \
   "${REPO_ROOT}/frontend/dist/sitemap-main.xml" \
   "${REPO_ROOT}/frontend/dist/sitemap-forms.xml"; do

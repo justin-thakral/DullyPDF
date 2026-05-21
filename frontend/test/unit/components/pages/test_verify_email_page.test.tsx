@@ -116,7 +116,7 @@ describe('VerifyEmailPage', () => {
     render(<VerifyEmailPage email="verify@example.com" />);
 
     const helpLink = screen.getByRole('link', { name: 'Need help? Open the setup guide' }) as HTMLAnchorElement;
-    expect(helpLink.getAttribute('href')).toBe('/usage-docs/getting-started');
+    expect(helpLink.getAttribute('href')).toBe('/es/usage-docs/getting-started');
     expect(
       screen.getByText('You can resend up to 5 verification emails per day from this browser.'),
     ).toBeTruthy();

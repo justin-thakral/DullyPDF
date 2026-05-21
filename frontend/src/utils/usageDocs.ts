@@ -1,15 +1,15 @@
 export const USAGE_DOCS_ROUTES = {
-  schemaSearchFill: '/usage-docs/search-fill',
-  renameMapping: '/usage-docs/rename-mapping',
-  editorWorkflow: '/usage-docs/editor-workflow',
-  pdfTools: '/usage-docs/editor-workflow#pdf-tools',
-  calculationFields: '/usage-docs/editor-workflow#calculation-fields',
-  fillFromImages: '/usage-docs/fill-from-images',
-  fillByLink: '/usage-docs/fill-by-link',
-  signatureWorkflow: '/usage-docs/signature-workflow',
-  apiFill: '/usage-docs/api-fill',
-  createGroup: '/usage-docs/create-group',
-  saveDownloadProfile: '/usage-docs/save-download-profile',
+  schemaSearchFill: '/es/usage-docs/search-fill',
+  renameMapping: '/es/usage-docs/rename-mapping',
+  editorWorkflow: '/es/usage-docs/editor-workflow',
+  pdfTools: '/es/usage-docs/editor-workflow#herramientas-pdf',
+  calculationFields: '/es/usage-docs/editor-workflow#campos-de-calculo',
+  fillFromImages: '/es/usage-docs/fill-from-images',
+  fillByLink: '/es/usage-docs/fill-by-link',
+  signatureWorkflow: '/es/usage-docs/signature-workflow',
+  apiFill: '/es/usage-docs/api-fill',
+  createGroup: '/es/usage-docs/create-group',
+  saveDownloadProfile: '/es/usage-docs/save-download-profile',
 } as const;
 
 export function openUsageDocsWindow(path: string): Window | null {

@@ -59,7 +59,7 @@ describe('CalculationSetupDialog', () => {
     await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
     expect(openSpy).toHaveBeenCalledWith(
-      '/usage-docs/editor-workflow#calculation-fields',
+      '/es/usage-docs/editor-workflow#campos-de-calculo',
       '_blank',
       'noopener,noreferrer',
     );

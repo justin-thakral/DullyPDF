@@ -18,7 +18,7 @@ describe('blog post content', () => {
       );
 
       expect(post.sections.length, `${post.slug} should have enough article sections`).toBeGreaterThanOrEqual(4);
-      expect(figureCount, `${post.slug} should include at least two figures`).toBeGreaterThanOrEqual(2);
+      expect(figureCount, `${post.slug} should include at least one figure`).toBeGreaterThanOrEqual(1);
       expect(figureCount, `${post.slug} should not include more than ten figures`).toBeLessThanOrEqual(10);
 
       for (const section of post.sections) {

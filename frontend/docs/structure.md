@@ -35,13 +35,18 @@ frontend/
 - `frontend/src/services/api.ts`: Profile/contact/recaptcha, schema persistence, OpenAI endpoints, saved forms, materialize/download operations.
 - `frontend/src/services/detectionApi.ts`: Detection upload + polling (`/detect-fields`) and detection-session keep-alive.
 - `frontend/src/config/planLimits.mjs`: Shared default plan-limit and credit snapshots used by the public plan pages, usage docs copy, and frontend profile fallbacks.
-- `frontend/src/config/intentPages.ts`: Content + FAQ + SEO metadata config for public intent and industry landing routes.
+- `frontend/src/config/intentPages.ts`: Content + FAQ + SEO metadata config for public intent and industry landing routes, including the India and Spanish workflow/industry route-key unions exposed in localized public routes.
+- `frontend/src/config/indiaWorkflowIntentPages.mjs`: India `/in/*` workflow intent-page dataset used by the indexable English India SEO cluster.
+- `frontend/src/config/indiaIndustryIntentPages.mjs`: India `/in/*` industry intent-page dataset used by the indexable English India SEO cluster.
+- `frontend/src/config/indiaBlogPosts.mjs`: India blog-post dataset exported through the public `/in/blog` route.
+- `frontend/src/config/spanishIntentPages.mjs`: Spanish `/es/*` workflow and industry intent-page dataset used for the indexable Spanish SEO cluster.
+- `frontend/src/config/spanishBlogPosts.mjs`: Spanish blog-post dataset exported through the public `/es/blog` route.
 - `frontend/src/config/formCatalogAssetBase.mjs`: Shared resolver for the public form-catalog asset origin. Dev defaults to `/form-catalog-assets`; prod reads `VITE_FORM_CATALOG_ASSET_BASE`.
 - `frontend/src/config/intentCatalogShowcases.mjs`: Curated real-form examples for selected industry landing routes, including thumbnail assets, catalog/editor deep links, and reusable workflow-step copy for Search & Fill, API Fill, Fill By Link, and signatures.
 - `frontend/src/config/formCatalogCategories.mjs`, `frontend/src/config/formCatalogData.mjs`, `frontend/src/config/formCatalogExternalSources.mjs`: Auto-generated datasets behind `/forms`. The public catalog currently exposes 5,467 hosted entries, including mirrored public-domain government PDFs and DullyPDF-authored practice/operational templates. The external-sources file is built from copyright-restricted `form_catalog/*/links.txt` manifests so restricted categories remain browsable without mirroring protected PDFs, while mirrored categories store relative asset paths that are rebound through `formCatalogAssetBase.mjs` at runtime.
-- `frontend/src/config/publicRouteSeoData.mjs`: Shared source of truth for public route metadata and build-time static body content used by the runtime SEO adapter plus the static HTML and sitemap generators.
-- `frontend/src/config/routeSeo.ts`: Typed runtime adapter over the shared public route SEO dataset for all indexable public pages (`/`, legal, `/usage-docs/*`, intent pages, hub pages, and blog routes).
-- `frontend/src/publicRouteRouting.ts`: Shared matcher for indexable public routes that should be prerendered and hydrated instead of mounted as empty client-only shells.
+- `frontend/src/config/publicRouteSeoData.mjs`: Shared source of truth for public route metadata and build-time static body content used by the runtime SEO adapter plus the static HTML and sitemap generators. The India `/in/*` and Spanish `/es/*` localized clusters are indexable; legacy global English intent-page records are flagged low-value/noindex for compatibility.
+- `frontend/src/config/routeSeo.ts`: Typed runtime adapter over the shared public route SEO dataset for all indexable public pages (`/`, `/in`, `/es`, legal, `/es/usage-docs/*`, India intent/blog pages, Spanish intent/hub/blog pages, and public form-catalog routes).
+- `frontend/src/publicRouteRouting.ts`: Shared matcher for indexable public routes, including localized homepages, India `/in/blog` article routes, and Spanish `/es/flujos-de-trabajo`, `/es/industrias`, `/es/blog`, and `/es/blog/:slug` routes that should be prerendered and hydrated instead of mounted as empty client-only shells.
 - `frontend/src/publicRouteClient.tsx`: Client-side renderer for hydratable public routes, including the homepage handoff into `App`.
 - `frontend/src/publicRouteServer.tsx`: Server-side React renderer used by the static HTML generator so the emitted HTML matches the hydrated route tree.
 - `frontend/src/utils/seo.ts`: Head-tag applier for title, description, canonical, Open Graph, and Twitter metadata from the shared SEO map.
@@ -53,7 +58,7 @@ frontend/
 - `frontend/src/components/features/OptimizePdfDialog.tsx`: Small PDF compression dialog that applies backend lossless optimization to the active source PDF and refreshes the workspace file bytes.
 - `frontend/src/components/features/DownloadPagesDialog.tsx`: Download-menu dialog for selecting a page subset and exporting only those pages as flat or editable PDFs.
 - `frontend/src/components/features/UploadView.tsx`: Upload + saved-form selection UI and OpenAI preflight modal entry.
-- `frontend/src/components/pages/*.tsx`: Homepage, auth pages, profile page, legal pages (`/privacy`, `/terms`, `/refund-policy`), public usage docs pages (`/usage-docs/*`), and intent landing pages.
+- `frontend/src/components/pages/*.tsx`: Homepage variants, auth pages, profile page, legal pages (`/privacy`, `/terms`, `/refund-policy`), public usage docs pages (`/es/usage-docs/*`), and intent landing pages.
 - `frontend/src/components/pages/FormCatalogIndexPage.tsx`: Public `/forms` catalog browser, including hosted-form search/pagination and external-source link lists for ACORD, HIPAA, and NAR / Realtor.
 - `frontend/src/components/pages/FormCatalogFormPage.tsx`: Individual form-catalog detail route with preview metadata and “Open in DullyPDF” editor handoff.
 - `frontend/src/components/pages/FormCatalogThumbnail.tsx`: Shared catalog/intent-card thumbnail renderer that now prefers static `.webp` previews and only falls back to a text badge when the image cannot load.
@@ -61,11 +66,12 @@ frontend/
 - `frontend/src/components/pages/AccountActionPage.tsx`: Public branded Firebase email action handler for verification and password reset links (`/account-action`, with legacy `/verify-email` compatibility).
 - `frontend/src/components/pages/AuthActionShell.tsx`: Shared branded shell used by the public account-action route and the signed-in verification gate.
 - `frontend/src/components/pages/PublicNotFoundPage.tsx`: Generic noindex 404 page for unknown public routes that should never fall back to the editor shell.
-- `frontend/src/components/pages/IntentHubPage.tsx`: Hub directory pages for `/workflows` and `/industries` that aggregate intent routes.
+- `frontend/src/components/pages/IntentHubPage.tsx`: Hub directory pages for `/es/flujos-de-trabajo` and `/es/industrias` that aggregate the Spanish intent routes.
 - `frontend/src/components/pages/IntentPageShell.tsx`: Shared shell for intent marketing pages (global header nav, breadcrumb + hero/CTA block, and footer).
 - `frontend/src/components/pages/PublicProfileLinksPanel.tsx`: Compact text-link panel for official DullyPDF profiles on selected SEO/public routes where those external properties are relevant without pushing them into the homepage.
 - `frontend/src/components/pages/PublicVideoPanel.tsx`: Shared public-route video panel used by usage docs and SEO landing pages when a route should surface a relevant YouTube walkthrough without pushing that content onto the homepage.
 - `frontend/src/config/publicProfiles.ts`: Shared source of truth for official DullyPDF profile links used by public-route components and footer social navigation.
+- `frontend/src/config/intentVisuals.mjs`: Shared visual metadata for intent pages, including the existing workflow/industry imagery, the India `/in/*` previews, and the Spanish `/es/*` route visuals.
 - `frontend/src/components/pages/SeoLayoutPreviewPage.tsx`: Internal noindex preview route for testing alternate editorial/article-style shells before changing live public intent pages.
 - `frontend/src/config/appConstants.tsx`: Shared app-level constants (history limits, demo assets/steps, processing copy).
 - `frontend/src/utils/pdf.ts`: PDF.js loading, page size extraction, and AcroForm field extraction. On Windows, Excel/Microsoft 365 exports are reopened with embedded-font preference to reduce Office-export render drift.

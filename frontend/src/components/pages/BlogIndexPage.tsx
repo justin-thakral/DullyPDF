@@ -1,28 +1,55 @@
 import { useEffect } from 'react';
-import { getBlogPostPrimaryFigure, getBlogPosts } from '../../config/blogPosts';
-import { BLOG_INDEX_SEO } from '../../config/blogSeo';
-import { applySeoMetadata } from '../../utils/seo';
+import { getBlogPostLocale, getBlogPostPrimaryFigure, getBlogPosts } from '../../config/blogPosts';
+import { applyRouteSeo } from '../../utils/seo';
 import { Breadcrumbs } from '../ui/Breadcrumbs';
 import { PublicSiteFrame } from '../ui/PublicSiteFrame';
 import { resolveRouteSeoBodyContent } from '../../config/routeSeo';
 import './BlogIndexPage.css';
 
-const BlogIndexPage = () => {
-  const posts = getBlogPosts();
-  const bodyContent = resolveRouteSeoBodyContent({ kind: 'blog-index' });
+type BlogIndexPageProps = {
+  locale?: 'es' | 'in';
+};
+
+const BlogIndexPage = ({ locale }: BlogIndexPageProps) => {
+  const postLocale = locale === 'in' ? 'in' : 'es';
+  const posts = getBlogPosts().filter((post) => getBlogPostLocale(post) === postLocale);
+  const bodyContent = resolveRouteSeoBodyContent({ kind: 'blog-index', locale: postLocale });
+  const basePath = postLocale === 'in' ? '/in/blog' : '/es/blog';
+  const localeCopy = postLocale === 'es'
+    ? {
+        home: 'Inicio',
+        homeHref: '/es',
+        fallbackHeading: 'Guías de Formularios PDF Rellenables',
+        fallbackSummary: 'Guías prácticas para crear formularios PDF rellenables, mapear datos y automatizar flujos repetidos.',
+        readMore: 'Leer guía',
+        dateLocale: 'es',
+      }
+    : {
+        home: 'India',
+        homeHref: '/in',
+        fallbackHeading: 'India PDF Form Automation Guides',
+        fallbackSummary: 'Practical guides for Indian KYC, vendor, HR, GST, school, clinic, finance, and branch PDF workflows.',
+        readMore: 'Read guide',
+        dateLocale: 'en-IN',
+      };
 
   useEffect(() => {
-    applySeoMetadata(BLOG_INDEX_SEO);
-  }, []);
+    applyRouteSeo({ kind: 'blog-index', locale: postLocale });
+  }, [postLocale]);
 
   return (
-    <PublicSiteFrame activeNavKey="blog" bodyClassName="blog-index__content">
+    <PublicSiteFrame
+      activeNavKey="blog"
+      bodyClassName="blog-index__content"
+      locale={postLocale === 'es' ? 'es' : 'en'}
+      hideFormCatalog={postLocale === 'in'}
+    >
       <div className="blog-index">
-        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog' }]} />
+        <Breadcrumbs items={[{ label: localeCopy.home, href: localeCopy.homeHref }, { label: 'Blog' }]} />
         <section className="blog-index__hero">
           <p className="blog-index__kicker">{bodyContent?.heroKicker ?? 'Blog'}</p>
-          <h1>{bodyContent?.heading ?? 'PDF Automation Guides & Tutorials'}</h1>
-          <p>{bodyContent?.paragraphs?.[0] ?? 'Practical guides for converting PDFs to fillable forms, mapping fields to databases, and automating repetitive form-filling workflows.'}</p>
+          <h1>{bodyContent?.heading ?? localeCopy.fallbackHeading}</h1>
+          <p>{bodyContent?.paragraphs?.[0] ?? localeCopy.fallbackSummary}</p>
         </section>
 
         <section className="blog-index__support">
@@ -52,7 +79,7 @@ const BlogIndexPage = () => {
             return (
               <article key={post.slug} className="blog-index__post-card">
                 {coverFigure ? (
-                  <a href={`/blog/${post.slug}`} className="blog-index__post-media">
+                  <a href={`${basePath}/${post.slug}`} className="blog-index__post-media">
                     <img
                       src={coverFigure.src}
                       alt={coverFigure.alt}
@@ -63,18 +90,18 @@ const BlogIndexPage = () => {
                   </a>
                 ) : null}
                 <h2>
-                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                  <a href={`${basePath}/${post.slug}`}>{post.title}</a>
                 </h2>
                 <time className="blog-index__date" dateTime={post.publishedDate}>
-                  {new Date(post.publishedDate + 'T00:00:00').toLocaleDateString('en-US', {
+                  {new Date(post.publishedDate + 'T00:00:00').toLocaleDateString(localeCopy.dateLocale, {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
                   })}
                 </time>
                 <p>{post.summary}</p>
-                <a href={`/blog/${post.slug}`} className="blog-index__read-more">
-                  Read more
+                <a href={`${basePath}/${post.slug}`} className="blog-index__read-more">
+                  {localeCopy.readMore}
                 </a>
               </article>
             );

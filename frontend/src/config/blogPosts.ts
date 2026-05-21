@@ -2,6 +2,8 @@ import type { IntentPageKey } from './intentPages';
 import type { UsageDocsPageKey } from '../components/pages/usageDocsContent';
 import { BLOG_POSTS as SHARED_BLOG_POSTS } from './blogContent.mjs';
 
+export type BlogPostLocale = 'es' | 'in';
+
 export type BlogPostFigure = {
   src: string;
   alt: string;
@@ -25,6 +27,7 @@ export type BlogPostSection = {
 
 export type BlogPost = {
   slug: string;
+  locale?: BlogPostLocale;
   title: string;
   seoTitle: string;
   seoDescription: string;
@@ -42,9 +45,16 @@ const BLOG_POSTS = SHARED_BLOG_POSTS as BlogPost[];
 
 const POST_BY_SLUG = new Map<string, BlogPost>(BLOG_POSTS.map((post) => [post.slug, post]));
 
+export const getBlogPostLocale = (post: BlogPost): BlogPostLocale => post.locale ?? 'es';
+
 export const getBlogPosts = (): BlogPost[] => BLOG_POSTS;
 
-export const getBlogPost = (slug: string): BlogPost | undefined => POST_BY_SLUG.get(slug);
+export const getBlogPost = (slug: string, locale?: BlogPostLocale): BlogPost | undefined => {
+  const post = POST_BY_SLUG.get(slug);
+  if (!post) return undefined;
+  if (locale && getBlogPostLocale(post) !== locale) return undefined;
+  return post;
+};
 
 export const getBlogSlugs = (): string[] => BLOG_POSTS.map((post) => post.slug);
 

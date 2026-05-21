@@ -150,7 +150,29 @@ describe('main entrypoint', () => {
     expect(screen.queryByTestId('legal-privacy')).toBeNull();
     expect(screen.queryByTestId('legal-terms')).toBeNull();
     expect(screen.queryByTestId('usage-docs-index')).toBeNull();
-  }, 15000);
+  }, 30000);
+
+  it('renders the India homepage route through App with the India homepage market', async () => {
+    await importEntrypoint('/in');
+    await renderCapturedTree();
+
+    expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
+    expect(entrypointMocks.initializeGoogleAds).toHaveBeenCalledTimes(1);
+    expect(await screen.findByTestId('app-view')).toBeTruthy();
+    expect(entrypointMocks.App.mock.calls.at(-1)?.[0]?.initialBrowserRoute).toEqual({ kind: 'homepage' });
+    expect(entrypointMocks.App.mock.calls.at(-1)?.[0]?.homepageMarket).toBe('india');
+  });
+
+  it('renders the Spanish homepage route through App with the Spanish homepage market', async () => {
+    await importEntrypoint('/es');
+    await renderCapturedTree();
+
+    expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
+    expect(entrypointMocks.initializeGoogleAds).toHaveBeenCalledTimes(1);
+    expect(await screen.findByTestId('app-view')).toBeTruthy();
+    expect(entrypointMocks.App.mock.calls.at(-1)?.[0]?.initialBrowserRoute).toEqual({ kind: 'homepage' });
+    expect(entrypointMocks.App.mock.calls.at(-1)?.[0]?.homepageMarket).toBe('spanish');
+  });
 
   it.each([
     ['/upload', { kind: 'upload-root' }],
@@ -170,8 +192,8 @@ describe('main entrypoint', () => {
   });
 
   it.each([
-    ['/workflows', 'workflows'],
-    ['/industries', 'industries'],
+    ['/es/flujos-de-trabajo', 'workflows'],
+    ['/es/industrias', 'industries'],
   ])('renders intent hub route %s', async (pathname, hubKey) => {
     await importEntrypoint(pathname);
     await renderCapturedTree();
@@ -262,13 +284,13 @@ describe('main entrypoint', () => {
   });
 
   it.each([
-    ['/usage-docs', 'index'],
-    ['/usage-docs/getting-started', 'getting-started'],
-    ['/usage-docs/editor-workflow', 'editor-workflow'],
-    ['/usage-docs/signature-workflow', 'signature-workflow'],
-    ['/usage-docs/api-fill', 'api-fill'],
-    ['/usage-docs/create-group', 'create-group'],
-    ['/usage-docs/search-fill/', 'search-fill'],
+    ['/es/usage-docs', 'index'],
+    ['/es/usage-docs/getting-started', 'getting-started'],
+    ['/es/usage-docs/editor-workflow', 'editor-workflow'],
+    ['/es/usage-docs/signature-workflow', 'signature-workflow'],
+    ['/es/usage-docs/api-fill', 'api-fill'],
+    ['/es/usage-docs/create-group', 'create-group'],
+    ['/es/usage-docs/search-fill/', 'search-fill'],
   ])('renders UsageDocs pageKey=%s route=%s', async (pathname, pageKey) => {
     await importEntrypoint(pathname);
     await renderCapturedTree();
@@ -308,18 +330,18 @@ describe('main entrypoint', () => {
     expect(screen.queryByTestId('app-view')).toBeNull();
   });
 
-  it('canonicalizes /docs/* routes to /usage-docs/* before rendering', async () => {
+  it('canonicalizes /docs/* routes to /es/usage-docs/* before rendering', async () => {
     await importEntrypoint('/docs/search-fill');
     await renderCapturedTree();
 
     expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
     expect(await screen.findByTestId('usage-docs-search-fill')).toBeTruthy();
-    expect(window.location.pathname).toBe('/usage-docs/search-fill');
+    expect(window.location.pathname).toBe('/es/usage-docs/search-fill');
   });
 
   it.each([
-    '/usage-docs/not-a-real-page',
-    '/usage-docs/search-fill/extra',
+    '/es/usage-docs/not-a-real-page',
+    '/es/usage-docs/search-fill/extra',
     '/docs/not-a-real-page',
   ])('renders UsageDocsNotFoundPage for unknown docs routes (%s)', async (pathname) => {
     await importEntrypoint(pathname);

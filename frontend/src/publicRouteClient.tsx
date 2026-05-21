@@ -16,6 +16,7 @@ export function renderPublicRouteForClient(route: HydratablePublicRoute) {
       return (
         <App
           initialBrowserRoute={{ kind: 'homepage' }}
+          homepageMarket={route.market ?? 'global'}
         />
       );
     case 'legal':
@@ -23,15 +24,15 @@ export function renderPublicRouteForClient(route: HydratablePublicRoute) {
     case 'intent':
       return <IntentLandingPage pageKey={route.intentKey} />;
     case 'intent-hub':
-      return <IntentHubPage hubKey={route.hubKey} />;
+      return <IntentHubPage hubKey={route.hubKey} locale={route.locale} />;
     case 'feature-plan':
       return <FeaturePlanPage pageKey={route.planKey} />;
     case 'usage-docs':
       return <UsageDocsPage pageKey={route.pageKey} />;
     case 'blog-index':
-      return <BlogIndexPage />;
+      return <BlogIndexPage locale={route.locale} />;
     case 'blog-post':
-      return <BlogPostPage slug={route.slug} />;
+      return <BlogPostPage slug={route.slug} locale={route.locale} />;
     case 'form-catalog-index':
       return <FormCatalogIndexPage />;
     case 'form-catalog-form':

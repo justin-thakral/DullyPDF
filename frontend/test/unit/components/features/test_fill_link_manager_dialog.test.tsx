@@ -151,7 +151,7 @@ describe('FillLinkManagerDialog', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
-    expect(window.open).toHaveBeenCalledWith('/usage-docs/fill-by-link', '_blank', 'noopener,noreferrer');
+    expect(window.open).toHaveBeenCalledWith('/es/usage-docs/fill-by-link', '_blank', 'noopener,noreferrer');
   });
 
   it('shows visible feedback after copying the public link', async () => {

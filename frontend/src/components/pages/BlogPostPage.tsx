@@ -21,17 +21,61 @@ const BLOG_POST_VIDEOS: Record<string, typeof ESIGN_PIPELINE_DEMO_VIDEO> = {
 
 type BlogPostPageProps = {
   slug: string;
+  locale?: 'es' | 'in';
 };
 
-const formatDisplayDate = (date: string): string =>
-  new Date(`${date}T00:00:00`).toLocaleDateString('en-US', {
+const formatDisplayDate = (date: string, locale = 'en-US'): string =>
+  new Date(`${date}T00:00:00`).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-const BlogPostPage = ({ slug }: BlogPostPageProps) => {
-  const post = getBlogPost(slug);
+const BlogPostPage = ({ slug, locale }: BlogPostPageProps) => {
+  const postLocale = locale === 'in' ? 'in' : 'es';
+  const post = getBlogPost(slug, postLocale);
+  const isSpanish = postLocale === 'es';
+  const isIndia = postLocale === 'in';
+  const basePath = isIndia ? '/in/blog' : '/es/blog';
+  const copy = isSpanish
+    ? {
+        home: 'Inicio',
+        homeHref: '/es',
+        published: 'Publicado',
+        updated: 'Actualizado',
+        by: 'por',
+        notFoundTitle: 'Guía no encontrada',
+        notFoundDescription: 'No existe una guía de DullyPDF en esta ruta.',
+        backToBlog: 'Volver al blog',
+        inlineLinksLabel: 'Recursos clave',
+        relatedPanel: 'Recursos relacionados para esta guía',
+        workflowPages: 'Páginas de flujo',
+        documentation: 'Documentación',
+        moreGuides: 'Más guías',
+        ctaPrimary: 'Probar DullyPDF',
+        ctaPrimaryHref: '/es',
+        ctaSecondary: 'Ver documentación de uso',
+        dateLocale: 'es',
+      }
+    : {
+        home: 'India',
+        homeHref: '/in',
+        published: 'Published',
+        updated: 'Last updated',
+        by: 'by',
+        notFoundTitle: 'Guide not found',
+        notFoundDescription: 'No DullyPDF India blog guide exists at this route.',
+        backToBlog: 'Back to India blog',
+        inlineLinksLabel: 'Key India workflow links',
+        relatedPanel: 'Related India resources for this guide',
+        workflowPages: 'India workflow pages',
+        documentation: 'Documentation',
+        moreGuides: 'More India guides',
+        ctaPrimary: 'Try DullyPDF India',
+        ctaPrimaryHref: '/in',
+        ctaSecondary: 'View Getting Started Docs',
+        dateLocale: 'en-IN',
+      };
   const relatedIntentLinks = useMemo(
     () => (post
       ? post.relatedIntentPages.map((key) => {
@@ -94,20 +138,26 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
     }
     applyNoIndexSeo({
       title: 'Blog Post Not Found (404) | DullyPDF',
-      description: 'The requested DullyPDF blog post was not found. Use the blog index to continue browsing guides.',
-      canonicalPath: '/blog',
+      description: copy.notFoundDescription,
+      canonicalPath: basePath,
     });
-  }, [post]);
+  }, [basePath, copy.notFoundDescription, post]);
 
   if (!post) {
     return (
-      <PublicSiteFrame activeNavKey="blog" bodyClassName="blog-post__content">
+      <PublicSiteFrame
+        activeNavKey="blog"
+        bodyClassName="blog-post__content"
+        locale={isSpanish ? 'es' : 'en'}
+        hideFormCatalog={isIndia}
+      >
         <div className="blog-post blog-post--not-found">
           <section className="blog-post__not-found">
             <p className="blog-post__not-found-code">404</p>
-            <h1>Post not found</h1>
+            <h1>{copy.notFoundTitle}</h1>
             <p>
-              No DullyPDF blog post exists at <code>/blog/{slug}</code>. <a href="/blog">Back to blog</a>.
+              {copy.notFoundDescription}{' '}
+              <code>{basePath}/{slug}</code>. <a href={basePath}>{copy.backToBlog}</a>.
             </p>
           </section>
         </div>
@@ -115,19 +165,24 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
     );
   }
 
-  const publishedDateLabel = formatDisplayDate(post.publishedDate);
-  const updatedDateLabel = formatDisplayDate(post.updatedDate);
+  const publishedDateLabel = formatDisplayDate(post.publishedDate, copy.dateLocale);
+  const updatedDateLabel = formatDisplayDate(post.updatedDate, copy.dateLocale);
   const showUpdatedDate = post.updatedDate !== post.publishedDate;
   const postVideo = BLOG_POST_VIDEOS[post.slug] ?? null;
 
   return (
-    <PublicSiteFrame activeNavKey="blog" bodyClassName="blog-post__content">
+    <PublicSiteFrame
+      activeNavKey="blog"
+      bodyClassName="blog-post__content"
+      locale={isSpanish ? 'es' : 'en'}
+      hideFormCatalog={isIndia}
+    >
       <div className="blog-post">
         <div className="blog-post__main">
           <Breadcrumbs
             items={[
-              { label: 'Home', href: '/' },
-              { label: 'Blog', href: '/blog' },
+              { label: copy.home, href: copy.homeHref },
+              { label: 'Blog', href: basePath },
               { label: post.title },
             ]}
           />
@@ -136,16 +191,16 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
             <header className="blog-post__article-header">
               <h1>{post.title}</h1>
               <div className="blog-post__meta">
-                <span className="blog-post__meta-label">Published</span>
+                <span className="blog-post__meta-label">{copy.published}</span>
                 <time dateTime={post.publishedDate}>{publishedDateLabel}</time>
                 {showUpdatedDate ? (
                   <>
                     <span className="blog-post__meta-separator" aria-hidden="true">•</span>
-                    <span className="blog-post__meta-label">Last updated</span>
+                    <span className="blog-post__meta-label">{copy.updated}</span>
                     <time dateTime={post.updatedDate}>{updatedDateLabel}</time>
                   </>
                 ) : null}
-                <span className="blog-post__author">by {post.author}</span>
+                <span className="blog-post__author">{copy.by} {post.author}</span>
               </div>
               <p className="blog-post__summary">{post.summary}</p>
               {coverFigure ? (
@@ -161,8 +216,8 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                 </figure>
               ) : null}
               {inlineResourceLinks.length > 0 ? (
-                <div className="blog-post__inline-links" aria-label="Key workflow links">
-                  <span className="blog-post__inline-links-label">Key workflow links</span>
+                <div className="blog-post__inline-links" aria-label={copy.inlineLinksLabel}>
+                  <span className="blog-post__inline-links-label">{copy.inlineLinksLabel}</span>
                   <div className="blog-post__inline-links-list">
                     {inlineResourceLinks.map((link) => (
                       <a key={link.href} href={link.href} className="blog-post__inline-link">
@@ -224,11 +279,11 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
 
           {(relatedIntentLinks.length > 0 || relatedDocsLinks.length > 0 || relatedGuideLinks.length > 0) && (
             <section className="blog-post__panel">
-              <h2>Related resources for this guide</h2>
+              <h2>{copy.relatedPanel}</h2>
               <div className="blog-post__related-grid">
                 {relatedIntentLinks.length > 0 && (
                   <div>
-                    <h3>Workflow pages</h3>
+                    <h3>{copy.workflowPages}</h3>
                     <ul>
                       {relatedIntentLinks.map((link) => (
                         <li key={link.href}>
@@ -240,7 +295,7 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                 )}
                 {relatedDocsLinks.length > 0 && (
                   <div>
-                    <h3>Documentation</h3>
+                    <h3>{copy.documentation}</h3>
                     <ul>
                       {relatedDocsLinks.map((link) => (
                         <li key={link.href}>
@@ -252,7 +307,7 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
                 )}
                 {relatedGuideLinks.length > 0 && (
                   <div>
-                    <h3>More guides</h3>
+                    <h3>{copy.moreGuides}</h3>
                     <ul>
                       {relatedGuideLinks.map((guide) => (
                         <li key={guide.href}>
@@ -273,8 +328,8 @@ const BlogPostPage = ({ slug }: BlogPostPageProps) => {
               next step in {post.title.toLowerCase()}.
             </p>
             <div className="blog-post__cta">
-              <a href="/" className="blog-post__cta-button">Try DullyPDF Now</a>
-              <a href="/usage-docs/getting-started" className="blog-post__cta-link">View Getting Started Docs</a>
+              <a href={copy.ctaPrimaryHref} className="blog-post__cta-button">{copy.ctaPrimary}</a>
+              <a href="/es/usage-docs/getting-started" className="blog-post__cta-link">{copy.ctaSecondary}</a>
             </div>
           </section>
         </div>

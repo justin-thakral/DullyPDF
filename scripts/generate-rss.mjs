@@ -19,6 +19,12 @@ function escXml(str) {
     .replace(/"/g, '&quot;');
 }
 
+function getBlogPostPath(post) {
+  return post.locale === 'in'
+    ? `/in/blog/${post.slug}`
+    : `/es/blog/${post.slug}`;
+}
+
 function main() {
   const sorted = [...BLOG_POSTS].sort(
     (a, b) => b.publishedDate.localeCompare(a.publishedDate),
@@ -29,7 +35,7 @@ function main() {
     : new Date().toISOString();
 
   const entries = sorted.map((post) => {
-    const url = `${SITE_ORIGIN}/blog/${post.slug}`;
+    const url = `${SITE_ORIGIN}${getBlogPostPath(post)}`;
     const published = `${post.publishedDate}T00:00:00Z`;
     const modified = `${post.updatedDate || post.publishedDate}T00:00:00Z`;
 
@@ -47,10 +53,11 @@ function main() {
   const feed = `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>DullyPDF Blog</title>
-  <subtitle>PDF form automation workflows, field detection, and fill strategies.</subtitle>
+  <subtitle>Guides for fillable PDF forms, data mapping, and PDF automation workflows.</subtitle>
   <link href="${SITE_ORIGIN}/feed.xml" rel="self" type="application/atom+xml"/>
-  <link href="${SITE_ORIGIN}/blog" rel="alternate" type="text/html"/>
-  <id>${SITE_ORIGIN}/blog</id>
+  <link href="${SITE_ORIGIN}/es/blog" rel="alternate" type="text/html"/>
+  <link href="${SITE_ORIGIN}/in/blog" rel="alternate" type="text/html" hreflang="en-IN"/>
+  <id>${SITE_ORIGIN}/feed.xml</id>
   <updated>${updated}</updated>
   <icon>${SITE_ORIGIN}/DullyPDF_logo_social_full_bleed.png</icon>
 ${entries.join('\n')}

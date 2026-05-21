@@ -134,6 +134,46 @@ describe('Homepage', () => {
     expect(catalogLink.getAttribute('href')).toBe('/forms');
   });
 
+  it('renders India homepage copy without e-signature or form catalog mentions', () => {
+    const { container } = render(<Homepage onStartWorkflow={vi.fn()} market="india" />);
+
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'India PDF Form Automation for KYC, Vendor, HR, and Invoice Workflows Fill By Link, API Fill, and CSV/Excel Search & Fill',
+      }),
+    ).toBeTruthy();
+    expect(screen.getAllByText(/PAN, GSTIN, vendor codes/i).length).toBeGreaterThan(0);
+    expect(screen.getByRole('link', { name: 'View the Excel Workflow' }).getAttribute('href')).toBe(
+      '/in/fill-pdf-from-excel',
+    );
+
+    expect(screen.queryByRole('link', { name: 'Go to the Pre-Made Form Catalog' })).toBeNull();
+    expect(container.textContent).not.toMatch(/Pre-Made Form Catalog|Form Catalog/i);
+    expect(container.textContent).not.toMatch(/e-sign|E-SIGN|UETA|signature/i);
+  });
+
+  it('renders Spanish homepage copy with usage-docs CTA and no e-signature or form catalog mentions', () => {
+    const { container } = render(<Homepage onStartWorkflow={vi.fn()} market="spanish" />);
+
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Crear formularios PDF rellenables con IA Rellenar PDFs con CSV, Excel, Fill By Link o API',
+      }),
+    ).toBeTruthy();
+    expect(screen.getAllByText(/formularios PDF rellenables/i).length).toBeGreaterThan(0);
+    expect(screen.getByRole('link', { name: 'Ver la documentación de uso' }).getAttribute('href')).toBe(
+      '/es/usage-docs/getting-started',
+    );
+    expect(screen.getByRole('button', { name: 'Detectar campos y abrir el editor' })).toBeTruthy();
+    expect(screen.getByText('Paso 1 de 11')).toBeTruthy();
+
+    expect(screen.queryByRole('link', { name: 'Go to the Pre-Made Form Catalog' })).toBeNull();
+    expect(container.textContent).not.toMatch(/Pre-Made Form Catalog|Form Catalog|catálogo/i);
+    expect(container.textContent).not.toMatch(/\bE-SIGN\b|\bUETA\b|\bsignature\b|\be-signature\b|\be-sign\b|\bfirma\b|\bfirmar\b|\bfirmas\b/i);
+  });
+
   it('renders compact feature-plan links in the quick info card', () => {
     render(<Homepage onStartWorkflow={vi.fn()} />);
 
@@ -159,7 +199,7 @@ describe('Homepage', () => {
     const expectedLinks = [
       { name: 'Featured on SaaSCity', href: 'https://saascity.io/live/dullypdf' },
       { name: 'G2', href: 'https://www.g2.com/products/dullypdf/reviews' },
-      { name: 'Find us on Product Hunt', href: 'https://www.producthunt.com/products/dullypdf' },
+      { name: 'Find us on Product Hunt', href: 'https://www.producthunt.com/products/dullypdf/reviews/new' },
       { name: 'GitHub', href: 'https://github.com/justin-thakral/DullyPDF' },
     ];
 
@@ -186,7 +226,7 @@ describe('Homepage', () => {
     const expectedLinks = [
       { name: 'SaaSCity', href: 'https://saascity.io/live/dullypdf' },
       { name: 'G2', href: 'https://www.g2.com/products/dullypdf/reviews' },
-      { name: 'Product Hunt', href: 'https://www.producthunt.com/products/dullypdf' },
+      { name: 'Product Hunt', href: 'https://www.producthunt.com/products/dullypdf/reviews/new' },
       { name: 'GitHub', href: 'https://github.com/justin-thakral/DullyPDF' },
     ];
 
@@ -220,6 +260,21 @@ describe('Homepage', () => {
     expect(screen.getByText('Step 10 of 11')).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Freeze the exact PDF, then send U.S. e-sign' })).toBeTruthy();
     expect(screen.getByText(/immutable source PDF, final signed PDF, audit receipt/i)).toBeTruthy();
+  });
+
+  it('uses an India-specific output step instead of the e-sign walkthrough step', async () => {
+    const user = userEvent.setup();
+    render(<Homepage onStartWorkflow={vi.fn()} market="india" />);
+
+    const nextButton = screen.getByRole('button', { name: 'Next demo step' }) as HTMLButtonElement;
+    for (let index = 0; index < 9; index += 1) {
+      await user.click(nextButton);
+    }
+
+    expect(screen.getByText('Step 10 of 11')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Download final PDFs for India workflows' })).toBeTruthy();
+    expect(screen.queryByRole('heading', { name: 'Freeze the exact PDF, then send U.S. e-sign' })).toBeNull();
+    expect(screen.getByText(/KYC, vendor, HR, invoice, education, finance, or clinic record/i)).toBeTruthy();
   });
 
   it('shows Sign in for signed-out users and Profile for signed-in users', async () => {
@@ -282,7 +337,7 @@ describe('Homepage', () => {
     const combinedLink = within(mobileCta).getByRole('link', { name: 'Docs & Privacy & Terms' });
 
     expect(within(mobileCta).queryByRole('link', { name: 'Form Catalog' })).toBeNull();
-    expect(combinedLink.getAttribute('href')).toBe('/usage-docs');
+    expect(combinedLink.getAttribute('href')).toBe('/es/usage-docs');
     expect(ctaLinks.map((link) => link.textContent?.trim())).toEqual(['Docs & Privacy & Terms']);
   });
 
@@ -298,7 +353,7 @@ describe('Homepage', () => {
     expect(screen.queryByRole('link', { name: 'Try DullyPDF' })).toBeNull();
     const gettingStartedLinks = screen.getAllByRole('link', { name: 'Getting Started' });
     expect(gettingStartedLinks.length).toBeGreaterThan(0);
-    expect(gettingStartedLinks.every((link) => link.getAttribute('href') === '/usage-docs/getting-started')).toBe(true);
+    expect(gettingStartedLinks.every((link) => link.getAttribute('href') === '/es/usage-docs/getting-started')).toBe(true);
   });
 
   it('renders footer hub links for workflows and industries', () => {
@@ -309,8 +364,8 @@ describe('Homepage', () => {
 
     expect(workflowLinks.length).toBeGreaterThan(0);
     expect(industryLinks.length).toBeGreaterThan(0);
-    expect(workflowLinks.every((link) => link.getAttribute('href') === '/workflows')).toBe(true);
-    expect(industryLinks.every((link) => link.getAttribute('href') === '/industries')).toBe(true);
+    expect(workflowLinks.every((link) => link.getAttribute('href') === '/es/flujos-de-trabajo')).toBe(true);
+    expect(industryLinks.every((link) => link.getAttribute('href') === '/es/industrias')).toBe(true);
   });
 
   it('renders footer social links that open in new tabs', () => {

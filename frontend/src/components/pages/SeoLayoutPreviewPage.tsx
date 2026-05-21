@@ -8,7 +8,7 @@ import './SeoLayoutPreviewPage.css';
 
 const HEADER_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'Usage Docs', href: '/usage-docs' },
+  { label: 'Usage Docs', href: '/es/usage-docs' },
   { label: 'Privacy', href: '/privacy' },
   { label: 'Terms', href: '/terms' },
 ];
@@ -112,7 +112,7 @@ const SeoLayoutPreviewPage = () => {
                   Try DullyPDF Now
                 </a>
                 <a
-                  href="/usage-docs/getting-started"
+                  href="/es/usage-docs/getting-started"
                   className="seo-layout-preview__button seo-layout-preview__button--secondary"
                 >
                   View Getting Started Docs

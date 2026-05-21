@@ -1,10 +1,10 @@
 export const PUBLIC_SITE_BRAND_TAGLINE = 'PDF automation workflows';
 
 export const PUBLIC_SITE_NAV_LINKS = [
-  { key: 'workflows', label: 'Workflow Library', href: '/workflows' },
-  { key: 'industries', label: 'Industry Solutions', href: '/industries' },
-  { key: 'usage-docs', label: 'Usage Docs', href: '/usage-docs' },
-  { key: 'blog', label: 'Blog', href: '/blog' },
+  { key: 'workflows', label: 'Workflow Library', href: '/es/flujos-de-trabajo' },
+  { key: 'industries', label: 'Industry Solutions', href: '/es/industrias' },
+  { key: 'usage-docs', label: 'Usage Docs', href: '/es/usage-docs' },
+  { key: 'blog', label: 'Blog', href: '/es/blog' },
 ];
 
 export const PUBLIC_SITE_FOOTER_GROUPS = [
@@ -13,16 +13,16 @@ export const PUBLIC_SITE_FOOTER_GROUPS = [
     title: 'Product',
     links: [
       { label: 'Form Catalog', href: '/forms' },
-      { label: 'Getting Started', href: '/usage-docs/getting-started' },
-      { label: 'Usage Docs', href: '/usage-docs' },
+      { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
+      { label: 'Usage Docs', href: '/es/usage-docs' },
     ],
   },
   {
     key: 'resources',
     title: 'Resources',
     links: [
-      { label: 'Blog', href: '/blog' },
-      { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
+      { label: 'Blog', href: '/es/blog' },
+      { label: 'Troubleshooting', href: '/es/usage-docs/troubleshooting' },
     ],
   },
   {
@@ -38,8 +38,8 @@ export const PUBLIC_SITE_FOOTER_GROUPS = [
     key: 'solutions',
     title: 'Solutions',
     links: [
-      { label: 'Workflow Library', href: '/workflows' },
-      { label: 'Industry Solutions', href: '/industries' },
+      { label: 'Workflow Library', href: '/es/flujos-de-trabajo' },
+      { label: 'Industry Solutions', href: '/es/industrias' },
     ],
   },
 ];

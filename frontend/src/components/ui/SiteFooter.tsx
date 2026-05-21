@@ -3,13 +3,35 @@ import { OFFICIAL_PUBLIC_PROFILE_LINKS } from '../../config/publicProfiles';
 
 const PRODUCT_LINKS = [
   { label: 'Form Catalog', href: '/forms' },
-  { label: 'Getting Started', href: '/usage-docs/getting-started' },
-  { label: 'Usage Docs', href: '/usage-docs' },
+  { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
+  { label: 'Usage Docs', href: '/es/usage-docs' },
+];
+
+const PRODUCT_LINKS_WITHOUT_FORM_CATALOG = [
+  { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
+  { label: 'Usage Docs', href: '/es/usage-docs' },
+  { label: 'Free Features', href: '/free-features' },
+];
+
+const SPANISH_PRODUCT_LINKS = [
+  { label: 'Primeros pasos', href: '/es/usage-docs/getting-started' },
+  { label: 'Documentación de uso', href: '/es/usage-docs' },
+  { label: 'Funciones gratis', href: '/free-features' },
 ];
 
 const RESOURCE_LINKS = [
-  { label: 'Blog', href: '/blog' },
-  { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
+  { label: 'Blog', href: '/es/blog' },
+  { label: 'Troubleshooting', href: '/es/usage-docs/troubleshooting' },
+];
+
+const INDIA_RESOURCE_LINKS = [
+  { label: 'Blog', href: '/in/blog' },
+  { label: 'Troubleshooting', href: '/es/usage-docs/troubleshooting' },
+];
+
+const SPANISH_RESOURCE_LINKS = [
+  { label: 'Blog', href: '/es/blog' },
+  { label: 'Solución de problemas', href: '/es/usage-docs/troubleshooting' },
 ];
 
 const LEGAL_LINKS = [
@@ -18,9 +40,25 @@ const LEGAL_LINKS = [
   { label: 'Refund Policy', href: '/refund-policy' },
 ];
 
+const SPANISH_LEGAL_LINKS = [
+  { label: 'Privacidad', href: '/privacy' },
+  { label: 'Términos', href: '/terms' },
+  { label: 'Reembolsos', href: '/refund-policy' },
+];
+
 const SOLUTION_LINKS = [
-  { label: 'Workflow Library', href: '/workflows' },
-  { label: 'Industry Solutions', href: '/industries' },
+  { label: 'Workflow Library', href: '/es/flujos-de-trabajo' },
+  { label: 'Industry Solutions', href: '/es/industrias' },
+];
+
+const INDIA_SOLUTION_LINKS = [
+  { label: 'Workflows', href: '/in/fill-pdf-from-excel' },
+  { label: 'Solutions', href: '/in/kyc-pdf-automation' },
+];
+
+const SPANISH_SOLUTION_LINKS = [
+  { label: 'Flujos de trabajo', href: '/es/flujos-de-trabajo' },
+  { label: 'Industrias', href: '/es/industrias' },
 ];
 
 const LEFT_SOCIAL_LINKS = OFFICIAL_PUBLIC_PROFILE_LINKS
@@ -86,15 +124,40 @@ const SocialLinkGroup = ({ links }: { links: SocialLink[] }) => (
   </div>
 );
 
-export const SiteFooter = () => {
+type SiteFooterProps = {
+  hideFormCatalog?: boolean;
+  locale?: 'en' | 'es';
+};
+
+export const SiteFooter = ({ hideFormCatalog = false, locale = 'en' }: SiteFooterProps) => {
   const year = new Date().getFullYear();
+  const isIndia = hideFormCatalog && locale !== 'es';
+  const productLinks = locale === 'es'
+    ? SPANISH_PRODUCT_LINKS
+    : hideFormCatalog
+      ? PRODUCT_LINKS_WITHOUT_FORM_CATALOG
+      : PRODUCT_LINKS;
+  const resourceLinks = locale === 'es'
+    ? SPANISH_RESOURCE_LINKS
+    : isIndia
+      ? INDIA_RESOURCE_LINKS
+      : RESOURCE_LINKS;
+  const legalLinks = locale === 'es' ? SPANISH_LEGAL_LINKS : LEGAL_LINKS;
+  const solutionLinks = locale === 'es'
+    ? SPANISH_SOLUTION_LINKS
+    : isIndia
+      ? INDIA_SOLUTION_LINKS
+      : SOLUTION_LINKS;
+  const groupTitles = locale === 'es'
+    ? { product: 'Producto', resources: 'Recursos', legal: 'Legal', solutions: 'Soluciones' }
+    : { product: 'Product', resources: 'Resources', legal: 'Legal', solutions: 'Solutions' };
 
   return (
-    <footer className="site-footer">
+    <footer className={isIndia ? 'site-footer site-footer--compact' : 'site-footer'}>
       <div className="site-footer__bar">
         <div className="site-footer__section site-footer__section--left">
-          <InlineLinkGroup className="site-footer__group--product" title="Product" links={PRODUCT_LINKS} />
-          <InlineLinkGroup className="site-footer__group--resources" title="Resources" links={RESOURCE_LINKS} />
+          <InlineLinkGroup className="site-footer__group--product" title={groupTitles.product} links={productLinks} />
+          <InlineLinkGroup className="site-footer__group--resources" title={groupTitles.resources} links={resourceLinks} />
           <SocialLinkGroup links={LEFT_SOCIAL_LINKS} />
         </div>
         <div className="site-footer__section site-footer__section--center">
@@ -102,23 +165,23 @@ export const SiteFooter = () => {
         </div>
         <div className="site-footer__section site-footer__section--right">
           <SocialLinkGroup links={RIGHT_SOCIAL_LINKS} />
-          <InlineLinkGroup className="site-footer__group--legal" title="Legal" links={LEGAL_LINKS} />
-          <InlineLinkGroup className="site-footer__group--solutions" title="Solutions" links={SOLUTION_LINKS} />
+          <InlineLinkGroup className="site-footer__group--legal" title={groupTitles.legal} links={legalLinks} />
+          <InlineLinkGroup className="site-footer__group--solutions" title={groupTitles.solutions} links={solutionLinks} />
         </div>
       </div>
       <div className="site-footer__mobile">
         <div className="site-footer__mobile-rows">
           <div className="site-footer__mobile-row">
-            <InlineLinkGroup title="Product" links={PRODUCT_LINKS} />
+            <InlineLinkGroup title={groupTitles.product} links={productLinks} />
           </div>
           <div className="site-footer__mobile-row">
-            <InlineLinkGroup title="Resources" links={RESOURCE_LINKS} />
+            <InlineLinkGroup title={groupTitles.resources} links={resourceLinks} />
           </div>
           <div className="site-footer__mobile-row">
-            <InlineLinkGroup title="Legal" links={LEGAL_LINKS} />
+            <InlineLinkGroup title={groupTitles.legal} links={legalLinks} />
           </div>
           <div className="site-footer__mobile-row">
-            <InlineLinkGroup title="Solutions" links={SOLUTION_LINKS} />
+            <InlineLinkGroup title={groupTitles.solutions} links={solutionLinks} />
           </div>
         </div>
         <div className="site-footer__meta site-footer__mobile-bottom">

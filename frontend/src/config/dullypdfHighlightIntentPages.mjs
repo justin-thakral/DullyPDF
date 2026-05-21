@@ -274,7 +274,7 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
       'Run Search & Fill, Fill By Link, and batch Rename + Map around the group model.',
     ],
     proofPoints: [
-      'Create Group workflows are documented at canonical `/usage-docs/create-group` routes.',
+      'Create Group workflows are documented at canonical `/es/usage-docs/create-group` routes.',
       'Open groups can publish one merged Fill By Link built from distinct respondent-facing fields.',
       'Group API Fill can return a ZIP packet of per-template PDFs for packet workflows.',
     ],
@@ -464,17 +464,17 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
         links: [
           {
             label: 'Editor workflow docs',
-            href: '/usage-docs/editor-workflow',
+            href: '/es/usage-docs/editor-workflow',
             description: 'Review fields, geometry, names, types, and output behavior after page changes.',
           },
           {
             label: 'Create Group docs',
-            href: '/usage-docs/create-group',
+            href: '/es/usage-docs/create-group',
             description: 'Keep related PDFs as separate templates when a grouped packet is cleaner than one merged file.',
           },
           {
             label: 'Search & Fill docs',
-            href: '/usage-docs/search-fill',
+            href: '/es/usage-docs/search-fill',
             description: 'Run one representative row through the merged template before publishing or signing.',
           },
         ],
@@ -619,12 +619,12 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
         links: [
           {
             label: 'Editor workflow docs',
-            href: '/usage-docs/editor-workflow',
+            href: '/es/usage-docs/editor-workflow',
             description: 'Review field geometry, names, mappings, and output behavior after page-order changes.',
           },
           {
             label: 'Save & Download docs',
-            href: '/usage-docs/save-download-profile',
+            href: '/es/usage-docs/save-download-profile',
             description: 'Understand when a changed source template should be saved versus when selected-page output is enough.',
           },
           {
@@ -768,12 +768,12 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
         links: [
           {
             label: 'Editor workflow docs',
-            href: '/usage-docs/editor-workflow',
+            href: '/es/usage-docs/editor-workflow',
             description: 'Review field geometry, names, mappings, and output behavior after orientation changes.',
           },
           {
             label: 'Save & Download docs',
-            href: '/usage-docs/save-download-profile',
+            href: '/es/usage-docs/save-download-profile',
             description: 'Save the rotated template only after the orientation and field overlays are stable.',
           },
           {
@@ -923,12 +923,12 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
         links: [
           {
             label: 'Save & Download docs',
-            href: '/usage-docs/save-download-profile',
+            href: '/es/usage-docs/save-download-profile',
             description: 'Understand full downloads, selected-page downloads, saved templates, and output mode choices.',
           },
           {
             label: 'Editor workflow docs',
-            href: '/usage-docs/editor-workflow',
+            href: '/es/usage-docs/editor-workflow',
             description: 'Review fields and page changes before relying on a split output.',
           },
           {
@@ -1078,17 +1078,17 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
         links: [
           {
             label: 'Editor workflow docs',
-            href: '/usage-docs/editor-workflow',
+            href: '/es/usage-docs/editor-workflow',
             description: 'Review the remaining fields and page geometry after source-PDF changes.',
           },
           {
             label: 'Save & Download docs',
-            href: '/usage-docs/save-download-profile',
+            href: '/es/usage-docs/save-download-profile',
             description: 'Compare permanent template changes with one-off selected-page downloads.',
           },
           {
             label: 'Search & Fill docs',
-            href: '/usage-docs/search-fill',
+            href: '/es/usage-docs/search-fill',
             description: 'Test one representative record before relying on the trimmed template.',
           },
         ],
@@ -1238,12 +1238,12 @@ export const DULLYPDF_HIGHLIGHT_INTENT_PAGES = [
         links: [
           {
             label: 'Editor workflow docs',
-            href: '/usage-docs/editor-workflow',
+            href: '/es/usage-docs/editor-workflow',
             description: 'Review fields, geometry, mappings, signatures, helper fields, and output behavior before optimization becomes final.',
           },
           {
             label: 'Save & Download docs',
-            href: '/usage-docs/save-download-profile',
+            href: '/es/usage-docs/save-download-profile',
             description: 'Choose flat, editable, or selected-page output after the optimized PDF is ready.',
           },
           {

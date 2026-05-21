@@ -6,6 +6,7 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } fro
 import type { User } from 'firebase/auth';
 import './App.css';
 import { HomepageShell } from './components/pages/HomepageShell';
+import type { HomepageMarket } from './components/pages/Homepage';
 import VerifyEmailPage from './components/pages/VerifyEmailPage';
 import { AUTH_READY_FALLBACK_MS } from './config/appConstants';
 import { ApiService } from './services/api';
@@ -29,10 +30,12 @@ const WorkspaceRuntime = lazy(() => import('./WorkspaceRuntime'));
 
 type AppProps = {
   initialBrowserRoute?: WorkspaceBrowserRoute;
+  homepageMarket?: HomepageMarket;
 };
 
 function App({
   initialBrowserRoute = { kind: 'homepage' },
+  homepageMarket = 'global',
 }: AppProps) {
   const [authReady, setAuthReady] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
@@ -49,9 +52,9 @@ function App({
 
   useEffect(() => {
     if (browserRoute.kind === 'homepage') {
-      applyRouteSeo({ kind: 'app' });
+      applyRouteSeo({ kind: 'app', market: homepageMarket });
     }
-  }, [browserRoute.kind]);
+  }, [browserRoute.kind, homepageMarket]);
 
   useEffect(() => {
     let isActive = true;
@@ -395,6 +398,7 @@ function App({
       onSignIn={!verifiedUser ? handleSignIn : undefined}
       onOpenProfile={verifiedUser ? handleOpenProfile : undefined}
       onSignOut={verifiedUser ? handleSignOut : undefined}
+      market={homepageMarket}
     />
   );
 }
