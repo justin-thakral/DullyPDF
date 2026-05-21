@@ -563,7 +563,8 @@
 /* Mobile-only header + walkthrough */
 .homepage-mobile-header,
 .homepage-mobile-layout,
-.homepage-mobile-demo {
+.homepage-mobile-demo,
+.homepage-mobile-launch-links {
   display: none;
 }
 
@@ -951,6 +952,59 @@
   font-size: 0.85rem;
   color: var(--ink-500);
   font-weight: 600;
+}
+
+.homepage-mobile-launch-links {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.25rem;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.mobile-launch-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--blue-700);
+}
+
+.homepage-mobile-launch-links h3 {
+  margin: 0;
+  font-size: 1.28rem;
+  color: var(--ink-900);
+  line-height: 1.25;
+}
+
+.homepage-mobile-launch-links p {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.homepage-mobile-launch-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.95rem;
+  margin-top: 0.2rem;
+}
+
+.homepage-mobile-launch-link {
+  color: #1d4ed8;
+  font-size: 0.96rem;
+  font-weight: 800;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.homepage-mobile-launch-link:hover,
+.homepage-mobile-launch-link:focus-visible {
+  color: #1e3a8a;
 }
 
 /* Responsive Design */
@@ -2209,7 +2263,8 @@
 
   .homepage-mobile-header,
   .homepage-mobile-layout,
-  .homepage-mobile-demo {
+  .homepage-mobile-demo,
+  .homepage-mobile-launch-links {
     display: flex;
   }
 
@@ -2282,6 +2337,10 @@
     padding: 0 1rem;
   }
 
+  .homepage-mobile-launch-links {
+    padding: 1.35rem 1rem 2rem;
+  }
+
   .homepage-legal {
     flex-direction: column;
     text-align: center;
@@ -2347,6 +2406,10 @@
   .homepage-mobile-demo {
     gap: 0.85rem;
     padding: 0 1rem;
+  }
+
+  .homepage-mobile-launch-links {
+    padding: 1.2rem 1rem 1.8rem;
   }
 
   .mobile-demo-content {

@@ -171,6 +171,33 @@ describe('Homepage', () => {
     });
   });
 
+  it('renders mobile launch and review links in the scroll flow without the desktop card treatment', () => {
+    render(<Homepage onStartWorkflow={vi.fn()} />);
+
+    const mobileLinksSection = document.querySelector('.homepage-mobile-launch-links') as HTMLElement | null;
+    expect(mobileLinksSection).toBeTruthy();
+    if (!mobileLinksSection) return;
+
+    const mobileLinks = within(mobileLinksSection);
+    expect(mobileLinks.getByRole('heading', { name: 'Review DullyPDF' })).toBeTruthy();
+    expect(mobileLinks.getByText(/leaving an honest review/i)).toBeTruthy();
+    expect(mobileLinksSection.querySelector('.launch-review-card')).toBeNull();
+
+    const expectedLinks = [
+      { name: 'SaaSCity', href: 'https://saascity.io/live/dullypdf' },
+      { name: 'G2', href: 'https://www.g2.com/products/dullypdf/reviews' },
+      { name: 'Product Hunt', href: 'https://www.producthunt.com/products/dullypdf' },
+      { name: 'GitHub', href: 'https://github.com/justin-thakral/DullyPDF' },
+    ];
+
+    expectedLinks.forEach(({ name, href }) => {
+      const link = mobileLinks.getByRole('link', { name });
+      expect(link.getAttribute('href')).toBe(href);
+      expect(link.getAttribute('target')).toBe('_blank');
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    });
+  });
+
   it('navigates mobile walkthrough steps with proper boundaries', async () => {
     const user = userEvent.setup();
     render(<Homepage onStartWorkflow={vi.fn()} />);

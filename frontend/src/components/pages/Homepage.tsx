@@ -174,6 +174,41 @@ const LAUNCH_REVIEW_LINKS: LaunchReviewLink[] = [
   },
 ];
 
+type LaunchReviewLinksProps = {
+  className: string;
+  linkClassName: string;
+  textOnly?: boolean;
+};
+
+const LaunchReviewLinks = ({ className, linkClassName, textOnly = false }: LaunchReviewLinksProps) => (
+  <div className={className}>
+    {LAUNCH_REVIEW_LINKS.map((link) => (
+      <a
+        key={link.href}
+        className={`${linkClassName} ${linkClassName}--${link.variant}${!textOnly && link.imageSrc ? ` ${linkClassName}--badge` : ''}`}
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={textOnly ? undefined : link.imageAlt ?? link.label}
+      >
+        {!textOnly && link.imageSrc ? (
+          <img
+            className="launch-review-badge-image"
+            src={link.imageSrc}
+            alt={link.imageAlt}
+            width={link.variant === 'product-hunt' ? 250 : 150}
+            height={54}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          link.label
+        )}
+      </a>
+    ))}
+  </div>
+);
+
 const LaunchReviewCard = () => (
   <div className="launch-review-card" aria-labelledby="launch-review-title">
     <div className="launch-review-copy-row">
@@ -186,34 +221,24 @@ const LaunchReviewCard = () => (
     </div>
     <div className="launch-review-links-row">
       <span className="launch-review-links-label">Links:</span>
-      <div className="launch-review-links">
-        {LAUNCH_REVIEW_LINKS.map((link) => (
-          <a
-            key={link.href}
-            className={`launch-review-link launch-review-link--${link.variant}${link.imageSrc ? ' launch-review-link--badge' : ''}`}
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={link.imageAlt ?? link.label}
-          >
-            {link.imageSrc ? (
-              <img
-                className="launch-review-badge-image"
-                src={link.imageSrc}
-                alt={link.imageAlt}
-                width={link.variant === 'product-hunt' ? 250 : 150}
-                height={54}
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              link.label
-            )}
-          </a>
-        ))}
-      </div>
+      <LaunchReviewLinks className="launch-review-links" linkClassName="launch-review-link" />
     </div>
   </div>
+);
+
+const MobileLaunchReviewSection = () => (
+  <section className="homepage-mobile-launch-links" aria-labelledby="homepage-mobile-launch-links-title">
+    <p className="mobile-launch-kicker">Official links</p>
+    <h3 id="homepage-mobile-launch-links-title">Review DullyPDF</h3>
+    <p>
+      Free users can help by liking DullyPDF or leaving an honest review on the public launch and review pages.
+    </p>
+    <LaunchReviewLinks
+      className="homepage-mobile-launch-list"
+      linkClassName="homepage-mobile-launch-link"
+      textOnly
+    />
+  </section>
 );
 
 /**
@@ -701,6 +726,8 @@ const Homepage: React.FC<HomepageProps> = ({
           </div>
         </div>
       </section>
+
+      <MobileLaunchReviewSection />
 
       <div className="homepage-content-shell">
         <div className="homepage-content homepage-desktop-layout">
