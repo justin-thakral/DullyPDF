@@ -3138,7 +3138,7 @@ function WorkspaceRuntime({
   ]);
 
   // Auto-fetch a catalog PDF when the user navigates to /upload?catalogSlug=<slug>
-  // via the "Open in DullyPDF" button on a form-catalog detail page.
+  // via a form-catalog CTA on a detail page.
   //
   // This is intentionally fire-and-forget with a ref guard: if we stored the
   // in-flight fetch inside a useEffect cleanup path, the very first thing the

@@ -381,10 +381,10 @@ const FormCatalogFormPage = ({
     );
   }
 
-  const openButtonLabel = openInProgress ? 'Loading into editor…' : 'Open in the DullyPDF Workspace';
   const downloadLabel = entry
     ? `Download ${entry.formNumber || entry.title} fillable form`
     : 'Download fillable form';
+  const openButtonLabel = openInProgress ? 'Loading into editor…' : downloadLabel;
   const displayName = formatFormDisplayName(entry);
   const categoryLabel = category?.label || entry.section;
   const formHandle = entry.formNumber || 'this form';
@@ -530,14 +530,6 @@ const FormCatalogFormPage = ({
                 .
               </p>
             </div>
-
-            <a
-              className="form-catalog-detail__button form-catalog-detail__button--secondary form-catalog-detail__download"
-              href={entry.pdfUrl}
-              download={entry.filename}
-            >
-              {downloadLabel}
-            </a>
 
             {entry.sourceUrl ? (() => {
               return (

@@ -188,7 +188,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Demo assets are served from `frontend/public/demo`.
 - Interactive demo PDFs under `frontend/public/demo/*.pdf` are intentionally tracked despite the repo-wide local PDF ignore rule, and prod deploys validate their live content types so the tour cannot ship with missing static fixtures.
 - Demo sessions allow downloading the generated PDF without signing in; saving to profile remains sign-in only.
-- Catalog anonymous sessions are separate from demos: they only start from `/forms/:slug` via `Open in DullyPDF`, and their generated downloads are account-gated.
+- Catalog anonymous sessions are separate from demos: they only start from `/forms/:slug` via the form-detail `Download {form} fillable form` CTA, and their generated downloads are account-gated.
 - Mobile homepage walkthrough is marketing/demo only, but it now explains template prep, native Fill By Link intake, extraction from images/documents, final fill review, and the supported U.S. e-sign handoff. The mobile flow also includes the official launch/review links near the end as inline text links instead of the compact desktop review card.
 - Small tracked fixtures live in `quickTestFiles/`; larger local datasets live in `samples/`.
 - Regenerate demo rename/remap name maps from the repo root with `npm run demo:generate-name-maps`.

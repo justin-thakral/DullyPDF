@@ -577,6 +577,7 @@
   border-radius: 10px;
   padding: 12px 16px;
   font-size: 14px;
+  line-height: 1.25;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
@@ -585,6 +586,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .form-catalog-detail__button--primary {
@@ -599,17 +602,6 @@
 .form-catalog-detail__button--primary:disabled {
   opacity: 0.6;
   cursor: wait;
-}
-
-.form-catalog-detail__button--secondary {
-  background: #ffffff;
-  color: #1c2530;
-  border: 1px solid #d2d8e0;
-}
-
-.form-catalog-detail__button--secondary:hover {
-  border-color: #2f6feb;
-  color: #2f6feb;
 }
 
 .form-catalog-detail__error {
@@ -647,13 +639,6 @@
 
 .form-catalog-detail__explainer-body a:hover {
   text-decoration: underline;
-}
-
-.form-catalog-detail__download {
-  margin-top: 16px;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
 }
 
 .form-catalog-detail__source {

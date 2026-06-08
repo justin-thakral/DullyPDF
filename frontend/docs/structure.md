@@ -61,7 +61,7 @@ frontend/
 - `frontend/src/components/features/UploadView.tsx`: Upload + saved-form selection UI and OpenAI preflight modal entry.
 - `frontend/src/components/pages/*.tsx`: Homepage variants, auth pages, profile page, legal pages (`/privacy`, `/terms`, `/refund-policy`), public usage docs pages (`/usage-docs/*` and `/es/usage-docs/*`), and intent landing pages.
 - `frontend/src/components/pages/FormCatalogIndexPage.tsx`: Public `/forms` catalog browser, including hosted-form search/pagination and external-source link lists for ACORD, HIPAA, and NAR / Realtor.
-- `frontend/src/components/pages/FormCatalogFormPage.tsx`: Individual form-catalog detail route with preview metadata and “Open in DullyPDF” editor handoff.
+- `frontend/src/components/pages/FormCatalogFormPage.tsx`: Individual form-catalog detail route with preview metadata and a `Download {form} fillable form` primary CTA that hands catalog PDFs into the editor.
 - `frontend/src/components/pages/FormCatalogThumbnail.tsx`: Shared catalog/intent-card thumbnail renderer that now prefers static `.webp` previews and only falls back to a text badge when the image cannot load.
 - `frontend/src/components/pages/IntentLandingPage.tsx`: Shared renderer for workflow/industry authority pages, including long-form article sections, FAQ blocks, related docs, optional source panels, and inline legal-footnote rendering for authority-heavy pages.
 - `frontend/src/components/pages/AccountActionPage.tsx`: Public branded Firebase email action handler for verification and password reset links (`/account-action`, with legacy `/verify-email` compatibility).
