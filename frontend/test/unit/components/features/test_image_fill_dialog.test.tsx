@@ -28,7 +28,7 @@ describe('ImageFillDialog', () => {
 
     await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/fill-from-images', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/fill-from-images', '_blank', 'noopener,noreferrer');
     openSpy.mockRestore();
   });
 });

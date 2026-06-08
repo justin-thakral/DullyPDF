@@ -41,9 +41,11 @@ export type UsageDocsPage = {
 };
 
 export type ResolvedUsageDocsPath =
-  | { kind: 'canonical'; pageKey: UsageDocsPageKey }
+  | { kind: 'canonical'; pageKey: UsageDocsPageKey; locale?: UsageDocsLocale }
   | { kind: 'redirect'; targetPath: string }
-  | { kind: 'not-found'; requestedPath: string };
+  | { kind: 'not-found'; requestedPath: string; locale?: UsageDocsLocale };
+
+export type UsageDocsLocale = 'en' | 'es';
 
 type SharedUsageDocsPage = {
   key: UsageDocsPageKey;
@@ -54,14 +56,6 @@ type SharedUsageDocsPage = {
   summary: string;
   relatedWorkflowKeys?: IntentPageKey[];
   sectionTitles: string[];
-};
-
-const USAGE_DOCS_BASE_PATH = '/es/usage-docs';
-
-const buildUsageDocsHref = (pageKey: UsageDocsPageKey): string => {
-  const page = USAGE_DOCS_PAGE_METADATA_BY_KEY.get(pageKey);
-  if (!page || !page.slug) return USAGE_DOCS_BASE_PATH;
-  return `${USAGE_DOCS_BASE_PATH}/${page.slug}`;
 };
 
 const USAGE_DOCS_PAGE_METADATA = SHARED_USAGE_DOCS_PAGES as SharedUsageDocsPage[];
@@ -92,103 +86,130 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('index'),
     sections: [
       {
-        id: 'resumen-del-flujo',
-        title: 'Resumen del flujo',
+        id: 'pipeline-overview',
+        title: 'Pipeline overview',
         body: (
           <>
             <p>
-              DullyPDF sigue una secuencia estable: subir PDF, detectar campos con CommonForms, revisar nombres y
-              tipos, limpiar la plantilla, guardar, y después rellenar con Search &amp; Fill, Fill By Link o API Fill.
+              DullyPDF runs a fixed sequence: PDF upload -&gt; CommonForms detection -&gt; optional OpenAI Rename
+              and/or Map -&gt; editor cleanup -&gt; saved template -&gt; Search &amp; Fill or Fill By Link respondent
+              selection -&gt; download/save.
             </p>
             <p>
-              La prioridad es mantener el PDF aprobado como documento base. DullyPDF no rediseña el formulario:
-              coloca campos revisables encima del archivo, guarda la estructura y genera salidas rellenadas cuando ya
-              confías en la plantilla.
+              Route-level behavior: `/detect-fields` creates the detection session, `/api/renames/ai` performs rename,
+              `/api/rename-remap/ai` performs the combined Rename + Map action, `/api/schema-mappings/ai` performs
+              standalone remap, and Search &amp; Fill runs over your local rows or stored Fill By Link respondent
+              records.
             </p>
           </>
         ),
       },
       {
-        id: 'antes-de-empezar',
-        title: 'Antes de empezar',
+        id: 'before-you-start',
+        title: 'Before you start',
         body: (
           <ul>
-            <li>El límite de subida del PDF es 50MB.</li>
-            <li>El editor completo está pensado para escritorio; móvil es una experiencia de explicación y entrada.</li>
-            <li>Search &amp; Fill puede usar CSV, XLSX, JSON o respuestas guardadas de Fill By Link. SQL y TXT sirven solo para esquema.</li>
-            <li>Las acciones con OpenAI requieren sesión iniciada y créditos disponibles.</li>
-            <li>Las cuentas gratis incluyen {formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} descargas generadas por mes.</li>
-            <li>Premium incluye descargas generadas ilimitadas y {formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} créditos OpenAI mensuales.</li>
+            <li>PDF upload limit is 50MB (`UploadComponent` validation).</li>
+            <li>Desktop is required for full editor usage. Mobile is walkthrough-only.</li>
+            <li>Search &amp; Fill record rows can come from CSV, XLSX, JSON, or stored Fill By Link respondents. SQL and TXT are schema-only.</li>
+            <li>Fill By Link can be published from the active saved form or from an open group. Owners now use a larger builder dialog with global settings, searchable questions, and live preview before publishing.</li>
+            <li>OpenAI actions require sign-in and credits. Rename and Map pricing is bucketed by page count (default 5 pages per bucket).</li>
+            <li>Rename/Map credits formula: total = baseCost x ceil(pageCount / bucketSize). Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
+            <li>Fill from Images and Documents credits: each image costs 1 credit; each PDF document costs 1 credit per 5 pages.</li>
+            <li>Free accounts include 25 generated PDF downloads per month. Premium accounts include unlimited generated PDF downloads.</li>
+            <li>Billing runs through Stripe from Profile: Pro Monthly, Pro Yearly, and a Pro-only 500-credit refill pack.</li>
+            <li>Public plan explainers live at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a>.</li>
           </ul>
         ),
       },
       {
-        id: 'elegir-la-pagina-correcta',
-        title: 'Elegir la página correcta',
+        id: 'choose-the-right-page',
+        title: 'Choose the right docs page',
         body: (
           <ul>
-            <li><a href={buildUsageDocsHref('detection')}>Detección</a>: confianza, geometría y revisión inicial.</li>
-            <li><a href={buildUsageDocsHref('rename-mapping')}>Renombrar y mapear</a>: nombres de campos, columnas y reglas.</li>
-            <li><a href={buildUsageDocsHref('editor-workflow')}>Editor</a>: mover, redimensionar, cambiar tipos y guardar.</li>
-            <li><a href={buildUsageDocsHref('search-fill')}>Search &amp; Fill</a>: rellenar desde filas revisadas.</li>
-            <li><a href={buildUsageDocsHref('fill-by-link')}>Fill By Link</a>: recopilar respuestas con un formulario web.</li>
-            <li><a href={buildUsageDocsHref('api-fill')}>API Fill</a>: rellenar PDFs desde JSON en sistemas internos.</li>
-            <li><a href={buildUsageDocsHref('create-group')}>Grupos</a>: paquetes de varios PDFs con una sola fuente de datos.</li>
-            <li><a href={buildUsageDocsHref('troubleshooting')}>Solución de problemas</a>: diagnóstico por etapa.</li>
+            <li>
+              Use <a href="/usage-docs/detection">Detection</a> for confidence tiers, geometry shape, and coordinate behavior.
+            </li>
+            <li>
+              Use <a href="/usage-docs/rename-mapping">Rename + Mapping</a> for OpenAI payload boundaries and checkbox/radio rule precedence.
+            </li>
+            <li>
+              Use <a href="/usage-docs/editor-workflow">Editor Workflow</a> for drag/resize constraints and edit-history behavior.
+            </li>
+            <li>
+              Use <a href="/usage-docs/search-fill">Search &amp; Fill</a> for row caps, query modes, Fill By Link respondent use, and field resolution heuristics.
+            </li>
+            <li>
+              Use <a href="/usage-docs/fill-by-link">Fill By Link</a> for published link creation, respondent expectations, and response review.
+            </li>
+            <li>
+              Use <a href="/usage-docs/signature-workflow">Signature Workflow</a> for email-based signing, web-form-to-sign handoff, immutable record freeze, and owner artifact retrieval.
+            </li>
+            <li>
+              Use <a href="/usage-docs/api-fill">API Fill</a> for template-scoped JSON-to-PDF endpoints, key rotation, hosted schema downloads, and server-side fill guardrails.
+            </li>
+            <li>
+              Use <a href="/usage-docs/create-group">Create Group</a> for packet workflows, group Search &amp; Fill, and batch Rename + Map behavior.
+            </li>
+            <li>
+              Use <a href="/usage-docs/troubleshooting">Troubleshooting</a> for exact validation/error messages and fast diagnosis steps.
+            </li>
           </ul>
         ),
       },
       {
-        id: 'rutas-publicas-y-documentacion',
-        title: 'Rutas públicas y documentación',
+        id: 'public-routes-vs-docs',
+        title: 'Public routes versus docs',
         body: (
           <>
             <p>
-              Las páginas de flujos e industrias explican para qué sirve una solución. Esta documentación explica cómo
-              operarla: límites, orden de revisión, validaciones y cuándo guardar o publicar.
+              The workflow and industry landing pages are meant to explain why a route exists and what kind of problem
+              it solves. The usage docs are where the implementation details live. If a search-intent page answers the
+              strategic question and you are ready to build, come back here for the exact runtime behavior.
             </p>
             <p>
-              Para un primer despliegue, elige una ruta de flujo, prepara una sola plantilla representativa y vuelve a
-              estas guías para completar una prueba controlada antes de escalar.
+              That split is deliberate. It keeps commercial pages focused on the document problem and keeps the docs
+              focused on operator behavior, guardrails, limits, and validation steps. The safest path is usually:
+              choose the right route first, then use the matching docs page to validate one representative workflow.
             </p>
           </>
         ),
       },
       {
-        id: 'tres-rutas-rapidas',
-        title: 'Tres rutas rápidas',
+        id: 'three-fastest-starting-paths',
+        title: 'Three fastest starting paths',
         body: (
           <ul>
-            <li>Plantilla nueva: empieza en <a href={buildUsageDocsHref('getting-started')}>Primeros pasos</a>.</li>
-            <li>Datos ya existentes: usa <a href={buildUsageDocsHref('search-fill')}>Search &amp; Fill</a>.</li>
-            <li>Datos que debe enviar otra persona: usa <a href={buildUsageDocsHref('fill-by-link')}>Fill By Link</a>.</li>
+            <li>Template setup: start with <a href="/usage-docs/getting-started">Getting Started</a> when you need one recurring PDF to reach its first safe fill quickly.</li>
+            <li>Row-based filling: start with <a href="/usage-docs/search-fill">Search &amp; Fill</a> when the record already exists in CSV, XLSX, JSON, or a stored respondent submission. Use SQL and TXT files for schema mapping only.</li>
+            <li>Respondent collection: start with <a href="/usage-docs/fill-by-link">Fill By Link</a> when the row does not exist yet and someone must submit it first.</li>
           </ul>
         ),
       },
       {
-        id: 'primer-ciclo-de-validacion',
-        title: 'Primer ciclo de validación',
+        id: 'first-validation-loop',
+        title: 'First validation loop',
         body: (
           <ol>
-            <li>Elige un documento recurrente, no todo el paquete.</li>
-            <li>Ejecuta detección y revisa primero los campos de baja confianza.</li>
-            <li>Normaliza nombres y mapeos antes de probar volumen.</li>
-            <li>Rellena un registro representativo y revisa el PDF final.</li>
-            <li>Solo después publica un link, crea un grupo o expone un endpoint API.</li>
+            <li>Choose one recurring document, not every possible packet variation.</li>
+            <li>Run detection and review low-confidence items first.</li>
+            <li>Normalize names and mappings before you worry about volume.</li>
+            <li>Fill one representative record and inspect the output PDF carefully.</li>
+            <li>Only after that should you publish a Fill By Link, group the template, or expose an API endpoint.</li>
           </ol>
         ),
       },
       {
-        id: 'numeros-clave',
-        title: 'Números clave de la app',
+        id: 'hard-numbers',
+        title: 'Hard numbers used by the app',
         body: (
           <ul>
-            <li>Confianza alta: &gt;= 0.60; media: &gt;= 0.30; baja: &lt; 0.30.</li>
-            <li>Los resultados de búsqueda se limitan a 25 filas por consulta.</li>
-            <li>CSV, XLSX y JSON cargan hasta 5000 registros por importación.</li>
-            <li>La inferencia de esquema toma hasta 200 filas de muestra.</li>
-            <li>El historial de edición conserva 10 estados para deshacer y rehacer.</li>
-            <li>La geometría mínima es 12 puntos para texto/casillas y 16 puntos para firma.</li>
+            <li>Confidence tiers: high &gt;= 0.60, medium &gt;= 0.30, low &lt; 0.30.</li>
+            <li>Search results are capped at 25 rows per query.</li>
+            <li>CSV/XLSX/JSON parsing caps rows at 5000 records per import.</li>
+            <li>Schema inference samples up to 200 rows when inferring field types.</li>
+            <li>Field edit history depth is 10 snapshots (undo/redo).</li>
+            <li>Minimum overlay geometry is type-based: text/checkbox = 12 points, signature = 16 points.</li>
           </ul>
         ),
       },
@@ -198,78 +219,89 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('getting-started'),
     sections: [
       {
-        id: 'ruta-rapida',
-        title: 'Ruta rápida',
+        id: 'quick-start-path',
+        title: 'Quick-start path',
         body: (
           <ol>
-            <li>Sube un PDF de hasta 50MB.</li>
-            <li>Espera la detección y revisa los campos de baja confianza.</li>
-            <li>Si los nombres son inconsistentes, ejecuta Rename o Rename + Map.</li>
-            <li>Ajusta geometría y tipos en el editor.</li>
-            <li>Guarda la plantilla.</li>
-            <li>Prueba una fila con Search &amp; Fill o publica un Fill By Link controlado.</li>
+            <li>Upload a PDF (50MB max). Non-PDF or larger files are blocked before upload.</li>
+            <li>Wait for detection results, then check low-confidence items first.</li>
+            <li>If naming is inconsistent, run Rename or Rename + Map (with schema ready).</li>
+            <li>Clean geometry in the editor, then verify field types.</li>
+            <li>Save the template, then either publish Fill By Link or load CSV/XLSX/JSON rows for Search &amp; Fill.</li>
+            <li>Run one controlled Search &amp; Fill or respondent-selection test before production use.</li>
           </ol>
         ),
       },
       {
-        id: 'orden-recomendado',
-        title: 'Orden recomendado',
+        id: 'best-practice-order',
+        title: 'Best-practice order',
+        body: (
+          <>
+            <p>For consistent results, keep this order:</p>
+            <ul>
+              <li>Detect first.</li>
+              <li>Rename before mapping if labels are inconsistent.</li>
+              <li>Map after schema upload so field names align to column headers.</li>
+              <li>Finalize geometry and field types before large batch filling/exporting.</li>
+            </ul>
+            <p>
+              Practical credit plan: when you need both operations, use Rename + Map to reduce round trips.
+              Credit cost remains bucketed by page count either way.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: 'first-run-checklist',
+        title: 'First-run checklist',
         body: (
           <ul>
-            <li>Detecta antes de renombrar.</li>
-            <li>Renombra antes de mapear cuando las etiquetas del PDF son débiles.</li>
-            <li>Mapea antes de cargar muchas filas.</li>
-            <li>Valida una salida antes de publicar.</li>
-            <li>Guarda la versión estable antes de crear links, grupos o endpoints.</li>
+            <li>Confirm each required form area has a field candidate.</li>
+            <li>Verify page assignment for fields spanning multiple pages.</li>
+            <li>Check checkbox groups/options (`groupKey`, `optionKey`) before filling.</li>
+            <li>Run one test record through Search &amp; Fill before saving templates.</li>
+            <li>If using Fill By Link, verify the public form questions read clearly on a phone before sharing.</li>
+            <li>Validate one date-like text field and one checkbox group in the final output PDF.</li>
           </ul>
         ),
       },
       {
-        id: 'lista-de-control',
-        title: 'Lista de control inicial',
+        id: 'first-30-minutes',
+        title: 'First 30 minutes',
+        body: (
+          <ol>
+            <li>Pick one recurring PDF instead of a full packet.</li>
+            <li>Run detection and clean the low-confidence items immediately.</li>
+            <li>Rename or map only after the field geometry is believable.</li>
+            <li>Fill one realistic record, inspect the PDF, clear it, and fill again.</li>
+            <li>Only after that should you publish a Fill By Link, save packet groups, or expose API Fill.</li>
+          </ol>
+        ),
+      },
+      {
+        id: 'common-first-run-mistakes',
+        title: 'Most common first-run mistakes',
         body: (
           <ul>
-            <li>El PDF base es el documento correcto y aprobado.</li>
-            <li>Los campos detectados no se solapan ni quedan fuera de la página.</li>
-            <li>Los nombres de campos se entienden fuera del contexto visual.</li>
-            <li>Casillas y radios tienen opciones claras.</li>
-            <li>La descarga plana se ve correcta en un visor común.</li>
+            <li>Uploading several document variations before one canonical template is stable.</li>
+            <li>Running mapping before low-confidence geometry and checkbox cleanup are reviewed.</li>
+            <li>Judging the workflow from field detection alone instead of from one full fill cycle.</li>
+            <li>Publishing links or sharing templates before date-like text, checkbox, and repeated-name fields are tested with a real record.</li>
           </ul>
         ),
       },
       {
-        id: 'primeros-30-minutos',
-        title: 'Primeros 30 minutos',
-        body: (
-          <p>
-            Dedica los primeros minutos a una sola plantilla. Si intentas resolver cada variante desde el inicio,
-            mezclarás problemas de detección, nombres, datos y salida. Una plantilla bien validada es mejor que cinco
-            plantillas medio revisadas.
-          </p>
-        ),
-      },
-      {
-        id: 'errores-comunes',
-        title: 'Errores comunes al empezar',
+        id: 'what-good-looks-like',
+        title: 'What good output looks like',
         body: (
           <ul>
-            <li>Publicar un link antes de revisar el PDF generado.</li>
-            <li>Usar columnas de Excel ambiguas como origen de datos.</li>
-            <li>Dejar nombres duplicados en campos copiados.</li>
-            <li>Confiar en detecciones de baja confianza sin redibujar.</li>
-            <li>Guardar una plantilla antes de verificar casillas y radios.</li>
+            <li>High-confidence fields require little or no geometry correction.</li>
+            <li>Mapped field names resemble your schema headers (snake_case style in most cases).</li>
+            <li>Yes/no checkbox pairs always end with exactly one selected option after fill.</li>
+            <li>
+              Search returns expected records quickly with either <code>contains</code> or <code>equals</code> mode.
+            </li>
           </ul>
-        ),
-      },
-      {
-        id: 'salida-correcta',
-        title: 'Cómo se ve una buena salida',
-        body: (
-          <p>
-            Una salida correcta mantiene el diseño original, coloca valores en los campos esperados, no deja texto
-            cortado, respeta casillas y opciones, y puede compartirse como PDF plano cuando el destinatario no necesita
-            editar campos.
-          </p>
         ),
       },
     ],
@@ -278,68 +310,84 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('detection'),
     sections: [
       {
-        id: 'que-devuelve-deteccion',
-        title: 'Qué devuelve la detección',
+        id: 'what-detection-returns',
+        title: 'What detection returns',
         body: (
-          <p>
-            La detección propone campos con tipo, página, coordenadas y confianza. Es un punto de partida, no una
-            aprobación automática. El operador debe revisar si el campo corresponde al espacio real del PDF.
-          </p>
+          <>
+            <p>
+              Detection returns a field list with key values: <code>name</code>, <code>type</code>, <code>page</code>,
+              geometry (<code>rect</code>), and confidence metadata.
+            </p>
+            <p>
+              Geometry is normalized to top-left origin coordinates and rendered as <code>{`{x, y, width, height}`}</code>
+              in the editor.
+            </p>
+            <p>
+              Field types supported in the UI are <code>text</code>, <code>signature</code>, <code>checkbox</code>, and <code>radio</code>.
+            </p>
+          </>
         ),
       },
       {
-        id: 'revisar-confianza',
-        title: 'Revisar confianza',
+        id: 'confidence-review',
+        title: 'Confidence review',
         body: (
           <ul>
-            <li>Alta: normalmente revisar tamaño y nombre.</li>
-            <li>Media: confirmar tipo, borde y etiqueta cercana.</li>
-            <li>Baja: revisar manualmente; a menudo conviene redibujar.</li>
+            <li>High: confidence &gt;= 0.60</li>
+            <li>Medium: confidence &gt;= 0.30 and &lt; 0.60</li>
+            <li>Low: confidence &lt; 0.30</li>
+            <li>
+              Numeric confidence parser accepts either 0..1 values or 0..100 percentages (for example <code>82</code>
+              becomes <code>0.82</code>).
+            </li>
+            <li>Start review from low-confidence candidates because they drive most downstream errors.</li>
           </ul>
         ),
       },
       {
-        id: 'limitaciones-y-arreglos',
-        title: 'Limitaciones y arreglos comunes',
+        id: 'common-limitations',
+        title: 'Common limitations and fixes',
         body: (
           <ul>
-            <li>Escaneos borrosos generan más falsos positivos.</li>
-            <li>Tablas densas pueden producir campos demasiado estrechos.</li>
-            <li>Casillas visualmente pequeñas pueden confundirse con marcas o bordes.</li>
-            <li>Campos de firma suelen necesitar ajuste manual de tamaño.</li>
+            <li>Low-quality scans can reduce field boundary precision.</li>
+            <li>Dense pages may produce close candidates that need manual cleanup.</li>
+            <li>Decorative boxes can be mistaken for fields; remove or repurpose them in the Field Editor.</li>
+            <li>Encrypted PDFs are rejected and must be unlocked before detection.</li>
           </ul>
         ),
       },
       {
-        id: 'calidad-del-pdf',
-        title: 'Rubrica de calidad del PDF',
+        id: 'pdf-quality-rubric',
+        title: 'PDF quality rubric',
         body: (
-          <p>
-            Un buen PDF base tiene texto legible, márgenes estables, áreas de respuesta claras y pocas marcas
-            decorativas cerca de los campos. Si el archivo cambia cada semana, valida la versión antes de guardar una
-            plantilla reutilizable.
-          </p>
+          <ul>
+            <li>Best: native PDFs with high contrast, clear form lines, and predictable spacing.</li>
+            <li>Usable with review: scans that are readable but have light skew, compression noise, or inconsistent line weight.</li>
+            <li>High-risk: faint scans, dense tables, decorative borders, or layouts where fields are packed tightly together.</li>
+            <li>The dirtier the PDF, the more important it is to review low-confidence candidates before rename or mapping.</li>
+          </ul>
         ),
       },
       {
-        id: 'redibujar-vs-redimensionar',
-        title: 'Cuándo redibujar en vez de redimensionar',
+        id: 'redraw-vs-resize',
+        title: 'When to redraw instead of resize',
         body: (
-          <p>
-            Redimensiona cuando el campo está bien ubicado pero necesita precisión. Redibuja cuando el tipo es
-            incorrecto, el campo cae sobre otra zona, o el detector interpretó una línea decorativa como área de
-            respuesta.
-          </p>
+          <ul>
+            <li>Resize when the candidate is fundamentally the right field but the geometry is slightly off.</li>
+            <li>Redraw when a decorative box was mistaken for a field or when the detection captures the wrong label/line pair entirely.</li>
+            <li>Delete and recreate when the current candidate would require several compensating edits that are harder to audit later.</li>
+          </ul>
         ),
       },
       {
-        id: 'geometria',
-        title: 'Geometría y restricciones del editor',
+        id: 'geometry-values',
+        title: 'Geometry values and editor constraints',
         body: (
-          <p>
-            Las coordenadas se guardan por página. Al mover, redimensionar o cambiar tipo, revisa que el campo siga
-            dentro de su página y que el tamaño mínimo no impida escribir el valor esperado.
-          </p>
+          <ul>
+            <li>Rectangles are clamped to page bounds during drag/resize.</li>
+            <li>Minimum field geometry is type-based: text/checkbox = 12 points, signature = 16 points.</li>
+            <li>All geometry edits in the Field Editor and overlay are applied in the same coordinate system.</li>
+          </ul>
         ),
       },
     ],
@@ -348,86 +396,124 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('rename-mapping'),
     sections: [
       {
-        id: 'cuando-usar-cada-accion',
-        title: 'Cuándo usar cada acción',
+        id: 'when-to-run-each',
+        title: 'When to run each action',
         body: (
           <ul>
-            <li>Rename limpia nombres de campos dentro de la plantilla.</li>
-            <li>Map alinea campos existentes con columnas o claves de datos.</li>
-            <li>Rename + Map hace ambas cosas cuando el PDF y el esquema necesitan revisión.</li>
+            <li>Rename: use when geometry is acceptable but field names are inconsistent.</li>
+            <li>Map: use when names are already acceptable and you only need schema alignment.</li>
+            <li>Rename + Map: use when you need both in a single flow.</li>
+            <li>Base costs per bucket: Rename=1, Remap=1, Rename+Map=2.</li>
+            <li>Server pricing formula: total credits = baseCost x ceil(pageCount / bucketSize).</li>
+            <li>Current bucket size default is 5 pages, and server page count is used for final billing.</li>
           </ul>
         ),
       },
       {
-        id: 'limites-de-datos-openai',
-        title: 'Límites de datos enviados a OpenAI',
+        id: 'openai-data-boundaries',
+        title: 'OpenAI data boundaries',
         body: (
-          <p>
-            DullyPDF usa OpenAI para proponer nombres, mapeos y extracciones cuando eliges esas acciones. Revisa cada
-            resultado antes de guardar, especialmente en documentos sensibles o campos con significado operativo.
-          </p>
+          <>
+            <p>
+              Rename and mapping can send PDF page imagery, field overlay tags, and schema headers.
+              CSV/Excel/JSON row values and in-editor field input values are not sent.
+            </p>
+            <p>
+              The product asks for explicit confirmation before these requests run. Mapping-only requests send
+              database headers + PDF field tags. Combined Rename + Map sends PDF + headers + tags.
+            </p>
+          </>
         ),
       },
       {
-        id: 'interpretar-resultados',
-        title: 'Interpretar resultados',
-        body: (
-          <p>
-            Un buen resultado produce nombres estables, legibles y cercanos al esquema de datos. Si varias columnas
-            parecen encajar con un campo, decide manualmente antes de rellenar.
-          </p>
-        ),
-      },
-      {
-        id: 'ejemplos-de-mapeo',
-        title: 'Ejemplos concretos de mapeo',
+        id: 'interpreting-results',
+        title: 'Interpreting results',
         body: (
           <ul>
-            <li><code>nombre_cliente</code> puede mapear a "Nombre completo".</li>
-            <li><code>fecha_ingreso</code> puede mapear a una fecha del formulario.</li>
-            <li><code>aprobado</code> puede controlar una casilla si los valores booleanos son claros.</li>
+            <li>
+              <code>renameConfidence</code> measures name quality; <code>fieldConfidence</code> measures whether it is
+              likely a true field; <code>mappingConfidence</code> measures schema alignment confidence.
+            </li>
+            <li>Review checkbox metadata (`groupKey`, `optionKey`, `optionLabel`) after rename/map runs.</li>
+            <li>
+              High-confidence <code>radioGroupSuggestions</code> auto-apply so explicit radio groups are created before
+              publish; lower-confidence suggestions stay review-only.
+            </li>
+            <li>Treat AI output as recommendations and validate before production usage.</li>
           </ul>
         ),
       },
       {
-        id: 'casillas-y-prioridad',
-        title: 'Casillas, radios y prioridad',
-        body: (
-          <p>
-            Las casillas y radios necesitan reglas explícitas. Revisa alias, valores verdaderos/falsos y grupos antes
-            de confiar en un relleno masivo.
-          </p>
-        ),
-      },
-      {
-        id: 'valores-booleanos',
-        title: 'Valores booleanos comunes',
-        body: (
-          <p>
-            Usa valores consistentes como true/false, yes/no, si/no, 1/0 o etiquetas exactas de opción. Evita columnas
-            con texto libre cuando controlan casillas.
-          </p>
-        ),
-      },
-      {
-        id: 'higiene-del-esquema',
-        title: 'Higiene del esquema',
+        id: 'concrete-mapping-examples',
+        title: 'Concrete mapping examples',
         body: (
           <ul>
-            <li>Evita columnas duplicadas.</li>
-            <li>Prefiere nombres cortos y descriptivos.</li>
-            <li>No mezcles varias respuestas en una sola columna si deben ir a campos separados.</li>
-            <li>Usa formatos de fecha consistentes.</li>
+            <li>Text field: map <code>insured_name</code> or <code>employee_first_name</code> directly to a stable string column.</li>
+            <li>Checkbox enum: map one group to values like <code>single</code>, <code>married</code>, or other categorical tokens via <code>enum</code> rules.</li>
+            <li>Radio group: keep one explicit group key and distinct option keys so a single selected value does not drift into multi-select behavior later.</li>
           </ul>
         ),
       },
       {
-        id: 'advertencia-rename',
-        title: 'Advertencia sobre Rename',
+        id: 'checkbox-rules-and-precedence',
+        title: 'Checkbox rules and precedence',
+        body: (
+          <>
+            <p>
+              Checkbox rules support four operations: <code>yes_no</code>, <code>presence</code>, <code>enum</code>,
+              and <code>list</code>.
+            </p>
+            <ul>
+              <li><code>yes_no</code>: boolean semantics with optional true/false option mapping.</li>
+              <li><code>presence</code>: truthy means select positive option; falsey usually leaves group unset unless mapped.</li>
+              <li><code>enum</code>: select the first valid option from a categorical value.</li>
+              <li><code>list</code>: split multi-value strings on <code>, ; | /</code> for multi-select groups.</li>
+            </ul>
+            <p>Search &amp; Fill applies checkbox/radio logic in this order:</p>
+            <ol>
+              <li>Direct field-name boolean match.</li>
+              <li>Direct option-key match.</li>
+              <li>Direct group-value match (`i_...`, `checkbox_...`, or raw group key).</li>
+              <li><code>checkboxRules</code>.</li>
+              <li>Built-in alias fallback groups.</li>
+            </ol>
+          </>
+        ),
+      },
+      {
+        id: 'boolean-token-values',
+        title: 'Boolean token values used by Search & Fill',
+        body: (
+          <>
+            <p>Truthy tokens include: <code>true</code>, <code>1</code>, <code>yes</code>, <code>y</code>, <code>on</code>, <code>checked</code>, <code>t</code>, <code>x</code>, <code>selected</code>.</p>
+            <p>False tokens include: <code>false</code>, <code>0</code>, <code>no</code>, <code>n</code>, <code>off</code>, <code>unchecked</code>, <code>f</code>, <code>unselected</code>.</p>
+            <p>Ambiguous tokens return null and do not coerce booleans: <code>y/n</code>, <code>yes/no</code>, <code>true/false</code>, <code>t/f</code>, <code>0/1</code>, <code>1/0</code>.</p>
+            <p>
+              Presence-false tokens include: <code>n/a</code>, <code>none</code>, <code>unknown</code>, <code>not available</code>,
+              <code>null</code>, <code>blank</code>, and related variants.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: 'schema-hygiene-anti-patterns',
+        title: 'Schema hygiene anti-patterns',
+        body: (
+          <ul>
+            <li>Headers that change spelling or casing between exports.</li>
+            <li>Multiple columns that mean the same thing but are not normalized intentionally.</li>
+            <li>Boolean or checkbox values that mix <code>yes/no</code>, <code>1/0</code>, blanks, and custom tokens without a documented rule.</li>
+            <li>Mapping directly from vague field names such as <code>Text1</code> or duplicated labels when Rename should have run first.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'rename-only-warning',
+        title: 'Rename-only warning',
         body: (
           <p>
-            Cambiar nombres puede invalidar valores ya rellenados. Si renombraste o remapeaste, ejecuta una prueba de
-            Search &amp; Fill otra vez antes de descargar o publicar.
+            Rename without map can standardize names, but complex checkbox groups and non-matching checkbox columns may
+            still fail to fill correctly until schema mapping is also applied.
           </p>
         ),
       },
@@ -437,100 +523,169 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('editor-workflow'),
     sections: [
       {
-        id: 'modelo-de-tres-paneles',
-        title: 'Modelo de tres paneles',
-        body: (
-          <p>
-            Usa el visor para revisar posición, la lista para encontrar campos por nombre y el inspector para editar
-            tipo, tamaño, reglas y metadatos. Cambiar de panel sin orden suele ocultar errores simples.
-          </p>
-        ),
-      },
-      {
-        id: 'modos-de-trabajo',
-        title: 'Modos de revisión, edición y relleno',
-        body: (
-          <p>
-            Revisión es para inspeccionar, edición es para corregir campos, y relleno es para validar datos. Mantén esas
-            etapas separadas cuando prepares una plantilla nueva.
-          </p>
-        ),
-      },
-      {
-        id: 'acciones-de-edicion',
-        title: 'Acciones de edición',
+        id: 'three-panel-model',
+        title: 'Three-panel model',
         body: (
           <ul>
-            <li>Mover y redimensionar campos.</li>
-            <li>Cambiar tipo de campo.</li>
-            <li>Crear o eliminar campos manuales.</li>
-            <li>Ajustar nombre, fuente, color y tamaño de texto.</li>
-            <li>Configurar reglas de casilla, radio o cálculo.</li>
+            <li>Overlay is best for spatial review and direct manipulation.</li>
+            <li>Browser is best for scanning, filtering, and page jumping.</li>
+            <li>Field Editor is best for precise metadata and geometry edits.</li>
+            <li>The Browser and Field Editor headers both expose a right-aligned <em>Usage Docs</em> button that opens this Editor Workflow page in a new browser tab/window.</li>
+            <li>Both side panels keep description text in collapsible rows so the working controls stay compact.</li>
+            <li>
+              Display presets are <code>Review</code>, <code>Edit</code>, and <code>Fill</code>, with manual toggles for
+              <code>Fields</code>, <code>Names</code>, <code>Info</code>, <code>All</code>, and <code>Clear</code>.
+            </li>
+            <li>The Browser controls show a compact <code>Page Fields</code> count, and the header includes a <code>Top</code> action for returning to the start of the scrollable panel.</li>
           </ul>
         ),
       },
       {
-        id: 'herramientas-pdf',
-        title: 'PDF Tools',
+        id: 'review-edit-fill-modes',
+        title: 'Review, Edit, and Fill modes',
         body: (
-          <p>
-            PDF Tools permite revisar páginas antes de guardar: borrar, reordenar, rotar, insertar páginas y optimizar
-            el archivo. Después de cambiar páginas, valida que los campos sigan en el lugar correcto.
-          </p>
+          <>
+            <p>
+              The display presets change which editor layer is active. Use them as a workflow switch, not as permanent
+              template metadata.
+            </p>
+            <ul>
+              <li><code>Review</code> shows field overlays and names so you can scan detection quality, naming, page assignment, and confidence without moving geometry by accident.</li>
+              <li><code>Edit</code> is the default cleanup mode. It enables transform controls for moving and resizing fields, then pairs with the Field Editor for exact metadata and coordinate edits.</li>
+              <li><code>Fill</code> shows interactive field controls on the PDF so you can enter or validate values before saving, downloading, publishing, or running Search &amp; Fill.</li>
+              <li>Manual toggles can create a custom visibility state when a preset is close but not exact enough for the current review pass.</li>
+            </ul>
+          </>
         ),
       },
       {
-        id: 'campos-de-calculo',
-        title: 'Campos de cálculo',
+        id: 'editing-actions',
+        title: 'Editing actions',
         body: (
-          <p>
-            Los cálculos de DullyPDF usan entradas numéricas y salidas calculadas revisables. Mantén las fórmulas
-            simples, evita dependencias circulares y valida con una fila conocida.
-          </p>
+          <ul>
+            <li>Enable <code>Transform</code> mode to show resize handles while editing fields on the PDF.</li>
+            <li><code>Transform</code> and <code>Info</code> are mutually exclusive to prevent drag/input conflicts.</li>
+            <li><code>Edit</code> preset is the default when a form opens.</li>
+            <li>Moving and resizing are only available while <code>Transform</code> is on.</li>
+            <li>Drag fields to move and use handles to resize while <code>Transform</code> is enabled.</li>
+            <li>Corner handles follow standard freeform resize behavior by default (independent width/height).</li>
+            <li>Hold <code>Shift</code> while dragging a corner to preserve aspect ratio for that drag.</li>
+            <li>Standard fields expose four corners plus middle edge handles; small fields (for example tiny checkboxes) use a single bottom-right handle.</li>
+            <li>Small fields also include a larger move hit area to reduce missed drag attempts.</li>
+            <li>
+              Use Field Editor create tools to draw text, signature, checkbox, and radio fields directly on-canvas,
+              including quick-radio helpers for common single-select groups.
+            </li>
+            <li>DullyPDF-only create tools include Image, PDF417, 1D Code 128, and QR Code helpers.</li>
+            <li>Activating a create tool exits <code>Transform</code> and <code>Info</code> so drawing gestures stay deterministic.</li>
+            <li>Turning the create tool off restores the previous viewer mode and visibility toggles.</li>
+            <li>Click once to place a default-size field, or drag past the click threshold to size the field from the gesture.</li>
+            <li>Use Field Editor inputs for exact x/y/width/height updates.</li>
+            <li>Delete invalid candidates one by one, or use the Field Editor bulk-delete action when you want to reset the field set and start over.</li>
+            <li>Geometry is clamped to page bounds and type-based minimum sizes.</li>
+            <li>If a selected field is hidden by active filters, use <code>Reveal selected</code> in the list panel.</li>
+          </ul>
         ),
       },
       {
-        id: 'limpieza-en-diez-minutos',
-        title: 'Orden de limpieza en diez minutos',
+        id: 'pdf-tools',
+        title: 'PDF tools',
+        body: (
+          <ul>
+            <li>The workspace header exposes <code>PDF Tools</code> with a <code>Manage Pages</code> action for source-PDF page changes.</li>
+            <li><code>Manage Pages</code> stages delete, reorder, rotate, and insert-from-PDF changes before it rewrites the active PDF.</li>
+            <li><code>Compress / Optimize PDF</code> applies lossless backend cleanup, object-stream rewriting, and stream/font/image deflate without intentionally lowering image quality.</li>
+            <li>Deleting a source page removes fields on that page. Reordering a source page moves that page's fields with it.</li>
+            <li>Rotating a source page also rotates the field rectangles on that page so overlays stay aligned with the new page orientation.</li>
+            <li>Inserted pages start without detected fields. Add fields manually or rerun the broader template workflow when those pages need detection.</li>
+            <li>After page changes, DullyPDF refreshes the active PDF bytes and creates a fresh backend session when possible so Rename/Map can continue against the updated document.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'calculation-fields',
+        title: 'Calculation fields',
+        body: (
+          <ul>
+            <li><code>Number Input</code> creates an integer text field that users or data sources can fill.</li>
+            <li><code>Calculated Output</code> creates a read-only text field whose value comes from a DullyPDF formula.</li>
+            <li>Formulas are built from numeric field references, constants, unary minus, and <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. DullyPDF stores the formula model, not user-authored JavaScript.</li>
+            <li>The calculation setup dialog includes a <em>Usage Docs</em> button that opens this section in a new browser tab/window.</li>
+            <li>Use <code>Add Field to equation</code> to append a selected numeric field to the equation builder.</li>
+            <li>The setup dialog blocks missing dependencies, invalid operators, and dependency cycles before the formula is saved.</li>
+            <li>Editable PDFs include generated Acrobat calculation actions for Adobe compatibility, but DullyPDF also precomputes the visible value before export.</li>
+            <li>For completed records, use a flat PDF when the recipient does not need to keep editing live fields.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'dullypdf-only-helpers',
+        title: 'DullyPDF-only helpers',
+        body: (
+          <ul>
+            <li>Image, PDF417, 1D Code 128, and QR Code helpers are template helpers, not native AcroForm widget types.</li>
+            <li>Editable downloads preserve those helpers as readonly text marker fields so DullyPDF can restore them when the PDF is reopened.</li>
+            <li>The first marker line is the helper code, the middle lines hold the image name or encoded barcode payload, and the last line is a short readonly type label: <code>(IMAGE)</code>, <code>(PDF417)</code>, <code>(1D)</code>, or <code>(QR)</code>.</li>
+            <li>DullyPDF converts helpers back from the helper code and payload. The short type label is only there so people can recognize the readonly marker field.</li>
+            <li>Flat downloads, Fill By Link response downloads, and API Fill outputs stamp the final image, PDF417, Code 128, or QR visual into the PDF page content.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'ten-minute-cleanup-order',
+        title: 'Ten-minute cleanup order',
         body: (
           <ol>
-            <li>Revisa detecciones de baja confianza.</li>
-            <li>Elimina falsos positivos.</li>
-            <li>Ajusta geometría.</li>
-            <li>Corrige tipos.</li>
-            <li>Normaliza nombres.</li>
-            <li>Prueba una fila.</li>
+            <li>Review low-confidence detections and obvious false positives first.</li>
+            <li>Fix page assignment, geometry, and field type mistakes before naming cleanup.</li>
+            <li>Normalize names and group metadata once the field set is visually stable.</li>
+            <li>Run one Search &amp; Fill validation pass before deciding the template is done.</li>
           </ol>
         ),
       },
       {
-        id: 'ciclo-de-calidad',
-        title: 'Ciclo de calidad recomendado',
+        id: 'quality-loop',
+        title: 'Recommended quality loop',
         body: (
-          <p>
-            Guarda solo cuando una salida representativa se vea correcta. Si cambias campos después, vuelve a probar el
-            mismo registro para comparar antes y después.
-          </p>
+          <ol>
+            <li>Filter low confidence items first.</li>
+            <li>Normalize field naming patterns.</li>
+            <li>Validate page assignments and dimensions.</li>
+            <li>Run a Search &amp; Fill trial row and inspect final output.</li>
+          </ol>
         ),
       },
       {
-        id: 'historial-y-limpieza',
-        title: 'Historial y limpieza',
+        id: 'history-and-clear',
+        title: 'History and clear behavior',
         body: (
-          <p>
-            El editor conserva un historial corto para deshacer. Los valores actuales pueden limpiarse cuando cambias la
-            definición de la plantilla, porque los datos antiguos podrían no pertenecer al nuevo campo.
-          </p>
+          <ul>
+            <li>Undo/redo depth is 10 edits.</li>
+            <li><code>Clear</code> removes meaningful field values and resets them to null.</li>
+            <li>Workspace edits update the editor state immediately, while the PDF bytes are rewritten when you save or download.</li>
+            <li>For booleans, only true values are considered filled for clear-state checks.</li>
+            <li>Header OpenAI actions surface prerequisite hints when disabled to reduce trial-and-error clicks.</li>
+          </ul>
         ),
       },
       {
-        id: 'atajos',
-        title: 'Atajos',
+        id: 'keyboard-shortcuts',
+        title: 'Keyboard shortcuts',
         body: (
-          <p>
-            Usa los controles visibles del editor como fuente principal. Si un atajo no responde, revisa que el foco no
-            esté dentro de un campo de texto o diálogo.
-          </p>
+          <ul>
+            <li><code>Ctrl/Cmd+Z</code>: undo</li>
+            <li><code>Ctrl/Cmd+Shift+Z</code> or <code>Ctrl/Cmd+Y</code>: redo</li>
+            <li><code>Delete</code>, <code>Backspace</code>, or <code>Ctrl/Cmd+X</code>: delete selected field</li>
+            <li><code>T</code> / <code>S</code> / <code>C</code> / <code>R</code> / <code>Q</code>: activate Text/Signature/Checkbox/Radio/Quick Radio create tools</li>
+            <li><code>Esc</code>: clear active create tool</li>
+            <li><code>Ctrl/Cmd+F</code> or <code>/</code>: focus field search</li>
+            <li><code>[</code> and <code>]</code>: previous/next page</li>
+            <li><code>Arrow</code>: move selected field by the configured step when <code>Arrow keys</code> movement is enabled</li>
+            <li><code>Alt+Arrow</code>: nudge selected field by 1 point</li>
+            <li><code>Shift+Alt+Arrow</code>: nudge selected field by 10 points</li>
+            <li><code>Ctrl/Cmd+0</code>: reset zoom to 100%</li>
+            <li><code>Shift</code> (during corner drag): temporary aspect-ratio lock</li>
+          </ul>
         ),
       },
     ],
@@ -539,113 +694,303 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('search-fill'),
     sections: [
       {
-        id: 'botones-principales',
-        title: 'Botones principales',
+        id: 'toolbar-buttons-overview',
+        title: 'Toolbar buttons overview',
         body: (
-          <p>
-            Search &amp; Fill conecta una fuente de datos, busca una fila, muestra coincidencias y rellena los campos
-            revisados. Úsalo cuando el dato ya existe en una tabla, archivo o respuesta almacenada.
-          </p>
+          <>
+            <p>
+              The workspace toolbar exposes five action buttons once a document is loaded. Each serves a different stage
+              of the template-to-filled-PDF pipeline:
+            </p>
+            <ul>
+              <li>
+                <strong>Connected source (Search &amp; Fill)</strong> — the data source dropdown. Click it to load CSV, Excel, or JSON
+                as a schema and record source, or SQL/TXT as a schema-only source. Once loaded, the button label updates to show the connected source type
+                (for example &quot;Connected CSV&quot;). The dropdown also contains <em>Search &amp; Fill</em> (opens the Search &amp; Fill
+                modal when rows are available), <em>Clear Field Information</em> (clears the current field values without disconnecting
+                the source), <em>Disconnect Data Source</em> (disconnects the current source), and <em>Usage Docs</em> (opens these
+                Search &amp; Fill docs in a new browser tab/window).
+              </li>
+              <li>
+                <strong>Rename or Remap</strong> — the OpenAI actions dropdown. Options include <em>Rename</em> (standardize field names),{' '}
+                <em>Map Schema</em> (align field names to your loaded schema columns), <em>Rename + Map</em> (both in one step),
+                and <em>Rename + Map Group</em> (batch across all templates in an open group), plus <em>Usage Docs</em> (opens Rename + Mapping
+                docs in a new browser tab/window). Requires a loaded document and available credits. A schema source must be
+                connected before Map or Rename + Map can run.
+              </li>
+              <li>
+                <strong>Fill From Images + Documents</strong> — upload photos or scanned documents (IDs, invoices, pay stubs) and
+                extract matching field values using OpenAI vision. The dialog also includes a top-right <em>Usage Docs</em> button
+                that opens the <a href="/usage-docs/fill-from-images">Fill from Images and Documents</a> docs page in a new browser tab/window.
+              </li>
+              <li>
+                <strong>Fill By Web Form Link + Sign</strong> — publish a DullyPDF-hosted web form from a saved template or open group,
+                collect respondent answers, and optionally require a signing ceremony after submit. The dialog includes a
+                top-right <em>Usage Docs</em> button that opens the <a href="/usage-docs/fill-by-link">Fill By Link</a> docs page
+                in a new browser tab/window.
+              </li>
+              <li>
+                <strong>Send PDF for Signature by email</strong> — freeze the current PDF and email it to one or more signers.
+                The dialog includes a top-right <em>Usage Docs</em> button that opens the <a href="/usage-docs/signature-workflow">Signature Workflow</a>
+                docs page in a new browser tab/window.
+              </li>
+            </ul>
+          </>
         ),
       },
       {
-        id: 'fuentes-soportadas',
-        title: 'Fuentes de datos soportadas',
+        id: 'data-source-support',
+        title: 'Data source support',
         body: (
-          <ul>
-            <li>CSV, XLSX y JSON pueden aportar filas.</li>
-            <li>SQL y TXT ayudan a inferir esquema, pero no rellenan filas.</li>
-            <li>Respuestas de Fill By Link pueden reutilizarse como registros.</li>
-          </ul>
+          <>
+            <p>
+              The data source dropdown accepts five file types. CSV, Excel, and JSON provide both schema headers and record
+              rows for Search &amp; Fill. SQL and TXT provide schema columns only (for mapping) — they do not include row data
+              unless the SQL file also contains <code>INSERT INTO</code> statements.
+            </p>
+            <ul>
+              <li>Fill By Link respondent submissions are stored as structured records and can be selected from the workspace just like local rows.</li>
+              <li>CSV/XLSX/JSON parsers cap records at 5,000 rows per import. SQL and TXT parsers expose schema columns only.</li>
+              <li>Duplicate headers are auto-renamed with numeric suffixes (<code>name</code>, <code>name_2</code>, <code>name_3</code>, ...).</li>
+              <li>Header normalization trims whitespace, converts to lowercase, replaces spaces and hyphens with underscores, and removes other punctuation.</li>
+              <li>Schema type inference samples up to 200 rows when detecting column types automatically.</li>
+              <li>Allowed column types across all formats: <code>string</code>, <code>int</code>, <code>date</code>, <code>bool</code>.</li>
+            </ul>
+          </>
         ),
       },
       {
-        id: 'formato-csv',
-        title: 'Formato CSV',
-        body: <p>Usa encabezados claros, una fila por registro y valores consistentes para fechas, casillas y opciones.</p>,
+        id: 'csv-file-format',
+        title: 'CSV file format',
+        body: (
+          <>
+            <p>
+              CSV files follow the RFC 4180 standard. The first row is treated as the header row. All subsequent rows
+              become searchable records.
+            </p>
+            <p><strong>Example CSV:</strong></p>
+            <pre>{`first_name,last_name,dob,email,phone
+John,Smith,1990-05-14,john@example.com,555-0100
+Jane,Doe,1985-11-02,jane@example.com,555-0200
+Bob,Johnson,1978-03-21,bob@example.com,555-0300`}</pre>
+            <ul>
+              <li>Default delimiter is comma. Quoted fields with escaped double-quotes are handled.</li>
+              <li>Both <code>\r\n</code> and <code>\n</code> line endings are supported.</li>
+              <li>BOM (byte-order mark) is stripped automatically.</li>
+              <li>Empty headers are filtered out. Empty rows (all cells blank) are skipped.</li>
+              <li>Maximum 5,000 rows per import. All values are stored as strings.</li>
+              <li>Column types (string, int, date, bool) are inferred automatically from the first 200 rows of data.</li>
+            </ul>
+          </>
+        ),
       },
       {
-        id: 'formato-json',
-        title: 'Formato JSON',
-        body: <p>Prefiere objetos planos o listas de objetos con claves estables. Evita estructuras profundas si no necesitas anidamiento.</p>,
+        id: 'json-file-format',
+        title: 'JSON file format',
+        body: (
+          <>
+            <p>
+              JSON files can use several structures. DullyPDF auto-detects the layout and extracts headers and rows.
+            </p>
+            <p><strong>Simplest format — array of objects (recommended):</strong></p>
+            <pre>{`[
+  { "first_name": "John", "last_name": "Smith", "dob": "1990-05-14" },
+  { "first_name": "Jane", "last_name": "Doe", "dob": "1985-11-02" }
+]`}</pre>
+            <p><strong>Nested structure with explicit schema:</strong></p>
+            <pre>{`{
+  "fields": [
+    { "name": "first_name", "type": "string" },
+    { "name": "dob", "type": "date" }
+  ],
+  "rows": [
+    { "first_name": "John", "dob": "1990-05-14" }
+  ]
+}`}</pre>
+            <ul>
+              <li>Accepted top-level array keys for rows: <code>rows</code>, <code>records</code>, <code>data</code>, <code>items</code>, <code>entries</code>.</li>
+              <li>Accepted schema keys: <code>schema.fields</code>, <code>fields</code>, <code>columns</code>, <code>headers</code>.</li>
+              <li>Each field entry can be a string name or an object with <code>name</code>, <code>field</code>, <code>column</code>, or <code>id</code> property.</li>
+              <li>Nested objects are flattened with underscore separators (for example <code>address.city</code> becomes <code>address_city</code>) up to 6 levels deep.</li>
+              <li>A single top-level object (not an array) is treated as one record row.</li>
+              <li>JSONL format (one JSON object per line) is also supported.</li>
+              <li>Maximum 5,000 rows. Type inference works the same as CSV when no explicit schema types are provided.</li>
+            </ul>
+          </>
+        ),
       },
       {
-        id: 'formato-sql',
-        title: 'Formato SQL',
-        body: <p>SQL se usa para leer nombres de columnas y tipos esperados. No ejecuta consultas ni rellena filas dentro del navegador.</p>,
+        id: 'sql-file-format',
+        title: 'SQL file format',
+        body: (
+          <>
+            <p>
+              SQL files are parsed for <code>CREATE TABLE</code> statements to extract column names and types.
+              If the file also contains <code>INSERT INTO</code> statements, those rows are extracted as searchable records.
+            </p>
+            <p><strong>Schema-only example:</strong></p>
+            <pre>{`CREATE TABLE patients (
+  mrn VARCHAR(20) NOT NULL,
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  date_of_birth DATE,
+  is_active BOOLEAN DEFAULT true,
+  age INT
+);`}</pre>
+            <p><strong>Schema with data rows:</strong></p>
+            <pre>{`CREATE TABLE patients (
+  mrn VARCHAR(20),
+  first_name VARCHAR(100),
+  last_name VARCHAR(100)
+);
+
+INSERT INTO patients VALUES
+  ('MRN001', 'John', 'Smith'),
+  ('MRN002', 'Jane', 'Doe');`}</pre>
+            <ul>
+              <li>
+                SQL type mapping: <code>VARCHAR</code>, <code>CHAR</code>, <code>TEXT</code>, <code>UUID</code>, <code>JSON</code>, <code>ENUM</code> → <code>string</code>;{' '}
+                <code>INT</code>, <code>INTEGER</code>, <code>SMALLINT</code>, <code>BIGINT</code>, <code>SERIAL</code>, <code>NUMERIC</code>, <code>DECIMAL</code>, <code>FLOAT</code>, <code>DOUBLE</code> → <code>int</code>;{' '}
+                <code>DATE</code>, <code>DATETIME</code>, <code>TIMESTAMP</code>, <code>TIME</code> → <code>date</code>;{' '}
+                <code>BOOLEAN</code>, <code>BOOL</code>, <code>BIT</code> → <code>bool</code>.
+              </li>
+              <li>Precision and length qualifiers are stripped (<code>VARCHAR(255)</code> → <code>VARCHAR</code>).</li>
+              <li>Quoted identifiers (backtick or double-quote) are handled.</li>
+              <li>Constraint lines (<code>PRIMARY KEY</code>, <code>UNIQUE</code>, <code>INDEX</code>, <code>FOREIGN KEY</code>, <code>CHECK</code>) are filtered out.</li>
+              <li>SQL comments (<code>-- line</code> and <code>/* block */</code>) are stripped before parsing.</li>
+              <li>Multiple <code>CREATE TABLE</code> statements are merged; duplicate column names are dropped.</li>
+              <li><code>INSERT INTO</code> rows are capped at 5,000. Without <code>INSERT</code> statements, the file is schema-only (mapping but no Search &amp; Fill rows).</li>
+            </ul>
+          </>
+        ),
       },
       {
-        id: 'formato-txt',
-        title: 'Formato TXT',
-        body: <p>TXT funciona como ayuda de esquema cuando solo necesitas nombres o instrucciones de campos.</p>,
+        id: 'txt-schema-file-format',
+        title: 'TXT schema file format',
+        body: (
+          <>
+            <p>
+              TXT files define schema columns only — one field per line. They do not contain record rows,
+              so they support mapping but not Search &amp; Fill.
+            </p>
+            <p><strong>Example TXT schema:</strong></p>
+            <pre>{`# Patient intake schema
+first_name:string
+last_name:string
+date_of_birth:date
+mrn:string
+is_active:bool
+age:int
+email`}</pre>
+            <ul>
+              <li>Format: <code>field_name</code> or <code>field_name:type</code>. Fields without a type default to <code>string</code>.</li>
+              <li>Allowed types: <code>string</code>, <code>int</code>, <code>date</code>, <code>bool</code> (case-insensitive).</li>
+              <li>Lines starting with <code>#</code> are comments and ignored.</li>
+              <li>Blank lines are ignored.</li>
+              <li>Duplicate field names are skipped.</li>
+              <li>Whitespace is trimmed from both name and type.</li>
+            </ul>
+          </>
+        ),
       },
       {
-        id: 'formato-excel',
-        title: 'Formato Excel',
-        body: <p>La primera fila debe contener encabezados estables. Revisa fechas y números porque Excel puede cambiar formatos visuales.</p>,
+        id: 'excel-file-format',
+        title: 'Excel file format',
+        body: (
+          <>
+            <p>
+              Excel files (<code>.xlsx</code>, <code>.xls</code>) are read from the first sheet by default.
+              The first row is treated as the header row, and all subsequent rows become searchable records.
+            </p>
+            <ul>
+              <li>Same header deduplication and normalization rules as CSV.</li>
+              <li>Empty rows are skipped. All values are stored as strings.</li>
+              <li>Maximum 5,000 rows per import.</li>
+              <li>Column types are inferred automatically from the data, same as CSV and JSON.</li>
+            </ul>
+          </>
+        ),
       },
       {
-        id: 'flujo-de-relleno',
-        title: 'Flujo de relleno',
+        id: 'fill-flow',
+        title: 'Fill flow',
         body: (
           <ol>
-            <li>Carga la fuente.</li>
-            <li>Elige una fila.</li>
-            <li>Revisa campos coincidentes y no coincidentes.</li>
-            <li>Aplica el relleno.</li>
-            <li>Inspecciona el PDF antes de descargar.</li>
+            <li>If you published Fill By Link, open the respondent list for that saved template and select a saved submission.</li>
+            <li>Choose a column (`Any column` is available) and match mode (`contains` or `equals`).</li>
+            <li>Search is case-insensitive and returns at most 25 results per query.</li>
+            <li>Click `Fill PDF` on a result row to write values to current fields.</li>
+            <li>Date-like text fields normalize accepted values like `YYYY-MM-DD` and `YYYY/MM/DD` to `YYYY-MM-DD`.</li>
           </ol>
         ),
       },
       {
-        id: 'controles-de-seguridad',
-        title: 'Controles de seguridad',
-        body: (
-          <p>
-            DullyPDF falla de forma cerrada cuando no encuentra campos coincidentes. Es mejor ver una advertencia que
-            descargar un documento sin cambios creyendo que fue rellenado.
-          </p>
-        ),
-      },
-      {
-        id: 'comparacion-de-flujos',
-        title: 'Search & Fill vs Fill By Link vs API Fill',
+        id: 'search-fill-guardrails',
+        title: 'Guardrails',
         body: (
           <ul>
-            <li>Search &amp; Fill: operador elige una fila en el navegador.</li>
-            <li>Fill By Link: otra persona envía la respuesta por formulario web.</li>
-            <li>API Fill: otro sistema envía JSON al backend.</li>
+            <li>If mapping is incomplete, fill coverage will be partial.</li>
+            <li>Clear and refill when testing mapping revisions.</li>
+            <li>Validate at least one full record before saving templates for teams.</li>
+            <li>Search &amp; Fill fills number inputs but ignores calculated outputs and calculated intermediates. DullyPDF recomputes those values during PDF materialization.</li>
+            <li>Search &amp; Fill is enabled only for CSV/XLSX/JSON with at least one row, stored respondent records, and a loaded document. SQL and TXT are schema-only sources.</li>
+            <li>Fill By Link submissions consume an account-level monthly quota instead of closing one link at a fixed per-link cap: base allows 25 accepted responses per month and premium allows 10,000.</li>
           </ul>
         ),
       },
       {
-        id: 'heuristicas',
-        title: 'Heurísticas de resolución de campos',
+        id: 'search-vs-link-vs-api',
+        title: 'Search & Fill versus Fill By Link versus API Fill',
         body: (
-          <p>
-            Los nombres exactos son más confiables que coincidencias aproximadas. Usa Rename + Map si los encabezados y
-            los nombres del PDF no se parecen.
-          </p>
+          <ul>
+            <li>Use Search &amp; Fill when an operator is choosing one record inside the workspace.</li>
+            <li>Use Fill By Link when the record still needs to be collected from a respondent first.</li>
+            <li>Use API Fill when another system already has the record and needs a hosted JSON-to-PDF endpoint.</li>
+          </ul>
         ),
       },
       {
-        id: 'casillas-y-alias',
-        title: 'Casillas y alias',
+        id: 'field-resolution-heuristics',
+        title: 'Field resolution heuristics (non-checkbox)',
         body: (
-          <p>
-            Para casillas, define valores aceptados y alias. Evita columnas con frases largas cuando la salida esperada
-            es una marca simple.
-          </p>
+          <ul>
+            <li>Exact normalized name match is attempted first.</li>
+            <li>Fallback prefixes: `patient_` and `responsible_party_` are checked automatically.</li>
+            <li><code>name</code> falls back to `full_name`, or `first_name + last_name`.</li>
+            <li><code>age</code> is derived from `dob`/`date_of_birth` and reference `date`/`visit_date` (or current date).</li>
+            <li><code>city_state_zip</code> is composed from `city`, `state`, and `zip` when available.</li>
+            <li>Numeric suffix fields like `phone_1` fall back to base key `phone`.</li>
+            <li>List fields (`allergy_1`, `medication_1`, `diagnosis_1`) can be sourced from comma/pipe/etc. lists.</li>
+            <li>Calculated outputs are resolved after source values are applied, so source rows should provide the number-input dependencies rather than the computed result.</li>
+          </ul>
         ),
       },
       {
-        id: 'rellenos-parciales',
-        title: 'Por qué ocurren rellenos parciales',
+        id: 'checkbox-groups-and-aliases',
+        title: 'Checkbox groups and aliases',
         body: (
-          <p>
-            Un relleno parcial suele venir de nombres sin mapear, tipos incompatibles, datos vacíos o campos eliminados
-            después de preparar el esquema. Revisa el resumen antes de descargar.
-          </p>
+          <>
+            <p>Built-in alias fallbacks include groups like:</p>
+            <ul>
+              <li><code>allergies</code> - aliases `allergy`, `has_allergies`</li>
+              <li><code>pregnant</code> - aliases `pregnancy`, `pregnancy_status`, `is_pregnant`</li>
+              <li><code>drug_use</code> - aliases `substance_use`, `illicit_drug_use`, `has_drug_use`</li>
+              <li><code>alcohol_use</code> - aliases `drinks_alcohol`, `etoh_use`, `has_alcohol_use`</li>
+              <li><code>tobacco_use</code> - aliases `smoking`, `smoker`, `smoking_status`, `has_tobacco_use`</li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        id: 'why-partial-fills-happen',
+        title: 'Why partial fills happen',
+        body: (
+          <ul>
+            <li>Some fields are still unmapped or mapped to unstable source headers.</li>
+            <li>Date-like text or checkbox values need normalization rules that the current row does not satisfy.</li>
+            <li>The template was updated but the operator is still validating stale output without clearing and refilling.</li>
+            <li>Alias fallbacks help, but they do not replace explicit mapping on important production templates.</li>
+          </ul>
         ),
       },
     ],
@@ -654,61 +999,91 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('fill-from-images'),
     sections: [
       {
-        id: 'que-hace',
-        title: 'Qué hace Fill from Images and Documents',
+        id: 'what-fill-from-images-does',
+        title: 'What Fill from Images and Documents does',
         body: (
-          <p>
-            Permite subir imágenes o documentos escaneados para extraer valores candidatos y colocarlos en campos del
-            PDF revisado. Sirve cuando la información viene de IDs, facturas, recibos o documentos externos.
-          </p>
+          <>
+            <p>
+              Fill from Images and Documents lets you upload photos or scanned documents (IDs, invoices, pay stubs, utility bills, medical records)
+              and have DullyPDF extract matching information into your template fields automatically using OpenAI vision.
+            </p>
+            <p>
+              The pipeline sends your uploaded images alongside the template field schema (including nearby label text extracted from the
+              PDF) to OpenAI. The model reads the uploaded documents, matches extracted data to your form fields by semantic meaning,
+              and returns values with confidence scores.
+            </p>
+          </>
         ),
       },
       {
-        id: 'detalles-del-pipeline',
-        title: 'Detalles del pipeline',
+        id: 'fill-from-images-pipeline',
+        title: 'Pipeline details',
         body: (
-          <p>
-            Primero necesitas una plantilla con campos claros. Después subes las fuentes visuales, revisas las
-            sugerencias y decides qué valores aplicar.
-          </p>
+          <ol>
+            <li>Click <strong>Fill from Images and Documents</strong> in the toolbar (requires named fields and an active session).</li>
+            <li>Click <strong>Upload</strong> to select one or more images or PDF documents. Multiple files can be uploaded at once.</li>
+            <li>Review the uploaded file list. Remove files with the x button if needed.</li>
+            <li>Check the credit cost in the footer: each image = 1 credit, each PDF document = 1 credit per 5 pages.</li>
+            <li>Click <strong>Send</strong> to run extraction. DullyPDF renders the template PDF to extract label context for each field, encodes your uploaded files, and calls OpenAI vision.</li>
+            <li>Review extracted fields: each shows the matched field name, the extracted value (editable), a confidence percentage, and a Reject button.</li>
+            <li>Edit values inline or reject fields you do not want applied.</li>
+            <li>Click <strong>Fill</strong> to write accepted values into your template fields. Existing values stay in place and are merged with the extracted information.</li>
+            <li>
+              Or click <strong>Fill &amp; Clear</strong> to wipe every field in the current PDF first and then apply only the extracted values. Use this when the template has prior data from a different record that should be fully replaced rather than merged.
+            </li>
+          </ol>
         ),
       },
       {
-        id: 'datos-enviados-openai',
-        title: 'Qué se envía a OpenAI',
-        body: (
-          <p>
-            La acción usa el contenido de los archivos que subes y la estructura necesaria para buscar valores
-            coincidentes. No la uses con documentos que no deban pasar por un modelo externo.
-          </p>
-        ),
-      },
-      {
-        id: 'costo-creditos',
-        title: 'Costo en créditos',
-        body: (
-          <p>
-            Cada imagen cuesta 1 crédito. Cada PDF cuesta 1 crédito por cada 5 páginas. Revisa el costo antes de subir
-            lotes grandes.
-          </p>
-        ),
-      },
-      {
-        id: 'buenas-practicas',
-        title: 'Buenas prácticas',
+        id: 'fill-from-images-what-gets-sent',
+        title: 'What gets sent to OpenAI',
         body: (
           <ul>
-            <li>Usa imágenes legibles y sin reflejos.</li>
-            <li>Sube solo documentos relevantes para la plantilla.</li>
-            <li>Confirma valores críticos antes de guardar o descargar.</li>
-            <li>No mezcles documentos de personas distintas en la misma prueba.</li>
+            <li>Your uploaded images and documents (encoded as base64).</li>
+            <li>The template field schema: field names, types, and the label text printed next to each field on the PDF.</li>
+            <li>A system prompt instructing the model to extract matching information.</li>
+            <li>Your PDF template page images are <strong>not</strong> sent. Only the text labels near each field are included for context.</li>
+            <li>Field values, row data, and respondent information are never sent.</li>
           </ul>
         ),
       },
       {
-        id: 'tipos-soportados',
-        title: 'Tipos de archivo soportados',
-        body: <p>Usa imágenes comunes y PDFs. Si una fuente no se procesa, conviértela a un formato estándar antes de repetir.</p>,
+        id: 'fill-from-images-credit-cost',
+        title: 'Credit cost',
+        body: (
+          <ul>
+            <li>Each uploaded image (JPG, PNG, etc.) costs <strong>1 credit</strong>.</li>
+            <li>Each uploaded PDF document costs <strong>1 credit per 5 pages</strong> (bucketed per document, rounded up).</li>
+            <li>The dialog footer shows the estimated cost before you click Send.</li>
+            <li>Credits are deducted from the same OpenAI credit pool used by Rename and Map operations.</li>
+            <li>If the extraction fails, credits are refunded automatically.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'fill-from-images-best-practices',
+        title: 'Best practices',
+        body: (
+          <ul>
+            <li>Name and rename your fields before using Fill from Images and Documents. The AI matches by field name and label context.</li>
+            <li>Upload clear, well-lit photos. Blurry or partially cropped documents reduce extraction accuracy.</li>
+            <li>For multi-page documents like invoices or medical records, upload as PDF rather than photographing each page separately.</li>
+            <li>Review confidence scores. High confidence (80%+) values are usually correct. Low confidence values should be verified.</li>
+            <li>Use Reject to exclude fields you want to fill manually.</li>
+            <li>Fill from Images and Documents works best for structured documents: IDs, invoices, tax forms, insurance cards, pay stubs, and similar.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'fill-from-images-supported-formats',
+        title: 'Supported file types',
+        body: (
+          <ul>
+            <li>Images: JPG, JPEG, PNG, GIF, WebP, BMP, and other browser-supported image formats.</li>
+            <li>Documents: PDF (rendered page-by-page for the AI model).</li>
+            <li>Maximum file size: 20 MB per file. Maximum 10 files per extraction.</li>
+          </ul>
+        ),
       },
     ],
   },
@@ -716,66 +1091,123 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('fill-by-link'),
     sections: [
       {
-        id: 'que-se-publica',
-        title: 'Qué se publica',
+        id: 'what-gets-published',
+        title: 'What gets published',
         body: (
-          <p>
-            Fill By Link publica un formulario web basado en una plantilla guardada o un grupo abierto. El destinatario
-            no edita el PDF directamente; responde preguntas y DullyPDF genera el PDF a partir de esa respuesta.
-          </p>
+          <ul>
+            <li>Fill By Link starts from a saved template or an open group. Unsaved work cannot be published.</li>
+            <li>If upload-time Rename or Map is still finishing in the editor, wait for that background run to complete before saving or publishing. DullyPDF keeps those actions blocked until the template stops changing.</li>
+            <li>The generated link points to a DullyPDF-hosted HTML form, not the PDF file itself.</li>
+            <li>Template links publish one saved form. Group links publish one merged form built from every distinct respondent-facing field in the open group.</li>
+            <li>Changing group membership closes the current group link so the next publish reflects the updated schema.</li>
+          </ul>
         ),
       },
       {
-        id: 'flujo-del-propietario',
-        title: 'Flujo del propietario',
+        id: 'owner-publishing-flow',
+        title: 'Owner publishing flow',
         body: (
           <ol>
-            <li>Guarda la plantilla.</li>
-            <li>Abre el constructor de Fill By Link.</li>
-            <li>Revisa preguntas, obligatorios y límites.</li>
-            <li>Publica el link.</li>
-            <li>Revisa respuestas antes de generar PDFs finales.</li>
+            <li>Open the saved template or saved group you want to publish.</li>
+            <li>Use Fill By Link to generate the public URL, set global defaults such as requiredness and text limits, and tune each visible question before sharing.</li>
+            <li>When <code>Require signature after submit</code> is enabled on a template link, choose the visible question that supplies the signer&apos;s full name, choose the visible email question that receives the invite, and review the compact readiness checklist before publishing. Those mapped signer questions are automatically required while signing stays enabled, and the builder now warns that saved PDF field values can still carry into the frozen signer copy when the web form does not overwrite them.</li>
+            <li>Open the generated URL yourself first to confirm question wording and mobile layout.</li>
+            <li>Copy the link and send it to respondents. Their answers are stored in DullyPDF under the owner account.</li>
           </ol>
         ),
       },
       {
-        id: 'experiencia-del-destinatario',
-        title: 'Qué ve el destinatario',
+        id: 'what-respondents-see',
+        title: 'What respondents see',
         body: (
-          <p>
-            El destinatario ve un formulario web, no un visor PDF complicado. Esto evita problemas de móviles,
-            navegadores y estilos de campos editables.
-          </p>
+          <>
+            <p>
+              Respondents fill a mock-form style HTML experience with the fields you chose to publish. They do not
+              edit the live PDF directly.
+            </p>
+            <p>
+              This separation keeps the PDF template stable while still letting teams collect answers from phones,
+              tablets, and desktops.
+            </p>
+            <p>
+              It also avoids asking respondents to rely on a mobile PDF viewer for data entry. Browser, phone, and
+              email-preview PDF viewers can handle editable field styling differently, while the web form gives every
+              respondent the same collection surface.
+            </p>
+            <p>
+              For template links only, owners can optionally expose a post-submit button that lets respondents
+              download a PDF copy of what they just submitted.
+            </p>
+            <p>
+              Template builders can also add custom questions that do not exist on the PDF itself, while group links
+              currently stay limited to the merged packet field set.
+            </p>
+            <p>
+              Explicit PDF radio groups publish as one single-choice web question, while PDF signature widgets stay out
+              of the public form entirely because DullyPDF reserves signature capture for the signing workflow.
+            </p>
+            <p>
+              Number inputs publish as regular questions. Calculated outputs and calculated intermediates stay out of the
+              respondent form because DullyPDF computes them from submitted answers when the PDF is generated.
+            </p>
+            <p>
+              Template links can also require signature after submit. In that mode the public web form collects the
+              respondent data first, then hands the same stored response into the signing ceremony so the signer reviews
+              the exact filled record before adopting a signature.
+            </p>
+          </>
         ),
       },
       {
-        id: 'salida-pdf',
-        title: 'Salida PDF y compatibilidad',
+        id: 'pdf-output-compatibility',
+        title: 'PDF output and viewer compatibility',
         body: (
-          <p>
-            Para destinatarios externos, la salida plana suele ser la opción más confiable porque los valores quedan
-            dibujados en la página y no dependen del visor PDF del destinatario.
-          </p>
+          <>
+            <p>
+              When a completed document is being sent outside your team, prefer Fill By Link or a flat PDF download.
+              Flat PDFs bake submitted values into page content, so the finished copy does not depend on the
+              recipient&apos;s PDF viewer preserving editable AcroForm font, font-size, or color behavior.
+            </p>
+            <p>
+              Editable PDFs remain useful when the next person must keep filling the same live fields after download.
+              For respondent receipts, signed packets, and final records, the flat output path is usually the safer
+              default.
+            </p>
+            <p>
+              Calculation fields follow the same rule. DullyPDF precomputes calculated values before download and before
+              Fill By Link respondent copies. Adobe Acrobat/Reader can run the generated live calculation actions in an
+              editable PDF, while browser and mobile viewers may only show the precomputed value.
+            </p>
+          </>
         ),
       },
       {
-        id: 'revisar-respuestas',
-        title: 'Revisar respuestas y generar PDFs',
+        id: 'reviewing-responses',
+        title: 'Reviewing responses and generating PDFs',
         body: (
-          <p>
-            Las respuestas guardadas pueden usarse como fuente en Search &amp; Fill. Revisa cada registro importante
-            antes de generar documentos finales o paquetes.
-          </p>
+          <ol>
+            <li>Open the saved respondent list in the workspace.</li>
+            <li>Select one submission and hand it to Search &amp; Fill just like a local CSV/XLSX/JSON row.</li>
+            <li>Generate the PDF only when you are ready to materialize that response into the active template or group.</li>
+            <li>Download a flat PDF for final sharing, or keep working with the stored respondent record later.</li>
+            <li>
+              If post-submit signing was enabled and the respondent completed it, download the signed PDF and audit
+              receipt directly from that response row.
+            </li>
+          </ol>
         ),
       },
       {
-        id: 'limites-y-publicacion',
-        title: 'Límites y publicación',
+        id: 'limits-and-sharing',
+        title: 'Limits and sharing guidance',
         body: (
-          <p>
-            Gratis permite hasta {formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} respuestas
-            aceptadas por mes. Premium sube el límite a {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)}.
-          </p>
+          <ul>
+            <li>Base accounts can publish links from any accessible saved template and accept up to 25 responses per month across the account.</li>
+            <li>Premium accounts can publish links across their saved-template library and accept up to 10,000 responses per month across the account.</li>
+            <li>Current plan pages at <a href="/free-features">/free-features</a> and <a href="/premium-features">/premium-features</a> also summarize saved-form, generated PDF download, API Fill, signing, and credit limits.</li>
+            <li>Preview the public form before you share it so required fields and labels match what respondents should submit.</li>
+            <li>The owner builder popup ignores outside clicks; use the red X or <code>Escape</code> when you intentionally want to leave and discard in-progress edits.</li>
+          </ul>
         ),
       },
     ],
@@ -784,54 +1216,127 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('signature-workflow'),
     sections: [
       {
-        id: 'alcance-eeuu',
-        title: 'Alcance disponible en EE. UU.',
-        body: (
-          <p>
-            El flujo de firma de DullyPDF está documentado para casos de uso de Estados Unidos. No lo presentes como una
-            solución legal general para otros países; revisa políticas y requisitos locales antes de usarlo fuera de ese
-            alcance.
-          </p>
-        ),
-      },
-      {
-        id: 'dos-rutas',
-        title: 'Dos rutas de entrada',
+        id: 'two-entry-paths',
+        title: 'Two entry paths, one signing engine',
         body: (
           <ul>
-            <li>El propietario rellena o prepara un PDF y lo envía a firma.</li>
-            <li>Un destinatario completa Fill By Link y luego pasa a una etapa de firma cuando el flujo de EE. UU. lo permite.</li>
+            <li><code>Send PDF for Signature by email</code> starts from the current PDF and freezes that exact record before send.</li>
+            <li><code>Require signature after submit</code> starts from a template Fill By Web Form Link, stores the respondent answers, materializes the filled PDF, then hands the signer into the same ceremony.</li>
+            <li>Both paths converge on the same immutable PDF boundary before the signer sees the document, and both now begin with email verification on the public signing page.</li>
+            <li>The owner workflow remains one request per signer, even when the UI saves recipient batches from pasted or uploaded TXT/CSV data.</li>
+            <li>The owner signing popup ignores outside clicks; use the red X or <code>Escape</code> when you intentionally want to leave the draft flow.</li>
           </ul>
         ),
       },
       {
-        id: 'ceremonia-del-firmante',
-        title: 'Ceremonia del firmante',
+        id: 'signer-ceremony',
+        title: 'Public signer ceremony',
         body: (
-          <p>
-            El firmante revisa el documento congelado, completa los pasos requeridos y termina la acción dentro de una
-            sesión pública controlada. El documento base no debe cambiar durante esa etapa.
-          </p>
+          <ol>
+            <li>The signer opens the public <code>/sign/:token</code> route.</li>
+            <li>Email verification unlocks the immutable PDF for every emailed signing request.</li>
+            <li>Business requests then go through review -&gt; adopt signature -&gt; explicit finish-sign.</li>
+            <li>Consumer requests add a separate electronic-record consent step before review can continue.</li>
+            <li>Manual fallback can pause the electronic ceremony and switch the request into owner follow-up instead of forcing e-signing.</li>
+          </ol>
         ),
       },
       {
-        id: 'artefactos',
-        title: 'Artefactos y visibilidad del propietario',
+        id: 'artifacts-and-owner-visibility',
+        title: 'Artifacts and owner visibility',
         body: (
-          <p>
-            Al completarse, el propietario puede acceder a los archivos y evidencias retenidas del flujo. Esos registros
-            ayudan a auditar qué documento se presentó y qué acciones se completaron.
-          </p>
+          <ul>
+            <li>Completed requests store the immutable source PDF, final signed PDF, audit-manifest envelope, and human-readable audit receipt.</li>
+            <li>The detailed owner audit manifest records the request id, document category, immutable source hash/version, sender and signer identity fields, invite delivery metadata, OTP/verification state, ceremony timestamps, signature-adoption details, digital-signature metadata, and retained artifact hashes/paths.</li>
+            <li>For consumer requests, that audit evidence also stores the disclosure payload and hash, the first-presented timestamp, the consent scope, and the access-demonstration evidence used before the signer can continue.</li>
+            <li>The owner `Responses` tab in the signing dialog surfaces waiting vs signed requests plus signed-form and audit-receipt downloads.</li>
+            <li>The owner `Responses` tab also offers a full dispute-package ZIP with the source PDF, signed PDF, audit receipt, owner audit manifest, validation snapshot, and delivery metadata.</li>
+            <li>Template Fill By Web Form Link responses also surface linked signing status so the owner can download the finished signed copy or the same full package from the response row later.</li>
+            <li>Signed PDFs are flattened before delivery so normal PDF viewers do not keep the underlying form widgets editable.</li>
+            <li>Per-document signer-request caps are enforced server-side across both email and Fill By Web Form signing entry paths.</li>
+          </ul>
         ),
       },
       {
-        id: 'guardrails',
-        title: 'Límites y guardrails',
+        id: 'audit-log-and-esign-alignment',
+        title: 'Audit log and E-SIGN alignment',
         body: (
-          <p>
-            DullyPDF no decide por ti si un documento pertenece a una categoría legal aceptable. El remitente es
-            responsable de usar el flujo solo en documentos permitidos y revisados.
-          </p>
+          <>
+            <p>
+              DullyPDF is designed to support the core evidentiary mechanics behind the U.S. E-SIGN Act for ordinary
+              business records and the product's consumer-mode ceremony. It does not rely on a single audit timestamp.
+              Instead, it preserves the exact record, the signer actions taken against that record, and the retained
+              evidence needed to reconstruct the ceremony later.
+            </p>
+            <ul>
+              <li>Intent to sign: the signer must open the signing session, review the exact frozen PDF, adopt a signature mark, and explicitly finish the ceremony. E-SIGN defines an electronic signature as an electronic sound, symbol, or process executed or adopted with intent to sign.</li>
+              <li>Logical association with the exact record: the ceremony is tied to the immutable source PDF hash and version, and the retained signed PDF plus validation record point back to that same source.</li>
+              <li>Consumer disclosures and consent: consumer mode captures paper-copy, fee, withdrawal, contact-update, and scope disclosures, then requires affirmative consent plus the PDF access-check step before completion. That is the part intended to line up with E-SIGN's consumer-disclosure and reasonable-demonstration concepts.</li>
+              <li>Retention for later reference: the source PDF, signed PDF, audit receipt, owner audit manifest, and public <code>/verify-signing/:token</code> page are retained so the record can be reproduced and checked later.</li>
+              <li>Delivery and attribution evidence: the audit log also keeps invite provider/message metadata, verification state, session and network evidence, and completion timestamps so the owner can build a dispute packet without depending on the signer to preserve every email.</li>
+            </ul>
+            <p>
+              Official references: <a href="https://uscode.house.gov/view.xhtml?req=%28title%3A15+section%3A7001+edition%3Aprelim%29">15 U.S.C. § 7001</a> covers
+              validity, consumer consent, and retention; <a href="https://uscode.house.gov/view.xhtml?req=%28title%3A15+section%3A7003+edition%3Aprelim%29">15 U.S.C. § 7003</a> lists
+              excluded categories; the <a href="https://www.ftc.gov/news-events/news/press-releases/2001/06/joint-ftccommerce-department-report-released-reasonable-demonstration-requirement-esign">FTC/Commerce report on the consumer consent provision</a> explains why the
+              "reasonable demonstration" step matters for discouraging fraud and preserving access to written
+              information in consumer workflows.
+            </p>
+            <p>
+              This is product documentation, not legal advice. DullyPDF is engineered to align with those core E-SIGN
+              requirements, but document-type-specific laws, excluded categories, sector rules, and jurisdictional
+              overlays still need policy or legal review before a team should claim support for a specific workflow.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: 'pdf-trust-vs-audit-evidence',
+        title: 'PDF trust versus audit evidence',
+        body: (
+          <>
+            <p>
+              When no production PKCS#12 or Cloud KMS signing identity is configured, DullyPDF can still finish the
+              workflow by self-signing the finalized PDF with its own certificate. In that configuration, PDF viewers
+              such as Edge or Acrobat may label the embedded certificate as untrusted because the certificate chain does
+              not anchor to a public trust store.
+            </p>
+            <p>
+              That viewer warning does not automatically mean the document was modified or that the workflow failed. The
+              self-signed PDF seal still provides cryptographic tamper evidence, while DullyPDF's retained audit
+              artifacts provide the higher-level workflow proof: immutable source PDF, signed PDF, audit-manifest
+              envelope, audit receipt, and the public <code>/verify-signing/:token</code> validation page.
+            </p>
+            <p>
+              In practice, this means self-signed PDFs can still be sufficient for many internal, pilot, or
+              ordinary-business workflows when the recipient is expected to rely on the audit log and retained validation
+              record rather than a browser or PDF-reader trust badge. It should not be marketed as the same thing as a
+              publicly trusted CA-backed signing certificate.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: 'us-esign-scope',
+        title: 'U.S. e-sign scope and guardrails',
+        body: (
+          <>
+            <p>
+              DullyPDF targets ordinary U.S. business e-sign workflows and is designed around core E-SIGN and UETA
+              principles: explicit signer action, logical association with the exact record, retention-ready final
+              artifacts, and paper/manual fallback when needed.
+            </p>
+            <p>
+              Excluded or higher-assurance categories still need separate legal review. The product should not be
+              marketed as a notary, qualified-signature, or regulated-signature system unless that scope is added
+              deliberately later.
+            </p>
+            <p>
+              Consumer-mode support is stronger than it was before the remediation work, but it is still not a blanket
+              promise that every U.S. consumer document type or jurisdiction-specific rule is covered automatically.
+              Teams still need document-type and policy review before turning on sensitive or excluded use cases.
+            </p>
+          </>
         ),
       },
     ],
@@ -840,47 +1345,61 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('api-fill'),
     sections: [
       {
-        id: 'que-es-api-fill',
-        title: 'Qué es API Fill',
+        id: 'what-api-fill-is',
+        title: 'What API Fill is',
         body: (
-          <p>
-            API Fill publica una instantánea de plantilla como endpoint backend. Otro sistema envía JSON y DullyPDF
-            devuelve un PDF rellenado según los campos y reglas guardadas.
-          </p>
+          <ul>
+            <li>API Fill publishes one saved-template snapshot as a hosted backend endpoint that accepts JSON and returns a PDF.</li>
+            <li>Each endpoint has its own generated key, schema view, rate limits, monthly request limits, and audit activity.</li>
+            <li>API Fill is a server-side runtime. It is different from Search &amp; Fill, which keeps selected record data local in the browser.</li>
+          </ul>
         ),
       },
       {
-        id: 'flujo-del-manager',
-        title: 'Flujo del manager',
+        id: 'owner-manager-flow',
+        title: 'Owner manager flow',
         body: (
           <ol>
-            <li>Guarda la plantilla.</li>
-            <li>Abre API Fill.</li>
-            <li>Publica o rota la clave.</li>
-            <li>Descarga el esquema.</li>
-            <li>Prueba un payload pequeño antes de integrar producción.</li>
+            <li>Open a saved template in the workspace.</li>
+            <li>Click <code>API Fill</code> to open the endpoint manager.</li>
+            <li>The manager header includes a <code>Usage Docs</code> button immediately left of the red close control so you can open these API Fill docs in a new browser tab/window without leaving the editor.</li>
+            <li>Create the endpoint from the current saved-template snapshot, then copy the fill URL, public schema URL, POST example, and active key.</li>
+            <li>Rotate or revoke keys from the same manager when credentials need to change.</li>
           </ol>
         ),
       },
       {
-        id: 'payload',
-        title: 'Payload y comportamiento de relleno',
+        id: 'payload-behavior',
+        title: 'Payload and fill behavior',
         body: (
-          <p>
-            El JSON debe usar claves que coincidan con el esquema publicado. Los valores se aplican a la plantilla
-            guardada; si cambias la plantilla, vuelve a revisar el esquema antes de enviar tráfico real.
-          </p>
+          <ul>
+            <li>The public schema exposes field names, types, transforms, checkbox rules, and radio group expectations for the frozen template snapshot.</li>
+            <li>Number inputs are exposed in the schema. Calculated outputs and calculated intermediates are omitted from required caller input because the backend computes them.</li>
+            <li>Public requests must send a top-level <code>data</code> object. Misspelled top-level keys like <code>fields</code> or <code>stict</code> are rejected instead of being ignored.</li>
+            <li>The manager examples use <code>strict=true</code> so integration smoke tests fail closed when a caller sends unknown keys.</li>
+            <li>In strict mode, a caller-provided calculated-output key is rejected as an unknown input. In non-strict mode, it is ignored and the computed value wins.</li>
+            <li>Blank strings remain valid scalar values, so callers can intentionally clear a text field instead of leaving the published default in place.</li>
+            <li>Radio groups are resolved deterministically as one selected option key, not as a legacy checkbox-hint side channel.</li>
+            <li>API Fill does not reuse the generic workspace materialize endpoint. It is its own hosted path with explicit auth, limits, and audit activity.</li>
+            <li>The backend is designed not to store raw submitted record values by default unless a separate operational need is added later.</li>
+          </ul>
         ),
       },
       {
-        id: 'cuando-usar-api',
-        title: 'Cuándo usar API Fill',
+        id: 'when-to-use-api-fill',
+        title: 'When to use API Fill instead of Search and Fill',
         body: (
-          <ul>
-            <li>Usa API Fill cuando los datos vienen de un sistema interno.</li>
-            <li>Usa Search &amp; Fill cuando un operador elige filas en el navegador.</li>
-            <li>Usa Fill By Link cuando otra persona debe enviar los datos primero.</li>
-          </ul>
+          <>
+            <p>
+              Use Search &amp; Fill when an operator is choosing a row interactively inside the workspace. Use API Fill
+              when another system already has the record data and needs a hosted JSON-to-PDF endpoint for the same saved
+              template.
+            </p>
+            <p>
+              The template still needs the same review discipline either way: stable naming, correct checkbox and radio
+              behavior, and one real end-to-end validation before the endpoint is treated as production-ready.
+            </p>
+          </>
         ),
       },
     ],
@@ -889,64 +1408,70 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('create-group'),
     sections: [
       {
-        id: 'que-es-un-grupo',
-        title: 'Qué es un grupo',
-        body: (
-          <p>
-            Un grupo reúne plantillas guardadas que pertenecen al mismo paquete. Permite cambiar entre documentos y
-            aplicar datos compartidos sin reconstruir cada PDF por separado.
-          </p>
-        ),
-      },
-      {
-        id: 'crear-y-abrir',
-        title: 'Crear y abrir grupos',
-        body: (
-          <p>
-            Crea el grupo desde formularios guardados, agrega las plantillas correctas y abre el paquete desde el
-            navegador de formularios. Mantén nombres claros para que el equipo entienda el orden del paquete.
-          </p>
-        ),
-      },
-      {
-        id: 'rellenar-grupos',
-        title: 'Search & Fill en grupos',
-        body: (
-          <p>
-            Un registro puede rellenar varios PDFs del grupo. Los documentos sin coincidencias no deben consumir el
-            mismo esfuerzo que los documentos mapeados correctamente.
-          </p>
-        ),
-      },
-      {
-        id: 'rename-map-grupo',
-        title: 'Rename + Map en todo el grupo',
-        body: (
-          <p>
-            Usa batch Rename + Map cuando varias plantillas comparten un esquema. Revisa los resultados por documento
-            antes de sobrescribir un paquete operativo.
-          </p>
-        ),
-      },
-      {
-        id: 'reglas-de-paquete',
-        title: 'Reglas de diseño de paquetes',
+        id: 'what-a-group-is',
+        title: 'What a group is',
         body: (
           <ul>
-            <li>Agrupa documentos que comparten el mismo registro.</li>
-            <li>No mezcles paquetes con ciclos de aprobación diferentes.</li>
-            <li>Prueba cada documento antes de probar el grupo completo.</li>
+            <li>A group is a named collection of saved templates that belong to one packet or workflow.</li>
+            <li>Opening a group loads the alphabetically first template first, then lets you switch between member templates from the header.</li>
+            <li>Groups are best for packets that share respondents, schema expectations, or repeat end-to-end processing steps.</li>
           </ul>
         ),
       },
       {
-        id: 'fill-by-link-grupo',
-        title: 'Fill By Link para grupos',
+        id: 'create-and-open-groups',
+        title: 'Create and open groups',
         body: (
-          <p>
-            Un grupo puede publicar un formulario combinado cuando varias plantillas necesitan la misma respuesta. La
-            publicación debe revisarse con una respuesta de prueba antes de compartirla.
-          </p>
+          <ol>
+            <li>Create a group from the upload screen or while organizing saved templates.</li>
+            <li>Add the templates that belong together in one workflow.</li>
+            <li>Open the group to work inside a packet context instead of reopening templates one at a time.</li>
+            <li>Use the header selector to move between member templates while keeping the group context active.</li>
+          </ol>
+        ),
+      },
+      {
+        id: 'group-search-fill',
+        title: 'Search and fill full groups',
+        body: (
+          <ul>
+            <li>When a group is open, Search &amp; Fill can apply one selected record across the packet instead of just one template.</li>
+            <li>This is the fastest way to populate full document sets that share a respondent or client record.</li>
+            <li>Group workflows keep the current template snapshots aligned so you can switch documents without losing the packet context.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'group-rename-map',
+        title: 'Rename and remap entire groups',
+        body: (
+          <ul>
+            <li>`Rename + Map Group` runs batch Rename + Map across every saved template in the open group.</li>
+            <li>Use this when a full packet needs standardized field names and schema alignment together.</li>
+            <li>The run overwrites each saved template on success, so test the packet once before using it in production.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'packet-design-rules',
+        title: 'Packet design rules',
+        body: (
+          <ul>
+            <li>Keep one canonical template per recurring document type instead of several near-duplicates.</li>
+            <li>Use a group when the documents truly belong to one packet or respondent journey, not just because they are all PDFs.</li>
+            <li>Validate one representative record across the whole packet before publishing a group link or running batch Rename + Map.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'group-fill-by-link',
+        title: 'Group Fill By Link and packet publishing',
+        body: (
+          <ul>
+            <li>Open a group to publish one merged Fill By Link that asks for every distinct respondent-facing field across the packet.</li>
+            <li>Owners can still review stored responses in the workspace and generate the final PDFs only when needed.</li>
+            <li>If group membership changes, republish the group link so the public form matches the new packet schema.</li>
+          </ul>
         ),
       },
     ],
@@ -955,75 +1480,146 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('save-download-profile'),
     sections: [
       {
-        id: 'descargar-vs-guardar',
-        title: 'Descargar vs guardar',
+        id: 'download-vs-save',
+        title: 'Download vs save',
         body: (
-          <p>
-            Descargar produce un archivo de salida. Guardar conserva la plantilla para reutilizarla, publicarla,
-            agruparla o conectarla a API Fill.
-          </p>
+          <ul>
+            <li>Download when you need a one-off generated output immediately. The workspace download menu offers flat PDF, editable PDF, and selected-page PDF outputs.</li>
+            <li><code>Download specific pages</code> opens a page-selection dialog, accepts the same page range syntax as PDF tools, and exports only those pages without changing the active workspace PDF.</li>
+            <li>Signed-in workspace downloads count against the generated PDF download quota. Free accounts include 25 generated PDF downloads per month, and Premium accounts include unlimited generated PDF downloads.</li>
+            <li>The monthly counter resets on the backend by UTC month. Saving templates, API Fill outputs, respondent downloads, and signing artifacts use their own workflow limits and are not charged against this workspace download quota.</li>
+            <li>Save to profile when the template will be reused or shared within your account context.</li>
+            <li>Saved forms persist template metadata including checkbox rules, radio groups, text transform rules, and calculation metadata.</li>
+            <li>Fill By Link starts from a saved form or an open group because the public respondent link is tied to the owner account and saved template set.</li>
+            <li>For external recipients, respondent receipts, and final records, prefer Fill By Link or flat PDF downloads because completed values are baked into the page instead of depending on the recipient&apos;s PDF viewer to preserve editable field styling or run live calculation JavaScript.</li>
+          </ul>
         ),
       },
       {
-        id: 'flujo-guardado',
-        title: 'Flujo de formularios guardados',
+        id: 'saved-form-workflow',
+        title: 'Saved form workflow',
         body: (
-          <p>
-            Al guardar, DullyPDF conserva campos, nombres, reglas, apariencia y snapshot del editor. Eso permite reabrir
-            la plantilla sin repetir detección.
-          </p>
+          <>
+            <p>
+              Saved forms preserve PDF bytes and field metadata so you can re-open, re-map, and refill
+              without re-detecting from scratch.
+            </p>
+            <p>
+              Saved forms are also the publication point for Fill By Link. You can publish one link for the active
+              template or, when a group is open, publish one merged link that asks for every distinct field across that
+              group. Respondent records stay attached to the owner account and the published template/group snapshot.
+            </p>
+          </>
         ),
       },
       {
-        id: 'antes-de-publicar',
-        title: 'Qué debe guardarse antes de publicar',
+        id: 'must-save-before-publish',
+        title: 'What must be saved before publishing or API use',
         body: (
-          <p>
-            Fill By Link, API Fill y grupos dependen de plantillas guardadas. Si el documento solo existe como edición
-            temporal, publícalo después de guardar y validar.
-          </p>
+          <ul>
+            <li>Fill By Link requires a saved template or open saved group because the public form belongs to that saved snapshot.</li>
+            <li>If Rename or Map is still running after the editor opens, wait for it to finish before saving that snapshot for Fill By Link or API Fill.</li>
+            <li>API Fill publishes one saved-template snapshot, not the unsaved working state in the editor.</li>
+            <li>Signature workflows are safest after the template and current record state are both intentionally frozen.</li>
+          </ul>
         ),
       },
       {
-        id: 'fill-by-link-propietario',
-        title: 'Flujo del propietario en Fill By Link',
+        id: 'fill-by-link-owner-flow',
+        title: 'Fill By Link owner flow',
         body: (
-          <p>
-            El propietario publica, comparte, revisa respuestas y genera PDFs. Las respuestas no reemplazan la plantilla;
-            son registros que se aplican a ella.
-          </p>
+          <ol>
+            <li>Open a saved template to publish a template link, or open a group to publish one merged group link.</li>
+            <li>Open your own generated public link to preview the respondent form before you send it out.</li>
+            <li>Share the public DullyPDF-hosted HTML form with respondents.</li>
+            <li>DullyPDF always requires each respondent to provide a name or ID before a submission is accepted.</li>
+            <li>Review stored respondent submissions in the workspace.</li>
+            <li>Select one respondent and run the existing Search &amp; Fill materialization flow against the active template or group targets.</li>
+            <li>Download the final PDF only when it is needed.</li>
+          </ol>
         ),
       },
       {
-        id: 'limites-creditos',
-        title: 'Límites y créditos',
+        id: 'limits-and-credits',
+        title: 'Limits and credits',
         body: (
-          <p>
-            Gratis permite {formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} formularios guardados y
-            {formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} créditos base. Premium permite
-            {' '}{formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} formularios y un pool mensual de
-            {' '}{formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)} créditos.
-          </p>
+          <>
+            <p>OpenAI credit usage varies by operation:</p>
+            <ul>
+              <li>Rename/Map formula: total credits = baseCost x ceil(pageCount / bucketSize). Default bucket size is 5 pages. Base costs: Rename=1, Remap=1, Rename+Map=2.</li>
+              <li>Fill from Images and Documents formula: each uploaded image = 1 credit. Each uploaded PDF document = 1 credit per 5 pages (bucketed per document). The dialog footer shows estimated cost before sending.</li>
+              <li>Base users top back up to 10 credits each month when their balance is below that floor. Premium users get a 500 monthly pool plus refill credits.</li>
+              <li>Refill credits do not expire and are consumed after monthly credits.</li>
+              <li>Signing uses a monthly sent-request quota. Saving a draft does not consume quota; the first successful send does.</li>
+            </ul>
+            <p>
+              Current default free-tier limits are {formatPlanLimitCount(FREE_PLAN_LIMITS.savedFormsMax)} saved forms,
+              {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(FREE_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, `}
+              no active Fill By Link cap, {formatPlanLimitCount(FREE_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month,
+              {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiActiveMax)} active API endpoint, ${formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, `}
+              {formatPlanLimitCount(FREE_PLAN_LIMITS.templateApiMaxPages)} API pages per request, {formatPlanLimitCount(FREE_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month,
+              {` ${formatPlanLimitCount(FREE_PLAN_LIMITS.pdfDownloadsMonthlyMax)} generated PDF downloads per month, `}
+              and a base OpenAI pool that tops back up to {formatPlanLimitCount(FREE_PLAN_CREDITS.availableCredits)} each month when needed.
+            </p>
+            <p>
+              Current default premium-tier limits are {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.savedFormsMax)} saved forms,
+              {` ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.detectMaxPages)} detect pages per PDF, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillableMaxPages)} fillable pages per reusable upload, `}
+              no active Fill By Link cap, {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.fillLinkResponsesMonthlyMax)} accepted Fill By Link responses per month,
+              {` ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiActiveMax)} active API endpoints, ${formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiRequestsMonthlyMax)} successful API fills per month, `}
+              {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.templateApiMaxPages)} API pages per request, {formatPlanLimitCount(PREMIUM_PLAN_LIMITS.signingRequestsMonthlyMax)} sent signing requests per month,
+              unlimited generated PDF downloads,
+              and a recurring {formatPlanLimitCount(PREMIUM_PLAN_CREDITS.monthlyCredits)}-credit monthly pool before refill packs.
+            </p>
+            <p>
+              API Fill is a hosted backend runtime, not a browser-local tool. Published API endpoints are scoped to one
+              saved template snapshot, use template-specific keys, and are governed by server-side page limits, monthly
+              request caps, rate limits, and endpoint audit logs. Search &amp; Fill stays local in the browser; API Fill
+              sends the submitted record data to DullyPDF backend services.
+            </p>
+            <p>
+              For the marketing-facing summary of those tiers, use the public <a href="/free-features">Free Features</a> and{' '}
+              <a href="/premium-features">Premium Features</a> pages.
+            </p>
+          </>
         ),
       },
       {
-        id: 'planes-stripe',
-        title: 'Planes y Stripe',
+        id: 'stripe-billing-plans',
+        title: 'Stripe billing plans',
         body: (
-          <p>
-            Las compras y cancelaciones se gestionan desde Profile cuando la facturación está disponible. Revisa tu plan
-            actual antes de asumir límites de producción.
-          </p>
+          <>
+            <p>Profile billing actions are backed by Stripe Checkout:</p>
+            <ul>
+              <li>Pro Monthly (`pro_monthly`) and Pro Yearly (`pro_yearly`) are recurring Stripe subscriptions.</li>
+              <li>Starting Checkout does not grant Pro access by itself; DullyPDF grants Pro and records trial usage only after Stripe confirms a completed checkout or active subscription lifecycle event.</li>
+              <li>Premium access bypasses the generated PDF download cap immediately after webhook or reconciliation fulfillment; opening Checkout alone does not bypass the cap.</li>
+              <li>Refill 500 (`refill_500`) is a Pro-only one-time credit pack and uses backend-provided Stripe plan metadata.</li>
+              <li>Payments are handled through Stripe Checkout for secure transaction processing.</li>
+              <li>Failed renewal payments keep `past_due` Pro access active during Stripe Smart Retries, refresh retry timing from Stripe invoice updates, show payment-recovery details in Profile, and send payment-method updates through Stripe Customer Portal.</li>
+              <li>Canceling Pro schedules cancellation at period end; Pro access remains active until that date. Terminal subscription states downgrade to base and immediately reapply the current-month generated PDF download cap without resetting the stored counter.</li>
+              <li>
+                If an account downgrades to base while holding more saved forms than the base tier allows, DullyPDF keeps
+                the earliest-created saved forms up to the base cap accessible and marks the rest locked in place instead
+                of deleting them. The retention dialog explains which templates remain accessible, which are locked, and
+                how downgrade-managed Fill By Link records reopen automatically after re-upgrade.
+              </li>
+            </ul>
+            <p>
+              If a user downgrades, stored refill credits stay on the account and become usable again after re-upgrading to Pro.
+            </p>
+          </>
         ),
       },
       {
-        id: 'reemplazar-o-nuevo',
-        title: 'Reemplazar o guardar como nuevo',
+        id: 'replace-vs-new-save',
+        title: 'Replace vs new save',
         body: (
-          <p>
-            Reemplaza cuando estás corrigiendo la misma plantilla. Guarda como nuevo cuando el PDF base, el flujo o el
-            esquema ya no representan el mismo proceso.
-          </p>
+          <ul>
+            <li>Use overwrite when you intentionally replace an existing template baseline.</li>
+            <li>Create a new saved form when testing alternate mappings or field sets.</li>
+            <li>Run one Search &amp; Fill verification before overwriting production templates.</li>
+            <li>If a template already has active Fill By Link traffic, publish replacement versions intentionally so response ownership remains clear.</li>
+          </ul>
         ),
       },
     ],
@@ -1032,80 +1628,88 @@ const USAGE_DOCS_PAGES: UsageDocsPage[] = [
     ...getUsageDocsPageMetadata('troubleshooting'),
     sections: [
       {
-        id: 'por-etapa',
-        title: 'Diagnosticar por etapa',
+        id: 'troubleshoot-by-stage',
+        title: 'Troubleshoot by stage',
+        body: (
+          <ol>
+            <li>Upload: confirm the file is a real PDF, under 50MB, and not encrypted.</li>
+            <li>Detect: review low-confidence items and obvious false positives before moving on.</li>
+            <li>Rename or map: confirm the schema is loaded, credits are available, and checkbox or radio metadata still make sense.</li>
+            <li>Fill: clear the output, refill from one representative record, and inspect the risky fields first.</li>
+            <li>Publish: confirm you are working from the intended saved template or group snapshot before sharing a link or API endpoint.</li>
+          </ol>
+        ),
+      },
+      {
+        id: 'detection-issues',
+        title: 'Detection issues',
+        body: (
+          <ul>
+            <li>Re-upload cleaner PDFs when labels are faint or skewed.</li>
+            <li>Use Field Editor tools to correct false positives and missed areas.</li>
+            <li>Confirm document is not password protected.</li>
+            <li>If upload fails immediately, confirm file type is PDF and size is under 50MB.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'rename-map-issues',
+        title: 'Rename and mapping issues',
+        body: (
+          <ul>
+            <li>Check that schema headers are loaded before mapping.</li>
+            <li>Retry with Rename + Map when direct mapping misses ambiguous names.</li>
+            <li>Review low-confidence rename outputs before filling.</li>
+            <li>If blocked, confirm credits and role on Profile. The server enforces bucketed pricing and returns remaining/required credits in errors.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'fill-output-issues',
+        title: 'Fill output issues',
+        body: (
+          <ul>
+            <li>Ensure identifier key matches the data source column you are searching.</li>
+            <li>Confirm checkbox options align with mapping/group metadata.</li>
+            <li>If values look stale, clear values and refill after mapping edits.</li>
+            <li>For missing checkbox fills, inspect rule operation (`yes_no|presence|enum|list`) and valueMap normalization.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'common-validation-errors',
+        title: 'Common validation and runtime messages',
+        body: (
+          <ul>
+            <li>`Choose a CSV, SQL, Excel, or JSON source first.`</li>
+            <li>`No record rows are available to search.`</li>
+            <li>`Enter a search value.`</li>
+            <li>`Choose a column to search.`</li>
+            <li>`OpenAI credits exhausted (remaining=X, required=Y)`</li>
+            <li>`Upload a schema file before running mapping.`</li>
+            <li>`Template session is not ready yet. Try again in a moment.`</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'capture-before-support',
+        title: 'What to capture before support',
+        body: (
+          <ul>
+            <li>The exact route or page you were on when the issue happened.</li>
+            <li>The action order that led to the failure: upload, detect, rename, map, fill, publish, or sign.</li>
+            <li>One screenshot that shows the state of the template or error message clearly.</li>
+            <li>The exact validation or runtime message if one was shown.</li>
+          </ul>
+        ),
+      },
+      {
+        id: 'support',
+        title: 'Support',
         body: (
           <p>
-            Empieza por la etapa donde aparece el problema: subida, detección, renombrado, mapeo, relleno, publicación o
-            descarga. Mezclar etapas alarga el diagnóstico.
-          </p>
-        ),
-      },
-      {
-        id: 'problemas-deteccion',
-        title: 'Problemas de detección',
-        body: (
-          <ul>
-            <li>Campos faltantes: crea campos manuales.</li>
-            <li>Falsos positivos: elimina antes de mapear.</li>
-            <li>Geometría incorrecta: redimensiona o redibuja.</li>
-            <li>PDF borroso: prueba con una fuente de mejor calidad.</li>
-          </ul>
-        ),
-      },
-      {
-        id: 'problemas-mapeo',
-        title: 'Problemas de renombrado y mapeo',
-        body: (
-          <ul>
-            <li>Columnas ambiguas producen coincidencias débiles.</li>
-            <li>Nombres duplicados pueden rellenar campos equivocados.</li>
-            <li>Casillas necesitan valores aceptados claros.</li>
-            <li>Después de renombrar, vuelve a probar Search &amp; Fill.</li>
-          </ul>
-        ),
-      },
-      {
-        id: 'problemas-salida',
-        title: 'Problemas en la salida',
-        body: (
-          <p>
-            Si la salida se ve vacía o incompleta, revisa primero si hubo coincidencias reales, si el campo sigue
-            existiendo y si el visor PDF está mostrando campos editables de forma distinta.
-          </p>
-        ),
-      },
-      {
-        id: 'mensajes-comunes',
-        title: 'Mensajes comunes',
-        body: (
-          <ul>
-            <li>Sin coincidencias: revisa nombres y mapeo.</li>
-            <li>Límite mensual alcanzado: revisa Profile.</li>
-            <li>Archivo no soportado: convierte a PDF, CSV, XLSX o JSON estándar.</li>
-            <li>Sesión expirada: vuelve a cargar el flujo guardado.</li>
-          </ul>
-        ),
-      },
-      {
-        id: 'antes-de-soporte',
-        title: 'Qué capturar antes de soporte',
-        body: (
-          <ul>
-            <li>Ruta exacta y hora aproximada.</li>
-            <li>Tipo de archivo usado.</li>
-            <li>Captura del campo o mensaje.</li>
-            <li>Si el problema ocurrió antes o después de guardar.</li>
-          </ul>
-        ),
-      },
-      {
-        id: 'soporte',
-        title: 'Soporte',
-        body: (
-          <p>
-            Si el problema persiste, reduce el caso a una plantilla, una fila y una acción. Ese caso mínimo facilita
-            encontrar si el fallo está en el archivo, el mapeo, la cuenta o la generación del PDF.
+            For persistent issues, include your route, action sequence, and screenshot evidence when
+            contacting support at <a href="mailto:justin@dullypdf.com">justin@dullypdf.com</a>.
           </p>
         ),
       },
@@ -1127,17 +1731,25 @@ export const getUsageDocsPage = (pageKey: UsageDocsPageKey): UsageDocsPage =>
 
 export const getUsageDocsPages = (): UsageDocsPage[] => USAGE_DOCS_PAGES;
 
-export const usageDocsHref = (pageKey: UsageDocsPageKey): string => buildUsageDocsHref(pageKey);
+export const usageDocsHref = (pageKey: UsageDocsPageKey, locale: UsageDocsLocale = 'en'): string => {
+  const page = getUsageDocsPage(pageKey);
+  const basePath = locale === 'es' ? '/es/usage-docs' : '/usage-docs';
+  return page.slug ? `${basePath}/${page.slug}` : basePath;
+};
 
 export const resolveUsageDocsPath = (pathname: string): ResolvedUsageDocsPath | null => {
   const normalizedPath = pathname.replace(/\/+$/, '') || '/';
 
-  if (normalizedPath === USAGE_DOCS_BASE_PATH) {
+  if (normalizedPath === '/usage-docs') {
     return { kind: 'canonical', pageKey: USAGE_DOCS_DEFAULT_PAGE_KEY };
   }
 
-  if (normalizedPath.startsWith(`${USAGE_DOCS_BASE_PATH}/`)) {
-    const slugParts = normalizedPath.slice(`${USAGE_DOCS_BASE_PATH}/`.length).split('/').filter(Boolean);
+  if (normalizedPath === '/es/usage-docs') {
+    return { kind: 'canonical', pageKey: USAGE_DOCS_DEFAULT_PAGE_KEY, locale: 'es' };
+  }
+
+  if (normalizedPath.startsWith('/usage-docs/')) {
+    const slugParts = normalizedPath.slice('/usage-docs/'.length).split('/').filter(Boolean);
     if (slugParts.length !== 1) {
       return { kind: 'not-found', requestedPath: normalizedPath };
     }
@@ -1149,18 +1761,26 @@ export const resolveUsageDocsPath = (pathname: string): ResolvedUsageDocsPath | 
     return { kind: 'not-found', requestedPath: normalizedPath };
   }
 
-  if (normalizedPath === '/usage-docs' || normalizedPath === '/docs') {
-    return { kind: 'redirect', targetPath: USAGE_DOCS_BASE_PATH };
+  if (normalizedPath.startsWith('/es/usage-docs/')) {
+    const slugParts = normalizedPath.slice('/es/usage-docs/'.length).split('/').filter(Boolean);
+    if (slugParts.length !== 1) {
+      return { kind: 'not-found', requestedPath: normalizedPath, locale: 'es' };
+    }
+    const slug = slugParts[0];
+    const page = PAGE_BY_SLUG.get(slug);
+    if (page) {
+      return { kind: 'canonical', pageKey: page.key, locale: 'es' };
+    }
+    return { kind: 'not-found', requestedPath: normalizedPath, locale: 'es' };
   }
 
-  if (normalizedPath.startsWith('/usage-docs/')) {
-    const suffix = normalizedPath.slice('/usage-docs'.length);
-    return { kind: 'redirect', targetPath: `${USAGE_DOCS_BASE_PATH}${suffix}` };
+  if (normalizedPath === '/docs') {
+    return { kind: 'redirect', targetPath: '/usage-docs' };
   }
 
   if (normalizedPath.startsWith('/docs/')) {
     const suffix = normalizedPath.slice('/docs'.length);
-    return { kind: 'redirect', targetPath: `${USAGE_DOCS_BASE_PATH}${suffix}` };
+    return { kind: 'redirect', targetPath: `/usage-docs${suffix}` };
   }
 
   return null;

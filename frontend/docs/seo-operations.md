@@ -4,7 +4,7 @@ This playbook covers ongoing work that complements route-level SEO implementatio
 
 ## Canonical URL and slash policy
 
-- Canonical public URLs use non-trailing slash style for all non-root routes (for example `/es/usage-docs`, `/fill-pdf-from-csv`).
+- Canonical public URLs use non-trailing slash style for all non-root routes (for example `/usage-docs`, `/es/usage-docs`, `/fill-pdf-from-csv`).
 - Firebase Hosting must keep `trailingSlash: false` in `firebase.json`.
 - Unknown public URLs must fall through to hosting `404.html`. Do not reintroduce a catch-all `** -> /index.html` rewrite, or Google will see soft 404s.
 - Keep redirects one-way only (legacy path -> canonical path). Do not add paired slash redirects that can create `/path` <-> `/path/` loops.
@@ -258,7 +258,7 @@ Authority growth is not a one-time code change. Use this recurring plan:
 - `/es/automatizacion-pdf-construccion`: Spanish construction quote, change order, and field PDF demand.
 - `/es/automatizacion-pdf-servicios-campo`: Spanish field-service work order and inspection PDF demand.
 - `/es/automatizacion-pdf-compras-proveedores`: Spanish procurement and supplier onboarding PDF demand.
-- Legacy global English intent routes below are low-value/noindex compatibility records and should not be treated as active sitemap targets while the India and Spanish clusters are the active localized SEO focus.
+- Global English intent routes below are active sitemap targets alongside the India and Spanish clusters.
 - `/pdf-to-fillable-form`: convert raw PDFs to fillable templates and absorb existing-PDF builder intent (`pdf form builder`, `fillable pdf builder`, `build fillable form from pdf`) until a dedicated builder page is warranted.
 - `/pdf-field-types/image-qr-barcode-fields`: advanced PDF helper-field intent for `add image field to PDF`, `QR code PDF form field`, `PDF417 barcode field PDF`, `1D barcode PDF form field`, and broader `add barcode to PDF form` searches.
 - `/add-image-field-to-pdf`: focused image-field intent for `add image field to PDF`, `fillable PDF image field`, `photo upload field PDF form`, and image-field versus static-image searchers.

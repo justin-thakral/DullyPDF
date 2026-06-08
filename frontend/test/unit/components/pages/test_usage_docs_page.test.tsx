@@ -3,8 +3,21 @@ import { render, screen, within } from '@testing-library/react';
 import UsageDocsPage from '../../../../src/components/pages/UsageDocsPage';
 
 describe('UsageDocsPage', () => {
-  it('renders overview page with sidebar page links and section anchors', () => {
+  it('renders English overview page by default', () => {
     render(<UsageDocsPage pageKey="index" />);
+
+    expect(screen.getByRole('heading', { name: 'DullyPDF Usage Docs' })).toBeTruthy();
+    const sidebar = screen.getByLabelText('Usage docs sidebar');
+    expect(within(sidebar).getByRole('link', { name: 'Getting Started' }).getAttribute('href')).toBe(
+      '/usage-docs/getting-started',
+    );
+    expect(within(sidebar).getByRole('link', { name: 'Detection' }).getAttribute('href')).toBe('/usage-docs/detection');
+    expect(document.querySelector('section#pipeline-overview')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Official DullyPDF profiles' })).toBeTruthy();
+  });
+
+  it('renders overview page with sidebar page links and section anchors', () => {
+    render(<UsageDocsPage locale="es" pageKey="index" />);
 
     expect(screen.getByRole('heading', { name: 'Documentación de Uso de DullyPDF' })).toBeTruthy();
     const sidebar = screen.getByLabelText('Barra lateral de documentación');
@@ -27,7 +40,7 @@ describe('UsageDocsPage', () => {
   });
 
   it('renders subroute content and marks active page in sidebar', () => {
-    render(<UsageDocsPage pageKey="rename-mapping" />);
+    render(<UsageDocsPage locale="es" pageKey="rename-mapping" />);
 
     expect(screen.getByRole('heading', { name: 'Renombrar y Mapear Campos' })).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Límites de datos enviados a OpenAI' })).toBeTruthy();
@@ -37,7 +50,7 @@ describe('UsageDocsPage', () => {
   });
 
   it('renders dedicated Fill By Link docs content', () => {
-    render(<UsageDocsPage pageKey="fill-by-link" />);
+    render(<UsageDocsPage locale="es" pageKey="fill-by-link" />);
 
     expect(screen.getByRole('heading', { name: 'Fill By Link' })).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Flujo del propietario' })).toBeTruthy();
@@ -46,7 +59,7 @@ describe('UsageDocsPage', () => {
   });
 
   it('renders dedicated signature workflow docs content', () => {
-    render(<UsageDocsPage pageKey="signature-workflow" />);
+    render(<UsageDocsPage locale="es" pageKey="signature-workflow" />);
 
     expect(screen.getByRole('heading', { name: 'Flujo de Firma para EE. UU.' })).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Alcance disponible en EE. UU.' })).toBeTruthy();
@@ -54,7 +67,7 @@ describe('UsageDocsPage', () => {
   });
 
   it('renders dedicated API Fill docs content', () => {
-    render(<UsageDocsPage pageKey="api-fill" />);
+    render(<UsageDocsPage locale="es" pageKey="api-fill" />);
 
     expect(screen.getByRole('heading', { name: 'API Fill' })).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Flujo del manager' })).toBeTruthy();
@@ -62,17 +75,17 @@ describe('UsageDocsPage', () => {
   });
 
   it('updates document title based on page key', () => {
-    const { rerender } = render(<UsageDocsPage pageKey="index" />);
+    const { rerender } = render(<UsageDocsPage locale="es" pageKey="index" />);
     expect(document.title).toBe('Documentación para Formularios PDF Rellenables | DullyPDF');
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/es/usage-docs');
 
-    rerender(<UsageDocsPage pageKey="search-fill" />);
+    rerender(<UsageDocsPage locale="es" pageKey="search-fill" />);
     expect(document.title).toBe('Rellenar PDFs desde Excel, CSV o JSON | DullyPDF');
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://dullypdf.com/es/usage-docs/search-fill');
   });
 
   it('renders the focused PDF conversion demo on getting started docs', () => {
-    render(<UsageDocsPage pageKey="getting-started" />);
+    render(<UsageDocsPage locale="es" pageKey="getting-started" />);
 
     expect(screen.getByRole('heading', { name: 'Recorrido de 3 minutos: PDF a formulario rellenable' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Ver en YouTube' }).getAttribute('href')).toBe(
@@ -81,7 +94,7 @@ describe('UsageDocsPage', () => {
   });
 
   it('renders the fill-by-file demo on the Search & Fill docs page', () => {
-    render(<UsageDocsPage pageKey="search-fill" />);
+    render(<UsageDocsPage locale="es" pageKey="search-fill" />);
 
     expect(
       screen.getByRole('heading', { name: 'Rellenar PDF desde CSV, Excel o JSON' }),
@@ -93,7 +106,7 @@ describe('UsageDocsPage', () => {
   });
 
   it('does not render the U.S. signing demo on the Fill By Link docs page', () => {
-    render(<UsageDocsPage pageKey="fill-by-link" />);
+    render(<UsageDocsPage locale="es" pageKey="fill-by-link" />);
 
     expect(
       screen.queryByRole('heading', { name: /sign it in the browser/i }),

@@ -17,7 +17,11 @@ const compareBlogPostsByFreshness = (left: BlogPost, right: BlogPost): number =>
   || left.title.localeCompare(right.title);
 
 const getBlogPostBasePath = (post: BlogPost): string => (
-  getBlogPostLocale(post) === 'in' ? '/in/blog' : '/es/blog'
+  getBlogPostLocale(post) === 'in'
+    ? '/in/blog'
+    : getBlogPostLocale(post) === 'es'
+      ? '/es/blog'
+      : '/blog'
 );
 
 const buildBlogGuideLink = (post: BlogPost): BlogGuideLink => ({
@@ -39,9 +43,11 @@ export const getBlogGuideLinksForIntentPage = (pageKey: IntentPageKey): BlogGuid
 export const getBlogGuideLinksForUsageDocsPage = (
   pageKey: UsageDocsPageKey,
   relatedWorkflowKeys: IntentPageKey[] = [],
+  locale: 'en' | 'es' | 'in' = 'en',
 ): BlogGuideLink[] => {
   const relatedWorkflowKeySet = new Set(relatedWorkflowKeys);
-  const rankedGuides = BLOG_POSTS
+  const localizedPosts = BLOG_POSTS.filter((post) => getBlogPostLocale(post) === locale);
+  const rankedGuides = localizedPosts
     .map((post) => {
       const directDocMatch = post.relatedDocs.includes(pageKey);
       const sharedWorkflowCount = countSharedValues(post.relatedIntentPages, relatedWorkflowKeySet);
@@ -56,7 +62,7 @@ export const getBlogGuideLinksForUsageDocsPage = (
     return rankedGuides;
   }
 
-  return BLOG_POSTS
+  return localizedPosts
     .slice()
     .sort(compareBlogPostsByFreshness)
     .slice(0, 6)

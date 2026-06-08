@@ -5875,6 +5875,12 @@ const CATALOG_PACKET_BLOG_SLUGS = new Set([
 ]);
 
 export const BLOG_POSTS = [
+  ...BLOG_POSTS_BY_AUTHORING_PRIORITY
+    .filter((post) => !CATALOG_PACKET_BLOG_SLUGS.has(post.slug))
+    .map((post) => ({ ...post, locale: 'en' })),
+  ...BLOG_POSTS_BY_AUTHORING_PRIORITY
+    .filter((post) => CATALOG_PACKET_BLOG_SLUGS.has(post.slug))
+    .map((post) => ({ ...post, locale: 'en' })),
   ...INDIA_BLOG_POSTS,
   ...SPANISH_BLOG_POSTS.map((post) => ({ ...post, locale: 'es' })),
 ];

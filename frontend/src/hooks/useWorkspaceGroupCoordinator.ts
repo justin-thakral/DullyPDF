@@ -125,7 +125,7 @@ type DetectionController = {
   ) => Promise<boolean>;
   handleFillableUpload: (
     file: File,
-    options: { isDemo?: boolean; skipExistingFields?: boolean },
+    options: { isDemo?: boolean; isCatalog?: boolean; catalogSlug?: string | null; skipExistingFields?: boolean },
     pdfState: PdfStateBridge,
   ) => Promise<void>;
   runDetectUpload: (
@@ -432,7 +432,10 @@ export function useWorkspaceGroupCoordinator(deps: UseWorkspaceGroupCoordinatorD
   ]);
 
   const handleFillableUpload = useCallback(
-    async (file: File, options: { isDemo?: boolean; skipExistingFields?: boolean } = {}) => {
+    async (
+      file: File,
+      options: { isDemo?: boolean; isCatalog?: boolean; catalogSlug?: string | null; skipExistingFields?: boolean } = {},
+    ) => {
       const confirmed = await confirmDiscardDirtyGroupChanges('loading another PDF');
       if (!confirmed) return;
       clearGroupTemplateCache();

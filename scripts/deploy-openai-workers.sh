@@ -71,6 +71,7 @@ WORKER_IMAGE="${OPENAI_RENAME_REMAP_WORKER_IMAGE:-${ARTIFACT_REGISTRY_LOCATION}-
 require_prod_artifact_registry_image "OPENAI_RENAME_REMAP_WORKER_IMAGE" "$WORKER_IMAGE" "$ARTIFACT_REPO"
 
 SERVICE_NAME="${OPENAI_RENAME_REMAP_SERVICE_NAME:-dullypdf-openai-rename-remap}"
+OPENAI_RENAME_REMAP_MAX_INSTANCES="${OPENAI_RENAME_REMAP_MAX_INSTANCES:-3}"
 
 # Standardize every environment on us-east4 and the canonical service name.
 # Without these guards, a mis-set env file can silently create a parallel
@@ -85,6 +86,10 @@ if [[ "$SERVICE_NAME" != "dullypdf-openai-rename-remap" ]]; then
 fi
 if [[ -n "${OPENAI_RENAME_REMAP_TASKS_LOCATION:-}" && "$OPENAI_RENAME_REMAP_TASKS_LOCATION" != "us-east4" ]]; then
   echo "Refusing to deploy: env file has OPENAI_RENAME_REMAP_TASKS_LOCATION=${OPENAI_RENAME_REMAP_TASKS_LOCATION}, expected us-east4." >&2
+  exit 1
+fi
+if ! [[ "$OPENAI_RENAME_REMAP_MAX_INSTANCES" =~ ^[1-9][0-9]*$ ]]; then
+  echo "OPENAI_RENAME_REMAP_MAX_INSTANCES must be a positive integer." >&2
   exit 1
 fi
 
@@ -293,6 +298,7 @@ deploy_worker() {
     --no-allow-unauthenticated \
     --memory "${OPENAI_RENAME_REMAP_MEMORY:-2Gi}" \
     --cpu "${OPENAI_RENAME_REMAP_CPU:-1}" \
+    --max-instances "$OPENAI_RENAME_REMAP_MAX_INSTANCES" \
     --env-vars-file "$TMP_ENV_FILE" \
     "${SECRET_ARGS[@]}"
 

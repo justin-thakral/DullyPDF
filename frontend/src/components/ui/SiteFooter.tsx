@@ -3,13 +3,13 @@ import { OFFICIAL_PUBLIC_PROFILE_LINKS } from '../../config/publicProfiles';
 
 const PRODUCT_LINKS = [
   { label: 'Form Catalog', href: '/forms' },
-  { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
-  { label: 'Usage Docs', href: '/es/usage-docs' },
+  { label: 'Getting Started', href: '/usage-docs/getting-started' },
+  { label: 'Usage Docs', href: '/usage-docs' },
 ];
 
 const PRODUCT_LINKS_WITHOUT_FORM_CATALOG = [
-  { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
-  { label: 'Usage Docs', href: '/es/usage-docs' },
+  { label: 'Getting Started', href: '/usage-docs/getting-started' },
+  { label: 'Usage Docs', href: '/usage-docs' },
   { label: 'Free Features', href: '/free-features' },
 ];
 
@@ -20,13 +20,13 @@ const SPANISH_PRODUCT_LINKS = [
 ];
 
 const RESOURCE_LINKS = [
-  { label: 'Blog', href: '/es/blog' },
-  { label: 'Troubleshooting', href: '/es/usage-docs/troubleshooting' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
 ];
 
 const INDIA_RESOURCE_LINKS = [
   { label: 'Blog', href: '/in/blog' },
-  { label: 'Troubleshooting', href: '/es/usage-docs/troubleshooting' },
+  { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
 ];
 
 const SPANISH_RESOURCE_LINKS = [
@@ -47,8 +47,8 @@ const SPANISH_LEGAL_LINKS = [
 ];
 
 const SOLUTION_LINKS = [
-  { label: 'Workflow Library', href: '/es/flujos-de-trabajo' },
-  { label: 'Industry Solutions', href: '/es/industrias' },
+  { label: 'Workflow Library', href: '/workflows' },
+  { label: 'Industry Solutions', href: '/industries' },
 ];
 
 const INDIA_SOLUTION_LINKS = [

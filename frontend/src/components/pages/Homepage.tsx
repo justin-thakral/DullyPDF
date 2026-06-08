@@ -1198,7 +1198,10 @@ const Homepage: React.FC<HomepageProps> = ({
           <button type="button" className="mobile-contact-button" onClick={handleOpenContact}>
             {homepageCopy.mobileContactButtonLabel}
           </button>
-          <a href="/es/usage-docs" className="mobile-contact-button mobile-legal-button">
+          <a
+            href={activeMarket === 'spanish' ? '/es/usage-docs' : '/usage-docs'}
+            className="mobile-contact-button mobile-legal-button"
+          >
             {homepageCopy.mobileLegalLinkLabel}
           </a>
         </div>

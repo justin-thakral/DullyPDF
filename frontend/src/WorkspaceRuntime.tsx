@@ -72,7 +72,7 @@ import { useDemo } from './hooks/useDemo';
 import { useUploadBrowserViewModel } from './hooks/useUploadBrowserViewModel';
 import { useWorkspaceSigning } from './hooks/useWorkspaceSigning';
 import { useWorkspaceSessionDiagnostic } from './hooks/useWorkspaceSessionDiagnostic';
-import { ApiService } from './services/api';
+import { ApiService, type MaterializePdfExportMode } from './services/api';
 import { fetchDetectionStatus } from './services/detectionApi';
 import { debugLog } from './utils/debug';
 import { resolveConfirmDialogResult } from './utils/dialogResult';
@@ -172,6 +172,12 @@ import {
   calculationFieldDefaultsForTool,
   isCalculationCreateTool,
 } from './utils/calculationFields';
+import {
+  clearCatalogDraftState,
+  readCatalogDraftState,
+  writeCatalogDraftState,
+  type CatalogDraftPendingAction,
+} from './utils/catalogDraftState';
 import { loadPageSizes, loadPdfFromFile } from './utils/pdf';
 
 /**
@@ -427,6 +433,8 @@ function WorkspaceRuntime({
   const [sourceFile, setSourceFile] = useState<File | null>(null);
   const [sourceFileName, setSourceFileName] = useState<string | null>(null);
   const [sourceFileIsDemo, setSourceFileIsDemo] = useState(false);
+  const [sourceFileIsCatalog, setSourceFileIsCatalog] = useState(false);
+  const [sourceFileCatalogSlug, setSourceFileCatalogSlug] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [savedFillLinkPublishFingerprint, setSavedFillLinkPublishFingerprint] = useState<string | null>(null);
   const browserRouteKey = useMemo(() => getWorkspaceBrowserRouteKey(browserRoute), [browserRoute]);
@@ -434,6 +442,7 @@ function WorkspaceRuntime({
     browserRoute.kind === 'homepage' ? null : browserRouteKey,
   );
   const routeRestoreInFlightKeyRef = useRef<string | null>(null);
+  const handledCatalogSlugRef = useRef<string | null>(null);
   useEffect(() => {
     if (
       routeRestoreInFlightKeyRef.current !== null &&
@@ -520,6 +529,8 @@ function WorkspaceRuntime({
     setSourceFile,
     setSourceFileName,
     setSourceFileIsDemo,
+    setSourceFileIsCatalog,
+    setSourceFileCatalogSlug,
     setGlobalFieldFont,
     setGlobalFieldFontSize,
     setGlobalFieldFontColor,
@@ -966,8 +977,8 @@ function WorkspaceRuntime({
       return browserRoute;
     }
     // Catalog editor handoffs carry the selected slug in /upload?catalogSlug=...
-    // until auth finishes. Preserve that pending route so the history sync does
-    // not collapse it to plain /upload before the post-sign-in loader runs.
+    // until the public catalog PDF loader starts. Preserve that pending route so
+    // history sync does not collapse it to plain /upload before the fetch runs.
     if (browserRoute.kind === 'upload-root' && browserRoute.catalogSlug && !pdfDoc && !detection.isProcessing) {
       return browserRoute;
     }
@@ -1214,6 +1225,7 @@ function WorkspaceRuntime({
     clearTemplateApiManager();
     dialog.reset();
     pipeline.reset();
+    clearCatalogDraftState();
     // App-level UI state
     setShowSearchFill(false); setSearchFillSessionId((prev) => prev + 1);
     setSearchFillPreset(null); setShowFillLinkManager(false); setShowTemplateApiManager(false);
@@ -1225,7 +1237,8 @@ function WorkspaceRuntime({
     setGlobalFieldAlignment(DEFAULT_FIELD_TEXT_ALIGNMENT);
     setManualRadioToolDraft(null); setQuickRadioToolDraft(null);
     setPendingQuickRadioSelection(null); setDismissedRadioSuggestionIds([]);
-    setSourceFile(null); setSourceFileName(null); setSourceFileIsDemo(false);
+    setSourceFile(null); setSourceFileName(null); setSourceFileIsDemo(false); setSourceFileIsCatalog(false); setSourceFileCatalogSlug(null);
+    handledCatalogSlugRef.current = null;
     setReviewedFillContext(null);
   }, [clearAllFillLinks, clearTemplateApiManager, dataSource, detection, dialog, fieldHistory, fieldState, openAi, pipeline, resetGroupRuntime, savedForms]);
   clearWorkspaceRef.current = clearWorkspace;
@@ -1343,6 +1356,98 @@ function WorkspaceRuntime({
     allowAnonymousDownload: sourceFileIsDemo,
     onSaveSuccess: captureSavedFillLinkPublishFingerprint,
   });
+  const pendingAuthenticatedDownloadRef = useRef<MaterializePdfExportMode | null>(null);
+  const pendingAuthenticatedSaveRef = useRef(false);
+
+  const clearPendingAuthenticatedActions = useCallback(() => {
+    pendingAuthenticatedDownloadRef.current = null;
+    pendingAuthenticatedSaveRef.current = false;
+  }, []);
+
+  const resolvePendingCatalogAction = useCallback((
+    override?: CatalogDraftPendingAction | null,
+  ): CatalogDraftPendingAction | null => {
+    if (override !== undefined) return override;
+    if (pendingAuthenticatedDownloadRef.current) {
+      return { type: 'download', exportMode: pendingAuthenticatedDownloadRef.current };
+    }
+    if (pendingAuthenticatedSaveRef.current) {
+      return { type: 'save' };
+    }
+    return null;
+  }, []);
+
+  const persistCatalogDraft = useCallback((pendingAction?: CatalogDraftPendingAction | null) => {
+    if (!sourceFileIsCatalog || !sourceFileCatalogSlug || !pdfDoc) return;
+    writeCatalogDraftState({
+      version: 1,
+      slug: sourceFileCatalogSlug,
+      sourceFileName: sourceFileName || sourceFile?.name || null,
+      fields: fieldHistory.fieldsRef.current,
+      checkboxRules: openAi.checkboxRules,
+      textTransformRules: openAi.textTransformRules,
+      globalFieldFont,
+      globalFieldFontSize,
+      globalFieldFontColor,
+      globalFieldAlignment,
+      hasRenamedFields: openAi.hasRenamedFields,
+      hasMappedSchema: openAi.hasMappedSchema,
+      currentPage,
+      scale,
+      pendingAction: resolvePendingCatalogAction(pendingAction),
+      updatedAtMs: Date.now(),
+    });
+  }, [
+    currentPage,
+    fieldHistory.fieldsRef,
+    globalFieldAlignment,
+    globalFieldFont,
+    globalFieldFontColor,
+    globalFieldFontSize,
+    openAi.checkboxRules,
+    openAi.hasMappedSchema,
+    openAi.hasRenamedFields,
+    openAi.textTransformRules,
+    pdfDoc,
+    resolvePendingCatalogAction,
+    scale,
+    sourceFile,
+    sourceFileCatalogSlug,
+    sourceFileIsCatalog,
+    sourceFileName,
+  ]);
+
+  const promptCatalogLoginForAction = useCallback((message: string) => {
+    dialog.setBannerNotice({
+      tone: 'info',
+      message,
+      autoDismissMs: 8000,
+    });
+    auth.setShowLogin(true);
+  }, [auth, dialog]);
+
+  const handleDownload = useCallback((exportMode: MaterializePdfExportMode = 'editable') => {
+    if (!auth.verifiedUser && sourceFileIsCatalog) {
+      pendingAuthenticatedDownloadRef.current = exportMode;
+      pendingAuthenticatedSaveRef.current = false;
+      persistCatalogDraft({ type: 'download', exportMode });
+      promptCatalogLoginForAction('Sign in to download this edited catalog PDF.');
+      return;
+    }
+    void saveDownload.handleDownload(exportMode);
+  }, [auth.verifiedUser, persistCatalogDraft, promptCatalogLoginForAction, saveDownload, sourceFileIsCatalog]);
+
+  const handleSaveToProfile = useCallback(() => {
+    if (!auth.verifiedUser && sourceFileIsCatalog) {
+      pendingAuthenticatedDownloadRef.current = null;
+      pendingAuthenticatedSaveRef.current = true;
+      persistCatalogDraft({ type: 'save' });
+      promptCatalogLoginForAction('Sign in to save this edited catalog PDF to your profile.');
+      return;
+    }
+    void saveDownload.handleSaveToProfile();
+  }, [auth.verifiedUser, persistCatalogDraft, promptCatalogLoginForAction, saveDownload, sourceFileIsCatalog]);
+
   const handleDownloadSelectedPages = useCallback(async (payload: DownloadPagesPayload) => {
     const success = await saveDownload.handleDownloadSelectedPages(payload);
     if (success) {
@@ -2355,6 +2460,147 @@ function WorkspaceRuntime({
   );
   const isDemoAsset = Boolean(sourceFileIsDemo && sourceFileName && DEMO_ASSET_NAME_SET.has(sourceFileName));
   const allowAnonymousDemoEditor = demoActive || isDemoAsset;
+  const allowAnonymousCatalogEditor = Boolean((sourceFileIsCatalog && pdfDoc) || handledCatalogSlugRef.current);
+  const allowAnonymousEditor = allowAnonymousDemoEditor || allowAnonymousCatalogEditor;
+  const catalogDraftRestoreInFlightRef = useRef(false);
+
+  useEffect(() => {
+    if (!sourceFileIsCatalog || savedForms.activeSavedFormId) return;
+    persistCatalogDraft();
+  }, [fields, persistCatalogDraft, savedForms.activeSavedFormId, sourceFileIsCatalog]);
+
+  useEffect(() => {
+    if (!sourceFileIsCatalog || !savedForms.activeSavedFormId) return;
+    clearCatalogDraftState();
+    handledCatalogSlugRef.current = null;
+    setSourceFileIsCatalog(false);
+    setSourceFileCatalogSlug(null);
+  }, [savedForms.activeSavedFormId, sourceFileIsCatalog]);
+
+  useEffect(() => {
+    if (catalogDraftRestoreInFlightRef.current) return;
+    if (browserRoute.kind !== 'upload-root' || browserRoute.catalogSlug) return;
+    if (pdfDoc || detection.isProcessing || showHomepage) return;
+    const draft = readCatalogDraftState();
+    if (!draft) return;
+    const billingState = typeof window !== 'undefined'
+      ? new URL(window.location.href).searchParams.get('billing')
+      : null;
+    if (!draft.pendingAction && billingState !== 'success' && billingState !== 'cancel') {
+      return;
+    }
+    catalogDraftRestoreInFlightRef.current = true;
+    setShowHomepage(false);
+
+    const restoreDraft = async () => {
+      try {
+        const { getFormCatalogEntryBySlug } = await import('./config/formCatalogData.mjs');
+        const entry = getFormCatalogEntryBySlug(draft.slug);
+        if (!entry) {
+          clearCatalogDraftState();
+          return;
+        }
+        const response = await fetch(entry.pdfUrl);
+        if (!response.ok) {
+          throw new Error(`Fetch failed (HTTP ${response.status})`);
+        }
+        const blob = await response.blob();
+        const file = new File([blob], draft.sourceFileName || entry.filename, { type: 'application/pdf' });
+        await handleFillableUpload(file, {
+          isCatalog: true,
+          catalogSlug: draft.slug,
+          skipExistingFields: true,
+        });
+        fieldHistory.resetFieldHistory(draft.fields);
+        fieldState.setSelectedFieldId(null);
+        openAi.setCheckboxRules(draft.checkboxRules);
+        openAi.setTextTransformRules(draft.textTransformRules);
+        openAi.setHasRenamedFields(draft.hasRenamedFields);
+        openAi.setHasMappedSchema(draft.hasMappedSchema);
+        setGlobalFieldFont(draft.globalFieldFont);
+        setGlobalFieldFontSize(draft.globalFieldFontSize);
+        setGlobalFieldFontColor(draft.globalFieldFontColor);
+        setGlobalFieldAlignment(draft.globalFieldAlignment);
+        setCurrentPage(draft.currentPage);
+        setScale(draft.scale);
+        if (draft.pendingAction?.type === 'download') {
+          pendingAuthenticatedDownloadRef.current = draft.pendingAction.exportMode;
+          pendingAuthenticatedSaveRef.current = false;
+        } else if (draft.pendingAction?.type === 'save') {
+          pendingAuthenticatedDownloadRef.current = null;
+          pendingAuthenticatedSaveRef.current = true;
+        }
+      } catch (error) {
+        clearCatalogDraftState();
+        const message = error instanceof Error ? error.message : 'Failed to restore catalog draft.';
+        dialog.setBannerNotice({
+          tone: 'error',
+          message: `Could not restore catalog draft: ${message}`,
+          autoDismissMs: 8000,
+        });
+      } finally {
+        catalogDraftRestoreInFlightRef.current = false;
+      }
+    };
+
+    void restoreDraft();
+  }, [
+    browserRoute,
+    detection.isProcessing,
+    dialog,
+    fieldHistory,
+    fieldState,
+    handleFillableUpload,
+    openAi,
+    pdfDoc,
+    showHomepage,
+  ]);
+
+  useEffect(() => {
+    if (
+      !auth.verifiedUser ||
+      auth.showLogin ||
+      showOnboarding ||
+      auth.requiresEmailVerification ||
+      billingCheckoutInProgressKind !== null
+    ) {
+      return;
+    }
+    const pendingDownload = pendingAuthenticatedDownloadRef.current;
+    if (pendingDownload) {
+      pendingAuthenticatedDownloadRef.current = null;
+      persistCatalogDraft(null);
+      void saveDownload.handleDownload(pendingDownload);
+      return;
+    }
+    if (pendingAuthenticatedSaveRef.current) {
+      pendingAuthenticatedSaveRef.current = false;
+      persistCatalogDraft(null);
+      void saveDownload.handleSaveToProfile();
+    }
+  }, [
+    auth.verifiedUser,
+    auth.requiresEmailVerification,
+    auth.showLogin,
+    billingCheckoutInProgressKind,
+    persistCatalogDraft,
+    saveDownload,
+    showOnboarding,
+  ]);
+
+  const handleOnboardingStartTrial = useCallback(() => {
+    persistCatalogDraft();
+    clearOnboardingPending();
+    setShowOnboarding(false);
+    handleStartBillingCheckout('free_trial');
+  }, [handleStartBillingCheckout, persistCatalogDraft]);
+
+  const handleOnboardingSkipToFree = useCallback(() => {
+    persistCatalogDraft();
+    clearOnboardingPending();
+    setShowOnboarding(false);
+  }, [persistCatalogDraft]);
+
   const pendingQuickRadioFields = useMemo(() => {
     return resolvePendingQuickRadioFields(pendingQuickRadioSelection, fields);
   }, [fields, pendingQuickRadioSelection]);
@@ -2589,7 +2835,7 @@ function WorkspaceRuntime({
     if (!authReady) {
       return;
     }
-    if (showLogin || showOnboarding || requiresEmailVerification || allowAnonymousDemoEditor) {
+    if (showLogin || showOnboarding || requiresEmailVerification || allowAnonymousEditor) {
       return;
     }
 
@@ -2616,7 +2862,7 @@ function WorkspaceRuntime({
   }, [
     activeGroupId,
     authReady,
-    allowAnonymousDemoEditor,
+    allowAnonymousEditor,
     bootstrapHasVerifiedUser,
     browserRoute.kind,
     detection.isProcessing,
@@ -2770,15 +3016,18 @@ function WorkspaceRuntime({
           setShowHomepage(false);
           return;
         }
-        if (!verifiedUser && !bootstrapHasVerifiedUser) {
+        if (!verifiedUser && !bootstrapHasVerifiedUser && !allowAnonymousCatalogEditor) {
           auth.setShowLogin(true);
           return;
         }
-        if (!verifiedUser) {
+        if (!verifiedUser && !allowAnonymousCatalogEditor) {
           return;
         }
         if (pdfDoc || detection.isProcessing) {
           finishRouteRestore();
+          return;
+        }
+        if (!verifiedUser) {
           return;
         }
         const resumeState = findMatchingWorkspaceResumeState(browserRoute, verifiedUser.uid);
@@ -2867,6 +3116,7 @@ function WorkspaceRuntime({
   }, [
     activeGroupId,
     auth,
+    allowAnonymousCatalogEditor,
     bootstrapHasVerifiedUser,
     browserRoute,
     browserRouteKey,
@@ -2894,12 +3144,8 @@ function WorkspaceRuntime({
   // in-flight fetch inside a useEffect cleanup path, the very first thing the
   // handler does (clearing the slug from the URL) would re-run the effect and
   // cancel the still-running fetch, leaving the user on a blank upload screen.
-  const handledCatalogSlugRef = useRef<string | null>(null);
   useEffect(() => {
     if (browserRoute.kind !== 'upload-root' || !browserRoute.catalogSlug) {
-      return;
-    }
-    if (!verifiedUser) {
       return;
     }
     const slug = browserRoute.catalogSlug;
@@ -2910,7 +3156,9 @@ function WorkspaceRuntime({
     // Swap the URL back to /upload right away so the effect does not see the
     // slug again and the user sees "Uploading…" instead of ?catalogSlug= in the
     // address bar while the fetch runs.
-    onBrowserRouteChange?.({ kind: 'upload-root' }, { replace: true });
+    const consumedCatalogRoute: WorkspaceBrowserRoute = { kind: 'upload-root' };
+    setPendingBrowserRouteKey(getWorkspaceBrowserRouteKey(consumedCatalogRoute));
+    onBrowserRouteChange?.(consumedCatalogRoute, { replace: true });
     setShowHomepage(false);
 
     const loadCatalogForm = async () => {
@@ -2931,7 +3179,8 @@ function WorkspaceRuntime({
         }
         const blob = await response.blob();
         const file = new File([blob], entry.filename, { type: 'application/pdf' });
-        await handleFillableUpload(file);
+        await handleFillableUpload(file, { isCatalog: true, catalogSlug: slug });
+        onBrowserRouteChange?.({ kind: 'ui-root' }, { replace: true });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to load catalog form';
         dialog.setBannerNotice({
@@ -2950,12 +3199,11 @@ function WorkspaceRuntime({
     handleFillableUpload,
     onBrowserRouteChange,
     pdfState,
-    verifiedUser,
   ]);
 
   const hasDocument = !!pdfDoc;
-  const canSaveToProfile = Boolean(pdfDoc && verifiedUser);
-  const canDownload = Boolean(pdfDoc && (verifiedUser || sourceFileIsDemo));
+  const canSaveToProfile = Boolean(pdfDoc && (verifiedUser || sourceFileIsCatalog));
+  const canDownload = Boolean(pdfDoc && (verifiedUser || sourceFileIsDemo || sourceFileIsCatalog));
 
   const demoUiLocked = demoCompletionOpen || (!demoActive && isDemoAsset);
 
@@ -2994,9 +3242,21 @@ function WorkspaceRuntime({
   const handleCancelLogin = useCallback(() => {
     auth.setShowLogin(false);
     if (!verifiedUser) {
+      clearPendingAuthenticatedActions();
+      if (allowAnonymousCatalogEditor) {
+        persistCatalogDraft(null);
+        return;
+      }
       onBrowserRouteChange?.({ kind: 'homepage' }, { replace: true });
     }
-  }, [auth, onBrowserRouteChange, verifiedUser]);
+  }, [
+    allowAnonymousCatalogEditor,
+    auth,
+    clearPendingAuthenticatedActions,
+    onBrowserRouteChange,
+    persistCatalogDraft,
+    verifiedUser,
+  ]);
 
   const runtimeLoadingFallback = (
     <div className="auth-loading-screen">
@@ -3210,15 +3470,8 @@ function WorkspaceRuntime({
     return (
       <Suspense fallback={runtimeLoadingFallback}>
         <LazyOnboardingPage
-          onStartTrial={() => {
-            clearOnboardingPending();
-            setShowOnboarding(false);
-            handleStartBillingCheckout('free_trial');
-          }}
-          onSkipToFree={() => {
-            clearOnboardingPending();
-            setShowOnboarding(false);
-          }}
+          onStartTrial={handleOnboardingStartTrial}
+          onSkipToFree={handleOnboardingSkipToFree}
           checkoutInProgress={billingCheckoutInProgressKind === 'free_trial'}
         />
       </Suspense>
@@ -3278,8 +3531,8 @@ function WorkspaceRuntime({
 
   // Safety net: if auth was lost while the runtime is still mounted (e.g.
   // sign-out race), force the homepage view instead of rendering an empty editor.
-  // Demo sessions are the one supported anonymous editor mode.
-  if (!verifiedUser && !showLogin && !showOnboarding && currentView === 'editor' && !allowAnonymousDemoEditor) {
+  // Demo sessions and catalog-origin handoffs are the supported anonymous editor modes.
+  if (!verifiedUser && !showLogin && !showOnboarding && currentView === 'editor' && !allowAnonymousEditor) {
     return (
       <div className="auth-loading-screen">
         <div className="auth-loading-card">Redirecting…</div>
@@ -3449,9 +3702,9 @@ function WorkspaceRuntime({
         canOptimizePdf={Boolean(pdfDoc && verifiedUser && !optimizePdfApplying)}
         onOpenImageFill={!demoActive && detection.detectSessionId && fieldHistory.fields.length > 0 ? imageFill.openDialog : undefined}
         onOpenDownloadPages={verifiedUser ? () => setShowDownloadPages(true) : undefined}
-        onDownload={saveDownload.handleDownload}
+        onDownload={handleDownload}
         onDownloadGroup={activeGroupId ? groupDownload.handleDownloadGroup : undefined}
-        onSaveToProfile={saveDownload.handleSaveToProfile}
+        onSaveToProfile={handleSaveToProfile}
         downloadInProgress={saveDownload.downloadInProgress}
         downloadGroupInProgress={groupDownload.downloadGroupInProgress}
         saveInProgress={saveDownload.saveInProgress}
@@ -3478,10 +3731,10 @@ function WorkspaceRuntime({
         onSignOut={verifiedUser ? handleSignOut : undefined}
         demoLocked={demoUiLocked}
         onDemoLockedAction={handleDemoLockedAction}
-        demoFillLinkDocsHref="/es/usage-docs/fill-by-link"
-        demoCreateGroupDocsHref="/es/usage-docs/create-group"
-        demoFillFromImagesDocsHref="/es/usage-docs/fill-from-images"
-        demoSignatureDocsHref="/es/usage-docs/signature-workflow"
+        demoFillLinkDocsHref="/usage-docs/fill-by-link"
+        demoCreateGroupDocsHref="/usage-docs/create-group"
+        demoFillFromImagesDocsHref="/usage-docs/fill-from-images"
+        demoSignatureDocsHref="/usage-docs/signature-workflow"
         onBlockedAction={(message) => dialog.setBannerNotice({ tone: 'error', message })}
       />
       <div className="app-shell">

@@ -33,6 +33,7 @@ describe('appRouteHydrationCover', () => {
     ['/industries', '', false],
     ['/blog', '', false],
     ['/blog/post-slug', '', false],
+    ['/usage-docs/getting-started', '', false],
     ['/es/usage-docs/getting-started', '', false],
     ['/ui/forms/nested/path', '', false],
     ['/respond/nested/token', '', false],
@@ -59,5 +60,32 @@ describe('appRouteHydrationCover', () => {
         `Expected rewrite source ${source} to activate the app-route hydration cover`,
       ).toBe(true);
     }
+  });
+
+  it('keeps canonical English usage docs routes out of Firebase redirect rules', () => {
+    const firebasePath = resolve(process.cwd(), '../firebase.json');
+    const payload = JSON.parse(readFileSync(firebasePath, 'utf8'));
+    const redirects = payload.hosting?.redirects || [];
+
+    expect(redirects).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          source: '/docs',
+          destination: '/usage-docs',
+          type: 301,
+        }),
+        expect.objectContaining({
+          source: '/docs/:slug*',
+          destination: '/usage-docs/:slug',
+          type: 301,
+        }),
+      ]),
+    );
+    expect(redirects).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ source: '/usage-docs' }),
+        expect.objectContaining({ source: '/usage-docs/:slug*' }),
+      ]),
+    );
   });
 });

@@ -17,6 +17,7 @@ interface LegacyHeaderProps {
     title: string;
     description: string;
     docsLabel: string;
+    docsHref?: string;
     signInLabel: string;
     signOutLabel: string;
     profileTitle: string;
@@ -98,7 +99,7 @@ const LegacyHeader: React.FC<LegacyHeaderProps> = ({
 
         <div className="header-right">
           <div className="header-link-group">
-            <a className="header-link-button" href="/es/usage-docs">
+            <a className="header-link-button" href={homepageCopy?.docsHref ?? '/usage-docs'}>
               {homepageCopy?.docsLabel ?? 'Docs & Privacy & Terms'}
             </a>
           </div>

@@ -4,7 +4,7 @@ import {
 } from '../../config/publicSiteChrome.mjs';
 import './PublicSiteHeader.css';
 
-export type PublicSiteHeaderNavKey = 'workflows' | 'industries' | 'usage-docs' | 'blog';
+export type PublicSiteHeaderNavKey = 'workflows' | 'industries' | 'forms' | 'usage-docs' | 'blog';
 
 type PublicSiteNavLink = {
   key: PublicSiteHeaderNavKey;
@@ -40,7 +40,7 @@ export const PublicSiteHeader = ({
       ? [
           { key: 'workflows', label: 'India Workflows', href: '/in/fill-pdf-from-excel' },
           { key: 'industries', label: 'India Solutions', href: '/in/kyc-pdf-automation' },
-          { key: 'usage-docs', label: 'Usage Docs', href: '/es/usage-docs' },
+          { key: 'usage-docs', label: 'Usage Docs', href: '/usage-docs' },
           { key: 'blog', label: 'Blog', href: '/in/blog' },
         ] as PublicSiteNavLink[]
     : (PUBLIC_SITE_NAV_LINKS as PublicSiteNavLink[]);

@@ -46,7 +46,7 @@ PUBLIC_BASE_SECTIONS = {
 }
 
 PUBLIC_LOCAL_TEMPLATE_RANGES = {
-    "agriculture_food": [("DAF", 2300, 2361)],
+    "agriculture_food": [("DAF", 2300, 2361), ("DAF", 2600, 2649)],
     "automotive_service": [("DAS", 2100, 2149)],
     "beauty_wellness": [("DBW", 100, 189), ("DBW", 2300, 2344)],
     "business_operations": [("DBO", 1755, 1809)],
@@ -56,14 +56,14 @@ PUBLIC_LOCAL_TEMPLATE_RANGES = {
     "facilities_maintenance": [("DFM", 1200, 1262)],
     "field_service": [("DHS", 100, 189), ("DFS", 1100, 1162), ("DFM", 1200, 1274)],
     "finance_accounting": [("DFA", 100, 169), ("DFA", 1700, 1754)],
-    "finance_lending": [("DFL", 1900, 1961)],
-    "home_services": [("DHS", 2400, 2444)],
-    "hospitality_events": [("DHE", 2200, 2261)],
+    "finance_lending": [("DFL", 1900, 1961), ("DFL", 2600, 2649)],
+    "home_services": [("DHS", 2400, 2444), ("DHS", 2600, 2649)],
+    "hospitality_events": [("DHE", 2200, 2261), ("DHE", 2600, 2649)],
     "hr_onboarding": [("DHR", 100, 169)],
-    "hr_operations": [("DHR", 1800, 1861)],
+    "hr_operations": [("DHR", 1800, 1861), ("DHO", 2600, 2649)],
     "insurance_claims": [("DIC", 100, 179), ("DIC", 1600, 1654), ("DIC", 2000, 2061)],
     "legal_admin": [("DLP", 1500, 1559)],
-    "legal_office": [("DLO", 2100, 2161)],
+    "legal_office": [("DLO", 2100, 2161), ("DLO", 2600, 2649)],
     "logistics_transport": [("DLT", 100, 169), ("DLT", 1500, 1562), ("DLD", 2200, 2249)],
     "manufacturing_quality": [("DMQ", 100, 179), ("DMQ", 1400, 1462), ("DMQ", 1810, 1864)],
     "nonprofit_community": [("DNE", 100, 179), ("DNV", 1900, 1949)],
@@ -71,9 +71,9 @@ PUBLIC_LOCAL_TEMPLATE_RANGES = {
     "pet_services": [("DPS", 100, 179), ("DVP", 2000, 2059)],
     "property_management": [("DPM", 1300, 1362)],
     "real_estate_property": [("DPM", 100, 199), ("DPM", 1000, 1079)],
-    "retail_operations": [("DRO", 2500, 2561)],
+    "retail_operations": [("DRO", 2500, 2561), ("DRO", 2600, 2649)],
     "safety_compliance": [("DSC", 1300, 1364)],
-    "utilities_energy": [("DUE", 2400, 2461)],
+    "utilities_energy": [("DUE", 2400, 2461), ("DUE", 2600, 2649)],
 }
 
 PUBLIC_SECTION_DIRS = PUBLIC_BASE_SECTIONS | {"practice_intake"} | set(PUBLIC_LOCAL_TEMPLATE_RANGES)

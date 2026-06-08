@@ -80,6 +80,6 @@ describe('DownloadPagesDialog', () => {
 
     await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/save-download-profile', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/save-download-profile', '_blank', 'noopener,noreferrer');
   });
 });

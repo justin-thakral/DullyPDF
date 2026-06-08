@@ -61,7 +61,7 @@ describe('ApiFillManagerDialog', () => {
 
     await user.click(screen.getByRole('button', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/api-fill', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/api-fill', '_blank', 'noopener,noreferrer');
     openSpy.mockRestore();
   });
 

@@ -14,6 +14,7 @@ type MatchMediaState = {
 
 const originalMatchMedia = window.matchMedia;
 const originalFileText = File.prototype.text;
+const originalAnchorClick = HTMLAnchorElement.prototype.click;
 let matchMediaStates = new Map<string, MatchMediaState>();
 
 const installMatchMedia = (initial: Record<string, boolean> = {}) => {
@@ -100,6 +101,7 @@ const apiServiceMocks = vi.hoisted(() => ({
   cancelBillingSubscription: vi.fn(),
   createTemplateSession: vi.fn().mockResolvedValue({ success: true, sessionId: 'session-1', fieldCount: 1 }),
   materializeFormPdf: vi.fn().mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' })),
+  downloadFormPdf: vi.fn().mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' })),
   saveFormToProfile: vi.fn().mockResolvedValue({ success: true, id: 'saved-1' }),
   createSchema: vi.fn(),
   renameFields: vi.fn(),
@@ -136,6 +138,12 @@ const uiMocks = vi.hoisted(() => ({
       <button data-testid="save-profile" type="button" onClick={() => void props.onSaveToProfile?.()}>
         Save profile
       </button>
+      <button data-testid="download-flat" type="button" onClick={() => void props.onDownload?.('flat')}>
+        Download flat
+      </button>
+      <button data-testid="header-sign-in" type="button" onClick={() => void props.onSignIn?.()}>
+        Sign in
+      </button>
       <button data-testid="sign-out" type="button" onClick={() => void props.onSignOut?.()}>
         Sign out
       </button>
@@ -144,6 +152,17 @@ const uiMocks = vi.hoisted(() => ({
   fieldListPanel: vi.fn((props: any) => (
     <div data-testid="field-list-panel">
       <div data-testid="field-list">{props.fields.map((field: any) => field.name).join('|')}</div>
+      <div data-testid="field-state-json">
+        {JSON.stringify({
+          fields: props.fields,
+          appearance: {
+            globalFieldFont: props.globalFieldFont,
+            globalFieldFontSize: props.globalFieldFontSize,
+            globalFieldFontColor: props.globalFieldFontColor,
+            globalFieldAlignment: props.globalFieldAlignment,
+          },
+        })}
+      </div>
       <div data-testid="display-preset">{props.displayPreset}</div>
       <button data-testid="apply-review-preset" type="button" onClick={() => props.onApplyDisplayPreset?.('review')}>
         Review
@@ -157,10 +176,23 @@ const uiMocks = vi.hoisted(() => ({
       <button data-testid="toggle-fields-off" type="button" onClick={() => props.onShowFieldsChange?.(false)}>
         Fields off
       </button>
+      <button data-testid="set-global-font" type="button" onClick={() => props.onGlobalFieldFontChange?.('Times-Roman')}>
+        Global font
+      </button>
+      <button data-testid="set-global-font-size" type="button" onClick={() => props.onGlobalFieldFontSizeChange?.(14)}>
+        Global font size
+      </button>
+      <button data-testid="set-global-font-color" type="button" onClick={() => props.onGlobalFieldFontColorChange?.('#123abc')}>
+        Global font color
+      </button>
+      <button data-testid="set-global-align-right" type="button" onClick={() => props.onGlobalFieldAlignmentChange?.('right')}>
+        Global align
+      </button>
     </div>
   )),
   fieldInspector: vi.fn((props: any) => {
     const first = props.fields[0];
+    const second = props.fields[1];
     return (
       <div data-testid="field-inspector">
         <div data-testid="active-create-tool">{props.activeCreateTool ?? 'off'}</div>
@@ -178,6 +210,38 @@ const uiMocks = vi.hoisted(() => ({
           disabled={!first}
         >
           Rename first
+        </button>
+        <button
+          data-testid="fill-first"
+          type="button"
+          onClick={() => props.onUpdateField(first.id, { value: 'Alice Catalog' })}
+          disabled={!first}
+        >
+          Fill first
+        </button>
+        <button
+          data-testid="style-first"
+          type="button"
+          onClick={() => props.onUpdateField(first.id, { fontName: 'Courier-Bold', fontSize: 12, fontColor: '#456def', textAlign: 'center' })}
+          disabled={!first}
+        >
+          Style first
+        </button>
+        <button
+          data-testid="delete-first"
+          type="button"
+          onClick={() => props.onDeleteField(first.id)}
+          disabled={!first}
+        >
+          Delete first
+        </button>
+        <button
+          data-testid="delete-second"
+          type="button"
+          onClick={() => props.onDeleteField(second.id)}
+          disabled={!second}
+        >
+          Delete second
         </button>
         <button data-testid="delete-all" type="button" onClick={() => props.onDeleteAllFields?.()}>
           Delete all
@@ -243,6 +307,9 @@ vi.mock('../../../src/components/pages/LoginPage', () => ({
       <button data-testid="login-authenticated" type="button" onClick={() => props.onAuthenticated?.()}>
         Authenticated
       </button>
+      <button data-testid="login-new-user" type="button" onClick={() => props.onAuthenticated?.({ isNewUser: true })}>
+        New user
+      </button>
       <button data-testid="login-cancel" type="button" onClick={() => props.onCancel?.()}>
         Cancel
       </button>
@@ -284,7 +351,16 @@ vi.mock('../../../src/components/pages/VerifyEmailPage', () => ({
 }));
 
 vi.mock('../../../src/components/pages/OnboardingPage', () => ({
-  default: () => <div data-testid="onboarding-page">Onboarding</div>,
+  default: (props: any) => (
+    <div data-testid="onboarding-page">
+      <button data-testid="onboarding-start-trial" type="button" onClick={() => props.onStartTrial?.()}>
+        Start trial
+      </button>
+      <button data-testid="onboarding-skip-free" type="button" onClick={() => props.onSkipToFree?.()}>
+        Skip
+      </button>
+    </div>
+  ),
 }));
 
 vi.mock('../../../src/components/layout/HeaderBar', () => ({
@@ -394,13 +470,14 @@ vi.mock('../../../src/components/ui/CommonFormsAttribution', () => ({
   CommonFormsAttribution: () => <span>CommonForms</span>,
 }));
 
-const makeField = () => ({
+const makeField = (overrides: Record<string, unknown> = {}) => ({
   id: 'field-1',
   name: 'First Name',
   type: 'text',
   page: 1,
   rect: { x: 10, y: 10, width: 80, height: 12 },
   value: '',
+  ...overrides,
 });
 
 const makePdfDoc = () => ({
@@ -610,6 +687,7 @@ describe('App', () => {
     }
     window.history.replaceState({}, '', '/');
     window.scrollTo = vi.fn();
+    HTMLAnchorElement.prototype.click = vi.fn();
     window.localStorage.clear();
     window.sessionStorage.clear();
     document.documentElement.classList.remove('workspace-no-scroll');
@@ -630,6 +708,7 @@ describe('App', () => {
     apiServiceMocks.cancelBillingSubscription.mockReset();
     apiServiceMocks.createTemplateSession.mockReset().mockResolvedValue({ success: true, sessionId: 'session-1', fieldCount: 1 });
     apiServiceMocks.materializeFormPdf.mockReset().mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' }));
+    apiServiceMocks.downloadFormPdf.mockReset().mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' }));
     apiServiceMocks.saveFormToProfile.mockReset().mockResolvedValue({ success: true, id: 'saved-1' });
     apiServiceMocks.createSchema.mockReset();
     apiServiceMocks.renameFields.mockReset();
@@ -664,6 +743,7 @@ describe('App', () => {
     } else {
       delete (File.prototype as File & { text?: unknown }).text;
     }
+    HTMLAnchorElement.prototype.click = originalAnchorClick;
     window.matchMedia = originalMatchMedia;
   });
 
@@ -767,7 +847,7 @@ describe('App', () => {
     expect(window.location.pathname).toBe('/upload');
   }, 15_000);
 
-  it('keeps catalog handoff slugs through sign-in and opens the selected form', async () => {
+  it('opens catalog handoff PDFs in the editor while signed out', async () => {
     const fetchMock = vi.fn(async () => ({
       ok: true,
       status: 200,
@@ -780,20 +860,207 @@ describe('App', () => {
     render(<App initialBrowserRoute={{ kind: 'upload-root', catalogSlug: 'w-9' }} />);
 
     await settleAuthAsSignedOut();
-    expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
-    expect(window.location.pathname).toBe('/upload');
-    expect(window.location.search).toBe('?catalogSlug=w-9');
-
-    fireEvent.click(screen.getByTestId('login-authenticated'));
-    await settleAuthAsSignedIn();
-
     await waitFor(() => {
       expect(fetchMock.mock.calls.some(([input]) => String(input).includes('hr_onboarding/w-9__fw9.pdf'))).toBe(true);
       expect(pdfMocks.loadPdfFromFile).toHaveBeenCalled();
     });
     expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(screen.queryByTestId('login-page')).toBeNull();
     expect(window.location.pathname).toBe('/ui');
     expect(window.location.search).toBe('');
+    await waitFor(() => {
+      const lastHeaderBarProps = uiMocks.headerBar.mock.calls.at(-1)?.[0];
+      expect(lastHeaderBarProps?.canDownload).toBe(true);
+      expect(lastHeaderBarProps?.canSave).toBe(true);
+      expect(lastHeaderBarProps?.onSignIn).toEqual(expect.any(Function));
+      expect(lastHeaderBarProps?.onOpenManagePages).toBeUndefined();
+      expect(lastHeaderBarProps?.onOpenOptimizePdf).toBeUndefined();
+      expect(lastHeaderBarProps?.onOpenDownloadPages).toBeUndefined();
+      expect(lastHeaderBarProps?.onOpenFillLink).toBeUndefined();
+      expect(lastHeaderBarProps?.onOpenTemplateApi).toBeUndefined();
+      expect(lastHeaderBarProps?.onOpenSignatureRequest).toBeUndefined();
+      expect(lastHeaderBarProps?.onOpenProfile).toBeUndefined();
+      expect(lastHeaderBarProps?.onSignOut).toBeUndefined();
+    });
+  }, 15_000);
+
+  it('prompts catalog anonymous users to sign in before generated download and resumes after auth', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      blob: async () => new Blob(['%PDF-1.4 catalog pdf'], { type: 'application/pdf' }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+    window.history.replaceState({}, '', '/upload?catalogSlug=w-9');
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'upload-root', catalogSlug: 'w-9' }} />);
+
+    await settleAuthAsSignedOut();
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+
+    fireEvent.click(screen.getByTestId('download-flat'));
+    expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(apiServiceMocks.downloadFormPdf).not.toHaveBeenCalled();
+
+    await settleAuthAsSignedIn();
+
+    await waitFor(() => {
+      expect(apiServiceMocks.downloadFormPdf).toHaveBeenCalledWith(
+        expect.any(Blob),
+        expect.any(Array),
+        expect.objectContaining({ exportMode: 'flat' }),
+      );
+    });
+  }, 15_000);
+
+  it('preserves catalog deletions, fill values, and font edits through sign-in before generated download', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      blob: async () => new Blob(['%PDF-1.4 catalog pdf'], { type: 'application/pdf' }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+    pdfMocks.extractFieldsFromPdf.mockResolvedValue([
+      makeField(),
+      makeField({
+        id: 'field-2',
+        name: 'Last Name',
+        rect: { x: 10, y: 30, width: 80, height: 12 },
+      }),
+    ]);
+    window.history.replaceState({}, '', '/upload?catalogSlug=w-9');
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'upload-root', catalogSlug: 'w-9' }} />);
+
+    await settleAuthAsSignedOut();
+    expect((await screen.findByTestId('field-list', {}, { timeout: 10_000 })).textContent).toBe('First Name|Last Name');
+
+    fireEvent.click(screen.getByTestId('fill-first'));
+    fireEvent.click(screen.getByTestId('style-first'));
+    fireEvent.click(screen.getByTestId('set-global-font'));
+    fireEvent.click(screen.getByTestId('set-global-font-size'));
+    fireEvent.click(screen.getByTestId('set-global-font-color'));
+    fireEvent.click(screen.getByTestId('set-global-align-right'));
+    fireEvent.click(screen.getByTestId('delete-second'));
+
+    await waitFor(() => {
+      const state = JSON.parse(screen.getByTestId('field-state-json').textContent || '{}');
+      expect(state.fields).toHaveLength(1);
+      expect(state.fields[0]).toEqual(expect.objectContaining({
+        id: 'field-1',
+        name: 'First Name',
+        value: 'Alice Catalog',
+        fontName: 'Courier-Bold',
+        fontSize: 12,
+        fontColor: '#456def',
+        textAlign: 'center',
+      }));
+      expect(state.appearance).toEqual({
+        globalFieldFont: 'Times-Roman',
+        globalFieldFontSize: 14,
+        globalFieldFontColor: '#123abc',
+        globalFieldAlignment: 'right',
+      });
+    });
+
+    fireEvent.click(screen.getByTestId('download-flat'));
+    expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
+    expect(apiServiceMocks.downloadFormPdf).not.toHaveBeenCalled();
+    expect(apiServiceMocks.materializeFormPdf).not.toHaveBeenCalled();
+
+    await settleAuthAsSignedIn();
+
+    await waitFor(() => {
+      expect(apiServiceMocks.downloadFormPdf).toHaveBeenCalledWith(
+        expect.any(Blob),
+        [
+          expect.objectContaining({
+            id: 'field-1',
+            value: 'Alice Catalog',
+            fontName: 'Courier-Bold',
+            fontSize: 12,
+            fontColor: '#456def',
+            textAlign: 'center',
+          }),
+        ],
+        expect.objectContaining({
+          exportMode: 'flat',
+          appearance: {
+            globalFieldFont: 'Times-Roman',
+            globalFieldFontSize: 14,
+            globalFieldFontColor: '#123abc',
+            globalFieldAlignment: 'right',
+          },
+        }),
+      );
+    });
+  }, 15_000);
+
+  it('keeps catalog drafts available through new-account free trial onboarding', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      blob: async () => new Blob(['%PDF-1.4 catalog pdf'], { type: 'application/pdf' }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+    pdfMocks.extractFieldsFromPdf.mockResolvedValue([
+      makeField(),
+      makeField({
+        id: 'field-2',
+        name: 'Last Name',
+        rect: { x: 10, y: 30, width: 80, height: 12 },
+      }),
+    ]);
+    apiServiceMocks.getProfile.mockResolvedValue(makeRetentionProfile({ retention: null }));
+    apiServiceMocks.createBillingCheckoutSession.mockReturnValue(new Promise(() => {}));
+    window.history.replaceState({}, '', '/upload?catalogSlug=w-9');
+
+    const App = await importApp();
+    render(<App initialBrowserRoute={{ kind: 'upload-root', catalogSlug: 'w-9' }} />);
+
+    await settleAuthAsSignedOut();
+    expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
+
+    fireEvent.click(screen.getByTestId('fill-first'));
+    fireEvent.click(screen.getByTestId('style-first'));
+    fireEvent.click(screen.getByTestId('set-global-font'));
+    fireEvent.click(screen.getByTestId('set-global-font-size'));
+    fireEvent.click(screen.getByTestId('set-global-font-color'));
+    fireEvent.click(screen.getByTestId('set-global-align-right'));
+    fireEvent.click(screen.getByTestId('delete-second'));
+
+    fireEvent.click(screen.getByTestId('save-profile'));
+    expect(await screen.findByTestId('login-page', {}, { timeout: 10_000 })).toBeTruthy();
+
+    fireEvent.click(screen.getByTestId('login-new-user'));
+    await settleAuthAsSignedIn();
+    expect(await screen.findByTestId('onboarding-page', {}, { timeout: 10_000 })).toBeTruthy();
+
+    fireEvent.click(screen.getByTestId('onboarding-start-trial'));
+
+    await waitFor(() => {
+      expect(apiServiceMocks.createBillingCheckoutSession).toHaveBeenCalledWith('free_trial');
+    });
+    const rawDraft = window.sessionStorage.getItem('dullypdf.catalogDraftState');
+    expect(rawDraft).toBeTruthy();
+    const parsedDraft = JSON.parse(rawDraft || '{}');
+    expect(parsedDraft.slug).toBe('w-9');
+    expect(parsedDraft.pendingAction).toEqual({ type: 'save' });
+    expect(parsedDraft.fields).toHaveLength(1);
+    expect(parsedDraft.fields?.[0]).toEqual(expect.objectContaining({
+      name: 'First Name',
+      value: 'Alice Catalog',
+      fontName: 'Courier-Bold',
+      fontSize: 12,
+      fontColor: '#456def',
+      textAlign: 'center',
+    }));
+    expect(parsedDraft.globalFieldFont).toBe('Times-Roman');
+    expect(parsedDraft.globalFieldFontSize).toBe(14);
+    expect(parsedDraft.globalFieldFontColor).toBe('#123abc');
+    expect(parsedDraft.globalFieldAlignment).toBe('right');
   }, 15_000);
 
   it('keeps direct workflow routes on the homepage shell below the 900px breakpoint', async () => {

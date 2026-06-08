@@ -9,6 +9,7 @@ import {
 } from './config/accountActionRoutes';
 import {
   resolveUsageDocsPath,
+  type UsageDocsLocale,
 } from './components/pages/usageDocsContent';
 import { initializeGoogleAds } from './utils/googleAds';
 import {
@@ -37,7 +38,7 @@ type AppRoute =
   | { kind: 'signing-public'; token: string }
   | { kind: 'signing-validation'; token: string }
   | { kind: 'account-action' }
-  | { kind: 'usage-docs-not-found'; requestedPath: string }
+  | { kind: 'usage-docs-not-found'; requestedPath: string; locale?: UsageDocsLocale }
   | { kind: 'seo-layout-preview' }
   | { kind: 'not-found'; requestedPath: string };
 
@@ -144,11 +145,13 @@ const resolveRoute = (): AppRoute => {
         return {
           kind: 'usage-docs',
           pageKey: canonicalRoute.pageKey,
+          locale: canonicalRoute.locale,
         };
       }
       return {
         kind: 'usage-docs-not-found',
         requestedPath: usageDocsRoute.targetPath,
+        locale: canonicalRoute?.kind === 'not-found' ? canonicalRoute.locale : undefined,
       };
     }
 
@@ -157,6 +160,7 @@ const resolveRoute = (): AppRoute => {
       return {
         kind: 'usage-docs',
         pageKey: usageDocsRoute.pageKey,
+        locale: usageDocsRoute.locale,
       };
     }
 
@@ -164,6 +168,7 @@ const resolveRoute = (): AppRoute => {
     return {
       kind: 'usage-docs-not-found',
       requestedPath: usageDocsRoute.requestedPath,
+      locale: usageDocsRoute.locale,
     };
   }
 
@@ -204,7 +209,7 @@ const renderRoute = (route: AppRoute) => {
     case 'account-action':
       return <AccountActionPage />;
     case 'usage-docs-not-found':
-      return <UsageDocsNotFoundPage requestedPath={route.requestedPath} />;
+      return <UsageDocsNotFoundPage requestedPath={route.requestedPath} locale={route.locale} />;
     case 'seo-layout-preview':
       return <SeoLayoutPreviewPage />;
     case 'not-found':

@@ -477,7 +477,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why generic PDF merging breaks down for form workflows' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Create Group docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/create-group',
+      '/usage-docs/create-group',
     );
   });
 
@@ -519,7 +519,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why splitting fillable PDFs needs more care than cutting pages' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Save & Download docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/save-download-profile',
+      '/usage-docs/save-download-profile',
     );
   });
 
@@ -539,7 +539,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why deleting pages from a fillable PDF is not just page cleanup' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Editor workflow docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/editor-workflow',
+      '/usage-docs/editor-workflow',
     );
   });
 
@@ -559,7 +559,7 @@ describe('IntentLandingPage', () => {
       screen.getByRole('heading', { level: 2, name: 'Why compression is different for fillable PDF workflows' }),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Save & Download docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/save-download-profile',
+      '/usage-docs/save-download-profile',
     );
   });
 
@@ -722,9 +722,9 @@ describe('IntentLandingPage', () => {
     expect(screen.queryByRole('heading', { level: 2, name: /Workflow examples for /i })).toBeNull();
     expect(screen.queryByRole('link', { name: 'Watch on YouTube' })).toBeNull();
     expect(screen.queryByTitle(/E-Sign Pipeline/i)).toBeNull();
-    expect(screen.getByRole('link', { name: 'API Fill' }).getAttribute('href')).toBe('/es/usage-docs/api-fill');
-    expect(screen.getByRole('link', { name: 'Renombrar y Mapear Campos' }).getAttribute('href')).toBe(
-      '/es/usage-docs/rename-mapping',
+    expect(screen.getByRole('link', { name: 'API Fill' }).getAttribute('href')).toBe('/usage-docs/api-fill');
+    expect(screen.getByRole('link', { name: 'Rename + Mapping' }).getAttribute('href')).toBe(
+      '/usage-docs/rename-mapping',
     );
   });
 
@@ -806,10 +806,10 @@ describe('IntentLandingPage', () => {
     expect(screen.getByText('10 specific forms to automate on this route')).toBeTruthy();
     expect(
       screen.getByRole('link', { name: 'API Fill docs' }).getAttribute('href'),
-    ).toBe('/es/usage-docs/api-fill');
+    ).toBe('/usage-docs/api-fill');
     expect(
       screen.getByRole('link', { name: 'Signature workflow docs' }).getAttribute('href'),
-    ).toBe('/es/usage-docs/signature-workflow');
+    ).toBe('/usage-docs/signature-workflow');
   });
 
   it('keeps public catalog CTAs crawl-safe and removes direct government file URLs from official-source links', () => {

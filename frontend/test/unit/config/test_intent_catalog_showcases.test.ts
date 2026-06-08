@@ -32,9 +32,9 @@ describe('intentCatalogShowcases', () => {
       expect(steps[0]?.href).toBe(showcase.featuredDocuments[0]?.catalogHref);
       expect(steps[0]?.editorHref).toBe(showcase.featuredDocuments[0]?.editorHref);
       expect(steps.some((step) => /csv|xlsx|json|sql/i.test(step.description))).toBe(true);
-      expect(steps.some((step) => step.href === '/es/usage-docs/api-fill')).toBe(true);
-      expect(steps.some((step) => step.href === '/es/usage-docs/fill-by-link')).toBe(true);
-      expect(steps.some((step) => step.href === '/es/usage-docs/signature-workflow')).toBe(true);
+      expect(steps.some((step) => step.href === '/usage-docs/api-fill')).toBe(true);
+      expect(steps.some((step) => step.href === '/usage-docs/fill-by-link')).toBe(true);
+      expect(steps.some((step) => step.href === '/usage-docs/signature-workflow')).toBe(true);
     }
   });
 

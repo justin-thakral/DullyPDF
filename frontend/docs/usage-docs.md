@@ -1,17 +1,30 @@
 # Usage Docs Pages
 
-The frontend exposes public usage documentation under `/es/usage-docs/*` as the canonical docs URL
-family. Legacy `/usage-docs/*` and `/docs/*` URLs are retained only for compatibility and redirect to
-`/es/usage-docs/*` with HTTP 301 on Firebase hosting.
-Canonical route style is non-trailing slash for non-root docs URLs (`/es/usage-docs/...`), and
-slash variants should only perform a single redirect to the non-slash URL.
+The frontend exposes public English usage documentation under `/usage-docs/*` as the canonical docs URL
+family. Spanish usage documentation is available under `/es/usage-docs/*`. Legacy `/docs/*` URLs are
+retained only for compatibility and redirect to `/usage-docs/*` with HTTP 301 on Firebase hosting.
+Canonical route style is non-trailing slash for non-root docs URLs (`/usage-docs/...` and
+`/es/usage-docs/...`), and slash variants should only perform a single redirect to the non-slash URL.
 
 These routes are handled in `src/main.tsx` without React Router so they remain lightweight and
 consistent with existing legal-page routing.
 
 ## Routes
 
-- `/es/usage-docs` -> overview
+- `/usage-docs` -> English overview
+- `/usage-docs/getting-started`
+- `/usage-docs/detection`
+- `/usage-docs/rename-mapping`
+- `/usage-docs/editor-workflow`
+- `/usage-docs/search-fill`
+- `/usage-docs/fill-from-images`
+- `/usage-docs/fill-by-link`
+- `/usage-docs/signature-workflow`
+- `/usage-docs/api-fill`
+- `/usage-docs/create-group`
+- `/usage-docs/save-download-profile`
+- `/usage-docs/troubleshooting`
+- `/es/usage-docs` -> Spanish overview
 - `/es/usage-docs/getting-started`
 - `/es/usage-docs/detection`
 - `/es/usage-docs/rename-mapping`
@@ -24,17 +37,18 @@ consistent with existing legal-page routing.
 - `/es/usage-docs/create-group`
 - `/es/usage-docs/save-download-profile`
 - `/es/usage-docs/troubleshooting`
-- `/usage-docs/*` permanently redirects to the matching `/es/usage-docs/*` path
-- `/docs/*` permanently redirects to the matching `/es/usage-docs/*` path
+- `/docs/*` permanently redirects to the matching `/usage-docs/*` path
+- `/usage-docs/:slug/` redirects once to `/usage-docs/:slug`
 - `/es/usage-docs/:slug/` redirects once to `/es/usage-docs/:slug`
 
-Unknown slugs (for example `/es/usage-docs/typo`) are treated as not found:
-- Firebase hosting returns a true 404 page (`frontend/public/404.html`) for unknown `/es/usage-docs/*` paths.
+Unknown slugs (for example `/usage-docs/typo` or `/es/usage-docs/typo`) are treated as not found:
+- Firebase hosting returns a true 404 page (`frontend/public/404.html`) for unknown docs paths.
 - Client-side fallback rendering (for local/dev rewrite behavior) uses `UsageDocsNotFoundPage` and applies `noindex,follow`.
 
 ## Files
 
-- `src/components/pages/usageDocsContent.tsx`: route/page catalog + section content.
+- `src/components/pages/usageDocsContent.tsx`: English route/page catalog + section content.
+- `src/components/pages/usageDocsSpanishContent.tsx`: Spanish route/page catalog + section content.
 - `src/components/pages/UsageDocsPage.tsx`: docs page shell, sidebar, and section rendering.
 - `src/components/pages/UsageDocsPage.css`: responsive layout and typography.
 - `src/components/pages/UsageDocsNotFoundPage.tsx`: client-side docs 404 fallback page with noindex SEO metadata.
@@ -42,7 +56,7 @@ Unknown slugs (for example `/es/usage-docs/typo`) are treated as not found:
 
 ## Navigation model
 
-- Public docs now use the shared public-site header/footer frame used by the blog and workflow routes.
+- Public docs use the shared public-site header/footer frame used by the blog and workflow routes.
 - Docs keep a small local utility nav for `Usage Docs`, `Privacy Policy`, and `Terms of Service`.
 - Sidebar includes:
   - `Pages`: jump between docs routes.
@@ -73,12 +87,12 @@ Unknown slugs (for example `/es/usage-docs/typo`) are treated as not found:
 
 ## Entry points
 
-- Desktop non-editor header includes one `Docs & Privacy & Terms` button that routes to `/es/usage-docs`.
-- Mobile homepage CTA stack includes one `Docs & Privacy & Terms` button that routes to `/es/usage-docs`.
-- Workspace `Schema` dropdown includes `Usage Docs`, which opens `/es/usage-docs/search-fill` in a new browser tab/window.
-- Workspace `Rename or Remap` dropdown includes `Usage Docs`, which opens `/es/usage-docs/rename-mapping` in a new browser tab/window.
-- Workspace `Download specific pages`, `Fill from information extracted from images and documents`, calculation setup, `Fill By Web Form Link + Sign`, `Send PDF for Signature by email`, and `API Fill` dialogs expose a `Usage Docs` button immediately left of the red close control, and each button opens its matching `/es/usage-docs/*` route in a new browser tab/window.
-- Workspace Browser and Field Editor headers expose right-aligned `Usage Docs` buttons that open `/es/usage-docs/editor-workflow` in a new browser tab/window without disturbing the active editor state.
+- Desktop non-editor header includes one `Docs & Privacy & Terms` button that routes to `/usage-docs` for the English homepage and `/es/usage-docs` for the Spanish homepage.
+- Mobile homepage CTA stack includes one `Docs & Privacy & Terms` button that routes to `/usage-docs` for English/India and `/es/usage-docs` for Spanish.
+- Workspace `Schema` dropdown includes `Usage Docs`, which opens `/usage-docs/search-fill` in a new browser tab/window.
+- Workspace `Rename or Remap` dropdown includes `Usage Docs`, which opens `/usage-docs/rename-mapping` in a new browser tab/window.
+- Workspace `Download specific pages`, `Fill from information extracted from images and documents`, calculation setup, `Fill By Web Form Link + Sign`, `Send PDF for Signature by email`, and `API Fill` dialogs expose a `Usage Docs` button immediately left of the red close control, and each button opens its matching `/usage-docs/*` route in a new browser tab/window.
+- Workspace Browser and Field Editor headers expose right-aligned `Usage Docs` buttons that open `/usage-docs/editor-workflow` in a new browser tab/window without disturbing the active editor state.
 
 ## Output guidance
 

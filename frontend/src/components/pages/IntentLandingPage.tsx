@@ -19,7 +19,14 @@ import {
   PDF_TO_FILLABLE_DEMO_VIDEO,
   WEB_FORM_AND_SIGN_DEMO_VIDEO,
 } from '../../config/publicVideoContent';
-import { getUsageDocsPage, usageDocsHref } from './usageDocsContent';
+import {
+  getUsageDocsPage as getEnglishUsageDocsPage,
+  usageDocsHref as englishUsageDocsHref,
+} from './usageDocsContent';
+import {
+  getUsageDocsPage as getSpanishUsageDocsPage,
+  usageDocsHref as spanishUsageDocsHref,
+} from './usageDocsSpanishContent';
 import { applyRouteSeo } from '../../utils/seo';
 import { IntentPageShell } from './IntentPageShell';
 import PublicVideoPanel from './PublicVideoPanel';
@@ -94,6 +101,10 @@ type IntentCatalogCategorySummary = {
 
 const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
   const page = getIntentPage(pageKey);
+  const isIndiaIntentPage = page.path.startsWith('/in/');
+  const isSpanishIntentPage = page.path.startsWith('/es/');
+  const usageDocsPage = isSpanishIntentPage ? getSpanishUsageDocsPage : getEnglishUsageDocsPage;
+  const usageDocsHref = isSpanishIntentPage ? spanishUsageDocsHref : englishUsageDocsHref;
   const articleFigures = getIntentPageArticleFigures(pageKey);
   const catalogShowcase = getIntentCatalogShowcase(pageKey) as IntentCatalogShowcase | null;
   const catalogCategorySummaries = useMemo<IntentCatalogCategorySummary[]>(
@@ -170,19 +181,17 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
     () => {
       const pageKeys = page.relatedDocs ?? ['getting-started', 'detection', 'rename-mapping', 'search-fill'];
       return pageKeys.map((key) => {
-        const doc = getUsageDocsPage(key);
+        const doc = usageDocsPage(key);
         return { label: doc.title, href: usageDocsHref(key) };
       });
     },
-    [page.relatedDocs],
+    [page.relatedDocs, usageDocsHref, usageDocsPage],
   );
   const relatedGuides = useMemo(
     () => getBlogGuideLinksForIntentPage(pageKey),
     [pageKey],
   );
   const routeFocusLabel = page.navLabel.toLowerCase();
-  const isIndiaIntentPage = page.path.startsWith('/in/');
-  const isSpanishIntentPage = page.path.startsWith('/es/');
   const spanishHubLabel = page.category === 'industry' ? 'Industrias' : 'Flujos de trabajo';
   const spanishHubHref = page.category === 'industry' ? '/es/industrias' : '/es/flujos-de-trabajo';
   const breadcrumbItems = isIndiaIntentPage
@@ -509,13 +518,13 @@ const IntentLandingPage = ({ pageKey }: IntentLandingPageProps) => {
             {isSpanishIntentPage
               ? `Para validar detalles técnicos sobre ${routeFocusLabel}, usa la `
               : `Need deeper technical details about ${routeFocusLabel}? Use the `}
-            <a href="/es/usage-docs/rename-mapping">
+            <a href={usageDocsHref('rename-mapping')}>
               {isSpanishIntentPage ? 'documentación de Rename + Mapping' : 'Rename + Mapping docs'}
             </a>
             {' '}
             {isSpanishIntentPage ? 'y la' : 'and'}
             {' '}
-            <a href="/es/usage-docs/search-fill">
+            <a href={usageDocsHref('search-fill')}>
               {isSpanishIntentPage ? 'documentación de Search & Fill' : 'Search & Fill docs'}
             </a>
             {' '}

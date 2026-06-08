@@ -4,7 +4,7 @@ import { getBlogPost, getBlogPostLocale, getBlogPosts } from '../../../src/confi
 import { getBlogPostSeo } from '../../../src/config/blogSeo';
 import { getFeaturePlanPages } from '../../../src/config/featurePlanPages';
 import { getUsageDocsPages } from '../../../src/components/pages/usageDocsContent';
-import { INDEXABLE_PUBLIC_ROUTE_PATHS, resolveRouteSeo } from '../../../src/config/routeSeo';
+import { INDEXABLE_PUBLIC_ROUTE_PATHS, resolveRouteSeo, resolveRouteSeoBodyContent } from '../../../src/config/routeSeo';
 import {
   ALL_ROUTES,
   BLOG_POSTS as STATIC_BLOG_POSTS,
@@ -216,26 +216,31 @@ describe('routeSeo config', () => {
 
   it('resolves canonical usage docs metadata by page key', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'search-fill' });
-    expect(metadata.canonicalPath).toBe('/es/usage-docs/search-fill');
-    expect(metadata.title).toContain('Rellenar PDFs');
+    expect(metadata.canonicalPath).toBe('/usage-docs/search-fill');
+    expect(metadata.title).toContain('Search & Fill');
+
+    const spanishMetadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'search-fill', locale: 'es' });
+    expect(spanishMetadata.canonicalPath).toBe('/es/usage-docs/search-fill');
+    expect(spanishMetadata.htmlLang).toBe('es');
+    expect(spanishMetadata.title).toContain('Rellenar PDFs');
   });
 
   it('resolves dedicated Create Group docs metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'create-group' });
-    expect(metadata.canonicalPath).toBe('/es/usage-docs/create-group');
-    expect(metadata.title).toContain('Crear Grupos');
+    expect(metadata.canonicalPath).toBe('/usage-docs/create-group');
+    expect(metadata.title).toContain('Create Group');
   });
 
   it('resolves dedicated signature docs metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'signature-workflow' });
-    expect(metadata.canonicalPath).toBe('/es/usage-docs/signature-workflow');
-    expect(metadata.title).toContain('EE. UU.');
+    expect(metadata.canonicalPath).toBe('/usage-docs/signature-workflow');
+    expect(metadata.title).toContain('Signature Workflow');
   });
 
   it('resolves dedicated API Fill docs metadata', () => {
     const metadata = resolveRouteSeo({ kind: 'usage-docs', pageKey: 'api-fill' });
-    expect(metadata.canonicalPath).toBe('/es/usage-docs/api-fill');
-    expect(metadata.title).toContain('API para Rellenar PDFs');
+    expect(metadata.canonicalPath).toBe('/usage-docs/api-fill');
+    expect(metadata.title).toContain('API Fill');
   });
 
   it('resolves canonical intent metadata by key', () => {
@@ -633,16 +638,38 @@ describe('routeSeo config', () => {
 
   it('resolves canonical hub metadata by key', () => {
     const metadata = resolveRouteSeo({ kind: 'intent-hub', hubKey: 'workflows' });
-    expect(metadata.canonicalPath).toBe('/es/flujos-de-trabajo');
-    expect(metadata.htmlLang).toBe('es');
-    expect(metadata.title).toBe('Flujos para Formularios PDF Rellenables | DullyPDF en Español');
+    expect(metadata.canonicalPath).toBe('/workflows');
+    expect(metadata.htmlLang).toBeUndefined();
+    expect(metadata.title).toBe('PDF Automation Workflows — Templates, Filling, Signing, and API');
+    expect(INDEXABLE_PUBLIC_ROUTE_PATHS).toContain('/workflows');
+
+    const bodyContent = resolveRouteSeoBodyContent({ kind: 'intent-hub', hubKey: 'workflows' });
+    expect(bodyContent?.heading).toBe('Workflow Library for PDF Automation');
+    expect(bodyContent?.panelTitle).toBe('All workflow pages');
+
     const spanishMetadata = resolveRouteSeo({ kind: 'intent-hub', hubKey: 'workflows', locale: 'es' });
     expect(spanishMetadata.canonicalPath).toBe('/es/flujos-de-trabajo');
     expect(spanishMetadata.htmlLang).toBe('es');
     expect(spanishMetadata.title).toBe('Flujos para Formularios PDF Rellenables | DullyPDF en Español');
+    const spanishBodyContent = resolveRouteSeoBodyContent({ kind: 'intent-hub', hubKey: 'workflows', locale: 'es' });
+    expect(spanishBodyContent?.heading).toBe('Flujos para Formularios PDF Rellenables');
+    expect(spanishBodyContent?.panelTitle).toBe('Páginas de flujo en español');
     expect(
       spanishMetadata.structuredData?.some((entry) => entry['@type'] === 'CollectionPage'),
     ).toBe(true);
+  });
+
+  it('does not include Spanish route recommendations in English SEO bodies', () => {
+    const englishPayloads = [
+      resolveRouteSeo({ kind: 'usage-docs', pageKey: 'search-fill' }),
+      resolveRouteSeo({ kind: 'intent-hub', hubKey: 'workflows' }),
+      resolveRouteSeo({ kind: 'intent-hub', hubKey: 'industries' }),
+      resolveRouteSeo({ kind: 'blog-index' }),
+      resolveRouteSeoBodyContent({ kind: 'intent-hub', hubKey: 'workflows' }),
+      resolveRouteSeoBodyContent({ kind: 'blog-index' }),
+    ];
+
+    expect(JSON.stringify(englishPayloads)).not.toContain('/es/');
   });
 
   it('resolves feature plan metadata by key', () => {

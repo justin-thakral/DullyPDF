@@ -26,7 +26,7 @@ describe('LegalPage', () => {
     expect(privacyLink.className.includes('legal-nav__link--active')).toBe(true);
     expect(termsLink.className.includes('legal-nav__link--active')).toBe(false);
     expect(getLegalNavLink('Refund Policy').className.includes('legal-nav__link--active')).toBe(false);
-    expect(usageDocsLinks.some((link) => link.getAttribute('href') === '/es/usage-docs')).toBe(true);
+    expect(usageDocsLinks.some((link) => link.getAttribute('href') === '/usage-docs')).toBe(true);
 
     expect(screen.getByText(/justin@dullypdf\.com/i)).toBeTruthy();
   });
@@ -43,7 +43,7 @@ describe('LegalPage', () => {
     expect(privacyLink.className.includes('legal-nav__link--active')).toBe(false);
     expect(termsLink.className.includes('legal-nav__link--active')).toBe(true);
     expect(getLegalNavLink('Refund Policy').className.includes('legal-nav__link--active')).toBe(false);
-    expect(usageDocsLinks.some((link) => link.getAttribute('href') === '/es/usage-docs')).toBe(true);
+    expect(usageDocsLinks.some((link) => link.getAttribute('href') === '/usage-docs')).toBe(true);
   });
 
   it('renders refund copy with active refund navigation', () => {

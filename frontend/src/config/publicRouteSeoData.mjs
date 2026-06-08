@@ -325,10 +325,10 @@ const INTENT_PAGES = [
           'Use these DullyPDF docs when you are moving from search intent into the actual editor sequence. The page above explains field-type strategy; the docs explain the operator steps around field cleanup, mapping, generated output, and publishing.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'Fill By Link', href: '/es/usage-docs/fill-by-link' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -493,9 +493,9 @@ const INTENT_PAGES = [
           'Use these DullyPDF docs to move from image-field intent into the exact editor behavior for creating fields, uploading image content, saving templates, and exporting final PDFs.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Save & Download', href: '/es/usage-docs/save-download-profile' },
-          { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Getting Started', href: '/usage-docs/getting-started' },
         ],
       },
     ],
@@ -664,10 +664,10 @@ const INTENT_PAGES = [
           'Use these DullyPDF docs when you are ready to create QR helper fields inside a real template and test the generated output against mapped records or published workflows.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'Fill By Link', href: '/es/usage-docs/fill-by-link' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -800,9 +800,9 @@ const INTENT_PAGES = [
           'Use these DullyPDF docs when you are ready to configure PDF417 helper fields against real template data and verify the generated output.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -936,9 +936,9 @@ const INTENT_PAGES = [
           'Use these DullyPDF docs when the barcode value should come from cleaned fields, mapped rows, or generated PDF workflows.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -1071,10 +1071,10 @@ const INTENT_PAGES = [
           'Use these docs after you decide which barcode type belongs in the template and need to connect it to real PDF output workflows.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'Fill By Link', href: '/es/usage-docs/fill-by-link' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -1218,9 +1218,9 @@ const INTENT_PAGES = [
           'Use these docs once the barcode choice is clear and you need to configure the template, map record values, or generate final PDFs.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -1347,10 +1347,10 @@ const INTENT_PAGES = [
           'Use these docs to map row data, test Search & Fill, or publish barcode-enabled templates through API Fill.',
         ],
         links: [
-          { label: 'Rename + Mapping', href: '/es/usage-docs/rename-mapping' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
-          { label: 'Fill By Link', href: '/es/usage-docs/fill-by-link' },
+          { label: 'Rename + Mapping', href: '/usage-docs/rename-mapping' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
         ],
       },
     ],
@@ -1477,9 +1477,9 @@ const INTENT_PAGES = [
           'Use these docs to place image fields in the editor, save templates, and export final PDFs with image content rendered into the page.',
         ],
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Save & Download', href: '/es/usage-docs/save-download-profile' },
-          { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Getting Started', href: '/usage-docs/getting-started' },
         ],
       },
     ],
@@ -1602,9 +1602,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -1709,9 +1709,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
         ],
       },
     ],
@@ -1811,9 +1811,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
         ],
       },
     ],
@@ -1913,9 +1913,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Signature Workflow', href: '/es/usage-docs/signature-workflow' },
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Signature Workflow', href: '/usage-docs/signature-workflow' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -2014,9 +2014,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
         ],
       },
     ],
@@ -2116,9 +2116,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
-          { label: 'Fill By Link', href: '/es/usage-docs/fill-by-link' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
+          { label: 'Fill By Link', href: '/usage-docs/fill-by-link' },
         ],
       },
     ],
@@ -2218,9 +2218,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'API Fill', href: '/usage-docs/api-fill' },
         ],
       },
     ],
@@ -2320,9 +2320,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Save & Download', href: '/es/usage-docs/save-download-profile' },
-          { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Getting Started', href: '/usage-docs/getting-started' },
         ],
       },
     ],
@@ -2421,9 +2421,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Save & Download', href: '/es/usage-docs/save-download-profile' },
-          { label: 'Fill from Images', href: '/es/usage-docs/fill-from-images' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
+          { label: 'Fill from Images', href: '/usage-docs/fill-from-images' },
         ],
       },
     ],
@@ -2522,9 +2522,9 @@ const INTENT_PAGES = [
       {
         title: 'Related setup docs',
         links: [
-          { label: 'Editor Workflow', href: '/es/usage-docs/editor-workflow' },
-          { label: 'Search & Fill', href: '/es/usage-docs/search-fill' },
-          { label: 'Save & Download', href: '/es/usage-docs/save-download-profile' },
+          { label: 'Editor Workflow', href: '/usage-docs/editor-workflow' },
+          { label: 'Search & Fill', href: '/usage-docs/search-fill' },
+          { label: 'Save & Download', href: '/usage-docs/save-download-profile' },
         ],
       },
     ],
@@ -7638,7 +7638,7 @@ const INTENT_PAGES = [
   //
   // These three pages target the "developer evaluating a PDF fill API" search
   // intent that the rest of the workflow pages do not capture well. They link
-  // back to /pdf-fill-api (the product page) and /es/usage-docs/api-fill (the
+  // back to /pdf-fill-api (the product page) and /usage-docs/api-fill (the
   // setup docs) so the search-to-product path is short.
   // ---------------------------------------------------------------------------
   {
@@ -8401,6 +8401,139 @@ const USAGE_DOCS_PAGES = [
   {
     key: 'index',
     slug: '',
+    path: '/usage-docs',
+    navLabel: 'Overview',
+    title: 'DullyPDF Usage Docs',
+    summary: 'Implementation-level guide for the full DullyPDF workflow, including concrete limits, matching rules, radio groups, API Fill, and signing behavior.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-to-database-template', 'fill-pdf-from-csv'],
+    sectionTitles: ['Pipeline overview', 'Before you start', 'Choose the right docs page', 'Public routes versus docs', 'Three fastest starting paths', 'First validation loop', 'Hard numbers used by the app'],
+  },
+  {
+    key: 'getting-started',
+    slug: 'getting-started',
+    path: '/usage-docs/getting-started',
+    navLabel: 'Getting Started',
+    title: 'Getting Started',
+    summary: 'A practical quick-start from upload to filled output, including when to pause, publish a Fill By Link, and review results.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'fill-pdf-from-csv'],
+    sectionTitles: ['Quick-start path', 'Best-practice order', 'First-run checklist', 'First 30 minutes', 'Most common first-run mistakes', 'What good output looks like'],
+  },
+  {
+    key: 'detection',
+    slug: 'detection',
+    path: '/usage-docs/detection',
+    navLabel: 'Detection',
+    title: 'Detection',
+    summary: 'How CommonForms detection works, how confidence levels are used, and what to adjust when candidates look wrong.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-field-detection-tool'],
+    sectionTitles: ['What detection returns', 'Confidence review', 'Common limitations and fixes', 'PDF quality rubric', 'When to redraw instead of resize', 'Geometry values and editor constraints'],
+  },
+  {
+    key: 'rename-mapping',
+    slug: 'rename-mapping',
+    path: '/usage-docs/rename-mapping',
+    navLabel: 'Rename + Mapping',
+    title: 'Rename + Mapping',
+    summary: 'How to choose Rename, Map, or Rename + Map and how OpenAI outputs appear in the editor.',
+    relatedWorkflowKeys: ['pdf-to-database-template', 'fillable-form-field-name'],
+    sectionTitles: ['When to run each action', 'OpenAI data boundaries', 'Interpreting results', 'Concrete mapping examples', 'Checkbox rules and precedence', 'Boolean token values used by Search & Fill', 'Schema hygiene anti-patterns', 'Rename-only warning'],
+  },
+  {
+    key: 'editor-workflow',
+    slug: 'editor-workflow',
+    path: '/usage-docs/editor-workflow',
+    navLabel: 'Editor Workflow',
+    title: 'Editor Workflow',
+    summary: 'How to use overlay, field list, and inspector together for fast, high-confidence template cleanup.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-checkbox-automation', 'pdf-calculation-fields'],
+    sectionTitles: ['Three-panel model', 'Review, Edit, and Fill modes', 'Editing actions', 'PDF tools', 'Calculation fields', 'Ten-minute cleanup order', 'Recommended quality loop', 'History and clear behavior', 'Keyboard shortcuts'],
+  },
+  {
+    key: 'search-fill',
+    slug: 'search-fill',
+    path: '/usage-docs/search-fill',
+    navLabel: 'Search & Fill',
+    title: 'Search & Fill',
+    summary: 'Connect local data sources or Fill By Link respondent records, search a record, and populate mapped fields with predictable behavior.',
+    relatedWorkflowKeys: ['fill-pdf-from-csv', 'batch-fill-pdf-forms', 'pdf-calculation-fields'],
+    sectionTitles: ['Toolbar buttons overview', 'Data source support', 'CSV file format', 'JSON file format', 'SQL file format', 'TXT schema file format', 'Excel file format', 'Fill flow', 'Guardrails', 'Search & Fill versus Fill By Link versus API Fill', 'Field resolution heuristics (non-checkbox)', 'Checkbox groups and aliases', 'Why partial fills happen'],
+  },
+  {
+    key: 'fill-from-images',
+    slug: 'fill-from-images',
+    path: '/usage-docs/fill-from-images',
+    navLabel: 'Fill from Images and Documents',
+    title: 'Fill from Images and Documents and Documents',
+    summary: 'Upload photos of IDs, invoices, pay stubs, or scanned documents and let OpenAI vision extract matching values into your template fields automatically.',
+    relatedWorkflowKeys: ['fill-information-in-pdf', 'pdf-to-fillable-form'],
+    sectionTitles: ['What Fill from Images and Documents does', 'Pipeline details', 'What gets sent to OpenAI', 'Credit cost', 'Best practices', 'Supported file types'],
+  },
+  {
+    key: 'fill-by-link',
+    slug: 'fill-by-link',
+    path: '/usage-docs/fill-by-link',
+    navLabel: 'Fill By Link',
+    title: 'Fill By Link',
+    summary: 'Publish a DullyPDF-hosted form from a saved template or open group, share the generated link, and turn stored respondent answers into flat PDFs when needed, with optional post-submit downloads for template respondents.',
+    relatedWorkflowKeys: ['fill-pdf-by-link', 'pdf-signature-workflow'],
+    sectionTitles: ['What gets published', 'Owner publishing flow', 'What respondents see', 'PDF output and viewer compatibility', 'Reviewing responses and generating PDFs', 'Limits and sharing guidance'],
+  },
+  {
+    key: 'signature-workflow',
+    slug: 'signature-workflow',
+    path: '/usage-docs/signature-workflow',
+    navLabel: 'Signature Workflow',
+    title: 'Signature Workflow',
+    summary: 'How DullyPDF freezes immutable PDFs for signature, supports both email-based and web-form-to-sign flows, and keeps signed artifacts available to owners later.',
+    relatedWorkflowKeys: ['pdf-signature-workflow', 'esign-ueta-pdf-workflow'],
+    sectionTitles: ['Two entry paths, one signing engine', 'Public signer ceremony', 'Artifacts and owner visibility', 'U.S. e-sign scope and guardrails'],
+  },
+  {
+    key: 'api-fill',
+    slug: 'api-fill',
+    path: '/usage-docs/api-fill',
+    navLabel: 'API Fill',
+    title: 'API Fill',
+    summary: 'How DullyPDF publishes frozen JSON-to-PDF endpoints from saved templates, enforces hosted limits, and keeps API Fill distinct from browser-local Search & Fill.',
+    relatedWorkflowKeys: ['pdf-fill-api', 'pdf-to-database-template', 'pdf-calculation-fields'],
+    sectionTitles: ['What API Fill is', 'Owner manager flow', 'Payload and fill behavior', 'When to use API Fill instead of Search and Fill'],
+  },
+  {
+    key: 'create-group',
+    slug: 'create-group',
+    path: '/usage-docs/create-group',
+    navLabel: 'Create Group',
+    title: 'Create Group and Group Workflows',
+    summary: 'Use groups to organize multi-document packets, switch between saved templates quickly, and run full document workflows across the group.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'pdf-to-database-template'],
+    sectionTitles: ['What a group is', 'Create and open groups', 'Search and fill full groups', 'Rename and remap entire groups', 'Packet design rules', 'Group Fill By Link and packet publishing'],
+  },
+  {
+    key: 'save-download-profile',
+    slug: 'save-download-profile',
+    path: '/usage-docs/save-download-profile',
+    navLabel: 'Save / Download',
+    title: 'Save, Download, and Profile',
+    summary: 'Understand when to download flat, editable, or selected-page PDFs immediately versus saving templates to your profile for reuse, Fill By Link publishing, and respondent management.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'fill-pdf-by-link'],
+    sectionTitles: ['Download vs save', 'Saved form workflow', 'What must be saved before publishing or API use', 'Fill By Link owner flow', 'Limits and credits', 'Stripe billing plans', 'Replace vs new save'],
+  },
+  {
+    key: 'troubleshooting',
+    slug: 'troubleshooting',
+    path: '/usage-docs/troubleshooting',
+    navLabel: 'Troubleshooting',
+    title: 'Troubleshooting',
+    summary: 'Systematic checks for detection quality, OpenAI steps, mapping mismatches, and fill output issues.',
+    relatedWorkflowKeys: ['pdf-to-fillable-form', 'fill-pdf-from-csv'],
+    sectionTitles: ['Troubleshoot by stage', 'Detection issues', 'Rename and mapping issues', 'Fill output issues', 'Common validation and runtime messages', 'What to capture before support', 'Support'],
+  },
+];
+
+const SPANISH_USAGE_DOCS_PAGES = [
+  {
+    key: 'index',
+    slug: '',
     path: '/es/usage-docs',
     navLabel: 'Resumen',
     title: 'Documentación de Uso de DullyPDF',
@@ -8583,8 +8716,8 @@ const FEATURE_PLAN_PAGES = [
     ],
     relatedLinks: [
       { label: 'Premium Features', href: '/premium-features' },
-      { label: 'Usage Docs', href: '/es/usage-docs' },
-      { label: 'Fill By Link Docs', href: '/es/usage-docs/fill-by-link' },
+      { label: 'Usage Docs', href: '/usage-docs' },
+      { label: 'Fill By Link Docs', href: '/usage-docs/fill-by-link' },
     ],
   },
   {
@@ -8640,8 +8773,8 @@ const FEATURE_PLAN_PAGES = [
     ],
     relatedLinks: [
       { label: 'Free Features', href: '/free-features' },
-      { label: 'Save, Download, and Profile Docs', href: '/es/usage-docs/save-download-profile' },
-      { label: 'Fill By Link Docs', href: '/es/usage-docs/fill-by-link' },
+      { label: 'Save, Download, and Profile Docs', href: '/usage-docs/save-download-profile' },
+      { label: 'Fill By Link Docs', href: '/usage-docs/fill-by-link' },
     ],
   },
 ];
@@ -9090,6 +9223,65 @@ const USAGE_DOCS_FAQ_SCHEMAS = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
+      { '@type': 'Question', name: 'How do I convert a PDF into a fillable template in DullyPDF?', acceptedAnswer: { '@type': 'Answer', text: 'Upload a PDF, run field detection, review/edit field geometry and names, then save the template for reuse.' } },
+      { '@type': 'Question', name: 'Do I need mapping before Search and Fill?', acceptedAnswer: { '@type': 'Answer', text: 'Mapping is strongly recommended for reliable output, especially for checkbox groups and non-trivial schemas.' } },
+    ],
+  }],
+  'rename-mapping': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is PDF field to database mapping?', acceptedAnswer: { '@type': 'Answer', text: 'It links PDF field identifiers to schema headers so row data can populate the correct fields during fill operations.' } },
+      { '@type': 'Question', name: 'Should I run rename before map?', acceptedAnswer: { '@type': 'Answer', text: 'When labels are inconsistent, rename first improves field naming consistency and typically improves mapping quality.' } },
+    ],
+  }],
+  'search-fill': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Can DullyPDF fill PDF fields from CSV rows?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. After mapping, Search and Fill lets you select a row and populate mapped PDF fields from CSV, XLSX, or JSON data.' } },
+      { '@type': 'Question', name: 'What data sources are supported for row-based fill?', acceptedAnswer: { '@type': 'Answer', text: 'CSV, XLSX, and JSON support row-based fill. SQL and TXT are schema-only and do not provide row data for filling.' } },
+    ],
+  }],
+  'fill-by-link': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Does Fill By Link publish the PDF itself?', acceptedAnswer: { '@type': 'Answer', text: 'No. DullyPDF publishes a hosted HTML form and generates the final PDF later from the saved respondent submission.' } },
+      { '@type': 'Question', name: 'Can one group publish a single shared respondent form?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. An open group can publish one merged Fill By Link that includes every distinct respondent-facing field across the group.' } },
+    ],
+  }],
+  'signature-workflow': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Can DullyPDF send a PDF for signature by email?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The owner can freeze the current PDF into an immutable snapshot, email the signer, and keep the signed artifacts in the workspace afterward.' } },
+      { '@type': 'Question', name: 'Can Fill By Web Form Link route respondents into signing after submit?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Template links can require signature after submit, which stores the response, materializes the filled PDF, and continues into the public signing ceremony.' } },
+    ],
+  }],
+  'api-fill': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What is DullyPDF API Fill?', acceptedAnswer: { '@type': 'Answer', text: 'API Fill publishes one saved-template snapshot as a hosted JSON-to-PDF endpoint with its own schema, auth key, limits, and audit activity.' } },
+      { '@type': 'Question', name: 'How is API Fill different from Search and Fill?', acceptedAnswer: { '@type': 'Answer', text: 'Search and Fill keeps chosen row data local in the browser, while API Fill is a hosted backend runtime for other systems that need a template-scoped JSON-to-PDF endpoint.' } },
+    ],
+  }],
+  'create-group': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What does a DullyPDF group do?', acceptedAnswer: { '@type': 'Answer', text: 'A group bundles saved templates into one packet so teams can switch documents quickly, fill the packet from one record, and run batch rename and mapping actions.' } },
+      { '@type': 'Question', name: 'Can Rename + Map run across the whole group?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Rename + Map Group runs across every saved template in the open group and overwrites each template on success.' } },
+    ],
+  }],
+};
+
+const SPANISH_USAGE_DOCS_FAQ_SCHEMAS = {
+  'getting-started': [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
       { '@type': 'Question', name: '¿Cómo convierto un PDF en una plantilla rellenable en DullyPDF?', acceptedAnswer: { '@type': 'Answer', text: 'Sube un PDF, ejecuta detección de campos, revisa geometría y nombres, y guarda la plantilla para reutilizarla.' } },
       { '@type': 'Question', name: '¿Necesito mapear antes de usar Search & Fill?', acceptedAnswer: { '@type': 'Answer', text: 'El mapeo es muy recomendable para salidas confiables, especialmente con casillas, radios y esquemas no triviales.' } },
     ],
@@ -9154,7 +9346,163 @@ const USAGE_DOCS_FAQ_SCHEMAS = {
 };
 
 const USAGE_DOCS_ROUTE_SEO = {};
+const getUsageDocsSeoKey = (pageKey, locale = 'en') => (locale === 'es' ? `es:${pageKey}` : pageKey);
+
 for (const page of USAGE_DOCS_PAGES) {
+  const seoLookup = {
+    index: {
+      title: 'PDF Form Automation Docs and Workflow Guide | DullyPDF',
+      description: 'Learn the full DullyPDF workflow: PDF field detection, OpenAI rename and mapping, editor cleanup, and Search & Fill output steps.',
+      keywords: ['pdf form automation docs', 'fillable form workflow', 'pdf template workflow'],
+      bodyParagraphs: [
+        page.summary,
+        'Use the docs overview when you already understand the product category and need the operating sequence, limits, and route structure in one place.',
+        'This page is strongest as the bridge between commercial workflow pages and the exact implementation docs that govern real template setup and QA.',
+        'Operators should use the overview to choose the correct next page quickly: setup, cleanup, row-based fill, respondent collection, packet grouping, API publication, or signing. That routing function is part of the page value, not just a navigation convenience.',
+      ],
+    },
+    'getting-started': {
+      title: 'DullyPDF Quick Start for Template Setup and First Fill | Docs',
+      description: 'Follow the shortest end-to-end setup path: detect fields, map one representative template, and validate one controlled fill before rollout.',
+      keywords: ['dullypdf quick start', 'pdf template setup guide', 'first fill validation docs'],
+      bodyParagraphs: [
+        page.summary,
+        'The goal of this page is not to teach every feature. It is to get one representative PDF through the safest setup order so the workflow can be trusted before you scale it.',
+        'The fastest first success usually comes from one document, one representative record, and one complete QA loop. Teams that skip that narrow starting path usually create more cleanup work than they save.',
+      ],
+    },
+    detection: {
+      title: 'Field Detection Confidence and Cleanup Guide | DullyPDF Docs',
+      description: 'Review confidence tiers, false positives, geometry constraints, and cleanup steps before turning detections into a saved template.',
+      keywords: ['field detection confidence docs', 'pdf detection cleanup guide', 'commonforms review docs'],
+      bodyParagraphs: [
+        page.summary,
+        'Detection quality is where most template workflows either become reliable or turn into cleanup debt. This page focuses on how to review the model output before mapping or publishing anything downstream.',
+        'The important question is not whether the model found something. It is whether the field set is clean enough that later rename, mapping, and fill workflows can trust it without hidden geometry or classification problems.',
+      ],
+    },
+    'rename-mapping': {
+      title: 'Rename PDF Fields and Map Them to Schema Headers | DullyPDF Docs',
+      description: 'Use OpenAI rename and schema mapping to review field names, align them to headers, and validate checkbox and radio behavior before production fill.',
+      keywords: ['pdf rename mapping guide', 'schema header mapping docs', 'align pdf fields to columns'],
+      bodyParagraphs: [
+        page.summary,
+        'Use this page after detection when the template still needs clean names, stable schema alignment, and a review pass across checkbox and radio behavior.',
+        'Rename and mapping are where many templates either become reusable or remain fragile. Clean names, stable headers, and explicit checkbox or radio rules are what turn a visual field set into something production-safe.',
+      ],
+    },
+    'editor-workflow': {
+      title: 'Edit Fillable PDF Fields and Template Geometry | DullyPDF Docs',
+      description: 'Use overlay, field list, and inspector tools to refine field names, types, and coordinates before production use.',
+      keywords: ['editable fillable pdf template', 'pdf field editor workflow'],
+      bodyParagraphs: [
+        page.summary,
+        'This page focuses on operator sequence rather than feature labels alone. The editor is most useful when teams know which panel to use first, which edits carry the most risk, and what has to be validated before save.',
+      ],
+    },
+    'search-fill': {
+      title: 'Search & Fill Records and Saved Respondents Into PDFs | DullyPDF Docs',
+      description: 'Use Search & Fill to choose a local row or stored respondent, validate field resolution, and review mapped PDF output before export.',
+      keywords: ['search and fill pdf docs', 'csv row pdf fill workflow', 'stored respondent pdf fill'],
+      bodyParagraphs: [
+        page.summary,
+        'This page is about operator-controlled output. It explains how to choose one record, inspect the filled PDF, and avoid turning row-based filling into a blind batch process.',
+        'Search & Fill should stay distinct from respondent collection and API publication. The page is strongest when it explains the browser-based record-selection workflow clearly instead of trying to be a generic data-ingestion guide.',
+      ],
+    },
+    'fill-from-images': {
+      title: 'Fill PDF Forms from Photos, Invoices, and Scanned Documents | DullyPDF Docs',
+      description: 'Upload images of IDs, invoices, pay stubs, or scanned documents and extract matching information into PDF form fields using AI vision.',
+      keywords: ['fill pdf from image', 'extract data from photo to pdf', 'invoice to pdf form', 'ocr pdf form fill', 'auto fill pdf from document', 'extract invoice data pdf'],
+      bodyParagraphs: [
+        page.summary,
+        'Fill from Images and Documents bridges the gap between unstructured source documents and structured PDF templates. Instead of manually reading an ID or invoice and typing values into form fields, the AI vision model reads the document and suggests field values with confidence scores.',
+        'This feature is most valuable for industries that process high volumes of intake documents: healthcare patient registration from insurance cards, accounting from invoices, HR onboarding from government IDs, insurance from ACORD submissions, and logistics from shipping documents.',
+      ],
+    },
+    'fill-by-link': {
+      title: 'Publish Fill By Link Forms and Review Respondents | DullyPDF Docs',
+      description: 'Configure respondent-facing forms, share links, review submissions, and generate PDFs later from stored Fill By Link records.',
+      keywords: ['fill by link docs', 'respondent form publishing', 'template link workflow'],
+      bodyParagraphs: [
+        page.summary,
+        'Fill By Link is the collection layer, not the final PDF output itself. This page explains how respondents, owners, and later PDF generation fit together inside the same template workflow.',
+      ],
+    },
+    'signature-workflow': {
+      title: 'Signature Workflow Setup and Signing Guardrails | DullyPDF Docs',
+      description: 'Learn the operator steps for freezing immutable PDFs, routing signers, and reviewing retained artifacts in DullyPDF.',
+      keywords: ['signature workflow docs', 'immutable pdf signing guide', 'signer artifact workflow'],
+    },
+    'api-fill': {
+      title: 'API Fill Endpoint Management and Schema Guide | DullyPDF Docs',
+      description: 'Learn how DullyPDF publishes template-scoped JSON-to-PDF endpoints with schema downloads, key rotation, audit activity, and hosted limits.',
+      keywords: ['api fill docs', 'json pdf endpoint guide', 'template endpoint schema'],
+      bodyParagraphs: [
+        page.summary,
+        'Use this page when the template already exists and the next decision is how to expose it safely as a hosted endpoint instead of a browser-only workflow.',
+      ],
+    },
+    'create-group': {
+      title: 'Create Group Workflows for Full PDF Packets | DullyPDF Docs',
+      description: 'Create groups of saved templates, switch packet members quickly, Search and Fill full document sets, and batch Rename + Map every template in the group.',
+      keywords: ['create group pdf templates', 'group pdf workflow', 'batch rename map pdf packet', 'pdf packet automation'],
+      bodyParagraphs: [
+        page.summary,
+        'Groups are most useful when the team is managing recurring packet logic rather than isolated documents. This page explains when several templates should share one packet context and how to keep that packet stable over time.',
+      ],
+    },
+    'save-download-profile': {
+      title: 'Save Reusable PDF Templates and Download Outputs | DullyPDF Docs',
+      description: 'Learn when to download full or selected-page generated files, or save templates to your DullyPDF profile for reuse, Fill By Link publishing, billing, and collaboration.',
+      keywords: ['save pdf template', 'download filled pdf', 'reusable pdf templates'],
+      bodyParagraphs: [
+        page.summary,
+        'Saving is not just storage. It is the boundary that makes templates reusable, publishable, and safe to connect to later workflows such as Fill By Link, API Fill, packet grouping, and signing.',
+      ],
+    },
+    troubleshooting: {
+      title: 'PDF Form Automation Troubleshooting Guide | DullyPDF Docs',
+      description: 'Diagnose detection, mapping, and fill issues with targeted checks and known validation errors in DullyPDF workflows.',
+      keywords: ['pdf automation troubleshooting', 'fillable pdf mapping issues'],
+      bodyParagraphs: [
+        page.summary,
+        'Troubleshooting works best when it follows the actual pipeline: upload, detect, rename or map, fill, publish, and deliver. This page is meant to shorten diagnosis time by matching checks to the stage where the workflow is failing.',
+      ],
+    },
+  };
+
+  const seo = seoLookup[page.key];
+  const breadcrumbItems = page.key === 'index'
+    ? [
+        { label: 'Home', href: '/' },
+        { label: 'Usage Docs', href: '/usage-docs' },
+      ]
+    : [
+        { label: 'Home', href: '/' },
+        { label: 'Usage Docs', href: '/usage-docs' },
+        { label: page.title, href: page.path },
+      ];
+  USAGE_DOCS_ROUTE_SEO[getUsageDocsSeoKey(page.key)] = {
+    title: seo.title,
+    description: truncateRouteDescription(seo.description),
+    canonicalPath: page.path,
+    keywords: seo.keywords,
+    structuredData: appendStructuredData(
+      appendStructuredData(USAGE_DOCS_FAQ_SCHEMAS[page.key], buildBreadcrumbSchema(breadcrumbItems)),
+      page.key === 'index'
+        ? buildCollectionPageSchema('DullyPDF Usage Docs', seo.description, page.path)
+        : buildTechArticleSchema(page.title, seo.description, page.path),
+    ),
+    bodyContent: {
+      heading: page.title,
+      paragraphs: seo.bodyParagraphs ?? [page.summary],
+      sectionTitles: page.sectionTitles,
+    },
+  };
+}
+
+for (const page of SPANISH_USAGE_DOCS_PAGES) {
   const seoLookup = {
     index: {
       title: 'Documentación para Formularios PDF Rellenables | DullyPDF',
@@ -9293,13 +9641,14 @@ for (const page of USAGE_DOCS_PAGES) {
         { label: 'Documentación', href: '/es/usage-docs' },
         { label: page.title, href: page.path },
       ];
-  USAGE_DOCS_ROUTE_SEO[page.key] = {
+  USAGE_DOCS_ROUTE_SEO[getUsageDocsSeoKey(page.key, 'es')] = {
     title: seo.title,
     description: truncateRouteDescription(seo.description),
     canonicalPath: page.path,
+    htmlLang: 'es',
     keywords: seo.keywords,
     structuredData: appendStructuredData(
-      appendStructuredData(USAGE_DOCS_FAQ_SCHEMAS[page.key], buildBreadcrumbSchema(breadcrumbItems)),
+      appendStructuredData(SPANISH_USAGE_DOCS_FAQ_SCHEMAS[page.key], buildBreadcrumbSchema(breadcrumbItems)),
       page.key === 'index'
         ? buildCollectionPageSchema('Documentación de Uso de DullyPDF', seo.description, page.path)
         : buildTechArticleSchema(page.title, seo.description, page.path),
@@ -9550,9 +9899,9 @@ const GLOBAL_INTENT_HUB_ROUTE_SEO = {
           links: [
             { label: 'PDF Form Catalog', href: '/pdf-form-catalog' },
             { label: 'Browse Form Catalog', href: '/forms' },
-            { label: 'Usage Docs Overview', href: '/es/usage-docs' },
-            { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
-            { label: 'Blog', href: '/es/blog' },
+            { label: 'Usage Docs Overview', href: '/usage-docs' },
+            { label: 'Getting Started', href: '/usage-docs/getting-started' },
+            { label: 'Blog', href: '/blog' },
           ],
         },
       ],
@@ -9607,9 +9956,9 @@ const GLOBAL_INTENT_HUB_ROUTE_SEO = {
             'After choosing an industry page, use these public resources to get operational details and implementation examples.',
           ],
           links: [
-            { label: 'Usage Docs Overview', href: '/es/usage-docs' },
-            { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
-            { label: 'Blog', href: '/es/blog' },
+            { label: 'Usage Docs Overview', href: '/usage-docs' },
+            { label: 'Getting Started', href: '/usage-docs/getting-started' },
+            { label: 'Blog', href: '/blog' },
           ],
         },
       ],
@@ -9969,7 +10318,7 @@ const FORM_CATALOG_FORM_ROUTES = FORM_CATALOG_ENTRIES.map((entry) => {
 });
 
 // ---------------------------------------------------------------------------
-const isIndexableIntentPath = (path) => path.startsWith('/es/') || path.startsWith('/in/');
+const isIndexableIntentPath = () => true;
 
 // All routes consolidated
 // ---------------------------------------------------------------------------
@@ -9982,8 +10331,8 @@ export const ALL_ROUTES = [
   { path: '/privacy', seo: LEGAL_ROUTE_SEO.privacy, kind: 'legal', pageKey: 'privacy' },
   { path: '/terms', seo: LEGAL_ROUTE_SEO.terms, kind: 'legal', pageKey: 'terms' },
   { path: '/refund-policy', seo: LEGAL_ROUTE_SEO.refund, kind: 'legal', pageKey: 'refund' },
-  { path: '/workflows', seo: GLOBAL_INTENT_HUB_ROUTE_SEO.workflows, kind: 'intent-hub', pageKey: 'workflows', lowValue: true, lowValueReason: 'replaced-by-spanish-route-cluster' },
-  { path: '/industries', seo: GLOBAL_INTENT_HUB_ROUTE_SEO.industries, kind: 'intent-hub', pageKey: 'industries', lowValue: true, lowValueReason: 'replaced-by-spanish-route-cluster' },
+  { path: '/workflows', seo: GLOBAL_INTENT_HUB_ROUTE_SEO.workflows, kind: 'intent-hub', pageKey: 'workflows' },
+  { path: '/industries', seo: GLOBAL_INTENT_HUB_ROUTE_SEO.industries, kind: 'intent-hub', pageKey: 'industries' },
   { path: '/es/flujos-de-trabajo', seo: INTENT_HUB_ROUTE_SEO.workflows, kind: 'intent-hub', pageKey: 'workflows', locale: 'es' },
   { path: '/es/industrias', seo: INTENT_HUB_ROUTE_SEO.industries, kind: 'intent-hub', pageKey: 'industries', locale: 'es' },
   ...FEATURE_PLAN_PAGES.map((page) => ({
@@ -9994,9 +10343,16 @@ export const ALL_ROUTES = [
   })),
   ...USAGE_DOCS_PAGES.map((page) => ({
     path: page.path,
-    seo: USAGE_DOCS_ROUTE_SEO[page.key],
+    seo: USAGE_DOCS_ROUTE_SEO[getUsageDocsSeoKey(page.key)],
     kind: 'usage-docs',
     pageKey: page.key,
+  })),
+  ...SPANISH_USAGE_DOCS_PAGES.map((page) => ({
+    path: page.path,
+    seo: USAGE_DOCS_ROUTE_SEO[getUsageDocsSeoKey(page.key, 'es')],
+    kind: 'usage-docs',
+    pageKey: page.key,
+    locale: 'es',
   })),
   ...INTENT_PAGES.map((page) => ({
     path: page.path,
@@ -10009,24 +10365,26 @@ export const ALL_ROUTES = [
   })),
 ];
 
-// Convenience export: just the paths
-export const INDEXABLE_PUBLIC_ROUTE_PATHS = ALL_ROUTES.filter((r) => !r.lowValue).map((r) => r.path);
-
 // ---------------------------------------------------------------------------
 // Footer link structure (used by static HTML generator for every page)
 // ---------------------------------------------------------------------------
 
 export const FOOTER_LINKS = {
   product: [
-    { label: 'DullyPDF en español', href: '/es' },
-    { label: 'Primeros pasos', href: '/es/usage-docs/getting-started' },
-    { label: 'Documentación de uso', href: '/es/usage-docs' },
+    { label: 'Try DullyPDF', href: '/' },
+    { label: 'Form Catalog', href: '/forms' },
+    { label: 'Getting Started', href: '/usage-docs/getting-started' },
+    { label: 'Usage Docs', href: '/usage-docs' },
   ],
-  workflows: SPANISH_WORKFLOW_INTENT_PAGES.map((p) => ({ label: p.navLabel, href: p.path })),
-  industries: SPANISH_INDUSTRY_INTENT_PAGES.map((p) => ({ label: p.navLabel, href: p.path })),
+  workflows: INTENT_PAGES
+    .filter((p) => p.category === 'workflow' && !p.path.startsWith('/es/') && !p.path.startsWith('/in/'))
+    .map((p) => ({ label: p.navLabel, href: p.path })),
+  industries: INTENT_PAGES
+    .filter((p) => p.category === 'industry' && !p.path.startsWith('/es/') && !p.path.startsWith('/in/'))
+    .map((p) => ({ label: p.navLabel, href: p.path })),
   resources: [
-    { label: 'Blog en español', href: '/es/blog' },
-    { label: 'Solución de problemas', href: '/es/usage-docs/troubleshooting' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Troubleshooting', href: '/usage-docs/troubleshooting' },
   ],
   legal: [
     { label: 'Privacy Policy', href: '/privacy' },
@@ -10040,7 +10398,11 @@ function getPrimaryBlogFigure(post) {
   return post.sections.flatMap((section) => section.figures ?? [])[0] ?? null;
 }
 
-const getBlogPostLocale = (post) => (post.locale === 'in' ? 'in' : 'es');
+const getBlogPostLocale = (post) => (post.locale === 'in' ? 'in' : post.locale === 'es' ? 'es' : 'en');
+
+const ENGLISH_BLOG_INDEX_PRIMARY_FIGURE = getPrimaryBlogFigure(
+  BLOG_POSTS.find((post) => post.slug === 'how-to-convert-pdf-to-fillable-form') ?? BLOG_POSTS.find((post) => getBlogPostLocale(post) === 'en') ?? BLOG_POSTS[0],
+);
 
 const SPANISH_BLOG_INDEX_PRIMARY_FIGURE = getPrimaryBlogFigure(
   BLOG_POSTS.find((post) => post.slug === 'como-crear-formulario-pdf-rellenable') ?? BLOG_POSTS.find((post) => getBlogPostLocale(post) === 'es') ?? BLOG_POSTS[0],
@@ -10049,6 +10411,85 @@ const SPANISH_BLOG_INDEX_PRIMARY_FIGURE = getPrimaryBlogFigure(
 const INDIA_BLOG_INDEX_PRIMARY_FIGURE = getPrimaryBlogFigure(
   BLOG_POSTS.find((post) => post.slug === 'india-pdf-form-automation-guide') ?? BLOG_POSTS.find((post) => getBlogPostLocale(post) === 'in') ?? BLOG_POSTS[0],
 );
+
+const ENGLISH_BLOG_INDEX_ROUTE = {
+  path: '/blog',
+  seo: {
+    title: 'PDF Automation Guides and Tutorials — DullyPDF Blog',
+    description: truncateRouteDescription('Step-by-step guides for converting PDFs to fillable forms, auto-filling from spreadsheets, setting up e-signatures, and eliminating manual data entry.'),
+    canonicalPath: '/blog',
+    keywords: ['pdf automation blog', 'fillable form guides', 'pdf form tutorials'],
+    ...(ENGLISH_BLOG_INDEX_PRIMARY_FIGURE ? {
+      ogImagePath: ENGLISH_BLOG_INDEX_PRIMARY_FIGURE.src,
+      ogImageAlt: ENGLISH_BLOG_INDEX_PRIMARY_FIGURE.alt,
+    } : {}),
+    structuredData: [{
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'DullyPDF Blog',
+      url: 'https://dullypdf.com/blog',
+      description: 'Guides and tutorials for PDF form automation, field detection, schema mapping, and auto-fill workflows.',
+    }, buildBreadcrumbSchema([
+      { label: 'Home', href: '/' },
+      { label: 'Blog', href: '/blog' },
+    ])],
+    bodyContent: {
+      heroKicker: 'Blog',
+      heading: 'PDF Automation Guides & Tutorials',
+      paragraphs: [
+        'Practical guides for converting PDFs to fillable forms, mapping fields to databases, and automating repetitive form-filling workflows.',
+        'Use the blog for implementation detail, comparisons, and recurring workflow examples that support the main commercial routes without replacing them.',
+        'The strongest posts answer a narrower search question than the workflow pages do: how to roll out one template, how to evaluate a comparison, or how a specific vertical uses the template model in practice.',
+        'That is why the blog index is organized around job-to-be-done thinking rather than chronology alone. Some posts help evaluators choose a route, some help operators implement a template, and others help vertical teams see how the template model applies to their own document library.',
+      ],
+      supportSections: [
+        {
+          title: 'How to use these guides',
+          paragraphs: [
+            'The blog is most useful when paired with the workflow pages and usage docs. Use a post to understand the operational problem, then move into the corresponding route or docs page to validate the exact DullyPDF setup order before production use.',
+            'This keeps the search path and the implementation path aligned. Comparison and case-study posts bring in broader query coverage, while the linked product routes answer the narrower question of how the workflow behaves inside the app.',
+          ],
+        },
+        {
+          title: 'Start with the main libraries',
+          paragraphs: [
+            'If you are not sure which guide fits yet, start with the broader route library and narrow from there.',
+          ],
+          links: [
+            { label: 'Workflow Library', href: '/workflows' },
+            { label: 'Industry Library', href: '/industries' },
+            { label: 'Getting Started Docs', href: '/usage-docs/getting-started' },
+          ],
+        },
+        {
+          title: 'Comparison and setup guides',
+          paragraphs: [
+            'Use these posts when you are comparing PDF form tooling or deciding whether DullyPDF should sit before or after another data-collection step.',
+          ],
+          links: [
+            { label: 'DullyPDF vs Adobe Acrobat', href: '/blog/dullypdf-vs-adobe-acrobat-pdf-form-automation' },
+            { label: 'How to Convert a PDF to a Fillable Form', href: '/blog/how-to-convert-pdf-to-fillable-form' },
+            { label: 'PDF to Fillable Form Workflow', href: '/pdf-to-fillable-form' },
+          ],
+        },
+        {
+          title: 'Browse by workflow stage',
+          paragraphs: [
+            'Some posts are best read before template setup begins, while others make more sense after the template already exists. Use the links below to move into the right stage instead of reading the blog in isolation.',
+          ],
+          links: [
+            { label: 'Detection Docs', href: '/usage-docs/detection' },
+            { label: 'Search & Fill Docs', href: '/usage-docs/search-fill' },
+            { label: 'Workflow Library', href: '/workflows' },
+            { label: 'Industry Library', href: '/industries' },
+          ],
+        },
+      ],
+    },
+  },
+  kind: 'blog-index',
+  locale: 'en',
+};
 
 const SPANISH_BLOG_INDEX_ROUTE = {
   path: '/es/blog',
@@ -10203,10 +10644,10 @@ const INDIA_BLOG_INDEX_ROUTE = {
             'After the India guide gives the operating example, use the product docs to confirm field detection, rename and mapping, Search and Fill, and API Fill behavior.',
           ],
           links: [
-            { label: 'Getting Started', href: '/es/usage-docs/getting-started' },
-            { label: 'Detection', href: '/es/usage-docs/detection' },
-            { label: 'Rename and Mapping', href: '/es/usage-docs/rename-mapping' },
-            { label: 'API Fill', href: '/es/usage-docs/api-fill' },
+            { label: 'Getting Started', href: '/usage-docs/getting-started' },
+            { label: 'Detection', href: '/usage-docs/detection' },
+            { label: 'Rename and Mapping', href: '/usage-docs/rename-mapping' },
+            { label: 'API Fill', href: '/usage-docs/api-fill' },
           ],
         },
       ],
@@ -10221,14 +10662,17 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
   const blogVideo = VIDEO_BY_BLOG_SLUG[post.slug];
   const postLocale = getBlogPostLocale(post);
   const isIndiaPost = postLocale === 'in';
-  const blogBasePath = isIndiaPost ? '/in/blog' : '/es/blog';
+  const isSpanishPost = postLocale === 'es';
+  const blogBasePath = isIndiaPost ? '/in/blog' : isSpanishPost ? '/es/blog' : '/blog';
   const homeBreadcrumb = isIndiaPost
     ? [
         { label: 'Home', href: '/' },
         { label: 'India', href: '/in' },
       ]
-    : [{ label: 'Inicio', href: '/es' }];
-  const htmlLang = isIndiaPost ? 'en-IN' : 'es';
+    : isSpanishPost
+      ? [{ label: 'Inicio', href: '/es' }]
+      : [{ label: 'Home', href: '/' }];
+  const htmlLang = isIndiaPost ? 'en-IN' : isSpanishPost ? 'es' : 'en';
 
   let blogStructuredData = appendStructuredData([{
     '@context': 'https://schema.org',
@@ -10294,6 +10738,7 @@ const BLOG_POST_ROUTES = BLOG_POSTS.map((post) => {
 });
 
 // Append blog routes
+ALL_ROUTES.push(ENGLISH_BLOG_INDEX_ROUTE);
 ALL_ROUTES.push(SPANISH_BLOG_INDEX_ROUTE);
 ALL_ROUTES.push(INDIA_BLOG_INDEX_ROUTE);
 ALL_ROUTES.push(...BLOG_POST_ROUTES);
@@ -10302,5 +10747,9 @@ ALL_ROUTES.push(...BLOG_POST_ROUTES);
 ALL_ROUTES.push(FORM_CATALOG_INDEX_ROUTE);
 ALL_ROUTES.push(...FORM_CATALOG_FORM_ROUTES);
 
+// Convenience export: just the paths. Keep this after all route pushes so
+// blog and form-catalog routes are included in runtime indexability checks.
+export const INDEXABLE_PUBLIC_ROUTE_PATHS = ALL_ROUTES.filter((r) => !r.lowValue).map((r) => r.path);
+
 // Export raw data for blog/sitemap integration
-export { INTENT_PAGES, USAGE_DOCS_PAGES, FEATURE_PLAN_PAGES, BLOG_POSTS };
+export { INTENT_PAGES, USAGE_DOCS_PAGES, SPANISH_USAGE_DOCS_PAGES, FEATURE_PLAN_PAGES, BLOG_POSTS };

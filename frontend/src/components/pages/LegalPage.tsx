@@ -555,7 +555,7 @@ const LegalPage = ({ kind }: LegalPageProps) => {
         >
           Refund Policy
         </a>
-        <a href="/es/usage-docs" className="legal-nav__link">Usage Docs</a>
+        <a href="/usage-docs" className="legal-nav__link">Usage Docs</a>
       </div>
 
       <div className="legal-page__surface">

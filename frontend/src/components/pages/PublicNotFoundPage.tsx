@@ -26,8 +26,8 @@ const PublicNotFoundPage = ({ requestedPath }: PublicNotFoundPageProps) => {
         </p>
         <div className="public-not-found-links">
           <a href="/">Go to Homepage</a>
-          <a href="/es/flujos-de-trabajo">Browse Workflows</a>
-          <a href="/es/usage-docs">Open Usage Docs</a>
+          <a href="/workflows">Browse Workflows</a>
+          <a href="/usage-docs">Open Usage Docs</a>
         </div>
       </div>
     </div>

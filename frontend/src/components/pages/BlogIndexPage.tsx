@@ -7,16 +7,25 @@ import { resolveRouteSeoBodyContent } from '../../config/routeSeo';
 import './BlogIndexPage.css';
 
 type BlogIndexPageProps = {
-  locale?: 'es' | 'in';
+  locale?: 'en' | 'es' | 'in';
 };
 
 const BlogIndexPage = ({ locale }: BlogIndexPageProps) => {
-  const postLocale = locale === 'in' ? 'in' : 'es';
+  const postLocale = locale === 'in' ? 'in' : locale === 'es' ? 'es' : 'en';
   const posts = getBlogPosts().filter((post) => getBlogPostLocale(post) === postLocale);
   const bodyContent = resolveRouteSeoBodyContent({ kind: 'blog-index', locale: postLocale });
-  const basePath = postLocale === 'in' ? '/in/blog' : '/es/blog';
-  const localeCopy = postLocale === 'es'
+  const basePath = postLocale === 'in' ? '/in/blog' : postLocale === 'es' ? '/es/blog' : '/blog';
+  const localeCopy = postLocale === 'en'
     ? {
+        home: 'Home',
+        homeHref: '/',
+        fallbackHeading: 'PDF Automation Guides & Tutorials',
+        fallbackSummary: 'Practical guides for converting PDFs to fillable forms, mapping fields to databases, and automating repetitive form-filling workflows.',
+        readMore: 'Read more',
+        dateLocale: 'en-US',
+      }
+    : postLocale === 'es'
+      ? {
         home: 'Inicio',
         homeHref: '/es',
         fallbackHeading: 'Guías de Formularios PDF Rellenables',
@@ -24,7 +33,7 @@ const BlogIndexPage = ({ locale }: BlogIndexPageProps) => {
         readMore: 'Leer guía',
         dateLocale: 'es',
       }
-    : {
+      : {
         home: 'India',
         homeHref: '/in',
         fallbackHeading: 'India PDF Form Automation Guides',

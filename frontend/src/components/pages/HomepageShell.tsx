@@ -18,6 +18,7 @@ const getHeaderCopy = (market: HomepageMarket) => {
       title: 'Generador de formularios PDF',
       description: 'Convierte PDFs en formularios rellenables con detección de campos por IA',
       docsLabel: 'Docs, privacidad y términos',
+      docsHref: '/es/usage-docs',
       signInLabel: 'Iniciar sesión',
       signOutLabel: 'Cerrar sesión',
       profileTitle: 'Abrir perfil',

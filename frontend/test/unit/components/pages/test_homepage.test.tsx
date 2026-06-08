@@ -337,7 +337,7 @@ describe('Homepage', () => {
     const combinedLink = within(mobileCta).getByRole('link', { name: 'Docs & Privacy & Terms' });
 
     expect(within(mobileCta).queryByRole('link', { name: 'Form Catalog' })).toBeNull();
-    expect(combinedLink.getAttribute('href')).toBe('/es/usage-docs');
+    expect(combinedLink.getAttribute('href')).toBe('/usage-docs');
     expect(ctaLinks.map((link) => link.textContent?.trim())).toEqual(['Docs & Privacy & Terms']);
   });
 
@@ -353,14 +353,26 @@ describe('Homepage', () => {
     expect(screen.queryByRole('link', { name: 'Try DullyPDF' })).toBeNull();
     const gettingStartedLinks = screen.getAllByRole('link', { name: 'Getting Started' });
     expect(gettingStartedLinks.length).toBeGreaterThan(0);
-    expect(gettingStartedLinks.every((link) => link.getAttribute('href') === '/es/usage-docs/getting-started')).toBe(true);
+    expect(gettingStartedLinks.every((link) => link.getAttribute('href') === '/usage-docs/getting-started')).toBe(true);
   });
 
-  it('renders footer hub links for workflows and industries', () => {
+  it('renders English footer hub links for workflows and industries', () => {
     render(<Homepage onStartWorkflow={vi.fn()} />);
 
     const workflowLinks = screen.getAllByRole('link', { name: 'Workflow Library' });
     const industryLinks = screen.getAllByRole('link', { name: 'Industry Solutions' });
+
+    expect(workflowLinks.length).toBeGreaterThan(0);
+    expect(industryLinks.length).toBeGreaterThan(0);
+    expect(workflowLinks.every((link) => link.getAttribute('href') === '/workflows')).toBe(true);
+    expect(industryLinks.every((link) => link.getAttribute('href') === '/industries')).toBe(true);
+  });
+
+  it('renders Spanish footer hub links for workflows and industries', () => {
+    render(<Homepage onStartWorkflow={vi.fn()} market="spanish" />);
+
+    const workflowLinks = screen.getAllByRole('link', { name: 'Flujos de trabajo' });
+    const industryLinks = screen.getAllByRole('link', { name: 'Industrias' });
 
     expect(workflowLinks.length).toBeGreaterThan(0);
     expect(industryLinks.length).toBeGreaterThan(0);

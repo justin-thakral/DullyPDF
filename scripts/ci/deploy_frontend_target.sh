@@ -126,8 +126,16 @@ node "${REPO_ROOT}/scripts/generate-sitemap.mjs"
 for required_path in \
   "${REPO_ROOT}/frontend/dist/index.html" \
   "${REPO_ROOT}/frontend/dist/app-shell.html" \
+  "${REPO_ROOT}/frontend/dist/workflows/index.html" \
+  "${REPO_ROOT}/frontend/dist/industries/index.html" \
   "${REPO_ROOT}/frontend/dist/healthcare-pdf-automation/index.html" \
   "${REPO_ROOT}/frontend/dist/pdf-to-fillable-form/index.html" \
+  "${REPO_ROOT}/frontend/dist/fill-pdf-from-csv/index.html" \
+  "${REPO_ROOT}/frontend/dist/acord-form-automation/index.html" \
+  "${REPO_ROOT}/frontend/dist/blog/index.html" \
+  "${REPO_ROOT}/frontend/dist/blog/dullypdf-vs-anvil-pdf-automation-pricing/index.html" \
+  "${REPO_ROOT}/frontend/dist/usage-docs/index.html" \
+  "${REPO_ROOT}/frontend/dist/usage-docs/getting-started/index.html" \
   "${REPO_ROOT}/frontend/dist/es/usage-docs/index.html" \
   "${REPO_ROOT}/frontend/dist/sitemap.xml" \
   "${REPO_ROOT}/frontend/dist/sitemap-main.xml" \
@@ -137,6 +145,39 @@ for required_path in \
     exit 1
   fi
 done
+
+grep -Fq '<meta name="robots" content="index,follow" />' "${REPO_ROOT}/frontend/dist/fill-pdf-from-csv/index.html" || {
+  echo "Expected fill-pdf-from-csv to be indexable." >&2
+  exit 1
+}
+grep -Fq '<meta name="robots" content="index,follow" />' "${REPO_ROOT}/frontend/dist/acord-form-automation/index.html" || {
+  echo "Expected acord-form-automation to be indexable." >&2
+  exit 1
+}
+grep -Fq '<meta name="robots" content="index,follow" />' "${REPO_ROOT}/frontend/dist/blog/index.html" || {
+  echo "Expected blog index to be indexable." >&2
+  exit 1
+}
+grep -Fq '<link rel="canonical" href="https://dullypdf.com/usage-docs" />' "${REPO_ROOT}/frontend/dist/usage-docs/index.html" || {
+  echo "Expected English usage docs to keep the English canonical URL." >&2
+  exit 1
+}
+grep -Fq '<loc>https://dullypdf.com/fill-pdf-from-csv</loc>' "${REPO_ROOT}/frontend/dist/sitemap-main.xml" || {
+  echo "Expected sitemap-main.xml to include fill-pdf-from-csv." >&2
+  exit 1
+}
+grep -Fq '<loc>https://dullypdf.com/acord-form-automation</loc>' "${REPO_ROOT}/frontend/dist/sitemap-main.xml" || {
+  echo "Expected sitemap-main.xml to include acord-form-automation." >&2
+  exit 1
+}
+grep -Fq '<loc>https://dullypdf.com/blog</loc>' "${REPO_ROOT}/frontend/dist/sitemap-main.xml" || {
+  echo "Expected sitemap-main.xml to include the English blog index." >&2
+  exit 1
+}
+grep -Fq '<loc>https://dullypdf.com/usage-docs</loc>' "${REPO_ROOT}/frontend/dist/sitemap-main.xml" || {
+  echo "Expected sitemap-main.xml to include English usage docs." >&2
+  exit 1
+}
 
 firebase deploy --only hosting --project "$PROJECT_ID"
 

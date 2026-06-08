@@ -102,7 +102,7 @@ describe('generate-static-html', () => {
   });
 
   it('includes head SEO signals for usage docs pages', () => {
-    const route = ALL_ROUTES.find((entry) => entry.path === '/es/usage-docs/getting-started');
+    const route = ALL_ROUTES.find((entry) => entry.path === '/usage-docs/getting-started');
     expect(route).toBeTruthy();
 
     const html = generatePageHtml(route!, EMPTY_VITE_ASSETS, '<main>Usage docs prerender</main>');

@@ -4,7 +4,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 
 ## Main workflow
 
-1. Load a PDF (detection upload, fillable upload, saved form, or a saved-form group that opens the alphabetically first template first unless a direct group route requests a specific template).
+1. Load a PDF (detection upload, fillable upload, public form-catalog handoff, saved form, or a saved-form group that opens the alphabetically first template first unless a direct group route requests a specific template).
 2. Detect fields with CommonForms (by [jbarrow](https://github.com/jbarrow/commonforms)) via `/detect-fields`, or import embedded AcroForm widgets.
 3. Optionally run OpenAI rename and schema mapping.
 4. Optionally use `PDF Tools` to manage pages or run lossless PDF optimization before final field cleanup.
@@ -13,17 +13,18 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 7. Reopen templates from the upload screen through the saved-form browser, which supports group filtering, an `Open groups` toggle, inline group deletion, and a stable selected-group label while the group list refreshes.
 8. When a group is open, switch between member templates from the header and run batch Rename + Map across every saved form in that group.
 9. Run Search & Fill from CSV/Excel/JSON rows or stored Fill By Link respondent records.
-10. Download either a `Flat PDF` (field values baked into page content), an `Editable PDF` (widgets preserved for later editing), or a selected-page subset in either mode, or save the current state to the signed-in profile. Signed-in workspace downloads go through the generated PDF download quota endpoint; saving templates and other internal materialization paths do not. Selected text-safe Base 14 fonts, font sizes, font colors, and DullyPDF-managed calculation values are carried into download modes.
+10. Download either a `Flat PDF` (field values baked into page content), an `Editable PDF` (widgets preserved for later editing), or a selected-page subset in either mode, or save the current state to the signed-in profile. Catalog-origin anonymous editors may edit before account creation, but generated download and save-to-profile actions prompt sign-in/signup and keep the session-scoped catalog draft available through onboarding and free-trial checkout. Signed-in workspace downloads go through the generated PDF download quota endpoint; saving templates and other internal materialization paths do not. Selected text-safe Base 14 fonts, font sizes, font colors, and DullyPDF-managed calculation values are carried into download modes.
 11. Persist and replay deterministic fill rules (`fillRules`) including text split/join transforms.
 12. Persist a versioned saved-form editor snapshot so reopened templates and group switches can hydrate fields/page sizes/appearance without re-extracting them on every open.
 
 ## Public usage docs
 
-- End-user documentation is available at canonical `/es/usage-docs/*` URLs.
-- Legacy `/docs/*` URLs are compatibility redirects (HTTP 301) to `/es/usage-docs/*`.
+- End-user documentation is available at canonical English `/usage-docs/*` URLs.
+- Spanish documentation is available at canonical `/es/usage-docs/*` URLs.
+- Legacy `/docs/*` URLs are compatibility redirects (HTTP 301) to `/usage-docs/*`.
 - Canonical style is non-trailing slash for non-root routes; `/path/` should only 301 once to `/path` (never loop).
 - The docs include dedicated pages for detection, rename/mapping, editor workflow, Search & Fill, Fill from Images and Documents, Fill By Link, signature workflow, API Fill, Create Group workflows, save/download/Profile behavior, and troubleshooting.
-- Workspace action menus and dialogs now expose direct `Usage Docs` shortcuts that open the matching `/es/usage-docs/*` route in a new browser tab/window so operators can keep the active editor state intact while reading instructions.
+- Workspace action menus and dialogs now expose direct `Usage Docs` shortcuts that open the matching `/usage-docs/*` route in a new browser tab/window so operators can keep the active editor state intact while reading instructions.
 - Route handling lives in `frontend/src/main.tsx` alongside legal page route handling.
 - Public legal routes include `/privacy`, `/terms`, and `/refund-policy`; the refund route is intended to satisfy payment-provider refund/return-policy URL requirements for the digital SaaS subscription and refill-credit model.
 - Unknown public URLs should resolve to a noindex 404 experience instead of falling back to the app homepage.
@@ -33,6 +34,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - `/` is the marketing shell only.
 - `/in` is the localized English India homepage for KYC, vendor, HR, GST invoice, school, clinic, finance, branch, logistics, property, and procurement PDF automation demand.
 - `/in/blog` and `/in/blog/:slug` are the public India blog routes. The ten India guides link back into the `/in/*` workflow and industry cluster.
+- `/workflows`, `/industries`, `/blog`, and `/blog/:slug` are the global English public hub/blog routes. They use the English SEO config and link to English docs.
 - `/es` is the generic Spanish-language homepage for Spanish-speaking search demand. It uses the same no-scroll shell, targets the `formularios PDF rellenables` keyword cluster, avoids U.S.-only e-signature positioning, and sends setup traffic to usage docs instead of the form catalog.
 - `/es/flujos-de-trabajo` and `/es/industrias` are the Spanish workflow and industry hubs. They each expose ten localized intent pages and are the hub routes used by public navigation, static HTML, and sitemap generation.
 - `/es/blog` and `/es/blog/:slug` are the public Spanish blog routes. The exported blog dataset contains ten Spanish guides that link back into the Spanish workflow and industry cluster.
@@ -41,6 +43,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - `/forms` is the public form catalog index.
 - `/forms/:slug` is the public detail route for one mirrored blank form.
 - `/upload` mounts the signed-in upload shell.
+- `/upload?catalogSlug=:slug` is the public catalog handoff route. It is the only signed-out editor entry point: the runtime fetches the catalog PDF, opens `/ui`, keeps edits in session storage, and requires account creation/sign-in before generated download or save.
 - `/ui` is the generic editor/runtime route for unsaved uploads and in-flight workspace processing.
 - `/ui/profile` opens the signed-in profile view.
 - `/ui/forms/:formId` reopens a saved form directly.
@@ -99,13 +102,13 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
   - `/es/automatizacion-pdf-construccion`
   - `/es/automatizacion-pdf-servicios-campo`
   - `/es/automatizacion-pdf-compras-proveedores`
-- Legacy global English intent-page datasets remain in the shared route data for compatibility, but the route adapter marks them low-value/noindex and excludes them from sitemap output while the India and Spanish clusters are active.
+- Global English intent-page datasets remain active indexable routes alongside the India and Spanish clusters.
 - Each route has unique canonical metadata and FAQ structured data.
 - The workflow route `/pdf-form-catalog` now explains what the catalog contains, what each entry exposes, and how the blank forms connect to the main DullyPDF workflow.
 - Selected catalog-backed industry pages also render curated real-form thumbnails and ten-document examples pulled from the DullyPDF catalog, with editor deep links (`/upload?catalogSlug=...`) plus Search & Fill, API Fill, Fill By Link, and signature guidance.
-- The catalog now includes first-party operational template sections for long-tail form searches such as automotive service, beauty/wellness, business operations, construction/trades, education/childcare, events/waivers, field service, finance/accounting, home services, HR/onboarding, insurance claims, legal/admin, logistics/transport, manufacturing quality, nonprofit/community, pet services, real estate/property, and safety/compliance workflows. These are DullyPDF-authored blank PDFs, separate from mirrored public-domain government forms and external-link-only restricted sources.
+- The 5,967-entry catalog now includes first-party operational template sections for long-tail form searches such as healthcare, small business, automotive service, beauty/wellness, business operations, construction/trades, education/childcare, events/waivers, field service, finance/accounting, finance/lending, hospitality/events, home services, HR/onboarding, insurance claims, legal/admin, legal office, logistics/transport, manufacturing quality, nonprofit/community, pet services, real estate/property, retail operations, safety/compliance, utilities/energy, and agriculture/food workflows. These are DullyPDF-authored blank PDFs, separate from mirrored public-domain government forms and external-link-only restricted sources.
 - In local dev those catalog PDFs and thumbnails are served from the repo-level `form_catalog/` directory through Vite at `/form-catalog-assets/*`. In prod they resolve through `VITE_FORM_CATALOG_ASSET_BASE`, which is expected to point at a public mirrored GCS bucket.
-- Catalog cards now use pre-generated first-page `.webp` thumbnails instead of fetching PDFs in-browser just to render previews. Signed-in detail pages still fetch the real PDF when the user opens a specific form preview or sends it into the editor.
+- Catalog cards now use pre-generated first-page `.webp` thumbnails instead of fetching PDFs in-browser just to render previews. Detail pages still fetch the real PDF when the user opens a specific form preview or sends it into the editor.
 - Selected workflow routes and docs pages can also surface embedded YouTube walkthroughs when a focused demo adds search-intent context without bloating the homepage.
 - Authority-style intent routes can also render inline legal footnotes and explicit source sections when the page needs statute or policy references instead of summary-only marketing copy.
 - Field-appearance intent routes now cover fillable PDF fonts, font sizes, colors, saved template persistence, and the AcroForm `/DA`/`/DR`/`/AP`/`/V` mechanics behind editable exports.
@@ -115,7 +118,9 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - High-intent opportunity routes now cover source-system, automation, developer-language, packet, and troubleshooting searches such as Google Sheets to PDF, Airtable to PDF, Google/Microsoft Forms to PDF, Power Automate, Zapier, Make, webhook JSON, PHP/Java/C#/Go/Ruby API clients, one web form or JSON payload filling multiple PDFs, respondent PDF downloads, flattening/read-only output, blank field troubleshooting, checkbox/radio/date mapping, duplicate field names, and reusable template versioning.
 - The `/fill-pdf-by-link` route now positions Fill By Link as the recommended external-recipient workflow when teams want mobile-friendly data collection plus flat, viewer-friendly completed PDFs instead of asking respondents to edit the PDF directly.
 - The India blog includes ten evidence-heavy PDF automation guides for KYC, Excel filling, vendor onboarding, GST invoices, HR joining, school admissions, clinic intake, delivery challans, and API rollout. The Spanish blog includes ten PDF automation guides that reuse existing proof images where appropriate and link to matching localized workflow or industry routes.
-- Two hub routes aggregate intent pages for cleaner global navigation:
+- Hub routes aggregate intent pages for cleaner public navigation:
+  - `/workflows` lists global English workflow-intent pages.
+  - `/industries` lists global English industry-intent pages.
   - `/es/flujos-de-trabajo` lists Spanish workflow-intent pages.
   - `/es/industrias` lists Spanish industry-intent pages.
 - Hub routes are part of the build-time static HTML and sitemap generation, so direct requests should serve route-specific HTML before React loads.
@@ -165,6 +170,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Firebase auth supports email/password, Google, and GitHub.
 - Password users must verify email before editor access.
 - The lightweight homepage shell keeps signed-in users on the marketing shell until they explicitly open workflow/profile, then waits for `/api/health` before mounting the runtime so Cloud Run scale-from-zero shows a startup screen instead of background profile/groups/saved-form failures on page load.
+- Public form-catalog editor handoffs are the one anonymous editor exception. A signed-out catalog user can open and edit the catalog PDF, but generated downloads and save-to-profile actions open the login/signup flow; if the user creates an account, chooses the free plan, or starts the free trial checkout, the runtime stores the edited catalog field/rule state in session storage and re-fetches the catalog PDF before resuming the pending action.
 - Saved-form and saved-group workspace routes survive refresh. The runtime stores a small session-scoped resume manifest for the active saved form/group route so it can restore page/zoom and opportunistically reuse existing backend session ids after reload.
 - Ad hoc `/ui` workspaces can also survive reload when they already have a live detect/mapping session. The frontend restores the workspace by re-downloading the session PDF from the backend, then rebuilding fields and mapping rules from the server-side session snapshot instead of relying on browser-local PDF persistence.
 - The resume manifest is not a full offline cache. It never stores PDF bytes or unsaved field edits locally. Saved forms/groups still rehydrate from backend data plus the saved editor snapshot, and ad hoc `/ui` restores only work while the backing session still exists.
@@ -182,6 +188,7 @@ The frontend is a React + TypeScript app for loading PDFs, editing fields, organ
 - Demo assets are served from `frontend/public/demo`.
 - Interactive demo PDFs under `frontend/public/demo/*.pdf` are intentionally tracked despite the repo-wide local PDF ignore rule, and prod deploys validate their live content types so the tour cannot ship with missing static fixtures.
 - Demo sessions allow downloading the generated PDF without signing in; saving to profile remains sign-in only.
+- Catalog anonymous sessions are separate from demos: they only start from `/forms/:slug` via `Open in DullyPDF`, and their generated downloads are account-gated.
 - Mobile homepage walkthrough is marketing/demo only, but it now explains template prep, native Fill By Link intake, extraction from images/documents, final fill review, and the supported U.S. e-sign handoff. The mobile flow also includes the official launch/review links near the end as inline text links instead of the compact desktop review card.
 - Small tracked fixtures live in `quickTestFiles/`; larger local datasets live in `samples/`.
 - Regenerate demo rename/remap name maps from the repo root with `npm run demo:generate-name-maps`.

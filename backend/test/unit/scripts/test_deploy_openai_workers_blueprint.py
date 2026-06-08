@@ -27,6 +27,9 @@ def test_deploy_openai_workers_requires_dedicated_runtime_service_accounts_in_pr
     assert "require_empty FIREBASE_CREDENTIALS_SECRET" in text
     assert "require_empty GOOGLE_APPLICATION_CREDENTIALS" in text
     assert 'RUNTIME_SA="${OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT:-${OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT:-}}"' in text
+    assert 'OPENAI_RENAME_REMAP_MAX_INSTANCES="${OPENAI_RENAME_REMAP_MAX_INSTANCES:-3}"' in text
+    assert "OPENAI_RENAME_REMAP_MAX_INSTANCES must be a positive integer." in text
+    assert '--max-instances "$OPENAI_RENAME_REMAP_MAX_INSTANCES"' in text
     assert "OPENAI_RENAME_REMAP_RUNTIME_SERVICE_ACCOUNT must differ from OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT in prod." in text
 
 

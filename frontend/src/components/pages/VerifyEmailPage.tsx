@@ -220,7 +220,7 @@ const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({ email, onRefresh, onS
               Secure Firebase verification handled on your branded DullyPDF domain.
             </span>
           )}
-          <a className="verify-action-footer-link" href="/es/usage-docs/getting-started">
+          <a className="verify-action-footer-link" href="/usage-docs/getting-started">
             Need help? Open the setup guide
           </a>
         </div>

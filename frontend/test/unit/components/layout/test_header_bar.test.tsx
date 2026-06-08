@@ -322,7 +322,7 @@ describe('HeaderBar', () => {
     await user.click(screen.getByRole('button', { name: /^Schema/i }));
     await user.click(screen.getByRole('menuitem', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/search-fill', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/search-fill', '_blank', 'noopener,noreferrer');
   });
 
   it('opens rename usage docs in a new window from the rename menu', async () => {
@@ -336,7 +336,7 @@ describe('HeaderBar', () => {
     await openRenameMenu(user);
     await user.click(screen.getByRole('menuitem', { name: 'Usage Docs' }));
 
-    expect(openSpy).toHaveBeenCalledWith('/es/usage-docs/rename-mapping', '_blank', 'noopener,noreferrer');
+    expect(openSpy).toHaveBeenCalledWith('/usage-docs/rename-mapping', '_blank', 'noopener,noreferrer');
   });
 
   it('closes the PDF tools menu when another header menu opens without a mouse down event', () => {
@@ -562,10 +562,10 @@ describe('HeaderBar', () => {
           canFillLink: true,
           onOpenSignatureRequest: vi.fn(),
           canSendForSignature: true,
-          demoFillLinkDocsHref: '/es/usage-docs/fill-by-link',
-          demoCreateGroupDocsHref: '/es/usage-docs/create-group',
-          demoFillFromImagesDocsHref: '/es/usage-docs/fill-from-images',
-          demoSignatureDocsHref: '/es/usage-docs/signature-workflow',
+          demoFillLinkDocsHref: '/usage-docs/fill-by-link',
+          demoCreateGroupDocsHref: '/usage-docs/create-group',
+          demoFillFromImagesDocsHref: '/usage-docs/fill-from-images',
+          demoSignatureDocsHref: '/usage-docs/signature-workflow',
         })}
       />,
     );
@@ -573,19 +573,19 @@ describe('HeaderBar', () => {
     expect(screen.queryByRole('button', { name: 'Fill By Web Form Link + Sign' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'Send PDF for Signature by email' })).toBeNull();
     expect(screen.getByRole('link', { name: 'Fill By Link docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/fill-by-link',
+      '/usage-docs/fill-by-link',
     );
     expect(screen.getByRole('link', { name: 'Fill By Link docs' }).getAttribute('target')).toBe('_blank');
     expect(screen.getByRole('link', { name: 'Create Group docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/create-group',
+      '/usage-docs/create-group',
     );
     expect(screen.getByRole('link', { name: 'Create Group docs' }).getAttribute('target')).toBe('_blank');
     expect(screen.getByRole('link', { name: 'Signature docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/signature-workflow',
+      '/usage-docs/signature-workflow',
     );
     expect(screen.getByRole('link', { name: 'Signature docs' }).getAttribute('target')).toBe('_blank');
     expect(screen.getByRole('link', { name: 'Fill from Images docs' }).getAttribute('href')).toBe(
-      '/es/usage-docs/fill-from-images',
+      '/usage-docs/fill-from-images',
     );
     expect(screen.getByRole('link', { name: 'Fill from Images docs' }).getAttribute('target')).toBe('_blank');
   });

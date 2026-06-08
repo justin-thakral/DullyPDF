@@ -30,6 +30,9 @@ const OUT_DATA = resolve(ROOT, 'frontend/src/config/formCatalogData.mjs');
 const OUT_CATEGORIES = resolve(ROOT, 'frontend/src/config/formCatalogCategories.mjs');
 const OUT_EXTERNAL_SOURCES = resolve(ROOT, 'frontend/src/config/formCatalogExternalSources.mjs');
 const OUT_SLUG_REDIRECTS = resolve(ROOT, 'form_catalog/slug_redirects.json');
+const PREVIOUS_CATALOG_DATA_PATH = process.env.FORM_CATALOG_PREVIOUS_DATA_PATH
+  ? resolve(ROOT, process.env.FORM_CATALOG_PREVIOUS_DATA_PATH)
+  : OUT_DATA;
 
 const CATEGORY_LABELS = {
   acord: 'ACORD (Insurance)',
@@ -138,7 +141,10 @@ const PUBLIC_BASE_SECTIONS = new Set([
 ]);
 
 const PUBLIC_LOCAL_TEMPLATE_RANGES = {
-  agriculture_food: { prefix: 'DAF', min: 2300, max: 2361 },
+  agriculture_food: [
+    { prefix: 'DAF', min: 2300, max: 2361 },
+    { prefix: 'DAF', min: 2600, max: 2649 },
+  ],
   automotive_service: { prefix: 'DAS', min: 2100, max: 2149 },
   beauty_wellness: [
     { prefix: 'DBW', min: 100, max: 189 },
@@ -166,18 +172,33 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
     { prefix: 'DFA', min: 100, max: 169 },
     { prefix: 'DFA', min: 1700, max: 1754 },
   ],
-  finance_lending: { prefix: 'DFL', min: 1900, max: 1961 },
-  home_services: { prefix: 'DHS', min: 2400, max: 2444 },
-  hospitality_events: { prefix: 'DHE', min: 2200, max: 2261 },
+  finance_lending: [
+    { prefix: 'DFL', min: 1900, max: 1961 },
+    { prefix: 'DFL', min: 2600, max: 2649 },
+  ],
+  home_services: [
+    { prefix: 'DHS', min: 2400, max: 2444 },
+    { prefix: 'DHS', min: 2600, max: 2649 },
+  ],
+  hospitality_events: [
+    { prefix: 'DHE', min: 2200, max: 2261 },
+    { prefix: 'DHE', min: 2600, max: 2649 },
+  ],
   hr_onboarding: { prefix: 'DHR', min: 100, max: 169 },
-  hr_operations: { prefix: 'DHR', min: 1800, max: 1861 },
+  hr_operations: [
+    { prefix: 'DHR', min: 1800, max: 1861 },
+    { prefix: 'DHO', min: 2600, max: 2649 },
+  ],
   insurance_claims: [
     { prefix: 'DIC', min: 100, max: 179 },
     { prefix: 'DIC', min: 1600, max: 1654 },
     { prefix: 'DIC', min: 2000, max: 2061 },
   ],
   legal_admin: { prefix: 'DLP', min: 1500, max: 1559 },
-  legal_office: { prefix: 'DLO', min: 2100, max: 2161 },
+  legal_office: [
+    { prefix: 'DLO', min: 2100, max: 2161 },
+    { prefix: 'DLO', min: 2600, max: 2649 },
+  ],
   logistics_transport: [
     { prefix: 'DLT', min: 100, max: 169 },
     { prefix: 'DLT', min: 1500, max: 1562 },
@@ -202,9 +223,15 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
     { prefix: 'DPM', min: 100, max: 199 },
     { prefix: 'DPM', min: 1000, max: 1079 },
   ],
-  retail_operations: { prefix: 'DRO', min: 2500, max: 2561 },
+  retail_operations: [
+    { prefix: 'DRO', min: 2500, max: 2561 },
+    { prefix: 'DRO', min: 2600, max: 2649 },
+  ],
   safety_compliance: { prefix: 'DSC', min: 1300, max: 1364 },
-  utilities_energy: { prefix: 'DUE', min: 2400, max: 2461 },
+  utilities_energy: [
+    { prefix: 'DUE', min: 2400, max: 2461 },
+    { prefix: 'DUE', min: 2600, max: 2649 },
+  ],
 };
 
 const SECTION_DESCRIPTION_FALLBACKS = {
@@ -291,21 +318,31 @@ function slugify(raw) {
     .replace(/-{2,}/g, '-');
 }
 
-function buildSlug(entry, usedSlugs) {
+function isSlugAvailable(slug, usedSlugs, reservedSlugs, preferredSlug = '') {
+  if (!slug || usedSlugs.has(slug)) return false;
+  return !reservedSlugs.has(slug) || slug === preferredSlug;
+}
+
+function buildSlug(entry, usedSlugs, reservedSlugs = new Set(), preferredSlug = '') {
+  if (isSlugAvailable(preferredSlug, usedSlugs, reservedSlugs, preferredSlug)) {
+    usedSlugs.add(preferredSlug);
+    return preferredSlug;
+  }
+
   const titleSlug = !String(entry.form_number || '').trim() ? slugify(entry.title || '') : '';
-  if (titleSlug && !usedSlugs.has(titleSlug)) {
+  if (isSlugAvailable(titleSlug, usedSlugs, reservedSlugs, preferredSlug)) {
     usedSlugs.add(titleSlug);
     return titleSlug;
   }
 
   const formNumberSlug = slugify(entry.form_number || '');
-  if (formNumberSlug && !usedSlugs.has(formNumberSlug)) {
+  if (isSlugAvailable(formNumberSlug, usedSlugs, reservedSlugs, preferredSlug)) {
     usedSlugs.add(formNumberSlug);
     return formNumberSlug;
   }
   if (formNumberSlug && entry.year) {
     const yearSlug = slugify(`${entry.form_number}-${entry.year}`);
-    if (yearSlug && !usedSlugs.has(yearSlug)) {
+    if (isSlugAvailable(yearSlug, usedSlugs, reservedSlugs, preferredSlug)) {
       usedSlugs.add(yearSlug);
       return yearSlug;
     }
@@ -315,7 +352,13 @@ function buildSlug(entry, usedSlugs) {
     slugify(entry.filename.replace(/\.pdf$/i, '')) ||
     entry.sha256?.slice(0, 12) ||
     'form';
-  const suffix = entry.sha256 ? entry.sha256.slice(0, 8) : Math.random().toString(36).slice(2, 10);
+  if (isSlugAvailable(base, usedSlugs, reservedSlugs, preferredSlug)) {
+    usedSlugs.add(base);
+    return base;
+  }
+
+  const stableKey = `${entry.sourceSection || entry.section || 'catalog'}-${entry.filename || entry.sha256 || 'form'}`;
+  const suffix = slugify(stableKey).slice(0, 32) || entry.sha256?.slice(0, 8) || 'catalog';
   const disambiguated = `${base}-${suffix}`;
   usedSlugs.add(disambiguated);
   return disambiguated;
@@ -390,6 +433,43 @@ function savePageCountCache(cache) {
     ),
   };
   writeFileSync(PAGE_COUNTS_PATH, `${JSON.stringify(payload, null, 2)}\n`);
+}
+
+function parseRawCatalogEntries(source) {
+  const match = String(source || '').match(/const RAW_FORM_CATALOG_ENTRIES = \[\n([\s\S]*?)\n\];/);
+  if (!match) return [];
+  return match[1]
+    .split('\n')
+    .map((line) => line.trim().replace(/,$/, ''))
+    .filter(Boolean)
+    .map((line) => JSON.parse(line));
+}
+
+function catalogEntryKey(entry) {
+  if (!entry?.filename) return '';
+  return `${entry.sourceSection || entry.section}/${entry.filename}`;
+}
+
+function loadPreviousSlugLookup() {
+  if (!existsSync(PREVIOUS_CATALOG_DATA_PATH)) return new Map();
+  try {
+    const entries = parseRawCatalogEntries(readFileSync(PREVIOUS_CATALOG_DATA_PATH, 'utf8'));
+    const lookup = new Map();
+    for (const entry of entries) {
+      const key = catalogEntryKey(entry);
+      if (key && entry.slug) lookup.set(key, entry.slug);
+    }
+    console.log(
+      `[build-form-catalog-index] loaded ${lookup.size} previous slugs from ${PREVIOUS_CATALOG_DATA_PATH}`,
+    );
+    return lookup;
+  } catch (error) {
+    console.warn(
+      `[build-form-catalog-index] could not load previous slugs from ${PREVIOUS_CATALOG_DATA_PATH}:`,
+      error.message,
+    );
+    return new Map();
+  }
 }
 
 // pdfjs-dist is installed under frontend/node_modules, not the repo root, so
@@ -883,7 +963,17 @@ function isPublicCatalogRawEntry(entry) {
   return isWithinAnyLocalTemplateRange(entry, localRules);
 }
 
-function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLookup, titleOverrides, usedSlugs, legacyUsedSlugs) {
+function buildEntry(
+  rawEntry,
+  descriptionsLookup,
+  pageCountCache,
+  currentTitleLookup,
+  titleOverrides,
+  previousSlugLookup,
+  reservedPreviousSlugs,
+  usedSlugs,
+  legacyUsedSlugs,
+) {
   const descriptionKey = `${rawEntry.section}/${rawEntry.filename}`;
   const desc = descriptionsLookup[descriptionKey] || {};
   const catalogSection = resolveCatalogSection(rawEntry);
@@ -898,7 +988,12 @@ function buildEntry(rawEntry, descriptionsLookup, pageCountCache, currentTitleLo
   // garbage from the disk-rebuild scraper produces clean "1040-2023", not a
   // duplicated mess. Legacy slug uses rawEntry so the 301 source matches the
   // URL Google already indexed.
-  const slug = buildSlug(normalizedEntry, usedSlugs);
+  const slug = buildSlug(
+    normalizedEntry,
+    usedSlugs,
+    reservedPreviousSlugs,
+    previousSlugLookup.get(descriptionKey) || '',
+  );
   const legacySlug = legacyUsedSlugs ? computeLegacySlug(rawEntry, legacyUsedSlugs) : null;
   const title = identity.title;
   const description = desc.description || buildAutoDescription(normalizedEntry, title);
@@ -946,6 +1041,11 @@ async function main() {
   // Prior-year IRS files rebuilt from disk often only preserve filename-like slugs.
   // Reuse the current-year title/form-number pair when the PDF code matches.
   const currentTitleLookup = buildCurrentTitleLookup(okForms);
+  // Preserve already-published /forms/:slug URLs by source file before assigning
+  // slugs to newly generated templates. This keeps O(n) slug assignment stable
+  // when generated PDF bytes or insertion order change.
+  const previousSlugLookup = loadPreviousSlugLookup();
+  const reservedPreviousSlugs = new Set(previousSlugLookup.values());
 
   // Group by section; sort within each section by form_number for deterministic output.
   const bySection = new Map();
@@ -974,6 +1074,8 @@ async function main() {
         pageCountCache,
         currentTitleLookup,
         titleOverrides,
+        previousSlugLookup,
+        reservedPreviousSlugs,
         usedSlugs,
         legacyUsedSlugs,
       );

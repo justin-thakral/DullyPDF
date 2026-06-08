@@ -44,16 +44,16 @@ describe('SEO metadata utility', () => {
   it('applies canonical usage-docs paths even when docs content is section-specific', () => {
     applyRouteSeo({ kind: 'usage-docs', pageKey: 'rename-mapping' });
 
-    expect(document.title).toBe('Renombrar Campos PDF y Mapear Datos | DullyPDF');
+    expect(document.title).toBe('Rename PDF Fields and Map Them to Schema Headers | DullyPDF Docs');
     expect(document.querySelector('link[rel="alternate"][hreflang="es"]')).toBeNull();
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
-      'https://dullypdf.com/es/usage-docs/rename-mapping',
+      'https://dullypdf.com/usage-docs/rename-mapping',
     );
     expect(document.querySelector('meta[property="og:title"]')?.getAttribute('content')).toBe(
-      'Renombrar Campos PDF y Mapear Datos | DullyPDF',
+      'Rename PDF Fields and Map Them to Schema Headers | DullyPDF Docs',
     );
     expect(document.querySelector('meta[name="twitter:description"]')?.getAttribute('content')).toContain(
-      'alinear campos PDF con columnas de datos',
+      'align them to headers',
     );
   });
 

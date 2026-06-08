@@ -97,6 +97,8 @@ function createDeps(overrides: Record<string, unknown> = {}) {
     setSourceFile: vi.fn(),
     setSourceFileName: vi.fn(),
     setSourceFileIsDemo: vi.fn(),
+    setSourceFileIsCatalog: vi.fn(),
+    setSourceFileCatalogSlug: vi.fn(),
     setGlobalFieldFont: vi.fn(),
     setGlobalFieldFontSize: vi.fn(),
     setGlobalFieldFontColor: vi.fn(),

@@ -345,13 +345,40 @@ async function main() {
     await page.locator('#global-field-font').selectOption('Times-Roman');
     const overrideFieldName = await selectFieldRow(page, 0);
     await page.locator('#field-font').selectOption('Courier-Bold');
+    await retry('field font override applies before switching rows', 4, async () => {
+      const value = await readSelectValue(page, '#field-font');
+      if (value !== 'Courier-Bold') {
+        throw new Error(`Expected selected field font Courier-Bold, found ${value}`);
+      }
+    });
     const globalFieldName = await selectFieldRow(page, 1);
     await page.locator('#field-font').selectOption('global');
+    await retry('field global font choice applies before download', 4, async () => {
+      const value = await readSelectValue(page, '#field-font');
+      if (value !== 'global') {
+        throw new Error(`Expected selected field font global, found ${value}`);
+      }
+    });
+
+    await page.locator('.field-list .field-row').filter({ hasText: overrideFieldName }).first().click();
+    await retry('field font override persists before download', 4, async () => {
+      const value = await readSelectValue(page, '#field-font');
+      if (value !== 'Courier-Bold') {
+        throw new Error(`Expected ${overrideFieldName} override Courier-Bold before download, found ${value}`);
+      }
+    });
+    await page.locator('.field-list .field-row').filter({ hasText: globalFieldName }).first().click();
+    await retry('field global font choice persists before download', 4, async () => {
+      const value = await readSelectValue(page, '#field-font');
+      if (value !== 'global') {
+        throw new Error(`Expected ${globalFieldName} to inherit global font before download, found ${value}`);
+      }
+    });
 
     logStep('entering field values for visible PDF appearance checks');
-    await page.locator('.field-list .field-row').nth(0).click();
+    await page.locator('.field-list .field-row').filter({ hasText: overrideFieldName }).first().click();
     await fillSelectedField(page, 'Courier Bold Smoke');
-    await page.locator('.field-list .field-row').nth(1).click();
+    await page.locator('.field-list .field-row').filter({ hasText: globalFieldName }).first().click();
     await fillSelectedField(page, 'Times Roman Smoke');
 
     await page.screenshot({ path: screenshotPath, fullPage: true });

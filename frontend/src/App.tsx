@@ -235,9 +235,10 @@ function App({
       return;
     }
     runtimeAutoStartKeyRef.current = autoStartKey;
+    const isAnonymousCatalogHandoff = browserRoute.kind === 'upload-root' && Boolean(browserRoute.catalogSlug);
     const intent: WorkspaceLaunchIntent = browserRoute.kind === 'profile'
       ? 'profile'
-      : (verifiedUser ? 'workflow' : 'signin');
+      : (verifiedUser || isAnonymousCatalogHandoff ? 'workflow' : 'signin');
     launchWorkspace(intent);
   }, [authReady, browserRoute, launchWorkspace, runtimeMounted, runtimeStartError, runtimeStarting, verifiedUser]);
 

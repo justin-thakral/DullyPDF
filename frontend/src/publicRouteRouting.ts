@@ -1,6 +1,7 @@
 import type { LegalPageKind } from './components/pages/LegalPage';
 import {
   resolveUsageDocsPath,
+  type UsageDocsLocale,
   type UsageDocsPageKey,
 } from './components/pages/usageDocsContent';
 import { resolveFeaturePlanPath, type FeaturePlanPageKey } from './config/featurePlanPages';
@@ -13,9 +14,9 @@ export type HydratablePublicRoute =
   | { kind: 'intent'; intentKey: IntentPageKey }
   | { kind: 'intent-hub'; hubKey: 'workflows' | 'industries'; locale?: 'es' }
   | { kind: 'feature-plan'; planKey: FeaturePlanPageKey }
-  | { kind: 'usage-docs'; pageKey: UsageDocsPageKey }
-  | { kind: 'blog-index'; locale?: 'es' | 'in' }
-  | { kind: 'blog-post'; slug: string; locale?: 'es' | 'in' }
+  | { kind: 'usage-docs'; pageKey: UsageDocsPageKey; locale?: UsageDocsLocale }
+  | { kind: 'blog-index'; locale?: 'en' | 'es' | 'in' }
+  | { kind: 'blog-post'; slug: string; locale?: 'en' | 'es' | 'in' }
   | { kind: 'form-catalog-index' }
   | { kind: 'form-catalog-form'; slug: string };
 
@@ -54,6 +55,10 @@ export function resolveHydratablePublicRoute(pathname: string): HydratablePublic
     return { kind: 'blog-index', locale: 'es' };
   }
 
+  if (normalizedPath === '/blog') {
+    return { kind: 'blog-index', locale: 'en' };
+  }
+
   if (normalizedPath === '/in/blog') {
     return { kind: 'blog-index', locale: 'in' };
   }
@@ -62,6 +67,13 @@ export function resolveHydratablePublicRoute(pathname: string): HydratablePublic
     const slug = normalizedPath.slice('/es/blog/'.length);
     if (slug && !slug.includes('/')) {
       return { kind: 'blog-post', slug, locale: 'es' };
+    }
+  }
+
+  if (normalizedPath.startsWith('/blog/')) {
+    const slug = normalizedPath.slice('/blog/'.length);
+    if (slug && !slug.includes('/')) {
+      return { kind: 'blog-post', slug, locale: 'en' };
     }
   }
 
@@ -91,6 +103,13 @@ export function resolveHydratablePublicRoute(pathname: string): HydratablePublic
     };
   }
 
+  if (normalizedPath === '/workflows' || normalizedPath === '/industries') {
+    return {
+      kind: 'intent-hub',
+      hubKey: normalizedPath === '/workflows' ? 'workflows' : 'industries',
+    };
+  }
+
   const featurePlanKey = resolveFeaturePlanPath(normalizedPath);
   if (featurePlanKey) {
     return { kind: 'feature-plan', planKey: featurePlanKey };
@@ -103,7 +122,7 @@ export function resolveHydratablePublicRoute(pathname: string): HydratablePublic
 
   const usageDocsRoute = resolveUsageDocsPath(normalizedPath);
   if (usageDocsRoute?.kind === 'canonical') {
-    return { kind: 'usage-docs', pageKey: usageDocsRoute.pageKey };
+    return { kind: 'usage-docs', pageKey: usageDocsRoute.pageKey, locale: usageDocsRoute.locale };
   }
 
   return null;

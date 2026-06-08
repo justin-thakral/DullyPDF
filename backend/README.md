@@ -210,6 +210,7 @@ After deploying indexes, verify TTL enablement with `gcloud firestore fields ttl
 - `OPENAI_RENAME_REMAP_TASKS_SERVICE_ACCOUNT`
 - `OPENAI_RENAME_REMAP_TASKS_AUDIENCE`, `OPENAI_RENAME_REMAP_TASKS_AUDIENCE_LIGHT`, `OPENAI_RENAME_REMAP_TASKS_AUDIENCE_HEAVY` (optional)
 - `OPENAI_RENAME_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_LIGHT`, `OPENAI_RENAME_REMAP_TASKS_DISPATCH_DEADLINE_SECONDS_HEAVY` (optional)
+- `OPENAI_RENAME_REMAP_MAX_INSTANCES` (default 3; Cloud Run max instance cap for the async OpenAI worker)
 - `OPENAI_REQUEST_TIMEOUT_SECONDS` (default 75; bounds each OpenAI request to avoid long UI stalls)
 - `OPENAI_MAX_RETRIES` (default 1; OpenAI SDK retry count for rename/remap calls)
 - `OPENAI_WORKER_MAX_RETRIES` (default 0; worker-only OpenAI SDK retries to avoid multiplying Cloud Tasks retries)

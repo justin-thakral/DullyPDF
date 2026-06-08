@@ -1019,35 +1019,35 @@ export const buildIntentCatalogWorkflowSteps = (showcase) => {
       title: 'Map fields once for CSV, XLSX, JSON, or schema-only SQL imports',
       description:
         'Rename weak field labels, align them to schema headers, and use SQL only when you need the schema without row data yet.',
-      href: '/es/usage-docs/rename-mapping',
+      href: '/usage-docs/rename-mapping',
       linkLabel: 'Rename + Mapping docs',
     },
     {
       title: 'Run Search & Fill from structured records',
       description:
         'Load CSV, XLSX, or JSON rows, search for the right record, and fill the saved template without retyping the PDF.',
-      href: '/es/usage-docs/search-fill',
+      href: '/usage-docs/search-fill',
       linkLabel: 'Search & Fill docs',
     },
     {
       title: 'Publish API Fill for server-side JSON-to-PDF workflows',
       description:
         'When another system should call the template directly, publish a template-scoped API Fill endpoint and send JSON instead of using the browser workflow.',
-      href: '/es/usage-docs/api-fill',
+      href: '/usage-docs/api-fill',
       linkLabel: 'API Fill docs',
     },
     {
       title: 'Collect answers through native DullyPDF web forms',
       description:
         'Use Fill By Link when the row data does not exist yet and a respondent should submit web-form answers before the PDF is generated.',
-      href: '/es/usage-docs/fill-by-link',
+      href: '/usage-docs/fill-by-link',
       linkLabel: 'Fill By Link docs',
     },
     {
       title: 'Freeze the completed packet and route it into signature',
       description:
         'Once the final filled record is correct, move it into the signature workflow so the immutable PDF, signer ceremony, and audit artifacts all stay attached to one retained document.',
-      href: '/es/usage-docs/signature-workflow',
+      href: '/usage-docs/signature-workflow',
       linkLabel: 'Signature workflow docs',
     },
   ];

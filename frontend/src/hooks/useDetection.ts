@@ -94,6 +94,8 @@ export interface UseDetectionDeps {
   setSourceFile: (file: File | null) => void;
   setSourceFileName: (name: string | null) => void;
   setSourceFileIsDemo: (value: boolean) => void;
+  setSourceFileIsCatalog: (value: boolean) => void;
+  setSourceFileCatalogSlug: (value: string | null) => void;
   setGlobalFieldFont: (font: FieldFontChoice) => void;
   setGlobalFieldFontSize: (fontSize: FieldFontSizeChoice) => void;
   setGlobalFieldFontColor: (fontColor: FieldFontColorChoice) => void;
@@ -438,7 +440,7 @@ export function useDetection(deps: UseDetectionDeps) {
   const handleFillableUpload = useCallback(
     async (
       file: File,
-      options: { isDemo?: boolean; skipExistingFields?: boolean } = {},
+      options: { isDemo?: boolean; isCatalog?: boolean; catalogSlug?: string | null; skipExistingFields?: boolean } = {},
       pdfState: {
         setPdfDoc: (doc: PDFDocumentProxy | null) => void;
         setPageSizes: (sizes: Record<number, PageSize>) => void;
@@ -471,6 +473,8 @@ export function useDetection(deps: UseDetectionDeps) {
       deps.setSourceFile(file);
       deps.setSourceFileName(file.name);
       deps.setSourceFileIsDemo(Boolean(options.isDemo));
+      deps.setSourceFileIsCatalog(Boolean(options.isCatalog));
+      deps.setSourceFileCatalogSlug(options.isCatalog ? options.catalogSlug ?? null : null);
       deps.setActiveSavedFormId(null);
       deps.setActiveSavedFormName(null);
       try {
@@ -606,6 +610,8 @@ export function useDetection(deps: UseDetectionDeps) {
           deps.setSourceFile(file);
           deps.setSourceFileName(name);
           deps.setSourceFileIsDemo(false);
+          deps.setSourceFileIsCatalog(false);
+          deps.setSourceFileCatalogSlug(null);
           // Attach the saved-template identity before the PDF hydration work
           // continues so header actions do not briefly treat the workspace as
           // an unsaved draft while a saved form is opening.
@@ -826,6 +832,8 @@ export function useDetection(deps: UseDetectionDeps) {
       deps.setSourceFile(sourceFile);
       deps.setSourceFileName(sourceFile.name);
       deps.setSourceFileIsDemo(false);
+      deps.setSourceFileIsCatalog(false);
+      deps.setSourceFileCatalogSlug(null);
       deps.setActiveSavedFormId(null);
       deps.setActiveSavedFormName(null);
 
@@ -915,6 +923,8 @@ export function useDetection(deps: UseDetectionDeps) {
       deps.setSourceFile(file);
       deps.setSourceFileName(file.name);
       deps.setSourceFileIsDemo(false);
+      deps.setSourceFileIsCatalog(false);
+      deps.setSourceFileCatalogSlug(null);
       deps.setActiveSavedFormId(null);
       deps.setActiveSavedFormName(null);
       const openAiActionsRequested = Boolean(options.autoRename || options.autoMap);

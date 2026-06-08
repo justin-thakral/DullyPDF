@@ -254,7 +254,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India Excel to PDF Forms', href: '/in/fill-pdf-from-excel' },
       { label: 'India CSV to PDF Forms', href: '/in/fill-pdf-from-csv' },
-      { label: 'Search and Fill docs', href: '/es/usage-docs/search-fill' },
+      { label: 'Search and Fill docs', href: '/usage-docs/search-fill' },
     ],
     relatedIntentPages: [
       'india-fill-pdf-from-excel',
@@ -310,7 +310,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India KYC PDF Automation', href: '/in/kyc-pdf-automation' },
       { label: 'India PDF Field Detection', href: '/in/pdf-field-detection' },
-      { label: 'Rename and Mapping docs', href: '/es/usage-docs/rename-mapping' },
+      { label: 'Rename and Mapping docs', href: '/usage-docs/rename-mapping' },
     ],
     relatedIntentPages: [
       'india-kyc-pdf-automation',
@@ -366,7 +366,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India Vendor Onboarding PDF Automation', href: '/in/vendor-onboarding-pdf-automation' },
       { label: 'India PDF Fill API', href: '/in/pdf-fill-api' },
-      { label: 'API Fill docs', href: '/es/usage-docs/api-fill' },
+      { label: 'API Fill docs', href: '/usage-docs/api-fill' },
     ],
     relatedIntentPages: [
       'india-vendor-onboarding-pdf-automation',
@@ -422,7 +422,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India GST Invoice PDF Automation', href: '/in/gst-invoice-pdf-automation' },
       { label: 'India PDF Calculations', href: '/in/pdf-calculations' },
-      { label: 'Search and Fill docs', href: '/es/usage-docs/search-fill' },
+      { label: 'Search and Fill docs', href: '/usage-docs/search-fill' },
     ],
     relatedIntentPages: [
       'india-gst-invoice-pdf-automation',
@@ -478,7 +478,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India HR Joining PDF Automation', href: '/in/hr-joining-pdf-automation' },
       { label: 'India PDF Packet Workflow', href: '/in/pdf-packet-workflow' },
-      { label: 'Fill By Link docs', href: '/es/usage-docs/fill-by-link' },
+      { label: 'Fill By Link docs', href: '/usage-docs/fill-by-link' },
     ],
     relatedIntentPages: [
       'india-hr-joining-pdf-automation',
@@ -534,7 +534,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India School Admissions PDF Automation', href: '/in/school-admissions-pdf-automation' },
       { label: 'India Fill By Link', href: '/in/fill-by-link' },
-      { label: 'Getting Started docs', href: '/es/usage-docs/getting-started' },
+      { label: 'Getting Started docs', href: '/usage-docs/getting-started' },
     ],
     relatedIntentPages: [
       'india-school-admissions-pdf-automation',
@@ -590,7 +590,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India Clinic Intake PDF Automation', href: '/in/clinic-intake-pdf-automation' },
       { label: 'India Fill By Link', href: '/in/fill-by-link' },
-      { label: 'Detection docs', href: '/es/usage-docs/detection' },
+      { label: 'Detection docs', href: '/usage-docs/detection' },
     ],
     relatedIntentPages: [
       'india-clinic-intake-pdf-automation',
@@ -646,7 +646,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India Delivery Challan PDF Automation', href: '/in/delivery-challan-pdf-automation' },
       { label: 'India PDF Packet Workflow', href: '/in/pdf-packet-workflow' },
-      { label: 'Search and Fill docs', href: '/es/usage-docs/search-fill' },
+      { label: 'Search and Fill docs', href: '/usage-docs/search-fill' },
     ],
     relatedIntentPages: [
       'india-delivery-challan-pdf-automation',
@@ -702,7 +702,7 @@ export const INDIA_BLOG_POSTS = [
     links: [
       { label: 'India PDF Fill API', href: '/in/pdf-fill-api' },
       { label: 'India Rename and Map PDF Fields', href: '/in/rename-map-pdf-fields' },
-      { label: 'API Fill docs', href: '/es/usage-docs/api-fill' },
+      { label: 'API Fill docs', href: '/usage-docs/api-fill' },
     ],
     relatedIntentPages: [
       'india-pdf-fill-api',

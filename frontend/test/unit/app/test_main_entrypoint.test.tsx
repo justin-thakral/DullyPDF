@@ -24,15 +24,17 @@ const entrypointMocks = vi.hoisted(() => {
       <div data-testid="public-signing-validation-page">Validation {token}</div>
     )),
     AccountActionPage: vi.fn(() => <div data-testid="account-action-page">Account action</div>),
-    IntentHubPage: vi.fn(({ hubKey }: { hubKey: string }) => <div data-testid={`intent-hub-${hubKey}`}>Hub {hubKey}</div>),
+    IntentHubPage: vi.fn(({ hubKey, locale }: { hubKey: string; locale?: string }) => (
+      <div data-testid={`intent-hub-${locale ?? 'en'}-${hubKey}`}>Hub {hubKey}</div>
+    )),
     FeaturePlanPage: vi.fn(({ pageKey }: { pageKey: string }) => (
       <div data-testid={`feature-plan-${pageKey}`}>Feature plan {pageKey}</div>
     )),
     IntentLandingPage: vi.fn(({ pageKey }: { pageKey: string }) => (
       <div data-testid={`intent-${pageKey}`}>Intent {pageKey}</div>
     )),
-    UsageDocsPage: vi.fn(({ pageKey }: { pageKey: string }) => (
-      <div data-testid={`usage-docs-${pageKey}`}>Usage docs {pageKey}</div>
+    UsageDocsPage: vi.fn(({ pageKey, locale }: { pageKey: string; locale?: string }) => (
+      <div data-testid={`usage-docs-${locale ?? 'en'}-${pageKey}`}>Usage docs {pageKey}</div>
     )),
     UsageDocsNotFoundPage: vi.fn(({ requestedPath }: { requestedPath: string }) => (
       <div data-testid="usage-docs-not-found">Usage docs not found {requestedPath}</div>
@@ -192,15 +194,18 @@ describe('main entrypoint', () => {
   });
 
   it.each([
-    ['/es/flujos-de-trabajo', 'workflows'],
-    ['/es/industrias', 'industries'],
-  ])('renders intent hub route %s', async (pathname, hubKey) => {
+    ['/workflows', 'workflows', undefined],
+    ['/industries', 'industries', undefined],
+    ['/es/flujos-de-trabajo', 'workflows', 'es'],
+    ['/es/industrias', 'industries', 'es'],
+  ])('renders intent hub route %s', async (pathname, hubKey, locale) => {
     await importEntrypoint(pathname);
     await renderCapturedTree();
 
     expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
     expect(entrypointMocks.initializeGoogleAds).not.toHaveBeenCalled();
-    expect(await screen.findByTestId(`intent-hub-${hubKey}`)).toBeTruthy();
+    expect(await screen.findByTestId(`intent-hub-${locale ?? 'en'}-${hubKey}`)).toBeTruthy();
+    expect(entrypointMocks.IntentHubPage.mock.calls.at(-1)?.[0]?.locale).toBe(locale);
     expect(screen.queryByTestId('app-view')).toBeNull();
   });
 
@@ -284,19 +289,23 @@ describe('main entrypoint', () => {
   });
 
   it.each([
-    ['/es/usage-docs', 'index'],
-    ['/es/usage-docs/getting-started', 'getting-started'],
-    ['/es/usage-docs/editor-workflow', 'editor-workflow'],
-    ['/es/usage-docs/signature-workflow', 'signature-workflow'],
-    ['/es/usage-docs/api-fill', 'api-fill'],
-    ['/es/usage-docs/create-group', 'create-group'],
-    ['/es/usage-docs/search-fill/', 'search-fill'],
-  ])('renders UsageDocs pageKey=%s route=%s', async (pathname, pageKey) => {
+    ['/usage-docs', 'index', undefined],
+    ['/usage-docs/getting-started', 'getting-started', undefined],
+    ['/usage-docs/search-fill/', 'search-fill', undefined],
+    ['/es/usage-docs', 'index', 'es'],
+    ['/es/usage-docs/getting-started', 'getting-started', 'es'],
+    ['/es/usage-docs/editor-workflow', 'editor-workflow', 'es'],
+    ['/es/usage-docs/signature-workflow', 'signature-workflow', 'es'],
+    ['/es/usage-docs/api-fill', 'api-fill', 'es'],
+    ['/es/usage-docs/create-group', 'create-group', 'es'],
+    ['/es/usage-docs/search-fill/', 'search-fill', 'es'],
+  ])('renders UsageDocs pageKey=%s route=%s', async (pathname, pageKey, locale) => {
     await importEntrypoint(pathname);
     await renderCapturedTree();
 
     expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
-    expect(await screen.findByTestId(`usage-docs-${pageKey}`)).toBeTruthy();
+    expect(await screen.findByTestId(`usage-docs-${locale ?? 'en'}-${pageKey}`)).toBeTruthy();
+    expect(entrypointMocks.UsageDocsPage.mock.calls.at(-1)?.[0]?.locale).toBe(locale);
     expect(screen.queryByTestId('app-view')).toBeNull();
     expect(screen.queryByTestId('usage-docs-not-found')).toBeNull();
   });
@@ -330,16 +339,17 @@ describe('main entrypoint', () => {
     expect(screen.queryByTestId('app-view')).toBeNull();
   });
 
-  it('canonicalizes /docs/* routes to /es/usage-docs/* before rendering', async () => {
+  it('canonicalizes /docs/* routes to /usage-docs/* before rendering', async () => {
     await importEntrypoint('/docs/search-fill');
     await renderCapturedTree();
 
     expect(entrypointMocks.ensureBackendReady).not.toHaveBeenCalled();
-    expect(await screen.findByTestId('usage-docs-search-fill')).toBeTruthy();
-    expect(window.location.pathname).toBe('/es/usage-docs/search-fill');
+    expect(await screen.findByTestId('usage-docs-en-search-fill')).toBeTruthy();
+    expect(window.location.pathname).toBe('/usage-docs/search-fill');
   });
 
   it.each([
+    '/usage-docs/not-a-real-page',
     '/es/usage-docs/not-a-real-page',
     '/es/usage-docs/search-fill/extra',
     '/docs/not-a-real-page',

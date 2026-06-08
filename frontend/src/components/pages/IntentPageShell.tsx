@@ -34,11 +34,15 @@ export const IntentPageShell = ({
         primaryLabel: 'Probar DullyPDF',
         primaryHref: '/es',
         secondaryLabel: 'Ver documentación de uso',
+        secondaryHref: '/es/usage-docs/getting-started',
+        docsHref: '/es/usage-docs',
       }
     : {
         primaryLabel: 'Try DullyPDF Now',
         primaryHref: '/',
         secondaryLabel: 'View Getting Started Docs',
+        secondaryHref: '/usage-docs/getting-started',
+        docsHref: '/usage-docs',
       };
 
   if (usePublicChrome) {
@@ -59,7 +63,7 @@ export const IntentPageShell = ({
             <a href={ctaCopy.primaryHref} className="intent-page__cta intent-page__cta--primary">
               {ctaCopy.primaryLabel}
             </a>
-            <a href="/es/usage-docs/getting-started" className="intent-page__cta intent-page__cta--secondary">
+            <a href={ctaCopy.secondaryHref} className="intent-page__cta intent-page__cta--secondary">
               {ctaCopy.secondaryLabel}
             </a>
           </div>
@@ -86,7 +90,7 @@ export const IntentPageShell = ({
           </div>
           <nav className="intent-page__nav" aria-label="Primary navigation">
             <a href="/" className="intent-page__nav-link">Home</a>
-            <a href="/es/usage-docs" className="intent-page__nav-link">Usage Docs</a>
+            <a href={ctaCopy.docsHref} className="intent-page__nav-link">Usage Docs</a>
             <a href="/privacy" className="intent-page__nav-link">Privacy</a>
             <a href="/terms" className="intent-page__nav-link">Terms</a>
           </nav>
@@ -103,7 +107,7 @@ export const IntentPageShell = ({
               <a href={ctaCopy.primaryHref} className="intent-page__cta intent-page__cta--primary">
                 {ctaCopy.primaryLabel}
               </a>
-              <a href="/es/usage-docs/getting-started" className="intent-page__cta intent-page__cta--secondary">
+              <a href={ctaCopy.secondaryHref} className="intent-page__cta intent-page__cta--secondary">
                 {ctaCopy.secondaryLabel}
               </a>
             </div>

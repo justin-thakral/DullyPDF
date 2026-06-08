@@ -249,8 +249,16 @@ node scripts/generate-rss.mjs
 # Validate key static HTML files exist
 require_file "frontend/dist/index.html"
 require_file "frontend/dist/app-shell.html"
+require_file "frontend/dist/workflows/index.html"
+require_file "frontend/dist/industries/index.html"
 require_file "frontend/dist/healthcare-pdf-automation/index.html"
 require_file "frontend/dist/pdf-to-fillable-form/index.html"
+require_file "frontend/dist/fill-pdf-from-csv/index.html"
+require_file "frontend/dist/acord-form-automation/index.html"
+require_file "frontend/dist/blog/index.html"
+require_file "frontend/dist/blog/dullypdf-vs-anvil-pdf-automation-pricing/index.html"
+require_file "frontend/dist/usage-docs/index.html"
+require_file "frontend/dist/usage-docs/getting-started/index.html"
 require_file "frontend/dist/es/usage-docs/index.html"
 require_file "frontend/dist/forms/index.html"
 require_file "frontend/dist/forms/w-9/index.html"
@@ -258,6 +266,14 @@ require_file "frontend/dist/sitemap.xml"
 require_file "frontend/dist/sitemap-main.xml"
 require_file "frontend/dist/sitemap-forms.xml"
 require_file "frontend/dist/feed.xml"
+require_file_contains "frontend/dist/fill-pdf-from-csv/index.html" '<meta name="robots" content="index,follow" />'
+require_file_contains "frontend/dist/acord-form-automation/index.html" '<meta name="robots" content="index,follow" />'
+require_file_contains "frontend/dist/blog/index.html" '<meta name="robots" content="index,follow" />'
+require_file_contains "frontend/dist/usage-docs/index.html" '<link rel="canonical" href="https://dullypdf.com/usage-docs" />'
+require_file_contains "frontend/dist/sitemap-main.xml" '<loc>https://dullypdf.com/fill-pdf-from-csv</loc>'
+require_file_contains "frontend/dist/sitemap-main.xml" '<loc>https://dullypdf.com/acord-form-automation</loc>'
+require_file_contains "frontend/dist/sitemap-main.xml" '<loc>https://dullypdf.com/blog</loc>'
+require_file_contains "frontend/dist/sitemap-main.xml" '<loc>https://dullypdf.com/usage-docs</loc>'
 echo "Static HTML, sitemap, and feed validation passed."
 
 for asset_path in "${CRITICAL_WEBP_ASSETS[@]}"; do

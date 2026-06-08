@@ -28,7 +28,7 @@ export function renderPublicRouteForClient(route: HydratablePublicRoute) {
     case 'feature-plan':
       return <FeaturePlanPage pageKey={route.planKey} />;
     case 'usage-docs':
-      return <UsageDocsPage pageKey={route.pageKey} />;
+      return <UsageDocsPage pageKey={route.pageKey} locale={route.locale} />;
     case 'blog-index':
       return <BlogIndexPage locale={route.locale} />;
     case 'blog-post':
