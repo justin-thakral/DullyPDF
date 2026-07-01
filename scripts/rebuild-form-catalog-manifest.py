@@ -14,7 +14,7 @@ import json
 import re
 from collections import Counter
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CATALOG_ROOT = REPO_ROOT / "form_catalog"
@@ -46,33 +46,33 @@ PUBLIC_BASE_SECTIONS = {
 }
 
 PUBLIC_LOCAL_TEMPLATE_RANGES = {
-    "agriculture_food": [("DAF", 2300, 2361), ("DAF", 2600, 2649)],
-    "automotive_service": [("DAS", 2100, 2149)],
+    "agriculture_food": [("DAF", 2300, 2361), ("DAF", 2600, 2649), ("DAF", 2800, 2800)],
+    "automotive_service": [("DAS", 2100, 2149), ("DAS", 2700, 2700)],
     "beauty_wellness": [("DBW", 100, 189), ("DBW", 2300, 2344)],
-    "business_operations": [("DBO", 1755, 1809)],
-    "construction_trades": [("DCF", 100, 199), ("DCT", 1000, 1062), ("DCT", 1100, 1174)],
+    "business_operations": [("DBO", 1755, 1809), ("DBO", 2800, 2802)],
+    "construction_trades": [("DCF", 100, 199), ("DCT", 1000, 1062), ("DCT", 1100, 1174), ("DCT", 2700, 2701)],
     "education_childcare": [("DEY", 100, 189), ("DEC", 1400, 1469), ("DEC", 1600, 1662)],
     "events_waivers": [("DEW", 1800, 1854)],
     "facilities_maintenance": [("DFM", 1200, 1262)],
     "field_service": [("DHS", 100, 189), ("DFS", 1100, 1162), ("DFM", 1200, 1274)],
-    "finance_accounting": [("DFA", 100, 169), ("DFA", 1700, 1754)],
+    "finance_accounting": [("DFA", 100, 169), ("DFA", 1700, 1754), ("DFA", 2700, 2700)],
     "finance_lending": [("DFL", 1900, 1961), ("DFL", 2600, 2649)],
     "home_services": [("DHS", 2400, 2444), ("DHS", 2600, 2649)],
     "hospitality_events": [("DHE", 2200, 2261), ("DHE", 2600, 2649)],
     "hr_onboarding": [("DHR", 100, 169)],
-    "hr_operations": [("DHR", 1800, 1861), ("DHO", 2600, 2649)],
+    "hr_operations": [("DHR", 1800, 1861), ("DHO", 2600, 2649), ("DHO", 2700, 2700)],
     "insurance_claims": [("DIC", 100, 179), ("DIC", 1600, 1654), ("DIC", 2000, 2061)],
     "legal_admin": [("DLP", 1500, 1559)],
     "legal_office": [("DLO", 2100, 2161), ("DLO", 2600, 2649)],
-    "logistics_transport": [("DLT", 100, 169), ("DLT", 1500, 1562), ("DLD", 2200, 2249)],
-    "manufacturing_quality": [("DMQ", 100, 179), ("DMQ", 1400, 1462), ("DMQ", 1810, 1864)],
+    "logistics_transport": [("DLT", 100, 169), ("DLT", 1500, 1562), ("DLT", 2700, 2700), ("DLT", 2800, 2800), ("DLD", 2200, 2249)],
+    "manufacturing_quality": [("DMQ", 100, 179), ("DMQ", 1400, 1462), ("DMQ", 1810, 1864), ("DMQ", 2700, 2700), ("DMQ", 2800, 2800)],
     "nonprofit_community": [("DNE", 100, 179), ("DNV", 1900, 1949)],
-    "nonprofit_events": [("DNE", 1700, 1762)],
+    "nonprofit_events": [("DNE", 1700, 1762), ("DNE", 2700, 2700), ("DNE", 2800, 2800)],
     "pet_services": [("DPS", 100, 179), ("DVP", 2000, 2059)],
     "property_management": [("DPM", 1300, 1362)],
-    "real_estate_property": [("DPM", 100, 199), ("DPM", 1000, 1079)],
-    "retail_operations": [("DRO", 2500, 2561), ("DRO", 2600, 2649)],
-    "safety_compliance": [("DSC", 1300, 1364)],
+    "real_estate_property": [("DPM", 100, 199), ("DPM", 1000, 1079), ("DPM", 2700, 2700), ("DPM", 2800, 2800)],
+    "retail_operations": [("DRO", 2500, 2561), ("DRO", 2600, 2649), ("DRO", 2800, 2800)],
+    "safety_compliance": [("DSC", 1300, 1364), ("DSC", 2700, 2700), ("DSC", 2800, 2800)],
     "utilities_energy": [("DUE", 2400, 2461), ("DUE", 2600, 2649)],
 }
 
@@ -99,7 +99,7 @@ def _load_form_sources() -> list[tuple[str, str, str, str]]:
 
 
 def _add_source_index_entry(index: dict, form_number: str, title: str, url: str, section: str) -> None:
-    base = unquote(url.rsplit("/", 1)[-1]).lower() if url else ""
+    base = unquote(urlparse(url).path.rsplit("/", 1)[-1]).lower() if url else ""
     base_noext = base.rsplit(".", 1)[0]
     sanitized_base = re.sub(r"[^a-z0-9\-._]+", "_", base)
     sanitized_base_noext = sanitized_base.rsplit(".", 1)[0]

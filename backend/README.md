@@ -167,7 +167,7 @@ After deploying indexes, verify TTL enablement with `gcloud firestore fields ttl
 - `FILL_LINK_DOWNLOAD_RATE_GLOBAL` (optional; global cap for anonymous respondent PDF downloads)
 - `FILL_LINK_MAX_ANSWER_VALUE_CHARS`, `FILL_LINK_MAX_TOTAL_ANSWER_CHARS`, `FILL_LINK_MAX_MULTI_SELECT_VALUES`
 - `FILL_LINK_ALLOW_LEGACY_PUBLIC_TOKENS` (default false; temporary fallback for previously issued plaintext Fill By Link URLs only)
-- `DULLYPDF_CALCULATION_FIELDS_ENABLED` / `SANDBOX_ENABLE_CALCULATION_FIELDS` (optional rollout flag for DullyPDF-managed calculation fields; defaults enabled outside production and disabled in production unless explicitly truthy)
+- `DULLYPDF_CALCULATION_FIELDS_ENABLED` / `SANDBOX_ENABLE_CALCULATION_FIELDS` (rollout flag for DullyPDF-managed calculation fields; application defaults remain enabled outside production and disabled in production unless explicitly truthy, while the prod deploy script now emits `DULLYPDF_CALCULATION_FIELDS_ENABLED=true` for the production rollout)
 - `SANDBOX_TRUST_PROXY_HEADERS` (required `true` in prod; keep `false` only outside prod. Production startup rejects `false` because the Cloud Run deployment path relies on trusted proxy headers.)
 - `SANDBOX_TRUSTED_PROXY_DEPTH` (required positive integer in prod when proxy headers are trusted. Set this to the number of trusted proxy hops appended to `X-Forwarded-For`, so the backend resolves the client IP from the right side of the chain instead of trusting a spoofable leftmost value.)
 - `SANDBOX_CORS_ORIGINS` (comma-separated list)

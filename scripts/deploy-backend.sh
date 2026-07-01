@@ -457,6 +457,13 @@ for binding_key, target_key in secret_bindings.items():
     omit_keys.add(target_key)
 
 data = {key: value for key, value in raw_values.items() if key not in omit_keys}
+
+# Calculation fields are now part of the production editor/runtime contract.
+# The prod backend env file is stored as a GitHub environment secret, so this
+# deploy-managed flag keeps the Cloud Run runtime aligned with the committed
+# frontend build flag without requiring a secret rotation for the rollout.
+data["DULLYPDF_CALCULATION_FIELDS_ENABLED"] = "true"
+
 with open(out_path, "w", encoding="utf-8") as handle:
     for key in sorted(data.keys()):
         handle.write(f"{key}: {json.dumps(data[key])}\n")

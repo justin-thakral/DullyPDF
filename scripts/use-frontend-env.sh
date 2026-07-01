@@ -46,3 +46,10 @@ if [[ -n "$EXPLICIT_OVERRIDE_FILE" ]]; then
     cat "$EXPLICIT_OVERRIDE_FILE"
   } >> "$OUTPUT_FILE"
 fi
+
+if [[ "$MODE" == "prod" ]]; then
+  {
+    printf "\n# Production rollout flags managed by source control\n"
+    printf "VITE_ENABLE_CALCULATION_FIELDS=true\n"
+  } >> "$OUTPUT_FILE"
+fi

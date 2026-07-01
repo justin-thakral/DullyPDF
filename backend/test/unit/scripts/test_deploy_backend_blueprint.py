@@ -31,6 +31,12 @@ def test_deploy_backend_omits_literal_stripe_env_when_secret_binding_is_present(
     assert '"STRIPE_WEBHOOK_SECRET_SECRET": "STRIPE_WEBHOOK_SECRET"' in text
 
 
+def test_deploy_backend_enables_calculation_fields_for_prod_rollout() -> None:
+    text = _script_text()
+    assert 'data["DULLYPDF_CALCULATION_FIELDS_ENABLED"] = "true"' in text
+    assert "DULLYPDF_CALCULATION_FIELDS_ENABLED=true" in _prod_env_example_text()
+
+
 def test_deploy_backend_updates_cloud_run_stripe_secret_bindings() -> None:
     text = _script_text()
     assert "FILL_LINK_TOKEN_SECRET=${FILL_LINK_TOKEN_SECRET_SECRET}:latest" in text

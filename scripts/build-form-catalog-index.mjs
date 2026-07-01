@@ -144,17 +144,25 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
   agriculture_food: [
     { prefix: 'DAF', min: 2300, max: 2361 },
     { prefix: 'DAF', min: 2600, max: 2649 },
+    { prefix: 'DAF', min: 2800, max: 2800 },
   ],
-  automotive_service: { prefix: 'DAS', min: 2100, max: 2149 },
+  automotive_service: [
+    { prefix: 'DAS', min: 2100, max: 2149 },
+    { prefix: 'DAS', min: 2700, max: 2700 },
+  ],
   beauty_wellness: [
     { prefix: 'DBW', min: 100, max: 189 },
     { prefix: 'DBW', min: 2300, max: 2344 },
   ],
-  business_operations: { prefix: 'DBO', min: 1755, max: 1809 },
+  business_operations: [
+    { prefix: 'DBO', min: 1755, max: 1809 },
+    { prefix: 'DBO', min: 2800, max: 2802 },
+  ],
   construction_trades: [
     { prefix: 'DCF', min: 100, max: 199 },
     { prefix: 'DCT', min: 1000, max: 1062 },
     { prefix: 'DCT', min: 1100, max: 1174 },
+    { prefix: 'DCT', min: 2700, max: 2701 },
   ],
   education_childcare: [
     { prefix: 'DEY', min: 100, max: 189 },
@@ -171,6 +179,7 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
   finance_accounting: [
     { prefix: 'DFA', min: 100, max: 169 },
     { prefix: 'DFA', min: 1700, max: 1754 },
+    { prefix: 'DFA', min: 2700, max: 2700 },
   ],
   finance_lending: [
     { prefix: 'DFL', min: 1900, max: 1961 },
@@ -188,6 +197,7 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
   hr_operations: [
     { prefix: 'DHR', min: 1800, max: 1861 },
     { prefix: 'DHO', min: 2600, max: 2649 },
+    { prefix: 'DHO', min: 2700, max: 2700 },
   ],
   insurance_claims: [
     { prefix: 'DIC', min: 100, max: 179 },
@@ -202,18 +212,26 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
   logistics_transport: [
     { prefix: 'DLT', min: 100, max: 169 },
     { prefix: 'DLT', min: 1500, max: 1562 },
+    { prefix: 'DLT', min: 2700, max: 2700 },
+    { prefix: 'DLT', min: 2800, max: 2800 },
     { prefix: 'DLD', min: 2200, max: 2249 },
   ],
   manufacturing_quality: [
     { prefix: 'DMQ', min: 100, max: 179 },
     { prefix: 'DMQ', min: 1400, max: 1462 },
     { prefix: 'DMQ', min: 1810, max: 1864 },
+    { prefix: 'DMQ', min: 2700, max: 2700 },
+    { prefix: 'DMQ', min: 2800, max: 2800 },
   ],
   nonprofit_community: [
     { prefix: 'DNE', min: 100, max: 179 },
     { prefix: 'DNV', min: 1900, max: 1949 },
   ],
-  nonprofit_events: { prefix: 'DNE', min: 1700, max: 1762 },
+  nonprofit_events: [
+    { prefix: 'DNE', min: 1700, max: 1762 },
+    { prefix: 'DNE', min: 2700, max: 2700 },
+    { prefix: 'DNE', min: 2800, max: 2800 },
+  ],
   pet_services: [
     { prefix: 'DPS', min: 100, max: 179 },
     { prefix: 'DVP', min: 2000, max: 2059 },
@@ -222,12 +240,19 @@ const PUBLIC_LOCAL_TEMPLATE_RANGES = {
   real_estate_property: [
     { prefix: 'DPM', min: 100, max: 199 },
     { prefix: 'DPM', min: 1000, max: 1079 },
+    { prefix: 'DPM', min: 2700, max: 2700 },
+    { prefix: 'DPM', min: 2800, max: 2800 },
   ],
   retail_operations: [
     { prefix: 'DRO', min: 2500, max: 2561 },
     { prefix: 'DRO', min: 2600, max: 2649 },
+    { prefix: 'DRO', min: 2800, max: 2800 },
   ],
-  safety_compliance: { prefix: 'DSC', min: 1300, max: 1364 },
+  safety_compliance: [
+    { prefix: 'DSC', min: 1300, max: 1364 },
+    { prefix: 'DSC', min: 2700, max: 2700 },
+    { prefix: 'DSC', min: 2800, max: 2800 },
+  ],
   utilities_energy: [
     { prefix: 'DUE', min: 2400, max: 2461 },
     { prefix: 'DUE', min: 2600, max: 2649 },
@@ -359,7 +384,13 @@ function buildSlug(entry, usedSlugs, reservedSlugs = new Set(), preferredSlug = 
 
   const stableKey = `${entry.sourceSection || entry.section || 'catalog'}-${entry.filename || entry.sha256 || 'form'}`;
   const suffix = slugify(stableKey).slice(0, 32) || entry.sha256?.slice(0, 8) || 'catalog';
-  const disambiguated = `${base}-${suffix}`;
+  const hashSuffix = entry.sha256?.slice(0, 8) || '';
+  let disambiguated = [base, suffix, hashSuffix].filter(Boolean).join('-');
+  let attempt = 2;
+  while (!isSlugAvailable(disambiguated, usedSlugs, reservedSlugs, preferredSlug)) {
+    disambiguated = [base, suffix, hashSuffix || 'catalog', attempt].filter(Boolean).join('-');
+    attempt += 1;
+  }
   usedSlugs.add(disambiguated);
   return disambiguated;
 }
