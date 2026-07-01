@@ -40,6 +40,37 @@ describe('fillLinkWebForm utils', () => {
     expect(questions.some((question) => question.key === 'license_pdf417')).toBe(false);
   });
 
+  it('marks calculation number inputs as integer web-form questions', () => {
+    const questions = buildFillLinkQuestionsFromFields([
+      makeField({
+        id: 'base',
+        name: 'base_premium',
+        type: 'text',
+        valueType: 'integer',
+        calculation: { role: 'number_input', valueType: 'integer' },
+      }),
+      makeField({
+        id: 'total',
+        name: 'premium_total',
+        type: 'text',
+        valueType: 'integer',
+        calculation: {
+          role: 'calculated_output',
+          valueType: 'integer',
+          formula: { kind: 'field', fieldId: 'base' },
+        },
+      }),
+    ]);
+
+    const basePremium = questions.find((question) => question.key === 'base_premium');
+    expect(basePremium).toMatchObject({
+      type: 'text',
+      calculationRole: 'number_input',
+      valueType: 'integer',
+    });
+    expect(questions.some((question) => question.key === 'premium_total')).toBe(false);
+  });
+
   it('groups explicit radio widgets into one single-choice web-form question', () => {
     const questions = buildFillLinkQuestionsFromFields([
       makeField({

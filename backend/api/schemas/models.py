@@ -666,6 +666,8 @@ class FillLinkWebFormQuestion(BaseModel):
     sourceType: Optional[str] = Field(default=None, max_length=40)
     sourceField: Optional[str] = Field(default=None, max_length=160)
     groupKey: Optional[str] = Field(default=None, max_length=160)
+    calculationRole: Optional[str] = Field(default=None, max_length=40)
+    valueType: Optional[str] = Field(default=None, max_length=40)
     required: bool = False
     requiredForRespondentIdentity: bool = False
     synthetic: bool = False
@@ -686,6 +688,8 @@ class FillLinkWebFormQuestion(BaseModel):
         "sourceType",
         "sourceField",
         "groupKey",
+        "calculationRole",
+        "valueType",
         "placeholder",
         "helpText",
         mode="before",

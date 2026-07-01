@@ -57,6 +57,8 @@ export type FillLinkQuestion = {
   label?: string;
   type: 'text' | 'textarea' | 'date' | 'boolean' | 'radio' | 'multi_select' | 'select' | 'email' | 'phone' | 'image' | string;
   sourceType?: 'pdf_field' | 'checkbox_group' | 'radio_group' | 'custom' | 'synthetic' | string;
+  calculationRole?: 'number_input' | string;
+  valueType?: 'integer' | 'decimal' | string;
   requiredForRespondentIdentity?: boolean;
   required?: boolean;
   synthetic?: boolean;

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from backend.services import fill_links_service as fls
 
 
@@ -167,6 +169,9 @@ def test_build_fill_link_questions_omits_calculated_outputs_and_keeps_number_inp
     assert "base_amount" in keys
     assert "subtotal" not in keys
     assert "total" not in keys
+    base_question = next(question for question in questions if question["key"] == "base_amount")
+    assert base_question["calculationRole"] == "number_input"
+    assert base_question["valueType"] == "integer"
 
 
 def test_build_fill_link_web_form_schema_drops_stale_calculated_output_questions() -> None:
@@ -273,6 +278,57 @@ def test_coerce_fill_link_answers_accepts_image_upload_payload() -> None:
     assert answers["profile_photo"]["imageDataUrl"] == ONE_BY_ONE_PNG_DATA_URL
     assert answers["profile_photo"]["imageMimeType"] == "image/png"
     assert answers["profile_photo"]["imageName"] == "profile.png"
+
+
+def test_coerce_fill_link_answers_rejects_decimal_calculation_number_input() -> None:
+    questions = [
+        {"key": "full_name", "label": "Full Name", "type": "text"},
+        {
+            "key": "base_premium",
+            "label": "Base Premium",
+            "type": "text",
+            "calculationRole": "number_input",
+            "valueType": "integer",
+        },
+    ]
+
+    with pytest.raises(ValueError, match="Base Premium must be an integer"):
+        fls.coerce_fill_link_answers(
+            {"full_name": "Ada Lovelace", "base_premium": "10.5"},
+            questions,
+        )
+
+    answers = fls.coerce_fill_link_answers(
+        {"full_name": "Ada Lovelace", "base_premium": "0010.0"},
+        questions,
+    )
+
+    assert answers["base_premium"] == "10"
+
+
+def test_enrich_fill_link_questions_with_calculation_metadata_from_snapshot() -> None:
+    questions = [
+        {"key": "full_name", "label": "Full Name", "type": "text"},
+        {"key": "base_premium", "label": "Base Premium", "type": "text"},
+    ]
+
+    enriched = fls.enrich_fill_link_questions_with_calculation_metadata(
+        questions,
+        respondent_pdf_snapshot={
+            "fields": [
+                {
+                    "id": "base",
+                    "name": "base_premium",
+                    "type": "text",
+                    "calculation": {"role": "number_input", "valueType": "integer"},
+                },
+            ]
+        },
+    )
+
+    by_key = {question["key"]: question for question in enriched}
+    assert by_key["base_premium"]["calculationRole"] == "number_input"
+    assert by_key["base_premium"]["valueType"] == "integer"
 
 
 def test_build_fill_link_questions_keeps_checkbox_groups_as_multi_select_until_converted() -> None:

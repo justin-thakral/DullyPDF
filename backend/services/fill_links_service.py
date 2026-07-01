@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 from collections import defaultdict
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 import hashlib
 import hmac
 import secrets
@@ -371,6 +372,25 @@ def _normalize_question_type(question_type: Optional[str]) -> str:
     return "text"
 
 
+def _field_calculation_role(field: Dict[str, Any]) -> str:
+    calculation = field.get("calculation")
+    if not isinstance(calculation, dict):
+        return ""
+    return normalize_fill_link_key(calculation.get("role"))
+
+
+def _field_is_number_input(field: Dict[str, Any]) -> bool:
+    return _field_calculation_role(field) == "number_input"
+
+
+def _question_calculation_role(question: Dict[str, Any]) -> str:
+    return normalize_fill_link_key(question.get("calculationRole"))
+
+
+def _question_requires_integer_answer(question: Dict[str, Any]) -> bool:
+    return _question_calculation_role(question) == "number_input"
+
+
 def _question_candidate_keys(question: Dict[str, Any]) -> List[str]:
     return [
         _normalize_question_type(question.get("type")),
@@ -543,19 +563,21 @@ def build_fill_link_questions(
                 continue
             seen_text_keys.add(normalized_key)
             question_type = _infer_text_question_type(field_type, source_field)
-            questions.append(
-                {
-                    "id": _default_fill_link_question_id(source_field, "pdf_field"),
-                    "key": source_field,
-                    "label": humanize_fill_link_label(source_field),
-                    "type": question_type,
-                    "sourceType": "pdf_field",
-                    "sourceField": source_field,
-                    "visible": True,
-                    "required": False,
-                    "order": len(questions),
-                }
-            )
+            question = {
+                "id": _default_fill_link_question_id(source_field, "pdf_field"),
+                "key": source_field,
+                "label": humanize_fill_link_label(source_field),
+                "type": question_type,
+                "sourceType": "pdf_field",
+                "sourceField": source_field,
+                "visible": True,
+                "required": False,
+                "order": len(questions),
+            }
+            if _field_is_number_input(field):
+                question["calculationRole"] = "number_input"
+                question["valueType"] = "integer"
+            questions.append(question)
             continue
 
         raw_group_key = (field.get("groupKey") or field.get("name") or "").strip()
@@ -757,6 +779,7 @@ def _normalize_fill_link_builder_question(
     if not key:
         key = _RESPONDENT_IDENTIFIER_KEY
     question_type = _normalize_question_type(question.get("type"))
+    calculation_role = _question_calculation_role(question)
     normalized: Dict[str, Any] = {
         "id": _coerce_text_answer(question.get("id")) or _default_fill_link_question_id(key, source_type),
         "key": key,
@@ -775,6 +798,9 @@ def _normalize_fill_link_builder_question(
         "placeholder": _coerce_text_answer(question.get("placeholder")),
         "helpText": _coerce_text_answer(question.get("helpText")),
     }
+    if calculation_role == "number_input":
+        normalized["calculationRole"] = "number_input"
+        normalized["valueType"] = "integer"
     if normalized["requiredForRespondentIdentity"] and normalized["synthetic"]:
         normalized["required"] = True
     if _question_supports_text_limits(question_type):
@@ -1024,6 +1050,21 @@ def _coerce_multi_value_answer(value: Any) -> List[str]:
     return deduped
 
 
+def _coerce_integer_answer(value: Any, *, label: str) -> Optional[str]:
+    text = _coerce_text_answer(value)
+    if text is None:
+        return None
+    if isinstance(value, bool):
+        raise ValueError(f"{label} must be an integer.")
+    try:
+        numeric = Decimal(text)
+    except (InvalidOperation, ValueError) as exc:
+        raise ValueError(f"{label} must be an integer.") from exc
+    if not numeric.is_finite() or numeric != numeric.to_integral_value():
+        raise ValueError(f"{label} must be an integer.")
+    return str(int(numeric))
+
+
 def _coerce_image_answer(value: Any, *, label: str) -> Optional[Dict[str, str]]:
     if value is None:
         return None
@@ -1104,6 +1145,105 @@ def _answer_size_error(label: str, *, max_chars: int) -> ValueError:
     return ValueError(f"{label} is too long. Limit {max_chars} characters.")
 
 
+def _iter_fill_link_snapshot_fields(snapshot: Optional[Dict[str, Any]]):
+    if not isinstance(snapshot, dict):
+        return
+    template_snapshots = snapshot.get("templateSnapshots")
+    if isinstance(template_snapshots, list):
+        for entry in template_snapshots:
+            if not isinstance(entry, dict):
+                continue
+            yield from _iter_fill_link_snapshot_fields(entry.get("snapshot"))
+        return
+    fields = snapshot.get("fields")
+    if not isinstance(fields, list):
+        return
+    for field in fields:
+        if isinstance(field, dict):
+            yield field
+
+
+def _collect_integer_answer_specs(
+    questions: Optional[Iterable[Dict[str, Any]]] = None,
+    *,
+    respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
+    canonical_schema_snapshot: Optional[Dict[str, Any]] = None,
+) -> Dict[str, str]:
+    specs: Dict[str, str] = {}
+    for question in questions or []:
+        if not isinstance(question, dict) or not _question_requires_integer_answer(question):
+            continue
+        key = _coerce_text_answer(question.get("key"))
+        normalized_key = normalize_fill_link_key(key)
+        if normalized_key:
+            specs[normalized_key] = humanize_fill_link_label(question.get("label") or key)
+    for field in [
+        *_iter_fill_link_snapshot_fields(respondent_pdf_snapshot),
+        *_iter_fill_link_snapshot_fields(canonical_schema_snapshot),
+    ]:
+        if not _field_is_number_input(field):
+            continue
+        key = _coerce_text_answer(field.get("name"))
+        normalized_key = normalize_fill_link_key(key)
+        if normalized_key and normalized_key not in specs:
+            specs[normalized_key] = humanize_fill_link_label(key)
+    return specs
+
+
+def enrich_fill_link_questions_with_calculation_metadata(
+    questions: Iterable[Dict[str, Any]],
+    *,
+    respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
+    canonical_schema_snapshot: Optional[Dict[str, Any]] = None,
+) -> List[Dict[str, Any]]:
+    specs = _collect_integer_answer_specs(
+        questions,
+        respondent_pdf_snapshot=respondent_pdf_snapshot,
+        canonical_schema_snapshot=canonical_schema_snapshot,
+    )
+    enriched: List[Dict[str, Any]] = []
+    for question in questions or []:
+        if not isinstance(question, dict):
+            continue
+        next_question = dict(question)
+        normalized_key = normalize_fill_link_key(next_question.get("key"))
+        if normalized_key in specs:
+            next_question["calculationRole"] = "number_input"
+            next_question["valueType"] = "integer"
+        enriched.append(next_question)
+    return enriched
+
+
+def coerce_fill_link_calculation_integer_answers(
+    answers: Dict[str, Any],
+    questions: Iterable[Dict[str, Any]],
+    *,
+    respondent_pdf_snapshot: Optional[Dict[str, Any]] = None,
+    canonical_schema_snapshot: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    normalized_answers = dict(answers or {})
+    specs = _collect_integer_answer_specs(
+        questions,
+        respondent_pdf_snapshot=respondent_pdf_snapshot,
+        canonical_schema_snapshot=canonical_schema_snapshot,
+    )
+    answer_key_by_normalized = {
+        normalize_fill_link_key(answer_key): answer_key
+        for answer_key in normalized_answers.keys()
+        if normalize_fill_link_key(answer_key)
+    }
+    for normalized_key, label in specs.items():
+        answer_key = answer_key_by_normalized.get(normalized_key)
+        if not answer_key:
+            continue
+        coerced = _coerce_integer_answer(normalized_answers.get(answer_key), label=label)
+        if coerced is None:
+            normalized_answers.pop(answer_key, None)
+            continue
+        normalized_answers[answer_key] = coerced
+    return normalized_answers
+
+
 def coerce_fill_link_answers(
     answers: Optional[Dict[str, Any]],
     questions: Iterable[Dict[str, Any]],
@@ -1122,6 +1262,15 @@ def coerce_fill_link_answers(
         question_type = _normalize_question_type(question.get("type"))
         raw_value = payload.get(key)
         max_chars = _normalize_positive_int(question.get("maxLength"), maximum=limits.max_value_chars) or limits.max_value_chars
+        if _question_requires_integer_answer(question):
+            coerced_text = _coerce_integer_answer(raw_value, label=label)
+            if coerced_text is None:
+                continue
+            if len(coerced_text) > max_chars:
+                raise _answer_size_error(label, max_chars=max_chars)
+            total_chars += len(coerced_text)
+            normalized[key] = coerced_text
+            continue
         if question_type == "image":
             coerced = _coerce_image_answer(raw_value, label=label)
             if coerced is not None:

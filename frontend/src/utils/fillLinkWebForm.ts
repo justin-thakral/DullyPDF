@@ -135,6 +135,16 @@ function normalizePositiveInteger(value: unknown): number | null {
   return Math.round(numeric);
 }
 
+function normalizeNumericValueType(value: unknown): FillLinkQuestion['valueType'] | undefined {
+  const normalized = normalizeFillLinkKey(String(value ?? ''));
+  return normalized === 'integer' || normalized === 'decimal' ? normalized : undefined;
+}
+
+function normalizeCalculationRole(value: unknown): FillLinkQuestion['calculationRole'] | undefined {
+  const normalized = normalizeFillLinkKey(String(value ?? ''));
+  return normalized === 'number_input' ? 'number_input' : undefined;
+}
+
 function sortQuestions(questions: FillLinkQuestion[]): FillLinkQuestion[] {
   return questions
     .map((question, index) => ({
@@ -268,6 +278,7 @@ function normalizeQuestion(
   const type = normalizeFillLinkQuestionType(question.type);
   const key = String(question.key ?? question.sourceField ?? '').trim() || IDENTITY_KEY;
   const requiredForRespondentIdentity = fillLinkQuestionSupportsRespondentIdentity(question);
+  const calculationRole = normalizeCalculationRole(question.calculationRole);
   const normalized: FillLinkQuestion = {
     id: String(question.id ?? '').trim() || defaultQuestionId(key, sourceType),
     key,
@@ -281,6 +292,10 @@ function normalizeQuestion(
     order: normalizePositiveInteger(question.order) ?? fallbackOrder,
     sourceField: String(question.sourceField ?? '').trim() || undefined,
     groupKey: String(question.groupKey ?? '').trim() || undefined,
+    calculationRole,
+    valueType: calculationRole === 'number_input'
+      ? 'integer'
+      : normalizeNumericValueType(question.valueType),
     placeholder: String(question.placeholder ?? '').trim() || undefined,
     helpText: String(question.helpText ?? '').trim() || undefined,
     maxLength: fillLinkQuestionSupportsTextLimit(type) ? normalizePositiveInteger(question.maxLength) : null,
@@ -313,6 +328,8 @@ function mergeQuestions(existing: FillLinkQuestion, incoming: FillLinkQuestion):
     requiredForRespondentIdentity: Boolean(existing.requiredForRespondentIdentity || incoming.requiredForRespondentIdentity),
     sourceField: existing.sourceField || incoming.sourceField,
     groupKey: existing.groupKey || incoming.groupKey,
+    calculationRole: existing.calculationRole || incoming.calculationRole,
+    valueType: existing.valueType || incoming.valueType,
     sourceType: existing.sourceType || incoming.sourceType,
     synthetic: Boolean(existing.synthetic || incoming.synthetic),
     required: Boolean(existing.required || incoming.required),
@@ -351,6 +368,10 @@ function resolveCheckboxQuestionType(optionCount: number): FillLinkQuestion['typ
 function fieldIsCalculatedOutput(field: PdfField): boolean {
   const role = String(field.calculation?.role ?? '').trim();
   return role === 'calculated_output' || role === 'calculated_intermediate';
+}
+
+function fieldIsCalculationNumberInput(field: PdfField): boolean {
+  return normalizeCalculationRole(field.calculation?.role) === 'number_input';
 }
 
 export function buildFillLinkQuestionsFromFields(
@@ -434,6 +455,8 @@ export function buildFillLinkQuestionsFromFields(
         type: inferFieldQuestionType(field),
         sourceType: 'pdf_field',
         sourceField,
+        calculationRole: fieldIsCalculationNumberInput(field) ? 'number_input' : undefined,
+        valueType: fieldIsCalculationNumberInput(field) ? 'integer' : normalizeNumericValueType(field.valueType),
         visible: true,
         required: false,
         order: questions.length,
@@ -551,6 +574,8 @@ export function buildFillLinkWebFormConfig(
       label: normalizedQuestion.label || matchedDefault.label,
       visible: normalizedQuestion.visible !== false,
       required: Boolean(normalizedQuestion.required),
+      calculationRole: matchedDefault.calculationRole,
+      valueType: matchedDefault.valueType,
       maxLength: fillLinkQuestionSupportsTextLimit(matchedDefault.type) ? normalizedQuestion.maxLength : null,
       placeholder: normalizedQuestion.placeholder || undefined,
       helpText: normalizedQuestion.helpText || undefined,

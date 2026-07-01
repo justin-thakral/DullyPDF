@@ -43,8 +43,10 @@ from backend.services.fill_link_scope_service import (
 from backend.services.downgrade_retention_service import get_user_retention_locked_template_ids
 from backend.services.fill_links_service import (
     build_fill_link_search_text,
+    coerce_fill_link_calculation_integer_answers,
     coerce_fill_link_answers,
     derive_fill_link_respondent_label,
+    enrich_fill_link_questions_with_calculation_metadata,
     format_missing_fill_link_questions_message,
     fill_link_public_status_message,
     has_fill_link_respondent_identifier,
@@ -151,7 +153,11 @@ def _serialize_public_link(
         payload["postSubmitSigningEnabled"] = bool(
             isinstance(record.signing_config, dict) and record.signing_config.get("enabled")
         )
-        payload["questions"] = record.questions
+        payload["questions"] = enrich_fill_link_questions_with_calculation_metadata(
+            record.questions,
+            respondent_pdf_snapshot=record.respondent_pdf_snapshot,
+            canonical_schema_snapshot=record.canonical_schema_snapshot,
+        )
     return payload
 
 
@@ -592,17 +598,28 @@ async def submit_public_fill_link(
             detail=link_payload.get("statusMessage") or "This link is no longer accepting responses.",
         )
 
+    questions = enrich_fill_link_questions_with_calculation_metadata(
+        record.questions,
+        respondent_pdf_snapshot=record.respondent_pdf_snapshot,
+        canonical_schema_snapshot=record.canonical_schema_snapshot,
+    )
     try:
-        answers = coerce_fill_link_answers(payload.answers, record.questions)
+        answers = coerce_fill_link_answers(payload.answers, questions)
+        answers = coerce_fill_link_calculation_integer_answers(
+            answers,
+            questions,
+            respondent_pdf_snapshot=record.respondent_pdf_snapshot,
+            canonical_schema_snapshot=record.canonical_schema_snapshot,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     if not answers:
         raise HTTPException(status_code=400, detail="At least one response is required.")
-    if not has_fill_link_respondent_identifier(answers, record.questions):
+    if not has_fill_link_respondent_identifier(answers, questions):
         raise HTTPException(status_code=400, detail=respondent_identifier_required_message())
     missing_labels = list_missing_required_fill_link_questions(
         answers,
-        record.questions,
+        questions,
         require_all_fields=record.require_all_fields,
     )
     if missing_labels:
@@ -636,7 +653,7 @@ async def submit_public_fill_link(
     )
     respondent_label, respondent_secondary_label = derive_fill_link_respondent_label(
         answers,
-        record.questions,
+        questions,
     )
     search_text = build_fill_link_search_text(answers, respondent_label)
     result = submit_fill_link_response(

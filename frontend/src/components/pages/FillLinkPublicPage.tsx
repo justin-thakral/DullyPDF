@@ -226,6 +226,44 @@ function resolveTextInputType(question: FillLinkQuestion): string {
   return 'text';
 }
 
+function fillLinkQuestionRequiresInteger(question: FillLinkQuestion): boolean {
+  return String(question.calculationRole || '').trim() === 'number_input';
+}
+
+function normalizeIntegerAnswer(value: unknown): string | null | undefined {
+  const text = toFieldValue(value).trim();
+  if (!text) return null;
+  const match = text.match(/^([+-]?)(\d+)(?:\.0+)?$/);
+  if (!match) {
+    return undefined;
+  }
+  try {
+    return BigInt(`${match[1] || ''}${match[2]}`).toString();
+  } catch {
+    return undefined;
+  }
+}
+
+function normalizeIntegerAnswersForSubmit(
+  questions: FillLinkQuestion[] | undefined,
+  answers: Record<string, unknown>,
+): { answers: Record<string, unknown>; invalidLabels: string[] } {
+  const nextAnswers = { ...answers };
+  const invalidLabels: string[] = [];
+  for (const question of questions || []) {
+    if (!fillLinkQuestionRequiresInteger(question)) continue;
+    const normalized = normalizeIntegerAnswer(nextAnswers[question.key]);
+    if (normalized === undefined) {
+      invalidLabels.push(renderQuestionLabel(question));
+      continue;
+    }
+    if (normalized !== null) {
+      nextAnswers[question.key] = normalized;
+    }
+  }
+  return { answers: nextAnswers, invalidLabels };
+}
+
 function sanitizeQuestionKeyForDom(questionKey: string): string {
   const normalized = questionKey.trim().replace(/[^a-zA-Z0-9_-]+/g, '-');
   return normalized || 'question';
@@ -408,6 +446,15 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
         return;
       }
     }
+    const normalizedIntegerAnswers = normalizeIntegerAnswersForSubmit(link.questions, answers);
+    if (normalizedIntegerAnswers.invalidLabels.length > 0) {
+      setError(
+        normalizedIntegerAnswers.invalidLabels.length === 1
+          ? `${normalizedIntegerAnswers.invalidLabels[0]} must be an integer.`
+          : `These fields must be integers: ${normalizedIntegerAnswers.invalidLabels.slice(0, 3).join(', ')}${normalizedIntegerAnswers.invalidLabels.length > 3 ? ', and more' : ''}.`,
+      );
+      return;
+    }
     setSubmitting(true);
     try {
       const attemptId = submitAttemptIdRef.current || buildFillLinkSubmitAttemptId();
@@ -420,7 +467,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
         recaptchaToken = await getRecaptchaToken(recaptchaSiteKey, 'fill_link_submit');
       }
       const payload = await ApiService.submitPublicFillLink(token, {
-        answers,
+        answers: normalizedIntegerAnswers.answers,
         recaptchaToken,
         recaptchaAction: 'fill_link_submit',
         attemptId,
@@ -681,6 +728,7 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
                 {(link.questions || []).map((question) => {
                   const normalizedType = normalizeFillLinkQuestionType(question.type);
                   const questionLabel = renderQuestionLabel(question);
+                  const integerQuestion = fillLinkQuestionRequiresInteger(question);
                   const fieldId = buildQuestionFieldId(question);
                   const fieldName = buildQuestionFieldName(question);
                   const labelId = `${fieldId}-label`;
@@ -835,7 +883,8 @@ export default function FillLinkPublicPage({ token }: FillLinkPublicPageProps) {
                         <input
                           id={fieldId}
                           name={fieldName}
-                          type={resolveTextInputType(question)}
+                          type={integerQuestion ? 'text' : resolveTextInputType(question)}
+                          inputMode={integerQuestion ? 'numeric' : undefined}
                           aria-label={questionLabel}
                           aria-required={isQuestionRequired(link, question)}
                           aria-describedby={describedBy}

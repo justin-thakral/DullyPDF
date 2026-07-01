@@ -1181,6 +1181,48 @@ def test_fill_links_public_get_and_submit(client, app_main, mocker) -> None:
     )
 
 
+def test_fill_links_public_submit_rejects_decimal_calculation_input_before_storage(client, app_main, mocker) -> None:
+    record = _fill_link_record(
+        questions=[
+            {"key": "full_name", "label": "Full Name", "type": "text", "visible": True},
+            {"key": "base_premium", "label": "Base Premium", "type": "text", "visible": True},
+        ],
+        respondent_pdf_download_enabled=True,
+        respondent_pdf_snapshot={
+            "version": 1,
+            "sourcePdfPath": "gs://forms/template.pdf",
+            "filename": "template-one-response.pdf",
+            "fields": [
+                {"name": "full_name", "type": "text", "page": 1},
+                {
+                    "id": "base",
+                    "name": "base_premium",
+                    "type": "text",
+                    "page": 1,
+                    "calculation": {"role": "number_input", "valueType": "integer"},
+                },
+            ],
+        },
+    )
+    mocker.patch.object(app_main, "get_fill_link_by_public_token", return_value=record)
+    mocker.patch.object(app_main, "_resolve_fill_link_submit_rate_limits", return_value=(300, 10, 0))
+    mocker.patch.object(app_main, "_resolve_client_ip", return_value="198.51.100.10")
+    mocker.patch.object(app_main, "check_rate_limit", return_value=True)
+    mocker.patch.object(app_main, "_verify_recaptcha_token", return_value=None)
+    mocker.patch.object(app_main, "_resolve_fill_link_recaptcha_action", return_value="fill_link_submit")
+    mocker.patch.object(app_main, "_recaptcha_required_for_fill_link", return_value=False)
+    submit_mock = mocker.patch.object(app_main, "submit_fill_link_response")
+
+    response = client.post(
+        "/api/fill-links/public/token-1/submit",
+        json={"answers": {"full_name": "Ada Lovelace", "base_premium": "10.5"}},
+    )
+
+    assert response.status_code == 400
+    assert "Base Premium must be an integer" in response.text
+    submit_mock.assert_not_called()
+
+
 def test_fill_links_public_submit_returns_signing_handoff_when_enabled(client, app_main, mocker, tmp_path) -> None:
     record = _fill_link_record(
         questions=[

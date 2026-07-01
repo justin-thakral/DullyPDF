@@ -416,7 +416,12 @@
     text-align: center;
   }
 
-  .fill-link-public-page__post-submit {
+  .fill-link-public-page__post-submit,
+  .fill-link-public-page__completion {
     grid-template-columns: 1fr;
+  }
+
+  .fill-link-public-page__download {
+    min-width: 0;
   }
 }

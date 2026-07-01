@@ -118,6 +118,110 @@ describe('FillLinkPublicPage', () => {
     expect(await screen.findByText('Thanks, Ada Lovelace. Your response was submitted.')).toBeTruthy();
   });
 
+  it('blocks calculation number input decimals before submitting', async () => {
+    const user = userEvent.setup();
+    apiMocks.getPublicFillLink.mockResolvedValue({
+      status: 'active',
+      requireAllFields: true,
+      questions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+        {
+          key: 'base_premium',
+          label: 'Base Premium',
+          type: 'text',
+          calculationRole: 'number_input',
+          valueType: 'integer',
+        },
+      ],
+    });
+
+    render(<FillLinkPublicPage token="token-1" />);
+
+    await waitForPublicFillLinkReady();
+    await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
+    await user.type(screen.getByLabelText('Base Premium'), '10.5');
+    await user.click(screen.getByRole('button', { name: 'Submit response' }));
+
+    expect(await screen.findByText('Base Premium must be an integer.')).toBeTruthy();
+    expect(apiMocks.submitPublicFillLink).not.toHaveBeenCalled();
+    expect(recaptchaMocks.getRecaptchaToken).not.toHaveBeenCalled();
+  });
+
+  it('normalizes calculation number inputs before submit and keeps the PDF download path', async () => {
+    const user = userEvent.setup();
+    apiMocks.getPublicFillLink.mockResolvedValue({
+      status: 'active',
+      requireAllFields: true,
+      respondentPdfDownloadEnabled: true,
+      questions: [
+        { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+        {
+          key: 'base_premium',
+          label: 'Base Premium',
+          type: 'text',
+          calculationRole: 'number_input',
+          valueType: 'integer',
+        },
+      ],
+    });
+    apiMocks.submitPublicFillLink.mockResolvedValue({
+      success: true,
+      responseId: 'resp-10',
+      respondentLabel: 'Ada Lovelace',
+      responseDownloadAvailable: true,
+      responseDownloadPath: '/api/fill-links/public/token-1/responses/resp-10/download',
+      link: {
+        status: 'active',
+        requireAllFields: true,
+        respondentPdfDownloadEnabled: true,
+        questions: [
+          { key: 'full_name', label: 'Full Name', type: 'text', requiredForRespondentIdentity: true },
+          {
+            key: 'base_premium',
+            label: 'Base Premium',
+            type: 'text',
+            calculationRole: 'number_input',
+            valueType: 'integer',
+          },
+        ],
+      },
+    });
+    apiMocks.downloadPublicFillLinkResponsePdf.mockResolvedValue({
+      blob: new Blob(['pdf']),
+      filename: 'submitted-template.pdf',
+    });
+
+    render(<FillLinkPublicPage token="token-1" />);
+
+    await waitForPublicFillLinkReady();
+    await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
+    await user.type(screen.getByLabelText('Base Premium'), '0010.0');
+    await user.click(screen.getByRole('button', { name: 'Submit response' }));
+
+    await waitFor(() => {
+      expect(apiMocks.submitPublicFillLink).toHaveBeenCalledWith('token-1', {
+        answers: {
+          full_name: 'Ada Lovelace',
+          base_premium: '10',
+        },
+        recaptchaToken: 'recaptcha-token',
+        recaptchaAction: 'fill_link_submit',
+        attemptId: expect.any(String),
+      });
+    });
+    const downloadButton = await screen.findByRole('button', { name: 'Download submitted PDF' });
+    expect(downloadButton).toBeTruthy();
+    await user.click(downloadButton);
+
+    await waitFor(() => {
+      expect(apiMocks.downloadPublicFillLinkResponsePdf).toHaveBeenCalledWith(
+        'token-1',
+        'resp-10',
+        { downloadPath: '/api/fill-links/public/token-1/responses/resp-10/download' },
+      );
+    });
+  });
+
   it('submits image questions as uploaded image payloads', async () => {
     const user = userEvent.setup();
     apiMocks.getPublicFillLink.mockResolvedValue({
@@ -306,7 +410,7 @@ describe('FillLinkPublicPage', () => {
         { downloadPath: '/api/fill-links/public/token-1/responses/resp-10/download' },
       );
     });
-    expect(URL.revokeObjectURL).not.toHaveBeenCalled();
+    expect(URL.createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
   });
 
   it('lets the respondent retry the signing handoff after a temporary failure', async () => {
