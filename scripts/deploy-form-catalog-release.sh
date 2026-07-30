@@ -467,7 +467,13 @@ fi
 # One validator pass binds the manifest, exact local bytes, and any promotion
 # evidence. All later orchestration reads this frozen result rather than
 # reopening mutable input JSON files.
-python3 "${VALIDATOR}" "${VALIDATOR_ARGS[@]}" --format json > "${TMP_VALIDATION_JSON}"
+if [[ ! -x "${FORM_CATALOG_PYTHON_BIN}" ]]; then
+  echo "The pinned form-catalog interpreter is not executable: ${FORM_CATALOG_PYTHON_BIN}" >&2
+  exit 1
+fi
+"${FORM_CATALOG_PYTHON_BIN}" "${VALIDATOR}" \
+  "${VALIDATOR_ARGS[@]}" \
+  --format json > "${TMP_VALIDATION_JSON}"
 python3 - "${TMP_VALIDATION_JSON}" > "${TMP_VALIDATED_PLAN}" <<'PY'
 import json
 import sys
@@ -804,10 +810,6 @@ PY
 )"
 
 if [[ "${EXECUTE}" == "1" ]]; then
-  if [[ ! -x "${FORM_CATALOG_PYTHON_BIN}" ]]; then
-    echo "The pinned form-catalog interpreter is not executable: ${FORM_CATALOG_PYTHON_BIN}" >&2
-    exit 1
-  fi
   if [[ ! -f "${GCS_TRANSPORT}" ]]; then
     echo "The form-catalog GCS transport wrapper is missing: ${GCS_TRANSPORT}" >&2
     exit 1
@@ -1323,7 +1325,7 @@ run_gcs_transport verify
 
 (
   cd "${REPO_ROOT}"
-  python3 -m scripts.form_catalog_factory snapshot-hosting \
+  "${FORM_CATALOG_PYTHON_BIN}" -m scripts.form_catalog_factory snapshot-hosting \
     --project "${HOSTING_PROJECT_ID}" \
     --site "${HOSTING_SITE}" \
     --output "${TMP_LIVE_HOSTING_SNAPSHOT}" >/dev/null

@@ -149,6 +149,9 @@ exactly the one to three planned browser identities and writes evidence only
 under `mcp/debugging/mcp-screenshots/<release-id>/`. Use the complete release
 command in `../../test/docs/form-catalog-release-runbook.md`; this smoke is not a
 generic local UI test and consumes one generated-PDF download per canary.
+Run `npm run test:form-catalog-release:unit` from the repository root for the
+factory, immutable-release, and browser-producer unit gates without contacting
+the live site.
 
 The owner smoke signs into the workspace with a Firebase custom token, opens a real fillable PDF in the editor, adds a signature anchor, saves a signing draft, and sends the immutable request with mocked signing endpoints. Both smoke scripts write screenshots and JSON summaries under `frontend/output/playwright/`.
 

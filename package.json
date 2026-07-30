@@ -44,6 +44,7 @@
     "test:playwright:pdf-fonts": "node frontend/test/playwright/run_pdf_base14_font_download_smoke.mjs",
     "test:playwright:form-catalog-canary": "node frontend/test/playwright/run_form_catalog_browser_canary.mjs",
     "test:playwright:form-catalog-canary:unit": "node --test frontend/test/playwright/test_form_catalog_browser_canary.mjs",
+    "test:form-catalog-release:unit": "backend/.venv/bin/python -m pytest -q scripts/form_catalog_factory/tests && backend/.venv/bin/python -m pytest -q backend/test/unit/scripts/test_form_catalog_release_foundation.py && npm run test:playwright:form-catalog-canary:unit",
     "test:playwright:pdf-download-quota:real": "node frontend/test/playwright/run_pdf_download_quota_real_user_flow.mjs",
     "test:playwright:deployed-frontend:real": "node frontend/test/playwright/run_deployed_frontend_smoke.mjs",
     "test:playwright:openai-rename": "node frontend/test/playwright/run_openai_rename_smoke.mjs",

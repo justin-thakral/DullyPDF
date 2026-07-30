@@ -1048,6 +1048,13 @@ import os
 import sys
 from pathlib import Path
 
+if (
+    len(sys.argv) > 1
+    and Path(sys.argv[1]).name == "validate-form-catalog-release.py"
+):
+    real_python = os.environ["FORM_CATALOG_TEST_REAL_PYTHON"]
+    os.execv(real_python, [real_python, *sys.argv[1:]])
+
 if len(sys.argv) == 2 and sys.argv[1] == "-":
     sys.stdin.read()
     print("dullypdf-gcs-preflight-ok")
@@ -1151,6 +1158,7 @@ print(
     env = {
         **os.environ,
         "FORM_CATALOG_PYTHON_BIN": str(fake_python),
+        "FORM_CATALOG_TEST_REAL_PYTHON": sys.executable,
         "CAPTURED_GCS_PLAN": str(captured_plan),
     }
 
@@ -1282,6 +1290,9 @@ def test_inventory_report_cannot_overwrite_release_inputs_or_assets(
     sentinel_python = tmp_path / "sentinel-python"
     sentinel_python.write_text(
         """#!/usr/bin/env bash
+if [[ "${1:-}" == */validate-form-catalog-release.py ]]; then
+  exec "$FORM_CATALOG_TEST_REAL_PYTHON" "$@"
+fi
 if [[ "${1:-}" == "-" ]]; then
   printf 'dullypdf-gcs-preflight-ok\\n'
 fi
@@ -1325,6 +1336,7 @@ exit 0
                 # The collision check runs after the interpreter/ADC preflight
                 # and before transport. A no-op interpreter isolates that gate.
                 "FORM_CATALOG_PYTHON_BIN": str(sentinel_python),
+                "FORM_CATALOG_TEST_REAL_PYTHON": sys.executable,
             },
             check=False,
             capture_output=True,
@@ -1459,6 +1471,9 @@ def test_executed_stage_cannot_reuse_stale_durable_inventory_evidence(
     no_op_python = tmp_path / "no-op-form-catalog-python"
     no_op_python.write_text(
         """#!/usr/bin/env bash
+if [[ "${1:-}" == */validate-form-catalog-release.py ]]; then
+  exec "$FORM_CATALOG_TEST_REAL_PYTHON" "$@"
+fi
 if [[ "${1:-}" == "-" ]]; then
   printf 'dullypdf-gcs-preflight-ok\\n'
 fi
@@ -1494,6 +1509,7 @@ exit 0
         env={
             **os.environ,
             "FORM_CATALOG_PYTHON_BIN": str(no_op_python),
+            "FORM_CATALOG_TEST_REAL_PYTHON": sys.executable,
         },
         check=False,
         capture_output=True,
@@ -1855,6 +1871,12 @@ def test_deploy_script_has_guarded_promotion_and_no_destructive_sync() -> None:
     assert '--expected-commit is required with --execute.' in text
     assert 'MAX_FORMS="1000"' in text
     assert "DEFAULT_MAX_FORMS = 1000" in validator_text
+    assert '"${FORM_CATALOG_PYTHON_BIN}" "${VALIDATOR}"' in text
+    assert 'python3 "${VALIDATOR}"' not in text
+    assert (
+        '"${FORM_CATALOG_PYTHON_BIN}" -m scripts.form_catalog_factory '
+        'snapshot-hosting'
+    ) in text
     assert 'BUCKET_URL}" != "gs://dullypdf-form-catalog-assets-east4"' in text
     assert 'ACTIVE_OBJECT}" != "catalog-release-state/active.json"' in text
     promote_lock = text.index('PRODUCTION_LOCK_OWNER="catalog-promote:')

@@ -736,6 +736,8 @@ jobs:
               || needs.resolve.outputs.component == 'all'
             )
           }}
+        # Status functions are restricted to `if`; pass the supported job
+        # context into the cleanup shell so lock release remains fail-closed.
         env:
           FORM_CATALOG_TERMINAL_JOB_STATUS: ${{ job.status }}
         run: |
