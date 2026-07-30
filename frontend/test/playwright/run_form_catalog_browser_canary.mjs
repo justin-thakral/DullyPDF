@@ -32,6 +32,10 @@ export function buildCanaryTextValue(catalogId) {
   return `Canary ${valueHash}`;
 }
 
+function stableFieldInputSelector(inputId) {
+  return `input[id=${JSON.stringify(inputId)}]`;
+}
+
 function logStep(message) {
   console.log(`[form-catalog-browser-canary] ${message}`);
 }
@@ -366,7 +370,7 @@ async function catalogPageEvidence(page, sample, binding, screenshotPath, timeou
   };
 }
 
-async function activateFirstWritableField(page, fieldType, timeoutMs) {
+export async function activateFirstWritableField(page, fieldType, timeoutMs) {
   const rowSelector = `.field-row:has(.field-row__type--${fieldType})`;
   const rows = page.locator(rowSelector);
   const count = await rows.count();
@@ -406,7 +410,14 @@ async function activateFirstWritableField(page, fieldType, timeoutMs) {
       ariaLabel === fieldName,
       `${fieldType} overlay aria-label does not match its field-row identity.`,
     );
-    return { fieldName, input };
+    const inputId = (await input.getAttribute('id')) || '';
+    assert(inputId, `${fieldType} overlay input has no stable DOM id.`);
+    // Tabbing moves the active class to the next overlay. Pin the locator to
+    // this input's stable id so later assertions do not retarget that overlay.
+    const stableInput = page
+      .locator(stableFieldInputSelector(inputId))
+      .first();
+    return { fieldName, input: stableInput };
   }
   throw new Error(`Workspace has no writable ${fieldType} field.`);
 }

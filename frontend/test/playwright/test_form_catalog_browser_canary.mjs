@@ -12,6 +12,7 @@ import {
   sha256File,
 } from './helpers/formCatalogBrowserCanary.mjs';
 import {
+  activateFirstWritableField,
   buildCanaryTextValue,
 } from './run_form_catalog_browser_canary.mjs';
 
@@ -236,4 +237,113 @@ test('runner imports safely and builds its deterministic fill value', () => {
     buildCanaryTextValue('section/form_a'),
     buildCanaryTextValue('section/form_b'),
   );
+});
+
+test('field locator remains pinned when Tab moves the active overlay', async () => {
+  const state = {
+    activeId: 'first',
+    labels: {
+      first: 'First field',
+      second: 'Second field',
+    },
+    values: {
+      first: '',
+      second: '',
+    },
+  };
+  const inputLocator = (resolveFieldId) => ({
+    async isVisible() {
+      return true;
+    },
+    async isDisabled() {
+      return false;
+    },
+    async isEditable() {
+      return true;
+    },
+    async getAttribute(name) {
+      const fieldId = resolveFieldId();
+      if (name === 'readonly') return null;
+      if (name === 'aria-label') return state.labels[fieldId];
+      if (name === 'id') return `field-input-${fieldId}`;
+      return null;
+    },
+    async fill(value) {
+      state.values[resolveFieldId()] = value;
+    },
+    async press(key) {
+      assert.equal(key, 'Tab');
+      state.activeId = 'second';
+    },
+    async inputValue() {
+      return state.values[resolveFieldId()];
+    },
+  });
+  const activeBox = {
+    async waitFor() {},
+    locator(selector) {
+      assert.equal(selector, 'input[type="text"]');
+      return {
+        first() {
+          return inputLocator(() => state.activeId);
+        },
+      };
+    },
+  };
+  const row = {
+    locator(selector) {
+      assert.equal(selector, '.field-row__name');
+      return {
+        async textContent() {
+          return 'First field';
+        },
+      };
+    },
+    async click() {
+      state.activeId = 'first';
+    },
+  };
+  const page = {
+    locator(selector) {
+      if (selector === '.field-row:has(.field-row__type--text)') {
+        return {
+          async count() {
+            return 1;
+          },
+          nth(index) {
+            assert.equal(index, 0);
+            return row;
+          },
+        };
+      }
+      if (
+        selector ===
+        '.field-input-box--active.field-input-box--text'
+      ) {
+        return {
+          first() {
+            return activeBox;
+          },
+        };
+      }
+      const stableSelector = /^input\[id=(.+)\]$/.exec(selector);
+      assert(stableSelector, `Unexpected page locator: ${selector}`);
+      const inputId = JSON.parse(stableSelector[1]);
+      const fieldId = inputId.replace(/^field-input-/, '');
+      return {
+        first() {
+          return inputLocator(() => fieldId);
+        },
+      };
+    },
+  };
+
+  const text = await activateFirstWritableField(page, 'text', 1000);
+  await text.input.fill('Canary pinned value');
+  await text.input.press('Tab');
+
+  assert.equal(state.activeId, 'second');
+  assert.equal(await text.input.inputValue(), 'Canary pinned value');
+  assert.equal(state.values.first, 'Canary pinned value');
+  assert.equal(state.values.second, '');
 });
