@@ -2054,6 +2054,15 @@ describe('App', () => {
     await openFillableWorkspace();
     expect(await screen.findByTestId('field-list', {}, { timeout: 10_000 })).toBeTruthy();
 
+    // The editor can render from bootstrap auth before the runtime's own auth
+    // subscription has attached the verified-user actions to the header.
+    await waitFor(
+      () => {
+        const latestHeaderProps = uiMocks.headerBar.mock.calls.at(-1)?.[0];
+        expect(latestHeaderProps?.onSignOut).toEqual(expect.any(Function));
+      },
+      { timeout: 10_000 },
+    );
     fireEvent.click(await screen.findByTestId('sign-out'));
     await waitFor(
       () => {
