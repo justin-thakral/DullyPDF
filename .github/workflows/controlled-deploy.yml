@@ -736,6 +736,8 @@ jobs:
               || needs.resolve.outputs.component == 'all'
             )
           }}
+        env:
+          FORM_CATALOG_TERMINAL_JOB_STATUS: ${{ job.status }}
         run: |
           set -euo pipefail
           state_file="$RUNNER_TEMP/form-catalog-production-lock.json"
@@ -743,8 +745,20 @@ jobs:
             echo "No production Hosting lock state exists; nothing to release."
             exit 0
           fi
+          case "$FORM_CATALOG_TERMINAL_JOB_STATUS" in
+            success)
+              deployment_failed=false
+              ;;
+            failure|cancelled)
+              deployment_failed=true
+              ;;
+            *)
+              echo "Unknown terminal job status; retaining the production lock lease for manual repair." >&2
+              exit 1
+              ;;
+          esac
           if [[ "${{ steps.form_catalog_release.outputs.active }}" == "true" \
-            && "${{ (failure() || cancelled()) && 'true' || 'false' }}" == "true" ]]; then
+            && "$deployment_failed" == "true" ]]; then
             rollback_path="$FORM_CATALOG_HOSTING_ROLLBACK_PATH"
             diagnostic_path="$RUNNER_TEMP/form-catalog-hosting-failure-diagnostic.json"
             lock_owner="controlled-deploy:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}"

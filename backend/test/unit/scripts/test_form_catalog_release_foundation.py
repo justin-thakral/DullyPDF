@@ -2150,6 +2150,8 @@ def test_controlled_deploys_share_one_non_cancelling_lock() -> None:
     assert "form-catalog-hosting-failure-diagnostic" in text
     assert text.count("form-catalog-production-lock.sh") == 2
     assert "always()" in text
+    assert "FORM_CATALOG_TERMINAL_JOB_STATUS: ${{ job.status }}" in text
+    assert "(failure() || cancelled()) && 'true'" not in text
 
 
 def test_form_catalog_hybrid_qa_covers_release_controllers() -> None:
