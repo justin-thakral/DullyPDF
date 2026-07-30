@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2218__catering_order_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2218__catering_order_inventory_log_form.pdf",
+  "slug": "catering-order-inventory-log-form",
+  "title": "Catering Order Inventory Log Form",
+  "subtitle": "Reconcile the load out against the load back: carriers, chafers, rentals, and anything left behind at a site the venue does not control.",
+  "description": "An original load-out and return log for off-premise catering. It records the log identity and count basis, the carrier and equipment register with out and back counts, rental reconciliation against the vendor manifest, food returned with its disposition, items left on site with a recovery plan, variances, and an accountable closeout.",
+  "use_case": "Use for one catering delivery when the kitchen must know what left, what came back, what is still at the site, and what has to be recovered or charged. The log closes when every variance has a disposition and recovery is assigned.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_identity",
+      "title": "Log identity and count basis",
+      "guidance": "State what is counted, by whom, and against what.",
+      "blocks": [
+        {
+          "key": "log_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.85
+            },
+            {
+              "key": "delivery_date",
+              "label": "Delivery date",
+              "units": 0.95
+            },
+            {
+              "key": "order_number",
+              "label": "Catering order number",
+              "units": 1.25
+            },
+            {
+              "key": "site_name",
+              "label": "Delivery site",
+              "units": 1.0
+            },
+            {
+              "key": "counted_by",
+              "label": "Counted by",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "count_basis",
+          "type": "fields",
+          "label": "Count basis",
+          "fields": [
+            {
+              "key": "loaded_by",
+              "label": "Loaded by",
+              "units": 0.9
+            },
+            {
+              "key": "returned_by",
+              "label": "Returned by",
+              "units": 0.95
+            },
+            {
+              "key": "count_method",
+              "label": "Count method",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Full count out and back",
+                "Pack list check only",
+                "Vendor manifest",
+                "Spot count"
+              ]
+            },
+            {
+              "key": "pack_list_reference",
+              "label": "Pack list reference",
+              "units": 1.25
+            },
+            {
+              "key": "return_deadline",
+              "label": "Return deadline",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "carrier_register",
+      "title": "Carriers and equipment out and back",
+      "guidance": "One row per item type; missing and damaged are separate columns.",
+      "blocks": [
+        {
+          "key": "carrier_rows",
+          "type": "table",
+          "label": "Carrier and equipment register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.5
+            },
+            {
+              "key": "out",
+              "label": "Out",
+              "units": 0.5
+            },
+            {
+              "key": "back",
+              "label": "Back",
+              "units": 0.5
+            },
+            {
+              "key": "damaged",
+              "label": "Damaged",
+              "units": 0.7
+            },
+            {
+              "key": "missing",
+              "label": "Missing",
+              "units": 0.7
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.2
+            }
+          ],
+          "rows": 12,
+          "guidance": "Insulated carriers, chafers, fuel holders, utensils, risers, linen, and signage all count as returnable."
+        },
+        {
+          "key": "carrier_totals",
+          "type": "fields",
+          "label": "Equipment totals",
+          "fields": [
+            {
+              "key": "items_out",
+              "label": "Items out",
+              "units": 0.9
+            },
+            {
+              "key": "items_back",
+              "label": "Items back",
+              "units": 0.9
+            },
+            {
+              "key": "damaged_total",
+              "label": "Damaged total",
+              "units": 1.05
+            },
+            {
+              "key": "missing_total",
+              "label": "Missing total",
+              "units": 1.0
+            },
+            {
+              "key": "charge_total",
+              "label": "Charges raised",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "rentals_and_food",
+      "title": "Rentals and food returned",
+      "guidance": "Rentals answer to a vendor; returned food answers to the chef.",
+      "blocks": [
+        {
+          "key": "rental_rows",
+          "type": "table",
+          "label": "Rental reconciliation",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Rental item",
+              "units": 1.3
+            },
+            {
+              "key": "vendor",
+              "label": "Vendor",
+              "units": 1.0
+            },
+            {
+              "key": "out",
+              "label": "Out",
+              "units": 0.5
+            },
+            {
+              "key": "back",
+              "label": "Back",
+              "units": 0.5
+            },
+            {
+              "key": "shortfall",
+              "label": "Shortfall",
+              "units": 0.8
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim reference",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "food_returned",
+          "type": "table",
+          "label": "Food returned and disposition",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item returned",
+              "units": 1.4
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.75
+            },
+            {
+              "key": "condition",
+              "label": "Condition on return",
+              "units": 1.2
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition decided",
+              "units": 1.25
+            },
+            {
+              "key": "decided_by",
+              "label": "Decided by",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "The chef on duty decides the disposition of returned food; the log records that decision rather than making it."
+        }
+      ]
+    },
+    {
+      "key": "left_on_site",
+      "title": "Items left on site and recovery",
+      "guidance": "A site the venue does not control needs an explicit recovery plan.",
+      "blocks": [
+        {
+          "key": "left_items",
+          "type": "table",
+          "label": "Items left on site",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item left",
+              "units": 1.3
+            },
+            {
+              "key": "why_left",
+              "label": "Why it was left",
+              "units": 1.3
+            },
+            {
+              "key": "who_holds",
+              "label": "Who is holding it",
+              "units": 1.15
+            },
+            {
+              "key": "recover_by",
+              "label": "Recover by",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Recovery status",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "recovery_controls",
+          "type": "checklist",
+          "label": "Recovery controls",
+          "items": [
+            "Site contact acknowledged the items left behind",
+            "Recovery date and responsible person agreed with the site contact",
+            "Items left because of a late service end recorded with the reason",
+            "Rental items left on site reported to the vendor the same day",
+            "Follow-up collection scheduled and assigned to a named person",
+            "Client charged only after recovery attempts are recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "variance_exceptions",
+      "title": "Variances, exceptions, and escalation",
+      "guidance": "Every unexplained difference gets an owner.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Back count is below out count with no recorded cause",
+            "Returnable equipment is still unaccounted for after the deadline",
+            "A rental shortfall will trigger a vendor claim",
+            "Returned food has no recorded disposition decision",
+            "Damage suggests a handling or loading fault to investigate",
+            "Carriers came back without being cleaned or sanitized",
+            "Par levels will not cover the next scheduled delivery"
+          ]
+        },
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Variance register",
+          "columns": [
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 1.2
+            },
+            {
+              "key": "cause",
+              "label": "Cause or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "What this log does not decide",
+          "guidance": "This log records counts, condition, and recovery status. It does not assign financial responsibility to an individual, authorize a client charge, settle a rental vendor claim, or approve the reuse of returned food. Route charges, claims, and food disposition to the responsible manager and the chef on duty under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Closeout and handoff to the kitchen",
+      "guidance": "Leave the kitchen a position it can load the next delivery from.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Log closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - reconciled",
+                "Closed with recovery open",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "restock_due",
+              "label": "Restock due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Out and back counts reconciled item by item",
+            "Damage and loss recorded with owners and dispositions",
+            "Rental shortfalls reported to the vendor with a claim reference",
+            "Returned food disposition recorded by the chef on duty",
+            "Items left on site have a named holder and a recovery date",
+            "Restock raised for the next scheduled delivery"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Reconciled outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Inventory handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by catering manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

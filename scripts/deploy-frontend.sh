@@ -87,6 +87,26 @@ require_file_contains() {
   fi
 }
 
+verify_production_hosting_mutation_lock() {
+  if [[ "$PROJECT_ID" != "dullypdf" ]]; then
+    return 0
+  fi
+  local lock_owner="${FORM_CATALOG_PRODUCTION_LOCK_OWNER:-}"
+  local lock_state="${FORM_CATALOG_PRODUCTION_LOCK_STATE_PATH:-}"
+  if [[ -z "$lock_owner" || -z "$lock_state" ]]; then
+    echo "Production Hosting deploy requires the shared lock owner and state path." >&2
+    exit 1
+  fi
+  require_file "$lock_state"
+  bash scripts/form-catalog-production-lock.sh \
+    --action verify \
+    --bucket gs://dullypdf-form-catalog-assets-east4 \
+    --project dullypdf \
+    --owner "$lock_owner" \
+    --state-file "$lock_state" \
+    --minimum-remaining-seconds 300
+}
+
 check_remote_content_type() {
   local url="$1"
   local expected_prefix="$2"
@@ -233,6 +253,37 @@ else
   echo "Skipping form catalog index rebuild (form_catalog/manifest.json not present; using committed formCatalogData.mjs + firebase.json)."
 fi
 
+# Production Hosting must be built from the exact tracked cumulative activation
+# mapping verified before the shared deployment lock was acquired. Recomputing
+# this deterministic report immediately before Vite also catches a local
+# form_catalog rebuild that changed the generated module after the preflight.
+if [[ "$PROJECT_ID" == "dullypdf" ]]; then
+  require_exact FORM_CATALOG_REQUIRE_ACTIVE_MAPPING "1"
+  require_nonempty FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH
+  require_file "$FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH"
+  ACTIVE_MAPPING_RECHECK_PATH="$(mktemp)"
+  active_mapping_args=(
+    --active-release form_catalog_releases/active.json
+    --form-catalog-data frontend/src/config/formCatalogData.mjs
+    --repo-root .
+    --expected-report "$FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH"
+    --output "$ACTIVE_MAPPING_RECHECK_PATH"
+  )
+  active_replacement_count="$(
+    jq -r '.replacements | length' form_catalog_releases/active.json
+  )"
+  if [[ "$active_replacement_count" != "0" ]]; then
+    require_nonempty FORM_CATALOG_RELEASE_MANIFEST_PATH
+    require_file "$FORM_CATALOG_RELEASE_MANIFEST_PATH"
+    active_mapping_args+=(
+      --manifest "$FORM_CATALOG_RELEASE_MANIFEST_PATH"
+    )
+  fi
+  python3 -m scripts.form_catalog_factory verify-active-mapping \
+    "${active_mapping_args[@]}"
+  rm -f "$ACTIVE_MAPPING_RECHECK_PATH"
+fi
+
 (
   cd frontend
   npm run build:prod
@@ -285,6 +336,10 @@ for asset_spec in "${CRITICAL_DEMO_ASSETS[@]}"; do
   require_file "frontend/dist${asset_path}"
 done
 
+# Revalidate the exact remote lock generation and lease at the final Hosting
+# mutation boundary, after all potentially long build and prerender work.
+verify_production_hosting_mutation_lock
+
 if [[ -n "${FIREBASE_HOSTING_DEPLOY_RESULT_PATH}" ]]; then
   mkdir -p "$(dirname "${FIREBASE_HOSTING_DEPLOY_RESULT_PATH}")"
   firebase --json deploy --only hosting --project "$PROJECT_ID" \
@@ -303,6 +358,36 @@ if isinstance(hosting, list) and len(hosting) != 1:
     raise SystemExit("Firebase deploy returned more than one Hosting version")
 print(f"Firebase Hosting deploy result captured at {path}")
 PY
+  if [[ "${FORM_CATALOG_CREATE_HOSTING_EVIDENCE:-0}" == "1" ]]; then
+    for required_name in \
+      FORM_CATALOG_HOSTING_BEFORE_PATH \
+      FORM_CATALOG_HOSTING_EVIDENCE_PATH \
+      FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH \
+      FORM_CATALOG_RELEASE_MANIFEST_PATH \
+      GITHUB_SHA \
+      GITHUB_RUN_ID \
+      GITHUB_RUN_ATTEMPT; do
+      if [[ -z "${!required_name:-}" ]]; then
+        echo "Immediate catalog Hosting evidence requires ${required_name}." >&2
+        exit 1
+      fi
+    done
+    python3 -m scripts.form_catalog_factory create-hosting-evidence \
+      --active-release form_catalog_releases/active.json \
+      --active-mapping-evidence "$FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH" \
+      --form-catalog-data frontend/src/config/formCatalogData.mjs \
+      --release-manifest "$FORM_CATALOG_RELEASE_MANIFEST_PATH" \
+      --before-snapshot "$FORM_CATALOG_HOSTING_BEFORE_PATH" \
+      --deploy-result "$FIREBASE_HOSTING_DEPLOY_RESULT_PATH" \
+      --project dullypdf \
+      --site dullypdf \
+      --site-origin https://dullypdf.com \
+      --site-origin https://dullypdf.web.app \
+      --deployment-commit "$GITHUB_SHA" \
+      --workflow-run-id "$GITHUB_RUN_ID" \
+      --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
+      --output "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"
+  fi
 else
   firebase deploy --only hosting --project "$PROJECT_ID"
 fi

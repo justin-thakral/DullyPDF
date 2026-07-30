@@ -1,0 +1,858 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1132__locksmith_warranty_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1132__locksmith_warranty_request_form.pdf",
+  "slug": "locksmith-warranty-request-form",
+  "title": "Locksmith Warranty Request Form",
+  "subtitle": "Control authority verification, access service, key control, testing, and secure release through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete locksmith service warranty request for openings, locks, keys, credentials, closers, and access devices. It connects verified access authority and approved security scope to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a locksmith dispatcher must investigate a locksmith service warranty or callback without treating the request as a coverage decision before identity, chronology, condition, and evidence are reviewed.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "warranty_identity",
+      "title": "Locksmith warranty claimant, site, and service identity",
+      "guidance": "Anchor the request to the exact customer, prior service, covered scope, and current affected condition.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Locksmith warranty request reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service request or controlled job number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Authorized property or access representative",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Authorized opening or access point",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Door, opening, vehicle, lock, keyway, or credential identifier",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Property, vehicle, or account",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Door, opening, safe, or asset",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Lock, keyway, or access-device type",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Authorized access window or case reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant locksmith service context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant locksmith service context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "coverage_context",
+      "title": "Locksmith coverage basis and request completeness",
+      "guidance": "Capture the asserted coverage facts without promising eligibility, liability, repair, replacement, or payment.",
+      "blocks": [
+        {
+          "key": "coverage_inputs",
+          "type": "checklist",
+          "label": "Coverage and prior-service inputs supplied",
+          "items": [
+            "Original controlled job or invoice reference",
+            "Covered opening, lock, hardware, key, or credential",
+            "Installed part, cylinder, core, and completion date",
+            "Approved security function and test record",
+            "Key, credential, user, door, alarm, or access-system changes",
+            "Current failure, security effect, and discovery date",
+            "Photographs and minimum necessary diagnostic evidence",
+            "Coverage term, exclusions, secure interim control, and response window"
+          ]
+        },
+        {
+          "key": "coverage_reference",
+          "type": "fields",
+          "label": "Warranty, agreement, and prior-work reference",
+          "fields": [
+            {
+              "key": "original_record",
+              "label": "Original invoice, work order, or service ref.",
+              "units": 1.25
+            },
+            {
+              "key": "completion_date",
+              "label": "Original completion date",
+              "units": 0.9
+            },
+            {
+              "key": "coverage_source",
+              "label": "Warranty or service-agreement source",
+              "units": 1.15
+            },
+            {
+              "key": "coverage_period",
+              "label": "Stated coverage period",
+              "units": 0.9
+            },
+            {
+              "key": "claim_date",
+              "label": "Request received date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "claimed_scope",
+          "type": "table",
+          "label": "Claimed item, prior work, current condition, and requested remedy",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Covered item, zone, or service",
+              "units": 1.2
+            },
+            {
+              "key": "prior_work",
+              "label": "Original work or material",
+              "units": 1.15
+            },
+            {
+              "key": "current_condition",
+              "label": "Current claimed condition",
+              "units": 1.2
+            },
+            {
+              "key": "requested_remedy",
+              "label": "Requested remedy",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "coverage_notice",
+          "type": "notice",
+          "label": "Coverage intake boundary",
+          "guidance": "Receipt of a warranty request confirms intake only. It is not a coverage decision, admission of responsibility, authorization to continue unsafe operation, or promise of a particular remedy."
+        }
+      ]
+    },
+    {
+      "key": "failure_facts",
+      "title": "Locksmith failure, recurrence, and change chronology",
+      "guidance": "Separate customer allegation, observed fact, prior performance, and intervening change so the review can be reconstructed.",
+      "blocks": [
+        {
+          "key": "failure_timing",
+          "type": "fields",
+          "label": "Failure and discovery timing",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "last_acceptable",
+              "label": "Last acceptable condition or result",
+              "units": 1.05
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.9
+            },
+            {
+              "key": "current_state",
+              "label": "Current operation, access, or site state",
+              "units": 1.05
+            },
+            {
+              "key": "notice_date",
+              "label": "Initial notice date and method",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "current_indicators",
+          "type": "checklist",
+          "label": "Current claimed condition and service-impact indicators",
+          "items": [
+            "Customer or representative access authority and scope",
+            "Door, frame, opening, vehicle, safe, or asset identity",
+            "Lock, cylinder, core, latch, strike, keyway, and hardware condition",
+            "Hinge, closer, alignment, clearance, binding, and door operation",
+            "Fire label, egress function, panic hardware, and shared-opening condition",
+            "Master-key, restricted-keyway, credential, and access-system relationship",
+            "Alarm, electric strike, maglock, sensor, intercom, and power interface",
+            "Existing keys, blanks, credentials, cores, and removed-hardware custody",
+            "Pre-existing damage, forced-entry evidence, and property-protection need",
+            "Required security function, user population, and emergency-access need"
+          ]
+        },
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Event, change, communication, and custody timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "event",
+              "label": "Observed event or change",
+              "units": 1.3
+            },
+            {
+              "key": "party",
+              "label": "Observer or responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action or communication",
+              "units": 1.1
+            },
+            {
+              "key": "reference",
+              "label": "Evidence reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "claimant_account",
+          "type": "textarea",
+          "label": "Claimant description, operating or site conditions, intervening work, care actions, and requested outcome",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Claimant description, operating or site conditions, intervening work, care actions, and requested outcome",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "evidence_diagnostics",
+      "title": "Locksmith warranty evidence and diagnostic intake",
+      "guidance": "Index original records and preserve current evidence before conditions are changed by repair, cleanup, use, or access.",
+      "blocks": [
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Available evidence and supporting records",
+          "items": [
+            "Authority verification reference with minimum necessary detail",
+            "Opening, vehicle, lock, or credential identity",
+            "Pre-work condition and damage photographs",
+            "Approved scope and not-to-exceed reference",
+            "Installed hardware, cylinder, core, and part identifiers",
+            "Issued key or credential count and recipient",
+            "Functional, closer, latch, lock, and egress test results",
+            "Removed-hardware disposition and secure handoff"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Warranty document and evidence index",
+          "columns": [
+            {
+              "key": "record",
+              "label": "Document, photo, item, or record",
+              "units": 1.35
+            },
+            {
+              "key": "date",
+              "label": "Date or version",
+              "units": 0.9
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "claim_link",
+              "label": "Claimed-line or condition link",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Evidence location",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "diagnostic_results",
+          "type": "table",
+          "label": "Initial observation, measurement, and diagnostic results",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, item, or test",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Method or source",
+              "units": 1.0
+            },
+            {
+              "key": "expected",
+              "label": "Expected condition",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual observation",
+              "units": 1.05
+            },
+            {
+              "key": "limitation",
+              "label": "Limitation or evidence ref.",
+              "units": 1.1
+            }
+          ],
+          "rows": 5,
+          "guidance": "Applicable concepts include: Door, frame, backset, thickness, or hardware dimension, Latch, strike, clearance, alignment, or closer setting, Key, core, blank, or credential quantity, Voltage or signal at powered access hardware, Lock, latch, closer, credential, and egress test, Response, unlock, relock, or alarm-restoration time."
+        },
+        {
+          "key": "evidence_gaps",
+          "type": "textarea",
+          "label": "Missing, conflicting, changed, inaccessible, or unreliable evidence and its effect on review",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Missing, conflicting, changed, inaccessible, or unreliable evidence and its effect on review",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "containment_interim",
+      "title": "Locksmith interim control and preservation",
+      "guidance": "Protect people, property, evidence, and the claimed item while preserving the distinction between temporary help and a final remedy.",
+      "blocks": [
+        {
+          "key": "interim_controls",
+          "type": "checklist",
+          "label": "Interim control and preservation options",
+          "items": [
+            "Minimum necessary identity and access authority verified",
+            "Property, vehicle, opening, and approved work scope matched",
+            "Reusable secrets, access codes, bitting data, and identity copies excluded from general notes",
+            "Fire-rated, egress, shared, master-key, and restricted-keyway conditions identified",
+            "Alarm, access-control, building, and affected-user coordination completed",
+            "Keys, blanks, cylinders, cores, credentials, and removed hardware controlled",
+            "Occupied area, property finishes, privacy, and emergency access protected",
+            "Additional openings, keys, credentials, or hierarchy changes require new approval",
+            "Door remains securable or an approved interim control is assigned",
+            "Functional, latch, lock, closer, credential, and egress tests defined"
+          ]
+        },
+        {
+          "key": "containment_log",
+          "type": "table",
+          "label": "Containment, temporary action, owner, and review deadline",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Affected scope",
+              "units": 1.15
+            },
+            {
+              "key": "control",
+              "label": "Interim control or temporary action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "deadline",
+              "label": "Review or response due",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or approval ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "interim_status",
+          "type": "fields",
+          "label": "Current custody, use, access, and service status",
+          "fields": [
+            {
+              "key": "use_status",
+              "label": "Use or access status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Available with no stated restriction",
+                "Restricted",
+                "Do not use",
+                "Secured or isolated",
+                "Temporary service",
+                "Unknown - review required"
+              ]
+            },
+            {
+              "key": "custody_location",
+              "label": "Current custody or controlled location",
+              "units": 1.15
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer update owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update date and time",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "coverage_decision",
+      "title": "Locksmith coverage review, remedy decision, and authorization",
+      "guidance": "Document the reviewed basis for coverage and the exact authorized remedy without turning a signature into a technical conclusion.",
+      "blocks": [
+        {
+          "key": "review_assignment",
+          "type": "fields",
+          "label": "Coverage and technical review assignment",
+          "fields": [
+            {
+              "key": "coverage_reviewer",
+              "label": "Coverage reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "technical_reviewer",
+              "label": "Locksmith, security, or egress supervisor",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 0.95
+            },
+            {
+              "key": "requirements_ref",
+              "label": "Agreement, label, policy, or technical ref.",
+              "units": 1.2
+            },
+            {
+              "key": "decision_status",
+              "label": "Review status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "More evidence required",
+                "Inspection required",
+                "Third-party review",
+                "Controlled hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "coverage_lines",
+          "type": "table",
+          "label": "Claimed line, coverage finding, rationale, and remedy",
+          "columns": [
+            {
+              "key": "claimed_line",
+              "label": "Claimed item or service",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Covered, excluded, or unresolved",
+              "units": 1.05
+            },
+            {
+              "key": "basis",
+              "label": "Decision basis",
+              "units": 1.2
+            },
+            {
+              "key": "remedy",
+              "label": "Authorized remedy",
+              "units": 1.0
+            },
+            {
+              "key": "limit",
+              "label": "Limit, condition, or approval ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "final_decision",
+          "type": "fields",
+          "label": "Warranty request decision and routing",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Partially approved",
+                "Inspection authorized",
+                "Goodwill response",
+                "Denied",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "remedy_owner",
+              "label": "Remedy owner",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response or remedy due",
+              "units": 0.95
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Coverage rationale, evidence relied upon, unresolved fact, approved remedy, limitation, and customer communication",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Coverage rationale, evidence relied upon, unresolved fact, approved remedy, limitation, and customer communication",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "decision_approval",
+          "type": "signatures",
+          "label": "Coverage and technical decision approval",
+          "fields": [
+            {
+              "key": "coverage_approval",
+              "label": "Coverage decision owner and date",
+              "units": 1.25
+            },
+            {
+              "key": "technical_approval",
+              "label": "Locksmith, security, or egress supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "customer_receipt",
+              "label": "Customer receipt acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "warranty_exceptions",
+      "title": "Locksmith warranty exception and escalation",
+      "guidance": "Route unsafe, disputed, missing-evidence, third-party, or out-of-scope conditions without implying a coverage outcome.",
+      "blocks": [
+        {
+          "key": "warranty_exception_indicators",
+          "type": "checklist",
+          "label": "Locksmith exception and stop-work indicators",
+          "items": [
+            "Identity, occupancy, ownership, management, agency, or access authority disputed",
+            "Requested opening, vehicle, safe, key, or credential exceeds approved scope",
+            "Fire-rated, egress, panic, emergency-access, or shared-opening function uncertain",
+            "Master-key hierarchy, restricted keyway, or credential population may be affected",
+            "Alarm, access-control, intercom, power, or life-safety integration unavailable",
+            "Door, frame, glass, hinge, closer, structure, or finish may be damaged",
+            "Key, blank, core, credential, code, or removed-hardware custody discrepancy",
+            "Opening cannot be secured during or after work",
+            "Evidence of forced entry, tampering, crime, or safety concern requires escalation",
+            "Customer requests reusable security secrets in unrestricted notes or communications"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "warranty_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "warranty_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Locksmith warranty request closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Warranty decision communicated",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This locksmith service warranty request is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when identity, access authority, property scope, key control, alarm integration, fire egress, security function, or credential custody is uncertain. A locksmith, security, or egress supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified locksmith and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Locksmith, security, or egress supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

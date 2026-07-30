@@ -32,6 +32,16 @@ def _sha256_file(path: str | Path) -> str:
     return digest.hexdigest()
 
 
+def _canonical_hash(payload: Any) -> str:
+    encoded = json.dumps(
+        payload,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def build_sample_plan(
     *,
     selection_path: str | Path,
@@ -100,9 +110,43 @@ def build_sample_plan(
         raise SamplingPlanError(
             "Build report and manifest must share one lowercase source commit"
         )
+    if manifest.get("rendererCommit") != source_commit:
+        raise SamplingPlanError(
+            "Manifest rendererCommit must equal sourceCommit"
+        )
+    for commit_key in ("baseCommit", "rendererCommit"):
+        if (
+            not isinstance(manifest.get(commit_key), str)
+            or report.get(commit_key) != manifest.get(commit_key)
+        ):
+            raise SamplingPlanError(
+                f"Build report and manifest {commit_key} values must match"
+            )
+    if (
+        not isinstance(manifest.get("rendererRuntime"), dict)
+        or report.get("rendererRuntime") != manifest.get("rendererRuntime")
+    ):
+        raise SamplingPlanError(
+            "Build report and manifest rendererRuntime fingerprints must match"
+        )
+    manifest_sha256 = _sha256_file(manifest_path)
+    build_report_sha256 = _sha256_file(build_report_path)
+    selection_digest = _canonical_hash(selection)
+    if (
+        report.get("passed") is not True
+        or report.get("count") != len(ids)
+        or report.get("selectionDigest") != selection_digest
+        or report.get("releaseManifestSha256") != manifest_sha256
+    ):
+        raise SamplingPlanError(
+            "Build report is not bound to the exact passing selection and manifest"
+        )
     for item_id in ids:
         item = plan_by_id[item_id]
+        result = result_by_id[item_id]
         form = form_by_id[item_id]
+        if result.get("ok") is not True:
+            raise SamplingPlanError(f"{item_id}: build result is not passing")
         for item_key, form_key in (
             ("slug", "slug"),
             ("sourceSection", "sourceSection"),
@@ -112,7 +156,15 @@ def build_sample_plan(
                 raise SamplingPlanError(
                     f"{item_id}: selection and manifest {item_key} differ"
                 )
-    manifest_sha256 = _sha256_file(manifest_path)
+        if result.get("pageCount") != form.get("pageCount"):
+            raise SamplingPlanError(
+                f"{item_id}: build and manifest pageCount differ"
+            )
+        for asset_name in ("pdf", "thumbnail"):
+            if result.get(asset_name) != form.get(asset_name):
+                raise SamplingPlanError(
+                    f"{item_id}: build and manifest {asset_name} assets differ"
+                )
     seed_material = json.dumps(
         manifest,
         sort_keys=True,
@@ -207,6 +259,8 @@ def build_sample_plan(
         "releaseId": release_id,
         "sourceCommit": source_commit,
         "manifestSha256": manifest_sha256,
+        "selectionDigest": selection_digest,
+        "buildReportSha256": build_report_sha256,
         "seedSha256": seed_sha256,
         "randomCount": len(random_ids),
         "httpSampleCount": len(samples),

@@ -1,0 +1,604 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1816__time_off_evaluation_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1816__time_off_evaluation_form.pdf",
+  "slug": "time-off-evaluation-form",
+  "title": "Time Off Evaluation Form",
+  "subtitle": "Use this evaluation to apply explicit criteria to traceable evidence, calibrate the conclusion, authorize action, and preserve limitations for a time off workflow.",
+  "description": "An original operational time off evaluation form that controls a absence request and leave-administration record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee, manager, scheduler, or leave administrator needs a traceable evaluation so the qualified HR, leave, payroll, or policy reviewer can approve, conditionally approve, deny, pend, recode, extend, or route the requested absence under the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "evaluation_assignment",
+      "title": "Time Off evaluation assignment and decision scope",
+      "guidance": "Define the subject, evaluator, evidence period, criteria, and authority before rating begins.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Time Off identity",
+          "fields": [
+            {
+              "key": "leave_record",
+              "label": "Time-off record number",
+              "units": 0.8
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "department_role",
+              "label": "Department and role",
+              "units": 1.0
+            },
+            {
+              "key": "manager_scheduler",
+              "label": "Manager or scheduler",
+              "units": 0.9
+            },
+            {
+              "key": "request_submitted",
+              "label": "Submitted date and time",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Evaluation ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "evaluation_control",
+          "type": "fields",
+          "label": "Evaluation control",
+          "fields": [
+            {
+              "key": "evaluation_date",
+              "label": "Evaluation date",
+              "units": 0.7
+            },
+            {
+              "key": "evidence_period",
+              "label": "Evidence period",
+              "units": 0.85
+            },
+            {
+              "key": "primary_evaluator",
+              "label": "Primary evaluator",
+              "units": 0.85
+            },
+            {
+              "key": "independent_reviewer",
+              "label": "Independent reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "decision_needed",
+              "label": "Decision required",
+              "units": 1.0
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "evaluation_scope",
+          "type": "textarea",
+          "label": "Evaluation question, population, boundaries, exclusions, comparison basis, and intended use",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Evaluation scope and job statement"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "criteria_evidence",
+      "title": "Time Off criteria and evidence plan",
+      "guidance": "Use current, job-related or workflow-related criteria and preserve the source of every conclusion.",
+      "blocks": [
+        {
+          "key": "evaluation_criteria",
+          "type": "checklist",
+          "label": "Time Off evaluation criteria",
+          "items": [
+            "Requested date, time, duration, and recurrence pattern are internally consistent",
+            "Requested policy category matches the information appropriate for this record",
+            "Available balance or pay treatment was verified by the system owner",
+            "Notice timing and documentation status were reviewed under current policy",
+            "Coverage impact is recorded without treating coverage as the sole legal decision",
+            "Potential protected leave or accommodation was routed to a qualified administrator",
+            "Sensitive medical information is segregated from the routine personnel record",
+            "Payroll and scheduling systems can use the approved date and hour boundaries",
+            "Conditions, call-in expectations, and update route are specific and feasible",
+            "Decision is consistent with comparable requests and documented authority"
+          ]
+        },
+        {
+          "key": "evidence_plan",
+          "type": "table",
+          "label": "Criterion, population, source, method, and limitation plan",
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Criterion / question",
+              "units": 1.2
+            },
+            {
+              "key": "population",
+              "label": "Population / period",
+              "units": 0.9
+            },
+            {
+              "key": "source",
+              "label": "Evidence source",
+              "units": 1.05
+            },
+            {
+              "key": "method",
+              "label": "Review method",
+              "units": 0.9
+            },
+            {
+              "key": "limitation",
+              "label": "Known limitation",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Expected evidence package",
+          "items": [
+            "Employee request or absence notice with date and time",
+            "Current schedule, shift, or planned work calendar",
+            "Leave-policy category and applicable notice template",
+            "Balance, eligibility, or timekeeping system reference",
+            "Confidential-document receipt status without medical content",
+            "Manager coverage plan and operational handoff",
+            "Decision communication and employee acknowledgment",
+            "Payroll, schedule, extension, cancellation, or return update reference"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evaluation_results",
+      "title": "Time Off evidence-level evaluation",
+      "guidance": "Record observed evidence, the applicable standard, missing information, and any follow-up required.",
+      "blocks": [
+        {
+          "key": "result_matrix",
+          "type": "table",
+          "label": "Time Off evaluation result matrix",
+          "columns": [
+            {
+              "key": "review_factor",
+              "label": "Policy / review factor",
+              "units": 1.15
+            },
+            {
+              "key": "source_record",
+              "label": "Source record",
+              "units": 1.0
+            },
+            {
+              "key": "observed_status",
+              "label": "Observed status",
+              "units": 1.0
+            },
+            {
+              "key": "requirement_result",
+              "label": "Requirement / result",
+              "units": 1.05
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up / owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "summary_metrics",
+          "type": "fields",
+          "label": "Evaluation summary measures",
+          "fields": [
+            {
+              "key": "items_reviewed",
+              "label": "Items or records reviewed",
+              "units": 0.75
+            },
+            {
+              "key": "criteria_met",
+              "label": "Criteria met",
+              "units": 0.65
+            },
+            {
+              "key": "criteria_partial",
+              "label": "Criteria partly met",
+              "units": 0.75
+            },
+            {
+              "key": "criteria_not_met",
+              "label": "Criteria not met",
+              "units": 0.75
+            },
+            {
+              "key": "unknown_count",
+              "label": "Unknown or insufficient",
+              "units": 0.8
+            },
+            {
+              "key": "urgent_findings",
+              "label": "Urgent findings",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "evidence_summary",
+          "type": "textarea",
+          "label": "Representative evidence, contradictory evidence, missing information, sampling limits, and confidence",
+          "fields": [
+            {
+              "key": "evidence_detail",
+              "label": "Evidence and limitation summary"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "calibration_exceptions",
+      "title": "Time Off calibration, bias check, and exception review",
+      "guidance": "Challenge unsupported assumptions and route material exceptions before a final conclusion.",
+      "blocks": [
+        {
+          "key": "calibration_checks",
+          "type": "checklist",
+          "label": "Calibration and decision-quality checks",
+          "items": [
+            "Criteria and rating definitions were established before the conclusion",
+            "Evidence belongs to the stated subject, period, and decision",
+            "Missing evidence is not treated as a negative fact",
+            "Similar cases or records were assessed using the same standard",
+            "Potential conflict of interest or prior involvement is disclosed",
+            "Contrary evidence and the subject's response receive documented consideration",
+            "Sensitive or protected information is excluded or separately routed",
+            "Independent reviewer can reproduce the conclusion from the cited record"
+          ]
+        },
+        {
+          "key": "calibration_register",
+          "type": "table",
+          "label": "Rating difference, evidence conflict, resolution, and reviewer",
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Criterion / item",
+              "units": 1.0
+            },
+            {
+              "key": "difference",
+              "label": "Difference / conflict",
+              "units": 1.15
+            },
+            {
+              "key": "additional_evidence",
+              "label": "Additional evidence",
+              "units": 1.1
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution / rationale",
+              "units": 1.05
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer / date",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "exception_analysis",
+          "type": "textarea",
+          "label": "Exception facts, bias or consistency concern, independent review, and unresolved limitation",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Calibration and exception analysis"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "evaluation_decision",
+      "title": "Time Off conclusion and qualified authorization",
+      "guidance": "State the evidence-supported outcome, its limits, and who has authority to act.",
+      "blocks": [
+        {
+          "key": "evaluation_boundary",
+          "type": "notice",
+          "label": "Evaluation boundary",
+          "guidance": "This evaluation supports a decision but does not replace the qualified HR, leave, payroll, or policy reviewer. Apply the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations, protect restricted information, and obtain separate review for legal, safety, security, medical, or tax conclusions."
+        },
+        {
+          "key": "evaluation_outcome",
+          "type": "fields",
+          "label": "Evaluation outcome",
+          "fields": [
+            {
+              "key": "overall_result",
+              "label": "Overall result",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Meets criteria",
+                "Partly meets criteria",
+                "Does not meet criteria",
+                "Insufficient evidence",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "recommended_action",
+              "label": "Recommended action",
+              "units": 1.05
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.85
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective scope or date",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.7
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conclusion_rationale",
+          "type": "textarea",
+          "label": "Conclusion, strongest evidence, contrary evidence, limitations, conditions, and rejected alternatives",
+          "fields": [
+            {
+              "key": "conclusion_detail",
+              "label": "Evaluation conclusion and rationale"
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "evaluation_review",
+          "type": "signatures",
+          "label": "Evaluator and qualified review",
+          "fields": [
+            {
+              "key": "evaluator_signoff",
+              "label": "Evaluator / date",
+              "units": 1.0
+            },
+            {
+              "key": "independent_review",
+              "label": "Independent reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority_signoff",
+              "label": "Decision authority / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evaluation_closeout",
+      "title": "Time Off action, handoff, and evaluation closeout",
+      "guidance": "Translate the conclusion into owned actions and preserve every remaining limitation.",
+      "blocks": [
+        {
+          "key": "evaluation_outcome",
+          "type": "fields",
+          "label": "Evaluation outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "evaluation_actions",
+          "type": "table",
+          "label": "Open time off action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "evaluation_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "evaluation_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "evaluation_signoff",
+          "type": "signatures",
+          "label": "Evaluation accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Leave, Payroll, Or Policy Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,669 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1918__mortgage_prequalification_payment_worksheet_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1918__mortgage_prequalification_payment_worksheet_form.pdf",
+  "slug": "mortgage-prequalification-payment-worksheet-form",
+  "title": "Mortgage Prequalification Housing Payment Scenario Worksheet",
+  "subtitle": "A controlled payment worksheet for an early mortgage affordability and eligibility conversation based on stated or identified information, clearly separating assumptions, verified evidence, loan program screening, credit review, property unknowns, and non-commitment status, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Mortgage Prequalification workflow for an early mortgage affordability and eligibility conversation based on stated or identified information, clearly separating assumptions, verified evidence, loan program screening, credit review, property unknowns, and non-commitment status. It is designed to separate source inputs from assumptions, itemize amounts, compare controlled scenarios, document fees and timing, obtain qualified calculation review, and reconcile the selected scenario or actual transaction while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a mortgage lending specialist must separate source inputs from assumptions, itemize amounts, compare controlled scenarios, document fees and timing, obtain qualified calculation review, and reconcile the selected scenario or actual transaction for one prequalification request. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Mortgage Prequalification payment worksheet identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Mortgage Prequalification record and responsible parties",
+          "fields": [
+            {
+              "key": "prequal_ref",
+              "label": "Prequalification reference",
+              "units": 1.2
+            },
+            {
+              "key": "borrower_name",
+              "label": "Prospective borrower",
+              "units": 1.2
+            },
+            {
+              "key": "co_borrower_status",
+              "label": "Co-borrower status",
+              "units": 1.0
+            },
+            {
+              "key": "loan_officer",
+              "label": "Assigned loan officer",
+              "units": 1.1
+            },
+            {
+              "key": "channel_source",
+              "label": "Referral or channel",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Payment Analysis and Reconciliation Worksheet timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Mortgage Prequalification facts and evidence for payment worksheet",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Mortgage Prequalification transaction or account profile",
+          "fields": [
+            {
+              "key": "transaction_goal",
+              "label": "Transaction goal",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Purchase",
+                "Refinance",
+                "Cash-out inquiry",
+                "Construction inquiry"
+              ]
+            },
+            {
+              "key": "target_price_value",
+              "label": "Target price or value",
+              "units": 1.0
+            },
+            {
+              "key": "down_payment",
+              "label": "Planned down payment",
+              "units": 0.9
+            },
+            {
+              "key": "occupancy",
+              "label": "Intended occupancy",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Primary residence",
+                "Second home",
+                "Investment",
+                "Undecided"
+              ]
+            },
+            {
+              "key": "property_area",
+              "label": "Target property area",
+              "units": 1.0
+            },
+            {
+              "key": "purchase_timeline",
+              "label": "Target timing",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Mortgage Prequalification evidence checkpoints",
+          "items": [
+            "Stated versus verified income sources are clearly distinguished",
+            "Asset source, availability, reserves, and gift assumptions are separated",
+            "Recurring debts, housing obligations, and contingent liabilities are recorded",
+            "Credit review authorization and credit-report date are stored by reference",
+            "Property price, taxes, insurance, dues, and occupancy remain explicit assumptions",
+            "Loan program and eligibility discussion is marked preliminary",
+            "Rate, points, mortgage insurance, and closing-cost assumptions show dates",
+            "Prequalification is not represented as a guaranteed loan offer or property approval"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Mortgage Prequalification quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "financial_item",
+              "label": "Income, asset, or debt",
+              "units": 1.3
+            },
+            {
+              "key": "amount",
+              "label": "Amount",
+              "units": 0.75
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency",
+              "units": 0.75
+            },
+            {
+              "key": "stated_verified",
+              "label": "Stated or verified",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Borrowing goals, property assumptions, income and asset structure, credit scope, program questions, and limits on the prequalification",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Mortgage Prequalification context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Mortgage Prequalification payment worksheet analysis and control record",
+      "guidance": "Use the blocks below to separate source inputs from assumptions, itemize amounts, compare controlled scenarios, document fees and timing, obtain qualified calculation review, and reconcile the selected scenario or actual transaction. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "calculation_inputs",
+          "type": "fields",
+          "label": "Mortgage Prequalification amount, timing, and calculation inputs",
+          "fields": [
+            {
+              "key": "loan_amount_assumption",
+              "label": "Loan amount assumption",
+              "units": 1.0
+            },
+            {
+              "key": "rate_term_assumption",
+              "label": "Rate and term assumption",
+              "units": 1.0
+            },
+            {
+              "key": "principal_interest",
+              "label": "Estimated principal and interest",
+              "units": 1.1
+            },
+            {
+              "key": "tax_insurance",
+              "label": "Estimated taxes and insurance",
+              "units": 1.0
+            },
+            {
+              "key": "mortgage_insurance_dues",
+              "label": "MI and association dues",
+              "units": 1.1
+            },
+            {
+              "key": "assumption_date",
+              "label": "Assumption date and expiry",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Record the source and as-of date for every input; do not treat blank cells as zero."
+        },
+        {
+          "key": "amount_components",
+          "type": "table",
+          "label": "Mortgage Prequalification amount-component reconciliation",
+          "columns": [
+            {
+              "key": "housing_component",
+              "label": "Housing component",
+              "units": 1.2
+            },
+            {
+              "key": "monthly_estimate",
+              "label": "Monthly estimate",
+              "units": 0.9
+            },
+            {
+              "key": "annual_source",
+              "label": "Annual source",
+              "units": 1.0
+            },
+            {
+              "key": "assumption_basis",
+              "label": "Assumption basis",
+              "units": 1.2
+            },
+            {
+              "key": "verified_status",
+              "label": "Status",
+              "units": 0.8
+            }
+          ],
+          "rows": 5,
+          "guidance": "Separate charges, credits, funding sources, and evidence. Reconcile components before comparing scenarios."
+        },
+        {
+          "key": "scenario_comparison",
+          "type": "table",
+          "label": "Controlled scenario or settlement comparison",
+          "columns": [
+            {
+              "key": "scenario",
+              "label": "Scenario",
+              "units": 1.0
+            },
+            {
+              "key": "rate_basis",
+              "label": "Rate or basis",
+              "units": 1.0
+            },
+            {
+              "key": "periodic_result",
+              "label": "Payment or settlement",
+              "units": 1.1
+            },
+            {
+              "key": "total_result",
+              "label": "Total cost or value",
+              "units": 1.0
+            },
+            {
+              "key": "key_assumption",
+              "label": "Key assumption",
+              "units": 1.2
+            },
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "calculation_controls",
+          "type": "checklist",
+          "label": "Calculation, estimate, fee, and selection controls",
+          "items": [
+            "Principal, balance, price, fee, credit, and funding inputs reconcile to sources",
+            "Rate, index, spread, exchange rate, or pricing basis includes an as-of date",
+            "Frequency, term, timing, day count, rounding, and cutoff assumptions are explicit",
+            "Optional, financed, waived, refunded, and third-party amounts are distinguishable",
+            "Each scenario uses the same comparison basis or explains the difference",
+            "Independent reviewer recalculates or verifies the selected result",
+            "Preliminary scenarios are labeled and not presented as approved terms",
+            "Actual payment, posting, funding, or settlement receives final reconciliation"
+          ]
+        },
+        {
+          "key": "calculation_notes",
+          "type": "textarea",
+          "label": "Formula basis, assumptions, exclusions, sensitivity, and reconciliation notes",
+          "fields": [
+            {
+              "key": "calculation_notes_detail",
+              "label": "Calculation and reconciliation notes"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Mortgage Prequalification stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Prequalification is described as a commitment, guarantee, or property approval",
+            "Stated and verified financial information are blended or mislabeled",
+            "Property tax, insurance, association dues, or mortgage insurance assumptions are missing",
+            "Income stability, source, continuity, or self-employment analysis needs specialist review",
+            "Asset source, large deposit, gift, reserve, or ownership evidence is unresolved",
+            "Credit report, debt, dispute, fraud alert, freeze, or consent issue remains open",
+            "Program eligibility, occupancy, property type, or geographic assumptions changed",
+            "Applicant treatment or decision factors raise fair-lending or policy concerns",
+            "A source amount, rate, fee, date, formula basis, or rounding rule is unresolved",
+            "A preliminary scenario could be mistaken for approved or contractual terms"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Payment Analysis and Reconciliation Worksheet exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Mortgage Prequalification decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Payment Analysis and Reconciliation Worksheet qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Mortgage Prequalification decision and execution conditions",
+          "items": [
+            "Inputs, assumptions, calculations, rounding, fees, and dates are independently reviewed",
+            "Selected scenario is linked to the applicable approval or agreement",
+            "Letter amount and assumptions match the qualified prequalification review",
+            "Information basis is labeled stated, reviewed, or verified for each material input",
+            "Letter expiration and material-change conditions are explicit",
+            "No property, appraisal, title, insurance, or final-underwriting approval is implied",
+            "Required adverse-action or incomplete-application routing is reviewed by qualified staff",
+            "Borrower receives the letter and limitations through an approved channel"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Mortgage Prequalification record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Mortgage Prequalification completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Payment Analysis and Reconciliation Worksheet outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Mortgage Prequalification closeout evidence",
+          "items": [
+            "Prequalification letter and assumption record use the same amount and expiration",
+            "Stated and verified information remain visibly distinguished",
+            "Borrower received limitations and next-step requirements",
+            "Any incomplete or adverse outcome followed the qualified notice process",
+            "No property or final-credit approval is implied in the record",
+            "Credit, evidence, communication, and retention references are linked"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1856__remote_work_request_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1856__remote_work_request_form.pdf",
+  "slug": "dhr-1856-remote-work-request-form-91065f7d",
+  "title": "Remote Work Request Form",
+  "subtitle": "Use this request to route the need, test readiness, document review, authorize a bounded action, and verify implementation for a remote work workflow.",
+  "description": "An original operational remote work request form that controls a remote-work arrangement and operating-control record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee, manager, workplace, or remote-access coordinator needs a traceable request so the authorized HR, management, information-security, workplace, or payroll reviewer can approve, conditionally approve, trial, revise, suspend, deny, or close the remote-work arrangement under the current remote-work policy, role requirements, information-security standard, equipment rules, and applicable wage, safety, privacy, or accommodation process without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Remote Work request identity and routing",
+      "guidance": "Open one traceable request and identify the responsible reviewers before work begins.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Remote Work identity",
+          "fields": [
+            {
+              "key": "remote_record",
+              "label": "Remote-work record number",
+              "units": 0.85
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "position_department",
+              "label": "Position and department",
+              "units": 1.05
+            },
+            {
+              "key": "manager_owner",
+              "label": "Manager or arrangement owner",
+              "units": 0.95
+            },
+            {
+              "key": "requested_window",
+              "label": "Requested start and review date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Request ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_scope",
+          "type": "textarea",
+          "label": "Requested outcome, initiating event, business need, affected people or work, and explicit exclusions",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Request scope and job statement"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "requested_action",
+      "title": "Requested remote work scope and operating need",
+      "guidance": "Describe the exact requested action and the evidence needed to evaluate it.",
+      "blocks": [
+        {
+          "key": "request_type",
+          "type": "checklist",
+          "label": "Remote Work request type",
+          "items": [
+            "Recurring hybrid schedule with designated onsite days",
+            "Fully remote arrangement within an approved jurisdiction",
+            "Short-term remote period for a defined operational reason",
+            "Occasional remote day under manager discretion",
+            "Schedule, location, time-zone, or duration change",
+            "Cross-border, interstate, or other jurisdictional review",
+            "Remote-work trial with explicit success measures",
+            "Accommodation-related request routed through the confidential process"
+          ]
+        },
+        {
+          "key": "requested_components",
+          "type": "table",
+          "label": "Remote Work requested components",
+          "columns": [
+            {
+              "key": "work_segment",
+              "label": "Day / work segment",
+              "units": 0.9
+            },
+            {
+              "key": "location_zone",
+              "label": "Location / time zone",
+              "units": 1.0
+            },
+            {
+              "key": "availability",
+              "label": "Availability / coverage",
+              "units": 1.0
+            },
+            {
+              "key": "onsite_duty",
+              "label": "Onsite duty / frequency",
+              "units": 1.0
+            },
+            {
+              "key": "data_system",
+              "label": "Data / systems used",
+              "units": 1.0
+            },
+            {
+              "key": "fallback",
+              "label": "Fallback / contact",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "business_need",
+          "type": "textarea",
+          "label": "Operational reason, intended result, assumptions, dependencies, alternatives, and timing impact",
+          "fields": [
+            {
+              "key": "need_detail",
+              "label": "Business need and requested result"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "readiness_impact",
+      "title": "Remote Work readiness, policy, and impact review",
+      "guidance": "Confirm the request can be reviewed without bypassing privacy, safety, security, or authority controls.",
+      "blocks": [
+        {
+          "key": "readiness_checkpoints",
+          "type": "checklist",
+          "label": "Remote Work readiness checkpoints",
+          "items": [
+            "Role outputs, onsite duties, customer coverage, and supervision needs are documented",
+            "Approved work location, jurisdiction, schedule, time zone, and availability are complete",
+            "HR, payroll, tax, legal, or labor routing is complete where required",
+            "Organization-managed device and approved remote-access method are identified",
+            "Multi-factor authentication, updates, encryption, and screen-lock controls are confirmed",
+            "Data classification, storage, printing, disposal, and private-conversation controls are understood",
+            "Home or alternate network and workspace meet the organization's stated requirements",
+            "Timekeeping, breaks, overtime, absence, and schedule-change procedures are clear",
+            "Equipment, support, expense, internet, travel, and return duties are assigned",
+            "Security, privacy, injury, equipment, and connectivity incident routes are known",
+            "Continuity fallback and required onsite response are practical",
+            "Trial measures, review date, change conditions, and closeout route are documented"
+          ]
+        },
+        {
+          "key": "impact_routing",
+          "type": "fields",
+          "label": "Affected workflow and review route",
+          "fields": [
+            {
+              "key": "affected_team",
+              "label": "Affected team or function",
+              "units": 0.95
+            },
+            {
+              "key": "affected_location",
+              "label": "Affected location",
+              "units": 0.9
+            },
+            {
+              "key": "system_update",
+              "label": "System update required",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "To be determined"
+              ]
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy or restricted-record route",
+              "units": 1.0
+            },
+            {
+              "key": "cost_schedule_effect",
+              "label": "Cost or schedule effect",
+              "units": 0.95
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Request and authority boundary",
+          "guidance": "This request does not itself authorize action. The authorized HR, management, information-security, workplace, or payroll reviewer must apply the current remote-work policy, role requirements, information-security standard, equipment rules, and applicable wage, safety, privacy, or accommodation process, resolve exceptions, and record any conditions before implementation."
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Remote Work review, alternatives, and decision",
+      "guidance": "Compare the request to the governing evidence and document why the selected route is appropriate.",
+      "blocks": [
+        {
+          "key": "review_matrix",
+          "type": "table",
+          "label": "Requirement, evidence, finding, and decision matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement / question",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Reviewer / owner",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result / condition",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "request_decision",
+          "type": "fields",
+          "label": "Request decision and authority",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned for revision",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date or scope boundary",
+              "units": 1.1
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, alternatives rejected, approved limits, exception treatment, and communication plan",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Decision rationale and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "implementation_handoff",
+      "title": "Approved remote work implementation and exception handoff",
+      "guidance": "Translate the decision into owned work without losing a condition or system update.",
+      "blocks": [
+        {
+          "key": "implementation_plan",
+          "type": "table",
+          "label": "Approved action, condition, system update, and completion evidence",
+          "columns": [
+            {
+              "key": "approved_action",
+              "label": "Approved action",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition / limit",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "system_record",
+              "label": "System / evidence ref.",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "implementation_checks",
+          "type": "checklist",
+          "label": "Implementation and communication controls",
+          "items": [
+            "Role and coverage remain workable under the proposed arrangement",
+            "Location, jurisdiction, schedule, and duration received required review",
+            "Information-security and privacy controls match the work and data",
+            "Timekeeping, overtime, expense, travel, and equipment duties are explicit",
+            "Connectivity and business-continuity fallback is sufficient",
+            "Accommodation details remain outside the general arrangement record",
+            "Trial metrics and review date support an evidence-based decision",
+            "Modification, suspension, onsite return, and closeout authority are clear"
+          ]
+        },
+        {
+          "key": "implementation_variance",
+          "type": "textarea",
+          "label": "Implementation variance, failed dependency, changed fact, immediate action, and reapproval need",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Variance and reapproval narrative"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Remote Work request completion and closeout",
+      "guidance": "Close only when the implemented result, remaining limits, and receiving ownership are verifiable.",
+      "blocks": [
+        {
+          "key": "request_outcome",
+          "type": "fields",
+          "label": "Request outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "request_actions",
+          "type": "table",
+          "label": "Open remote work action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "request_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "request_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "request_signoff",
+          "type": "signatures",
+          "label": "Request accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Hr, Management, Information-Security, Workplace, Or Payroll Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

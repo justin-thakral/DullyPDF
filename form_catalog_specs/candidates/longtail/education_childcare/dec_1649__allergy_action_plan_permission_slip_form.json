@@ -1,0 +1,609 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1649__allergy_action_plan_permission_slip_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1649__allergy_action_plan_permission_slip_form.pdf",
+  "slug": "allergy-action-plan-permission-slip-form",
+  "title": "Allergy Action Plan Permission Slip Form",
+  "subtitle": "An original operational permission slip for allergy action plan that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This Allergy Action Plan Permission Slip Form supports the complete allergy action plan workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the Allergy Action Plan Permission Slip Form when the assigned allergy-plan coordinator needs one fillable record for approved allergy plan, allergen controls, emergency supplies, response, and handoff without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Allergy action plan permission slip identity and routing",
+      "guidance": "Connect this permission slip to one approved allergy plan, allergen controls, emergency supplies, response, and handoff record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Allergy action plan record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "School, program, meal, or activity site",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Student group or allergy-plan record",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Student or authorized plan reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or authorized health contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned allergy-plan coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "Allergy action plan scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "permission_scope",
+      "title": "Allergy action plan requested participation and permission scope",
+      "guidance": "Separate each requested activity and condition so one choice does not imply another.",
+      "blocks": [
+        {
+          "key": "request_basis",
+          "type": "fields",
+          "label": "Permission request basis",
+          "fields": [
+            {
+              "key": "activity_or_program",
+              "label": "Named activity or program",
+              "units": 1.5
+            },
+            {
+              "key": "start_date",
+              "label": "Start date",
+              "units": 0.9
+            },
+            {
+              "key": "end_date",
+              "label": "End date",
+              "units": 0.9
+            },
+            {
+              "key": "setting_or_transport",
+              "label": "Setting or transport ref.",
+              "units": 1.4
+            },
+            {
+              "key": "request_owner",
+              "label": "Request owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "permission_items",
+          "type": "checklist",
+          "label": "Allergy action plan permission choices",
+          "items": [
+            "Use of the current approved allergy action plan in the named setting",
+            "Meal, snack, classroom, and activity controls as documented",
+            "Minimum-necessary communication with assigned staff",
+            "Emergency medication only from the approved authorization",
+            "Emergency services and guardian contact through documented routes",
+            "Transport or off-site plan only when separately reviewed",
+            "Return, replacement, or transfer of supplies through approved custody",
+            "Held or stopped participation recorded when controls cannot be confirmed"
+          ],
+          "guidance": "Each item is independent; document any exclusion or condition in the scope table."
+        },
+        {
+          "key": "scope_lines",
+          "type": "table",
+          "label": "Requested scope, exclusions, and source",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Activity or permission",
+              "units": 1.3
+            },
+            {
+              "key": "included",
+              "label": "Included, declined, or pending",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition or exclusion",
+              "units": 1.4
+            },
+            {
+              "key": "source",
+              "label": "Guardian or review source",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "permission_boundary",
+          "type": "notice",
+          "label": "Permission and authority boundary",
+          "guidance": "This form records an allergy action-plan workflow; it does not diagnose an allergy, interpret symptoms, invent exposure limits, or replace qualified directions or emergency services. Use only the current approved plan and authorization. Stop routine activity for any mismatch, suspected exposure, symptom, or unavailable control, protect privacy, and route response decisions to qualified authorized staff."
+        }
+      ]
+    },
+    {
+      "key": "guardian_readiness",
+      "title": "Allergy action plan guardian routing, readiness, and support review",
+      "guidance": "Confirm contact, release, support, and stop conditions before relying on the permission record.",
+      "blocks": [
+        {
+          "key": "guardian_route",
+          "type": "fields",
+          "label": "Guardian and communication route",
+          "fields": [
+            {
+              "key": "guardian_contact",
+              "label": "Guardian or authorized health contact",
+              "units": 1.4
+            },
+            {
+              "key": "alternate_contact",
+              "label": "Alternate authorized contact",
+              "units": 1.3
+            },
+            {
+              "key": "preferred_route",
+              "label": "Preferred contact route",
+              "units": 1.0
+            },
+            {
+              "key": "release_plan",
+              "label": "Release or departure plan ref.",
+              "units": 1.3
+            },
+            {
+              "key": "access_support",
+              "label": "Language or access support",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring review before participation",
+          "items": [
+            "Student identity, allergen, plan, or emergency supply does not match",
+            "Plan is missing, illegible, expired, changed, or unavailable",
+            "Food label, ingredient, meal, snack, or cross-contact control is unclear",
+            "Emergency medication, trained staff, or required setting is unavailable",
+            "Possible exposure, symptom, reaction, or administration event occurred",
+            "Classroom, transport, field trip, or activity environment changed",
+            "Immediate breathing, circulation, consciousness, or other emergency concern is active",
+            "Response, supply count, notification, or follow-up does not reconcile"
+          ]
+        },
+        {
+          "key": "support_lines",
+          "type": "table",
+          "label": "Participation support, limitation, owner, and evidence",
+          "columns": [
+            {
+              "key": "support",
+              "label": "Support or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Approved source",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status or evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "guardian_questions",
+          "type": "textarea",
+          "label": "Guardian questions, participant needs, assumptions, and unresolved conditions",
+          "fields": [
+            {
+              "key": "questions",
+              "label": "Questions, participant needs, assumptions, and unresolved conditions"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "permission_decision",
+      "title": "Allergy action plan permission decision and authorization",
+      "guidance": "Preserve approved, declined, conditional, and unresolved scope as separate decisions.",
+      "blocks": [
+        {
+          "key": "decision_lines",
+          "type": "table",
+          "label": "Permission decision lines",
+          "columns": [
+            {
+              "key": "scope_line",
+              "label": "Scope line",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Approve, decline, or defer",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition or reason",
+              "units": 1.4
+            },
+            {
+              "key": "reviewer",
+              "label": "Authorized reviewer",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Allergy action plan permission decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the guardian, qualified health professional, and authorized allergy-response staff."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, approved limits, exception path, and communication plan",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Rationale, approved limits, exception path, and communication plan"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_handoff",
+      "title": "Allergy action plan permission exceptions and operating handoff",
+      "guidance": "Do not force agreement; assign unresolved scope and communicate operating limits.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Permission exception and stop indicators",
+          "items": [
+            "Routine activity cannot proceed under the current allergy plan",
+            "Guardian authorization or qualified plan direction is incomplete",
+            "Student, allergen, plan, medication, or supply does not reconcile",
+            "Meal, activity, cross-contact, staffing, or setting control is unavailable",
+            "Possible exposure, symptom, reaction, or emergency response is active",
+            "Response, supply custody, notification, or follow-up remains unresolved"
+          ]
+        },
+        {
+          "key": "exception_actions",
+          "type": "table",
+          "label": "Exception, immediate control, owner, escalation, and disposition",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or variance",
+              "units": 1.2
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner and due point",
+              "units": 1.1
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation route",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "operating_handoff",
+          "type": "checklist",
+          "label": "Approved-scope handoff requirements",
+          "items": [
+            "Approved and declined scope communicated to assigned staff",
+            "Conditions and stop points visible at the point of use",
+            "Guardian and qualified-review sources linked",
+            "Release, transport, or setting limits routed when applicable",
+            "Unresolved permission has an owner and due point",
+            "Completion evidence and record location identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Allergy action plan outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "Allergy action plan closeout controls",
+          "items": [
+            "Allergy-plan readiness and response status accepted",
+            "Guardian and qualified-review communication recorded",
+            "Unresolved exposure, control, or supply action has an owner",
+            "Emergency medication and equipment returned to approved custody",
+            "Meal, facility, health, or program follow-up linked",
+            "Allergy record stored with privacy and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Permission Slip closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

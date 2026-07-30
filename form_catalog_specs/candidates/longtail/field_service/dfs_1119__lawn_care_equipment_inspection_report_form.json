@@ -1,0 +1,784 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1119__lawn_care_equipment_inspection_report_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1119__lawn_care_equipment_inspection_report_form.pdf",
+  "slug": "lawn-care-equipment-inspection-report-form",
+  "title": "Lawn Care Equipment Inspection Report Form",
+  "subtitle": "Control mowing, cultivation, irrigation review, treatment, and property handoff through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete lawn care equipment inspection report for turf zones, plantings, irrigation features, and service equipment. It connects service plan, product label, site map, and instructions to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified lawn-care technician or applicator must inspect turf zones, plantings, irrigation features, and service equipment against stated criteria and issue a traceable condition, restriction, corrective-action, or release decision.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Lawn Care inspection, site, asset, and inspector identity",
+      "guidance": "Define the exact inspected population, governing criteria, responsible parties, and record boundary.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Lawn Care equipment inspection report reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service visit or route number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Property owner or authorized site contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Property and mapped lawn or planting zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Property zone, turf, planting, and treatment identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Property or route stop",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Lawn, bed, tree, or planting zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Turf or plant type",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Service-plan or prior-visit reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant lawn care context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant lawn care context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "scope_readiness",
+      "title": "Lawn Care inspection scope, criteria, and readiness",
+      "guidance": "Do not infer whole-asset or whole-site condition from a limited, inaccessible, or unqualified inspection.",
+      "blocks": [
+        {
+          "key": "inspection_assignment",
+          "type": "fields",
+          "label": "Inspection assignment and criteria",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Qualified lawn-care technician or applicator",
+              "units": 1.2
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification, license, or training ref.",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_date_time",
+              "label": "Inspection date and time",
+              "units": 0.95
+            },
+            {
+              "key": "criteria_reference",
+              "label": "Controlling plan or criteria reference",
+              "units": 1.3
+            },
+            {
+              "key": "inspection_type",
+              "label": "Inspection type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Initial",
+                "Periodic",
+                "Pre-service",
+                "Post-service",
+                "Incident or complaint",
+                "Return-to-service"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Inspection access and control readiness",
+          "items": [
+            "Property and treatment boundaries confirmed before work",
+            "People, children, pets, vehicles, and movable property cleared or protected",
+            "Hidden utilities, irrigation heads, drainage features, and obstacles identified",
+            "Slope, wet ground, traffic, heat, lightning, and other weather hazards assessed",
+            "Mower guards, discharge controls, blades, and service equipment inspected",
+            "Product label, applicator qualification, PPE, and application conditions verified",
+            "Water, wells, storm drains, pollinator areas, and neighboring property protected",
+            "Mowing height, route, clipping, pruning, and treatment instructions defined",
+            "Gate, key, alarm, and access controls preserved",
+            "Reentry, watering, cleanup, and follow-up instructions assigned"
+          ]
+        },
+        {
+          "key": "population_sampling",
+          "type": "fields",
+          "label": "Population, sampling, and access limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Total assets, zones, or points",
+              "units": 0.9
+            },
+            {
+              "key": "inspected_count",
+              "label": "Actually inspected",
+              "units": 0.85
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.1
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Excluded or inaccessible scope",
+              "units": 1.15
+            },
+            {
+              "key": "known_limits",
+              "label": "Known evidence or access limits",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "preinspection_context",
+          "type": "textarea",
+          "label": "Operating state, environmental conditions, preparatory controls, known history, and inspection limitations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Operating state, environmental conditions, preparatory controls, known history, and inspection limitations",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "component_findings",
+      "title": "Lawn Care component and condition findings",
+      "guidance": "Record actual observations at requirement level rather than converting a checkmark into a conclusion.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Lawn Care detailed inspection points",
+          "items": [
+            "Turf density, height, color, vigor, and bare areas",
+            "Weed, insect, disease, animal, and other pest evidence",
+            "Soil moisture, compaction, erosion, grade, and drainage",
+            "Irrigation coverage, leaks, heads, runoff, and schedule",
+            "Trees, shrubs, beds, edging, roots, and mulch condition",
+            "Mowing pattern, scalping, clipping, thatch, and previous service effects",
+            "Obstacles, debris, utilities, hardscape, vehicles, and fragile property",
+            "Slope, ground firmness, access width, gate, and traffic conditions",
+            "Weather, wind, heat, rainfall, and treatment suitability",
+            "Sensitive plants, water, pollinator habitat, and neighboring exposure"
+          ]
+        },
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Inspection result and evidence register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Asset, component, zone, or point",
+              "units": 1.2
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.2
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, monitor, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or inspector initials",
+              "units": 1.05
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "finding_context",
+          "type": "textarea",
+          "label": "Pattern, environmental influence, sampling basis, inaccessible point, and observation interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pattern, environmental influence, sampling basis, inaccessible point, and observation interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Lawn Care measurements, instruments, and evidence package",
+      "guidance": "Preserve readings and source evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, test, and instrument log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Measurement or test point",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "calibration",
+              "label": "Calibration or evidence ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Applicable concepts include: Turf height before and after, Treated or serviced area, Product rate and applied quantity, Soil moisture, pH, or other approved reading, Weather, wind, or rainfall condition, Irrigation, watering, or follow-up interval."
+        },
+        {
+          "key": "evidence_available",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Property and zone map",
+            "Pre-service turf or plant photographs",
+            "Mowing height or service-setting record",
+            "Product, lot, rate, amount, and treated-area record",
+            "Weather and ground-condition record",
+            "Equipment inspection or route reference",
+            "Property damage or exception photographs",
+            "Post-service and customer-instruction record"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Evidence, source, affected scope, and record location",
+          "columns": [
+            {
+              "key": "evidence",
+              "label": "Evidence or source record",
+              "units": 1.35
+            },
+            {
+              "key": "scope",
+              "label": "Affected asset, zone, or point",
+              "units": 1.15
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "date",
+              "label": "Record date",
+              "units": 0.8
+            },
+            {
+              "key": "location",
+              "label": "Evidence location",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_limits",
+          "type": "textarea",
+          "label": "Unavailable method, calibration concern, conflicting result, photograph restriction, and remaining evidence gap",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unavailable method, calibration concern, conflicting result, photograph restriction, and remaining evidence gap",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "defect_control",
+      "title": "Lawn Care defect classification, containment, and correction",
+      "guidance": "Separate the immediate protection from the corrective action and from the final serviceability decision.",
+      "blocks": [
+        {
+          "key": "defect_indicators",
+          "type": "checklist",
+          "label": "Defect, hazard, or uncertain-condition indicators",
+          "items": [
+            "People, pets, traffic, or property remain in the discharge or work zone",
+            "Hidden utility, irrigation, wire, drain, or obstacle location uncertain",
+            "Slope, wet ground, drop-off, heat, storm, or lightning condition unsafe",
+            "Equipment guard, blade, tire, control, or emergency stop is defective",
+            "Product label, qualification, PPE, weather, or application boundary not met",
+            "Spray drift, runoff, overspread, spill, or non-target plant exposure",
+            "Tree, branch, retaining wall, sinkhole, or structural condition appears unstable",
+            "Property line, customer instruction, or protected zone is disputed",
+            "Plant damage, disease, or condition exceeds authorized lawn-care scope",
+            "Work would conflict with irrigation, construction, occupants, or another vendor"
+          ]
+        },
+        {
+          "key": "defect_register",
+          "type": "table",
+          "label": "Defect priority, immediate control, correction, and verification",
+          "columns": [
+            {
+              "key": "defect",
+              "label": "Defect and affected scope",
+              "units": 1.25
+            },
+            {
+              "key": "priority",
+              "label": "Priority or consequence",
+              "units": 0.9
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "correction",
+              "label": "Corrective action and owner",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Due point or verification ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "containment_status",
+          "type": "fields",
+          "label": "Containment and correction status",
+          "fields": [
+            {
+              "key": "use_status",
+              "label": "Use, access, or service status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Available",
+                "Available with restriction",
+                "Controlled hold",
+                "Removed from service",
+                "Refer to qualified review"
+              ]
+            },
+            {
+              "key": "contained_scope",
+              "label": "Contained or excluded scope",
+              "units": 1.1
+            },
+            {
+              "key": "correction_owner",
+              "label": "Correction owner",
+              "units": 1.0
+            },
+            {
+              "key": "verification_due",
+              "label": "Verification due",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_decision",
+      "title": "Lawn Care inspection status and release decision",
+      "guidance": "Base the stated status on explicit findings, test limits, defect control, and qualified authorization.",
+      "blocks": [
+        {
+          "key": "release_verification",
+          "type": "checklist",
+          "label": "Release and condition verification points",
+          "items": [
+            "All authorized zones received the documented service",
+            "Mowing, edging, trimming, and cleanup meet the approved standard",
+            "No visible discharge, debris, or damage remains on hardscape or property",
+            "Applied product and rate agree with the label and service record",
+            "Gates, irrigation controls, furniture, and movable items are restored",
+            "People, pets, water, and sensitive areas remain protected",
+            "Known plant, turf, drainage, or equipment concerns are documented",
+            "Customer received watering, reentry, and next-visit instructions"
+          ]
+        },
+        {
+          "key": "inspection_status",
+          "type": "fields",
+          "label": "Inspection and serviceability decision",
+          "fields": [
+            {
+              "key": "overall_status",
+              "label": "Overall status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with monitor item",
+                "Restricted",
+                "Corrective action required",
+                "Controlled hold",
+                "Unable to determine"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted asset, area, or scope",
+              "units": 1.15
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Held, excluded, or inaccessible scope",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Inspection conclusion, evidence relied upon, limitation, service restriction, correction need, and reinspection trigger",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection conclusion, evidence relied upon, limitation, service restriction, correction need, and reinspection trigger",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection decision and release authorization",
+          "fields": [
+            {
+              "key": "inspector_signoff",
+              "label": "Inspector and date",
+              "units": 1.15
+            },
+            {
+              "key": "qualified_review",
+              "label": "Turf, pesticide, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "custody_owner",
+              "label": "Service, custody, or site owner and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Lawn Care inspection exception and escalation",
+      "guidance": "Route any authority, access, evidence, defect, scope, or release conflict to an accountable owner.",
+      "blocks": [
+        {
+          "key": "inspection_exception_indicators",
+          "type": "checklist",
+          "label": "Lawn Care exception and stop-work indicators",
+          "items": [
+            "People, pets, traffic, or property remain in the discharge or work zone",
+            "Hidden utility, irrigation, wire, drain, or obstacle location uncertain",
+            "Slope, wet ground, drop-off, heat, storm, or lightning condition unsafe",
+            "Equipment guard, blade, tire, control, or emergency stop is defective",
+            "Product label, qualification, PPE, weather, or application boundary not met",
+            "Spray drift, runoff, overspread, spill, or non-target plant exposure",
+            "Tree, branch, retaining wall, sinkhole, or structural condition appears unstable",
+            "Property line, customer instruction, or protected zone is disputed",
+            "Plant damage, disease, or condition exceeds authorized lawn-care scope",
+            "Work would conflict with irrigation, construction, occupants, or another vendor"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "inspection_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Lawn Care equipment inspection report closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Inspection completed and decision issued",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This lawn care equipment inspection report is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when weather, chemical labeling, people or pets, hidden utilities, slope, equipment guarding, property boundary, or treatment condition is uncertain. A turf, pesticide, or safety supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified lawn-care technician or applicator and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Turf, pesticide, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,582 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1610__childcare_registration_incident_report_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1610__childcare_registration_incident_report_form.pdf",
+  "slug": "childcare-registration-incident-report-form",
+  "title": "Childcare Registration Incident Report Form",
+  "subtitle": "An original operational incident report for childcare registration that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This Childcare Registration Incident Report Form supports the complete childcare registration workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the Childcare Registration Incident Report Form when the assigned childcare enrollment lead needs one fillable record for child enrollment, daily care routing, authorized release, and onboarding without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Childcare registration incident report identity and routing",
+      "guidance": "Connect this incident report to one child enrollment, daily care routing, authorized release, and onboarding record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Childcare registration record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "Childcare site or room",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Program, group, or schedule",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Child or enrollment reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned childcare enrollment lead",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "Childcare registration scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "incident_facts",
+      "title": "Childcare registration incident facts and immediate condition",
+      "guidance": "Record direct observations, reported information, exact times, and unknowns without blame or diagnosis.",
+      "blocks": [
+        {
+          "key": "incident_indicators",
+          "type": "checklist",
+          "label": "Childcare registration incident indicators",
+          "items": [
+            "Injury, illness, allergic concern, or medical response",
+            "Missing child, room transition, or headcount discrepancy",
+            "Unauthorized pickup, release, or contact attempt",
+            "Behavioral or peer event requiring support",
+            "Playground, classroom, rest, meal, or equipment hazard",
+            "Medication, meal, allergy, or support-plan variance",
+            "Property loss, damage, or restricted-record exposure",
+            "Late pickup, unplanned absence, or schedule discrepancy"
+          ]
+        },
+        {
+          "key": "event_time_source",
+          "type": "fields",
+          "label": "Event time, location, and information source",
+          "fields": [
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.9
+            },
+            {
+              "key": "event_time",
+              "label": "Event time",
+              "units": 0.8
+            },
+            {
+              "key": "discovered_time",
+              "label": "Discovered time",
+              "units": 0.9
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location or setting",
+              "units": 1.4
+            },
+            {
+              "key": "information_source",
+              "label": "Direct or reported source",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Direct observation",
+                "Participant report",
+                "Staff report",
+                "Other source"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "chronological_facts",
+          "type": "textarea",
+          "label": "Chronological facts, exact words when necessary, source of each fact, unknowns, and observed impact",
+          "fields": [
+            {
+              "key": "facts",
+              "label": "Chronological facts, exact words, source, unknowns, and observed impact"
+            }
+          ],
+          "height": 82
+        },
+        {
+          "key": "incident_boundary",
+          "type": "notice",
+          "label": "Response and record boundary",
+          "guidance": "This form records childcare registration and operations; it does not decide legal custody, diagnose a child, prescribe care, grant blanket consent, or replace emergency services. Stop enrollment, activity, or release when identity, guardian direction, authorized pickup, health support, or safety is unresolved. Limit sensitive information to the approved record and route decisions to qualified authorized staff."
+        }
+      ]
+    },
+    {
+      "key": "people_evidence",
+      "title": "Childcare registration people, property, records, and evidence",
+      "guidance": "Collect only information needed for response and follow-up; use approved restricted storage.",
+      "blocks": [
+        {
+          "key": "involved_people",
+          "type": "table",
+          "label": "Involved or affected people",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role or relationship",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Name or contact ref.",
+              "units": 1.2
+            },
+            {
+              "key": "impact",
+              "label": "Observed or reported impact",
+              "units": 1.5
+            },
+            {
+              "key": "owner",
+              "label": "Follow-up owner",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_records",
+          "type": "table",
+          "label": "Property, system, document, or evidence references",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or source",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.3
+            },
+            {
+              "key": "storage",
+              "label": "Approved storage or location",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 0.9
+            },
+            {
+              "key": "reference",
+              "label": "Evidence ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "unknowns_limitations",
+          "type": "textarea",
+          "label": "Conflicting reports, missing records, unavailable evidence, privacy limits, and unresolved facts",
+          "fields": [
+            {
+              "key": "unknowns",
+              "label": "Conflicting reports, missing evidence, privacy limits, and unresolved facts"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "response_notification",
+      "title": "Childcare registration response, notification, and operating decision",
+      "guidance": "Document the action actually taken, why it was selected, who authorized it, and what remains unresolved.",
+      "blocks": [
+        {
+          "key": "immediate_actions",
+          "type": "checklist",
+          "label": "Immediate actions and safeguards",
+          "items": [
+            "Stopped or limited the affected childcare registration activity, movement, or release",
+            "Protected the child, participant, volunteer, or affected person from further exposure",
+            "Used emergency services or the qualified response route when indicated",
+            "Reconciled identity, roster, headcount, item, or custody status",
+            "Notified the assigned childcare enrollment lead and authorized guardian-facing route",
+            "Preserved objective facts and minimum-necessary evidence",
+            "Protected private records and restricted sensitive information",
+            "Established a temporary childcare registration control and accountable follow-up owner"
+          ]
+        },
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Notification and escalation log",
+          "columns": [
+            {
+              "key": "contact",
+              "label": "Role or service contacted",
+              "units": 1.2
+            },
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "facts",
+              "label": "Reason and facts shared",
+              "units": 1.5
+            },
+            {
+              "key": "instruction",
+              "label": "Instruction or case ref.",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Childcare registration incident operating decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the childcare administrator, guardian, and qualified health or support reviewer."
+        }
+      ]
+    },
+    {
+      "key": "review_followup",
+      "title": "Childcare registration review, exception ownership, and corrective follow-up",
+      "guidance": "Preserve questions as questions and assign evidence, correction, and recipient follow-up.",
+      "blocks": [
+        {
+          "key": "open_questions",
+          "type": "table",
+          "label": "Open question, action, owner, due point, and review",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or exception",
+              "units": 1.2
+            },
+            {
+              "key": "needed",
+              "label": "Evidence or action needed",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "review",
+              "label": "Disposition or review ref.",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "reviewer_observations",
+          "type": "textarea",
+          "label": "Reviewer observations, corrections to the initial record, limitations, and rationale for final disposition",
+          "fields": [
+            {
+              "key": "review",
+              "label": "Reviewer observations, corrections, limitations, and disposition rationale"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "exception_ownership",
+          "type": "checklist",
+          "label": "Incident exception and escalation indicators",
+          "items": [
+            "Enrollment or placement cannot proceed as requested",
+            "Guardian, emergency contact, or release route is incomplete",
+            "Required health, allergy, medication, or support review is pending",
+            "Child is present while enrollment authority remains unclear",
+            "Immediate illness, injury, missing-child, or safety response is active",
+            "Daily release, attendance, or onboarding closeout is unresolved"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Childcare registration outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "Childcare registration closeout controls",
+          "items": [
+            "Enrollment or daily status accepted by assigned staff",
+            "Guardian communication and next action recorded",
+            "Authorized pickup and emergency routes are available",
+            "Private health and support records are in approved custody",
+            "Open onboarding item has an owner and due point",
+            "Childcare record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Incident Report closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

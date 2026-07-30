@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1530__inventory_count_inspection_checklist_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1530__inventory_count_inspection_checklist_form.pdf",
+  "slug": "inventory-count-inspection-checklist-form",
+  "title": "Inventory Count Inspection Checklist Form",
+  "subtitle": "Set the inventory count inspection scope, test readiness and requirement-level evidence, contain deficiencies, authorize status, and preserve qualified closeout.",
+  "description": "An original, fillable inventory count inspection checklist form for controlling controlled physical inventory count and reconciliation package through inspection checklist identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when a inventory control coordinator or qualified inspector must evaluate controlled physical inventory count and reconciliation package against the count plan, item master, location record, and transaction cutoff and provide a traceable basis for release, restriction, hold, correction, or rejection.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Inventory Count inspection checklist identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Inventory Count record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Inspection Checklist record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Count event, sheet, and zone number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Location, SKU, lot, serial, or count-tag ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned inventory control coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Assigned Counter And Independent Verifier",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Count zone, aisle, bin, cage, or yard location",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Inventory control review and posting queue",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the count plan, item master, location record, and transaction cutoff."
+        }
+      ]
+    },
+    {
+      "key": "inspection_scope",
+      "title": "Inventory Count inspection scope, criteria, and readiness",
+      "guidance": "Define the exact population and review basis so inspection conclusions remain bounded.",
+      "blocks": [
+        {
+          "key": "scope_criteria",
+          "type": "fields",
+          "label": "Inspection scope and criteria",
+          "fields": [
+            {
+              "key": "scope",
+              "label": "Controlled Physical Inventory Count And Reconciliation Package",
+              "units": 1.35
+            },
+            {
+              "key": "criteria",
+              "label": "Count Plan, Item Master, Location Record, And Transaction Cutoff",
+              "units": 1.45
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector name and role",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Inventory Count readiness verification",
+          "items": [
+            "Count scope, zone boundaries, responsible teams, and timing are frozen",
+            "Receiving, shipping, picking, production, and transfer cutoff is documented",
+            "Blind count and system-quantity visibility rules are assigned by role",
+            "Item, unit-of-measure, pack conversion, lot, and serial references are available",
+            "Open containers, mixed lots, consignment, scrap, returns, and holds are marked",
+            "Count tags, scan devices, scales, ladders, and safety access are ready",
+            "Variance thresholds, recount independence, and approval levels are defined",
+            "Completed sheets and electronic records have controlled custody"
+          ],
+          "guidance": "A failed readiness item must be resolved, excluded with rationale, or carried into the exception section."
+        },
+        {
+          "key": "sample_basis",
+          "type": "fields",
+          "label": "Population, sample, and limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Population or total units",
+              "units": 1.05
+            },
+            {
+              "key": "sample",
+              "label": "Units actually inspected",
+              "units": 1.05
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.25
+            },
+            {
+              "key": "limitations",
+              "label": "Known access or evidence limits",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_results",
+      "title": "Inventory Count requirement-level inspection results",
+      "guidance": "Record actual observations against explicit criteria and identify the evidence for each result.",
+      "blocks": [
+        {
+          "key": "requirement_results",
+          "type": "table",
+          "label": "Inspection result register",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit, point, or sample ID",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.35
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, or N/A",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector initials",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "domain_checks",
+          "type": "checklist",
+          "label": "Inventory Count detailed inspection points",
+          "items": [
+            "Count zone and physical boundaries match the assigned sheet",
+            "Location label, SKU, description, and unit of measure are unambiguous",
+            "Sealed cases, open packs, eaches, weight, or volume are converted consistently",
+            "Lot, serial, expiry, revision, ownership, and status are captured where required",
+            "Receiving, shipping, transfer, and work-in-process cutoff is respected",
+            "Damaged, quarantined, consigned, customer-owned, or obsolete stock is separated",
+            "First count is independent and corrections remain traceable",
+            "Recount uses the specified independence and evidence rule",
+            "Empty locations and unlisted stock are explicitly recorded",
+            "Unresolved identity, ownership, cutoff, or quantity issue is escalated before posting"
+          ],
+          "guidance": "Checkboxes indicate that the point was examined; the result table carries findings and evidence."
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Inventory Count measurements and evidence package",
+      "guidance": "Preserve readings, instruments, identity, and evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, count, or verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use the method applicable to System, first-count, recount, and approved quantity and Countability, status, ownership, and segregation condition."
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Approved count plan and zone map",
+            "Controlled count-sheet or scan-batch identity",
+            "Location and item label image",
+            "First-count and counter identity",
+            "Independent recount and verifier identity",
+            "Unit conversion or scale record",
+            "Cutoff transaction and movement log",
+            "Variance investigation and posting reference"
+          ]
+        },
+        {
+          "key": "inspection_narrative",
+          "type": "textarea",
+          "label": "Inspection observations, sampling limitations, and evidence interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection observations, sampling limitations, and evidence interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Inventory Count exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "inspection_exception_types",
+          "type": "checklist",
+          "label": "Inventory Count exception indicators",
+          "items": [
+            "Unlabeled, duplicate, or inaccessible location",
+            "Unknown item, lot, serial, owner, or inventory status",
+            "Mixed unit of measure or pack conversion is uncertain",
+            "Physical movement occurred outside the documented cutoff",
+            "First count and recount remain outside the threshold",
+            "System shows stock where location is empty or the reverse",
+            "Damaged, hold, consigned, or customer-owned quantity is commingled",
+            "Count sheet or scan batch is missing, altered, or duplicated",
+            "Scale, scanner, or system interface is unavailable",
+            "Potential fraud, diversion, or deliberate record override requires escalation"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "inspection_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_decision",
+          "type": "fields",
+          "label": "Inspection deficiency containment and disposition",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_release",
+      "title": "Inventory Count inspection status and release decision",
+      "guidance": "Do not turn a checklist score into release when a critical exception or evidence gap remains.",
+      "blocks": [
+        {
+          "key": "release_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Inspection status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with action",
+                "Restricted",
+                "On hold",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted unit or scope",
+              "units": 1.25
+            },
+            {
+              "key": "held_scope",
+              "label": "Held or excluded unit",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection and release authorization",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector signature and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Inventory Accounting Or Operations Manager review",
+              "units": 1.45
+            },
+            {
+              "key": "release_owner",
+              "label": "Release or custody owner",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Inventory Count inspection checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and released",
+                "Accepted with closed action",
+                "Restricted handoff",
+                "Held for corrective work",
+                "Rejected or removed"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this inventory count inspection checklist with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by inventory accounting or operations manager",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

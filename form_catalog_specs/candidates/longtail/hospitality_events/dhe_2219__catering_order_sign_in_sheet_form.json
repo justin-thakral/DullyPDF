@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2219__catering_order_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2219__catering_order_sign_in_sheet_form.pdf",
+  "slug": "catering-order-sign-in-sheet-form",
+  "title": "Catering Order Sign-In Sheet Form",
+  "subtitle": "Sign the catering crew on and off a delivery, record travel and on-site hours, and capture the client's signature for the delivery itself.",
+  "description": "An original crew and delivery register for off-premise catering. It records the delivery identity and crew plan, each crew member's kitchen departure, on-site, and return times, the on-site delivery acknowledgment signed by the client contact, exceptions such as a refused signature or unlogged return, and an accountable closeout.",
+  "use_case": "Use for one catering delivery when the kitchen must know who travelled, how long they were on site, and who at the client accepted the delivery. The register closes when every crew member is logged back and the delivery has been acknowledged or the refusal recorded.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "delivery_identity",
+      "title": "Delivery identity and crew plan",
+      "guidance": "State the crew plan before the vehicle leaves.",
+      "blocks": [
+        {
+          "key": "delivery_routing",
+          "type": "fields",
+          "label": "Delivery identity and routing",
+          "fields": [
+            {
+              "key": "sheet_id",
+              "label": "Sheet record ID",
+              "units": 0.9
+            },
+            {
+              "key": "delivery_date",
+              "label": "Delivery date",
+              "units": 0.95
+            },
+            {
+              "key": "order_number",
+              "label": "Catering order number",
+              "units": 1.25
+            },
+            {
+              "key": "onsite_lead",
+              "label": "On-site lead",
+              "units": 1.0
+            },
+            {
+              "key": "depart_kitchen",
+              "label": "Depart kitchen",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "crew_plan",
+          "type": "fields",
+          "label": "Crew plan",
+          "fields": [
+            {
+              "key": "site_name",
+              "label": "Delivery site",
+              "units": 1.1
+            },
+            {
+              "key": "guests_expected",
+              "label": "Guests expected",
+              "units": 1.05
+            },
+            {
+              "key": "crew_planned",
+              "label": "Crew planned",
+              "units": 0.95
+            },
+            {
+              "key": "vehicle",
+              "label": "Vehicle",
+              "units": 0.85
+            },
+            {
+              "key": "return_expected",
+              "label": "Return expected",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "crew_register",
+      "title": "Crew sign-on and sign-off",
+      "guidance": "One row per crew member, logged back before the sheet closes.",
+      "blocks": [
+        {
+          "key": "crew_rows",
+          "type": "table",
+          "label": "Crew register",
+          "columns": [
+            {
+              "key": "crew_name",
+              "label": "Name",
+              "units": 1.2
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.9
+            },
+            {
+              "key": "left_kitchen",
+              "label": "Left",
+              "units": 0.6
+            },
+            {
+              "key": "on_site",
+              "label": "On site",
+              "units": 0.65
+            },
+            {
+              "key": "off_site",
+              "label": "Off site",
+              "units": 0.65
+            },
+            {
+              "key": "back_kitchen",
+              "label": "Back",
+              "units": 0.6
+            }
+          ],
+          "rows": 10,
+          "guidance": "Record times only. Payroll identifiers and personal contact details belong in the staffing system, not on a sheet that travels."
+        },
+        {
+          "key": "register_totals",
+          "type": "fields",
+          "label": "Register reconciliation",
+          "fields": [
+            {
+              "key": "crew_signed",
+              "label": "Crew signed on",
+              "units": 1.05
+            },
+            {
+              "key": "travel_minutes",
+              "label": "Travel minutes",
+              "units": 1.0
+            },
+            {
+              "key": "onsite_hours",
+              "label": "On-site hours",
+              "units": 1.0
+            },
+            {
+              "key": "all_returned",
+              "label": "All logged back",
+              "units": 1.15
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivery_acknowledgment",
+      "title": "On-site delivery acknowledgment",
+      "guidance": "Someone at the client accepts the delivery, by name.",
+      "blocks": [
+        {
+          "key": "delivery_lines",
+          "type": "table",
+          "label": "Delivery acknowledgment lines",
+          "columns": [
+            {
+              "key": "line",
+              "label": "What was delivered",
+              "units": 1.5
+            },
+            {
+              "key": "count_expected",
+              "label": "Expected",
+              "units": 0.8
+            },
+            {
+              "key": "count_delivered",
+              "label": "Delivered",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "acceptance_note",
+              "label": "Note or exception",
+              "units": 1.3
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "acknowledgment_record",
+          "type": "fields",
+          "label": "Acknowledgment record",
+          "fields": [
+            {
+              "key": "accepted_name",
+              "label": "Accepted by (name)",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_role",
+              "label": "Their role",
+              "units": 0.95
+            },
+            {
+              "key": "accepted_at",
+              "label": "Accepted at",
+              "units": 0.9
+            },
+            {
+              "key": "acceptance_status",
+              "label": "Acceptance status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Accepted in full",
+                "Accepted with exception",
+                "Signature refused",
+                "No one available"
+              ]
+            },
+            {
+              "key": "restricted_handed_to",
+              "label": "Restricted items to",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "onsite_record",
+      "title": "On-site record and access",
+      "guidance": "What the crew found when it arrived.",
+      "blocks": [
+        {
+          "key": "onsite_checks",
+          "type": "checklist",
+          "label": "On-site checks at arrival",
+          "items": [
+            "Reported to the named site contact on arrival",
+            "Loading position and access route as described in the order",
+            "Client-provided tables and surfaces available as agreed",
+            "Power available where the order assumed it",
+            "Arrival temperature readings taken and recorded",
+            "Restricted portions handed to the named person and confirmed",
+            "Buffet positioned clear of doorways and walkways",
+            "Waste removal responsibility confirmed with the site contact"
+          ]
+        },
+        {
+          "key": "onsite_notes",
+          "type": "textarea",
+          "label": "Site conditions found, deviations from the order, and how they were handled",
+          "fields": [
+            {
+              "key": "onsite_detail",
+              "label": "On-site conditions and deviations"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "register_exceptions",
+      "title": "Exceptions and escalation",
+      "guidance": "A refused signature is recorded, not argued.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "No one at the site would accept or sign for the delivery",
+            "Delivered counts differ from the order and were accepted anyway",
+            "A crew member was not logged back to the kitchen",
+            "The crew was on site materially longer than planned",
+            "Site access differed from the order and delayed setup",
+            "A crew member reported illness or injury during the delivery",
+            "Restricted portions could not be handed to a named person"
+          ],
+          "guidance": "An illness or injury is routed on the incident record, not resolved on this sheet."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "register_boundary",
+          "type": "notice",
+          "label": "Purpose and limits of this register",
+          "guidance": "This register exists to know who travelled, how long the crew was on site, and who accepted the delivery. It is not a payroll record, a performance evaluation, a waiver of any claim by the client, or a record of any employment decision. Route pay, discipline, and medical matters to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "register_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Account for the crew and the acceptance before closing.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Register closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - crew all back",
+                "Closed with exception",
+                "Delivery cancelled"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "labor_reconciliation",
+          "type": "table",
+          "label": "Labor reconciliation for payroll and costing",
+          "columns": [
+            {
+              "key": "crew_name",
+              "label": "Crew member",
+              "units": 1.2
+            },
+            {
+              "key": "travel_minutes",
+              "label": "Travel min",
+              "units": 0.85
+            },
+            {
+              "key": "onsite_hours",
+              "label": "On-site hrs",
+              "units": 0.85
+            },
+            {
+              "key": "beyond_plan",
+              "label": "Beyond plan",
+              "units": 0.9
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 1.1
+            }
+          ],
+          "rows": 5,
+          "guidance": "This is the hours summary the post-delivery cost review consumes; it records hours worked and does not authorize any pay decision."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Every crew row has a matching return time",
+            "Travel and on-site hours totalled for the labor reconciliation",
+            "Delivery acceptance recorded with a name, role, and time",
+            "Delivered-count exceptions carried to the billing record",
+            "Open exceptions transferred with named owners",
+            "Register filed with the order record for the retention period"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Delivery outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Register handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by catering manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

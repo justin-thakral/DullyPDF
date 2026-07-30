@@ -1,0 +1,611 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1808__employee_equipment_acknowledgment_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1808__employee_equipment_acknowledgment_form.pdf",
+  "slug": "employee-equipment-acknowledgment-form",
+  "title": "Employee Equipment Acknowledgment Form",
+  "subtitle": "Use this acknowledgment to prove what was presented, preserve questions or disagreement, route exceptions, and confirm accountable receipt for a employee equipment workflow.",
+  "description": "An original operational employee equipment acknowledgment form that controls a employee asset and access package from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the hiring manager, workplace coordinator, or asset custodian needs a traceable acknowledgment so the authorized workplace, IT, security, or HR reviewer can issue, ship, substitute, repair, recover, or deny the requested equipment package under the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "acknowledgment_context",
+      "title": "Employee Equipment acknowledgment identity and context",
+      "guidance": "Identify the record, participant, presenter, source decision, and exact acknowledgment event.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Employee Equipment identity",
+          "fields": [
+            {
+              "key": "equipment_record",
+              "label": "Equipment record number",
+              "units": 0.8
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee or worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "role_department",
+              "label": "Role and department",
+              "units": 1.05
+            },
+            {
+              "key": "work_location",
+              "label": "Primary work location",
+              "units": 0.9
+            },
+            {
+              "key": "needed_by",
+              "label": "Needed-by date",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Acknowledgment ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "participant_event",
+          "type": "fields",
+          "label": "Participant and delivery event",
+          "fields": [
+            {
+              "key": "participant_name",
+              "label": "Participant name",
+              "units": 0.9
+            },
+            {
+              "key": "participant_reference",
+              "label": "Participant ID or reference",
+              "units": 0.85
+            },
+            {
+              "key": "presented_by",
+              "label": "Presented by",
+              "units": 0.85
+            },
+            {
+              "key": "delivery_method",
+              "label": "Delivery method",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "In person",
+                "Video",
+                "Telephone",
+                "Secure electronic",
+                "Other approved method"
+              ]
+            },
+            {
+              "key": "presented_at",
+              "label": "Presented date and time",
+              "units": 0.85
+            },
+            {
+              "key": "source_decision",
+              "label": "Source decision or record",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "information_presented",
+      "title": "Employee Equipment information and responsibilities presented",
+      "guidance": "Record what was actually explained; do not use a signature as a substitute for delivery.",
+      "blocks": [
+        {
+          "key": "presented_topics",
+          "type": "checklist",
+          "label": "Employee Equipment acknowledgment topics",
+          "items": [
+            "Asset tag, serial number, model, and assigned custodian were verified",
+            "Issued condition and included accessories were recorded",
+            "Security configuration and approved account setup were confirmed",
+            "Storage, transport, physical protection, and acceptable-use duties were explained",
+            "Loss, theft, damage, or suspected compromise reporting route was provided",
+            "Support, repair, replacement, and loaner process was explained",
+            "Personal use, shared access, and unapproved software limits were reviewed",
+            "Return trigger, destination, due point, and data-handling steps were confirmed"
+          ]
+        },
+        {
+          "key": "materials_register",
+          "type": "table",
+          "label": "Material, policy, decision, or instruction presented",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item / topic",
+              "units": 1.2
+            },
+            {
+              "key": "revision",
+              "label": "Revision / date",
+              "units": 0.7
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery method",
+              "units": 0.8
+            },
+            {
+              "key": "recipient_response",
+              "label": "Recipient response",
+              "units": 1.1
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up / owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "terms_summary",
+          "type": "textarea",
+          "label": "Key terms, responsibilities, conditions, limitations, and changes from prior understanding",
+          "fields": [
+            {
+              "key": "terms_detail",
+              "label": "Presented information and responsibility summary"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "understanding_questions",
+      "title": "Employee Equipment understanding, questions, and clarification",
+      "guidance": "Give the participant a route to identify uncertainty, disagreement, access needs, or missing information.",
+      "blocks": [
+        {
+          "key": "question_log",
+          "type": "table",
+          "label": "Question, response, source, unresolved point, and owner",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question / concern",
+              "units": 1.25
+            },
+            {
+              "key": "response",
+              "label": "Response provided",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source / policy ref.",
+              "units": 0.85
+            },
+            {
+              "key": "unresolved",
+              "label": "Unresolved point",
+              "units": 0.95
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner / due",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "understanding_checks",
+          "type": "checklist",
+          "label": "Understanding and access checks",
+          "items": [
+            "Participant had a meaningful opportunity to review the information",
+            "Terms were presented in a usable language and accessible format",
+            "Dates, amounts, schedules, duties, and conditions were restated accurately",
+            "Participant could ask questions without pressure or retaliation",
+            "Unanswered questions have an owner and response due point",
+            "Disagreement is preserved without changing the fact of receipt",
+            "No waiver, consent, or admission is inferred beyond the stated acknowledgment",
+            "Correction and additional-evidence routes were provided"
+          ]
+        },
+        {
+          "key": "participant_statement",
+          "type": "textarea",
+          "label": "Participant statement, disagreement, requested correction, additional evidence, and desired follow-up",
+          "fields": [
+            {
+              "key": "statement_detail",
+              "label": "Participant response in their own words"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "exceptions_privacy",
+      "title": "Employee Equipment exception, privacy, and escalation routing",
+      "guidance": "Protect restricted information and preserve any concern requiring qualified review.",
+      "blocks": [
+        {
+          "key": "ack_boundary",
+          "type": "notice",
+          "label": "Acknowledgment stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized workplace, IT, security, or HR reviewer under the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route."
+        },
+        {
+          "key": "ack_triggers",
+          "type": "checklist",
+          "label": "Employee Equipment exception and escalation triggers",
+          "items": [
+            "Device, badge, key, token, or accessory is lost or stolen",
+            "Equipment is damaged, unsafe, contaminated, or unusable",
+            "Asset tag, serial, assignment, or location record is inconsistent",
+            "Suspected unauthorized access, malware, or data exposure occurred",
+            "Shipment was misdirected, opened, incomplete, or not received",
+            "Unapproved software, peripheral, account, or configuration was identified",
+            "Return deadline was missed or recovered equipment remains unaccounted for",
+            "Equipment failure prevented a critical assigned task or safe work"
+          ]
+        },
+        {
+          "key": "ack_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "ack_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "receipt_action",
+      "title": "Employee Equipment receipt status and resulting action",
+      "guidance": "Record the limited meaning of acknowledgment and route every follow-up.",
+      "blocks": [
+        {
+          "key": "meaning_boundary",
+          "type": "notice",
+          "label": "Meaning of acknowledgment",
+          "guidance": "A signature or recorded receipt confirms presentation and opportunity to respond. It does not by itself prove agreement, waive a right, admit fault, or replace review under the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route."
+        },
+        {
+          "key": "ack_status",
+          "type": "fields",
+          "label": "Acknowledgment status",
+          "fields": [
+            {
+              "key": "receipt_status",
+              "label": "Receipt status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Acknowledged",
+                "Acknowledged with statement",
+                "Declined to sign",
+                "Delivery incomplete",
+                "Pending clarification"
+              ]
+            },
+            {
+              "key": "effective_status",
+              "label": "Resulting workflow status",
+              "units": 0.9
+            },
+            {
+              "key": "correction_needed",
+              "label": "Correction needed?",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "Under review"
+              ]
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 0.85
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.7
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "resulting_actions",
+          "type": "table",
+          "label": "Clarification, correction, delivery, and follow-up actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "ack_signatures",
+          "type": "signatures",
+          "label": "Presentation and receipt record",
+          "fields": [
+            {
+              "key": "participant_ack",
+              "label": "Participant acknowledgment / date",
+              "units": 1.0
+            },
+            {
+              "key": "presenter_confirmation",
+              "label": "Presenter confirmation / date",
+              "units": 1.0
+            },
+            {
+              "key": "witness_or_system",
+              "label": "Witness or delivery-system record / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "acknowledgment_closeout",
+      "title": "Employee Equipment acknowledgment handoff and closeout",
+      "guidance": "Confirm the record and every unresolved clarification reached the correct owner.",
+      "blocks": [
+        {
+          "key": "acknowledgment_outcome",
+          "type": "fields",
+          "label": "Acknowledgment outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "acknowledgment_actions",
+          "type": "table",
+          "label": "Open employee equipment action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "acknowledgment_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "acknowledgment_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "acknowledgment_signoff",
+          "type": "signatures",
+          "label": "Acknowledgment accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Workplace, It, Security, Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

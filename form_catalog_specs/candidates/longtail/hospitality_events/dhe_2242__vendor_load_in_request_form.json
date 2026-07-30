@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2242__vendor_load_in_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2242__vendor_load_in_request_form.pdf",
+  "slug": "vendor-load-in-request-form",
+  "title": "Vendor Load-In Request Form",
+  "subtitle": "Scope a vendor arrival, reserve the right route and staging resources, and hand an approved request into a load-in order.",
+  "description": "An original vendor load-in request that captures the delivery scope, vehicles, crew, equipment, arrival window, receiving route, operational dependencies, conflicts, approval decision, and accountable handoff.",
+  "use_case": "Use before a vendor is scheduled to bring equipment or goods onto a hospitality property. Close when the request is declined or an approved scope is linked to an issued load-in order.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Request intake and ownership",
+      "guidance": "Identify the event, vendor, requested movement, and reviewer.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request ID",
+              "units": 0.8
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 1.0
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.85
+            },
+            {
+              "key": "vendor_name",
+              "label": "Vendor",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Scope details received",
+          "items": [
+            "Vendor contact and day-of contact are recorded",
+            "Requested arrival and completion windows are stated",
+            "Vehicle count and largest vehicle are described",
+            "Equipment, cases, pallets, or goods are summarized",
+            "Destination rooms and staging needs are identified",
+            "Power, freight lift, or storage dependencies are noted"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Movement scope and venue fit",
+      "guidance": "Break the delivery into units that can be routed and received.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Delivery and equipment units",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Item or unit",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Qty",
+              "units": 0.55
+            },
+            {
+              "key": "handling",
+              "label": "Handling need",
+              "units": 1.15
+            },
+            {
+              "key": "arrival",
+              "label": "Arrival",
+              "units": 0.9
+            },
+            {
+              "key": "destination",
+              "label": "Destination",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Requested operating context",
+          "fields": [
+            {
+              "key": "entry_point",
+              "label": "Entry point",
+              "units": 1.0
+            },
+            {
+              "key": "dock_or_curb",
+              "label": "Dock or curb",
+              "units": 1.0
+            },
+            {
+              "key": "staging_area",
+              "label": "Staging area",
+              "units": 1.0
+            },
+            {
+              "key": "venue_contact",
+              "label": "Venue contact",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Feasibility decision and conflicts",
+      "guidance": "Confirm that the proposed movement can be supported as scoped.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Review decisions",
+          "items": [
+            "Arrival window checked against other dock activity",
+            "Vehicle route and clearance reviewed by venue operations",
+            "Freight lift or alternate path availability confirmed",
+            "Floor, wall, or door protection need assigned",
+            "Storage and unattended-item ownership assigned",
+            "Conflicts have owners and resolution due points"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Conflict and resolution register",
+          "columns": [
+            {
+              "key": "conflict",
+              "label": "Conflict",
+              "units": 1.4
+            },
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Request decision and escalation",
+      "guidance": "State what is approved and what remains unresolved.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Request disposition",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Approved",
+                "Declined",
+                "Needs review"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 1.0
+            },
+            {
+              "key": "order_id",
+              "label": "Load-in order",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Approved scope, limitations, and unresolved dependencies",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Decision detail and limitations"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Operational review boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Request handoff and record close",
+      "guidance": "Make the approved movement visible to every receiving role.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Receiving handoffs",
+          "columns": [
+            {
+              "key": "team",
+              "label": "Team",
+              "units": 1.0
+            },
+            {
+              "key": "instruction",
+              "label": "Instruction",
+              "units": 1.5
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "confirmed",
+              "label": "Confirmed",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Request closeout",
+          "items": [
+            "Vendor received the decision and next-step contact",
+            "Approved window and route are reflected in the load-in order",
+            "Dock, lift, staging, and storage owners were notified",
+            "Open exceptions remain assigned with due points",
+            "Supporting diagrams or lists are linked to this request"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Request preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "approved_by",
+              "label": "Venue reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "approval_date",
+              "label": "Review date",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

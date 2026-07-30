@@ -1,0 +1,533 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2561__loss_prevention_log_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2561__loss_prevention_log_form.pdf",
+  "slug": "loss-prevention-log-form",
+  "title": "Loss Prevention Log Form",
+  "subtitle": "A practical chronological operating log for loss prevention that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations chronological operating log for loss prevention covering loss-prevention controls and evidence, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a authorized loss-prevention lead opens one loss prevention record to record chronological checkpoints, preserve corrections, escalate exceptions, summarize the period, and hand off open actions; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Loss prevention log identity and routing",
+      "guidance": "Connect this log to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Loss prevention record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Store or monitored site",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Zone, shift, or control",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned authorized loss-prevention lead",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Loss prevention event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Loss Prevention scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "log_basis",
+      "title": "Loss prevention log basis and entry rules",
+      "guidance": "Use chronological entries for one operating period and preserve corrections as new entries rather than overwriting history.",
+      "blocks": [
+        {
+          "key": "event_categories",
+          "type": "checklist",
+          "label": "Loss prevention event categories",
+          "items": [
+            "Control or restricted-area check",
+            "Key, seal, alarm, door, or device status",
+            "High-value or transaction-interface observation",
+            "Reported event received",
+            "Objective observation recorded",
+            "Restricted evidence custody action",
+            "Escalation or external-contact routing",
+            "Temporary control or next-shift handoff"
+          ]
+        },
+        {
+          "key": "log_controls",
+          "type": "fields",
+          "label": "Log control",
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.8
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.8
+            },
+            {
+              "key": "entry_owner",
+              "label": "Primary log owner",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_frequency",
+              "label": "Handoff frequency",
+              "units": 1.0
+            },
+            {
+              "key": "restricted_refs",
+              "label": "Restricted-record route",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Logging boundary",
+          "guidance": "This form does not authorize surveillance expansion, profiling, confrontation, pursuit, search, detention, accusation, or access to restricted evidence. Record objective facts and minimum necessary personal information. Keep footage, credentials, and sensitive evidence in approved restricted systems. Follow applicable privacy, security, legal-request, and emergency policy and route decisions to the authorized professional reviewer."
+        }
+      ]
+    },
+    {
+      "key": "chronological_entries",
+      "title": "Loss prevention chronological activity entries",
+      "guidance": "Give each entry a time, event or checkpoint, objective result, action or decision, owner, and evidence reference.",
+      "blocks": [
+        {
+          "key": "activity_log",
+          "type": "table",
+          "label": "Loss prevention activity log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "event",
+              "label": "Event or checkpoint",
+              "units": 1.15
+            },
+            {
+              "key": "observation",
+              "label": "Observation or result",
+              "units": 1.25
+            },
+            {
+              "key": "action",
+              "label": "Action or decision",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref.",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "period_context",
+          "type": "textarea",
+          "label": "Operating context, unusual demand, system limits, corrections to prior entries, and known evidence gaps",
+          "fields": [
+            {
+              "key": "context_detail",
+              "label": "Loss Prevention log context and corrections"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Loss prevention exceptions, escalation, and status changes",
+      "guidance": "Connect every unresolved log entry to an immediate control, owner, due point, and escalation route.",
+      "blocks": [
+        {
+          "key": "condition_indicators",
+          "type": "checklist",
+          "label": "Conditions requiring a status entry",
+          "items": [
+            "Key, seal, door, alarm, or restricted-area discrepancy",
+            "Camera or security device unavailable",
+            "High-value, receiving, return, or cash control gap",
+            "Unexpected access or activity observed",
+            "Reported loss lacks objective supporting facts",
+            "Evidence or personal information needs restricted handling",
+            "Immediate threat or emergency response needed",
+            "Matter exceeds role, policy, or investigation authority"
+          ]
+        },
+        {
+          "key": "exception_log",
+          "type": "table",
+          "label": "Exception and escalation entries",
+          "columns": [
+            {
+              "key": "entry_ref",
+              "label": "Log entry ref.",
+              "units": 0.8
+            },
+            {
+              "key": "exception",
+              "label": "Exception or variance",
+              "units": 1.25
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.05
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or outcome",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Loss prevention period status and authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Hold",
+                "Proceed with limits",
+                "Proceed",
+                "Escalate",
+                "Decline",
+                "Rework"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or approval ref.",
+              "units": 1.05
+            },
+            {
+              "key": "review_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "shift_summary",
+      "title": "Loss prevention period summary and next-shift route",
+      "guidance": "Summarize totals and outcomes without replacing the detailed chronological entries.",
+      "blocks": [
+        {
+          "key": "summary_counts",
+          "type": "fields",
+          "label": "Period summary",
+          "fields": [
+            {
+              "key": "entries_total",
+              "label": "Entries recorded",
+              "units": 0.8
+            },
+            {
+              "key": "normal_results",
+              "label": "Routine results",
+              "units": 0.8
+            },
+            {
+              "key": "exceptions_total",
+              "label": "Exceptions",
+              "units": 0.8
+            },
+            {
+              "key": "open_actions",
+              "label": "Open actions",
+              "units": 0.8
+            },
+            {
+              "key": "evidence_records",
+              "label": "Evidence references",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Next-shift log handoff controls",
+          "items": [
+            "Chronological entries complete through handoff time",
+            "Late corrections cross-reference the original entry",
+            "Period counts and status summary reconciled",
+            "Highest-priority open exception highlighted",
+            "Receiving owner briefed on operating limits",
+            "Next checkpoint or review time recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Loss prevention outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Loss prevention closeout controls",
+          "items": [
+            "Objective observation and source type recorded",
+            "Restricted evidence location and custodian linked",
+            "Affected control has a temporary owner",
+            "Required management or specialist review assigned",
+            "Next shift received limits and open actions",
+            "Final outcome avoids unsupported accusation"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_action_register",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation_action",
+              "label": "Limitation or action",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "recipient_route",
+              "label": "Recipient or route",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Loss Prevention residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Log closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

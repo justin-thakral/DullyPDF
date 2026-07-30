@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2254__wedding_planning_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2254__wedding_planning_sign_in_sheet_form.pdf",
+  "slug": "wedding-planning-sign-in-sheet-form",
+  "title": "Wedding Planning Sign-In Sheet Form",
+  "subtitle": "Control vendor and event-crew access with arrival, assigned zone, issued property, briefing, departure, and exception handoffs in one record.",
+  "description": "An original wedding vendor and crew access sheet, not a guest attendance list. It connects each arrival to an approved supplier role, workspace, venue contact, equipment or access property, briefing status, check-out, and unresolved access exception.",
+  "use_case": "Use at the designated wedding supplier entrance for planners, production crews, decorators, photographers, rental teams, and other approved workers. Do not collect guest details; close after access property is reconciled and late departures or unresolved exceptions are handed to venue operations.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "sheet_control",
+      "title": "Access sheet control",
+      "guidance": "Define the event, checkpoint, access window, and checkpoint owners.",
+      "blocks": [
+        {
+          "key": "sheet_identity",
+          "type": "fields",
+          "label": "Sheet identity",
+          "fields": [
+            {
+              "key": "sheet_id",
+              "label": "Access sheet ID",
+              "units": 0.85
+            },
+            {
+              "key": "event_id",
+              "label": "Wedding or event ID",
+              "units": 1.0
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "checkpoint",
+              "label": "Access checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "opens_at",
+              "label": "Checkpoint opens",
+              "units": 0.85
+            },
+            {
+              "key": "closes_at",
+              "label": "Checkpoint closes",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "checkpoint_team",
+          "type": "fields",
+          "label": "Checkpoint routing",
+          "fields": [
+            {
+              "key": "primary_attendant",
+              "label": "Primary attendant",
+              "units": 1.1
+            },
+            {
+              "key": "relief_attendant",
+              "label": "Relief attendant",
+              "units": 1.05
+            },
+            {
+              "key": "event_lead",
+              "label": "Event lead",
+              "units": 1.0
+            },
+            {
+              "key": "operations_contact",
+              "label": "Operations contact",
+              "units": 1.1
+            },
+            {
+              "key": "escalation_channel",
+              "label": "Escalation channel",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approved_access",
+      "title": "Approved access reference",
+      "guidance": "Confirm who is expected and the access scope already assigned.",
+      "blocks": [
+        {
+          "key": "approved_supplier_list",
+          "type": "table",
+          "label": "Approved supplier reference",
+          "columns": [
+            {
+              "key": "company",
+              "label": "Company",
+              "units": 1.2
+            },
+            {
+              "key": "service",
+              "label": "Service",
+              "units": 1.0
+            },
+            {
+              "key": "lead_contact",
+              "label": "Lead contact",
+              "units": 1.1
+            },
+            {
+              "key": "window",
+              "label": "Access window",
+              "units": 0.95
+            },
+            {
+              "key": "zone",
+              "label": "Approved zone",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "checkpoint_setup",
+          "type": "checklist",
+          "label": "Checkpoint setup confirmations",
+          "items": [
+            "Current supplier list and planning order are available",
+            "Entry route and restricted areas are marked",
+            "Badge, key, or radio inventory is counted",
+            "Load-in and parking directions are available",
+            "Event lead and operations escalation contacts are confirmed",
+            "Late, unlisted, or changed arrivals have a review path"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_log",
+      "title": "Vendor and crew attendance",
+      "guidance": "Record only the operational details needed for access and accountability.",
+      "blocks": [
+        {
+          "key": "sign_in_log",
+          "type": "table",
+          "label": "Vendor and crew sign-in",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.15
+            },
+            {
+              "key": "company_role",
+              "label": "Company and role",
+              "units": 1.35
+            },
+            {
+              "key": "in_time",
+              "label": "In",
+              "units": 0.55
+            },
+            {
+              "key": "assigned_zone",
+              "label": "Assigned zone",
+              "units": 1.0
+            },
+            {
+              "key": "venue_contact",
+              "label": "Venue contact",
+              "units": 1.0
+            },
+            {
+              "key": "out_time",
+              "label": "Out",
+              "units": 0.55
+            }
+          ],
+          "rows": 10,
+          "guidance": "Use the minimum identifying detail needed for venue access. Do not record guests on this sheet."
+        },
+        {
+          "key": "headcount_control",
+          "type": "fields",
+          "label": "Attendance control",
+          "fields": [
+            {
+              "key": "expected_workers",
+              "label": "Expected workers",
+              "units": 0.9
+            },
+            {
+              "key": "total_checked_in",
+              "label": "Total checked in",
+              "units": 0.9
+            },
+            {
+              "key": "total_checked_out",
+              "label": "Total checked out",
+              "units": 0.95
+            },
+            {
+              "key": "still_on_site",
+              "label": "Still on site",
+              "units": 0.8
+            },
+            {
+              "key": "last_sweep_at",
+              "label": "Last sweep at",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "issued_property",
+      "title": "Issued access property and briefing",
+      "guidance": "Track venue property and restrictions supplied at check-in.",
+      "blocks": [
+        {
+          "key": "property_log",
+          "type": "table",
+          "label": "Issued property register",
+          "columns": [
+            {
+              "key": "person",
+              "label": "Person or company",
+              "units": 1.2
+            },
+            {
+              "key": "item",
+              "label": "Badge, key, or radio",
+              "units": 1.25
+            },
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.75
+            },
+            {
+              "key": "issued_at",
+              "label": "Issued at",
+              "units": 0.75
+            },
+            {
+              "key": "returned_at",
+              "label": "Returned at",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "briefing_checks",
+          "type": "checklist",
+          "label": "Briefing topics acknowledged",
+          "items": [
+            "Approved work area and restricted areas identified",
+            "Load-in route and storage expectations explained",
+            "Accessible guest route must remain unobstructed",
+            "Changes require event-lead approval",
+            "Incident and damage reporting route explained",
+            "Load-out, waste, and departure window explained"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_exceptions",
+      "title": "Access exceptions and escalation",
+      "guidance": "Route unexpected arrivals or access conflicts before entry.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Person or company is not on the approved list",
+            "Arrival is outside the approved window",
+            "Requested zone exceeds the approved access scope",
+            "Restricted-area access is requested",
+            "Issued property cannot be accounted for",
+            "Worker refuses or cannot complete the venue briefing",
+            "Load-in activity conflicts with guest or event movement"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Access exception register",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "access_boundary",
+          "type": "notice",
+          "label": "Access decision boundary",
+          "guidance": "The attendant records and routes access decisions; this sheet does not independently authorize entry, credential a supplier, or expand an approved work zone. Stop an unresolved arrival and contact the event lead or responsible operations role."
+        }
+      ]
+    },
+    {
+      "key": "checkpoint_closeout",
+      "title": "Departure reconciliation and closeout",
+      "guidance": "Reconcile people, issued property, and unresolved handoffs.",
+      "blocks": [
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Checkpoint closeout",
+          "items": [
+            "Checked-in and checked-out totals compared",
+            "Remaining workers located or handed to operations",
+            "Badges, keys, radios, and other issued property reconciled",
+            "Late load-out teams transferred to a named venue contact",
+            "Access exceptions have final dispositions or owners",
+            "Completed sheet stored with the event operations record"
+          ]
+        },
+        {
+          "key": "departure_handoff",
+          "type": "table",
+          "label": "Departure and late-team handoff",
+          "columns": [
+            {
+              "key": "person_company",
+              "label": "Person or company",
+              "units": 1.2
+            },
+            {
+              "key": "open_reason",
+              "label": "Reason still open",
+              "units": 1.2
+            },
+            {
+              "key": "last_location",
+              "label": "Last location",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_owner",
+              "label": "Handoff owner",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use for anyone still working, loading out, or missing a recorded departure when the checkpoint closes."
+        },
+        {
+          "key": "checkpoint_notes",
+          "type": "textarea",
+          "label": "Final sweep and unresolved access detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Checkpoint closeout observations and remaining limitations"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "checkpoint_review",
+          "type": "signatures",
+          "label": "Checkpoint handoff",
+          "fields": [
+            {
+              "key": "closed_by",
+              "label": "Checkpoint closed by",
+              "units": 1.1
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "received_by",
+              "label": "Handoff received by",
+              "units": 1.1
+            },
+            {
+              "key": "received_at",
+              "label": "Received at",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

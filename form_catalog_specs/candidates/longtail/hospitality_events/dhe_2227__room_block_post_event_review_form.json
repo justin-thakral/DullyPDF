@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2227__room_block_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2227__room_block_post_event_review_form.pdf",
+  "slug": "room-block-post-event-review-form",
+  "title": "Room Block Post-Event Review Form",
+  "subtitle": "Close the block after the group leaves: pickup against contract, attrition, revenue per available room, service failures, and rebooking position.",
+  "description": "An original post-stay review for a contracted room block. It reconciles contracted, picked up, and consumed room nights, records the attrition and billing position, measures arrival and service performance, captures the group's outcome and rebooking intent, opens actions for findings, and records what should change in the next block.",
+  "use_case": "Use after a group departs, when sales, rooms control, and accounting must agree on what the block actually consumed and whether it should be rebooked on the same terms. The review closes when the billing position is agreed and every finding has an owner.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_identity",
+      "title": "Review identity and participants",
+      "guidance": "Bind the review to the block and the people who ran the stay.",
+      "blocks": [
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Review identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review record ID",
+              "units": 0.9
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "block_order_number",
+              "label": "Block order number",
+              "units": 1.35
+            },
+            {
+              "key": "stay_dates",
+              "label": "Stay dates",
+              "units": 0.95
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Participants",
+          "fields": [
+            {
+              "key": "group_name",
+              "label": "Group name",
+              "units": 1.2
+            },
+            {
+              "key": "sales_owner",
+              "label": "Sales owner",
+              "units": 1.0
+            },
+            {
+              "key": "rooms_owner",
+              "label": "Rooms control owner",
+              "units": 1.3
+            },
+            {
+              "key": "front_office_lead",
+              "label": "Front office lead",
+              "units": 1.25
+            },
+            {
+              "key": "group_contact",
+              "label": "Group contact",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consumption_and_billing",
+      "title": "Room nights consumed and billing position",
+      "guidance": "Contracted, picked up, consumed - three different numbers.",
+      "blocks": [
+        {
+          "key": "consumption_rows",
+          "type": "table",
+          "label": "Room night reconciliation",
+          "columns": [
+            {
+              "key": "stay_date",
+              "label": "Night",
+              "units": 0.75
+            },
+            {
+              "key": "contracted",
+              "label": "Contracted",
+              "units": 0.9
+            },
+            {
+              "key": "picked_up",
+              "label": "Picked up",
+              "units": 0.85
+            },
+            {
+              "key": "consumed",
+              "label": "Consumed",
+              "units": 0.85
+            },
+            {
+              "key": "no_shows",
+              "label": "No-shows",
+              "units": 0.85
+            },
+            {
+              "key": "shortfall",
+              "label": "Shortfall",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "billing_position",
+          "type": "fields",
+          "label": "Billing position",
+          "fields": [
+            {
+              "key": "nights_contracted",
+              "label": "Nights contracted",
+              "units": 1.25
+            },
+            {
+              "key": "nights_consumed",
+              "label": "Nights consumed",
+              "units": 1.2
+            },
+            {
+              "key": "rooms_revenue",
+              "label": "Rooms revenue",
+              "units": 1.05
+            },
+            {
+              "key": "attrition_charged",
+              "label": "Attrition charged",
+              "units": 1.25
+            },
+            {
+              "key": "average_rate",
+              "label": "Average rate",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "billing_checks",
+          "type": "checklist",
+          "label": "Billing checks",
+          "items": [
+            "Consumed nights reconciled to the night audit records",
+            "No-show and early-departure charges applied per the agreement",
+            "Attrition position calculated against the contracted pattern",
+            "Master account charges reconciled against the billing route",
+            "Complimentary rooms applied at the contracted ratio",
+            "Approved incident remedies and adjustments applied with references",
+            "Final account reviewed with the group contact"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "stay_performance",
+      "title": "Arrival and service performance",
+      "guidance": "The block can meet its numbers and still deliver a bad stay.",
+      "blocks": [
+        {
+          "key": "performance_rows",
+          "type": "table",
+          "label": "Performance against plan",
+          "columns": [
+            {
+              "key": "measure",
+              "label": "Measure",
+              "units": 1.35
+            },
+            {
+              "key": "planned",
+              "label": "Planned",
+              "units": 0.85
+            },
+            {
+              "key": "actual",
+              "label": "Actual",
+              "units": 0.85
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 0.85
+            },
+            {
+              "key": "cause",
+              "label": "Cause",
+              "units": 1.4
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "performance_findings",
+          "type": "checklist",
+          "label": "Performance findings",
+          "items": [
+            "Rooming list arrived by the contracted due date",
+            "Every guest had a reservation on arrival",
+            "Every committed accessible room was delivered",
+            "No guest from the block was relocated or turned away",
+            "Rooms were ready at the agreed check-in time",
+            "Billing routing held through the stay without desk corrections",
+            "Group contact had a single named point of contact throughout"
+          ]
+        },
+        {
+          "key": "performance_notes",
+          "type": "textarea",
+          "label": "Where the stay worked, where it failed, and what it cost",
+          "fields": [
+            {
+              "key": "performance_detail",
+              "label": "Stay performance detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "group_outcome",
+      "title": "Group outcome and rebooking position",
+      "guidance": "Record what the group said, in their terms.",
+      "blocks": [
+        {
+          "key": "outcome_record",
+          "type": "fields",
+          "label": "Group outcome",
+          "fields": [
+            {
+              "key": "satisfaction",
+              "label": "Group satisfaction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "Very satisfied",
+                "Satisfied",
+                "Mixed",
+                "Dissatisfied"
+              ]
+            },
+            {
+              "key": "feedback_source",
+              "label": "Feedback source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "Departure debrief",
+                "Follow-up call",
+                "Written survey",
+                "Unsolicited email"
+              ]
+            },
+            {
+              "key": "complaint_raised",
+              "label": "Complaint raised",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Raised and resolved",
+                "Raised - still open",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "rebook_position",
+              "label": "Rebook position",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Unknown",
+                "Rebooked already",
+                "Likely - same terms",
+                "Likely - revised terms",
+                "Unlikely",
+                "Will not return"
+              ]
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "group_feedback",
+          "type": "textarea",
+          "label": "Group feedback and what was promised in response",
+          "fields": [
+            {
+              "key": "feedback_detail",
+              "label": "Group feedback record"
+            }
+          ],
+          "height": 58,
+          "guidance": "Record what was said and who said it. Do not record health information or judgments about individual staff."
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Record boundary for this review",
+          "guidance": "This review is an internal commercial and operating record. It does not settle an attrition or billing dispute, determine liability for an incident, evaluate an individual employee, or authorize compensation. Route account adjustments, contract questions, and personnel matters to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "review_findings",
+      "title": "Findings requiring action and escalation",
+      "guidance": "Terms that did not work should not be repeated by default.",
+      "blocks": [
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A guest from the block was relocated or turned away",
+            "A committed accessible room was not delivered",
+            "Pickup fell materially below the contracted pattern",
+            "Attrition is chargeable and the group is disputing it",
+            "Displacement of higher-rated demand exceeded the estimate",
+            "An open incident report from this stay is unresolved",
+            "The same failure appeared on a prior stay by this group"
+          ]
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Finding and action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "action_agreed",
+              "label": "Action agreed",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Rebooking terms, closeout, and handoff",
+      "guidance": "What the next block for this group should look like.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - no actions",
+                "Closed with actions",
+                "Escalated to leadership",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "rebooking_terms",
+          "type": "table",
+          "label": "Recommended terms for the next block",
+          "columns": [
+            {
+              "key": "term",
+              "label": "Term",
+              "units": 1.25
+            },
+            {
+              "key": "this_stay",
+              "label": "This stay",
+              "units": 1.0
+            },
+            {
+              "key": "recommended",
+              "label": "Recommended next",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason",
+              "units": 1.35
+            }
+          ],
+          "rows": 5,
+          "guidance": "Cover contracted pattern, rate, cutoff, attrition allowance, and comp ratio."
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Room night reconciliation agreed with accounting",
+            "Attrition position documented with the contracted basis",
+            "Group feedback recorded with its source and date",
+            "Open findings transferred with named owners and due points",
+            "Recommended terms filed against the group's account for rebooking",
+            "Review filed against the block order record"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Review outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Review closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by director of sales",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

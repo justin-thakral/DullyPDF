@@ -1,0 +1,617 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1854__performance_improvement_log_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1854__performance_improvement_log_form.pdf",
+  "slug": "performance-improvement-log-form",
+  "title": "Performance Improvement Log Form",
+  "subtitle": "Use this log to record events in sequence, reconcile sources, identify trends and exceptions, and transfer the last known status for a performance improvement workflow.",
+  "description": "An original operational performance improvement log form that controls a objective performance-support and review record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the manager, employee, or HR case owner needs a traceable log so the qualified HR, employee-relations, legal, or management reviewer can start, revise, extend, complete, close, or escalate the performance-improvement process under the current job description, consistently applied performance standards, accommodation process, employee-relations policy, and applicable employment requirements without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Performance Improvement log period, ownership, and control",
+      "guidance": "Open a bounded log with a clear owner, source record, entry standard, and review cadence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Performance Improvement identity",
+          "fields": [
+            {
+              "key": "improvement_record",
+              "label": "Improvement record number",
+              "units": 0.85
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "position_department",
+              "label": "Position and department",
+              "units": 1.05
+            },
+            {
+              "key": "manager_owner",
+              "label": "Manager or case owner",
+              "units": 0.95
+            },
+            {
+              "key": "review_period",
+              "label": "Review period",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Log ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "log_period",
+          "type": "fields",
+          "label": "Log period and entry control",
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.7
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.7
+            },
+            {
+              "key": "entry_owner",
+              "label": "Entry owner",
+              "units": 0.85
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 0.8
+            },
+            {
+              "key": "source_system",
+              "label": "Source system or register",
+              "units": 1.0
+            },
+            {
+              "key": "timezone_basis",
+              "label": "Time zone or date basis",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "baseline_rules",
+      "title": "Performance Improvement baseline, entry rules, and expected evidence",
+      "guidance": "Define the expected operating state so each log entry can be interpreted later.",
+      "blocks": [
+        {
+          "key": "entry_requirements",
+          "type": "checklist",
+          "label": "Performance Improvement log-entry requirements",
+          "items": [
+            "Current job description, essential outputs, and applicable standards are identified",
+            "Each concern cites objective examples, dates, impact, and source evidence",
+            "Employee response and supporting information are preserved",
+            "Prior expectations, coaching, feedback, and opportunities are documented",
+            "Targets and measures are specific to the identified performance gap",
+            "Resources, training, tools, access, priorities, and manager support are assigned",
+            "Checkpoint schedule gives timely feedback before final review",
+            "Accommodation or medical information is routed to a separate confidential process",
+            "Retaliation, complaint, leave, or protected-activity concerns receive independent review",
+            "Comparable application and conflict-of-interest checks are complete",
+            "Checkpoint conclusions use evidence from the defined review window",
+            "Final action has qualified HR review and a documented handoff"
+          ]
+        },
+        {
+          "key": "evidence_sources",
+          "type": "checklist",
+          "label": "Supporting evidence and source records",
+          "items": [
+            "Current job description, role duty, or conduct standard",
+            "Work product, service, deadline, quality, attendance, or outcome record",
+            "Prior direction, coaching, feedback, and employee response",
+            "Approved target, measure, baseline, and review schedule",
+            "Training, tools, access, workload, and manager-support evidence",
+            "Checkpoint notes and employee-provided evidence",
+            "Separate HR routing reference for confidential or protected concerns",
+            "Qualified review, decision communication, follow-up, or closure record"
+          ]
+        },
+        {
+          "key": "baseline_notes",
+          "type": "textarea",
+          "label": "Opening status, carried items, data sources, known gaps, entry conventions, and review assumptions",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Log baseline and control notes"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "recurring_entries",
+      "title": "Performance Improvement recurring event log",
+      "guidance": "Enter events in sequence and preserve actor, result, source, and next action.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Performance Improvement event and status log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "checkpoint_event",
+              "label": "Checkpoint / support event",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_result",
+              "label": "Evidence / observed result",
+              "units": 1.2
+            },
+            {
+              "key": "employee_input",
+              "label": "Employee input",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner / reviewer",
+              "units": 0.8
+            },
+            {
+              "key": "next_due",
+              "label": "Next action / due",
+              "units": 0.95
+            }
+          ],
+          "rows": 12
+        },
+        {
+          "key": "decision_change_log",
+          "type": "table",
+          "label": "Decision, correction, status change, reason, and authorization log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "prior_status",
+              "label": "Prior status",
+              "units": 0.8
+            },
+            {
+              "key": "new_status",
+              "label": "New status",
+              "units": 0.8
+            },
+            {
+              "key": "reason_evidence",
+              "label": "Reason / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.8
+            },
+            {
+              "key": "notice_ref",
+              "label": "Notice / system ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "sequence_notes",
+          "type": "textarea",
+          "label": "Sequence context, corrected entry, source conflict, missing interval, and interpretation limit",
+          "fields": [
+            {
+              "key": "sequence_detail",
+              "label": "Log sequence and correction notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "period_review",
+      "title": "Performance Improvement trend, reconciliation, and period review",
+      "guidance": "Reconcile the log to source systems and identify patterns that require a decision or corrective action.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "table",
+          "label": "Population, source count, log count, variance, owner, and resolution",
+          "columns": [
+            {
+              "key": "population",
+              "label": "Population / segment",
+              "units": 1.05
+            },
+            {
+              "key": "source_total",
+              "label": "Source total",
+              "units": 0.7
+            },
+            {
+              "key": "log_total",
+              "label": "Log total",
+              "units": 0.7
+            },
+            {
+              "key": "variance",
+              "label": "Variance / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "period_checks",
+          "type": "checklist",
+          "label": "Period review and decision checks",
+          "items": [
+            "Expectation is tied to an essential output, conduct rule, or documented role duty",
+            "Standard is specific, measurable where feasible, attainable, relevant, and time-bounded",
+            "Evidence identifies dates, work products, expected result, and observed gap",
+            "Comparable employees and prior applications support consistent treatment",
+            "Employee explanation and contrary evidence are captured without prejudgment",
+            "Training, tools, access, workload, direction, and manager support were assessed",
+            "Accommodation or protected-activity indicators are routed to qualified HR",
+            "Checkpoint ratings use the stated measure and review period",
+            "Consequences are not predetermined before the evidence period closes",
+            "Final conclusion distinguishes sustained improvement, partial progress, and unresolved gap"
+          ]
+        },
+        {
+          "key": "period_outcome",
+          "type": "fields",
+          "label": "Period review outcome",
+          "fields": [
+            {
+              "key": "entries_reviewed",
+              "label": "Entries reviewed",
+              "units": 0.7
+            },
+            {
+              "key": "exceptions_open",
+              "label": "Open exceptions",
+              "units": 0.7
+            },
+            {
+              "key": "corrections_made",
+              "label": "Corrections made",
+              "units": 0.75
+            },
+            {
+              "key": "trend_status",
+              "label": "Trend status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Stable",
+                "Improving",
+                "Deteriorating",
+                "Mixed",
+                "Insufficient data"
+              ]
+            },
+            {
+              "key": "reviewer",
+              "label": "Period reviewer",
+              "units": 0.85
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "trend_analysis",
+          "type": "textarea",
+          "label": "Observed pattern, comparison basis, outlier, source limitation, operational effect, and decision need",
+          "fields": [
+            {
+              "key": "trend_detail",
+              "label": "Trend and reconciliation analysis"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Performance Improvement unresolved event and escalation register",
+      "guidance": "Preserve exceptions separately from routine entries until final disposition.",
+      "blocks": [
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Log stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the qualified HR, employee-relations, legal, or management reviewer under the current job description, consistently applied performance standards, accommodation process, employee-relations policy, and applicable employment requirements."
+        },
+        {
+          "key": "log_triggers",
+          "type": "checklist",
+          "label": "Performance Improvement exception and escalation triggers",
+          "items": [
+            "Record contains medical details or confidential accommodation information",
+            "Employee reports retaliation, discrimination, harassment, coercion, or interference",
+            "Expectation or measure changed without notice during the review period",
+            "Required coaching, tools, access, workload decision, or feedback was not provided",
+            "Manager evidence is inaccurate, altered, incomplete, or attributed to the wrong employee",
+            "Comparable-employee or prior-treatment information indicates inconsistent application",
+            "Decision was communicated or implemented before required HR review",
+            "Threat, violence, self-harm, safety, or emergency concern requires immediate qualified routing"
+          ]
+        },
+        {
+          "key": "log_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Performance Improvement period handoff and log closeout",
+      "guidance": "Transfer the last known status, open actions, and next required review to the receiving owner.",
+      "blocks": [
+        {
+          "key": "log_closeout_outcome",
+          "type": "fields",
+          "label": "Log outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_closeout_actions",
+          "type": "table",
+          "label": "Open performance improvement action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "log_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "log_closeout_signoff",
+          "type": "signatures",
+          "label": "Log accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Employee-Relations, Legal, Or Management Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2229__guest_incident_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2229__guest_incident_order_form.pdf",
+  "slug": "guest-incident-order-form",
+  "title": "Guest Incident Order Form",
+  "subtitle": "Authorize and track the remediation work an incident case needs: repairs, replacement, account adjustments, and follow-up contact.",
+  "description": "An original remediation work order for an open guest incident case. It records the case it belongs to, the authorized remediation lines with cost and approver, corrective work on the condition that caused the incident, the guest follow-up plan, approval limits and open conditions, and the verified completion handoff.",
+  "use_case": "Use once a guest incident case has been reviewed and the venue has decided what it will do: fix a condition, replace property, adjust an account, or follow up with the guest. The order closes when every authorized line is verified complete and the guest has confirmed what was promised was done.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Order identity and case routing",
+      "guidance": "Bind the work order to the case and its approver.",
+      "blocks": [
+        {
+          "key": "order_routing",
+          "type": "fields",
+          "label": "Order identity and routing",
+          "fields": [
+            {
+              "key": "order_id",
+              "label": "Work order ID",
+              "units": 0.9
+            },
+            {
+              "key": "case_id",
+              "label": "Case ID",
+              "units": 0.8
+            },
+            {
+              "key": "raised_on",
+              "label": "Raised on",
+              "units": 0.8
+            },
+            {
+              "key": "case_owner",
+              "label": "Case owner",
+              "units": 1.0
+            },
+            {
+              "key": "approver",
+              "label": "Approving manager",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "case_context",
+          "type": "fields",
+          "label": "Case context",
+          "fields": [
+            {
+              "key": "guest_name",
+              "label": "Guest name",
+              "units": 1.15
+            },
+            {
+              "key": "incident_date",
+              "label": "Incident date",
+              "units": 1.0
+            },
+            {
+              "key": "location_on_site",
+              "label": "Location on site",
+              "units": 1.2
+            },
+            {
+              "key": "case_category",
+              "label": "Case category",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not classified",
+                "Guest injury",
+                "Guest illness",
+                "Property damage",
+                "Property loss",
+                "Service failure",
+                "Billing dispute"
+              ]
+            },
+            {
+              "key": "report_reference",
+              "label": "Incident report ID",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_remediation",
+      "title": "Authorized remediation lines",
+      "guidance": "Nothing happens on this order without a named approver.",
+      "blocks": [
+        {
+          "key": "remediation_lines",
+          "type": "table",
+          "label": "Remediation authorized",
+          "columns": [
+            {
+              "key": "line",
+              "label": "What is authorized",
+              "units": 1.6
+            },
+            {
+              "key": "basis",
+              "label": "Basis for it",
+              "units": 1.2
+            },
+            {
+              "key": "cost",
+              "label": "Cost",
+              "units": 0.65
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.95
+            }
+          ],
+          "rows": 6,
+          "guidance": "Record the basis, not a justification of fault: what the guest needs to be made whole operationally."
+        },
+        {
+          "key": "approval_limits",
+          "type": "fields",
+          "label": "Approval position",
+          "fields": [
+            {
+              "key": "total_authorized",
+              "label": "Total authorized",
+              "units": 1.2
+            },
+            {
+              "key": "approver_limit",
+              "label": "Approver limit",
+              "units": 1.1
+            },
+            {
+              "key": "above_limit",
+              "label": "Above limit",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not assessed",
+                "No",
+                "Yes - referred up",
+                "Yes - approved above"
+              ]
+            },
+            {
+              "key": "referred_to",
+              "label": "Referred to",
+              "units": 1.0
+            },
+            {
+              "key": "insurer_notified",
+              "label": "Insurer notified",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "remediation_boundary",
+          "type": "notice",
+          "label": "What authorizing remediation does not mean",
+          "guidance": "Providing a remedy is an operational service decision. It is not an admission of fault, an acceptance of liability, or a settlement of any claim, and nothing on this order should be described to the guest as either. Route any request for a settlement, a release, or a written acceptance of responsibility to the responsible manager and the insurer under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "corrective_work",
+      "title": "Corrective work on the condition",
+      "guidance": "Fixing the guest's problem is not the same as fixing the cause.",
+      "blocks": [
+        {
+          "key": "corrective_lines",
+          "type": "table",
+          "label": "Corrective work orders raised",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition to correct",
+              "units": 1.4
+            },
+            {
+              "key": "work_order",
+              "label": "Work order ref",
+              "units": 1.0
+            },
+            {
+              "key": "trade_or_team",
+              "label": "Trade or team",
+              "units": 1.1
+            },
+            {
+              "key": "due_by",
+              "label": "Due by",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "interim_controls",
+          "type": "checklist",
+          "label": "Interim controls while work is open",
+          "items": [
+            "Area secured, barriered, or signed until the work is complete",
+            "Affected room or space taken out of service",
+            "Equipment tagged out where it contributed to the incident",
+            "Staff briefed on the interim control and how long it applies",
+            "Recheck scheduled and assigned to a named person",
+            "Condition logged in the maintenance system, not only on this order",
+            "Similar locations checked for the same condition"
+          ],
+          "guidance": "An interim control with no recheck date becomes a permanent hazard."
+        }
+      ]
+    },
+    {
+      "key": "guest_followup",
+      "title": "Guest follow-up plan and consent",
+      "guidance": "Follow-up is planned, recorded, and stops when the guest asks it to.",
+      "blocks": [
+        {
+          "key": "followup_plan",
+          "type": "fields",
+          "label": "Follow-up plan",
+          "fields": [
+            {
+              "key": "contact_method",
+              "label": "Agreed contact method",
+              "units": 1.4,
+              "field_type": "choice",
+              "options": [
+                "Not agreed",
+                "Phone",
+                "Email",
+                "In person",
+                "Through group organizer",
+                "Guest declined contact"
+              ]
+            },
+            {
+              "key": "first_contact_due",
+              "label": "First contact due",
+              "units": 1.25
+            },
+            {
+              "key": "contact_owner",
+              "label": "Contact owner",
+              "units": 1.05
+            },
+            {
+              "key": "consent_recorded",
+              "label": "Consent to contact",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Given",
+                "Given - limited",
+                "Declined"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "followup_log",
+          "type": "table",
+          "label": "Follow-up contact log",
+          "columns": [
+            {
+              "key": "contact_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "method",
+              "label": "Method",
+              "units": 0.8
+            },
+            {
+              "key": "by_whom",
+              "label": "By whom",
+              "units": 1.0
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.4
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record the outcome factually. Do not record health detail the guest volunteers beyond what the follow-up requires."
+        }
+      ]
+    },
+    {
+      "key": "order_conditions",
+      "title": "Open conditions and escalation",
+      "guidance": "An authorized order can still be blocked.",
+      "blocks": [
+        {
+          "key": "condition_triggers",
+          "type": "checklist",
+          "label": "Open condition triggers",
+          "items": [
+            "Authorized total exceeds the approver's limit and is not yet referred",
+            "The insurer has been notified and has not yet responded",
+            "The guest has engaged a representative or made a legal demand",
+            "Corrective work is past its due date",
+            "An interim control is in place with no recheck date",
+            "The guest cannot be reached to confirm the remedy",
+            "The guest has declined the remedy offered",
+            "Property to be replaced cannot be valued or sourced"
+          ]
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Open condition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Open condition",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "order_closeout",
+      "title": "Verified completion and closeout",
+      "guidance": "Close only when the work is verified and the guest confirms it.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Order closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Work in progress",
+                "Closed - verified",
+                "Closed - guest declined",
+                "Referred and closed"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "review_due",
+              "label": "Case review due",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "completion_evidence",
+          "type": "table",
+          "label": "Completion evidence",
+          "columns": [
+            {
+              "key": "line",
+              "label": "Authorized line",
+              "units": 1.4
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence of completion",
+              "units": 1.4
+            },
+            {
+              "key": "verified_on",
+              "label": "Verified on",
+              "units": 0.85
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Every authorized line has completion evidence recorded",
+            "Corrective work verified as effective, not only marked complete",
+            "Interim controls removed only after the permanent fix was verified",
+            "Guest confirmed what was promised was done, or declined to confirm",
+            "Account adjustments verified on the folio",
+            "Insurer and legal referrals recorded per applicable policy",
+            "Record retained with restricted access for the required period"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Verified outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Order closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

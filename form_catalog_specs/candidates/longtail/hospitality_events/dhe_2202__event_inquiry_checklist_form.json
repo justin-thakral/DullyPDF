@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2202__event_inquiry_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2202__event_inquiry_checklist_form.pdf",
+  "slug": "event-inquiry-checklist-form",
+  "title": "Event Inquiry Checklist Form",
+  "subtitle": "Stage-gate an inquiry before it is quoted: response standards, data quality, feasibility verified by the owning role, and site-visit readiness.",
+  "description": "An original stage-gate review for enquiries in progress. It records the review stage and reviewer, response and data-quality checks, a feasibility matrix verified by each responsible role, site-visit preparation and observations, the review decision, and the gaps that must close before a quote is issued.",
+  "use_case": "Use at each inquiry stage gate - first response, qualification, site-visit preparation, or proposal review - when a coordinator must prove the inquiry is complete and feasible before it is quoted. The review closes when every gap has a named owner and the inquiry has been passed on or lost with a recorded reason.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_scope",
+      "title": "Review scope and reviewer",
+      "guidance": "Name the stage being gated and the inquiry under review.",
+      "blocks": [
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Review identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review record ID",
+              "units": 0.85
+            },
+            {
+              "key": "inquiry_reference",
+              "label": "Inquiry reference",
+              "units": 0.95
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "reviewer_name",
+              "label": "Reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "review_stage",
+              "label": "Review stage",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "First response",
+                "Qualification review",
+                "Site visit preparation",
+                "Proposal review",
+                "Final handoff review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "subject_under_review",
+          "type": "fields",
+          "label": "Inquiry under review",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "event_type",
+              "label": "Event type",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Conference or seminar",
+                "Corporate meeting",
+                "Banquet or gala",
+                "Wedding or celebration",
+                "Social gathering",
+                "Trade or consumer show",
+                "Community or civic",
+                "Other"
+              ]
+            },
+            {
+              "key": "event_date",
+              "label": "Event date reviewed",
+              "units": 1.0
+            },
+            {
+              "key": "spaces_reviewed",
+              "label": "Spaces reviewed",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "response_standards",
+      "title": "Response standards and data quality",
+      "guidance": "Check the inquiry record itself before checking feasibility.",
+      "blocks": [
+        {
+          "key": "response_checks",
+          "type": "checklist",
+          "label": "Response standard checks",
+          "items": [
+            "Inquiry acknowledged within the published response window",
+            "Requester identity and callback details verified",
+            "Event date, time blocks, and headcount captured",
+            "Budget range or revenue expectation discussed",
+            "Decision date and decision maker identified",
+            "Competing venues or dates disclosed by the requester recorded",
+            "Inquiry source and referral credit recorded",
+            "Checked for a duplicate inquiry already in progress"
+          ]
+        },
+        {
+          "key": "data_quality_checks",
+          "type": "checklist",
+          "label": "Record data-quality checks",
+          "items": [
+            "Contact spelling and email domain verified with the requester",
+            "Organization name matches the intended billing entity",
+            "Headcount recorded with its basis (estimate, prior year, or guaranteed)",
+            "Requested spaces recorded using current space names",
+            "Hold status and expiry recorded in the master calendar",
+            "Attachments and correspondence filed against the inquiry ID"
+          ],
+          "guidance": "A quote built on an unverified record is the most common source of downstream rework."
+        }
+      ]
+    },
+    {
+      "key": "feasibility_verification",
+      "title": "Feasibility verified by the owning role",
+      "guidance": "Feasibility is not a coordinator opinion; record who confirmed it.",
+      "blocks": [
+        {
+          "key": "feasibility_matrix",
+          "type": "table",
+          "label": "Feasibility verification matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.25
+            },
+            {
+              "key": "responsible_role",
+              "label": "Responsible role",
+              "units": 1.05
+            },
+            {
+              "key": "method",
+              "label": "How verified",
+              "units": 1.1
+            },
+            {
+              "key": "verified_on",
+              "label": "Verified on",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.0
+            }
+          ],
+          "rows": 6,
+          "guidance": "One row per requirement that the venue would have to deliver. Name a person or role, not a department alone."
+        },
+        {
+          "key": "feasibility_confirmations",
+          "type": "checklist",
+          "label": "Feasibility confirmations obtained",
+          "items": [
+            "Capacity and egress limits for each requested setup confirmed with the responsible manager",
+            "Kitchen capacity and menu feasibility confirmed with the culinary lead",
+            "Beverage service hours and licensing questions routed to the responsible manager",
+            "Guest-room availability confirmed with rooms control",
+            "Audio-visual and rigging feasibility confirmed with the production lead",
+            "Accessibility accommodation feasibility confirmed with the responsible manager",
+            "Loading dock and freight window confirmed with operations",
+            "Concurrent events on the same date reviewed for shared-space impact"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "site_visit",
+      "title": "Site visit preparation and observations",
+      "guidance": "Prepare the visit and record what the client actually saw.",
+      "blocks": [
+        {
+          "key": "visit_logistics",
+          "type": "fields",
+          "label": "Site visit logistics",
+          "fields": [
+            {
+              "key": "visit_status",
+              "label": "Visit status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not requested",
+                "Requested - unscheduled",
+                "Scheduled",
+                "Completed",
+                "Declined by client",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "visit_date",
+              "label": "Visit date and time",
+              "units": 1.0
+            },
+            {
+              "key": "visit_host",
+              "label": "Visit host",
+              "units": 0.95
+            },
+            {
+              "key": "attendees_expected",
+              "label": "Attendees expected",
+              "units": 1.0
+            },
+            {
+              "key": "meeting_point",
+              "label": "Meeting point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "visit_preparation",
+          "type": "checklist",
+          "label": "Visit preparation",
+          "items": [
+            "Requested spaces reserved for the visit window",
+            "Spaces clean, lit, and free of active service",
+            "Sample setup or diagram prepared",
+            "Menu tasting or sample discussed with the culinary lead",
+            "Arrival route, parking, and accessible route confirmed",
+            "Visitor sign-in and escort arranged"
+          ]
+        },
+        {
+          "key": "visit_observations",
+          "type": "textarea",
+          "label": "Client reactions, objections, and commitments made during the visit",
+          "fields": [
+            {
+              "key": "visit_detail",
+              "label": "Site visit observations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "review_outcome",
+      "title": "Review decision and gap escalation",
+      "guidance": "State the gate result and what still blocks the inquiry.",
+      "blocks": [
+        {
+          "key": "review_decision",
+          "type": "fields",
+          "label": "Review decision",
+          "fields": [
+            {
+              "key": "review_result",
+              "label": "Review result",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Complete - no gaps",
+                "Complete with open items",
+                "Blocked - information missing",
+                "Blocked - feasibility unconfirmed",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.8
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "gap_register",
+          "type": "table",
+          "label": "Gap and exception register",
+          "columns": [
+            {
+              "key": "gap",
+              "label": "Unresolved item",
+              "units": 1.2
+            },
+            {
+              "key": "why_blocking",
+              "label": "Why it blocks the quote",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "What this review does and does not establish",
+          "guidance": "This review records whether an inquiry is complete and whether the owning roles confirmed feasibility. It is not a capacity determination, a licensing opinion, an accessibility compliance finding, or an approval to quote. Unresolved items stay open until the responsible manager records a disposition."
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Close the gate and name who carries the inquiry forward.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - proposal issued",
+                "Closed - site visit complete",
+                "Closed - lost",
+                "Transferred to another seller"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.05
+            },
+            {
+              "key": "next_action_due",
+              "label": "Next action due",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "gate_history",
+          "type": "table",
+          "label": "Stage gate history for this inquiry",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage gated",
+              "units": 1.2
+            },
+            {
+              "key": "completed_on",
+              "label": "Completed on",
+              "units": 0.8
+            },
+            {
+              "key": "completed_by",
+              "label": "Completed by",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.0
+            },
+            {
+              "key": "open_items",
+              "label": "Items left open",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "One row per gate this inquiry has passed, so a later reviewer can see which checks were actually performed and which were skipped."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Feasibility evidence filed against the inquiry record",
+            "Open gaps transferred with named owners",
+            "Site visit outcome recorded and shared with the service owner",
+            "Accessibility and allergen requests carried into the event file",
+            "Hold status rechecked at closeout",
+            "Lost-business reason recorded when the inquiry did not proceed"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Review outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Review handoff detail"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by sales manager",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

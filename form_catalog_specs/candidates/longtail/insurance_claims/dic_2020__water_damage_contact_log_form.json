@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2020__water_damage_contact_log_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2020__water_damage_contact_log_form.pdf",
+  "slug": "water-damage-contact-log-form",
+  "title": "Water Damage Contact Log Form",
+  "subtitle": "A decision-ready water damage contact log that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original water damage contact log for water source, migration path, and affected materials with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the water-loss claim and mitigation coordination owner must open and control a contact log for water source, migration path, and affected materials. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Water Damage contact log identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Water Damage contact log record",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Contact log ID",
+              "units": 0.85
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "period_start",
+              "label": "Log period start",
+              "units": 0.85
+            },
+            {
+              "key": "period_end",
+              "label": "Log period end",
+              "units": 0.85
+            },
+            {
+              "key": "log_owner",
+              "label": "Contact-log owner",
+              "units": 1.0
+            },
+            {
+              "key": "communication_stage",
+              "label": "Communication stage",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Initial",
+                "Investigation",
+                "Decision",
+                "Follow-up",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Water Damage subject and event identity",
+          "fields": [
+            {
+              "key": "discovery_time",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "source_location",
+              "label": "Suspected source and exact location",
+              "units": 1.25
+            },
+            {
+              "key": "source_status",
+              "label": "Source active, stopped, or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "affected_levels",
+              "label": "Affected rooms, units, and levels",
+              "units": 1.05
+            },
+            {
+              "key": "occupancy_status",
+              "label": "Occupancy and access status",
+              "units": 1.0
+            },
+            {
+              "key": "mitigation_ref",
+              "label": "Mitigation company/job ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Source, affected level, and moisture-map reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Contact Log scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Water Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "communication_plan",
+      "title": "Water Damage communication plan, parties, and authorization",
+      "guidance": "Identify who may communicate, what can be disclosed, and how urgent or sensitive contacts must be routed.",
+      "blocks": [
+        {
+          "key": "party_directory",
+          "type": "table",
+          "label": "Water Damage communication party directory",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "party_ref",
+              "label": "Name or approved party ref",
+              "units": 1.2
+            },
+            {
+              "key": "authority",
+              "label": "Authority or relationship",
+              "units": 1.1
+            },
+            {
+              "key": "channel",
+              "label": "Approved channel",
+              "units": 1.0
+            },
+            {
+              "key": "limits",
+              "label": "Disclosure or contact limit",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "contact_roles",
+          "type": "checklist",
+          "label": "Water Damage contact roles",
+          "items": [
+            "Named insured, occupant, tenant, or property manager",
+            "Plumber, utility, appliance service, or source-control vendor",
+            "Mitigation, restoration, environmental, or drying contractor",
+            "Adjuster, building consultant, contents reviewer, or examiner",
+            "Landlord, adjoining unit, mortgagee, or recovery party",
+            "Temporary housing, safety, legal, or escalation route"
+          ]
+        },
+        {
+          "key": "contact_preferences",
+          "type": "fields",
+          "label": "Contact preference and verification",
+          "fields": [
+            {
+              "key": "primary_recipient",
+              "label": "Primary verified recipient",
+              "units": 1.1
+            },
+            {
+              "key": "preferred_channel",
+              "label": "Preferred approved channel",
+              "units": 1.05
+            },
+            {
+              "key": "preferred_window",
+              "label": "Preferred contact window",
+              "units": 1.0
+            },
+            {
+              "key": "language_access",
+              "label": "Language or access need",
+              "units": 1.05
+            },
+            {
+              "key": "verification_method",
+              "label": "Identity verification method",
+              "units": 1.1
+            },
+            {
+              "key": "representation_ref",
+              "label": "Representative authority ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "contact_boundary",
+          "type": "notice",
+          "label": "Communication and authority boundary",
+          "guidance": "This record does not classify water, diagnose contamination, authorize entry into electrical or structurally unsafe areas, or determine coverage. Stop unsafe work and route source control, sampling, demolition, and claim decisions to qualified authority."
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Water Damage chronological contact and attempt log",
+      "guidance": "Log source, facts, requests, commitments, owner, and exact follow-up; never store reusable credentials.",
+      "blocks": [
+        {
+          "key": "contact_entries",
+          "type": "table",
+          "label": "Contact, attempt, and message register",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "party_channel",
+              "label": "Party, role, and channel",
+              "units": 1.2
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose and verified facts",
+              "units": 1.25
+            },
+            {
+              "key": "request_commitment",
+              "label": "Request or commitment",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "record_ref",
+              "label": "Message or record ref",
+              "units": 0.95
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "last_contact",
+          "type": "fields",
+          "label": "Current communication snapshot",
+          "fields": [
+            {
+              "key": "last_successful",
+              "label": "Last successful contact",
+              "units": 1.0
+            },
+            {
+              "key": "last_attempt",
+              "label": "Last attempt",
+              "units": 0.9
+            },
+            {
+              "key": "attempt_count",
+              "label": "Unanswered attempt count",
+              "units": 0.9
+            },
+            {
+              "key": "next_contact",
+              "label": "Next contact due",
+              "units": 0.95
+            },
+            {
+              "key": "current_owner",
+              "label": "Current communication owner",
+              "units": 1.1
+            },
+            {
+              "key": "contact_status",
+              "label": "Contact status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Active",
+                "Awaiting response",
+                "Escalated",
+                "Do not contact",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "communication_summary",
+          "type": "textarea",
+          "label": "Communication context and unresolved questions",
+          "fields": [
+            {
+              "key": "summary",
+              "label": "Water Damage factual summary, differing accounts, accessibility needs, tone-relevant context, and next message purpose",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "requests_commitments",
+      "title": "Water Damage requests, commitments, and notices",
+      "guidance": "A contact is not complete until each promise and requested item has an owner, due point, and completion record.",
+      "blocks": [
+        {
+          "key": "request_commitment_log",
+          "type": "table",
+          "label": "Request and commitment tracking",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Requested item or promised action",
+              "units": 1.35
+            },
+            {
+              "key": "requested_by_to",
+              "label": "Requested by / from",
+              "units": 1.05
+            },
+            {
+              "key": "made_at",
+              "label": "Made date and time",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due or promised date",
+              "units": 0.9
+            },
+            {
+              "key": "completion",
+              "label": "Completion or response ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "decision_notice_log",
+          "type": "table",
+          "label": "Decision, notice, and explanation log",
+          "columns": [
+            {
+              "key": "decision_notice",
+              "label": "Decision or notice",
+              "units": 1.25
+            },
+            {
+              "key": "authority",
+              "label": "Authorized source",
+              "units": 1.05
+            },
+            {
+              "key": "recipient",
+              "label": "Verified recipient",
+              "units": 1.0
+            },
+            {
+              "key": "sent_at",
+              "label": "Sent date and channel",
+              "units": 1.0
+            },
+            {
+              "key": "receipt_questions",
+              "label": "Receipt or question ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "communication_controls",
+          "type": "checklist",
+          "label": "Communication controls",
+          "items": [
+            "Identity and authority were verified before disclosure",
+            "Facts, estimates, pending review, and final decisions were distinguished",
+            "No unauthorized coverage, liability, value, or payment promise was made",
+            "Sensitive attachments used an approved secure route",
+            "Language, disability, or communication access need was routed",
+            "Complaint, attorney, regulator, or do-not-contact instruction was honored",
+            "Required explanation or next-step information was provided",
+            "The exact next update and responsible owner are recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Water Damage communication exceptions, disputes, and escalation",
+      "guidance": "Preserve disputed facts as disputed and route threats, complaints, deadlines, representation, and privacy concerns immediately.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Water Damage communication exception screen",
+          "items": [
+            "Water source remains active, inaccessible, or unverified",
+            "Wet electrical or structural condition blocks safe access",
+            "Contamination or microbial concern lacks qualified assessment",
+            "Materials were removed before condition and location were documented",
+            "Moisture readings conflict or omit affected cavities and boundaries",
+            "Adjoining unit, tenant, landlord, or recovery route is unresolved"
+          ]
+        },
+        {
+          "key": "escalation_register",
+          "type": "table",
+          "label": "Communication exception and escalation",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Dispute, concern, or failed contact",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "route",
+              "label": "Escalation route",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update due",
+              "units": 0.9
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or final instruction",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "restriction_control",
+          "type": "fields",
+          "label": "Representation and contact restrictions",
+          "fields": [
+            {
+              "key": "restriction",
+              "label": "Contact or disclosure restriction",
+              "units": 1.2
+            },
+            {
+              "key": "effective_at",
+              "label": "Effective date and time",
+              "units": 1.0
+            },
+            {
+              "key": "authority_ref",
+              "label": "Authority or instruction ref",
+              "units": 1.15
+            },
+            {
+              "key": "approved_contact",
+              "label": "Approved contact route",
+              "units": 1.05
+            },
+            {
+              "key": "restriction_owner",
+              "label": "Restriction owner",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Water Damage communication handoff and log closeout",
+      "guidance": "Close the log period only when the next contact, every open commitment, and any restriction or escalation is owned.",
+      "blocks": [
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Contact-log closeout checks",
+          "items": [
+            "Chronology and source references are complete",
+            "Unsuccessful attempts are distinguishable from completed contacts",
+            "Requests and commitments have outcomes or accountable owners",
+            "Restrictions, representation, and privacy instructions are current",
+            "Disputed information remains attributed and unresolved when appropriate",
+            "The receiving owner accepted the communication handoff"
+          ]
+        },
+        {
+          "key": "handoff",
+          "type": "fields",
+          "label": "Communication handoff",
+          "fields": [
+            {
+              "key": "open_commitments",
+              "label": "Open commitment count",
+              "units": 0.9
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 1.0
+            },
+            {
+              "key": "next_message",
+              "label": "Next message purpose",
+              "units": 1.1
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_ref",
+              "label": "Handoff evidence ref",
+              "units": 1.1
+            },
+            {
+              "key": "log_closed",
+              "label": "Log period closed at",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "log_signoff",
+          "type": "signatures",
+          "label": "Log owner, reviewer, and handoff acceptance",
+          "fields": [
+            {
+              "key": "log_owner",
+              "label": "Log owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner / date",
+              "units": 1.1
+            },
+            {
+              "key": "log_version",
+              "label": "Log version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

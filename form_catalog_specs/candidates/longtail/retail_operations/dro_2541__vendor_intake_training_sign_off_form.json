@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2541__vendor_intake_training_sign_off_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2541__vendor_intake_training_sign_off_form.pdf",
+  "slug": "vendor-intake-training-sign-off-form",
+  "title": "Vendor Intake Training Sign-Off Form",
+  "subtitle": "A practical observed-practice training sign-off for vendor intake that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations observed-practice training sign-off for vendor intake covering vendor onboarding and access, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a vendor coordinator opens one vendor intake record to plan instruction, observe practice, identify knowledge and authority limits, assign follow-up, and acknowledge the resulting work scope; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Vendor training sign-off identity and routing",
+      "guidance": "Connect this training sign-off to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Vendor record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Business unit or site",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Vendor scope or route",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned vendor coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Vendor event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Vendor Intake scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "training_plan",
+      "title": "Vendor training plan and learner route",
+      "guidance": "Define the procedure revision, learning method, practice setting, supervisor, and authorized scope.",
+      "blocks": [
+        {
+          "key": "learner_session",
+          "type": "fields",
+          "label": "Learner and session",
+          "fields": [
+            {
+              "key": "learner_name",
+              "label": "Learner",
+              "units": 1.0
+            },
+            {
+              "key": "employee_or_vendor_id",
+              "label": "Employee or vendor ID",
+              "units": 0.95
+            },
+            {
+              "key": "trainer_name",
+              "label": "Trainer or coach",
+              "units": 1.0
+            },
+            {
+              "key": "session_date",
+              "label": "Session date",
+              "units": 0.75
+            },
+            {
+              "key": "procedure_version",
+              "label": "Procedure or policy version",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "competencies",
+          "type": "checklist",
+          "label": "Vendor competencies",
+          "items": [
+            "Defines vendor identity, sponsor, and exact scope",
+            "Routes purchasing and payment setup correctly",
+            "Tracks required records without claiming validation",
+            "Classifies site, system, data, and badge access",
+            "Collects only necessary vendor information",
+            "Recognizes conflict and subcontractor review needs",
+            "Documents conditions and expiration dates",
+            "Prevents work before required approval",
+            "Communicates approval, hold, or rejection",
+            "Assigns renewal and offboarding ownership"
+          ]
+        },
+        {
+          "key": "training_boundary",
+          "type": "notice",
+          "label": "Training and authorization boundary",
+          "guidance": "Use references and status fields rather than copying tax identifiers, bank details, identity documents, credentials, or confidential contracts into this general form. A listed document is not a legal or professional validation. Follow applicable purchasing, access, privacy, security, and retention policy and route specialist judgments to the authorized reviewer. This sign-off records observed practice and assigned limits; it is not a license, professional certification, or guarantee of future performance."
+        }
+      ]
+    },
+    {
+      "key": "observed_practice",
+      "title": "Vendor coached practice and evidence",
+      "guidance": "Record the scenario, learner action, observable result, coaching, and next attempt rather than a generic pass mark.",
+      "blocks": [
+        {
+          "key": "practice_register",
+          "type": "table",
+          "label": "Observed practice register",
+          "columns": [
+            {
+              "key": "scenario",
+              "label": "Scenario or task",
+              "units": 1.2
+            },
+            {
+              "key": "learner_action",
+              "label": "Observed learner action",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Result or evidence",
+              "units": 1.05
+            },
+            {
+              "key": "coaching",
+              "label": "Coaching or correction",
+              "units": 1.2
+            },
+            {
+              "key": "observer",
+              "label": "Observer",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_scenarios",
+          "type": "checklist",
+          "label": "Exception scenarios reviewed",
+          "items": [
+            "Vendor identity or ownership review unresolved",
+            "Required record or policy acknowledgment missing",
+            "Sensitive access requires specialist approval",
+            "Emergency or temporary vendor route requested",
+            "Commercial terms or payment setup disputed",
+            "Start, renewal, suspension, or rejection decision pending"
+          ]
+        },
+        {
+          "key": "practice_notes",
+          "type": "textarea",
+          "label": "Strengths, repeated errors, prompts required, evidence references, and conditions for another observation",
+          "fields": [
+            {
+              "key": "practice_detail",
+              "label": "Vendor Intake observed practice notes"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "knowledge_limits",
+      "title": "Vendor knowledge check, limits, and escalation",
+      "guidance": "Confirm that the learner can identify sources, stop conditions, authorization limits, escalation owners, and handoff evidence.",
+      "blocks": [
+        {
+          "key": "condition_knowledge",
+          "type": "checklist",
+          "label": "Condition and exception knowledge",
+          "items": [
+            "Vendor identity or authorized contact mismatch",
+            "Scope, site, product, or subcontractor unclear",
+            "Required document expired, missing, or not applicable",
+            "Data, system, key, badge, or after-hours access requested",
+            "Commercial setup differs from approved purchase route",
+            "Conflict or restricted-category review needed",
+            "Operational owner has not accepted the handoff",
+            "Start date precedes completed approvals"
+          ]
+        },
+        {
+          "key": "knowledge_register",
+          "type": "table",
+          "label": "Knowledge question and demonstrated response",
+          "columns": [
+            {
+              "key": "prompt",
+              "label": "Question or condition",
+              "units": 1.3
+            },
+            {
+              "key": "response",
+              "label": "Learner response",
+              "units": 1.35
+            },
+            {
+              "key": "expected_route",
+              "label": "Expected route or source",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Result or coaching need",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "knowledge_gaps",
+          "type": "textarea",
+          "label": "Knowledge gaps, restricted tasks, retraining topics, interim supervision, and evidence needed",
+          "fields": [
+            {
+              "key": "gap_detail",
+              "label": "Vendor Intake knowledge gaps and limits"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_followup",
+      "title": "Vendor work authorization and follow-up plan",
+      "guidance": "Grant only the observed scope and state the supervision, expiry, reassessment, or restriction that applies.",
+      "blocks": [
+        {
+          "key": "authorization_scope",
+          "type": "fields",
+          "label": "Observed-practice decision",
+          "fields": [
+            {
+              "key": "readiness_decision",
+              "label": "Readiness decision",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Independent within scope",
+                "Supervised only",
+                "Additional practice",
+                "Restricted task",
+                "Not assigned"
+              ]
+            },
+            {
+              "key": "authorized_tasks",
+              "label": "Authorized task scope",
+              "units": 1.25
+            },
+            {
+              "key": "restricted_tasks",
+              "label": "Restricted or excluded tasks",
+              "units": 1.25
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.75
+            },
+            {
+              "key": "review_date",
+              "label": "Review or reassessment date",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "followup_plan",
+          "type": "table",
+          "label": "Training follow-up and reassessment",
+          "columns": [
+            {
+              "key": "topic",
+              "label": "Topic or task",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Practice or review action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Coach or owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_evidence",
+              "label": "Due point and evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Training authorization handoff",
+          "items": [
+            "Readiness decision communicated to scheduler",
+            "Restricted tasks visible to supervising owner",
+            "Procedure version and practice evidence linked",
+            "Coach accepted follow-up responsibility",
+            "Reassessment date or trigger recorded",
+            "Learner can identify the escalation route"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Vendor outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Vendor closeout controls",
+          "items": [
+            "Approved vendor ID and scope recorded",
+            "Site, system, and data access owners notified",
+            "Commercial setup reference linked in restricted system",
+            "Conditions and expiration dates have owners",
+            "Start or hold decision communicated to sponsor",
+            "Renewal and offboarding responsibility assigned"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Vendor Intake residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Training Sign-Off closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

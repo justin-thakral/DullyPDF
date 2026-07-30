@@ -1,0 +1,655 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1560__cold_chain_freight_claim_intake_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1560__cold_chain_freight_claim_intake_form.pdf",
+  "slug": "cold-chain-freight-claim-intake-form",
+  "title": "Cold Chain Freight Claim Intake Form",
+  "subtitle": "Build a decision-ready cold chain claim file from shipment identity, observed loss or damage, determinable amounts, preserved evidence, mitigation, requirements review, and accountable investigation routing.",
+  "description": "An original, fillable cold chain freight claim intake form for controlling temperature-controlled consignment and product-integrity record through freight claim intake identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when alleged loss, damage, delay, or expense involving temperature-controlled consignment and product-integrity record must be submitted and triaged without treating an inspection notation, delivery exception, or intake signature as a liability or payment decision.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Cold Chain freight claim intake identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Cold Chain record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Freight Claim Intake record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Shipment, order, lane, and protocol reference",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Lot, pallet, shipper, logger, sensor, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned cold-chain logistics coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Trained Cold-Chain Shipper, Carrier, And Receiver",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Qualified storage, pack-out, and loading location",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Approved receiving and quarantine location",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the shipping protocol, product requirements, lane plan, and logger instructions."
+        }
+      ]
+    },
+    {
+      "key": "claimant_shipment",
+      "title": "Cold Chain claimant authority and shipment facts",
+      "guidance": "Identify the shipment, claimant, carrier path, and controlling records without deciding liability at intake.",
+      "blocks": [
+        {
+          "key": "claimant",
+          "type": "fields",
+          "label": "Claimant and contact",
+          "fields": [
+            {
+              "key": "claimant_name",
+              "label": "Claimant organization or person",
+              "units": 1.35
+            },
+            {
+              "key": "claimant_role",
+              "label": "Relationship to shipment",
+              "units": 1.1
+            },
+            {
+              "key": "contact",
+              "label": "Claim contact and method",
+              "units": 1.25
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claimant reference number",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "shipment_facts",
+          "type": "fields",
+          "label": "Shipment and carrier facts",
+          "fields": [
+            {
+              "key": "ship_date",
+              "label": "Ship or tender date",
+              "units": 0.9
+            },
+            {
+              "key": "delivery_date",
+              "label": "Delivery or expected date",
+              "units": 1.0
+            },
+            {
+              "key": "carrier",
+              "label": "Receiving, delivering, or issuing carrier",
+              "units": 1.35
+            },
+            {
+              "key": "carrier_reference",
+              "label": "Carrier claim or notice reference",
+              "units": 1.25
+            },
+            {
+              "key": "contract_reference",
+              "label": "Contract or carriage reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "filing_boundary",
+          "type": "fields",
+          "label": "Filing and notice boundary",
+          "fields": [
+            {
+              "key": "discovered_date",
+              "label": "Loss or damage discovered",
+              "units": 1.05
+            },
+            {
+              "key": "notice_date",
+              "label": "Initial notice date",
+              "units": 1.0
+            },
+            {
+              "key": "filing_due",
+              "label": "Applicable filing deadline",
+              "units": 1.1
+            },
+            {
+              "key": "requirements_source",
+              "label": "Deadline and requirements source",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Verify the applicable contract, law, and carrier instructions; this template does not set a universal filing deadline."
+        }
+      ]
+    },
+    {
+      "key": "loss_damage_scope",
+      "title": "Cold Chain loss, damage, delay, and custody facts",
+      "guidance": "Record observations and chronology separately from conclusions about cause or responsibility.",
+      "blocks": [
+        {
+          "key": "event_indicators",
+          "type": "checklist",
+          "label": "Cold Chain event and exception indicators",
+          "items": [
+            "Product, lot, quantity, range, route, or protocol mismatch",
+            "Packaging or coolant configuration differs from the approved pack-out",
+            "Logger missing, expired, uncalibrated, failed, stopped, or incorrectly placed",
+            "Vehicle or container not clean, compatible, or adequately preconditioned",
+            "Seal damage, shipper damage, leakage, contamination, or tampering",
+            "Temperature alarm, excursion, freeze event, or missing data interval",
+            "Delay, door-open exposure, power interruption, or unplanned transfer",
+            "Receiving site cannot maintain quarantine or controlled storage",
+            "Product released, moved, sold, or used before qualified disposition",
+            "Custody, timing, or evidence cannot reconstruct the exposure history"
+          ]
+        },
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Loss, damage, delay, and custody timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "location",
+              "label": "Location or custody point",
+              "units": 1.15
+            },
+            {
+              "key": "event",
+              "label": "Observed event",
+              "units": 1.4
+            },
+            {
+              "key": "party",
+              "label": "Party with custody or knowledge",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Document, scan, or photo ref",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "facts_narrative",
+          "type": "textarea",
+          "label": "Observed facts, discovery circumstances, affected scope, and alleged basis",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Observed facts, discovery circumstances, affected scope, and alleged basis",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "guidance": "Describe what was observed, by whom, and when. Keep allegations distinguishable from verified evidence."
+        }
+      ]
+    },
+    {
+      "key": "claimed_items",
+      "title": "Cold Chain claimed-item and amount schedule",
+      "guidance": "Make the requested amount determinable and trace each line to shipment identity and value support.",
+      "blocks": [
+        {
+          "key": "claim_lines",
+          "type": "table",
+          "label": "Claimed loss, damage, or expense lines",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Lot, pallet, shipper, logger, sensor, or seal ID",
+              "units": 1.25
+            },
+            {
+              "key": "description",
+              "label": "Item and affected condition",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Claimed quantity",
+              "units": 0.8
+            },
+            {
+              "key": "value_basis",
+              "label": "Value or expense basis",
+              "units": 1.1
+            },
+            {
+              "key": "amount",
+              "label": "Amount claimed",
+              "units": 0.85
+            },
+            {
+              "key": "support",
+              "label": "Invoice, quote, or proof ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "claim_totals",
+          "type": "fields",
+          "label": "Claim amount summary",
+          "fields": [
+            {
+              "key": "merchandise",
+              "label": "Goods or property amount",
+              "units": 1.0
+            },
+            {
+              "key": "freight",
+              "label": "Freight or service amount",
+              "units": 1.0
+            },
+            {
+              "key": "mitigation",
+              "label": "Mitigation or repair amount",
+              "units": 1.1
+            },
+            {
+              "key": "credits",
+              "label": "Credits, salvage, or offsets",
+              "units": 1.1
+            },
+            {
+              "key": "total",
+              "label": "Total amount claimed",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Record currency, taxes, depreciation, released value, and other terms only as supported by the applicable claim basis."
+        }
+      ]
+    },
+    {
+      "key": "claim_evidence",
+      "title": "Cold Chain supporting documents and preservation",
+      "guidance": "Index original records, preserved property, and evidence gaps for prompt investigation.",
+      "blocks": [
+        {
+          "key": "supporting_records",
+          "type": "checklist",
+          "label": "Available claim and shipment evidence",
+          "items": [
+            "Approved shipping protocol and lane record",
+            "Product, lot, quantity, and pack-out record",
+            "Coolant conditioning and packaging configuration",
+            "Logger identity, calibration, start, and placement",
+            "Vehicle preconditioning and loading observation",
+            "Custody, seal, delay, and door-open events",
+            "Arrival readings and downloaded temperature history",
+            "Qualified excursion assessment and product disposition",
+            "Value, invoice, replacement, repair, or cost support",
+            "Written claim communication identifying shipment, allegation, and amount"
+          ]
+        },
+        {
+          "key": "document_index",
+          "type": "table",
+          "label": "Claim document and evidence index",
+          "columns": [
+            {
+              "key": "document",
+              "label": "Document or evidence",
+              "units": 1.4
+            },
+            {
+              "key": "date",
+              "label": "Date or version",
+              "units": 0.9
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "scope",
+              "label": "Shipment or claimed-line link",
+              "units": 1.2
+            },
+            {
+              "key": "location",
+              "label": "Record location",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "preservation",
+          "type": "fields",
+          "label": "Property, packaging, and salvage preservation",
+          "fields": [
+            {
+              "key": "property_location",
+              "label": "Affected property location",
+              "units": 1.25
+            },
+            {
+              "key": "packaging_status",
+              "label": "Packaging preservation status",
+              "units": 1.2
+            },
+            {
+              "key": "inspection_access",
+              "label": "Carrier or investigator access",
+              "units": 1.2
+            },
+            {
+              "key": "salvage_restriction",
+              "label": "Salvage or disposal restriction",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "mitigation_investigation",
+      "title": "Cold Chain mitigation, investigation, and escalation",
+      "guidance": "Protect property and evidence while assigning questions, decisions, and response deadlines.",
+      "blocks": [
+        {
+          "key": "investigation_actions",
+          "type": "table",
+          "label": "Investigation and mitigation action log",
+          "columns": [
+            {
+              "key": "question_action",
+              "label": "Question or action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Required evidence",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status or result",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "claim_status",
+          "type": "fields",
+          "label": "Intake completeness and routing status",
+          "fields": [
+            {
+              "key": "completeness",
+              "label": "Intake completeness",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Complete for review",
+                "Conditional - evidence pending",
+                "Incomplete",
+                "Duplicate or conflicting",
+                "Outside current scope"
+              ]
+            },
+            {
+              "key": "assigned_reviewer",
+              "label": "Assigned claim reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "acknowledgment_due",
+              "label": "Acknowledgment or response due",
+              "units": 1.15
+            },
+            {
+              "key": "escalation",
+              "label": "Legal, insurer, carrier, or management route",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "mitigation_notes",
+          "type": "textarea",
+          "label": "Mitigation taken, remaining loss exposure, evidence gap, and communication",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Mitigation taken, remaining loss exposure, evidence gap, and communication",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "claim_intake_decision",
+      "title": "Cold Chain claim intake decision and handoff",
+      "guidance": "Confirm what was received and where it was routed; do not imply payment or liability approval.",
+      "blocks": [
+        {
+          "key": "intake_decision",
+          "type": "fields",
+          "label": "Claim intake decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Intake outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted for investigation",
+                "Accepted conditionally",
+                "Returned for information",
+                "Routed to another party",
+                "Closed as duplicate"
+              ]
+            },
+            {
+              "key": "investigation_owner",
+              "label": "Investigation owner",
+              "units": 1.15
+            },
+            {
+              "key": "claim_file",
+              "label": "Claim file location",
+              "units": 1.2
+            },
+            {
+              "key": "next_response",
+              "label": "Next response or review date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_attestation",
+          "type": "signatures",
+          "label": "Claimant submission and intake review",
+          "fields": [
+            {
+              "key": "submitted_by",
+              "label": "Submitted by and date",
+              "units": 1.2
+            },
+            {
+              "key": "intake_by",
+              "label": "Received by and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Quality, Food-Safety, Pharmacy, Or Product-Integrity Reviewer review",
+              "units": 1.4
+            }
+          ],
+          "guidance": "Intake acknowledgment confirms receipt of the identified materials; it is not an admission of liability or a promise of payment."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Cold Chain freight claim intake closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Transferred for investigation",
+                "Resolved with documented disposition",
+                "Withdrawn by claimant",
+                "Routed to responsible party",
+                "Closed without payment decision"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This cold chain freight claim intake is an operational record, not a substitute for applicable law, contract terms, safety or product requirements, or professional judgment. Stop the affected movement, transfer, release, posting, or disposition when identity, evidence, authorization, or control is uncertain. A qualified qualified quality, food-safety, pharmacy, or product-integrity reviewer must review the exception and document the controlling decision."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified quality, food-safety, pharmacy, or product-integrity reviewer",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

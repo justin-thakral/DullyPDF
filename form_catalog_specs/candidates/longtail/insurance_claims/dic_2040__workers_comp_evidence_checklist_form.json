@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2040__workers_comp_evidence_checklist_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2040__workers_comp_evidence_checklist_form.pdf",
+  "slug": "workers-comp-evidence-checklist-form",
+  "title": "Workers Comp Evidence Checklist Form",
+  "subtitle": "A decision-ready workers comp evidence checklist that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original workers comp evidence checklist for reported workplace injury or illness and employment event with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the workers compensation claim and workplace reporting owner must open and control a evidence checklist for reported workplace injury or illness and employment event. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Workers Comp evidence checklist identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Workers Comp evidence checklist record",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Evidence review ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "review_cutoff",
+              "label": "Evidence cutoff date and time",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Evidence reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision or investigation owner",
+              "units": 1.1
+            },
+            {
+              "key": "package_status",
+              "label": "Evidence package status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Collecting",
+                "Ready for review",
+                "Gap hold",
+                "Accepted"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Workers Comp subject and event identity",
+          "fields": [
+            {
+              "key": "employee_ref",
+              "label": "Employee record ref",
+              "units": 1.0
+            },
+            {
+              "key": "incident_time",
+              "label": "Reported incident or onset date and time",
+              "units": 1.25
+            },
+            {
+              "key": "worksite",
+              "label": "Worksite and exact task location",
+              "units": 1.15
+            },
+            {
+              "key": "job_task",
+              "label": "Job title and task being performed",
+              "units": 1.05
+            },
+            {
+              "key": "supervisor_notice",
+              "label": "Supervisor notice date and time",
+              "units": 1.0
+            },
+            {
+              "key": "care_route",
+              "label": "Emergency or care route ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Employee record, worksite, and incident reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Evidence Checklist scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Workers Comp purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "evidence_plan",
+      "title": "Workers Comp evidence plan, issues, and preservation priorities",
+      "guidance": "Tie evidence collection to specific questions; do not collect sensitive or irrelevant material merely because it exists.",
+      "blocks": [
+        {
+          "key": "issue_evidence_map",
+          "type": "table",
+          "label": "Issue-to-evidence plan",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Question or issue",
+              "units": 1.25
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Likely source",
+              "units": 1.0
+            },
+            {
+              "key": "priority",
+              "label": "Priority / expiry risk",
+              "units": 0.95
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "domain_evidence",
+          "type": "checklist",
+          "label": "Workers Comp evidence checklist",
+          "items": [
+            "Employee report and exact source wording reference",
+            "Supervisor, witness, and first-response factual account",
+            "Scene, equipment, material, task, or condition photographs",
+            "Training, authorization, procedure, maintenance, or job records",
+            "Time, schedule, payroll, assignment, and employer relationship reference",
+            "Authorized work-status or restriction document stored securely",
+            "Carrier, administrator, jurisdiction, and incident-report references",
+            "Corrective action and return-to-work coordination records"
+          ],
+          "guidance": "Check only when the item is received, verified, or preservation is documented."
+        },
+        {
+          "key": "preservation_control",
+          "type": "fields",
+          "label": "Preservation and collection control",
+          "fields": [
+            {
+              "key": "preservation_owner",
+              "label": "Preservation owner",
+              "units": 1.0
+            },
+            {
+              "key": "first_request",
+              "label": "First request date and time",
+              "units": 1.0
+            },
+            {
+              "key": "expiry_risk",
+              "label": "Earliest expiry or overwrite risk",
+              "units": 1.1
+            },
+            {
+              "key": "legal_hold_ref",
+              "label": "Hold or instruction ref, if any",
+              "units": 1.1
+            },
+            {
+              "key": "collection_method",
+              "label": "Approved collection method",
+              "units": 1.1
+            },
+            {
+              "key": "restricted_route",
+              "label": "Restricted evidence route",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "evidence_boundary",
+          "type": "notice",
+          "label": "Evidence and decision boundary",
+          "guidance": "This record does not diagnose, determine compensability, replace an emergency route, or substitute for required jurisdiction forms. Protect employee privacy, support reporting without retaliation, and route medical, legal, benefit, and work-status decisions appropriately."
+        }
+      ]
+    },
+    {
+      "key": "receipt_quality",
+      "title": "Workers Comp evidence receipt, authenticity, and quality review",
+      "guidance": "Preserve the original source and distinguish a complete record from an unreadable, altered, partial, or unsupported item.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Evidence receipt and quality register",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "description",
+              "label": "Item and exact source",
+              "units": 1.35
+            },
+            {
+              "key": "received",
+              "label": "Received date and method",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "quality",
+              "label": "Quality and verification",
+              "units": 1.15
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "quality_checks",
+          "type": "checklist",
+          "label": "Evidence quality checks",
+          "items": [
+            "Source identity and authority are recorded",
+            "Original file, record, or unaltered copy is retained",
+            "Relevant dates, times, locations, and subjects are visible",
+            "Metadata or system provenance is preserved when material",
+            "Corrections and annotations do not obscure the original",
+            "Duplicate and superseded versions are linked",
+            "Sensitive content is limited to approved access",
+            "Known limitations and missing pages are documented"
+          ]
+        },
+        {
+          "key": "quality_notes",
+          "type": "textarea",
+          "label": "Evidence quality, authenticity questions, and limitations",
+          "fields": [
+            {
+              "key": "quality_detail",
+              "label": "Workers Comp source reliability, missing context, contradictions, alteration concerns, and follow-up needed",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "custody_disclosure",
+      "title": "Workers Comp custody, privacy, disclosure, and access control",
+      "guidance": "Document who handled evidence and prevent unnecessary duplication or disclosure of restricted information.",
+      "blocks": [
+        {
+          "key": "custody_log",
+          "type": "table",
+          "label": "Custody and access log",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "from_to",
+              "label": "From / to or access role",
+              "units": 1.15
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose and authority",
+              "units": 1.2
+            },
+            {
+              "key": "location",
+              "label": "Storage / transfer ref",
+              "units": 1.1
+            },
+            {
+              "key": "ack",
+              "label": "Receipt or audit ref",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "privacy_controls",
+          "type": "checklist",
+          "label": "Privacy and disclosure controls",
+          "items": [
+            "Only necessary personal information was collected",
+            "Identity and authority were verified before disclosure",
+            "Medical, financial, credential, or legal material uses a restricted route",
+            "Public or shared copies omit unnecessary identifiers",
+            "Consent, subpoena, policy, or other disclosure authority is recorded",
+            "Third-party records retain source and permitted-use limits",
+            "Retention and deletion requirements are identified",
+            "An access or disclosure error has an incident route"
+          ]
+        },
+        {
+          "key": "access_summary",
+          "type": "fields",
+          "label": "Evidence access summary",
+          "fields": [
+            {
+              "key": "system_owner",
+              "label": "System or repository owner",
+              "units": 1.1
+            },
+            {
+              "key": "access_group",
+              "label": "Authorized access group",
+              "units": 1.05
+            },
+            {
+              "key": "retention_ref",
+              "label": "Retention rule reference",
+              "units": 1.1
+            },
+            {
+              "key": "disclosure_owner",
+              "label": "Disclosure decision owner",
+              "units": 1.05
+            },
+            {
+              "key": "last_audit",
+              "label": "Last access audit date",
+              "units": 0.95
+            },
+            {
+              "key": "incident_ref",
+              "label": "Privacy incident ref, if any",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "gaps_conflicts",
+      "title": "Workers Comp evidence gaps, conflicting sources, and escalation",
+      "guidance": "Do not convert missing or inconsistent evidence into an unsupported conclusion.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Workers Comp evidence exception screen",
+          "items": [
+            "Emergency, severe event, or regulatory reporting route is unconfirmed",
+            "Employee reporting could be deterred, delayed, or treated inconsistently",
+            "Sensitive medical details appear outside the restricted claim record",
+            "Employer, worksite, employment, or jurisdiction responsibility conflicts",
+            "Work status, restriction, schedule, or modified-duty handoff is unclear",
+            "Evidence, equipment, training, or scene condition may be altered"
+          ]
+        },
+        {
+          "key": "gap_register",
+          "type": "table",
+          "label": "Gap, conflict, and follow-up register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Gap or conflict",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Decision or workflow impact",
+              "units": 1.15
+            },
+            {
+              "key": "request_action",
+              "label": "Request or verification action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or limitation",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_status",
+          "type": "fields",
+          "label": "Evidence escalation status",
+          "fields": [
+            {
+              "key": "escalation_owner",
+              "label": "Escalation owner",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            },
+            {
+              "key": "review_authority",
+              "label": "Review authority",
+              "units": 1.05
+            },
+            {
+              "key": "decision_deadline",
+              "label": "Decision or response due",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "package_handoff",
+      "title": "Workers Comp evidence-package decision readiness and handoff",
+      "guidance": "The package can close only when evidence, gaps, access limits, and the receiving decision owner are explicit.",
+      "blocks": [
+        {
+          "key": "readiness_check",
+          "type": "checklist",
+          "label": "Evidence-package readiness",
+          "items": [
+            "Every material issue maps to supporting evidence or a stated gap",
+            "Evidence IDs, source, storage, and quality are traceable",
+            "Conflicts and unavailable evidence are not hidden",
+            "Restricted material has an authorized access route",
+            "No checklist item implies a coverage or legal conclusion",
+            "The qualified decision owner accepted the package"
+          ]
+        },
+        {
+          "key": "package_decision",
+          "type": "fields",
+          "label": "Package disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Evidence package disposition",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Ready for decision",
+                "Ready with limitations",
+                "Further collection",
+                "Expert review",
+                "Closed no decision"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Receiving decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "open_gaps",
+              "label": "Open gap count",
+              "units": 0.85
+            },
+            {
+              "key": "limitations_ref",
+              "label": "Limitations reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due",
+              "units": 1.1
+            },
+            {
+              "key": "handoff_date",
+              "label": "Handoff date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "evidence_signoff",
+          "type": "signatures",
+          "label": "Collector, reviewer, and decision-owner acceptance",
+          "fields": [
+            {
+              "key": "collected_by",
+              "label": "Collection owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "quality_review",
+              "label": "Quality reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy reviewer / date",
+              "units": 1.05
+            },
+            {
+              "key": "accepted_by",
+              "label": "Decision owner / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

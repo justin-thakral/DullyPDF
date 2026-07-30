@@ -1,0 +1,654 @@
+{
+  "catalog_id": "facilities_maintenance/dfm_1230__elevator_repair_request_form",
+  "description": "An original, jurisdiction-neutral elevator repair intake, diagnosis, authorization, and resolution record for a passenger or service conveyance whose doors, leveling, controls, machine spaces, communications, inspection status, and operating restrictions require qualified review. It connects facility identity, asset-specific evidence, hazards, qualified decisions, exceptions, service status, and accountable closeout without replacing employer procedures or trade judgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.95
+            },
+            {
+              "key": "record_opened_date",
+              "label": "Opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time_zone",
+              "label": "Opened time and zone",
+              "units": 1.0
+            },
+            {
+              "key": "work_order_reference",
+              "label": "Work order or route",
+              "units": 1.1
+            },
+            {
+              "field_type": "choice",
+              "key": "priority",
+              "label": "Priority",
+              "options": [
+                "Select priority",
+                "Routine",
+                "Scheduled",
+                "Urgent",
+                "Emergency"
+              ],
+              "units": 0.8
+            }
+          ],
+          "key": "record_reference",
+          "label": "Record reference and timing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.15
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.05
+            },
+            {
+              "key": "asset_reference",
+              "label": "Asset or route reference",
+              "units": 1.0
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.15
+            }
+          ],
+          "key": "facility_routing",
+          "label": "Facility, location, and responsible parties",
+          "type": "fields"
+        },
+        {
+          "guidance": "This Elevator record organizes facts and evidence. It does not replace employer energy-control procedures, permits, manufacturer instructions, required inspection, emergency response, or qualified trade judgment. Stop and route any unsafe or uncertain condition.",
+          "key": "record_boundary",
+          "label": "Safety and authority boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Open one traceable record, identify the responsible parties, and set the review route.",
+      "key": "record_identity",
+      "title": "Elevator Repair Request identity and routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "conveyance_id",
+              "label": "Elevator or conveyance ID",
+              "units": 1.05
+            },
+            {
+              "key": "building_landings",
+              "label": "Building and landings served",
+              "units": 1.25
+            },
+            {
+              "key": "manufacturer_control",
+              "label": "Manufacturer and control",
+              "units": 1.25
+            },
+            {
+              "key": "capacity_speed",
+              "label": "Rated capacity and speed",
+              "units": 1.05
+            },
+            {
+              "field_type": "choice",
+              "key": "elevator_type",
+              "label": "Elevator type",
+              "options": [
+                "Select type",
+                "Traction",
+                "Hydraulic",
+                "Machine-room-less",
+                "Freight or service",
+                "Other"
+              ],
+              "units": 1.05
+            },
+            {
+              "key": "certificate_reference",
+              "label": "Certificate or authority ref",
+              "units": 1.25
+            }
+          ],
+          "key": "asset_profile",
+          "label": "Elevator asset and system profile",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only directly observed or source-supported items; explain inaccessible, not applicable, or conflicting evidence below.",
+          "items": [
+            "Car, controller, machine, disconnect, and building identifiers reconcile",
+            "Landing and car doors, gates, interlocks, sills, and closing behavior are recorded",
+            "Leveling, starting, stopping, ride quality, noise, and vibration observations are captured",
+            "Car operating panel, indicators, call stations, and floor signals are documented",
+            "Alarm, two-way communication, emergency lighting, and recall status are recorded",
+            "Machine room, control space, pit, hoistway access, keys, and barriers are controlled",
+            "Brake, governor, ropes, belts, sheaves, hydraulic equipment, or buffers are referenced",
+            "Water intrusion, oil leakage, debris, heat, odor, and housekeeping conditions are recorded",
+            "Controller faults, callbacks, entrapments, shutdowns, and repeated symptoms are linked",
+            "Required inspection, test, certificate, permit, and maintenance-control records are referenced",
+            "Jumpers, bypasses, out-of-service controls, and temporary restrictions are visible",
+            "Work is limited to qualified conveyance personnel and the authorized scope"
+          ],
+          "key": "evidence_checkpoints",
+          "label": "Elevator evidence checkpoints",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_component",
+              "label": "Landing or component",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition or symptom",
+              "units": 1.15
+            },
+            {
+              "key": "test_observation",
+              "label": "Test or observation",
+              "units": 1.05
+            },
+            {
+              "key": "criterion_source",
+              "label": "Criterion or source",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "action_status",
+              "label": "Action or status",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Tie each entry to a location, source, reading condition, photo, tag, log, or other retrievable evidence.",
+          "key": "asset_register",
+          "label": "Elevator system, landing, test, and evidence register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Elevator condition, recent history, known changes, evidence conflicts, and access limitations",
+              "multiline": true
+            }
+          ],
+          "height": 64,
+          "key": "asset_history",
+          "label": "Elevator condition, recent history, known changes, evidence conflicts, and access limitations",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Capture the exact asset context, supported observations, and source references.",
+      "key": "asset_evidence",
+      "title": "Elevator facts and source evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 1.05
+            },
+            {
+              "key": "reported_by",
+              "label": "Reported by",
+              "units": 1.0
+            },
+            {
+              "key": "symptom_summary",
+              "label": "Symptom or defect summary",
+              "units": 1.35
+            },
+            {
+              "key": "service_impact",
+              "label": "Service or occupant impact",
+              "units": 1.1
+            },
+            {
+              "key": "response_priority",
+              "label": "Response priority",
+              "units": 0.95
+            },
+            {
+              "key": "response_due",
+              "label": "Response due point",
+              "units": 1.0
+            }
+          ],
+          "key": "workflow_context",
+          "label": "Repair Request scope, timing, and responsible roles",
+          "type": "fields"
+        },
+        {
+          "guidance": "A checked item confirms the control was addressed; it does not substitute for the referenced procedure, permit, test, or source.",
+          "items": [
+            "Reporter wording, observed facts, alarms, and prior symptoms are preserved",
+            "Immediate safety, service, damage, and occupant impacts are classified",
+            "Containment or shutdown does not exceed the requester's authority",
+            "Asset, location, access, keys, contacts, and operating window are confirmed",
+            "Diagnosis identifies tests, evidence, assumptions, and unresolved alternatives",
+            "Repair scope, parts, labor, outage, cost route, and authorization are explicit",
+            "Changed scope or hidden condition returns for qualified review and approval",
+            "Resolution requires functional evidence and requester or facility handoff"
+          ],
+          "key": "workflow_controls",
+          "label": "Elevator repair request controls",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue_step",
+              "label": "Issue or work step",
+              "units": 1.15
+            },
+            {
+              "key": "observation",
+              "label": "Observation or diagnosis",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Action or repair",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Test or result",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "owner_status",
+              "label": "Owner or status",
+              "units": 1.0
+            }
+          ],
+          "key": "workflow_register",
+          "label": "Symptom, diagnosis, repair, verification, and owner register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Reported condition, diagnostic reasoning, approved repair scope, hidden conditions, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "key": "workflow_narrative",
+          "label": "Reported condition, diagnostic reasoning, approved repair scope, hidden conditions, and remaining uncertainty",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Turn the form purpose into evidence, accountable actions, and a reviewable disposition.",
+      "key": "workflow_control",
+      "title": "Elevator repair request control record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "A checked condition requires immediate protective action, a named owner, qualified review, and a final disposition.",
+          "items": [
+            "Entrapment, uncontrolled movement, unintended door motion, or unsafe leveling is reported",
+            "Door interlock, gate, brake, governor, recall, alarm, or communication function may be impaired",
+            "Water, smoke, fire, oil, debris, or electrical condition affects the car, pit, hoistway, or controls",
+            "Required isolation, access control, barricade, key control, or qualified personnel is absent",
+            "An unauthorized jumper, bypass, reset, or return-to-service request is identified",
+            "Exposed energized parts, moving equipment, suspended load, or stored energy is uncontrolled",
+            "Certificate, inspection, test, permit, shutdown, or authority restriction is unresolved",
+            "Observed condition conflicts with controller logs, callback history, inspection evidence, or field status"
+          ],
+          "key": "stop_conditions",
+          "label": "Stop and escalate when any condition is present",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate protective action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.95
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due point or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.7
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "key": "exception_register",
+          "label": "Elevator exception and protective-action register",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "exception_narrative",
+          "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not resolve a checked stop condition by inference, an unchecked box, or a generic sign-off. Preserve the condition, protective action, authority, evidence, owner, due point, and verified disposition.",
+          "key": "escalation_boundary",
+          "label": "Escalation record boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Stop when authority, access, energy control, safety, evidence, or service status is unresolved.",
+      "key": "exceptions_escalation",
+      "title": "Elevator stop conditions, exceptions, and escalation"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "options": [
+                "Select disposition",
+                "Repair approved",
+                "Diagnostic work only",
+                "Temporary repair approved",
+                "Permanent repair complete",
+                "Deferred with controls",
+                "Request rejected or rerouted"
+              ],
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.85
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.85
+            },
+            {
+              "key": "review_or_expiry",
+              "label": "Review or expiry date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 1.1
+            },
+            {
+              "key": "communication_route",
+              "label": "Communication route",
+              "units": 1.05
+            }
+          ],
+          "key": "decision_record",
+          "label": "Repair Request decision, timing, and authority",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only controls supported by referenced evidence; unresolved controls remain open conditions.",
+          "items": [
+            "Diagnosis is supported by observations and does not overstate certainty",
+            "Repair method, parts, access, isolation, outage, and qualified trade are approved",
+            "Temporary work has a limit, monitoring plan, permanent correction, and stop trigger",
+            "Functional and protective checks support the service disposition",
+            "Requester-visible impacts and restrictions are communicated",
+            "Closed request links repair, test, parts, cost, evidence, and acceptance records",
+            "Qualified elevator personnel control testing, adjustment, repair, and return to service",
+            "Door, leveling, brake, governor, recall, alarm, and communication evidence is reconciled",
+            "Any out-of-service or restricted condition has barriers, notices, and an accountable owner",
+            "Controller resets or cleared faults are not accepted without cause and verification evidence",
+            "Required authority, inspection, certificate, and maintenance-control records are current",
+            "Building operations approve occupant communication and alternate-access arrangements"
+          ],
+          "key": "decision_controls",
+          "label": "Elevator repair request decision controls",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "key": "decision_rationale",
+          "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "key": "decision_approval",
+          "label": "Preparation, qualified review, and facility authorization",
+          "type": "signatures"
+        },
+        {
+          "guidance": "Do not use this Elevator record as permission for work outside the approved scope, as proof that an unperformed test passed, or as a substitute for required qualified-person, employer, authority, or manufacturer approval.",
+          "key": "decision_limitation",
+          "label": "Decision-use limitation",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Separate the authorized decision from preliminary observation and record its limits.",
+      "key": "qualified_decision",
+      "title": "Elevator qualified decision and authorization"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final repair-request disposition",
+              "units": 1.2
+            },
+            {
+              "key": "service_or_asset_status",
+              "label": "Service or asset status",
+              "units": 1.0
+            },
+            {
+              "key": "final_evidence_reference",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "remaining_action_owner",
+              "label": "Remaining action owner",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.05
+            },
+            {
+              "key": "closure_date_time",
+              "label": "Closure date and time",
+              "units": 1.0
+            }
+          ],
+          "key": "outcome_handoff",
+          "label": "Repair Request outcome and primary handoff",
+          "type": "fields"
+        },
+        {
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger before the record can be treated as closed.",
+          "items": [
+            "Car and landing access status, barriers, keys, and notices match the final disposition",
+            "Doors, leveling, alarm, communication, indicators, and recall state are documented",
+            "Machine room, control space, hoistway, pit, and work areas are secured",
+            "Jumpers, temporary devices, tools, and materials have documented custody or removal",
+            "Controller logs, service notes, test evidence, and authority records are filed",
+            "Callbacks, monitoring, restrictions, alternate access, and next qualified review are assigned"
+          ],
+          "key": "closeout_evidence",
+          "label": "Elevator closeout evidence",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "record_or_item",
+              "label": "Record or item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_owner",
+              "label": "Recipient or owner",
+              "units": 1.0
+            },
+            {
+              "key": "date_method",
+              "label": "Date and method",
+              "units": 0.95
+            },
+            {
+              "key": "status_due",
+              "label": "Status or due point",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_register",
+          "label": "Final evidence, communication, custody, and follow-up register",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "closeout_summary",
+          "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close only when the final condition is evidenced and every open action has an owner.",
+      "key": "completion_handoff",
+      "title": "Elevator completion, evidence reconciliation, and handoff"
+    }
+  ],
+  "slug": "elevator-repair-request-form",
+  "source_filename": "dfm_1230__elevator_repair_request_form.pdf",
+  "source_section": "facilities_maintenance",
+  "subtitle": "Elevator: Route a reported defect from symptom and immediate containment through diagnosis, approved repair, verification, service restoration, and requester handoff.",
+  "title": "Elevator Repair Request Form",
+  "use_case": "Use when a facility owner, maintenance coordinator, qualified technician, or service vendor needs one traceable elevator repair request record from opening through evidence-backed disposition, handoff, and follow-up."
+}

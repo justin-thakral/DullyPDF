@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2237__lost_and_found_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2237__lost_and_found_checklist_form.pdf",
+  "slug": "lost-and-found-checklist-form",
+  "title": "Lost and Found Checklist Form",
+  "subtitle": "Take a found item into custody properly: describe it, tag it, handle restricted contents, and store it where it belongs.",
+  "description": "An original intake checklist for found property. It records who found the item and where, the description and contents recorded at intake, restricted-content handling for documents, cards, medication, and valuables, the storage decision with holding period, intake exceptions, and the handoff into the storage inventory.",
+  "use_case": "Use at the moment a staff member hands in a found item, when the description, tag, and storage decision have to be made once and made properly. The checklist closes when the item is tagged, stored, and entered in the inventory log.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "intake_identity",
+      "title": "Intake identity and finder",
+      "guidance": "Record who found it, where, and when it reached storage.",
+      "blocks": [
+        {
+          "key": "intake_routing",
+          "type": "fields",
+          "label": "Intake identity and routing",
+          "fields": [
+            {
+              "key": "intake_id",
+              "label": "Intake record ID",
+              "units": 0.95
+            },
+            {
+              "key": "tag_number",
+              "label": "Tag number assigned",
+              "units": 1.3
+            },
+            {
+              "key": "received_at",
+              "label": "Received at storage",
+              "units": 1.35
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "finder_detail",
+          "type": "fields",
+          "label": "Finder and find location",
+          "fields": [
+            {
+              "key": "finder_name",
+              "label": "Found by",
+              "units": 1.0
+            },
+            {
+              "key": "finder_department",
+              "label": "Department",
+              "units": 1.0
+            },
+            {
+              "key": "found_location",
+              "label": "Found location",
+              "units": 1.3
+            },
+            {
+              "key": "found_at",
+              "label": "Found at",
+              "units": 0.85
+            },
+            {
+              "key": "delay_reason",
+              "label": "Reason for delay",
+              "units": 1.15
+            }
+          ],
+          "guidance": "A gap between finding and handing in has to be explained; it is the usual source of a later dispute."
+        }
+      ]
+    },
+    {
+      "key": "description_recorded",
+      "title": "Description and contents recorded at intake",
+      "guidance": "Describe it once, properly, before anyone claims it.",
+      "blocks": [
+        {
+          "key": "item_basics",
+          "type": "fields",
+          "label": "Item basics",
+          "fields": [
+            {
+              "key": "item_category",
+              "label": "Item category",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Clothing or outerwear",
+                "Bag or luggage",
+                "Phone or tablet",
+                "Laptop or electronics",
+                "Jewelry or watch",
+                "Wallet or purse",
+                "Identification document",
+                "Keys",
+                "Eyewear",
+                "Medication",
+                "Other personal item"
+              ]
+            },
+            {
+              "key": "brand_or_make",
+              "label": "Brand or make",
+              "units": 1.0
+            },
+            {
+              "key": "color",
+              "label": "Color",
+              "units": 0.7
+            },
+            {
+              "key": "condition",
+              "label": "Condition at intake",
+              "units": 1.2
+            },
+            {
+              "key": "estimated_value",
+              "label": "Estimated value band",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "description_detail",
+          "type": "textarea",
+          "label": "Full description including marks, wear, and anything distinguishing",
+          "fields": [
+            {
+              "key": "description_text",
+              "label": "Full item description at intake"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "contents_inventory",
+          "type": "table",
+          "label": "Contents recorded at intake",
+          "columns": [
+            {
+              "key": "content",
+              "label": "Content found inside",
+              "units": 1.5
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.75
+            },
+            {
+              "key": "restricted",
+              "label": "Restricted",
+              "units": 0.85
+            },
+            {
+              "key": "witnessed_by",
+              "label": "Witnessed by",
+              "units": 1.1
+            }
+          ],
+          "rows": 5,
+          "guidance": "Open a bag or wallet only to identify the owner or a restricted content, and only with a second person present."
+        }
+      ]
+    },
+    {
+      "key": "restricted_handling",
+      "title": "Restricted contents and special handling",
+      "guidance": "Documents, cards, medication, and valuables leave the normal path.",
+      "blocks": [
+        {
+          "key": "restricted_steps",
+          "type": "checklist",
+          "label": "Restricted content handling",
+          "items": [
+            "Cash counted by two people and the amount recorded by both",
+            "Payment cards recorded by count only, never by number",
+            "Identification documents recorded by type only, never by number",
+            "High-value items moved to the safe and the transfer logged",
+            "Medication set aside and the responsible manager notified",
+            "Perishable contents removed, recorded, and disposed of",
+            "Mobility, hearing, or vision aid escalated for urgent owner contact",
+            "Device left powered off and never accessed to search for an owner",
+            "Weapon or hazardous item escalated immediately and not stored"
+          ],
+          "guidance": "Escalate a weapon, a suspected controlled substance, or a hazardous item to the responsible manager at once rather than storing it."
+        },
+        {
+          "key": "restricted_result",
+          "type": "fields",
+          "label": "Restricted handling result",
+          "fields": [
+            {
+              "key": "restricted_class",
+              "label": "Restricted class applied",
+              "units": 1.5,
+              "field_type": "choice",
+              "options": [
+                "None - standard item",
+                "High value - safe",
+                "Documents - restricted",
+                "Medication - restricted",
+                "Cash - dual counted",
+                "Escalated - not stored"
+              ]
+            },
+            {
+              "key": "second_person",
+              "label": "Second person present",
+              "units": 1.4
+            },
+            {
+              "key": "manager_notified",
+              "label": "Manager notified at",
+              "units": 1.35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "storage_decision",
+      "title": "Storage decision and holding period",
+      "guidance": "Where it goes and how long it stays, decided at intake.",
+      "blocks": [
+        {
+          "key": "storage_record",
+          "type": "fields",
+          "label": "Storage record",
+          "fields": [
+            {
+              "key": "storage_type",
+              "label": "Storage type",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "General storage bin",
+                "Secure cabinet",
+                "High-value safe",
+                "Refrigerated hold",
+                "Not stored - escalated"
+              ]
+            },
+            {
+              "key": "bin_or_shelf",
+              "label": "Bin or shelf",
+              "units": 1.0
+            },
+            {
+              "key": "stored_at",
+              "label": "Stored at",
+              "units": 0.85
+            },
+            {
+              "key": "holding_period",
+              "label": "Holding period",
+              "units": 1.05
+            },
+            {
+              "key": "review_due",
+              "label": "Disposition review",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "storage_steps",
+          "type": "checklist",
+          "label": "Storage steps completed",
+          "items": [
+            "Tag attached to the item and the number recorded on this form",
+            "Item photographed as received before storage",
+            "Entered in the storage inventory log the same shift",
+            "Holding period set from the find date, not the intake date",
+            "Storage location recorded precisely enough to retrieve it",
+            "Any open lost report checked for a possible match",
+            "Storage area locked and access limited to authorized staff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_exceptions",
+      "title": "Intake exceptions and escalation",
+      "guidance": "Intake defects follow the item for its whole holding period.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "The item was held by the finder before being handed in",
+            "Cash was counted by only one person",
+            "A bag was opened without a second person present",
+            "The item arrived already damaged or open",
+            "Contents may be missing compared with what the finder described",
+            "The item cannot be described well enough to match a claim",
+            "No storage location is suitable for the item",
+            "A weapon, suspected controlled substance, or hazard was found"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Intake exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "What this intake does and does not do",
+          "guidance": "Taking an item into storage does not make the venue its owner or its insurer, and it is not a valuation. Record a value band as an estimate only. Do not search a device or read a document to find an owner beyond what is visible, and route weapons, suspected controlled substances, medication, and hazardous items to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "intake_closeout",
+      "title": "Closeout and handoff to storage",
+      "guidance": "Close the intake once the item is findable by tag.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Intake closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - stored and logged",
+                "Closed - matched at intake",
+                "Closed - escalated out",
+                "Closed with exception"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "logged_by",
+              "label": "Logged by",
+              "units": 1.0
+            },
+            {
+              "key": "inventory_reference",
+              "label": "Inventory log ref",
+              "units": 1.3
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "match_attempts",
+          "type": "table",
+          "label": "Match attempts against open lost reports",
+          "columns": [
+            {
+              "key": "report_reference",
+              "label": "Lost report",
+              "units": 1.05
+            },
+            {
+              "key": "matched_on",
+              "label": "Matched on",
+              "units": 1.35
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.3
+            },
+            {
+              "key": "checked_by",
+              "label": "Checked by",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Tag number, description, and storage location all agree",
+            "Photographs filed against the tag number",
+            "Restricted contents handled and recorded per their class",
+            "Holding period and disposition review date set",
+            "Open lost reports checked and the result recorded",
+            "Open exceptions transferred with named owners"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Intake outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Intake handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Intake and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Taken in by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by duty manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

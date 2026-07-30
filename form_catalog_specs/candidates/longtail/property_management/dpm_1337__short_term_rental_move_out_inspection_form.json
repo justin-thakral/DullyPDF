@@ -1,0 +1,653 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1337__short_term_rental_move_out_inspection_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1337__short_term_rental_move_out_inspection_form.pdf",
+  "slug": "short-term-rental-move-out-inspection-form",
+  "title": "Short-Term Rental Move-Out Inspection Form",
+  "subtitle": "Operational move-out inspection intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable short-term rental move-out inspection workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a short-term rental move-out inspection from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "departure_identity",
+      "title": "Departure identity, schedule, and routing",
+      "guidance": "Open one traceable departure inspection.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Move-Out Inspection reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Short-term rental property",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Listing and unit",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Guest or reservation",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "departure_context",
+          "type": "fields",
+          "label": "Departure and agreement context",
+          "guidance": "Record only context needed for inspection and turnover routing.",
+          "fields": [
+            {
+              "key": "agreement_reference",
+              "label": "Agreement reference",
+              "units": 1.3
+            },
+            {
+              "key": "scheduled_departure",
+              "label": "Scheduled departure",
+              "units": 1.1
+            },
+            {
+              "key": "possession_status",
+              "label": "Possession status",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_participants",
+              "label": "Inspection participants",
+              "units": 1.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "basis_access",
+      "title": "Inspection basis, access, and evidence",
+      "guidance": "Define what can be compared and inspected.",
+      "blocks": [
+        {
+          "key": "reference_records",
+          "type": "checklist",
+          "label": "Reference records available",
+          "guidance": "Missing references must remain visible as an evidence limitation.",
+          "items": [
+            "Move-in baseline or prior condition record linked",
+            "Approved alterations or improvement records linked",
+            "Relevant maintenance and repair references linked",
+            "Notice, scheduling, and authorized-entry status recorded",
+            "Photo or video series uses a stable timestamp and identifier",
+            "Participant comments and evidence can be preserved separately",
+            "Unavailable utilities or inaccessible areas are identified",
+            "Turnover, financial, and legal reviewers are distinct from inspector"
+          ]
+        },
+        {
+          "key": "inspection_access",
+          "type": "fields",
+          "label": "Inspection event and access",
+          "guidance": "Follow the applicable authorized-entry process.",
+          "fields": [
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.9
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection time",
+              "units": 0.8
+            },
+            {
+              "key": "entry_basis",
+              "label": "Entry basis or notice status",
+              "units": 1.4
+            },
+            {
+              "key": "utilities_status",
+              "label": "Utilities status",
+              "units": 1.0
+            },
+            {
+              "key": "occupant_present",
+              "label": "Occupant participation",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "inspection_exception",
+          "type": "textarea",
+          "label": "Uninspected area, evidence gap, objection, or access exception",
+          "guidance": "Do not treat lack of access or participation as agreement with an observation.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "exception_details",
+              "label": "Area, reason, stated objection, temporary control, owner, due point, and next step",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "neutral_documentation",
+          "type": "notice",
+          "label": "Neutral inspection boundary",
+          "guidance": "Describe observable condition, comparison source, and evidence. Do not assign fault, characterize wear, decide a charge, determine deposit treatment, authorize disposal, or make a legal conclusion in this inspection record."
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This move-out inspection record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "departure_condition",
+      "title": "Condition, inventory, and turnover observations",
+      "guidance": "Separate observations from later decisions.",
+      "blocks": [
+        {
+          "key": "condition_comparison",
+          "type": "table",
+          "label": "Area-by-area condition comparison",
+          "guidance": "Use exact locations and objective descriptions.",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room or area",
+              "units": 1.1
+            },
+            {
+              "key": "item",
+              "label": "Surface, fixture, or item",
+              "units": 1.2
+            },
+            {
+              "key": "current_condition",
+              "label": "Current observation",
+              "units": 1.7
+            },
+            {
+              "key": "baseline_ref",
+              "label": "Baseline or evidence",
+              "units": 1.2
+            },
+            {
+              "key": "turnover_need",
+              "label": "Turnover need",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "systems_readings",
+          "type": "table",
+          "label": "Equipment, utility, and final reading log",
+          "guidance": "Basic status does not certify condition or compliance.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Equipment or service",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Identifier",
+              "units": 1.0
+            },
+            {
+              "key": "reading",
+              "label": "Final reading or status",
+              "units": 1.4
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 1.0
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "returned_items",
+          "type": "table",
+          "label": "Returned keys, credentials, remotes, and supplied items",
+          "guidance": "Do not record credential secrets. Route deactivation through the authorized system owner.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or access type",
+              "units": 1.5
+            },
+            {
+              "key": "expected",
+              "label": "Expected",
+              "units": 0.8
+            },
+            {
+              "key": "returned",
+              "label": "Returned",
+              "units": 0.8
+            },
+            {
+              "key": "identifier",
+              "label": "Non-secret identifier",
+              "units": 1.2
+            },
+            {
+              "key": "exception",
+              "label": "Exception and owner",
+              "units": 1.5
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "property_handling",
+          "type": "textarea",
+          "label": "Remaining property, waste, surrendered items, or handling limitation",
+          "guidance": "This record is not authorization to discard, transfer, sell, or retain property.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "handling_details",
+              "label": "Item, location, evidence, protective action, authorized route, owner, and due point",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "Short-Term Rental context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "Short-Term Rental workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Checkout and next-arrival deadlines define the inspection window",
+            "Guest property, found items, and waste follow separate handling routes",
+            "Cleaning, maintenance, inventory, and damage observations are separated",
+            "Platform or payment decisions are outside the inspector's authority",
+            "Smart access status is updated without storing credentials here",
+            "Same-day turnover exceptions have a host decision cutoff",
+            "Vendor evidence uses reservation and listing references consistently",
+            "Release to the next stay occurs only after readiness verification"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Host, manager, or vendor",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Reservation or platform reference",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "Short-Term Rental coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "turnover_review",
+      "title": "Turnover scope, separate decisions, and authorization",
+      "guidance": "Route work without assigning legal responsibility.",
+      "blocks": [
+        {
+          "key": "turnover_register",
+          "type": "table",
+          "label": "Turnover work and separate-review register",
+          "guidance": "Financial, responsibility, disposal, and legal decisions require their own authorized process.",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.5
+            },
+            {
+              "key": "proposed_work",
+              "label": "Proposed work or review",
+              "units": 1.5
+            },
+            {
+              "key": "decision_route",
+              "label": "Decision route",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "target",
+              "label": "Target and reference",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "separate_review",
+          "type": "checklist",
+          "label": "Separate-review handoffs",
+          "guidance": "Checking a handoff does not record the later decision.",
+          "items": [
+            "Cleaning and repair scope routed for operational authorization",
+            "Potential regulated or specialist work routed to qualified staff",
+            "Responsibility or wear classification left to authorized review",
+            "Charge or deposit review uses approved evidence and process",
+            "Remaining property follows applicable notice and handling process",
+            "Disputed facts and resident evidence remain attached",
+            "Access and utility changes have authorized owners",
+            "Urgent safety condition has an immediate-control record"
+          ]
+        },
+        {
+          "key": "turnover_authorization",
+          "type": "fields",
+          "label": "Turnover authorization",
+          "guidance": "Authorization covers operational work only within the reviewer's authority.",
+          "fields": [
+            {
+              "key": "turnover_status",
+              "label": "Turnover status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Pending",
+                "Authorized",
+                "Limited",
+                "On hold",
+                "Specialist review"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 1.0
+            },
+            {
+              "key": "work_reference",
+              "label": "Work reference",
+              "units": 1.2
+            },
+            {
+              "key": "ready_target",
+              "label": "Ready target",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "turnover_escalation",
+          "type": "textarea",
+          "label": "Urgent condition, disputed fact, evidence gap, or escalation",
+          "guidance": "Preserve the inspection record when later review reaches a different conclusion.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "escalation_details",
+              "label": "Issue, immediate action, missing evidence, owner, due point, reviewer, and disposition route",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "departure_closeout",
+      "title": "Comments, communication, and accountable closeout",
+      "guidance": "Close after every handoff has an owner.",
+      "blocks": [
+        {
+          "key": "occupant_comments",
+          "type": "textarea",
+          "label": "Occupant comments, corrections, disagreement, or added evidence",
+          "guidance": "Record the person's account without requiring agreement or waiver.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "occupant_comment_details",
+              "label": "Statement, evidence reference, requested correction, response owner, and status",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Open action and communication register",
+          "guidance": "Keep the record open while required actions lack a disposition.",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or communication",
+              "units": 1.6
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status and evidence",
+              "units": 1.4
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "inspection_closeout",
+          "type": "fields",
+          "label": "Inspection closeout",
+          "guidance": "Inspection completion does not mean financial or legal review is complete.",
+          "fields": [
+            {
+              "key": "inspection_status",
+              "label": "Inspection status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Complete",
+                "Complete with exceptions",
+                "Incomplete",
+                "Rescheduled"
+              ]
+            },
+            {
+              "key": "record_delivered",
+              "label": "Record delivered to",
+              "units": 1.2
+            },
+            {
+              "key": "delivery_date",
+              "label": "Delivery date",
+              "units": 0.9
+            },
+            {
+              "key": "turnover_owner",
+              "label": "Turnover owner",
+              "units": 1.1
+            },
+            {
+              "key": "final_review_due",
+              "label": "Final review due",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "inspection_acknowledgment",
+          "type": "signatures",
+          "label": "Inspection record preparation and acknowledgment",
+          "guidance": "Signatures confirm participation, preparation, or receipt only; a missing signature does not prove agreement.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized property reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

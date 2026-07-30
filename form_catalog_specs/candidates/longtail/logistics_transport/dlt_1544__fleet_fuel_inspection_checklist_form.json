@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1544__fleet_fuel_inspection_checklist_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1544__fleet_fuel_inspection_checklist_form.pdf",
+  "slug": "fleet-fuel-inspection-checklist-form",
+  "title": "Fleet Fuel Inspection Checklist Form",
+  "subtitle": "Set the fleet fuel inspection scope, test readiness and requirement-level evidence, contain deficiencies, authorize status, and preserve qualified closeout.",
+  "description": "An original, fillable fleet fuel inspection checklist form for controlling bulk or mobile fleet-fuel delivery and tank inventory through inspection checklist identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when a fuel dispatch or fleet coordinator or qualified inspector must evaluate bulk or mobile fleet-fuel delivery and tank inventory against the fuel order, product record, tank chart, meter ticket, and site procedure and provide a traceable basis for release, restriction, hold, correction, or rejection.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Fleet Fuel inspection checklist identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Fleet Fuel record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Inspection Checklist record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Fuel order, delivery ticket, and route number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Vehicle, compartment, tank, meter, hose, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned fuel dispatch or fleet coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Fuel Driver And Authorized Site Receiver",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Fuel terminal, supplier rack, or mobile unit",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Fleet tank, generator, equipment, or authorized vehicle group",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the fuel order, product record, tank chart, meter ticket, and site procedure."
+        }
+      ]
+    },
+    {
+      "key": "inspection_scope",
+      "title": "Fleet Fuel inspection scope, criteria, and readiness",
+      "guidance": "Define the exact population and review basis so inspection conclusions remain bounded.",
+      "blocks": [
+        {
+          "key": "scope_criteria",
+          "type": "fields",
+          "label": "Inspection scope and criteria",
+          "fields": [
+            {
+              "key": "scope",
+              "label": "Bulk Or Mobile Fleet-Fuel Delivery And Tank Inventory",
+              "units": 1.35
+            },
+            {
+              "key": "criteria",
+              "label": "Fuel Order, Product Record, Tank Chart, Meter Ticket, And Site Procedure",
+              "units": 1.45
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector name and role",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Fleet Fuel readiness verification",
+          "items": [
+            "Fuel grade, quantity, destination tank, and available capacity are verified",
+            "Driver, vehicle, compartment, placard, seal, and meter identities are recorded",
+            "Tank, fill point, vent, overfill control, and site authorization are confirmed",
+            "Transfer hose, bonding or grounding, caps, fittings, and containment are ready",
+            "Ignition sources, smoking, traffic, public access, and weather hazards are controlled",
+            "Extinguisher, spill kit, emergency stop, and notification route are available",
+            "Starting gauge, water check, meter reading, and product compatibility are documented",
+            "Stop-work, spill, wrong-product, overfill, leak, and rejected-load paths are explicit"
+          ],
+          "guidance": "A failed readiness item must be resolved, excluded with rationale, or carried into the exception section."
+        },
+        {
+          "key": "sample_basis",
+          "type": "fields",
+          "label": "Population, sample, and limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Population or total units",
+              "units": 1.05
+            },
+            {
+              "key": "sample",
+              "label": "Units actually inspected",
+              "units": 1.05
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.25
+            },
+            {
+              "key": "limitations",
+              "label": "Known access or evidence limits",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_results",
+      "title": "Fleet Fuel requirement-level inspection results",
+      "guidance": "Record actual observations against explicit criteria and identify the evidence for each result.",
+      "blocks": [
+        {
+          "key": "requirement_results",
+          "type": "table",
+          "label": "Inspection result register",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit, point, or sample ID",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.35
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, or N/A",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector initials",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "domain_checks",
+          "type": "checklist",
+          "label": "Fleet Fuel detailed inspection points",
+          "items": [
+            "Fuel order, product grade, destination tank, and fill-point label agree",
+            "Tank available capacity supports the planned delivery with operating margin",
+            "Compartment, seal, meter, hose, nozzle, fitting, and cap identities are traceable",
+            "No leak, damage, loose connection, blocked vent, or containment defect is visible",
+            "Ignition, smoking, traffic, pedestrian, and unauthorized-access controls are active",
+            "Bonding or grounding and static-control steps follow the applicable site procedure",
+            "Extinguisher, spill response equipment, emergency stop, and communication are accessible",
+            "Starting gauge, water check, meter start, and product appearance are acceptable",
+            "Transfer remains attended and observations can be recorded throughout delivery",
+            "Any wrong-product, leak, spill, capacity, fire, or unsafe-site concern stops transfer"
+          ],
+          "guidance": "Checkboxes indicate that the point was examined; the result table carries findings and evidence."
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Fleet Fuel measurements and evidence package",
+      "guidance": "Preserve readings, instruments, identity, and evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, count, or verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use the method applicable to Ordered, metered, corrected, and accepted volume and Tank, hose, fitting, containment, and product condition."
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Fuel order and supplier loading record",
+            "Compartment, seal, and product identity",
+            "Destination tank label and starting gauge",
+            "Meter start, meter end, and delivery ticket",
+            "Water check, product observation, or sample reference",
+            "Transfer start, stop, and attendant record",
+            "Spill, leak, overfill, or emergency response record",
+            "Receiver acceptance and inventory posting reference"
+          ]
+        },
+        {
+          "key": "inspection_narrative",
+          "type": "textarea",
+          "label": "Inspection observations, sampling limitations, and evidence interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection observations, sampling limitations, and evidence interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Fleet Fuel exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "inspection_exception_types",
+          "type": "checklist",
+          "label": "Fleet Fuel exception indicators",
+          "items": [
+            "Wrong fuel grade, destination tank, or fill point",
+            "Insufficient tank capacity or unreliable gauge",
+            "Broken seal, product appearance concern, or water indication",
+            "Leak, loose fitting, damaged hose, cap, vent, or containment",
+            "Spill, overfill, fire, vapor, static, or ignition-source concern",
+            "Meter failure or delivered volume cannot be reconciled",
+            "Unauthorized person, vehicle movement, or uncontrolled site access",
+            "Emergency stop, extinguisher, spill kit, or communication unavailable",
+            "Receiver refuses product, quantity, or condition",
+            "Environmental, safety, or site notification remains incomplete"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "inspection_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_decision",
+          "type": "fields",
+          "label": "Inspection deficiency containment and disposition",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_release",
+      "title": "Fleet Fuel inspection status and release decision",
+      "guidance": "Do not turn a checklist score into release when a critical exception or evidence gap remains.",
+      "blocks": [
+        {
+          "key": "release_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Inspection status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with action",
+                "Restricted",
+                "On hold",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted unit or scope",
+              "units": 1.25
+            },
+            {
+              "key": "held_scope",
+              "label": "Held or excluded unit",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection and release authorization",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector signature and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified Fuel Operations And Environmental Safety Lead review",
+              "units": 1.45
+            },
+            {
+              "key": "release_owner",
+              "label": "Release or custody owner",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Fleet Fuel inspection checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and released",
+                "Accepted with closed action",
+                "Restricted handoff",
+                "Held for corrective work",
+                "Rejected or removed"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This fleet fuel inspection checklist is an operational record, not a substitute for applicable law, contract terms, safety or product requirements, or professional judgment. Stop the affected movement, transfer, release, posting, or disposition when identity, evidence, authorization, or control is uncertain. A qualified qualified fuel operations and environmental safety lead must review the exception and document the controlling decision."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified fuel operations and environmental safety lead",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

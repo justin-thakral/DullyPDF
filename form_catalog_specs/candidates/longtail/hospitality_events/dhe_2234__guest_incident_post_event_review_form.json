@@ -1,0 +1,468 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2234__guest_incident_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2234__guest_incident_post_event_review_form.pdf",
+  "slug": "guest-incident-post-event-review-form",
+  "title": "Guest Incident Post-Event Review Form",
+  "subtitle": "Close the case and look for the pattern: contributing conditions, recurrence, prevention actions, and what the venue changes.",
+  "description": "An original case review for a closed or closing guest incident. It records the review identity and participants, the contributing conditions and how they were addressed, a recurrence check against prior incidents at the same location or of the same kind, the guest outcome, prevention actions with verification, and the changes carried into policy, training, or inspection routines.",
+  "use_case": "Use after a guest incident case has been handled, when the venue needs to know whether the condition was actually fixed and whether the same thing has happened before. The review closes when prevention actions are verified and the recurrence position is recorded.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "review_identity",
+      "title": "Review identity and participants",
+      "guidance": "Bind the review to the case and the people accountable for it.",
+      "blocks": [
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Review identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review record ID",
+              "units": 0.95
+            },
+            {
+              "key": "case_id",
+              "label": "Case ID",
+              "units": 0.7
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "report_reference",
+              "label": "Incident report ID",
+              "units": 1.3
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Participants",
+          "fields": [
+            {
+              "key": "case_owner",
+              "label": "Case owner",
+              "units": 1.0
+            },
+            {
+              "key": "department_lead",
+              "label": "Department lead",
+              "units": 1.15
+            },
+            {
+              "key": "maintenance_lead",
+              "label": "Maintenance lead",
+              "units": 1.2
+            },
+            {
+              "key": "incident_date",
+              "label": "Incident date",
+              "units": 1.0
+            },
+            {
+              "key": "location_on_site",
+              "label": "Location on site",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "contributing_conditions",
+      "title": "Contributing conditions and how they were addressed",
+      "guidance": "Conditions, not conclusions about people.",
+      "blocks": [
+        {
+          "key": "condition_rows",
+          "type": "table",
+          "label": "Contributing conditions review",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition recorded",
+              "units": 1.4
+            },
+            {
+              "key": "addressed_how",
+              "label": "How it was addressed",
+              "units": 1.4
+            },
+            {
+              "key": "verified_on",
+              "label": "Verified on",
+              "units": 0.85
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "condition_checks",
+          "type": "checklist",
+          "label": "Condition closure checks",
+          "items": [
+            "Every condition recorded in the report has a disposition here",
+            "Permanent fix verified in place, not only ordered",
+            "Interim controls removed only after the permanent fix was verified",
+            "Inspection or cleaning frequency reviewed for the location",
+            "Signage or layout change considered where the condition can recur",
+            "Similar locations checked for the same condition",
+            "Maintenance history for the location reviewed for earlier warnings"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "recurrence_check",
+      "title": "Recurrence check and pattern",
+      "guidance": "One incident is an event; three is a control failure.",
+      "blocks": [
+        {
+          "key": "recurrence_rows",
+          "type": "table",
+          "label": "Prior incidents of this kind or location",
+          "columns": [
+            {
+              "key": "prior_reference",
+              "label": "Prior report",
+              "units": 1.0
+            },
+            {
+              "key": "prior_date",
+              "label": "Date",
+              "units": 0.8
+            },
+            {
+              "key": "what_matched",
+              "label": "What matched",
+              "units": 1.5
+            },
+            {
+              "key": "action_then",
+              "label": "Action taken then",
+              "units": 1.4
+            },
+            {
+              "key": "held",
+              "label": "Did it hold",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "pattern_position",
+          "type": "fields",
+          "label": "Pattern position",
+          "fields": [
+            {
+              "key": "prior_count",
+              "label": "Prior incidents found",
+              "units": 1.4
+            },
+            {
+              "key": "period_reviewed",
+              "label": "Period reviewed",
+              "units": 1.15
+            },
+            {
+              "key": "pattern_finding",
+              "label": "Pattern finding",
+              "units": 1.4,
+              "field_type": "choice",
+              "options": [
+                "Not assessed",
+                "Isolated event",
+                "Repeat at this location",
+                "Repeat of this kind",
+                "Systemic - escalated"
+              ]
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "guest_outcome",
+      "title": "Guest outcome and case position",
+      "guidance": "Record what happened for the guest, factually.",
+      "blocks": [
+        {
+          "key": "outcome_record",
+          "type": "fields",
+          "label": "Guest outcome",
+          "fields": [
+            {
+              "key": "case_outcome",
+              "label": "Case outcome",
+              "units": 1.45,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Resolved with the guest",
+                "Resolved - guest unresponsive",
+                "Remedy declined by guest",
+                "Referred to the insurer",
+                "Claim in progress",
+                "Escalated to legal"
+              ]
+            },
+            {
+              "key": "last_contact",
+              "label": "Last guest contact",
+              "units": 1.25
+            },
+            {
+              "key": "guest_satisfaction",
+              "label": "Guest position",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "Satisfied with handling",
+                "Mixed",
+                "Dissatisfied",
+                "No comment given"
+              ]
+            },
+            {
+              "key": "open_commitments",
+              "label": "Open commitments",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "outcome_notes",
+          "type": "textarea",
+          "label": "How the case was handled from the guest's side, and what remains open",
+          "fields": [
+            {
+              "key": "outcome_detail",
+              "label": "Guest outcome notes"
+            }
+          ],
+          "height": 58,
+          "guidance": "Record the handling and the guest's stated position. Do not record health detail, and do not characterize the guest or their motives."
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Record boundary for this review",
+          "guidance": "This review is an internal prevention record. It does not determine the cause of an injury or illness, decide liability, evaluate an individual employee, settle a claim, or authorize compensation. Where a claim is open, route the review through the responsible manager before it is shared, and keep it under applicable privacy, retention, and insurance policy."
+        }
+      ]
+    },
+    {
+      "key": "prevention_actions",
+      "title": "Prevention actions and escalation",
+      "guidance": "A prevention action with no verification is a wish.",
+      "blocks": [
+        {
+          "key": "prevention_register",
+          "type": "table",
+          "label": "Prevention action register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Prevention action",
+              "units": 1.3
+            },
+            {
+              "key": "what_it_prevents",
+              "label": "What it prevents",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "The same condition has caused more than one incident",
+            "A prior prevention action did not hold",
+            "A guest was transported for care",
+            "A claim, legal demand, or regulatory contact is open",
+            "The condition affects a route or space that cannot be closed",
+            "Prevention requires capital work beyond the department's authority",
+            "An accessible route or facility was involved"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Changes carried forward and closeout",
+      "guidance": "The review's product is a change someone will actually meet.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - actions verified",
+                "Closed with actions open",
+                "Escalated to leadership",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "change_log",
+          "type": "table",
+          "label": "Changes carried forward",
+          "columns": [
+            {
+              "key": "change",
+              "label": "Change made",
+              "units": 1.4
+            },
+            {
+              "key": "recorded_in",
+              "label": "Where recorded",
+              "units": 1.1
+            },
+            {
+              "key": "applies_to",
+              "label": "Applies to",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Name the inspection routine, briefing, checklist, or standard that will carry the change."
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Every contributing condition has a verified disposition",
+            "Recurrence check completed over a stated period",
+            "Prevention actions verified as effective, not only completed",
+            "Guest outcome and open commitments recorded",
+            "Changes written into the named routine, briefing, or standard",
+            "Referral and retention position confirmed under applicable policy",
+            "Review filed with the case record under restricted access"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Review outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Review closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

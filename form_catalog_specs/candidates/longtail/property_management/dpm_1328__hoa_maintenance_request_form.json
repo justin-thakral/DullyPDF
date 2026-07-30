@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1328__hoa_maintenance_request_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1328__hoa_maintenance_request_form.pdf",
+  "slug": "hoa-maintenance-request-form",
+  "title": "HOA Maintenance Request Form",
+  "subtitle": "Operational maintenance request intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable hoa maintenance request workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a hoa maintenance request from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Request identity and service routing",
+      "guidance": "Open one traceable maintenance request.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Maintenance Request reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "HOA community",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Lot, address, or common area",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Owner, resident, or tenant",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "reported_condition",
+          "type": "textarea",
+          "label": "Reported condition and requested outcome",
+          "guidance": "Preserve the reporter's wording and distinguish observed facts from assumptions.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "condition_account",
+              "label": "Location, symptoms, timing, impact, changes, and requested outcome",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "triage_access",
+      "title": "Urgency, access, and immediate controls",
+      "guidance": "Escalate danger and plan authorized entry.",
+      "blocks": [
+        {
+          "key": "condition_screen",
+          "type": "checklist",
+          "label": "Reported condition screen",
+          "guidance": "Use emergency services and the property's emergency protocol for immediate danger.",
+          "items": [
+            "Fire, smoke, gas odor, sparking, or active electrical concern reported",
+            "Uncontrolled water, sewage, flooding, or active leak reported",
+            "Loss of heat, cooling, water, power, sanitation, or essential function reported",
+            "Broken lock, glazing, entry, security, stair, rail, or fall concern reported",
+            "Moisture, indoor-air, pest, waste, or environmental concern reported",
+            "Area cannot be used safely or condition may affect another location",
+            "Resident, guest, employee, or public access route is affected",
+            "Condition appears routine with no immediate safety impact reported"
+          ]
+        },
+        {
+          "key": "triage_result",
+          "type": "fields",
+          "label": "Triage result and accountable response",
+          "guidance": "Urgency supports routing and does not claim a legal or code classification.",
+          "fields": [
+            {
+              "key": "urgency",
+              "label": "Operational urgency",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Emergency route",
+                "Urgent",
+                "Priority",
+                "Routine",
+                "Monitor"
+              ]
+            },
+            {
+              "key": "triage_owner",
+              "label": "Triage owner",
+              "units": 1.2
+            },
+            {
+              "key": "response_target",
+              "label": "Response target",
+              "units": 1.0
+            },
+            {
+              "key": "control_reference",
+              "label": "Immediate-control reference",
+              "units": 1.4
+            }
+          ]
+        },
+        {
+          "key": "entry_plan",
+          "type": "fields",
+          "label": "Authorized access and communication plan",
+          "guidance": "Record consent and operational support without diagnosis or protected-trait detail.",
+          "fields": [
+            {
+              "key": "entry_basis",
+              "label": "Entry permission or notice status",
+              "units": 1.5
+            },
+            {
+              "key": "access_window",
+              "label": "Access window",
+              "units": 1.0
+            },
+            {
+              "key": "occupancy_status",
+              "label": "Occupancy during visit",
+              "units": 1.1
+            },
+            {
+              "key": "access_support",
+              "label": "Operational access support",
+              "units": 1.3
+            },
+            {
+              "key": "notice_owner",
+              "label": "Notice owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This maintenance request record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "condition_evidence",
+      "title": "Condition history, observations, and evidence",
+      "guidance": "Link every material fact to a source.",
+      "blocks": [
+        {
+          "key": "condition_timeline",
+          "type": "fields",
+          "label": "Condition timeline",
+          "guidance": "Record dates and recurrence without inferring cause.",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed",
+              "units": 1.0
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 1.1
+            },
+            {
+              "key": "current_state",
+              "label": "Current state",
+              "units": 1.0
+            },
+            {
+              "key": "prior_request",
+              "label": "Prior request reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "affected_items",
+          "type": "table",
+          "label": "Affected locations and components",
+          "guidance": "Use one row per distinct location or component.",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Exact location",
+              "units": 1.3
+            },
+            {
+              "key": "component",
+              "label": "Component or system",
+              "units": 1.2
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.8
+            },
+            {
+              "key": "impact",
+              "label": "Use or service impact",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "evidence_log",
+          "type": "table",
+          "label": "Photo, reading, message, and record log",
+          "guidance": "Do not include access codes, unrelated personal material, or sensitive records.",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.9
+            },
+            {
+              "key": "source_time",
+              "label": "Source and time",
+              "units": 1.3
+            },
+            {
+              "key": "subject",
+              "label": "What it shows",
+              "units": 1.8
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage reference",
+              "units": 1.5
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "history_note",
+          "type": "textarea",
+          "label": "Prior work, temporary measures, and recurring-condition history",
+          "guidance": "Identify supporting references and any uncertainty.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "history_details",
+              "label": "Earlier requests, repairs, warranties, temporary measures, and unresolved history",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "HOA context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "HOA workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Request distinguishes owner-lot work from association common-area work",
+            "Road, gate, drainage, landscape, amenity, or utility scope is identified",
+            "Architectural or covenant questions route outside maintenance triage",
+            "Board, manager, committee, and vendor roles are not conflated",
+            "Resident notice for common-area closure or service impact has an owner",
+            "Emergency work can proceed only under the authorized property protocol",
+            "Governing-document interpretation is left to qualified HOA reviewers",
+            "Work order and board or manager decision references remain linked"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Owner, association, or vendor",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Board or manager handoff",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "HOA coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "assessment_authorization",
+      "title": "Assessment, scope, and work authorization",
+      "guidance": "Separate findings from approval.",
+      "blocks": [
+        {
+          "key": "visit_record",
+          "type": "fields",
+          "label": "Visit and assessment record",
+          "guidance": "Record qualifications or vendor status by reference when required.",
+          "fields": [
+            {
+              "key": "visit_date",
+              "label": "Visit date",
+              "units": 0.9
+            },
+            {
+              "key": "arrival_time",
+              "label": "Arrival time",
+              "units": 0.8
+            },
+            {
+              "key": "assessor",
+              "label": "Assessor or vendor",
+              "units": 1.3
+            },
+            {
+              "key": "trade_scope",
+              "label": "Trade or specialty",
+              "units": 1.1
+            },
+            {
+              "key": "access_result",
+              "label": "Access result",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "finding_plan",
+          "type": "table",
+          "label": "Finding and proposed-work register",
+          "guidance": "Route regulated, hazardous, or specialist work before authorization.",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Observed finding",
+              "units": 1.6
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or test",
+              "units": 1.2
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.5
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8
+            },
+            {
+              "key": "owner",
+              "label": "Work owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "authorization",
+          "type": "fields",
+          "label": "Scope and authorization",
+          "guidance": "This row records an authorized operational decision; it does not establish liability.",
+          "fields": [
+            {
+              "key": "authorization_status",
+              "label": "Authorization status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Pending",
+                "Approved",
+                "Limited",
+                "Declined",
+                "Specialist review"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 1.0
+            },
+            {
+              "key": "cost_limit",
+              "label": "Approved limit or reference",
+              "units": 1.3
+            },
+            {
+              "key": "work_order",
+              "label": "Work-order reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "scope_exception",
+          "type": "textarea",
+          "label": "Access failure, changed scope, delay, or escalation",
+          "guidance": "Stop and route work that exceeds authority, qualification, consent, or approved scope.",
+          "height": 60,
+          "fields": [
+            {
+              "key": "exception_plan",
+              "label": "Condition, immediate action, owner, due point, escalation route, and planned disposition",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "completion_closeout",
+      "title": "Completion, verification, and accountable closeout",
+      "guidance": "Close only after function and handoff are verified.",
+      "blocks": [
+        {
+          "key": "work_completion",
+          "type": "table",
+          "label": "Completed work and verification",
+          "guidance": "Record temporary work and permanent work as separate actions.",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Work performed",
+              "units": 1.7
+            },
+            {
+              "key": "completed_by",
+              "label": "Completed by",
+              "units": 1.1
+            },
+            {
+              "key": "completed_at",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification result",
+              "units": 1.4
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout verification",
+          "guidance": "A completed checklist does not replace specialist certification or resident acceptance.",
+          "items": [
+            "Affected function was tested within the worker's authority",
+            "Temporary controls and remaining limitations are documented",
+            "Area was left secure, accessible, and appropriately clean",
+            "Resident, tenant, guest, or business contact received an update",
+            "Keys, credentials, tools, materials, and vendor access were reconciled",
+            "Warranty, invoice, work order, and evidence references are linked",
+            "Every unresolved item has an owner, due point, and escalation route",
+            "Required follow-up or reinspection date is scheduled"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Outcome and handoff",
+          "guidance": "Do not mark closed while a required action lacks ownership.",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Completed",
+                "Temporary control",
+                "Partially completed",
+                "Referred",
+                "Unable to complete"
+              ]
+            },
+            {
+              "key": "communicated_to",
+              "label": "Update delivered to",
+              "units": 1.2
+            },
+            {
+              "key": "communication_date",
+              "label": "Update date",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_owner",
+              "label": "Remaining-action owner",
+              "units": 1.3
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "remaining_work",
+          "type": "textarea",
+          "label": "Remaining limitation, resident response, and next action",
+          "guidance": "Preserve disagreement or correction requests without changing the original evidence.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "remaining_details",
+              "label": "Unresolved condition, current control, owner, due point, handoff, and final disposition path",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "closeout_review",
+          "type": "signatures",
+          "label": "Work record preparation and qualified review",
+          "guidance": "Signatures acknowledge preparation and review of the record, not waiver or legal acceptance.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized property reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

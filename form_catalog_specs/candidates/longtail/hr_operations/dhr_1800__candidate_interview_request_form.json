@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1800__candidate_interview_request_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1800__candidate_interview_request_form.pdf",
+  "slug": "candidate-interview-request-form",
+  "title": "Candidate Interview Request Form",
+  "subtitle": "Use this request to route the need, test readiness, document review, authorize a bounded action, and verify implementation for a candidate interview workflow.",
+  "description": "An original operational candidate interview request form that controls a interview stage and candidate record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the recruiting coordinator or interview lead needs a traceable request so the qualified recruiting or HR reviewer can advance, hold, decline, reschedule, or obtain additional job-related evidence under the approved requisition, structured interview plan, privacy rules, and applicable equal-employment requirements without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Candidate Interview request identity and routing",
+      "guidance": "Open one traceable request and identify the responsible reviewers before work begins.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Candidate Interview identity",
+          "fields": [
+            {
+              "key": "interview_record",
+              "label": "Interview record number",
+              "units": 0.8
+            },
+            {
+              "key": "requisition_id",
+              "label": "Requisition or position ID",
+              "units": 0.8
+            },
+            {
+              "key": "position_title",
+              "label": "Position title",
+              "units": 1.05
+            },
+            {
+              "key": "candidate_reference",
+              "label": "Candidate reference ID",
+              "units": 0.9
+            },
+            {
+              "key": "interview_stage",
+              "label": "Interview stage",
+              "units": 0.75
+            },
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled date, time, and zone",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Request ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_scope",
+          "type": "textarea",
+          "label": "Requested outcome, initiating event, business need, affected people or work, and explicit exclusions",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Request scope and job statement"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "requested_action",
+      "title": "Requested candidate interview scope and operating need",
+      "guidance": "Describe the exact requested action and the evidence needed to evaluate it.",
+      "blocks": [
+        {
+          "key": "request_type",
+          "type": "checklist",
+          "label": "Candidate Interview request type",
+          "items": [
+            "Recruiter screen using the approved role criteria",
+            "Structured hiring-manager interview",
+            "Panel interview with assigned competency coverage",
+            "Job-related work sample or skills exercise",
+            "Technical interview using approved prompts and scoring anchors",
+            "Final decision interview with documented decision scope",
+            "Rescheduled or replacement interview after a process interruption",
+            "Accessibility coordination routed without recording medical details"
+          ]
+        },
+        {
+          "key": "requested_components",
+          "type": "table",
+          "label": "Candidate Interview requested components",
+          "columns": [
+            {
+              "key": "interview_component",
+              "label": "Interview component",
+              "units": 1.2
+            },
+            {
+              "key": "competency",
+              "label": "Competency / outcome",
+              "units": 1.05
+            },
+            {
+              "key": "interviewer",
+              "label": "Assigned interviewer",
+              "units": 0.9
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 0.6
+            },
+            {
+              "key": "format",
+              "label": "Format / location",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Target date",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "business_need",
+          "type": "textarea",
+          "label": "Operational reason, intended result, assumptions, dependencies, alternatives, and timing impact",
+          "fields": [
+            {
+              "key": "need_detail",
+              "label": "Business need and requested result"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "readiness_impact",
+      "title": "Candidate Interview readiness, policy, and impact review",
+      "guidance": "Confirm the request can be reviewed without bypassing privacy, safety, security, or authority controls.",
+      "blocks": [
+        {
+          "key": "readiness_checkpoints",
+          "type": "checklist",
+          "label": "Candidate Interview readiness checkpoints",
+          "items": [
+            "Active requisition and current position description are confirmed",
+            "Interviewers have assigned competencies and no duplicate coverage gap",
+            "Question set and rating anchors match the interview stage",
+            "Candidate identity is confirmed without collecting unnecessary identifiers",
+            "Format, access instructions, time zone, and contact route are accurate",
+            "Accessibility requests are routed to the designated confidential process",
+            "Panel conflicts or prior relationships are disclosed and resolved",
+            "Interview notes are limited to job-related evidence",
+            "Each rating includes evidence and an anchor-based rationale",
+            "Panel members submit independent ratings before group calibration",
+            "Candidate communication contains the correct next step and owner",
+            "Records are stored in the approved recruiting system with limited access"
+          ]
+        },
+        {
+          "key": "impact_routing",
+          "type": "fields",
+          "label": "Affected workflow and review route",
+          "fields": [
+            {
+              "key": "affected_team",
+              "label": "Affected team or function",
+              "units": 0.95
+            },
+            {
+              "key": "affected_location",
+              "label": "Affected location",
+              "units": 0.9
+            },
+            {
+              "key": "system_update",
+              "label": "System update required",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "To be determined"
+              ]
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy or restricted-record route",
+              "units": 1.0
+            },
+            {
+              "key": "cost_schedule_effect",
+              "label": "Cost or schedule effect",
+              "units": 0.95
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Request and authority boundary",
+          "guidance": "This request does not itself authorize action. The qualified recruiting or HR reviewer must apply the approved requisition, structured interview plan, privacy rules, and applicable equal-employment requirements, resolve exceptions, and record any conditions before implementation."
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Candidate Interview review, alternatives, and decision",
+      "guidance": "Compare the request to the governing evidence and document why the selected route is appropriate.",
+      "blocks": [
+        {
+          "key": "review_matrix",
+          "type": "table",
+          "label": "Requirement, evidence, finding, and decision matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement / question",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Reviewer / owner",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result / condition",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "request_decision",
+          "type": "fields",
+          "label": "Request decision and authority",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned for revision",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date or scope boundary",
+              "units": 1.1
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, alternatives rejected, approved limits, exception treatment, and communication plan",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Decision rationale and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "implementation_handoff",
+      "title": "Approved candidate interview implementation and exception handoff",
+      "guidance": "Translate the decision into owned work without losing a condition or system update.",
+      "blocks": [
+        {
+          "key": "implementation_plan",
+          "type": "table",
+          "label": "Approved action, condition, system update, and completion evidence",
+          "columns": [
+            {
+              "key": "approved_action",
+              "label": "Approved action",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition / limit",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "system_record",
+              "label": "System / evidence ref.",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "implementation_checks",
+          "type": "checklist",
+          "label": "Implementation and communication controls",
+          "items": [
+            "Interview need and stage align with the approved hiring process",
+            "Assigned interviewers are available, trained, and conflict-free",
+            "Questions and exercises are job related and consistently administered",
+            "Candidate access or adjustment coordination has an accountable route",
+            "Decision rights and scorecard due times are explicit",
+            "Data access, note retention, and recording rules are communicated",
+            "Schedule gives the candidate and panel a workable preparation window",
+            "Any exception has qualified HR review and a documented condition"
+          ]
+        },
+        {
+          "key": "implementation_variance",
+          "type": "textarea",
+          "label": "Implementation variance, failed dependency, changed fact, immediate action, and reapproval need",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Variance and reapproval narrative"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Candidate Interview request completion and closeout",
+      "guidance": "Close only when the implemented result, remaining limits, and receiving ownership are verifiable.",
+      "blocks": [
+        {
+          "key": "request_outcome",
+          "type": "fields",
+          "label": "Request outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "request_actions",
+          "type": "table",
+          "label": "Open candidate interview action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "request_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "request_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "request_signoff",
+          "type": "signatures",
+          "label": "Request accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Recruiting Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

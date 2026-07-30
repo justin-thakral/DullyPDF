@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2216__catering_order_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2216__catering_order_checklist_form.pdf",
+  "slug": "catering-order-checklist-form",
+  "title": "Catering Order Checklist Form",
+  "subtitle": "The pre-departure check: production complete, restricted portions separated, temperatures recorded, vehicle loaded, and the site pack verified.",
+  "description": "An original pre-departure readiness check for an off-premise catering delivery. It records the check identity and the order under check, production completion, separation and labeling of restricted portions, departure temperature readings, vehicle and pack verification, the release-to-depart decision, blocking findings, and the closeout that hands the load to the driver.",
+  "use_case": "Use in the loading bay before a catering vehicle leaves, when a kitchen lead and manager verify that what is packed matches the order and can be held safely for the planned transit. The check closes when the load is released or the blocking findings are escalated.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "check_identity",
+      "title": "Check identity and order under check",
+      "guidance": "Name the check, the order, and who is signing it off.",
+      "blocks": [
+        {
+          "key": "check_routing",
+          "type": "fields",
+          "label": "Check identity and routing",
+          "fields": [
+            {
+              "key": "check_id",
+              "label": "Check record ID",
+              "units": 0.9
+            },
+            {
+              "key": "check_time",
+              "label": "Check start time",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Checked by",
+              "units": 0.95
+            },
+            {
+              "key": "manager_present",
+              "label": "Manager present",
+              "units": 1.1
+            },
+            {
+              "key": "depart_by",
+              "label": "Depart by",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "order_under_check",
+          "type": "fields",
+          "label": "Order under check",
+          "fields": [
+            {
+              "key": "order_number",
+              "label": "Catering order number",
+              "units": 1.3
+            },
+            {
+              "key": "revision_checked",
+              "label": "Revision checked",
+              "units": 1.05
+            },
+            {
+              "key": "site_name",
+              "label": "Delivery site",
+              "units": 1.05
+            },
+            {
+              "key": "guest_count",
+              "label": "Final guest count",
+              "units": 1.1
+            },
+            {
+              "key": "transit_minutes",
+              "label": "Transit minutes",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "production_complete",
+      "title": "Production completion against the order",
+      "guidance": "Count what is actually made against what was ordered.",
+      "blocks": [
+        {
+          "key": "production_check",
+          "type": "table",
+          "label": "Production check",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.5
+            },
+            {
+              "key": "ordered",
+              "label": "Ordered",
+              "units": 0.7
+            },
+            {
+              "key": "produced",
+              "label": "Produced",
+              "units": 0.75
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 0.7
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.3
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "production_checks",
+          "type": "checklist",
+          "label": "Production checks",
+          "items": [
+            "Every order line produced and counted",
+            "Substitutions recorded and approved by the catering lead",
+            "Portion sizes checked against the order basis",
+            "Garnish and finishing items prepared and packed separately",
+            "Shortfalls raised with the catering lead before loading",
+            "Production waste and overproduction recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "separation_and_temperature",
+      "title": "Restricted portions and departure temperatures",
+      "guidance": "Separation and readings are recorded by a named person.",
+      "blocks": [
+        {
+          "key": "departure_readings",
+          "type": "table",
+          "label": "Departure temperature readings",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or carrier",
+              "units": 1.35
+            },
+            {
+              "key": "reading",
+              "label": "Reading",
+              "units": 0.65
+            },
+            {
+              "key": "taken_at",
+              "label": "Taken at",
+              "units": 0.75
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.25
+            }
+          ],
+          "rows": 6,
+          "guidance": "Record readings as observed. Route anything outside the venue standard to the chef on duty before the vehicle leaves."
+        },
+        {
+          "key": "separation_checks",
+          "type": "checklist",
+          "label": "Separation and labeling checks",
+          "items": [
+            "Restricted portions produced separately from the main production run",
+            "Restricted portions labeled with the requirement they satisfy",
+            "Restricted portions packed in their own sealed carrier",
+            "Chef on duty confirmed the allergen plan matches the order",
+            "Name of the person receiving restricted portions recorded on the order",
+            "Buffet labels prepared for every item that will be set out",
+            "Hot and cold carriers loaded separately and closed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "vehicle_and_pack",
+      "title": "Vehicle and pack verification",
+      "guidance": "A missing utensil on site cannot be fixed from the kitchen.",
+      "blocks": [
+        {
+          "key": "pack_verification",
+          "type": "checklist",
+          "label": "Pack verification",
+          "items": [
+            "Pack list checked item by item against the loaded vehicle",
+            "Returnable equipment counted and recorded before departure",
+            "Serving utensils and chafer fuel packed and counted",
+            "Disposables and napkins packed to the final guest count",
+            "Rental service ware present and counted against the manifest",
+            "Cleaning supplies, waste bags, and gloves packed",
+            "Site address, access notes, and contact number given to the driver",
+            "Vehicle clean, secured, and loaded so carriers stay upright"
+          ]
+        },
+        {
+          "key": "vehicle_record",
+          "type": "fields",
+          "label": "Vehicle record",
+          "fields": [
+            {
+              "key": "vehicle",
+              "label": "Vehicle",
+              "units": 0.85
+            },
+            {
+              "key": "driver",
+              "label": "Driver",
+              "units": 0.9
+            },
+            {
+              "key": "loaded_at",
+              "label": "Loaded at",
+              "units": 0.85
+            },
+            {
+              "key": "carriers_out",
+              "label": "Carriers out",
+              "units": 1.0
+            },
+            {
+              "key": "returnables_out",
+              "label": "Returnables out",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "release_decision",
+      "title": "Release to depart and blocking findings",
+      "guidance": "The load leaves, or it does not.",
+      "blocks": [
+        {
+          "key": "release_record",
+          "type": "fields",
+          "label": "Release decision",
+          "fields": [
+            {
+              "key": "release_status",
+              "label": "Release status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Released to depart",
+                "Released with follow-up",
+                "Held - findings open",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "released_at",
+              "label": "Released at",
+              "units": 0.85
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "blocking_findings",
+          "type": "table",
+          "label": "Blocking findings register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Blocking finding",
+              "units": 1.25
+            },
+            {
+              "key": "why_blocking",
+              "label": "Why it blocks departure",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "check_boundary",
+          "type": "notice",
+          "label": "What this check does and does not establish",
+          "guidance": "This check records observations against the catering order at the moment of departure. It is not a food-safety certification and it does not cover what happens after handover at a site the venue does not control. Stop the departure and route to the responsible manager when a temperature is outside the venue standard, restricted portions are not separated, or the load does not match the order."
+        }
+      ]
+    },
+    {
+      "key": "check_closeout",
+      "title": "Closeout and handoff to the driver",
+      "guidance": "Hand over the load with the findings that remain open.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Check closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - load released",
+                "Closed with follow-up",
+                "Closed - delivery cancelled"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "handed_to",
+              "label": "Handed to",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "transit_log",
+          "type": "table",
+          "label": "Transit and arrival log",
+          "columns": [
+            {
+              "key": "log_time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint",
+              "units": 1.3
+            },
+            {
+              "key": "reading_or_note",
+              "label": "Reading or note",
+              "units": 1.35
+            },
+            {
+              "key": "recorded_by",
+              "label": "Recorded by",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Record the arrival reading and any delay so the on-site lead and the kitchen see the same transit history."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Production variances recorded and accepted or corrected",
+            "Departure readings and actions filed with the order record",
+            "Allergen separation confirmation obtained from the chef on duty",
+            "Returnable equipment count given to the driver in writing",
+            "Open findings transferred with named owners",
+            "Check record retained as required by applicable policy"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Release outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Check handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Check and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Checked and prepared by",
+              "units": 1.35
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.35
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

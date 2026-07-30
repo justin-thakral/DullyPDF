@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2206__event_inquiry_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2206__event_inquiry_post_event_review_form.pdf",
+  "slug": "event-inquiry-post-event-review-form",
+  "title": "Event Inquiry Post-Event Review Form",
+  "subtitle": "After the event, compare what the inquiry captured against what was delivered, and record what the sales process should change.",
+  "description": "An original post-event review that closes the loop on an inquiry. It reconciles what was recorded at inquiry against what was actually delivered, measures the inquiry process itself, records the client outcome and repeat potential, opens actions for findings that need work, and captures the learning that should change the next inquiry.",
+  "use_case": "Use after an event that originated from this inquiry, when sales and event services need to know whether the inquiry captured reality and where the process leaked. The review closes when every finding has an owner and the learning has been recorded where the next seller will actually see it.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_identity",
+      "title": "Review identity and routing",
+      "guidance": "Bind the review to the inquiry, the order, and the delivered event.",
+      "blocks": [
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Review identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review record ID",
+              "units": 0.9
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "source_inquiry",
+              "label": "Source inquiry ID",
+              "units": 1.05
+            },
+            {
+              "key": "order_number",
+              "label": "Order number",
+              "units": 0.9
+            },
+            {
+              "key": "event_date",
+              "label": "Event date delivered",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "review_participants",
+          "type": "fields",
+          "label": "Participants and outcome",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "reviewer_name",
+              "label": "Reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "sales_owner",
+              "label": "Sales owner",
+              "units": 0.95
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 1.0
+            },
+            {
+              "key": "attendees_final",
+              "label": "Final attendance",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "sold_versus_delivered",
+      "title": "Recorded at inquiry versus delivered",
+      "guidance": "Compare the inquiry record with what the event actually became.",
+      "blocks": [
+        {
+          "key": "variance_matrix",
+          "type": "table",
+          "label": "Inquiry-to-delivery variance matrix",
+          "columns": [
+            {
+              "key": "element",
+              "label": "Element",
+              "units": 1.0
+            },
+            {
+              "key": "at_inquiry",
+              "label": "Recorded at inquiry",
+              "units": 1.15
+            },
+            {
+              "key": "delivered",
+              "label": "Actually delivered",
+              "units": 1.15
+            },
+            {
+              "key": "cause",
+              "label": "Variance cause",
+              "units": 1.1
+            },
+            {
+              "key": "revenue_effect",
+              "label": "Revenue effect",
+              "units": 0.9
+            }
+          ],
+          "rows": 6,
+          "guidance": "Cover space, headcount, setup, food and beverage, and any accommodation captured at inquiry."
+        },
+        {
+          "key": "quantitative_variance",
+          "type": "fields",
+          "label": "Quantitative variance",
+          "fields": [
+            {
+              "key": "headcount_inquiry",
+              "label": "Headcount at inquiry",
+              "units": 1.1
+            },
+            {
+              "key": "headcount_final",
+              "label": "Headcount delivered",
+              "units": 1.1
+            },
+            {
+              "key": "revenue_forecast",
+              "label": "Revenue forecast",
+              "units": 1.0
+            },
+            {
+              "key": "revenue_actual",
+              "label": "Revenue actual",
+              "units": 0.95
+            },
+            {
+              "key": "variance_percent",
+              "label": "Variance percent",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accuracy_checks",
+          "type": "checklist",
+          "label": "Inquiry accuracy checks",
+          "items": [
+            "Spaces requested at inquiry matched the spaces delivered",
+            "Headcount basis at inquiry was within tolerance of the guaranteed count",
+            "Every service flagged at inquiry appeared on the order",
+            "Accessibility requests captured at inquiry were delivered",
+            "Allergen and dietary requests captured at inquiry reached the culinary team",
+            "Rate quoted at inquiry matched the contracted rate",
+            "Load-in window discussed at inquiry matched what operations delivered"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "process_performance",
+      "title": "Inquiry process performance",
+      "guidance": "Measure the process, not only the outcome.",
+      "blocks": [
+        {
+          "key": "process_metrics",
+          "type": "fields",
+          "label": "Process metrics",
+          "fields": [
+            {
+              "key": "response_hours",
+              "label": "Response time (hours)",
+              "units": 1.15
+            },
+            {
+              "key": "qualification_days",
+              "label": "Days to qualify",
+              "units": 1.0
+            },
+            {
+              "key": "hold_to_definite",
+              "label": "Days hold to definite",
+              "units": 1.15
+            },
+            {
+              "key": "site_visit_held",
+              "label": "Site visit held",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Yes",
+                "No - not requested",
+                "No - client declined",
+                "No - not offered"
+              ]
+            },
+            {
+              "key": "proposal_revisions",
+              "label": "Proposal revisions",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "process_findings",
+          "type": "checklist",
+          "label": "Process findings",
+          "items": [
+            "Response window met at first contact",
+            "Qualification review completed before the quote was issued",
+            "Feasibility confirmations obtained from every owning role",
+            "Hold expiry managed without an unplanned release",
+            "Turnover to operations acknowledged by every department",
+            "Open conditions at turnover were closed before the event"
+          ]
+        },
+        {
+          "key": "process_notes",
+          "type": "textarea",
+          "label": "Where the process worked, where it leaked, and what it cost",
+          "fields": [
+            {
+              "key": "process_detail",
+              "label": "Process performance detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "client_outcome",
+      "title": "Client outcome and repeat potential",
+      "guidance": "Record what the client said, not what the team hopes they meant.",
+      "blocks": [
+        {
+          "key": "outcome_record",
+          "type": "fields",
+          "label": "Client outcome",
+          "fields": [
+            {
+              "key": "satisfaction",
+              "label": "Client satisfaction",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "Very satisfied",
+                "Satisfied",
+                "Mixed",
+                "Dissatisfied"
+              ]
+            },
+            {
+              "key": "feedback_source",
+              "label": "Feedback source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "Post-event call",
+                "Written survey",
+                "Unsolicited email",
+                "On-site debrief"
+              ]
+            },
+            {
+              "key": "rebook_intent",
+              "label": "Rebook intent",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Unknown",
+                "Rebooked already",
+                "Likely",
+                "Unlikely",
+                "Will not return"
+              ]
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 1.0
+            },
+            {
+              "key": "referral_asked",
+              "label": "Referral asked",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Not asked",
+                "Yes",
+                "No"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "client_feedback",
+          "type": "textarea",
+          "label": "Client feedback in the client's own terms",
+          "fields": [
+            {
+              "key": "feedback_detail",
+              "label": "Client feedback record"
+            }
+          ],
+          "height": 58,
+          "guidance": "Record what was said and who said it. Do not record health information, judgments about individual staff, or commitments the venue has not approved."
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Record boundary for this review",
+          "guidance": "This review is an internal learning record. It does not settle a billing dispute, determine liability for an incident, evaluate an individual employee, or authorize compensation. Route pricing adjustments, claims, and personnel matters to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "review_findings",
+      "title": "Findings requiring action and escalation",
+      "guidance": "A finding without an owner is an observation, not an improvement.",
+      "blocks": [
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A requirement captured at inquiry was never delivered",
+            "An accessibility or allergen request was lost between inquiry and delivery",
+            "Revenue fell materially below the inquiry forecast",
+            "A hold was released or a date lost through process failure",
+            "The client raised a complaint that is still open",
+            "An incident report from this event is still open",
+            "The same finding has appeared in a prior review"
+          ]
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Finding and action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "action_agreed",
+              "label": "Action agreed",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Learning, closeout, and handoff",
+      "guidance": "Put the learning where the next inquiry will meet it.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - no actions",
+                "Closed with actions",
+                "Escalated to leadership",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "learning_log",
+          "type": "table",
+          "label": "Learning log",
+          "columns": [
+            {
+              "key": "change",
+              "label": "What to change",
+              "units": 1.4
+            },
+            {
+              "key": "recorded_in",
+              "label": "Where recorded",
+              "units": 1.0
+            },
+            {
+              "key": "applies_to",
+              "label": "Applies to",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Name the checklist, template, or briefing that will carry the change."
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Variance matrix reconciled with the order and final billing",
+            "Open findings transferred with named owners and due points",
+            "Client feedback recorded with its source and date",
+            "Learning entries written into the named template or briefing",
+            "Lost accommodation requests reported to the responsible manager",
+            "Review filed against the inquiry and order records"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Review outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Review closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by director of sales",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

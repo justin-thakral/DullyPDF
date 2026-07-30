@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1835__training_attendance_request_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1835__training_attendance_request_form.pdf",
+  "slug": "training-attendance-request-form",
+  "title": "Training Attendance Request Form",
+  "subtitle": "Use this request to route the need, test readiness, document review, authorize a bounded action, and verify implementation for a training attendance workflow.",
+  "description": "An original operational training attendance request form that controls a controlled learning-session attendance and participation record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the training coordinator, facilitator, manager, or learner needs a traceable request so the authorized learning, compliance, safety, or qualification reviewer can credit attendance, assign partial credit, require make-up, correct the roster, or withhold completion under the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Training Attendance request identity and routing",
+      "guidance": "Open one traceable request and identify the responsible reviewers before work begins.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Training Attendance identity",
+          "fields": [
+            {
+              "key": "session_record",
+              "label": "Training session number",
+              "units": 0.8
+            },
+            {
+              "key": "course_id",
+              "label": "Course or curriculum ID",
+              "units": 0.85
+            },
+            {
+              "key": "course_title",
+              "label": "Course title",
+              "units": 1.15
+            },
+            {
+              "key": "curriculum_revision",
+              "label": "Curriculum revision",
+              "units": 0.7
+            },
+            {
+              "key": "session_window",
+              "label": "Session date, time, and zone",
+              "units": 1.0
+            },
+            {
+              "key": "delivery_location",
+              "label": "Location or delivery channel",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Request ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_scope",
+          "type": "textarea",
+          "label": "Requested outcome, initiating event, business need, affected people or work, and explicit exclusions",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Request scope and job statement"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "requested_action",
+      "title": "Requested training attendance scope and operating need",
+      "guidance": "Describe the exact requested action and the evidence needed to evaluate it.",
+      "blocks": [
+        {
+          "key": "request_type",
+          "type": "checklist",
+          "label": "Training Attendance request type",
+          "items": [
+            "Instructor-led classroom session",
+            "Virtual instructor-led session",
+            "Observed practical demonstration",
+            "Toolbox, briefing, or shift-based instruction",
+            "Self-paced module with controlled completion evidence",
+            "Refresher, change-driven, or remedial attendance",
+            "Make-up session for a missed segment",
+            "Roster correction or external-training credit review"
+          ]
+        },
+        {
+          "key": "requested_components",
+          "type": "table",
+          "label": "Training Attendance requested components",
+          "columns": [
+            {
+              "key": "learner_group",
+              "label": "Learner / group",
+              "units": 1.0
+            },
+            {
+              "key": "required_course",
+              "label": "Course / revision",
+              "units": 1.05
+            },
+            {
+              "key": "assignment_reason",
+              "label": "Assignment / need",
+              "units": 1.1
+            },
+            {
+              "key": "delivery_method",
+              "label": "Method / location",
+              "units": 0.9
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.65
+            },
+            {
+              "key": "support_need",
+              "label": "Access / support route",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "business_need",
+          "type": "textarea",
+          "label": "Operational reason, intended result, assumptions, dependencies, alternatives, and timing impact",
+          "fields": [
+            {
+              "key": "need_detail",
+              "label": "Business need and requested result"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "readiness_impact",
+      "title": "Training Attendance readiness, policy, and impact review",
+      "guidance": "Confirm the request can be reviewed without bypassing privacy, safety, security, or authority controls.",
+      "blocks": [
+        {
+          "key": "readiness_checkpoints",
+          "type": "checklist",
+          "label": "Training Attendance readiness checkpoints",
+          "items": [
+            "Course ID, curriculum revision, instructor, date, time, zone, and location are correct",
+            "Roster includes only assigned or authorized participants",
+            "Learner identity is verified by the approved method",
+            "Prerequisites and required prior qualifications are confirmed",
+            "Accessibility, language, technology, and material needs are addressed",
+            "Arrival, departure, break, and missed-segment times are captured",
+            "Required exercises, discussions, and knowledge checks are documented",
+            "Interruptions and resumed content are traceable",
+            "Attendance credit is separated from competency or work authorization",
+            "Partial attendance has an exact make-up assignment and due point",
+            "Roster, evidence, and learning-system entries reconcile",
+            "Learners and managers receive completion or outstanding-action status"
+          ]
+        },
+        {
+          "key": "impact_routing",
+          "type": "fields",
+          "label": "Affected workflow and review route",
+          "fields": [
+            {
+              "key": "affected_team",
+              "label": "Affected team or function",
+              "units": 0.95
+            },
+            {
+              "key": "affected_location",
+              "label": "Affected location",
+              "units": 0.9
+            },
+            {
+              "key": "system_update",
+              "label": "System update required",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "To be determined"
+              ]
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy or restricted-record route",
+              "units": 1.0
+            },
+            {
+              "key": "cost_schedule_effect",
+              "label": "Cost or schedule effect",
+              "units": 0.95
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Request and authority boundary",
+          "guidance": "This request does not itself authorize action. The authorized learning, compliance, safety, or qualification reviewer must apply the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy, resolve exceptions, and record any conditions before implementation."
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Training Attendance review, alternatives, and decision",
+      "guidance": "Compare the request to the governing evidence and document why the selected route is appropriate.",
+      "blocks": [
+        {
+          "key": "review_matrix",
+          "type": "table",
+          "label": "Requirement, evidence, finding, and decision matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement / question",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Reviewer / owner",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result / condition",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "request_decision",
+          "type": "fields",
+          "label": "Request decision and authority",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned for revision",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date or scope boundary",
+              "units": 1.1
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, alternatives rejected, approved limits, exception treatment, and communication plan",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Decision rationale and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "implementation_handoff",
+      "title": "Approved training attendance implementation and exception handoff",
+      "guidance": "Translate the decision into owned work without losing a condition or system update.",
+      "blocks": [
+        {
+          "key": "implementation_plan",
+          "type": "table",
+          "label": "Approved action, condition, system update, and completion evidence",
+          "columns": [
+            {
+              "key": "approved_action",
+              "label": "Approved action",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition / limit",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "system_record",
+              "label": "System / evidence ref.",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "implementation_checks",
+          "type": "checklist",
+          "label": "Implementation and communication controls",
+          "items": [
+            "Course, revision, instructor, and delivery method are approved",
+            "Roster population and learner assignments are accurate",
+            "Prerequisites and support needs are addressed",
+            "Attendance-capture method can preserve start, end, and missed segments",
+            "Required participation and assessment evidence are available",
+            "Make-up route exists for partial or interrupted attendance",
+            "Attendance is not represented as competency without separate evidence",
+            "Learning-system update and retention have accountable owners"
+          ]
+        },
+        {
+          "key": "implementation_variance",
+          "type": "textarea",
+          "label": "Implementation variance, failed dependency, changed fact, immediate action, and reapproval need",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Variance and reapproval narrative"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Training Attendance request completion and closeout",
+      "guidance": "Close only when the implemented result, remaining limits, and receiving ownership are verifiable.",
+      "blocks": [
+        {
+          "key": "request_outcome",
+          "type": "fields",
+          "label": "Request outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "request_actions",
+          "type": "table",
+          "label": "Open training attendance action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "request_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "request_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "request_signoff",
+          "type": "signatures",
+          "label": "Request accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Learning, Compliance, Safety, Or Qualification Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

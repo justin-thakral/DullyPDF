@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1839__training_attendance_checklist_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1839__training_attendance_checklist_form.pdf",
+  "slug": "training-attendance-checklist-form",
+  "title": "Training Attendance Checklist Form",
+  "subtitle": "Use this checklist to verify readiness and execution, expose failed checkpoints, authorize the next state, and preserve accountable handoff for a training attendance workflow.",
+  "description": "An original operational training attendance checklist form that controls a controlled learning-session attendance and participation record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the training coordinator, facilitator, manager, or learner needs a traceable checklist so the authorized learning, compliance, safety, or qualification reviewer can credit attendance, assign partial credit, require make-up, correct the roster, or withhold completion under the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "checklist_assignment",
+      "title": "Training Attendance checklist assignment and operating boundary",
+      "guidance": "Identify the event, accountable operator, reviewer, applicable references, and required completion point.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Training Attendance identity",
+          "fields": [
+            {
+              "key": "session_record",
+              "label": "Training session number",
+              "units": 0.8
+            },
+            {
+              "key": "course_id",
+              "label": "Course or curriculum ID",
+              "units": 0.85
+            },
+            {
+              "key": "course_title",
+              "label": "Course title",
+              "units": 1.15
+            },
+            {
+              "key": "curriculum_revision",
+              "label": "Curriculum revision",
+              "units": 0.7
+            },
+            {
+              "key": "session_window",
+              "label": "Session date, time, and zone",
+              "units": 1.0
+            },
+            {
+              "key": "delivery_location",
+              "label": "Location or delivery channel",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Checklist ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "execution_control",
+          "type": "fields",
+          "label": "Execution control",
+          "fields": [
+            {
+              "key": "checklist_date",
+              "label": "Checklist date",
+              "units": 0.7
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 0.85
+            },
+            {
+              "key": "work_window",
+              "label": "Work or review window",
+              "units": 0.9
+            },
+            {
+              "key": "reference_revision",
+              "label": "Policy or reference revision",
+              "units": 1.0
+            },
+            {
+              "key": "completion_due",
+              "label": "Completion due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_scope",
+          "type": "textarea",
+          "label": "Event scope, operating objective, affected population, exclusions, and required outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Checklist scope and job statement"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "readiness",
+      "title": "Training Attendance readiness and source-record verification",
+      "guidance": "Confirm the task is ready and the operator has the correct information before checking execution.",
+      "blocks": [
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Training Attendance readiness checks",
+          "items": [
+            "Course ID, curriculum revision, instructor, date, time, zone, and location are correct",
+            "Roster includes only assigned or authorized participants",
+            "Learner identity is verified by the approved method",
+            "Prerequisites and required prior qualifications are confirmed",
+            "Accessibility, language, technology, and material needs are addressed",
+            "Arrival, departure, break, and missed-segment times are captured",
+            "Required exercises, discussions, and knowledge checks are documented",
+            "Interruptions and resumed content are traceable"
+          ]
+        },
+        {
+          "key": "source_evidence",
+          "type": "checklist",
+          "label": "Source records and evidence available",
+          "items": [
+            "Approved curriculum and session assignment",
+            "Instructor authorization and delivery record",
+            "Controlled roster with identity verification",
+            "Arrival, departure, break, and missed-segment evidence",
+            "Participation, exercise, knowledge-check, or module evidence",
+            "Accessibility, interruption, make-up, or incident reference",
+            "Learner and instructor acknowledgment",
+            "Learning-system completion and qualification-status update"
+          ]
+        },
+        {
+          "key": "readiness_status",
+          "type": "fields",
+          "label": "Readiness status",
+          "fields": [
+            {
+              "key": "ready_status",
+              "label": "Ready to proceed?",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "Yes with conditions",
+                "No",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "missing_item",
+              "label": "Missing item or dependency",
+              "units": 1.15
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.85
+            },
+            {
+              "key": "dependency_due",
+              "label": "Dependency due",
+              "units": 0.7
+            },
+            {
+              "key": "proceed_authority",
+              "label": "Proceed authority",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "execution",
+      "title": "Training Attendance execution checkpoints and traceable results",
+      "guidance": "Record each checkpoint against observable evidence and identify every condition that is not complete.",
+      "blocks": [
+        {
+          "key": "execution_checks",
+          "type": "checklist",
+          "label": "Training Attendance execution checkpoints",
+          "items": [
+            "Course ID, curriculum revision, instructor, date, time, zone, and location are correct",
+            "Roster includes only assigned or authorized participants",
+            "Learner identity is verified by the approved method",
+            "Prerequisites and required prior qualifications are confirmed",
+            "Accessibility, language, technology, and material needs are addressed",
+            "Arrival, departure, break, and missed-segment times are captured",
+            "Required exercises, discussions, and knowledge checks are documented",
+            "Interruptions and resumed content are traceable",
+            "Attendance credit is separated from competency or work authorization",
+            "Partial attendance has an exact make-up assignment and due point",
+            "Roster, evidence, and learning-system entries reconcile",
+            "Learners and managers receive completion or outstanding-action status"
+          ]
+        },
+        {
+          "key": "checkpoint_results",
+          "type": "table",
+          "label": "Checkpoint, observed evidence, result, operator, and follow-up",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint / item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_observed",
+              "label": "Evidence observed",
+              "units": 1.25
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.7
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.7
+            },
+            {
+              "key": "record_ref",
+              "label": "Record ref.",
+              "units": 0.8
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up / due",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Observed conditions, sequence, evidence references, deferred checks, and operating limitations",
+          "fields": [
+            {
+              "key": "execution_detail",
+              "label": "Execution evidence and limitation notes"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exception_control",
+      "title": "Training Attendance failed checkpoint and escalation control",
+      "guidance": "Do not hide an incomplete or failed checkpoint inside free text; route it with an owner and due point.",
+      "blocks": [
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized learning, compliance, safety, or qualification reviewer under the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy."
+        },
+        {
+          "key": "checklist_triggers",
+          "type": "checklist",
+          "label": "Training Attendance exception and escalation triggers",
+          "items": [
+            "Wrong learner, course, revision, or session received attendance credit",
+            "Roster signature or electronic evidence appears duplicated or misattributed",
+            "Required content, instructor, demonstration, or assessment was omitted",
+            "Technology, location, evacuation, or safety event interrupted material content",
+            "Learner missed a segment but was recorded as fully complete",
+            "Accessibility or language support failed to provide meaningful access",
+            "Attendance record was altered after sign-off without an audit trail",
+            "Learning system, roster, qualification record, and manager status conflict"
+          ]
+        },
+        {
+          "key": "checklist_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "verification_decision",
+      "title": "Training Attendance verification and proceed decision",
+      "guidance": "Use an independent review where required and state the exact boundary of any proceed decision.",
+      "blocks": [
+        {
+          "key": "verification_sample",
+          "type": "table",
+          "label": "Training Attendance verification sample",
+          "columns": [
+            {
+              "key": "course_component",
+              "label": "Course component",
+              "units": 1.1
+            },
+            {
+              "key": "delivery_evidence",
+              "label": "Delivery evidence",
+              "units": 1.15
+            },
+            {
+              "key": "participation_result",
+              "label": "Participation result",
+              "units": 1.0
+            },
+            {
+              "key": "missed_content",
+              "label": "Missed / incomplete",
+              "units": 0.95
+            },
+            {
+              "key": "credit_action",
+              "label": "Credit / make-up action",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proceed_decision",
+          "type": "fields",
+          "label": "Verification and proceed decision",
+          "fields": [
+            {
+              "key": "completion_status",
+              "label": "Completion status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with conditions",
+                "Incomplete",
+                "Stopped",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "proceed_status",
+              "label": "Proceed status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Conditionally authorized",
+                "Not authorized",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective scope or time",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.7
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist and qualified-review boundary",
+          "guidance": "A completed checkbox is evidence only when the underlying condition was observed. The authorized learning, compliance, safety, or qualification reviewer must apply the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy before any restricted, safety, security, legal, medical, payroll, or tax decision."
+        },
+        {
+          "key": "verification_signoff",
+          "type": "signatures",
+          "label": "Checklist performance and verification",
+          "fields": [
+            {
+              "key": "operator_signoff",
+              "label": "Performed by / date",
+              "units": 1.0
+            },
+            {
+              "key": "independent_verification",
+              "label": "Verified by / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority_signoff",
+              "label": "Decision authority / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "checklist_closeout",
+      "title": "Training Attendance checklist handoff and closeout",
+      "guidance": "Preserve the final state, unfinished work, receiving owner, and reopen trigger.",
+      "blocks": [
+        {
+          "key": "checklist_closeout_outcome",
+          "type": "fields",
+          "label": "Checklist outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_closeout_actions",
+          "type": "table",
+          "label": "Open training attendance action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "checklist_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "checklist_closeout_signoff",
+          "type": "signatures",
+          "label": "Checklist accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Learning, Compliance, Safety, Or Qualification Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

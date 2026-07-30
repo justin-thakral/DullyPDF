@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2004__auto_accident_policy_change_request_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2004__auto_accident_policy_change_request_form.pdf",
+  "slug": "auto-accident-policy-change-request-form",
+  "title": "Auto Accident Policy Change Request Form",
+  "subtitle": "A decision-ready auto accident policy change request that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original auto accident policy change request for collision event and involved vehicle with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the auto claim intake or adjusting owner must open and control a policy change request for collision event and involved vehicle. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Auto Accident policy change request identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Auto Accident policy change request record",
+          "fields": [
+            {
+              "key": "change_id",
+              "label": "Policy change request ID",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "request_received",
+              "label": "Request received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 1.0
+            },
+            {
+              "key": "service_owner",
+              "label": "Assigned policy-service owner",
+              "units": 1.1
+            },
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Received",
+                "Needs evidence",
+                "Under review",
+                "Issued",
+                "Declined"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Auto Accident subject and event identity",
+          "fields": [
+            {
+              "key": "loss_date_time",
+              "label": "Collision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Road, intersection, or exact location",
+              "units": 1.25
+            },
+            {
+              "key": "vehicle_identity",
+              "label": "Vehicle and VIN suffix",
+              "units": 1.15
+            },
+            {
+              "key": "driver_relation",
+              "label": "Driver and relationship",
+              "units": 1.05
+            },
+            {
+              "key": "operability",
+              "label": "Operability and tow site",
+              "units": 1.0
+            },
+            {
+              "key": "trip_context",
+              "label": "Trip purpose or use at time of event",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Police agency and report reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Policy Change Request scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Auto Accident purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "requested_change",
+      "title": "Auto Accident requested policy change and effective-date boundary",
+      "guidance": "Record the request exactly and keep prospective policy administration separate from any known event or claim decision.",
+      "blocks": [
+        {
+          "key": "change_categories",
+          "type": "checklist",
+          "label": "Auto Accident change categories",
+          "items": [
+            "Driver or household operator information",
+            "Vehicle ownership, registration, garaging, or use",
+            "Replacement or newly acquired vehicle record",
+            "Lienholder, lessor, or additional interest",
+            "Contact, mailing, or communication preference",
+            "Requested coverage, limit, or deductible review"
+          ]
+        },
+        {
+          "key": "change_register",
+          "type": "table",
+          "label": "Current-to-requested change register",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Subject or schedule item",
+              "units": 1.15
+            },
+            {
+              "key": "current_value",
+              "label": "Current policy record",
+              "units": 1.15
+            },
+            {
+              "key": "requested_value",
+              "label": "Requested future state",
+              "units": 1.2
+            },
+            {
+              "key": "effective_date",
+              "label": "Requested effective date",
+              "units": 1.0
+            },
+            {
+              "key": "reason_source",
+              "label": "Reason and source ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "request_authority",
+          "type": "fields",
+          "label": "Requester identity and instruction control",
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Requester name or approved ref",
+              "units": 1.1
+            },
+            {
+              "key": "relationship",
+              "label": "Relationship and authority",
+              "units": 1.1
+            },
+            {
+              "key": "authenticated_by",
+              "label": "Authentication method",
+              "units": 1.0
+            },
+            {
+              "key": "instruction_date",
+              "label": "Instruction date and time",
+              "units": 1.0
+            },
+            {
+              "key": "source_record",
+              "label": "Original instruction record",
+              "units": 1.15
+            },
+            {
+              "key": "consent_status",
+              "label": "Required consent status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "change_boundary",
+          "type": "notice",
+          "label": "Policy change and claim boundary",
+          "guidance": "This record does not determine fault, liability, value, or coverage. Address emergencies first, avoid admissions or promises, preserve evidence, and route decisions to the authorized adjuster under the controlling policy and applicable requirements."
+        }
+      ]
+    },
+    {
+      "key": "supporting_evidence",
+      "title": "Auto Accident change evidence and review",
+      "guidance": "Do not treat an unsupported request, quote, or conversation as an issued policy transaction.",
+      "blocks": [
+        {
+          "key": "support_sources",
+          "type": "checklist",
+          "label": "Auto Accident policy-change support",
+          "items": [
+            "Scene overview and traffic-control photographs",
+            "All vehicle sides and close damage photographs",
+            "Driver, registration, and insurance exchange reference",
+            "Police or incident report request and receipt reference",
+            "Witness contact and statement source reference",
+            "Tow, storage, repair, rental, or appraisal documents",
+            "Dashcam, telematics, or camera-preservation reference",
+            "Injury, expense, wage, or passenger documents routed securely"
+          ]
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Change-support and verification register",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Required support or question",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Source or provider",
+              "units": 1.0
+            },
+            {
+              "key": "received",
+              "label": "Received date",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Verified / gap / conflict",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Approved record ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "request_rationale",
+          "type": "textarea",
+          "label": "Requester explanation, known facts, and unresolved questions",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Auto Accident reason for change, current conditions, source facts, requested timing, and information still needed",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "known_loss_separation",
+      "title": "Auto Accident known-loss, claim, and timing separation",
+      "guidance": "Prevent a prospective service request from being mistaken for retroactive coverage or a claim determination.",
+      "blocks": [
+        {
+          "key": "timing_screen",
+          "type": "checklist",
+          "label": "Known-event and effective-date screen",
+          "items": [
+            "Requested effective date and exact time are stated",
+            "Request receipt timestamp and authenticated source are preserved",
+            "Known loss, incident, damage, demand, or claim was specifically screened",
+            "Any known event is routed to a separate claim or incident record",
+            "No one represented that the request is bound, issued, or retroactive",
+            "Cancellation, lapse, reinstatement, or replacement policy was screened",
+            "Underwriting and jurisdiction approval requirements were identified",
+            "Customer was told how final issuance or decline will be communicated"
+          ]
+        },
+        {
+          "key": "known_event_register",
+          "type": "table",
+          "label": "Known event and separate routing register",
+          "columns": [
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 0.9
+            },
+            {
+              "key": "event_summary",
+              "label": "Event, damage, or demand summary",
+              "units": 1.35
+            },
+            {
+              "key": "known_when",
+              "label": "When requester knew",
+              "units": 1.0
+            },
+            {
+              "key": "separate_route",
+              "label": "Claim or incident route",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Route owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "effective_date_decision",
+          "type": "fields",
+          "label": "Effective-date review",
+          "fields": [
+            {
+              "key": "requested_date",
+              "label": "Requested effective date",
+              "units": 1.0
+            },
+            {
+              "key": "permitted_date",
+              "label": "Approved or permitted date",
+              "units": 1.0
+            },
+            {
+              "key": "date_authority",
+              "label": "Authority or rule reference",
+              "units": 1.15
+            },
+            {
+              "key": "known_loss_review",
+              "label": "Known-loss review owner",
+              "units": 1.1
+            },
+            {
+              "key": "timing_decision",
+              "label": "Timing decision status",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approval_processing",
+      "title": "Auto Accident underwriting, authorization, and transaction processing",
+      "guidance": "Keep request, quote, approval, binding, issuance, delivery, and acceptance as separate auditable states.",
+      "blocks": [
+        {
+          "key": "approval_route",
+          "type": "table",
+          "label": "Question, approval, and transaction route",
+          "columns": [
+            {
+              "key": "step",
+              "label": "Review or processing step",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Authorized owner",
+              "units": 1.0
+            },
+            {
+              "key": "decision",
+              "label": "Decision or result",
+              "units": 1.1
+            },
+            {
+              "key": "completed",
+              "label": "Completed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "record_ref",
+              "label": "Evidence or transaction ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "transaction_status",
+          "type": "fields",
+          "label": "Transaction status",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current transaction status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Request only",
+                "Quoted",
+                "Approved",
+                "Bound",
+                "Issued",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 1.0
+            },
+            {
+              "key": "transaction_id",
+              "label": "Policy transaction ID",
+              "units": 1.05
+            },
+            {
+              "key": "issued_effective",
+              "label": "Issued effective date and time",
+              "units": 1.05
+            },
+            {
+              "key": "billing_status",
+              "label": "Billing or premium status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, conditions, and customer-facing limits",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Auto Accident approval basis, conditions, changes from request, unresolved issues, and authorized communication wording",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "exceptions_closeout",
+      "title": "Auto Accident policy-change exceptions, delivery, and closeout",
+      "guidance": "Close only after the final state, effective date, issued documents, customer notice, and unresolved items are traceable.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Auto Accident policy-change exception screen",
+          "items": [
+            "Vehicle location or ownership cannot be verified",
+            "Loss date, driver identity, or trip use conflicts across sources",
+            "Injury, child restraint, or accessibility issue lacks a route",
+            "Potential fraud indicator requires authorized special review",
+            "Tow, storage, salvage, or evidence-preservation deadline is near",
+            "Lawsuit, demand, citation, or government notice was received"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Policy-change exception and resolution",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or conflict",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "approval",
+              "label": "Required approval",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Final resolution",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "delivery_checks",
+          "type": "checklist",
+          "label": "Issuance and delivery checks",
+          "items": [
+            "Issued documents match the authorized transaction",
+            "Effective date and time are clear",
+            "Superseded quote or draft is marked",
+            "Customer delivery and receipt route are recorded",
+            "Separate claim or known-event record remains linked",
+            "Open conditions have accountable owners and due points"
+          ]
+        },
+        {
+          "key": "change_signoff",
+          "type": "signatures",
+          "label": "Request, authorization, processing, and delivery",
+          "fields": [
+            {
+              "key": "request_recorded_by",
+              "label": "Request recorded by / date",
+              "units": 1.05
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by / date",
+              "units": 1.0
+            },
+            {
+              "key": "processed_by",
+              "label": "Processed by / date",
+              "units": 1.0
+            },
+            {
+              "key": "delivered_by",
+              "label": "Delivered by / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,577 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1552__trailer_dispatch_sheet_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1552__trailer_dispatch_sheet_form.pdf",
+  "slug": "trailer-dispatch-sheet-form",
+  "title": "Trailer Dispatch Sheet Form",
+  "subtitle": "Turn the trailer request into a capacity-checked manifest, assigned route, custody plan, handling controls, exception path, and authorized release.",
+  "description": "An original, fillable trailer dispatch sheet form for controlling trailer asset, interchange, load space, and road-readiness record through dispatch sheet identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use before trailer assignment, interchange, inspection, and return when the fleet or yard coordinator, driver, yard hostler, or receiving carrier, and receiving owner need one executable dispatch record from commitment through manifest, sequence, variance management, and return handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Trailer dispatch sheet identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Trailer record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Dispatch Sheet record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Trailer unit, VIN, and interchange number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Plate, seal, work-order, or yard-location ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned fleet or yard coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Driver, Yard Hostler, Or Receiving Carrier",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Owning yard, customer dock, or prior carrier",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Assigned route, customer, carrier, or return yard",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the trailer master, inspection criteria, maintenance record, and interchange terms."
+        }
+      ]
+    },
+    {
+      "key": "dispatch_commitment",
+      "title": "Trailer service commitment and assignment",
+      "guidance": "Convert the request into an executable assignment with clear timing, capacity, and accountable custody.",
+      "blocks": [
+        {
+          "key": "service_assignment",
+          "type": "fields",
+          "label": "Dispatch assignment",
+          "fields": [
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 1.0
+            },
+            {
+              "key": "ready_time",
+              "label": "Ready date and time",
+              "units": 1.0
+            },
+            {
+              "key": "required_completion",
+              "label": "Required completion",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority or service level",
+              "units": 1.05
+            },
+            {
+              "key": "assigned_custodian",
+              "label": "Driver, Yard Hostler, Or Receiving Carrier",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "dispatch_readiness",
+          "type": "checklist",
+          "label": "Trailer dispatch readiness",
+          "items": [
+            "Trailer unit, VIN, plate, owner, type, dimensions, and capacity are matched",
+            "Assigned tractor, driver, route, cargo, and customer requirements are compatible",
+            "Brake connections, lights, tires, coupling, landing gear, doors, and structure are checked",
+            "Interior, roof, floor, walls, drain, odor, debris, and prior-cargo condition are reviewed",
+            "Maintenance due, out-of-service status, open work order, and defect history are known",
+            "Seal, lock, securement equipment, spare equipment, and document pouch are reconciled",
+            "Yard location, pickup time, return expectation, and custody parties are recorded",
+            "Unsafe defect, damage dispute, contamination, and alternate-equipment routes are defined"
+          ],
+          "guidance": "Resolve failed readiness controls before authorization or record the approved alternate."
+        },
+        {
+          "key": "equipment_capacity",
+          "type": "fields",
+          "label": "Equipment, capacity, and route constraint",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "Assigned vehicle, equipment, or work area",
+              "units": 1.35
+            },
+            {
+              "key": "capacity",
+              "label": "Capacity or available space",
+              "units": 1.0
+            },
+            {
+              "key": "route_constraint",
+              "label": "Route, cutoff, or site constraint",
+              "units": 1.25
+            },
+            {
+              "key": "communication",
+              "label": "Primary communication method",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "dispatch_manifest",
+      "title": "Trailer dispatch manifest and control assignment",
+      "guidance": "Tie each movement unit to its quantity, custody, destination, and handling control.",
+      "blocks": [
+        {
+          "key": "manifest_lines",
+          "type": "table",
+          "label": "Trailer Units, Seals, Defects, Equipment, Mileage, And Custody Events dispatch manifest",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Plate, seal, work-order, or yard-location ID",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Trailer, equipment, seal, and accessory count",
+              "units": 1.0
+            },
+            {
+              "key": "origin",
+              "label": "Origin or source point",
+              "units": 1.05
+            },
+            {
+              "key": "destination",
+              "label": "Destination or handoff",
+              "units": 1.1
+            },
+            {
+              "key": "control",
+              "label": "Roadworthiness, defect, maintenance, and custody restriction",
+              "units": 1.15
+            },
+            {
+              "key": "proof",
+              "label": "Required proof or scan",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "manifest_totals",
+          "type": "fields",
+          "label": "Manifest and capacity totals",
+          "fields": [
+            {
+              "key": "unit_total",
+              "label": "Total units",
+              "units": 0.85
+            },
+            {
+              "key": "quantity_total",
+              "label": "Total quantity",
+              "units": 0.9
+            },
+            {
+              "key": "weight_volume",
+              "label": "Weight, volume, or capacity use",
+              "units": 1.2
+            },
+            {
+              "key": "manifest_status",
+              "label": "Manifest status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Reconciled",
+                "Pending verification",
+                "Partial assignment",
+                "On hold"
+              ]
+            },
+            {
+              "key": "control_reference",
+              "label": "Control or instruction reference",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "route_handoff_plan",
+      "title": "Trailer route, sequence, and custody plan",
+      "guidance": "Plan each control point and define the handoff evidence before execution begins.",
+      "blocks": [
+        {
+          "key": "route_stops",
+          "type": "table",
+          "label": "Route, work sequence, and handoff plan",
+          "columns": [
+            {
+              "key": "sequence",
+              "label": "Sequence",
+              "units": 0.65
+            },
+            {
+              "key": "location",
+              "label": "Location or control point",
+              "units": 1.3
+            },
+            {
+              "key": "window",
+              "label": "Planned window",
+              "units": 0.9
+            },
+            {
+              "key": "contact",
+              "label": "Contact or custodian",
+              "units": 1.05
+            },
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "proof",
+              "label": "Proof or completion ref",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "handling_controls",
+          "type": "checklist",
+          "label": "Trailer assigned handling controls",
+          "items": [
+            "Road-service assignment",
+            "Yard-only movement",
+            "Out-of-service hold",
+            "Maintenance routing",
+            "Sealed-load custody",
+            "Food-compatible clean trailer",
+            "Temperature-control equipment required",
+            "Customer-specific interchange condition"
+          ]
+        },
+        {
+          "key": "dispatch_instructions",
+          "type": "textarea",
+          "label": "Access, loading, custody, contingency, and return instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Access, loading, custody, contingency, and return instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Write only instructions the assignee cannot reliably infer from labels, route data, or standard procedure."
+        }
+      ]
+    },
+    {
+      "key": "dispatch_exceptions",
+      "title": "Trailer exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "dispatch_exception_types",
+          "type": "checklist",
+          "label": "Trailer exception indicators",
+          "items": [
+            "Trailer identity, ownership, plate, or assignment mismatch",
+            "Brake, light, tire, wheel, coupling, pin, or slider concern",
+            "Landing gear, rail, frame, crossmember, roof, wall, floor, or door damage",
+            "Leak, odor, debris, pest, contamination, or incompatible prior cargo",
+            "Maintenance due, open work order, or out-of-service status",
+            "Seal, lock, securement equipment, or accessory discrepancy",
+            "Pre-existing damage or interchange responsibility is disputed",
+            "Temperature-control or cargo-compatibility requirement cannot be met",
+            "Yard location or custody transfer cannot be verified",
+            "Road-service release lacks qualified authorization"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "dispatch_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "dispatch_decision",
+          "type": "fields",
+          "label": "Dispatch variance, alternate assignment, or stop-work decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "dispatch_authorization",
+      "title": "Trailer dispatch authorization and release",
+      "guidance": "Release only the reconciled scope and record restrictions that continue into execution.",
+      "blocks": [
+        {
+          "key": "authorization",
+          "type": "fields",
+          "label": "Dispatch authorization",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Dispatch status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Authorized with restriction",
+                "Partially authorized",
+                "Held",
+                "Canceled"
+              ]
+            },
+            {
+              "key": "released_scope",
+              "label": "Released units or scope",
+              "units": 1.25
+            },
+            {
+              "key": "restriction",
+              "label": "Continuing restriction",
+              "units": 1.25
+            },
+            {
+              "key": "release_time",
+              "label": "Release date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_due",
+              "label": "Return, update, or check-in due",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "dispatch_signoff",
+          "type": "signatures",
+          "label": "Prepared, accepted, and released",
+          "fields": [
+            {
+              "key": "dispatcher",
+              "label": "Fleet Or Yard Coordinator authorization",
+              "units": 1.35
+            },
+            {
+              "key": "assignee",
+              "label": "Assignee acceptance",
+              "units": 1.2
+            },
+            {
+              "key": "reviewer",
+              "label": "Qualified Fleet Maintenance Or Safety Supervisor review",
+              "units": 1.35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Trailer dispatch sheet closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Completed as dispatched",
+                "Completed with closed variance",
+                "Partially completed",
+                "Returned or reassigned",
+                "Canceled or stopped"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This trailer dispatch sheet is an operational record, not a substitute for applicable law, contract terms, safety or product requirements, or professional judgment. Stop the affected movement, transfer, release, posting, or disposition when identity, evidence, authorization, or control is uncertain. A qualified qualified fleet maintenance or safety supervisor must review the exception and document the controlling decision."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified fleet maintenance or safety supervisor",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

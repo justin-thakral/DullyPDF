@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2549__food_temperature_checklist_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2549__food_temperature_checklist_form.pdf",
+  "slug": "food-temperature-checklist-form",
+  "title": "Food Temperature Checklist Form",
+  "subtitle": "A practical execution checklist for food temperature that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations execution checklist for food temperature covering temperature reading and product disposition, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a food operations lead opens one food temperature record to execute required steps, record conditions, route exceptions, make a release decision, and hand off open work; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Temperature checklist identity and routing",
+      "guidance": "Connect this checklist to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Temperature record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Store or food area",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Station, case, or unit",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned food operations lead",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Temperature event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Food Temperature scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "execution_sequence",
+      "title": "Temperature readiness and execution sequence",
+      "guidance": "Mark each independently verified step; explain any item that cannot be completed as planned.",
+      "blocks": [
+        {
+          "key": "required_steps",
+          "type": "checklist",
+          "label": "Temperature steps",
+          "items": [
+            "Food, batch, case, equipment, or receiving lot identified",
+            "Reading location and sample point defined",
+            "Instrument ID and readiness check recorded",
+            "Current policy target or limit source referenced",
+            "Reading time, value, and unit recorded",
+            "Repeat or confirmation reading completed when required",
+            "Product exposure or equipment condition observed",
+            "Hold, move, adjust, discard, or release decision authorized",
+            "Equipment, product, and customer impact routed",
+            "Follow-up reading and handoff owner recorded"
+          ]
+        },
+        {
+          "key": "checkpoint_evidence",
+          "type": "table",
+          "label": "Key checkpoint observation and evidence",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint",
+              "units": 1.15
+            },
+            {
+              "key": "observation",
+              "label": "Observation or result",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or record ref.",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Checked by",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "operating_boundary",
+          "type": "notice",
+          "label": "Operating boundary",
+          "guidance": "This form records measurements and decisions under the current procedure; it does not set temperature limits or certify food safety or regulatory compliance. Do not guess a target, exposure duration, or disposition. Stop affected activity when policy requires and route illness, safety, and final product decisions to the qualified food-safety reviewer under applicable requirements."
+        }
+      ]
+    },
+    {
+      "key": "conditions_evidence",
+      "title": "Temperature conditions and supporting evidence",
+      "guidance": "Record what was actually observed; a checked condition is a routing signal, not a conclusion.",
+      "blocks": [
+        {
+          "key": "condition_indicators",
+          "type": "checklist",
+          "label": "Condition indicators reviewed",
+          "items": [
+            "Instrument unavailable, damaged, or readiness check fails",
+            "Food, batch, case, or sample point unclear",
+            "Reading is outside the current policy target",
+            "Repeat reading materially differs",
+            "Exposure start or duration is unknown",
+            "Equipment alarm, door, power, airflow, or seal concern",
+            "Product has already moved, sold, or been served",
+            "Disposition authority or follow-up owner unavailable"
+          ]
+        },
+        {
+          "key": "observation_record",
+          "type": "textarea",
+          "label": "Observation, location, time, people affected, source, and evidence reference",
+          "fields": [
+            {
+              "key": "observation_detail",
+              "label": "Food Temperature observation and evidence detail"
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "exceptions_decision",
+      "title": "Temperature exceptions, escalation, and release decision",
+      "guidance": "Give each exception an immediate action, owner, due point, escalation route, and disposition.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Exception and stop indicators",
+          "items": [
+            "Applicable target or policy source unavailable",
+            "Instrument result cannot be relied upon",
+            "Reading exceeds local action point",
+            "Exposure history is incomplete",
+            "Product or equipment disposition is disputed",
+            "Qualified food-safety review is required"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception, control, owner, and disposition",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or variance",
+              "units": 1.35
+            },
+            {
+              "key": "action",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.15
+            },
+            {
+              "key": "disposition",
+              "label": "Escalation or disposition",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Temperature release decision and authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Hold",
+                "Proceed with limits",
+                "Proceed",
+                "Escalate",
+                "Decline",
+                "Rework"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or approval ref.",
+              "units": 1.05
+            },
+            {
+              "key": "review_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Temperature outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Temperature closeout controls",
+          "items": [
+            "Final reading, time, unit, and instrument retained",
+            "Policy target and variance decision recorded",
+            "Affected product quantity and status handed off",
+            "Equipment or facilities ticket linked",
+            "Follow-up reading owner and due time assigned",
+            "Qualified review and final disposition recorded"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "remaining_action_register",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation_action",
+              "label": "Limitation or action",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "recipient_route",
+              "label": "Recipient or route",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Food Temperature residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Checklist closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,739 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1059__concrete_daily_job_report_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1059__concrete_daily_job_report_form.pdf",
+  "slug": "concrete-daily-job-report-form",
+  "title": "Concrete Daily Job Report and Shift Handoff",
+  "subtitle": "Capture the concrete shift, labor and equipment, delivered materials, measured production, inspections, hazards, delays, decisions, and next-shift ownership.",
+  "description": "A daily Concrete field report covering site and weather identity, crew time, equipment and deliveries, work areas and production, technical readings, quality and safety observations, incidents and delays, RFIs and directives, photos, outstanding actions, and verified shift handoff.",
+  "use_case": "Use at the end of each Concrete shift when the concrete placement foreperson, project management, payroll or cost control, quality, safety, and the next crew need a factual contemporaneous record without using it to authorize unapproved work.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "daily_identity",
+      "title": "Concrete shift identity and site conditions",
+      "guidance": "Anchor the report to one project, work date, shift, preparer, and operating window.",
+      "blocks": [
+        {
+          "key": "daily_reference",
+          "type": "fields",
+          "label": "Daily report reference",
+          "fields": [
+            {
+              "key": "report_number",
+              "label": "Daily report number",
+              "units": 0.85
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.8
+            },
+            {
+              "key": "work_date",
+              "label": "Work date",
+              "units": 0.7
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.65
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.85
+            },
+            {
+              "key": "field_lead",
+              "label": "Concrete Placement Foreperson",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "site_work_window",
+          "type": "fields",
+          "label": "Project, site, and work window",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "site_location",
+              "label": "Site and work area",
+              "units": 1.2
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "finish_time",
+              "label": "Finish time",
+              "units": 0.65
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer/site contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "weather_conditions",
+          "type": "fields",
+          "label": "Weather and site conditions",
+          "fields": [
+            {
+              "key": "weather",
+              "label": "Weather",
+              "units": 0.8
+            },
+            {
+              "key": "temperature",
+              "label": "Temperature range",
+              "units": 0.8
+            },
+            {
+              "key": "humidity_wind",
+              "label": "Humidity or wind",
+              "units": 0.9
+            },
+            {
+              "key": "surface_condition",
+              "label": "Surface/site condition",
+              "units": 1.0
+            },
+            {
+              "key": "lost_weather",
+              "label": "Weather delay hours",
+              "units": 0.85
+            },
+            {
+              "key": "condition_evidence",
+              "label": "Weather/condition ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "shift_objectives",
+          "type": "textarea",
+          "label": "Planned concrete objectives and actual shift summary",
+          "fields": [
+            {
+              "key": "objective_detail",
+              "label": "Describe planned areas, achieved outcome, and material variance",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "labor_resources",
+      "title": "Concrete labor, equipment, material, and visitors",
+      "guidance": "Connect resource use to work areas, cost codes, and production.",
+      "blocks": [
+        {
+          "key": "labor_log",
+          "type": "table",
+          "label": "Concrete labor and hours",
+          "columns": [
+            {
+              "key": "company",
+              "label": "Company/crew",
+              "units": 1.0
+            },
+            {
+              "key": "classification",
+              "label": "Classification",
+              "units": 1.0
+            },
+            {
+              "key": "headcount",
+              "label": "Count",
+              "units": 0.55
+            },
+            {
+              "key": "regular",
+              "label": "Regular hrs",
+              "units": 0.75
+            },
+            {
+              "key": "overtime",
+              "label": "OT hrs",
+              "units": 0.65
+            },
+            {
+              "key": "area_cost",
+              "label": "Area/cost code",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "equipment_log",
+          "type": "table",
+          "label": "Equipment, tool, and utilization log",
+          "columns": [
+            {
+              "key": "equipment",
+              "label": "Equipment/tool",
+              "units": 1.25
+            },
+            {
+              "key": "asset",
+              "label": "Asset ID",
+              "units": 0.8
+            },
+            {
+              "key": "hours",
+              "label": "Hours",
+              "units": 0.65
+            },
+            {
+              "key": "area",
+              "label": "Work area",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition/issue",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "delivery_log",
+          "type": "table",
+          "label": "Concrete delivery and receiving log",
+          "columns": [
+            {
+              "key": "material",
+              "label": "Material/package",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "ticket",
+              "label": "Ticket/lot ref",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition/status",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Storage/area",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "visitor_coordination",
+          "type": "fields",
+          "label": "Visitors, inspections, and coordination",
+          "fields": [
+            {
+              "key": "visitor",
+              "label": "Visitor or inspector",
+              "units": 1.0
+            },
+            {
+              "key": "organization",
+              "label": "Organization",
+              "units": 0.9
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.0
+            },
+            {
+              "key": "arrival_departure",
+              "label": "Arrival/departure",
+              "units": 0.9
+            },
+            {
+              "key": "record_ref",
+              "label": "Meeting/inspection ref",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "production_record",
+      "title": "Concrete work performed and measured production",
+      "guidance": "Record installed work and readings for the excavation, base, forms, reinforcement, concrete, finish, and cure.",
+      "blocks": [
+        {
+          "key": "production_log",
+          "type": "table",
+          "label": "Concrete activity and production log",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area/system",
+              "units": 1.0
+            },
+            {
+              "key": "activity",
+              "label": "Work performed",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Qty./measure",
+              "units": 0.85
+            },
+            {
+              "key": "percent",
+              "label": "Percent/status",
+              "units": 0.8
+            },
+            {
+              "key": "drawing",
+              "label": "Drawing/detail ref",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "daily_measurements",
+          "type": "fields",
+          "label": "Daily concrete readings and quantities",
+          "fields": [
+            {
+              "key": "volume",
+              "label": "Calculated concrete volume",
+              "units": 0.9
+            },
+            {
+              "key": "thickness",
+              "label": "Specified thickness",
+              "units": 0.9
+            },
+            {
+              "key": "elevation",
+              "label": "Top elevation or grade",
+              "units": 0.9
+            },
+            {
+              "key": "reinforcement",
+              "label": "Reinforcement size/spacing",
+              "units": 0.9
+            },
+            {
+              "key": "strength",
+              "label": "Specified strength",
+              "units": 0.9
+            },
+            {
+              "key": "slump",
+              "label": "Specified slump",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "scope_touched",
+          "type": "checklist",
+          "label": "Concrete scope worked this shift",
+          "items": [
+            "Layout, survey, excavation, subgrade, base, and compaction",
+            "Formwork, shores, reshores, bracing, release agent, and access",
+            "Reinforcing steel, mesh, dowels, chairs, cover, and impalement protection",
+            "Embeds, anchors, sleeves, blockouts, waterstops, and joint materials",
+            "Mix design, batch, delivery, access, pump, chute, and placement plan",
+            "Consolidation, screeding, elevation, slope, and surface tolerance",
+            "Finish, texture, edge, hardener, color, curing, and protection",
+            "Control, construction, isolation, expansion, and saw-cut joints",
+            "Sampling, slump, air, temperature, cylinders, and field tests",
+            "Form removal, repair, protection, as-builts, and owner handoff"
+          ]
+        },
+        {
+          "key": "means_methods",
+          "type": "textarea",
+          "label": "Means, sequence, temporary condition, and protected work",
+          "fields": [
+            {
+              "key": "method_detail",
+              "label": "Record material methods, sequence, concealed work, protection, and shutdown state",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "quality_safety",
+      "title": "Concrete quality, safety, and environmental observations",
+      "guidance": "Capture observed conditions, evidence, corrections, and escalation without replacing required inspections.",
+      "blocks": [
+        {
+          "key": "quality_observations",
+          "type": "checklist",
+          "label": "Concrete quality checkpoints observed",
+          "items": [
+            "Survey, excavation, subgrade, base, compaction, and elevations accepted",
+            "Forms, dimensions, bracing, release, and placement access accepted",
+            "Reinforcement, cover, splices, embeds, sleeves, and joints accepted",
+            "Mix, ticket, time, water addition, slump, air, and temperature recorded",
+            "Placement sequence, lift, consolidation, elevation, and slope controlled",
+            "Finish, tolerance, edge, texture, joint, and saw-cut timing accepted",
+            "Cure method, duration, temperature, protection, and strength tracked",
+            "Repairs, tests, form removal, loading release, and as-builts accepted"
+          ]
+        },
+        {
+          "key": "inspection_test_log",
+          "type": "table",
+          "label": "Inspection, test, and evidence record",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area/system",
+              "units": 1.0
+            },
+            {
+              "key": "check",
+              "label": "Inspection/test",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Result/reading",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Photo/report ref",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer/date",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "safety_observations",
+          "type": "checklist",
+          "label": "Concrete critical controls observed",
+          "items": [
+            "Excavation, access, soil, utilities, protection, and inspection verified",
+            "Formwork, shoring, reshoring, bracing, load, and stripping plan verified",
+            "Rebar impalement, protrusions, dowels, and access routes protected",
+            "Pump, boom, hose, outrigger, power-line, and exclusion zones controlled",
+            "Wet cement, skin, eye, wash water, and hygiene controls verified",
+            "Silica, cutting, grinding, chipping, dust, and respiratory routes addressed",
+            "Vehicle, backing, delivery, spotter, public, and struck-by zones controlled",
+            "Electrical tools, vibrators, cords, GFCI, and wet locations controlled",
+            "Heat, cold, lighting, fatigue, weather, and emergency route reviewed",
+            "Cure, open edges, floor openings, loading, and access restrictions posted"
+          ]
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Hazard, quality issue, and corrective-action log",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.35
+            },
+            {
+              "key": "immediate",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due",
+              "label": "Due/recheck",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status/evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "daily_boundary",
+          "type": "notice",
+          "label": "Concrete daily-report boundary",
+          "guidance": "This record does not approve formwork, shoring, excavation, mix design, placement loads, stripping, or structural acceptance and does not replace engineered plans, inspections, or competent-person duties. The daily report records observed facts and does not itself release work or close required actions."
+        }
+      ]
+    },
+    {
+      "key": "delay_decisions",
+      "title": "Concrete delay, issue, direction, and escalation",
+      "guidance": "Preserve time-sensitive facts and assign one owner for every unresolved decision.",
+      "blocks": [
+        {
+          "key": "delay_log",
+          "type": "table",
+          "label": "Delay, disruption, and lost-time log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time/window",
+              "units": 0.8
+            },
+            {
+              "key": "cause",
+              "label": "Observed cause",
+              "units": 1.35
+            },
+            {
+              "key": "area",
+              "label": "Area/crew",
+              "units": 0.9
+            },
+            {
+              "key": "hours",
+              "label": "Hours/impact",
+              "units": 0.8
+            },
+            {
+              "key": "action",
+              "label": "Action/notice ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "rfi_direction_log",
+          "type": "table",
+          "label": "RFI, directive, inspection, and decision log",
+          "columns": [
+            {
+              "key": "ref",
+              "label": "Reference",
+              "units": 0.8
+            },
+            {
+              "key": "question",
+              "label": "Question/condition",
+              "units": 1.35
+            },
+            {
+              "key": "direction",
+              "label": "Direction/decision",
+              "units": 1.25
+            },
+            {
+              "key": "authority",
+              "label": "Authority",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status/due",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "incident_notice",
+          "type": "fields",
+          "label": "Incident, damage, near miss, or formal notice",
+          "fields": [
+            {
+              "key": "event_status",
+              "label": "Event status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "None reported",
+                "Separate report",
+                "Notice pending",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "event_ref",
+              "label": "Separate event report ref",
+              "units": 1.0
+            },
+            {
+              "key": "notice_to",
+              "label": "Notice provided to",
+              "units": 0.9
+            },
+            {
+              "key": "notice_time",
+              "label": "Notice date/time",
+              "units": 0.9
+            },
+            {
+              "key": "scene_evidence",
+              "label": "Scene/evidence ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "unresolved_detail",
+          "type": "textarea",
+          "label": "Unresolved issue, constraint, variance, or customer concern",
+          "fields": [
+            {
+              "key": "unresolved_record",
+              "label": "Describe evidence, current safe state, decision needed, owner, and deadline",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "shift_handoff",
+      "title": "Concrete shift closeout and next-day handoff",
+      "guidance": "Close the shift with site condition, record package, priorities, and accountable owners.",
+      "blocks": [
+        {
+          "key": "end_shift_checks",
+          "type": "checklist",
+          "label": "End-of-shift condition verified",
+          "items": [
+            "Work area left in a controlled condition",
+            "Temporary protection and barriers checked",
+            "Energy, pressure, water, weather, or cure state communicated",
+            "Materials and equipment secured",
+            "Waste and access paths addressed",
+            "Concealed work evidence retained",
+            "Required notices and reports routed",
+            "Open actions assigned to named owners"
+          ]
+        },
+        {
+          "key": "daily_evidence",
+          "type": "checklist",
+          "label": "Concrete daily evidence package",
+          "items": [
+            "Survey, subgrade, form, reinforcement, and embed evidence",
+            "Mix designs, batch tickets, placement, and water-addition records",
+            "Slump, air, temperature, cylinder, and strength reports",
+            "Cure, weather, protection, saw-cut, and loading records",
+            "Repair, nonconformance, acceptance, and as-built evidence",
+            "Warranty, maintenance, sealant, and owner handoff"
+          ]
+        },
+        {
+          "key": "next_shift_plan",
+          "type": "table",
+          "label": "Next-shift priority and handoff register",
+          "columns": [
+            {
+              "key": "priority",
+              "label": "Priority/task",
+              "units": 1.3
+            },
+            {
+              "key": "prerequisite",
+              "label": "Prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner/crew",
+              "units": 0.85
+            },
+            {
+              "key": "needed",
+              "label": "Needed by",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status/note",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Shift outcome, site state, customer communication, and handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Summarize verified progress, restrictions, outstanding decisions, and next owner",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "daily_review",
+          "type": "signatures",
+          "label": "Concrete daily report review",
+          "fields": [
+            {
+              "key": "prepared_signature",
+              "label": "Prepared by/signature",
+              "units": 1.0
+            },
+            {
+              "key": "field_review",
+              "label": "Field lead review",
+              "units": 0.95
+            },
+            {
+              "key": "manager_review",
+              "label": "Project manager review",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date/time",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

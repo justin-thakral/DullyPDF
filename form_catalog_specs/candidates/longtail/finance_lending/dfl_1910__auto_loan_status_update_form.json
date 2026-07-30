@@ -1,0 +1,672 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1910__auto_loan_status_update_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1910__auto_loan_status_update_form.pdf",
+  "slug": "auto-loan-status-update-form",
+  "title": "Auto Loan Milestone Status and Communication Update",
+  "subtitle": "A controlled status update for a purchase or refinance of a specific vehicle, connecting buyer, dealer, VIN reference, purchase price, down payment, trade, title, lien, insurance, valuation, and funding controls, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Auto Loan workflow for a purchase or refinance of a specific vehicle, connecting buyer, dealer, VIN reference, purchase price, down payment, trade, title, lien, insurance, valuation, and funding controls. It is designed to record the current stage and objective evidence, preserve a milestone trail, expose blockers and revised dates, document customer communications, assign next actions, and hand off unresolved work while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a vehicle lending specialist must record the current stage and objective evidence, preserve a milestone trail, expose blockers and revised dates, document customer communications, assign next actions, and hand off unresolved work for one vehicle finance request. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Auto Loan status update identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Auto Loan record and responsible parties",
+          "fields": [
+            {
+              "key": "application_ref",
+              "label": "Vehicle finance application reference",
+              "units": 1.3
+            },
+            {
+              "key": "borrower_name",
+              "label": "Borrower name",
+              "units": 1.1
+            },
+            {
+              "key": "secure_profile_ref",
+              "label": "Secure customer profile reference",
+              "units": 1.3
+            },
+            {
+              "key": "transaction_type",
+              "label": "Transaction",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Dealer purchase",
+                "Private-party purchase",
+                "Refinance",
+                "Lease buyout"
+              ]
+            },
+            {
+              "key": "dealer_seller_ref",
+              "label": "Dealer or seller reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Milestone Status and Communication Update timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Auto Loan facts and evidence for status update",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Auto Loan transaction or account profile",
+          "fields": [
+            {
+              "key": "vehicle_year",
+              "label": "Model year",
+              "units": 0.7
+            },
+            {
+              "key": "vehicle_make",
+              "label": "Make",
+              "units": 0.8
+            },
+            {
+              "key": "vehicle_model",
+              "label": "Model and trim",
+              "units": 1.1
+            },
+            {
+              "key": "vin_last_eight",
+              "label": "VIN last eight",
+              "units": 1.0
+            },
+            {
+              "key": "odometer",
+              "label": "Odometer and units",
+              "units": 0.9
+            },
+            {
+              "key": "vehicle_use",
+              "label": "Primary use",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Personal",
+                "Commuting",
+                "Mixed personal/business",
+                "Other"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Auto Loan evidence checkpoints",
+          "items": [
+            "VIN last eight, year, make, model, trim, and odometer describe one vehicle",
+            "Buyer order or purchase agreement identifies price and dealer-added items",
+            "Down payment source and amount are documented without cash assumptions",
+            "Trade allowance, payoff quote, negative equity, and expiration are separated",
+            "Title state, current owner, lienholder, and title status are recorded",
+            "Valuation source, edition, mileage, options, condition, and date are traceable",
+            "Insurance binder or coverage requirement is routed before funding",
+            "Dealer or private-seller identity and disbursement channel are verified"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Auto Loan quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "price_component",
+              "label": "Price or payoff item",
+              "units": 1.35
+            },
+            {
+              "key": "gross_amount",
+              "label": "Gross amount",
+              "units": 0.8
+            },
+            {
+              "key": "credit_offset",
+              "label": "Credit or offset",
+              "units": 0.8
+            },
+            {
+              "key": "source_ref",
+              "label": "Source ref",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Verified status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Vehicle condition, purchase or refinance structure, dealer or seller facts, trade and title issues, and funding timing",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Auto Loan context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Auto Loan status update analysis and control record",
+      "guidance": "Use the blocks below to record the current stage and objective evidence, preserve a milestone trail, expose blockers and revised dates, document customer communications, assign next actions, and hand off unresolved work. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "current_status",
+          "type": "fields",
+          "label": "Current stage, timing, and communication status",
+          "fields": [
+            {
+              "key": "current_stage",
+              "label": "Current stage",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Intake",
+                "Evidence pending",
+                "Under review",
+                "Decision pending",
+                "Execution pending",
+                "Complete",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "status_as_of",
+              "label": "Status as-of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "days_open",
+              "label": "Days open",
+              "units": 0.7
+            },
+            {
+              "key": "target_completion",
+              "label": "Current target completion",
+              "units": 1.0
+            },
+            {
+              "key": "next_milestone",
+              "label": "Next milestone",
+              "units": 1.2
+            },
+            {
+              "key": "customer_update_due",
+              "label": "Customer update due",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "milestone_history",
+          "type": "table",
+          "label": "Auto Loan milestone and evidence history",
+          "columns": [
+            {
+              "key": "event_time",
+              "label": "Date or time",
+              "units": 0.85
+            },
+            {
+              "key": "stage_event",
+              "label": "Stage or event",
+              "units": 1.2
+            },
+            {
+              "key": "result_evidence",
+              "label": "Result or evidence",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "next_due",
+              "label": "Next due",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "blocker_register",
+          "type": "table",
+          "label": "Current blockers, dependencies, and revised commitments",
+          "columns": [
+            {
+              "key": "blocker",
+              "label": "Blocker or dependency",
+              "units": 1.35
+            },
+            {
+              "key": "impact",
+              "label": "Impact",
+              "units": 1.0
+            },
+            {
+              "key": "recovery_action",
+              "label": "Recovery action",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "eta_status",
+              "label": "ETA or status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "communication_controls",
+          "type": "checklist",
+          "label": "Customer and internal status communication controls",
+          "items": [
+            "Update distinguishes completed, pending, blocked, and unverified work",
+            "Dates are evidence-based estimates rather than unsupported promises",
+            "Customer-facing language avoids internal codes and unexplained conclusions",
+            "Required next action identifies the party, channel, and due point",
+            "Sensitive details are shared only through the approved recipient channel",
+            "Changed terms, instructions, identity, or risk are routed for reverification",
+            "Complaint, dispute, accommodation, or urgent harm is separately escalated",
+            "Communication delivery, receipt, failure, and follow-up are recorded"
+          ]
+        },
+        {
+          "key": "status_narrative",
+          "type": "textarea",
+          "label": "Plain-language status summary, cause of delay, next action, and confidence limits",
+          "fields": [
+            {
+              "key": "status_narrative_notes",
+              "label": "Status narrative and revised plan"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Auto Loan stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "VIN, model, ownership, title, or seller identity does not reconcile",
+            "Purchase agreement contains unexplained products, fees, or price changes",
+            "Trade payoff is stale, negative equity is hidden, or payoff route is unclear",
+            "Valuation inputs omit mileage, condition, options, prior damage, or branded title",
+            "Insurance requirement is unmet or binder information conflicts with the vehicle",
+            "Dealer or seller requests altered payee, rushed funding, or third-party proceeds",
+            "Borrower capacity or stated vehicle use changed after the decision",
+            "Title perfection, lien release, or specialist review remains unresolved",
+            "Status cannot be supported by objective milestone evidence",
+            "A promised date, customer message, or system status conflicts with the record"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Milestone Status and Communication Update exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Auto Loan decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Milestone Status and Communication Update qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Auto Loan decision and execution conditions",
+          "items": [
+            "Current stage and next action are supported by dated evidence",
+            "Customer-facing message avoids unsupported promises or conclusions",
+            "Final buyer order and amount-financed components reconcile to approval",
+            "VIN and title evidence identify the same eligible vehicle and owner",
+            "Trade payoff and lien-release instructions remain valid at funding",
+            "Insurance evidence satisfies the institution's documented requirement",
+            "Dealer or seller and payment destination pass independent verification",
+            "Funding waits for qualified approval and all title exceptions to close"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Auto Loan record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Auto Loan completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Milestone Status and Communication Update outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Auto Loan closeout evidence",
+          "items": [
+            "Final VIN, buyer order, title state, and valuation references reconcile",
+            "Amount financed, down payment, trade, payoff, and fees reconcile",
+            "Insurance and lien-perfection evidence are linked to the vehicle record",
+            "Dealer or seller payment destination has independent verification evidence",
+            "Borrower receives final terms through the approved disclosure process",
+            "Funding, title follow-up, and unresolved exceptions have accountable owners"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2001__auto_accident_inspection_report_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2001__auto_accident_inspection_report_form.pdf",
+  "slug": "auto-accident-inspection-report-form",
+  "title": "Auto Accident Inspection Report Form",
+  "subtitle": "A decision-ready auto accident inspection report that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original auto accident inspection report for collision event and involved vehicle with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the auto claim intake or adjusting owner must open and control a inspection report for collision event and involved vehicle. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Auto Accident inspection report identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Auto Accident inspection report record",
+          "fields": [
+            {
+              "key": "inspection_id",
+              "label": "Inspection report ID",
+              "units": 0.95
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date and time",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector and qualification ref",
+              "units": 1.15
+            },
+            {
+              "key": "assignment_source",
+              "label": "Assignment source and scope ref",
+              "units": 1.1
+            },
+            {
+              "key": "report_status",
+              "label": "Report status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Partial",
+                "Complete",
+                "Review hold"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Auto Accident subject and event identity",
+          "fields": [
+            {
+              "key": "loss_date_time",
+              "label": "Collision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Road, intersection, or exact location",
+              "units": 1.25
+            },
+            {
+              "key": "vehicle_identity",
+              "label": "Vehicle and VIN suffix",
+              "units": 1.15
+            },
+            {
+              "key": "driver_relation",
+              "label": "Driver and relationship",
+              "units": 1.05
+            },
+            {
+              "key": "operability",
+              "label": "Operability and tow site",
+              "units": 1.0
+            },
+            {
+              "key": "trip_context",
+              "label": "Trip purpose or use at time of event",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Police agency and report reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Inspection Report scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Auto Accident purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "inspection_plan",
+      "title": "Auto Accident inspection authority, access, and evidence plan",
+      "guidance": "Confirm the approved scope, safe access, evidence method, and conditions that require the inspection to stop.",
+      "blocks": [
+        {
+          "key": "preinspection_check",
+          "type": "checklist",
+          "label": "Pre-inspection controls",
+          "items": [
+            "Assignment scope and exact subject were verified",
+            "Access permission and site contact were confirmed",
+            "Required qualification, equipment, and protective controls were confirmed",
+            "Known hazards and restricted areas were reviewed",
+            "Photograph, measurement, sample, and data permissions were confirmed",
+            "Preservation or custody expectations were documented",
+            "Potential conflicts of interest were disclosed",
+            "Stop-work and emergency route were understood"
+          ]
+        },
+        {
+          "key": "inspection_conditions",
+          "type": "fields",
+          "label": "Inspection conditions",
+          "fields": [
+            {
+              "key": "arrival_departure",
+              "label": "Arrival and departure time",
+              "units": 1.0
+            },
+            {
+              "key": "weather_environment",
+              "label": "Weather or environment",
+              "units": 1.05
+            },
+            {
+              "key": "access_provided_by",
+              "label": "Access provided by",
+              "units": 1.0
+            },
+            {
+              "key": "persons_present",
+              "label": "Persons present reference",
+              "units": 1.1
+            },
+            {
+              "key": "limitations",
+              "label": "Access or inspection limitation",
+              "units": 1.15
+            },
+            {
+              "key": "scope_status",
+              "label": "Scope status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Partial",
+                "Stopped",
+                "Reschedule"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "inspection_boundary",
+          "type": "notice",
+          "label": "Inspection and authority boundary",
+          "guidance": "This record does not determine fault, liability, value, or coverage. Address emergencies first, avoid admissions or promises, preserve evidence, and route decisions to the authorized adjuster under the controlling policy and applicable requirements."
+        }
+      ]
+    },
+    {
+      "key": "observations",
+      "title": "Auto Accident observations, measurements, and condition record",
+      "guidance": "Record what was directly observed, where it was observed, and how the record can be verified.",
+      "blocks": [
+        {
+          "key": "domain_observations",
+          "type": "fields",
+          "label": "Auto Accident observation summary",
+          "fields": [
+            {
+              "key": "travel_direction",
+              "label": "Travel lane and direction",
+              "units": 1.0
+            },
+            {
+              "key": "impact_area",
+              "label": "Reported point and area of impact",
+              "units": 1.25
+            },
+            {
+              "key": "airbag_status",
+              "label": "Airbag deployment status",
+              "units": 1.15
+            },
+            {
+              "key": "occupant_count",
+              "label": "Occupants and passenger ref",
+              "units": 1.05
+            },
+            {
+              "key": "road_weather",
+              "label": "Road, light, and weather",
+              "units": 1.0
+            },
+            {
+              "key": "police_ref",
+              "label": "Police agency and report reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "observation_register",
+          "type": "table",
+          "label": "Location-based observation register",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Location or item",
+              "units": 1.05
+            },
+            {
+              "key": "observation",
+              "label": "Direct observation",
+              "units": 1.35
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.0
+            },
+            {
+              "key": "value",
+              "label": "Reading or condition",
+              "units": 0.95
+            },
+            {
+              "key": "photo_ref",
+              "label": "Photo or evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "condition_indicators",
+          "type": "checklist",
+          "label": "Auto Accident condition indicators",
+          "items": [
+            "Injury or emergency response was reported",
+            "More than two vehicles or a chain event was involved",
+            "Hit-and-run, uninsured, or unknown driver concern exists",
+            "Vehicle was towed, impounded, or is accruing storage",
+            "Commercial, delivery, rideshare, or business use was reported",
+            "Child restraint or mobility equipment may need separate review",
+            "Roadside property, cargo, or a non-vehicle asset was affected",
+            "Citation, witness, dashcam, or traffic-camera evidence exists"
+          ],
+          "guidance": "Checking an indicator records its presence or report; it is not a cause or coverage conclusion."
+        },
+        {
+          "key": "observation_narrative",
+          "type": "textarea",
+          "label": "Inspection sequence and factual narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Auto Accident inspection path, direct facts, reported facts, comparison points, and unknowns",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "evidence_custody",
+      "title": "Auto Accident evidence, source quality, and custody",
+      "guidance": "Make evidence reproducible by recording its source, location, date, method, and any limitations.",
+      "blocks": [
+        {
+          "key": "expected_evidence",
+          "type": "checklist",
+          "label": "Auto Accident evidence sources",
+          "items": [
+            "Scene overview and traffic-control photographs",
+            "All vehicle sides and close damage photographs",
+            "Driver, registration, and insurance exchange reference",
+            "Police or incident report request and receipt reference",
+            "Witness contact and statement source reference",
+            "Tow, storage, repair, rental, or appraisal documents",
+            "Dashcam, telematics, or camera-preservation reference",
+            "Injury, expense, wage, or passenger documents routed securely"
+          ]
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Inspection evidence register",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "description",
+              "label": "Description and exact source",
+              "units": 1.35
+            },
+            {
+              "key": "captured",
+              "label": "Date, time, and collector",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Approved storage or custody",
+              "units": 1.15
+            },
+            {
+              "key": "quality",
+              "label": "Quality, alteration, or gap",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "instrument_control",
+          "type": "fields",
+          "label": "Instrument, data, or reference control",
+          "fields": [
+            {
+              "key": "instrument",
+              "label": "Instrument or system",
+              "units": 1.0
+            },
+            {
+              "key": "identifier",
+              "label": "Identifier or version",
+              "units": 0.95
+            },
+            {
+              "key": "verification",
+              "label": "Calibration or verification ref",
+              "units": 1.1
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.9
+            },
+            {
+              "key": "data_location",
+              "label": "Raw data location",
+              "units": 1.15
+            },
+            {
+              "key": "custodian",
+              "label": "Data custodian",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_decision",
+      "title": "Auto Accident findings, comparison basis, and review decision",
+      "guidance": "Separate facts from analysis and preserve the basis and authority for each conclusion.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Finding and review register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.3
+            },
+            {
+              "key": "basis",
+              "label": "Evidence and comparison basis",
+              "units": 1.25
+            },
+            {
+              "key": "significance",
+              "label": "Operational significance",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or next test",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "review_decision",
+          "type": "fields",
+          "label": "Inspection review decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Ready for review",
+                "Additional inspection",
+                "Expert review",
+                "Evidence hold",
+                "No conclusion"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "basis_ref",
+              "label": "Decision-basis reference",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "analysis_limitations",
+          "type": "textarea",
+          "label": "Analysis, alternative explanations, and limitations",
+          "fields": [
+            {
+              "key": "analysis",
+              "label": "Auto Accident evidence-supported assessment, conflicts, inaccessible areas, assumptions avoided, and needed review",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "exceptions_closeout",
+      "title": "Auto Accident inspection exceptions, escalation, and closeout",
+      "guidance": "Do not close the inspection with an unowned hazard, evidence gap, limitation, or required review.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Auto Accident inspection exception screen",
+          "items": [
+            "Vehicle location or ownership cannot be verified",
+            "Loss date, driver identity, or trip use conflicts across sources",
+            "Injury, child restraint, or accessibility issue lacks a route",
+            "Potential fraud indicator requires authorized special review",
+            "Tow, storage, salvage, or evidence-preservation deadline is near",
+            "Lawsuit, demand, citation, or government notice was received"
+          ]
+        },
+        {
+          "key": "exception_actions",
+          "type": "table",
+          "label": "Exception, corrective action, and verification",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or limitation",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.1
+            },
+            {
+              "key": "final_state",
+              "label": "Final state",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "report_completion",
+          "type": "checklist",
+          "label": "Report completion checks",
+          "items": [
+            "Every inspected and inaccessible area is identified",
+            "Each photograph, reading, and attachment is traceable",
+            "Reported information is separated from direct observation",
+            "Findings do not imply unauthorized fault or coverage decisions",
+            "Exceptions and further review have owners and due points",
+            "The report recipient accepted the next-step handoff"
+          ]
+        },
+        {
+          "key": "inspection_signoff",
+          "type": "signatures",
+          "label": "Inspector, qualified review, and handoff",
+          "fields": [
+            {
+              "key": "inspector_signoff",
+              "label": "Inspector / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer_signoff",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_signoff",
+              "label": "Recipient / date",
+              "units": 1.0
+            },
+            {
+              "key": "report_version",
+              "label": "Report version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

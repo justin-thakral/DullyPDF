@@ -1,0 +1,519 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2222__room_block_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2222__room_block_order_form.pdf",
+  "slug": "room-block-order-form",
+  "title": "Room Block Order Form",
+  "subtitle": "The confirmed block order: inventory by night and room type, rate, cutoff, reservation method, billing routing, and release terms.",
+  "description": "An original room block order. It records block identity and group routing, the confirmed inventory by night and room type with rates, the reservation and billing method with cutoff and release terms, authorization, open conditions, and distribution to reservations, front office, and accounting.",
+  "use_case": "Use as the operating record for one contracted guest-room block, from confirmation through cutoff to release. The order closes when reservations, front office, and accounting have acknowledged the current revision.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Block identity and group routing",
+      "guidance": "Bind the block to the group, the agreement, and its owners.",
+      "blocks": [
+        {
+          "key": "order_routing",
+          "type": "fields",
+          "label": "Order identity and routing",
+          "fields": [
+            {
+              "key": "block_order_number",
+              "label": "Block order number",
+              "units": 1.3
+            },
+            {
+              "key": "block_code",
+              "label": "Block code",
+              "units": 0.85
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.6
+            },
+            {
+              "key": "sales_owner",
+              "label": "Sales owner",
+              "units": 0.95
+            },
+            {
+              "key": "rooms_owner",
+              "label": "Rooms control owner",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "group_contacts",
+          "type": "fields",
+          "label": "Group and billing contacts",
+          "fields": [
+            {
+              "key": "group_name",
+              "label": "Group name",
+              "units": 1.25
+            },
+            {
+              "key": "group_contact",
+              "label": "Group contact",
+              "units": 1.0
+            },
+            {
+              "key": "group_phone",
+              "label": "Group phone",
+              "units": 0.9
+            },
+            {
+              "key": "billing_contact",
+              "label": "Billing contact",
+              "units": 1.05
+            },
+            {
+              "key": "agreement_reference",
+              "label": "Agreement reference",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "confirmed_inventory",
+      "title": "Confirmed inventory by night",
+      "guidance": "Room type and night, exactly as reservations will load it.",
+      "blocks": [
+        {
+          "key": "inventory_rows",
+          "type": "table",
+          "label": "Confirmed block inventory",
+          "columns": [
+            {
+              "key": "stay_date",
+              "label": "Night",
+              "units": 0.75
+            },
+            {
+              "key": "room_type",
+              "label": "Room type",
+              "units": 1.15
+            },
+            {
+              "key": "rooms_blocked",
+              "label": "Blocked",
+              "units": 0.7
+            },
+            {
+              "key": "rate",
+              "label": "Rate",
+              "units": 0.7
+            },
+            {
+              "key": "release_date",
+              "label": "Release",
+              "units": 0.75
+            },
+            {
+              "key": "notes",
+              "label": "Note",
+              "units": 1.1
+            }
+          ],
+          "rows": 10,
+          "guidance": "Reservations loads from this table; a night missing here is a night that will not be sellable at the group rate."
+        },
+        {
+          "key": "inventory_summary",
+          "type": "fields",
+          "label": "Inventory summary",
+          "fields": [
+            {
+              "key": "peak_rooms",
+              "label": "Peak night rooms",
+              "units": 1.15
+            },
+            {
+              "key": "total_room_nights",
+              "label": "Total room nights",
+              "units": 1.25
+            },
+            {
+              "key": "accessible_rooms",
+              "label": "Accessible rooms",
+              "units": 1.15
+            },
+            {
+              "key": "suites_allocated",
+              "label": "Suites allocated",
+              "units": 1.15
+            },
+            {
+              "key": "comp_rooms",
+              "label": "Complimentary rooms",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "reservation_and_billing",
+      "title": "Reservation method, cutoff, and billing",
+      "guidance": "How guests book and who pays for what.",
+      "blocks": [
+        {
+          "key": "reservation_terms",
+          "type": "fields",
+          "label": "Reservation terms",
+          "fields": [
+            {
+              "key": "reservation_method",
+              "label": "Reservation method",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Individual call-in",
+                "Rooming list",
+                "Booking link",
+                "Direct bill list"
+              ]
+            },
+            {
+              "key": "cutoff_date",
+              "label": "Cutoff date",
+              "units": 0.9
+            },
+            {
+              "key": "rooming_list_due",
+              "label": "Rooming list due",
+              "units": 1.2
+            },
+            {
+              "key": "booking_code",
+              "label": "Booking code",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "billing_terms",
+          "type": "fields",
+          "label": "Billing terms",
+          "fields": [
+            {
+              "key": "billing_route",
+              "label": "Billing route",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Not yet set",
+                "Each guest pays own",
+                "Room and tax to master",
+                "All charges to master",
+                "Split by guest list"
+              ]
+            },
+            {
+              "key": "master_account",
+              "label": "Master account",
+              "units": 1.05
+            },
+            {
+              "key": "deposit_due",
+              "label": "Deposit due",
+              "units": 0.9
+            },
+            {
+              "key": "credit_status",
+              "label": "Credit status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Not required",
+                "Requested",
+                "Approved",
+                "Approved with deposit",
+                "Declined"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "term_confirmations",
+          "type": "checklist",
+          "label": "Term confirmations",
+          "items": [
+            "Rate confirmed against the signed agreement",
+            "Cutoff and release dates loaded in the reservation system",
+            "Booking link or block code tested before release to the group",
+            "Accessible room commitment recorded against specific room types",
+            "Complimentary room basis recorded and agreed with accounting",
+            "Billing route confirmed with accounting before arrival",
+            "Early arrival and late departure handling recorded",
+            "Incidental charge authorization approach recorded"
+          ],
+          "guidance": "Record the routing only. Guest payment card details are held in the reservation system, never on this order."
+        }
+      ]
+    },
+    {
+      "key": "order_authorization",
+      "title": "Authorization and release terms",
+      "guidance": "Who committed the inventory and what happens at cutoff.",
+      "blocks": [
+        {
+          "key": "authorization_record",
+          "type": "fields",
+          "label": "Order authorization",
+          "fields": [
+            {
+              "key": "order_status",
+              "label": "Order status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending approval",
+                "Approved",
+                "Approved with conditions",
+                "Revised - reissued",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "approved_on",
+              "label": "Approved on",
+              "units": 0.85
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 1.0
+            },
+            {
+              "key": "release_rule",
+              "label": "Release at cutoff",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Release all unsold",
+                "Release in stages",
+                "Hold to arrival",
+                "Review before release"
+              ]
+            },
+            {
+              "key": "review_before_release",
+              "label": "Release review by",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "order_boundary",
+          "type": "notice",
+          "label": "Order scope and record boundary",
+          "guidance": "This order records the inventory, rate, and routing the venue has committed. It does not interpret attrition, cancellation, or no-show terms, and it does not guarantee a specific room number or an upgrade. Where this order and the signed agreement differ, the agreement governs. Route rate, attrition, credit, and accessibility commitments to the responsible manager before confirming them to the group."
+        },
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Approved conditions, deviations, and what the group was told",
+          "fields": [
+            {
+              "key": "authorization_detail",
+              "label": "Authorization detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "order_conditions",
+      "title": "Open conditions and escalation",
+      "guidance": "A confirmed block can still carry unresolved conditions.",
+      "blocks": [
+        {
+          "key": "condition_triggers",
+          "type": "checklist",
+          "label": "Open condition triggers",
+          "items": [
+            "Signed agreement or countersignature outstanding",
+            "Deposit not received by the scheduled date",
+            "Credit or master-account approval unresolved",
+            "Rooming list not received by the due date",
+            "Accessible room commitment not yet allocated",
+            "Booking link or block code not live",
+            "Block loaded in the system differs from this order",
+            "Pickup pace materially behind the contracted pattern"
+          ]
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Open condition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Open condition",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "order_distribution",
+      "title": "Distribution, acknowledgment, and closeout",
+      "guidance": "Reservations, front office, and accounting each confirm receipt.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Order closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Distributed",
+                "Revised - reissued",
+                "Cutoff passed",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "distributed_on",
+              "label": "Distributed on",
+              "units": 0.95
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "review_due",
+              "label": "Post-stay review due",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "distribution_log",
+          "type": "table",
+          "label": "Distribution and acknowledgment",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Department or role",
+              "units": 1.15
+            },
+            {
+              "key": "sent_on",
+              "label": "Sent on",
+              "units": 0.75
+            },
+            {
+              "key": "acknowledged_by",
+              "label": "Acknowledged by",
+              "units": 1.05
+            },
+            {
+              "key": "open_question",
+              "label": "Outstanding question",
+              "units": 1.4
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "distribution_confirmations",
+          "type": "checklist",
+          "label": "Distribution confirmations",
+          "items": [
+            "Reservations loaded the block and confirmed it matches night by night",
+            "Front office holds the arrival pattern and billing route",
+            "Accounting holds the master account and deposit schedule",
+            "Housekeeping holds the arrival and departure volumes",
+            "Accessible room allocation confirmed with front office",
+            "Superseded revisions withdrawn from the departments"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Distribution outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Order closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by revenue manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

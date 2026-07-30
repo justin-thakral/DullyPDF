@@ -1,0 +1,739 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1052__flooring_daily_job_report_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1052__flooring_daily_job_report_form.pdf",
+  "slug": "flooring-daily-job-report-form",
+  "title": "Flooring Daily Job Report and Shift Handoff",
+  "subtitle": "Capture the flooring shift, labor and equipment, delivered materials, measured production, inspections, hazards, delays, decisions, and next-shift ownership.",
+  "description": "A daily Flooring field report covering site and weather identity, crew time, equipment and deliveries, work areas and production, technical readings, quality and safety observations, incidents and delays, RFIs and directives, photos, outstanding actions, and verified shift handoff.",
+  "use_case": "Use at the end of each Flooring shift when the flooring installation lead, project management, payroll or cost control, quality, safety, and the next crew need a factual contemporaneous record without using it to authorize unapproved work.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "daily_identity",
+      "title": "Flooring shift identity and site conditions",
+      "guidance": "Anchor the report to one project, work date, shift, preparer, and operating window.",
+      "blocks": [
+        {
+          "key": "daily_reference",
+          "type": "fields",
+          "label": "Daily report reference",
+          "fields": [
+            {
+              "key": "report_number",
+              "label": "Daily report number",
+              "units": 0.85
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.8
+            },
+            {
+              "key": "work_date",
+              "label": "Work date",
+              "units": 0.7
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.65
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.85
+            },
+            {
+              "key": "field_lead",
+              "label": "Flooring Installation Lead",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "site_work_window",
+          "type": "fields",
+          "label": "Project, site, and work window",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "site_location",
+              "label": "Site and work area",
+              "units": 1.2
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "finish_time",
+              "label": "Finish time",
+              "units": 0.65
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer/site contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "weather_conditions",
+          "type": "fields",
+          "label": "Weather and site conditions",
+          "fields": [
+            {
+              "key": "weather",
+              "label": "Weather",
+              "units": 0.8
+            },
+            {
+              "key": "temperature",
+              "label": "Temperature range",
+              "units": 0.8
+            },
+            {
+              "key": "humidity_wind",
+              "label": "Humidity or wind",
+              "units": 0.9
+            },
+            {
+              "key": "surface_condition",
+              "label": "Surface/site condition",
+              "units": 1.0
+            },
+            {
+              "key": "lost_weather",
+              "label": "Weather delay hours",
+              "units": 0.85
+            },
+            {
+              "key": "condition_evidence",
+              "label": "Weather/condition ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "shift_objectives",
+          "type": "textarea",
+          "label": "Planned flooring objectives and actual shift summary",
+          "fields": [
+            {
+              "key": "objective_detail",
+              "label": "Describe planned areas, achieved outcome, and material variance",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "labor_resources",
+      "title": "Flooring labor, equipment, material, and visitors",
+      "guidance": "Connect resource use to work areas, cost codes, and production.",
+      "blocks": [
+        {
+          "key": "labor_log",
+          "type": "table",
+          "label": "Flooring labor and hours",
+          "columns": [
+            {
+              "key": "company",
+              "label": "Company/crew",
+              "units": 1.0
+            },
+            {
+              "key": "classification",
+              "label": "Classification",
+              "units": 1.0
+            },
+            {
+              "key": "headcount",
+              "label": "Count",
+              "units": 0.55
+            },
+            {
+              "key": "regular",
+              "label": "Regular hrs",
+              "units": 0.75
+            },
+            {
+              "key": "overtime",
+              "label": "OT hrs",
+              "units": 0.65
+            },
+            {
+              "key": "area_cost",
+              "label": "Area/cost code",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "equipment_log",
+          "type": "table",
+          "label": "Equipment, tool, and utilization log",
+          "columns": [
+            {
+              "key": "equipment",
+              "label": "Equipment/tool",
+              "units": 1.25
+            },
+            {
+              "key": "asset",
+              "label": "Asset ID",
+              "units": 0.8
+            },
+            {
+              "key": "hours",
+              "label": "Hours",
+              "units": 0.65
+            },
+            {
+              "key": "area",
+              "label": "Work area",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition/issue",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "delivery_log",
+          "type": "table",
+          "label": "Flooring delivery and receiving log",
+          "columns": [
+            {
+              "key": "material",
+              "label": "Material/package",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "ticket",
+              "label": "Ticket/lot ref",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition/status",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Storage/area",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "visitor_coordination",
+          "type": "fields",
+          "label": "Visitors, inspections, and coordination",
+          "fields": [
+            {
+              "key": "visitor",
+              "label": "Visitor or inspector",
+              "units": 1.0
+            },
+            {
+              "key": "organization",
+              "label": "Organization",
+              "units": 0.9
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.0
+            },
+            {
+              "key": "arrival_departure",
+              "label": "Arrival/departure",
+              "units": 0.9
+            },
+            {
+              "key": "record_ref",
+              "label": "Meeting/inspection ref",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "production_record",
+      "title": "Flooring work performed and measured production",
+      "guidance": "Record installed work and readings for the substrate, moisture, layout, finish material, and transition system.",
+      "blocks": [
+        {
+          "key": "production_log",
+          "type": "table",
+          "label": "Flooring activity and production log",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area/system",
+              "units": 1.0
+            },
+            {
+              "key": "activity",
+              "label": "Work performed",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Qty./measure",
+              "units": 0.85
+            },
+            {
+              "key": "percent",
+              "label": "Percent/status",
+              "units": 0.8
+            },
+            {
+              "key": "drawing",
+              "label": "Drawing/detail ref",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "daily_measurements",
+          "type": "fields",
+          "label": "Daily flooring readings and quantities",
+          "fields": [
+            {
+              "key": "floor_area",
+              "label": "Measured floor area",
+              "units": 0.9
+            },
+            {
+              "key": "waste_factor",
+              "label": "Waste factor",
+              "units": 0.9
+            },
+            {
+              "key": "flatness",
+              "label": "Flatness result",
+              "units": 0.9
+            },
+            {
+              "key": "moisture",
+              "label": "Moisture or RH result",
+              "units": 0.9
+            },
+            {
+              "key": "acclimation",
+              "label": "Acclimation duration",
+              "units": 0.9
+            },
+            {
+              "key": "transition_length",
+              "label": "Transition length",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "scope_touched",
+          "type": "checklist",
+          "label": "Flooring scope worked this shift",
+          "items": [
+            "Area isolation, furniture movement, protection, and occupied phasing",
+            "Existing flooring removal, salvage, disposal, and hazard release",
+            "Substrate cleaning, grinding, patching, leveling, and crack treatment",
+            "Moisture and alkalinity testing, mitigation, and acceptance",
+            "Underlayment, membrane, sound control, vapor control, and primers",
+            "Layout, pattern, dye lot, seam, joint, and room transition planning",
+            "Resilient, carpet, wood, laminate, tile, stone, or specialty installation",
+            "Adhesive, mortar, grout, weld, fastener, and rolling requirements",
+            "Base, trim, reducers, thresholds, stair, and edge details",
+            "Protection, cure, cleaning, maintenance stock, and owner handoff"
+          ]
+        },
+        {
+          "key": "means_methods",
+          "type": "textarea",
+          "label": "Means, sequence, temporary condition, and protected work",
+          "fields": [
+            {
+              "key": "method_detail",
+              "label": "Record material methods, sequence, concealed work, protection, and shutdown state",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "quality_safety",
+      "title": "Flooring quality, safety, and environmental observations",
+      "guidance": "Capture observed conditions, evidence, corrections, and escalation without replacing required inspections.",
+      "blocks": [
+        {
+          "key": "quality_observations",
+          "type": "checklist",
+          "label": "Flooring quality checkpoints observed",
+          "items": [
+            "Hazard release and substrate acceptance are documented",
+            "Moisture, RH, alkalinity, flatness, and environmental data are accepted",
+            "Product, lot, acclimation, storage, and area assignment are traceable",
+            "Layout, pattern, direction, seams, joints, and transitions are approved",
+            "Primer, adhesive, trowel, open time, rolling, and cure are recorded",
+            "Alignment, lippage, bond, seams, edges, and surface are accepted",
+            "Base, transitions, stairs, doors, equipment, and accessibility details work",
+            "Cleaning, protection, attic stock, care, and closeout are complete"
+          ]
+        },
+        {
+          "key": "inspection_test_log",
+          "type": "table",
+          "label": "Inspection, test, and evidence record",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area/system",
+              "units": 1.0
+            },
+            {
+              "key": "check",
+              "label": "Inspection/test",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Result/reading",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Photo/report ref",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer/date",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "safety_observations",
+          "type": "checklist",
+          "label": "Flooring critical controls observed",
+          "items": [
+            "Asbestos, lead, silica, mold, and existing-material status addressed",
+            "Grinding, cutting, scraping, dust collection, and exposure controls verified",
+            "Adhesive, primer, solvent, SDS, ventilation, and ignition controls verified",
+            "Knee, lifting, handling, ergonomic, and repetitive-work controls addressed",
+            "Blades, saws, grinders, cords, GFCI, guards, and PPE controlled",
+            "Occupied-area separation, egress, trip, access, and signage maintained",
+            "Temperature, humidity, odor, cure, and reentry restrictions communicated",
+            "Waste, sharp debris, containers, spills, and housekeeping controlled",
+            "Stair, edge, elevation change, and unfinished transition hazards controlled",
+            "Material storage, rolling loads, floor capacity, and cart paths reviewed"
+          ]
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Hazard, quality issue, and corrective-action log",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.35
+            },
+            {
+              "key": "immediate",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due",
+              "label": "Due/recheck",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status/evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "daily_boundary",
+          "type": "notice",
+          "label": "Flooring daily-report boundary",
+          "guidance": "This record does not clear existing flooring, mastic, or substrate for disturbance and does not replace hazardous-material assessment, silica controls, moisture-system design, or manufacturer instructions. The daily report records observed facts and does not itself release work or close required actions."
+        }
+      ]
+    },
+    {
+      "key": "delay_decisions",
+      "title": "Flooring delay, issue, direction, and escalation",
+      "guidance": "Preserve time-sensitive facts and assign one owner for every unresolved decision.",
+      "blocks": [
+        {
+          "key": "delay_log",
+          "type": "table",
+          "label": "Delay, disruption, and lost-time log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time/window",
+              "units": 0.8
+            },
+            {
+              "key": "cause",
+              "label": "Observed cause",
+              "units": 1.35
+            },
+            {
+              "key": "area",
+              "label": "Area/crew",
+              "units": 0.9
+            },
+            {
+              "key": "hours",
+              "label": "Hours/impact",
+              "units": 0.8
+            },
+            {
+              "key": "action",
+              "label": "Action/notice ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "rfi_direction_log",
+          "type": "table",
+          "label": "RFI, directive, inspection, and decision log",
+          "columns": [
+            {
+              "key": "ref",
+              "label": "Reference",
+              "units": 0.8
+            },
+            {
+              "key": "question",
+              "label": "Question/condition",
+              "units": 1.35
+            },
+            {
+              "key": "direction",
+              "label": "Direction/decision",
+              "units": 1.25
+            },
+            {
+              "key": "authority",
+              "label": "Authority",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status/due",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "incident_notice",
+          "type": "fields",
+          "label": "Incident, damage, near miss, or formal notice",
+          "fields": [
+            {
+              "key": "event_status",
+              "label": "Event status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "None reported",
+                "Separate report",
+                "Notice pending",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "event_ref",
+              "label": "Separate event report ref",
+              "units": 1.0
+            },
+            {
+              "key": "notice_to",
+              "label": "Notice provided to",
+              "units": 0.9
+            },
+            {
+              "key": "notice_time",
+              "label": "Notice date/time",
+              "units": 0.9
+            },
+            {
+              "key": "scene_evidence",
+              "label": "Scene/evidence ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "unresolved_detail",
+          "type": "textarea",
+          "label": "Unresolved issue, constraint, variance, or customer concern",
+          "fields": [
+            {
+              "key": "unresolved_record",
+              "label": "Describe evidence, current safe state, decision needed, owner, and deadline",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "shift_handoff",
+      "title": "Flooring shift closeout and next-day handoff",
+      "guidance": "Close the shift with site condition, record package, priorities, and accountable owners.",
+      "blocks": [
+        {
+          "key": "end_shift_checks",
+          "type": "checklist",
+          "label": "End-of-shift condition verified",
+          "items": [
+            "Work area left in a controlled condition",
+            "Temporary protection and barriers checked",
+            "Energy, pressure, water, weather, or cure state communicated",
+            "Materials and equipment secured",
+            "Waste and access paths addressed",
+            "Concealed work evidence retained",
+            "Required notices and reports routed",
+            "Open actions assigned to named owners"
+          ]
+        },
+        {
+          "key": "daily_evidence",
+          "type": "checklist",
+          "label": "Flooring daily evidence package",
+          "items": [
+            "Product, color, lot, pattern, and area schedule",
+            "Moisture, alkalinity, flatness, and environment records",
+            "Preparation, mitigation, adhesive, and installation evidence",
+            "Punch, correction, cure, and traffic-release records",
+            "Attic stock, repair pieces, and lot labels",
+            "Cleaning, care, warranty, and owner handoff"
+          ]
+        },
+        {
+          "key": "next_shift_plan",
+          "type": "table",
+          "label": "Next-shift priority and handoff register",
+          "columns": [
+            {
+              "key": "priority",
+              "label": "Priority/task",
+              "units": 1.3
+            },
+            {
+              "key": "prerequisite",
+              "label": "Prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner/crew",
+              "units": 0.85
+            },
+            {
+              "key": "needed",
+              "label": "Needed by",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status/note",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Shift outcome, site state, customer communication, and handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Summarize verified progress, restrictions, outstanding decisions, and next owner",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "daily_review",
+          "type": "signatures",
+          "label": "Flooring daily report review",
+          "fields": [
+            {
+              "key": "prepared_signature",
+              "label": "Prepared by/signature",
+              "units": 1.0
+            },
+            {
+              "key": "field_review",
+              "label": "Field lead review",
+              "units": 0.95
+            },
+            {
+              "key": "manager_review",
+              "label": "Project manager review",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date/time",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

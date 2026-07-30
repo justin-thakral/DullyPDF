@@ -1,0 +1,666 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1945__payment_plan_status_update_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1945__payment_plan_status_update_form.pdf",
+  "slug": "payment-plan-status-update-form",
+  "title": "Payment Plan Milestone Status and Communication Update",
+  "subtitle": "A controlled status update for a repayment-plan request that verifies the obligation and account status, records customer circumstances without judgment, tests realistic schedules, documents written terms, payment application, monitoring, missed-payment response, and alternatives requiring qualified servicing review, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Payment Plan workflow for a repayment-plan request that verifies the obligation and account status, records customer circumstances without judgment, tests realistic schedules, documents written terms, payment application, monitoring, missed-payment response, and alternatives requiring qualified servicing review. It is designed to record the current stage and objective evidence, preserve a milestone trail, expose blockers and revised dates, document customer communications, assign next actions, and hand off unresolved work while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a account servicing specialist must record the current stage and objective evidence, preserve a milestone trail, expose blockers and revised dates, document customer communications, assign next actions, and hand off unresolved work for one payment-plan case. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Payment Plan status update identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Payment Plan record and responsible parties",
+          "fields": [
+            {
+              "key": "plan_case_ref",
+              "label": "Payment-plan case reference",
+              "units": 1.2
+            },
+            {
+              "key": "customer_name",
+              "label": "Customer name",
+              "units": 1.2
+            },
+            {
+              "key": "secure_account_ref",
+              "label": "Secure account reference",
+              "units": 1.2
+            },
+            {
+              "key": "creditor_servicer",
+              "label": "Creditor or servicer",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_specialist",
+              "label": "Assigned servicing specialist",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Milestone Status and Communication Update timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Payment Plan facts and evidence for status update",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Payment Plan transaction or account profile",
+          "fields": [
+            {
+              "key": "balance_as_of",
+              "label": "Balance and as-of date",
+              "units": 1.0
+            },
+            {
+              "key": "past_due_amount",
+              "label": "Past-due or disputed amount",
+              "units": 1.0
+            },
+            {
+              "key": "regular_payment",
+              "label": "Regular payment amount",
+              "units": 0.9
+            },
+            {
+              "key": "next_due_date",
+              "label": "Next due date",
+              "units": 0.8
+            },
+            {
+              "key": "account_status",
+              "label": "Account status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Current",
+                "Past due",
+                "In default",
+                "Disputed",
+                "Other reviewed status"
+              ]
+            },
+            {
+              "key": "customer_goal",
+              "label": "Customer's requested outcome",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Payment Plan evidence checkpoints",
+          "items": [
+            "Debt or obligation owner, secure account reference, and balance date are confirmed",
+            "Principal, interest, fees, credits, disputed amount, and past-due amount are separated",
+            "Payment history and prior arrangement outcomes are reviewed",
+            "Customer income timing, essential expenses, and available amount are recorded",
+            "Hardship circumstances are described without unnecessary sensitive detail",
+            "Regular payment, proposed catch-up amount, frequency, and start date are explicit",
+            "Payment application, suspense, fees, interest, reporting, and collection effects are routed",
+            "Alternative assistance, dispute, complaint, bankruptcy, legal, or counseling routes are considered"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Payment Plan quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "cashflow_item",
+              "label": "Income or essential expense",
+              "units": 1.35
+            },
+            {
+              "key": "amount",
+              "label": "Amount",
+              "units": 0.75
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency",
+              "units": 0.75
+            },
+            {
+              "key": "timing",
+              "label": "Expected timing",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_status",
+              "label": "Evidence status",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Customer circumstances, ability and timing, disputed amounts, prior arrangements, communication constraints, requested relief, and alternative options",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Payment Plan context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Payment Plan status update analysis and control record",
+      "guidance": "Use the blocks below to record the current stage and objective evidence, preserve a milestone trail, expose blockers and revised dates, document customer communications, assign next actions, and hand off unresolved work. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "current_status",
+          "type": "fields",
+          "label": "Current stage, timing, and communication status",
+          "fields": [
+            {
+              "key": "current_stage",
+              "label": "Current stage",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Intake",
+                "Evidence pending",
+                "Under review",
+                "Decision pending",
+                "Execution pending",
+                "Complete",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "status_as_of",
+              "label": "Status as-of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "days_open",
+              "label": "Days open",
+              "units": 0.7
+            },
+            {
+              "key": "target_completion",
+              "label": "Current target completion",
+              "units": 1.0
+            },
+            {
+              "key": "next_milestone",
+              "label": "Next milestone",
+              "units": 1.2
+            },
+            {
+              "key": "customer_update_due",
+              "label": "Customer update due",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "milestone_history",
+          "type": "table",
+          "label": "Payment Plan milestone and evidence history",
+          "columns": [
+            {
+              "key": "event_time",
+              "label": "Date or time",
+              "units": 0.85
+            },
+            {
+              "key": "stage_event",
+              "label": "Stage or event",
+              "units": 1.2
+            },
+            {
+              "key": "result_evidence",
+              "label": "Result or evidence",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "next_due",
+              "label": "Next due",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "blocker_register",
+          "type": "table",
+          "label": "Current blockers, dependencies, and revised commitments",
+          "columns": [
+            {
+              "key": "blocker",
+              "label": "Blocker or dependency",
+              "units": 1.35
+            },
+            {
+              "key": "impact",
+              "label": "Impact",
+              "units": 1.0
+            },
+            {
+              "key": "recovery_action",
+              "label": "Recovery action",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "eta_status",
+              "label": "ETA or status",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "communication_controls",
+          "type": "checklist",
+          "label": "Customer and internal status communication controls",
+          "items": [
+            "Update distinguishes completed, pending, blocked, and unverified work",
+            "Dates are evidence-based estimates rather than unsupported promises",
+            "Customer-facing language avoids internal codes and unexplained conclusions",
+            "Required next action identifies the party, channel, and due point",
+            "Sensitive details are shared only through the approved recipient channel",
+            "Changed terms, instructions, identity, or risk are routed for reverification",
+            "Complaint, dispute, accommodation, or urgent harm is separately escalated",
+            "Communication delivery, receipt, failure, and follow-up are recorded"
+          ]
+        },
+        {
+          "key": "status_narrative",
+          "type": "textarea",
+          "label": "Plain-language status summary, cause of delay, next action, and confidence limits",
+          "fields": [
+            {
+              "key": "status_narrative_notes",
+              "label": "Status narrative and revised plan"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Payment Plan stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Debt ownership, customer identity, balance, payment history, or account status conflicts",
+            "Disputed amount, complaint, fraud, bankruptcy, legal process, or represented-party issue is open",
+            "Proposed payment exceeds the customer's documented available amount",
+            "Interest, fees, reporting, collection activity, or payment application is unclear",
+            "Partial-payment, suspense, acceleration, default, or missed-payment consequence needs review",
+            "Customer reports coercion, inability to understand terms, or accessibility barrier",
+            "Plan terms differ from policy, contract, applicable requirements, or approved authority",
+            "Written agreement, notice, consent, or qualified approval is missing",
+            "Status cannot be supported by objective milestone evidence",
+            "A promised date, customer message, or system status conflicts with the record"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Milestone Status and Communication Update exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Payment Plan decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Milestone Status and Communication Update qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Payment Plan decision and execution conditions",
+          "items": [
+            "Current stage and next action are supported by dated evidence",
+            "Customer-facing message avoids unsupported promises or conclusions",
+            "Verified balance and payment history reconcile to the written plan",
+            "Schedule is based on documented available amount and realistic timing",
+            "Interest, fees, payment application, reporting, and collection effects are disclosed",
+            "Missed-payment, cure, review, modification, and cancellation rules are explicit",
+            "Disputes, complaints, bankruptcy, legal, or vulnerability issues follow qualified routes",
+            "Customer receives and accepts written terms before the plan is activated"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Payment Plan record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Payment Plan completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Milestone Status and Communication Update outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Payment Plan closeout evidence",
+          "items": [
+            "Written plan states balance, schedule, application, and consequences",
+            "Customer acceptance and delivery evidence are linked",
+            "Each payment reconciles to posting or an exception",
+            "Missed or disputed payments have qualified review outcomes",
+            "Completion, change, cancellation, or assistance is recorded",
+            "Final status, balance, and customer communication are verified"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

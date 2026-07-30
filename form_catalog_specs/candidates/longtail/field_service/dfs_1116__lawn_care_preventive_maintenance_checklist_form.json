@@ -1,0 +1,791 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1116__lawn_care_preventive_maintenance_checklist_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1116__lawn_care_preventive_maintenance_checklist_form.pdf",
+  "slug": "lawn-care-preventive-maintenance-checklist-form",
+  "title": "Lawn Care Preventive Maintenance Checklist Form",
+  "subtitle": "Control mowing, cultivation, irrigation review, treatment, and property handoff through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete lawn care preventive maintenance checklist for turf zones, plantings, irrigation features, and service equipment. It connects service plan, product label, site map, and instructions to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified lawn-care technician or applicator must perform scheduled lawn care maintenance against an identified plan while preserving readings, defects, deferrals, verification, and the next due event.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "maintenance_identity",
+      "title": "Lawn Care maintenance plan, site, and asset identity",
+      "guidance": "Tie the planned interval, exact maintained scope, prior condition, and accountable parties to one visit.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Lawn Care preventive maintenance checklist reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service visit or route number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Property owner or authorized site contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Property and mapped lawn or planting zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Property zone, turf, planting, and treatment identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Property or route stop",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Lawn, bed, tree, or planting zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Turf or plant type",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Service-plan or prior-visit reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant lawn care context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant lawn care context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "plan_readiness",
+      "title": "Lawn Care interval, criteria, and maintenance readiness",
+      "guidance": "Confirm the controlling plan and actual readiness before treating a checklist as authorization to work.",
+      "blocks": [
+        {
+          "key": "maintenance_interval",
+          "type": "fields",
+          "label": "Maintenance interval and controlling reference",
+          "fields": [
+            {
+              "key": "plan_reference",
+              "label": "Service plan, contract, or maintenance ref.",
+              "units": 1.2
+            },
+            {
+              "key": "last_service",
+              "label": "Last completed service",
+              "units": 0.9
+            },
+            {
+              "key": "due_basis",
+              "label": "Time, use, condition, or route basis",
+              "units": 1.05
+            },
+            {
+              "key": "current_due",
+              "label": "Current due date or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "criteria_source",
+              "label": "Controlling plan or criteria reference",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Pre-maintenance access and control readiness",
+          "items": [
+            "Property and treatment boundaries confirmed before work",
+            "People, children, pets, vehicles, and movable property cleared or protected",
+            "Hidden utilities, irrigation heads, drainage features, and obstacles identified",
+            "Slope, wet ground, traffic, heat, lightning, and other weather hazards assessed",
+            "Mower guards, discharge controls, blades, and service equipment inspected",
+            "Product label, applicator qualification, PPE, and application conditions verified",
+            "Water, wells, storm drains, pollinator areas, and neighboring property protected",
+            "Mowing height, route, clipping, pruning, and treatment instructions defined",
+            "Gate, key, alarm, and access controls preserved",
+            "Reentry, watering, cleanup, and follow-up instructions assigned"
+          ]
+        },
+        {
+          "key": "history_defects",
+          "type": "table",
+          "label": "Prior defect, recommendation, recurrence, and open-action review",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or record ref.",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Condition or recommendation",
+              "units": 1.3
+            },
+            {
+              "key": "prior_action",
+              "label": "Prior action",
+              "units": 1.0
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner or escalation",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_assignment",
+          "type": "fields",
+          "label": "Technician, site contact, and service status",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Qualified lawn-care technician or applicator",
+              "units": 1.15
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification or license reference",
+              "units": 1.05
+            },
+            {
+              "key": "site_contact",
+              "label": "Property owner or authorized site contact",
+              "units": 1.1
+            },
+            {
+              "key": "start_date_time",
+              "label": "Controlled start date and time",
+              "units": 0.95
+            },
+            {
+              "key": "readiness_status",
+              "label": "Readiness status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with restriction",
+                "Controlled hold",
+                "Refer for qualified review",
+                "Access unavailable"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "condition_checks",
+      "title": "Lawn Care requirement-level condition inspection",
+      "guidance": "Record actual condition for each applicable point and identify the evidence or rationale for the result.",
+      "blocks": [
+        {
+          "key": "inspection_coverage",
+          "type": "checklist",
+          "label": "Lawn Care inspection coverage",
+          "items": [
+            "Turf density, height, color, vigor, and bare areas",
+            "Weed, insect, disease, animal, and other pest evidence",
+            "Soil moisture, compaction, erosion, grade, and drainage",
+            "Irrigation coverage, leaks, heads, runoff, and schedule",
+            "Trees, shrubs, beds, edging, roots, and mulch condition",
+            "Mowing pattern, scalping, clipping, thatch, and previous service effects",
+            "Obstacles, debris, utilities, hardscape, vehicles, and fragile property",
+            "Slope, ground firmness, access width, gate, and traffic conditions",
+            "Weather, wind, heat, rainfall, and treatment suitability",
+            "Sensitive plants, water, pollinator habitat, and neighboring exposure"
+          ],
+          "guidance": "A check means the point was examined; the result table carries the actual finding."
+        },
+        {
+          "key": "inspection_results",
+          "type": "table",
+          "label": "Condition, criterion, result, and evidence register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, zone, or component",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Expected condition or criterion",
+              "units": 1.25
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, monitor, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or technician initials",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "inspection_context",
+          "type": "textarea",
+          "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "maintenance_work",
+      "title": "Lawn Care preventive service tasks and controlled materials",
+      "guidance": "Separate tasks completed from tasks merely considered, and preserve product, part, quantity, and removed-item custody.",
+      "blocks": [
+        {
+          "key": "maintenance_tasks",
+          "type": "checklist",
+          "label": "Preventive maintenance tasks completed",
+          "items": [
+            "Mow to the approved height and pattern",
+            "Edge approved hardscape and bed boundaries",
+            "Trim around obstacles without property damage",
+            "Collect or distribute clippings as authorized",
+            "Aerate, dethatch, seed, or topdress approved zones",
+            "Apply label-consistent fertilizer or control product",
+            "Adjust or report irrigation condition",
+            "Remove approved debris and restore gates",
+            "Photograph material property or plant condition",
+            "Communicate watering, reentry, and next-service instructions"
+          ]
+        },
+        {
+          "key": "task_result_log",
+          "type": "table",
+          "label": "Maintenance action and result log",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Asset, zone, or point",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Maintenance action",
+              "units": 1.2
+            },
+            {
+              "key": "before",
+              "label": "Before condition",
+              "units": 1.0
+            },
+            {
+              "key": "after",
+              "label": "After condition",
+              "units": 1.0
+            },
+            {
+              "key": "technician_ref",
+              "label": "Technician or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "materials_used",
+          "type": "table",
+          "label": "Parts, products, consumables, and quantities",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, product, or material",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, label, or serial",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "application",
+              "label": "Used, installed, or removed",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or remaining stock",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "measurements_tests",
+      "title": "Lawn Care measurements and post-maintenance verification",
+      "guidance": "Use repeatable observations to show the maintained scope reached the stated condition.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement and verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Measurement or test point",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Applicable measurement concepts include: Turf height before and after, Treated or serviced area, Product rate and applied quantity, Soil moisture, pH, or other approved reading, Weather, wind, or rainfall condition, Irrigation, watering, or follow-up interval."
+        },
+        {
+          "key": "verification_checks",
+          "type": "checklist",
+          "label": "Post-maintenance condition and function checks",
+          "items": [
+            "All authorized zones received the documented service",
+            "Mowing, edging, trimming, and cleanup meet the approved standard",
+            "No visible discharge, debris, or damage remains on hardscape or property",
+            "Applied product and rate agree with the label and service record",
+            "Gates, irrigation controls, furniture, and movable items are restored",
+            "People, pets, water, and sensitive areas remain protected",
+            "Known plant, turf, drainage, or equipment concerns are documented",
+            "Customer received watering, reentry, and next-visit instructions"
+          ]
+        },
+        {
+          "key": "maintenance_evidence",
+          "type": "checklist",
+          "label": "Maintenance evidence retained",
+          "items": [
+            "Property and zone map",
+            "Pre-service turf or plant photographs",
+            "Mowing height or service-setting record",
+            "Product, lot, rate, amount, and treated-area record",
+            "Weather and ground-condition record",
+            "Equipment inspection or route reference",
+            "Property damage or exception photographs",
+            "Post-service and customer-instruction record"
+          ]
+        },
+        {
+          "key": "verification_limits",
+          "type": "textarea",
+          "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "defect_actions",
+      "title": "Lawn Care defect containment and corrective-action routing",
+      "guidance": "A preventive checklist does not release an unsafe, unverified, or out-of-scope condition.",
+      "blocks": [
+        {
+          "key": "maintenance_defect_indicators",
+          "type": "checklist",
+          "label": "Lawn Care exception and stop-work indicators",
+          "items": [
+            "People, pets, traffic, or property remain in the discharge or work zone",
+            "Hidden utility, irrigation, wire, drain, or obstacle location uncertain",
+            "Slope, wet ground, drop-off, heat, storm, or lightning condition unsafe",
+            "Equipment guard, blade, tire, control, or emergency stop is defective",
+            "Product label, qualification, PPE, weather, or application boundary not met",
+            "Spray drift, runoff, overspread, spill, or non-target plant exposure",
+            "Tree, branch, retaining wall, sinkhole, or structural condition appears unstable",
+            "Property line, customer instruction, or protected zone is disputed",
+            "Plant damage, disease, or condition exceeds authorized lawn-care scope",
+            "Work would conflict with irrigation, construction, occupants, or another vendor"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "maintenance_defect_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_defect_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_decision",
+      "title": "Lawn Care maintenance status and service decision",
+      "guidance": "Record the exact maintained scope, serviceability decision, restriction, next interval, and independent review.",
+      "blocks": [
+        {
+          "key": "maintenance_status",
+          "type": "fields",
+          "label": "Maintenance and serviceability decision",
+          "fields": [
+            {
+              "key": "maintenance_result",
+              "label": "Maintenance result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with monitor item",
+                "Partially completed",
+                "Controlled hold",
+                "Corrective repair required",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted asset, area, or service scope",
+              "units": 1.15
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Excluded or inaccessible scope",
+              "units": 1.05
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "next_service",
+          "type": "fields",
+          "label": "Next preventive interval and trigger",
+          "fields": [
+            {
+              "key": "next_due",
+              "label": "Next due date, use, route, or condition",
+              "units": 1.1
+            },
+            {
+              "key": "monitor_trigger",
+              "label": "Monitor or early-return trigger",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Service-plan owner",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_status",
+              "label": "Scheduling status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Owner to schedule",
+                "Parts pending",
+                "Corrective work first",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_review",
+          "type": "signatures",
+          "label": "Technician and qualified maintenance review",
+          "fields": [
+            {
+              "key": "technician_signoff",
+              "label": "Technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_review",
+              "label": "Turf, pesticide, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "site_acknowledgment",
+              "label": "Site owner acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Lawn Care preventive maintenance checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Maintenance completed and interval assigned",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This lawn care preventive maintenance checklist is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when weather, chemical labeling, people or pets, hidden utilities, slope, equipment guarding, property boundary, or treatment condition is uncertain. A turf, pesticide, or safety supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified lawn-care technician or applicator and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Turf, pesticide, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2236__lost_and_found_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2236__lost_and_found_order_form.pdf",
+  "slug": "lost-and-found-order-form",
+  "title": "Lost and Found Order Form",
+  "subtitle": "Authorize the release of a stored item: ownership check, release method, shipping detail, and the signature that closes custody.",
+  "description": "An original release order for stored found property. It records the item and its custody position, the ownership check performed before any release, the authorized release method with collection or shipping detail, the handover record and signature, open conditions, and a verified closeout that ends the venue's custody.",
+  "use_case": "Use when a stored item has been matched to a claimant and the venue is ready to hand it back, whether collected in person or shipped. The order closes when the item has been received and the receipt is recorded, or the release is refused with a reason.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Release order identity and item custody",
+      "guidance": "Bind the release to the tagged item and its current holder.",
+      "blocks": [
+        {
+          "key": "order_routing",
+          "type": "fields",
+          "label": "Order identity and routing",
+          "fields": [
+            {
+              "key": "order_id",
+              "label": "Release order ID",
+              "units": 1.0
+            },
+            {
+              "key": "tag_number",
+              "label": "Item tag number",
+              "units": 1.0
+            },
+            {
+              "key": "raised_at",
+              "label": "Raised at",
+              "units": 0.8
+            },
+            {
+              "key": "raised_by",
+              "label": "Raised by",
+              "units": 0.95
+            },
+            {
+              "key": "approver",
+              "label": "Approving manager",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "item_custody",
+          "type": "fields",
+          "label": "Item and custody position",
+          "fields": [
+            {
+              "key": "item_description",
+              "label": "Item as tagged",
+              "units": 1.6
+            },
+            {
+              "key": "found_date",
+              "label": "Found on",
+              "units": 0.85
+            },
+            {
+              "key": "storage_location",
+              "label": "Storage location",
+              "units": 1.2
+            },
+            {
+              "key": "custody_class",
+              "label": "Custody class",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not classified",
+                "Standard storage",
+                "High-value safe",
+                "Documents - restricted",
+                "Medication - restricted",
+                "Perishable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "claimant_identity",
+          "type": "fields",
+          "label": "Claimant",
+          "fields": [
+            {
+              "key": "claimant_name",
+              "label": "Claimant name",
+              "units": 1.2
+            },
+            {
+              "key": "linked_report",
+              "label": "Lost report ID",
+              "units": 1.05
+            },
+            {
+              "key": "claimant_contact",
+              "label": "Contact used",
+              "units": 1.35
+            },
+            {
+              "key": "claimant_relation",
+              "label": "Claiming as",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "The owner",
+                "Authorized by the owner",
+                "Parent or guardian",
+                "Employer of the owner",
+                "Group organizer"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ownership_check",
+      "title": "Ownership check before release",
+      "guidance": "The check happens before the item is shown, not after.",
+      "blocks": [
+        {
+          "key": "ownership_steps",
+          "type": "checklist",
+          "label": "Ownership check steps",
+          "items": [
+            "Claimant described the item before being shown it",
+            "Distinguishing detail from the lost report matched what they described",
+            "Claimant named contents that were not visible from outside",
+            "Stay or event record confirms the claimant was on property",
+            "Device ownership demonstrated by unlocking it or naming the account",
+            "Where a third party claims, written authority from the owner obtained",
+            "Where a minor's item is claimed, the claiming adult's relationship recorded",
+            "Identity confirmed to the standard applicable policy requires"
+          ],
+          "guidance": "Confirm identity to the recorded standard. Do not photograph, copy, or transcribe the number from any identification document."
+        },
+        {
+          "key": "check_result",
+          "type": "fields",
+          "label": "Ownership check result",
+          "fields": [
+            {
+              "key": "check_outcome",
+              "label": "Check outcome",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Satisfied",
+                "Satisfied with conditions",
+                "Not satisfied - held",
+                "Not satisfied - refused"
+              ]
+            },
+            {
+              "key": "checked_by",
+              "label": "Checked by",
+              "units": 1.0
+            },
+            {
+              "key": "checked_at",
+              "label": "Checked at",
+              "units": 0.85
+            },
+            {
+              "key": "evidence_recorded",
+              "label": "Evidence recorded",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "ownership_boundary",
+          "type": "notice",
+          "label": "Release authority and record boundary",
+          "guidance": "Only the responsible manager may authorize release of identification documents, medication, payment cards, cash, or a high-value item, and none of those may be shipped without that authorization. This order does not determine legal ownership, resolve a competing claim, or transfer title. Where two people claim the same item, hold it and route the claim to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "release_method",
+      "title": "Authorized release method",
+      "guidance": "Collection and shipping are different risks; record which applies.",
+      "blocks": [
+        {
+          "key": "method_record",
+          "type": "fields",
+          "label": "Release method",
+          "fields": [
+            {
+              "key": "release_method",
+              "label": "Release method",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Collected in person",
+                "Collected by authorized person",
+                "Shipped to claimant",
+                "Handed to group organizer",
+                "Held for later collection"
+              ]
+            },
+            {
+              "key": "scheduled_for",
+              "label": "Scheduled for",
+              "units": 1.0
+            },
+            {
+              "key": "released_from",
+              "label": "Released from",
+              "units": 1.05
+            },
+            {
+              "key": "cost_bearer",
+              "label": "Shipping cost borne by",
+              "units": 1.4,
+              "field_type": "choice",
+              "options": [
+                "Not applicable",
+                "Claimant prepaid",
+                "Claimant account",
+                "Venue absorbed",
+                "Group account"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "shipping_detail",
+          "type": "table",
+          "label": "Shipping detail where applicable",
+          "columns": [
+            {
+              "key": "field",
+              "label": "Detail",
+              "units": 1.15
+            },
+            {
+              "key": "value",
+              "label": "Value recorded",
+              "units": 1.75
+            },
+            {
+              "key": "recorded_by",
+              "label": "Recorded by",
+              "units": 1.05
+            },
+            {
+              "key": "verified",
+              "label": "Verified",
+              "units": 0.85
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record the carrier, service, tracking reference, declared value, and the address the claimant supplied in writing."
+        },
+        {
+          "key": "packing_controls",
+          "type": "checklist",
+          "label": "Packing and dispatch controls",
+          "items": [
+            "Item photographed in its condition before packing",
+            "Contents listed and agreed with the claimant in writing",
+            "Packed so the contents cannot be identified from the outside",
+            "Tracked service used and the reference recorded",
+            "Signature on delivery required for a high-value item",
+            "Medication and perishables not shipped without manager authorization",
+            "Claimant told the tracking reference and expected delivery"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handover_record",
+      "title": "Handover, receipt, and exception escalation",
+      "guidance": "Custody ends with a signature or a tracked delivery, not a promise.",
+      "blocks": [
+        {
+          "key": "handover_result",
+          "type": "fields",
+          "label": "Handover record",
+          "fields": [
+            {
+              "key": "handover_status",
+              "label": "Handover status",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Handed over in person",
+                "Dispatched - in transit",
+                "Delivered - confirmed",
+                "Not collected",
+                "Returned undelivered"
+              ]
+            },
+            {
+              "key": "handed_over_at",
+              "label": "Handed over at",
+              "units": 1.15
+            },
+            {
+              "key": "handed_over_by",
+              "label": "Handed over by",
+              "units": 1.15
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "condition_triggers",
+          "type": "checklist",
+          "label": "Exception and escalation triggers",
+          "items": [
+            "Ownership check is not yet satisfied",
+            "Manager authorization required and not yet given",
+            "Claimant has not confirmed the shipping address in writing",
+            "Item condition is disputed by the claimant",
+            "Contents listed do not match what the claimant expected",
+            "A second person has claimed the same item",
+            "Shipment is in transit past its expected delivery",
+            "Item was not collected by the agreed date"
+          ]
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Open exception",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalation route",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4,
+          "guidance": "A competing claim or a disputed condition is held here until the responsible manager records a disposition."
+        }
+      ]
+    },
+    {
+      "key": "order_closeout",
+      "title": "Closeout and end of custody",
+      "guidance": "Record the point at which the venue stopped holding the item.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Order closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - received",
+                "Closed - refused release",
+                "Closed - returned to storage",
+                "Closed - claim disputed"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "retain_until",
+              "label": "Retain record until",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Ownership check outcome recorded with the checker's name",
+            "Manager authorization recorded for any restricted item class",
+            "Receipt signature or tracked delivery confirmation obtained",
+            "Storage record updated so the tag no longer shows as held",
+            "Photographs and contents list filed with the release record",
+            "Claimant contact details retained only as applicable policy allows",
+            "Unreleased item returned to its recorded storage location"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Release outcome, condition disputes, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Release closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "release_signatures",
+          "type": "signatures",
+          "label": "Release and receipt",
+          "fields": [
+            {
+              "key": "released_by_sign",
+              "label": "Released by",
+              "units": 1.2
+            },
+            {
+              "key": "release_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "received_by_sign",
+              "label": "Received by claimant",
+              "units": 1.35
+            },
+            {
+              "key": "receipt_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

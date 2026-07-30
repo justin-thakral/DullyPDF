@@ -1,0 +1,702 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1325__condo_pet_screening_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1325__condo_pet_screening_form.pdf",
+  "slug": "condo-pet-screening-form",
+  "title": "Condo Pet Screening Form",
+  "subtitle": "Operational pet screening intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable condo pet screening workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a condo pet screening from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "animal_request_identity",
+      "title": "Animal request identity and routing",
+      "guidance": "Open one proportionate animal record.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Pet Screening reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Condominium property",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Building, floor, and unit",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Owner, resident, or tenant",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "requested_timing",
+          "type": "fields",
+          "label": "Request timing",
+          "guidance": "Do not collect unnecessary medical, disability, or personal information.",
+          "fields": [
+            {
+              "key": "requested_start",
+              "label": "Requested start date",
+              "units": 1.1
+            },
+            {
+              "key": "animal_present",
+              "label": "Animal already present",
+              "units": 1.1
+            },
+            {
+              "key": "response_requested",
+              "label": "Response requested by",
+              "units": 1.2
+            },
+            {
+              "key": "related_reference",
+              "label": "Related request reference",
+              "units": 1.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "classification_routing",
+      "title": "Classification before household-pet screening",
+      "guidance": "Route protected requests before pet review.",
+      "blocks": [
+        {
+          "key": "request_classification",
+          "type": "fields",
+          "label": "Request classification and route",
+          "guidance": "When classification is unclear, pause household-pet screening.",
+          "fields": [
+            {
+              "key": "classification",
+              "label": "Request classification",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Household pet",
+                "Assistance or accommodation route",
+                "Service-animal or accessibility route",
+                "Unclear - qualified review",
+                "Request withdrawn"
+              ]
+            },
+            {
+              "key": "classified_by",
+              "label": "Classified by",
+              "units": 1.1
+            },
+            {
+              "key": "classification_date",
+              "label": "Classification date",
+              "units": 1.0
+            },
+            {
+              "key": "route_reference",
+              "label": "Separate-route reference",
+              "units": 1.4
+            }
+          ]
+        },
+        {
+          "key": "protected_route",
+          "type": "notice",
+          "label": "Assistance, service, and accommodation safeguard",
+          "guidance": "Do not use this pet screen to decide an assistance-animal, service-animal, disability, accessibility, or accommodation request. Do not request diagnosis or unnecessary medical details. Pause pet rules, charges, scores, and registration requirements until the established qualified process provides authorized operational direction."
+        },
+        {
+          "key": "process_support",
+          "type": "checklist",
+          "label": "Communication and process support",
+          "guidance": "Checking an item records routing, not an eligibility decision.",
+          "items": [
+            "Requester's own classification wording is preserved",
+            "Only necessary operational contact information is recorded",
+            "Requested communication or process support is routed",
+            "Interpreter, accessible format, or authorized contact route is recorded",
+            "Sensitive supporting records are not stored in this pet form",
+            "Pet fees or restrictions are paused for protected-route review",
+            "Qualified reviewer and response due point are assigned",
+            "Requester receives the correct process and follow-up contact"
+          ]
+        },
+        {
+          "key": "classification_note",
+          "type": "textarea",
+          "label": "Classification facts, requester wording, and unresolved routing question",
+          "guidance": "Avoid medical conclusions, credibility judgments, or protected-trait details.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "classification_details",
+              "label": "Request as stated, route selected, information not collected, reviewer, due point, and next contact",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This pet screening record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "household_pet_details",
+      "title": "Household-pet identity, care, and proportionate records",
+      "guidance": "Complete only after household-pet classification.",
+      "blocks": [
+        {
+          "key": "pet_identity",
+          "type": "fields",
+          "label": "Household-pet identity",
+          "guidance": "Use factual identifiers; do not infer behavior from a label or appearance.",
+          "fields": [
+            {
+              "key": "pet_name",
+              "label": "Pet name",
+              "units": 1.0
+            },
+            {
+              "key": "animal_type",
+              "label": "Animal type",
+              "units": 1.0
+            },
+            {
+              "key": "description",
+              "label": "Appearance or description",
+              "units": 1.4
+            },
+            {
+              "key": "approx_age",
+              "label": "Approximate age",
+              "units": 0.9
+            },
+            {
+              "key": "identifier",
+              "label": "Tag or record identifier",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "care_contacts",
+          "type": "fields",
+          "label": "Care and emergency contacts",
+          "guidance": "Collect only contacts needed for the written household-pet process.",
+          "fields": [
+            {
+              "key": "primary_caregiver",
+              "label": "Primary caregiver",
+              "units": 1.2
+            },
+            {
+              "key": "backup_caregiver",
+              "label": "Backup caregiver",
+              "units": 1.2
+            },
+            {
+              "key": "veterinary_contact",
+              "label": "Veterinary contact",
+              "units": 1.3
+            },
+            {
+              "key": "emergency_contact",
+              "label": "Animal emergency contact",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "record_log",
+          "type": "table",
+          "label": "Required household-pet record log",
+          "guidance": "Request only records required by the current written policy and applicable process.",
+          "columns": [
+            {
+              "key": "record_type",
+              "label": "Record type",
+              "units": 1.4
+            },
+            {
+              "key": "record_date",
+              "label": "Date or period",
+              "units": 1.0
+            },
+            {
+              "key": "issuer",
+              "label": "Issuer or source",
+              "units": 1.3
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.9
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage reference",
+              "units": 1.4
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "care_plan",
+          "type": "textarea",
+          "label": "Daily care, containment, waste, absence, and emergency plan",
+          "guidance": "Use operational facts rather than broad promises.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "care_plan_details",
+              "label": "Routine, access areas, containment, waste handling, time alone, backup care, and emergency steps",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "Condo context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "Condo workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Unit pet request is separated from assistance or accommodation routing",
+            "Owner policy and association policy references are recorded separately",
+            "Elevator, corridor, lobby, and common-area management plan is described",
+            "Registration, tag, waste, and amenity rules use current written sources",
+            "Neighbor reports are treated as facts to review, not automatic findings",
+            "Pet charges are not confused with association charges or accommodations",
+            "Building registration handoff follows authorized approval only",
+            "Open association questions retain a qualified reviewer and due point"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Unit or common-element owner",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Association handoff reference",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "Condo coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "fact_review",
+      "title": "Factual history, written criteria, and qualified review",
+      "guidance": "Apply the same documented process.",
+      "blocks": [
+        {
+          "key": "reported_history",
+          "type": "checklist",
+          "label": "Requester-reported factual history",
+          "guidance": "A checked item records a report, not a verified finding or legal characterization.",
+          "items": [
+            "Prior housing or facility reference is identified when required",
+            "Current licensing or registration status is recorded when required",
+            "Caregiver describes containment and supervised-access practices",
+            "Any disclosed bite, injury, escape, damage, or complaint has details",
+            "No incident history was reported by the requester",
+            "Emergency and temporary-care contacts are available",
+            "Requested exception or variance is identified for separate review",
+            "Missing information and response due point are communicated"
+          ]
+        },
+        {
+          "key": "incident_facts",
+          "type": "table",
+          "label": "Disclosed incident or concern details",
+          "guidance": "Describe specific events; do not substitute breed, type, size, or appearance for facts.",
+          "columns": [
+            {
+              "key": "date_place",
+              "label": "Date and location",
+              "units": 1.2
+            },
+            {
+              "key": "factual_account",
+              "label": "Factual account",
+              "units": 1.8
+            },
+            {
+              "key": "source",
+              "label": "Source or evidence",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Action or mitigation",
+              "units": 1.3
+            },
+            {
+              "key": "status",
+              "label": "Current status",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "criteria_review",
+          "type": "table",
+          "label": "Written household-pet criteria review",
+          "guidance": "Do not apply household-pet criteria to a protected-route request.",
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Written criterion",
+              "units": 1.4
+            },
+            {
+              "key": "policy_ref",
+              "label": "Policy reference",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Relevant evidence",
+              "units": 1.4
+            },
+            {
+              "key": "result",
+              "label": "Review result",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "review_exception",
+          "type": "textarea",
+          "label": "Missing fact, requested exception, conflicting record, or escalation",
+          "guidance": "Do not make an adverse or accommodation decision from incomplete routing.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "review_exception_details",
+              "label": "Issue, information requested, interim status, qualified reviewer, due point, and disposition route",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_closeout",
+      "title": "Authorized communication, registration, and closeout",
+      "guidance": "Keep decision authority and handoff visible.",
+      "blocks": [
+        {
+          "key": "decision_status",
+          "type": "fields",
+          "label": "Household-pet workflow decision",
+          "guidance": "This row records the authorized result; it does not decide a protected request.",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Pending",
+                "Approved",
+                "Approved with conditions",
+                "Not approved",
+                "Withdrawn",
+                "Protected route"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 1.0
+            },
+            {
+              "key": "basis_reference",
+              "label": "Written basis reference",
+              "units": 1.4
+            },
+            {
+              "key": "notice_reference",
+              "label": "Decision notice reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "approved_conditions",
+          "type": "table",
+          "label": "Approved condition, registration, or action",
+          "guidance": "Do not enter household-pet charges or conditions for a protected-route request.",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or action",
+              "units": 1.6
+            },
+            {
+              "key": "source",
+              "label": "Written source",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "verification",
+              "label": "Verification or status",
+              "units": 1.4
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "registration_handoff",
+          "type": "checklist",
+          "label": "Registration and handoff verification",
+          "guidance": "Registration does not waive the requester's right to correct facts or use another applicable process.",
+          "items": [
+            "Authorized result and written source are linked",
+            "Requester received the decision through the approved channel",
+            "Required household-pet records are stored in the approved location",
+            "Only necessary staff received operational animal information",
+            "Access, security, facilities, or resident-service instructions are updated",
+            "Renewal or record-expiration dates have owners",
+            "Correction, reconsideration, or separate accommodation route was communicated",
+            "Open actions retain owners, due points, and escalation routes"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Registration and closeout status",
+          "guidance": "Keep the workflow open while a required item lacks disposition.",
+          "fields": [
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Active",
+                "Pending items",
+                "Not activated",
+                "Closed",
+                "Transferred to protected route"
+              ]
+            },
+            {
+              "key": "registration_ref",
+              "label": "Registration reference",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Next review date",
+              "units": 1.0
+            },
+            {
+              "key": "open_action_owner",
+              "label": "Open-action owner",
+              "units": 1.2
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "requester_response",
+          "type": "textarea",
+          "label": "Requester correction, disagreement, withdrawal, or follow-up",
+          "guidance": "Preserve the requester's response without requiring waiver or agreement.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "requester_response_details",
+              "label": "Response, added evidence, requested correction, receiving owner, due point, and status",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "pet_review",
+          "type": "signatures",
+          "label": "Workflow preparation and qualified closeout review",
+          "guidance": "Signatures acknowledge review or receipt of this operational record, not an accommodation decision or waiver.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized animal-request reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

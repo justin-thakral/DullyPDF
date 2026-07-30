@@ -1,0 +1,623 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1958__wire_transfer_authorization_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1958__wire_transfer_authorization_form.pdf",
+  "slug": "wire-transfer-authorization-form",
+  "title": "Wire Transfer Authorization, Conditions, and Release Record",
+  "subtitle": "A controlled authorization for a high-risk domestic or international wire instruction from verified intake through beneficiary and bank validation, fraud and sanctions screening, funding, fees and foreign exchange, dual authorization, release, settlement, exception, recall, and accountable confirmation, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Wire Transfer workflow for a high-risk domestic or international wire instruction from verified intake through beneficiary and bank validation, fraud and sanctions screening, funding, fees and foreign exchange, dual authorization, release, settlement, exception, recall, and accountable confirmation. It is designed to define the exact action and authority requested, test evidence and limits, record independent approval conditions, block unauthorized execution, and reconcile the approved action to its outcome while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a wire operations and financial-crime specialist must define the exact action and authority requested, test evidence and limits, record independent approval conditions, block unauthorized execution, and reconcile the approved action to its outcome for one wire instruction. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Wire Transfer authorization identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Wire Transfer record and responsible parties",
+          "fields": [
+            {
+              "key": "wire_case_ref",
+              "label": "Wire case reference",
+              "units": 1.2
+            },
+            {
+              "key": "originator_name",
+              "label": "Originator name",
+              "units": 1.2
+            },
+            {
+              "key": "secure_account_ref",
+              "label": "Secure debit account reference",
+              "units": 1.3
+            },
+            {
+              "key": "requester_name_role",
+              "label": "Requester name and role",
+              "units": 1.2
+            },
+            {
+              "key": "assigned_operator",
+              "label": "Assigned wire operator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Authorization, Conditions, and Release Record timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Wire Transfer facts and evidence for authorization",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Wire Transfer transaction or account profile",
+          "fields": [
+            {
+              "key": "wire_type",
+              "label": "Wire type",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Domestic",
+                "International",
+                "Book transfer",
+                "Fedwire",
+                "SWIFT",
+                "Other approved rail"
+              ]
+            },
+            {
+              "key": "amount_currency",
+              "label": "Amount and currency",
+              "units": 1.0
+            },
+            {
+              "key": "requested_value_date",
+              "label": "Requested value date",
+              "units": 1.0
+            },
+            {
+              "key": "beneficiary_name",
+              "label": "Beneficiary name",
+              "units": 1.2
+            },
+            {
+              "key": "beneficiary_country",
+              "label": "Beneficiary country",
+              "units": 0.9
+            },
+            {
+              "key": "purpose_summary",
+              "label": "Payment purpose summary",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Wire Transfer evidence checkpoints",
+          "items": [
+            "Originator identity, account authority, and transaction authority are independently verified",
+            "Beneficiary legal name, masked account reference, bank, and country are recorded",
+            "Bank identifier and intermediary route are validated through an approved source",
+            "Purpose, invoice, contract, relationship, and source of funds are traceable",
+            "New or changed beneficiary instructions receive out-of-band verification",
+            "Fraud, business-email-compromise, sanctions, AML, and geographic screening are routed",
+            "Amount, currency, value date, fee treatment, exchange rate, and funding are reconciled",
+            "Dual control separates instruction entry, approval, release, and confirmation"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Wire Transfer quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "wire_party_route",
+              "label": "Party or routing element",
+              "units": 1.3
+            },
+            {
+              "key": "masked_identifier",
+              "label": "Masked identifier",
+              "units": 1.0
+            },
+            {
+              "key": "country_currency",
+              "label": "Country or currency",
+              "units": 0.9
+            },
+            {
+              "key": "verification_ref",
+              "label": "Verification ref",
+              "units": 1.0
+            },
+            {
+              "key": "screen_status",
+              "label": "Screen or status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Commercial or personal purpose, originator-beneficiary relationship, instruction source, recent changes, urgency, funding, intermediary route, and screening context",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Wire Transfer context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Wire Transfer authorization analysis and control record",
+      "guidance": "Use the blocks below to define the exact action and authority requested, test evidence and limits, record independent approval conditions, block unauthorized execution, and reconcile the approved action to its outcome. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "authority_request",
+          "type": "fields",
+          "label": "Requested authority, limit, and effective window",
+          "fields": [
+            {
+              "key": "action_requested",
+              "label": "Exact action requested",
+              "units": 1.4
+            },
+            {
+              "key": "amount_scope_limit",
+              "label": "Amount or scope limit",
+              "units": 1.0
+            },
+            {
+              "key": "effective_start",
+              "label": "Effective start",
+              "units": 0.8
+            },
+            {
+              "key": "authorization_expiry",
+              "label": "Expiration or one-time use",
+              "units": 1.0
+            },
+            {
+              "key": "requesting_role",
+              "label": "Requesting role",
+              "units": 0.9
+            },
+            {
+              "key": "execution_channel",
+              "label": "Controlled execution channel",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "authority_evidence_controls",
+          "type": "checklist",
+          "label": "Wire Transfer authority and release prerequisites",
+          "items": [
+            "Originator identity and transaction authority pass independent verification",
+            "Beneficiary and bank instructions pass trusted-source or out-of-band validation",
+            "Fraud, sanctions, AML, geographic, and name screening have qualified dispositions",
+            "Amount, currency, fees, FX, funding, value date, and debit authorization reconcile",
+            "Independent approver reviews the immutable instruction before release",
+            "Release is blocked until dual control and all stop conditions are cleared"
+          ],
+          "guidance": "Check only after the cited evidence and named authority support the control."
+        },
+        {
+          "key": "authority_matrix",
+          "type": "table",
+          "label": "Authority, limit, evidence, and decision matrix",
+          "columns": [
+            {
+              "key": "action_control",
+              "label": "Action or control",
+              "units": 1.25
+            },
+            {
+              "key": "limit_condition",
+              "label": "Limit or condition",
+              "units": 1.15
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 1.0
+            },
+            {
+              "key": "approver_role",
+              "label": "Approver role",
+              "units": 0.9
+            },
+            {
+              "key": "decision_expiry",
+              "label": "Decision or expiry",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_rationale",
+          "type": "textarea",
+          "label": "Authorization rationale, rejected alternatives, and non-delegable conditions",
+          "fields": [
+            {
+              "key": "authorization_rationale_notes",
+              "label": "Authorization rationale and limits"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Wire Transfer stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Requester identity, account authority, transaction authority, or callback fails",
+            "Instructions came from email alone or changed contact data",
+            "Beneficiary, account, bank, country, intermediary, or payee recently changed",
+            "Urgency, secrecy, executive impersonation, invoice change, or remote access is reported",
+            "Purpose, invoice, contract, relationship, or source of funds is unsupported",
+            "Sanctions, AML, fraud, geographic, name, or bank-identifier screening is unresolved",
+            "Amount, currency, fee, FX, funding, value date, or debit authority does not reconcile",
+            "Dual control, cutoff, hold, release, settlement, recall, or reporting requirement is unmet",
+            "Requested action exceeds the named approver's authority, amount, scope, or effective period",
+            "Execution instruction differs from the immutable approved record"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Authorization, Conditions, and Release Record exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Wire Transfer decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Authorization, Conditions, and Release Record qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Wire Transfer decision and execution conditions",
+          "items": [
+            "Approval scope, limit, conditions, effective date, and expiration are enforceable",
+            "Execution and independent verification evidence match the authorized action",
+            "Originator identity and transaction authority pass independent verification",
+            "Beneficiary and bank instructions pass trusted-source or out-of-band validation",
+            "Fraud, sanctions, AML, geographic, and name screening have qualified dispositions",
+            "Amount, currency, fees, FX, funding, value date, and debit authorization reconcile",
+            "Independent approver reviews the immutable instruction before release",
+            "Release is blocked until dual control and all stop conditions are cleared"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Wire Transfer record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Wire Transfer completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Authorization, Conditions, and Release Record outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Wire Transfer closeout evidence",
+          "items": [
+            "Released wire matches the approved immutable instruction",
+            "Parties, banks, amount, currency, purpose, and date reconcile",
+            "Fraud, sanctions, AML, and geography evidence is linked",
+            "Funding, fees, FX, release, settlement, and recall reconcile",
+            "Customer confirmation uses a verified independent channel",
+            "Exceptions, reporting, investigation, and retention are assigned"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

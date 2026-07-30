@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2042__claim_status_claim_intake_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2042__claim_status_claim_intake_form.pdf",
+  "slug": "claim-status-claim-intake-form",
+  "title": "Claim Status Claim Intake Form",
+  "subtitle": "A decision-ready claim status claim intake that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original claim status claim intake for claim-file stage, outstanding work, and next accountable milestone with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the claim status communication and diary owner must open and control a claim intake for claim-file stage, outstanding work, and next accountable milestone. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Claim Status claim intake identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Claim Status claim intake record",
+          "fields": [
+            {
+              "key": "intake_id",
+              "label": "Claim intake record ID",
+              "units": 0.95
+            },
+            {
+              "key": "notice_received",
+              "label": "Notice received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim number, if assigned",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned intake owner",
+              "units": 1.05
+            },
+            {
+              "key": "triage_priority",
+              "label": "Triage priority",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Prompt",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Claim Status subject and event identity",
+          "fields": [
+            {
+              "key": "claim_number",
+              "label": "Claim or service record number",
+              "units": 1.0
+            },
+            {
+              "key": "claim_line",
+              "label": "Claim line and loss type",
+              "units": 1.25
+            },
+            {
+              "key": "loss_date",
+              "label": "Loss or incident date",
+              "units": 1.15
+            },
+            {
+              "key": "current_stage",
+              "label": "Current verified claim stage",
+              "units": 1.05
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.0
+            },
+            {
+              "key": "as_of",
+              "label": "Status verified as of date and time",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Claim number, line, and as-of timestamp"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Claim Intake scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Claim Status purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "notice_and_response",
+      "title": "Claim Status notice, immediate response, and factual account",
+      "guidance": "Separate direct observations from reported information and document urgent routing before ordinary intake.",
+      "blocks": [
+        {
+          "key": "initial_observations",
+          "type": "fields",
+          "label": "Claim Status initial observations",
+          "fields": [
+            {
+              "key": "last_milestone",
+              "label": "Last milestone and date",
+              "units": 1.0
+            },
+            {
+              "key": "next_milestone",
+              "label": "Next planned milestone and target",
+              "units": 1.25
+            },
+            {
+              "key": "coverage_stage",
+              "label": "Coverage review stage",
+              "units": 1.15
+            },
+            {
+              "key": "damage_stage",
+              "label": "Damage/investigation stage",
+              "units": 1.05
+            },
+            {
+              "key": "payment_stage",
+              "label": "Payment or recovery stage",
+              "units": 1.0
+            },
+            {
+              "key": "communication_stage",
+              "label": "Last customer update and method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "triage_indicators",
+          "type": "checklist",
+          "label": "Claim Status triage indicators",
+          "items": [
+            "First contact, acknowledgment, or assigned-owner confirmation is pending",
+            "Coverage, liability, damage, value, or causation review is incomplete",
+            "Requested document, estimate, statement, authorization, or inspection is pending",
+            "Reserve, payment, deductible, recovery, salvage, or subrogation activity exists",
+            "Vendor, appraiser, expert, legal, fraud, or management review is active",
+            "Deadline, promised update, diary date, or statutory route may be near",
+            "Customer, claimant, insured, or representative disputes the stated status",
+            "Claim is ready for closure only if remaining work and notices are resolved"
+          ],
+          "guidance": "Check only conditions reported or directly observed; explain source and uncertainty in the narrative."
+        },
+        {
+          "key": "event_narrative",
+          "type": "textarea",
+          "label": "Chronological notice and loss narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Claim Status facts, source of each fact, sequence, immediate action, and unresolved questions",
+              "multiline": true
+            }
+          ],
+          "height": 78
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "Claim intake boundary",
+          "guidance": "A status record reports verified file activity as of a stated time; it does not create coverage, waive requirements, promise payment, or replace an authorized decision notice. Separate facts, pending work, estimates, and final decisions and cite the controlling record."
+        }
+      ]
+    },
+    {
+      "key": "people_property_evidence",
+      "title": "Claim Status involved parties, affected scope, and early evidence",
+      "guidance": "Collect only information needed for safe routing and the claim workflow; store restricted material in its approved system.",
+      "blocks": [
+        {
+          "key": "party_register",
+          "type": "table",
+          "label": "Involved-party and interest register",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role or interest",
+              "units": 0.9
+            },
+            {
+              "key": "identity_ref",
+              "label": "Name or approved identity ref",
+              "units": 1.15
+            },
+            {
+              "key": "contact_route",
+              "label": "Contact route",
+              "units": 1.0
+            },
+            {
+              "key": "reported_impact",
+              "label": "Reported impact or interest",
+              "units": 1.25
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "early_evidence",
+          "type": "checklist",
+          "label": "Claim Status early evidence sources",
+          "items": [
+            "Claim-system status and assigned-owner confirmation",
+            "Diary, task, milestone, and promised-update records",
+            "Coverage correspondence and controlling-policy reference",
+            "Inspection, estimate, invoice, valuation, or expert report",
+            "Payment, deductible, recovery, salvage, or subrogation record",
+            "Customer, claimant, insured, or representative correspondence",
+            "Management, legal, fraud, complaint, or regulatory-review reference",
+            "Closure notice, reopen condition, and retention reference"
+          ],
+          "guidance": "A checked item means it is received or preservation is confirmed; record gaps separately."
+        },
+        {
+          "key": "evidence_receipt",
+          "type": "table",
+          "label": "Evidence receipt and source log",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence item",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.05
+            },
+            {
+              "key": "received",
+              "label": "Received / preserved",
+              "units": 0.9
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "gap_note",
+              "label": "Quality or gap note",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "triage_investigation",
+      "title": "Claim Status triage, investigation plan, and decision routing",
+      "guidance": "Define what is known, what must be verified, and who has authority for the next decision.",
+      "blocks": [
+        {
+          "key": "triage_decision",
+          "type": "fields",
+          "label": "Triage disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Intake disposition",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Assign for investigation",
+                "Request information",
+                "Urgent review",
+                "Refer",
+                "Close as duplicate"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.15
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 0.9
+            },
+            {
+              "key": "policy_record_ref",
+              "label": "Controlling policy-record ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "investigation_plan",
+          "type": "table",
+          "label": "Claim Status verification and investigation plan",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question to resolve",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence or action needed",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "result_ref",
+              "label": "Result or record ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "triage_rationale",
+          "type": "textarea",
+          "label": "Triage rationale and uncertainty",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Claim Status facts supporting the route, conflicts, limitations, and authority used",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Claim Status exceptions, deadlines, and escalation",
+      "guidance": "Make each unresolved condition visible with an immediate action, owner, due point, and disposition.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Claim Status exception screen",
+          "items": [
+            "System status conflicts with the latest dated evidence",
+            "No accountable owner or next update date is assigned",
+            "A promised communication or required route may be overdue",
+            "Coverage, liability, payment, or closure wording lacks authorization",
+            "Complaint, dispute, attorney, regulator, or vulnerable-person issue exists",
+            "Claim is marked closed while a task, payment, recovery, or notice remains"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or conflict",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "route_owner",
+              "label": "Route and owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or deadline",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "notice_control",
+          "type": "fields",
+          "label": "Notice and deadline control",
+          "fields": [
+            {
+              "key": "notice_owner",
+              "label": "Notice owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.05
+            },
+            {
+              "key": "deadline_source",
+              "label": "Policy, system, or requirement ref",
+              "units": 1.2
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Claim Status intake handoff and accountable closeout",
+      "guidance": "Close intake only when ownership, evidence, open issues, and the next communication are explicit.",
+      "blocks": [
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Handoff readiness",
+          "items": [
+            "Claim Status identity and event references are consistent",
+            "Urgent safety, privacy, legal, or deadline routes are documented",
+            "Evidence received and missing evidence are distinguishable",
+            "No fault, value, liability, or coverage conclusion is implied",
+            "Open questions have owners and due points",
+            "The next responsible recipient accepted the handoff"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Intake closeout",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Intake outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Assigned",
+                "Referred",
+                "Duplicate",
+                "Withdrawn",
+                "Closed"
+              ]
+            },
+            {
+              "key": "open_items",
+              "label": "Remaining open-item count",
+              "units": 0.9
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due date",
+              "units": 1.2
+            },
+            {
+              "key": "handoff_ref",
+              "label": "Handoff evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "closed_at",
+              "label": "Intake closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "accepted_by",
+              "label": "Handoff accepted by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Record version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

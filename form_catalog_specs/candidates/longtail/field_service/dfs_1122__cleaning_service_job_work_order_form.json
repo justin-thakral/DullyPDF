@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1122__cleaning_service_job_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1122__cleaning_service_job_work_order_form.pdf",
+  "slug": "cleaning-service-job-work-order-form",
+  "title": "Cleaning Service Job Work Order Form",
+  "subtitle": "Control site preparation, cleaning, disinfection, inspection, and secure handoff through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete cleaning service job work order for rooms, surfaces, fixtures, chemicals, tools, and controlled items. It connects cleaning plan, product label, safety data, and site instructions to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a trained cleaning technician or team lead must control authorized cleaning service work from arrival and baseline findings through change approval, service evidence, testing, and handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "job_identity",
+      "title": "Cleaning Service work order, customer, site, and asset identity",
+      "guidance": "Anchor authorization, assigned work, materials, evidence, testing, and handoff to one controlled job record.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Cleaning Service job work order reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service visit, route, or work-order number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Customer or authorized facility representative",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Facility and room-by-room service zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Building, room, surface, fixture, and task identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Facility, building, or account",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Room, floor, or service zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Surface or fixture category",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Service level and frequency",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant cleaning service context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant cleaning service context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "scope_authorization",
+      "title": "Cleaning Service scope, estimate, and work authorization",
+      "guidance": "Separate requested work from the exact approved scope, price boundary, exclusions, and decision authority.",
+      "blocks": [
+        {
+          "key": "requested_tasks",
+          "type": "checklist",
+          "label": "Requested cleaning service work",
+          "items": [
+            "Secure and stage the approved cleaning zone",
+            "Remove or segregate approved waste and recycling",
+            "Clean from lower-risk to higher-risk or defined sequence",
+            "Apply approved product at the documented dilution",
+            "Maintain required contact or dwell time",
+            "Use separated tools for defined room or surface classes",
+            "Clean and restore floors, fixtures, high-touch points, and glass",
+            "Restock only approved consumables and quantities",
+            "Remove signs only after the area is dry and releasable",
+            "Reconcile keys, badges, chemicals, tools, and room status"
+          ]
+        },
+        {
+          "key": "scope_lines",
+          "type": "table",
+          "label": "Authorized rooms, surfaces, fixtures, chemicals, tools, and controlled items work lines",
+          "columns": [
+            {
+              "key": "asset_location",
+              "label": "Asset, zone, or location",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Reported or verified condition",
+              "units": 1.15
+            },
+            {
+              "key": "task",
+              "label": "Authorized task",
+              "units": 1.15
+            },
+            {
+              "key": "limit",
+              "label": "Quantity, limit, or exclusion",
+              "units": 1.0
+            },
+            {
+              "key": "approval_ref",
+              "label": "Approval reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "estimate_limit",
+          "type": "fields",
+          "label": "Estimate, price, and authorization limit",
+          "fields": [
+            {
+              "key": "labor_estimate",
+              "label": "Labor estimate",
+              "units": 0.75
+            },
+            {
+              "key": "materials_estimate",
+              "label": "Materials or parts estimate",
+              "units": 0.85
+            },
+            {
+              "key": "travel_fee",
+              "label": "Travel or service fee",
+              "units": 0.75
+            },
+            {
+              "key": "tax_other",
+              "label": "Tax or other approved amount",
+              "units": 0.8
+            },
+            {
+              "key": "not_to_exceed",
+              "label": "Not-to-exceed total",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_status",
+              "label": "Authorization status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limit",
+                "Partial approval",
+                "Awaiting approval",
+                "Declined",
+                "Controlled hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "work_authorization",
+          "type": "signatures",
+          "label": "Customer scope and price authorization",
+          "fields": [
+            {
+              "key": "authorized_by",
+              "label": "Authorized by customer or representative",
+              "units": 1.35
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "coordinator_acceptance",
+              "label": "Accepted by cleaning-service coordinator",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Authorization applies only to the listed scope and limit under the cleaning plan, product label, safety data, and site instructions."
+        }
+      ]
+    },
+    {
+      "key": "arrival_controls",
+      "title": "Cleaning Service arrival, site readiness, and controlled work setup",
+      "guidance": "Verify actual site conditions before beginning and stop when dispatch assumptions no longer hold.",
+      "blocks": [
+        {
+          "key": "arrival_record",
+          "type": "fields",
+          "label": "Arrival and on-site authority",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Trained cleaning technician or team lead",
+              "units": 1.2
+            },
+            {
+              "key": "arrival_date_time",
+              "label": "Arrival date and time",
+              "units": 0.9
+            },
+            {
+              "key": "on_site_contact",
+              "label": "On-site authorized contact",
+              "units": 1.05
+            },
+            {
+              "key": "authority_reconfirmed",
+              "label": "Authority reconfirmed by",
+              "units": 1.0
+            },
+            {
+              "key": "work_start",
+              "label": "Controlled work start",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "site_controls",
+          "type": "checklist",
+          "label": "Site, access, exposure, and work-zone controls",
+          "items": [
+            "Approved scope and room sequence confirmed before entry",
+            "Keys, badges, alarms, privacy, and restricted-area controls assigned",
+            "Chemical labels and safety data are available and containers are identified",
+            "Dilution, compatibility, ventilation, PPE, and dwell-time instructions verified",
+            "Wet-floor, trip, occupant, electrical, and equipment hazards controlled",
+            "Color-coded or otherwise separated tools prevent cross-contamination",
+            "Food, medications, records, valuables, electronics, and personal items protected",
+            "Sharps, blood, bodily fluid, mold, pest, or unknown material follows the approved route",
+            "Waste, laundry, reusable tools, and contaminated materials remain segregated",
+            "Room release, inspection, access restoration, and customer notification assigned"
+          ]
+        },
+        {
+          "key": "prework_hazards",
+          "type": "checklist",
+          "label": "Pre-work hazard and stop-condition review",
+          "items": [
+            "Chemical label, SDS, dilution, compatibility, or container identity uncertain",
+            "Uncontrolled mixture, reaction, spill, vapor, or exposure concern",
+            "Sharps, blood, bodily fluid, mold, pest, or unknown material outside scope",
+            "Wet floor, blocked egress, trip, electrical, or moving-equipment hazard",
+            "Ventilation, PPE, eyewash, first-aid, or spill-response resource unavailable",
+            "Occupied or restricted area cannot be isolated as required",
+            "Food, medication, record, valuable, electronic, or personal item may be affected",
+            "Surface or finish may be damaged by the proposed product or method",
+            "Security key, badge, alarm, door, or privacy-control discrepancy",
+            "Customer requests disinfection, remediation, or waste handling beyond authorization"
+          ]
+        },
+        {
+          "key": "prework_variance",
+          "type": "textarea",
+          "label": "Differences from dispatch, pre-existing condition, property or equipment protection, and approved response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Differences from dispatch, pre-existing condition, property or equipment protection, and approved response",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "work_execution",
+      "title": "Cleaning Service task execution, labor, materials, and custody",
+      "guidance": "Record what was actually done, by whom, with which item, under which control, and against which authorized line.",
+      "blocks": [
+        {
+          "key": "task_log",
+          "type": "table",
+          "label": "Task execution and technician evidence log",
+          "columns": [
+            {
+              "key": "time_scope",
+              "label": "Time or affected scope",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Action performed",
+              "units": 1.2
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Result or status",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "performed_tasks",
+          "type": "checklist",
+          "label": "Performed service tasks",
+          "items": [
+            "Secure and stage the approved cleaning zone",
+            "Remove or segregate approved waste and recycling",
+            "Clean from lower-risk to higher-risk or defined sequence",
+            "Apply approved product at the documented dilution",
+            "Maintain required contact or dwell time",
+            "Use separated tools for defined room or surface classes",
+            "Clean and restore floors, fixtures, high-touch points, and glass",
+            "Restock only approved consumables and quantities",
+            "Remove signs only after the area is dry and releasable",
+            "Reconcile keys, badges, chemicals, tools, and room status"
+          ],
+          "guidance": "Select only tasks actually completed; explain partial or deferred work in the task log."
+        },
+        {
+          "key": "materials_log",
+          "type": "table",
+          "label": "Parts, products, materials, removed items, and controlled quantities",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item, product, or part",
+              "units": 1.25
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, serial, or label ref.",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "installed_used",
+              "label": "Installed, used, or issued",
+              "units": 1.0
+            },
+            {
+              "key": "removed_disposition",
+              "label": "Removed item or disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "labor_record",
+          "type": "fields",
+          "label": "Labor, interruption, and scope reconciliation",
+          "fields": [
+            {
+              "key": "regular_labor",
+              "label": "Regular labor time",
+              "units": 0.85
+            },
+            {
+              "key": "additional_labor",
+              "label": "Additional approved labor",
+              "units": 0.9
+            },
+            {
+              "key": "delay_time",
+              "label": "Delay or access time",
+              "units": 0.8
+            },
+            {
+              "key": "scope_status",
+              "label": "Authorized scope status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Partially completed",
+                "Deferred",
+                "Stopped",
+                "Expanded with approval"
+              ]
+            },
+            {
+              "key": "change_approval",
+              "label": "Change approval reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "testing_verification",
+      "title": "Cleaning Service measurements, testing, and release verification",
+      "guidance": "Connect each claimed result to an actual method, acceptance basis, and traceable observation.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, adjustment, and test results",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, item, or test",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 6,
+          "guidance": "Use the method applicable to: Area or room count, Product dilution or concentration, Contact or dwell time, Inspection sample or quality score, Consumable, waste, or linen quantity, Start, completion, dry, or room-release time."
+        },
+        {
+          "key": "release_checks",
+          "type": "checklist",
+          "label": "Functional, condition, and handoff verification",
+          "items": [
+            "Assigned rooms and surfaces match the completed scope",
+            "No visible soil, residue, streak, waste, or unapproved odor remains",
+            "Product, dilution, method, and dwell time match instructions",
+            "Floors are dry or controlled and egress is unobstructed",
+            "Tools, chemicals, waste, linen, keys, and badges are reconciled",
+            "Food, records, valuables, electronics, and personal items remain protected",
+            "Special-area or high-touch requirements are complete",
+            "Customer received limitation, recurrence, and next-service information"
+          ]
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Completed-work evidence package",
+          "items": [
+            "Room, zone, and task assignment",
+            "Pre-service condition or damage photographs",
+            "Product, label, SDS, dilution, and lot reference",
+            "Contact-time or process verification",
+            "Inspection score or defined quality sample",
+            "Waste, linen, consumable, and restocking record",
+            "Key, badge, alarm, and room-release record",
+            "Exception, exposure, damage, or customer communication reference"
+          ]
+        },
+        {
+          "key": "test_limitations",
+          "type": "textarea",
+          "label": "Test conditions, unavailable test, residual symptom, access limitation, customer-observed result, and interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, unavailable test, residual symptom, access limitation, customer-observed result, and interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "work_exceptions",
+      "title": "Cleaning Service variance, stop-work decision, and escalation",
+      "guidance": "Do not hide an unresolved safety, authority, property, cost, quality, or evidence gap inside a completion note.",
+      "blocks": [
+        {
+          "key": "work_exception_indicators",
+          "type": "checklist",
+          "label": "Cleaning Service exception and stop-work indicators",
+          "items": [
+            "Chemical label, SDS, dilution, compatibility, or container identity uncertain",
+            "Uncontrolled mixture, reaction, spill, vapor, or exposure concern",
+            "Sharps, blood, bodily fluid, mold, pest, or unknown material outside scope",
+            "Wet floor, blocked egress, trip, electrical, or moving-equipment hazard",
+            "Ventilation, PPE, eyewash, first-aid, or spill-response resource unavailable",
+            "Occupied or restricted area cannot be isolated as required",
+            "Food, medication, record, valuable, electronic, or personal item may be affected",
+            "Surface or finish may be damaged by the proposed product or method",
+            "Security key, badge, alarm, door, or privacy-control discrepancy",
+            "Customer requests disinfection, remediation, or waste handling beyond authorization"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "work_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "work_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Cleaning Service job work order closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorized work completed and verified",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This cleaning service job work order is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when chemical identity, compatibility, dilution, ventilation, exposure, biohazard, sharps, security, or occupied-area control is uncertain. A cleaning, chemical-safety, or site supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Trained cleaning technician or team lead and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Cleaning, chemical-safety, or site supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

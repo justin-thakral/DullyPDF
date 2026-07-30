@@ -1,0 +1,535 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2203__event_inquiry_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2203__event_inquiry_incident_report_form.pdf",
+  "slug": "event-inquiry-incident-report-form",
+  "title": "Event Inquiry Incident Report Form",
+  "subtitle": "Record a booking-process failure in the inquiry pipeline, contain the client impact, and route correction and remediation to the responsible manager.",
+  "description": "An original incident record for failures in the inquiry and booking process, such as a double-sold hold, a released hold, a missed response window, a misquoted rate, or a lost accessibility request. It captures incident identity, the factual account and contributing factors, client impact and containment, qualified review, corrective actions, and verified closeout.",
+  "use_case": "Use when something in the inquiry-to-booking process went wrong and a client commitment, a date, or a record is affected. A coordinator records the facts and containment, and the responsible manager reviews the incident and approves corrective action. The report closes only after corrective actions are verified as effective and any residual risk is accepted in writing.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident identity and routing",
+      "guidance": "Bind the incident to the affected inquiry, order, and client.",
+      "blocks": [
+        {
+          "key": "incident_routing",
+          "type": "fields",
+          "label": "Incident record and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident record ID",
+              "units": 0.9
+            },
+            {
+              "key": "discovered_at",
+              "label": "Discovered date and time",
+              "units": 1.15
+            },
+            {
+              "key": "discovered_by",
+              "label": "Discovered by",
+              "units": 0.95
+            },
+            {
+              "key": "reported_to",
+              "label": "Reported to",
+              "units": 0.95
+            },
+            {
+              "key": "response_started",
+              "label": "Response started",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "affected_record",
+          "type": "fields",
+          "label": "Affected records and client",
+          "fields": [
+            {
+              "key": "affected_inquiry",
+              "label": "Affected inquiry ID",
+              "units": 1.0
+            },
+            {
+              "key": "affected_order",
+              "label": "Affected order number",
+              "units": 1.05
+            },
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.15
+            },
+            {
+              "key": "event_date_affected",
+              "label": "Event date affected",
+              "units": 1.0
+            },
+            {
+              "key": "spaces_affected",
+              "label": "Spaces affected",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Incident classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "What went wrong",
+              "units": 1.7,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Double-sold hold or space",
+                "Hold released in error",
+                "Response window missed",
+                "Rate or minimum misquoted",
+                "Headcount or setup recorded wrong",
+                "Accessibility request not recorded",
+                "Allergen request not recorded",
+                "Deposit or billing routed wrong",
+                "Same inquiry sold twice",
+                "Recorded against the wrong client"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Assessed severity",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Minor - internal only",
+                "Moderate - client impact",
+                "Major - commitment at risk",
+                "Critical - cannot deliver as sold"
+              ]
+            }
+          ],
+          "guidance": "Severity describes the effect on the client commitment, not how the failure looks internally."
+        }
+      ]
+    },
+    {
+      "key": "incident_facts",
+      "title": "Factual account and contributing factors",
+      "guidance": "Record what was captured, what was true, and how they diverged.",
+      "blocks": [
+        {
+          "key": "detection_context",
+          "type": "fields",
+          "label": "Detection context",
+          "fields": [
+            {
+              "key": "detected_how",
+              "label": "How it was detected",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Client contact",
+                "Internal calendar audit",
+                "Department handoff",
+                "Accounting reconciliation",
+                "Post-event review",
+                "Other internal check"
+              ]
+            },
+            {
+              "key": "occurred_between",
+              "label": "Occurred between",
+              "units": 1.05
+            },
+            {
+              "key": "client_aware",
+              "label": "Client awareness",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not yet informed",
+                "Client raised it",
+                "Informed by venue",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account: what the record said, what was actually true, how the difference arose",
+          "fields": [
+            {
+              "key": "account_detail",
+              "label": "Factual account of the incident"
+            }
+          ],
+          "height": 76,
+          "guidance": "Record observed facts, dates, and record states. Do not record opinions about fault, personnel performance, or liability."
+        },
+        {
+          "key": "contributing_factors",
+          "type": "table",
+          "label": "Contributing factors",
+          "columns": [
+            {
+              "key": "factor",
+              "label": "Contributing factor",
+              "units": 1.3
+            },
+            {
+              "key": "where_occurred",
+              "label": "Where in the process",
+              "units": 1.15
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.05
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary for this report",
+          "guidance": "This report is an internal process record. Keep it to observed facts, record states, dates, and actions taken. Do not record health information, conclusions about legal liability, admissions on behalf of the venue, or statements about individual staff discipline. Personnel and legal matters belong in the channels required by applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "client_impact",
+      "title": "Client impact and immediate containment",
+      "guidance": "Contain the exposure before analyzing the cause.",
+      "blocks": [
+        {
+          "key": "containment_record",
+          "type": "fields",
+          "label": "Containment record",
+          "fields": [
+            {
+              "key": "commitment_status",
+              "label": "Commitment status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Honored as sold",
+                "Honored with changes",
+                "At risk",
+                "Cannot be honored"
+              ]
+            },
+            {
+              "key": "alternate_offered",
+              "label": "Alternate offered",
+              "units": 1.05
+            },
+            {
+              "key": "client_response",
+              "label": "Client response",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Accepted alternate",
+                "Requested compensation",
+                "Escalated internally",
+                "Cancelled",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "contained_by",
+              "label": "Contained by",
+              "units": 0.95
+            },
+            {
+              "key": "contained_at",
+              "label": "Contained at",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "containment_actions",
+          "type": "checklist",
+          "label": "Containment actions completed",
+          "items": [
+            "Master calendar corrected and independently re-verified",
+            "Conflicting hold or booking identified and its owner notified",
+            "Affected client contacted by the responsible manager",
+            "Alternate date, space, or configuration offered in writing",
+            "Accounting notified where a deposit or billing route was affected",
+            "Accessibility or allergen request re-confirmed with the responsible manager",
+            "Every department holding the affected order notified of the change",
+            "Capacity and egress limits re-confirmed for any substituted space"
+          ],
+          "guidance": "An unticked action is an open containment gap, not an optional step."
+        },
+        {
+          "key": "impact_notes",
+          "type": "textarea",
+          "label": "Client impact, what was communicated, and by whom",
+          "fields": [
+            {
+              "key": "impact_detail",
+              "label": "Client impact detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and remediation decision",
+      "guidance": "A manager, not the reporter, decides what the venue does next.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed - no change",
+                "Process change required",
+                "Training required",
+                "Referred to leadership"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "remediation_approved",
+              "label": "Remediation approved",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "None required",
+                "Service recovery",
+                "Rate adjustment",
+                "Referred for approval"
+              ]
+            },
+            {
+              "key": "approval_reference",
+              "label": "Approval reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Stop and route the matter to the responsible manager before promising any remedy, before changing a contracted term, and whenever the incident touches capacity or egress limits, an accessibility accommodation, an allergen requirement, a deposit or refund, or an insurance question. This report does not determine liability, approve a refund, or substitute for the review that applicable policy requires."
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Review rationale, requirements applied, and limits of the decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Qualified review rationale"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "corrective_actions",
+      "title": "Corrective actions and escalation",
+      "guidance": "Fix the process, not only this booking.",
+      "blocks": [
+        {
+          "key": "corrective_register",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "cause_addressed",
+              "label": "Cause addressed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Completing an action is not the same as verifying it worked; both columns must be filled before the row closes."
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "The same failure has been recorded more than once this review period",
+            "A client commitment cannot be honored as sold",
+            "Revenue or deposit exposure exceeds the manager's approval limit",
+            "What was sold exceeded a capacity or egress limit",
+            "An accessibility accommodation was promised and cannot be delivered",
+            "A licensing, insurance, or regulatory question was raised",
+            "The client has requested a written explanation or compensation"
+          ],
+          "guidance": "Any ticked trigger requires the responsible manager to record a decision before closeout."
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Verification, closeout, and handoff",
+      "guidance": "Close only on verified evidence and accepted residual risk.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Contained - actions open",
+                "Closed - verified",
+                "Closed with residual risk",
+                "Referred and closed"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_review_due",
+              "label": "Next review due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Calendar and order records corrected and independently verified",
+            "Client communication documented with date and author",
+            "Corrective actions verified as effective, not only completed",
+            "Residual risk described and accepted by the responsible manager",
+            "Report retained for the period required by applicable policy",
+            "Trend entry added to the pipeline review record"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Verified outcome, residual risk, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Incident closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

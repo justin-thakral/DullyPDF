@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2230__guest_incident_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2230__guest_incident_checklist_form.pdf",
+  "slug": "guest-incident-checklist-form",
+  "title": "Guest Incident Checklist Form",
+  "subtitle": "What the responder does in the first minutes: care offered, scene made safe, evidence preserved, and the right people called.",
+  "description": "An original first-response checklist for a guest incident. It records the responder and time of arrival, the immediate care offered, the actions taken to make the scene safe, evidence and scene preservation before anything is cleaned or repaired, notifications made, the handover to the case owner, and what remains open.",
+  "use_case": "Use at the scene in the first minutes after a guest is hurt, becomes unwell, or reports a loss, when the responder needs a sequence that does not depend on memory. The checklist closes when the scene is handed to the case owner with evidence preserved.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "response_identity",
+      "title": "Response identity and arrival",
+      "guidance": "Fix who responded and when.",
+      "blocks": [
+        {
+          "key": "response_routing",
+          "type": "fields",
+          "label": "Response identity and routing",
+          "fields": [
+            {
+              "key": "checklist_id",
+              "label": "Checklist record ID",
+              "units": 1.05
+            },
+            {
+              "key": "alerted_at",
+              "label": "Alerted at",
+              "units": 0.8
+            },
+            {
+              "key": "arrived_at",
+              "label": "Arrived at",
+              "units": 0.8
+            },
+            {
+              "key": "responder_name",
+              "label": "Responder",
+              "units": 0.95
+            },
+            {
+              "key": "responder_role",
+              "label": "Responder role",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "scene_context",
+          "type": "fields",
+          "label": "Scene context",
+          "fields": [
+            {
+              "key": "location_on_site",
+              "label": "Location on site",
+              "units": 1.25
+            },
+            {
+              "key": "incident_kind",
+              "label": "Kind of incident",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Slip, trip, or fall",
+                "Struck or caught",
+                "Burn or scald",
+                "Illness or fainting",
+                "Allergic reaction reported",
+                "Property damage",
+                "Property loss or theft",
+                "Guest conduct or dispute"
+              ]
+            },
+            {
+              "key": "people_involved",
+              "label": "People involved",
+              "units": 1.15
+            },
+            {
+              "key": "case_id",
+              "label": "Case ID",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "immediate_care",
+      "title": "Immediate care offered",
+      "guidance": "Offer help, record the response, and never assess an injury.",
+      "blocks": [
+        {
+          "key": "care_steps",
+          "type": "checklist",
+          "label": "Care steps completed",
+          "items": [
+            "Asked the guest whether they need medical attention",
+            "Offered to call emergency services and recorded the answer",
+            "Called emergency services where the guest asked or was unresponsive",
+            "Stayed with the guest until help arrived or they declined further help",
+            "Summoned a trained first-aid responder where the venue has one on duty",
+            "Offered a private place to sit and someone to stay with them",
+            "Asked whether they want a companion or group contact informed",
+            "Recorded the time of every step rather than reconstructing it later"
+          ],
+          "guidance": "Responders offer help and summon trained assistance. They do not diagnose, treat, move an injured guest, or give medical advice."
+        },
+        {
+          "key": "care_result",
+          "type": "fields",
+          "label": "Care result",
+          "fields": [
+            {
+              "key": "care_outcome",
+              "label": "Care outcome",
+              "units": 1.4,
+              "field_type": "choice",
+              "options": [
+                "None requested",
+                "Guest declined all help",
+                "First aid given on site",
+                "Emergency services attended",
+                "Guest transported",
+                "Guest left to seek own care"
+              ]
+            },
+            {
+              "key": "services_called_at",
+              "label": "Services called at",
+              "units": 1.3
+            },
+            {
+              "key": "first_aider",
+              "label": "First aider",
+              "units": 1.0
+            },
+            {
+              "key": "guest_left_at",
+              "label": "Guest left scene at",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "care_boundary",
+          "type": "notice",
+          "label": "Care boundary for responders",
+          "guidance": "This checklist records what was offered and what the guest chose. It is not a medical assessment, a triage decision, or a treatment record, and nothing in it should be read as advice about a person's condition. When in doubt, call emergency services and record that you did."
+        }
+      ]
+    },
+    {
+      "key": "scene_safety",
+      "title": "Making the scene safe",
+      "guidance": "Protect the next guest before restoring the space.",
+      "blocks": [
+        {
+          "key": "safety_steps",
+          "type": "checklist",
+          "label": "Scene safety steps",
+          "items": [
+            "Hazard area cordoned, barriered, or attended until controlled",
+            "Wet floor or spill signage placed and left in position",
+            "Equipment switched off, tagged, and taken out of service",
+            "Route diverted or an alternative route signed for guests",
+            "Broken glass or sharps cleared using the proper equipment",
+            "Affected room or space taken out of service in the system",
+            "Similar nearby locations checked for the same condition",
+            "Manager on duty attended the scene"
+          ]
+        },
+        {
+          "key": "safety_result",
+          "type": "fields",
+          "label": "Scene safety result",
+          "fields": [
+            {
+              "key": "scene_status",
+              "label": "Scene status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not assessed",
+                "Controlled and safe",
+                "Controlled - interim measure",
+                "Not controlled - escalated"
+              ]
+            },
+            {
+              "key": "controlled_at",
+              "label": "Controlled at",
+              "units": 0.95
+            },
+            {
+              "key": "controlled_by",
+              "label": "Controlled by",
+              "units": 1.05
+            },
+            {
+              "key": "work_order_raised",
+              "label": "Work order raised",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evidence_preservation",
+      "title": "Evidence and scene preservation",
+      "guidance": "Most evidence is lost in the first hour by cleaning up.",
+      "blocks": [
+        {
+          "key": "preservation_steps",
+          "type": "checklist",
+          "label": "Preservation steps",
+          "items": [
+            "Scene photographed before anything was cleaned, moved, or repaired",
+            "Condition that caused the incident photographed close up and in context",
+            "Camera footage retention requested before the overwrite window",
+            "Footwear, clothing, or equipment described rather than removed",
+            "Any item retained was bagged, labeled, and logged",
+            "Witnesses identified and asked to give their details",
+            "Relevant logs, work orders, and inspection records identified",
+            "Cleaning or repair deferred until photographs were taken"
+          ],
+          "guidance": "Preserve and describe. Do not test, dismantle, or repair the condition before it is recorded."
+        },
+        {
+          "key": "evidence_captured",
+          "type": "table",
+          "label": "Evidence captured",
+          "columns": [
+            {
+              "key": "evidence_item",
+              "label": "Evidence",
+              "units": 1.35
+            },
+            {
+              "key": "how_captured",
+              "label": "How captured",
+              "units": 1.2
+            },
+            {
+              "key": "captured_at",
+              "label": "Captured at",
+              "units": 0.85
+            },
+            {
+              "key": "held_by",
+              "label": "Held by",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "notifications",
+      "title": "Notifications and escalation",
+      "guidance": "The right people, in the right order, with times recorded.",
+      "blocks": [
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Notification log",
+          "columns": [
+            {
+              "key": "who",
+              "label": "Who was notified",
+              "units": 1.3
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "notified_at",
+              "label": "Notified at",
+              "units": 0.85
+            },
+            {
+              "key": "method",
+              "label": "Method",
+              "units": 0.8
+            },
+            {
+              "key": "response",
+              "label": "Their response",
+              "units": 1.3
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "Emergency services attended or the guest was transported",
+            "The guest reported a head, neck, or back injury",
+            "An allergic reaction was reported",
+            "More than one guest was affected",
+            "The condition could affect other guests before it is fixed",
+            "The guest or a companion recorded video or asked for a written statement",
+            "A police or regulatory attendance occurred",
+            "The guest alleges venue fault"
+          ],
+          "guidance": "Any ticked trigger requires the responsible manager to be involved before the responder goes off shift."
+        }
+      ]
+    },
+    {
+      "key": "response_closeout",
+      "title": "Handover and closeout",
+      "guidance": "Hand the scene and the facts to the case owner.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Response closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - handed over",
+                "Closed with follow-up",
+                "Escalated and open"
+              ]
+            },
+            {
+              "key": "handed_over_at",
+              "label": "Handed over at",
+              "units": 1.15
+            },
+            {
+              "key": "handed_to",
+              "label": "Handed to",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "report_due",
+              "label": "Incident report due",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "handover_confirmations",
+          "type": "checklist",
+          "label": "Handover confirmations",
+          "items": [
+            "Times recorded for care, control, and notification steps",
+            "Photographs and footage requests confirmed as captured",
+            "Retained items logged with a holder and a reference",
+            "Witness details passed to the case owner",
+            "Interim controls described with a recheck owner and date",
+            "Incident report started while the facts are fresh",
+            "Record stored with restricted access under applicable privacy policy"
+          ]
+        },
+        {
+          "key": "handover_notes",
+          "type": "textarea",
+          "label": "What the responder observed, what remains open, and what the guest was told",
+          "fields": [
+            {
+              "key": "handover_detail",
+              "label": "Responder handover detail"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Responder and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Responder",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by manager on duty",
+              "units": 1.35
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

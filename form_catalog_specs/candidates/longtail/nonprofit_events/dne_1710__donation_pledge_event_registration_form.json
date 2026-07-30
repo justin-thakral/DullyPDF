@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "catalog_id": "nonprofit_events/dne_1710__donation_pledge_event_registration_form",
+  "source_section": "nonprofit_events",
+  "source_filename": "dne_1710__donation_pledge_event_registration_form.pdf",
+  "slug": "donation-pledge-event-registration-form",
+  "title": "Donation Pledge Event Registration Form",
+  "subtitle": "Donation Pledge workflow to register participation, route consent and access needs, confirm assignments, manage event exceptions, and close attendance.",
+  "description": "An original donation pledge event registration form for nonprofit operators to preserve donor commitment identity, workflow evidence, decisions, exceptions, qualified review, and accountable closeout.",
+  "use_case": "Use when a nonprofit team must manage a donor commitment through the event registration workflow while keeping consent, privacy, authority, evidence, escalation, and handoff visible.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "routing",
+      "title": "Donation Pledge event registration routing",
+      "guidance": "Identify the record, source, priority, subject, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Event Registration identity and routing",
+          "guidance": "Use this record ID on attachments, corrections, and follow-up.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Event registration ID",
+              "units": 1
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "source_contact",
+              "label": "Source or requester",
+              "units": 1.3
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 1,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Urgent"
+              ]
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned record owner",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Donation Pledge identity",
+          "guidance": "Preserve the identities used by the controlling program or partner record.",
+          "fields": [
+            {
+              "key": "pledge_id",
+              "label": "Pledge ID",
+              "units": 0.9
+            },
+            {
+              "key": "donor_name",
+              "label": "Donor or organization",
+              "units": 1.4
+            },
+            {
+              "key": "contact_method",
+              "label": "Preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "campaign",
+              "label": "Campaign or appeal",
+              "units": 1.2
+            },
+            {
+              "key": "recognition_name",
+              "label": "Recognition name",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "context",
+      "title": "Donation Pledge event participation and consent routing",
+      "guidance": "Define the event, participant, access needs, and consent status before confirmation.",
+      "blocks": [
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Donation Pledge operating context",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "pledge_type",
+              "label": "Pledge type",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "One-time",
+                "Recurring",
+                "Conditional"
+              ]
+            },
+            {
+              "key": "pledge_amount",
+              "label": "Stated amount",
+              "units": 1
+            },
+            {
+              "key": "schedule",
+              "label": "Payment schedule",
+              "units": 1.2
+            },
+            {
+              "key": "designation",
+              "label": "Restriction or designation",
+              "units": 1.4
+            },
+            {
+              "key": "benefit_status",
+              "label": "Goods or services status",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Donation Pledge readiness and record controls",
+          "guidance": "Confirm facts and routes; do not infer approval from a checked item.",
+          "items": [
+            "Donor identity and communication preference are confirmed",
+            "Campaign, fund, restriction, or designation is recorded as stated",
+            "Amount, frequency, start date, and expected completion are explicit",
+            "Conditional or matching terms are separated from confirmed receipts",
+            "Goods, services, admission, or other donor benefits are flagged",
+            "Recognition, anonymity, and contact preferences are documented",
+            "Payment data is routed through an approved channel, not recorded here",
+            "Pledge changes, cancellations, and failed transactions have a follow-up route"
+          ]
+        },
+        {
+          "key": "workflow_controls",
+          "type": "checklist",
+          "label": "Event Registration workflow controls",
+          "guidance": "Mark each applicable control and route any unmet condition.",
+          "items": [
+            "Event, venue, schedule, participant, and contact route are confirmed",
+            "Capacity, ticket, role, session, and check-in requirements are recorded",
+            "Youth, guardian, consent, release, and pickup statuses are routed",
+            "Accessibility, language, food, and accommodation needs are routed privately",
+            "Transportation, driver, vehicle, and passenger plans have authorized owners",
+            "Emergency contact status and event communication route are confirmed",
+            "Sensitive health or support details remain in the approved restricted record",
+            "Cancellation, transfer, no-show, check-out, and reunification paths are documented"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "details",
+      "title": "Donation Pledge sessions, assignments, and event logistics",
+      "guidance": "Preserve repeated items and the evidence needed to reconstruct the record.",
+      "blocks": [
+        {
+          "key": "detail_register",
+          "type": "table",
+          "label": "Donation Pledge registered activities and logistics",
+          "guidance": "Use one row per distinct item, activity, commitment, event, or service entry.",
+          "columns": [
+            {
+              "key": "activity",
+              "label": "Session or activity",
+              "units": 1.4
+            },
+            {
+              "key": "schedule",
+              "label": "Date and time",
+              "units": 1.1
+            },
+            {
+              "key": "place",
+              "label": "Venue or location",
+              "units": 1.2
+            },
+            {
+              "key": "assignment",
+              "label": "Ticket, role, or assignment",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "detail_narrative",
+          "type": "textarea",
+          "label": "Participation plan, access needs, consent limits, transportation, food, supervision, and communication notes",
+          "guidance": "Separate direct facts, attributed statements, and unresolved assumptions.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "detail_notes",
+              "label": "Participation plan, access needs, consent limits, transportation, food, supervision, and communication notes",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evidence",
+      "title": "Donation Pledge evidence and completeness review",
+      "guidance": "Link the subject-specific evidence, record boundaries, and missing information.",
+      "blocks": [
+        {
+          "key": "subject_evidence",
+          "type": "checklist",
+          "label": "Donation Pledge evidence review",
+          "guidance": "Retain source references and correction history in the approved record.",
+          "items": [
+            "Amount, frequency, start date, and expected completion are explicit",
+            "Conditional or matching terms are separated from confirmed receipts",
+            "Goods, services, admission, or other donor benefits are flagged",
+            "Recognition, anonymity, and contact preferences are documented",
+            "Payment data is routed through an approved channel, not recorded here",
+            "Pledge changes, cancellations, and failed transactions have a follow-up route",
+            "Receipt or acknowledgment work begins only after contribution evidence exists",
+            "Finance and donor-record references use the same pledge identifier"
+          ]
+        },
+        {
+          "key": "evidence_refs",
+          "type": "fields",
+          "label": "Evidence and communication references",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "primary_record_ref",
+              "label": "Primary record reference",
+              "units": 1.3
+            },
+            {
+              "key": "attachment_ref",
+              "label": "Attachment or evidence ref",
+              "units": 1.3
+            },
+            {
+              "key": "communication_ref",
+              "label": "Communication reference",
+              "units": 1.3
+            },
+            {
+              "key": "restricted_record_ref",
+              "label": "Restricted-record ref",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_owner",
+              "label": "Evidence owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision",
+      "title": "Donation Pledge event registration decision and authorization",
+      "guidance": "Document the status, evidence basis, conditions, and accountable decision owner.",
+      "blocks": [
+        {
+          "key": "decision_status",
+          "type": "fields",
+          "label": "Event Registration decision",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Decision status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Confirmed",
+                "Conditional",
+                "Waitlisted",
+                "Cancelled",
+                "Declined"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.9
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Decision evidence ref",
+              "units": 1.4
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "decision_basis",
+          "type": "checklist",
+          "label": "Decision and authorization basis",
+          "guidance": "",
+          "items": [
+            "Registration details and event capacity were reviewed",
+            "Consent, access, food, transport, and supervision routes are complete",
+            "Emergency and restricted-record status was reviewed by the proper owner",
+            "Conditions, assignments, and exclusions are clearly communicated",
+            "Check-in, check-out, and post-event record owners are assigned"
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, conditions, limits, and next action",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Decision rationale, conditions, limits, and next action",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions",
+      "title": "Donation Pledge exceptions and escalation",
+      "guidance": "Keep incomplete, sensitive, unsafe, disputed, or unauthorized work visible.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Event Registration authority and record boundary",
+          "guidance": "Registration does not replace consent, youth-protection, transportation, food, accessibility, emergency, or venue procedures. Store sensitive details separately. This operational record does not determine charitable status, deductibility, tax treatment, or acceptance of a restricted gift. Do not record payment-card or bank credentials. Route tax, finance, restriction, and acknowledgment questions to the organization's authorized reviewers. Hold unresolved work and route it to the qualified owner under applicable policy."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Donation Pledge exception triggers",
+          "guidance": "Mark each applicable trigger and explain uncertain scope below.",
+          "items": [
+            "Donor, campaign, designation, amount, or schedule is unclear",
+            "Restriction cannot be accepted or routed by the current owner",
+            "Matching, conditional, or third-party commitment is unverified",
+            "Goods or services received by the donor are not documented",
+            "Payment, refund, reversal, or duplicate-record concern is open",
+            "Tax, deductibility, acknowledgment, or legal-status question needs qualified review"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Donation Pledge unresolved-item register",
+          "guidance": "Do not close a row until disposition and accountable ownership are explicit.",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Trigger or unresolved item",
+              "units": 1.5
+            },
+            {
+              "key": "action",
+              "label": "Immediate safeguard or action",
+              "units": 1.5
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.2
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "escalation_notes",
+          "type": "textarea",
+          "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout",
+      "title": "Donation Pledge event registration closeout and handoff",
+      "guidance": "Reconcile the final status, transfer open work, and preserve accountable acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Event registration closeout",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Open handoff",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.4
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.2
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Donation Pledge open actions and limitations",
+          "guidance": "Carry forward every item that is not fully resolved at closeout.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open action or limitation",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status or handoff",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Donation Pledge handoff confirmations",
+          "guidance": "Unchecked items remain part of the open handoff.",
+          "items": [
+            "Attendance, check-in, check-out, and no-show status reconcile",
+            "Consent, transport, food, access, and supervision records were routed",
+            "Event changes and participant communications were filed",
+            "Incidents or open follow-up retain owners",
+            "The event or program owner accepted the final handoff",
+            "Donor, campaign, designation, amount, and schedule were reconciled",
+            "Conditions, benefits, recognition, and privacy preferences were transferred"
+          ]
+        },
+        {
+          "key": "final_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "guidance": "",
+          "height": 70,
+          "fields": [
+            {
+              "key": "outcome_notes",
+              "label": "Final outcome, remaining limits, communications, and acceptance notes",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "guidance": "Record accountable preparation and qualified review.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized donor-relations reviewer",
+              "units": 1.5
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

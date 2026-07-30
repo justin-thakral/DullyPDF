@@ -1,0 +1,516 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2231__guest_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2231__guest_incident_report_form.pdf",
+  "slug": "guest-incident-report-form",
+  "title": "Guest Incident Report Form",
+  "subtitle": "The authoritative factual record of a guest incident: sequence, conditions present, what the guest reported, witnesses, and the manager's review.",
+  "description": "An original guest incident report. It records the incident identity and the people involved, a timed sequence of what happened, the environmental and equipment conditions present at the time, what the guest reported in their own terms, the witness and evidence summary, the responsible manager's review, and a verified closeout with retention and referral recorded.",
+  "use_case": "Use as the single authoritative record for one guest incident, written while the facts are fresh and used by the manager, the insurer, and any later review. The report closes only after the responsible manager has reviewed it and the referral and retention position is recorded.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "report_identity",
+      "title": "Report identity and people involved",
+      "guidance": "Fix the incident and the people, without over-collecting.",
+      "blocks": [
+        {
+          "key": "report_routing",
+          "type": "fields",
+          "label": "Report identity and routing",
+          "fields": [
+            {
+              "key": "report_id",
+              "label": "Report record ID",
+              "units": 0.95
+            },
+            {
+              "key": "case_id",
+              "label": "Case ID",
+              "units": 0.7
+            },
+            {
+              "key": "occurred_at",
+              "label": "Occurred at",
+              "units": 0.85
+            },
+            {
+              "key": "reported_at",
+              "label": "Reported at",
+              "units": 0.85
+            },
+            {
+              "key": "prepared_by_role",
+              "label": "Prepared by role",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "guest_identity",
+          "type": "fields",
+          "label": "Guest details",
+          "fields": [
+            {
+              "key": "guest_name",
+              "label": "Guest name",
+              "units": 1.2
+            },
+            {
+              "key": "guest_contact",
+              "label": "Contact for follow-up",
+              "units": 1.45
+            },
+            {
+              "key": "stay_or_event",
+              "label": "Stay or event reference",
+              "units": 1.4
+            },
+            {
+              "key": "guest_status",
+              "label": "Guest status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Registered guest",
+                "Event attendee",
+                "Visitor",
+                "Contractor or vendor",
+                "Passer-by"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "incident_placement",
+          "type": "fields",
+          "label": "Where and how",
+          "fields": [
+            {
+              "key": "location_on_site",
+              "label": "Location on site",
+              "units": 1.35
+            },
+            {
+              "key": "incident_kind",
+              "label": "Kind of incident",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Slip, trip, or fall",
+                "Struck or caught",
+                "Burn or scald",
+                "Illness or fainting",
+                "Allergic reaction reported",
+                "Property damage",
+                "Property loss or theft",
+                "Guest conduct or dispute"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Recorded severity",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "No harm reported",
+                "Minor - declined care",
+                "Care given on site",
+                "Transported for care",
+                "Serious - escalated"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "sequence_of_events",
+      "title": "Timed sequence of what happened",
+      "guidance": "A sequence with times is worth more than a paragraph.",
+      "blocks": [
+        {
+          "key": "sequence_rows",
+          "type": "table",
+          "label": "Sequence of events",
+          "columns": [
+            {
+              "key": "event_time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "what_happened",
+              "label": "What happened",
+              "units": 1.7
+            },
+            {
+              "key": "observed_by",
+              "label": "Observed by",
+              "units": 1.05
+            },
+            {
+              "key": "source",
+              "label": "How it is known",
+              "units": 1.15
+            }
+          ],
+          "rows": 7,
+          "guidance": "Mark whether each line was directly observed, reported by the guest, or reconstructed from a record."
+        },
+        {
+          "key": "factual_narrative",
+          "type": "textarea",
+          "label": "Factual narrative: what happened, in the order it happened",
+          "fields": [
+            {
+              "key": "narrative_detail",
+              "label": "Factual narrative"
+            }
+          ],
+          "height": 76,
+          "guidance": "Write only what was observed or reported. Do not state a cause, assign fault, or describe what someone should have done."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary for this report",
+          "guidance": "Record only the facts needed to handle this case: what happened, when, where, who was involved, and what the venue did. Do not record a diagnosis, a medical history, treatment detail, an opinion about cause, an admission of fault, or a statement about staff discipline. Collect the minimum contact detail needed to complete follow-up and handle it under applicable privacy and retention policy."
+        }
+      ]
+    },
+    {
+      "key": "conditions_present",
+      "title": "Conditions present at the time",
+      "guidance": "Conditions are the part that disappears fastest.",
+      "blocks": [
+        {
+          "key": "condition_rows",
+          "type": "table",
+          "label": "Environmental and equipment conditions",
+          "columns": [
+            {
+              "key": "factor",
+              "label": "Factor",
+              "units": 1.15
+            },
+            {
+              "key": "as_observed",
+              "label": "As observed at the time",
+              "units": 1.6
+            },
+            {
+              "key": "observed_by",
+              "label": "Observed by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence ref",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Cover floor surface and condition, lighting, weather, signage, obstruction, footwear as described, and equipment state."
+        },
+        {
+          "key": "condition_checks",
+          "type": "checklist",
+          "label": "Condition record checks",
+          "items": [
+            "Floor surface and whether it was wet, uneven, or obstructed recorded",
+            "Lighting and visibility at the location recorded",
+            "Weather or outside conditions recorded where relevant",
+            "Signage present at the time recorded, including whether it was visible",
+            "Last cleaning, inspection, or maintenance entry for the area identified",
+            "Equipment involved identified with its service state",
+            "Photographs taken before cleaning or repair confirmed as filed",
+            "Camera coverage of the location confirmed and retention requested"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "guest_account_and_witnesses",
+      "title": "What the guest reported and who saw it",
+      "guidance": "The guest's own words, and the witnesses who can support them.",
+      "blocks": [
+        {
+          "key": "guest_report",
+          "type": "fields",
+          "label": "As reported by the guest",
+          "fields": [
+            {
+              "key": "harm_reported",
+              "label": "Harm reported by the guest",
+              "units": 1.8,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "None reported",
+                "Discomfort reported",
+                "Pain reported",
+                "Visible injury reported",
+                "Illness symptoms reported",
+                "Property damage reported",
+                "Property loss reported"
+              ]
+            },
+            {
+              "key": "body_area_or_item",
+              "label": "Area or item affected",
+              "units": 1.5
+            }
+          ]
+        },
+        {
+          "key": "guest_statement",
+          "type": "textarea",
+          "label": "The guest's account, recorded in their own terms",
+          "fields": [
+            {
+              "key": "statement_detail",
+              "label": "Guest account"
+            }
+          ],
+          "height": 62,
+          "guidance": "Record what the guest said. Do not translate it into a diagnosis or summarize it as a conclusion."
+        },
+        {
+          "key": "witness_summary",
+          "type": "table",
+          "label": "Witness and evidence summary",
+          "columns": [
+            {
+              "key": "witness",
+              "label": "Witness or evidence",
+              "units": 1.35
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.95
+            },
+            {
+              "key": "statement_taken",
+              "label": "Statement",
+              "units": 0.85
+            },
+            {
+              "key": "what_it_shows",
+              "label": "What it shows",
+              "units": 1.55
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "manager_review",
+      "title": "Responsible manager review and referral",
+      "guidance": "The manager reviews the record, not the blame.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed - record complete",
+                "Reviewed - more facts needed",
+                "Referred to the insurer",
+                "Referred to leadership"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "referral",
+              "label": "Referral made",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Insurer notified",
+                "Legal notified",
+                "Regulator or authority",
+                "Corporate risk"
+              ]
+            },
+            {
+              "key": "referral_reference",
+              "label": "Referral reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Notify the responsible manager immediately, and before the shift ends, whenever a guest is transported for care, reports a head, neck, or back injury, reports an allergic reaction, alleges venue fault, or asks for a written statement. This report records facts only. It does not determine cause, decide liability, accept a claim, authorize compensation, or serve as a medical record, and it does not replace the review or notification applicable policy requires."
+        },
+        {
+          "key": "review_notes",
+          "type": "textarea",
+          "label": "Review findings, facts still missing, and requirements applied",
+          "fields": [
+            {
+              "key": "review_detail",
+              "label": "Manager review notes"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "report_closeout",
+      "title": "Closeout, retention, and handoff",
+      "guidance": "Close the record and state how long it is kept and by whom.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Report closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - record complete",
+                "Closed - referred out",
+                "Closed with facts missing",
+                "Superseded by revision"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.1
+            },
+            {
+              "key": "access_restricted_to",
+              "label": "Access restricted to",
+              "units": 1.4
+            },
+            {
+              "key": "retain_until",
+              "label": "Retain until",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "linked_records",
+          "type": "table",
+          "label": "Linked records",
+          "columns": [
+            {
+              "key": "record_type",
+              "label": "Record type",
+              "units": 1.2
+            },
+            {
+              "key": "reference",
+              "label": "Reference",
+              "units": 1.0
+            },
+            {
+              "key": "held_by",
+              "label": "Held by",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Link the response checklist, remediation order, witness register, property log, and any maintenance work order."
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Sequence, conditions, and guest account recorded without conclusions",
+            "Photographs and footage confirmed as retained and referenced",
+            "Witness details recorded and the witness register linked",
+            "Referrals made and recorded per applicable policy",
+            "Corrective work order raised where a condition contributed",
+            "Access restricted to the roles that need it",
+            "Retention period set under applicable privacy and retention policy"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Record status, limitations of the account, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Report closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

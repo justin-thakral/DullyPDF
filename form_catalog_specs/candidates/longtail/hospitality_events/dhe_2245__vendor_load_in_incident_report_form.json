@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2245__vendor_load_in_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2245__vendor_load_in_incident_report_form.pdf",
+  "slug": "vendor-load-in-incident-report-form",
+  "title": "Vendor Load-In Incident Report Form",
+  "subtitle": "Preserve the timeline and observed effects of a vendor movement incident, route immediate action, and track corrective ownership to close.",
+  "description": "An original incident record for a load-in disruption, access conflict, property impact, missing item, or unsafe observed condition. It separates facts from assumptions, preserves evidence, records immediate response, escalation, linked records, corrective actions, and reviewed disposition.",
+  "use_case": "Use when a vendor arrival or internal movement departs from the issued plan and causes or could cause injury, damage, loss, blocked access, schedule disruption, or another condition requiring responsible venue review.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Incident intake and response owner",
+      "guidance": "Record when, where, and under which load-in order the event occurred.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident ID",
+              "units": 0.85
+            },
+            {
+              "key": "order_id",
+              "label": "Order ID",
+              "units": 0.85
+            },
+            {
+              "key": "occurred_at",
+              "label": "Occurred at",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Immediate record safeguards",
+          "items": [
+            "Affected movement was stopped or redirected as needed",
+            "Responsible venue lead was notified",
+            "Emergency help was requested when circumstances required it",
+            "Names and contact paths for involved people were recorded",
+            "Scene, equipment, and records were preserved where appropriate",
+            "Guest-facing access or service effects were routed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Observed sequence and evidence",
+      "guidance": "Use direct observations and attributed statements, not conclusions.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Incident timeline",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "observation",
+              "label": "Observed event",
+              "units": 1.5
+            },
+            {
+              "key": "source",
+              "label": "Source",
+              "units": 0.9
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.25
+            },
+            {
+              "key": "record_ref",
+              "label": "Evidence ref",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "People and property context",
+          "fields": [
+            {
+              "key": "vendor_lead",
+              "label": "Vendor lead",
+              "units": 1.0
+            },
+            {
+              "key": "venue_lead",
+              "label": "Venue lead",
+              "units": 1.0
+            },
+            {
+              "key": "vehicle_or_item",
+              "label": "Vehicle or item",
+              "units": 1.0
+            },
+            {
+              "key": "affected_area",
+              "label": "Affected area",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Impact review and escalation",
+      "guidance": "Route each observed impact to the role authorized to decide it.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Review routes considered",
+          "items": [
+            "Injury or health concern routed to the responsible response role",
+            "Property impact documented and routed to property leadership",
+            "Access or egress impact routed to venue operations",
+            "Missing or damaged item linked to custody records",
+            "Schedule or service impact communicated to event leadership",
+            "Potential policy issue assigned for qualified review"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Impact and escalation register",
+          "columns": [
+            {
+              "key": "impact",
+              "label": "Observed impact",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_step",
+              "label": "Immediate step",
+              "units": 1.25
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Incident disposition and limits",
+      "guidance": "Keep open impacts visible and avoid unsupported fault findings.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Incident status",
+          "fields": [
+            {
+              "key": "incident_status",
+              "label": "Status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed",
+                "Escalated",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "response_owner",
+              "label": "Response owner",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Review due",
+              "units": 1.0
+            },
+            {
+              "key": "linked_record",
+              "label": "Linked record",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Observed facts, attributed statements, and record limitations",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Factual incident narrative"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Incident record boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Corrective ownership and reviewed close",
+      "guidance": "Close only after impacts and promised follow-up are accounted for.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Corrective and follow-up actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.45
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.75
+            },
+            {
+              "key": "verification",
+              "label": "Verification",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Incident closeout",
+          "items": [
+            "Evidence and linked records are stored at named locations",
+            "Affected people received the promised follow-up route",
+            "Property, access, schedule, and custody impacts are dispositioned",
+            "Corrective actions have verification evidence or remain open",
+            "Responsible reviewer approved the final factual record"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and responsible review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_at",
+              "label": "Prepared at",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_at",
+              "label": "Reviewed at",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

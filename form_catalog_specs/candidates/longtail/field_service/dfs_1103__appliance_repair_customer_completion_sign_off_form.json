@@ -1,0 +1,688 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1103__appliance_repair_customer_completion_sign_off_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1103__appliance_repair_customer_completion_sign_off_form.pdf",
+  "slug": "appliance-repair-customer-completion-sign-off-form",
+  "title": "Appliance Repair Customer Completion Sign-Off Form",
+  "subtitle": "Control diagnosis, repair, maintenance, testing, and return to use through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete appliance repair customer completion sign-off for appliances and utility connections. It connects manufacturer service information, approved scope, and customer authorization to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified appliance service technician and customer or authorized property contact must reconcile the promised appliance repair scope, actual work, evidence, limitations, remaining actions, and custody transfer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "completion_identity",
+      "title": "Appliance Repair completion, customer, site, and job identity",
+      "guidance": "Tie customer review to the exact job and receiving representative, not to an ambiguous signature line.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Appliance Repair customer completion sign-off reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service request or work-order number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Customer or authorized property contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Service address and appliance location",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Appliance type, brand, model, and serial number",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Appliance type and use",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Brand and model",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Serial or asset number",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Purchase or installation date",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant appliance repair context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant appliance repair context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "scope_reconciliation",
+      "title": "Appliance Repair authorized scope and completed-work reconciliation",
+      "guidance": "Show what was approved, completed, changed, excluded, deferred, or declined before asking for acceptance.",
+      "blocks": [
+        {
+          "key": "scope_reconciliation_log",
+          "type": "table",
+          "label": "Authorized scope, completion status, and customer-facing result",
+          "columns": [
+            {
+              "key": "asset_scope",
+              "label": "Asset, zone, or task",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_work",
+              "label": "Authorized work",
+              "units": 1.2
+            },
+            {
+              "key": "completed_work",
+              "label": "Completed work",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Complete, partial, or excluded",
+              "units": 0.95
+            },
+            {
+              "key": "reason_ref",
+              "label": "Reason or approval ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "completed_tasks",
+          "type": "checklist",
+          "label": "Completed service and handoff topics",
+          "items": [
+            "Diagnose reported symptom under controlled conditions",
+            "Clean accessible service components",
+            "Tighten approved electrical or mechanical connections",
+            "Replace approved failed component",
+            "Correct drain, airflow, leveling, or alignment condition",
+            "Update control setting or approved software configuration",
+            "Complete leak or pressure check",
+            "Restore utilities in the defined sequence",
+            "Run full or representative operating cycle",
+            "Provide use, care, and recurrence guidance"
+          ]
+        },
+        {
+          "key": "scope_totals",
+          "type": "fields",
+          "label": "Scope and time reconciliation",
+          "fields": [
+            {
+              "key": "authorized_lines",
+              "label": "Authorized lines or zones",
+              "units": 0.9
+            },
+            {
+              "key": "completed_lines",
+              "label": "Completed lines or zones",
+              "units": 0.9
+            },
+            {
+              "key": "excluded_lines",
+              "label": "Excluded or deferred lines",
+              "units": 0.9
+            },
+            {
+              "key": "work_start",
+              "label": "Work start",
+              "units": 0.8
+            },
+            {
+              "key": "work_completion",
+              "label": "Work completion",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "scope_explanation",
+          "type": "textarea",
+          "label": "Scope change, partial completion, inaccessible area, customer decline, substitution, or deferred work explanation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Scope change, partial completion, inaccessible area, customer decline, substitution, or deferred work explanation",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "result_evidence",
+      "title": "Appliance Repair condition, tests, and evidence presented",
+      "guidance": "Present the actual observations and limitations supporting the completion claim.",
+      "blocks": [
+        {
+          "key": "verification_presented",
+          "type": "checklist",
+          "label": "Verification and condition results reviewed with the customer",
+          "items": [
+            "Reported symptom no longer present under the test condition",
+            "No visible leak, abnormal odor, smoke, spark, or overheating",
+            "Controls, indicators, and user interface respond correctly",
+            "Door, latch, interlock, guard, and cutoff operate correctly",
+            "Utilities and connections restored without abnormal condition",
+            "Appliance is level, stable, secured, and clear of obstruction",
+            "Work area and customer contents restored",
+            "Customer operating limitation and next action explained"
+          ]
+        },
+        {
+          "key": "test_summary",
+          "type": "table",
+          "label": "Test, observation, and acceptance-basis summary",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Test or observation point",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected condition",
+              "units": 1.05
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Pass, monitor, fail, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "evidence_reviewed",
+          "type": "checklist",
+          "label": "Evidence available for customer review",
+          "items": [
+            "Model and serial label photograph",
+            "Customer symptom description and timing",
+            "Displayed fault code or diagnostic log",
+            "Pre-work condition photographs",
+            "Meter, temperature, pressure, or leak-test result",
+            "Removed and installed part identifiers",
+            "Post-repair operating-cycle result",
+            "Manufacturer information or recall reference"
+          ]
+        },
+        {
+          "key": "result_limits",
+          "type": "textarea",
+          "label": "Test conditions, inaccessible or untested scope, temporary result, residual symptom, and interpretation explained",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, inaccessible or untested scope, temporary result, residual symptom, and interpretation explained",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "materials_cost_custody",
+      "title": "Appliance Repair materials, charges, controlled items, and property custody",
+      "guidance": "Reconcile items and charges that materially affect customer ownership, security, operation, cleanup, or later service.",
+      "blocks": [
+        {
+          "key": "materials_summary",
+          "type": "table",
+          "label": "Installed, used, issued, removed, or returned items",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, product, material, or item",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, serial, label, or ref.",
+              "units": 1.1
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "action",
+              "label": "Installed, used, issued, or removed",
+              "units": 1.1
+            },
+            {
+              "key": "custody",
+              "label": "Recipient or disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "charge_summary",
+          "type": "fields",
+          "label": "Authorized and final charge summary",
+          "fields": [
+            {
+              "key": "authorized_limit",
+              "label": "Authorized limit",
+              "units": 0.8
+            },
+            {
+              "key": "labor",
+              "label": "Labor",
+              "units": 0.7
+            },
+            {
+              "key": "materials",
+              "label": "Parts, products, or materials",
+              "units": 0.85
+            },
+            {
+              "key": "other_tax",
+              "label": "Travel, other, or tax",
+              "units": 0.8
+            },
+            {
+              "key": "final_total",
+              "label": "Final total",
+              "units": 0.75
+            },
+            {
+              "key": "invoice_ref",
+              "label": "Invoice or payment reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "property_restoration",
+          "type": "checklist",
+          "label": "Property, access, equipment, and controlled-item handoff",
+          "items": [
+            "Serviced affected appliance returned to the stated condition",
+            "Customer property, finishes, contents, and adjacent areas restored",
+            "Keys, badges, remotes, controls, documents, and access items reconciled",
+            "Removed parts, products, waste, fluids, tools, and debris reconciled",
+            "Utility, alarm, irrigation, power, security, or operating controls restored",
+            "Temporary protection, sign, barrier, exclusion, or restriction explained",
+            "Photos and records handled under the approved privacy or security route",
+            "Invoice, warranty, care, and next-service information delivered"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "limitations_followup",
+      "title": "Appliance Repair limitations, unresolved concerns, and callback plan",
+      "guidance": "Acceptance must not conceal a defect, incomplete task, service restriction, or promised follow-up.",
+      "blocks": [
+        {
+          "key": "unresolved_indicators",
+          "type": "checklist",
+          "label": "Unresolved condition or follow-up trigger",
+          "items": [
+            "Electrical shock, damaged conductor, or improper supply",
+            "Gas odor, fuel leak, combustion, carbon-monoxide, or venting concern",
+            "Refrigerant leak or work beyond technician certification",
+            "Water leak, overflow, sanitation, or property-damage risk",
+            "Hot surface, steam, pressure, sharp edge, or moving-part exposure",
+            "Appliance unstable, unanchored, or subject to tip-over",
+            "Required guard, interlock, cutoff, or safety device does not function",
+            "Recall, service bulletin, or incompatible replacement part concern",
+            "Customer requests operation before required testing is complete",
+            "Diagnosis remains uncertain or symptom cannot be reproduced safely"
+          ]
+        },
+        {
+          "key": "open_items",
+          "type": "table",
+          "label": "Open item, customer impact, owner, due point, and interim control",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open item or affected scope",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Customer or service impact",
+              "units": 1.1
+            },
+            {
+              "key": "interim_control",
+              "label": "Interim control or limitation",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Evidence or escalation ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "followup_commitment",
+          "type": "fields",
+          "label": "Callback, return visit, or escalation commitment",
+          "fields": [
+            {
+              "key": "followup_type",
+              "label": "Follow-up type",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "None required",
+                "Courtesy check",
+                "Return visit",
+                "Parts or material return",
+                "Qualified review",
+                "Customer decision pending"
+              ]
+            },
+            {
+              "key": "scheduled_date",
+              "label": "Scheduled date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "communication_ref",
+              "label": "Communication reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "customer_review",
+      "title": "Appliance Repair customer review, acceptance, and dispute record",
+      "guidance": "Record the customer's stated review outcome without converting acknowledgment into a waiver or technical release.",
+      "blocks": [
+        {
+          "key": "handoff_topics",
+          "type": "checklist",
+          "label": "Customer handoff topics reviewed",
+          "items": [
+            "Completed and excluded scope",
+            "Observed results and test conditions",
+            "Operating, access, reentry, watering, or use instructions",
+            "Safety, security, environmental, or property limitations",
+            "Installed, issued, removed, or returned items",
+            "Final charges and invoice delivery",
+            "Warranty or callback terms",
+            "Open actions, owner, and due point"
+          ]
+        },
+        {
+          "key": "customer_decision",
+          "type": "fields",
+          "label": "Customer completion decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Customer decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with noted limitation",
+                "Partial acceptance",
+                "Disputed",
+                "Representative unavailable",
+                "Held for qualified review"
+              ]
+            },
+            {
+              "key": "decision_reason",
+              "label": "Reason or disputed item reference",
+              "units": 1.2
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer or authorized property contact",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date_time",
+              "label": "Decision date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "customer_comments",
+          "type": "textarea",
+          "label": "Customer comments, disputed fact, requested correction, communication preference, and final response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer comments, disputed fact, requested correction, communication preference, and final response",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "completion_acknowledgment",
+          "type": "signatures",
+          "label": "Customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "customer_signature",
+              "label": "Customer or representative acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "customer_date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "technician_signature",
+              "label": "Qualified appliance service technician",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Acknowledgment confirms receipt of the stated information; it does not waive a concealed defect, unresolved requirement, or applicable right."
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Appliance Repair customer completion sign-off closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Customer handoff accepted",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this appliance repair customer completion sign-off with the applicable customer agreement, manufacturer information, product instructions, site policy, licensing, safety, privacy, and retention requirements. It records the stated decision but does not create authority, coverage, compliance, or release when identity, evidence, scope, condition, or acceptance remains unresolved."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified appliance service technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified appliance service or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

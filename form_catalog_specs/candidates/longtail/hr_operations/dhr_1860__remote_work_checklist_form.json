@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1860__remote_work_checklist_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1860__remote_work_checklist_form.pdf",
+  "slug": "remote-work-checklist-form",
+  "title": "Remote Work Checklist Form",
+  "subtitle": "Use this checklist to verify readiness and execution, expose failed checkpoints, authorize the next state, and preserve accountable handoff for a remote work workflow.",
+  "description": "An original operational remote work checklist form that controls a remote-work arrangement and operating-control record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee, manager, workplace, or remote-access coordinator needs a traceable checklist so the authorized HR, management, information-security, workplace, or payroll reviewer can approve, conditionally approve, trial, revise, suspend, deny, or close the remote-work arrangement under the current remote-work policy, role requirements, information-security standard, equipment rules, and applicable wage, safety, privacy, or accommodation process without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "checklist_assignment",
+      "title": "Remote Work checklist assignment and operating boundary",
+      "guidance": "Identify the event, accountable operator, reviewer, applicable references, and required completion point.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Remote Work identity",
+          "fields": [
+            {
+              "key": "remote_record",
+              "label": "Remote-work record number",
+              "units": 0.85
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "position_department",
+              "label": "Position and department",
+              "units": 1.05
+            },
+            {
+              "key": "manager_owner",
+              "label": "Manager or arrangement owner",
+              "units": 0.95
+            },
+            {
+              "key": "requested_window",
+              "label": "Requested start and review date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Checklist ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "execution_control",
+          "type": "fields",
+          "label": "Execution control",
+          "fields": [
+            {
+              "key": "checklist_date",
+              "label": "Checklist date",
+              "units": 0.7
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 0.85
+            },
+            {
+              "key": "work_window",
+              "label": "Work or review window",
+              "units": 0.9
+            },
+            {
+              "key": "reference_revision",
+              "label": "Policy or reference revision",
+              "units": 1.0
+            },
+            {
+              "key": "completion_due",
+              "label": "Completion due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_scope",
+          "type": "textarea",
+          "label": "Event scope, operating objective, affected population, exclusions, and required outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Checklist scope and job statement"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "readiness",
+      "title": "Remote Work readiness and source-record verification",
+      "guidance": "Confirm the task is ready and the operator has the correct information before checking execution.",
+      "blocks": [
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Remote Work readiness checks",
+          "items": [
+            "Role outputs, onsite duties, customer coverage, and supervision needs are documented",
+            "Approved work location, jurisdiction, schedule, time zone, and availability are complete",
+            "HR, payroll, tax, legal, or labor routing is complete where required",
+            "Organization-managed device and approved remote-access method are identified",
+            "Multi-factor authentication, updates, encryption, and screen-lock controls are confirmed",
+            "Data classification, storage, printing, disposal, and private-conversation controls are understood",
+            "Home or alternate network and workspace meet the organization's stated requirements",
+            "Timekeeping, breaks, overtime, absence, and schedule-change procedures are clear"
+          ]
+        },
+        {
+          "key": "source_evidence",
+          "type": "checklist",
+          "label": "Source records and evidence available",
+          "items": [
+            "Role description and remote-work eligibility review",
+            "Requested schedule, location, jurisdiction, time zone, and duration",
+            "Coverage, service, communication, and onsite-duty plan",
+            "Approved device, asset, software, account, and remote-access reference",
+            "Security, privacy, workspace, and records-handling acknowledgment",
+            "HR, payroll, tax, legal, accommodation, or labor review reference",
+            "Trial measure, manager checkpoint, and arrangement review",
+            "Incident, modification, suspension, equipment-return, or closeout record"
+          ]
+        },
+        {
+          "key": "readiness_status",
+          "type": "fields",
+          "label": "Readiness status",
+          "fields": [
+            {
+              "key": "ready_status",
+              "label": "Ready to proceed?",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "Yes with conditions",
+                "No",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "missing_item",
+              "label": "Missing item or dependency",
+              "units": 1.15
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.85
+            },
+            {
+              "key": "dependency_due",
+              "label": "Dependency due",
+              "units": 0.7
+            },
+            {
+              "key": "proceed_authority",
+              "label": "Proceed authority",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "execution",
+      "title": "Remote Work execution checkpoints and traceable results",
+      "guidance": "Record each checkpoint against observable evidence and identify every condition that is not complete.",
+      "blocks": [
+        {
+          "key": "execution_checks",
+          "type": "checklist",
+          "label": "Remote Work execution checkpoints",
+          "items": [
+            "Role outputs, onsite duties, customer coverage, and supervision needs are documented",
+            "Approved work location, jurisdiction, schedule, time zone, and availability are complete",
+            "HR, payroll, tax, legal, or labor routing is complete where required",
+            "Organization-managed device and approved remote-access method are identified",
+            "Multi-factor authentication, updates, encryption, and screen-lock controls are confirmed",
+            "Data classification, storage, printing, disposal, and private-conversation controls are understood",
+            "Home or alternate network and workspace meet the organization's stated requirements",
+            "Timekeeping, breaks, overtime, absence, and schedule-change procedures are clear",
+            "Equipment, support, expense, internet, travel, and return duties are assigned",
+            "Security, privacy, injury, equipment, and connectivity incident routes are known",
+            "Continuity fallback and required onsite response are practical",
+            "Trial measures, review date, change conditions, and closeout route are documented"
+          ]
+        },
+        {
+          "key": "checkpoint_results",
+          "type": "table",
+          "label": "Checkpoint, observed evidence, result, operator, and follow-up",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint / item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_observed",
+              "label": "Evidence observed",
+              "units": 1.25
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.7
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.7
+            },
+            {
+              "key": "record_ref",
+              "label": "Record ref.",
+              "units": 0.8
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up / due",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Observed conditions, sequence, evidence references, deferred checks, and operating limitations",
+          "fields": [
+            {
+              "key": "execution_detail",
+              "label": "Execution evidence and limitation notes"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exception_control",
+      "title": "Remote Work failed checkpoint and escalation control",
+      "guidance": "Do not hide an incomplete or failed checkpoint inside free text; route it with an owner and due point.",
+      "blocks": [
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized HR, management, information-security, workplace, or payroll reviewer under the current remote-work policy, role requirements, information-security standard, equipment rules, and applicable wage, safety, privacy, or accommodation process."
+        },
+        {
+          "key": "checklist_triggers",
+          "type": "checklist",
+          "label": "Remote Work exception and escalation triggers",
+          "items": [
+            "Device, credential, token, document, or storage media is lost or stolen",
+            "Suspected phishing, malware, unauthorized access, or data disclosure occurred",
+            "Confidential conversation, screen, document, or printout was exposed",
+            "Unapproved device, account, cloud service, application, or network was used",
+            "Work location or jurisdiction changed without required review",
+            "Connectivity or power failure interrupted critical coverage or recordkeeping",
+            "Work-related injury, property damage, or safety concern arose at the remote location",
+            "Timekeeping, overtime, availability, performance, or expense record is inconsistent"
+          ]
+        },
+        {
+          "key": "checklist_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "verification_decision",
+      "title": "Remote Work verification and proceed decision",
+      "guidance": "Use an independent review where required and state the exact boundary of any proceed decision.",
+      "blocks": [
+        {
+          "key": "verification_sample",
+          "type": "table",
+          "label": "Remote Work verification sample",
+          "columns": [
+            {
+              "key": "control_area",
+              "label": "Role / control area",
+              "units": 1.1
+            },
+            {
+              "key": "expected_state",
+              "label": "Expected state",
+              "units": 1.1
+            },
+            {
+              "key": "observed_evidence",
+              "label": "Observed evidence",
+              "units": 1.2
+            },
+            {
+              "key": "gap_effect",
+              "label": "Gap / effect",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action / decision",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proceed_decision",
+          "type": "fields",
+          "label": "Verification and proceed decision",
+          "fields": [
+            {
+              "key": "completion_status",
+              "label": "Completion status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with conditions",
+                "Incomplete",
+                "Stopped",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "proceed_status",
+              "label": "Proceed status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Conditionally authorized",
+                "Not authorized",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective scope or time",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.7
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist and qualified-review boundary",
+          "guidance": "A completed checkbox is evidence only when the underlying condition was observed. The authorized HR, management, information-security, workplace, or payroll reviewer must apply the current remote-work policy, role requirements, information-security standard, equipment rules, and applicable wage, safety, privacy, or accommodation process before any restricted, safety, security, legal, medical, payroll, or tax decision."
+        },
+        {
+          "key": "verification_signoff",
+          "type": "signatures",
+          "label": "Checklist performance and verification",
+          "fields": [
+            {
+              "key": "operator_signoff",
+              "label": "Performed by / date",
+              "units": 1.0
+            },
+            {
+              "key": "independent_verification",
+              "label": "Verified by / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority_signoff",
+              "label": "Decision authority / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "checklist_closeout",
+      "title": "Remote Work checklist handoff and closeout",
+      "guidance": "Preserve the final state, unfinished work, receiving owner, and reopen trigger.",
+      "blocks": [
+        {
+          "key": "checklist_closeout_outcome",
+          "type": "fields",
+          "label": "Checklist outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_closeout_actions",
+          "type": "table",
+          "label": "Open remote work action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "checklist_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "checklist_closeout_signoff",
+          "type": "signatures",
+          "label": "Checklist accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Hr, Management, Information-Security, Workplace, Or Payroll Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

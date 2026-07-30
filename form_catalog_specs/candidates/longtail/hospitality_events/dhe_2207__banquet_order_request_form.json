@@ -1,0 +1,546 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2207__banquet_order_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2207__banquet_order_request_form.pdf",
+  "slug": "banquet-order-request-form",
+  "title": "Banquet Order Request Form",
+  "subtitle": "Ask banquets and culinary to price and confirm a function before a banquet event order is written, and record what each department can actually deliver.",
+  "description": "An original internal request that starts a banquet function. Sales states the function profile, room and service expectations, and menu direction; banquets, culinary, and audio-visual record what they can deliver and at what cost. It captures routing, department feasibility responses, the pricing decision, unresolved requirements, and the handoff into a banquet event order.",
+  "use_case": "Use when a seller needs banquets and culinary to confirm feasibility and cost for a function before committing it to a client. The request closes when every department has responded, the pricing decision is recorded, and either a banquet event order number is assigned or the request is withdrawn.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "Banquet request routing",
+      "guidance": "Name the requester, the function, and who must respond.",
+      "blocks": [
+        {
+          "key": "request_identity",
+          "type": "fields",
+          "label": "Request identity and routing",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request record ID",
+              "units": 0.9
+            },
+            {
+              "key": "submitted_on",
+              "label": "Submitted on",
+              "units": 0.8
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 0.95
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.85
+            },
+            {
+              "key": "banquet_contact",
+              "label": "Banquet contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "function_identity",
+          "type": "fields",
+          "label": "Function identity",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "function_name",
+              "label": "Function name",
+              "units": 1.1
+            },
+            {
+              "key": "function_date",
+              "label": "Function date",
+              "units": 0.85
+            },
+            {
+              "key": "linked_order",
+              "label": "Linked order number",
+              "units": 1.05
+            },
+            {
+              "key": "commitment_state",
+              "label": "Commitment state",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Not committed",
+                "Proposal stage",
+                "Definite - order pending",
+                "Definite - order issued"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "function_profile",
+      "title": "Requested function profile",
+      "guidance": "State what sales has described to the client so far.",
+      "blocks": [
+        {
+          "key": "profile_basics",
+          "type": "fields",
+          "label": "Function basics",
+          "fields": [
+            {
+              "key": "function_type",
+              "label": "Function type",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Plated dinner",
+                "Buffet dinner",
+                "Luncheon",
+                "Breakfast",
+                "Reception only",
+                "Coffee break",
+                "Awards or gala",
+                "Meeting with catering"
+              ]
+            },
+            {
+              "key": "expected_covers",
+              "label": "Expected covers",
+              "units": 0.95
+            },
+            {
+              "key": "service_start",
+              "label": "Service start",
+              "units": 0.85
+            },
+            {
+              "key": "service_end",
+              "label": "Service end",
+              "units": 0.85
+            },
+            {
+              "key": "budget_per_cover",
+              "label": "Budget per cover",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "space_request",
+          "type": "fields",
+          "label": "Space and set request",
+          "fields": [
+            {
+              "key": "room_requested",
+              "label": "Room requested",
+              "units": 1.1
+            },
+            {
+              "key": "setup_style",
+              "label": "Set style requested",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Rounds of ten",
+                "Rounds of eight",
+                "Long tables",
+                "Theater",
+                "Classroom",
+                "Reception standing",
+                "Stations with seating"
+              ]
+            },
+            {
+              "key": "head_table",
+              "label": "Head table covers",
+              "units": 1.0
+            },
+            {
+              "key": "dance_floor",
+              "label": "Dance floor requested",
+              "units": 1.15
+            },
+            {
+              "key": "access_from",
+              "label": "Room access from",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "menu_direction",
+          "type": "table",
+          "label": "Menu direction discussed with the client",
+          "columns": [
+            {
+              "key": "course",
+              "label": "Course or service",
+              "units": 0.95
+            },
+            {
+              "key": "direction",
+              "label": "Direction discussed",
+              "units": 1.45
+            },
+            {
+              "key": "must_have",
+              "label": "Client must-have",
+              "units": 1.1
+            },
+            {
+              "key": "price_indication",
+              "label": "Price indication",
+              "units": 0.95
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record direction only. Nothing here is a confirmed menu until culinary responds below."
+        },
+        {
+          "key": "requirements_raised",
+          "type": "checklist",
+          "label": "Requirements raised by the client",
+          "items": [
+            "Dietary or allergen accommodation raised",
+            "Bar or wine service requested",
+            "Audio-visual or staging requested",
+            "Specialty linen, china, or decor requested",
+            "Live entertainment or performer requested",
+            "Outside vendor delivery expected",
+            "Accessible seating positions requested",
+            "Extended service hours or late close requested"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "department_response",
+      "title": "Department feasibility responses",
+      "guidance": "Each department answers for itself; sales does not answer for them.",
+      "blocks": [
+        {
+          "key": "feasibility_responses",
+          "type": "table",
+          "label": "Department response matrix",
+          "columns": [
+            {
+              "key": "department",
+              "label": "Department",
+              "units": 1.0
+            },
+            {
+              "key": "responder",
+              "label": "Responder",
+              "units": 1.0
+            },
+            {
+              "key": "can_deliver",
+              "label": "Can deliver",
+              "units": 0.85
+            },
+            {
+              "key": "constraint",
+              "label": "Constraint or condition",
+              "units": 1.4
+            },
+            {
+              "key": "cost_basis",
+              "label": "Cost basis",
+              "units": 0.95
+            }
+          ],
+          "rows": 6,
+          "guidance": "Cover culinary, banquets, beverage, audio-visual, and housekeeping at a minimum."
+        },
+        {
+          "key": "response_confirmations",
+          "type": "checklist",
+          "label": "Response confirmations",
+          "items": [
+            "Kitchen capacity for the cover count on that date confirmed by culinary",
+            "Room capacity and egress paths for the requested set confirmed with the responsible manager",
+            "Server and captain staffing available for the service window",
+            "Dietary and allergen direction reviewed by the chef on duty",
+            "Beverage service hours reviewed against venue policy",
+            "Audio-visual and rigging needs reviewed by the production lead",
+            "Linen, china, and specialty rental availability checked",
+            "Concurrent functions on the date reviewed for kitchen and dock conflict"
+          ]
+        },
+        {
+          "key": "response_notes",
+          "type": "textarea",
+          "label": "Department constraints, substitutions offered, and cost drivers",
+          "fields": [
+            {
+              "key": "response_detail",
+              "label": "Department response detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "pricing_decision",
+      "title": "Pricing and request decision",
+      "guidance": "Record what was quoted back to sales and who approved it.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Approved as requested",
+                "Approved with substitutions",
+                "Approved at revised price",
+                "Declined - capacity",
+                "Declined - date conflict",
+                "Withdrawn by sales"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "quoted_per_cover",
+              "label": "Quoted per cover",
+              "units": 1.0
+            },
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "What changed from the request, and why",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Pricing decision rationale"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Scope of this request",
+          "guidance": "This request records feasibility and indicative pricing between departments. It is not a client quote, a confirmed menu, a capacity determination, or an allergen assurance. Nothing here may be presented to the client until it appears on an approved banquet event order, and capacity, egress, licensing, and allergen questions stay with the responsible manager."
+        }
+      ]
+    },
+    {
+      "key": "request_exceptions",
+      "title": "Unresolved requirements and escalation",
+      "guidance": "Anything a department could not confirm stays visible here.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "A department did not respond by the response due date",
+            "Requested cover count exceeds kitchen capacity for that date",
+            "Requested set exceeds the room's capacity or blocks an egress path",
+            "An allergen or dietary requirement cannot be confirmed",
+            "Staffing for the service window is not available",
+            "Requested menu item is unavailable and no substitution was accepted",
+            "Client budget is below the quoted cost basis",
+            "Accessible seating request cannot be met in the requested set"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Unresolved requirement register",
+          "columns": [
+            {
+              "key": "trigger",
+              "label": "Trigger or gap",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Closeout and handoff to the banquet order",
+      "guidance": "Hand the confirmed scope to whoever writes the banquet event order.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Request closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - order issued",
+                "Closed - declined",
+                "Closed - withdrawn",
+                "Superseded by a new request"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action_due",
+              "label": "Next action due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "handoff_items",
+          "type": "table",
+          "label": "Confirmed scope handed to the banquet order",
+          "columns": [
+            {
+              "key": "scope_item",
+              "label": "Confirmed scope item",
+              "units": 1.35
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition attached",
+              "units": 1.25
+            },
+            {
+              "key": "carried_to",
+              "label": "Carried to",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Every department response is recorded with a named responder",
+            "Substitutions and conditions carried onto the banquet order",
+            "Dietary and allergen direction carried to culinary in writing",
+            "Open exceptions transferred with named owners",
+            "Quoted cost basis filed with the order record"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Request outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Request handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by banquet manager",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

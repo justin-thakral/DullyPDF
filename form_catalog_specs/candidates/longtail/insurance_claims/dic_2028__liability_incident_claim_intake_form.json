@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2028__liability_incident_claim_intake_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2028__liability_incident_claim_intake_form.pdf",
+  "slug": "liability-incident-claim-intake-form",
+  "title": "Liability Incident Claim Intake Form",
+  "subtitle": "A decision-ready liability incident claim intake that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original liability incident claim intake for reported third-party incident and premises or activity with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the liability claim intake and investigation owner must open and control a claim intake for reported third-party incident and premises or activity. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Liability Incident claim intake identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Liability Incident claim intake record",
+          "fields": [
+            {
+              "key": "intake_id",
+              "label": "Claim intake record ID",
+              "units": 0.95
+            },
+            {
+              "key": "notice_received",
+              "label": "Notice received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim number, if assigned",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned intake owner",
+              "units": 1.05
+            },
+            {
+              "key": "triage_priority",
+              "label": "Triage priority",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Prompt",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Liability Incident subject and event identity",
+          "fields": [
+            {
+              "key": "incident_time",
+              "label": "Incident date and time",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact premises or activity location",
+              "units": 1.25
+            },
+            {
+              "key": "reporting_party",
+              "label": "Reporting party and relationship",
+              "units": 1.15
+            },
+            {
+              "key": "claimant_ref",
+              "label": "Claimant/affected party",
+              "units": 1.05
+            },
+            {
+              "key": "activity",
+              "label": "Activity or product involved",
+              "units": 1.0
+            },
+            {
+              "key": "staff_vendor",
+              "label": "Staff or vendor involved",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Incident site, activity, and claimant reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Claim Intake scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Liability Incident purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "notice_and_response",
+      "title": "Liability Incident notice, immediate response, and factual account",
+      "guidance": "Separate direct observations from reported information and document urgent routing before ordinary intake.",
+      "blocks": [
+        {
+          "key": "initial_observations",
+          "type": "fields",
+          "label": "Liability Incident initial observations",
+          "fields": [
+            {
+              "key": "observed_condition",
+              "label": "Directly observed condition",
+              "units": 1.0
+            },
+            {
+              "key": "reported_event",
+              "label": "Reported event, injury, or damage",
+              "units": 1.25
+            },
+            {
+              "key": "notice_time",
+              "label": "Organization notice date and time",
+              "units": 1.15
+            },
+            {
+              "key": "scene_control",
+              "label": "Immediate scene control",
+              "units": 1.05
+            },
+            {
+              "key": "camera_status",
+              "label": "Camera or system record",
+              "units": 1.0
+            },
+            {
+              "key": "authority_ref",
+              "label": "Authority report ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "triage_indicators",
+          "type": "checklist",
+          "label": "Liability Incident triage indicators",
+          "items": [
+            "Emergency care, injury, or immediate welfare concern was reported",
+            "Premises, product, vehicle, professional service, or completed work involved",
+            "Condition changed, was repaired, or was removed after the event",
+            "Camera footage, access log, transaction, or device data may expire",
+            "Witness, employee, contractor, or customer account is available",
+            "Demand, attorney contact, summons, complaint, or government notice received",
+            "Property, product, equipment, or sample needs preservation",
+            "Multiple organizations, contracts, or insurers may require notice"
+          ],
+          "guidance": "Check only conditions reported or directly observed; explain source and uncertainty in the narrative."
+        },
+        {
+          "key": "event_narrative",
+          "type": "textarea",
+          "label": "Chronological notice and loss narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Liability Incident facts, source of each fact, sequence, immediate action, and unresolved questions",
+              "multiline": true
+            }
+          ],
+          "height": 78
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "Claim intake boundary",
+          "guidance": "This record captures facts and routing only. Do not admit liability, promise payment, request unnecessary medical detail, or characterize credibility. Preserve evidence and route legal, coverage, fault, and settlement decisions to authorized professionals."
+        }
+      ]
+    },
+    {
+      "key": "people_property_evidence",
+      "title": "Liability Incident involved parties, affected scope, and early evidence",
+      "guidance": "Collect only information needed for safe routing and the claim workflow; store restricted material in its approved system.",
+      "blocks": [
+        {
+          "key": "party_register",
+          "type": "table",
+          "label": "Involved-party and interest register",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role or interest",
+              "units": 0.9
+            },
+            {
+              "key": "identity_ref",
+              "label": "Name or approved identity ref",
+              "units": 1.15
+            },
+            {
+              "key": "contact_route",
+              "label": "Contact route",
+              "units": 1.0
+            },
+            {
+              "key": "reported_impact",
+              "label": "Reported impact or interest",
+              "units": 1.25
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "early_evidence",
+          "type": "checklist",
+          "label": "Liability Incident early evidence sources",
+          "items": [
+            "Scene and condition photographs with date and source",
+            "Witness and involved-person contact or statement reference",
+            "Video, access, transaction, device, or system preservation ref",
+            "Incident, maintenance, inspection, cleaning, or service record",
+            "Contract, work order, lease, vendor, or certificate reference",
+            "Product, lot, equipment, sample, or damaged-item custody record",
+            "Emergency, police, fire, or public-authority report reference",
+            "Demand, correspondence, expense, invoice, or damage support"
+          ],
+          "guidance": "A checked item means it is received or preservation is confirmed; record gaps separately."
+        },
+        {
+          "key": "evidence_receipt",
+          "type": "table",
+          "label": "Evidence receipt and source log",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence item",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.05
+            },
+            {
+              "key": "received",
+              "label": "Received / preserved",
+              "units": 0.9
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "gap_note",
+              "label": "Quality or gap note",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "triage_investigation",
+      "title": "Liability Incident triage, investigation plan, and decision routing",
+      "guidance": "Define what is known, what must be verified, and who has authority for the next decision.",
+      "blocks": [
+        {
+          "key": "triage_decision",
+          "type": "fields",
+          "label": "Triage disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Intake disposition",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Assign for investigation",
+                "Request information",
+                "Urgent review",
+                "Refer",
+                "Close as duplicate"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.15
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 0.9
+            },
+            {
+              "key": "policy_record_ref",
+              "label": "Controlling policy-record ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "investigation_plan",
+          "type": "table",
+          "label": "Liability Incident verification and investigation plan",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question to resolve",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence or action needed",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "result_ref",
+              "label": "Result or record ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "triage_rationale",
+          "type": "textarea",
+          "label": "Triage rationale and uncertainty",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Liability Incident facts supporting the route, conflicts, limitations, and authority used",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Liability Incident exceptions, deadlines, and escalation",
+      "guidance": "Make each unresolved condition visible with an immediate action, owner, due point, and disposition.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Liability Incident exception screen",
+          "items": [
+            "Emergency or continuing hazard has no accountable response owner",
+            "Scene, video, product, sample, or system evidence may be lost",
+            "Accounts conflict on location, timing, activity, or observed condition",
+            "Demand, attorney contact, lawsuit, or authority notice lacks routing",
+            "Contract, vendor, additional insured, or tender route is unresolved",
+            "Sensitive injury information is outside approved storage and access"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or conflict",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "route_owner",
+              "label": "Route and owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or deadline",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "notice_control",
+          "type": "fields",
+          "label": "Notice and deadline control",
+          "fields": [
+            {
+              "key": "notice_owner",
+              "label": "Notice owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.05
+            },
+            {
+              "key": "deadline_source",
+              "label": "Policy, system, or requirement ref",
+              "units": 1.2
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Liability Incident intake handoff and accountable closeout",
+      "guidance": "Close intake only when ownership, evidence, open issues, and the next communication are explicit.",
+      "blocks": [
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Handoff readiness",
+          "items": [
+            "Liability Incident identity and event references are consistent",
+            "Urgent safety, privacy, legal, or deadline routes are documented",
+            "Evidence received and missing evidence are distinguishable",
+            "No fault, value, liability, or coverage conclusion is implied",
+            "Open questions have owners and due points",
+            "The next responsible recipient accepted the handoff"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Intake closeout",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Intake outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Assigned",
+                "Referred",
+                "Duplicate",
+                "Withdrawn",
+                "Closed"
+              ]
+            },
+            {
+              "key": "open_items",
+              "label": "Remaining open-item count",
+              "units": 0.9
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due date",
+              "units": 1.2
+            },
+            {
+              "key": "handoff_ref",
+              "label": "Handoff evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "closed_at",
+              "label": "Intake closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "accepted_by",
+              "label": "Handoff accepted by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Record version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,617 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1833__expense_reimbursement_log_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1833__expense_reimbursement_log_form.pdf",
+  "slug": "expense-reimbursement-log-form",
+  "title": "Expense Reimbursement Log Form",
+  "subtitle": "Use this log to record events in sequence, reconcile sources, identify trends and exceptions, and transfer the last known status for a expense reimbursement workflow.",
+  "description": "An original operational expense reimbursement log form that controls a employee business-expense claim and substantiation record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee claimant, manager, or expense processor needs a traceable log so the authorized manager, finance, payroll, tax, or compliance reviewer can reimburse, partially reimburse, return, deny, recode, offset an advance, or escalate the claim under the current expense policy, approval limits, receipt and substantiation rules, project coding, and applicable tax requirements without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Expense Reimbursement log period, ownership, and control",
+      "guidance": "Open a bounded log with a clear owner, source record, entry standard, and review cadence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Expense Reimbursement identity",
+          "fields": [
+            {
+              "key": "expense_report",
+              "label": "Expense report number",
+              "units": 0.85
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "department_cost_center",
+              "label": "Department and cost center",
+              "units": 1.0
+            },
+            {
+              "key": "business_event",
+              "label": "Trip, project, or event",
+              "units": 1.05
+            },
+            {
+              "key": "submitted_date",
+              "label": "Submitted date",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Log ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "log_period",
+          "type": "fields",
+          "label": "Log period and entry control",
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.7
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.7
+            },
+            {
+              "key": "entry_owner",
+              "label": "Entry owner",
+              "units": 0.85
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 0.8
+            },
+            {
+              "key": "source_system",
+              "label": "Source system or register",
+              "units": 1.0
+            },
+            {
+              "key": "timezone_basis",
+              "label": "Time zone or date basis",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "baseline_rules",
+      "title": "Expense Reimbursement baseline, entry rules, and expected evidence",
+      "guidance": "Define the expected operating state so each log entry can be interpreted later.",
+      "blocks": [
+        {
+          "key": "entry_requirements",
+          "type": "checklist",
+          "label": "Expense Reimbursement log-entry requirements",
+          "items": [
+            "Claimant, department, manager, cost center, and payment route are verified",
+            "Report period, trip, project, event, and business purpose are complete",
+            "Every line has date, merchant, category, amount, currency, and payment method",
+            "Receipts and alternate-evidence statements are linked to the correct line",
+            "Mileage, attendees, allocation, exchange, and category-specific detail is complete",
+            "Corporate card, advance, refund, credit, and prior reimbursement are reconciled",
+            "Personal and nonreimbursable portions are excluded",
+            "Preapproval, policy limit, late submission, and exception status are documented",
+            "Manager confirms business purpose and coding without approving own exception",
+            "Finance or tax review is routed where the policy requires it",
+            "Approved, reduced, denied, returned, and employee-owed amounts reconcile",
+            "Payment reference and retention location are recorded at closeout"
+          ]
+        },
+        {
+          "key": "evidence_sources",
+          "type": "checklist",
+          "label": "Supporting evidence and source records",
+          "items": [
+            "Expense report and claimant certification",
+            "Itemized receipt, invoice, ticket, or permitted alternate evidence",
+            "Mileage route, travel itinerary, or attendance support",
+            "Preapproval and policy-exception decision",
+            "Corporate-card transaction and cash-advance record",
+            "Currency-conversion, refund, credit, or allocation evidence",
+            "Manager, finance, tax, payroll, or grant review",
+            "Payment, amount-returned, recovery, or corrected-claim reference"
+          ]
+        },
+        {
+          "key": "baseline_notes",
+          "type": "textarea",
+          "label": "Opening status, carried items, data sources, known gaps, entry conventions, and review assumptions",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Log baseline and control notes"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "recurring_entries",
+      "title": "Expense Reimbursement recurring event log",
+      "guidance": "Enter events in sequence and preserve actor, result, source, and next action.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Expense Reimbursement event and status log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "report_line",
+              "label": "Report / line",
+              "units": 0.8
+            },
+            {
+              "key": "review_event",
+              "label": "Submission / review event",
+              "units": 1.15
+            },
+            {
+              "key": "amount_effect",
+              "label": "Amount / currency effect",
+              "units": 0.95
+            },
+            {
+              "key": "actor",
+              "label": "Actor / reviewer",
+              "units": 0.85
+            },
+            {
+              "key": "status_next",
+              "label": "Status / next action",
+              "units": 1.0
+            }
+          ],
+          "rows": 12
+        },
+        {
+          "key": "decision_change_log",
+          "type": "table",
+          "label": "Decision, correction, status change, reason, and authorization log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "prior_status",
+              "label": "Prior status",
+              "units": 0.8
+            },
+            {
+              "key": "new_status",
+              "label": "New status",
+              "units": 0.8
+            },
+            {
+              "key": "reason_evidence",
+              "label": "Reason / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.8
+            },
+            {
+              "key": "notice_ref",
+              "label": "Notice / system ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "sequence_notes",
+          "type": "textarea",
+          "label": "Sequence context, corrected entry, source conflict, missing interval, and interpretation limit",
+          "fields": [
+            {
+              "key": "sequence_detail",
+              "label": "Log sequence and correction notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "period_review",
+      "title": "Expense Reimbursement trend, reconciliation, and period review",
+      "guidance": "Reconcile the log to source systems and identify patterns that require a decision or corrective action.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "table",
+          "label": "Population, source count, log count, variance, owner, and resolution",
+          "columns": [
+            {
+              "key": "population",
+              "label": "Population / segment",
+              "units": 1.05
+            },
+            {
+              "key": "source_total",
+              "label": "Source total",
+              "units": 0.7
+            },
+            {
+              "key": "log_total",
+              "label": "Log total",
+              "units": 0.7
+            },
+            {
+              "key": "variance",
+              "label": "Variance / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "period_checks",
+          "type": "checklist",
+          "label": "Period review and decision checks",
+          "items": [
+            "Expense has a documented business connection and claimant",
+            "Date, merchant, location, amount, currency, and category reconcile",
+            "Receipt or permitted alternate evidence supports the amount",
+            "Business purpose identifies the work objective rather than a generic label",
+            "Attendees, mileage route, allocation, or other category detail is complete",
+            "Duplicate, personal, companion, refunded, and card-paid amounts are excluded",
+            "Policy limit, preapproval, timing, and exception requirements were reviewed",
+            "Advance, reimbursement, and amount owed back are correctly reconciled",
+            "Project, cost center, client, grant, and tax coding have an owner",
+            "Decision distinguishes allowed, reduced, returned, and denied line items"
+          ]
+        },
+        {
+          "key": "period_outcome",
+          "type": "fields",
+          "label": "Period review outcome",
+          "fields": [
+            {
+              "key": "entries_reviewed",
+              "label": "Entries reviewed",
+              "units": 0.7
+            },
+            {
+              "key": "exceptions_open",
+              "label": "Open exceptions",
+              "units": 0.7
+            },
+            {
+              "key": "corrections_made",
+              "label": "Corrections made",
+              "units": 0.75
+            },
+            {
+              "key": "trend_status",
+              "label": "Trend status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Stable",
+                "Improving",
+                "Deteriorating",
+                "Mixed",
+                "Insufficient data"
+              ]
+            },
+            {
+              "key": "reviewer",
+              "label": "Period reviewer",
+              "units": 0.85
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "trend_analysis",
+          "type": "textarea",
+          "label": "Observed pattern, comparison basis, outlier, source limitation, operational effect, and decision need",
+          "fields": [
+            {
+              "key": "trend_detail",
+              "label": "Trend and reconciliation analysis"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Expense Reimbursement unresolved event and escalation register",
+      "guidance": "Preserve exceptions separately from routine entries until final disposition.",
+      "blocks": [
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Log stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized manager, finance, payroll, tax, or compliance reviewer under the current expense policy, approval limits, receipt and substantiation rules, project coding, and applicable tax requirements."
+        },
+        {
+          "key": "log_triggers",
+          "type": "checklist",
+          "label": "Expense Reimbursement exception and escalation triggers",
+          "items": [
+            "Duplicate claim or prior payment was discovered",
+            "Receipt, amount, merchant, currency, or claimant identity is inconsistent",
+            "Corporate-card charge was also submitted as personal payment",
+            "Refund, credit, cancellation, or unused ticket was not reflected",
+            "Personal, companion, or otherwise excluded amount was included",
+            "Payment was sent to the wrong person, account, amount, or currency",
+            "Expense evidence exposed payment data beyond the required record",
+            "Suspected alteration, misrepresentation, policy circumvention, or retaliation arose"
+          ]
+        },
+        {
+          "key": "log_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Expense Reimbursement period handoff and log closeout",
+      "guidance": "Transfer the last known status, open actions, and next required review to the receiving owner.",
+      "blocks": [
+        {
+          "key": "log_closeout_outcome",
+          "type": "fields",
+          "label": "Log outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_closeout_actions",
+          "type": "table",
+          "label": "Open expense reimbursement action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "log_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "log_closeout_signoff",
+          "type": "signatures",
+          "label": "Log accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Manager, Finance, Payroll, Tax, Or Compliance Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

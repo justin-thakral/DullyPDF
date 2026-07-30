@@ -1,0 +1,617 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1840__training_attendance_log_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1840__training_attendance_log_form.pdf",
+  "slug": "training-attendance-log-form",
+  "title": "Training Attendance Log Form",
+  "subtitle": "Use this log to record events in sequence, reconcile sources, identify trends and exceptions, and transfer the last known status for a training attendance workflow.",
+  "description": "An original operational training attendance log form that controls a controlled learning-session attendance and participation record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the training coordinator, facilitator, manager, or learner needs a traceable log so the authorized learning, compliance, safety, or qualification reviewer can credit attendance, assign partial credit, require make-up, correct the roster, or withhold completion under the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Training Attendance log period, ownership, and control",
+      "guidance": "Open a bounded log with a clear owner, source record, entry standard, and review cadence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Training Attendance identity",
+          "fields": [
+            {
+              "key": "session_record",
+              "label": "Training session number",
+              "units": 0.8
+            },
+            {
+              "key": "course_id",
+              "label": "Course or curriculum ID",
+              "units": 0.85
+            },
+            {
+              "key": "course_title",
+              "label": "Course title",
+              "units": 1.15
+            },
+            {
+              "key": "curriculum_revision",
+              "label": "Curriculum revision",
+              "units": 0.7
+            },
+            {
+              "key": "session_window",
+              "label": "Session date, time, and zone",
+              "units": 1.0
+            },
+            {
+              "key": "delivery_location",
+              "label": "Location or delivery channel",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Log ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "log_period",
+          "type": "fields",
+          "label": "Log period and entry control",
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.7
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.7
+            },
+            {
+              "key": "entry_owner",
+              "label": "Entry owner",
+              "units": 0.85
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 0.8
+            },
+            {
+              "key": "source_system",
+              "label": "Source system or register",
+              "units": 1.0
+            },
+            {
+              "key": "timezone_basis",
+              "label": "Time zone or date basis",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "baseline_rules",
+      "title": "Training Attendance baseline, entry rules, and expected evidence",
+      "guidance": "Define the expected operating state so each log entry can be interpreted later.",
+      "blocks": [
+        {
+          "key": "entry_requirements",
+          "type": "checklist",
+          "label": "Training Attendance log-entry requirements",
+          "items": [
+            "Course ID, curriculum revision, instructor, date, time, zone, and location are correct",
+            "Roster includes only assigned or authorized participants",
+            "Learner identity is verified by the approved method",
+            "Prerequisites and required prior qualifications are confirmed",
+            "Accessibility, language, technology, and material needs are addressed",
+            "Arrival, departure, break, and missed-segment times are captured",
+            "Required exercises, discussions, and knowledge checks are documented",
+            "Interruptions and resumed content are traceable",
+            "Attendance credit is separated from competency or work authorization",
+            "Partial attendance has an exact make-up assignment and due point",
+            "Roster, evidence, and learning-system entries reconcile",
+            "Learners and managers receive completion or outstanding-action status"
+          ]
+        },
+        {
+          "key": "evidence_sources",
+          "type": "checklist",
+          "label": "Supporting evidence and source records",
+          "items": [
+            "Approved curriculum and session assignment",
+            "Instructor authorization and delivery record",
+            "Controlled roster with identity verification",
+            "Arrival, departure, break, and missed-segment evidence",
+            "Participation, exercise, knowledge-check, or module evidence",
+            "Accessibility, interruption, make-up, or incident reference",
+            "Learner and instructor acknowledgment",
+            "Learning-system completion and qualification-status update"
+          ]
+        },
+        {
+          "key": "baseline_notes",
+          "type": "textarea",
+          "label": "Opening status, carried items, data sources, known gaps, entry conventions, and review assumptions",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Log baseline and control notes"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "recurring_entries",
+      "title": "Training Attendance recurring event log",
+      "guidance": "Enter events in sequence and preserve actor, result, source, and next action.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Training Attendance event and status log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "learner_session",
+              "label": "Learner / session",
+              "units": 0.95
+            },
+            {
+              "key": "attendance_event",
+              "label": "Attendance / content event",
+              "units": 1.15
+            },
+            {
+              "key": "segment_result",
+              "label": "Segment / result",
+              "units": 1.0
+            },
+            {
+              "key": "recorder",
+              "label": "Instructor / recorder",
+              "units": 0.85
+            },
+            {
+              "key": "next_action",
+              "label": "Next action / due",
+              "units": 1.0
+            }
+          ],
+          "rows": 12
+        },
+        {
+          "key": "decision_change_log",
+          "type": "table",
+          "label": "Decision, correction, status change, reason, and authorization log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "prior_status",
+              "label": "Prior status",
+              "units": 0.8
+            },
+            {
+              "key": "new_status",
+              "label": "New status",
+              "units": 0.8
+            },
+            {
+              "key": "reason_evidence",
+              "label": "Reason / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.8
+            },
+            {
+              "key": "notice_ref",
+              "label": "Notice / system ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "sequence_notes",
+          "type": "textarea",
+          "label": "Sequence context, corrected entry, source conflict, missing interval, and interpretation limit",
+          "fields": [
+            {
+              "key": "sequence_detail",
+              "label": "Log sequence and correction notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "period_review",
+      "title": "Training Attendance trend, reconciliation, and period review",
+      "guidance": "Reconcile the log to source systems and identify patterns that require a decision or corrective action.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "table",
+          "label": "Population, source count, log count, variance, owner, and resolution",
+          "columns": [
+            {
+              "key": "population",
+              "label": "Population / segment",
+              "units": 1.05
+            },
+            {
+              "key": "source_total",
+              "label": "Source total",
+              "units": 0.7
+            },
+            {
+              "key": "log_total",
+              "label": "Log total",
+              "units": 0.7
+            },
+            {
+              "key": "variance",
+              "label": "Variance / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "period_checks",
+          "type": "checklist",
+          "label": "Period review and decision checks",
+          "items": [
+            "Session used the approved course and curriculum revision",
+            "Instructor or facilitator was authorized for the delivery",
+            "Learner identity and assigned requirement were verified",
+            "Arrival, departure, breaks, and missed segments support the claimed attendance",
+            "Required participation, exercises, or knowledge checks were completed",
+            "Accessibility, language, and technical barriers were addressed",
+            "Practical demonstration or qualification is not inferred from attendance alone",
+            "Make-up assignment maps to the exact missed content",
+            "Roster and learning-system records reconcile",
+            "Completion status and next requirement have accountable owners"
+          ]
+        },
+        {
+          "key": "period_outcome",
+          "type": "fields",
+          "label": "Period review outcome",
+          "fields": [
+            {
+              "key": "entries_reviewed",
+              "label": "Entries reviewed",
+              "units": 0.7
+            },
+            {
+              "key": "exceptions_open",
+              "label": "Open exceptions",
+              "units": 0.7
+            },
+            {
+              "key": "corrections_made",
+              "label": "Corrections made",
+              "units": 0.75
+            },
+            {
+              "key": "trend_status",
+              "label": "Trend status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Stable",
+                "Improving",
+                "Deteriorating",
+                "Mixed",
+                "Insufficient data"
+              ]
+            },
+            {
+              "key": "reviewer",
+              "label": "Period reviewer",
+              "units": 0.85
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "trend_analysis",
+          "type": "textarea",
+          "label": "Observed pattern, comparison basis, outlier, source limitation, operational effect, and decision need",
+          "fields": [
+            {
+              "key": "trend_detail",
+              "label": "Trend and reconciliation analysis"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Training Attendance unresolved event and escalation register",
+      "guidance": "Preserve exceptions separately from routine entries until final disposition.",
+      "blocks": [
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Log stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized learning, compliance, safety, or qualification reviewer under the approved curriculum, roster rules, prerequisite matrix, delivery standard, and qualification policy."
+        },
+        {
+          "key": "log_triggers",
+          "type": "checklist",
+          "label": "Training Attendance exception and escalation triggers",
+          "items": [
+            "Wrong learner, course, revision, or session received attendance credit",
+            "Roster signature or electronic evidence appears duplicated or misattributed",
+            "Required content, instructor, demonstration, or assessment was omitted",
+            "Technology, location, evacuation, or safety event interrupted material content",
+            "Learner missed a segment but was recorded as fully complete",
+            "Accessibility or language support failed to provide meaningful access",
+            "Attendance record was altered after sign-off without an audit trail",
+            "Learning system, roster, qualification record, and manager status conflict"
+          ]
+        },
+        {
+          "key": "log_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Training Attendance period handoff and log closeout",
+      "guidance": "Transfer the last known status, open actions, and next required review to the receiving owner.",
+      "blocks": [
+        {
+          "key": "log_closeout_outcome",
+          "type": "fields",
+          "label": "Log outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_closeout_actions",
+          "type": "table",
+          "label": "Open training attendance action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "log_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "log_closeout_signoff",
+          "type": "signatures",
+          "label": "Log accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Learning, Compliance, Safety, Or Qualification Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1550__trailer_proof_of_delivery_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1550__trailer_proof_of_delivery_form.pdf",
+  "slug": "trailer-proof-of-delivery-form",
+  "title": "Trailer Proof of Delivery Form",
+  "subtitle": "Authenticate the trailer delivery through unit identity, custody events, recipient authority, location, timing, condition, and privacy-conscious proof.",
+  "description": "An original, fillable trailer proof of delivery form for controlling trailer asset, interchange, load space, and road-readiness record through proof of delivery identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use after a trailer delivery or failed attempt when operations must establish what was delivered, to whom, where, when, under which control, and how any evidence gap or dispute was routed.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Trailer proof of delivery identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Trailer record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Proof Of Delivery record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Trailer unit, VIN, and interchange number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Plate, seal, work-order, or yard-location ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned fleet or yard coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Driver, Yard Hostler, Or Receiving Carrier",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Owning yard, customer dock, or prior carrier",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Assigned route, customer, carrier, or return yard",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the trailer master, inspection criteria, maintenance record, and interchange terms."
+        }
+      ]
+    },
+    {
+      "key": "proof_commitment",
+      "title": "Trailer delivery obligation and proof standard",
+      "guidance": "Define the promised event and acceptable evidence before evaluating whether delivery was completed.",
+      "blocks": [
+        {
+          "key": "delivery_obligation",
+          "type": "fields",
+          "label": "Delivery obligation",
+          "fields": [
+            {
+              "key": "promised_window",
+              "label": "Promised delivery window",
+              "units": 1.1
+            },
+            {
+              "key": "actual_completion",
+              "label": "Actual completion date and time",
+              "units": 1.1
+            },
+            {
+              "key": "proof_standard",
+              "label": "Required proof method",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_recipient",
+              "label": "Assigned Driver, Carrier, Customer, Or Yard Location",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "proof_controls",
+          "type": "checklist",
+          "label": "Trailer custody and proof controls",
+          "items": [
+            "Road-service assignment",
+            "Yard-only movement",
+            "Out-of-service hold",
+            "Maintenance routing",
+            "Sealed-load custody",
+            "Food-compatible clean trailer",
+            "Temperature-control equipment required",
+            "Customer-specific interchange condition"
+          ],
+          "guidance": "Select the controls actually required for this delivery, not every available service feature."
+        },
+        {
+          "key": "route_assignment",
+          "type": "fields",
+          "label": "Route, custodian, and destination assignment",
+          "fields": [
+            {
+              "key": "route",
+              "label": "Route, trip, or movement reference",
+              "units": 1.25
+            },
+            {
+              "key": "custodian",
+              "label": "Driver, Yard Hostler, Or Receiving Carrier",
+              "units": 1.2
+            },
+            {
+              "key": "destination",
+              "label": "Assigned route, customer, carrier, or return yard",
+              "units": 1.4
+            },
+            {
+              "key": "contact_method",
+              "label": "Recipient contact method",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivery_timeline",
+      "title": "Trailer delivery event timeline",
+      "guidance": "Preserve the sequence of custody, location, timing, and proof-generating events.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Delivery milestone and custody log",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Event or custody change",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned time",
+              "units": 0.8
+            },
+            {
+              "key": "actual",
+              "label": "Actual time",
+              "units": 0.8
+            },
+            {
+              "key": "location",
+              "label": "Location or control point",
+              "units": 1.15
+            },
+            {
+              "key": "party",
+              "label": "Responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "proof",
+              "label": "Scan, seal, or proof ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "timeline_reconciliation",
+          "type": "fields",
+          "label": "Timeline reconciliation",
+          "fields": [
+            {
+              "key": "first_attempt",
+              "label": "First attempt time",
+              "units": 1.0
+            },
+            {
+              "key": "completed_time",
+              "label": "Completion time",
+              "units": 1.0
+            },
+            {
+              "key": "custody_changes",
+              "label": "Custody changes",
+              "units": 0.9
+            },
+            {
+              "key": "unplanned_stops",
+              "label": "Unplanned stops or delays",
+              "units": 1.2
+            },
+            {
+              "key": "timeline_status",
+              "label": "Timeline status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with variance",
+                "Missing event",
+                "Conflicting evidence"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivered_scope",
+      "title": "Trailer delivered scope and recipient verification",
+      "guidance": "Tie proof to each relevant unit rather than treating one signature as proof for an unverified shipment.",
+      "blocks": [
+        {
+          "key": "delivered_units",
+          "type": "table",
+          "label": "Trailer Units, Seals, Defects, Equipment, Mileage, And Custody Events delivery proof",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Plate, seal, work-order, or yard-location ID",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Delivered quantity",
+              "units": 0.8
+            },
+            {
+              "key": "condition",
+              "label": "Body, running gear, coupling, interior, and load-space condition",
+              "units": 1.15
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or delivery point",
+              "units": 1.1
+            },
+            {
+              "key": "proof_method",
+              "label": "Proof method",
+              "units": 0.95
+            },
+            {
+              "key": "proof_ref",
+              "label": "Proof reference",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proof_evidence",
+          "type": "checklist",
+          "label": "Trailer proof package",
+          "items": [
+            "Trailer master and ownership record",
+            "VIN, plate, unit, and yard-location photographs",
+            "Pre-trip or interchange inspection reference",
+            "Visible defect and damage photographs",
+            "Maintenance work order and release status",
+            "Seal, lock, and accessory reconciliation",
+            "Pickup, drop, and custody timestamps",
+            "Driver, carrier, or yard acceptance record"
+          ],
+          "guidance": "Capture only the evidence needed to authenticate the event and follow privacy, access, and retention policy."
+        },
+        {
+          "key": "delivery_facts",
+          "type": "textarea",
+          "label": "Delivery location, recipient authority, custody, and condition facts",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Delivery location, recipient authority, custody, and condition facts",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "delivery_exceptions",
+      "title": "Trailer exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "delivery_exception_types",
+          "type": "checklist",
+          "label": "Trailer exception indicators",
+          "items": [
+            "Trailer identity, ownership, plate, or assignment mismatch",
+            "Brake, light, tire, wheel, coupling, pin, or slider concern",
+            "Landing gear, rail, frame, crossmember, roof, wall, floor, or door damage",
+            "Leak, odor, debris, pest, contamination, or incompatible prior cargo",
+            "Maintenance due, open work order, or out-of-service status",
+            "Seal, lock, securement equipment, or accessory discrepancy",
+            "Pre-existing damage or interchange responsibility is disputed",
+            "Temperature-control or cargo-compatibility requirement cannot be met",
+            "Yard location or custody transfer cannot be verified",
+            "Road-service release lacks qualified authorization"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "delivery_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "delivery_decision",
+          "type": "fields",
+          "label": "Failed attempt, disputed delivery, or proof-gap decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "proof_attestation",
+      "title": "Trailer proof validation and delivery attestation",
+      "guidance": "Validate evidence consistency and route disputes without overstating what the record proves.",
+      "blocks": [
+        {
+          "key": "proof_validation",
+          "type": "fields",
+          "label": "Proof validation",
+          "fields": [
+            {
+              "key": "proof_status",
+              "label": "Proof status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Validated",
+                "Validated with variance",
+                "Pending evidence",
+                "Disputed",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "location_match",
+              "label": "Location evidence match",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_match",
+              "label": "Recipient authority match",
+              "units": 1.1
+            },
+            {
+              "key": "quantity_match",
+              "label": "Quantity reconciliation",
+              "units": 1.05
+            },
+            {
+              "key": "review_reference",
+              "label": "Review or dispute reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "delivery_attestation",
+          "type": "signatures",
+          "label": "Delivery, recipient, and proof review",
+          "fields": [
+            {
+              "key": "delivering_party",
+              "label": "Delivering party attestation",
+              "units": 1.25
+            },
+            {
+              "key": "recipient_party",
+              "label": "Recipient acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "proof_reviewer",
+              "label": "Proof reviewed by",
+              "units": 1.15
+            },
+            {
+              "key": "attested_at",
+              "label": "Attestation date and time",
+              "units": 1.05
+            }
+          ],
+          "guidance": "A recipient acknowledgment records the observed handoff; final acceptance may remain subject to inspection or applicable terms."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Trailer proof of delivery closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Proof validated",
+                "Validated with closed variance",
+                "Redelivery completed",
+                "Transferred to dispute or claim",
+                "Delivery not established"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this trailer proof of delivery with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified fleet maintenance or safety supervisor",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

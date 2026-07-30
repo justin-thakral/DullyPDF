@@ -1,0 +1,584 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1625__after_school_program_sign_in_sheet_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1625__after_school_program_sign_in_sheet_form.pdf",
+  "slug": "after-school-program-sign-in-sheet-form",
+  "title": "After School Program Sign-In Sheet Form",
+  "subtitle": "An original operational sign-in sheet for after school program that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This After School Program Sign-In Sheet Form supports the complete after school program workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the After School Program Sign-In Sheet Form when the assigned after-school site lead needs one fillable record for student arrival, program participation, dismissal change, and authorized release without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "After school sign-in sheet identity and routing",
+      "guidance": "Connect this sign-in sheet to one student arrival, program participation, dismissal change, and authorized release record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "After school record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "School or program site",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Program group or dismissal route",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Student or program roster reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned after-school site lead",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "After school scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "daily_basis",
+      "title": "After school sign-in basis and accountability controls",
+      "guidance": "Define the operating window, roster source, responsible staff, and release or custody route.",
+      "blocks": [
+        {
+          "key": "sheet_basis",
+          "type": "fields",
+          "label": "Sign-in sheet basis",
+          "fields": [
+            {
+              "key": "sheet_date",
+              "label": "Sheet date",
+              "units": 0.9
+            },
+            {
+              "key": "session_or_shift",
+              "label": "Session, shift, or activity",
+              "units": 1.3
+            },
+            {
+              "key": "roster_source",
+              "label": "Roster or record source",
+              "units": 1.2
+            },
+            {
+              "key": "accountable_lead",
+              "label": "Accountable after-school site lead",
+              "units": 1.2
+            },
+            {
+              "key": "starting_count",
+              "label": "Starting count or inventory",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accountability_points",
+          "type": "checklist",
+          "label": "After school sign-in, transfer, and release controls",
+          "items": [
+            "Arrival from classroom, bus, guardian, or school route recorded",
+            "Student identity matched to the after-school roster",
+            "Room or activity transfer headcount recorded",
+            "Dismissal request matched to the current guardian plan",
+            "Authorized pickup or independent departure condition confirmed",
+            "Departure time and releasing staff recorded",
+            "Changed, disputed, or late release held for authorized review",
+            "Final attendance and remaining-student count reconciled"
+          ]
+        },
+        {
+          "key": "signin_boundary",
+          "type": "notice",
+          "label": "Identity, release, and record boundary",
+          "guidance": "This form records after-school operations; it does not change a school's dismissal authority, decide custody, diagnose a student, grant blanket consent, or replace emergency services. Stop participation or departure when identity, attendance, guardian direction, authorized release, health support, or safety is unresolved. Limit sensitive information and route decisions to qualified authorized staff."
+        }
+      ]
+    },
+    {
+      "key": "activity_entries",
+      "title": "After school chronological sign-in, transfer, and sign-out entries",
+      "guidance": "Use one row per participant, volunteer, item custody event, or authorized record handoff.",
+      "blocks": [
+        {
+          "key": "entry_log",
+          "type": "table",
+          "label": "After school accountability log",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Participant, volunteer, or item ref.",
+              "units": 1.3
+            },
+            {
+              "key": "arrival",
+              "label": "Arrival or sign-in",
+              "units": 0.9
+            },
+            {
+              "key": "receiver",
+              "label": "Receiving staff or custodian",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Transfer, group, or custody status",
+              "units": 1.3
+            },
+            {
+              "key": "departure",
+              "label": "Departure or handoff",
+              "units": 1.0
+            },
+            {
+              "key": "exception",
+              "label": "Exception or evidence ref.",
+              "units": 1.2
+            }
+          ],
+          "rows": 10
+        },
+        {
+          "key": "operating_context",
+          "type": "textarea",
+          "label": "Operating context, unusual demand, system limits, corrections to prior entries, and known evidence gaps",
+          "fields": [
+            {
+              "key": "context",
+              "label": "Operating context, corrections, system limits, and evidence gaps"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "reconciliation_decision",
+      "title": "After school count reconciliation, exceptions, and authorization",
+      "guidance": "Preserve the first entry, document corrections, and do not force agreement.",
+      "blocks": [
+        {
+          "key": "count_summary",
+          "type": "fields",
+          "label": "Count and reconciliation summary",
+          "fields": [
+            {
+              "key": "expected_count",
+              "label": "Expected count",
+              "units": 1.0
+            },
+            {
+              "key": "signed_in_count",
+              "label": "Signed-in or received",
+              "units": 1.0
+            },
+            {
+              "key": "signed_out_count",
+              "label": "Signed-out or transferred",
+              "units": 1.0
+            },
+            {
+              "key": "remaining_count",
+              "label": "Remaining or held",
+              "units": 1.0
+            },
+            {
+              "key": "reconciliation_status",
+              "label": "Reconciliation status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Reconciled",
+                "Variance open",
+                "Escalated"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "status_exceptions",
+          "type": "checklist",
+          "label": "Conditions requiring a status entry",
+          "items": [
+            "Student expected from school does not arrive",
+            "Student arrives but is not on the program roster",
+            "Dismissal, transport, pickup, or independent-departure plan changed",
+            "Authorized person or guardian direction cannot be confirmed",
+            "Required medication, allergy, meal, or support route is unavailable",
+            "Student is missing, ill, injured, or in immediate distress",
+            "Staffing, room, weather, transport, or school closure changes operations",
+            "Attendance, headcount, schedule, or release record does not reconcile"
+          ]
+        },
+        {
+          "key": "reconciliation_lines",
+          "type": "table",
+          "label": "Entry, variance, verified fact, temporary control, and owner",
+          "columns": [
+            {
+              "key": "entry",
+              "label": "Entry or subject ref.",
+              "units": 1.1
+            },
+            {
+              "key": "variance",
+              "label": "Variance or concern",
+              "units": 1.2
+            },
+            {
+              "key": "verified",
+              "label": "Verified fact",
+              "units": 1.1
+            },
+            {
+              "key": "control",
+              "label": "Temporary control",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner and due point",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "After school reconciliation decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the school or program administrator, guardian, and qualified health or support reviewer."
+        }
+      ]
+    },
+    {
+      "key": "held_release",
+      "title": "After school held, changed, or disputed handoff",
+      "guidance": "Hold movement, disclosure, administration, or release when identity or authority is unresolved.",
+      "blocks": [
+        {
+          "key": "hold_indicators",
+          "type": "checklist",
+          "label": "Hold and escalation indicators",
+          "items": [
+            "Student arrival or participation cannot be confirmed",
+            "Guardian, emergency contact, or dismissal route is incomplete",
+            "Health, allergy, medication, snack, or support review is pending",
+            "Staffing, room, transport, or school handoff is unresolved",
+            "Immediate missing-student, illness, injury, or safety response is active",
+            "Departure, attendance, or daily closeout remains unresolved"
+          ]
+        },
+        {
+          "key": "held_entries",
+          "type": "table",
+          "label": "Held entry, reason, immediate control, authorized reviewer, and disposition",
+          "columns": [
+            {
+              "key": "entry",
+              "label": "Entry or subject",
+              "units": 1.1
+            },
+            {
+              "key": "reason",
+              "label": "Hold or change reason",
+              "units": 1.2
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "reviewer",
+              "label": "Authorized reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or evidence",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Corrections, late or changed handoffs, notifications, open questions, and next-shift message",
+          "fields": [
+            {
+              "key": "handoff",
+              "label": "Corrections, notifications, open questions, and handoff message"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "After school outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "After school closeout controls",
+          "items": [
+            "Final attendance and remaining-student count accepted",
+            "Guardian communication and dismissal status recorded",
+            "Unresolved incident, academic, or support action has an owner",
+            "Equipment and private records returned to approved custody",
+            "School, transport, facilities, or health follow-up linked",
+            "Program record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Sign-In Sheet closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1928__borrower_document_intake_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1928__borrower_document_intake_form.pdf",
+  "slug": "borrower-document-intake-form",
+  "title": "Borrower Document Intake and Initial Review Record",
+  "subtitle": "A controlled intake for the secure receipt, classification, version control, quality review, discrepancy routing, payment evidence, retention, and handoff of borrower-supplied documents without using the form as a repository for sensitive source material, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Borrower Document workflow for the secure receipt, classification, version control, quality review, discrepancy routing, payment evidence, retention, and handoff of borrower-supplied documents without using the form as a repository for sensitive source material. It is designed to open one controlled record, distinguish an inquiry from an actionable request, capture relevant facts and evidence status, triage stop conditions, assign review, and document the next accepted handoff while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a loan documentation coordinator must open one controlled record, distinguish an inquiry from an actionable request, capture relevant facts and evidence status, triage stop conditions, assign review, and document the next accepted handoff for one borrower document package. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Borrower Document intake identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Borrower Document record and responsible parties",
+          "fields": [
+            {
+              "key": "package_ref",
+              "label": "Document package reference",
+              "units": 1.2
+            },
+            {
+              "key": "borrower_name",
+              "label": "Borrower or business name",
+              "units": 1.3
+            },
+            {
+              "key": "application_ref",
+              "label": "Application or account reference",
+              "units": 1.2
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 0.9
+            },
+            {
+              "key": "assigned_coordinator",
+              "label": "Document coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Intake and Initial Review Record timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Borrower Document facts and evidence for intake",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Borrower Document transaction or account profile",
+          "fields": [
+            {
+              "key": "package_purpose",
+              "label": "Package purpose",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Initial application",
+                "Underwriting update",
+                "Closing condition",
+                "Servicing review",
+                "Audit response",
+                "Other authorized purpose"
+              ]
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.8
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "received_date",
+              "label": "First received date",
+              "units": 0.9
+            },
+            {
+              "key": "delivery_channel",
+              "label": "Approved delivery channel",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Approved mail",
+                "Approved vendor",
+                "Other secure route"
+              ]
+            },
+            {
+              "key": "secure_repository_ref",
+              "label": "Secure repository reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Borrower Document evidence checkpoints",
+          "items": [
+            "Each document has a type, owner or issuer, period, version, and receipt date",
+            "Page count, completeness, legibility, orientation, and scan quality are checked",
+            "Source channel and chain-of-custody events are traceable",
+            "Duplicate, superseded, corrected, and translated versions are distinguished",
+            "Names, dates, amounts, and account references are checked for internal consistency",
+            "Expiration, freshness, certification, signature, or notarization needs are routed",
+            "Unneeded sensitive data is redacted or rejected under approved procedure",
+            "Actual documents remain in the secure repository, not embedded in this tracker"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Borrower Document quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "document_type",
+              "label": "Document type",
+              "units": 1.25
+            },
+            {
+              "key": "period_version",
+              "label": "Period or version",
+              "units": 1.0
+            },
+            {
+              "key": "received_source",
+              "label": "Received or source",
+              "units": 1.0
+            },
+            {
+              "key": "quality_status",
+              "label": "Quality status",
+              "units": 1.0
+            },
+            {
+              "key": "repository_ref",
+              "label": "Repository ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Package purpose, requested evidence, delivery constraints, version history, translation or accessibility needs, and known document discrepancies",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Borrower Document context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Borrower Document intake analysis and control record",
+      "guidance": "Use the blocks below to open one controlled record, distinguish an inquiry from an actionable request, capture relevant facts and evidence status, triage stop conditions, assign review, and document the next accepted handoff. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "intake_definition",
+          "type": "fields",
+          "label": "Request definition and triage",
+          "fields": [
+            {
+              "key": "requested_outcome",
+              "label": "Requested outcome",
+              "units": 1.3
+            },
+            {
+              "key": "target_date",
+              "label": "Customer target date",
+              "units": 0.8
+            },
+            {
+              "key": "request_class",
+              "label": "Request classification",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "General inquiry",
+                "Application or review",
+                "Servicing request",
+                "Payment instruction",
+                "Unclear - escalate"
+              ]
+            },
+            {
+              "key": "information_basis",
+              "label": "Information basis",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Customer stated",
+                "Partly evidenced",
+                "Previously verified",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "service_level_due",
+              "label": "Service-level due point",
+              "units": 0.9
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "intake_conversation",
+          "type": "checklist",
+          "label": "Initial conversation and intake controls",
+          "items": [
+            "The borrower or authorized document provider describes the requested outcome in their own words",
+            "The borrower document package is classified before any decision or execution",
+            "Material dates, amounts, parties, and assumptions are read back for confirmation",
+            "Stated information is visibly separated from verified evidence",
+            "Only necessary information is requested through an approved secure channel",
+            "Language access, accommodation, representative, and contact preferences are routed",
+            "No promise of approval, pricing, timing, settlement, or outcome is made",
+            "Urgent, suspicious, disputed, or protected-process matters are escalated"
+          ]
+        },
+        {
+          "key": "intake_question_log",
+          "type": "table",
+          "label": "Initial question, response, and evidence map",
+          "columns": [
+            {
+              "key": "question_item",
+              "label": "Question or fact",
+              "units": 1.25
+            },
+            {
+              "key": "response_summary",
+              "label": "Response summary",
+              "units": 1.35
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            },
+            {
+              "key": "status_due",
+              "label": "Status or due",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "intake_summary",
+          "type": "textarea",
+          "label": "Neutral intake summary, open questions, and proposed next step",
+          "fields": [
+            {
+              "key": "intake_summary_notes",
+              "label": "Intake summary and handoff narrative"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Borrower Document stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Document arrived through an unapproved or unverifiable delivery channel",
+            "Borrower, issuer, period, version, page count, or account reference conflicts",
+            "Document is illegible, incomplete, expired, altered, password locked, or corrupted",
+            "A duplicate or superseded version may be mistaken for the current record",
+            "Unneeded sensitive data is exposed beyond the approved access group",
+            "Authenticity, signature, certification, translation, or notarization needs review",
+            "A requested document may be unnecessary, disproportionate, or prohibited",
+            "Package status was changed without evidence or accountable review",
+            "Request cannot be classified as inquiry, application, servicing request, or payment instruction",
+            "Required identity, authority, contact, or secure-system reference is missing"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Intake and Initial Review Record exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Borrower Document decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Intake and Initial Review Record qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Borrower Document decision and execution conditions",
+          "items": [
+            "Request type, owner, service level, and next decision point are explicit",
+            "Unverified statements are not represented as verified evidence",
+            "Required-document list matches the product, stage, and qualified review request",
+            "Current versions and secure repository references are unambiguous",
+            "Quality, consistency, freshness, and authenticity exceptions are dispositioned",
+            "Sensitive source documents remain access controlled and properly retained",
+            "Borrower follow-up lists only necessary missing or corrected items",
+            "Package release is blocked until the receiving reviewer accepts readiness"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Borrower Document record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Borrower Document completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Intake and Initial Review Record outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Borrower Document closeout evidence",
+          "items": [
+            "Final document inventory identifies current and superseded versions",
+            "All accepted items have secure repository and chain-of-custody references",
+            "Missing, deficient, or unnecessary requests have final dispositions",
+            "Sensitive-data access and retention class are assigned",
+            "Receiving reviewer acknowledges package readiness or specific limitations",
+            "Any fee or payment evidence is reconciled without storing credentials"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

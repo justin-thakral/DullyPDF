@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1622__after_school_program_registration_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1622__after_school_program_registration_form.pdf",
+  "slug": "after-school-program-registration-form",
+  "title": "After School Program Registration Form",
+  "subtitle": "An original operational registration for after school program that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This After School Program Registration Form supports the complete after school program workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the After School Program Registration Form when the assigned after-school site lead needs one fillable record for student arrival, program participation, dismissal change, and authorized release without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "After school registration identity and routing",
+      "guidance": "Connect this registration to one student arrival, program participation, dismissal change, and authorized release record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "After school record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "School or program site",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Program group or dismissal route",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Student or program roster reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned after-school site lead",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "After school scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "registration_intake",
+      "title": "After school registration intake and requested placement",
+      "guidance": "Capture one requested program assignment, schedule, and accountable enrollment route.",
+      "blocks": [
+        {
+          "key": "enrollment_basis",
+          "type": "fields",
+          "label": "Registration basis",
+          "fields": [
+            {
+              "key": "requested_program",
+              "label": "Requested program or assignment",
+              "units": 1.5
+            },
+            {
+              "key": "requested_start",
+              "label": "Requested start date",
+              "units": 1.0
+            },
+            {
+              "key": "requested_end",
+              "label": "Requested end or review date",
+              "units": 1.0
+            },
+            {
+              "key": "schedule",
+              "label": "Requested days or session",
+              "units": 1.2
+            },
+            {
+              "key": "intake_owner",
+              "label": "Intake owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "registration_items",
+          "type": "checklist",
+          "label": "After school registration information",
+          "items": [
+            "Program site, days, start date, and attendance window",
+            "Student school, grade, group, and roster reference",
+            "School-to-program arrival and non-arrival follow-up route",
+            "Guardian and alternate emergency contact routing",
+            "Authorized pickup, independent departure, or transport plan",
+            "Snack, allergy, medication, and health-plan reference",
+            "Academic, accessibility, language, sensory, or behavioral support route",
+            "Orientation, supplies, schedule changes, and enrollment owner"
+          ]
+        },
+        {
+          "key": "schedule_lines",
+          "type": "table",
+          "label": "Schedule, arrival, departure, routing, and owner",
+          "columns": [
+            {
+              "key": "day_session",
+              "label": "Day or session",
+              "units": 1.0
+            },
+            {
+              "key": "arrival",
+              "label": "Arrival route or time",
+              "units": 1.1
+            },
+            {
+              "key": "departure",
+              "label": "Departure route or time",
+              "units": 1.1
+            },
+            {
+              "key": "setting",
+              "label": "Setting, group, or tutor",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_goal",
+          "type": "textarea",
+          "label": "Registration goal, source, participant needs, and requested outcome",
+          "fields": [
+            {
+              "key": "goal",
+              "label": "Goal, source, participant needs, and requested outcome"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "registration_boundary",
+          "type": "notice",
+          "label": "Registration boundary",
+          "guidance": "This form records after-school operations; it does not change a school's dismissal authority, decide custody, diagnose a student, grant blanket consent, or replace emergency services. Stop participation or departure when identity, attendance, guardian direction, authorized release, health support, or safety is unresolved. Limit sensitive information and route decisions to qualified authorized staff."
+        }
+      ]
+    },
+    {
+      "key": "contacts_support",
+      "title": "After school contacts, release route, and support readiness",
+      "guidance": "Route sensitive health and support information to its approved record and reviewer.",
+      "blocks": [
+        {
+          "key": "contact_route",
+          "type": "fields",
+          "label": "Contact and support route",
+          "fields": [
+            {
+              "key": "primary_contact",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "alternate_contact",
+              "label": "Alternate or backup contact",
+              "units": 1.2
+            },
+            {
+              "key": "communication_route",
+              "label": "Preferred communication route",
+              "units": 1.1
+            },
+            {
+              "key": "release_or_handoff",
+              "label": "Release or handoff ref.",
+              "units": 1.2
+            },
+            {
+              "key": "support_reviewer",
+              "label": "Support review owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "readiness_review",
+          "type": "checklist",
+          "label": "Registration readiness and stop conditions",
+          "items": [
+            "Student expected from school does not arrive",
+            "Student arrives but is not on the program roster",
+            "Dismissal, transport, pickup, or independent-departure plan changed",
+            "Authorized person or guardian direction cannot be confirmed",
+            "Required medication, allergy, meal, or support route is unavailable",
+            "Student is missing, ill, injured, or in immediate distress",
+            "Staffing, room, weather, transport, or school closure changes operations",
+            "Attendance, headcount, schedule, or release record does not reconcile"
+          ]
+        },
+        {
+          "key": "support_records",
+          "type": "table",
+          "label": "Support or record source, applicability, owner, and status",
+          "columns": [
+            {
+              "key": "need",
+              "label": "Support or record",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Approved source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "applies",
+              "label": "When or where it applies",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Review owner",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status or due point",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "privacy_limits",
+          "type": "textarea",
+          "label": "Minimum-necessary information, access limits, assumptions, and open questions",
+          "fields": [
+            {
+              "key": "limits",
+              "label": "Information boundary, access limits, assumptions, and open questions"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "placement_decision",
+      "title": "After school placement, readiness, and authorization decision",
+      "guidance": "Separate requested placement from authorized placement and retained conditions.",
+      "blocks": [
+        {
+          "key": "readiness_evidence",
+          "type": "checklist",
+          "label": "After school readiness evidence",
+          "items": [
+            "Student is assigned to the correct site, group, and schedule",
+            "School dismissal-to-program transfer route is documented",
+            "Guardian and emergency contact routes are current",
+            "Authorized pickup, independent departure, or transport plan is visible",
+            "Unscheduled absence and non-arrival follow-up route is defined",
+            "Snack, allergy, medication, and health-plan references are privately routed",
+            "Academic, accessibility, language, sensory, or behavioral supports are routed",
+            "Staff coverage, room, activity, and headcount assignments are known",
+            "Late pickup, early release, and dismissal-change controls are available",
+            "Open participation conditions have owners and due points"
+          ]
+        },
+        {
+          "key": "placement_lines",
+          "type": "table",
+          "label": "Requested element, review result, condition, owner, and evidence",
+          "columns": [
+            {
+              "key": "requested",
+              "label": "Requested element",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Review result",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner and due point",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "After school registration decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the school or program administrator, guardian, and qualified health or support reviewer."
+        },
+        {
+          "key": "placement_rationale",
+          "type": "textarea",
+          "label": "Placement rationale, alternatives, limits, and participant or guardian communication",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Rationale, alternatives, limits, and communication"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "onboarding_exceptions",
+      "title": "After school onboarding, exceptions, and first-day handoff",
+      "guidance": "Turn each unresolved condition into an owned action before participation begins.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Registration exception indicators",
+          "items": [
+            "Student arrival or participation cannot be confirmed",
+            "Guardian, emergency contact, or dismissal route is incomplete",
+            "Health, allergy, medication, snack, or support review is pending",
+            "Staffing, room, transport, or school handoff is unresolved",
+            "Immediate missing-student, illness, injury, or safety response is active",
+            "Departure, attendance, or daily closeout remains unresolved"
+          ]
+        },
+        {
+          "key": "onboarding_actions",
+          "type": "table",
+          "label": "Condition, required action, owner, due point, and acceptance",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or exception",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance or status",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "first_day_handoff",
+          "type": "checklist",
+          "label": "Onboarding and first-day handoff",
+          "items": [
+            "Authorized assignment and schedule communicated",
+            "Arrival, attendance, and departure routes visible",
+            "Guardian and emergency communication routes available",
+            "Approved health and support records routed privately",
+            "Open condition has an owner and due point",
+            "First review date and completion evidence identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "After school outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "After school closeout controls",
+          "items": [
+            "Final attendance and remaining-student count accepted",
+            "Guardian communication and dismissal status recorded",
+            "Unresolved incident, academic, or support action has an owner",
+            "Equipment and private records returned to approved custody",
+            "School, transport, facilities, or health follow-up linked",
+            "Program record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Registration closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

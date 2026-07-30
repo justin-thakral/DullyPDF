@@ -1,0 +1,684 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1014__roofing_estimate_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1014__roofing_estimate_request_form.pdf",
+  "slug": "roofing-estimate-request-form",
+  "title": "Roofing Estimate Request and Bid Review",
+  "subtitle": "Qualify the roofing opportunity, verify field inputs, define scope and exclusions, price labor and materials, review risk, and control the bid handoff.",
+  "description": "A workflow-complete Roofing estimate request covering customer and site routing, bid documents, field measurements, specialty scope, quantity and cost build-up, assumptions, safety and technical risks, approval, submission, clarifications, and post-bid handoff.",
+  "use_case": "Use when an estimator, roofing foreperson, project manager, and authorized reviewer need one accountable Roofing estimate record that distinguishes verified facts from allowances and produces a reviewable bid decision.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "estimate_request_routing",
+      "title": "Roofing estimate request and bid routing",
+      "guidance": "Establish the opportunity, deadlines, decision makers, and controlling references.",
+      "blocks": [
+        {
+          "key": "estimate_identity",
+          "type": "fields",
+          "label": "Estimate identity and ownership",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Estimate request number",
+              "units": 0.9
+            },
+            {
+              "key": "opportunity_ref",
+              "label": "Opportunity or invitation ref",
+              "units": 1.05
+            },
+            {
+              "key": "received_date",
+              "label": "Received date",
+              "units": 0.7
+            },
+            {
+              "key": "bid_due",
+              "label": "Bid due date and time",
+              "units": 0.9
+            },
+            {
+              "key": "assigned_estimator",
+              "label": "Assigned estimator",
+              "units": 0.9
+            },
+            {
+              "key": "review_owner",
+              "label": "Review owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, project, and site",
+          "fields": [
+            {
+              "key": "customer",
+              "label": "Customer or owner",
+              "units": 1.0
+            },
+            {
+              "key": "bid_contact",
+              "label": "Bid contact",
+              "units": 0.85
+            },
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.05
+            },
+            {
+              "key": "site_location",
+              "label": "Site location",
+              "units": 1.2
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "bid_classification",
+          "type": "fields",
+          "label": "Roofing bid classification",
+          "fields": [
+            {
+              "key": "procurement_stage",
+              "label": "Procurement stage",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Budget",
+                "Concept",
+                "Competitive",
+                "Negotiated",
+                "Final"
+              ]
+            },
+            {
+              "key": "delivery_method",
+              "label": "Delivery method",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Plan and spec",
+                "Design-build",
+                "Service",
+                "Unit price"
+              ]
+            },
+            {
+              "key": "expected_start",
+              "label": "Expected start",
+              "units": 0.75
+            },
+            {
+              "key": "duration",
+              "label": "Expected duration",
+              "units": 0.8
+            },
+            {
+              "key": "addendum_cutoff",
+              "label": "Question or addendum cutoff",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "customer_request",
+          "type": "textarea",
+          "label": "Requested roofing outcome and bid instructions",
+          "fields": [
+            {
+              "key": "request_detail",
+              "label": "Customer request, success criteria, and submission instructions",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "site_inputs",
+      "title": "Roofing field inputs and controlling information",
+      "guidance": "Document the evidence used to estimate the roof area, drainage path, assembly, and weather exposure.",
+      "blocks": [
+        {
+          "key": "estimate_inputs",
+          "type": "checklist",
+          "label": "Roofing estimate inputs verified or assigned",
+          "items": [
+            "Verified roof plan, field dimensions, slope, and elevation",
+            "Assembly type, warranty term, and approved manufacturer",
+            "Core or test-cut results and concealed assembly assumptions",
+            "Deck type, condition allowance, and replacement unit rate",
+            "Wind, uplift, fastening, edge-zone, and perimeter requirements",
+            "Tear-off layers, disposal route, and hazardous-material status",
+            "Hoisting, crane, loading, storage, and occupied-site restrictions",
+            "Drainage design, tapered insulation, and ponding correction scope",
+            "Weather window, temporary protection, and daily dry-in capacity",
+            "Penetration, curb, equipment, solar, and adjacent-trade coordination"
+          ]
+        },
+        {
+          "key": "key_quantities",
+          "type": "fields",
+          "label": "Key roofing measurements and design values",
+          "fields": [
+            {
+              "key": "roof_area",
+              "label": "Measured roof area",
+              "units": 1.0
+            },
+            {
+              "key": "slope",
+              "label": "Slope or pitch",
+              "units": 0.85
+            },
+            {
+              "key": "perimeter",
+              "label": "Perimeter or edge length",
+              "units": 0.85
+            },
+            {
+              "key": "tearoff_depth",
+              "label": "Tear-off layers or depth",
+              "units": 0.85
+            },
+            {
+              "key": "penetrations",
+              "label": "Penetration count",
+              "units": 0.85
+            },
+            {
+              "key": "drain_count",
+              "label": "Drain or outlet count",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "site_observations",
+          "type": "table",
+          "label": "Site observation and evidence register",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area or system",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.4
+            },
+            {
+              "key": "measure",
+              "label": "Measure or qty.",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or document ref",
+              "units": 1.1
+            },
+            {
+              "key": "estimate_effect",
+              "label": "Estimate effect",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "unknown_conditions",
+          "type": "textarea",
+          "label": "Unknown, concealed, inaccessible, or conflicting condition",
+          "fields": [
+            {
+              "key": "unknown_detail",
+              "label": "Unknown condition, estimating treatment, and verification owner",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "scope_pricing",
+      "title": "Roofing scope, takeoff, and pricing build-up",
+      "guidance": "Separate included work, quantities, production assumptions, and commercial treatment.",
+      "blocks": [
+        {
+          "key": "scope_coverage",
+          "type": "checklist",
+          "label": "Roofing scope elements included, excluded, or assigned",
+          "items": [
+            "Mobilization, access, staging, and weather protection",
+            "Tear-off, selective removal, and lawful disposal",
+            "Deck inspection, replacement, fastening, and substrate repair",
+            "Air barrier, vapor retarder, insulation, and cover board",
+            "Underlayment, field membrane, shingles, or roof panels",
+            "Base, wall, curb, penetration, and transition flashing",
+            "Edge metal, coping, expansion joint, and perimeter securement",
+            "Drain, scupper, gutter, downspout, and overflow work",
+            "Walk pads, accessories, sealants, and rooftop protection",
+            "Temporary dry-in, cleanup, warranty, and owner handoff"
+          ]
+        },
+        {
+          "key": "scope_cost_detail",
+          "type": "table",
+          "label": "Roofing scope and direct-cost detail",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Scope item",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Qty.",
+              "units": 0.6
+            },
+            {
+              "key": "labor",
+              "label": "Labor hrs/cost",
+              "units": 0.9
+            },
+            {
+              "key": "material",
+              "label": "Material cost",
+              "units": 0.9
+            },
+            {
+              "key": "equipment",
+              "label": "Equip/sub cost",
+              "units": 0.9
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.8
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "material_allowances",
+          "type": "table",
+          "label": "Quoted material, allowance, and lead-time register",
+          "columns": [
+            {
+              "key": "material",
+              "label": "Material or package",
+              "units": 1.35
+            },
+            {
+              "key": "basis",
+              "label": "Vendor or basis",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Qty.",
+              "units": 0.65
+            },
+            {
+              "key": "allowance",
+              "label": "Quote/allowance",
+              "units": 0.95
+            },
+            {
+              "key": "lead_time",
+              "label": "Lead time/validity",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, alternates, allowances, and unit rates",
+          "fields": [
+            {
+              "key": "commercial_detail",
+              "label": "State what is included, excluded, provisional, optional, or subject to unit pricing",
+              "multiline": true
+            }
+          ],
+          "height": 74
+        }
+      ]
+    },
+    {
+      "key": "risk_coordination",
+      "title": "Roofing technical, safety, and coordination risk review",
+      "guidance": "Price or route material risks instead of burying them in general qualifications.",
+      "blocks": [
+        {
+          "key": "risk_prompts",
+          "type": "checklist",
+          "label": "Risk and constructability prompts",
+          "items": [
+            "Roof access and ladder or stair route approved",
+            "Surface strength, deck openings, and fragile areas assessed",
+            "Fall-protection system, anchors, rescue route, and boundaries verified",
+            "Skylights, holes, edges, and lower-level exposure controlled",
+            "Wind, rain, ice, heat, lightning, and visibility reviewed",
+            "Hoisting, material loading, dropped-object, and public zones controlled",
+            "Structural or deck repair decision",
+            "Mechanical curb and penetration release",
+            "Electrical, solar, or lightning protection coordination",
+            "Masonry, wall, parapet, or coping readiness"
+          ]
+        },
+        {
+          "key": "risk_register",
+          "type": "table",
+          "label": "Roofing estimate risk and decision register",
+          "columns": [
+            {
+              "key": "risk",
+              "label": "Risk or dependency",
+              "units": 1.4
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or assumption",
+              "units": 1.25
+            },
+            {
+              "key": "cost_time",
+              "label": "Cost/time effect",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Decision owner",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "pricing_strategy",
+          "type": "textarea",
+          "label": "Clarification, alternate, contingency, or no-bid strategy",
+          "fields": [
+            {
+              "key": "strategy_detail",
+              "label": "Describe the decision, customer clarification, and residual exposure",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "estimate_boundary",
+          "type": "notice",
+          "label": "Roofing estimate boundary",
+          "guidance": "This record does not authorize unsafe roof access or replace the site fall-protection plan, competent-person assessment, engineered assembly, permit, manufacturer instructions, or required inspection. The issued proposal and incorporated contract documents control scope and price."
+        }
+      ]
+    },
+    {
+      "key": "bid_review",
+      "title": "Roofing estimate reconciliation and bid decision",
+      "guidance": "Reconcile the estimate and record authorization before the offer is issued.",
+      "blocks": [
+        {
+          "key": "cost_reconciliation",
+          "type": "table",
+          "label": "Estimate cost and sell-price reconciliation",
+          "columns": [
+            {
+              "key": "category",
+              "label": "Cost category",
+              "units": 1.25
+            },
+            {
+              "key": "direct",
+              "label": "Direct cost",
+              "units": 0.85
+            },
+            {
+              "key": "burden",
+              "label": "Burden/OH",
+              "units": 0.8
+            },
+            {
+              "key": "risk",
+              "label": "Risk/contingency",
+              "units": 0.95
+            },
+            {
+              "key": "markup",
+              "label": "Markup",
+              "units": 0.75
+            },
+            {
+              "key": "sell",
+              "label": "Sell amount",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "commercial_summary",
+          "type": "fields",
+          "label": "Commercial and schedule summary",
+          "fields": [
+            {
+              "key": "base_bid",
+              "label": "Base bid amount",
+              "units": 0.95
+            },
+            {
+              "key": "alternates",
+              "label": "Alternate total",
+              "units": 0.9
+            },
+            {
+              "key": "tax_bond",
+              "label": "Tax, bond, or fee basis",
+              "units": 1.0
+            },
+            {
+              "key": "valid_through",
+              "label": "Price valid through",
+              "units": 0.85
+            },
+            {
+              "key": "schedule_basis",
+              "label": "Schedule basis",
+              "units": 1.0
+            },
+            {
+              "key": "payment_terms",
+              "label": "Payment terms",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "estimate_review",
+          "type": "checklist",
+          "label": "Estimate review completed",
+          "items": [
+            "Roofing quantities and production reviewed",
+            "Vendor and subcontractor quotes leveled",
+            "Latest documents and addenda included",
+            "Allowances, unit rates, and alternates identified",
+            "Schedule, labor, equipment, and logistics reconciled",
+            "Safety and compliance costs included or excluded clearly",
+            "Assumptions and exclusions match the proposal",
+            "Authorized bid decision recorded"
+          ]
+        },
+        {
+          "key": "bid_approval",
+          "type": "signatures",
+          "label": "Roofing estimate review and approval",
+          "fields": [
+            {
+              "key": "estimator",
+              "label": "Estimator name/signature",
+              "units": 1.0
+            },
+            {
+              "key": "operations_review",
+              "label": "Operations reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "commercial_review",
+              "label": "Commercial reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_approver",
+              "label": "Authorized approver",
+              "units": 1.0
+            },
+            {
+              "key": "approval_date",
+              "label": "Approval date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "submission_handoff",
+      "title": "Roofing bid submission, outcome, and handoff",
+      "guidance": "Preserve the issued package, customer response, and next accountable action.",
+      "blocks": [
+        {
+          "key": "submission_package",
+          "type": "checklist",
+          "label": "Submission and handoff package",
+          "items": [
+            "Proposal or bid form",
+            "Scope narrative and exclusions",
+            "Alternates, allowances, and unit rates",
+            "Schedule or milestone basis",
+            "Product or system qualifications",
+            "Bid bond, insurance, or compliance attachment",
+            "Issued estimate backup and quote file",
+            "Roofing field notes and evidence archive"
+          ]
+        },
+        {
+          "key": "submission_record",
+          "type": "fields",
+          "label": "Submission and outcome record",
+          "fields": [
+            {
+              "key": "submitted_by",
+              "label": "Submitted by",
+              "units": 0.85
+            },
+            {
+              "key": "submitted_at",
+              "label": "Submission date and time",
+              "units": 0.95
+            },
+            {
+              "key": "submission_method",
+              "label": "Method or portal",
+              "units": 0.9
+            },
+            {
+              "key": "issued_revision",
+              "label": "Issued revision",
+              "units": 0.8
+            },
+            {
+              "key": "outcome",
+              "label": "Bid outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Shortlisted",
+                "Awarded",
+                "Declined",
+                "Lost"
+              ]
+            },
+            {
+              "key": "followup_date",
+              "label": "Follow-up date",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "post_bid_log",
+          "type": "table",
+          "label": "Post-bid clarification and decision log",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "question",
+              "label": "Question or request",
+              "units": 1.55
+            },
+            {
+              "key": "response",
+              "label": "Response or decision",
+              "units": 1.55
+            },
+            {
+              "key": "owner",
+              "label": "Owner/status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "award_handoff",
+          "type": "textarea",
+          "label": "Award, loss, negotiation, or project-start handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome, changed assumptions, accepted scope, open items, and next owner",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "submission_notice",
+          "type": "notice",
+          "label": "Offer and contract notice",
+          "guidance": "This internal estimate supports review and handoff. The final issued offer, executed agreement, incorporated drawings, specifications, addenda, and approved changes define the parties' obligations."
+        }
+      ]
+    }
+  ]
+}

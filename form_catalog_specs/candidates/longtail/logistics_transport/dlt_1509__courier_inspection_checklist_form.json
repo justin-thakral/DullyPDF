@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1509__courier_inspection_checklist_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1509__courier_inspection_checklist_form.pdf",
+  "slug": "courier-inspection-checklist-form",
+  "title": "Courier Inspection Checklist Form",
+  "subtitle": "Set the courier inspection scope, test readiness and requirement-level evidence, contain deficiencies, authorize status, and preserve qualified closeout.",
+  "description": "An original, fillable courier inspection checklist form for controlling time-critical document or parcel consignment through inspection checklist identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when a courier dispatcher or qualified inspector must evaluate time-critical document or parcel consignment against the dispatch order, tracking record, and custody manifest and provide a traceable basis for release, restriction, hold, correction, or rejection.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Courier inspection checklist identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Courier record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Inspection Checklist record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Dispatch and tracking number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Envelope, parcel, pouch, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned courier dispatcher",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Identified Courier",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Pickup contact and controlled pickup point",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Named recipient and exact handoff point",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the dispatch order, tracking record, and custody manifest."
+        }
+      ]
+    },
+    {
+      "key": "inspection_scope",
+      "title": "Courier inspection scope, criteria, and readiness",
+      "guidance": "Define the exact population and review basis so inspection conclusions remain bounded.",
+      "blocks": [
+        {
+          "key": "scope_criteria",
+          "type": "fields",
+          "label": "Inspection scope and criteria",
+          "fields": [
+            {
+              "key": "scope",
+              "label": "Time-Critical Document Or Parcel Consignment",
+              "units": 1.35
+            },
+            {
+              "key": "criteria",
+              "label": "Dispatch Order, Tracking Record, And Custody Manifest",
+              "units": 1.45
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector name and role",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Courier readiness verification",
+          "items": [
+            "Named pickup and recipient contacts match the dispatch instruction",
+            "Each envelope, parcel, pouch, or seal has a unique manifest identity",
+            "Ready time, delivery deadline, and permitted intermediate stops are explicit",
+            "Courier identity, vehicle or route, and communication method are assigned",
+            "Signature, identification, chain-of-custody, or photo proof is specified",
+            "Secure pouch, tamper seal, orientation, and environmental controls are available",
+            "Building access, security desk, floor, and after-hours instructions are confirmed",
+            "Refusal, unreachable contact, and return-to-sender routing are defined"
+          ],
+          "guidance": "A failed readiness item must be resolved, excluded with rationale, or carried into the exception section."
+        },
+        {
+          "key": "sample_basis",
+          "type": "fields",
+          "label": "Population, sample, and limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Population or total units",
+              "units": 1.05
+            },
+            {
+              "key": "sample",
+              "label": "Units actually inspected",
+              "units": 1.05
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.25
+            },
+            {
+              "key": "limitations",
+              "label": "Known access or evidence limits",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_results",
+      "title": "Courier requirement-level inspection results",
+      "guidance": "Record actual observations against explicit criteria and identify the evidence for each result.",
+      "blocks": [
+        {
+          "key": "requirement_results",
+          "type": "table",
+          "label": "Inspection result register",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit, point, or sample ID",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.35
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, or N/A",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector initials",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "domain_checks",
+          "type": "checklist",
+          "label": "Courier detailed inspection points",
+          "items": [
+            "Dispatch number and tracking identity agree across label and manifest",
+            "Piece count and package identifiers agree with the pickup record",
+            "Tamper seal, pouch closure, and package surfaces show no unexplained change",
+            "Recipient name and acceptable alternate recipient rules are explicit",
+            "Required delivery deadline and escalation trigger are visible",
+            "Courier can preserve custody through access screening or security handoff",
+            "No prohibited or undeclared contents are apparent under applicable policy",
+            "Tracking scan can be captured at pickup, transfer, attempt, and delivery",
+            "Proof method protects confidential information unrelated to the delivery",
+            "Any seal, identity, count, deadline, or access discrepancy is stopped and routed"
+          ],
+          "guidance": "Checkboxes indicate that the point was examined; the result table carries findings and evidence."
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Courier measurements and evidence package",
+      "guidance": "Preserve readings, instruments, identity, and evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, count, or verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use the method applicable to Manifested and accepted pieces and Seal, envelope, and parcel condition."
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Dispatch acceptance timestamp",
+            "Pickup scan and sender handoff confirmation",
+            "Seal or pouch identity image",
+            "Courier location or milestone timestamp",
+            "Security desk or controlled transfer record",
+            "Recipient identity method and signature reference",
+            "Attempt, refusal, or return scan",
+            "Final tracking and custody reconciliation"
+          ]
+        },
+        {
+          "key": "inspection_narrative",
+          "type": "textarea",
+          "label": "Inspection observations, sampling limitations, and evidence interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection observations, sampling limitations, and evidence interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Courier exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "inspection_exception_types",
+          "type": "checklist",
+          "label": "Courier exception indicators",
+          "items": [
+            "Sender is not ready at committed pickup time",
+            "Envelope, parcel, pouch, or seal identity differs from manifest",
+            "Package condition suggests opening, tampering, or damage",
+            "Courier cannot access the pickup or delivery control point",
+            "Named recipient or permitted alternate is unavailable",
+            "Delivery deadline is at risk or missed",
+            "Security screening conflicts with handling instruction",
+            "Tracking scan or signature capture is unavailable",
+            "Unplanned custody transfer or vehicle change is required",
+            "Sender, recipient, or dispatcher disputes the recorded piece count"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "inspection_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_decision",
+          "type": "fields",
+          "label": "Inspection deficiency containment and disposition",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_release",
+      "title": "Courier inspection status and release decision",
+      "guidance": "Do not turn a checklist score into release when a critical exception or evidence gap remains.",
+      "blocks": [
+        {
+          "key": "release_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Inspection status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with action",
+                "Restricted",
+                "On hold",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted unit or scope",
+              "units": 1.25
+            },
+            {
+              "key": "held_scope",
+              "label": "Held or excluded unit",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection and release authorization",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector signature and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Courier Service Supervisor review",
+              "units": 1.45
+            },
+            {
+              "key": "release_owner",
+              "label": "Release or custody owner",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Courier inspection checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and released",
+                "Accepted with closed action",
+                "Restricted handoff",
+                "Held for corrective work",
+                "Rejected or removed"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this courier inspection checklist with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by courier service supervisor",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

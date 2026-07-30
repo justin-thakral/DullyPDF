@@ -305,6 +305,76 @@ jobs:
           fi
           printf '%s' "$DEPLOY_FRONTEND_OVERRIDE_B64" | base64 --decode > "$RUNNER_TEMP/frontend.env"
 
+      - name: Acquire shared production Hosting deployment lock
+        if: >-
+          ${{
+            needs.resolve.outputs.deploy_environment == 'prod'
+            && needs.resolve.outputs.dry_run != 'true'
+            && (
+              needs.resolve.outputs.component == 'frontend'
+              || needs.resolve.outputs.component == 'all'
+            )
+          }}
+        run: |
+          set -euo pipefail
+          lock_owner="controlled-deploy:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}"
+          lock_state="$RUNNER_TEMP/form-catalog-production-lock.json"
+          bash scripts/form-catalog-production-lock.sh \
+            --action acquire \
+            --bucket gs://dullypdf-form-catalog-assets-east4 \
+            --project dullypdf \
+            --owner "$lock_owner" \
+            --state-file "$lock_state"
+          {
+            echo "FORM_CATALOG_PRODUCTION_LOCK_OWNER=$lock_owner"
+            echo "FORM_CATALOG_PRODUCTION_LOCK_STATE_PATH=$lock_state"
+          } >> "$GITHUB_ENV"
+
+      - name: Verify committed active form catalog mapping
+        if: >-
+          ${{
+            needs.resolve.outputs.deploy_environment == 'prod'
+            && needs.resolve.outputs.dry_run != 'true'
+            && (
+              needs.resolve.outputs.component == 'frontend'
+              || needs.resolve.outputs.component == 'all'
+            )
+          }}
+        run: |
+          set -euo pipefail
+          active_path="form_catalog_releases/active.json"
+          data_path="frontend/src/config/formCatalogData.mjs"
+          evidence_path="$RUNNER_TEMP/form-catalog-active-mapping.json"
+          manifest_path="$RUNNER_TEMP/form-catalog-release-manifest.json"
+          release_id="$(jq -r '.releaseId // empty' "$active_path")"
+          replacement_count="$(jq -r '.replacements | length' "$active_path")"
+          args=(
+            --active-release "$active_path"
+            --form-catalog-data "$data_path"
+            --repo-root .
+            --output "$evidence_path"
+          )
+          rm -f "$manifest_path"
+          if [[ -n "$release_id" || "$replacement_count" != "0" ]]; then
+            if [[ -z "$release_id" || "$replacement_count" == "0" ]]; then
+              echo "Active catalog metadata and replacements are inconsistent." >&2
+              exit 1
+            fi
+            gcloud storage cp \
+              "gs://dullypdf-form-catalog-assets-east4/releases/${release_id}/release-manifest.json" \
+              "$manifest_path" \
+              --project dullypdf
+            args+=(--manifest "$manifest_path")
+          fi
+          python3 -m scripts.form_catalog_factory verify-active-mapping "${args[@]}"
+          cp -- "$active_path" "$RUNNER_TEMP/form-catalog-active.json"
+          cp -- "$data_path" "$RUNNER_TEMP/form-catalog-data.mjs"
+          {
+            echo "FORM_CATALOG_REQUIRE_ACTIVE_MAPPING=1"
+            echo "FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH=$evidence_path"
+            echo "FORM_CATALOG_RELEASE_MANIFEST_PATH=$manifest_path"
+          } >> "$GITHUB_ENV"
+
       - name: Capture pre-deploy form catalog Hosting version
         id: form_catalog_release
         if: >-
@@ -329,6 +399,7 @@ jobs:
           before_path="$RUNNER_TEMP/form-catalog-hosting-before.json"
           deploy_result_path="$RUNNER_TEMP/firebase-hosting-deploy-result.json"
           evidence_path="$RUNNER_TEMP/form-catalog-hosting-evidence.json"
+          rollback_path="$RUNNER_TEMP/form-catalog-hosting-rollback.json"
           python3 -m scripts.form_catalog_factory snapshot-hosting \
             --project dullypdf \
             --site dullypdf \
@@ -341,6 +412,8 @@ jobs:
             echo "FORM_CATALOG_HOSTING_BEFORE_PATH=$before_path"
             echo "FIREBASE_HOSTING_DEPLOY_RESULT_PATH=$deploy_result_path"
             echo "FORM_CATALOG_HOSTING_EVIDENCE_PATH=$evidence_path"
+            echo "FORM_CATALOG_HOSTING_ROLLBACK_PATH=$rollback_path"
+            echo "FORM_CATALOG_CREATE_HOSTING_EVIDENCE=1"
           } >> "$GITHUB_ENV"
 
       - name: Run deploy target
@@ -426,31 +499,296 @@ jobs:
           PLAYWRIGHT_CHECK_API_HEALTH="$check_api_health" \
           npm run test:playwright:deployed-frontend:real
 
-      - name: Create release-bound form catalog Hosting evidence
+      - name: Verify immediate form catalog Hosting evidence
         if: ${{ steps.form_catalog_release.outputs.active == 'true' }}
         run: |
           set -euo pipefail
-          python3 -m scripts.form_catalog_factory create-hosting-evidence \
-            --active-release form_catalog_releases/active.json \
-            --before-snapshot "$FORM_CATALOG_HOSTING_BEFORE_PATH" \
-            --deploy-result "$FIREBASE_HOSTING_DEPLOY_RESULT_PATH" \
-            --project dullypdf \
-            --site dullypdf \
-            --site-origin https://dullypdf.com \
-            --site-origin https://dullypdf.web.app \
-            --deployment-commit "$GITHUB_SHA" \
-            --workflow-run-id "$GITHUB_RUN_ID" \
-            --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
-            --output "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"
+          test -s "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"
+          jq -e '
+            .schemaVersion == 1
+            and .reportType == "form-catalog-hosting-deployment"
+            and .producer == "controlled-deploy"
+            and .environment == "production"
+            and .projectId == "dullypdf"
+            and .site == "dullypdf"
+            and .ok == true
+          ' "$FORM_CATALOG_HOSTING_EVIDENCE_PATH" >/dev/null
+
+      - name: Roll back failed form catalog Hosting deployment
+        if: >-
+          ${{
+            always()
+            && steps.form_catalog_release.outputs.active == 'true'
+            && (failure() || cancelled())
+          }}
+        run: |
+          set -euo pipefail
+          lock_state="$RUNNER_TEMP/form-catalog-production-lock.json"
+          lock_owner="controlled-deploy:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}"
+          rollback_path="$FORM_CATALOG_HOSTING_ROLLBACK_PATH"
+          current_path="$RUNNER_TEMP/form-catalog-hosting-failure-current.json"
+          diagnostic_path="$RUNNER_TEMP/form-catalog-hosting-failure-diagnostic.json"
+
+          if [[ ! -s "$FORM_CATALOG_HOSTING_EVIDENCE_PATH" \
+            && -s "$FIREBASE_HOSTING_DEPLOY_RESULT_PATH" ]]; then
+            if ! python3 -m scripts.form_catalog_factory create-hosting-evidence \
+              --active-release form_catalog_releases/active.json \
+              --active-mapping-evidence "$FORM_CATALOG_ACTIVE_MAPPING_EVIDENCE_PATH" \
+              --form-catalog-data frontend/src/config/formCatalogData.mjs \
+              --release-manifest "$FORM_CATALOG_RELEASE_MANIFEST_PATH" \
+              --before-snapshot "$FORM_CATALOG_HOSTING_BEFORE_PATH" \
+              --deploy-result "$FIREBASE_HOSTING_DEPLOY_RESULT_PATH" \
+              --project dullypdf \
+              --site dullypdf \
+              --site-origin https://dullypdf.com \
+              --site-origin https://dullypdf.web.app \
+              --deployment-commit "$GITHUB_SHA" \
+              --workflow-run-id "$GITHUB_RUN_ID" \
+              --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
+              --output "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"; then
+              echo "The original Firebase result could not produce exact Hosting evidence; classifying live state without authorizing rollback." >&2
+            fi
+          fi
+
+          if [[ ! -s "$FORM_CATALOG_HOSTING_EVIDENCE_PATH" ]]; then
+            python3 -m scripts.form_catalog_factory snapshot-hosting \
+              --project dullypdf \
+              --site dullypdf \
+              --output "$current_path"
+            before_version="$(jq -r '.hostingVersion' "$FORM_CATALOG_HOSTING_BEFORE_PATH")"
+            current_version="$(jq -r '.hostingVersion' "$current_path")"
+            generation="$(jq -r '.generation // empty' "$lock_state")"
+            jq -n \
+              --arg releaseId "${{ steps.form_catalog_release.outputs.release_id }}" \
+              --arg beforeHostingVersion "$before_version" \
+              --arg currentHostingVersion "$current_version" \
+              --arg lockOwner "$lock_owner" \
+              --arg lockGeneration "$generation" \
+              --argjson hostingUnchanged "$([[ "$current_version" == "$before_version" ]] && echo true || echo false)" \
+              '{
+                schemaVersion: 1,
+                reportType: "form-catalog-hosting-failure-diagnostic",
+                producer: "controlled-deploy-failure-gate",
+                environment: "production",
+                releaseId: $releaseId,
+                beforeHostingVersion: $beforeHostingVersion,
+                currentHostingVersion: $currentHostingVersion,
+                hostingUnchanged: $hostingUnchanged,
+                productionLockOwner: $lockOwner,
+                productionLockGeneration: $lockGeneration,
+                rollbackAuthorized: false,
+                ok: $hostingUnchanged
+              }' > "$diagnostic_path"
+            if [[ "$current_version" == "$before_version" ]]; then
+              echo "The failed workflow did not change live Hosting; no rollback release was needed."
+              exit 0
+            fi
+            echo "Live Hosting differs from the pre-deploy version, but the original Firebase deploy result cannot prove the target. Automatic rollback is forbidden." >&2
+            exit 1
+          fi
+
+          generation="$(jq -r '.generation // empty' "$lock_state")"
+          if [[ -z "$generation" ]]; then
+            echo "Production lock state has no generation; rollback is forbidden." >&2
+            exit 1
+          fi
+          rollback_args=(
+            --hosting-evidence "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"
+            --pointer-object-url "gs://dullypdf-form-catalog-assets-east4/catalog-release-state/active.json"
+            --lock-owner "$lock_owner"
+            --lock-generation "$generation"
+            --lock-state-file "$lock_state"
+            --trigger-stage "controlled-deploy-post-live"
+            --trigger-exit-code 1
+            --output "$rollback_path"
+          )
+          previous_release_id="$(jq -r '.previousReleaseId // empty' form_catalog_releases/active.json)"
+          if [[ -n "$previous_release_id" ]]; then
+            rollback_args+=(--previous-release-id "$previous_release_id")
+          fi
+          python3 -m scripts.form_catalog_factory rollback-hosting \
+            "${rollback_args[@]}"
 
       - name: Upload form catalog Hosting evidence
-        if: ${{ steps.form_catalog_release.outputs.active == 'true' }}
+        id: form_catalog_evidence_upload
+        if: ${{ always() && steps.form_catalog_release.outputs.active == 'true' }}
+        continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
           name: form-catalog-hosting-evidence-${{ steps.form_catalog_release.outputs.release_id }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/form-catalog-hosting-before.json
             ${{ runner.temp }}/firebase-hosting-deploy-result.json
+            ${{ runner.temp }}/form-catalog-active-mapping.json
+            ${{ runner.temp }}/form-catalog-active.json
+            ${{ runner.temp }}/form-catalog-data.mjs
+            ${{ runner.temp }}/form-catalog-release-manifest.json
             ${{ runner.temp }}/form-catalog-hosting-evidence.json
+            ${{ runner.temp }}/form-catalog-hosting-rollback.json
+            ${{ runner.temp }}/form-catalog-hosting-failure-current.json
+            ${{ runner.temp }}/form-catalog-hosting-failure-diagnostic.json
+            ${{ runner.temp }}/form-catalog-production-lock.json
           if-no-files-found: error
           retention-days: 90
+
+      - name: Roll back when form catalog evidence upload fails
+        if: >-
+          ${{
+            always()
+            && steps.form_catalog_release.outputs.active == 'true'
+            && steps.form_catalog_evidence_upload.outcome == 'failure'
+          }}
+        run: |
+          set -euo pipefail
+          rollback_path="$FORM_CATALOG_HOSTING_ROLLBACK_PATH"
+          diagnostic_path="$RUNNER_TEMP/form-catalog-hosting-failure-diagnostic.json"
+          if [[ -s "$rollback_path" ]] && jq -e '
+            .reportType == "form-catalog-hosting-rollback"
+            and .producer == "locked-post-live-gate"
+            and .pointerUnchanged == true
+            and .ok == true
+          ' "$rollback_path" >/dev/null; then
+            echo "Hosting was already rolled back before the failed upload."
+            exit 0
+          fi
+          if [[ -s "$diagnostic_path" ]] && jq -e '
+            .reportType == "form-catalog-hosting-failure-diagnostic"
+            and .hostingUnchanged == true
+            and .rollbackAuthorized == false
+            and .ok == true
+          ' "$diagnostic_path" >/dev/null; then
+            echo "The failed run never changed Hosting."
+            exit 0
+          fi
+          if [[ ! -s "$FORM_CATALOG_HOSTING_EVIDENCE_PATH" ]]; then
+            echo "Evidence upload failed and no exact Hosting receipt exists. Automatic rollback is forbidden." >&2
+            exit 1
+          fi
+          lock_state="$RUNNER_TEMP/form-catalog-production-lock.json"
+          lock_owner="controlled-deploy:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}"
+          generation="$(jq -r '.generation // empty' "$lock_state")"
+          if [[ -z "$generation" ]]; then
+            echo "Production lock state has no generation; rollback is forbidden." >&2
+            exit 1
+          fi
+          rollback_args=(
+            --hosting-evidence "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"
+            --pointer-object-url "gs://dullypdf-form-catalog-assets-east4/catalog-release-state/active.json"
+            --lock-owner "$lock_owner"
+            --lock-generation "$generation"
+            --lock-state-file "$lock_state"
+            --trigger-stage "controlled-deploy-evidence-upload"
+            --trigger-exit-code 1
+            --output "$rollback_path"
+          )
+          previous_release_id="$(jq -r '.previousReleaseId // empty' form_catalog_releases/active.json)"
+          if [[ -n "$previous_release_id" ]]; then
+            rollback_args+=(--previous-release-id "$previous_release_id")
+          fi
+          python3 -m scripts.form_catalog_factory rollback-hosting \
+            "${rollback_args[@]}"
+
+      - name: Preserve form catalog upload-failure recovery evidence
+        id: form_catalog_recovery_upload
+        if: >-
+          ${{
+            always()
+            && steps.form_catalog_release.outputs.active == 'true'
+            && steps.form_catalog_evidence_upload.outcome == 'failure'
+          }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: form-catalog-hosting-recovery-${{ steps.form_catalog_release.outputs.release_id }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/form-catalog-hosting-before.json
+            ${{ runner.temp }}/firebase-hosting-deploy-result.json
+            ${{ runner.temp }}/form-catalog-active-mapping.json
+            ${{ runner.temp }}/form-catalog-active.json
+            ${{ runner.temp }}/form-catalog-data.mjs
+            ${{ runner.temp }}/form-catalog-release-manifest.json
+            ${{ runner.temp }}/form-catalog-hosting-evidence.json
+            ${{ runner.temp }}/form-catalog-hosting-rollback.json
+            ${{ runner.temp }}/form-catalog-hosting-failure-current.json
+            ${{ runner.temp }}/form-catalog-hosting-failure-diagnostic.json
+            ${{ runner.temp }}/form-catalog-production-lock.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Fail when form catalog evidence upload failed
+        if: >-
+          ${{
+            always()
+            && steps.form_catalog_evidence_upload.outcome == 'failure'
+          }}
+        run: |
+          echo "Form catalog Hosting evidence upload failed; the deployment was not retained." >&2
+          exit 1
+
+      - name: Release shared production Hosting deployment lock
+        if: >-
+          ${{
+            always()
+            && needs.resolve.outputs.deploy_environment == 'prod'
+            && needs.resolve.outputs.dry_run != 'true'
+            && (
+              needs.resolve.outputs.component == 'frontend'
+              || needs.resolve.outputs.component == 'all'
+            )
+          }}
+        run: |
+          set -euo pipefail
+          state_file="$RUNNER_TEMP/form-catalog-production-lock.json"
+          if [[ ! -f "$state_file" ]]; then
+            echo "No production Hosting lock state exists; nothing to release."
+            exit 0
+          fi
+          if [[ "${{ steps.form_catalog_release.outputs.active }}" == "true" \
+            && "${{ (failure() || cancelled()) && 'true' || 'false' }}" == "true" ]]; then
+            rollback_path="$FORM_CATALOG_HOSTING_ROLLBACK_PATH"
+            diagnostic_path="$RUNNER_TEMP/form-catalog-hosting-failure-diagnostic.json"
+            lock_owner="controlled-deploy:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}"
+            release_id="${{ steps.form_catalog_release.outputs.release_id }}"
+            if [[ "${{ steps.form_catalog_evidence_upload.outcome }}" == "failure" \
+              && "${{ steps.form_catalog_recovery_upload.outcome }}" != "success" ]]; then
+              echo "Neither evidence upload preserved the terminal Hosting state. Retaining the production lock lease for manual repair." >&2
+              exit 1
+            fi
+            if [[ -s "$rollback_path" ]] && jq -e \
+              --arg lockOwner "$lock_owner" \
+              --arg releaseId "$release_id" '
+              .schemaVersion == 1
+              and .reportType == "form-catalog-hosting-rollback"
+              and .producer == "locked-post-live-gate"
+              and .environment == "production"
+              and .releaseId == $releaseId
+              and .productionLockOwner == $lockOwner
+              and .pointerUnchanged == true
+              and .ok == true
+            ' "$rollback_path" >/dev/null; then
+              echo "Verified canonical Hosting rollback receipt before lock release."
+            elif [[ -s "$diagnostic_path" ]] && jq -e \
+              --arg lockOwner "$lock_owner" \
+              --arg releaseId "$release_id" '
+              .schemaVersion == 1
+              and .reportType == "form-catalog-hosting-failure-diagnostic"
+              and .producer == "controlled-deploy-failure-gate"
+              and .environment == "production"
+              and .releaseId == $releaseId
+              and .productionLockOwner == $lockOwner
+              and .hostingUnchanged == true
+              and .rollbackAuthorized == false
+              and .ok == true
+            ' "$diagnostic_path" >/dev/null; then
+              echo "Verified that the failed run never changed Hosting."
+            else
+              echo "No verified terminal Hosting state exists. Retaining the production lock lease for manual repair." >&2
+              exit 1
+            fi
+          fi
+          bash scripts/form-catalog-production-lock.sh \
+            --action release \
+            --bucket gs://dullypdf-form-catalog-assets-east4 \
+            --project dullypdf \
+            --owner "controlled-deploy:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}" \
+            --state-file "$state_file"

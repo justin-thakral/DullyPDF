@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2213__banquet_order_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2213__banquet_order_post_event_review_form.pdf",
+  "slug": "banquet-order-post-event-review-form",
+  "title": "Banquet Order Post-Event Review Form",
+  "subtitle": "Close the function: reconcile guarantee against covers served, measure the timeline actuals, record client feedback, and close billing.",
+  "description": "An original post-function review for a banquet. It reconciles ordered, guaranteed, set, served, and billed counts, measures the service timeline against plan, records the client outcome and any complaint, opens actions for findings, and captures the learning that should change the next banquet event order.",
+  "use_case": "Use after a banquet function when banquets, culinary, and accounting must agree on what was served and what is billable, and when the team needs to know where the timeline slipped. The review closes when billing is agreed and every finding has an owner.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_identity",
+      "title": "Review identity and participants",
+      "guidance": "Bind the review to the order and the people who ran the function.",
+      "blocks": [
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Review identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review record ID",
+              "units": 0.9
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.2
+            },
+            {
+              "key": "function_date",
+              "label": "Function date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Participants and outcome",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "captain",
+              "label": "Captain on duty",
+              "units": 1.0
+            },
+            {
+              "key": "chef_on_duty",
+              "label": "Chef on duty",
+              "units": 0.95
+            },
+            {
+              "key": "service_manager",
+              "label": "Service manager",
+              "units": 1.05
+            },
+            {
+              "key": "covers_served",
+              "label": "Covers served",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "count_and_billing",
+      "title": "Count reconciliation and billing",
+      "guidance": "Ordered, guaranteed, set, served, billed - all five must agree or be explained.",
+      "blocks": [
+        {
+          "key": "count_reconciliation",
+          "type": "table",
+          "label": "Count reconciliation",
+          "columns": [
+            {
+              "key": "line",
+              "label": "Line item",
+              "units": 1.4
+            },
+            {
+              "key": "ordered",
+              "label": "Ordered",
+              "units": 0.7
+            },
+            {
+              "key": "guaranteed",
+              "label": "Guaranteed",
+              "units": 0.85
+            },
+            {
+              "key": "set",
+              "label": "Set",
+              "units": 0.55
+            },
+            {
+              "key": "served",
+              "label": "Served",
+              "units": 0.7
+            },
+            {
+              "key": "billed",
+              "label": "Billed",
+              "units": 0.7
+            }
+          ],
+          "rows": 6,
+          "guidance": "One row per billable line. A difference between served and billed needs a recorded reason."
+        },
+        {
+          "key": "billing_summary",
+          "type": "fields",
+          "label": "Billing summary",
+          "fields": [
+            {
+              "key": "guarantee_count",
+              "label": "Guaranteed covers",
+              "units": 1.15
+            },
+            {
+              "key": "served_count",
+              "label": "Covers served",
+              "units": 1.0
+            },
+            {
+              "key": "overset_used",
+              "label": "Overset used",
+              "units": 0.95
+            },
+            {
+              "key": "revenue_actual",
+              "label": "Revenue actual",
+              "units": 1.0
+            },
+            {
+              "key": "variance_amount",
+              "label": "Variance amount",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "billing_checks",
+          "type": "checklist",
+          "label": "Billing checks",
+          "items": [
+            "Guarantee applied per the signed agreement, not the set count",
+            "Overset covers charged or absorbed per venue standard",
+            "Consumption items reconciled to the inventory log",
+            "Bar charges reconciled to the beverage record",
+            "Service charge and tax lines reviewed against the account",
+            "Approved remediation or adjustments applied with a reference",
+            "Final account reviewed with the client on-site contact"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_performance",
+      "title": "Timeline actuals and service performance",
+      "guidance": "Measure where the clock slipped and why.",
+      "blocks": [
+        {
+          "key": "timeline_actuals",
+          "type": "table",
+          "label": "Timeline actuals against plan",
+          "columns": [
+            {
+              "key": "cue",
+              "label": "Cue",
+              "units": 1.3
+            },
+            {
+              "key": "planned_time",
+              "label": "Planned",
+              "units": 0.8
+            },
+            {
+              "key": "actual_time",
+              "label": "Actual",
+              "units": 0.8
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 0.8
+            },
+            {
+              "key": "cause",
+              "label": "Cause",
+              "units": 1.4
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "performance_findings",
+          "type": "checklist",
+          "label": "Performance findings",
+          "items": [
+            "Doors opened on the ordered time",
+            "Every course cleared within the planned window",
+            "Planned covers-per-server ratio held through service",
+            "Restricted plates reached the correct seats and were confirmed",
+            "Holding temperatures stayed within the venue standard through service",
+            "Buffet replenishment kept pace with the floor",
+            "Teardown completed by the ordered time"
+          ]
+        },
+        {
+          "key": "performance_notes",
+          "type": "textarea",
+          "label": "Where service worked, where it slipped, and what it cost",
+          "fields": [
+            {
+              "key": "performance_detail",
+              "label": "Service performance detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "client_outcome",
+      "title": "Client outcome and complaint record",
+      "guidance": "Record what the client said, in their terms.",
+      "blocks": [
+        {
+          "key": "outcome_record",
+          "type": "fields",
+          "label": "Client outcome",
+          "fields": [
+            {
+              "key": "satisfaction",
+              "label": "Client satisfaction",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "Very satisfied",
+                "Satisfied",
+                "Mixed",
+                "Dissatisfied"
+              ]
+            },
+            {
+              "key": "feedback_source",
+              "label": "Feedback source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not collected",
+                "On-site debrief",
+                "Post-event call",
+                "Written survey",
+                "Unsolicited email"
+              ]
+            },
+            {
+              "key": "complaint_raised",
+              "label": "Complaint raised",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Raised and resolved",
+                "Raised - still open",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "rebook_intent",
+              "label": "Rebook intent",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Unknown",
+                "Rebooked already",
+                "Likely",
+                "Unlikely",
+                "Will not return"
+              ]
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "client_feedback",
+          "type": "textarea",
+          "label": "Client feedback and what was promised in response",
+          "fields": [
+            {
+              "key": "feedback_detail",
+              "label": "Client feedback record"
+            }
+          ],
+          "height": 58,
+          "guidance": "Record what was said and who said it. Do not record health information or judgments about individual staff."
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Record boundary for this review",
+          "guidance": "This review is an internal operating and billing record. It does not settle a billing dispute, determine liability for an incident, evaluate an individual employee, or authorize compensation. Route account adjustments, claims, and personnel matters to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "review_findings",
+      "title": "Findings requiring action and escalation",
+      "guidance": "A finding without an owner will recur next function.",
+      "blocks": [
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A restricted plate reached the wrong guest during the function",
+            "A holding temperature outside the standard was recorded during service",
+            "Billed covers differ from served covers without an agreed reason",
+            "An open incident report from this function is unresolved",
+            "The client complaint is still open at review",
+            "Covers served exceeded the room's confirmed capacity",
+            "The same finding appeared in a prior function review"
+          ]
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Finding and action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "action_agreed",
+              "label": "Action agreed",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Learning, closeout, and handoff",
+      "guidance": "Put the learning where the next order will meet it.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - no actions",
+                "Closed with actions",
+                "Escalated to leadership",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "learning_log",
+          "type": "table",
+          "label": "Learning log",
+          "columns": [
+            {
+              "key": "change",
+              "label": "What to change",
+              "units": 1.4
+            },
+            {
+              "key": "recorded_in",
+              "label": "Where recorded",
+              "units": 1.0
+            },
+            {
+              "key": "applies_to",
+              "label": "Applies to",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Name the order template, briefing, or checklist that will carry the change."
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Count reconciliation agreed with accounting",
+            "Timeline actuals filed with the function record",
+            "Client feedback recorded with its source and date",
+            "Open findings transferred with named owners and due points",
+            "Learning entries written into the named template or briefing",
+            "Review filed against the banquet order record"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Review outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Review closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by director of catering",
+              "units": 1.35
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

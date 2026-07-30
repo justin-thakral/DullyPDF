@@ -1,0 +1,654 @@
+{
+  "catalog_id": "facilities_maintenance/dfm_1219__chiller_incident_report_form",
+  "description": "An original, jurisdiction-neutral chiller incident response, evidence, investigation, and corrective action record for a central cooling asset serving occupied or process loads through a refrigerant circuit and evaporator and condenser heat transfer. It connects facility identity, asset-specific evidence, hazards, qualified decisions, exceptions, service status, and accountable closeout without replacing employer procedures or trade judgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.95
+            },
+            {
+              "key": "record_opened_date",
+              "label": "Opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time_zone",
+              "label": "Opened time and zone",
+              "units": 1.0
+            },
+            {
+              "key": "work_order_reference",
+              "label": "Work order or route",
+              "units": 1.1
+            },
+            {
+              "field_type": "choice",
+              "key": "priority",
+              "label": "Priority",
+              "options": [
+                "Select priority",
+                "Routine",
+                "Scheduled",
+                "Urgent",
+                "Emergency"
+              ],
+              "units": 0.8
+            }
+          ],
+          "key": "record_reference",
+          "label": "Record reference and timing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.15
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.05
+            },
+            {
+              "key": "asset_reference",
+              "label": "Asset or route reference",
+              "units": 1.0
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.15
+            }
+          ],
+          "key": "facility_routing",
+          "label": "Facility, location, and responsible parties",
+          "type": "fields"
+        },
+        {
+          "guidance": "This Chiller record organizes facts and evidence. It does not replace employer energy-control procedures, permits, manufacturer instructions, required inspection, emergency response, or qualified trade judgment. Stop and route any unsafe or uncertain condition.",
+          "key": "record_boundary",
+          "label": "Safety and authority boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Open one traceable record, identify the responsible parties, and set the review route.",
+      "key": "record_identity",
+      "title": "Chiller Incident Report identity and routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "chiller_id",
+              "label": "Chiller or asset ID",
+              "units": 1.0
+            },
+            {
+              "key": "plant_location",
+              "label": "Plant and exact location",
+              "units": 1.2
+            },
+            {
+              "key": "manufacturer_model",
+              "label": "Manufacturer and model",
+              "units": 1.25
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "rated_capacity",
+              "label": "Rated tons or capacity",
+              "units": 0.9
+            },
+            {
+              "field_type": "choice",
+              "key": "chiller_configuration",
+              "label": "Chiller configuration",
+              "options": [
+                "Select configuration",
+                "Air-cooled",
+                "Water-cooled",
+                "Absorption",
+                "Modular",
+                "Other"
+              ],
+              "units": 1.15
+            }
+          ],
+          "key": "asset_profile",
+          "label": "Chiller asset and system profile",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only directly observed or source-supported items; explain inaccessible, not applicable, or conflicting evidence below.",
+          "items": [
+            "Refrigerant type, charge record, and circuit identity are referenced",
+            "Compressor, starter, oil system, and vibration condition are recorded",
+            "Evaporator and condenser entering and leaving temperatures are captured",
+            "Water flow, pump status, valve position, and pressure evidence are linked",
+            "Tube, coil, strainer, and heat-transfer surface condition is documented",
+            "Approach temperatures and load conditions are tied to the reading time",
+            "Refrigerant, oil, and water leak evidence is distinguished by location",
+            "Pressure, temperature, flow, freeze, and relief safeguards are identified",
+            "Controller alarms, BAS trends, setpoints, and overrides are reconciled",
+            "Cooling tower or dry-cooler interface condition is recorded when applicable",
+            "Electrical enclosure, disconnect, conductors, and grounding are observed",
+            "Recent service, refrigerant handling, and unresolved deficiency records are linked"
+          ],
+          "key": "evidence_checkpoints",
+          "label": "Chiller evidence checkpoints",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "component",
+              "label": "Circuit or component",
+              "units": 1.15
+            },
+            {
+              "key": "condition",
+              "label": "Condition or operating state",
+              "units": 1.2
+            },
+            {
+              "key": "reading",
+              "label": "Reading and units",
+              "units": 0.9
+            },
+            {
+              "key": "target",
+              "label": "Target or source",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "action",
+              "label": "Action or owner",
+              "units": 1.05
+            }
+          ],
+          "guidance": "Tie each entry to a location, source, reading condition, photo, tag, log, or other retrievable evidence.",
+          "key": "asset_register",
+          "label": "Chiller circuit, component, reading, and evidence register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Chiller condition, recent history, known changes, evidence conflicts, and access limitations",
+              "multiline": true
+            }
+          ],
+          "height": 64,
+          "key": "asset_history",
+          "label": "Chiller condition, recent history, known changes, evidence conflicts, and access limitations",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Capture the exact asset context, supported observations, and source references.",
+      "key": "asset_evidence",
+      "title": "Chiller facts and source evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "incident_date_time",
+              "label": "Incident date and time",
+              "units": 1.05
+            },
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 1.05
+            },
+            {
+              "key": "reporter",
+              "label": "Reporter and contact",
+              "units": 1.05
+            },
+            {
+              "key": "initial_severity",
+              "label": "Initial severity",
+              "units": 0.95
+            },
+            {
+              "key": "emergency_reference",
+              "label": "Emergency response ref",
+              "units": 1.15
+            },
+            {
+              "key": "investigation_owner",
+              "label": "Investigation owner",
+              "units": 1.05
+            }
+          ],
+          "key": "workflow_context",
+          "label": "Incident Report scope, timing, and responsible roles",
+          "type": "fields"
+        },
+        {
+          "guidance": "A checked item confirms the control was addressed; it does not substitute for the referenced procedure, permit, test, or source.",
+          "items": [
+            "Life safety, emergency response, isolation, evacuation, and medical needs are addressed first",
+            "Scene, equipment state, alarms, controls, weather, and operating context are preserved",
+            "Direct observations, witness statements, system records, and later analysis are distinguished",
+            "People, property, environment, service, occupant, regulatory, and business impacts are mapped",
+            "Photos, logs, samples, damaged parts, video, access records, and custody are indexed",
+            "Notifications identify recipient, time, method, message, and confirmation",
+            "Cause hypotheses remain provisional until evidence and qualified review support them",
+            "Corrective actions separate immediate containment, interim control, permanent correction, and verification"
+          ],
+          "key": "workflow_controls",
+          "label": "Chiller incident report controls",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "event_fact",
+              "label": "Event or verified fact",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Source or witness",
+              "units": 0.95
+            },
+            {
+              "key": "impact_action",
+              "label": "Impact or action",
+              "units": 1.1
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "owner_status",
+              "label": "Owner or status",
+              "units": 1.0
+            }
+          ],
+          "key": "workflow_register",
+          "label": "Incident chronology, evidence, impact, and action log",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Objective incident narrative, sequence, uncertainty, competing explanations, and investigation limits",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "key": "workflow_narrative",
+          "label": "Objective incident narrative, sequence, uncertainty, competing explanations, and investigation limits",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Turn the form purpose into evidence, accountable actions, and a reviewable disposition.",
+      "key": "workflow_control",
+      "title": "Chiller incident report control record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "A checked condition requires immediate protective action, a named owner, qualified review, and a final disposition.",
+          "items": [
+            "Suspected refrigerant release, oxygen-deficiency concern, or strong chemical odor",
+            "High-pressure, freeze, flow, oil, motor, or relief safeguard is active or bypassed",
+            "Unexpected electrical, mechanical, hydraulic, pneumatic, or thermal energy is uncontrolled",
+            "Water loss, tube rupture, flooding, or freeze damage threatens people or equipment",
+            "Starter, conductor, disconnect, or enclosure shows heat, arcing, or exposed live parts",
+            "Compressor noise, vibration, oil loss, or pressure condition suggests imminent damage",
+            "Required refrigerant credential, work authorization, permit, or recovery route is unavailable",
+            "Operating data conflicts with nameplate, controller, BAS trend, or prior service evidence"
+          ],
+          "key": "stop_conditions",
+          "label": "Stop and escalate when any condition is present",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate protective action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.95
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due point or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.7
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "key": "exception_register",
+          "label": "Chiller exception and protective-action register",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "exception_narrative",
+          "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not resolve a checked stop condition by inference, an unchecked box, or a generic sign-off. Preserve the condition, protective action, authority, evidence, owner, due point, and verified disposition.",
+          "key": "escalation_boundary",
+          "label": "Escalation record boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Stop when authority, access, energy control, safety, evidence, or service status is unresolved.",
+      "key": "exceptions_escalation",
+      "title": "Chiller stop conditions, exceptions, and escalation"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "options": [
+                "Select disposition",
+                "Emergency response active",
+                "Contained - investigation open",
+                "Interim controls active",
+                "Permanent correction pending",
+                "Corrective action verified",
+                "Incident closed"
+              ],
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.85
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.85
+            },
+            {
+              "key": "review_or_expiry",
+              "label": "Review or expiry date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 1.1
+            },
+            {
+              "key": "communication_route",
+              "label": "Communication route",
+              "units": 1.05
+            }
+          ],
+          "key": "decision_record",
+          "label": "Incident Report decision, timing, and authority",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only controls supported by referenced evidence; unresolved controls remain open conditions.",
+          "items": [
+            "Immediate protective actions and service restrictions remain effective",
+            "Evidence, statements, logs, damaged items, and custody support the findings",
+            "Qualified reviewers approve technical conclusions within their disciplines",
+            "Root and contributing factors are separated from symptoms and unsupported blame",
+            "Corrective actions have owners, due points, verification methods, and effectiveness review",
+            "Required people, authority, insurer, vendor, tenant, and management notifications are complete",
+            "Qualified reviewer confirms refrigerant work and leak records use the approved process",
+            "Operating readings are evaluated only against manufacturer or approved facility criteria",
+            "Water-side valves, pumps, strainers, and treatment impacts have accountable owners",
+            "Safeties, alarms, setpoints, and overrides are restored or visibly restricted",
+            "Any temporary operation has a limit, monitoring owner, and stop trigger",
+            "Return to service is authorized separately from completion of the record"
+          ],
+          "key": "decision_controls",
+          "label": "Chiller incident report decision controls",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "key": "decision_rationale",
+          "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "key": "decision_approval",
+          "label": "Preparation, qualified review, and facility authorization",
+          "type": "signatures"
+        },
+        {
+          "guidance": "Do not use this Chiller record as permission for work outside the approved scope, as proof that an unperformed test passed, or as a substitute for required qualified-person, employer, authority, or manufacturer approval.",
+          "key": "decision_limitation",
+          "label": "Decision-use limitation",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Separate the authorized decision from preliminary observation and record its limits.",
+      "key": "qualified_decision",
+      "title": "Chiller qualified decision and authorization"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final incident status",
+              "units": 1.2
+            },
+            {
+              "key": "service_or_asset_status",
+              "label": "Service or asset status",
+              "units": 1.0
+            },
+            {
+              "key": "final_evidence_reference",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "remaining_action_owner",
+              "label": "Remaining action owner",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.05
+            },
+            {
+              "key": "closure_date_time",
+              "label": "Closure date and time",
+              "units": 1.0
+            }
+          ],
+          "key": "outcome_handoff",
+          "label": "Incident Report outcome and primary handoff",
+          "type": "fields"
+        },
+        {
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger before the record can be treated as closed.",
+          "items": [
+            "Refrigerant, oil, and water circuits have a documented final leak condition",
+            "Valves, pumps, strainers, vents, drains, and access panels are left in the approved state",
+            "Energy-control devices are removed only by the authorized process and person",
+            "Controller modes, alarms, setpoints, BAS points, and schedules are reconciled",
+            "Open cooling-load risk and temporary capacity limits are communicated",
+            "Refrigerant handling, parts, readings, photos, and service evidence are filed"
+          ],
+          "key": "closeout_evidence",
+          "label": "Chiller closeout evidence",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "record_or_item",
+              "label": "Record or item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_owner",
+              "label": "Recipient or owner",
+              "units": 1.0
+            },
+            {
+              "key": "date_method",
+              "label": "Date and method",
+              "units": 0.95
+            },
+            {
+              "key": "status_due",
+              "label": "Status or due point",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_register",
+          "label": "Final evidence, communication, custody, and follow-up register",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "closeout_summary",
+          "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close only when the final condition is evidenced and every open action has an owner.",
+      "key": "completion_handoff",
+      "title": "Chiller completion, evidence reconciliation, and handoff"
+    }
+  ],
+  "slug": "chiller-incident-report-form",
+  "source_filename": "dfm_1219__chiller_incident_report_form.pdf",
+  "source_section": "facilities_maintenance",
+  "subtitle": "Chiller: Record immediate protection, equipment and scene facts, people and service impacts, timeline, evidence, causal review, corrective actions, authorization, and closure.",
+  "title": "Chiller Incident Report Form",
+  "use_case": "Use when a facility owner, maintenance coordinator, qualified technician, or service vendor needs one traceable chiller incident report record from opening through evidence-backed disposition, handoff, and follow-up."
+}

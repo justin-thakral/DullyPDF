@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1662__volunteer_chaperone_meeting_notes_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1662__volunteer_chaperone_meeting_notes_form.pdf",
+  "slug": "volunteer-chaperone-meeting-notes-form",
+  "title": "Volunteer Chaperone Meeting Notes Form",
+  "subtitle": "An original operational meeting notes for volunteer chaperone that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This Volunteer Chaperone Meeting Notes Form supports the complete volunteer chaperone workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the Volunteer Chaperone Meeting Notes Form when the assigned volunteer coordinator needs one fillable record for volunteer eligibility reference, assignment scope, supervision, child boundaries, and return without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Volunteer chaperone meeting notes identity and routing",
+      "guidance": "Connect this meeting notes to one volunteer eligibility reference, assignment scope, supervision, child boundaries, and return record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Volunteer chaperone record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "School, program, trip, or activity site",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Volunteer shift or assigned group",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Volunteer or assignment reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Program administrator or emergency contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned volunteer coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "Volunteer chaperone scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "meeting_basis",
+      "title": "Volunteer chaperone meeting purpose, participants, and information boundary",
+      "guidance": "State the decision purpose and include only people and information needed for that purpose.",
+      "blocks": [
+        {
+          "key": "meeting_reference",
+          "type": "fields",
+          "label": "Meeting reference",
+          "fields": [
+            {
+              "key": "meeting_date",
+              "label": "Meeting date",
+              "units": 0.9
+            },
+            {
+              "key": "meeting_time",
+              "label": "Start and end time",
+              "units": 1.0
+            },
+            {
+              "key": "facilitator",
+              "label": "Facilitator",
+              "units": 1.1
+            },
+            {
+              "key": "decision_purpose",
+              "label": "Decision purpose",
+              "units": 1.4
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "attendees",
+          "type": "table",
+          "label": "Attendee, role, participation route, and follow-up responsibility",
+          "columns": [
+            {
+              "key": "attendee",
+              "label": "Attendee or reference",
+              "units": 1.3
+            },
+            {
+              "key": "role",
+              "label": "Role or relationship",
+              "units": 1.1
+            },
+            {
+              "key": "route",
+              "label": "In person, remote, or input supplied",
+              "units": 1.3
+            },
+            {
+              "key": "responsibility",
+              "label": "Follow-up responsibility",
+              "units": 1.3
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "agenda_topics",
+          "type": "checklist",
+          "label": "Volunteer chaperone agenda and review topics",
+          "items": [
+            "Event, shift, group, supervisor, and volunteer assignments",
+            "Screening reference, orientation, conduct, and reporting route",
+            "Supervision ratios, child boundaries, and one-to-one exclusions",
+            "Headcount, movement, restroom, transport, and release duties",
+            "Emergency, missing-child, illness, injury, and incident response",
+            "Privacy, minimum-necessary information, and restricted-record custody",
+            "Keys, devices, equipment, communication, and activity supports",
+            "Open conditions, owners, due points, shift handoff, and closeout"
+          ]
+        },
+        {
+          "key": "meeting_boundary",
+          "type": "notice",
+          "label": "Meeting and record boundary",
+          "guidance": "This form records a volunteer-chaperone assignment; it does not prove screening, grant unsupervised authority, decide child custody or release, authorize medical or transport duties, or replace emergency services. Stop the assignment when identity, eligibility, supervision, child boundaries, privacy, or safety is unresolved. Limit information and access, and route decisions to authorized program staff."
+        }
+      ]
+    },
+    {
+      "key": "discussion_evidence",
+      "title": "Volunteer chaperone discussion, evidence, and unresolved questions",
+      "guidance": "Separate observed facts, supplied information, assumptions, decisions, and open questions.",
+      "blocks": [
+        {
+          "key": "discussion_log",
+          "type": "table",
+          "label": "Topic, source or evidence, discussion result, question, and owner",
+          "columns": [
+            {
+              "key": "topic",
+              "label": "Topic or issue",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source or evidence ref.",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Discussion result",
+              "units": 1.2
+            },
+            {
+              "key": "question",
+              "label": "Open question",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "conditions_reviewed",
+          "type": "checklist",
+          "label": "Conditions, conflicts, and stop indicators reviewed",
+          "items": [
+            "Volunteer identity, eligibility status, or assignment cannot be confirmed",
+            "Supervisor, group, shift, or activity scope changed",
+            "Volunteer is asked to act outside the documented role",
+            "Child boundary, one-to-one, transport, restroom, or release concern arises",
+            "Private student, guardian, health, or contact information is exposed",
+            "Child is missing, ill, injured, distressed, or needs qualified support",
+            "Key, device, roster, equipment, or restricted record is missing",
+            "Incident, complaint, conduct, attendance, or handoff record is disputed"
+          ]
+        },
+        {
+          "key": "context_unknowns",
+          "type": "textarea",
+          "label": "Context, exact words when necessary, dissent, assumptions, privacy limits, and unknowns",
+          "fields": [
+            {
+              "key": "context",
+              "label": "Context, dissent, assumptions, privacy limits, and unknowns"
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "decisions_authorization",
+      "title": "Volunteer chaperone decisions, authorization, and accepted limitations",
+      "guidance": "Record who may decide, what was decided, the source, and what remains outside scope.",
+      "blocks": [
+        {
+          "key": "decision_register",
+          "type": "table",
+          "label": "Decision item, authorized outcome, limit, source, and reviewer",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Decision item",
+              "units": 1.1
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome or alternative",
+              "units": 1.2
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Policy or source ref.",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Authorized reviewer",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Volunteer chaperone meeting decision status",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the program administrator, volunteer coordinator, guardian-facing lead, and qualified safety reviewer."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, declined alternatives, participant or guardian impact, and communication plan",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Rationale, alternatives, impact, and communication plan"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "actions_exceptions",
+      "title": "Volunteer chaperone action register, exceptions, and recipient handoff",
+      "guidance": "Give each action an owner, due point, completion evidence, and accountable recipient.",
+      "blocks": [
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Action, owner, due point, evidence, and recipient",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or correction",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Meeting exceptions and escalation indicators",
+          "items": [
+            "Volunteer assignment cannot start or continue",
+            "Identity, eligibility, orientation, or supervisor route is incomplete",
+            "Requested duty exceeds the authorized volunteer role",
+            "Child boundary, privacy, equipment, or restricted-record control is unresolved",
+            "Immediate missing-child, illness, injury, conduct, or safety response is active",
+            "Check-out, item return, incident, or supervisor handoff remains unresolved"
+          ]
+        },
+        {
+          "key": "meeting_handoff",
+          "type": "checklist",
+          "label": "Meeting handoff and record controls",
+          "items": [
+            "Decision scope and retained limitations communicated",
+            "Participant, guardian, or staff impact routed appropriately",
+            "Private information stored in the approved record",
+            "Each open action has an owner and due point",
+            "Escalated question has an authorized reviewer",
+            "Minutes recipient and next review point recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Volunteer chaperone outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "Volunteer chaperone closeout controls",
+          "items": [
+            "Volunteer shift and group accountability accepted",
+            "Supervisor communication and release status recorded",
+            "Unresolved incident, conduct, or support action has an owner",
+            "Keys, devices, equipment, and restricted records returned",
+            "Program, screening, facilities, or safety follow-up linked",
+            "Volunteer record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Meeting Notes closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

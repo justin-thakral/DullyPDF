@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2250__wedding_planning_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2250__wedding_planning_order_form.pdf",
+  "slug": "wedding-planning-order-form",
+  "title": "Wedding Planning Order Form",
+  "subtitle": "Issue one controlled wedding execution order covering schedule, spaces, suppliers, service handoffs, revisions, and final operating approval.",
+  "description": "An original wedding-planning order that converts approved decisions into a versioned operating record for venue teams and suppliers. It coordinates the ceremony and reception run of show, room transitions, responsibility handoffs, exception decisions, and day-of release.",
+  "use_case": "Use after the planning request and commercial agreement are approved and the operating teams need a controlled execution record. Reissue the order for material changes; close it after final distribution, day-of release, and transfer of remaining exceptions to the event lead.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "order_control",
+      "title": "Order control and distribution",
+      "guidance": "Identify the authoritative revision and everyone expected to use it.",
+      "blocks": [
+        {
+          "key": "order_identity",
+          "type": "fields",
+          "label": "Order identity",
+          "fields": [
+            {
+              "key": "order_id",
+              "label": "Planning order ID",
+              "units": 0.9
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.65
+            },
+            {
+              "key": "issue_date",
+              "label": "Issue date",
+              "units": 0.75
+            },
+            {
+              "key": "wedding_date",
+              "label": "Wedding date",
+              "units": 0.8
+            },
+            {
+              "key": "event_lead",
+              "label": "Event lead",
+              "units": 1.0
+            },
+            {
+              "key": "client_contact",
+              "label": "Client contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "distribution_list",
+          "type": "table",
+          "label": "Controlled distribution list",
+          "columns": [
+            {
+              "key": "team_role",
+              "label": "Team or role",
+              "units": 1.2
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.1
+            },
+            {
+              "key": "sent_at",
+              "label": "Sent at",
+              "units": 0.85
+            },
+            {
+              "key": "acknowledged",
+              "label": "Acknowledged",
+              "units": 0.9
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.65
+            }
+          ],
+          "rows": 4,
+          "guidance": "Superseded copies should be withdrawn or clearly marked."
+        }
+      ]
+    },
+    {
+      "key": "run_of_show",
+      "title": "Ceremony and reception run of show",
+      "guidance": "Translate the approved program into timed operating handoffs.",
+      "blocks": [
+        {
+          "key": "timeline",
+          "type": "table",
+          "label": "Master event timeline",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.55
+            },
+            {
+              "key": "milestone",
+              "label": "Milestone",
+              "units": 1.35
+            },
+            {
+              "key": "space",
+              "label": "Space",
+              "units": 0.9
+            },
+            {
+              "key": "lead",
+              "label": "Lead",
+              "units": 0.8
+            },
+            {
+              "key": "handoff",
+              "label": "Handoff or cue",
+              "units": 1.35
+            }
+          ],
+          "rows": 8,
+          "guidance": "Use one row per cue that transfers responsibility between teams."
+        },
+        {
+          "key": "timing_controls",
+          "type": "fields",
+          "label": "Timing controls",
+          "fields": [
+            {
+              "key": "vendor_access",
+              "label": "First vendor access",
+              "units": 0.95
+            },
+            {
+              "key": "guest_arrival",
+              "label": "Guest arrival",
+              "units": 0.85
+            },
+            {
+              "key": "ceremony_start",
+              "label": "Ceremony start",
+              "units": 0.85
+            },
+            {
+              "key": "reception_start",
+              "label": "Reception start",
+              "units": 0.9
+            },
+            {
+              "key": "last_service",
+              "label": "Last service point",
+              "units": 0.9
+            },
+            {
+              "key": "venue_clear",
+              "label": "Venue clear by",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "spaces_setups",
+      "title": "Spaces, setups, and transition ownership",
+      "guidance": "State the approved use and reset responsibility for each space.",
+      "blocks": [
+        {
+          "key": "space_plan",
+          "type": "table",
+          "label": "Space and setup order",
+          "columns": [
+            {
+              "key": "space",
+              "label": "Space",
+              "units": 1.0
+            },
+            {
+              "key": "use",
+              "label": "Approved use",
+              "units": 1.2
+            },
+            {
+              "key": "setup",
+              "label": "Setup detail",
+              "units": 1.35
+            },
+            {
+              "key": "ready_by",
+              "label": "Ready by",
+              "units": 0.75
+            },
+            {
+              "key": "owner",
+              "label": "Setup owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "transition_checks",
+          "type": "checklist",
+          "label": "Transition controls",
+          "items": [
+            "Weather decision time and decision owner recorded",
+            "Ceremony-to-cocktail transition owner assigned",
+            "Cocktail-to-reception guest route confirmed",
+            "Accessible route kept available through each transition",
+            "Private items and gifts have a custody owner",
+            "Room reset and strike windows confirmed",
+            "Noise or neighborhood limits routed to event lead"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_orders",
+      "title": "Supplier and service orders",
+      "guidance": "Link each supplier deliverable to its operating owner and acceptance point.",
+      "blocks": [
+        {
+          "key": "supplier_orders",
+          "type": "table",
+          "label": "Supplier deliverables",
+          "columns": [
+            {
+              "key": "supplier",
+              "label": "Supplier",
+              "units": 1.1
+            },
+            {
+              "key": "deliverable",
+              "label": "Deliverable",
+              "units": 1.35
+            },
+            {
+              "key": "arrival",
+              "label": "Arrival",
+              "units": 0.8
+            },
+            {
+              "key": "venue_owner",
+              "label": "Venue owner",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance point",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "service_handoffs",
+          "type": "checklist",
+          "label": "Service handoffs confirmed",
+          "items": [
+            "Catering order and meal timing linked",
+            "Bar service order linked and separately approved",
+            "Production cue sheet and power plan linked",
+            "Floral, decor, and rental placement plan linked",
+            "Photography and private-space access boundaries shared",
+            "Cake or specialty food handoff owner identified",
+            "Transportation arrival and departure contacts shared",
+            "Supplier load-out and item custody owners identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "change_control",
+      "title": "Change control and exception decisions",
+      "guidance": "Record approved changes without obscuring the last authorized order.",
+      "blocks": [
+        {
+          "key": "change_register",
+          "type": "table",
+          "label": "Revision and change register",
+          "columns": [
+            {
+              "key": "change",
+              "label": "Requested change",
+              "units": 1.35
+            },
+            {
+              "key": "impact",
+              "label": "Schedule or service impact",
+              "units": 1.35
+            },
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.95
+            },
+            {
+              "key": "revision",
+              "label": "Order revision",
+              "units": 0.7
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Open exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.25
+            },
+            {
+              "key": "containment",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Order authority boundary",
+          "guidance": "This order coordinates approved operations; it does not replace the signed commercial agreement or responsible-role decisions for capacity, egress, accessibility, food or allergen controls, alcohol service, security, or supplier credentials. Stop and route a conflicting or unapproved change before execution."
+        }
+      ]
+    },
+    {
+      "key": "operating_release",
+      "title": "Final review, release, and handoff",
+      "guidance": "Release only the current order and leave no ownerless exception.",
+      "blocks": [
+        {
+          "key": "release_status",
+          "type": "fields",
+          "label": "Operating release",
+          "fields": [
+            {
+              "key": "final_revision",
+              "label": "Final revision",
+              "units": 0.7
+            },
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Released",
+                "Released with exceptions",
+                "Not released"
+              ]
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "release_time",
+              "label": "Release date and time",
+              "units": 1.0
+            },
+            {
+              "key": "day_of_lead",
+              "label": "Day-of lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "release_checks",
+          "type": "checklist",
+          "label": "Release confirmations",
+          "items": [
+            "Latest order distributed to every operating lead",
+            "Superseded revision withdrawn or marked",
+            "Critical cues confirmed with responsible owners",
+            "Weather and accessibility decisions have named owners",
+            "Open exceptions transferred to the day-of lead",
+            "Emergency and escalation contacts available to leads",
+            "Post-event record and item-custody owners assigned"
+          ]
+        },
+        {
+          "key": "release_signatures",
+          "type": "signatures",
+          "label": "Order preparation and release",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "released_date",
+              "label": "Release date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

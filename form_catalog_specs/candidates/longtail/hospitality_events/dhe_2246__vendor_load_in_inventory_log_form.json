@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2246__vendor_load_in_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2246__vendor_load_in_inventory_log_form.pdf",
+  "slug": "vendor-load-in-inventory-log-form",
+  "title": "Vendor Load-In Inventory Log Form",
+  "subtitle": "Track vendor equipment and delivery units through receipt, staging, destination handoff, return movement, and discrepancy closeout.",
+  "description": "An original movement inventory ledger for cases, carts, pallets, rentals, equipment, keys, passes, and other controlled load-in units. It records custody changes, location, condition, quantity, discrepancies, return ownership, and the final reconciled balance.",
+  "use_case": "Use when a load-in includes units the venue or vendor must account for across unloading, staging, setup, storage, strike, or return. Maintain one log until all entries have a final location and custody disposition.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Inventory scope and custodian",
+      "guidance": "Define the movement window and who controls the ledger.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log ID",
+              "units": 0.85
+            },
+            {
+              "key": "order_id",
+              "label": "Order ID",
+              "units": 0.85
+            },
+            {
+              "key": "vendor_name",
+              "label": "Vendor",
+              "units": 1.15
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Ledger setup checks",
+          "items": [
+            "Vendor packing list or expected-unit list is attached",
+            "Reusable cases, carts, pallets, and rentals are included",
+            "High-value or fragile units are separately identifiable",
+            "Keys, badges, passes, and access devices are included",
+            "Starting condition evidence is linked where needed",
+            "Return or strike ownership and timing are recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Unit movement and custody ledger",
+      "guidance": "Give every controlled unit a traceable location and handoff.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Inventory movements",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Unit ID",
+              "units": 0.85
+            },
+            {
+              "key": "description",
+              "label": "Description",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Qty",
+              "units": 0.55
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Custody or status",
+              "units": 1.25
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Balance context",
+          "fields": [
+            {
+              "key": "expected_units",
+              "label": "Expected units",
+              "units": 1.0
+            },
+            {
+              "key": "received_units",
+              "label": "Received units",
+              "units": 1.0
+            },
+            {
+              "key": "returned_units",
+              "label": "Returned units",
+              "units": 1.0
+            },
+            {
+              "key": "open_variance",
+              "label": "Open variance",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Condition decisions and authorization",
+      "guidance": "Record discrepancy decisions and authorization rather than forcing a false balance.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Custody controls",
+          "items": [
+            "Each receipt identifies the accepting person and location",
+            "Quantity changes are supported by a movement entry",
+            "Condition changes carry an observation or photo reference",
+            "Temporary storage has a named access owner",
+            "Missing or unidentified units are isolated for review",
+            "Return units are accepted by the named vendor representative"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Variance and condition register",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit",
+              "units": 0.9
+            },
+            {
+              "key": "variance",
+              "label": "Variance or condition",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Inventory status and escalation",
+      "guidance": "Keep unresolved custody or condition questions open.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Ledger disposition",
+          "fields": [
+            {
+              "key": "ledger_status",
+              "label": "Ledger status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed",
+                "Escalated",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "reconciled_by",
+              "label": "Reconciled by",
+              "units": 1.0
+            },
+            {
+              "key": "balance_date",
+              "label": "Balance date",
+              "units": 1.0
+            },
+            {
+              "key": "incident_ref",
+              "label": "Incident ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Unresolved units, custody limits, and reconciliation rationale",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Inventory reconciliation detail"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Custody record boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Final balance and ledger handoff",
+      "guidance": "Confirm where every unit went and who owns any remaining variance.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Open inventory actions",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit or group",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Inventory closeout",
+          "items": [
+            "Received, staged, delivered, and returned counts reconcile",
+            "Venue-owned and vendor-owned units are distinguished",
+            "Keys, badges, passes, carts, and rentals are returned",
+            "Open variances have linked incidents and named owners",
+            "Final ledger was shared with the vendor and venue lead"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Ledger custody and reconciliation",
+          "fields": [
+            {
+              "key": "venue_custodian",
+              "label": "Venue custodian",
+              "units": 1.15
+            },
+            {
+              "key": "venue_date",
+              "label": "Venue date",
+              "units": 0.8
+            },
+            {
+              "key": "vendor_custodian",
+              "label": "Vendor custodian",
+              "units": 1.15
+            },
+            {
+              "key": "vendor_date",
+              "label": "Vendor date",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

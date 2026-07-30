@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2204__event_inquiry_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2204__event_inquiry_inventory_log_form.pdf",
+  "slug": "event-inquiry-inventory-log-form",
+  "title": "Event Inquiry Inventory Log Form",
+  "subtitle": "Track date and space holds as perishable inventory across a period: ranks, expiries, releases, conversions, and reconciliation to the master calendar.",
+  "description": "An original period log that treats inquiry holds as inventory. It records the log period and calendar of record, the open hold register with rank and expiry, every hold movement with its authorizing seller, reconciliation against the master calendar, exceptions such as duplicate first holds or expired holds never released, and an accountable period closeout.",
+  "use_case": "Use for a defined review period when a sales office must see which dates and spaces are actually committed, which holds are about to expire, and whether the log still matches the master calendar. The period closes after variances are corrected or escalated and the next period owner is named.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_period",
+      "title": "Log period, calendar of record, and routing",
+      "guidance": "Define the period, the owner, and the calendar this log reconciles to.",
+      "blocks": [
+        {
+          "key": "period_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.85
+            },
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.8
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.8
+            },
+            {
+              "key": "log_owner",
+              "label": "Assigned log owner",
+              "units": 1.1
+            },
+            {
+              "key": "property_name",
+              "label": "Property or venue",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "reconciliation_basis",
+          "type": "fields",
+          "label": "Reconciliation basis",
+          "fields": [
+            {
+              "key": "calendar_of_record",
+              "label": "Calendar of record",
+              "units": 1.2
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Daily",
+                "Twice weekly",
+                "Weekly",
+                "Monthly"
+              ]
+            },
+            {
+              "key": "last_reconciled",
+              "label": "Last reconciled",
+              "units": 1.0
+            },
+            {
+              "key": "reconciled_by",
+              "label": "Reconciled by",
+              "units": 1.05
+            }
+          ],
+          "guidance": "The master calendar is authoritative. This log is a working view that must be reconciled back to it."
+        }
+      ]
+    },
+    {
+      "key": "hold_inventory",
+      "title": "Open hold inventory",
+      "guidance": "One row per held date and space, with the rank and expiry that make it real.",
+      "blocks": [
+        {
+          "key": "hold_register",
+          "type": "table",
+          "label": "Open hold register",
+          "columns": [
+            {
+              "key": "hold_date",
+              "label": "Date held",
+              "units": 0.7
+            },
+            {
+              "key": "space",
+              "label": "Space",
+              "units": 1.0
+            },
+            {
+              "key": "hold_rank",
+              "label": "Rank",
+              "units": 0.45
+            },
+            {
+              "key": "client_reference",
+              "label": "Client or inquiry",
+              "units": 1.3
+            },
+            {
+              "key": "expires_on",
+              "label": "Expires",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.9
+            }
+          ],
+          "rows": 12,
+          "guidance": "A hold without an expiry date is not a hold; it is an unmanaged block on sellable inventory."
+        },
+        {
+          "key": "period_counts",
+          "type": "fields",
+          "label": "Period hold counts",
+          "fields": [
+            {
+              "key": "holds_open",
+              "label": "Holds open at close",
+              "units": 1.05
+            },
+            {
+              "key": "first_holds",
+              "label": "First-rank holds",
+              "units": 1.0
+            },
+            {
+              "key": "expiring_soon",
+              "label": "Expiring within 7 days",
+              "units": 1.2
+            },
+            {
+              "key": "converted_count",
+              "label": "Converted to definite",
+              "units": 1.15
+            },
+            {
+              "key": "released_count",
+              "label": "Released in period",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "movement_log",
+      "title": "Hold movements during the period",
+      "guidance": "Every rank change, extension, and release needs an authorizing name.",
+      "blocks": [
+        {
+          "key": "movement_register",
+          "type": "table",
+          "label": "Hold movement log",
+          "columns": [
+            {
+              "key": "action_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "subject",
+              "label": "Date and space",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.05
+            },
+            {
+              "key": "rank_change",
+              "label": "Rank change",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "movement_controls",
+          "type": "checklist",
+          "label": "Hold movement controls",
+          "items": [
+            "Every new hold was recorded with an expiry date",
+            "Second and third holds recorded against the same date and space",
+            "Rank changes recorded with the authorizing seller",
+            "Expired holds released or extended with a recorded decision",
+            "Released dates returned to the master calendar the same business day",
+            "Conversions to definite cross-referenced to an order number",
+            "Shared or combinable space impact reviewed before a new hold"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "reconciliation",
+      "title": "Reconciliation and period decision",
+      "guidance": "Prove the log and the calendar agree, or record why they do not.",
+      "blocks": [
+        {
+          "key": "reconciliation_result",
+          "type": "fields",
+          "label": "Reconciliation result",
+          "fields": [
+            {
+              "key": "result_status",
+              "label": "Result status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Balanced",
+                "Variance - corrected",
+                "Variance - unresolved",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "reconciled_on",
+              "label": "Reconciled on",
+              "units": 0.9
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "variance_count",
+              "label": "Variance count",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Variance register",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Date and space",
+              "units": 1.1
+            },
+            {
+              "key": "log_shows",
+              "label": "This log shows",
+              "units": 1.0
+            },
+            {
+              "key": "calendar_shows",
+              "label": "Calendar shows",
+              "units": 1.0
+            },
+            {
+              "key": "cause",
+              "label": "Cause",
+              "units": 1.1
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "reconciliation_notes",
+          "type": "textarea",
+          "label": "Reconciliation findings, corrections applied, and residual differences",
+          "fields": [
+            {
+              "key": "reconciliation_detail",
+              "label": "Reconciliation findings"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Exceptions and escalation",
+      "guidance": "Keep inventory defects visible until someone disposes of them.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "A date and space appears held at first rank more than once",
+            "A hold has no recorded expiry date",
+            "An expired hold was never released",
+            "A definite booking has no matching order number",
+            "A hold was released with no recorded decision or authorizer",
+            "A combinable space is held beyond its configured capacity",
+            "A hold is older than the policy limit without review"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "What this log does not decide",
+          "guidance": "This log records hold inventory and its movements. It does not create or release a hold on its own, does not override the master calendar, and does not confirm that a space can seat a given headcount. Capacity, egress, and release decisions stay with the responsible manager."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Period closeout and handoff",
+      "guidance": "Hand the next period a reconciled starting position.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Period closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - balanced",
+                "Closed with follow-up",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_period_start",
+              "label": "Next period start",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Open holds and expiries reconciled to the master calendar",
+            "Unresolved variances transferred with named owners",
+            "Expiring holds flagged to the owning sellers",
+            "Conversions and releases recorded with authorizers",
+            "Period counts filed as the next period's opening position"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Period outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Period handoff detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by sales manager",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

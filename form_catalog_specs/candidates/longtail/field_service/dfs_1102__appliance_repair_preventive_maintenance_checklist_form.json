@@ -1,0 +1,791 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1102__appliance_repair_preventive_maintenance_checklist_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1102__appliance_repair_preventive_maintenance_checklist_form.pdf",
+  "slug": "appliance-repair-preventive-maintenance-checklist-form",
+  "title": "Appliance Repair Preventive Maintenance Checklist Form",
+  "subtitle": "Control diagnosis, repair, maintenance, testing, and return to use through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete appliance repair preventive maintenance checklist for appliances and utility connections. It connects manufacturer service information, approved scope, and customer authorization to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified appliance service technician must perform scheduled appliance repair maintenance against an identified plan while preserving readings, defects, deferrals, verification, and the next due event.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "maintenance_identity",
+      "title": "Appliance Repair maintenance plan, site, and asset identity",
+      "guidance": "Tie the planned interval, exact maintained scope, prior condition, and accountable parties to one visit.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Appliance Repair preventive maintenance checklist reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service request or work-order number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Customer or authorized property contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Service address and appliance location",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Appliance type, brand, model, and serial number",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Appliance type and use",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Brand and model",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Serial or asset number",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Purchase or installation date",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant appliance repair context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant appliance repair context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "plan_readiness",
+      "title": "Appliance Repair interval, criteria, and maintenance readiness",
+      "guidance": "Confirm the controlling plan and actual readiness before treating a checklist as authorization to work.",
+      "blocks": [
+        {
+          "key": "maintenance_interval",
+          "type": "fields",
+          "label": "Maintenance interval and controlling reference",
+          "fields": [
+            {
+              "key": "plan_reference",
+              "label": "Service plan, contract, or maintenance ref.",
+              "units": 1.2
+            },
+            {
+              "key": "last_service",
+              "label": "Last completed service",
+              "units": 0.9
+            },
+            {
+              "key": "due_basis",
+              "label": "Time, use, condition, or route basis",
+              "units": 1.05
+            },
+            {
+              "key": "current_due",
+              "label": "Current due date or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "criteria_source",
+              "label": "Controlling plan or criteria reference",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Pre-maintenance access and control readiness",
+          "items": [
+            "Electrical supply isolated and verified before exposed work",
+            "Gas, water, steam, or other utility isolated when required",
+            "Stored heat, pressure, motion, and sharp-part exposure controlled",
+            "Floor, cabinetry, contents, and adjacent finishes protected",
+            "Refrigerant work routed to an appropriately certified technician",
+            "Replacement part compatibility verified before installation",
+            "Recall or manufacturer service notice checked when applicable",
+            "Customer kept from operating the appliance during controlled work",
+            "Leak, combustion, and ventilation concerns receive a stop-work response",
+            "Restoration test plan defined before utilities are reconnected"
+          ]
+        },
+        {
+          "key": "history_defects",
+          "type": "table",
+          "label": "Prior defect, recommendation, recurrence, and open-action review",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or record ref.",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Condition or recommendation",
+              "units": 1.3
+            },
+            {
+              "key": "prior_action",
+              "label": "Prior action",
+              "units": 1.0
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner or escalation",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_assignment",
+          "type": "fields",
+          "label": "Technician, site contact, and service status",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Qualified appliance service technician",
+              "units": 1.15
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification or license reference",
+              "units": 1.05
+            },
+            {
+              "key": "site_contact",
+              "label": "Customer or authorized property contact",
+              "units": 1.1
+            },
+            {
+              "key": "start_date_time",
+              "label": "Controlled start date and time",
+              "units": 0.95
+            },
+            {
+              "key": "readiness_status",
+              "label": "Readiness status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with restriction",
+                "Controlled hold",
+                "Refer for qualified review",
+                "Access unavailable"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "condition_checks",
+      "title": "Appliance Repair requirement-level condition inspection",
+      "guidance": "Record actual condition for each applicable point and identify the evidence or rationale for the result.",
+      "blocks": [
+        {
+          "key": "inspection_coverage",
+          "type": "checklist",
+          "label": "Appliance Repair inspection coverage",
+          "items": [
+            "Power cord, plug, receptacle, disconnect, and visible wiring condition",
+            "Gas or fuel connection, shutoff, ignition, flame, and venting condition",
+            "Water supply, inlet, drain, hose, seal, and leak condition",
+            "Refrigerant circuit, tubing, coils, condensate, and airflow condition",
+            "Door, latch, hinge, gasket, interlock, and enclosure condition",
+            "Motor, fan, pump, belt, bearing, and other moving-part condition",
+            "Control panel, sensor, thermostat, display, and error history",
+            "Heating, cooling, washing, drying, or cycle performance",
+            "Mounting, leveling, clearances, anchorage, and anti-tip provisions",
+            "Safety devices, guards, labels, and required warnings"
+          ],
+          "guidance": "A check means the point was examined; the result table carries the actual finding."
+        },
+        {
+          "key": "inspection_results",
+          "type": "table",
+          "label": "Condition, criterion, result, and evidence register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, zone, or component",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Expected condition or criterion",
+              "units": 1.25
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, monitor, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or technician initials",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "inspection_context",
+          "type": "textarea",
+          "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "maintenance_work",
+      "title": "Appliance Repair preventive service tasks and controlled materials",
+      "guidance": "Separate tasks completed from tasks merely considered, and preserve product, part, quantity, and removed-item custody.",
+      "blocks": [
+        {
+          "key": "maintenance_tasks",
+          "type": "checklist",
+          "label": "Preventive maintenance tasks completed",
+          "items": [
+            "Diagnose reported symptom under controlled conditions",
+            "Clean accessible service components",
+            "Tighten approved electrical or mechanical connections",
+            "Replace approved failed component",
+            "Correct drain, airflow, leveling, or alignment condition",
+            "Update control setting or approved software configuration",
+            "Complete leak or pressure check",
+            "Restore utilities in the defined sequence",
+            "Run full or representative operating cycle",
+            "Provide use, care, and recurrence guidance"
+          ]
+        },
+        {
+          "key": "task_result_log",
+          "type": "table",
+          "label": "Maintenance action and result log",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Asset, zone, or point",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Maintenance action",
+              "units": 1.2
+            },
+            {
+              "key": "before",
+              "label": "Before condition",
+              "units": 1.0
+            },
+            {
+              "key": "after",
+              "label": "After condition",
+              "units": 1.0
+            },
+            {
+              "key": "technician_ref",
+              "label": "Technician or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "materials_used",
+          "type": "table",
+          "label": "Parts, products, consumables, and quantities",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, product, or material",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, label, or serial",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "application",
+              "label": "Used, installed, or removed",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or remaining stock",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "measurements_tests",
+      "title": "Appliance Repair measurements and post-maintenance verification",
+      "guidance": "Use repeatable observations to show the maintained scope reached the stated condition.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement and verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Measurement or test point",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Applicable measurement concepts include: Supply voltage or electrical reading, Operating current or resistance, Temperature rise, drop, or setpoint, Pressure, vacuum, or leak-test result, Cycle time, flow, or drain performance, Level, clearance, airflow, or vibration observation."
+        },
+        {
+          "key": "verification_checks",
+          "type": "checklist",
+          "label": "Post-maintenance condition and function checks",
+          "items": [
+            "Reported symptom no longer present under the test condition",
+            "No visible leak, abnormal odor, smoke, spark, or overheating",
+            "Controls, indicators, and user interface respond correctly",
+            "Door, latch, interlock, guard, and cutoff operate correctly",
+            "Utilities and connections restored without abnormal condition",
+            "Appliance is level, stable, secured, and clear of obstruction",
+            "Work area and customer contents restored",
+            "Customer operating limitation and next action explained"
+          ]
+        },
+        {
+          "key": "maintenance_evidence",
+          "type": "checklist",
+          "label": "Maintenance evidence retained",
+          "items": [
+            "Model and serial label photograph",
+            "Customer symptom description and timing",
+            "Displayed fault code or diagnostic log",
+            "Pre-work condition photographs",
+            "Meter, temperature, pressure, or leak-test result",
+            "Removed and installed part identifiers",
+            "Post-repair operating-cycle result",
+            "Manufacturer information or recall reference"
+          ]
+        },
+        {
+          "key": "verification_limits",
+          "type": "textarea",
+          "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "defect_actions",
+      "title": "Appliance Repair defect containment and corrective-action routing",
+      "guidance": "A preventive checklist does not release an unsafe, unverified, or out-of-scope condition.",
+      "blocks": [
+        {
+          "key": "maintenance_defect_indicators",
+          "type": "checklist",
+          "label": "Appliance Repair exception and stop-work indicators",
+          "items": [
+            "Electrical shock, damaged conductor, or improper supply",
+            "Gas odor, fuel leak, combustion, carbon-monoxide, or venting concern",
+            "Refrigerant leak or work beyond technician certification",
+            "Water leak, overflow, sanitation, or property-damage risk",
+            "Hot surface, steam, pressure, sharp edge, or moving-part exposure",
+            "Appliance unstable, unanchored, or subject to tip-over",
+            "Required guard, interlock, cutoff, or safety device does not function",
+            "Recall, service bulletin, or incompatible replacement part concern",
+            "Customer requests operation before required testing is complete",
+            "Diagnosis remains uncertain or symptom cannot be reproduced safely"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "maintenance_defect_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_defect_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_decision",
+      "title": "Appliance Repair maintenance status and service decision",
+      "guidance": "Record the exact maintained scope, serviceability decision, restriction, next interval, and independent review.",
+      "blocks": [
+        {
+          "key": "maintenance_status",
+          "type": "fields",
+          "label": "Maintenance and serviceability decision",
+          "fields": [
+            {
+              "key": "maintenance_result",
+              "label": "Maintenance result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with monitor item",
+                "Partially completed",
+                "Controlled hold",
+                "Corrective repair required",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted asset, area, or service scope",
+              "units": 1.15
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Excluded or inaccessible scope",
+              "units": 1.05
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "next_service",
+          "type": "fields",
+          "label": "Next preventive interval and trigger",
+          "fields": [
+            {
+              "key": "next_due",
+              "label": "Next due date, use, route, or condition",
+              "units": 1.1
+            },
+            {
+              "key": "monitor_trigger",
+              "label": "Monitor or early-return trigger",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Service-plan owner",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_status",
+              "label": "Scheduling status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Owner to schedule",
+                "Parts pending",
+                "Corrective work first",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_review",
+          "type": "signatures",
+          "label": "Technician and qualified maintenance review",
+          "fields": [
+            {
+              "key": "technician_signoff",
+              "label": "Technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified appliance service or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "site_acknowledgment",
+              "label": "Site owner acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Appliance Repair preventive maintenance checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Maintenance completed and interval assigned",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This appliance repair preventive maintenance checklist is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when electrical, gas, refrigerant, water, combustion, structural, recall, or other unsafe condition is unresolved. A qualified appliance service or safety supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified appliance service technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified appliance service or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

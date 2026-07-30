@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2015__water_damage_inspection_report_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2015__water_damage_inspection_report_form.pdf",
+  "slug": "water-damage-inspection-report-form",
+  "title": "Water Damage Inspection Report Form",
+  "subtitle": "A decision-ready water damage inspection report that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original water damage inspection report for water source, migration path, and affected materials with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the water-loss claim and mitigation coordination owner must open and control a inspection report for water source, migration path, and affected materials. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Water Damage inspection report identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Water Damage inspection report record",
+          "fields": [
+            {
+              "key": "inspection_id",
+              "label": "Inspection report ID",
+              "units": 0.95
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date and time",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector and qualification ref",
+              "units": 1.15
+            },
+            {
+              "key": "assignment_source",
+              "label": "Assignment source and scope ref",
+              "units": 1.1
+            },
+            {
+              "key": "report_status",
+              "label": "Report status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Partial",
+                "Complete",
+                "Review hold"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Water Damage subject and event identity",
+          "fields": [
+            {
+              "key": "discovery_time",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "source_location",
+              "label": "Suspected source and exact location",
+              "units": 1.25
+            },
+            {
+              "key": "source_status",
+              "label": "Source active, stopped, or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "affected_levels",
+              "label": "Affected rooms, units, and levels",
+              "units": 1.05
+            },
+            {
+              "key": "occupancy_status",
+              "label": "Occupancy and access status",
+              "units": 1.0
+            },
+            {
+              "key": "mitigation_ref",
+              "label": "Mitigation company/job ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Source, affected level, and moisture-map reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Inspection Report scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Water Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "inspection_plan",
+      "title": "Water Damage inspection authority, access, and evidence plan",
+      "guidance": "Confirm the approved scope, safe access, evidence method, and conditions that require the inspection to stop.",
+      "blocks": [
+        {
+          "key": "preinspection_check",
+          "type": "checklist",
+          "label": "Pre-inspection controls",
+          "items": [
+            "Assignment scope and exact subject were verified",
+            "Access permission and site contact were confirmed",
+            "Required qualification, equipment, and protective controls were confirmed",
+            "Known hazards and restricted areas were reviewed",
+            "Photograph, measurement, sample, and data permissions were confirmed",
+            "Preservation or custody expectations were documented",
+            "Potential conflicts of interest were disclosed",
+            "Stop-work and emergency route were understood"
+          ]
+        },
+        {
+          "key": "inspection_conditions",
+          "type": "fields",
+          "label": "Inspection conditions",
+          "fields": [
+            {
+              "key": "arrival_departure",
+              "label": "Arrival and departure time",
+              "units": 1.0
+            },
+            {
+              "key": "weather_environment",
+              "label": "Weather or environment",
+              "units": 1.05
+            },
+            {
+              "key": "access_provided_by",
+              "label": "Access provided by",
+              "units": 1.0
+            },
+            {
+              "key": "persons_present",
+              "label": "Persons present reference",
+              "units": 1.1
+            },
+            {
+              "key": "limitations",
+              "label": "Access or inspection limitation",
+              "units": 1.15
+            },
+            {
+              "key": "scope_status",
+              "label": "Scope status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Partial",
+                "Stopped",
+                "Reschedule"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "inspection_boundary",
+          "type": "notice",
+          "label": "Inspection and authority boundary",
+          "guidance": "This record does not classify water, diagnose contamination, authorize entry into electrical or structurally unsafe areas, or determine coverage. Stop unsafe work and route source control, sampling, demolition, and claim decisions to qualified authority."
+        }
+      ]
+    },
+    {
+      "key": "observations",
+      "title": "Water Damage observations, measurements, and condition record",
+      "guidance": "Record what was directly observed, where it was observed, and how the record can be verified.",
+      "blocks": [
+        {
+          "key": "domain_observations",
+          "type": "fields",
+          "label": "Water Damage observation summary",
+          "fields": [
+            {
+              "key": "visible_water",
+              "label": "Standing or visible water extent",
+              "units": 1.0
+            },
+            {
+              "key": "migration",
+              "label": "Migration and adjoining areas",
+              "units": 1.25
+            },
+            {
+              "key": "materials",
+              "label": "Wet materials and contents",
+              "units": 1.15
+            },
+            {
+              "key": "utility_control",
+              "label": "Utility or source-isolation action",
+              "units": 1.05
+            },
+            {
+              "key": "moisture_ref",
+              "label": "Moisture survey ref",
+              "units": 1.0
+            },
+            {
+              "key": "prior_event",
+              "label": "Prior leak or repair ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "observation_register",
+          "type": "table",
+          "label": "Location-based observation register",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Location or item",
+              "units": 1.05
+            },
+            {
+              "key": "observation",
+              "label": "Direct observation",
+              "units": 1.35
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.0
+            },
+            {
+              "key": "value",
+              "label": "Reading or condition",
+              "units": 0.95
+            },
+            {
+              "key": "photo_ref",
+              "label": "Photo or evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "condition_indicators",
+          "type": "checklist",
+          "label": "Water Damage condition indicators",
+          "items": [
+            "Active flow, standing water, or inaccessible shutoff remains",
+            "Electrical equipment, outlets, or wiring may be wet",
+            "Ceiling sag, structural movement, or falling material is present",
+            "Sewage, groundwater, chemicals, or unknown contamination suspected",
+            "Visible growth, odor, prolonged wetness, or hidden cavity concern",
+            "Multiple rooms, units, floors, or adjoining properties affected",
+            "Contents or moisture-sensitive equipment needs controlled movement",
+            "Emergency drying, extraction, containment, or temporary relocation began"
+          ],
+          "guidance": "Checking an indicator records its presence or report; it is not a cause or coverage conclusion."
+        },
+        {
+          "key": "observation_narrative",
+          "type": "textarea",
+          "label": "Inspection sequence and factual narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Water Damage inspection path, direct facts, reported facts, comparison points, and unknowns",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "evidence_custody",
+      "title": "Water Damage evidence, source quality, and custody",
+      "guidance": "Make evidence reproducible by recording its source, location, date, method, and any limitations.",
+      "blocks": [
+        {
+          "key": "expected_evidence",
+          "type": "checklist",
+          "label": "Water Damage evidence sources",
+          "items": [
+            "Source and affected-area photographs before material removal",
+            "Moisture readings with location, instrument, date, and operator",
+            "Plumber, appliance, roofer, utility, or mitigation report",
+            "Water bills, alarms, maintenance, or prior leak records",
+            "Drying, extraction, equipment-placement, and monitoring logs",
+            "Removed material, contents, sample, or disposal authorization log",
+            "Repair, mitigation, temporary lodging, and utility receipts",
+            "Adjoining unit, landlord, tenant, or property-manager notices"
+          ]
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Inspection evidence register",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "description",
+              "label": "Description and exact source",
+              "units": 1.35
+            },
+            {
+              "key": "captured",
+              "label": "Date, time, and collector",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Approved storage or custody",
+              "units": 1.15
+            },
+            {
+              "key": "quality",
+              "label": "Quality, alteration, or gap",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "instrument_control",
+          "type": "fields",
+          "label": "Instrument, data, or reference control",
+          "fields": [
+            {
+              "key": "instrument",
+              "label": "Instrument or system",
+              "units": 1.0
+            },
+            {
+              "key": "identifier",
+              "label": "Identifier or version",
+              "units": 0.95
+            },
+            {
+              "key": "verification",
+              "label": "Calibration or verification ref",
+              "units": 1.1
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.9
+            },
+            {
+              "key": "data_location",
+              "label": "Raw data location",
+              "units": 1.15
+            },
+            {
+              "key": "custodian",
+              "label": "Data custodian",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_decision",
+      "title": "Water Damage findings, comparison basis, and review decision",
+      "guidance": "Separate facts from analysis and preserve the basis and authority for each conclusion.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Finding and review register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.3
+            },
+            {
+              "key": "basis",
+              "label": "Evidence and comparison basis",
+              "units": 1.25
+            },
+            {
+              "key": "significance",
+              "label": "Operational significance",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or next test",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "review_decision",
+          "type": "fields",
+          "label": "Inspection review decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Ready for review",
+                "Additional inspection",
+                "Expert review",
+                "Evidence hold",
+                "No conclusion"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "basis_ref",
+              "label": "Decision-basis reference",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "analysis_limitations",
+          "type": "textarea",
+          "label": "Analysis, alternative explanations, and limitations",
+          "fields": [
+            {
+              "key": "analysis",
+              "label": "Water Damage evidence-supported assessment, conflicts, inaccessible areas, assumptions avoided, and needed review",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "exceptions_closeout",
+      "title": "Water Damage inspection exceptions, escalation, and closeout",
+      "guidance": "Do not close the inspection with an unowned hazard, evidence gap, limitation, or required review.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Water Damage inspection exception screen",
+          "items": [
+            "Water source remains active, inaccessible, or unverified",
+            "Wet electrical or structural condition blocks safe access",
+            "Contamination or microbial concern lacks qualified assessment",
+            "Materials were removed before condition and location were documented",
+            "Moisture readings conflict or omit affected cavities and boundaries",
+            "Adjoining unit, tenant, landlord, or recovery route is unresolved"
+          ]
+        },
+        {
+          "key": "exception_actions",
+          "type": "table",
+          "label": "Exception, corrective action, and verification",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or limitation",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.1
+            },
+            {
+              "key": "final_state",
+              "label": "Final state",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "report_completion",
+          "type": "checklist",
+          "label": "Report completion checks",
+          "items": [
+            "Every inspected and inaccessible area is identified",
+            "Each photograph, reading, and attachment is traceable",
+            "Reported information is separated from direct observation",
+            "Findings do not imply unauthorized fault or coverage decisions",
+            "Exceptions and further review have owners and due points",
+            "The report recipient accepted the next-step handoff"
+          ]
+        },
+        {
+          "key": "inspection_signoff",
+          "type": "signatures",
+          "label": "Inspector, qualified review, and handoff",
+          "fields": [
+            {
+              "key": "inspector_signoff",
+              "label": "Inspector / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer_signoff",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_signoff",
+              "label": "Recipient / date",
+              "units": 1.0
+            },
+            {
+              "key": "report_version",
+              "label": "Report version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

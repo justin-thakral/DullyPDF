@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1855__performance_improvement_approval_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1855__performance_improvement_approval_form.pdf",
+  "slug": "performance-improvement-approval-form",
+  "title": "Performance Improvement Approval Form",
+  "subtitle": "Use this approval to test evidence and authority, resolve conflicts, issue a bounded decision, and verify every resulting update for a performance improvement workflow.",
+  "description": "An original operational performance improvement approval form that controls a objective performance-support and review record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the manager, employee, or HR case owner needs a traceable approval so the qualified HR, employee-relations, legal, or management reviewer can start, revise, extend, complete, close, or escalate the performance-improvement process under the current job description, consistently applied performance standards, accommodation process, employee-relations policy, and applicable employment requirements without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "approval_submission",
+      "title": "Performance Improvement approval submission and authority route",
+      "guidance": "Identify the proposed action, submitter, decision authority, effective point, and required evidence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Performance Improvement identity",
+          "fields": [
+            {
+              "key": "improvement_record",
+              "label": "Improvement record number",
+              "units": 0.85
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "position_department",
+              "label": "Position and department",
+              "units": 1.05
+            },
+            {
+              "key": "manager_owner",
+              "label": "Manager or case owner",
+              "units": 0.95
+            },
+            {
+              "key": "review_period",
+              "label": "Review period",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Approval ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "approval_control",
+          "type": "fields",
+          "label": "Approval control",
+          "fields": [
+            {
+              "key": "submitted_by",
+              "label": "Submitted by",
+              "units": 0.85
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 0.7
+            },
+            {
+              "key": "requested_decision",
+              "label": "Requested decision",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 0.85
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "proposed_action",
+          "type": "textarea",
+          "label": "Proposed action, purpose, exact scope, affected people or work, exclusions, and requested conditions",
+          "fields": [
+            {
+              "key": "proposal_detail",
+              "label": "Approval proposal and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "submission_completeness",
+      "title": "Performance Improvement evidence completeness and readiness",
+      "guidance": "Reject unsupported assumptions before the decision reaches an approver.",
+      "blocks": [
+        {
+          "key": "approval_readiness",
+          "type": "checklist",
+          "label": "Performance Improvement approval readiness",
+          "items": [
+            "Concern is supported by objective, job-related evidence",
+            "Expectation and measure are clear and consistently applied",
+            "Employee response and contrary evidence received fair review",
+            "Resources, training, tools, and manager support are feasible",
+            "Accommodation and protected-activity indicators have independent routing",
+            "Review period and checkpoints allow meaningful feedback",
+            "Manager conflict and comparable-treatment checks are complete",
+            "Qualified HR reviewer approved the process, conditions, and communication"
+          ]
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Evidence package submitted",
+          "items": [
+            "Current job description, role duty, or conduct standard",
+            "Work product, service, deadline, quality, attendance, or outcome record",
+            "Prior direction, coaching, feedback, and employee response",
+            "Approved target, measure, baseline, and review schedule",
+            "Training, tools, access, workload, and manager-support evidence",
+            "Checkpoint notes and employee-provided evidence",
+            "Separate HR routing reference for confidential or protected concerns",
+            "Qualified review, decision communication, follow-up, or closure record"
+          ]
+        },
+        {
+          "key": "completeness_register",
+          "type": "table",
+          "label": "Required item, evidence, owner, status, and deficiency",
+          "columns": [
+            {
+              "key": "required_item",
+              "label": "Required item",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence / record",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency / due",
+              "units": 1.15
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "authority_policy",
+      "title": "Performance Improvement policy, authority, and impact review",
+      "guidance": "Apply the current decision standard and record each reviewer within their actual authority.",
+      "blocks": [
+        {
+          "key": "policy_checks",
+          "type": "checklist",
+          "label": "Performance Improvement policy and impact checks",
+          "items": [
+            "Expectation is tied to an essential output, conduct rule, or documented role duty",
+            "Standard is specific, measurable where feasible, attainable, relevant, and time-bounded",
+            "Evidence identifies dates, work products, expected result, and observed gap",
+            "Comparable employees and prior applications support consistent treatment",
+            "Employee explanation and contrary evidence are captured without prejudgment",
+            "Training, tools, access, workload, direction, and manager support were assessed",
+            "Accommodation or protected-activity indicators are routed to qualified HR",
+            "Checkpoint ratings use the stated measure and review period",
+            "Consequences are not predetermined before the evidence period closes",
+            "Final conclusion distinguishes sustained improvement, partial progress, and unresolved gap"
+          ]
+        },
+        {
+          "key": "reviewer_matrix",
+          "type": "table",
+          "label": "Review area, reviewer, authority, evidence, finding, and condition",
+          "columns": [
+            {
+              "key": "review_area",
+              "label": "Review area",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.75
+            },
+            {
+              "key": "authority",
+              "label": "Authority / limit",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.0
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition / route",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "impact_analysis",
+          "type": "textarea",
+          "label": "People, schedule, service, cost, payroll, privacy, security, safety, consistency, and system impacts",
+          "fields": [
+            {
+              "key": "impact_detail",
+              "label": "Cross-functional impact and authority analysis"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "conditions_exceptions",
+      "title": "Performance Improvement conflicts, exceptions, and approval conditions",
+      "guidance": "Resolve material conflicts and convert every condition into owned, verifiable work.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the qualified HR, employee-relations, legal, or management reviewer under the current job description, consistently applied performance standards, accommodation process, employee-relations policy, and applicable employment requirements."
+        },
+        {
+          "key": "approval_triggers",
+          "type": "checklist",
+          "label": "Performance Improvement exception and escalation triggers",
+          "items": [
+            "Record contains medical details or confidential accommodation information",
+            "Employee reports retaliation, discrimination, harassment, coercion, or interference",
+            "Expectation or measure changed without notice during the review period",
+            "Required coaching, tools, access, workload decision, or feedback was not provided",
+            "Manager evidence is inaccurate, altered, incomplete, or attributed to the wrong employee",
+            "Comparable-employee or prior-treatment information indicates inconsistent application",
+            "Decision was communicated or implemented before required HR review",
+            "Threat, violence, self-harm, safety, or emergency concern requires immediate qualified routing"
+          ]
+        },
+        {
+          "key": "approval_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Approval condition, prerequisite, owner, due point, evidence, and expiry",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / prerequisite",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence required",
+              "units": 1.05
+            },
+            {
+              "key": "expiry",
+              "label": "Expiry / review",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "approval_decision",
+      "title": "Performance Improvement approval decision and effective boundary",
+      "guidance": "Record one unambiguous decision with rationale, authority, conditions, and review date.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval boundary",
+          "guidance": "Approval is valid only within the stated scope and authority. The qualified HR, employee-relations, legal, or management reviewer must apply the current job description, consistently applied performance standards, accommodation process, employee-relations policy, and applicable employment requirements; a signature does not override a required privacy, safety, security, legal, payroll, tax, or accommodation review."
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Approval decision",
+          "fields": [
+            {
+              "key": "approval_result",
+              "label": "Approval result",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date and scope",
+              "units": 1.1
+            },
+            {
+              "key": "expiry_review",
+              "label": "Expiry or review date",
+              "units": 0.85
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence relied upon, contrary evidence, alternatives, conditions, limits, and reason for decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Approval rationale and decision limits"
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "approval_signoff",
+          "type": "signatures",
+          "label": "Submission, qualified review, and decision authorization",
+          "fields": [
+            {
+              "key": "submitter_certification",
+              "label": "Submitter / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Employee-Relations, Legal, Or Management Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "approver_authorization",
+              "label": "Authorized approver / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approval_implementation",
+      "title": "Performance Improvement implementation, notification, and approval closeout",
+      "guidance": "Verify that the approved outcome reached every affected system and recipient.",
+      "blocks": [
+        {
+          "key": "implementation_actions",
+          "type": "table",
+          "label": "Approved implementation, system update, notification, and verification",
+          "columns": [
+            {
+              "key": "action_update",
+              "label": "Action / system update",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "recipient_system",
+              "label": "Recipient / system",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "approval_closeout_outcome",
+          "type": "fields",
+          "label": "Approval outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "approval_closeout_actions",
+          "type": "table",
+          "label": "Open performance improvement action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "approval_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "approval_closeout_signoff",
+          "type": "signatures",
+          "label": "Approval accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Employee-Relations, Legal, Or Management Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1322__condo_move_in_condition_checklist_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1322__condo_move_in_condition_checklist_form.pdf",
+  "slug": "condo-move-in-condition-checklist-form",
+  "title": "Condo Move-In Condition Checklist Form",
+  "subtitle": "Operational move-in condition intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable condo move-in condition workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a condo move-in condition from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "handover_identity",
+      "title": "Move-in identity, assignment, and handover",
+      "guidance": "Establish the correct baseline event.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Move-In Condition reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Condominium property",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Building, floor, and unit",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Owner, resident, or tenant",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "assignment_context",
+          "type": "fields",
+          "label": "Agreement and possession context",
+          "guidance": "Do not copy unnecessary financial, identity, or protected information.",
+          "fields": [
+            {
+              "key": "agreement_reference",
+              "label": "Agreement reference",
+              "units": 1.3
+            },
+            {
+              "key": "term_start",
+              "label": "Term or occupancy start",
+              "units": 1.1
+            },
+            {
+              "key": "possession_time",
+              "label": "Possession date and time",
+              "units": 1.2
+            },
+            {
+              "key": "inspection_participants",
+              "label": "Inspection participants",
+              "units": 1.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_method",
+      "title": "Inspection method, access, and evidence controls",
+      "guidance": "Create a neutral observable baseline.",
+      "blocks": [
+        {
+          "key": "condition_codes",
+          "type": "notice",
+          "label": "Condition recording guide",
+          "guidance": "Use plain observable descriptions and locally defined condition codes. Identify not-inspected, obstructed, unavailable, and not-applicable items. This baseline does not assign fault, responsibility, charges, code status, or legal effect."
+        },
+        {
+          "key": "preparation_checks",
+          "type": "checklist",
+          "label": "Baseline preparation",
+          "guidance": "A basic walkthrough does not replace qualified inspection or required disclosure.",
+          "items": [
+            "Correct property, location, assignment, and participant identities confirmed",
+            "Inspection date, time, utility status, and lighting conditions recorded",
+            "Prior baseline or turnover record is linked when available",
+            "Evidence device date and time are checked",
+            "Personal papers, faces, credentials, and unrelated belongings are excluded",
+            "Operational communication or access support is recorded without diagnosis",
+            "Unavailable or unsafe areas are identified before inspection",
+            "Resident comments can be attached without altering original observations"
+          ]
+        },
+        {
+          "key": "evidence_series",
+          "type": "fields",
+          "label": "Evidence series and limitations",
+          "guidance": "Use stable references so later corrections remain traceable.",
+          "fields": [
+            {
+              "key": "photo_series",
+              "label": "Photo or video series",
+              "units": 1.3
+            },
+            {
+              "key": "starting_sequence",
+              "label": "Starting sequence",
+              "units": 0.9
+            },
+            {
+              "key": "storage_reference",
+              "label": "Approved storage reference",
+              "units": 1.4
+            },
+            {
+              "key": "weather_utilities",
+              "label": "Weather and utilities",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "inspection_limits",
+          "type": "textarea",
+          "label": "Uninspected areas, obstruction, access limit, or evidence exception",
+          "guidance": "An omitted area must remain visible as an open item.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "limitation_details",
+              "label": "Area, reason, immediate action, owner, due point, and follow-up method",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This move-in condition record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "condition_observations",
+      "title": "Room, finish, fixture, and system observations",
+      "guidance": "Tie condition to an exact location.",
+      "blocks": [
+        {
+          "key": "area_condition",
+          "type": "table",
+          "label": "Area-by-area condition baseline",
+          "guidance": "Include entries, floors, walls, ceilings, doors, windows, storage, and supplied finishes as applicable.",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room or area",
+              "units": 1.1
+            },
+            {
+              "key": "item",
+              "label": "Surface, fixture, or item",
+              "units": 1.3
+            },
+            {
+              "key": "condition",
+              "label": "Observable condition",
+              "units": 1.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.9
+            },
+            {
+              "key": "action",
+              "label": "Correction or monitor",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "equipment_condition",
+          "type": "table",
+          "label": "Appliance, utility, and equipment baseline",
+          "guidance": "Record only basic observable function within the participant's authority.",
+          "columns": [
+            {
+              "key": "equipment",
+              "label": "Equipment or service",
+              "units": 1.3
+            },
+            {
+              "key": "basic_check",
+              "label": "Basic observable check",
+              "units": 1.5
+            },
+            {
+              "key": "reading",
+              "label": "Reading or identifier",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.9
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up reference",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "basic_safety_observations",
+          "type": "checklist",
+          "label": "Basic visible condition observations",
+          "guidance": "Presence or basic operation does not prove inspection, testing, or compliance.",
+          "items": [
+            "Entry door and basic locking function observed",
+            "Visible trip, fall, sharp-edge, or broken-glass concern recorded",
+            "Visible water, moisture, sanitation, or pest concern recorded",
+            "Basic lighting and supplied-device function observed where authorized",
+            "Smoke, carbon-monoxide, sprinkler, or call devices noted without certifying them",
+            "Heating, cooling, ventilation, and plumbing concerns routed",
+            "Accessibility or communication concern routed without a compliance conclusion",
+            "Urgent condition has an immediate-control owner"
+          ]
+        },
+        {
+          "key": "condition_context",
+          "type": "textarea",
+          "label": "Additional marks, cleanliness, odor, repair history, and resident comments",
+          "guidance": "Avoid fault, wear, charge, or legal conclusions.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "condition_context_details",
+              "label": "Observable facts, source, evidence, requested correction, and unresolved disagreement",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "Condo context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "Condo workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Unit baseline is separated from hallway and common-element condition",
+            "Elevator reservation, loading path, and move protection are recorded",
+            "Lobby, corridor, door, and wall evidence identifies exact location",
+            "Fob, parking, storage, mailbox, and amenity credentials are reconciled",
+            "Association move rules are referenced without interpreting them",
+            "Owner and tenant handover responsibilities are separately assigned",
+            "Common-area damage concern is routed before a responsibility decision",
+            "Building management receives the completed access-item register"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Unit or common-element owner",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Association handoff reference",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "Condo coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inventory_corrections",
+      "title": "Access items, inventory, and correction register",
+      "guidance": "Reconcile handover items and open work.",
+      "blocks": [
+        {
+          "key": "issued_items",
+          "type": "table",
+          "label": "Keys, credentials, remotes, parking, and supplied items",
+          "guidance": "Do not record passwords, PINs, or full credential values.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or access type",
+              "units": 1.5
+            },
+            {
+              "key": "identifier",
+              "label": "Non-secret identifier",
+              "units": 1.1
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Issued status",
+              "units": 1.0
+            },
+            {
+              "key": "exception",
+              "label": "Exception or owner",
+              "units": 1.4
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "correction_register",
+          "type": "table",
+          "label": "Pre-occupancy correction and follow-up register",
+          "guidance": "Keep disputed or deferred items open until their disposition is recorded.",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or request",
+              "units": 1.6
+            },
+            {
+              "key": "temporary_control",
+              "label": "Current control",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "verification",
+              "label": "Verification method",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "correction_status",
+          "type": "fields",
+          "label": "Correction review status",
+          "guidance": "Counts are operational summaries and do not determine responsibility.",
+          "fields": [
+            {
+              "key": "urgent_count",
+              "label": "Urgent items",
+              "units": 0.8
+            },
+            {
+              "key": "open_count",
+              "label": "Open items",
+              "units": 0.8
+            },
+            {
+              "key": "resident_comment_due",
+              "label": "Comment due or route",
+              "units": 1.2
+            },
+            {
+              "key": "correction_owner",
+              "label": "Correction coordinator",
+              "units": 1.3
+            },
+            {
+              "key": "followup_date",
+              "label": "Follow-up date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handover_closeout",
+      "title": "Resident comments, handover, and closeout",
+      "guidance": "Close only after baseline and open items are handed off.",
+      "blocks": [
+        {
+          "key": "resident_comments",
+          "type": "textarea",
+          "label": "Resident additions, corrections, disagreement, or later evidence",
+          "guidance": "Preserve the resident's account and the original observation as separate records.",
+          "height": 60,
+          "fields": [
+            {
+              "key": "resident_comment_details",
+              "label": "Resident statement, evidence reference, requested correction, response owner, and status",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "handover_checks",
+          "type": "checklist",
+          "label": "Handover verification",
+          "guidance": "Acknowledgment of receipt does not waive corrections or disputes.",
+          "items": [
+            "Condition baseline and evidence references are complete",
+            "Uninspected or disputed areas remain visible",
+            "Issued items and access records reconcile",
+            "Urgent conditions have immediate controls and owners",
+            "Open corrections have due points and verification methods",
+            "Resident reporting, emergency, and after-hours routes were provided",
+            "Resident received a copy or approved access to the record",
+            "Qualified review and retention routing are complete"
+          ]
+        },
+        {
+          "key": "handover_status",
+          "type": "fields",
+          "label": "Final handover status",
+          "guidance": "Do not mark complete while a required inspection or handoff is missing.",
+          "fields": [
+            {
+              "key": "baseline_status",
+              "label": "Baseline status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Complete",
+                "Complete with open items",
+                "Incomplete",
+                "Rescheduled"
+              ]
+            },
+            {
+              "key": "copy_delivered",
+              "label": "Copy delivered by",
+              "units": 1.1
+            },
+            {
+              "key": "delivery_date",
+              "label": "Delivery date",
+              "units": 0.9
+            },
+            {
+              "key": "open_item_owner",
+              "label": "Open-item owner",
+              "units": 1.2
+            },
+            {
+              "key": "next_review",
+              "label": "Next review date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "condition_acknowledgment",
+          "type": "signatures",
+          "label": "Condition record preparation and acknowledgment",
+          "guidance": "Signatures confirm participation or receipt only and do not establish agreement, fault, charges, waiver, or legal acceptance.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized housing reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

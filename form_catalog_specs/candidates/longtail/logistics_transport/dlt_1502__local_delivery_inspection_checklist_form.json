@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1502__local_delivery_inspection_checklist_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1502__local_delivery_inspection_checklist_form.pdf",
+  "slug": "local-delivery-inspection-checklist-form",
+  "title": "Local Delivery Inspection Checklist Form",
+  "subtitle": "Set the local delivery inspection scope, test readiness and requirement-level evidence, contain deficiencies, authorize status, and preserve qualified closeout.",
+  "description": "An original, fillable local delivery inspection checklist form for controlling multi-stop local order through inspection checklist identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when a route dispatcher or qualified inspector must evaluate multi-stop local order against the route plan, customer order, and package labels and provide a traceable basis for release, restriction, hold, correction, or rejection.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Local Delivery inspection checklist identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Local Delivery record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Inspection Checklist record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Route and stop number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Order, tote, or package ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned route dispatcher",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Assigned Driver",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Origin store, hub, or pickup point",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Delivery address and stop access point",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the route plan, customer order, and package labels."
+        }
+      ]
+    },
+    {
+      "key": "inspection_scope",
+      "title": "Local Delivery inspection scope, criteria, and readiness",
+      "guidance": "Define the exact population and review basis so inspection conclusions remain bounded.",
+      "blocks": [
+        {
+          "key": "scope_criteria",
+          "type": "fields",
+          "label": "Inspection scope and criteria",
+          "fields": [
+            {
+              "key": "scope",
+              "label": "Multi-Stop Local Order",
+              "units": 1.35
+            },
+            {
+              "key": "criteria",
+              "label": "Route Plan, Customer Order, And Package Labels",
+              "units": 1.45
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector name and role",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Local Delivery readiness verification",
+          "items": [
+            "Stop sequence matches promised delivery windows and traffic constraints",
+            "Every order is matched to route, stop, package, and recipient identifiers",
+            "Vehicle capacity and package placement support the planned stop sequence",
+            "Driver has access instructions, contact method, and failed-attempt rules",
+            "Age, identity, signature, or photo requirements are explicit where applicable",
+            "Fragile, upright, temperature, and no-unattended-delivery controls are visible",
+            "Returns, exchanges, cash handling, or reusable containers have separate custody",
+            "Dispatcher has a communication and escalation path for route disruption"
+          ],
+          "guidance": "A failed readiness item must be resolved, excluded with rationale, or carried into the exception section."
+        },
+        {
+          "key": "sample_basis",
+          "type": "fields",
+          "label": "Population, sample, and limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Population or total units",
+              "units": 1.05
+            },
+            {
+              "key": "sample",
+              "label": "Units actually inspected",
+              "units": 1.05
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.25
+            },
+            {
+              "key": "limitations",
+              "label": "Known access or evidence limits",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_results",
+      "title": "Local Delivery requirement-level inspection results",
+      "guidance": "Record actual observations against explicit criteria and identify the evidence for each result.",
+      "blocks": [
+        {
+          "key": "requirement_results",
+          "type": "table",
+          "label": "Inspection result register",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit, point, or sample ID",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.35
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, or N/A",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector initials",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "domain_checks",
+          "type": "checklist",
+          "label": "Local Delivery detailed inspection points",
+          "items": [
+            "Route label and customer order identify the same stop and recipient",
+            "Piece count agrees with the staged order and driver manifest",
+            "Packaging is closed, dry, stable, and free of visible crushing or puncture",
+            "Fragile and orientation markings remain legible and correctly placed",
+            "Time-window and contact-on-arrival instructions are available to the driver",
+            "Address, unit, gate, loading zone, and parking details are complete",
+            "Restricted-delivery and unattended-drop rules are understood",
+            "Return goods and reusable assets are segregated from outbound orders",
+            "Proof method can be captured without exposing unrelated customer information",
+            "Unresolved count, label, condition, or access issue is held before departure"
+          ],
+          "guidance": "Checkboxes indicate that the point was examined; the result table carries findings and evidence."
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Local Delivery measurements and evidence package",
+      "guidance": "Preserve readings, instruments, identity, and evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, count, or verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use the method applicable to Expected and delivered pieces and Package and product condition."
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Route assignment and stop sequence snapshot",
+            "Package or tote scan at load",
+            "Departure and arrival timestamp",
+            "Recipient name or authorized delivery point",
+            "Delivery photo or signature reference",
+            "Failed-attempt contact record",
+            "Shortage, damage, or return image reference",
+            "Driver and dispatcher communication reference"
+          ]
+        },
+        {
+          "key": "inspection_narrative",
+          "type": "textarea",
+          "label": "Inspection observations, sampling limitations, and evidence interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection observations, sampling limitations, and evidence interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Local Delivery exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "inspection_exception_types",
+          "type": "checklist",
+          "label": "Local Delivery exception indicators",
+          "items": [
+            "Address or access point cannot be located",
+            "Recipient unavailable or refuses delivery",
+            "Package is missing, extra, mislabeled, or assigned to another stop",
+            "Packaging or contents show visible damage or leakage",
+            "Delivery window will be missed",
+            "Identity, signature, or age condition cannot be completed",
+            "Unsafe parking, property condition, animal, or other site hazard",
+            "Customer requests an unapproved alternate delivery location",
+            "Proof capture fails or conflicts with the delivered stop",
+            "Return item or reusable container cannot be reconciled"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "inspection_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_decision",
+          "type": "fields",
+          "label": "Inspection deficiency containment and disposition",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_release",
+      "title": "Local Delivery inspection status and release decision",
+      "guidance": "Do not turn a checklist score into release when a critical exception or evidence gap remains.",
+      "blocks": [
+        {
+          "key": "release_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Inspection status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with action",
+                "Restricted",
+                "On hold",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted unit or scope",
+              "units": 1.25
+            },
+            {
+              "key": "held_scope",
+              "label": "Held or excluded unit",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection and release authorization",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector signature and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Local Delivery Operations Lead review",
+              "units": 1.45
+            },
+            {
+              "key": "release_owner",
+              "label": "Release or custody owner",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Local Delivery inspection checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and released",
+                "Accepted with closed action",
+                "Restricted handoff",
+                "Held for corrective work",
+                "Rejected or removed"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this local delivery inspection checklist with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by local delivery operations lead",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2212__banquet_order_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2212__banquet_order_sign_in_sheet_form.pdf",
+  "slug": "banquet-order-sign-in-sheet-form",
+  "title": "Banquet Order Sign-In Sheet Form",
+  "subtitle": "Assign banquet service staff to stations, sign them in and out, and record the pre-shift briefing and break coverage.",
+  "description": "An original shift register for banquet service staff. It records the shift and staffing plan, each person's sign-in and sign-out with role and station, the station assignment map with backup and break cover, the break log, exceptions such as no-shows or uncovered stations, and an accountable closeout.",
+  "use_case": "Use at the start of a banquet shift when a captain must know who is on the floor, which station each person owns, and who covers a break. The register closes when every person has signed out and uncovered stations have been recorded.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "shift_identity",
+      "title": "Shift identity and staffing plan",
+      "guidance": "State the plan before the floor fills up.",
+      "blocks": [
+        {
+          "key": "shift_routing",
+          "type": "fields",
+          "label": "Shift identity and routing",
+          "fields": [
+            {
+              "key": "sheet_id",
+              "label": "Sheet record ID",
+              "units": 0.9
+            },
+            {
+              "key": "function_date",
+              "label": "Function date",
+              "units": 0.9
+            },
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.2
+            },
+            {
+              "key": "captain",
+              "label": "Captain on duty",
+              "units": 1.0
+            },
+            {
+              "key": "shift_start",
+              "label": "Shift start",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "staffing_plan",
+          "type": "fields",
+          "label": "Staffing plan",
+          "fields": [
+            {
+              "key": "function_room",
+              "label": "Function room",
+              "units": 1.05
+            },
+            {
+              "key": "covers_expected",
+              "label": "Covers expected",
+              "units": 1.05
+            },
+            {
+              "key": "servers_planned",
+              "label": "Servers planned",
+              "units": 1.05
+            },
+            {
+              "key": "ratio_target",
+              "label": "Target covers per server",
+              "units": 1.35
+            },
+            {
+              "key": "call_time",
+              "label": "Call time",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "staff_register",
+      "title": "Staff sign-in and sign-out",
+      "guidance": "One row per person, signed out before the sheet closes.",
+      "blocks": [
+        {
+          "key": "staff_rows",
+          "type": "table",
+          "label": "Staff register",
+          "columns": [
+            {
+              "key": "staff_name",
+              "label": "Name",
+              "units": 1.2
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.9
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 1.0
+            },
+            {
+              "key": "time_in",
+              "label": "Time in",
+              "units": 0.6
+            },
+            {
+              "key": "time_out",
+              "label": "Time out",
+              "units": 0.6
+            },
+            {
+              "key": "initials",
+              "label": "Initials",
+              "units": 0.6
+            }
+          ],
+          "rows": 12,
+          "guidance": "Collect name, role, and times only. Payroll identifiers and personal contact details belong in the staffing system, not on the floor sheet."
+        },
+        {
+          "key": "register_totals",
+          "type": "fields",
+          "label": "Register reconciliation",
+          "fields": [
+            {
+              "key": "planned_count",
+              "label": "Planned",
+              "units": 0.85
+            },
+            {
+              "key": "signed_in_count",
+              "label": "Signed in",
+              "units": 0.9
+            },
+            {
+              "key": "no_shows",
+              "label": "No-shows",
+              "units": 0.9
+            },
+            {
+              "key": "late_arrivals",
+              "label": "Late arrivals",
+              "units": 1.0
+            },
+            {
+              "key": "released_early",
+              "label": "Released early",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "station_assignment",
+      "title": "Station assignment and briefing",
+      "guidance": "Every station has an owner and a named backup.",
+      "blocks": [
+        {
+          "key": "station_map",
+          "type": "table",
+          "label": "Station assignment map",
+          "columns": [
+            {
+              "key": "station",
+              "label": "Station or tables",
+              "units": 1.2
+            },
+            {
+              "key": "assigned_to",
+              "label": "Assigned to",
+              "units": 1.05
+            },
+            {
+              "key": "covers",
+              "label": "Covers",
+              "units": 0.6
+            },
+            {
+              "key": "backup",
+              "label": "Backup",
+              "units": 1.0
+            },
+            {
+              "key": "break_cover",
+              "label": "Break cover",
+              "units": 1.05
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "briefing_items",
+          "type": "checklist",
+          "label": "Pre-shift briefing given",
+          "items": [
+            "Service timeline and cue times walked through",
+            "Menu, course order, and item descriptions covered",
+            "Restricted plates, marking method, and affected seats identified",
+            "Buffet and station positions and traffic flow shown",
+            "Exit routes and the assembly point pointed out",
+            "Spill, breakage, and guest-request escalation path stated",
+            "Break rotation and coverage confirmed with each station owner",
+            "Uniform, hygiene, and handwashing expectations stated"
+          ],
+          "guidance": "This records that a briefing was given. It is not a training record or a certification of any kind."
+        }
+      ]
+    },
+    {
+      "key": "break_coverage",
+      "title": "Break and coverage log",
+      "guidance": "A covered station is the only kind that may be left.",
+      "blocks": [
+        {
+          "key": "break_log",
+          "type": "table",
+          "label": "Break log",
+          "columns": [
+            {
+              "key": "time_out",
+              "label": "Out",
+              "units": 0.6
+            },
+            {
+              "key": "time_in",
+              "label": "Back",
+              "units": 0.6
+            },
+            {
+              "key": "staff_name",
+              "label": "Who",
+              "units": 1.2
+            },
+            {
+              "key": "covered_by",
+              "label": "Covered by",
+              "units": 1.2
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "coverage_notes",
+          "type": "textarea",
+          "label": "Coverage gaps, reassignments during service, and how they were handled",
+          "fields": [
+            {
+              "key": "coverage_detail",
+              "label": "Coverage and reassignment detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "shift_exceptions",
+      "title": "Exceptions and escalation",
+      "guidance": "Staffing gaps are recorded, not absorbed silently.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "A scheduled person did not arrive and was not replaced",
+            "A station ran without an assigned owner",
+            "A break was taken without recorded cover",
+            "A person did not sign out",
+            "Covers per server exceeded the planned ratio",
+            "A person reported illness or injury during the shift",
+            "A person was sent home before the shift ended"
+          ],
+          "guidance": "An illness or injury during a shift is routed on the incident record, not resolved on this sheet."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "register_boundary",
+          "type": "notice",
+          "label": "Purpose and limits of this register",
+          "guidance": "This register exists to run one banquet shift: who is present, which station they own, and who covers a break. It is not a payroll record, a performance evaluation, a training certification, or a record of any employment decision. Route pay, discipline, and medical matters to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "shift_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Account for everyone before the sheet closes.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Shift closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - all signed out",
+                "Closed with exception",
+                "Function cancelled"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Every staff row has a matching sign-out time",
+            "Station map reflects reassignments made during service",
+            "Break coverage gaps recorded with the station affected",
+            "Open exceptions transferred with named owners",
+            "Register filed with the function record for the retention period"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Shift outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Shift handoff detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by banquet manager",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

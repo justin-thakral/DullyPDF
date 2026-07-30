@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1637__student_emergency_contact_medical_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1637__student_emergency_contact_medical_authorization_form.pdf",
+  "slug": "student-emergency-contact-medical-authorization-form",
+  "title": "Student Emergency Contact Medical Authorization Form",
+  "subtitle": "An original operational medical authorization for student emergency contact that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This Student Emergency Contact Medical Authorization Form supports the complete student emergency contact workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the Student Emergency Contact Medical Authorization Form when the assigned student records coordinator needs one fillable record for student emergency contacts, contact priority, authorized disclosure, and response routing without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Emergency contact medical authorization identity and routing",
+      "guidance": "Connect this medical authorization to one student emergency contacts, contact priority, authorized disclosure, and response routing record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Emergency contact record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "School, program, or activity site",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Student group or contact roster",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Student or roster reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or emergency contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned student records coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "Emergency contact scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "authorized_source",
+      "title": "Emergency contact authorized health source and operating scope",
+      "guidance": "Transcribe supplied directions exactly and keep diagnosis or clinical interpretation out of this record.",
+      "blocks": [
+        {
+          "key": "source_basis",
+          "type": "fields",
+          "label": "Authorization and qualified source",
+          "fields": [
+            {
+              "key": "plan_reference",
+              "label": "Authorization or plan ref.",
+              "units": 1.3
+            },
+            {
+              "key": "guardian_source",
+              "label": "Guardian or emergency contact",
+              "units": 1.3
+            },
+            {
+              "key": "qualified_source",
+              "label": "Qualified direction source",
+              "units": 1.2
+            },
+            {
+              "key": "effective_from",
+              "label": "Effective from",
+              "units": 0.9
+            },
+            {
+              "key": "review_or_end",
+              "label": "Review or end date",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "authorized_health_items",
+          "type": "checklist",
+          "label": "Emergency contact supplied health and response information",
+          "items": [
+            "Emergency health information source reference",
+            "Guardian direction and qualified reviewer",
+            "Emergency response-plan location without duplicating clinical details",
+            "Contact priority during a health-related event",
+            "Symptoms or stop conditions only from the approved plan",
+            "Emergency services and local response route",
+            "Private record location and minimum-necessary disclosure boundary",
+            "Contact acknowledgment, update, and follow-up requirement"
+          ]
+        },
+        {
+          "key": "direction_lines",
+          "type": "table",
+          "label": "Authorized item, exact supplied direction, applicability, source, and review",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Medication, support, or plan item",
+              "units": 1.2
+            },
+            {
+              "key": "direction",
+              "label": "Exact supplied direction",
+              "units": 1.5
+            },
+            {
+              "key": "applies",
+              "label": "Timing, condition, or setting",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Qualified source ref.",
+              "units": 1.0
+            },
+            {
+              "key": "review",
+              "label": "Review or expiry",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "medical_boundary",
+          "type": "notice",
+          "label": "Medical and authorization boundary",
+          "guidance": "This form records student emergency-contact routing; it does not decide custody, prove legal authority, replace a child-release record, give medical direction, or delay emergency services. Use minimum necessary information, follow approved contact restrictions, and stop disclosure or release when identity or authority is unclear. Route disputes and professional decisions to authorized qualified reviewers."
+        }
+      ]
+    },
+    {
+      "key": "custody_readiness",
+      "title": "Emergency contact custody, staff readiness, and read-back",
+      "guidance": "Confirm the approved source, staff authority, setting, storage, and handoff before use.",
+      "blocks": [
+        {
+          "key": "custody_route",
+          "type": "fields",
+          "label": "Custody and authorized operating route",
+          "fields": [
+            {
+              "key": "authorized_staff",
+              "label": "Authorized staff or role",
+              "units": 1.3
+            },
+            {
+              "key": "custodian",
+              "label": "Current item or record custodian",
+              "units": 1.2
+            },
+            {
+              "key": "storage_location",
+              "label": "Approved storage location",
+              "units": 1.2
+            },
+            {
+              "key": "inventory_or_count",
+              "label": "Count or supply status",
+              "units": 1.0
+            },
+            {
+              "key": "self_carry_status",
+              "label": "Self-carry or independent-use ref.",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Emergency contact authorization readiness",
+          "items": [
+            "Contact record is tied to the correct student identity",
+            "Primary and alternate contact priorities are explicit",
+            "Relationship and authority source are recorded without assumptions",
+            "Preferred language and communication support are routed",
+            "Phone, message, and alternate communication channels are current",
+            "Do-not-use, limited-contact, or confidential routes are flagged for authorized review",
+            "Emergency, school, program, and activity contexts are distinguished",
+            "Health or support information remains in the separate approved record",
+            "Verification date, source, and responsible staff are recorded",
+            "Unresolved contact conditions have owners and due points"
+          ]
+        },
+        {
+          "key": "custody_lines",
+          "type": "table",
+          "label": "Item or record custody, condition, count, owner, and evidence",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or record",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Label, seal, or condition",
+              "units": 1.1
+            },
+            {
+              "key": "count",
+              "label": "Count or status",
+              "units": 0.8
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or handoff ref.",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "readback_notes",
+          "type": "textarea",
+          "label": "Exact read-back, unresolved mismatch, staff limitation, and qualified-review question",
+          "fields": [
+            {
+              "key": "readback",
+              "label": "Read-back, mismatch, staff limitation, and review question"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "response_decision",
+      "title": "Emergency contact response conditions, stop controls, and decision",
+      "guidance": "Do not guess or improvise; stop and use the documented escalation route on any mismatch.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring hold, stop, or escalation",
+          "items": [
+            "Student identity or contact record does not match",
+            "Primary and alternate contacts cannot be reached",
+            "Relationship, priority, or authority source is unclear",
+            "Contact direction conflicts with an approved restriction",
+            "Interpreter, accessibility, or alternate communication route is unavailable",
+            "Sensitive contact or student information was exposed",
+            "Immediate emergency response is active and contacts remain pending",
+            "Contact attempt, acknowledgment, or record update does not reconcile"
+          ]
+        },
+        {
+          "key": "response_events",
+          "type": "table",
+          "label": "Condition, observed fact, immediate action, contact, and outcome",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or event",
+              "units": 1.2
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "contact",
+              "label": "Contact or escalation",
+              "units": 1.0
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome or status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Emergency contact operating decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the school administrator, guardian, records custodian, and qualified emergency reviewer."
+        },
+        {
+          "key": "decision_record",
+          "type": "textarea",
+          "label": "Decision basis, source consulted, temporary limit, and next qualified review",
+          "fields": [
+            {
+              "key": "decision_basis",
+              "label": "Decision basis, source, temporary limit, and qualified review"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "exceptions_followup",
+      "title": "Emergency contact exceptions, notification, and follow-up",
+      "guidance": "Preserve unknowns, assign correction, and record the accountable recipient.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Authorization and response exceptions",
+          "items": [
+            "Student or contact identity cannot be confirmed",
+            "Primary and alternate contact attempts are unsuccessful",
+            "Authority, priority, restriction, or disclosure route is unclear",
+            "Private record, interpreter, or communication support is unavailable",
+            "Immediate emergency response is active",
+            "Contact acknowledgment, update, or record closeout remains unresolved"
+          ]
+        },
+        {
+          "key": "followup_actions",
+          "type": "table",
+          "label": "Exception, evidence or action needed, owner, due point, and disposition",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or variance",
+              "units": 1.2
+            },
+            {
+              "key": "needed",
+              "label": "Evidence or action needed",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or review ref.",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "notification_handoff",
+          "type": "textarea",
+          "label": "Guardian, qualified reviewer, emergency, program, and receiving-staff notification handoff",
+          "fields": [
+            {
+              "key": "notification",
+              "label": "Notification sequence, facts shared, instructions received, and handoff"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Emergency contact outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "Emergency contact closeout controls",
+          "items": [
+            "Contact identity, priority, and verification status accepted",
+            "Guardian or alternate contact acknowledgment recorded",
+            "Unresolved restriction or failed-contact route has an owner",
+            "Private contact records returned to approved custody",
+            "Emergency, interpreter, or records follow-up linked",
+            "Contact record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Medical Authorization closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

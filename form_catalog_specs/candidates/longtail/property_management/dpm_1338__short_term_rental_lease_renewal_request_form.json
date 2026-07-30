@@ -1,0 +1,707 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1338__short_term_rental_lease_renewal_request_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1338__short_term_rental_lease_renewal_request_form.pdf",
+  "slug": "short-term-rental-lease-renewal-request-form",
+  "title": "Short-Term Rental Lease Renewal Request Form",
+  "subtitle": "Operational lease renewal request intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable short-term rental lease renewal request workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a short-term rental lease renewal request from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "renewal_identity",
+      "title": "Renewal request identity and routing",
+      "guidance": "Record a request, not an agreement.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Lease Renewal Request reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Short-term rental property",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Listing and unit",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Guest or reservation",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "current_term",
+          "type": "fields",
+          "label": "Current term and response timing",
+          "guidance": "Use approved records to verify dates before review.",
+          "fields": [
+            {
+              "key": "agreement_reference",
+              "label": "Current agreement reference",
+              "units": 1.4
+            },
+            {
+              "key": "current_start",
+              "label": "Current start date",
+              "units": 1.0
+            },
+            {
+              "key": "current_end",
+              "label": "Current end date",
+              "units": 1.0
+            },
+            {
+              "key": "response_requested",
+              "label": "Response requested by",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "resident_request",
+      "title": "Requested outcome and change routing",
+      "guidance": "Capture what the requester is asking for.",
+      "blocks": [
+        {
+          "key": "renewal_preference",
+          "type": "fields",
+          "label": "Renewal preference",
+          "guidance": "A stated preference is not acceptance or an approved offer.",
+          "fields": [
+            {
+              "key": "request_type",
+              "label": "Request type",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Renew current terms",
+                "Request revised term",
+                "Request extension",
+                "Unsure or discussion",
+                "Withdraw request"
+              ]
+            },
+            {
+              "key": "requested_start",
+              "label": "Requested start",
+              "units": 1.0
+            },
+            {
+              "key": "requested_end",
+              "label": "Requested end",
+              "units": 1.0
+            },
+            {
+              "key": "term_length",
+              "label": "Requested term length",
+              "units": 1.1
+            },
+            {
+              "key": "response_channel",
+              "label": "Response channel",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "related_requests",
+          "type": "checklist",
+          "label": "Related requests requiring separate routing",
+          "guidance": "Record the route and reference, not sensitive supporting details.",
+          "items": [
+            "Occupant, roommate, business, or authorized-contact update",
+            "Parking, storage, access, amenity, or service change",
+            "Animal, assistance-animal, service-animal, or pet request",
+            "Communication, access, or accommodation request",
+            "Transfer, relocation, room, unit, suite, or space change",
+            "Repair, condition, or unresolved maintenance concern",
+            "Payment, billing, deposit, fee, or financial question",
+            "Complaint, dispute, legal, or policy-interpretation question"
+          ]
+        },
+        {
+          "key": "change_requests",
+          "type": "table",
+          "label": "Requested change and separate workflow",
+          "guidance": "Do not imply approval by listing a requested change.",
+          "columns": [
+            {
+              "key": "request",
+              "label": "Requested change",
+              "units": 1.6
+            },
+            {
+              "key": "effective_date",
+              "label": "Requested date",
+              "units": 1.0
+            },
+            {
+              "key": "workflow",
+              "label": "Required workflow",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Routing owner",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status or reference",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_details",
+          "type": "textarea",
+          "label": "Questions, priorities, requested discussion, and preferred outcome",
+          "guidance": "Avoid diagnosis, protected-trait information, or unrelated personal history.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "renewal_request_details",
+              "label": "Requester's words, requested outcome, communication need, and supporting reference",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "accommodation_route",
+          "type": "notice",
+          "label": "Accommodation and protected-request routing",
+          "guidance": "If the request includes an accommodation or communication adjustment, record only the operational request and route it through the established qualified process. Do not request diagnosis or protected-trait details on this renewal record."
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "Short-Term Rental context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "Short-Term Rental workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Request identifies the booking, stay extension, or longer-term transition",
+            "A stay extension is not treated as an executed lease by this form",
+            "Availability, cleaning, rate, platform, and access reviews are separated",
+            "Occupancy, legal, tax, or licensing questions route to qualified staff",
+            "Guest complaints or protected activity are excluded from criteria",
+            "Host approval and platform confirmation have separate references",
+            "Conflicting future reservations have an escalation owner",
+            "Final terms are delivered only through an authorized booking channel"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Host, manager, or vendor",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Reservation or platform reference",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "Short-Term Rental coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer. For short-term rental renewal, identify whether the request is a booking extension, new reservation, or transition to another occupancy process. Keep platform availability, future bookings, cleaning, access rotation, host approval, rate communication, licensing, tax, and relocation routes separate.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Neutral review, evidence, and escalation",
+      "guidance": "Apply documented criteria consistently.",
+      "blocks": [
+        {
+          "key": "review_controls",
+          "type": "checklist",
+          "label": "Qualified review controls",
+          "guidance": "This checklist supports process discipline and does not establish legal compliance.",
+          "items": [
+            "Correct agreement, dates, parties, and authorized contacts verified",
+            "Current documented criteria and approval authority identified",
+            "Comparable requests use the same review sequence",
+            "Maintenance requests, complaints, accommodation activity, and protected activity excluded",
+            "Protected traits, assumptions, and unrelated personal information excluded",
+            "Missing, conflicting, or disputed records are identified",
+            "Legal, fair-housing, privacy, tax, or policy questions are escalated",
+            "No final term is communicated before authorized review"
+          ]
+        },
+        {
+          "key": "review_items",
+          "type": "table",
+          "label": "Review item and evidence register",
+          "guidance": "Record objective sources and unresolved gaps; do not score protected or irrelevant information.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Review item",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Source or policy reference",
+              "units": 1.4
+            },
+            {
+              "key": "fact_status",
+              "label": "Verified fact or gap",
+              "units": 1.4
+            },
+            {
+              "key": "reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "review_status",
+          "type": "fields",
+          "label": "Review status and authority",
+          "guidance": "Status is internal routing and is not a decision notice.",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Intake complete",
+                "More information needed",
+                "Qualified review",
+                "Ready for authorization",
+                "Withdrawn"
+              ]
+            },
+            {
+              "key": "review_owner",
+              "label": "Review owner",
+              "units": 1.2
+            },
+            {
+              "key": "authority_source",
+              "label": "Approval authority reference",
+              "units": 1.4
+            },
+            {
+              "key": "review_due",
+              "label": "Review due",
+              "units": 0.9
+            },
+            {
+              "key": "escalation_ref",
+              "label": "Escalation reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Objective review summary, missing information, and unresolved question",
+          "guidance": "Do not include legal conclusions or protected-trait reasoning.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "review_summary",
+              "label": "Relevant facts, evidence sources, missing items, conflict, qualified reviewer, and next step",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This lease renewal request record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "offer_response",
+      "title": "Authorized option, delivery, and response",
+      "guidance": "Keep approval, delivery, and acceptance distinct.",
+      "blocks": [
+        {
+          "key": "renewal_options",
+          "type": "table",
+          "label": "Renewal option under consideration",
+          "guidance": "Use approved document references rather than recreating binding terms here.",
+          "columns": [
+            {
+              "key": "option",
+              "label": "Option or term",
+              "units": 1.5
+            },
+            {
+              "key": "effective_period",
+              "label": "Effective period",
+              "units": 1.3
+            },
+            {
+              "key": "term_reference",
+              "label": "Approved term reference",
+              "units": 1.4
+            },
+            {
+              "key": "authority",
+              "label": "Approval source",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "authorized_communication",
+          "type": "fields",
+          "label": "Authorized communication",
+          "guidance": "This row does not itself create an offer or agreement.",
+          "fields": [
+            {
+              "key": "authorization_status",
+              "label": "Authorization status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Pending",
+                "Approved to prepare",
+                "Approved to deliver",
+                "Not approved",
+                "Withdrawn"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 1.0
+            },
+            {
+              "key": "document_reference",
+              "label": "Approved document reference",
+              "units": 1.4
+            },
+            {
+              "key": "delivery_deadline",
+              "label": "Delivery deadline",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Delivery, question, revision, and response log",
+          "guidance": "Keep revision history and delivery evidence traceable.",
+          "columns": [
+            {
+              "key": "date_channel",
+              "label": "Date and channel",
+              "units": 1.2
+            },
+            {
+              "key": "document",
+              "label": "Document or message",
+              "units": 1.5
+            },
+            {
+              "key": "recipient",
+              "label": "Authorized recipient",
+              "units": 1.1
+            },
+            {
+              "key": "response",
+              "label": "Response or question",
+              "units": 1.5
+            },
+            {
+              "key": "owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "response_exception",
+          "type": "textarea",
+          "label": "Delivery failure, disputed term, requested revision, or exception",
+          "guidance": "Do not change approved terms without documented authority.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "response_exception_details",
+              "label": "Issue, immediate action, authorized reviewer, due point, communication plan, and disposition",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "renewal_closeout",
+      "title": "Execution handoff and accountable closeout",
+      "guidance": "Close only after documents and systems agree.",
+      "blocks": [
+        {
+          "key": "execution_checks",
+          "type": "checklist",
+          "label": "Execution and handoff verification",
+          "guidance": "Do not treat a signature on this workflow record as execution of renewal documents.",
+          "items": [
+            "Final approved document identity and revision are verified",
+            "All required authorized parties completed the approved process",
+            "Requester received a copy through the approved channel",
+            "Dates, billing, access, service, and occupancy systems are updated",
+            "Separate accommodation, animal, transfer, or complaint routes remain linked",
+            "Withdrawn, declined, expired, or unresolved status is communicated",
+            "Open conditions retain owners, due points, and escalation routes",
+            "Record retention and access controls are applied"
+          ]
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final workflow outcome",
+          "guidance": "Record the authorized-system result without adding a legal characterization.",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Executed in approved system",
+                "Not renewed",
+                "Withdrawn",
+                "Expired",
+                "Still pending"
+              ]
+            },
+            {
+              "key": "final_document",
+              "label": "Final document reference",
+              "units": 1.4
+            },
+            {
+              "key": "system_update",
+              "label": "System update status",
+              "units": 1.1
+            },
+            {
+              "key": "closeout_owner",
+              "label": "Closeout owner",
+              "units": 1.1
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and handoff register",
+          "guidance": "A pending required action prevents final closure.",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.6
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "handoff",
+              "label": "Handoff or recipient",
+              "units": 1.3
+            },
+            {
+              "key": "status",
+              "label": "Status or evidence",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "renewal_review",
+          "type": "signatures",
+          "label": "Workflow preparation and qualified closeout review",
+          "guidance": "Signatures confirm review of this operational record, not execution, waiver, or agreement to lease terms.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized renewal reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

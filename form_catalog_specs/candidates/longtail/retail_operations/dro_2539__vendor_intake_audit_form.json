@@ -1,0 +1,526 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2539__vendor_intake_audit_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2539__vendor_intake_audit_form.pdf",
+  "slug": "vendor-intake-audit-form",
+  "title": "Vendor Intake Audit Form",
+  "subtitle": "A practical evidence-based audit for vendor intake that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations evidence-based audit for vendor intake covering vendor onboarding and access, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a vendor coordinator opens one vendor intake record to define criteria and sample, test objective evidence, record findings, assign corrective verification, and close or reopen actions; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Vendor audit identity and routing",
+      "guidance": "Connect this audit to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Vendor record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Business unit or site",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Vendor scope or route",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned vendor coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Vendor event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Vendor Intake scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "audit_scope",
+      "title": "Vendor audit scope, criteria, and sample",
+      "guidance": "Define the period, locations, records, sample method, and applicable policy before recording findings.",
+      "blocks": [
+        {
+          "key": "scope_basis",
+          "type": "fields",
+          "label": "Audit basis",
+          "fields": [
+            {
+              "key": "audit_period",
+              "label": "Audit period",
+              "units": 0.9
+            },
+            {
+              "key": "criteria_reference",
+              "label": "Criteria or policy ref.",
+              "units": 1.2
+            },
+            {
+              "key": "sample_method",
+              "label": "Sample method",
+              "units": 1.0
+            },
+            {
+              "key": "sample_size",
+              "label": "Sample size",
+              "units": 0.75
+            },
+            {
+              "key": "process_owner",
+              "label": "Process owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "audit_criteria",
+          "type": "checklist",
+          "label": "Vendor audit criteria",
+          "items": [
+            "Vendor identity and approved contact are linked",
+            "Scope, sites, products, and term are specific",
+            "Sponsor and purchase route are present",
+            "Required records show current status and source",
+            "Access requests have least-necessary scope",
+            "Subcontractors and conflicts are addressed",
+            "Restricted commercial data remains in approved systems",
+            "Approval conditions have owners and expiration dates",
+            "Renewal and offboarding are assigned",
+            "Start or hold decision is communicated"
+          ]
+        },
+        {
+          "key": "audit_boundary",
+          "type": "notice",
+          "label": "Audit conclusion boundary",
+          "guidance": "Use references and status fields rather than copying tax identifiers, bank details, identity documents, credentials, or confidential contracts into this general form. A listed document is not a legal or professional validation. Follow applicable purchasing, access, privacy, security, and retention policy and route specialist judgments to the authorized reviewer."
+        }
+      ]
+    },
+    {
+      "key": "tests_evidence",
+      "title": "Vendor tests, observations, and evidence",
+      "guidance": "Record the sample or record examined, the objective result, and the evidence reference for each test.",
+      "blocks": [
+        {
+          "key": "test_register",
+          "type": "table",
+          "label": "Audit test register",
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Criterion or test",
+              "units": 1.2
+            },
+            {
+              "key": "sample",
+              "label": "Sample or record",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Observation or result",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref.",
+              "units": 1.0
+            },
+            {
+              "key": "tester",
+              "label": "Tested by",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "sample_limitations",
+          "type": "textarea",
+          "label": "Sample selection, unavailable records, conflicting evidence, limitations, and additional observations",
+          "fields": [
+            {
+              "key": "limitation_detail",
+              "label": "Vendor Intake audit evidence and limitations"
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "findings_decision",
+      "title": "Vendor findings, correction, and authorization",
+      "guidance": "Make each finding traceable to evidence and separate immediate correction from longer-term action.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Finding and corrective-action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding or variance",
+              "units": 1.25
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref.",
+              "units": 0.9
+            },
+            {
+              "key": "correction",
+              "label": "Immediate correction",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status or disposition",
+              "units": 0.95
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Vendor audit decision and authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Proceed",
+                "Proceed with limits",
+                "Hold",
+                "Escalate",
+                "Decline",
+                "Rework"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or approval ref.",
+              "units": 1.05
+            },
+            {
+              "key": "review_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "finding_rationale",
+          "type": "textarea",
+          "label": "Finding rationale, recurring pattern, disputed evidence, escalation need, and accepted limitation",
+          "fields": [
+            {
+              "key": "finding_rationale_detail",
+              "label": "Vendor Intake audit finding rationale"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "verification_followup",
+      "title": "Vendor corrective verification and escalation",
+      "guidance": "Identify how completion will be proven and who accepts or reopens each action.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Audit escalation indicators",
+          "items": [
+            "Vendor identity or ownership review unresolved",
+            "Required record or policy acknowledgment missing",
+            "Sensitive access requires specialist approval",
+            "Emergency or temporary vendor route requested",
+            "Commercial terms or payment setup disputed",
+            "Start, renewal, suspension, or rejection decision pending"
+          ]
+        },
+        {
+          "key": "verification_register",
+          "type": "table",
+          "label": "Corrective verification plan",
+          "columns": [
+            {
+              "key": "action_ref",
+              "label": "Finding or action ref.",
+              "units": 0.9
+            },
+            {
+              "key": "proof",
+              "label": "Required verification evidence",
+              "units": 1.35
+            },
+            {
+              "key": "verifier",
+              "label": "Verifier",
+              "units": 0.85
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Result or reopen decision",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Vendor outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Vendor closeout controls",
+          "items": [
+            "Approved vendor ID and scope recorded",
+            "Site, system, and data access owners notified",
+            "Commercial setup reference linked in restricted system",
+            "Conditions and expiration dates have owners",
+            "Start or hold decision communicated to sponsor",
+            "Renewal and offboarding responsibility assigned"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_action_register",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation_action",
+              "label": "Limitation or action",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "recipient_route",
+              "label": "Recipient or route",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Vendor Intake residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Audit closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

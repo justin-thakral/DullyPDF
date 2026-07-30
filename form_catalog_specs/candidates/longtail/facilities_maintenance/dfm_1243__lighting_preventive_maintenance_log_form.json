@@ -1,0 +1,653 @@
+{
+  "catalog_id": "facilities_maintenance/dfm_1243__lighting_preventive_maintenance_log_form",
+  "description": "An original, jurisdiction-neutral lighting scheduled preventive maintenance service record for an indoor, exterior, emergency, or egress lighting system whose fixtures, circuits, supports, controls, illumination, and electrical condition must be traceable. It connects facility identity, asset-specific evidence, hazards, qualified decisions, exceptions, service status, and accountable closeout without replacing employer procedures or trade judgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.95
+            },
+            {
+              "key": "record_opened_date",
+              "label": "Opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time_zone",
+              "label": "Opened time and zone",
+              "units": 1.0
+            },
+            {
+              "key": "work_order_reference",
+              "label": "Work order or route",
+              "units": 1.1
+            },
+            {
+              "field_type": "choice",
+              "key": "priority",
+              "label": "Priority",
+              "options": [
+                "Select priority",
+                "Routine",
+                "Scheduled",
+                "Urgent",
+                "Emergency"
+              ],
+              "units": 0.8
+            }
+          ],
+          "key": "record_reference",
+          "label": "Record reference and timing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.15
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.05
+            },
+            {
+              "key": "asset_reference",
+              "label": "Asset or route reference",
+              "units": 1.0
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.15
+            }
+          ],
+          "key": "facility_routing",
+          "label": "Facility, location, and responsible parties",
+          "type": "fields"
+        },
+        {
+          "guidance": "This Lighting record organizes facts and evidence. It does not replace employer energy-control procedures, permits, manufacturer instructions, required inspection, emergency response, or qualified trade judgment. Stop and route any unsafe or uncertain condition.",
+          "key": "record_boundary",
+          "label": "Safety and authority boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Open one traceable record, identify the responsible parties, and set the review route.",
+      "key": "record_identity",
+      "title": "Lighting Preventive Maintenance identity and routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "lighting_zone",
+              "label": "Lighting zone or asset ID",
+              "units": 1.05
+            },
+            {
+              "key": "area_served",
+              "label": "Building and area served",
+              "units": 1.2
+            },
+            {
+              "key": "panel_circuit",
+              "label": "Panel and circuit",
+              "units": 1.0
+            },
+            {
+              "key": "fixture_type",
+              "label": "Fixture or lamp type",
+              "units": 1.15
+            },
+            {
+              "key": "voltage_control",
+              "label": "Voltage and control type",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "service_category",
+              "label": "Lighting category",
+              "options": [
+                "Select category",
+                "Interior general",
+                "Exterior or site",
+                "Emergency or egress",
+                "Task or specialty",
+                "Other"
+              ],
+              "units": 1.05
+            }
+          ],
+          "key": "asset_profile",
+          "label": "Lighting asset and system profile",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only directly observed or source-supported items; explain inaccessible, not applicable, or conflicting evidence below.",
+          "items": [
+            "Zone, circuit, panel, control, fixture, and served-area identities reconcile",
+            "Fixture housing, lens, diffuser, door, gasket, fasteners, and supports are observed",
+            "Lamp, LED module, driver, ballast, socket, connector, and wiring condition are recorded",
+            "Heat, discoloration, odor, arcing, buzzing, flicker, and intermittent operation are documented",
+            "Grounding, bonding, enclosure, cover, strain relief, and conductor protection are observed",
+            "Occupancy sensor, timer, photocell, dimmer, relay, contactor, and BAS status are reconciled",
+            "Emergency unit, exit sign, battery, charger, indicator, and transfer evidence is linked",
+            "Illumination complaint, dark area, glare, color, flicker, and task impact are recorded",
+            "Water intrusion, condensation, corrosion, dirt, insect, and environmental exposure are documented",
+            "Ladder, lift, ceiling, overhead, traffic, and falling-object access conditions are controlled",
+            "Lamp and material type, compatibility, disposal, and replacement evidence are recorded",
+            "Open circuit, fixture, emergency-lighting, and occupant-impact deficiencies are assigned"
+          ],
+          "key": "evidence_checkpoints",
+          "label": "Lighting evidence checkpoints",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "fixture_location",
+              "label": "Fixture or location",
+              "units": 1.2
+            },
+            {
+              "key": "circuit_control",
+              "label": "Circuit or control",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition or symptom",
+              "units": 1.1
+            },
+            {
+              "key": "test_reading",
+              "label": "Test or reading",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "action",
+              "label": "Action or owner",
+              "units": 1.05
+            }
+          ],
+          "guidance": "Tie each entry to a location, source, reading condition, photo, tag, log, or other retrievable evidence.",
+          "key": "asset_register",
+          "label": "Lighting fixture, circuit, control, and evidence register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lighting condition, recent history, known changes, evidence conflicts, and access limitations",
+              "multiline": true
+            }
+          ],
+          "height": 64,
+          "key": "asset_history",
+          "label": "Lighting condition, recent history, known changes, evidence conflicts, and access limitations",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Capture the exact asset context, supported observations, and source references.",
+      "key": "asset_evidence",
+      "title": "Lighting facts and source evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 0.85
+            },
+            {
+              "key": "pm_cycle",
+              "label": "PM cycle or route",
+              "units": 1.0
+            },
+            {
+              "key": "plan_revision",
+              "label": "Plan or procedure revision",
+              "units": 1.15
+            },
+            {
+              "key": "lead_technician",
+              "label": "Lead technician",
+              "units": 1.05
+            },
+            {
+              "key": "runtime_or_age",
+              "label": "Runtime, age, or interval",
+              "units": 1.05
+            },
+            {
+              "key": "next_service_basis",
+              "label": "Next service basis",
+              "units": 1.15
+            }
+          ],
+          "key": "workflow_context",
+          "label": "Preventive Maintenance scope, timing, and responsible roles",
+          "type": "fields"
+        },
+        {
+          "guidance": "A checked item confirms the control was addressed; it does not substitute for the referenced procedure, permit, test, or source.",
+          "items": [
+            "Approved maintenance plan and manufacturer references are identified",
+            "Energy isolation, operating impact, permits, and access controls are recorded",
+            "Before-service condition is captured before cleaning, adjustment, or replacement",
+            "Every task records completed, not applicable, deferred, or failed status",
+            "Settings and adjustments preserve before value, after value, and authority",
+            "Parts, materials, consumables, lot or serial data, and waste route are traceable",
+            "Functional tests record conditions, acceptance source, result, and reviewer",
+            "Deferred work remains open with risk, restriction, owner, due point, and escalation"
+          ],
+          "key": "workflow_controls",
+          "label": "Lighting preventive maintenance controls",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "task_component",
+              "label": "Task or component",
+              "units": 1.15
+            },
+            {
+              "key": "before",
+              "label": "Condition before",
+              "units": 1.05
+            },
+            {
+              "key": "work",
+              "label": "Work performed",
+              "units": 1.2
+            },
+            {
+              "key": "after",
+              "label": "Condition after",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Part or evidence",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status or owner",
+              "units": 0.95
+            }
+          ],
+          "key": "workflow_register",
+          "label": "Preventive maintenance task and before-after service log",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Maintenance performed, changed settings, rejected results, deferred work, and next interval rationale",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "key": "workflow_narrative",
+          "label": "Maintenance performed, changed settings, rejected results, deferred work, and next interval rationale",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Turn the form purpose into evidence, accountable actions, and a reviewable disposition.",
+      "key": "workflow_control",
+      "title": "Lighting preventive maintenance control record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "A checked condition requires immediate protective action, a named owner, qualified review, and a final disposition.",
+          "items": [
+            "Exposed live parts, arcing, burning, smoke, melted insulation, or severe heat is present",
+            "Wet electrical equipment, water intrusion, condensation, or conductive contamination is unresolved",
+            "Fixture, lens, support, pole, mast arm, ceiling, or mounting could fall or detach",
+            "Emergency, exit, stair, life-safety, or required egress illumination may be unavailable",
+            "Ladder, lift, ceiling, traffic, roof, weather, or overhead-work access is unsafe",
+            "Hazardous-location, voltage, lamp, driver, ballast, or control compatibility is uncertain",
+            "Required de-energization, lockout, qualified electrical work, or outage authorization is absent",
+            "Field status conflicts with circuit schedules, controls, test records, or emergency-power evidence"
+          ],
+          "key": "stop_conditions",
+          "label": "Stop and escalate when any condition is present",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate protective action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.95
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due point or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.7
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "key": "exception_register",
+          "label": "Lighting exception and protective-action register",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "exception_narrative",
+          "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not resolve a checked stop condition by inference, an unchecked box, or a generic sign-off. Preserve the condition, protective action, authority, evidence, owner, due point, and verified disposition.",
+          "key": "escalation_boundary",
+          "label": "Escalation record boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Stop when authority, access, energy control, safety, evidence, or service status is unresolved.",
+      "key": "exceptions_escalation",
+      "title": "Lighting stop conditions, exceptions, and escalation"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "options": [
+                "Select disposition",
+                "Service complete",
+                "Complete with monitoring",
+                "Complete with restriction",
+                "Incomplete - follow-up required",
+                "Remain out of service"
+              ],
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.85
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.85
+            },
+            {
+              "key": "review_or_expiry",
+              "label": "Review or expiry date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 1.1
+            },
+            {
+              "key": "communication_route",
+              "label": "Communication route",
+              "units": 1.05
+            }
+          ],
+          "key": "decision_record",
+          "label": "Preventive Maintenance decision, timing, and authority",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only controls supported by referenced evidence; unresolved controls remain open conditions.",
+          "items": [
+            "All planned tasks have evidence or an explicit deferred disposition",
+            "Parts, settings, fluids, materials, and configuration changes are reconciled",
+            "Required operational and protective-device checks have accepted results",
+            "Open defects have risk controls, owners, due points, and communication",
+            "Next interval reflects condition, runtime, environment, and governing plan",
+            "Qualified reviewer separately approves return-to-service evidence",
+            "Qualified electrical reviewer approves energized testing, circuit work, and return to service",
+            "Emergency and egress lighting status is independently verified where applicable",
+            "Fixture, lamp, driver, ballast, voltage, control, and environment compatibility is documented",
+            "Dark-area, glare, accessibility, traffic, and occupant impacts have controls and owners",
+            "Temporary lighting and any circuit restriction have a due point and removal trigger",
+            "Controls, schedules, sensors, dimming, and BAS commands are restored to the approved state"
+          ],
+          "key": "decision_controls",
+          "label": "Lighting preventive maintenance decision controls",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "key": "decision_rationale",
+          "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "key": "decision_approval",
+          "label": "Preparation, qualified review, and facility authorization",
+          "type": "signatures"
+        },
+        {
+          "guidance": "Do not use this Lighting record as permission for work outside the approved scope, as proof that an unperformed test passed, or as a substitute for required qualified-person, employer, authority, or manufacturer approval.",
+          "key": "decision_limitation",
+          "label": "Decision-use limitation",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Separate the authorized decision from preliminary observation and record its limits.",
+      "key": "qualified_decision",
+      "title": "Lighting qualified decision and authorization"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final preventive-maintenance result",
+              "units": 1.2
+            },
+            {
+              "key": "service_or_asset_status",
+              "label": "Service or asset status",
+              "units": 1.0
+            },
+            {
+              "key": "final_evidence_reference",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "remaining_action_owner",
+              "label": "Remaining action owner",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.05
+            },
+            {
+              "key": "closure_date_time",
+              "label": "Closure date and time",
+              "units": 1.0
+            }
+          ],
+          "key": "outcome_handoff",
+          "label": "Preventive Maintenance outcome and primary handoff",
+          "type": "fields"
+        },
+        {
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger before the record can be treated as closed.",
+          "items": [
+            "Fixtures, lenses, diffusers, covers, supports, panels, and ceilings are restored",
+            "Circuit, control, sensor, timer, photocell, dimming, and BAS status are documented",
+            "Emergency and exit units have required functional evidence and clear indicators",
+            "Ladders, lifts, barriers, lamps, packaging, debris, and regulated waste have final custody",
+            "Illumination, flicker, glare, dark-area, and occupant complaints have a final disposition",
+            "Parts, circuit records, photos, test evidence, restrictions, and next service are filed"
+          ],
+          "key": "closeout_evidence",
+          "label": "Lighting closeout evidence",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "record_or_item",
+              "label": "Record or item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_owner",
+              "label": "Recipient or owner",
+              "units": 1.0
+            },
+            {
+              "key": "date_method",
+              "label": "Date and method",
+              "units": 0.95
+            },
+            {
+              "key": "status_due",
+              "label": "Status or due point",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_register",
+          "label": "Final evidence, communication, custody, and follow-up register",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "closeout_summary",
+          "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close only when the final condition is evidenced and every open action has an owner.",
+      "key": "completion_handoff",
+      "title": "Lighting completion, evidence reconciliation, and handoff"
+    }
+  ],
+  "slug": "lighting-preventive-maintenance-log-form",
+  "source_filename": "dfm_1243__lighting_preventive_maintenance_log_form.pdf",
+  "source_section": "facilities_maintenance",
+  "subtitle": "Lighting: Record the maintenance basis, isolation, before-and-after condition, tasks, parts, tests, deferred work, return to service, and next interval.",
+  "title": "Lighting Preventive Maintenance Log Form",
+  "use_case": "Use when a facility owner, maintenance coordinator, qualified technician, or service vendor needs one traceable lighting preventive maintenance record from opening through evidence-backed disposition, handoff, and follow-up."
+}

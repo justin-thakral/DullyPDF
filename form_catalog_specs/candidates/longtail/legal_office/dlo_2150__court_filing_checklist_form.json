@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "catalog_id": "legal_office/dlo_2150__court_filing_checklist_form",
+  "source_section": "legal_office",
+  "source_filename": "dlo_2150__court_filing_checklist_form.pdf",
+  "slug": "court-filing-checklist-form",
+  "title": "Court Filing Checklist Form",
+  "subtitle": "A controlled readiness checklist record for a proposed court submission controlled from authorized draft through caption, signature, exhibits, redaction, filing event, fee, deadline, electronic receipt, docket verification, service, rejection correction, client notice, and archive, carrying facts and source evidence through qualified decision, exception escalation, secure communication, and accountable handoff.",
+  "description": "This original Court Filing Checklist Form helps the filing coordinator and responsible lawyer manage a proposed court submission controlled from authorized draft through caption, signature, exhibits, redaction, filing event, fee, deadline, electronic receipt, docket verification, service, rejection correction, client notice, and archive. It tests whether each required input, evidence item, review, and stop condition is complete before the legal-office workflow advances, while keeping jurisdiction-specific conclusions and professional judgment with authorized reviewers.",
+  "use_case": "Use when the filing coordinator and responsible lawyer needs one fillable record that tests whether each required input, evidence item, review, and stop condition is complete before the legal-office workflow advances for the court filing package. Close only after the readiness gate result is supported by evidence and accepted by the named recipient.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Court Filing record identity and routing",
+      "guidance": "Open one traceable record, establish authority, and assign accountable qualified review.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Court Filing record and responsible parties",
+          "fields": [
+            {
+              "key": "filing_ref",
+              "label": "Filing package reference",
+              "units": 1.2
+            },
+            {
+              "key": "court_case",
+              "label": "Court and case number",
+              "units": 1.2
+            },
+            {
+              "key": "filing_party",
+              "label": "Filing party",
+              "units": 1.0
+            },
+            {
+              "key": "responsible_lawyer",
+              "label": "Responsible lawyer",
+              "units": 1.0
+            },
+            {
+              "key": "filing_operator",
+              "label": "Filing operator",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "timing_route",
+          "type": "fields",
+          "label": "Readiness Checklist timing and route",
+          "fields": [
+            {
+              "key": "record_opened",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time and zone",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time sensitive",
+                "Urgent review",
+                "Stop and escalate"
+              ]
+            },
+            {
+              "key": "qualified_route",
+              "label": "Qualified review route",
+              "units": 1.1
+            },
+            {
+              "key": "next_due",
+              "label": "Next due point",
+              "units": 0.9
+            },
+            {
+              "key": "related_record",
+              "label": "Related record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "secure_boundary",
+          "type": "notice",
+          "label": "Confidential record boundary",
+          "guidance": "Use approved secure systems for protected communications and source files. Do not enter access credentials, complete account numbers, government identifiers, medical detail, or privileged source content in this routing form."
+        }
+      ]
+    },
+    {
+      "key": "domain_evidence",
+      "title": "Court Filing facts and source evidence",
+      "guidance": "Capture domain-specific facts, distinguish statements from verified evidence, and retain source references.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Court Filing matter profile",
+          "fields": [
+            {
+              "key": "document_type",
+              "label": "Document or event type",
+              "units": 1.1
+            },
+            {
+              "key": "filing_deadline",
+              "label": "Filing deadline and zone",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_judge",
+              "label": "Judge or division",
+              "units": 0.9
+            },
+            {
+              "key": "submission_route",
+              "label": "Electronic or other route",
+              "units": 1.0
+            },
+            {
+              "key": "fee_status",
+              "label": "Fee or waiver status",
+              "units": 0.9
+            },
+            {
+              "key": "service_plan",
+              "label": "Service method plan",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "evidence_checkpoints",
+          "type": "checklist",
+          "label": "Court Filing evidence checkpoints",
+          "items": [
+            "Court, case number, caption, party, judge, and filing event match the docket",
+            "Authorized final document, exhibits, attachments, and proposed order are version locked",
+            "Signature, attorney admission, filer access, and client authority are verified",
+            "Local rule, standing order, scheduling order, and judge procedure review is referenced",
+            "Deadline, time zone, outage route, fee, page limit, and file-size controls are checked",
+            "Required personal identifiers and protected information receive qualified redaction review",
+            "PDF readability, text search, pagination, bookmarks, security, and attachment order are checked",
+            "Service recipients, non-electronic recipients, and certificate requirements are mapped"
+          ],
+          "guidance": "Check only supported items; explain any limitation in the evidence narrative."
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Court Filing evidence and action register",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Filing component",
+              "units": 1.2
+            },
+            {
+              "key": "final_version",
+              "label": "Final version ref",
+              "units": 1.2
+            },
+            {
+              "key": "pages",
+              "label": "Pages",
+              "units": 0.6
+            },
+            {
+              "key": "redaction",
+              "label": "Redaction check",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.8
+            }
+          ],
+          "rows": 4,
+          "guidance": "Reference approved repositories; do not copy confidential source contents into the table."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Filing purpose, requested relief, version history, deadline basis, sensitive information, exhibits, service plan, and special court instructions",
+          "fields": [
+            {
+              "key": "context_narrative",
+              "label": "Filing purpose, requested relief, version history, deadline basis, sensitive information, exhibits, service plan, and special court instructions"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "workflow_record",
+      "title": "Court Filing readiness checklist control record",
+      "guidance": "Turn the record purpose into traceable evidence, accountable actions, and reviewable decisions.",
+      "blocks": [
+        {
+          "key": "gate_definition",
+          "type": "fields",
+          "label": "Readiness gate scope and control point",
+          "fields": [
+            {
+              "key": "gate_name",
+              "label": "Gate or milestone",
+              "units": 1.0
+            },
+            {
+              "key": "scope_version",
+              "label": "Scope or version reviewed",
+              "units": 1.1
+            },
+            {
+              "key": "requirements_source",
+              "label": "Requirements source",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            },
+            {
+              "key": "gate_due",
+              "label": "Gate decision due",
+              "units": 0.9
+            },
+            {
+              "key": "starting_status",
+              "label": "Starting status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "In progress",
+                "Blocked",
+                "Ready for review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Court Filing readiness verification",
+          "items": [
+            "Correct client, matter, party, and record version are in scope",
+            "Source documents and communications are complete and securely referenced",
+            "Every material date and deadline has an independently verified basis",
+            "Required conflict, authority, privacy, privilege, and access checks are complete",
+            "Factual gaps, inconsistencies, assumptions, and disputed points are visible",
+            "Reviewer qualifications and segregation-of-duties needs are met",
+            "Conditions, exceptions, and prohibited actions have accountable owners",
+            "Acceptance evidence and downstream handoff requirements are defined"
+          ],
+          "guidance": "A checked box is evidence of verification, not a substitute for the referenced source."
+        },
+        {
+          "key": "gate_register",
+          "type": "table",
+          "label": "Requirement-by-requirement gate register",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "correction",
+              "label": "Correction or due",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "gate_rationale",
+          "type": "textarea",
+          "label": "Readiness rationale, failed controls, compensating steps, and recheck plan",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Readiness rationale, failed controls, compensating steps, and recheck plan"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Court Filing stop conditions, exceptions, and escalation",
+      "guidance": "Stop when authority, identity, evidence, deadline, confidentiality, or professional-duty controls are unresolved.",
+      "blocks": [
+        {
+          "key": "risk_triggers",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Court, case, party, event, judge, deadline, or filing authority may be incorrect",
+            "Document version, signature, exhibit, proposed order, or requested relief is not final",
+            "Personal identifiers, sealed material, protected data, or confidential exhibits may be exposed",
+            "Local rule, standing order, page limit, format, admission, or fee requirement is unmet",
+            "Electronic-filing outage, credential, payment, file-size, corruption, or upload issue occurs",
+            "Notice of filing, docket text, attachment order, restriction level, or timestamp is wrong",
+            "A recipient is not electronically served or separate service evidence is required",
+            "Clerk rejection, deficiency, corrective entry, refiling, or emergency relief needs escalation"
+          ],
+          "guidance": "A checked item requires immediate protective action, a named owner, qualified review, and a final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Readiness Checklist exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_facts",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "facts",
+              "label": "Objective facts, affected activity, containment, notifications, and review needed"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "qualified_review",
+          "type": "notice",
+          "label": "Qualified review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, professional duties, privilege, conflicts, consentability, deadlines, or court compliance. Follow applicable jurisdictional rules and current firm policy; route legal, ethics, privacy, tax, court, safety, and specialist questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Court Filing qualified decision and accountable authorization",
+      "guidance": "Record the authorized decision separately from preliminary analysis and prevent action beyond its evidence and scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Readiness Checklist qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Deferred",
+                "Declined",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "review_expiry",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_controls",
+          "type": "checklist",
+          "label": "Court Filing decision and execution conditions",
+          "items": [
+            "Responsible lawyer authorizes the exact final filing package and requested event",
+            "Independent reviewer confirms caption, case, deadline, rules, signature, and exhibits",
+            "Qualified privacy review confirms redaction, sealing, and access-restriction treatment",
+            "Filing operator has exact event, docket text, attachments, fees, and service instructions",
+            "Submission is not treated as complete until official receipt and docket entry are verified",
+            "Any rejection or correction preserves the original receipt and approved response route"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Evidence considered, reasons, limits, alternatives, and required follow-up"
+            }
+          ],
+          "height": 50
+        },
+        {
+          "key": "decision_signatures",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, consents, notices, filings, or system approvals."
+        },
+        {
+          "key": "decision_limit",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Court Filing record as a substitute for legal advice, a required client agreement, informed consent, court paper, discovery response, privilege review, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Court Filing completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, limitations remain visible, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "outcome_handoff",
+          "type": "fields",
+          "label": "Readiness Checklist outcome and primary handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final readiness gate result",
+              "units": 1.2
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or task status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 1.0
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Court Filing closeout evidence",
+          "items": [
+            "Official electronic receipt or clerk-stamped filing evidence is preserved",
+            "Docket number, text, date, time, event, documents, and restriction level are verified",
+            "Electronic and non-electronic service completion is reconciled",
+            "Responsible lawyer and client communication receive confirmed filing status",
+            "Rejection, deficiency, correction, hearing, response, and next-deadline tasks are docketed",
+            "Final filed set and receipts are stored in the approved matter workspace"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with follow-up",
+                "Transferred",
+                "Declined",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_record_ref",
+              "label": "Final record reference",
+              "units": 1.1
+            },
+            {
+              "key": "retention_access",
+              "label": "Retention or access class",
+              "units": 1.0
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

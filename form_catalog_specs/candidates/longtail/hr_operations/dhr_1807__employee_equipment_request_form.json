@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1807__employee_equipment_request_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1807__employee_equipment_request_form.pdf",
+  "slug": "dhr-1807-employee-equipment-request-form-b866da34",
+  "title": "Employee Equipment Request Form",
+  "subtitle": "Use this request to route the need, test readiness, document review, authorize a bounded action, and verify implementation for a employee equipment workflow.",
+  "description": "An original operational employee equipment request form that controls a employee asset and access package from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the hiring manager, workplace coordinator, or asset custodian needs a traceable request so the authorized workplace, IT, security, or HR reviewer can issue, ship, substitute, repair, recover, or deny the requested equipment package under the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Employee Equipment request identity and routing",
+      "guidance": "Open one traceable request and identify the responsible reviewers before work begins.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Employee Equipment identity",
+          "fields": [
+            {
+              "key": "equipment_record",
+              "label": "Equipment record number",
+              "units": 0.8
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee or worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "role_department",
+              "label": "Role and department",
+              "units": 1.05
+            },
+            {
+              "key": "work_location",
+              "label": "Primary work location",
+              "units": 0.9
+            },
+            {
+              "key": "needed_by",
+              "label": "Needed-by date",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Request ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_scope",
+          "type": "textarea",
+          "label": "Requested outcome, initiating event, business need, affected people or work, and explicit exclusions",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Request scope and job statement"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "requested_action",
+      "title": "Requested employee equipment scope and operating need",
+      "guidance": "Describe the exact requested action and the evidence needed to evaluate it.",
+      "blocks": [
+        {
+          "key": "request_type",
+          "type": "checklist",
+          "label": "Employee Equipment request type",
+          "items": [
+            "Standard computer and approved power accessories",
+            "Monitor, dock, keyboard, mouse, or standard workstation peripheral",
+            "Phone, tablet, headset, or communication device",
+            "Badge, key, token, or physical-access item",
+            "Role-specific tool, protective item, or field device",
+            "Approved software license or licensed accessory",
+            "Replacement for failed, damaged, lost, or end-of-life equipment",
+            "Nonstandard or accommodation-related item routed for separate review"
+          ]
+        },
+        {
+          "key": "requested_components",
+          "type": "table",
+          "label": "Employee Equipment requested components",
+          "columns": [
+            {
+              "key": "item_category",
+              "label": "Item / category",
+              "units": 1.05
+            },
+            {
+              "key": "functional_need",
+              "label": "Role task / need",
+              "units": 1.25
+            },
+            {
+              "key": "standard_option",
+              "label": "Standard / exception",
+              "units": 0.9
+            },
+            {
+              "key": "quantity",
+              "label": "Qty.",
+              "units": 0.45
+            },
+            {
+              "key": "delivery_location",
+              "label": "Delivery location",
+              "units": 0.9
+            },
+            {
+              "key": "needed_by",
+              "label": "Needed by",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "business_need",
+          "type": "textarea",
+          "label": "Operational reason, intended result, assumptions, dependencies, alternatives, and timing impact",
+          "fields": [
+            {
+              "key": "need_detail",
+              "label": "Business need and requested result"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "readiness_impact",
+      "title": "Employee Equipment readiness, policy, and impact review",
+      "guidance": "Confirm the request can be reviewed without bypassing privacy, safety, security, or authority controls.",
+      "blocks": [
+        {
+          "key": "readiness_checkpoints",
+          "type": "checklist",
+          "label": "Employee Equipment readiness checkpoints",
+          "items": [
+            "Worker identity, role, department, manager, and location are confirmed",
+            "Role standard and approved equipment package are current",
+            "Each physical item has asset tag, serial, model, and condition recorded",
+            "Accessories, power components, cases, and adapters reconcile to the issue list",
+            "Device security baseline and required updates are complete",
+            "Approved applications and access setup are referenced without recording passwords",
+            "Shipment or handoff chain and recipient verification are documented",
+            "Support contact and priority route are known to the worker",
+            "Loss, theft, damage, and suspected compromise escalation was explained",
+            "Return date, trigger, packaging, destination, and data handling are defined",
+            "Nonstandard or ergonomic need is routed to the designated review process",
+            "Asset register reflects the final custodian, location, and status"
+          ]
+        },
+        {
+          "key": "impact_routing",
+          "type": "fields",
+          "label": "Affected workflow and review route",
+          "fields": [
+            {
+              "key": "affected_team",
+              "label": "Affected team or function",
+              "units": 0.95
+            },
+            {
+              "key": "affected_location",
+              "label": "Affected location",
+              "units": 0.9
+            },
+            {
+              "key": "system_update",
+              "label": "System update required",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "To be determined"
+              ]
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy or restricted-record route",
+              "units": 1.0
+            },
+            {
+              "key": "cost_schedule_effect",
+              "label": "Cost or schedule effect",
+              "units": 0.95
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Request and authority boundary",
+          "guidance": "This request does not itself authorize action. The authorized workplace, IT, security, or HR reviewer must apply the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route, resolve exceptions, and record any conditions before implementation."
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Employee Equipment review, alternatives, and decision",
+      "guidance": "Compare the request to the governing evidence and document why the selected route is appropriate.",
+      "blocks": [
+        {
+          "key": "review_matrix",
+          "type": "table",
+          "label": "Requirement, evidence, finding, and decision matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement / question",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Reviewer / owner",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result / condition",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "request_decision",
+          "type": "fields",
+          "label": "Request decision and authority",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned for revision",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date or scope boundary",
+              "units": 1.1
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, alternatives rejected, approved limits, exception treatment, and communication plan",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Decision rationale and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "implementation_handoff",
+      "title": "Approved employee equipment implementation and exception handoff",
+      "guidance": "Translate the decision into owned work without losing a condition or system update.",
+      "blocks": [
+        {
+          "key": "implementation_plan",
+          "type": "table",
+          "label": "Approved action, condition, system update, and completion evidence",
+          "columns": [
+            {
+              "key": "approved_action",
+              "label": "Approved action",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition / limit",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "system_record",
+              "label": "System / evidence ref.",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "implementation_checks",
+          "type": "checklist",
+          "label": "Implementation and communication controls",
+          "items": [
+            "Role and work location justify each requested item",
+            "Standard equipment was considered before a nonstandard purchase",
+            "Budget, ownership, and procurement authority are confirmed",
+            "Security reviewer cleared the device and access method",
+            "Delivery, setup, support, and replacement owners are assigned",
+            "Inventory can track custody from issue through return",
+            "Confidential accommodation information is held outside this record",
+            "Conditions and return obligations are communicated before issuance"
+          ]
+        },
+        {
+          "key": "implementation_variance",
+          "type": "textarea",
+          "label": "Implementation variance, failed dependency, changed fact, immediate action, and reapproval need",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Variance and reapproval narrative"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Employee Equipment request completion and closeout",
+      "guidance": "Close only when the implemented result, remaining limits, and receiving ownership are verifiable.",
+      "blocks": [
+        {
+          "key": "request_outcome",
+          "type": "fields",
+          "label": "Request outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "request_actions",
+          "type": "table",
+          "label": "Open employee equipment action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "request_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "request_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "request_signoff",
+          "type": "signatures",
+          "label": "Request accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Workplace, It, Security, Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

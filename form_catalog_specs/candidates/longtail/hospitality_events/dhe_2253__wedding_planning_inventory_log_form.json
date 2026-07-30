@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2253__wedding_planning_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2253__wedding_planning_inventory_log_form.pdf",
+  "slug": "wedding-planning-inventory-log-form",
+  "title": "Wedding Planning Inventory Log Form",
+  "subtitle": "Track wedding decor, rentals, gifts, supplies, and personal items from receipt through placement, return, discrepancy resolution, and handoff.",
+  "description": "An original event inventory and custody log for items that cross venue, supplier, client, and event-team boundaries. It records expected quantity, receipt condition, storage location, issued use, return status, exceptions, and accountable release.",
+  "use_case": "Use for wedding property or rented items that need a documented receiving and return trail. Create a linked continuation for larger inventories and close only after counts reconcile or every variance has a disposition and handoff owner.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Inventory log control",
+      "guidance": "Identify the event, count basis, and people responsible for custody.",
+      "blocks": [
+        {
+          "key": "log_identity",
+          "type": "fields",
+          "label": "Log identity",
+          "fields": [
+            {
+              "key": "inventory_id",
+              "label": "Inventory log ID",
+              "units": 0.95
+            },
+            {
+              "key": "event_id",
+              "label": "Wedding or event ID",
+              "units": 1.0
+            },
+            {
+              "key": "wedding_date",
+              "label": "Wedding date",
+              "units": 0.8
+            },
+            {
+              "key": "log_owner",
+              "label": "Inventory owner",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_contact",
+              "label": "Receiving contact",
+              "units": 1.05
+            },
+            {
+              "key": "return_contact",
+              "label": "Return contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "scope_control",
+          "type": "fields",
+          "label": "Inventory scope",
+          "fields": [
+            {
+              "key": "scope",
+              "label": "Inventory scope",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not selected",
+                "Client-owned decor",
+                "Venue inventory",
+                "Rental inventory",
+                "Supplier equipment",
+                "Gifts or personal items",
+                "Mixed event inventory"
+              ]
+            },
+            {
+              "key": "count_basis",
+              "label": "Count basis",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Packing list",
+                "Rental order",
+                "Physical count",
+                "Client declaration"
+              ]
+            },
+            {
+              "key": "receiving_window",
+              "label": "Receiving window",
+              "units": 1.0
+            },
+            {
+              "key": "return_deadline",
+              "label": "Return deadline",
+              "units": 0.9
+            },
+            {
+              "key": "linked_order",
+              "label": "Linked order",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "expected_inventory",
+      "title": "Expected items and custody plan",
+      "guidance": "Record expected items before receiving begins.",
+      "blocks": [
+        {
+          "key": "expected_items",
+          "type": "table",
+          "label": "Expected inventory",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.75
+            },
+            {
+              "key": "description",
+              "label": "Item description",
+              "units": 1.45
+            },
+            {
+              "key": "owner",
+              "label": "Owner or supplier",
+              "units": 1.05
+            },
+            {
+              "key": "expected_qty",
+              "label": "Expected qty",
+              "units": 0.75
+            },
+            {
+              "key": "destination",
+              "label": "Planned location",
+              "units": 1.1
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "custody_plan",
+          "type": "checklist",
+          "label": "Custody plan confirmations",
+          "items": [
+            "Each high-value or unique item has an identifier",
+            "Receiving and return contacts are confirmed",
+            "Secure storage location is assigned where needed",
+            "Setup and strike custodians are named",
+            "Gift and personal-item access is limited to named roles",
+            "Rental return deadline and carrier handoff are recorded",
+            "Packaging and empty-case storage location is assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "receiving",
+      "title": "Receipt, condition, and storage",
+      "guidance": "Count and inspect at the moment custody transfers.",
+      "blocks": [
+        {
+          "key": "receipt_log",
+          "type": "table",
+          "label": "Receiving log",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.7
+            },
+            {
+              "key": "received_qty",
+              "label": "Received",
+              "units": 0.65
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 1.0
+            },
+            {
+              "key": "received_at",
+              "label": "Received at",
+              "units": 0.85
+            },
+            {
+              "key": "stored_at",
+              "label": "Storage location",
+              "units": 1.1
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.9
+            }
+          ],
+          "rows": 7,
+          "guidance": "Use a new row for a partial receipt or materially different condition."
+        },
+        {
+          "key": "receipt_exceptions",
+          "type": "checklist",
+          "label": "Receipt exception checks",
+          "items": [
+            "Quantity differs from the expected record",
+            "Item arrived damaged or incomplete",
+            "Item has no usable identifier",
+            "Packaging is insufficient for return",
+            "Storage location differs from the custody plan",
+            "Unscheduled item requires acceptance decision",
+            "High-value item needs controlled-access storage"
+          ],
+          "guidance": "Open a variance row for every checked condition."
+        }
+      ]
+    },
+    {
+      "key": "issue_return",
+      "title": "Issue, placement, strike, and return",
+      "guidance": "Preserve custody as items move through event spaces.",
+      "blocks": [
+        {
+          "key": "movement_log",
+          "type": "table",
+          "label": "Item movement log",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.7
+            },
+            {
+              "key": "movement",
+              "label": "Movement",
+              "units": 0.85
+            },
+            {
+              "key": "quantity",
+              "label": "Qty",
+              "units": 0.55
+            },
+            {
+              "key": "from_to",
+              "label": "From and to",
+              "units": 1.2
+            },
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 1.0
+            }
+          ],
+          "rows": 8,
+          "guidance": "Record issue, relocation, strike, pack, and release movements."
+        },
+        {
+          "key": "return_control",
+          "type": "fields",
+          "label": "Return control",
+          "fields": [
+            {
+              "key": "count_started",
+              "label": "Return count started",
+              "units": 0.95
+            },
+            {
+              "key": "count_completed",
+              "label": "Return count completed",
+              "units": 1.0
+            },
+            {
+              "key": "packed_by",
+              "label": "Packed by",
+              "units": 1.0
+            },
+            {
+              "key": "released_to",
+              "label": "Released to",
+              "units": 1.0
+            },
+            {
+              "key": "release_reference",
+              "label": "Release reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "variance_control",
+      "title": "Variance and damage control",
+      "guidance": "Keep discrepancies open until a responsible disposition is recorded.",
+      "blocks": [
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Inventory variance register",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.7
+            },
+            {
+              "key": "variance",
+              "label": "Short, excess, or damage",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Variance evidence and communication",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Count evidence, condition facts, and notifications"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "custody_boundary",
+          "type": "notice",
+          "label": "Custody record boundary",
+          "guidance": "This log records item movements and observed condition. It does not determine ownership, assign fault, accept liability, or authorize payment. Route disputed ownership, significant damage, missing property, or compensation decisions to the responsible role."
+        }
+      ]
+    },
+    {
+      "key": "inventory_closeout",
+      "title": "Reconciliation and accountable closeout",
+      "guidance": "Close only on a verified count or documented variance handoff.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Final reconciliation",
+          "fields": [
+            {
+              "key": "expected_total",
+              "label": "Expected item count",
+              "units": 0.9
+            },
+            {
+              "key": "received_total",
+              "label": "Received item count",
+              "units": 0.9
+            },
+            {
+              "key": "returned_total",
+              "label": "Returned item count",
+              "units": 0.9
+            },
+            {
+              "key": "open_variances",
+              "label": "Open variances",
+              "units": 0.8
+            },
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Reconciled",
+                "Reconciled with notes",
+                "Variance transferred"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Expected, received, and returned counts compared",
+            "Storage and event spaces checked for remaining items",
+            "Packaging and empty cases reconciled",
+            "Release receipt or carrier reference recorded",
+            "All variances have dispositions and owners",
+            "Restricted or high-value custody records stored appropriately"
+          ]
+        },
+        {
+          "key": "custody_handoff",
+          "type": "table",
+          "label": "Final custody handoff",
+          "columns": [
+            {
+              "key": "item_group",
+              "label": "Item or group",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Final custodian",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Final location",
+              "units": 1.0
+            },
+            {
+              "key": "release_ref",
+              "label": "Release reference",
+              "units": 1.0
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use for remaining client property, rentals, packaging, or variance evidence transferred at closeout."
+        },
+        {
+          "key": "count_review",
+          "type": "signatures",
+          "label": "Count and custody review",
+          "fields": [
+            {
+              "key": "counted_by",
+              "label": "Counted by",
+              "units": 1.0
+            },
+            {
+              "key": "count_date",
+              "label": "Count date",
+              "units": 0.75
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "verify_date",
+              "label": "Verify date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

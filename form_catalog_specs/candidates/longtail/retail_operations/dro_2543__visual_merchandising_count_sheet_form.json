@@ -1,0 +1,552 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2543__visual_merchandising_count_sheet_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2543__visual_merchandising_count_sheet_form.pdf",
+  "slug": "visual-merchandising-count-sheet-form",
+  "title": "Visual Merchandising Count Sheet Form",
+  "subtitle": "A practical reconciliation count sheet for visual merchandising that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations reconciliation count sheet for visual merchandising covering display execution and release, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a visual merchandising lead opens one visual merchandising record to set the count basis, preserve expected and observed values, reconcile variances, authorize a result, and hand off unresolved lines; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Merchandising count sheet identity and routing",
+      "guidance": "Connect this count sheet to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Merchandising record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Store or display site",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Campaign, zone, or fixture",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned visual merchandising lead",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Merchandising event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Visual Merchandising scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "count_basis",
+      "title": "Merchandising count basis and source records",
+      "guidance": "Reconcile planned, received, installed, damaged, missing, reusable, and removed quantities by campaign zone and material identifier.",
+      "blocks": [
+        {
+          "key": "basis_reference",
+          "type": "fields",
+          "label": "Count basis",
+          "fields": [
+            {
+              "key": "expected_source",
+              "label": "Expected-count source",
+              "units": 1.2
+            },
+            {
+              "key": "source_as_of",
+              "label": "Source as-of time",
+              "units": 0.9
+            },
+            {
+              "key": "count_method",
+              "label": "Count method",
+              "units": 1.0
+            },
+            {
+              "key": "first_counter",
+              "label": "First counter",
+              "units": 0.9
+            },
+            {
+              "key": "second_counter",
+              "label": "Verifier or recount owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "count_categories",
+          "type": "checklist",
+          "label": "Included display fixtures, signs, products, and campaign materials",
+          "items": [
+            "Fixtures or structural components",
+            "Signs, headers, or price cards",
+            "Product facings or display units",
+            "Lighting or powered components",
+            "Digital displays or content devices",
+            "Fasteners, mounts, or safety accessories",
+            "Reusable prior-campaign materials",
+            "Packaging, waste, or removed materials"
+          ]
+        },
+        {
+          "key": "count_boundary",
+          "type": "notice",
+          "label": "Count and decision boundary",
+          "guidance": "Do not claim accessibility, electrical, structural, promotional, or legal compliance from this visual record. Stop and restrict a display when conditions exceed current training or authorization. Avoid identifiable customer images unless genuinely required and approved. Follow applicable merchandising, safety, accessibility, privacy, and promotional policy and route judgment to the authorized reviewer."
+        }
+      ]
+    },
+    {
+      "key": "primary_count",
+      "title": "Merchandising expected, observed, and variance count",
+      "guidance": "Use one row per distinct item, unit, location, reading, or control category; do not combine unlike units.",
+      "blocks": [
+        {
+          "key": "count_lines",
+          "type": "table",
+          "label": "Merchandising count lines",
+          "columns": [
+            {
+              "key": "material_zone",
+              "label": "Material, fixture, or zone",
+              "units": 1.2
+            },
+            {
+              "key": "planned",
+              "label": "Planned",
+              "units": 0.7
+            },
+            {
+              "key": "received",
+              "label": "Received",
+              "units": 0.7
+            },
+            {
+              "key": "installed",
+              "label": "Installed",
+              "units": 0.7
+            },
+            {
+              "key": "damaged_missing",
+              "label": "Damaged or missing",
+              "units": 1.0
+            },
+            {
+              "key": "disposition_evidence",
+              "label": "Disposition and evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "count_observations",
+          "type": "textarea",
+          "label": "Count assumptions, unit conversions, sample point, damaged or excluded units, and observation notes",
+          "fields": [
+            {
+              "key": "count_observation_detail",
+              "label": "Visual Merchandising count observation and evidence"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "reconciliation_decision",
+      "title": "Merchandising recount, reconciliation, and authorization",
+      "guidance": "Preserve the first result, document the approved recount or research, and make the selected quantity or status explicit.",
+      "blocks": [
+        {
+          "key": "reconciliation_lines",
+          "type": "table",
+          "label": "Variance research and agreed result",
+          "columns": [
+            {
+              "key": "line_ref",
+              "label": "Count line ref.",
+              "units": 0.75
+            },
+            {
+              "key": "research",
+              "label": "Recount or research result",
+              "units": 1.35
+            },
+            {
+              "key": "agreed_result",
+              "label": "Agreed quantity or status",
+              "units": 1.1
+            },
+            {
+              "key": "reason",
+              "label": "Reason and evidence",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Reviewer",
+              "units": 0.8
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "totals_summary",
+          "type": "fields",
+          "label": "Count summary",
+          "fields": [
+            {
+              "key": "lines_counted",
+              "label": "Lines counted",
+              "units": 0.75
+            },
+            {
+              "key": "lines_matched",
+              "label": "Lines matched",
+              "units": 0.75
+            },
+            {
+              "key": "lines_variance",
+              "label": "Variance lines",
+              "units": 0.8
+            },
+            {
+              "key": "held_lines",
+              "label": "Lines on hold",
+              "units": 0.8
+            },
+            {
+              "key": "recount_completed",
+              "label": "Recount status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not needed",
+                "Complete",
+                "Partial",
+                "Pending",
+                "Unable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Merchandising count decision and authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Proceed",
+                "Proceed with limits",
+                "Hold",
+                "Escalate",
+                "Decline",
+                "Rework"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or approval ref.",
+              "units": 1.05
+            },
+            {
+              "key": "review_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "count_exceptions",
+      "title": "Merchandising count exceptions and escalation",
+      "guidance": "Do not force agreement; record unresolved differences, temporary controls, and the accountable follow-up route.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Count exception indicators",
+          "items": [
+            "Approved plan or material unavailable",
+            "Substitution or placement variance requested",
+            "Price, offer, or copy requires owner review",
+            "Fixture or powered component cannot be released",
+            "Customer path or operational access is affected",
+            "Campaign release or removal date must change"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Unresolved count exception",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or variance",
+              "units": 1.3
+            },
+            {
+              "key": "temporary_control",
+              "label": "Temporary control",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.1
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or final disposition",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Merchandising outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Merchandising closeout controls",
+          "items": [
+            "Final campaign revision and zones recorded",
+            "Release photos and evidence references linked",
+            "Price and promotional source check completed",
+            "Open material or fixture issue assigned",
+            "Store team received care and removal notes",
+            "Removal date and storage or disposal owner assigned"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_action_register",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation_action",
+              "label": "Limitation or action",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "recipient_route",
+              "label": "Recipient or route",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Visual Merchandising residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Count Sheet closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

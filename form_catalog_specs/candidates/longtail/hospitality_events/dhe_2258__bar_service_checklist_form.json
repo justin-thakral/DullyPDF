@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2258__bar_service_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2258__bar_service_checklist_form.pdf",
+  "slug": "bar-service-checklist-form",
+  "title": "Bar Service Checklist Form",
+  "subtitle": "Verify authorized bar readiness before opening, monitor service controls, record stop conditions, and reconcile the operation at close.",
+  "description": "An original staged checklist for event beverage operations. It verifies the current order, responsible review, station setup, staff briefing, nonalcoholic support, custody controls, mid-service observations, exceptions, and closing handoff without claiming regulatory certification.",
+  "use_case": "Use during the pre-open briefing, operating checks, and station close. Checking an item records that the assigned reviewer observed the stated condition; it does not replace individual service judgment. Open an exception for any failed check and hold opening when a stop condition remains.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "checklist_control",
+      "title": "Checklist control and reviewed order",
+      "guidance": "Tie the checks to a current order, service period, and named reviewers.",
+      "blocks": [
+        {
+          "key": "checklist_identity",
+          "type": "fields",
+          "label": "Checklist identity",
+          "fields": [
+            {
+              "key": "checklist_id",
+              "label": "Checklist ID",
+              "units": 0.85
+            },
+            {
+              "key": "order_id",
+              "label": "Bar order ID",
+              "units": 0.9
+            },
+            {
+              "key": "order_revision",
+              "label": "Order revision",
+              "units": 0.75
+            },
+            {
+              "key": "event_id",
+              "label": "Event ID",
+              "units": 0.9
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "service_lead",
+              "label": "Service lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Responsible-review record",
+          "fields": [
+            {
+              "key": "policy_ref",
+              "label": "Applicable policy reference",
+              "units": 1.15
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "service_start",
+              "label": "Authorized start",
+              "units": 0.85
+            },
+            {
+              "key": "last_service",
+              "label": "Last service",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "station_readiness",
+      "title": "Station and product readiness",
+      "guidance": "Confirm the physical station matches the current order before opening.",
+      "blocks": [
+        {
+          "key": "station_checks",
+          "type": "checklist",
+          "label": "Station setup checks",
+          "items": [
+            "Station ID and service scope match the current order",
+            "Guest queue and accessible route are clear",
+            "Required power, water, ice, and waste support are ready",
+            "Glassware, service tools, and supplies are staged",
+            "Product allocation matches the inventory issue record",
+            "Nonalcoholic choices and water are stocked and visible",
+            "Menu and hosted-limit information are current",
+            "Secure product, key, cash, and device custody is assigned",
+            "Station-close and return locations are identified"
+          ]
+        },
+        {
+          "key": "station_results",
+          "type": "table",
+          "label": "Station readiness results",
+          "columns": [
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.75
+            },
+            {
+              "key": "checked_at",
+              "label": "Checked at",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.85
+            },
+            {
+              "key": "gap",
+              "label": "Gap found",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Correction owner",
+              "units": 1.0
+            },
+            {
+              "key": "verified_at",
+              "label": "Verified at",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "team_briefing",
+      "title": "Team briefing and role handoff",
+      "guidance": "Confirm that each operator knows the scope and escalation route.",
+      "blocks": [
+        {
+          "key": "briefing_topics",
+          "type": "checklist",
+          "label": "Briefing topics",
+          "items": [
+            "Authorized menu, stations, and service periods reviewed",
+            "Applicable age-verification process reviewed",
+            "Service-refusal and responsible-manager route reviewed",
+            "Guest concern and incident-reporting route reviewed",
+            "Nonalcoholic choices and water support reviewed",
+            "Ingredient questions route to the responsible team",
+            "Hosted limits, tickets, or payment workflow reviewed",
+            "Product, cash, key, and device custody reviewed",
+            "Last-service cue and closeout assignments reviewed"
+          ]
+        },
+        {
+          "key": "role_briefing",
+          "type": "table",
+          "label": "Role briefing record",
+          "columns": [
+            {
+              "key": "person",
+              "label": "Person",
+              "units": 1.1
+            },
+            {
+              "key": "role_station",
+              "label": "Role and station",
+              "units": 1.25
+            },
+            {
+              "key": "briefed_at",
+              "label": "Briefed at",
+              "units": 0.8
+            },
+            {
+              "key": "exception",
+              "label": "Open question",
+              "units": 1.2
+            },
+            {
+              "key": "handoff",
+              "label": "Handoff owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "pre_open_decision",
+      "title": "Pre-open decision and stop conditions",
+      "guidance": "Make unresolved readiness gaps visible before service begins.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when",
+          "items": [
+            "Current approved order or revision is unavailable",
+            "Responsible-review conditions are not understood",
+            "Station route or workspace creates an unresolved concern",
+            "Product custody or opening count cannot be reconciled",
+            "Required nonalcoholic or water support is unavailable",
+            "Age-verification or service-refusal route is unclear",
+            "Payment or hosted-limit control is not ready",
+            "Responsible service lead is not available"
+          ]
+        },
+        {
+          "key": "opening_decision",
+          "type": "fields",
+          "label": "Opening decision",
+          "fields": [
+            {
+              "key": "opening_status",
+              "label": "Opening status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Ready to open",
+                "Ready with owned exception",
+                "Hold",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision time",
+              "units": 0.85
+            },
+            {
+              "key": "next_check",
+              "label": "Next check due",
+              "units": 0.85
+            },
+            {
+              "key": "event_lead_notified",
+              "label": "Event lead notified at",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist authority boundary",
+          "guidance": "A completed check documents the observed operating state; it does not certify legal compliance, determine a guest's age or condition, or direct service to a specific person. Follow the current applicable policy and escalate uncertain identification, service, safety, or guest situations to the responsible role."
+        }
+      ]
+    },
+    {
+      "key": "service_monitoring",
+      "title": "Service monitoring and exception response",
+      "guidance": "Record scheduled observations and corrective handoffs during service.",
+      "blocks": [
+        {
+          "key": "monitoring_log",
+          "type": "table",
+          "label": "Operating observation log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.6
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.7
+            },
+            {
+              "key": "observation",
+              "label": "Observation",
+              "units": 1.35
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "monitoring_topics",
+          "type": "checklist",
+          "label": "Monitoring topics",
+          "items": [
+            "Guest queue and accessible route remain clear",
+            "Water and nonalcoholic stock remain available",
+            "Product and issued-property custody remains assigned",
+            "Payment or hosted-limit control is operating as ordered",
+            "Spills, broken items, or service-area concerns are routed",
+            "Last-service timing remains aligned with the order",
+            "Incidents and refusals use their separate records"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout",
+      "title": "Station close and accountable handoff",
+      "guidance": "Close on reconciled records, not an assumed clean station.",
+      "blocks": [
+        {
+          "key": "closeout_exceptions",
+          "type": "table",
+          "label": "Closeout exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "record_ref",
+              "label": "Related record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 0.95
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closing_checks",
+          "type": "checklist",
+          "label": "Closing checks",
+          "items": [
+            "Last service and guest-facing close were communicated",
+            "Closing inventory transferred to the inventory log",
+            "Unused product secured or released to the assigned custodian",
+            "Cash and payment devices transferred for reconciliation",
+            "Keys, radios, and issued property accounted for",
+            "Waste, breakage, and returns recorded",
+            "Open incidents and exceptions transferred with owners",
+            "Station released to the venue closeout owner"
+          ]
+        },
+        {
+          "key": "station_close_status",
+          "type": "fields",
+          "label": "Final station status",
+          "fields": [
+            {
+              "key": "stations_closed",
+              "label": "Stations closed",
+              "units": 0.85
+            },
+            {
+              "key": "inventory_handoff",
+              "label": "Inventory handed off",
+              "units": 1.05
+            },
+            {
+              "key": "payment_handoff",
+              "label": "Payment handed off",
+              "units": 1.0
+            },
+            {
+              "key": "property_handoff",
+              "label": "Property handed off",
+              "units": 1.0
+            },
+            {
+              "key": "open_records",
+              "label": "Open related records",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Residual exceptions and receiving-owner context",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Station-close findings and accountable handoff detail"
+            }
+          ],
+          "height": 50
+        },
+        {
+          "key": "closeout_review",
+          "type": "signatures",
+          "label": "Service closeout review",
+          "fields": [
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 1.0
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "reviewed_at",
+              "label": "Reviewed at",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

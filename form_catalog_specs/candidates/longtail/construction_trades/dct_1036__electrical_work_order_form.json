@@ -1,0 +1,731 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1036__electrical_work_order_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1036__electrical_work_order_form.pdf",
+  "slug": "electrical-work-order-form",
+  "title": "Electrical Work Order and Completion Record",
+  "subtitle": "Authorize electrical work, translate scope into a controlled field plan, verify safe release and technical hold points, resolve exceptions, and close the order.",
+  "description": "A field-ready Electrical work order covering customer and contract authority, site and crew routing, planned tasks and quantities, materials and dependencies, safe-work release, inspections and tests, changed conditions, completion evidence, customer handoff, and accountable closeout.",
+  "use_case": "Use when dispatch, a project manager, the electrical foreperson, quality reviewers, and the customer need one authorized Electrical work record from assignment through verified completion without treating the work order as a safety permit.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "work_authorization",
+      "title": "Electrical work authorization and routing",
+      "guidance": "Identify the controlling agreement, accountable field team, location, and timing.",
+      "blocks": [
+        {
+          "key": "work_order_identity",
+          "type": "fields",
+          "label": "Work order identity and authority",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Work order number",
+              "units": 0.9
+            },
+            {
+              "key": "contract_ref",
+              "label": "Contract or proposal ref",
+              "units": 1.0
+            },
+            {
+              "key": "change_ref",
+              "label": "Approved change ref",
+              "units": 0.85
+            },
+            {
+              "key": "issued_date",
+              "label": "Issued date",
+              "units": 0.7
+            },
+            {
+              "key": "issued_by",
+              "label": "Issued by",
+              "units": 0.8
+            },
+            {
+              "key": "authorization",
+              "label": "Authorization status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Conditional",
+                "Planning only",
+                "Hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_project",
+          "type": "fields",
+          "label": "Customer, project, and work location",
+          "fields": [
+            {
+              "key": "customer",
+              "label": "Customer or owner",
+              "units": 1.0
+            },
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "site_location",
+              "label": "Site and exact work area",
+              "units": 1.25
+            },
+            {
+              "key": "site_contact",
+              "label": "Site contact",
+              "units": 0.85
+            },
+            {
+              "key": "contact_method",
+              "label": "Phone or email",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "assignment_schedule",
+          "type": "fields",
+          "label": "Electrical assignment and schedule",
+          "fields": [
+            {
+              "key": "project_manager",
+              "label": "Project manager",
+              "units": 0.9
+            },
+            {
+              "key": "field_lead",
+              "label": "Electrical Foreperson",
+              "units": 0.95
+            },
+            {
+              "key": "crew_shift",
+              "label": "Crew or shift",
+              "units": 0.8
+            },
+            {
+              "key": "planned_start",
+              "label": "Planned start",
+              "units": 0.8
+            },
+            {
+              "key": "required_finish",
+              "label": "Required finish",
+              "units": 0.85
+            },
+            {
+              "key": "customer_window",
+              "label": "Access or outage window",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized electrical scope and completion outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Describe the work, location, limits, deliverable, and explicit exclusions",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "execution_plan",
+      "title": "Electrical execution plan and resource control",
+      "guidance": "Translate the authorized scope into tasks for the service, distribution, branch circuits, equipment, and controls.",
+      "blocks": [
+        {
+          "key": "scope_plan",
+          "type": "checklist",
+          "label": "Electrical scope packages assigned",
+          "items": [
+            "Service, utility interface, metering, and service equipment",
+            "Feeders, panels, switchgear, transformers, and distribution",
+            "Branch circuits, raceways, conductors, boxes, and supports",
+            "Lighting, controls, emergency lighting, and lighting devices",
+            "Receptacles, disconnects, equipment connections, and appliances",
+            "Grounding, bonding, electrodes, and equipotential connections",
+            "Fire alarm, communications, security, or low-voltage interfaces",
+            "Temporary power, shutdowns, cutovers, and phased energization",
+            "Identification, torque, continuity, insulation, and functional tests",
+            "Schedules, labels, as-builts, training, and owner handoff"
+          ]
+        },
+        {
+          "key": "task_plan",
+          "type": "table",
+          "label": "Electrical task, crew, and production plan",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or area",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Qty./measure",
+              "units": 0.85
+            },
+            {
+              "key": "crew",
+              "label": "Crew/owner",
+              "units": 0.8
+            },
+            {
+              "key": "method",
+              "label": "Method/detail ref",
+              "units": 1.1
+            },
+            {
+              "key": "start_finish",
+              "label": "Start/finish",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.7
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Material, equipment, and access readiness",
+          "columns": [
+            {
+              "key": "resource",
+              "label": "Resource or material",
+              "units": 1.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "source",
+              "label": "Source/location",
+              "units": 1.0
+            },
+            {
+              "key": "needed",
+              "label": "Needed by",
+              "units": 0.8
+            },
+            {
+              "key": "readiness",
+              "label": "Readiness/issue",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "dependency_plan",
+          "type": "checklist",
+          "label": "Coordination and predecessor release",
+          "items": [
+            "Utility design, service, meter, and energization release",
+            "Structural support, sleeves, embeds, and equipment pads",
+            "Mechanical and plumbing equipment connection data",
+            "Fire alarm, BAS, controls, and low-voltage interface",
+            "Architectural ceiling, casework, finish, and device layout",
+            "Electrical authority inspection and owner energization approval"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "safe_work_release",
+      "title": "Electrical safe-work readiness and field release",
+      "guidance": "Record the route to controlling safety processes before work begins or conditions change.",
+      "blocks": [
+        {
+          "key": "hazard_controls",
+          "type": "checklist",
+          "label": "Electrical hazard and control verification",
+          "items": [
+            "De-energization, lockout, tagout, and absence-of-voltage verified",
+            "Qualified-person scope and energized-work authorization confirmed",
+            "Arc, shock, approach, PPE, barricade, and standby controls verified",
+            "Temporary power, GFCI, grounding, cords, and wet locations controlled",
+            "Overhead, underground, concealed, and induced-voltage hazards addressed",
+            "Backfeed, generator, battery, capacitor, and stored energy controlled",
+            "Ladder, lift, roof, shaft, and elevated-work exposures controlled",
+            "Excavation, utility locate, concrete encasement, and access controlled",
+            "Dust, silica, lead, asbestos, firestop, and occupied-area routes addressed",
+            "Energization boundary, communication, and emergency response confirmed"
+          ]
+        },
+        {
+          "key": "permit_release",
+          "type": "fields",
+          "label": "Permit, isolation, and release references",
+          "fields": [
+            {
+              "key": "pretask_ref",
+              "label": "Pre-task plan or JHA ref",
+              "units": 1.0
+            },
+            {
+              "key": "permit_ref",
+              "label": "Permit or authority ref",
+              "units": 0.95
+            },
+            {
+              "key": "isolation_ref",
+              "label": "Isolation or shutdown ref",
+              "units": 1.0
+            },
+            {
+              "key": "inspection_owner",
+              "label": "Competent/qualified owner",
+              "units": 1.0
+            },
+            {
+              "key": "release_time",
+              "label": "Work release date/time",
+              "units": 0.9
+            },
+            {
+              "key": "release_status",
+              "label": "Field release",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Released",
+                "Conditional",
+                "Stop",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "readiness_exceptions",
+          "type": "table",
+          "label": "Readiness exception and corrective-action register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or hazard",
+              "units": 1.4
+            },
+            {
+              "key": "control",
+              "label": "Control/action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due/recheck",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "work_order_boundary",
+          "type": "notice",
+          "label": "Electrical work-order boundary",
+          "guidance": "This record does not authorize energized work or energization and does not replace qualified-person decisions, energy control, permits, engineering studies, code inspection, or approved test procedures. Stop and escalate when the authorized scope, site condition, or control basis changes."
+        }
+      ]
+    },
+    {
+      "key": "quality_evidence",
+      "title": "Electrical inspection, test, and completion evidence",
+      "guidance": "Record measurable acceptance evidence before work is concealed, energized, loaded, or handed off.",
+      "blocks": [
+        {
+          "key": "quality_gates",
+          "type": "checklist",
+          "label": "Electrical quality and installation gates",
+          "items": [
+            "Equipment ratings, listings, location, access, and clearances verified",
+            "Raceway, cable, supports, bends, fill, and environmental seals accepted",
+            "Conductor identity, size, color, phase, and termination verified",
+            "Torque values and calibrated-tool records complete",
+            "Grounding, bonding, continuity, and electrode records complete",
+            "Circuit, panel, equipment, and disconnect identification complete",
+            "Insulation, polarity, rotation, GFCI, and function tests documented",
+            "Energization, commissioning, schedules, and as-builts accepted"
+          ]
+        },
+        {
+          "key": "inspection_log",
+          "type": "table",
+          "label": "Inspection and hold-point record",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area or system",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion/detail",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Result/reading",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Photo/test ref",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer/date",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "test_log",
+          "type": "table",
+          "label": "Electrical test and verification log",
+          "columns": [
+            {
+              "key": "test",
+              "label": "Test or check",
+              "units": 1.2
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.85
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument/ref",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Accept/retest",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "test_coverage",
+          "type": "checklist",
+          "label": "Planned test and commissioning coverage",
+          "items": [
+            "Continuity and conductor identity",
+            "Insulation resistance",
+            "Grounding and bonding",
+            "Torque verification",
+            "Polarity and phase rotation",
+            "GFCI and protective function",
+            "Lighting and control sequence",
+            "Energization and commissioning"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field_control",
+      "title": "Electrical field change, issue, and recovery control",
+      "guidance": "Keep unauthorized work separate from approved correction and change paths.",
+      "blocks": [
+        {
+          "key": "issue_register",
+          "type": "table",
+          "label": "Field issue, RFI, and changed-condition register",
+          "columns": [
+            {
+              "key": "ref",
+              "label": "Issue/RFI ref",
+              "units": 0.8
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.45
+            },
+            {
+              "key": "impact",
+              "label": "Scope/cost/time impact",
+              "units": 1.15
+            },
+            {
+              "key": "decision",
+              "label": "Decision/status",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner/due",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "deviation_detail",
+          "type": "textarea",
+          "label": "Deviation, rejected work, temporary condition, or recovery plan",
+          "fields": [
+            {
+              "key": "deviation_record",
+              "label": "Describe evidence, containment, authorization route, correction, and verification",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "change_control",
+          "type": "fields",
+          "label": "Change and stop-work control",
+          "fields": [
+            {
+              "key": "change_request_ref",
+              "label": "Change request ref",
+              "units": 0.95
+            },
+            {
+              "key": "stop_work_ref",
+              "label": "Stop-work ref",
+              "units": 0.85
+            },
+            {
+              "key": "customer_direction",
+              "label": "Customer direction ref",
+              "units": 1.0
+            },
+            {
+              "key": "approved_by",
+              "label": "Authorized by",
+              "units": 0.85
+            },
+            {
+              "key": "approval_date",
+              "label": "Approval date",
+              "units": 0.75
+            },
+            {
+              "key": "work_status",
+              "label": "Work status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Proceed",
+                "Proceed in part",
+                "Hold",
+                "Demobilize"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "field_acknowledgment",
+          "type": "signatures",
+          "label": "Field control acknowledgment",
+          "fields": [
+            {
+              "key": "field_lead_sign",
+              "label": "Field lead name/signature",
+              "units": 1.05
+            },
+            {
+              "key": "project_manager_sign",
+              "label": "Project manager",
+              "units": 1.0
+            },
+            {
+              "key": "quality_sign",
+              "label": "Quality reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "ack_date",
+              "label": "Acknowledgment date",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "completion_closeout",
+      "title": "Electrical completion, customer handoff, and closeout",
+      "guidance": "Verify the deliverable, unresolved items, records, and final ownership.",
+      "blocks": [
+        {
+          "key": "closeout_package",
+          "type": "checklist",
+          "label": "Electrical completion and closeout evidence",
+          "items": [
+            "Panel, circuit, feeder, and equipment schedules",
+            "Torque, insulation, continuity, and grounding tests",
+            "Settings, coordination, commissioning, and startup records",
+            "Approved one-lines, as-builts, and concealed-work evidence",
+            "Labels, directories, spare devices, and keys",
+            "Manuals, warranties, training, and owner handoff"
+          ]
+        },
+        {
+          "key": "open_items",
+          "type": "table",
+          "label": "Open, deferred, warranty, and follow-up items",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open item",
+              "units": 1.45
+            },
+            {
+              "key": "temporary_state",
+              "label": "Safe temporary state",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.75
+            },
+            {
+              "key": "verification",
+              "label": "Closeout ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "completion_record",
+          "type": "fields",
+          "label": "Completion and customer handoff",
+          "fields": [
+            {
+              "key": "substantial_complete",
+              "label": "Substantial completion",
+              "units": 0.95
+            },
+            {
+              "key": "final_complete",
+              "label": "Final completion",
+              "units": 0.85
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer contact",
+              "units": 0.95
+            },
+            {
+              "key": "customer_status",
+              "label": "Handoff status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with items",
+                "Review pending",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "warranty_start",
+              "label": "Warranty start",
+              "units": 0.8
+            },
+            {
+              "key": "closeout_owner",
+              "label": "Closeout owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "completion_narrative",
+          "type": "textarea",
+          "label": "Completed work, operating condition, exceptions, and next action",
+          "fields": [
+            {
+              "key": "completion_detail",
+              "label": "Summarize what was verified, what remains, limitations, and accountable handoff",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "completion_signoff",
+          "type": "signatures",
+          "label": "Electrical completion review",
+          "fields": [
+            {
+              "key": "field_completion",
+              "label": "Field lead name/signature",
+              "units": 1.0
+            },
+            {
+              "key": "quality_completion",
+              "label": "Quality reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "manager_completion",
+              "label": "Project manager",
+              "units": 0.95
+            },
+            {
+              "key": "customer_ack",
+              "label": "Customer acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "signoff_date",
+              "label": "Date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

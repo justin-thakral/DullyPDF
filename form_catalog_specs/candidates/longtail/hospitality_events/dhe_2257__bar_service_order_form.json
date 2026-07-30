@@ -1,0 +1,537 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2257__bar_service_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2257__bar_service_order_form.pdf",
+  "slug": "bar-service-order-form",
+  "title": "Bar Service Order Form",
+  "subtitle": "Issue a controlled beverage-service order covering periods, stations, staffing, product allocation, operating controls, changes, and closeout.",
+  "description": "An original versioned operating order for an approved event bar program. It translates responsible-role decisions into service periods, station assignments, product allocations, nonalcoholic support, staffing, payment controls, exception handling, and accountable release.",
+  "use_case": "Use only after the bar-service request and required venue reviews are approved. Distribute the current revision to service leads, reissue it for material changes, and close after stock, payment devices, issued property, and open incidents are transferred to their own accountable records.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "order_control",
+      "title": "Order control and responsible review",
+      "guidance": "Identify the authoritative revision and the reviewed basis for service.",
+      "blocks": [
+        {
+          "key": "order_identity",
+          "type": "fields",
+          "label": "Order identity",
+          "fields": [
+            {
+              "key": "order_id",
+              "label": "Bar order ID",
+              "units": 0.85
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.65
+            },
+            {
+              "key": "issued_at",
+              "label": "Issued date and time",
+              "units": 1.0
+            },
+            {
+              "key": "event_id",
+              "label": "Event ID",
+              "units": 0.9
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "service_lead",
+              "label": "Service lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_basis",
+          "type": "fields",
+          "label": "Responsible-review basis",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Approved request ID",
+              "units": 1.0
+            },
+            {
+              "key": "policy_ref",
+              "label": "Applicable policy reference",
+              "units": 1.1
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "conditions_ref",
+              "label": "Conditions reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_schedule",
+      "title": "Service periods and station plan",
+      "guidance": "Assign each service period to a location, lead, and stop point.",
+      "blocks": [
+        {
+          "key": "service_periods",
+          "type": "table",
+          "label": "Authorized service periods",
+          "columns": [
+            {
+              "key": "period",
+              "label": "Service period",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "start",
+              "label": "Start",
+              "units": 0.6
+            },
+            {
+              "key": "last_service",
+              "label": "Last service",
+              "units": 0.85
+            },
+            {
+              "key": "station_lead",
+              "label": "Station lead",
+              "units": 1.0
+            },
+            {
+              "key": "guest_basis",
+              "label": "Guest basis",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "station_plan",
+          "type": "table",
+          "label": "Bar station plan",
+          "columns": [
+            {
+              "key": "station",
+              "label": "Station ID",
+              "units": 0.75
+            },
+            {
+              "key": "setup",
+              "label": "Setup type",
+              "units": 1.0
+            },
+            {
+              "key": "service_scope",
+              "label": "Service scope",
+              "units": 1.2
+            },
+            {
+              "key": "staffing",
+              "label": "Staffing",
+              "units": 0.8
+            },
+            {
+              "key": "support",
+              "label": "Support source",
+              "units": 1.0
+            },
+            {
+              "key": "close_owner",
+              "label": "Close owner",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "menu_allocation",
+      "title": "Menu and product allocation",
+      "guidance": "Link authorized menu items to quantities, stations, and substitutes.",
+      "blocks": [
+        {
+          "key": "product_order",
+          "type": "table",
+          "label": "Product allocation",
+          "columns": [
+            {
+              "key": "category",
+              "label": "Category",
+              "units": 0.9
+            },
+            {
+              "key": "product",
+              "label": "Product or menu item",
+              "units": 1.45
+            },
+            {
+              "key": "quantity",
+              "label": "Ordered qty",
+              "units": 0.75
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.7
+            },
+            {
+              "key": "substitute",
+              "label": "Approved substitute",
+              "units": 1.2
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "menu_controls",
+          "type": "checklist",
+          "label": "Menu and supply controls",
+          "items": [
+            "Nonalcoholic menu and water service are included",
+            "Signature-drink recipe source is linked",
+            "Ingredient questions are routed to the responsible team",
+            "Client-supplied product has a custody and acceptance plan",
+            "Ice, garnish, glassware, and service supplies are allocated",
+            "Backup product and substitution authority are recorded",
+            "Unused and returnable product destinations are assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "staff_payment",
+      "title": "Staffing, cash, and issued-property control",
+      "guidance": "Assign operating roles and custody without recording unnecessary personal data.",
+      "blocks": [
+        {
+          "key": "role_assignments",
+          "type": "table",
+          "label": "Service role assignments",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_to",
+              "label": "Assigned to",
+              "units": 1.1
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.75
+            },
+            {
+              "key": "start_end",
+              "label": "Start and end",
+              "units": 0.95
+            },
+            {
+              "key": "handoff",
+              "label": "Handoff",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "custody_assignments",
+          "type": "table",
+          "label": "Cash and property custody",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Device or item",
+              "units": 1.2
+            },
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.75
+            },
+            {
+              "key": "issued_to",
+              "label": "Issued to",
+              "units": 1.0
+            },
+            {
+              "key": "issued_at",
+              "label": "Issued at",
+              "units": 0.75
+            },
+            {
+              "key": "return_owner",
+              "label": "Return owner",
+              "units": 1.05
+            }
+          ],
+          "rows": 4,
+          "guidance": "Reference the separate cash or payment reconciliation record where applicable; do not record card data."
+        }
+      ]
+    },
+    {
+      "key": "operating_controls",
+      "title": "Responsible-service and operating controls",
+      "guidance": "Translate reviewed requirements into observable station controls.",
+      "blocks": [
+        {
+          "key": "service_controls",
+          "type": "checklist",
+          "label": "Operating controls",
+          "items": [
+            "Current order and escalation contacts are at each station",
+            "Age-verification process from applicable policy is briefed",
+            "Service-refusal and manager-escalation route is briefed",
+            "Nonalcoholic choices and water are visible and available",
+            "Hosted limits, tickets, or payment model are configured",
+            "Guest flow and accessible route remain unobstructed",
+            "Product, cash, key, and device custody owners are assigned",
+            "Incident-reporting route is available to the team",
+            "Last-service and station-close cues are assigned"
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Service-order authority boundary",
+          "guidance": "This order communicates decisions already reviewed by the responsible role. It does not itself grant a license, determine age, direct service to a specific guest, or replace professional judgment and applicable policy. Staff should stop and escalate an unresolved service, identification, safety, or guest concern."
+        }
+      ]
+    },
+    {
+      "key": "change_exceptions",
+      "title": "Changes, exceptions, and escalation",
+      "guidance": "Protect the authorized service scope from undocumented changes.",
+      "blocks": [
+        {
+          "key": "change_register",
+          "type": "table",
+          "label": "Order change register",
+          "columns": [
+            {
+              "key": "change",
+              "label": "Requested change",
+              "units": 1.3
+            },
+            {
+              "key": "impact",
+              "label": "Operational impact",
+              "units": 1.2
+            },
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.95
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.7
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Service exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 0.95
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "order_release",
+      "title": "Release, distribution, and closeout handoff",
+      "guidance": "Release one current order and assign every downstream record.",
+      "blocks": [
+        {
+          "key": "release_record",
+          "type": "fields",
+          "label": "Order release",
+          "fields": [
+            {
+              "key": "release_status",
+              "label": "Release status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Released",
+                "Released with conditions",
+                "Held",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "final_revision",
+              "label": "Final revision",
+              "units": 0.7
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "released_at",
+              "label": "Released at",
+              "units": 0.85
+            },
+            {
+              "key": "closeout_owner",
+              "label": "Closeout owner",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "distribution_checks",
+          "type": "checklist",
+          "label": "Distribution and handoff",
+          "items": [
+            "Current revision distributed to station and event leads",
+            "Superseded versions withdrawn or marked",
+            "Inventory log owner and count windows assigned",
+            "Cash and payment reconciliation owner assigned",
+            "Issued-property return owner assigned",
+            "Incident and service-refusal records have separate routes",
+            "Open exceptions transferred with owners and due points"
+          ]
+        },
+        {
+          "key": "distribution_receipts",
+          "type": "table",
+          "label": "Controlled distribution receipts",
+          "columns": [
+            {
+              "key": "team",
+              "label": "Team or role",
+              "units": 1.1
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.0
+            },
+            {
+              "key": "sent_at",
+              "label": "Sent at",
+              "units": 0.8
+            },
+            {
+              "key": "acknowledged",
+              "label": "Acknowledged",
+              "units": 0.9
+            },
+            {
+              "key": "open_question",
+              "label": "Open question",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Record receipt of the current revision and route any unresolved instruction before the service period."
+        },
+        {
+          "key": "release_notes",
+          "type": "textarea",
+          "label": "Release conditions and downstream record handoff",
+          "fields": [
+            {
+              "key": "release_detail",
+              "label": "Conditions, residual exceptions, and closeout-record ownership"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "release_signatures",
+          "type": "signatures",
+          "label": "Preparation and responsible release",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "released_by",
+              "label": "Responsible releaser",
+              "units": 1.15
+            },
+            {
+              "key": "release_date",
+              "label": "Release date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

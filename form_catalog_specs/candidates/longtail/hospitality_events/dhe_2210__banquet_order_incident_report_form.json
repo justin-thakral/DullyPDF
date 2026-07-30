@@ -1,0 +1,540 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2210__banquet_order_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2210__banquet_order_incident_report_form.pdf",
+  "slug": "banquet-order-incident-report-form",
+  "title": "Banquet Order Incident Report Form",
+  "subtitle": "Record a service or food-safety incident during a banquet function, stop what needs stopping, and route the decision to the manager on duty.",
+  "description": "An original incident record for banquet service. It captures incident identity and the service stage, the factual account with the covers affected, the immediate response including any service stop, qualified review by the manager on duty, corrective actions with verification, and a closeout that names residual risk.",
+  "use_case": "Use when something goes wrong during a banquet function: a restricted plate reaches the wrong guest, a holding temperature falls outside the venue standard, a guest reports illness or injury, or service fails materially. The report closes only after the manager on duty has reviewed it and corrective actions are verified.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident identity and service stage",
+      "guidance": "Fix the incident in time, place, and order.",
+      "blocks": [
+        {
+          "key": "incident_routing",
+          "type": "fields",
+          "label": "Incident record and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident record ID",
+              "units": 0.9
+            },
+            {
+              "key": "occurred_at",
+              "label": "Occurred at",
+              "units": 0.85
+            },
+            {
+              "key": "discovered_by",
+              "label": "Discovered by",
+              "units": 0.95
+            },
+            {
+              "key": "reported_to",
+              "label": "Reported to",
+              "units": 0.95
+            },
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "function_context",
+          "type": "fields",
+          "label": "Function context",
+          "fields": [
+            {
+              "key": "function_room",
+              "label": "Function room",
+              "units": 1.05
+            },
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "covers_served",
+              "label": "Covers served",
+              "units": 0.85
+            },
+            {
+              "key": "service_stage",
+              "label": "Service stage",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Pre-service set",
+                "Doors open",
+                "First course",
+                "Main course",
+                "Dessert",
+                "Bar service",
+                "Teardown"
+              ]
+            },
+            {
+              "key": "captain_on_duty",
+              "label": "Captain on duty",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Incident classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "What happened",
+              "units": 1.7,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Restricted plate served in error",
+                "Holding temperature excursion",
+                "Foreign object reported",
+                "Guest illness reported",
+                "Guest injury - slip or fall",
+                "Guest injury - burn or scald",
+                "Spill or breakage",
+                "Service timing failure",
+                "Menu item ran short",
+                "Equipment failure",
+                "Guest conduct or dispute"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Assessed severity",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Minor - corrected at table",
+                "Moderate - guest affected",
+                "Major - medical response",
+                "Critical - multiple guests"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_facts",
+      "title": "Factual account and covers affected",
+      "guidance": "What was observed, not what is assumed.",
+      "blocks": [
+        {
+          "key": "detection_context",
+          "type": "fields",
+          "label": "Detection and response context",
+          "fields": [
+            {
+              "key": "detected_how",
+              "label": "How it was detected",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Guest told a server",
+                "Server observed it",
+                "Captain observed it",
+                "Kitchen flagged it",
+                "Temperature check",
+                "Client contact raised it"
+              ]
+            },
+            {
+              "key": "guests_affected",
+              "label": "Guests affected",
+              "units": 1.0
+            },
+            {
+              "key": "medical_response",
+              "label": "Medical response",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "None requested",
+                "Guest declined help",
+                "First aid on site",
+                "Emergency services called",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "first_action_at",
+              "label": "First action at",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account: what was observed, in what order, and by whom",
+          "fields": [
+            {
+              "key": "account_detail",
+              "label": "Factual account of the incident"
+            }
+          ],
+          "height": 76
+        },
+        {
+          "key": "affected_covers",
+          "type": "table",
+          "label": "Covers affected",
+          "columns": [
+            {
+              "key": "seat_reference",
+              "label": "Seat or table",
+              "units": 0.85
+            },
+            {
+              "key": "what_served",
+              "label": "What was served",
+              "units": 1.35
+            },
+            {
+              "key": "what_ordered",
+              "label": "What the order specified",
+              "units": 1.35
+            },
+            {
+              "key": "guest_response",
+              "label": "Guest response",
+              "units": 1.15
+            },
+            {
+              "key": "staff_involved",
+              "label": "Staff involved",
+              "units": 0.95
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary for this report",
+          "guidance": "Record observed facts, times, and actions. Do not record a guest's medical history, diagnosis, or treatment detail, do not state a cause of illness, and do not record conclusions about liability or staff discipline. Collect only the guest contact detail needed to follow up, and handle it under applicable privacy policy."
+        }
+      ]
+    },
+    {
+      "key": "immediate_response",
+      "title": "Immediate response and service stop",
+      "guidance": "Stopping service is a legitimate outcome; record it plainly.",
+      "blocks": [
+        {
+          "key": "stop_record",
+          "type": "fields",
+          "label": "Service stop record",
+          "fields": [
+            {
+              "key": "service_stopped",
+              "label": "Service stopped",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not required",
+                "Station stopped",
+                "Course stopped",
+                "Function paused",
+                "Service ended early"
+              ]
+            },
+            {
+              "key": "stopped_by",
+              "label": "Stopped by",
+              "units": 0.95
+            },
+            {
+              "key": "stopped_at",
+              "label": "Stopped at",
+              "units": 0.8
+            },
+            {
+              "key": "chef_notified",
+              "label": "Chef notified at",
+              "units": 1.05
+            },
+            {
+              "key": "manager_on_scene",
+              "label": "Manager on scene",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "response_actions",
+          "type": "checklist",
+          "label": "Immediate response actions",
+          "items": [
+            "Affected plates removed from the floor and held, not discarded",
+            "Remaining covers of the same item held pending the chef's decision",
+            "Chef on duty attended and confirmed the disposition of held food",
+            "Guest offered assistance and the offer recorded",
+            "Client on-site contact informed by the manager on duty",
+            "Affected area made safe and marked where a spill or breakage occurred",
+            "Equipment taken out of service and tagged where it failed",
+            "Holding temperatures rechecked across every remaining station"
+          ],
+          "guidance": "An unticked action is an open response gap."
+        },
+        {
+          "key": "response_notes",
+          "type": "textarea",
+          "label": "What was done, in what order, and what the guest and client were told",
+          "fields": [
+            {
+              "key": "response_detail",
+              "label": "Immediate response detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and remediation decision",
+      "guidance": "The manager on duty decides, not the reporter.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed - no change",
+                "Process change required",
+                "Retraining required",
+                "Referred to leadership"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "remediation",
+              "label": "Remediation approved",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "None required",
+                "Course replaced",
+                "Charge adjusted",
+                "Referred for approval"
+              ]
+            },
+            {
+              "key": "approval_reference",
+              "label": "Approval reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Stop service and route to the responsible manager before continuing whenever a guest reports illness or injury, a restricted plate reached the wrong guest, a holding temperature is outside the venue standard, or a foreign object is reported. This report does not diagnose illness, determine the cause of harm, decide liability, or authorize compensation, and it does not replace the review applicable policy requires."
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Review rationale, requirements applied, and limits of the decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Qualified review rationale"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "corrective_actions",
+      "title": "Corrective actions and escalation",
+      "guidance": "Fix the cause, then prove the fix held.",
+      "blocks": [
+        {
+          "key": "corrective_register",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "cause_addressed",
+              "label": "Cause addressed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A guest received medical attention or was transported",
+            "More than one guest reported the same symptom",
+            "A restricted plate reached a guest with a stated allergen requirement",
+            "Food was served after a temperature reading outside the standard",
+            "A regulatory, insurance, or licensing question was raised",
+            "The client has requested a written account or compensation",
+            "The same failure has been recorded at a prior function"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Verification, closeout, and handoff",
+      "guidance": "Close on verified evidence, with residual risk accepted in writing.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Contained - actions open",
+                "Closed - verified",
+                "Closed with residual risk",
+                "Referred and closed"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_review_due",
+              "label": "Next review due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Held food disposition recorded with the chef's decision",
+            "Guest and client communication documented with date and author",
+            "Corrective actions verified as effective, not only completed",
+            "Residual risk described and accepted by the responsible manager",
+            "Report retained for the period required by applicable policy",
+            "Finding carried into the post-function review"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Verified outcome, residual risk, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Incident closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by manager on duty",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

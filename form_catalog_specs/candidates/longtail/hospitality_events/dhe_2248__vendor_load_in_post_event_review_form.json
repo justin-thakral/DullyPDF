@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2248__vendor_load_in_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2248__vendor_load_in_post_event_review_form.pdf",
+  "slug": "vendor-load-in-post-event-review-form",
+  "title": "Vendor Load-In Post-Event Review Form",
+  "subtitle": "Reconcile load-in performance, custody, exceptions, vendor coordination, and improvements before the event movement record is closed.",
+  "description": "An original post-event review of vendor load-in planning and execution. It compares scheduled and actual movement, evaluates route and staging use, reconciles inventory and access records, analyzes incidents and delays, captures vendor feedback, assigns improvements, and closes the record.",
+  "use_case": "Use after vendor load-in and related strike or collection are complete, especially for complex events or recurring vendors. Convert observed exceptions into owned improvements rather than informal lessons.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Review scope and participants",
+      "guidance": "Bind the review to the event, vendor, orders, and accountable lead.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review ID",
+              "units": 0.85
+            },
+            {
+              "key": "event_name",
+              "label": "Event",
+              "units": 1.1
+            },
+            {
+              "key": "vendor_name",
+              "label": "Vendor",
+              "units": 1.1
+            },
+            {
+              "key": "review_lead",
+              "label": "Review lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Review evidence assembled",
+          "items": [
+            "Request, issued order, and checklist are available",
+            "Arrival, completion, strike, and departure times are available",
+            "Inventory and access registers were reconciled",
+            "Incident, damage, or service-impact records are linked",
+            "Vendor and receiving-team feedback was requested",
+            "Open actions from the operating day are listed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Plan-to-actual performance",
+      "guidance": "Compare measurable stages and explain material variance.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Movement performance review",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage",
+              "units": 1.1
+            },
+            {
+              "key": "planned",
+              "label": "Planned",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual",
+              "units": 0.9
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 1.0
+            },
+            {
+              "key": "cause",
+              "label": "Observed cause",
+              "units": 1.25
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Review totals",
+          "fields": [
+            {
+              "key": "vehicles",
+              "label": "Vehicles",
+              "units": 0.8
+            },
+            {
+              "key": "crew",
+              "label": "Crew",
+              "units": 0.8
+            },
+            {
+              "key": "inventory_variance",
+              "label": "Inventory variance",
+              "units": 1.2
+            },
+            {
+              "key": "incidents",
+              "label": "Incidents",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Findings and improvement priorities",
+      "guidance": "Separate isolated exceptions from repeatable process gaps.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Review questions",
+          "items": [
+            "Arrival window and route were realistic for the movement volume",
+            "Dock, lift, staging, and destination capacity were sufficient",
+            "Vendor and venue command routes stayed clear",
+            "Access and custody records supported reconciliation",
+            "Guest-facing or event-schedule impacts were contained",
+            "Recurring issues have a process-change owner"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Finding and priority register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.35
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence",
+              "units": 1.15
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Review conclusions and limitations",
+      "guidance": "State what the evidence supports and what remains unknown.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Review disposition",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed",
+                "Escalated",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "actions_open",
+              "label": "Open actions",
+              "units": 1.0
+            },
+            {
+              "key": "next_use",
+              "label": "Next use",
+              "units": 1.0
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Performance conclusion, evidence limits, and vendor feedback",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Review conclusion and feedback"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Review boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Improvement ownership and closure",
+      "guidance": "Carry approved changes into the next operating record.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Improvement action plan",
+          "columns": [
+            {
+              "key": "improvement",
+              "label": "Improvement",
+              "units": 1.45
+            },
+            {
+              "key": "applies_to",
+              "label": "Applies to",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_verify",
+              "label": "Due and verify",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Review closeout",
+          "items": [
+            "Actions are specific, owned, and assigned due points",
+            "Route or timing changes were placed in the reusable plan",
+            "Vendor-specific feedback was shared through the named contact",
+            "Open incidents or variances remain linked and visible",
+            "Review evidence and approval are filed with the event record"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Review preparation and acceptance",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_date",
+              "label": "Accepted date",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

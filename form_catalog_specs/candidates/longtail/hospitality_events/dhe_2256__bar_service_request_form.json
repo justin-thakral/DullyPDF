@@ -1,0 +1,544 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2256__bar_service_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2256__bar_service_request_form.pdf",
+  "slug": "bar-service-request-form",
+  "title": "Bar Service Request Form",
+  "subtitle": "Scope a proposed beverage service, route licensing and responsible-service decisions, test venue feasibility, and hand an approved request to ordering.",
+  "description": "An original bar-service intake record for event schedule, attendance, service model, beverage preferences, nonalcoholic program, station needs, venue constraints, responsible-role review, exceptions, and proposal handoff.",
+  "use_case": "Use when a client or event planner requests hosted, cash, ticketed, or limited beverage service. Record preferences without promising service, route licensing and policy checks to the responsible role, and close when the request is declined or linked to an authorized bar service order.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Service request and routing",
+      "guidance": "Identify the event, requester, and accountable beverage reviewer.",
+      "blocks": [
+        {
+          "key": "request_record",
+          "type": "fields",
+          "label": "Request record",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request ID",
+              "units": 0.8
+            },
+            {
+              "key": "received_at",
+              "label": "Received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "event_id",
+              "label": "Event ID",
+              "units": 0.9
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "requester",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "beverage_owner",
+              "label": "Beverage review owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "event_context",
+          "type": "fields",
+          "label": "Event context",
+          "fields": [
+            {
+              "key": "event_type",
+              "label": "Event type",
+              "units": 1.0
+            },
+            {
+              "key": "guest_count",
+              "label": "Expected guests",
+              "units": 0.8
+            },
+            {
+              "key": "guest_profile",
+              "label": "Guest profile",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Adults only",
+                "Mixed ages",
+                "Public attendance",
+                "Invitation only",
+                "Other"
+              ]
+            },
+            {
+              "key": "service_start",
+              "label": "Requested start",
+              "units": 0.85
+            },
+            {
+              "key": "service_end",
+              "label": "Requested end",
+              "units": 0.85
+            },
+            {
+              "key": "event_lead",
+              "label": "Event lead",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_brief",
+      "title": "Requested service model and experience",
+      "guidance": "Capture what the requester wants before responsible-role review.",
+      "blocks": [
+        {
+          "key": "service_model",
+          "type": "fields",
+          "label": "Service model",
+          "fields": [
+            {
+              "key": "payment_model",
+              "label": "Payment model",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not selected",
+                "Hosted",
+                "Cash",
+                "Ticketed",
+                "Hosted then cash",
+                "No-charge service"
+              ]
+            },
+            {
+              "key": "menu_scope",
+              "label": "Menu scope",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not selected",
+                "Beer and wine",
+                "Beer, wine, and spirits",
+                "Signature drinks",
+                "Toast service only",
+                "Nonalcoholic only"
+              ]
+            },
+            {
+              "key": "station_count",
+              "label": "Requested stations",
+              "units": 0.85
+            },
+            {
+              "key": "service_style",
+              "label": "Service style",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not selected",
+                "Fixed bar",
+                "Portable bar",
+                "Table service",
+                "Passed beverage",
+                "Mixed service"
+              ]
+            },
+            {
+              "key": "budget_basis",
+              "label": "Budget or cap basis",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "service_periods",
+          "type": "table",
+          "label": "Requested service periods",
+          "columns": [
+            {
+              "key": "period",
+              "label": "Service period",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "start_end",
+              "label": "Start and end",
+              "units": 0.95
+            },
+            {
+              "key": "guests",
+              "label": "Guests",
+              "units": 0.6
+            },
+            {
+              "key": "service_note",
+              "label": "Service note",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "experience_requests",
+          "type": "checklist",
+          "label": "Program requests raised",
+          "items": [
+            "Welcome beverage requested",
+            "Toast or ceremonial beverage requested",
+            "Signature drink requested",
+            "Premium product or brand preference raised",
+            "Dedicated nonalcoholic menu requested",
+            "Water service plan requested",
+            "Table wine service requested",
+            "Last-service announcement requested"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "beverage_requirements",
+      "title": "Beverage, accommodation, and supply needs",
+      "guidance": "Route product and guest-needs information without making specialist claims.",
+      "blocks": [
+        {
+          "key": "beverage_preferences",
+          "type": "table",
+          "label": "Beverage preference register",
+          "columns": [
+            {
+              "key": "category",
+              "label": "Category",
+              "units": 1.0
+            },
+            {
+              "key": "preference",
+              "label": "Preference",
+              "units": 1.3
+            },
+            {
+              "key": "quantity_basis",
+              "label": "Quantity basis",
+              "units": 1.0
+            },
+            {
+              "key": "substitute",
+              "label": "Substitute",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Review owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "guest_needs",
+          "type": "checklist",
+          "label": "Guest and service needs raised",
+          "items": [
+            "Alcohol-free choices comparable to the event menu requested",
+            "Allergen or ingredient question routed to the responsible team",
+            "Accessibility accommodation for the service point raised",
+            "Language, signage, or menu-format need raised",
+            "Drink-ticket or hosted-limit control requested",
+            "Transportation or safe-departure information requested",
+            "Client-supplied product or special delivery proposed"
+          ],
+          "guidance": "Record the request and routing source; do not certify ingredients or suitability on this form."
+        }
+      ]
+    },
+    {
+      "key": "venue_feasibility",
+      "title": "Venue feasibility and responsible-role review",
+      "guidance": "Screen locations and operating dependencies before a proposal is issued.",
+      "blocks": [
+        {
+          "key": "feasibility_checks",
+          "type": "checklist",
+          "label": "Feasibility review",
+          "items": [
+            "Requested service period reviewed against event schedule",
+            "Service locations reviewed with venue operations",
+            "Station footprint, guest flow, and accessible route reviewed",
+            "Water, power, ice, storage, and waste needs reviewed",
+            "Delivery, secure storage, and return custody assigned",
+            "Responsible-service staffing basis routed for review",
+            "Applicable licensing, permit, and venue-policy checks routed",
+            "Payment, cash, or point-of-sale needs routed",
+            "Final-service time and closeout window routed"
+          ]
+        },
+        {
+          "key": "review_result",
+          "type": "fields",
+          "label": "Feasibility result",
+          "fields": [
+            {
+              "key": "space_result",
+              "label": "Location result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Feasible as requested",
+                "Revision required",
+                "Not feasible"
+              ]
+            },
+            {
+              "key": "staffing_result",
+              "label": "Staffing review",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Basis accepted",
+                "Revision required",
+                "Manager escalation"
+              ]
+            },
+            {
+              "key": "policy_result",
+              "label": "Policy review",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed",
+                "Conditions apply",
+                "Not approved"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "service_boundary",
+          "type": "notice",
+          "label": "Request-stage authority boundary",
+          "guidance": "This request records a proposed service only. It does not confirm licensing, authorize alcohol service, establish age-verification or refusal decisions, certify ingredients, or promise a service period. The responsible role must review applicable requirements and issue the authorized order before service."
+        }
+      ]
+    },
+    {
+      "key": "request_exceptions",
+      "title": "Constraints and exception resolution",
+      "guidance": "Assign every condition that blocks an authorized order.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Requested time or location conflicts with venue operations",
+            "Guest profile or access model needs additional review",
+            "Licensing, permit, or venue-policy review is incomplete",
+            "Responsible-service staffing basis is unresolved",
+            "Client-supplied product or delivery is unresolved",
+            "Ingredient or accommodation question is unresolved",
+            "Payment or hosted-limit control is unresolved",
+            "Storage, custody, or closeout owner is unresolved"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Request exception register",
+          "columns": [
+            {
+              "key": "constraint",
+              "label": "Constraint",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Decision and ordering handoff",
+      "guidance": "Close with a reviewed outcome and a linked next record.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved to order",
+                "Approved with conditions",
+                "Revision requested",
+                "Declined",
+                "Withdrawn"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "order_id",
+              "label": "Linked order ID",
+              "units": 0.95
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "decision_notes",
+          "type": "textarea",
+          "label": "Decision rationale and conditions",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Reviewed basis, conditions, and requester response"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Ordering handoff",
+          "items": [
+            "Approved service periods carried into the order",
+            "Menu and nonalcoholic requirements transferred",
+            "Responsible-role conditions transferred",
+            "Open exceptions have owners and due points",
+            "Requester informed of reviewed outcome",
+            "Pricing assumptions marked for ordering review"
+          ]
+        },
+        {
+          "key": "order_handoff_register",
+          "type": "table",
+          "label": "Approved-scope ordering handoff",
+          "columns": [
+            {
+              "key": "service_element",
+              "label": "Service element",
+              "units": 1.2
+            },
+            {
+              "key": "order_instruction",
+              "label": "Order instruction",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Decision source",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Order owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            }
+          ],
+          "rows": 4,
+          "guidance": "Transfer only reviewed scope and identify the source for each condition carried into ordering."
+        },
+        {
+          "key": "qualified_review",
+          "type": "signatures",
+          "label": "Preparation and responsible review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

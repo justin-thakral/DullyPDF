@@ -1,0 +1,724 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1320__duplex_property_walkthrough_report_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1320__duplex_property_walkthrough_report_form.pdf",
+  "slug": "duplex-property-walkthrough-report-form",
+  "title": "Duplex Property Walkthrough Report Form",
+  "subtitle": "Operational property walkthrough intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable duplex property walkthrough workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a duplex property walkthrough from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "walkthrough_identity",
+      "title": "Walkthrough identity, purpose, and scope",
+      "guidance": "Define why and where the review occurs.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Property Walkthrough reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Duplex property",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Side or unit",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Resident or household",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "walkthrough_purpose",
+          "type": "fields",
+          "label": "Purpose, trigger, and participants",
+          "guidance": "A walkthrough purpose does not expand entry or professional authority.",
+          "fields": [
+            {
+              "key": "walkthrough_type",
+              "label": "Walkthrough type",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Pre-work",
+                "Post-work",
+                "Seasonal",
+                "Complaint follow-up",
+                "Event-driven"
+              ]
+            },
+            {
+              "key": "trigger_reference",
+              "label": "Trigger or prior reference",
+              "units": 1.3
+            },
+            {
+              "key": "lead_reviewer",
+              "label": "Walkthrough lead",
+              "units": 1.2
+            },
+            {
+              "key": "participants",
+              "label": "Participants",
+              "units": 1.4
+            }
+          ]
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Included areas, excluded areas, priority questions, and expected handoff",
+          "guidance": "Make scope boundaries visible before observations begin.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "scope_details",
+              "label": "Authorized scope, exclusions, requested observations, known limits, and receiving decision owner",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "preparation_safety",
+      "title": "Access, safety, resident impact, and evidence",
+      "guidance": "Prepare safe and proportionate observation.",
+      "blocks": [
+        {
+          "key": "pre_walkthrough",
+          "type": "checklist",
+          "label": "Pre-walkthrough preparation",
+          "guidance": "Do not enter or test beyond authorization, training, equipment, or safe access.",
+          "items": [
+            "Authorized scope, entry basis, notice, and participants confirmed",
+            "Prior findings, work orders, maps, and equipment references linked",
+            "Weather, lighting, utility, occupancy, and access conditions recorded",
+            "Required personal protective or specialist support is routed",
+            "Resident, tenant, guest, employee, or public impact is considered",
+            "Photo plan excludes people, personal records, credentials, and unrelated belongings",
+            "Unsafe, locked, concealed, elevated, or specialist-only areas are excluded",
+            "Emergency and stop-work contacts are available"
+          ]
+        },
+        {
+          "key": "hazard_screen",
+          "type": "checklist",
+          "label": "Immediate condition screen",
+          "guidance": "Stop and use the established emergency or specialist route when conditions exceed authority.",
+          "items": [
+            "Fire, smoke, gas, electrical, structural, or active life-safety concern",
+            "Water, sewage, sanitation, moisture, or environmental concern",
+            "Security, broken entry, glazing, stair, rail, or fall concern",
+            "Essential utility, ventilation, temperature, or equipment outage",
+            "Access route, elevator, door, lighting, or communication concern",
+            "Condition may affect another unit, suite, room, lot, or public area",
+            "Area requires restriction, emergency response, or specialist control",
+            "No immediate condition identified during the visible walkthrough"
+          ]
+        },
+        {
+          "key": "conditions_evidence",
+          "type": "fields",
+          "label": "Walkthrough conditions and evidence",
+          "guidance": "Use stable evidence references and document unavailable areas.",
+          "fields": [
+            {
+              "key": "walkthrough_date",
+              "label": "Walkthrough date",
+              "units": 0.9
+            },
+            {
+              "key": "start_end",
+              "label": "Start and end time",
+              "units": 1.1
+            },
+            {
+              "key": "weather_conditions",
+              "label": "Weather and conditions",
+              "units": 1.2
+            },
+            {
+              "key": "photo_series",
+              "label": "Evidence series",
+              "units": 1.2
+            },
+            {
+              "key": "storage_reference",
+              "label": "Approved storage reference",
+              "units": 1.4
+            }
+          ]
+        },
+        {
+          "key": "immediate_control",
+          "type": "textarea",
+          "label": "Immediate control, area restriction, notice, and escalation",
+          "guidance": "Priority supports response routing and does not establish code or legal status.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "immediate_control_details",
+              "label": "Condition, action taken, people notified, current restriction, owner, due point, and specialist route",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This property walkthrough record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "site_observations",
+      "title": "Site, exterior, common area, and system observations",
+      "guidance": "Record visible condition by exact location.",
+      "blocks": [
+        {
+          "key": "site_exterior",
+          "type": "table",
+          "label": "Site, access, exterior, and envelope observations",
+          "guidance": "Consider circulation, drainage, lighting, waste, grounds, walls, roofline, doors, windows, and exterior equipment as applicable.",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Exact location",
+              "units": 1.2
+            },
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.2
+            },
+            {
+              "key": "observation",
+              "label": "Visible condition",
+              "units": 1.7
+            },
+            {
+              "key": "impact",
+              "label": "Function or access impact",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "interior_systems",
+          "type": "table",
+          "label": "Interior, common-area, and visible-system observations",
+          "guidance": "A basic observation does not certify fire, electrical, mechanical, environmental, accessibility, or other compliance.",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area or system",
+              "units": 1.3
+            },
+            {
+              "key": "basic_check",
+              "label": "Basic visible check",
+              "units": 1.5
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.5
+            },
+            {
+              "key": "service_impact",
+              "label": "Service impact",
+              "units": 1.1
+            },
+            {
+              "key": "route",
+              "label": "Work or specialist route",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "operations_review",
+          "type": "checklist",
+          "label": "Operational areas reviewed",
+          "guidance": "Check only areas actually reviewed and describe exclusions.",
+          "items": [
+            "Entry, exit, circulation, parking, loading, or mobility routes",
+            "Lighting, signage, doors, windows, stairs, rails, and surfaces",
+            "Water, drainage, sanitation, waste, moisture, and pest indicators",
+            "Heating, cooling, ventilation, plumbing, and electrical observations",
+            "Alarm, sprinkler, extinguisher, call, or emergency-device presence",
+            "Laundry, storage, mail, amenity, service, or equipment areas",
+            "Landscaping, fence, gate, play, yard, or outdoor-use areas",
+            "Closed, inaccessible, unsafe, tenant-controlled, or specialist-only areas"
+          ]
+        },
+        {
+          "key": "observation_limits",
+          "type": "textarea",
+          "label": "Obstructed, inaccessible, weather-limited, or specialist-only observations",
+          "guidance": "A limitation cannot be recorded as a passing condition.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "observation_limit_details",
+              "label": "Area, limitation, risk control, evidence gap, responsible owner, due point, and follow-up method",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "Duplex context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "Duplex workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Both exterior sides and the boundary between them are identified",
+            "Shared roof, drainage, foundation, and utility paths are observed",
+            "Each unit entry and private area remains within authorized scope",
+            "Shared drive, yard, steps, porch, lighting, and waste areas are reviewed",
+            "Cross-unit conditions are linked to both locations without assigning fault",
+            "Other-household notice need is recorded before disruptive work",
+            "Unit work orders and shared-property work orders are separated",
+            "Reinspection verifies both the repair and cross-unit impact"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Unit or shared-system owner",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Other-side notice reference",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "Duplex coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer. For a duplex walkthrough, map both exterior sides, the property boundary, party wall, shared roof and drainage paths, foundation edges, utility meters, shutoffs, porch, stairs, drive, yard, lighting, and waste locations. Keep each unit entrance and private interior within its authorized scope. Record any cross-unit leak, odor, pest, smoke, sound, or service path without assigning fault, and split unit work orders from shared-system work and other-household notice.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_authorization",
+      "title": "Prioritized findings and work authorization",
+      "guidance": "Convert evidence into accountable action.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Prioritized finding register",
+          "guidance": "Use emergency, urgent, planned, or monitor only as locally defined routing priorities.",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding and location",
+              "units": 1.6
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence",
+              "units": 1.0
+            },
+            {
+              "key": "priority",
+              "label": "Operational priority",
+              "units": 1.0
+            },
+            {
+              "key": "immediate_control",
+              "label": "Current control",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.3
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "action_authorization",
+          "type": "table",
+          "label": "Work order, project, estimate, or specialist-review authorization",
+          "guidance": "Do not authorize regulated, licensed, invasive, or specialist work beyond documented authority.",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Proposed action",
+              "units": 1.5
+            },
+            {
+              "key": "authority",
+              "label": "Authority or reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "reference",
+              "label": "Work or review reference",
+              "units": 1.3
+            },
+            {
+              "key": "target",
+              "label": "Target date",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Authorization status",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "report_approval",
+          "type": "fields",
+          "label": "Report and action-plan review",
+          "guidance": "Report approval confirms operational routing, not professional certification.",
+          "fields": [
+            {
+              "key": "report_status",
+              "label": "Report status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Draft",
+                "Qualified review",
+                "Approved",
+                "Approved with exceptions",
+                "Returned"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.2
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            },
+            {
+              "key": "action_plan_owner",
+              "label": "Action-plan owner",
+              "units": 1.3
+            },
+            {
+              "key": "next_review",
+              "label": "Next review date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_exception",
+          "type": "textarea",
+          "label": "Deferred item, budget constraint, disputed fact, or escalation",
+          "guidance": "A deferred item must retain a current control and accountable review date.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "decision_exception_details",
+              "label": "Finding, current control, reason, authorized reviewer, owner, due point, and planned disposition",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "verification_closeout",
+      "title": "Communication, verification, and closeout",
+      "guidance": "Verify action and disclose remaining limits.",
+      "blocks": [
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Owner, resident, tenant, staff, and vendor communication",
+          "guidance": "Share only information needed for the recipient's action.",
+          "columns": [
+            {
+              "key": "date_channel",
+              "label": "Date and channel",
+              "units": 1.2
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.1
+            },
+            {
+              "key": "subject",
+              "label": "Finding or action",
+              "units": 1.5
+            },
+            {
+              "key": "message",
+              "label": "Notice or instruction",
+              "units": 1.5
+            },
+            {
+              "key": "response",
+              "label": "Response or follow-up",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "completion_verification",
+          "type": "table",
+          "label": "Completed action and reinspection verification",
+          "guidance": "Verification should match the original finding and authorized scope.",
+          "columns": [
+            {
+              "key": "action_ref",
+              "label": "Action reference",
+              "units": 1.2
+            },
+            {
+              "key": "completed",
+              "label": "Completion evidence",
+              "units": 1.4
+            },
+            {
+              "key": "reinspection",
+              "label": "Verification result",
+              "units": 1.4
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.1
+            },
+            {
+              "key": "remaining",
+              "label": "Remaining limit or action",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "report_closeout",
+          "type": "checklist",
+          "label": "Report closeout verification",
+          "guidance": "The walkthrough remains an operational record, not a specialist inspection.",
+          "items": [
+            "Every immediate condition has a documented disposition",
+            "Every finding links to evidence and an action or monitoring decision",
+            "Affected stakeholders received necessary notice or instruction",
+            "Completed work was verified within the reviewer's authority",
+            "Deferred and unresolved work retains controls, owners, and dates",
+            "Specialist, legal, accessibility, or compliance routes remain linked",
+            "Photos and records use approved privacy and retention controls",
+            "Final report, limitations, and reopen route were handed off"
+          ]
+        },
+        {
+          "key": "walkthrough_closeout",
+          "type": "fields",
+          "label": "Final outcome and handoff",
+          "guidance": "Do not mark closed while a required immediate action lacks disposition.",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Closed",
+                "Closed with monitoring",
+                "Open actions remain",
+                "Referred",
+                "Reinspection required"
+              ]
+            },
+            {
+              "key": "report_recipient",
+              "label": "Final report recipient",
+              "units": 1.3
+            },
+            {
+              "key": "delivered_date",
+              "label": "Delivered date",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_owner",
+              "label": "Remaining-action owner",
+              "units": 1.3
+            },
+            {
+              "key": "reinspection_date",
+              "label": "Reinspection date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "walkthrough_review",
+          "type": "signatures",
+          "label": "Report preparation and qualified closeout review",
+          "guidance": "Signatures confirm preparation and operational review; they do not certify code, engineering, environmental, accessibility, fire, or legal compliance.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized property reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

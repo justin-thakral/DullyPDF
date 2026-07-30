@@ -1,0 +1,658 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1039__electrical_punch_list_checklist_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1039__electrical_punch_list_checklist_form.pdf",
+  "slug": "electrical-punch-list-checklist-form",
+  "title": "Electrical Punch List and Acceptance Checklist",
+  "subtitle": "Define the electrical acceptance basis, log location-specific deficiencies, assign corrections, retain reinspection evidence, resolve exceptions, and record final handoff.",
+  "description": "A controlled Electrical punch list covering inspection identity and document basis, system-specific acceptance criteria, a detailed deficiency register, responsible owners and due dates, containment and access, correction evidence, failed reinspection, deferred items, customer decisions, final acceptance, and closeout.",
+  "use_case": "Use when the electrical foreperson, quality reviewer, project manager, affected trades, and customer need one location-based Electrical completion register that stays open until every item has a supported disposition.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Electrical punch inspection identity and basis",
+      "guidance": "Identify the exact inspection event, scope boundary, controlling records, and participants.",
+      "blocks": [
+        {
+          "key": "inspection_reference",
+          "type": "fields",
+          "label": "Punch inspection reference",
+          "fields": [
+            {
+              "key": "punch_number",
+              "label": "Punch list number",
+              "units": 0.85
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.8
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date/time",
+              "units": 0.9
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.8
+            },
+            {
+              "key": "inspection_type",
+              "label": "Inspection type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Pre-punch",
+                "Substantial",
+                "Final",
+                "Warranty",
+                "Reinspection"
+              ]
+            },
+            {
+              "key": "target_close",
+              "label": "Target close date",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "project_area",
+          "type": "fields",
+          "label": "Project and inspection area",
+          "fields": [
+            {
+              "key": "customer",
+              "label": "Customer or owner",
+              "units": 1.0
+            },
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "building_area",
+              "label": "Building, level, and area",
+              "units": 1.2
+            },
+            {
+              "key": "system_zone",
+              "label": "Electrical system or zone",
+              "units": 1.0
+            },
+            {
+              "key": "field_lead",
+              "label": "Electrical Foreperson",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "document_basis",
+          "type": "checklist",
+          "label": "Acceptance document basis",
+          "items": [
+            "Executed scope and approved changes",
+            "Latest drawings and specifications",
+            "Approved submittals and product data",
+            "Approved mockups, samples, or details",
+            "Inspection and test requirements",
+            "Manufacturer installation instructions",
+            "Authority comments or permits",
+            "Prior punch and correction records"
+          ]
+        },
+        {
+          "key": "inspection_limits",
+          "type": "textarea",
+          "label": "Inspection limits, inaccessible areas, exclusions, and known constraints",
+          "fields": [
+            {
+              "key": "limit_detail",
+              "label": "Define what was and was not inspected and the reason",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "acceptance_criteria",
+      "title": "Electrical acceptance criteria and readiness",
+      "guidance": "Confirm readiness and observable criteria for the service, distribution, branch circuits, equipment, and controls.",
+      "blocks": [
+        {
+          "key": "quality_criteria",
+          "type": "checklist",
+          "label": "Electrical acceptance checkpoints",
+          "items": [
+            "Equipment ratings, listings, location, access, and clearances verified",
+            "Raceway, cable, supports, bends, fill, and environmental seals accepted",
+            "Conductor identity, size, color, phase, and termination verified",
+            "Torque values and calibrated-tool records complete",
+            "Grounding, bonding, continuity, and electrode records complete",
+            "Circuit, panel, equipment, and disconnect identification complete",
+            "Insulation, polarity, rotation, GFCI, and function tests documented",
+            "Energization, commissioning, schedules, and as-builts accepted"
+          ]
+        },
+        {
+          "key": "test_criteria",
+          "type": "checklist",
+          "label": "Electrical required test and verification status",
+          "items": [
+            "Continuity and conductor identity",
+            "Insulation resistance",
+            "Grounding and bonding",
+            "Torque verification",
+            "Polarity and phase rotation",
+            "GFCI and protective function",
+            "Lighting and control sequence",
+            "Energization and commissioning"
+          ]
+        },
+        {
+          "key": "area_readiness",
+          "type": "table",
+          "label": "Area and system readiness review",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area/system",
+              "units": 1.15
+            },
+            {
+              "key": "readiness",
+              "label": "Readiness criterion",
+              "units": 1.35
+            },
+            {
+              "key": "status",
+              "label": "Ready/not ready",
+              "units": 0.85
+            },
+            {
+              "key": "blocker",
+              "label": "Blocker/owner",
+              "units": 1.1
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "inspection_boundary",
+          "type": "notice",
+          "label": "Electrical inspection boundary",
+          "guidance": "This record does not authorize energized work or energization and does not replace qualified-person decisions, energy control, permits, engineering studies, code inspection, or approved test procedures. A visual punch review does not certify concealed work, design, or code compliance."
+        }
+      ]
+    },
+    {
+      "key": "punch_register",
+      "title": "Electrical punch item register",
+      "guidance": "Give every item a unique location, requirement, owner, due date, and evidence path.",
+      "blocks": [
+        {
+          "key": "deficiency_register",
+          "type": "table",
+          "label": "Electrical deficiency and completion register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item/location",
+              "units": 1.15
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency",
+              "units": 1.45
+            },
+            {
+              "key": "criterion",
+              "label": "Requirement ref",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Status/ref",
+              "units": 0.9
+            }
+          ],
+          "rows": 12
+        },
+        {
+          "key": "item_priority",
+          "type": "fields",
+          "label": "Punch priority and routing summary",
+          "fields": [
+            {
+              "key": "life_safety_count",
+              "label": "Safety-critical count",
+              "units": 0.95
+            },
+            {
+              "key": "operation_count",
+              "label": "Operation-impact count",
+              "units": 1.0
+            },
+            {
+              "key": "finish_count",
+              "label": "Finish item count",
+              "units": 0.85
+            },
+            {
+              "key": "documentation_count",
+              "label": "Document item count",
+              "units": 1.0
+            },
+            {
+              "key": "total_open",
+              "label": "Total open items",
+              "units": 0.85
+            },
+            {
+              "key": "escalation_owner",
+              "label": "Escalation owner",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "systemic_issue",
+          "type": "textarea",
+          "label": "Systemic, repeated, concealed, or potentially broader issue",
+          "fields": [
+            {
+              "key": "systemic_detail",
+              "label": "Describe sampling limits, additional inspection, containment, and decision route",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "correction_reinspection",
+      "title": "Electrical correction and reinspection evidence",
+      "guidance": "Retain before and after evidence and reject incomplete or unsupported corrections.",
+      "blocks": [
+        {
+          "key": "correction_log",
+          "type": "table",
+          "label": "Correction and reinspection log",
+          "columns": [
+            {
+              "key": "item_ref",
+              "label": "Punch item ref",
+              "units": 0.85
+            },
+            {
+              "key": "correction",
+              "label": "Correction performed",
+              "units": 1.35
+            },
+            {
+              "key": "completed",
+              "label": "Completed by/date",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "After photo/test ref",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Accept/reject",
+              "units": 0.8
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer/date",
+              "units": 0.95
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "correction_checks",
+          "type": "checklist",
+          "label": "Correction verification prompts",
+          "items": [
+            "Original deficiency and exact location confirmed",
+            "Affected adjacent work inspected",
+            "Approved product and method used",
+            "Required permit or safe-work route followed",
+            "Concealed correction evidence retained",
+            "Required test or measurement repeated",
+            "Finish and protection restored",
+            "Rejected correction returned to accountable owner"
+          ]
+        },
+        {
+          "key": "rejected_items",
+          "type": "table",
+          "label": "Rejected correction and repeat-action register",
+          "columns": [
+            {
+              "key": "item_ref",
+              "label": "Item ref",
+              "units": 0.8
+            },
+            {
+              "key": "reason",
+              "label": "Rejection reason",
+              "units": 1.35
+            },
+            {
+              "key": "next_action",
+              "label": "Required next action",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due/reinspect",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "reinspection_notes",
+          "type": "textarea",
+          "label": "Reinspection limitations, destructive review, or specialist follow-up",
+          "fields": [
+            {
+              "key": "reinspection_detail",
+              "label": "Record access, evidence gaps, and required qualified review",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_deferred",
+      "title": "Electrical exception, deferred item, and escalation control",
+      "guidance": "Do not silently close items that are deferred, disputed, inaccessible, or accepted with conditions.",
+      "blocks": [
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Deferred, disputed, inaccessible, and accepted-exception register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item/location",
+              "units": 1.15
+            },
+            {
+              "key": "exception",
+              "label": "Exception/reason",
+              "units": 1.3
+            },
+            {
+              "key": "temporary",
+              "label": "Temporary condition",
+              "units": 1.1
+            },
+            {
+              "key": "authority",
+              "label": "Decision authority",
+              "units": 0.95
+            },
+            {
+              "key": "due_status",
+              "label": "Due/status",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "exception_decision",
+          "type": "fields",
+          "label": "Exception decision summary",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Correct",
+                "Defer",
+                "Accept with condition",
+                "Reject",
+                "Further review"
+              ]
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or change ref",
+              "units": 1.0
+            },
+            {
+              "key": "commercial_ref",
+              "label": "Credit/retainage ref",
+              "units": 0.95
+            },
+            {
+              "key": "warranty_effect",
+              "label": "Warranty effect",
+              "units": 0.9
+            },
+            {
+              "key": "approved_by",
+              "label": "Authorized by",
+              "units": 0.85
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "escalation_checks",
+          "type": "checklist",
+          "label": "Escalation and handoff completed",
+          "items": [
+            "Safety or operational issue isolated",
+            "Customer and project management notified",
+            "Design or manufacturer review routed",
+            "Change, credit, or retainage route assigned",
+            "Warranty and maintenance effect recorded",
+            "Access and future completion plan recorded",
+            "Supporting evidence retained",
+            "Named owner and deadline confirmed"
+          ]
+        },
+        {
+          "key": "exception_notes",
+          "type": "textarea",
+          "label": "Exception rationale, residual risk, and final completion plan",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Record the authorized outcome without obscuring unresolved work",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "final_acceptance",
+      "title": "Electrical final acceptance and closeout",
+      "guidance": "Reconcile all items, final evidence, customer acknowledgment, and remaining obligations.",
+      "blocks": [
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Electrical closeout evidence verified",
+          "items": [
+            "Panel, circuit, feeder, and equipment schedules",
+            "Torque, insulation, continuity, and grounding tests",
+            "Settings, coordination, commissioning, and startup records",
+            "Approved one-lines, as-builts, and concealed-work evidence",
+            "Labels, directories, spare devices, and keys",
+            "Manuals, warranties, training, and owner handoff"
+          ]
+        },
+        {
+          "key": "punch_summary",
+          "type": "fields",
+          "label": "Final punch reconciliation",
+          "fields": [
+            {
+              "key": "items_issued",
+              "label": "Items issued",
+              "units": 0.75
+            },
+            {
+              "key": "items_accepted",
+              "label": "Items accepted",
+              "units": 0.8
+            },
+            {
+              "key": "items_deferred",
+              "label": "Items deferred",
+              "units": 0.8
+            },
+            {
+              "key": "items_rejected",
+              "label": "Items rejected/open",
+              "units": 0.9
+            },
+            {
+              "key": "final_inspection",
+              "label": "Final inspection date",
+              "units": 0.9
+            },
+            {
+              "key": "acceptance_status",
+              "label": "Acceptance status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Conditional",
+                "Open",
+                "Rejected"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "remaining_obligations",
+          "type": "table",
+          "label": "Remaining warranty, seasonal, training, or document obligations",
+          "columns": [
+            {
+              "key": "obligation",
+              "label": "Obligation",
+              "units": 1.35
+            },
+            {
+              "key": "trigger",
+              "label": "Trigger/date",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Required evidence",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "acceptance_handoff",
+          "type": "textarea",
+          "label": "Final condition, limitations, operation, warranty, and owner handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Summarize accepted work, deferred obligations, access, and next contact",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "acceptance_signoff",
+          "type": "signatures",
+          "label": "Electrical punch closeout and acceptance",
+          "fields": [
+            {
+              "key": "field_lead",
+              "label": "Field lead",
+              "units": 0.9
+            },
+            {
+              "key": "quality_reviewer",
+              "label": "Quality reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "project_manager",
+              "label": "Project manager",
+              "units": 0.95
+            },
+            {
+              "key": "customer_ack",
+              "label": "Customer acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance_date",
+              "label": "Acceptance date",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

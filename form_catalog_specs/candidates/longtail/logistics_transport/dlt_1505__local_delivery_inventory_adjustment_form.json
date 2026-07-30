@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1505__local_delivery_inventory_adjustment_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1505__local_delivery_inventory_adjustment_form.pdf",
+  "slug": "local-delivery-inventory-adjustment-form",
+  "title": "Local Delivery Inventory Adjustment Form",
+  "subtitle": "Reconcile the local delivery source state to verified evidence, explain every variance, control affected inventory, authorize exact postings, and verify the ledger.",
+  "description": "An original, fillable local delivery inventory adjustment form for controlling multi-stop local order through inventory adjustment identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when expected and delivered pieces or related identity, location, status, or ownership differs from the system and a controlled adjustment must remain traceable from physical evidence through approval, posting, and after-state verification.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Local Delivery inventory adjustment identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Local Delivery record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Inventory Adjustment record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Route and stop number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Order, tote, or package ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned route dispatcher",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Assigned Driver",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Origin store, hub, or pickup point",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Delivery address and stop access point",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the route plan, customer order, and package labels."
+        }
+      ]
+    },
+    {
+      "key": "adjustment_boundary",
+      "title": "Local Delivery inventory boundary and source state",
+      "guidance": "Freeze the affected identity, location, cutoff, and source balances before proposing a posting.",
+      "blocks": [
+        {
+          "key": "source_state",
+          "type": "fields",
+          "label": "Source inventory state",
+          "fields": [
+            {
+              "key": "system_snapshot",
+              "label": "System snapshot date and time",
+              "units": 1.15
+            },
+            {
+              "key": "transaction_cutoff",
+              "label": "Transaction cutoff or through-time",
+              "units": 1.2
+            },
+            {
+              "key": "location",
+              "label": "Origin store, hub, or pickup point",
+              "units": 1.35
+            },
+            {
+              "key": "record_owner",
+              "label": "Source record owner or route dispatcher",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "boundary_controls",
+          "type": "checklist",
+          "label": "Local Delivery adjustment controls",
+          "items": [
+            "Stop sequence matches promised delivery windows and traffic constraints",
+            "Every order is matched to route, stop, package, and recipient identifiers",
+            "Vehicle capacity and package placement support the planned stop sequence",
+            "Driver has access instructions, contact method, and failed-attempt rules",
+            "Age, identity, signature, or photo requirements are explicit where applicable",
+            "Fragile, upright, temperature, and no-unattended-delivery controls are visible",
+            "Returns, exchanges, cash handling, or reusable containers have separate custody",
+            "Dispatcher has a communication and escalation path for route disruption"
+          ],
+          "guidance": "Do not post until movement, unit, ownership, status, and evidence boundaries are understood."
+        },
+        {
+          "key": "approval_threshold",
+          "type": "fields",
+          "label": "Authority and posting threshold",
+          "fields": [
+            {
+              "key": "adjustment_type",
+              "label": "Adjustment type",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Quantity",
+                "Location",
+                "Status",
+                "Lot or serial",
+                "Ownership",
+                "Reversal"
+              ]
+            },
+            {
+              "key": "threshold",
+              "label": "Value or quantity approval threshold",
+              "units": 1.25
+            },
+            {
+              "key": "posting_system",
+              "label": "System or ledger to update",
+              "units": 1.2
+            },
+            {
+              "key": "restricted_period",
+              "label": "Closed period or restriction",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "variance_schedule",
+      "title": "Local Delivery inventory variance schedule",
+      "guidance": "Show current, verified, proposed, and net values for every affected identity.",
+      "blocks": [
+        {
+          "key": "variance_lines",
+          "type": "table",
+          "label": "Inventory adjustment lines",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Order, tote, or package ID",
+              "units": 1.25
+            },
+            {
+              "key": "location_status",
+              "label": "Location, owner, or status",
+              "units": 1.15
+            },
+            {
+              "key": "system_qty",
+              "label": "Current system value",
+              "units": 0.95
+            },
+            {
+              "key": "verified_qty",
+              "label": "Verified actual value",
+              "units": 0.95
+            },
+            {
+              "key": "adjustment",
+              "label": "Proposed adjustment",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or count ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "variance_totals",
+          "type": "fields",
+          "label": "Variance and value summary",
+          "fields": [
+            {
+              "key": "line_count",
+              "label": "Affected line count",
+              "units": 0.9
+            },
+            {
+              "key": "quantity_change",
+              "label": "Net quantity change",
+              "units": 1.0
+            },
+            {
+              "key": "value_change",
+              "label": "Estimated value impact",
+              "units": 1.05
+            },
+            {
+              "key": "currency_uom",
+              "label": "Currency or unit of measure",
+              "units": 1.05
+            },
+            {
+              "key": "reconciliation_status",
+              "label": "Reconciliation status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Balanced",
+                "Balanced with correction",
+                "Pending evidence",
+                "Unresolved"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cause_evidence",
+      "title": "Local Delivery adjustment reason and evidence",
+      "guidance": "Use a reason supported by transaction and physical evidence, not a balancing convenience.",
+      "blocks": [
+        {
+          "key": "reason_codes",
+          "type": "checklist",
+          "label": "Local Delivery supported adjustment reasons",
+          "items": [
+            "Route load count corrected before departure",
+            "Mis-sort moved to the correct stop",
+            "Short pick or unavailable item confirmed",
+            "Customer refusal or canceled order returned",
+            "Damaged item moved to hold",
+            "Reusable tote or container balance corrected",
+            "Substitution or partial fulfillment documented",
+            "Duplicate scan or system posting corrected"
+          ]
+        },
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Conditions requiring investigation or escalation",
+          "items": [
+            "Address or access point cannot be located",
+            "Recipient unavailable or refuses delivery",
+            "Package is missing, extra, mislabeled, or assigned to another stop",
+            "Packaging or contents show visible damage or leakage",
+            "Delivery window will be missed",
+            "Identity, signature, or age condition cannot be completed",
+            "Unsafe parking, property condition, animal, or other site hazard",
+            "Customer requests an unapproved alternate delivery location",
+            "Proof capture fails or conflicts with the delivered stop",
+            "Return item or reusable container cannot be reconciled"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Adjustment evidence and source-record index",
+          "columns": [
+            {
+              "key": "evidence",
+              "label": "Evidence or source record",
+              "units": 1.45
+            },
+            {
+              "key": "identity",
+              "label": "Affected identity",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Record owner",
+              "units": 0.9
+            },
+            {
+              "key": "date",
+              "label": "Record date",
+              "units": 0.8
+            },
+            {
+              "key": "location",
+              "label": "Evidence location",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "containment_correction",
+      "title": "Local Delivery containment, correction, and prevention",
+      "guidance": "Separate the immediate inventory correction from action on the cause and control gap.",
+      "blocks": [
+        {
+          "key": "correction_actions",
+          "type": "table",
+          "label": "Correction and control action register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Correction or preventive action",
+              "units": 1.5
+            },
+            {
+              "key": "scope",
+              "label": "Affected item, location, or process",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "verification",
+              "label": "Verification or evidence",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "containment_status",
+          "type": "fields",
+          "label": "Inventory containment status",
+          "fields": [
+            {
+              "key": "movement_status",
+              "label": "Movement or use status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Available",
+                "Restricted",
+                "On hold",
+                "Quarantined",
+                "Removed"
+              ]
+            },
+            {
+              "key": "affected_scope",
+              "label": "Contained quantity or scope",
+              "units": 1.25
+            },
+            {
+              "key": "exception_owner",
+              "label": "Exception owner",
+              "units": 1.05
+            },
+            {
+              "key": "next_count",
+              "label": "Recount or verification due",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "investigation_notes",
+          "type": "textarea",
+          "label": "Variance cause, transaction chronology, control gap, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Variance cause, transaction chronology, control gap, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "posting_authorization",
+      "title": "Local Delivery adjustment authorization and ledger verification",
+      "guidance": "Record independent approval, exact posting reference, and after-state reconciliation.",
+      "blocks": [
+        {
+          "key": "authorization",
+          "type": "fields",
+          "label": "Adjustment authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Authorization decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limit",
+                "Returned for correction",
+                "Rejected",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "authorized_scope",
+              "label": "Authorized lines or amount",
+              "units": 1.25
+            },
+            {
+              "key": "approver_level",
+              "label": "Approver role or level",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "posting_log",
+          "type": "table",
+          "label": "Inventory posting and verification log",
+          "columns": [
+            {
+              "key": "line_group",
+              "label": "Line or batch reference",
+              "units": 1.15
+            },
+            {
+              "key": "posted_by",
+              "label": "Posted by",
+              "units": 0.9
+            },
+            {
+              "key": "posted_at",
+              "label": "Posted date and time",
+              "units": 1.0
+            },
+            {
+              "key": "transaction",
+              "label": "System transaction ref",
+              "units": 1.2
+            },
+            {
+              "key": "after_state",
+              "label": "Verified after-state",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "adjustment_signoff",
+          "type": "signatures",
+          "label": "Prepared, approved, posted, and verified",
+          "fields": [
+            {
+              "key": "prepared",
+              "label": "Prepared by and date",
+              "units": 1.1
+            },
+            {
+              "key": "approved",
+              "label": "Approved by local delivery operations lead",
+              "units": 1.4
+            },
+            {
+              "key": "posted",
+              "label": "Posted by and date",
+              "units": 1.1
+            },
+            {
+              "key": "verified",
+              "label": "Independent verification",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Local Delivery inventory adjustment closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Posted and reconciled",
+                "Partially posted with action",
+                "Corrected without posting",
+                "Rejected and controlled",
+                "Escalated for investigation"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This local delivery inventory adjustment is an operational record, not a substitute for applicable law, contract terms, safety or product requirements, or professional judgment. Stop the affected movement, transfer, release, posting, or disposition when identity, evidence, authorization, or control is uncertain. A qualified local delivery operations lead must review the exception and document the controlling decision."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by local delivery operations lead",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

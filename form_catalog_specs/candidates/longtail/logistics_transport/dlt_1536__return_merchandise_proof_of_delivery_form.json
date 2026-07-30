@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1536__return_merchandise_proof_of_delivery_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1536__return_merchandise_proof_of_delivery_form.pdf",
+  "slug": "return-merchandise-proof-of-delivery-form",
+  "title": "Return Merchandise Proof of Delivery Form",
+  "subtitle": "Authenticate the return merchandise delivery through unit identity, custody events, recipient authority, location, timing, condition, and privacy-conscious proof.",
+  "description": "An original, fillable return merchandise proof of delivery form for controlling returned product, return authorization, and disposition unit through proof of delivery identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use after a return merchandise delivery or failed attempt when operations must establish what was delivered, to whom, where, when, under which control, and how any evidence gap or dispute was routed.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Return Merchandise proof of delivery identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Return Merchandise record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Proof Of Delivery record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Return authorization and original order number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "SKU, serial, lot, package, or return-label ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned returns authorization coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Returns Receiving And Inspection Associate",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Customer, store, field location, or return carrier",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Returns dock, quarantine area, repair, restock, or supplier route",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the return authorization, original sale, product identity, and return policy."
+        }
+      ]
+    },
+    {
+      "key": "proof_commitment",
+      "title": "Return Merchandise delivery obligation and proof standard",
+      "guidance": "Define the promised event and acceptable evidence before evaluating whether delivery was completed.",
+      "blocks": [
+        {
+          "key": "delivery_obligation",
+          "type": "fields",
+          "label": "Delivery obligation",
+          "fields": [
+            {
+              "key": "promised_window",
+              "label": "Promised delivery window",
+              "units": 1.1
+            },
+            {
+              "key": "actual_completion",
+              "label": "Actual completion date and time",
+              "units": 1.1
+            },
+            {
+              "key": "proof_standard",
+              "label": "Required proof method",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_recipient",
+              "label": "Returns Center, Supplier, Repair Depot, Or Customer Account Owner",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "proof_controls",
+          "type": "checklist",
+          "label": "Return Merchandise custody and proof controls",
+          "items": [
+            "Quarantine pending inspection",
+            "Data-bearing device privacy route",
+            "Hazardous or leaking item isolation",
+            "Temperature-sensitive return hold",
+            "Original packaging preservation",
+            "Accessory and component reconciliation",
+            "Supplier return authorization required",
+            "No credit before disposition approval"
+          ],
+          "guidance": "Select the controls actually required for this delivery, not every available service feature."
+        },
+        {
+          "key": "route_assignment",
+          "type": "fields",
+          "label": "Route, custodian, and destination assignment",
+          "fields": [
+            {
+              "key": "route",
+              "label": "Route, trip, or movement reference",
+              "units": 1.25
+            },
+            {
+              "key": "custodian",
+              "label": "Returns Receiving And Inspection Associate",
+              "units": 1.2
+            },
+            {
+              "key": "destination",
+              "label": "Returns dock, quarantine area, repair, restock, or supplier route",
+              "units": 1.4
+            },
+            {
+              "key": "contact_method",
+              "label": "Recipient contact method",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivery_timeline",
+      "title": "Return Merchandise delivery event timeline",
+      "guidance": "Preserve the sequence of custody, location, timing, and proof-generating events.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Delivery milestone and custody log",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Event or custody change",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned time",
+              "units": 0.8
+            },
+            {
+              "key": "actual",
+              "label": "Actual time",
+              "units": 0.8
+            },
+            {
+              "key": "location",
+              "label": "Location or control point",
+              "units": 1.15
+            },
+            {
+              "key": "party",
+              "label": "Responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "proof",
+              "label": "Scan, seal, or proof ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "timeline_reconciliation",
+          "type": "fields",
+          "label": "Timeline reconciliation",
+          "fields": [
+            {
+              "key": "first_attempt",
+              "label": "First attempt time",
+              "units": 1.0
+            },
+            {
+              "key": "completed_time",
+              "label": "Completion time",
+              "units": 1.0
+            },
+            {
+              "key": "custody_changes",
+              "label": "Custody changes",
+              "units": 0.9
+            },
+            {
+              "key": "unplanned_stops",
+              "label": "Unplanned stops or delays",
+              "units": 1.2
+            },
+            {
+              "key": "timeline_status",
+              "label": "Timeline status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with variance",
+                "Missing event",
+                "Conflicting evidence"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivered_scope",
+      "title": "Return Merchandise delivered scope and recipient verification",
+      "guidance": "Tie proof to each relevant unit rather than treating one signature as proof for an unverified shipment.",
+      "blocks": [
+        {
+          "key": "delivered_units",
+          "type": "table",
+          "label": "Returned Items, Serials, Lots, Accessories, Packages, And Disposition Quantities delivery proof",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "SKU, serial, lot, package, or return-label ID",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Delivered quantity",
+              "units": 0.8
+            },
+            {
+              "key": "condition",
+              "label": "Product, packaging, accessory, seal, and use condition",
+              "units": 1.15
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or delivery point",
+              "units": 1.1
+            },
+            {
+              "key": "proof_method",
+              "label": "Proof method",
+              "units": 0.95
+            },
+            {
+              "key": "proof_ref",
+              "label": "Proof reference",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proof_evidence",
+          "type": "checklist",
+          "label": "Return Merchandise proof package",
+          "items": [
+            "Return authorization and original transaction",
+            "Carrier tracking and return-label identity",
+            "Arrival and unopened-package photographs",
+            "Serial, lot, model, and ownership verification",
+            "Accessory and component reconciliation",
+            "Inspection and functional-test reference",
+            "Customer communication and promised remedy",
+            "Approved disposition, credit, repair, or supplier route"
+          ],
+          "guidance": "Capture only the evidence needed to authenticate the event and follow privacy, access, and retention policy."
+        },
+        {
+          "key": "delivery_facts",
+          "type": "textarea",
+          "label": "Delivery location, recipient authority, custody, and condition facts",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Delivery location, recipient authority, custody, and condition facts",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "delivery_exceptions",
+      "title": "Return Merchandise exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "delivery_exception_types",
+          "type": "checklist",
+          "label": "Return Merchandise exception indicators",
+          "items": [
+            "No valid return authorization or item outside approved scope",
+            "SKU, serial, lot, ownership, or original transaction cannot be matched",
+            "Received quantity or accessories differ from the return request",
+            "Undisclosed use, damage, contamination, modification, or missing parts",
+            "Hazardous, leaking, swollen, sharp, or otherwise unsafe condition",
+            "Data-bearing device lacks approved privacy handling",
+            "Temperature control or product integrity cannot be established",
+            "Warranty, recall, return-window, or policy status is disputed",
+            "Customer remedy and physical disposition conflict",
+            "Duplicate credit, replacement, or return record is suspected"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "delivery_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "delivery_decision",
+          "type": "fields",
+          "label": "Failed attempt, disputed delivery, or proof-gap decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "proof_attestation",
+      "title": "Return Merchandise proof validation and delivery attestation",
+      "guidance": "Validate evidence consistency and route disputes without overstating what the record proves.",
+      "blocks": [
+        {
+          "key": "proof_validation",
+          "type": "fields",
+          "label": "Proof validation",
+          "fields": [
+            {
+              "key": "proof_status",
+              "label": "Proof status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Validated",
+                "Validated with variance",
+                "Pending evidence",
+                "Disputed",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "location_match",
+              "label": "Location evidence match",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_match",
+              "label": "Recipient authority match",
+              "units": 1.1
+            },
+            {
+              "key": "quantity_match",
+              "label": "Quantity reconciliation",
+              "units": 1.05
+            },
+            {
+              "key": "review_reference",
+              "label": "Review or dispute reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "delivery_attestation",
+          "type": "signatures",
+          "label": "Delivery, recipient, and proof review",
+          "fields": [
+            {
+              "key": "delivering_party",
+              "label": "Delivering party attestation",
+              "units": 1.25
+            },
+            {
+              "key": "recipient_party",
+              "label": "Recipient acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "proof_reviewer",
+              "label": "Proof reviewed by",
+              "units": 1.15
+            },
+            {
+              "key": "attested_at",
+              "label": "Attestation date and time",
+              "units": 1.05
+            }
+          ],
+          "guidance": "A recipient acknowledgment records the observed handoff; final acceptance may remain subject to inspection or applicable terms."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Return Merchandise proof of delivery closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Proof validated",
+                "Validated with closed variance",
+                "Redelivery completed",
+                "Transferred to dispute or claim",
+                "Delivery not established"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this return merchandise proof of delivery with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by returns, quality, or finance supervisor",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

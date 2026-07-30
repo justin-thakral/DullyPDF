@@ -1,0 +1,554 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2201__event_inquiry_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2201__event_inquiry_order_form.pdf",
+  "slug": "event-inquiry-order-form",
+  "title": "Event Inquiry Order Form",
+  "subtitle": "Convert a qualified inquiry into an internal definite-booking order that operations can build from, with contracted scope, billing routing, and turnover evidence.",
+  "description": "An original booking order that turns a screened inquiry into a definite internal order. It records order identity and routing, contracted dates, spaces and rates, the operational build data each department needs, authorization and client acceptance, open commercial conditions, and the turnover handoff to operations.",
+  "use_case": "Use when an inquiry has been qualified and the venue is ready to commit space. The seller records contracted scope, deposit and billing routing, and the dependencies each department must acknowledge. The order closes only when it has been turned over to operations and every open condition has an owner.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Booking order identity and routing",
+      "guidance": "Bind this order to its source inquiry and its accountable owners.",
+      "blocks": [
+        {
+          "key": "order_routing",
+          "type": "fields",
+          "label": "Order identity and routing",
+          "fields": [
+            {
+              "key": "order_number",
+              "label": "Order number",
+              "units": 0.85
+            },
+            {
+              "key": "source_inquiry",
+              "label": "Source inquiry ID",
+              "units": 0.95
+            },
+            {
+              "key": "definite_date",
+              "label": "Definite date",
+              "units": 0.8
+            },
+            {
+              "key": "sales_owner",
+              "label": "Sales owner",
+              "units": 0.95
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 0.95
+            }
+          ],
+          "guidance": "The sales owner owns commercial terms; the service owner owns delivery."
+        },
+        {
+          "key": "client_contacts",
+          "type": "fields",
+          "label": "Client and billing contacts",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "billing_contact",
+              "label": "Billing contact",
+              "units": 1.0
+            },
+            {
+              "key": "onsite_contact",
+              "label": "On-site contact",
+              "units": 1.0
+            },
+            {
+              "key": "onsite_phone",
+              "label": "On-site phone",
+              "units": 0.85
+            },
+            {
+              "key": "client_reference",
+              "label": "Client PO or reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "contracted_scope",
+      "title": "Contracted dates, spaces, and commercial terms",
+      "guidance": "Record only what the venue has actually committed.",
+      "blocks": [
+        {
+          "key": "space_schedule",
+          "type": "table",
+          "label": "Contracted space schedule",
+          "columns": [
+            {
+              "key": "event_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "time_block",
+              "label": "Time block",
+              "units": 0.85
+            },
+            {
+              "key": "space_assigned",
+              "label": "Space assigned",
+              "units": 1.05
+            },
+            {
+              "key": "function_type",
+              "label": "Function",
+              "units": 1.0
+            },
+            {
+              "key": "headcount",
+              "label": "Guests",
+              "units": 0.5
+            },
+            {
+              "key": "rate_basis",
+              "label": "Rate or minimum",
+              "units": 0.95
+            }
+          ],
+          "rows": 6,
+          "guidance": "Space names must match the master calendar exactly so operations and accounting reconcile to the same inventory."
+        },
+        {
+          "key": "commercial_terms",
+          "type": "fields",
+          "label": "Commercial terms",
+          "fields": [
+            {
+              "key": "agreement_status",
+              "label": "Agreement status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Pending client signature",
+                "Pending venue countersignature",
+                "Signed agreement on file",
+                "Letter of agreement only",
+                "Internal - no client"
+              ]
+            },
+            {
+              "key": "guaranteed_minimum",
+              "label": "Guaranteed minimum",
+              "units": 1.0
+            },
+            {
+              "key": "deposit_due",
+              "label": "Deposit due",
+              "units": 0.8
+            },
+            {
+              "key": "balance_due",
+              "label": "Balance due",
+              "units": 0.8
+            },
+            {
+              "key": "payment_route",
+              "label": "Payment route",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Not yet set",
+                "Invoice - approved credit",
+                "Card authorization on file",
+                "Bank transfer",
+                "Prepaid in full",
+                "Split billing"
+              ]
+            }
+          ],
+          "guidance": "Record the routing only. Do not write card numbers or bank details on this form; hold them in the system of record."
+        },
+        {
+          "key": "order_inclusions",
+          "type": "checklist",
+          "label": "Services included in this order",
+          "items": [
+            "Banquet or plated food service",
+            "Beverage or bar service",
+            "Guest-room block",
+            "Audio-visual or production",
+            "Rental furniture, linen, or decor",
+            "Parking, valet, or shuttle",
+            "Signage or branding placement",
+            "Dedicated staffing beyond standard service",
+            "Outside vendor load-in",
+            "Security or crowd management"
+          ],
+          "guidance": "Every ticked service needs an owning department in the dependency schedule below."
+        }
+      ]
+    },
+    {
+      "key": "operational_build",
+      "title": "Operational build and department dependencies",
+      "guidance": "Give each department what it needs to build without a second document.",
+      "blocks": [
+        {
+          "key": "build_window",
+          "type": "fields",
+          "label": "Build and access window",
+          "fields": [
+            {
+              "key": "setup_style",
+              "label": "Contracted setup",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Rounds",
+                "Theater",
+                "Classroom",
+                "U-shape",
+                "Hollow square",
+                "Standing reception",
+                "Exhibit floor",
+                "Mixed by session"
+              ]
+            },
+            {
+              "key": "access_from",
+              "label": "Client access from",
+              "units": 0.9
+            },
+            {
+              "key": "setup_complete_by",
+              "label": "Setup complete by",
+              "units": 0.95
+            },
+            {
+              "key": "teardown_by",
+              "label": "Teardown complete by",
+              "units": 1.0
+            },
+            {
+              "key": "diagram_reference",
+              "label": "Diagram reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "dependency_schedule",
+          "type": "table",
+          "label": "Department dependency schedule",
+          "columns": [
+            {
+              "key": "dependency",
+              "label": "Dependency",
+              "units": 1.3
+            },
+            {
+              "key": "owning_department",
+              "label": "Owning department",
+              "units": 1.05
+            },
+            {
+              "key": "needed_by",
+              "label": "Needed by",
+              "units": 0.8
+            },
+            {
+              "key": "confirmation",
+              "label": "Confirmation status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "An unconfirmed dependency at turnover becomes an open condition, not a verbal promise."
+        },
+        {
+          "key": "build_notes",
+          "type": "textarea",
+          "label": "Build sequence, shared-wall constraints, and service notes",
+          "fields": [
+            {
+              "key": "build_detail",
+              "label": "Operational build detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "order_authorization",
+      "title": "Authorization and client acceptance",
+      "guidance": "Record who committed the venue and when the client accepted.",
+      "blocks": [
+        {
+          "key": "authorization_record",
+          "type": "fields",
+          "label": "Order authorization",
+          "fields": [
+            {
+              "key": "order_status",
+              "label": "Order status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending approval",
+                "Approved - definite",
+                "Approved with conditions",
+                "Held for credit review",
+                "Declined"
+              ]
+            },
+            {
+              "key": "approval_date",
+              "label": "Approval date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.05
+            },
+            {
+              "key": "credit_review",
+              "label": "Credit review",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Not required",
+                "Requested",
+                "Approved",
+                "Approved with deposit",
+                "Declined"
+              ]
+            },
+            {
+              "key": "client_accepted",
+              "label": "Client accepted on",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "commercial_boundary",
+          "type": "notice",
+          "label": "Order scope and record boundary",
+          "guidance": "This order records the internal booking scope agreed with the client. It is not the signed contract and does not interpret cancellation, attrition, insurance, or liability terms. Where this order and the signed agreement differ, the agreement governs. Route pricing, credit, contract-language, and insurance questions to the responsible manager before acting on them."
+        },
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Approved conditions, deviations, and what the client accepted",
+          "fields": [
+            {
+              "key": "authorization_detail",
+              "label": "Authorization detail"
+            }
+          ],
+          "height": 46
+        }
+      ]
+    },
+    {
+      "key": "order_conditions",
+      "title": "Open conditions, exceptions, and escalation",
+      "guidance": "An order can be definite and still carry unresolved conditions.",
+      "blocks": [
+        {
+          "key": "condition_triggers",
+          "type": "checklist",
+          "label": "Open condition triggers",
+          "items": [
+            "Signed agreement or countersignature outstanding",
+            "Deposit not received by the scheduled date",
+            "Credit review unresolved",
+            "Contracted space changed after client acceptance",
+            "Expected headcount below the guaranteed minimum",
+            "A contracted service cannot be staffed on the date",
+            "Outside vendor insurance or licensing not on file",
+            "Accessibility accommodation not yet confirmed",
+            "Allergen or dietary requirement not yet confirmed"
+          ]
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Open condition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Open condition",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "order_turnover",
+      "title": "Turnover, distribution, and closeout",
+      "guidance": "Hand the order to operations with acknowledgment, not assumption.",
+      "blocks": [
+        {
+          "key": "turnover_status",
+          "type": "fields",
+          "label": "Turnover status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Pending turnover",
+                "Turned over to operations",
+                "Revised - reissued",
+                "Cancelled by client",
+                "Cancelled by venue",
+                "Postponed"
+              ]
+            },
+            {
+              "key": "turnover_date",
+              "label": "Turnover date",
+              "units": 0.8
+            },
+            {
+              "key": "revision_number",
+              "label": "Revision number",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "distribution_log",
+          "type": "table",
+          "label": "Order distribution and acknowledgment",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Department or role",
+              "units": 1.15
+            },
+            {
+              "key": "sent_on",
+              "label": "Sent on",
+              "units": 0.75
+            },
+            {
+              "key": "acknowledged_by",
+              "label": "Acknowledged by",
+              "units": 1.05
+            },
+            {
+              "key": "open_question",
+              "label": "Outstanding question",
+              "units": 1.4
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "turnover_confirmations",
+          "type": "checklist",
+          "label": "Turnover confirmations",
+          "items": [
+            "Contracted dates, spaces, and headcounts verified against the agreement",
+            "Deposit status and billing routing confirmed with accounting",
+            "Dependencies acknowledged by each owning department",
+            "Open conditions transferred with named owners and due points",
+            "Allergen, accessibility, and security requests carried forward",
+            "Revision history and superseded versions recorded"
+          ]
+        },
+        {
+          "key": "turnover_notes",
+          "type": "textarea",
+          "label": "Turnover outcome, remaining limitations, and acceptance notes",
+          "fields": [
+            {
+              "key": "turnover_detail",
+              "label": "Turnover and closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by director of sales",
+              "units": 1.2
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

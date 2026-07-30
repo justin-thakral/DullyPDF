@@ -1,0 +1,498 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2341__harvest_load_incident_report_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2341__harvest_load_incident_report_form.pdf",
+  "slug": "harvest-load-incident-report-form",
+  "title": "Harvest Load Incident Report Form",
+  "subtitle": "Harvest Load stabilize the event, preserve facts and affected identities, assess impact, assign corrective action, authorize disposition, and close the handoff.",
+  "description": "An original, workflow-complete harvest load incident report covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use after an unplanned event or material deviation to preserve evidence, keep affected work or product visible, and route decisions to accountable owners. The record is owned by the harvest and shipping owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "incident_routing",
+      "title": "Harvest Load incident routing",
+      "guidance": "Identify the event, affected subject, reporter, and decision owner.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Incident Report identity and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident record ID",
+              "units": 0.9
+            },
+            {
+              "key": "discovery_date",
+              "label": "Discovery date",
+              "units": 0.75
+            },
+            {
+              "key": "discovery_time",
+              "label": "Discovery time",
+              "units": 0.7
+            },
+            {
+              "key": "reported_by",
+              "label": "Reported by",
+              "units": 0.9
+            },
+            {
+              "key": "event_location",
+              "label": "Event location",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Harvest Lot Or Outbound Load identity",
+          "fields": [
+            {
+              "key": "field_block",
+              "label": "Field or block ID",
+              "units": 0.85
+            },
+            {
+              "key": "crop_variety",
+              "label": "Crop and variety",
+              "units": 1.0
+            },
+            {
+              "key": "harvest_lot",
+              "label": "Harvest lot ID",
+              "units": 0.9
+            },
+            {
+              "key": "crew_harvester",
+              "label": "Crew or harvester ID",
+              "units": 1.05
+            },
+            {
+              "key": "destination",
+              "label": "Planned destination",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "immediate_response",
+      "title": "Harvest Load immediate response",
+      "guidance": "Record stabilization and affected scope without replacing emergency procedure.",
+      "blocks": [
+        {
+          "key": "initial_status",
+          "type": "fields",
+          "label": "Initial status and routing",
+          "fields": [
+            {
+              "key": "event_status",
+              "label": "Event status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Active response",
+                "Stabilized",
+                "Under review",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "response_lead",
+              "label": "Response lead",
+              "units": 1.0
+            },
+            {
+              "key": "affected_scope",
+              "label": "Initial affected scope",
+              "units": 1.2
+            },
+            {
+              "key": "hold_restriction",
+              "label": "Hold or restriction ref",
+              "units": 1.05
+            },
+            {
+              "key": "notification_ref",
+              "label": "Notification reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "immediate_actions",
+          "type": "checklist",
+          "label": "Harvest Load immediate actions",
+          "items": [
+            "Harvest or load movement was stopped when indicated",
+            "People, product, and affected area were protected under site procedure",
+            "Field, lot, container, load, seal, and transport identities were captured",
+            "Product damage, contamination concern, or foreign material was isolated",
+            "Temperature, cooling, delay, or rejected-load concern was placed on hold",
+            "Scale, count, weight, label, or document mismatch was preserved",
+            "Vehicle, equipment, spill, or access event was routed appropriately",
+            "Receiver, harvest owner, and qualified disposition owner were notified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "event_facts",
+      "title": "Harvest Load event facts and timeline",
+      "guidance": "Preserve direct observations, sources, and sequence.",
+      "blocks": [
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Event timeline and evidence",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "event_observation",
+              "label": "Event or observation",
+              "units": 1.35
+            },
+            {
+              "key": "person_source",
+              "label": "Person or source",
+              "units": 1.0
+            },
+            {
+              "key": "action_state",
+              "label": "Action or state",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "factual_narrative",
+          "type": "textarea",
+          "label": "Factual narrative, discovery circumstances, and known limitations",
+          "fields": [
+            {
+              "key": "facts_detail",
+              "label": "Harvest Load incident factual narrative"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "affected_evidence",
+      "title": "Harvest Load affected identities and evidence",
+      "guidance": "Account for affected people, assets, fields, animals, or product as applicable.",
+      "blocks": [
+        {
+          "key": "affected_register",
+          "type": "table",
+          "label": "Affected-scope register",
+          "columns": [
+            {
+              "key": "identifier",
+              "label": "Affected identifier",
+              "units": 1.1
+            },
+            {
+              "key": "quantity_extent",
+              "label": "Quantity or extent",
+              "units": 1.0
+            },
+            {
+              "key": "location_status",
+              "label": "Location and status",
+              "units": 1.15
+            },
+            {
+              "key": "hold_disposition",
+              "label": "Hold or disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_inventory",
+          "type": "checklist",
+          "label": "Evidence inventory",
+          "items": [
+            "Photos or video preserved",
+            "Instrument, controller, or system data preserved",
+            "Labels, lots, tags, or serial identifiers preserved",
+            "Witness or operator accounts requested",
+            "Related logs, work orders, or shipping records linked",
+            "Corrections preserve original values and sources"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "impact_assessment",
+      "title": "Harvest Load impact and decision assessment",
+      "guidance": "Distinguish facts, contributing conditions, and authorized decisions.",
+      "blocks": [
+        {
+          "key": "incident_decision",
+          "type": "fields",
+          "label": "Incident decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Contained for review",
+                "Corrective action active",
+                "Transferred",
+                "Closed"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "assessment_basis",
+          "type": "checklist",
+          "label": "Assessment and decision basis",
+          "items": [
+            "Harvest Load facts and evidence support the affected scope",
+            "Direct observations are separated from causal assessment",
+            "Immediate actions, holds, and notifications are documented",
+            "Corrections and recurrence actions have owners and verification",
+            "Qualified authority owns disposition and remaining uncertainty"
+          ]
+        },
+        {
+          "key": "assessment_rationale",
+          "type": "textarea",
+          "label": "Impact analysis, contributing conditions, uncertainty, and decision rationale",
+          "fields": [
+            {
+              "key": "assessment_detail",
+              "label": "Harvest Load incident assessment"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "corrective_action",
+      "title": "Harvest Load corrective action and escalation",
+      "guidance": "Assign immediate correction, recurrence action, verification, and disposition.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Incident authority boundary",
+          "guidance": "This form records harvest and load evidence; it does not certify product condition, food safety, weight, or transport suitability. Hold exceptions and route release or disposition to the authorized owner under applicable plans."
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Corrective action and verification register",
+          "columns": [
+            {
+              "key": "issue_cause",
+              "label": "Issue or cause",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Correction or action",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification and result",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "notification_disposition",
+          "type": "textarea",
+          "label": "Escalation, notification, affected-scope disposition, and recurrence review",
+          "fields": [
+            {
+              "key": "disposition_detail",
+              "label": "Incident escalation and disposition detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Harvest Load incident closeout and handoff",
+      "guidance": "Confirm affected-scope accounting and transfer open corrective action.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Incident Report closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Harvest Load open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Harvest Load handoff confirmations",
+          "items": [
+            "Affected people, assets, fields, animals, or product were reconciled",
+            "Holds, restrictions, notifications, and disposition were transferred",
+            "Corrective and recurrence actions retain owners and due points",
+            "Verification and qualified review confirmed the recorded outcome",
+            "Harvest Load incident evidence and lessons were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Harvest Load final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized harvest-load reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

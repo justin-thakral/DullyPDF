@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2251__wedding_planning_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2251__wedding_planning_checklist_form.pdf",
+  "slug": "wedding-planning-checklist-form",
+  "title": "Wedding Planning Checklist Form",
+  "subtitle": "Verify wedding readiness by planning horizon, surface blocked decisions, and transfer day-of responsibilities with evidence instead of assumptions.",
+  "description": "An original wedding-readiness checklist organized around dated planning gates rather than a generic task list. It captures the approved source records, milestone evidence, responsible owners, exceptions, release decision, and final day-of handoff.",
+  "use_case": "Use at formal planning reviews and again before day-of release. Record only completed checks supported by the linked planning record, open an exception for every blocked item, and close when the current plan is released or explicitly held by the responsible event lead.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_control",
+      "title": "Checklist control and source records",
+      "guidance": "Tie the readiness review to the current plans and named reviewers.",
+      "blocks": [
+        {
+          "key": "review_identity",
+          "type": "fields",
+          "label": "Readiness review",
+          "fields": [
+            {
+              "key": "checklist_id",
+              "label": "Checklist ID",
+              "units": 0.85
+            },
+            {
+              "key": "wedding_date",
+              "label": "Wedding date",
+              "units": 0.8
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "planning_horizon",
+              "label": "Review horizon",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not selected",
+                "Initial planning",
+                "Ninety-day review",
+                "Thirty-day review",
+                "Seven-day review",
+                "Day-before review",
+                "Day-of release"
+              ]
+            },
+            {
+              "key": "review_lead",
+              "label": "Review lead",
+              "units": 1.0
+            },
+            {
+              "key": "client_contact",
+              "label": "Client or planner contact",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "source_records",
+          "type": "fields",
+          "label": "Controlled source records",
+          "fields": [
+            {
+              "key": "planning_order_id",
+              "label": "Planning order ID",
+              "units": 1.0
+            },
+            {
+              "key": "order_revision",
+              "label": "Order revision",
+              "units": 0.75
+            },
+            {
+              "key": "agreement_ref",
+              "label": "Agreement reference",
+              "units": 1.0
+            },
+            {
+              "key": "floorplan_ref",
+              "label": "Floor plan revision",
+              "units": 1.0
+            },
+            {
+              "key": "supplier_list_ref",
+              "label": "Supplier list revision",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "program_readiness",
+      "title": "Program and space readiness",
+      "guidance": "Verify the event sequence and the spaces that support it.",
+      "blocks": [
+        {
+          "key": "program_checks",
+          "type": "checklist",
+          "label": "Program checks",
+          "items": [
+            "Ceremony and reception dates and times match the current order",
+            "Guest-count basis and update deadline are recorded",
+            "Every program block has an assigned space and lead",
+            "Weather alternate and decision time are recorded",
+            "Guest routes between spaces are documented",
+            "Accessible routes and requested accommodations are routed",
+            "Private preparation spaces and access boundaries are assigned",
+            "Room transition and reset owners are assigned",
+            "Final departure and venue-clear time are recorded"
+          ]
+        },
+        {
+          "key": "blocked_program_items",
+          "type": "table",
+          "label": "Blocked program items",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Blocked item",
+              "units": 1.35
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "service_readiness",
+      "title": "Food, beverage, and guest-service readiness",
+      "guidance": "Confirm routed decisions without claiming specialist authority.",
+      "blocks": [
+        {
+          "key": "service_checks",
+          "type": "checklist",
+          "label": "Service checks",
+          "items": [
+            "Meal format and service timing match the current order",
+            "Guaranteed count and update deadline are recorded",
+            "Dietary and allergen requests are routed to the responsible team",
+            "Bar order and responsible-service plan are separately approved",
+            "Nonalcoholic beverage choices and water service are confirmed",
+            "Cake or specialty-food delivery and custody are assigned",
+            "Guest-room, transportation, or parking handoffs are confirmed",
+            "Childcare, quiet-room, or family-space request is routed",
+            "Guest communication owner and release time are assigned"
+          ]
+        },
+        {
+          "key": "guest_service_exceptions",
+          "type": "table",
+          "label": "Guest-service exception register",
+          "columns": [
+            {
+              "key": "request",
+              "label": "Request or gap",
+              "units": 1.3
+            },
+            {
+              "key": "routed_to",
+              "label": "Routed to",
+              "units": 1.0
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.85
+            },
+            {
+              "key": "client_update",
+              "label": "Client update",
+              "units": 1.0
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "service_boundary",
+          "type": "notice",
+          "label": "Specialist review boundary",
+          "guidance": "A checked item confirms that the current record was reviewed and routed; it does not certify accessibility, food or allergen controls, alcohol service, or legal compliance. Record only the decision supplied by the responsible role and its source record."
+        }
+      ]
+    },
+    {
+      "key": "supplier_readiness",
+      "title": "Supplier, production, and access readiness",
+      "guidance": "Confirm that each outside team can arrive, work, and leave under the plan.",
+      "blocks": [
+        {
+          "key": "supplier_checks",
+          "type": "checklist",
+          "label": "Supplier readiness checks",
+          "items": [
+            "Current supplier contact list is distributed",
+            "Arrival, load-in, staging, and load-out windows are confirmed",
+            "Venue access contact and entry point are assigned",
+            "Production power, sound, and cue dependencies are reviewed",
+            "Floral, decor, and rental placement plan is current",
+            "Photography and video access boundaries are shared",
+            "Equipment and personal-item custody owners are assigned",
+            "Supplier credential or insurance review is routed where required",
+            "Strike, waste, and return responsibilities are assigned"
+          ]
+        },
+        {
+          "key": "supplier_readiness_log",
+          "type": "table",
+          "label": "Supplier readiness log",
+          "columns": [
+            {
+              "key": "supplier",
+              "label": "Supplier",
+              "units": 1.1
+            },
+            {
+              "key": "deliverable",
+              "label": "Critical deliverable",
+              "units": 1.3
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 0.95
+            },
+            {
+              "key": "confirmed_at",
+              "label": "Confirmed at",
+              "units": 0.85
+            },
+            {
+              "key": "open_item",
+              "label": "Open item",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "release_decision",
+      "title": "Exceptions and release decision",
+      "guidance": "Make the go, conditional-go, or hold decision explicit.",
+      "blocks": [
+        {
+          "key": "release_exceptions",
+          "type": "table",
+          "label": "Release exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Readiness decision",
+          "fields": [
+            {
+              "key": "readiness_status",
+              "label": "Readiness status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Ready",
+                "Ready with owned exceptions",
+                "Hold",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.85
+            },
+            {
+              "key": "day_of_owner",
+              "label": "Day-of owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_notes",
+          "type": "textarea",
+          "label": "Decision rationale and limits",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Readiness decision rationale"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "day_of_handoff",
+      "title": "Day-of handoff and closeout",
+      "guidance": "Transfer every open item and confirm receipt of the current plan.",
+      "blocks": [
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Day-of handoff",
+          "items": [
+            "Current order and timeline issued to operating leads",
+            "Weather decision owner and contact confirmed",
+            "Client or planner escalation contact confirmed",
+            "Open exceptions transferred with due points",
+            "Private-item and gift custody owner confirmed",
+            "Incident-reporting route shared with leads",
+            "Post-event review owner and date assigned"
+          ]
+        },
+        {
+          "key": "handoff_register",
+          "type": "table",
+          "label": "Open-item handoff register",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open item",
+              "units": 1.25
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.0
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Day-of limits and escalation context",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "What the day-of lead must know before accepting the plan"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "review_acknowledgment",
+          "type": "signatures",
+          "label": "Review and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.75
+            },
+            {
+              "key": "received_by",
+              "label": "Day-of lead",
+              "units": 1.0
+            },
+            {
+              "key": "received_date",
+              "label": "Received date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

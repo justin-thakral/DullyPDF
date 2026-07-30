@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2223__room_block_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2223__room_block_checklist_form.pdf",
+  "slug": "room-block-checklist-form",
+  "title": "Room Block Checklist Form",
+  "subtitle": "The pre-arrival readiness check: rooming list loaded, rooms assigned, keys and welcome packets ready, billing routed, and accessible rooms confirmed.",
+  "description": "An original pre-arrival readiness check for a group room block. It records the check identity and the block under check, rooming-list and reservation accuracy, room assignment and readiness including accessible rooms, arrival-day logistics, the release decision before the group arrives, blocking findings, and the handoff to front office.",
+  "use_case": "Use in the days before a group arrives, when reservations and front office verify that the block in the system matches the order and every named guest has a room. The check closes when the block is released for arrival or blocking findings are escalated.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "check_identity",
+      "title": "Check identity and block under check",
+      "guidance": "Name the check, the block, and the arrival it prepares for.",
+      "blocks": [
+        {
+          "key": "check_routing",
+          "type": "fields",
+          "label": "Check identity and routing",
+          "fields": [
+            {
+              "key": "check_id",
+              "label": "Check record ID",
+              "units": 0.9
+            },
+            {
+              "key": "check_date",
+              "label": "Check date",
+              "units": 0.85
+            },
+            {
+              "key": "checked_by",
+              "label": "Checked by",
+              "units": 0.95
+            },
+            {
+              "key": "front_office_lead",
+              "label": "Front office lead",
+              "units": 1.25
+            },
+            {
+              "key": "arrival_date",
+              "label": "First arrival",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "block_under_check",
+          "type": "fields",
+          "label": "Block under check",
+          "fields": [
+            {
+              "key": "block_order_number",
+              "label": "Block order number",
+              "units": 1.3
+            },
+            {
+              "key": "block_code",
+              "label": "Block code",
+              "units": 0.85
+            },
+            {
+              "key": "group_name",
+              "label": "Group name",
+              "units": 1.15
+            },
+            {
+              "key": "rooms_contracted",
+              "label": "Rooms contracted",
+              "units": 1.15
+            },
+            {
+              "key": "rooms_picked_up",
+              "label": "Rooms picked up",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "list_accuracy",
+      "title": "Rooming list and reservation accuracy",
+      "guidance": "Check the system against the order and the list against the system.",
+      "blocks": [
+        {
+          "key": "list_checks",
+          "type": "checklist",
+          "label": "Rooming list checks",
+          "items": [
+            "Rooming list received by the contracted due date",
+            "Every name on the list has a reservation in the system",
+            "Every reservation in the block matches a name on the list",
+            "Arrival and departure dates match the list for each guest",
+            "Room types match what each guest was promised",
+            "Share-with and double-occupancy pairings confirmed",
+            "Duplicate reservations for the same guest removed",
+            "Rate on each reservation matches the block rate",
+            "Special requests transferred to the reservation record"
+          ]
+        },
+        {
+          "key": "list_variances",
+          "type": "table",
+          "label": "Rooming list variances",
+          "columns": [
+            {
+              "key": "guest_reference",
+              "label": "Guest or line",
+              "units": 1.15
+            },
+            {
+              "key": "variance",
+              "label": "Variance found",
+              "units": 1.35
+            },
+            {
+              "key": "corrected_by",
+              "label": "Corrected by",
+              "units": 1.0
+            },
+            {
+              "key": "corrected_on",
+              "label": "Corrected on",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "room_readiness",
+      "title": "Room assignment and readiness",
+      "guidance": "Assignment is where accessible and connecting commitments are kept or lost.",
+      "blocks": [
+        {
+          "key": "assignment_rows",
+          "type": "table",
+          "label": "Assignment and readiness by requirement",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.3
+            },
+            {
+              "key": "promised",
+              "label": "Promised",
+              "units": 0.7
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned",
+              "units": 0.75
+            },
+            {
+              "key": "room_numbers",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 1.1
+            }
+          ],
+          "rows": 6,
+          "guidance": "Accessible rooms, connecting rooms, suites, and early arrivals each need their own row."
+        },
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Room readiness checks",
+          "items": [
+            "Accessible rooms assigned to the guests who requested them",
+            "Accessible room features confirmed against what was promised",
+            "Connecting and adjoining requests assigned where committed",
+            "Suites and upgrades assigned per the allocation",
+            "Early arrival rooms identified and cleaning sequenced first",
+            "Key packets prepared and matched to the rooming list",
+            "Welcome amenity or delivery scheduled with housekeeping",
+            "Housekeeping notified of the arrival and departure volumes"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "arrival_logistics",
+      "title": "Arrival-day logistics and billing routing",
+      "guidance": "Prepare the arrival so the desk is not solving it at the counter.",
+      "blocks": [
+        {
+          "key": "arrival_plan",
+          "type": "fields",
+          "label": "Arrival plan",
+          "fields": [
+            {
+              "key": "arrival_window",
+              "label": "Arrival window",
+              "units": 1.1
+            },
+            {
+              "key": "bus_or_transfer",
+              "label": "Bus or transfer",
+              "units": 1.1
+            },
+            {
+              "key": "desk_coverage",
+              "label": "Desk coverage",
+              "units": 1.0
+            },
+            {
+              "key": "group_desk",
+              "label": "Group check-in point",
+              "units": 1.35
+            },
+            {
+              "key": "bag_storage",
+              "label": "Bag storage",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "billing_checks",
+          "type": "checklist",
+          "label": "Billing routing checks",
+          "items": [
+            "Master account open and routed as the order specifies",
+            "Room and tax versus incidental routing set on each reservation",
+            "Incidental authorization approach briefed to the desk",
+            "Direct bill approval confirmed with accounting",
+            "Deposit applied and visible on the master account",
+            "Complimentary rooms flagged and routed correctly",
+            "Group contact identified as authorized to approve charges"
+          ],
+          "guidance": "Record routing only. Never write guest payment card details on this check."
+        }
+      ]
+    },
+    {
+      "key": "release_decision",
+      "title": "Release for arrival and blocking findings",
+      "guidance": "The block is ready for the group, or it is not.",
+      "blocks": [
+        {
+          "key": "release_record",
+          "type": "fields",
+          "label": "Release decision",
+          "fields": [
+            {
+              "key": "release_status",
+              "label": "Release status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Released for arrival",
+                "Released with follow-up",
+                "Held - findings open",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "released_on",
+              "label": "Released on",
+              "units": 0.9
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "blocking_findings",
+          "type": "table",
+          "label": "Blocking findings register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Blocking finding",
+              "units": 1.25
+            },
+            {
+              "key": "why_blocking",
+              "label": "Why it blocks arrival",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "check_boundary",
+          "type": "notice",
+          "label": "What this check does and does not establish",
+          "guidance": "This check records whether the block in the system matches the order and whether committed rooms are assigned. It does not certify that a room meets any accessibility standard, and it does not resolve a rate or attrition dispute. Route an accessible room that cannot be delivered as promised, or a block that is oversold, to the responsible manager before the guest arrives."
+        }
+      ]
+    },
+    {
+      "key": "check_closeout",
+      "title": "Closeout and handoff to front office",
+      "guidance": "Hand the arrival over with the findings that remain open.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Check closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - block released",
+                "Closed with follow-up",
+                "Closed - group cancelled"
+              ]
+            },
+            {
+              "key": "closed_on",
+              "label": "Closed on",
+              "units": 0.85
+            },
+            {
+              "key": "handed_to",
+              "label": "Handed to",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "recheck_log",
+          "type": "table",
+          "label": "Recheck log before arrival",
+          "columns": [
+            {
+              "key": "recheck_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "what_rechecked",
+              "label": "What was rechecked",
+              "units": 1.5
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.1
+            },
+            {
+              "key": "checked_by",
+              "label": "Checked by",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Rooming list variances corrected or recorded as accepted",
+            "Accessible and connecting commitments confirmed as assigned",
+            "Billing routing confirmed with accounting before arrival",
+            "Key packets and welcome deliveries confirmed with housekeeping",
+            "Open findings transferred to front office with named owners",
+            "Check record filed against the block order"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Release outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Check handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by front office manager",
+              "units": 1.35
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

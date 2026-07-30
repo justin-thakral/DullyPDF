@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2047__claim_status_evidence_checklist_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2047__claim_status_evidence_checklist_form.pdf",
+  "slug": "claim-status-evidence-checklist-form",
+  "title": "Claim Status Evidence Checklist Form",
+  "subtitle": "A decision-ready claim status evidence checklist that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original claim status evidence checklist for claim-file stage, outstanding work, and next accountable milestone with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the claim status communication and diary owner must open and control a evidence checklist for claim-file stage, outstanding work, and next accountable milestone. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Claim Status evidence checklist identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Claim Status evidence checklist record",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Evidence review ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "review_cutoff",
+              "label": "Evidence cutoff date and time",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Evidence reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision or investigation owner",
+              "units": 1.1
+            },
+            {
+              "key": "package_status",
+              "label": "Evidence package status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Collecting",
+                "Ready for review",
+                "Gap hold",
+                "Accepted"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Claim Status subject and event identity",
+          "fields": [
+            {
+              "key": "claim_number",
+              "label": "Claim or service record number",
+              "units": 1.0
+            },
+            {
+              "key": "claim_line",
+              "label": "Claim line and loss type",
+              "units": 1.25
+            },
+            {
+              "key": "loss_date",
+              "label": "Loss or incident date",
+              "units": 1.15
+            },
+            {
+              "key": "current_stage",
+              "label": "Current verified claim stage",
+              "units": 1.05
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.0
+            },
+            {
+              "key": "as_of",
+              "label": "Status verified as of date and time",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Claim number, line, and as-of timestamp"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Evidence Checklist scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Claim Status purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "evidence_plan",
+      "title": "Claim Status evidence plan, issues, and preservation priorities",
+      "guidance": "Tie evidence collection to specific questions; do not collect sensitive or irrelevant material merely because it exists.",
+      "blocks": [
+        {
+          "key": "issue_evidence_map",
+          "type": "table",
+          "label": "Issue-to-evidence plan",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Question or issue",
+              "units": 1.25
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Likely source",
+              "units": 1.0
+            },
+            {
+              "key": "priority",
+              "label": "Priority / expiry risk",
+              "units": 0.95
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "domain_evidence",
+          "type": "checklist",
+          "label": "Claim Status evidence checklist",
+          "items": [
+            "Claim-system status and assigned-owner confirmation",
+            "Diary, task, milestone, and promised-update records",
+            "Coverage correspondence and controlling-policy reference",
+            "Inspection, estimate, invoice, valuation, or expert report",
+            "Payment, deductible, recovery, salvage, or subrogation record",
+            "Customer, claimant, insured, or representative correspondence",
+            "Management, legal, fraud, complaint, or regulatory-review reference",
+            "Closure notice, reopen condition, and retention reference"
+          ],
+          "guidance": "Check only when the item is received, verified, or preservation is documented."
+        },
+        {
+          "key": "preservation_control",
+          "type": "fields",
+          "label": "Preservation and collection control",
+          "fields": [
+            {
+              "key": "preservation_owner",
+              "label": "Preservation owner",
+              "units": 1.0
+            },
+            {
+              "key": "first_request",
+              "label": "First request date and time",
+              "units": 1.0
+            },
+            {
+              "key": "expiry_risk",
+              "label": "Earliest expiry or overwrite risk",
+              "units": 1.1
+            },
+            {
+              "key": "legal_hold_ref",
+              "label": "Hold or instruction ref, if any",
+              "units": 1.1
+            },
+            {
+              "key": "collection_method",
+              "label": "Approved collection method",
+              "units": 1.1
+            },
+            {
+              "key": "restricted_route",
+              "label": "Restricted evidence route",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "evidence_boundary",
+          "type": "notice",
+          "label": "Evidence and decision boundary",
+          "guidance": "A status record reports verified file activity as of a stated time; it does not create coverage, waive requirements, promise payment, or replace an authorized decision notice. Separate facts, pending work, estimates, and final decisions and cite the controlling record."
+        }
+      ]
+    },
+    {
+      "key": "receipt_quality",
+      "title": "Claim Status evidence receipt, authenticity, and quality review",
+      "guidance": "Preserve the original source and distinguish a complete record from an unreadable, altered, partial, or unsupported item.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Evidence receipt and quality register",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "description",
+              "label": "Item and exact source",
+              "units": 1.35
+            },
+            {
+              "key": "received",
+              "label": "Received date and method",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "quality",
+              "label": "Quality and verification",
+              "units": 1.15
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "quality_checks",
+          "type": "checklist",
+          "label": "Evidence quality checks",
+          "items": [
+            "Source identity and authority are recorded",
+            "Original file, record, or unaltered copy is retained",
+            "Relevant dates, times, locations, and subjects are visible",
+            "Metadata or system provenance is preserved when material",
+            "Corrections and annotations do not obscure the original",
+            "Duplicate and superseded versions are linked",
+            "Sensitive content is limited to approved access",
+            "Known limitations and missing pages are documented"
+          ]
+        },
+        {
+          "key": "quality_notes",
+          "type": "textarea",
+          "label": "Evidence quality, authenticity questions, and limitations",
+          "fields": [
+            {
+              "key": "quality_detail",
+              "label": "Claim Status source reliability, missing context, contradictions, alteration concerns, and follow-up needed",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "custody_disclosure",
+      "title": "Claim Status custody, privacy, disclosure, and access control",
+      "guidance": "Document who handled evidence and prevent unnecessary duplication or disclosure of restricted information.",
+      "blocks": [
+        {
+          "key": "custody_log",
+          "type": "table",
+          "label": "Custody and access log",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "from_to",
+              "label": "From / to or access role",
+              "units": 1.15
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose and authority",
+              "units": 1.2
+            },
+            {
+              "key": "location",
+              "label": "Storage / transfer ref",
+              "units": 1.1
+            },
+            {
+              "key": "ack",
+              "label": "Receipt or audit ref",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "privacy_controls",
+          "type": "checklist",
+          "label": "Privacy and disclosure controls",
+          "items": [
+            "Only necessary personal information was collected",
+            "Identity and authority were verified before disclosure",
+            "Medical, financial, credential, or legal material uses a restricted route",
+            "Public or shared copies omit unnecessary identifiers",
+            "Consent, subpoena, policy, or other disclosure authority is recorded",
+            "Third-party records retain source and permitted-use limits",
+            "Retention and deletion requirements are identified",
+            "An access or disclosure error has an incident route"
+          ]
+        },
+        {
+          "key": "access_summary",
+          "type": "fields",
+          "label": "Evidence access summary",
+          "fields": [
+            {
+              "key": "system_owner",
+              "label": "System or repository owner",
+              "units": 1.1
+            },
+            {
+              "key": "access_group",
+              "label": "Authorized access group",
+              "units": 1.05
+            },
+            {
+              "key": "retention_ref",
+              "label": "Retention rule reference",
+              "units": 1.1
+            },
+            {
+              "key": "disclosure_owner",
+              "label": "Disclosure decision owner",
+              "units": 1.05
+            },
+            {
+              "key": "last_audit",
+              "label": "Last access audit date",
+              "units": 0.95
+            },
+            {
+              "key": "incident_ref",
+              "label": "Privacy incident ref, if any",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "gaps_conflicts",
+      "title": "Claim Status evidence gaps, conflicting sources, and escalation",
+      "guidance": "Do not convert missing or inconsistent evidence into an unsupported conclusion.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Claim Status evidence exception screen",
+          "items": [
+            "System status conflicts with the latest dated evidence",
+            "No accountable owner or next update date is assigned",
+            "A promised communication or required route may be overdue",
+            "Coverage, liability, payment, or closure wording lacks authorization",
+            "Complaint, dispute, attorney, regulator, or vulnerable-person issue exists",
+            "Claim is marked closed while a task, payment, recovery, or notice remains"
+          ]
+        },
+        {
+          "key": "gap_register",
+          "type": "table",
+          "label": "Gap, conflict, and follow-up register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Gap or conflict",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Decision or workflow impact",
+              "units": 1.15
+            },
+            {
+              "key": "request_action",
+              "label": "Request or verification action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or limitation",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_status",
+          "type": "fields",
+          "label": "Evidence escalation status",
+          "fields": [
+            {
+              "key": "escalation_owner",
+              "label": "Escalation owner",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            },
+            {
+              "key": "review_authority",
+              "label": "Review authority",
+              "units": 1.05
+            },
+            {
+              "key": "decision_deadline",
+              "label": "Decision or response due",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "package_handoff",
+      "title": "Claim Status evidence-package decision readiness and handoff",
+      "guidance": "The package can close only when evidence, gaps, access limits, and the receiving decision owner are explicit.",
+      "blocks": [
+        {
+          "key": "readiness_check",
+          "type": "checklist",
+          "label": "Evidence-package readiness",
+          "items": [
+            "Every material issue maps to supporting evidence or a stated gap",
+            "Evidence IDs, source, storage, and quality are traceable",
+            "Conflicts and unavailable evidence are not hidden",
+            "Restricted material has an authorized access route",
+            "No checklist item implies a coverage or legal conclusion",
+            "The qualified decision owner accepted the package"
+          ]
+        },
+        {
+          "key": "package_decision",
+          "type": "fields",
+          "label": "Package disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Evidence package disposition",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Ready for decision",
+                "Ready with limitations",
+                "Further collection",
+                "Expert review",
+                "Closed no decision"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Receiving decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "open_gaps",
+              "label": "Open gap count",
+              "units": 0.85
+            },
+            {
+              "key": "limitations_ref",
+              "label": "Limitations reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due",
+              "units": 1.1
+            },
+            {
+              "key": "handoff_date",
+              "label": "Handoff date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "evidence_signoff",
+          "type": "signatures",
+          "label": "Collector, reviewer, and decision-owner acceptance",
+          "fields": [
+            {
+              "key": "collected_by",
+              "label": "Collection owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "quality_review",
+              "label": "Quality reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy reviewer / date",
+              "units": 1.05
+            },
+            {
+              "key": "accepted_by",
+              "label": "Decision owner / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

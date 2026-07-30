@@ -1,0 +1,609 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1600__field_trip_permission_slip_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1600__field_trip_permission_slip_form.pdf",
+  "slug": "field-trip-permission-slip-form",
+  "title": "Field Trip Permission Slip Form",
+  "subtitle": "An original operational permission slip for field trip that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This Field Trip Permission Slip Form supports the complete field trip workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the Field Trip Permission Slip Form when the assigned trip lead needs one fillable record for trip participant, itinerary, transport, supervision, and return without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Field trip permission slip identity and routing",
+      "guidance": "Connect this permission slip to one trip participant, itinerary, transport, supervision, and return record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Field trip record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "School and destination",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Trip group or vehicle",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Student or roster reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned trip lead",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "Field trip scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "permission_scope",
+      "title": "Field trip requested participation and permission scope",
+      "guidance": "Separate each requested activity and condition so one choice does not imply another.",
+      "blocks": [
+        {
+          "key": "request_basis",
+          "type": "fields",
+          "label": "Permission request basis",
+          "fields": [
+            {
+              "key": "activity_or_program",
+              "label": "Named activity or program",
+              "units": 1.5
+            },
+            {
+              "key": "start_date",
+              "label": "Start date",
+              "units": 0.9
+            },
+            {
+              "key": "end_date",
+              "label": "End date",
+              "units": 0.9
+            },
+            {
+              "key": "setting_or_transport",
+              "label": "Setting or transport ref.",
+              "units": 1.4
+            },
+            {
+              "key": "request_owner",
+              "label": "Request owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "permission_items",
+          "type": "checklist",
+          "label": "Field trip permission choices",
+          "items": [
+            "Participation in the named destination and trip window",
+            "Use of the documented transport or walking plan",
+            "Participation in listed instructional activities",
+            "Use of listed meals or snacks under the current plan",
+            "Use of accessibility or participation supports already approved",
+            "Emergency contact using the supplied routing information",
+            "Alternate return or pickup plan only when separately documented",
+            "Declined or excluded activities recorded without changing other permissions"
+          ],
+          "guidance": "Each item is independent; document any exclusion or condition in the scope table."
+        },
+        {
+          "key": "scope_lines",
+          "type": "table",
+          "label": "Requested scope, exclusions, and source",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Activity or permission",
+              "units": 1.3
+            },
+            {
+              "key": "included",
+              "label": "Included, declined, or pending",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition or exclusion",
+              "units": 1.4
+            },
+            {
+              "key": "source",
+              "label": "Guardian or review source",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "permission_boundary",
+          "type": "notice",
+          "label": "Permission and authority boundary",
+          "guidance": "This form records a field-trip workflow; it does not replace guardian permission, qualified medical direction, transportation rules, emergency services, or local supervision requirements. Stop movement or release when identity, headcount, authorization, health support, or safety cannot be confirmed. Share only minimum necessary information and route decisions to the authorized reviewer."
+        }
+      ]
+    },
+    {
+      "key": "guardian_readiness",
+      "title": "Field trip guardian routing, readiness, and support review",
+      "guidance": "Confirm contact, release, support, and stop conditions before relying on the permission record.",
+      "blocks": [
+        {
+          "key": "guardian_route",
+          "type": "fields",
+          "label": "Guardian and communication route",
+          "fields": [
+            {
+              "key": "guardian_contact",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "alternate_contact",
+              "label": "Alternate authorized contact",
+              "units": 1.3
+            },
+            {
+              "key": "preferred_route",
+              "label": "Preferred contact route",
+              "units": 1.0
+            },
+            {
+              "key": "release_plan",
+              "label": "Release or departure plan ref.",
+              "units": 1.3
+            },
+            {
+              "key": "access_support",
+              "label": "Language or access support",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring review before participation",
+          "items": [
+            "Permission or roster status is missing or inconsistent",
+            "Student is present but not assigned to the trip group",
+            "Destination, activity, route, or vehicle changed",
+            "Departure, transfer, or return headcount does not reconcile",
+            "Required support, medication custodian, or accessible transport is unavailable",
+            "Guardian or authorized release arrangement cannot be confirmed",
+            "Student is separated, missing, ill, injured, or in immediate distress",
+            "Weather, site, transport, or emergency authority issues a stop or change"
+          ]
+        },
+        {
+          "key": "support_lines",
+          "type": "table",
+          "label": "Participation support, limitation, owner, and evidence",
+          "columns": [
+            {
+              "key": "support",
+              "label": "Support or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Approved source",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status or evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "guardian_questions",
+          "type": "textarea",
+          "label": "Guardian questions, participant needs, assumptions, and unresolved conditions",
+          "fields": [
+            {
+              "key": "questions",
+              "label": "Questions, participant needs, assumptions, and unresolved conditions"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "permission_decision",
+      "title": "Field trip permission decision and authorization",
+      "guidance": "Preserve approved, declined, conditional, and unresolved scope as separate decisions.",
+      "blocks": [
+        {
+          "key": "decision_lines",
+          "type": "table",
+          "label": "Permission decision lines",
+          "columns": [
+            {
+              "key": "scope_line",
+              "label": "Scope line",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Approve, decline, or defer",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition or reason",
+              "units": 1.4
+            },
+            {
+              "key": "reviewer",
+              "label": "Authorized reviewer",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Field trip permission decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the program administrator, guardian, and qualified health or emergency reviewer."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, approved limits, exception path, and communication plan",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Rationale, approved limits, exception path, and communication plan"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_handoff",
+      "title": "Field trip permission exceptions and operating handoff",
+      "guidance": "Do not force agreement; assign unresolved scope and communicate operating limits.",
+      "blocks": [
+        {
+          "key": "exception_indicators",
+          "type": "checklist",
+          "label": "Permission exception and stop indicators",
+          "items": [
+            "Trip cannot start under the documented plan",
+            "Student participation status needs guardian or administrator review",
+            "Transport, destination, or supervision arrangement changed",
+            "Health, allergy, medication, or support plan cannot be followed",
+            "Emergency, missing-student, or immediate safety response is active",
+            "Return, authorized release, or final headcount remains unresolved"
+          ]
+        },
+        {
+          "key": "exception_actions",
+          "type": "table",
+          "label": "Exception, immediate control, owner, escalation, and disposition",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or variance",
+              "units": 1.2
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner and due point",
+              "units": 1.1
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation route",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "operating_handoff",
+          "type": "checklist",
+          "label": "Approved-scope handoff requirements",
+          "items": [
+            "Approved and declined scope communicated to assigned staff",
+            "Conditions and stop points visible at the point of use",
+            "Guardian and qualified-review sources linked",
+            "Release, transport, or setting limits routed when applicable",
+            "Unresolved permission has an owner and due point",
+            "Completion evidence and record location identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Field trip outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "Field trip closeout controls",
+          "items": [
+            "Final headcount and roster status accepted",
+            "Guardian or school return communication recorded",
+            "Unresolved incident or support need has an owner",
+            "Equipment and private records returned to approved custody",
+            "Transport or destination follow-up reference linked",
+            "Trip record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Permission Slip closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

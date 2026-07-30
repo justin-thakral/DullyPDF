@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2335__harvest_load_log_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2335__harvest_load_log_form.pdf",
+  "slug": "harvest-load-log-form",
+  "title": "Harvest Load Log Form",
+  "subtitle": "Harvest Load record recurring events, evidence, variances, review decisions, escalation, and accountable period closeout in one operational record.",
+  "description": "An original, workflow-complete harvest load operating log covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use for a defined operating period when staff need repeatable entries, traceable observations, visible exceptions, and a reviewed handoff. The record is owned by the harvest and shipping owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_routing",
+      "title": "Harvest Load log routing",
+      "guidance": "Define the period, owner, subject, and controlling identifiers.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Operating Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.8
+            },
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.75
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.75
+            },
+            {
+              "key": "site_name",
+              "label": "Farm, facility, or site",
+              "units": 1.15
+            },
+            {
+              "key": "log_owner",
+              "label": "Assigned log owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Harvest Lot Or Outbound Load identity",
+          "fields": [
+            {
+              "key": "field_block",
+              "label": "Field or block ID",
+              "units": 0.85
+            },
+            {
+              "key": "crop_variety",
+              "label": "Crop and variety",
+              "units": 1.0
+            },
+            {
+              "key": "harvest_lot",
+              "label": "Harvest lot ID",
+              "units": 0.9
+            },
+            {
+              "key": "crew_harvester",
+              "label": "Crew or harvester ID",
+              "units": 1.05
+            },
+            {
+              "key": "destination",
+              "label": "Planned destination",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "operating_context",
+      "title": "Harvest Load operating context",
+      "guidance": "Capture the baseline needed to interpret recurring entries.",
+      "blocks": [
+        {
+          "key": "baseline",
+          "type": "fields",
+          "label": "Harvest Load baseline",
+          "fields": [
+            {
+              "key": "scheduled_time",
+              "label": "Scheduled harvest time",
+              "units": 0.9
+            },
+            {
+              "key": "shift",
+              "label": "Shift or run",
+              "units": 0.7
+            },
+            {
+              "key": "maturity_grade_ref",
+              "label": "Maturity or grade reference",
+              "units": 1.1
+            },
+            {
+              "key": "container_type",
+              "label": "Container or package type",
+              "units": 1.0
+            },
+            {
+              "key": "transport_unit",
+              "label": "Trailer or transport unit",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "entry_readiness",
+          "type": "checklist",
+          "label": "Entry readiness and record controls",
+          "items": [
+            "Field, crop, harvest lot, and crew were recorded",
+            "Start, finish, and load departure times were captured",
+            "Container, pallet, bin, or package IDs were assigned",
+            "Count, gross, tare, and net measures were reconciled as applicable",
+            "Product condition and temperature were noted under the facility plan",
+            "Transport unit, seal, driver, and destination were recorded",
+            "Rejected, held, reworked, or diverted product remained identifiable",
+            "Harvest, packing, and shipping references were linked"
+          ],
+          "guidance": "Use these confirmations at the start of the log period and revisit changed conditions."
+        }
+      ]
+    },
+    {
+      "key": "recurring_entries",
+      "title": "Harvest Load recurring entries",
+      "guidance": "Record each event with enough evidence to reconstruct what occurred.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Harvest Load event log",
+          "columns": [
+            {
+              "key": "harvest_time",
+              "label": "Harvest time",
+              "units": 0.8
+            },
+            {
+              "key": "field_lot",
+              "label": "Field and lot",
+              "units": 1.0
+            },
+            {
+              "key": "container_count",
+              "label": "Container and count",
+              "units": 1.05
+            },
+            {
+              "key": "weight_measure",
+              "label": "Weight or measure",
+              "units": 0.95
+            },
+            {
+              "key": "load_receiver",
+              "label": "Load and receiver",
+              "units": 1.1
+            }
+          ],
+          "rows": 6,
+          "guidance": "Use one row per distinct event; continue under a linked record when more rows are needed."
+        },
+        {
+          "key": "trend_notes",
+          "type": "textarea",
+          "label": "Trend, context, and supporting evidence notes",
+          "fields": [
+            {
+              "key": "trend_detail",
+              "label": "Harvest Load trend and evidence detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "period_review",
+      "title": "Harvest Load period review and decision",
+      "guidance": "Review completeness, trends, and work that cannot be closed.",
+      "blocks": [
+        {
+          "key": "review_decision",
+          "type": "fields",
+          "label": "Period decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with follow-up",
+                "Correction required",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "review_evidence",
+          "type": "checklist",
+          "label": "Review evidence",
+          "items": [
+            "Harvest Load entries, dates, and identifiers reconcile",
+            "Trends and abnormal events are supported by recorded evidence",
+            "Open exceptions have an owner and due point",
+            "Restrictions or holds are visible to the next operator",
+            "Qualified review was obtained where the controlling procedure requires it"
+          ]
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, trend interpretation, and next action",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Period review rationale"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Harvest Load exceptions and escalation",
+      "guidance": "Make incomplete or abnormal events visible until disposition.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop, hold, and authority boundary",
+          "guidance": "This form records harvest and load evidence; it does not certify product condition, food safety, weight, or transport suitability. Hold exceptions and route release or disposition to the authorized owner under applicable plans."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Harvest Load exception triggers",
+          "items": [
+            "Field, lot, container, load, or seal identity mismatch",
+            "Count, weight, scale, or document discrepancy",
+            "Product condition, damage, or foreign-material concern",
+            "Temperature, cooling, delay, or capacity exception",
+            "Transport, destination, receiver, or route change",
+            "Held, rejected, diverted, or commingled product gap"
+          ],
+          "guidance": "Mark each applicable trigger and explain any uncertainty in the exception record."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Harvest Load unresolved-event register",
+          "columns": [
+            {
+              "key": "trigger",
+              "label": "Trigger or issue",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.25
+            }
+          ],
+          "rows": 3,
+          "guidance": "Do not close a row until its disposition and accountable owner are explicit."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Harvest Load log closeout and handoff",
+      "guidance": "Reconcile the period and transfer remaining work.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Operating Log closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Harvest Load open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Harvest Load handoff confirmations",
+          "items": [
+            "Harvest Load entries and period totals were reconciled",
+            "Corrections and exception records retain accountable owners",
+            "Restrictions, holds, or service needs were transferred",
+            "Next log period or review point was assigned",
+            "Source records and supporting evidence were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Harvest Load final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized harvest-load reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

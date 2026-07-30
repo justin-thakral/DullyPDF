@@ -1,0 +1,569 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1520__freight_temperature_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1520__freight_temperature_log_form.pdf",
+  "slug": "freight-temperature-log-form",
+  "title": "Freight Temperature Log Form",
+  "subtitle": "Define the freight temperature range and monitoring setup, record chronological readings and events, contain excursions, and obtain qualified disposition.",
+  "description": "An original, fillable freight temperature log form for controlling palletized, crated, or unitized freight shipment through temperature log identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use during dock-to-dock freight movement when temperature or related environmental control must be reconstructed from identified devices, checkpoints, readings, custody events, equipment observations, excursion response, and final review.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Freight temperature log identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Freight record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Temperature Log record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Shipment, PRO, or bill-of-lading reference",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Pallet, crate, handling-unit, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned freight operations coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Carrier Driver And Terminal Handler",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Shipper dock and pickup appointment",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Consignee dock and delivery appointment",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the shipment record, carrier document, purchase order, and packing list."
+        }
+      ]
+    },
+    {
+      "key": "temperature_requirements",
+      "title": "Freight temperature requirements and monitoring setup",
+      "guidance": "Record the controlling range, method, devices, and responsibilities before relying on readings.",
+      "blocks": [
+        {
+          "key": "range_requirement",
+          "type": "fields",
+          "label": "Approved range and exposure boundary",
+          "fields": [
+            {
+              "key": "lower_limit",
+              "label": "Approved lower limit and units",
+              "units": 1.15
+            },
+            {
+              "key": "upper_limit",
+              "label": "Approved upper limit and units",
+              "units": 1.15
+            },
+            {
+              "key": "exposure_limit",
+              "label": "Maximum exposure or excursion rule",
+              "units": 1.25
+            },
+            {
+              "key": "requirements_source",
+              "label": "Protocol, label, or requirement source",
+              "units": 1.4
+            }
+          ]
+        },
+        {
+          "key": "monitoring_equipment",
+          "type": "fields",
+          "label": "Monitoring equipment and verification",
+          "fields": [
+            {
+              "key": "device_id",
+              "label": "Logger, probe, display, or meter ID",
+              "units": 1.35
+            },
+            {
+              "key": "calibration",
+              "label": "Calibration or verification status",
+              "units": 1.2
+            },
+            {
+              "key": "accuracy",
+              "label": "Accuracy or uncertainty",
+              "units": 1.0
+            },
+            {
+              "key": "placement",
+              "label": "Device placement or measurement point",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "required_checkpoints",
+          "type": "checklist",
+          "label": "Freight required temperature checkpoints",
+          "items": [
+            "Origin staging area",
+            "Trailer before loading",
+            "Product at first pallet",
+            "Product at center pallet",
+            "Product at final pallet",
+            "Mid-transit monitoring point",
+            "Destination trailer ambient",
+            "Destination product acceptance"
+          ],
+          "guidance": "Use the reading table for actual values; this list defines the intended monitoring coverage."
+        }
+      ]
+    },
+    {
+      "key": "temperature_readings",
+      "title": "Freight chronological temperature readings",
+      "guidance": "Record readings as observed with location, device, responsible person, and relevant event.",
+      "blocks": [
+        {
+          "key": "reading_log",
+          "type": "table",
+          "label": "Temperature reading log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "point",
+              "label": "Location or checkpoint",
+              "units": 1.2
+            },
+            {
+              "key": "device",
+              "label": "Device ID",
+              "units": 0.9
+            },
+            {
+              "key": "reading",
+              "label": "Reading and units",
+              "units": 0.95
+            },
+            {
+              "key": "event",
+              "label": "Door, transfer, delay, or event",
+              "units": 1.25
+            },
+            {
+              "key": "observer",
+              "label": "Observer or source",
+              "units": 1.0
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "reading_summary",
+          "type": "fields",
+          "label": "Reading and exposure summary",
+          "fields": [
+            {
+              "key": "minimum",
+              "label": "Minimum observed",
+              "units": 0.95
+            },
+            {
+              "key": "maximum",
+              "label": "Maximum observed",
+              "units": 0.95
+            },
+            {
+              "key": "out_of_range",
+              "label": "Out-of-range duration",
+              "units": 1.05
+            },
+            {
+              "key": "missing_interval",
+              "label": "Missing-data interval",
+              "units": 1.1
+            },
+            {
+              "key": "summary_status",
+              "label": "Initial status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Within range",
+                "Potential excursion",
+                "Confirmed excursion",
+                "Data incomplete",
+                "Device unreliable"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "control_observations",
+      "title": "Freight environmental and handling observations",
+      "guidance": "Connect readings to the operational conditions that can explain or affect temperature control.",
+      "blocks": [
+        {
+          "key": "handling_controls",
+          "type": "checklist",
+          "label": "Freight temperature-control practices",
+          "items": [
+            "Keep dry",
+            "Do not stack",
+            "Top load only",
+            "Forklift entry restriction",
+            "Liftgate required",
+            "Protect from freeze or heat",
+            "Seal control and no unauthorized opening",
+            "High-value or controlled-access handling"
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Equipment, custody, and response readiness",
+          "items": [
+            "Shipment, purchase order, and carrier references identify the same freight",
+            "Handling-unit count, piece count, weight, and dimensions are reconciled",
+            "Pallets, crates, wrap, bands, and labels support ordinary freight handling",
+            "Load distribution, blocking, bracing, and securement are assigned for review",
+            "Trailer number, seal number, carrier, driver, and appointment are recorded",
+            "Dock equipment and labor support the weight and handling configuration",
+            "Hazard, food, temperature, high-value, or special handling status is routed",
+            "Shortage, overage, damage, refused freight, and redelivery paths are defined"
+          ]
+        },
+        {
+          "key": "observation_notes",
+          "type": "textarea",
+          "label": "Equipment status, packaging condition, door events, delays, and other observations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Equipment status, packaging condition, door events, delays, and other observations",
+              "multiline": true
+            }
+          ],
+          "height": 62,
+          "guidance": "Do not infer product suitability from an ambient reading alone; preserve the measurement context."
+        }
+      ]
+    },
+    {
+      "key": "excursion_response",
+      "title": "Freight temperature excursion and immediate response",
+      "guidance": "Stop affected release or use, protect evidence, and assign qualified disposition when control is uncertain.",
+      "blocks": [
+        {
+          "key": "excursion_indicators",
+          "type": "checklist",
+          "label": "Excursion or monitoring failure indicators",
+          "items": [
+            "Reading above the approved upper limit",
+            "Reading below the approved lower limit",
+            "Freeze exposure or freeze indicator",
+            "Alarm, logger, probe, display, or meter failure",
+            "Missing, overwritten, delayed, or conflicting temperature data",
+            "Unplanned door opening, transfer, delay, or power interruption",
+            "Packaging, seal, coolant, compartment, tank, or equipment damage",
+            "Product or controlled material condition concern",
+            "Monitoring responsibility or custody interval cannot be established",
+            "No excursion or monitoring failure observed"
+          ]
+        },
+        {
+          "key": "excursion_actions",
+          "type": "table",
+          "label": "Excursion containment and investigation log",
+          "columns": [
+            {
+              "key": "affected_scope",
+              "label": "Affected lot, unit, or interval",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action or hold",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Review due",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Logger, probe, photo, or record ref",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "notification",
+          "type": "fields",
+          "label": "Excursion notification and custody",
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Qualified reviewer notified",
+              "units": 1.2
+            },
+            {
+              "key": "notification_time",
+              "label": "Notification date and time",
+              "units": 1.1
+            },
+            {
+              "key": "hold_location",
+              "label": "Hold, quarantine, or controlled location",
+              "units": 1.35
+            },
+            {
+              "key": "custody_owner",
+              "label": "Current custody owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "temperature_disposition",
+      "title": "Freight temperature assessment and disposition",
+      "guidance": "Document the evidence reviewed, authorized scope, restrictions, and rationale for the final decision.",
+      "blocks": [
+        {
+          "key": "assessment_evidence",
+          "type": "table",
+          "label": "Qualified assessment evidence",
+          "columns": [
+            {
+              "key": "evidence",
+              "label": "Evidence or requirement",
+              "units": 1.45
+            },
+            {
+              "key": "scope",
+              "label": "Affected scope",
+              "units": 1.0
+            },
+            {
+              "key": "finding",
+              "label": "Finding or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "reference",
+              "label": "Assessment reference",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "disposition",
+          "type": "fields",
+          "label": "Temperature-control disposition",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Disposition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted within range",
+                "Released after qualified review",
+                "Restricted use or movement",
+                "Continue hold",
+                "Reject or return"
+              ]
+            },
+            {
+              "key": "authorized_scope",
+              "label": "Authorized lot, quantity, or interval",
+              "units": 1.35
+            },
+            {
+              "key": "remaining_restriction",
+              "label": "Remaining restriction",
+              "units": 1.25
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision and rationale reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "disposition_signoff",
+          "type": "signatures",
+          "label": "Monitoring review and disposition authorization",
+          "fields": [
+            {
+              "key": "log_preparer",
+              "label": "Log prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Shipping Or Receiving Manager decision",
+              "units": 1.5
+            },
+            {
+              "key": "custody_owner",
+              "label": "Custody owner acknowledgment",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Freight temperature log closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Range maintained and closed",
+                "Excursion reviewed and released",
+                "Restricted disposition completed",
+                "Held for further evidence",
+                "Rejected, returned, or removed"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This freight temperature log is an operational record, not a substitute for applicable law, contract terms, safety or product requirements, or professional judgment. Stop the affected movement, transfer, release, posting, or disposition when identity, evidence, authorization, or control is uncertain. A qualified shipping or receiving manager must review the exception and document the controlling decision."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by shipping or receiving manager",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

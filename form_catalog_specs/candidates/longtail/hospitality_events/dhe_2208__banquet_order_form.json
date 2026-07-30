@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2208__banquet_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2208__banquet_order_form.pdf",
+  "slug": "banquet-order-form",
+  "title": "Banquet Order Form",
+  "subtitle": "The banquet event order the floor actually works from: room set, service timeline, courses, dietary plating plan, and billing routing.",
+  "description": "An original banquet event order covering function identity and billing routing, the room set and minute-by-minute service timeline, the course-by-course menu with the dietary and allergen plating plan, order authorization with the guarantee, open conditions, and distribution to every department that has to execute it.",
+  "use_case": "Use as the single operating document for one banquet function, from set through service to teardown, so captains, culinary, beverage, and audio-visual work from the same record. The order closes when it has been distributed and acknowledged and the guarantee and dietary plan are confirmed.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Function identity and billing routing",
+      "guidance": "Bind the order to the client, the account, and the accountable captain.",
+      "blocks": [
+        {
+          "key": "order_routing",
+          "type": "fields",
+          "label": "Order identity and routing",
+          "fields": [
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.15
+            },
+            {
+              "key": "function_date",
+              "label": "Function date",
+              "units": 0.85
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.6
+            },
+            {
+              "key": "banquet_captain",
+              "label": "Banquet captain",
+              "units": 1.0
+            },
+            {
+              "key": "service_manager",
+              "label": "Service manager",
+              "units": 1.05
+            }
+          ],
+          "guidance": "A revised order supersedes every earlier copy on the floor; reissue and collect the old copies."
+        },
+        {
+          "key": "client_billing",
+          "type": "fields",
+          "label": "Client and billing",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "onsite_contact",
+              "label": "On-site contact",
+              "units": 1.0
+            },
+            {
+              "key": "onsite_phone",
+              "label": "On-site phone",
+              "units": 0.9
+            },
+            {
+              "key": "billing_route",
+              "label": "Billing route",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not yet set",
+                "Master account",
+                "Direct bill - approved",
+                "Card on file",
+                "Prepaid",
+                "Split by function"
+              ]
+            },
+            {
+              "key": "master_account",
+              "label": "Master account",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "room_and_timeline",
+      "title": "Room set and service timeline",
+      "guidance": "The set and the clock, exactly as the floor will run it.",
+      "blocks": [
+        {
+          "key": "room_set",
+          "type": "fields",
+          "label": "Room set",
+          "fields": [
+            {
+              "key": "function_room",
+              "label": "Function room",
+              "units": 1.1
+            },
+            {
+              "key": "setup_style",
+              "label": "Set style",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Rounds of ten",
+                "Rounds of eight",
+                "Long tables",
+                "Theater",
+                "Classroom",
+                "Reception standing",
+                "Stations with seating"
+              ]
+            },
+            {
+              "key": "guarantee_count",
+              "label": "Guaranteed covers",
+              "units": 1.0
+            },
+            {
+              "key": "set_count",
+              "label": "Set covers",
+              "units": 0.85
+            },
+            {
+              "key": "doors_open",
+              "label": "Doors open",
+              "units": 0.8
+            }
+          ],
+          "guidance": "Set covers normally exceed the guarantee by the venue's overset standard; record both so billing and the floor agree."
+        },
+        {
+          "key": "service_timeline",
+          "type": "table",
+          "label": "Service timeline",
+          "columns": [
+            {
+              "key": "clock_time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "activity",
+              "label": "Activity",
+              "units": 1.35
+            },
+            {
+              "key": "responsible",
+              "label": "Responsible",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "timeline_note",
+              "label": "Note",
+              "units": 1.1
+            }
+          ],
+          "rows": 8,
+          "guidance": "One row per cue, from door open through last course and teardown."
+        },
+        {
+          "key": "set_requirements",
+          "type": "checklist",
+          "label": "Set requirements",
+          "items": [
+            "Head table set and positioned per the diagram",
+            "Podium and microphone positions confirmed",
+            "Dance floor size and position confirmed",
+            "Registration or gift table set as ordered",
+            "Buffet and station positions confirmed clear of exit paths",
+            "Aisle widths and exit routes confirmed with the responsible manager",
+            "Accessible seating positions set where requested",
+            "Entrance signage and seating chart placed"
+          ],
+          "guidance": "Aisle and exit clearance is confirmed by the responsible manager, not estimated on the floor."
+        }
+      ]
+    },
+    {
+      "key": "menu_and_dietary",
+      "title": "Courses and dietary plating plan",
+      "guidance": "What is served, and exactly how restricted covers are plated.",
+      "blocks": [
+        {
+          "key": "service_profile",
+          "type": "fields",
+          "label": "Service profile",
+          "fields": [
+            {
+              "key": "service_style",
+              "label": "Service style",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Plated",
+                "Buffet",
+                "Family style",
+                "Stations",
+                "Passed reception",
+                "Boxed or grab and go"
+              ]
+            },
+            {
+              "key": "course_count",
+              "label": "Courses",
+              "units": 0.6
+            },
+            {
+              "key": "wine_service",
+              "label": "Wine service",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Poured tableside",
+                "Bottles on table",
+                "On consumption",
+                "Client supplied"
+              ]
+            },
+            {
+              "key": "bar_reference",
+              "label": "Bar order reference",
+              "units": 1.15
+            },
+            {
+              "key": "china_linen",
+              "label": "China and linen",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "menu_courses",
+          "type": "table",
+          "label": "Course detail",
+          "columns": [
+            {
+              "key": "course",
+              "label": "Course",
+              "units": 0.8
+            },
+            {
+              "key": "item",
+              "label": "Item as it will be described to guests",
+              "units": 1.75
+            },
+            {
+              "key": "portion_basis",
+              "label": "Portion basis",
+              "units": 0.9
+            },
+            {
+              "key": "count",
+              "label": "Count",
+              "units": 0.55
+            },
+            {
+              "key": "service_point",
+              "label": "Served from",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "dietary_plan",
+          "type": "table",
+          "label": "Dietary and allergen plating plan",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement stated by the client",
+              "units": 1.5
+            },
+            {
+              "key": "cover_count",
+              "label": "Covers",
+              "units": 0.55
+            },
+            {
+              "key": "seat_reference",
+              "label": "Seat or table",
+              "units": 0.9
+            },
+            {
+              "key": "plating_method",
+              "label": "How it is plated and marked",
+              "units": 1.5
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 0.95
+            }
+          ],
+          "rows": 5,
+          "guidance": "Every restricted cover needs a seat reference and a marking method so the right plate reaches the right guest."
+        },
+        {
+          "key": "allergen_boundary",
+          "type": "notice",
+          "label": "Allergen and dietary boundary",
+          "guidance": "This order records the dietary and allergen requirements the client provided and how the kitchen intends to plate them. It does not certify that any dish is free of an allergen and it is not a medical or food-safety determination. Re-confirm each requirement with the client contact and the chef on duty before service, and stop and route any requirement that cannot be met safely to the responsible manager."
+        }
+      ]
+    },
+    {
+      "key": "order_authorization",
+      "title": "Authorization and guarantee",
+      "guidance": "Record the guarantee and who committed the venue to it.",
+      "blocks": [
+        {
+          "key": "authorization_record",
+          "type": "fields",
+          "label": "Order authorization",
+          "fields": [
+            {
+              "key": "order_status",
+              "label": "Order status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending approval",
+                "Approved",
+                "Approved with conditions",
+                "Revised - reissued",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "guarantee_received",
+              "label": "Guarantee received",
+              "units": 1.1
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 1.0
+            },
+            {
+              "key": "culinary_ack",
+              "label": "Culinary acknowledged",
+              "units": 1.2
+            },
+            {
+              "key": "client_signed",
+              "label": "Client signed on",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "order_boundary",
+          "type": "notice",
+          "label": "Stop conditions and record boundary",
+          "guidance": "Stop and route to the responsible manager before serving if the dietary plan is unconfirmed, if a holding temperature cannot be verified, if the set blocks an exit path, or if covers exceed the room's confirmed capacity. This order is an operating record; it does not determine occupancy limits, certify food safety, or interpret the signed agreement, and the applicable venue policy and signed agreement govern where they differ."
+        },
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Approved conditions, deviations from the request, and client instructions",
+          "fields": [
+            {
+              "key": "authorization_detail",
+              "label": "Authorization detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "order_conditions",
+      "title": "Open conditions and escalation",
+      "guidance": "An approved order can still carry unresolved conditions.",
+      "blocks": [
+        {
+          "key": "condition_triggers",
+          "type": "checklist",
+          "label": "Open condition triggers",
+          "items": [
+            "Guarantee not received by the cutoff",
+            "Dietary or allergen plan not confirmed by culinary",
+            "Menu item substituted after client approval",
+            "Room changed after the order was issued",
+            "Set count cannot be delivered in the assigned room",
+            "Staffing below the planned server ratio",
+            "Audio-visual or rigging element unconfirmed",
+            "Billing route or credit unresolved",
+            "Accessible seating request unconfirmed"
+          ]
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Open condition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Open condition",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "order_distribution",
+      "title": "Distribution, acknowledgment, and closeout",
+      "guidance": "Every executing department signs for the copy it will work from.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Order closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Distributed",
+                "Revised - reissued",
+                "Executed",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "distributed_on",
+              "label": "Distributed on",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "review_due",
+              "label": "Post-function review due",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "distribution_log",
+          "type": "table",
+          "label": "Distribution and acknowledgment",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Department or role",
+              "units": 1.15
+            },
+            {
+              "key": "sent_on",
+              "label": "Sent on",
+              "units": 0.75
+            },
+            {
+              "key": "acknowledged_by",
+              "label": "Acknowledged by",
+              "units": 1.05
+            },
+            {
+              "key": "open_question",
+              "label": "Outstanding question",
+              "units": 1.4
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "distribution_confirmations",
+          "type": "checklist",
+          "label": "Distribution confirmations",
+          "items": [
+            "Culinary holds the current revision and acknowledged the dietary plan",
+            "Banquet captains hold the current revision and the timeline",
+            "Beverage holds the bar reference and service hours",
+            "Audio-visual holds the staging and microphone plan",
+            "Accounting holds the billing route and guarantee",
+            "Superseded copies collected from the floor"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Distribution outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Order closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

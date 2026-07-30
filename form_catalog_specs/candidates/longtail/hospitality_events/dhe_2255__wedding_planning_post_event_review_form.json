@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2255__wedding_planning_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2255__wedding_planning_post_event_review_form.pdf",
+  "slug": "wedding-planning-post-event-review-form",
+  "title": "Wedding Planning Post-Event Review Form",
+  "subtitle": "Compare the approved wedding plan with actual delivery, reconcile exceptions, capture stakeholder feedback, and assign measurable improvements.",
+  "description": "An original post-event review for wedding operations. It links planned and actual timing, guest and service outcomes, supplier handoffs, inventory and incident records, client feedback, causal findings, corrective actions, and accountable closeout.",
+  "use_case": "Use after the event record, incident reports, inventory logs, and supplier handoffs are available. Conduct the review with operating leads, separate verified evidence from opinion, and close when actions and client follow-up have named owners and due points.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_scope",
+      "title": "Review scope and source evidence",
+      "guidance": "Define the review team and the records used to support findings.",
+      "blocks": [
+        {
+          "key": "review_identity",
+          "type": "fields",
+          "label": "Review identity",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review ID",
+              "units": 0.8
+            },
+            {
+              "key": "event_id",
+              "label": "Wedding or event ID",
+              "units": 1.0
+            },
+            {
+              "key": "wedding_date",
+              "label": "Wedding date",
+              "units": 0.8
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "review_lead",
+              "label": "Review lead",
+              "units": 1.0
+            },
+            {
+              "key": "client_followup_owner",
+              "label": "Client follow-up owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "source_records",
+          "type": "checklist",
+          "label": "Source records reviewed",
+          "items": [
+            "Final planning order and revision history",
+            "Day-of timeline and operating notes",
+            "Supplier delivery and load-out records",
+            "Bar, catering, and guest-service records",
+            "Inventory and item-custody reconciliation",
+            "Incident and exception records",
+            "Client, planner, and team feedback"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivery_comparison",
+      "title": "Planned versus actual delivery",
+      "guidance": "Compare key milestones using the current order and recorded times.",
+      "blocks": [
+        {
+          "key": "milestone_review",
+          "type": "table",
+          "label": "Milestone performance",
+          "columns": [
+            {
+              "key": "milestone",
+              "label": "Milestone",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned",
+              "units": 0.8
+            },
+            {
+              "key": "actual",
+              "label": "Actual",
+              "units": 0.8
+            },
+            {
+              "key": "variance",
+              "label": "Variance or result",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence source",
+              "units": 1.1
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "summary_outcomes",
+          "type": "fields",
+          "label": "Delivery outcomes",
+          "fields": [
+            {
+              "key": "guest_count_plan",
+              "label": "Planned guests",
+              "units": 0.8
+            },
+            {
+              "key": "guest_count_actual",
+              "label": "Actual guests",
+              "units": 0.8
+            },
+            {
+              "key": "spaces_released_at",
+              "label": "Spaces released at",
+              "units": 0.95
+            },
+            {
+              "key": "supplier_clear_at",
+              "label": "Suppliers clear at",
+              "units": 0.95
+            },
+            {
+              "key": "open_items_count",
+              "label": "Open items",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "experience_review",
+      "title": "Guest, client, and service experience",
+      "guidance": "Capture evidence-backed outcomes and route sensitive details appropriately.",
+      "blocks": [
+        {
+          "key": "experience_findings",
+          "type": "table",
+          "label": "Experience findings",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Experience area",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected outcome",
+              "units": 1.2
+            },
+            {
+              "key": "actual",
+              "label": "Observed outcome",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Feedback source",
+              "units": 1.0
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up need",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "experience_topics",
+          "type": "checklist",
+          "label": "Review topics",
+          "items": [
+            "Arrival, wayfinding, and guest transitions reviewed",
+            "Requested accessibility handoffs reviewed",
+            "Meal timing and service flow reviewed",
+            "Dietary and allergen routing process reviewed",
+            "Bar and nonalcoholic service flow reviewed",
+            "Ceremony and reception cues reviewed",
+            "Client or planner communication cadence reviewed",
+            "Private-space and personal-item handling reviewed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "supplier_review",
+      "title": "Supplier and internal-team performance",
+      "guidance": "Review deliverables and handoffs against the approved order.",
+      "blocks": [
+        {
+          "key": "supplier_results",
+          "type": "table",
+          "label": "Supplier and team results",
+          "columns": [
+            {
+              "key": "team",
+              "label": "Supplier or team",
+              "units": 1.2
+            },
+            {
+              "key": "deliverable",
+              "label": "Critical deliverable",
+              "units": 1.25
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.9
+            },
+            {
+              "key": "handoff_finding",
+              "label": "Handoff finding",
+              "units": 1.2
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "control_review",
+          "type": "checklist",
+          "label": "Control effectiveness",
+          "items": [
+            "Revision control prevented use of superseded instructions",
+            "Access and load-in windows supported the event sequence",
+            "Space-transition owners were present at handoff",
+            "Equipment and inventory custody reconciled",
+            "Escalations reached the correct responsible role",
+            "Incident and exception records were opened when needed",
+            "Load-out and venue-clear responsibilities were completed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_actions",
+      "title": "Findings, causes, and improvement actions",
+      "guidance": "Convert material variances into specific, verifiable changes.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Finding and cause register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Verified finding",
+              "units": 1.35
+            },
+            {
+              "key": "impact",
+              "label": "Impact",
+              "units": 1.0
+            },
+            {
+              "key": "contributing_factor",
+              "label": "Contributing factor",
+              "units": 1.25
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence",
+              "units": 0.95
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.75
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Improvement action register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Improvement action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.7
+            },
+            {
+              "key": "verification",
+              "label": "Success measure",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Review record boundary",
+          "guidance": "Use verified operational evidence and distinguish feedback from fact. This review does not determine legal fault, authorize compensation, or replace specialist review of accessibility, food and allergen, alcohol, safety, privacy, or employment matters."
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Client follow-up and review closeout",
+      "guidance": "Close with communicated outcomes and owned improvement work.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Findings complete",
+                "Actions assigned",
+                "Closed"
+              ]
+            },
+            {
+              "key": "client_followup_at",
+              "label": "Client follow-up",
+              "units": 0.95
+            },
+            {
+              "key": "action_review_due",
+              "label": "Action review due",
+              "units": 0.95
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_owner",
+              "label": "Next review owner",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Client or planner follow-up completed or scheduled",
+            "Open incidents retain their own qualified review path",
+            "Inventory and supplier exceptions have dispositions",
+            "Actions have owners, due points, and success measures",
+            "Useful lessons transferred to planning templates",
+            "Review record stored with appropriate access"
+          ]
+        },
+        {
+          "key": "review_approval",
+          "type": "signatures",
+          "label": "Review preparation and acceptance",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_date",
+              "label": "Accepted date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

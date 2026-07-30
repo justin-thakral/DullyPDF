@@ -1,0 +1,791 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1151__window_cleaning_preventive_maintenance_checklist_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1151__window_cleaning_preventive_maintenance_checklist_form.pdf",
+  "slug": "window-cleaning-preventive-maintenance-checklist-form",
+  "title": "Window Cleaning Preventive Maintenance Checklist Form",
+  "subtitle": "Control access setup, exclusion, glass cleaning, equipment control, inspection, and release through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete window cleaning preventive maintenance checklist for windows, frames, anchors, ladders, lifts, ropes, tools, and exclusion zones. It connects work plan, access method, anchors, products, and site approval to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a trained window-cleaning technician must perform scheduled window cleaning maintenance against an identified plan while preserving readings, defects, deferrals, verification, and the next due event.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "maintenance_identity",
+      "title": "Window Cleaning maintenance plan, site, and asset identity",
+      "guidance": "Tie the planned interval, exact maintained scope, prior condition, and accountable parties to one visit.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Window Cleaning preventive maintenance checklist reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service, route, or work-plan number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Building owner or authorized site contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Building facade, window group, and access point",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Building elevation, drop, anchor, equipment, and window identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Building, facade, elevation, or drop",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Window group, glass type, and frame",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Access method and equipment set",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Anchor, tieback, lift, ladder, or scaffold reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant window cleaning context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant window cleaning context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "plan_readiness",
+      "title": "Window Cleaning interval, criteria, and maintenance readiness",
+      "guidance": "Confirm the controlling plan and actual readiness before treating a checklist as authorization to work.",
+      "blocks": [
+        {
+          "key": "maintenance_interval",
+          "type": "fields",
+          "label": "Maintenance interval and controlling reference",
+          "fields": [
+            {
+              "key": "plan_reference",
+              "label": "Service plan, contract, or maintenance ref.",
+              "units": 1.2
+            },
+            {
+              "key": "last_service",
+              "label": "Last completed service",
+              "units": 0.9
+            },
+            {
+              "key": "due_basis",
+              "label": "Time, use, condition, or route basis",
+              "units": 1.05
+            },
+            {
+              "key": "current_due",
+              "label": "Current due date or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "criteria_source",
+              "label": "Controlling plan or criteria reference",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Pre-maintenance access and control readiness",
+          "items": [
+            "Facade, window group, access route, and public drop zone confirmed",
+            "Weather, wind, temperature, precipitation, lightning, and surface conditions assessed",
+            "Selected ladder, lift, scaffold, or rope-descent method is appropriate",
+            "Anchorage and building-provided equipment information verified before use",
+            "Independent fall protection, rescue plan, and communication method assigned where required",
+            "Ladders, ropes, connectors, harnesses, descenders, lifts, and tools inspected",
+            "Electrical lines, roof edges, skylights, fragile surfaces, and facade hazards identified",
+            "Pedestrians, occupants, doors, vehicles, landscaping, and lower levels excluded or protected",
+            "Glass type, coating, tint, sealant, frame, and chemical compatibility verified",
+            "Tools, water, hoses, buckets, and loose items tethered or otherwise controlled"
+          ]
+        },
+        {
+          "key": "history_defects",
+          "type": "table",
+          "label": "Prior defect, recommendation, recurrence, and open-action review",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or record ref.",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Condition or recommendation",
+              "units": 1.3
+            },
+            {
+              "key": "prior_action",
+              "label": "Prior action",
+              "units": 1.0
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner or escalation",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_assignment",
+          "type": "fields",
+          "label": "Technician, site contact, and service status",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Trained window-cleaning technician",
+              "units": 1.15
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification or license reference",
+              "units": 1.05
+            },
+            {
+              "key": "site_contact",
+              "label": "Building owner or authorized site contact",
+              "units": 1.1
+            },
+            {
+              "key": "start_date_time",
+              "label": "Controlled start date and time",
+              "units": 0.95
+            },
+            {
+              "key": "readiness_status",
+              "label": "Readiness status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with restriction",
+                "Controlled hold",
+                "Refer for qualified review",
+                "Access unavailable"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "condition_checks",
+      "title": "Window Cleaning requirement-level condition inspection",
+      "guidance": "Record actual condition for each applicable point and identify the evidence or rationale for the result.",
+      "blocks": [
+        {
+          "key": "inspection_coverage",
+          "type": "checklist",
+          "label": "Window Cleaning inspection coverage",
+          "items": [
+            "Building, elevation, window group, drop, and access-route identity",
+            "Roof, parapet, edge, skylight, ladder, lift, scaffold, and landing condition",
+            "Anchor, tieback, davit, outrigger, suspension, and building-information status",
+            "Rope, harness, connector, descender, lifeline, lanyard, and rescue equipment",
+            "Ladder rails, feet, locks, rungs, angle, support, and tie-off condition",
+            "Lift controls, alarms, guardrails, outriggers, tires, and inspection status",
+            "Wind, precipitation, lightning, heat, ice, visibility, and surface traction",
+            "Electrical conductors, facade projections, falling-object, and entanglement hazards",
+            "Glass crack, chip, seal, coating, tint, frame, screen, and pre-existing damage",
+            "Pedestrian, occupant, vehicle, door, landscaping, and drop-zone exposure"
+          ],
+          "guidance": "A check means the point was examined; the result table carries the actual finding."
+        },
+        {
+          "key": "inspection_results",
+          "type": "table",
+          "label": "Condition, criterion, result, and evidence register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, zone, or component",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Expected condition or criterion",
+              "units": 1.25
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, monitor, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or technician initials",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "inspection_context",
+          "type": "textarea",
+          "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "maintenance_work",
+      "title": "Window Cleaning preventive service tasks and controlled materials",
+      "guidance": "Separate tasks completed from tasks merely considered, and preserve product, part, quantity, and removed-item custody.",
+      "blocks": [
+        {
+          "key": "maintenance_tasks",
+          "type": "checklist",
+          "label": "Preventive maintenance tasks completed",
+          "items": [
+            "Establish access, exclusion, communication, and rescue controls",
+            "Inspect and stage access and fall-protection equipment",
+            "Protect occupants, property, landscaping, and lower levels",
+            "Confirm glass and chemical compatibility",
+            "Clean authorized interior or exterior window groups",
+            "Control water, hoses, tools, buckets, and falling-object exposure",
+            "Remove approved screen, debris, residue, or construction soil",
+            "Inspect glass, frame, seal, tint, and surrounding facade",
+            "Reconcile all equipment and restore access points",
+            "Document excluded windows, defects, and future-access needs"
+          ]
+        },
+        {
+          "key": "task_result_log",
+          "type": "table",
+          "label": "Maintenance action and result log",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Asset, zone, or point",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Maintenance action",
+              "units": 1.2
+            },
+            {
+              "key": "before",
+              "label": "Before condition",
+              "units": 1.0
+            },
+            {
+              "key": "after",
+              "label": "After condition",
+              "units": 1.0
+            },
+            {
+              "key": "technician_ref",
+              "label": "Technician or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "materials_used",
+          "type": "table",
+          "label": "Parts, products, consumables, and quantities",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, product, or material",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, label, or serial",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "application",
+              "label": "Used, installed, or removed",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or remaining stock",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "measurements_tests",
+      "title": "Window Cleaning measurements and post-maintenance verification",
+      "guidance": "Use repeatable observations to show the maintained scope reached the stated condition.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement and verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Measurement or test point",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Applicable measurement concepts include: Elevation, drop, window count, or serviced area, Wind, temperature, precipitation, or surface condition, Anchor, access, ladder, lift, or equipment identifier, Rope, harness, connector, or inspection status, Water, product, or solution concentration, Start, suspension, restart, and completion time."
+        },
+        {
+          "key": "verification_checks",
+          "type": "checklist",
+          "label": "Post-maintenance condition and function checks",
+          "items": [
+            "All authorized windows are cleaned or explicitly excluded",
+            "Glass, frame, tint, coating, seal, and surrounding property are undamaged",
+            "No unacceptable streak, residue, runoff, debris, or loose item remains",
+            "Anchors, roof access, doors, screens, and building controls are restored",
+            "Ladders, lifts, ropes, harnesses, connectors, tools, and keys are reconciled",
+            "Exclusion zones remain until overhead exposure is removed",
+            "Glass or facade defects and inaccessible areas are documented",
+            "Customer received limitations, damage observations, and next-service plan"
+          ]
+        },
+        {
+          "key": "maintenance_evidence",
+          "type": "checklist",
+          "label": "Maintenance evidence retained",
+          "items": [
+            "Building, facade, drop, and window-group map",
+            "Weather and site-condition record",
+            "Anchor or building-equipment information reference",
+            "Access and fall-protection equipment inspection",
+            "Exclusion-zone and access-setup photograph",
+            "Pre-existing glass, frame, or facade damage",
+            "Completed-window and quality-inspection record",
+            "Equipment reconciliation and site-release record"
+          ]
+        },
+        {
+          "key": "verification_limits",
+          "type": "textarea",
+          "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "defect_actions",
+      "title": "Window Cleaning defect containment and corrective-action routing",
+      "guidance": "A preventive checklist does not release an unsafe, unverified, or out-of-scope condition.",
+      "blocks": [
+        {
+          "key": "maintenance_defect_indicators",
+          "type": "checklist",
+          "label": "Window Cleaning exception and stop-work indicators",
+          "items": [
+            "Anchor, tieback, davit, roof, parapet, or building information unavailable",
+            "Required fall protection, rescue, communication, or competent review unavailable",
+            "Ladder, lift, scaffold, rope, harness, connector, or tool fails inspection",
+            "Wind, storm, lightning, ice, heat, visibility, or wet-surface condition unsafe",
+            "Electrical conductor, fragile roof, skylight, edge, or facade hazard uncontrolled",
+            "Pedestrian, occupant, vehicle, doorway, or lower-level exclusion cannot be maintained",
+            "Glass is cracked, loose, heat-stressed, coated, tinted, or incompatible with the method",
+            "Falling-object, water, hose, chemical, or equipment movement cannot be controlled",
+            "Facade access requires a method or height beyond the approved plan",
+            "Technician reports fatigue, medical, communication, or rescue-readiness concern"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "maintenance_defect_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_defect_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_decision",
+      "title": "Window Cleaning maintenance status and service decision",
+      "guidance": "Record the exact maintained scope, serviceability decision, restriction, next interval, and independent review.",
+      "blocks": [
+        {
+          "key": "maintenance_status",
+          "type": "fields",
+          "label": "Maintenance and serviceability decision",
+          "fields": [
+            {
+              "key": "maintenance_result",
+              "label": "Maintenance result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with monitor item",
+                "Partially completed",
+                "Controlled hold",
+                "Corrective repair required",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted asset, area, or service scope",
+              "units": 1.15
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Excluded or inaccessible scope",
+              "units": 1.05
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "next_service",
+          "type": "fields",
+          "label": "Next preventive interval and trigger",
+          "fields": [
+            {
+              "key": "next_due",
+              "label": "Next due date, use, route, or condition",
+              "units": 1.1
+            },
+            {
+              "key": "monitor_trigger",
+              "label": "Monitor or early-return trigger",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Service-plan owner",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_status",
+              "label": "Scheduling status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Owner to schedule",
+                "Parts pending",
+                "Corrective work first",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_review",
+          "type": "signatures",
+          "label": "Technician and qualified maintenance review",
+          "fields": [
+            {
+              "key": "technician_signoff",
+              "label": "Technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_review",
+              "label": "Access and fall-protection supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "site_acknowledgment",
+              "label": "Site owner acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Window Cleaning preventive maintenance checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Maintenance completed and interval assigned",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This window cleaning preventive maintenance checklist is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when anchorage, access equipment, fall protection, rescue, weather, electrical, public exclusion, facade, glass, or drop-zone condition is uncertain. A access and fall-protection supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Trained window-cleaning technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Access and fall-protection supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

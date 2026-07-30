@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2038__workers_comp_status_update_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2038__workers_comp_status_update_form.pdf",
+  "slug": "workers-comp-status-update-form",
+  "title": "Workers Comp Status Update Form",
+  "subtitle": "A decision-ready workers comp status update that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original workers comp status update for reported workplace injury or illness and employment event with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the workers compensation claim and workplace reporting owner must open and control a status update for reported workplace injury or illness and employment event. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Workers Comp status update identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Workers Comp status update record",
+          "fields": [
+            {
+              "key": "update_id",
+              "label": "Status update ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "as_of",
+              "label": "Verified as of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            },
+            {
+              "key": "current_owner",
+              "label": "Current accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "overall_stage",
+              "label": "Overall stage",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Intake",
+                "Investigation",
+                "Decision",
+                "Payment",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Workers Comp subject and event identity",
+          "fields": [
+            {
+              "key": "employee_ref",
+              "label": "Employee record ref",
+              "units": 1.0
+            },
+            {
+              "key": "incident_time",
+              "label": "Reported incident or onset date and time",
+              "units": 1.25
+            },
+            {
+              "key": "worksite",
+              "label": "Worksite and exact task location",
+              "units": 1.15
+            },
+            {
+              "key": "job_task",
+              "label": "Job title and task being performed",
+              "units": 1.05
+            },
+            {
+              "key": "supervisor_notice",
+              "label": "Supervisor notice date and time",
+              "units": 1.0
+            },
+            {
+              "key": "care_route",
+              "label": "Emergency or care route ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Employee record, worksite, and incident reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Status Update scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Workers Comp purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "verified_snapshot",
+      "title": "Workers Comp verified status snapshot",
+      "guidance": "Report the file state as of a precise time and identify the evidence behind each material status.",
+      "blocks": [
+        {
+          "key": "status_dimensions",
+          "type": "fields",
+          "label": "Workers Comp status dimensions",
+          "fields": [
+            {
+              "key": "event_description",
+              "label": "Reported event or exposure",
+              "units": 1.0
+            },
+            {
+              "key": "body_part",
+              "label": "Reported body area, without diagnosis",
+              "units": 1.25
+            },
+            {
+              "key": "equipment_material",
+              "label": "Equipment/material involved",
+              "units": 1.15
+            },
+            {
+              "key": "work_status",
+              "label": "Work status/restriction ref",
+              "units": 1.05
+            },
+            {
+              "key": "witness_ref",
+              "label": "Witness or coworker reference",
+              "units": 1.0
+            },
+            {
+              "key": "reporting_ref",
+              "label": "Employer/reporting ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "stage_indicators",
+          "type": "checklist",
+          "label": "Workers Comp active-work indicators",
+          "items": [
+            "Emergency response, hospitalization, fatality, or severe event reported",
+            "Employee reports injury, illness, exposure, or repetitive condition",
+            "Equipment, vehicle, chemical, ergonomic, or environmental factor involved",
+            "Work restriction, time away, modified duty, or return-to-work issue exists",
+            "Temporary worker, contractor, multiple employer, or remote work involved",
+            "Witness, camera, training, maintenance, or job record may be relevant",
+            "Privacy-concern information requires a restricted record route",
+            "Regulatory, carrier, administrator, or jurisdiction deadline may apply"
+          ]
+        },
+        {
+          "key": "milestone_history",
+          "type": "table",
+          "label": "Completed and planned milestone history",
+          "columns": [
+            {
+              "key": "milestone",
+              "label": "Milestone or decision",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned date",
+              "units": 0.85
+            },
+            {
+              "key": "completed",
+              "label": "Completed date",
+              "units": 0.85
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Status evidence ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_boundary",
+          "type": "notice",
+          "label": "Status communication boundary",
+          "guidance": "This record does not diagnose, determine compensability, replace an emergency route, or substitute for required jurisdiction forms. Protect employee privacy, support reporting without retaliation, and route medical, legal, benefit, and work-status decisions appropriately."
+        }
+      ]
+    },
+    {
+      "key": "workstream_status",
+      "title": "Workers Comp workstream, evidence, and decision status",
+      "guidance": "Track independent workstreams separately so a completed task does not hide an unresolved decision or dependency.",
+      "blocks": [
+        {
+          "key": "workstream_register",
+          "type": "table",
+          "label": "Workstream and next-action register",
+          "columns": [
+            {
+              "key": "workstream",
+              "label": "Workstream",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current verified state",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or system ref",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.05
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "status_evidence",
+          "type": "checklist",
+          "label": "Workers Comp status evidence sources",
+          "items": [
+            "Employee report and exact source wording reference",
+            "Supervisor, witness, and first-response factual account",
+            "Scene, equipment, material, task, or condition photographs",
+            "Training, authorization, procedure, maintenance, or job records",
+            "Time, schedule, payroll, assignment, and employer relationship reference",
+            "Authorized work-status or restriction document stored securely",
+            "Carrier, administrator, jurisdiction, and incident-report references",
+            "Corrective action and return-to-work coordination records"
+          ]
+        },
+        {
+          "key": "decision_snapshot",
+          "type": "fields",
+          "label": "Decision and authority snapshot",
+          "fields": [
+            {
+              "key": "latest_decision",
+              "label": "Latest authorized decision",
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "basis_ref",
+              "label": "Decision-basis reference",
+              "units": 1.15
+            },
+            {
+              "key": "notice_status",
+              "label": "Required notice status",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Next review due",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requests_dependencies",
+      "title": "Workers Comp outstanding requests, dependencies, and commitments",
+      "guidance": "Record exactly what is needed, who owes it, when it was requested, and what happens if it remains outstanding.",
+      "blocks": [
+        {
+          "key": "request_register",
+          "type": "table",
+          "label": "Outstanding request and dependency register",
+          "columns": [
+            {
+              "key": "request",
+              "label": "Requested item or dependency",
+              "units": 1.3
+            },
+            {
+              "key": "requested_from",
+              "label": "Requested from",
+              "units": 1.0
+            },
+            {
+              "key": "requested_at",
+              "label": "Requested date",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status and response ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "commitment_register",
+          "type": "table",
+          "label": "Promised update and commitment control",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.0
+            },
+            {
+              "key": "commitment",
+              "label": "Committed update or action",
+              "units": 1.35
+            },
+            {
+              "key": "promised_by",
+              "label": "Promised by",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due date and time",
+              "units": 0.9
+            },
+            {
+              "key": "completion",
+              "label": "Completion evidence",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_narrative",
+          "type": "textarea",
+          "label": "Plain-language status narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Workers Comp completed work, pending work, reason for delay, uncertainty, and next expected update",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Workers Comp blockers, exceptions, and escalation",
+      "guidance": "A status update is incomplete if an overdue or disputed item lacks an accountable escalation path.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Workers Comp blocker and exception screen",
+          "items": [
+            "Emergency, severe event, or regulatory reporting route is unconfirmed",
+            "Employee reporting could be deterred, delayed, or treated inconsistently",
+            "Sensitive medical details appear outside the restricted claim record",
+            "Employer, worksite, employment, or jurisdiction responsibility conflicts",
+            "Work status, restriction, schedule, or modified-duty handoff is unclear",
+            "Evidence, equipment, training, or scene condition may be altered"
+          ]
+        },
+        {
+          "key": "blocker_register",
+          "type": "table",
+          "label": "Blocker, escalation, and disposition",
+          "columns": [
+            {
+              "key": "blocker",
+              "label": "Blocker or disputed status",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Impact on claim or request",
+              "units": 1.15
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update due",
+              "units": 0.9
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or final state",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "timeliness_control",
+          "type": "fields",
+          "label": "Timeliness and oversight control",
+          "fields": [
+            {
+              "key": "oldest_open_date",
+              "label": "Oldest open-item date",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.0
+            },
+            {
+              "key": "deadline_basis",
+              "label": "Deadline source or requirement",
+              "units": 1.2
+            },
+            {
+              "key": "supervisor_review",
+              "label": "Supervisor review status",
+              "units": 1.0
+            },
+            {
+              "key": "complaint_route",
+              "label": "Complaint or escalation ref",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "communication_closeout",
+      "title": "Workers Comp status communication, next milestone, and closeout",
+      "guidance": "Confirm what was communicated, what remains open, and who accepted the next accountable action.",
+      "blocks": [
+        {
+          "key": "communication_checks",
+          "type": "checklist",
+          "label": "Status communication checks",
+          "items": [
+            "The as-of timestamp and source records are clear",
+            "Facts, estimates, pending reviews, and final decisions are distinct",
+            "The recipient was not given an unauthorized promise",
+            "Required privacy and identity verification were followed",
+            "Outstanding requests and promised updates have due points",
+            "The next accountable owner accepted the handoff"
+          ]
+        },
+        {
+          "key": "next_milestone",
+          "type": "fields",
+          "label": "Next milestone and update route",
+          "fields": [
+            {
+              "key": "next_milestone",
+              "label": "Next milestone",
+              "units": 1.1
+            },
+            {
+              "key": "milestone_owner",
+              "label": "Milestone owner",
+              "units": 1.0
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.85
+            },
+            {
+              "key": "next_update",
+              "label": "Next customer update due",
+              "units": 1.0
+            },
+            {
+              "key": "update_channel",
+              "label": "Approved update channel",
+              "units": 1.0
+            },
+            {
+              "key": "recipient",
+              "label": "Verified recipient",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "status_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and communicated",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "communicated_by",
+              "label": "Communicated by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Status version",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

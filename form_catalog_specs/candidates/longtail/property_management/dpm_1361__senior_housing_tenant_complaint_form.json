@@ -1,0 +1,762 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1361__senior_housing_tenant_complaint_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1361__senior_housing_tenant_complaint_form.pdf",
+  "slug": "senior-housing-tenant-complaint-form",
+  "title": "Senior Housing Tenant Complaint Form",
+  "subtitle": "Operational tenant complaint intake, evidence, qualified review, exception routing, handoff, and accountable closeout.",
+  "description": "An original fillable senior housing tenant complaint workflow that keeps identity, property-specific observations, evidence, authorization, exceptions, communication, and closeout in one traceable record.",
+  "use_case": "Use when authorized property staff need to manage a senior housing tenant complaint from intake through verified handoff without using the record to make legal, accommodation, screening, compliance, or professional conclusions.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "complaint_identity",
+      "title": "Complaint identity, safe contact, and ownership",
+      "guidance": "Open one protected case record.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Tenant Complaint reference",
+          "guidance": "Use one identifier across messages, evidence, work orders, and handoffs.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time",
+              "units": 0.8
+            },
+            {
+              "key": "intake_source",
+              "label": "Intake source",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Property and location",
+          "guidance": "Confirm the exact property record before collecting workflow details.",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Senior housing property",
+              "units": 1.3
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.6
+            },
+            {
+              "key": "specific_location",
+              "label": "Building and unit",
+              "units": 1.4
+            },
+            {
+              "key": "account_reference",
+              "label": "Account or tenancy reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "reporting_contact",
+          "type": "fields",
+          "label": "Reporting and routing contact",
+          "guidance": "Record only contact information needed to route and update this record.",
+          "fields": [
+            {
+              "key": "contact_name",
+              "label": "Resident or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "contact_role",
+              "label": "Relationship to property",
+              "units": 1.1
+            },
+            {
+              "key": "contact_channel",
+              "label": "Authorized contact channel",
+              "units": 1.3
+            },
+            {
+              "key": "update_method",
+              "label": "Preferred update method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "case_ownership",
+          "type": "fields",
+          "label": "Case ownership and safe communication",
+          "guidance": "Do not promise absolute confidentiality; disclose only as authorized and necessary.",
+          "fields": [
+            {
+              "key": "case_owner",
+              "label": "Case owner",
+              "units": 1.2
+            },
+            {
+              "key": "alternate_owner",
+              "label": "Conflict-free alternate",
+              "units": 1.2
+            },
+            {
+              "key": "safe_time",
+              "label": "Safe contact time",
+              "units": 1.0
+            },
+            {
+              "key": "contact_limits",
+              "label": "Contact or disclosure limits",
+              "units": 1.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "triage_protection",
+      "title": "Immediate risk and protected-process routing",
+      "guidance": "Address danger before routine review.",
+      "blocks": [
+        {
+          "key": "concern_categories",
+          "type": "checklist",
+          "label": "Concern categories reported",
+          "guidance": "Categories support routing and are not findings.",
+          "items": [
+            "Maintenance, condition, utility, sanitation, or habitability concern",
+            "Access, privacy, notice, key, lock, or security concern",
+            "Noise, conduct, neighbor, guest, staff, or vendor concern",
+            "Billing, charge, deposit, lease, service, or communication concern",
+            "Discrimination, harassment, retaliation, or fair-housing concern",
+            "Accommodation, accessibility, assistance-animal, or communication concern",
+            "Threat, violence, abuse, neglect, injury, or immediate welfare concern",
+            "Other concern requiring a separate qualified process"
+          ]
+        },
+        {
+          "key": "immediate_screen",
+          "type": "checklist",
+          "label": "Immediate safety and preservation screen",
+          "guidance": "Do not delay emergency support while waiting for routine case review.",
+          "items": [
+            "Emergency services or emergency property protocol needed",
+            "Person needs a safe contact or alternate communication route",
+            "Area, access, service, or interaction needs a temporary control",
+            "Evidence, messages, video, access logs, or physical condition need preservation",
+            "Potential retaliation or adverse action needs an immediate hold",
+            "Conflict of interest requires reassignment",
+            "Mandatory or specialist reporting question needs qualified review",
+            "No immediate protective action identified at intake"
+          ]
+        },
+        {
+          "key": "triage_route",
+          "type": "fields",
+          "label": "Triage result and routing",
+          "guidance": "Interim measures should be neutral, reversible, and within authorized policy.",
+          "fields": [
+            {
+              "key": "triage_status",
+              "label": "Triage status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Emergency route",
+                "Urgent protected review",
+                "Priority case review",
+                "Routine review",
+                "Referred"
+              ]
+            },
+            {
+              "key": "immediate_owner",
+              "label": "Immediate-action owner",
+              "units": 1.3
+            },
+            {
+              "key": "temporary_measure",
+              "label": "Temporary-measure reference",
+              "units": 1.4
+            },
+            {
+              "key": "qualified_route",
+              "label": "Qualified-review route",
+              "units": 1.3
+            },
+            {
+              "key": "next_contact",
+              "label": "Next contact due",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "immediate_actions",
+          "type": "textarea",
+          "label": "Immediate action, communication limit, evidence hold, and escalation",
+          "guidance": "Record fact and source; do not make a legal or credibility conclusion.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "immediate_action_details",
+              "label": "Reported risk, action taken, person contacted, temporary measure, owner, due point, and unresolved need",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "non_retaliation",
+          "type": "notice",
+          "label": "Neutral and non-retaliatory handling",
+          "guidance": "Do not retaliate or take an adverse action because a person reported a concern, requested maintenance or an accommodation, participated in review, or used a protected process. Hold uncertain action and route fair-housing, privacy, safety, employment, abuse, criminal, or legal questions for qualified review."
+        },
+        {
+          "key": "operational_boundary",
+          "type": "notice",
+          "label": "Operational and qualified-review boundary",
+          "guidance": "This tenant complaint record captures operational facts, routing, evidence, and authorized handoffs. It does not determine legal rights, tenancy, responsibility, habitability, code or accessibility compliance, accommodation eligibility, screening eligibility, or a professional opinion. Authorized property staff must review applicable policy, notice, privacy, retention, fair-housing, safety, insurance, and licensed-trade requirements."
+        }
+      ]
+    },
+    {
+      "key": "account_evidence",
+      "title": "Reporter account, chronology, and evidence",
+      "guidance": "Preserve sources and disputed facts.",
+      "blocks": [
+        {
+          "key": "reporter_account",
+          "type": "textarea",
+          "label": "Reporter's account and requested outcome",
+          "guidance": "Use the reporter's own words where practical and distinguish quotation from summary.",
+          "height": 70,
+          "fields": [
+            {
+              "key": "reporter_account_details",
+              "label": "What occurred, people or roles involved, dates, locations, impact, prior notice, and requested outcome",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Event chronology",
+          "guidance": "Use one row per material event and retain source uncertainty.",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.1
+            },
+            {
+              "key": "event",
+              "label": "Event or communication",
+              "units": 1.8
+            },
+            {
+              "key": "source",
+              "label": "Source",
+              "units": 1.0
+            },
+            {
+              "key": "impact",
+              "label": "Reported impact",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "people_sources",
+          "type": "table",
+          "label": "People, roles, and information sources",
+          "guidance": "Limit collection and disclosure to information needed for this review.",
+          "columns": [
+            {
+              "key": "person_role",
+              "label": "Person or role",
+              "units": 1.4
+            },
+            {
+              "key": "connection",
+              "label": "Connection to event",
+              "units": 1.4
+            },
+            {
+              "key": "contact_route",
+              "label": "Authorized contact route",
+              "units": 1.2
+            },
+            {
+              "key": "information",
+              "label": "Information expected",
+              "units": 1.5
+            },
+            {
+              "key": "status",
+              "label": "Contact status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "complaint_evidence",
+          "type": "table",
+          "label": "Evidence and record log",
+          "guidance": "Do not alter source material; record corrections or challenges separately.",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.9
+            },
+            {
+              "key": "source_date",
+              "label": "Source and date",
+              "units": 1.3
+            },
+            {
+              "key": "description",
+              "label": "What it supports",
+              "units": 1.7
+            },
+            {
+              "key": "custody",
+              "label": "Storage or custody reference",
+              "units": 1.4
+            },
+            {
+              "key": "limits",
+              "label": "Access or reliability note",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "property_coordination",
+      "title": "Senior Housing context and responsibility",
+      "guidance": "Apply controls that are specific to this property type.",
+      "blocks": [
+        {
+          "key": "profile_controls",
+          "type": "checklist",
+          "label": "Senior Housing workflow controls",
+          "guidance": "Check only controls actually reviewed; explain exceptions in the routing note.",
+          "items": [
+            "Resident, authorized contact, visitor, staff, and service roles are clear",
+            "Safe and accessible communication preference is recorded",
+            "Immediate safety or welfare concern uses established emergency routing",
+            "No diagnosis, medication, or unrelated clinical information is collected",
+            "Housing, care, employment, accommodation, and legal reviews stay separate",
+            "Interim support does not presume incapacity or waive resident choice",
+            "Retaliation, discrimination, neglect, or abuse concerns are escalated",
+            "Resident response and authorized follow-up are communicated accessibly"
+          ]
+        },
+        {
+          "key": "responsibility_route",
+          "type": "fields",
+          "label": "Responsibility and external handoff",
+          "guidance": "A routing field records ownership; it does not decide disputed responsibility.",
+          "fields": [
+            {
+              "key": "scope_owner",
+              "label": "Housing or service coordinator",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_reference",
+              "label": "Resident-services handoff",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_status",
+              "label": "Handoff status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Not needed",
+                "Pending",
+                "Accepted",
+                "Returned"
+              ]
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            },
+            {
+              "key": "coordination_owner",
+              "label": "Coordination owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "profile_exception",
+          "type": "textarea",
+          "label": "Senior Housing coordination facts and unresolved questions",
+          "guidance": "Separate observed facts from assumptions and identify the next authorized reviewer. For a senior-housing complaint, preserve the resident's own account, chosen communication format, and documented permission for any authorized contact. Separate housing staff, resident services, care providers, visitors, vendors, and emergency responders by role. Record doors, elevators, routes, services, welfare checks, or support interactions as operational facts without diagnosis, medication, capacity, or clinical records. Route neglect, abuse, retaliation, accommodation, employment, legal, and care questions to qualified processes without presuming incapacity or waiving resident choice.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "coordination_note",
+              "label": "Property-specific facts, limitations, handoff details, and unresolved question",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "neutral_review",
+      "title": "Neutral review plan and authorized response",
+      "guidance": "Connect each assessment to evidence.",
+      "blocks": [
+        {
+          "key": "review_assignment",
+          "type": "fields",
+          "label": "Review scope and assignment",
+          "guidance": "Reassign conflicts and keep the scope proportionate.",
+          "fields": [
+            {
+              "key": "reviewer",
+              "label": "Assigned reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "scope",
+              "label": "Authorized review scope",
+              "units": 1.5
+            },
+            {
+              "key": "conflict_check",
+              "label": "Conflict check status",
+              "units": 1.1
+            },
+            {
+              "key": "target_date",
+              "label": "Target review date",
+              "units": 1.0
+            },
+            {
+              "key": "specialist_route",
+              "label": "Specialist-review reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "review_controls",
+          "type": "checklist",
+          "label": "Neutral review controls",
+          "guidance": "The case reviewer records an operational assessment, not a judicial finding.",
+          "items": [
+            "Reporter account and requested correction are preserved",
+            "Relevant records, messages, work orders, and access logs are identified",
+            "Each person receives an appropriate opportunity to provide information",
+            "Conflicting facts and unavailable evidence remain explicit",
+            "Protected traits and unrelated personal information are excluded",
+            "Interim measures do not imply a finding or punish protected activity",
+            "Legal, fair-housing, privacy, safety, or employment questions are escalated",
+            "Proposed adverse action is held for separate authorization"
+          ]
+        },
+        {
+          "key": "review_activity",
+          "type": "table",
+          "label": "Review activity and source log",
+          "guidance": "Preserve notes in the approved confidential case location.",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 0.8
+            },
+            {
+              "key": "activity",
+              "label": "Interview, inspection, or review",
+              "units": 1.6
+            },
+            {
+              "key": "source",
+              "label": "Source or participant",
+              "units": 1.3
+            },
+            {
+              "key": "result",
+              "label": "Factual result or gap",
+              "units": 1.7
+            },
+            {
+              "key": "next_step",
+              "label": "Next step and owner",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "issue_assessment",
+          "type": "table",
+          "label": "Issue-by-issue operational assessment",
+          "guidance": "Do not enter legal conclusions, diagnoses, or unsupported credibility labels.",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue reviewed",
+              "units": 1.3
+            },
+            {
+              "key": "supporting_facts",
+              "label": "Supporting facts",
+              "units": 1.6
+            },
+            {
+              "key": "conflicting_facts",
+              "label": "Conflict or gap",
+              "units": 1.4
+            },
+            {
+              "key": "policy_route",
+              "label": "Policy or qualified route",
+              "units": 1.3
+            },
+            {
+              "key": "status",
+              "label": "Assessment status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "response_rationale",
+          "type": "textarea",
+          "label": "Proposed response, evidence basis, uncertainty, and escalation",
+          "guidance": "Any adverse, legal, accommodation, or protected decision requires separate authorized review.",
+          "height": 54,
+          "fields": [
+            {
+              "key": "response_rationale_details",
+              "label": "Proposed operational response, supporting evidence, unresolved facts, qualified review, owner, and due point",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "response_closeout",
+      "title": "Communication, corrective action, and closeout",
+      "guidance": "Verify commitments and preserve disagreement.",
+      "blocks": [
+        {
+          "key": "response_authorization",
+          "type": "fields",
+          "label": "Response authorization",
+          "guidance": "Authorization applies only within the reviewer's role and current qualified guidance.",
+          "fields": [
+            {
+              "key": "response_status",
+              "label": "Response status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Pending review",
+                "Authorized",
+                "Partially authorized",
+                "Referred",
+                "No operational action"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 1.0
+            },
+            {
+              "key": "response_reference",
+              "label": "Response reference",
+              "units": 1.4
+            },
+            {
+              "key": "communication_due",
+              "label": "Communication due",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective, support, and follow-up action register",
+          "guidance": "Record separate actions for maintenance, communication, training, process, or specialist review.",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or support",
+              "units": 1.5
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or affected party",
+              "units": 1.3
+            },
+            {
+              "key": "verification",
+              "label": "Verification and status",
+              "units": 1.4
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "reporter_response",
+          "type": "textarea",
+          "label": "Reporter response, disagreement, correction, or added evidence",
+          "guidance": "A reporter need not agree with the case assessment for the response to be recorded.",
+          "height": 60,
+          "fields": [
+            {
+              "key": "reporter_response_details",
+              "label": "Response, disputed fact, added evidence, requested escalation, receiving owner, and status",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "closure_checks",
+          "type": "checklist",
+          "label": "Case closure verification",
+          "guidance": "Closeout does not prevent a later correction, appeal, report, or qualified review.",
+          "items": [
+            "Immediate and temporary measures have a final disposition",
+            "Authorized response was communicated through a safe channel",
+            "Reporter corrections and disagreements remain attached",
+            "Every promised action has evidence or remains visibly open",
+            "Retaliation or recurring-pattern monitoring has an accountable owner",
+            "Separate legal, accommodation, safety, or employment routes remain linked",
+            "Confidential access and retention controls are applied",
+            "Final outcome, limitations, and reopen route are communicated"
+          ]
+        },
+        {
+          "key": "case_closeout",
+          "type": "fields",
+          "label": "Case outcome and follow-up",
+          "guidance": "Do not mark closed while a required safety or response action lacks disposition.",
+          "fields": [
+            {
+              "key": "case_outcome",
+              "label": "Operational outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Actions completed",
+                "Closed with monitoring",
+                "Referred",
+                "Unable to resolve",
+                "Withdrawn"
+              ]
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 1.1
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            },
+            {
+              "key": "monitor_owner",
+              "label": "Monitoring or reopen owner",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Follow-up review date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "case_review",
+          "type": "signatures",
+          "label": "Case preparation and qualified closeout review",
+          "guidance": "Signatures confirm review of the operational record and do not waive rights or establish a legal finding.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Record prepared by",
+              "units": 1.4
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized complaint reviewer",
+              "units": 1.4
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

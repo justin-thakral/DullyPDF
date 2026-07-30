@@ -1,0 +1,781 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1027__hvac_installation_material_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1027__hvac_installation_material_request_form.pdf",
+  "slug": "hvac-installation-material-request-form",
+  "title": "HVAC Installation Material Request and Receiving Control",
+  "subtitle": "Connect the approved hvac installation requirement to quantities, submittals, procurement and delivery dates, receiving inspection, storage, release, exceptions, and cost closeout.",
+  "description": "A complete HVAC Installation material request covering project and cost routing, technical requirements, approved products and substitutions, takeoff and waste, vendor and lead time, submittal and approval status, delivery planning, receiving evidence, lot and serial traceability, storage, nonconformance, returns, field release, and reconciliation.",
+  "use_case": "Use when the HVAC installation lead, project manager, purchasing, submittal reviewer, warehouse or receiver, quality, and accounts payable need one traceable HVAC Installation material record from request through accepted field custody.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "HVAC Installation material request and project routing",
+      "guidance": "Identify who needs what, where, when, under which cost and contract authority.",
+      "blocks": [
+        {
+          "key": "request_identity",
+          "type": "fields",
+          "label": "Material request identity",
+          "fields": [
+            {
+              "key": "request_number",
+              "label": "Material request number",
+              "units": 0.9
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.8
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.7
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 0.85
+            },
+            {
+              "key": "purchasing_owner",
+              "label": "Purchasing owner",
+              "units": 0.9
+            },
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Review",
+                "Approved",
+                "Ordered",
+                "Partial",
+                "Closed",
+                "Hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "project_need",
+          "type": "fields",
+          "label": "Project, delivery point, and need date",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "site_location",
+              "label": "Site and delivery point",
+              "units": 1.2
+            },
+            {
+              "key": "work_area",
+              "label": "Work area or system",
+              "units": 1.0
+            },
+            {
+              "key": "required_on_site",
+              "label": "Required on-site date",
+              "units": 0.9
+            },
+            {
+              "key": "install_date",
+              "label": "Planned install date",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "commercial_routing",
+          "type": "fields",
+          "label": "Commercial and approval routing",
+          "fields": [
+            {
+              "key": "contract_ref",
+              "label": "Contract or scope ref",
+              "units": 0.95
+            },
+            {
+              "key": "spec_detail",
+              "label": "Specification/detail ref",
+              "units": 1.0
+            },
+            {
+              "key": "cost_code",
+              "label": "Cost code",
+              "units": 0.75
+            },
+            {
+              "key": "budget_amount",
+              "label": "Budget amount",
+              "units": 0.85
+            },
+            {
+              "key": "change_ref",
+              "label": "Change or allowance ref",
+              "units": 0.95
+            },
+            {
+              "key": "approver",
+              "label": "Authorized approver",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "need_summary",
+          "type": "textarea",
+          "label": "HVAC Installation material need, installation outcome, and timing constraint",
+          "fields": [
+            {
+              "key": "need_detail",
+              "label": "Describe why the material is needed, exact use, predecessor, and consequence of delay",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "technical_selection",
+      "title": "HVAC Installation technical selection and submittal control",
+      "guidance": "Match the request to approved technical requirements before purchase or field use.",
+      "blocks": [
+        {
+          "key": "material_categories",
+          "type": "checklist",
+          "label": "HVAC Installation material and equipment categories",
+          "items": [
+            "Air-handling, condensing, heat-pump, or packaged equipment",
+            "Duct, fittings, dampers, access doors, and flexible connections",
+            "Duct and pipe insulation, vapor barrier, and jacketing",
+            "Refrigerant tube, fittings, valves, filter-driers, and supports",
+            "Condensate pipe, traps, pumps, drains, and overflow devices",
+            "Hydronic pipe, valves, strainers, specialties, and supports",
+            "Thermostats, sensors, controls, actuators, and interface devices",
+            "Diffusers, grilles, registers, louvers, filters, and accessories"
+          ]
+        },
+        {
+          "key": "item_request",
+          "type": "table",
+          "label": "HVAC Installation requested item schedule",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item/description",
+              "units": 1.3
+            },
+            {
+              "key": "product",
+              "label": "Product/model",
+              "units": 1.05
+            },
+            {
+              "key": "quantity",
+              "label": "Qty./unit",
+              "units": 0.75
+            },
+            {
+              "key": "requirement",
+              "label": "Spec/detail ref",
+              "units": 1.0
+            },
+            {
+              "key": "needed",
+              "label": "Need date",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Approval status",
+              "units": 0.9
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "submittal_status",
+          "type": "fields",
+          "label": "Submittal, sample, and selection status",
+          "fields": [
+            {
+              "key": "submittal_ref",
+              "label": "Submittal reference",
+              "units": 0.95
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.65
+            },
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved as noted",
+                "Revise",
+                "Rejected",
+                "Not required"
+              ]
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.75
+            },
+            {
+              "key": "sample_mockup",
+              "label": "Sample/mockup ref",
+              "units": 0.95
+            },
+            {
+              "key": "release_by",
+              "label": "Release authorized by",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "technical_requirements",
+          "type": "textarea",
+          "label": "Performance, compatibility, finish, certification, and warranty requirements",
+          "fields": [
+            {
+              "key": "requirement_detail",
+              "label": "Record mandatory characteristics and evidence needed for acceptance",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "quantity_procurement",
+      "title": "HVAC Installation quantity, sourcing, and delivery plan",
+      "guidance": "Reconcile takeoff, waste, package sizes, lead time, commercial terms, and site logistics.",
+      "blocks": [
+        {
+          "key": "quantity_basis",
+          "type": "fields",
+          "label": "HVAC Installation quantity and takeoff basis",
+          "fields": [
+            {
+              "key": "capacity",
+              "label": "Scheduled capacity",
+              "units": 0.9
+            },
+            {
+              "key": "airflow",
+              "label": "Design airflow",
+              "units": 0.9
+            },
+            {
+              "key": "external_static",
+              "label": "External static target",
+              "units": 0.9
+            },
+            {
+              "key": "refrigerant",
+              "label": "Refrigerant and charge",
+              "units": 0.9
+            },
+            {
+              "key": "voltage",
+              "label": "Voltage and phase",
+              "units": 0.9
+            },
+            {
+              "key": "condensate",
+              "label": "Condensate route length",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "quantity_reconciliation",
+          "type": "table",
+          "label": "Quantity and order reconciliation",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area/system",
+              "units": 1.0
+            },
+            {
+              "key": "net",
+              "label": "Net qty.",
+              "units": 0.7
+            },
+            {
+              "key": "waste",
+              "label": "Waste/spare",
+              "units": 0.75
+            },
+            {
+              "key": "package",
+              "label": "Package conversion",
+              "units": 1.0
+            },
+            {
+              "key": "order_qty",
+              "label": "Order qty.",
+              "units": 0.8
+            },
+            {
+              "key": "takeoff_ref",
+              "label": "Takeoff ref",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "source_comparison",
+          "type": "table",
+          "label": "Vendor, quote, lead-time, and source decision",
+          "columns": [
+            {
+              "key": "vendor",
+              "label": "Vendor/source",
+              "units": 1.0
+            },
+            {
+              "key": "quote",
+              "label": "Quote/ref",
+              "units": 0.8
+            },
+            {
+              "key": "amount",
+              "label": "Amount",
+              "units": 0.75
+            },
+            {
+              "key": "lead_time",
+              "label": "Lead time",
+              "units": 0.8
+            },
+            {
+              "key": "validity",
+              "label": "Validity/terms",
+              "units": 0.9
+            },
+            {
+              "key": "decision",
+              "label": "Decision/note",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "logistics_plan",
+          "type": "checklist",
+          "label": "Delivery and logistics planning",
+          "items": [
+            "Delivery appointment and site contact assigned",
+            "Truck, crane, lift, unloading, or dock route confirmed",
+            "Size, weight, pallet, and handling limits reviewed",
+            "Weather and temperature protection planned",
+            "Secure and conditioned storage identified",
+            "Inspection and quarantine area identified",
+            "Partial shipment and backorder plan recorded",
+            "Returns, containers, reels, pallets, or cylinders planned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "risk_substitution",
+      "title": "HVAC Installation substitution, compliance, and risk review",
+      "guidance": "Prevent unapproved substitutions and unsafe or incompatible material from reaching the field.",
+      "blocks": [
+        {
+          "key": "compatibility_checks",
+          "type": "checklist",
+          "label": "HVAC Installation compatibility and quality prompts",
+          "items": [
+            "Equipment identity, orientation, capacity, and clearances verified",
+            "Duct joints, supports, sealing, insulation, and access accepted",
+            "Refrigerant piping is supported, protected, clean, and insulated",
+            "Pressure test, evacuation, decay, and refrigerant records complete",
+            "Condensate slope, trap, overflow, and discharge are proven",
+            "Power, control wiring, safeties, sensors, and sequences function",
+            "Structural support, pad, curb, or housekeeping base release",
+            "Roofing and weatherproof penetration coordination",
+            "Electrical power, disconnect, controls, and BAS readiness",
+            "Plumbing drain, hydronic, fuel-gas, and condensate connection"
+          ]
+        },
+        {
+          "key": "substitution_register",
+          "type": "table",
+          "label": "Substitution and deviation decision register",
+          "columns": [
+            {
+              "key": "requested",
+              "label": "Requested product",
+              "units": 1.1
+            },
+            {
+              "key": "proposed",
+              "label": "Proposed substitute",
+              "units": 1.2
+            },
+            {
+              "key": "difference",
+              "label": "Technical difference",
+              "units": 1.15
+            },
+            {
+              "key": "effect",
+              "label": "Cost/time/warranty",
+              "units": 1.0
+            },
+            {
+              "key": "decision",
+              "label": "Decision/ref",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "material_safety",
+          "type": "checklist",
+          "label": "Material handling and safety review",
+          "items": [
+            "Energy sources isolated, locked, tagged, and absence verified",
+            "Electrical qualification, arc exposure, and temporary power controlled",
+            "Refrigerant recovery, cylinder, ventilation, and release controls verified",
+            "Pressure testing medium, regulator, exclusion zone, and limits approved",
+            "Brazing, soldering, hot-work permit, purge, and fire watch verified",
+            "Rigging, lifting points, crane, roof loading, and drop zones controlled",
+            "Roof, ladder, lift, shaft, ceiling, and fall exposures controlled",
+            "Confined-space or limited-access area assessed before entry"
+          ]
+        },
+        {
+          "key": "exception_route",
+          "type": "textarea",
+          "label": "Approval condition, substitution limitation, or unresolved material risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Describe evidence, decision authority, field restriction, and next action",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "material_boundary",
+          "type": "notice",
+          "label": "HVAC Installation material-control boundary",
+          "guidance": "This record does not replace permits, design calculations, code inspection, energy-control procedures, pressure-test plans, or EPA technician certification and refrigerant records. Purchase or delivery does not authorize field use before required approval and receiving acceptance."
+        }
+      ]
+    },
+    {
+      "key": "receiving_storage",
+      "title": "HVAC Installation receiving, traceability, and storage inspection",
+      "guidance": "Compare delivered material to the approved order before acceptance, payment, or installation.",
+      "blocks": [
+        {
+          "key": "delivery_reference",
+          "type": "fields",
+          "label": "Delivery and receiving reference",
+          "fields": [
+            {
+              "key": "purchase_order",
+              "label": "Purchase order",
+              "units": 0.85
+            },
+            {
+              "key": "delivery_ticket",
+              "label": "Delivery ticket",
+              "units": 0.9
+            },
+            {
+              "key": "vendor",
+              "label": "Vendor",
+              "units": 0.85
+            },
+            {
+              "key": "received_date_time",
+              "label": "Received date/time",
+              "units": 0.95
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.85
+            },
+            {
+              "key": "delivery_status",
+              "label": "Delivery status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with note",
+                "Partial",
+                "Quarantined",
+                "Rejected"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "receiving_inspection",
+          "type": "table",
+          "label": "HVAC Installation receiving and condition inspection",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item/package",
+              "units": 1.15
+            },
+            {
+              "key": "received",
+              "label": "Qty. received",
+              "units": 0.8
+            },
+            {
+              "key": "lot_serial",
+              "label": "Lot/serial/batch",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 0.95
+            },
+            {
+              "key": "match",
+              "label": "Approved match",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition/ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "receiving_checks",
+          "type": "checklist",
+          "label": "Receiving acceptance checks",
+          "items": [
+            "Purchase order and delivery ticket match",
+            "Product, model, size, color, finish, and grade match",
+            "Quantity and package count reconciled",
+            "Lot, batch, heat, serial, or expiration recorded",
+            "Damage, moisture, contamination, and packaging checked",
+            "Certificates, SDS, manuals, and warranty documents received",
+            "Temperature or environmental requirements met",
+            "Accepted and quarantined material physically separated"
+          ]
+        },
+        {
+          "key": "storage_custody",
+          "type": "table",
+          "label": "Storage, protection, issue, and custody log",
+          "columns": [
+            {
+              "key": "material",
+              "label": "Material/package",
+              "units": 1.25
+            },
+            {
+              "key": "location",
+              "label": "Storage location",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Required condition",
+              "units": 1.1
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 0.85
+            },
+            {
+              "key": "issued",
+              "label": "Issue/date ref",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "exception_closeout",
+      "title": "HVAC Installation nonconformance, field release, and cost closeout",
+      "guidance": "Resolve shortages, damage, rejection, returns, invoices, and field handoff with evidence.",
+      "blocks": [
+        {
+          "key": "nonconformance_log",
+          "type": "table",
+          "label": "Shortage, damage, nonconformance, and return register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item/qty.",
+              "units": 0.95
+            },
+            {
+              "key": "issue",
+              "label": "Issue/evidence",
+              "units": 1.25
+            },
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "disposition",
+              "label": "Return/replace/use",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status/ref",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "field_release",
+          "type": "fields",
+          "label": "Field release and custody transfer",
+          "fields": [
+            {
+              "key": "released_item",
+              "label": "Released item/package",
+              "units": 1.05
+            },
+            {
+              "key": "released_quantity",
+              "label": "Released quantity",
+              "units": 0.85
+            },
+            {
+              "key": "released_to",
+              "label": "Released to crew/area",
+              "units": 1.0
+            },
+            {
+              "key": "release_date",
+              "label": "Release date/time",
+              "units": 0.9
+            },
+            {
+              "key": "release_evidence",
+              "label": "Acceptance evidence ref",
+              "units": 1.0
+            },
+            {
+              "key": "release_status",
+              "label": "Release status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Released",
+                "Conditional",
+                "Hold",
+                "Rejected"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "HVAC Installation material closeout",
+          "items": [
+            "Ordered, shipped, received, rejected, and accepted quantities reconcile",
+            "Backorders and replacement dates are assigned",
+            "Returns, credits, deposits, and freight are documented",
+            "Invoice matches accepted material and commercial terms",
+            "Lot, serial, batch, and certificate records are retained",
+            "Field custody and remaining storage are traceable",
+            "Attic stock, spare parts, and warranty items are separated",
+            "Budget, commitment, forecast, and cost code are updated"
+          ]
+        },
+        {
+          "key": "closeout_handoff",
+          "type": "textarea",
+          "label": "Final variance, remaining material, warranty stock, and handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Reconcile quantities, cost, exceptions, custody, and next responsible owner",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "material_signoff",
+          "type": "signatures",
+          "label": "HVAC Installation material acceptance and closeout",
+          "fields": [
+            {
+              "key": "requester_sign",
+              "label": "Requester/field lead",
+              "units": 0.95
+            },
+            {
+              "key": "receiver_sign",
+              "label": "Receiver/warehouse",
+              "units": 0.95
+            },
+            {
+              "key": "quality_sign",
+              "label": "Quality approval",
+              "units": 0.9
+            },
+            {
+              "key": "purchasing_sign",
+              "label": "Purchasing closeout",
+              "units": 0.95
+            },
+            {
+              "key": "closeout_date",
+              "label": "Closeout date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

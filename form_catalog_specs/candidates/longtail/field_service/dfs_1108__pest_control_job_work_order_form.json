@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1108__pest_control_job_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1108__pest_control_job_work_order_form.pdf",
+  "slug": "pest-control-job-work-order-form",
+  "title": "Pest Control Job Work Order Form",
+  "subtitle": "Control inspection, monitoring, exclusion, treatment, and follow-up through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete pest control job work order for treatment zones, devices, products, and pest observations. It connects approved pest plan, product label, and site authorization to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified pest-management technician must control authorized pest control work from arrival and baseline findings through change approval, service evidence, testing, and handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "job_identity",
+      "title": "Pest Control work order, customer, site, and asset identity",
+      "guidance": "Anchor authorization, assigned work, materials, evidence, testing, and handoff to one controlled job record.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Pest Control job work order reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service record or application number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Customer or authorized site representative",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Service site and exact treatment or monitoring zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Target pest, site zone, device, and product identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Target pest or organism",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Structure, unit, or outdoor zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Account or service-plan number",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Prior application or device reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant pest control context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant pest control context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "scope_authorization",
+      "title": "Pest Control scope, estimate, and work authorization",
+      "guidance": "Separate requested work from the exact approved scope, price boundary, exclusions, and decision authority.",
+      "blocks": [
+        {
+          "key": "requested_tasks",
+          "type": "checklist",
+          "label": "Requested pest control work",
+          "items": [
+            "Confirm target pest and treatment threshold",
+            "Install or service identified monitoring devices",
+            "Perform approved exclusion or sanitation correction",
+            "Prepare and apply label-consistent product",
+            "Treat only documented zones and quantities",
+            "Record weather and application conditions",
+            "Remove accessible pest debris or carcasses as authorized",
+            "Post required warning or service notification",
+            "Communicate reentry, aeration, and cleanup conditions",
+            "Schedule monitoring or treatment follow-up"
+          ]
+        },
+        {
+          "key": "scope_lines",
+          "type": "table",
+          "label": "Authorized treatment zones, devices, products, and pest observations work lines",
+          "columns": [
+            {
+              "key": "asset_location",
+              "label": "Asset, zone, or location",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Reported or verified condition",
+              "units": 1.15
+            },
+            {
+              "key": "task",
+              "label": "Authorized task",
+              "units": 1.15
+            },
+            {
+              "key": "limit",
+              "label": "Quantity, limit, or exclusion",
+              "units": 1.0
+            },
+            {
+              "key": "approval_ref",
+              "label": "Approval reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "estimate_limit",
+          "type": "fields",
+          "label": "Estimate, price, and authorization limit",
+          "fields": [
+            {
+              "key": "labor_estimate",
+              "label": "Labor estimate",
+              "units": 0.75
+            },
+            {
+              "key": "materials_estimate",
+              "label": "Materials or parts estimate",
+              "units": 0.85
+            },
+            {
+              "key": "travel_fee",
+              "label": "Travel or service fee",
+              "units": 0.75
+            },
+            {
+              "key": "tax_other",
+              "label": "Tax or other approved amount",
+              "units": 0.8
+            },
+            {
+              "key": "not_to_exceed",
+              "label": "Not-to-exceed total",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_status",
+              "label": "Authorization status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limit",
+                "Partial approval",
+                "Awaiting approval",
+                "Declined",
+                "Controlled hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "work_authorization",
+          "type": "signatures",
+          "label": "Customer scope and price authorization",
+          "fields": [
+            {
+              "key": "authorized_by",
+              "label": "Authorized by customer or representative",
+              "units": 1.35
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "coordinator_acceptance",
+              "label": "Accepted by pest-service coordinator",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Authorization applies only to the listed scope and limit under the approved pest plan, product label, and site authorization."
+        }
+      ]
+    },
+    {
+      "key": "arrival_controls",
+      "title": "Pest Control arrival, site readiness, and controlled work setup",
+      "guidance": "Verify actual site conditions before beginning and stop when dispatch assumptions no longer hold.",
+      "blocks": [
+        {
+          "key": "arrival_record",
+          "type": "fields",
+          "label": "Arrival and on-site authority",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Qualified pest-management technician",
+              "units": 1.2
+            },
+            {
+              "key": "arrival_date_time",
+              "label": "Arrival date and time",
+              "units": 0.9
+            },
+            {
+              "key": "on_site_contact",
+              "label": "On-site authorized contact",
+              "units": 1.05
+            },
+            {
+              "key": "authority_reconfirmed",
+              "label": "Authority reconfirmed by",
+              "units": 1.0
+            },
+            {
+              "key": "work_start",
+              "label": "Controlled work start",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "site_controls",
+          "type": "checklist",
+          "label": "Site, access, exposure, and work-zone controls",
+          "items": [
+            "Current product labeling is available before product handling or use",
+            "Applicator credential and assignment are appropriate to the planned task",
+            "Sensitive occupants, children, pets, food, feed, and medical concerns identified",
+            "Treatment, buffer, exclusion, and restricted-entry boundaries defined",
+            "Weather, ventilation, runoff, pollinator, and water conditions checked",
+            "Required PPE, first-aid information, spill kit, and emergency contact available",
+            "Product, EPA registration, lot, mix, rate, amount, and device identity traceable",
+            "Food-contact surfaces, utensils, toys, bedding, and personal items protected",
+            "Warning, notification, reentry, aeration, and cleanup instructions assigned",
+            "Unused product, rinsate, container, carcass, and contaminated material controlled"
+          ]
+        },
+        {
+          "key": "prework_hazards",
+          "type": "checklist",
+          "label": "Pre-work hazard and stop-condition review",
+          "items": [
+            "Target pest cannot be reliably identified",
+            "Product label, SDS, registration, or intended-use direction unavailable",
+            "Applicator credential or supervision requirement not satisfied",
+            "Child, pet, food, feed, medical, or other sensitive exposure unresolved",
+            "Wind, rain, temperature, runoff, pollinator, or water condition outside limits",
+            "PPE, first-aid, spill-response, or decontamination resources unavailable",
+            "Product spill, leak, damaged container, misapplication, or unintended exposure",
+            "Treatment area cannot be secured, ventilated, posted, or kept vacant as required",
+            "Observed organism, damage, or site condition requires another qualified discipline",
+            "Customer requests a rate, site, method, or reentry instruction outside labeling"
+          ]
+        },
+        {
+          "key": "prework_variance",
+          "type": "textarea",
+          "label": "Differences from dispatch, pre-existing condition, property or equipment protection, and approved response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Differences from dispatch, pre-existing condition, property or equipment protection, and approved response",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "work_execution",
+      "title": "Pest Control task execution, labor, materials, and custody",
+      "guidance": "Record what was actually done, by whom, with which item, under which control, and against which authorized line.",
+      "blocks": [
+        {
+          "key": "task_log",
+          "type": "table",
+          "label": "Task execution and technician evidence log",
+          "columns": [
+            {
+              "key": "time_scope",
+              "label": "Time or affected scope",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Action performed",
+              "units": 1.2
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Result or status",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "performed_tasks",
+          "type": "checklist",
+          "label": "Performed service tasks",
+          "items": [
+            "Confirm target pest and treatment threshold",
+            "Install or service identified monitoring devices",
+            "Perform approved exclusion or sanitation correction",
+            "Prepare and apply label-consistent product",
+            "Treat only documented zones and quantities",
+            "Record weather and application conditions",
+            "Remove accessible pest debris or carcasses as authorized",
+            "Post required warning or service notification",
+            "Communicate reentry, aeration, and cleanup conditions",
+            "Schedule monitoring or treatment follow-up"
+          ],
+          "guidance": "Select only tasks actually completed; explain partial or deferred work in the task log."
+        },
+        {
+          "key": "materials_log",
+          "type": "table",
+          "label": "Parts, products, materials, removed items, and controlled quantities",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item, product, or part",
+              "units": 1.25
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, serial, or label ref.",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "installed_used",
+              "label": "Installed, used, or issued",
+              "units": 1.0
+            },
+            {
+              "key": "removed_disposition",
+              "label": "Removed item or disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "labor_record",
+          "type": "fields",
+          "label": "Labor, interruption, and scope reconciliation",
+          "fields": [
+            {
+              "key": "regular_labor",
+              "label": "Regular labor time",
+              "units": 0.85
+            },
+            {
+              "key": "additional_labor",
+              "label": "Additional approved labor",
+              "units": 0.9
+            },
+            {
+              "key": "delay_time",
+              "label": "Delay or access time",
+              "units": 0.8
+            },
+            {
+              "key": "scope_status",
+              "label": "Authorized scope status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Partially completed",
+                "Deferred",
+                "Stopped",
+                "Expanded with approval"
+              ]
+            },
+            {
+              "key": "change_approval",
+              "label": "Change approval reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "testing_verification",
+      "title": "Pest Control measurements, testing, and release verification",
+      "guidance": "Connect each claimed result to an actual method, acceptance basis, and traceable observation.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, adjustment, and test results",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, item, or test",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 6,
+          "guidance": "Use the method applicable to: Activity or capture count, Treated area or linear distance, Product concentration or mix, Applied quantity or device count, Wind, temperature, humidity, or rainfall condition, Restricted-entry, ventilation, or follow-up interval."
+        },
+        {
+          "key": "release_checks",
+          "type": "checklist",
+          "label": "Functional, condition, and handoff verification",
+          "items": [
+            "Treatment and device locations match the authorized service map",
+            "Product, rate, amount, and method match the controlling label",
+            "All application equipment and containers are reconciled",
+            "Warning, notification, ventilation, and reentry controls are in place",
+            "Food, personal items, pets, and sensitive areas remain protected",
+            "Spill, exposure, complaint, or non-target concern is absent or escalated",
+            "Customer received preparation, cleanup, and recurrence guidance",
+            "Monitoring or retreatment threshold and due date are assigned"
+          ]
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Completed-work evidence package",
+          "items": [
+            "Target-pest photograph or specimen reference",
+            "Monitoring-device map and count",
+            "Site-condition and entry-point photographs",
+            "Product label and EPA registration reference",
+            "Product lot, mix, rate, amount, and application method",
+            "Weather and treatment-condition record",
+            "Customer preparation and notification confirmation",
+            "Reentry, cleanup, and follow-up instructions delivered"
+          ]
+        },
+        {
+          "key": "test_limitations",
+          "type": "textarea",
+          "label": "Test conditions, unavailable test, residual symptom, access limitation, customer-observed result, and interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, unavailable test, residual symptom, access limitation, customer-observed result, and interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "work_exceptions",
+      "title": "Pest Control variance, stop-work decision, and escalation",
+      "guidance": "Do not hide an unresolved safety, authority, property, cost, quality, or evidence gap inside a completion note.",
+      "blocks": [
+        {
+          "key": "work_exception_indicators",
+          "type": "checklist",
+          "label": "Pest Control exception and stop-work indicators",
+          "items": [
+            "Target pest cannot be reliably identified",
+            "Product label, SDS, registration, or intended-use direction unavailable",
+            "Applicator credential or supervision requirement not satisfied",
+            "Child, pet, food, feed, medical, or other sensitive exposure unresolved",
+            "Wind, rain, temperature, runoff, pollinator, or water condition outside limits",
+            "PPE, first-aid, spill-response, or decontamination resources unavailable",
+            "Product spill, leak, damaged container, misapplication, or unintended exposure",
+            "Treatment area cannot be secured, ventilated, posted, or kept vacant as required",
+            "Observed organism, damage, or site condition requires another qualified discipline",
+            "Customer requests a rate, site, method, or reentry instruction outside labeling"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "work_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "work_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Pest Control job work order closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorized work completed and verified",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This pest control job work order is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when target identification, product labeling, applicator qualification, occupant protection, weather, exposure, spill, or treatment boundary is uncertain. A pest-management compliance supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified pest-management technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Pest-management compliance supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,645 @@
+{
+  "catalog_id": "facilities_maintenance/dfm_1223__fire_extinguisher_repair_request_form",
+  "description": "An original, jurisdiction-neutral fire extinguisher repair intake, diagnosis, authorization, and resolution record for a portable fire-protection unit whose location, accessibility, charge, condition, maintenance status, and hazard suitability must remain traceable. It connects facility identity, asset-specific evidence, hazards, qualified decisions, exceptions, service status, and accountable closeout without replacing employer procedures or trade judgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.95
+            },
+            {
+              "key": "record_opened_date",
+              "label": "Opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time_zone",
+              "label": "Opened time and zone",
+              "units": 1.0
+            },
+            {
+              "key": "work_order_reference",
+              "label": "Work order or route",
+              "units": 1.1
+            },
+            {
+              "field_type": "choice",
+              "key": "priority",
+              "label": "Priority",
+              "options": [
+                "Select priority",
+                "Routine",
+                "Scheduled",
+                "Urgent",
+                "Emergency"
+              ],
+              "units": 0.8
+            }
+          ],
+          "key": "record_reference",
+          "label": "Record reference and timing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.15
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.05
+            },
+            {
+              "key": "asset_reference",
+              "label": "Asset or route reference",
+              "units": 1.0
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.15
+            }
+          ],
+          "key": "facility_routing",
+          "label": "Facility, location, and responsible parties",
+          "type": "fields"
+        },
+        {
+          "guidance": "This Fire Extinguisher record organizes facts and evidence. It does not replace employer energy-control procedures, permits, manufacturer instructions, required inspection, emergency response, or qualified trade judgment. Stop and route any unsafe or uncertain condition.",
+          "key": "record_boundary",
+          "label": "Safety and authority boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Open one traceable record, identify the responsible parties, and set the review route.",
+      "key": "record_identity",
+      "title": "Fire Extinguisher Repair Request identity and routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "unit_tag",
+              "label": "Extinguisher or unit tag",
+              "units": 1.0
+            },
+            {
+              "key": "designated_location",
+              "label": "Designated location",
+              "units": 1.2
+            },
+            {
+              "key": "manufacturer_serial",
+              "label": "Manufacturer and serial",
+              "units": 1.25
+            },
+            {
+              "key": "agent_type",
+              "label": "Agent and extinguisher type",
+              "units": 1.15
+            },
+            {
+              "key": "capacity_rating",
+              "label": "Capacity and rating",
+              "units": 0.95
+            },
+            {
+              "key": "hazard_coverage",
+              "label": "Protected hazard or area",
+              "units": 1.15
+            }
+          ],
+          "key": "asset_profile",
+          "label": "Fire Extinguisher asset and system profile",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only directly observed or source-supported items; explain inaccessible, not applicable, or conflicting evidence below.",
+          "items": [
+            "Unit is in its designated place and its asset tag matches the location record",
+            "Access, visibility, mounting, cabinet, and directional marking are documented",
+            "Operating instructions and hazard rating are legible and face outward",
+            "Pressure indicator or charge condition is recorded without assuming serviceability",
+            "Pin, tamper seal, handle, hose, nozzle, horn, and discharge path are observed",
+            "Cylinder, cartridge, shell, base, and threads show no visible damage or corrosion",
+            "Leakage, agent loss, prior discharge, fire exposure, and contamination are recorded",
+            "Inspection tag, annual maintenance date, and supporting service record are linked",
+            "Hydrostatic-test and internal-maintenance dates are routed for qualified verification",
+            "Agent class and rating are checked against the documented hazard and occupancy plan",
+            "Recall, replacement, recharge, and out-of-service status are reconciled",
+            "Alternate protection is documented whenever the unit is removed from service"
+          ],
+          "key": "evidence_checkpoints",
+          "label": "Fire Extinguisher evidence checkpoints",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "inspection_point",
+              "label": "Inspection point",
+              "units": 1.15
+            },
+            {
+              "key": "observed_state",
+              "label": "Observed state",
+              "units": 1.1
+            },
+            {
+              "key": "date_or_value",
+              "label": "Date, value, or mark",
+              "units": 0.95
+            },
+            {
+              "key": "requirement_source",
+              "label": "Record or source",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Tag or evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Tie each entry to a location, source, reading condition, photo, tag, log, or other retrievable evidence.",
+          "key": "asset_register",
+          "label": "Extinguisher condition, service status, and evidence register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Fire Extinguisher condition, recent history, known changes, evidence conflicts, and access limitations",
+              "multiline": true
+            }
+          ],
+          "height": 64,
+          "key": "asset_history",
+          "label": "Fire Extinguisher condition, recent history, known changes, evidence conflicts, and access limitations",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Capture the exact asset context, supported observations, and source references.",
+      "key": "asset_evidence",
+      "title": "Fire Extinguisher facts and source evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 1.05
+            },
+            {
+              "key": "reported_by",
+              "label": "Reported by",
+              "units": 1.0
+            },
+            {
+              "key": "symptom_summary",
+              "label": "Symptom or defect summary",
+              "units": 1.35
+            },
+            {
+              "key": "service_impact",
+              "label": "Service or occupant impact",
+              "units": 1.1
+            },
+            {
+              "key": "response_priority",
+              "label": "Response priority",
+              "units": 0.95
+            },
+            {
+              "key": "response_due",
+              "label": "Response due point",
+              "units": 1.0
+            }
+          ],
+          "key": "workflow_context",
+          "label": "Repair Request scope, timing, and responsible roles",
+          "type": "fields"
+        },
+        {
+          "guidance": "A checked item confirms the control was addressed; it does not substitute for the referenced procedure, permit, test, or source.",
+          "items": [
+            "Reporter wording, observed facts, alarms, and prior symptoms are preserved",
+            "Immediate safety, service, damage, and occupant impacts are classified",
+            "Containment or shutdown does not exceed the requester's authority",
+            "Asset, location, access, keys, contacts, and operating window are confirmed",
+            "Diagnosis identifies tests, evidence, assumptions, and unresolved alternatives",
+            "Repair scope, parts, labor, outage, cost route, and authorization are explicit",
+            "Changed scope or hidden condition returns for qualified review and approval",
+            "Resolution requires functional evidence and requester or facility handoff"
+          ],
+          "key": "workflow_controls",
+          "label": "Fire Extinguisher repair request controls",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue_step",
+              "label": "Issue or work step",
+              "units": 1.15
+            },
+            {
+              "key": "observation",
+              "label": "Observation or diagnosis",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Action or repair",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Test or result",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "owner_status",
+              "label": "Owner or status",
+              "units": 1.0
+            }
+          ],
+          "key": "workflow_register",
+          "label": "Symptom, diagnosis, repair, verification, and owner register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Reported condition, diagnostic reasoning, approved repair scope, hidden conditions, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "key": "workflow_narrative",
+          "label": "Reported condition, diagnostic reasoning, approved repair scope, hidden conditions, and remaining uncertainty",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Turn the form purpose into evidence, accountable actions, and a reviewable disposition.",
+      "key": "workflow_control",
+      "title": "Fire Extinguisher repair request control record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "A checked condition requires immediate protective action, a named owner, qualified review, and a final disposition.",
+          "items": [
+            "Extinguisher is missing, discharged, depressurized, leaking, or visibly damaged",
+            "Cylinder has corrosion, pitting, heat exposure, mechanical injury, or suspect repair",
+            "Pin, seal, hose, nozzle, horn, valve, handle, or pressure indication is compromised",
+            "Access is obstructed or the unit cannot be safely reached and identified",
+            "Agent class, rating, mounting, or location may not match the documented hazard",
+            "Maintenance, recharge, hydrostatic test, recall, or condemnation status is unresolved",
+            "A unit is removed without documented alternate protection and facility notification",
+            "Inspection evidence conflicts with the tag, inventory, service label, or provider record"
+          ],
+          "key": "stop_conditions",
+          "label": "Stop and escalate when any condition is present",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate protective action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.95
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due point or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.7
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "key": "exception_register",
+          "label": "Fire Extinguisher exception and protective-action register",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "exception_narrative",
+          "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not resolve a checked stop condition by inference, an unchecked box, or a generic sign-off. Preserve the condition, protective action, authority, evidence, owner, due point, and verified disposition.",
+          "key": "escalation_boundary",
+          "label": "Escalation record boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Stop when authority, access, energy control, safety, evidence, or service status is unresolved.",
+      "key": "exceptions_escalation",
+      "title": "Fire Extinguisher stop conditions, exceptions, and escalation"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "options": [
+                "Select disposition",
+                "Repair approved",
+                "Diagnostic work only",
+                "Temporary repair approved",
+                "Permanent repair complete",
+                "Deferred with controls",
+                "Request rejected or rerouted"
+              ],
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.85
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.85
+            },
+            {
+              "key": "review_or_expiry",
+              "label": "Review or expiry date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 1.1
+            },
+            {
+              "key": "communication_route",
+              "label": "Communication route",
+              "units": 1.05
+            }
+          ],
+          "key": "decision_record",
+          "label": "Repair Request decision, timing, and authority",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only controls supported by referenced evidence; unresolved controls remain open conditions.",
+          "items": [
+            "Diagnosis is supported by observations and does not overstate certainty",
+            "Repair method, parts, access, isolation, outage, and qualified trade are approved",
+            "Temporary work has a limit, monitoring plan, permanent correction, and stop trigger",
+            "Functional and protective checks support the service disposition",
+            "Requester-visible impacts and restrictions are communicated",
+            "Closed request links repair, test, parts, cost, evidence, and acceptance records",
+            "Qualified fire-protection provider reviews recharge, repair, testing, and condemnation work",
+            "Location and hazard suitability are confirmed against the approved fire-protection plan",
+            "Removed or rejected equipment has replacement or alternate-protection evidence",
+            "No inspection mark is treated as proof of internal condition or future performance",
+            "Service dates, tags, seals, and inventory status reconcile before acceptance",
+            "Facility owner approves any temporary gap, restriction, or follow-up due point"
+          ],
+          "key": "decision_controls",
+          "label": "Fire Extinguisher repair request decision controls",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "key": "decision_rationale",
+          "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "key": "decision_approval",
+          "label": "Preparation, qualified review, and facility authorization",
+          "type": "signatures"
+        },
+        {
+          "guidance": "Do not use this Fire Extinguisher record as permission for work outside the approved scope, as proof that an unperformed test passed, or as a substitute for required qualified-person, employer, authority, or manufacturer approval.",
+          "key": "decision_limitation",
+          "label": "Decision-use limitation",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Separate the authorized decision from preliminary observation and record its limits.",
+      "key": "qualified_decision",
+      "title": "Fire Extinguisher qualified decision and authorization"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final repair-request disposition",
+              "units": 1.2
+            },
+            {
+              "key": "service_or_asset_status",
+              "label": "Service or asset status",
+              "units": 1.0
+            },
+            {
+              "key": "final_evidence_reference",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "remaining_action_owner",
+              "label": "Remaining action owner",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.05
+            },
+            {
+              "key": "closure_date_time",
+              "label": "Closure date and time",
+              "units": 1.0
+            }
+          ],
+          "key": "outcome_handoff",
+          "label": "Repair Request outcome and primary handoff",
+          "type": "fields"
+        },
+        {
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger before the record can be treated as closed.",
+          "items": [
+            "Accepted unit is mounted, visible, accessible, sealed, and identified in its assigned place",
+            "Rejected unit is tagged, segregated, and routed for qualified service or disposal",
+            "Replacement or alternate protection is installed and communicated when required",
+            "Inspection, maintenance, recharge, and test records are linked to the exact serial or tag",
+            "Inventory and protected-area records reflect the final location and service state",
+            "Open deficiency, responsible owner, due point, and verification method are recorded"
+          ],
+          "key": "closeout_evidence",
+          "label": "Fire Extinguisher closeout evidence",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "record_or_item",
+              "label": "Record or item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_owner",
+              "label": "Recipient or owner",
+              "units": 1.0
+            },
+            {
+              "key": "date_method",
+              "label": "Date and method",
+              "units": 0.95
+            },
+            {
+              "key": "status_due",
+              "label": "Status or due point",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_register",
+          "label": "Final evidence, communication, custody, and follow-up register",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "closeout_summary",
+          "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close only when the final condition is evidenced and every open action has an owner.",
+      "key": "completion_handoff",
+      "title": "Fire Extinguisher completion, evidence reconciliation, and handoff"
+    }
+  ],
+  "slug": "fire-extinguisher-repair-request-form",
+  "source_filename": "dfm_1223__fire_extinguisher_repair_request_form.pdf",
+  "source_section": "facilities_maintenance",
+  "subtitle": "Fire Extinguisher: Route a reported defect from symptom and immediate containment through diagnosis, approved repair, verification, service restoration, and requester handoff.",
+  "title": "Fire Extinguisher Repair Request Form",
+  "use_case": "Use when a facility owner, maintenance coordinator, qualified technician, or service vendor needs one traceable fire extinguisher repair request record from opening through evidence-backed disposition, handoff, and follow-up."
+}

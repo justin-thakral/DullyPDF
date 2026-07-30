@@ -1,0 +1,707 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1156__mobile_mechanic_service_call_intake_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1156__mobile_mechanic_service_call_intake_form.pdf",
+  "slug": "mobile-mechanic-service-call-intake-form",
+  "title": "Mobile Mechanic Service Call Intake Form",
+  "subtitle": "Control mobile diagnosis, vehicle stabilization, repair, testing, and return or tow decision through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete mobile mechanic service service call intake for vehicles, systems, components, fluids, tools, supports, and work-zone controls. It connects approved repair scope, service information, and site plan to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a mobile-service dispatcher must triage and route a new mobile mechanic service request without promising scope before site, asset, hazard, access, and authorization facts are known.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Mobile Mechanic request, customer, site, and asset identity",
+      "guidance": "Create one authoritative intake record before advice, dispatch, access, or work is promised.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Mobile Mechanic service call intake reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Dispatch or mobile work-order number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Vehicle owner or authorized fleet contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Vehicle and roadside or field work zone",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "VIN, unit, plate, mileage, engine-hour, and component identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Vehicle or fleet unit",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "VIN, plate, year, make, and model",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Mileage or engine hours",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Roadside, yard, jobsite, or field location",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant mobile mechanic service context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant mobile mechanic service context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "condition_triage",
+      "title": "Mobile Mechanic reported condition and immediate triage",
+      "guidance": "Preserve the caller's facts, distinguish an active hazard from a service symptom, and assign immediate controls.",
+      "blocks": [
+        {
+          "key": "reported_conditions",
+          "type": "checklist",
+          "label": "Reported condition, symptom, or service trigger",
+          "items": [
+            "VIN, unit, plate, mileage, engine hours, and customer-reported symptom",
+            "Roadside or field location, traffic, grade, ground, lighting, and weather",
+            "Tires, wheels, brakes, steering, suspension, frame, and visible damage",
+            "Engine, fuel, intake, exhaust, cooling, lubrication, and leak condition",
+            "Battery, charging, starting, wiring, lighting, controls, and high-voltage status",
+            "Transmission, driveline, axle, hub, differential, and related components",
+            "Hydraulic, pneumatic, pressure, lift, attachment, and stored-energy condition",
+            "Safety systems, warning lamps, diagnostic codes, recalls, and service history",
+            "Jack points, support locations, vehicle stability, and ground capacity",
+            "Parts, fluids, tools, spill kit, fire extinguisher, recovery, and tow readiness"
+          ],
+          "guidance": "Select only observations reported or directly confirmed during intake."
+        },
+        {
+          "key": "condition_pattern",
+          "type": "fields",
+          "label": "Condition timing, recurrence, and current state",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.9
+            },
+            {
+              "key": "last_normal",
+              "label": "Last known acceptable condition",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current operating or site state",
+              "units": 1.05
+            },
+            {
+              "key": "people_impacted",
+              "label": "People, occupants, or operations affected",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "immediate_controls",
+          "type": "checklist",
+          "label": "Immediate controls communicated or already in place",
+          "items": [
+            "Vehicle authority, dispatch location, VIN, unit, and requested scope confirmed",
+            "Traffic, visibility, weather, terrain, lighting, and escape path assessed",
+            "Vehicle parked, braked, chocked, stabilized, and protected from impact",
+            "Jack, stands, lift points, cribbing, and ground capacity verified before elevation",
+            "Ignition, keys, battery, high voltage, stored pressure, heat, and moving parts controlled",
+            "Fuel, oil, coolant, refrigerant, battery, and spill or fire controls available",
+            "Service information, torque values, parts, tools, and recall status checked",
+            "Customer and bystanders kept outside the controlled work zone",
+            "Removed parts, fluids, batteries, tires, and contaminated material controlled",
+            "Functional test, leak check, roadworthiness decision, and tow route defined"
+          ],
+          "guidance": "Record only controls that were actually communicated, confirmed, or assigned."
+        },
+        {
+          "key": "caller_account",
+          "type": "textarea",
+          "label": "Caller observations in their own words, actions already taken, instructions given, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Caller observations in their own words, actions already taken, instructions given, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "access_readiness",
+      "title": "Mobile Mechanic access, authority, and visit readiness",
+      "guidance": "Confirm that the assigned person can reach the exact scope without creating a new access, exposure, or property risk.",
+      "blocks": [
+        {
+          "key": "access_assignment",
+          "type": "fields",
+          "label": "Access and authorized site contact",
+          "fields": [
+            {
+              "key": "access_contact",
+              "label": "On-site access contact",
+              "units": 1.0
+            },
+            {
+              "key": "access_method",
+              "label": "Gate, key, badge, escort, or entry method",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_window",
+              "label": "Authorized service window",
+              "units": 0.95
+            },
+            {
+              "key": "occupied_status",
+              "label": "Occupied or operating status",
+              "units": 0.95
+            },
+            {
+              "key": "special_access",
+              "label": "Parking, roof, utility, animal, or other access note",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Customer and site readiness confirmations",
+          "items": [
+            "Exact vehicle, equipment, and roadside or field work zone and affected area can be identified",
+            "Authorized contact will be available during the service window",
+            "Access restrictions, keys, alarms, gates, or escorts are understood",
+            "People, pets, vehicles, products, or operations can be protected",
+            "Utilities, controls, equipment, or records needed for diagnosis are accessible",
+            "Pre-visit customer preparation has been communicated",
+            "Photograph, privacy, security, or evidence restrictions are documented",
+            "Other contractor, landlord, fleet, facility, or authority coordination is assigned"
+          ]
+        },
+        {
+          "key": "customer_commitment",
+          "type": "fields",
+          "label": "Requested response and customer commitment",
+          "fields": [
+            {
+              "key": "requested_date",
+              "label": "Requested visit date or response time",
+              "units": 1.0
+            },
+            {
+              "key": "service_level",
+              "label": "Priority or service level",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Priority",
+                "Emergency triage",
+                "After-hours",
+                "Hold for review"
+              ]
+            },
+            {
+              "key": "cost_authority",
+              "label": "Diagnostic or visit charge authority",
+              "units": 1.0
+            },
+            {
+              "key": "approval_contact",
+              "label": "Additional-work approval contact",
+              "units": 1.05
+            },
+            {
+              "key": "communication_method",
+              "label": "Preferred update method",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "access_constraints",
+          "type": "textarea",
+          "label": "Access restrictions, customer preparation, privacy limits, occupancy conditions, and visit assumptions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Access restrictions, customer preparation, privacy limits, occupancy conditions, and visit assumptions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "history_evidence",
+      "title": "Mobile Mechanic service history and available evidence",
+      "guidance": "Give the assigned technician enough traceable context for a productive and controlled first visit.",
+      "blocks": [
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Available mobile mechanic service evidence and records",
+          "items": [
+            "VIN, unit, plate, mileage, and location record",
+            "Customer symptom and dashboard-warning photographs",
+            "Diagnostic code, scan, meter, pressure, or test result",
+            "Pre-work vehicle, component, and site condition",
+            "Installed part, fluid, tire, battery, and lot identifiers",
+            "Torque, adjustment, calibration, or configuration reference",
+            "Leak, stationary, functional, and roadworthiness test",
+            "Return-to-service, restriction, recovery, or tow handoff"
+          ]
+        },
+        {
+          "key": "history_log",
+          "type": "table",
+          "label": "Prior service, change, event, and result history",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or period",
+              "units": 0.8
+            },
+            {
+              "key": "event",
+              "label": "Service, change, or event",
+              "units": 1.3
+            },
+            {
+              "key": "party",
+              "label": "Provider or responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Result or recurrence",
+              "units": 1.2
+            },
+            {
+              "key": "reference",
+              "label": "Record or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "warranty_recall_context",
+          "type": "checklist",
+          "label": "Warranty, contract, recall, and other routing context",
+          "items": [
+            "Original mobile work order and completion date",
+            "Covered vehicle, system, component, and installed part",
+            "VIN, mileage, engine hours, and use",
+            "Original diagnostic and test results",
+            "Collision, tow, overload, modification, fluid, or maintenance changes",
+            "Current symptom, warning, leak, noise, or failure date",
+            "Photographs, codes, measurements, and prior communication",
+            "Coverage term, exclusions, safe interim control, and inspection location"
+          ]
+        },
+        {
+          "key": "history_limitations",
+          "type": "textarea",
+          "label": "Known history, unavailable records, conflicting information, and facts the technician must verify on site",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Known history, unavailable records, conflicting information, and facts the technician must verify on site",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "dispatch_plan",
+      "title": "Mobile Mechanic dispatch decision and technician preparation",
+      "guidance": "Translate intake facts into an explicit assignment without implying that unverified work or price is authorized.",
+      "blocks": [
+        {
+          "key": "dispatch_assignment",
+          "type": "fields",
+          "label": "Dispatch and qualification assignment",
+          "fields": [
+            {
+              "key": "assigned_technician",
+              "label": "Qualified mobile mechanic",
+              "units": 1.2
+            },
+            {
+              "key": "qualification_ref",
+              "label": "License, certification, or qualification ref.",
+              "units": 1.1
+            },
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled arrival window",
+              "units": 0.95
+            },
+            {
+              "key": "dispatcher",
+              "label": "Mobile-service dispatcher",
+              "units": 1.0
+            },
+            {
+              "key": "dispatch_status",
+              "label": "Dispatch status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Ready to dispatch",
+                "Awaiting customer",
+                "Awaiting qualified review",
+                "Refer to other provider",
+                "Emergency route"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "planned_service_scope",
+          "type": "checklist",
+          "label": "Likely diagnostic or service preparation",
+          "items": [
+            "Secure the vehicle and establish the mobile work zone",
+            "Control ignition, keys, battery, high voltage, pressure, heat, and movement",
+            "Perform approved scan, test, and physical diagnosis",
+            "Lift and support only at verified points when required",
+            "Repair or replace the authorized component",
+            "Service approved fluid, filter, battery, tire, or wear item",
+            "Apply required torque, adjustment, and configuration",
+            "Check for leaks, loose parts, tools, and foreign material",
+            "Complete stationary and limited functional tests",
+            "Decide return to service, restricted movement, recovery, or tow"
+          ],
+          "guidance": "This is a preparation list, not authorization to complete every listed task."
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Likely parts, tools, records, permits, and coordination needs",
+          "columns": [
+            {
+              "key": "need",
+              "label": "Resource or coordination need",
+              "units": 1.35
+            },
+            {
+              "key": "basis",
+              "label": "Intake basis",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Ready or pending",
+              "units": 0.8
+            },
+            {
+              "key": "reference",
+              "label": "Source or confirmation ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "technician_brief",
+          "type": "textarea",
+          "label": "Technician brief: outcome, scope, controls, access, evidence, and stop conditions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Technician brief: outcome, scope, controls, access, evidence, and stop conditions",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "guidance": "Verify the full intake record before arrival and stop or escalate when traffic, vehicle support, lifting, stored energy, high voltage, fuel, fire, weather, spill, repair information, or roadworthiness condition is uncertain."
+        }
+      ]
+    },
+    {
+      "key": "intake_exceptions",
+      "title": "Mobile Mechanic intake exception, containment, and escalation",
+      "guidance": "Make the trigger, immediate protection, decision owner, deadline, and dispatch restriction reconstructable.",
+      "blocks": [
+        {
+          "key": "intake_exception_indicators",
+          "type": "checklist",
+          "label": "Mobile Mechanic exception and stop-work indicators",
+          "items": [
+            "Traffic, shoulder, grade, weather, lighting, or escape path is unsafe",
+            "Vehicle cannot be parked, braked, chocked, stabilized, or protected",
+            "Jack, stand, lift point, cribbing, or ground capacity is uncertain",
+            "Unexpected start, movement, pressure, heat, electrical, or high-voltage energy",
+            "Fuel, vapor, battery, fire, hot-surface, fluid, refrigerant, or spill concern",
+            "Tire, spring, air system, hydraulic system, or other stored energy uncontrolled",
+            "Service information, recall status, torque, calibration, or part compatibility uncertain",
+            "Repair exceeds mobile capability, available tools, environment, or authorization",
+            "Roadworthiness, braking, steering, tire, wheel, lighting, or structural condition uncertain",
+            "Customer requests driving or operation before required testing or tow decision"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "intake_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Mobile Mechanic service call intake closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Dispatched with confirmed controls",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This mobile mechanic service service call intake is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when traffic, vehicle support, lifting, stored energy, high voltage, fuel, fire, weather, spill, repair information, or roadworthiness condition is uncertain. A automotive or fleet safety supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified mobile mechanic and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Automotive or fleet safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import secrets
 import sqlite3
 import time
@@ -96,6 +97,7 @@ LEASE_POLICIES: dict[Stage, LeasePolicy] = {
 CLAIMED_STAGES = frozenset(LEASE_POLICIES)
 ALL_STAGE_VALUES = tuple(stage.value for stage in Stage)
 ALL_BATCH_STATUS_VALUES = tuple(status.value for status in BatchStatus)
+OPEN_BATCH_RETARGETABLE_STAGES = frozenset({Stage.SPEC_READY})
 
 ARTIFACT_UPDATE_FIELDS = frozenset(
     {
@@ -106,7 +108,21 @@ ARTIFACT_UPDATE_FIELDS = frozenset(
         "pdf_uri",
         "thumbnail_uri",
         "qa_evidence_uri",
+        "qa_evidence_hash",
+        "review_evidence_uri",
+        "review_evidence_hash",
     }
+)
+OPEN_BATCH_RELEASE_EVIDENCE_FIELDS = (
+    "pdf_hash",
+    "thumbnail_hash",
+    "schema_hash",
+    "pdf_uri",
+    "thumbnail_uri",
+    "qa_evidence_uri",
+    "qa_evidence_hash",
+    "review_evidence_uri",
+    "review_evidence_hash",
 )
 FREEZE_REQUIRED_FIELDS = (
     "spec_hash",
@@ -116,8 +132,13 @@ FREEZE_REQUIRED_FIELDS = (
     "pdf_uri",
     "thumbnail_uri",
     "qa_evidence_uri",
+    "qa_evidence_hash",
+    "review_evidence_uri",
+    "review_evidence_hash",
 )
 _IDEMPOTENCY_MISSING = object()
+COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}(?:[0-9a-f]{24})?$")
+SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True)
@@ -140,6 +161,9 @@ class WorkItem:
     pdf_uri: str | None
     thumbnail_uri: str | None
     qa_evidence_uri: str | None
+    qa_evidence_hash: str | None
+    review_evidence_uri: str | None
+    review_evidence_hash: str | None
     lease_owner: str | None
     lease_token: str | None
     fence_epoch: int
@@ -170,9 +194,14 @@ class Batch:
     target_count: int
     base_commit: str
     renderer_commit: str
+    source_commit: str | None
+    selection_digest: str | None
+    build_report_hash: str | None
+    release_manifest_hash: str | None
     status: BatchStatus
     frozen_digest: str | None
     manifest: dict[str, Any] | None
+    version: int
     created_at: float
     frozen_at: float | None
 
@@ -186,6 +215,16 @@ class Completion:
 @dataclass(frozen=True)
 class FreezeResult:
     batch: Batch
+    idempotent_replay: bool
+
+
+@dataclass(frozen=True)
+class OpenBatchRetargetResult:
+    batch: Batch
+    selection_digest: str
+    item_count: int
+    previous_state_digest: str
+    current_state_digest: str
     idempotent_replay: bool
 
 
@@ -236,6 +275,22 @@ def _validate_nonempty(name: str, value: str) -> str:
     normalized = str(value or "").strip()
     if not normalized:
         raise ValueError(f"{name} must not be empty")
+    return normalized
+
+
+def _validate_commit(name: str, value: str) -> str:
+    normalized = _validate_nonempty(name, value)
+    if not COMMIT_PATTERN.fullmatch(normalized):
+        raise ValueError(
+            f"{name} must be a lowercase 40- or 64-character Git object ID"
+        )
+    return normalized
+
+
+def _validate_sha256(name: str, value: str) -> str:
+    normalized = _validate_nonempty(name, value)
+    if not SHA256_PATTERN.fullmatch(normalized):
+        raise ValueError(f"{name} must be a lowercase SHA-256 digest")
     return normalized
 
 
@@ -307,9 +362,14 @@ class CatalogFactoryLedger:
                     target_count INTEGER NOT NULL CHECK (target_count > 0),
                     base_commit TEXT NOT NULL,
                     renderer_commit TEXT NOT NULL,
+                    source_commit TEXT,
+                    selection_digest TEXT,
+                    build_report_hash TEXT,
+                    release_manifest_hash TEXT,
                     status TEXT NOT NULL CHECK (status IN ({batch_status_values})),
                     frozen_digest TEXT,
                     manifest_json TEXT,
+                    version INTEGER NOT NULL DEFAULT 0 CHECK (version >= 0),
                     created_at REAL NOT NULL,
                     frozen_at REAL,
                     CHECK (
@@ -340,6 +400,9 @@ class CatalogFactoryLedger:
                     pdf_uri TEXT,
                     thumbnail_uri TEXT,
                     qa_evidence_uri TEXT,
+                    qa_evidence_hash TEXT,
+                    review_evidence_uri TEXT,
+                    review_evidence_hash TEXT,
                     lease_owner TEXT,
                     lease_token TEXT,
                     fence_epoch INTEGER NOT NULL DEFAULT 0 CHECK (fence_epoch >= 0),
@@ -441,39 +504,15 @@ class CatalogFactoryLedger:
                 END;
 
                 CREATE TRIGGER IF NOT EXISTS
-                    catalog_factory_prevent_frozen_artifact_update
-                BEFORE UPDATE OF
-                    section,
-                    filename,
-                    slug,
-                    ownership,
-                    intent_fingerprint,
-                    payload_json,
-                    current_asset_hash,
-                    spec_hash,
-                    pdf_hash,
-                    thumbnail_hash,
-                    schema_hash,
-                    pdf_uri,
-                    thumbnail_uri,
-                    qa_evidence_uri
-                ON catalog_factory_items
-                WHEN OLD.batch_id IS NOT NULL
-                    AND EXISTS (
-                        SELECT 1
-                        FROM catalog_factory_batches
-                        WHERE batch_id = OLD.batch_id AND status = 'frozen'
-                    )
-                BEGIN
-                    SELECT RAISE(ABORT, 'frozen batch artifacts are immutable');
-                END;
-
-                CREATE TRIGGER IF NOT EXISTS
                     catalog_factory_prevent_frozen_batch_update
                 BEFORE UPDATE OF
                     target_count,
                     base_commit,
                     renderer_commit,
+                    source_commit,
+                    selection_digest,
+                    build_report_hash,
+                    release_manifest_hash,
                     status,
                     frozen_digest,
                     manifest_json,
@@ -490,6 +529,102 @@ class CatalogFactoryLedger:
                 WHEN OLD.status = 'frozen'
                 BEGIN
                     SELECT RAISE(ABORT, 'frozen batch cannot be deleted');
+                END;
+                """
+            )
+            existing_columns = {
+                str(row["name"])
+                for row in connection.execute(
+                    "PRAGMA table_info(catalog_factory_items)"
+                ).fetchall()
+            }
+            evidence_columns = {
+                "qa_evidence_hash": "TEXT",
+                "review_evidence_uri": "TEXT",
+                "review_evidence_hash": "TEXT",
+            }
+            for column_name, column_type in evidence_columns.items():
+                if column_name not in existing_columns:
+                    connection.execute(
+                        f"ALTER TABLE catalog_factory_items "
+                        f"ADD COLUMN {column_name} {column_type}"
+                    )
+            existing_batch_columns = {
+                str(row["name"])
+                for row in connection.execute(
+                    "PRAGMA table_info(catalog_factory_batches)"
+                ).fetchall()
+            }
+            batch_evidence_columns = {
+                "source_commit": "TEXT",
+                "selection_digest": "TEXT",
+                "build_report_hash": "TEXT",
+                "release_manifest_hash": "TEXT",
+                "version": "INTEGER NOT NULL DEFAULT 0 CHECK (version >= 0)",
+            }
+            for column_name, column_type in batch_evidence_columns.items():
+                if column_name not in existing_batch_columns:
+                    connection.execute(
+                        f"ALTER TABLE catalog_factory_batches "
+                        f"ADD COLUMN {column_name} {column_type}"
+                    )
+            connection.executescript(
+                """
+                DROP TRIGGER IF EXISTS
+                    catalog_factory_prevent_frozen_artifact_update;
+                DROP TRIGGER IF EXISTS
+                    catalog_factory_prevent_frozen_batch_update;
+
+                CREATE TRIGGER
+                    catalog_factory_prevent_frozen_artifact_update
+                BEFORE UPDATE OF
+                    section,
+                    filename,
+                    slug,
+                    ownership,
+                    intent_fingerprint,
+                    payload_json,
+                    current_asset_hash,
+                    spec_hash,
+                    pdf_hash,
+                    thumbnail_hash,
+                    schema_hash,
+                    pdf_uri,
+                    thumbnail_uri,
+                    qa_evidence_uri,
+                    qa_evidence_hash,
+                    review_evidence_uri,
+                    review_evidence_hash
+                ON catalog_factory_items
+                WHEN OLD.batch_id IS NOT NULL
+                    AND EXISTS (
+                        SELECT 1
+                        FROM catalog_factory_batches
+                        WHERE batch_id = OLD.batch_id AND status = 'frozen'
+                    )
+                BEGIN
+                    SELECT RAISE(ABORT, 'frozen batch artifacts are immutable');
+                END;
+
+                CREATE TRIGGER
+                    catalog_factory_prevent_frozen_batch_update
+                BEFORE UPDATE OF
+                    target_count,
+                    base_commit,
+                    renderer_commit,
+                    source_commit,
+                    selection_digest,
+                    build_report_hash,
+                    release_manifest_hash,
+                    status,
+                    frozen_digest,
+                    manifest_json,
+                    version,
+                    frozen_at
+                ON catalog_factory_batches
+                WHEN OLD.status = 'frozen'
+                BEGIN
+                    SELECT RAISE(ABORT, 'frozen batch manifest is immutable');
                 END;
                 """
             )
@@ -528,6 +663,9 @@ class CatalogFactoryLedger:
             pdf_uri=row["pdf_uri"],
             thumbnail_uri=row["thumbnail_uri"],
             qa_evidence_uri=row["qa_evidence_uri"],
+            qa_evidence_hash=row["qa_evidence_hash"],
+            review_evidence_uri=row["review_evidence_uri"],
+            review_evidence_hash=row["review_evidence_hash"],
             lease_owner=row["lease_owner"],
             lease_token=row["lease_token"],
             fence_epoch=row["fence_epoch"],
@@ -548,9 +686,14 @@ class CatalogFactoryLedger:
             target_count=row["target_count"],
             base_commit=row["base_commit"],
             renderer_commit=row["renderer_commit"],
+            source_commit=row["source_commit"],
+            selection_digest=row["selection_digest"],
+            build_report_hash=row["build_report_hash"],
+            release_manifest_hash=row["release_manifest_hash"],
             status=BatchStatus(row["status"]),
             frozen_digest=row["frozen_digest"],
             manifest=json.loads(row["manifest_json"]) if row["manifest_json"] else None,
+            version=row["version"],
             created_at=row["created_at"],
             frozen_at=row["frozen_at"],
         )
@@ -686,6 +829,9 @@ class CatalogFactoryLedger:
     @staticmethod
     def _item_from_result(payload: Mapping[str, Any]) -> WorkItem:
         values = dict(payload)
+        values.setdefault("qa_evidence_hash", None)
+        values.setdefault("review_evidence_uri", None)
+        values.setdefault("review_evidence_hash", None)
         values["stage"] = Stage(values["stage"])
         values["retry_stage"] = (
             Stage(values["retry_stage"]) if values.get("retry_stage") else None
@@ -701,8 +847,120 @@ class CatalogFactoryLedger:
     @staticmethod
     def _batch_from_result(payload: Mapping[str, Any]) -> Batch:
         values = dict(payload)
+        values.setdefault("source_commit", None)
+        values.setdefault("selection_digest", None)
+        values.setdefault("build_report_hash", None)
+        values.setdefault("release_manifest_hash", None)
+        values.setdefault("version", 0)
         values["status"] = BatchStatus(values["status"])
         return Batch(**values)
+
+    @classmethod
+    def _open_batch_retarget_state_digest(
+        cls,
+        batch: Batch,
+        items: Sequence[WorkItem],
+    ) -> str:
+        """Hash the complete batch and member state used by a retarget fence.
+
+        Building the digest is O(n) in the number of batch members. Including
+        every durable item field means a claim, artifact write, membership
+        change, or identity edit invalidates an operator's previously inspected
+        fence even when the batch provenance row itself did not change.
+        """
+
+        return _sha256_json(
+            {
+                "schema_version": 1,
+                "batch": cls._batch_result(batch),
+                "items": [
+                    cls._item_result(item)
+                    for item in sorted(items, key=lambda item: item.catalog_id)
+                ],
+            }
+        )
+
+    @staticmethod
+    def _open_batch_retarget_blockers(
+        batch: Batch,
+        items: Sequence[WorkItem],
+    ) -> list[str]:
+        blockers: list[str] = []
+        if batch.status is not BatchStatus.OPEN:
+            blockers.append(f"batch status is {batch.status.value}, expected open")
+        bound_fields = {
+            field_name: getattr(batch, field_name)
+            for field_name in (
+                "source_commit",
+                "selection_digest",
+                "build_report_hash",
+                "release_manifest_hash",
+                "frozen_digest",
+                "manifest",
+                "frozen_at",
+            )
+            if getattr(batch, field_name) is not None
+        }
+        if bound_fields:
+            blockers.append(
+                "batch already contains release or frozen evidence: "
+                + ", ".join(sorted(bound_fields))
+            )
+        if len(items) != batch.target_count:
+            blockers.append(
+                f"batch contains {len(items)} items, expected {batch.target_count}"
+            )
+
+        stage_counts: dict[str, int] = {}
+        leased_count = 0
+        missing_spec_hashes = 0
+        non_first_party = 0
+        release_evidence_count = 0
+        for item in items:
+            stage_counts[item.stage.value] = stage_counts.get(item.stage.value, 0) + 1
+            if (
+                item.lease_owner is not None
+                or item.lease_token is not None
+                or item.lease_expires_at is not None
+            ):
+                leased_count += 1
+            if item.ownership != "first_party":
+                non_first_party += 1
+            if any(
+                getattr(item, field_name) is not None
+                for field_name in OPEN_BATCH_RELEASE_EVIDENCE_FIELDS
+            ):
+                release_evidence_count += 1
+            if item.stage in OPEN_BATCH_RETARGETABLE_STAGES and not item.spec_hash:
+                missing_spec_hashes += 1
+
+        unexpected_stages = {
+            stage: count
+            for stage, count in sorted(stage_counts.items())
+            if Stage(stage) not in OPEN_BATCH_RETARGETABLE_STAGES
+        }
+        if unexpected_stages:
+            formatted = ", ".join(
+                f"{stage}={count}" for stage, count in unexpected_stages.items()
+            )
+            blockers.append(
+                "batch members are not all at the safe spec_ready boundary: "
+                f"{formatted}"
+            )
+        if leased_count:
+            blockers.append(f"{leased_count} item(s) contain lease state")
+        if missing_spec_hashes:
+            blockers.append(
+                f"{missing_spec_hashes} spec_ready item(s) are missing spec_hash"
+            )
+        if non_first_party:
+            blockers.append(f"{non_first_party} item(s) are not first_party")
+        if release_evidence_count:
+            blockers.append(
+                f"{release_evidence_count} item(s) already contain rendered, QA, "
+                "or review evidence"
+            )
+        return blockers
 
     def add_item(
         self,
@@ -1621,6 +1879,414 @@ class CatalogFactoryLedger:
         finally:
             connection.close()
 
+    def get_open_batch_retarget_fence(self, batch_id: str) -> dict[str, Any]:
+        """Return the exact state fence required by a provenance retarget.
+
+        This read transaction gives an operator one coherent batch/member
+        snapshot. The returned digest is opaque and must be supplied unchanged
+        to ``retarget_open_batch_source``; any intervening durable member or
+        batch mutation invalidates it.
+        """
+
+        batch_id = _validate_nonempty("batch_id", batch_id)
+        connection = self._connect()
+        try:
+            connection.execute("BEGIN")
+            row = connection.execute(
+                "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                (batch_id,),
+            ).fetchone()
+            if row is None:
+                raise ConflictError(f"Unknown batch {batch_id!r}")
+            batch = self._row_to_batch(row)
+            item_rows = connection.execute(
+                """
+                SELECT *
+                FROM catalog_factory_items
+                WHERE batch_id = ?
+                ORDER BY catalog_id
+                """,
+                (batch_id,),
+            ).fetchall()
+            items = [self._row_to_item(item_row) for item_row in item_rows]
+            state_digest = self._open_batch_retarget_state_digest(batch, items)
+            blockers = self._open_batch_retarget_blockers(batch, items)
+            stage_counts: dict[str, int] = {}
+            for item in items:
+                stage_counts[item.stage.value] = (
+                    stage_counts.get(item.stage.value, 0) + 1
+                )
+            connection.commit()
+            return {
+                "schema_version": 1,
+                "batch_id": batch.batch_id,
+                "target_count": batch.target_count,
+                "item_count": len(items),
+                "base_commit": batch.base_commit,
+                "renderer_commit": batch.renderer_commit,
+                "source_commit": batch.source_commit,
+                "batch_version": batch.version,
+                "state_digest": state_digest,
+                "stages": dict(sorted(stage_counts.items())),
+                "eligible": not blockers,
+                "blockers": blockers,
+            }
+        except Exception:
+            if connection.in_transaction:
+                connection.rollback()
+            raise
+        finally:
+            connection.close()
+
+    def retarget_open_batch_source(
+        self,
+        *,
+        batch_id: str,
+        expected_base_commit: str,
+        expected_renderer_commit: str,
+        expected_batch_version: int,
+        expected_state_digest: str,
+        selection_digest: str,
+        expected_catalog_ids: Sequence[str],
+        new_source_commit: str,
+        actor: str,
+        idempotency_key: str,
+    ) -> OpenBatchRetargetResult:
+        """Retarget one fully authored, evidence-free open batch atomically.
+
+        ``source_commit`` remains unbound until reviewed release evidence is
+        reconciled. The operation instead advances ``renderer_commit`` to the
+        exact source commit that the final release builder must use. Accepting
+        only one ``new_source_commit`` argument makes renderer/source divergence
+        impossible at this boundary.
+        """
+
+        batch_id = _validate_nonempty("batch_id", batch_id)
+        expected_base_commit = _validate_commit(
+            "expected_base_commit",
+            expected_base_commit,
+        )
+        expected_renderer_commit = _validate_commit(
+            "expected_renderer_commit",
+            expected_renderer_commit,
+        )
+        expected_state_digest = _validate_sha256(
+            "expected_state_digest",
+            expected_state_digest,
+        )
+        selection_digest = _validate_sha256("selection_digest", selection_digest)
+        new_source_commit = _validate_commit("new_source_commit", new_source_commit)
+        actor = _validate_nonempty("actor", actor)
+        idempotency_key = _validate_nonempty("idempotency_key", idempotency_key)
+        expected_batch_version = int(expected_batch_version)
+        if expected_batch_version < 0:
+            raise ValueError("expected_batch_version must be non-negative")
+        normalized_catalog_ids = [
+            _validate_nonempty("catalog_id", catalog_id)
+            for catalog_id in expected_catalog_ids
+        ]
+        if len(normalized_catalog_ids) != len(set(normalized_catalog_ids)):
+            raise ValueError("expected_catalog_ids contains duplicates")
+        normalized_catalog_ids.sort()
+        request = {
+            "batch_id": batch_id,
+            "expected_base_commit": expected_base_commit,
+            "expected_renderer_commit": expected_renderer_commit,
+            "expected_batch_version": expected_batch_version,
+            "expected_state_digest": expected_state_digest,
+            "selection_digest": selection_digest,
+            "expected_catalog_ids": normalized_catalog_ids,
+            "new_source_commit": new_source_commit,
+            "actor": actor,
+        }
+        now = self._now()
+        with self._transaction() as connection:
+            replay = self._idempotency_replay(
+                connection,
+                idempotency_key=idempotency_key,
+                action="retarget_open_batch_source",
+                scope_id=batch_id,
+                request=request,
+            )
+            if replay is not _IDEMPOTENCY_MISSING:
+                return OpenBatchRetargetResult(
+                    batch=self._batch_from_result(replay["batch"]),
+                    selection_digest=replay["selection_digest"],
+                    item_count=replay["item_count"],
+                    previous_state_digest=replay["previous_state_digest"],
+                    current_state_digest=replay["current_state_digest"],
+                    idempotent_replay=True,
+                )
+
+            row = connection.execute(
+                "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                (batch_id,),
+            ).fetchone()
+            if row is None:
+                raise ConflictError(f"Unknown batch {batch_id!r}")
+            batch = self._row_to_batch(row)
+            if batch.status is BatchStatus.FROZEN:
+                raise BatchFrozenError(f"Batch {batch_id!r} is frozen")
+            if batch.status is not BatchStatus.OPEN:
+                raise ConflictError(f"Batch {batch_id!r} is not open")
+            if batch.base_commit != expected_base_commit:
+                raise ConflictError(
+                    f"Batch {batch_id!r} base commit changed from the expected value"
+                )
+            if batch.renderer_commit != expected_renderer_commit:
+                raise ConflictError(
+                    f"Batch {batch_id!r} renderer commit changed from the "
+                    "expected value"
+                )
+            if batch.version != expected_batch_version:
+                raise ConflictError(
+                    f"Batch {batch_id!r} version is {batch.version}, expected "
+                    f"{expected_batch_version}"
+                )
+
+            item_rows = connection.execute(
+                """
+                SELECT *
+                FROM catalog_factory_items
+                WHERE batch_id = ?
+                ORDER BY catalog_id
+                """,
+                (batch_id,),
+            ).fetchall()
+            items = [self._row_to_item(item_row) for item_row in item_rows]
+            actual_catalog_ids = [item.catalog_id for item in items]
+            if actual_catalog_ids != normalized_catalog_ids:
+                raise ConflictError(
+                    f"Batch {batch_id!r} membership no longer matches the "
+                    "expected tracked selection"
+                )
+            actual_state_digest = self._open_batch_retarget_state_digest(batch, items)
+            if actual_state_digest != expected_state_digest:
+                raise ConflictError(
+                    f"Batch {batch_id!r} state digest changed from the inspected fence"
+                )
+            blockers = self._open_batch_retarget_blockers(batch, items)
+            if blockers:
+                preview = "; ".join(blockers[:10])
+                if len(blockers) > 10:
+                    preview += f"; ... {len(blockers) - 10} more"
+                raise ConflictError(
+                    f"Batch {batch_id!r} is not safe to retarget: {preview}"
+                )
+            if batch.renderer_commit == new_source_commit:
+                raise ConflictError(
+                    f"Batch {batch_id!r} already uses the requested source/renderer "
+                    "commit"
+                )
+
+            cursor = connection.execute(
+                """
+                UPDATE catalog_factory_batches
+                SET renderer_commit = ?,
+                    version = version + 1
+                WHERE batch_id = ?
+                    AND status = ?
+                    AND version = ?
+                    AND base_commit = ?
+                    AND renderer_commit = ?
+                    AND source_commit IS NULL
+                    AND selection_digest IS NULL
+                    AND build_report_hash IS NULL
+                    AND release_manifest_hash IS NULL
+                    AND frozen_digest IS NULL
+                    AND manifest_json IS NULL
+                    AND frozen_at IS NULL
+                """,
+                (
+                    new_source_commit,
+                    batch_id,
+                    BatchStatus.OPEN.value,
+                    expected_batch_version,
+                    expected_base_commit,
+                    expected_renderer_commit,
+                ),
+            )
+            if cursor.rowcount != 1:
+                raise ConflictError(
+                    f"Batch {batch_id!r} provenance changed during retarget"
+                )
+            updated = self._row_to_batch(
+                connection.execute(
+                    "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                    (batch_id,),
+                ).fetchone()
+            )
+            current_state_digest = self._open_batch_retarget_state_digest(
+                updated,
+                items,
+            )
+            self._event(
+                connection,
+                event_type="batch_open_source_retargeted",
+                batch_id=batch_id,
+                actor=actor,
+                details={
+                    "selection_digest": selection_digest,
+                    "item_count": len(items),
+                    "base_commit": batch.base_commit,
+                    "previous_renderer_commit": batch.renderer_commit,
+                    "new_source_renderer_commit": updated.renderer_commit,
+                    "previous_batch_version": batch.version,
+                    "new_batch_version": updated.version,
+                    "previous_state_digest": actual_state_digest,
+                    "current_state_digest": current_state_digest,
+                },
+                now=now,
+            )
+            result = {
+                "batch": self._batch_result(updated),
+                "selection_digest": selection_digest,
+                "item_count": len(items),
+                "previous_state_digest": actual_state_digest,
+                "current_state_digest": current_state_digest,
+            }
+            self._save_idempotency(
+                connection,
+                idempotency_key=idempotency_key,
+                action="retarget_open_batch_source",
+                scope_id=batch_id,
+                request=request,
+                result=result,
+                now=now,
+            )
+            return OpenBatchRetargetResult(
+                batch=updated,
+                selection_digest=selection_digest,
+                item_count=len(items),
+                previous_state_digest=actual_state_digest,
+                current_state_digest=current_state_digest,
+                idempotent_replay=False,
+            )
+
+    def bind_release_evidence(
+        self,
+        *,
+        batch_id: str,
+        source_commit: str,
+        selection_digest: str,
+        build_report_hash: str,
+        release_manifest_hash: str,
+        idempotency_key: str,
+    ) -> Batch:
+        """Bind an open batch to one exact reviewed release package.
+
+        The binding is write-once. It prevents a later reconciliation or
+        membership change from silently pointing the same batch at different
+        source, selection, report, or release-manifest bytes.
+        """
+
+        batch_id = _validate_nonempty("batch_id", batch_id)
+        evidence = {
+            "source_commit": _validate_commit("source_commit", source_commit),
+            "selection_digest": _validate_sha256(
+                "selection_digest",
+                selection_digest,
+            ),
+            "build_report_hash": _validate_sha256(
+                "build_report_hash",
+                build_report_hash,
+            ),
+            "release_manifest_hash": _validate_sha256(
+                "release_manifest_hash",
+                release_manifest_hash,
+            ),
+        }
+        idempotency_key = _validate_nonempty("idempotency_key", idempotency_key)
+        request = {"batch_id": batch_id, **evidence}
+        now = self._now()
+        with self._transaction() as connection:
+            replay = self._idempotency_replay(
+                connection,
+                idempotency_key=idempotency_key,
+                action="bind_release_evidence",
+                scope_id=batch_id,
+                request=request,
+            )
+            if replay is not _IDEMPOTENCY_MISSING:
+                return self._batch_from_result(replay)
+
+            row = connection.execute(
+                "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                (batch_id,),
+            ).fetchone()
+            if row is None:
+                raise ConflictError(f"Unknown batch {batch_id!r}")
+            batch = self._row_to_batch(row)
+            if batch.status is BatchStatus.FROZEN:
+                raise BatchFrozenError(f"Batch {batch_id!r} is frozen")
+            existing = {
+                "source_commit": batch.source_commit,
+                "selection_digest": batch.selection_digest,
+                "build_report_hash": batch.build_report_hash,
+                "release_manifest_hash": batch.release_manifest_hash,
+            }
+            if any(value is not None for value in existing.values()):
+                if existing != evidence:
+                    raise ConflictError(
+                        f"Batch {batch_id!r} is already bound to different "
+                        "release evidence"
+                    )
+            else:
+                cursor = connection.execute(
+                    """
+                    UPDATE catalog_factory_batches
+                    SET source_commit = ?,
+                        selection_digest = ?,
+                        build_report_hash = ?,
+                        release_manifest_hash = ?,
+                        version = version + 1
+                    WHERE batch_id = ?
+                        AND status = ?
+                        AND source_commit IS NULL
+                        AND selection_digest IS NULL
+                        AND build_report_hash IS NULL
+                        AND release_manifest_hash IS NULL
+                    """,
+                    (
+                        evidence["source_commit"],
+                        evidence["selection_digest"],
+                        evidence["build_report_hash"],
+                        evidence["release_manifest_hash"],
+                        batch_id,
+                        BatchStatus.OPEN.value,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    raise ConflictError(
+                        f"Batch {batch_id!r} release evidence changed concurrently"
+                    )
+                self._event(
+                    connection,
+                    event_type="batch_release_evidence_bound",
+                    batch_id=batch_id,
+                    actor="release_reconciler",
+                    details=evidence,
+                    now=now,
+                )
+                batch = self._row_to_batch(
+                    connection.execute(
+                        "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                        (batch_id,),
+                    ).fetchone()
+                )
+
+            result = self._batch_result(batch)
+            self._save_idempotency(
+                connection,
+                idempotency_key=idempotency_key,
+                action="bind_release_evidence",
+                scope_id=batch_id,
+                request=request,
+                result=result,
+                now=now,
+            )
+            return batch
+
     def assign_to_batch(
         self,
         *,
@@ -1656,6 +2322,10 @@ class CatalogFactoryLedger:
             batch = self._row_to_batch(batch_row)
             if batch.status is BatchStatus.FROZEN:
                 raise BatchFrozenError(f"Batch {batch_id!r} is already frozen")
+            if batch.source_commit is not None:
+                raise ConflictError(
+                    f"Batch {batch_id!r} membership is sealed by release evidence"
+                )
             existing_count = connection.execute(
                 """
                 SELECT COUNT(*)
@@ -1760,13 +2430,18 @@ class CatalogFactoryLedger:
         now = self._now()
         with self._transaction() as connection:
             row = connection.execute(
-                "SELECT status FROM catalog_factory_batches WHERE batch_id = ?",
+                "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
                 (batch_id,),
             ).fetchone()
             if row is None:
                 raise ConflictError(f"Unknown batch {batch_id!r}")
-            if BatchStatus(row["status"]) is BatchStatus.FROZEN:
+            batch = self._row_to_batch(row)
+            if batch.status is BatchStatus.FROZEN:
                 raise BatchFrozenError(f"Batch {batch_id!r} is frozen")
+            if batch.source_commit is not None:
+                raise ConflictError(
+                    f"Batch {batch_id!r} membership is sealed by release evidence"
+                )
             placeholders = ",".join("?" for _ in normalized_ids)
             leased_count = connection.execute(
                 f"""
@@ -1849,6 +2524,14 @@ class CatalogFactoryLedger:
             ).fetchall()
             items = [self._row_to_item(item_row) for item_row in item_rows]
             errors: list[str] = []
+            for field_name in (
+                "source_commit",
+                "selection_digest",
+                "build_report_hash",
+                "release_manifest_hash",
+            ):
+                if not getattr(batch, field_name):
+                    errors.append(f"batch is missing {field_name}")
             if len(items) != batch.target_count:
                 errors.append(
                     f"expected exactly {batch.target_count} items, found {len(items)}"
@@ -1878,12 +2561,18 @@ class CatalogFactoryLedger:
                 "target_count": batch.target_count,
                 "base_commit": batch.base_commit,
                 "renderer_commit": batch.renderer_commit,
+                "source_commit": batch.source_commit,
+                "selection_digest": batch.selection_digest,
+                "build_report_hash": batch.build_report_hash,
+                "release_manifest_hash": batch.release_manifest_hash,
                 "items": [
                     {
                         "catalog_id": item.catalog_id,
                         "section": item.section,
                         "filename": item.filename,
                         "slug": item.slug,
+                        "title": item.payload.get("title"),
+                        "risk_tier": item.payload.get("risk_tier"),
                         "ownership": item.ownership,
                         "intent_fingerprint": item.intent_fingerprint,
                         "current_asset_hash": item.current_asset_hash,
@@ -1894,6 +2583,9 @@ class CatalogFactoryLedger:
                         "pdf_uri": item.pdf_uri,
                         "thumbnail_uri": item.thumbnail_uri,
                         "qa_evidence_uri": item.qa_evidence_uri,
+                        "qa_evidence_hash": item.qa_evidence_hash,
+                        "review_evidence_uri": item.review_evidence_uri,
+                        "review_evidence_hash": item.review_evidence_hash,
                     }
                     for item in items
                 ],
@@ -1905,7 +2597,8 @@ class CatalogFactoryLedger:
                 SET status = ?,
                     frozen_digest = ?,
                     manifest_json = ?,
-                    frozen_at = ?
+                    frozen_at = ?,
+                    version = version + 1
                 WHERE batch_id = ? AND status = ?
                 """,
                 (
@@ -2014,6 +2707,7 @@ __all__ = [
     "InvalidTransitionError",
     "LedgerError",
     "LeaseLostError",
+    "OpenBatchRetargetResult",
     "Stage",
     "WorkItem",
     "WorkLease",

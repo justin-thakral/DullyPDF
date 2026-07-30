@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2211__banquet_order_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2211__banquet_order_inventory_log_form.pdf",
+  "slug": "banquet-order-inventory-log-form",
+  "title": "Banquet Order Inventory Log Form",
+  "subtitle": "Reconcile what left the store for a function against what came back: equipment, linen, china, and consumables, with breakage, loss, and charges.",
+  "description": "An original issue-and-return log for banquet inventory. It records the log identity and count basis, an equipment register with issued, returned, broken, and missing quantities, a linen and china register, consumable usage with the cost basis, variances and their disposition, and an accountable closeout that hands the store a reconciled position.",
+  "use_case": "Use for one function or one service period when a banquet store must know what it issued, what came back, and what has to be charged or replaced. The log closes when every variance is corrected or escalated and the next owner is named.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_identity",
+      "title": "Log identity and count basis",
+      "guidance": "State what is being counted and how.",
+      "blocks": [
+        {
+          "key": "log_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.85
+            },
+            {
+              "key": "function_date",
+              "label": "Function date",
+              "units": 0.9
+            },
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.2
+            },
+            {
+              "key": "storekeeper",
+              "label": "Storekeeper",
+              "units": 0.95
+            },
+            {
+              "key": "function_room",
+              "label": "Function room",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "count_basis",
+          "type": "fields",
+          "label": "Count basis",
+          "fields": [
+            {
+              "key": "issued_by",
+              "label": "Issued by",
+              "units": 0.9
+            },
+            {
+              "key": "returned_by",
+              "label": "Returned by",
+              "units": 0.95
+            },
+            {
+              "key": "count_method",
+              "label": "Count method",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Full physical count",
+                "Spot count",
+                "Par restock",
+                "Vendor manifest"
+              ]
+            },
+            {
+              "key": "par_reference",
+              "label": "Par sheet reference",
+              "units": 1.15
+            },
+            {
+              "key": "variance_threshold",
+              "label": "Variance threshold",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "equipment_register",
+      "title": "Equipment issued and returned",
+      "guidance": "One row per item type, with breakage and loss separated.",
+      "blocks": [
+        {
+          "key": "equipment_rows",
+          "type": "table",
+          "label": "Equipment register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.5
+            },
+            {
+              "key": "issued",
+              "label": "Issued",
+              "units": 0.6
+            },
+            {
+              "key": "returned",
+              "label": "Returned",
+              "units": 0.65
+            },
+            {
+              "key": "broken",
+              "label": "Broken",
+              "units": 0.6
+            },
+            {
+              "key": "missing",
+              "label": "Missing",
+              "units": 0.6
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 12,
+          "guidance": "Broken and missing are different problems with different owners; do not merge them into one number."
+        },
+        {
+          "key": "equipment_totals",
+          "type": "fields",
+          "label": "Equipment totals",
+          "fields": [
+            {
+              "key": "items_issued",
+              "label": "Items issued",
+              "units": 1.0
+            },
+            {
+              "key": "items_returned",
+              "label": "Items returned",
+              "units": 1.05
+            },
+            {
+              "key": "breakage_total",
+              "label": "Breakage total",
+              "units": 1.05
+            },
+            {
+              "key": "missing_total",
+              "label": "Missing total",
+              "units": 1.0
+            },
+            {
+              "key": "charge_total",
+              "label": "Charges raised",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "linen_and_china",
+      "title": "Linen, china, and glassware",
+      "guidance": "Track condition on return, not only count.",
+      "blocks": [
+        {
+          "key": "linen_rows",
+          "type": "table",
+          "label": "Linen and tableware register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.3
+            },
+            {
+              "key": "pattern_size",
+              "label": "Pattern or size",
+              "units": 1.0
+            },
+            {
+              "key": "issued",
+              "label": "Issued",
+              "units": 0.6
+            },
+            {
+              "key": "returned_soiled",
+              "label": "Soiled back",
+              "units": 0.8
+            },
+            {
+              "key": "damaged",
+              "label": "Damaged",
+              "units": 0.7
+            },
+            {
+              "key": "condition_note",
+              "label": "Condition note",
+              "units": 1.25
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "handling_controls",
+          "type": "checklist",
+          "label": "Handling controls",
+          "items": [
+            "Soiled linen bagged and separated from damaged linen",
+            "Damaged linen recorded with the cause where it is known",
+            "China and glassware counted before leaving the function room",
+            "Breakage recorded at the point it was found, not at restock",
+            "Specialty rentals separated and counted against the vendor manifest",
+            "Chafers, fuel holders, and risers returned clean and complete",
+            "Items still in the function room at close recorded as outstanding"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consumables",
+      "title": "Consumable usage and cost basis",
+      "guidance": "Consumption that becomes a charge needs a recorded basis.",
+      "blocks": [
+        {
+          "key": "consumable_rows",
+          "type": "table",
+          "label": "Consumable usage",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.35
+            },
+            {
+              "key": "opening",
+              "label": "Opening",
+              "units": 0.7
+            },
+            {
+              "key": "used",
+              "label": "Used",
+              "units": 0.6
+            },
+            {
+              "key": "closing",
+              "label": "Closing",
+              "units": 0.7
+            },
+            {
+              "key": "unit_cost",
+              "label": "Unit cost",
+              "units": 0.8
+            },
+            {
+              "key": "charged_to",
+              "label": "Charged to",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "consumption_summary",
+          "type": "fields",
+          "label": "Consumption summary",
+          "fields": [
+            {
+              "key": "fuel_used",
+              "label": "Chafing fuel used",
+              "units": 1.15
+            },
+            {
+              "key": "candles_used",
+              "label": "Candles used",
+              "units": 0.95
+            },
+            {
+              "key": "disposables_used",
+              "label": "Disposables used",
+              "units": 1.15
+            },
+            {
+              "key": "cost_basis",
+              "label": "Cost basis applied",
+              "units": 1.15
+            },
+            {
+              "key": "billing_reference",
+              "label": "Billing reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "variance_exceptions",
+      "title": "Variances, exceptions, and escalation",
+      "guidance": "Every unexplained difference gets an owner.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Returned count is below issued count with no recorded cause",
+            "Breakage exceeds the variance threshold for the item",
+            "A rental item is missing against the vendor manifest",
+            "Items were left in the function room after teardown",
+            "A charge was raised without a recorded cost basis",
+            "Par levels will not cover the next scheduled function",
+            "Damage suggests an equipment or handling fault to investigate"
+          ]
+        },
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Variance register",
+          "columns": [
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 1.2
+            },
+            {
+              "key": "cause",
+              "label": "Cause or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "What this log does not decide",
+          "guidance": "This log records counts, condition, and cost basis. It does not assign financial responsibility to an individual, authorize a client charge, or settle a rental vendor claim. Route charges, deductions, and vendor claims to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Closeout and handoff to the store",
+      "guidance": "Leave the store a position it can open from.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Log closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - reconciled",
+                "Closed with follow-up",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "restock_due",
+              "label": "Restock due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Issued and returned counts reconciled item by item",
+            "Breakage and loss recorded with owners and dispositions",
+            "Rental returns reconciled against the vendor manifest",
+            "Restock requirements raised for the next function",
+            "Charges and cost basis filed with the function billing record"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Reconciled outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Inventory handoff detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by banquet manager",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

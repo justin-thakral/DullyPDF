@@ -1,0 +1,516 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2235__lost_and_found_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2235__lost_and_found_request_form.pdf",
+  "slug": "lost-and-found-request-form",
+  "title": "Lost and Found Request Form",
+  "subtitle": "Take a guest's report of a lost item, describe it well enough to match, and run a search of the areas and storage that could hold it.",
+  "description": "An original lost-item report and search request. It captures the claimant and how to reach them, a description detailed enough to match against stored property without prompting, the last-known movements to search, the search performed with results by area, the match decision, unresolved searches, and the handoff to a release order or a closed no-match.",
+  "use_case": "Use when a guest reports something missing and the venue needs a description it can match against found property. The request closes when an item is matched and routed to a release order, or the search is exhausted and the claimant is told.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "Report intake and routing",
+      "guidance": "Record who is looking, how to reach them, and who owns the search.",
+      "blocks": [
+        {
+          "key": "intake_routing",
+          "type": "fields",
+          "label": "Report identity and routing",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Report record ID",
+              "units": 0.95
+            },
+            {
+              "key": "received_at",
+              "label": "Received at",
+              "units": 0.85
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.95
+            },
+            {
+              "key": "assigned_searcher",
+              "label": "Assigned to",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "claimant_contact",
+          "type": "fields",
+          "label": "Claimant and contact",
+          "fields": [
+            {
+              "key": "claimant_name",
+              "label": "Claimant name",
+              "units": 1.15
+            },
+            {
+              "key": "claimant_contact",
+              "label": "Contact for follow-up",
+              "units": 1.4
+            },
+            {
+              "key": "stay_or_event",
+              "label": "Stay or event reference",
+              "units": 1.35
+            },
+            {
+              "key": "claimant_status",
+              "label": "Claimant status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Still on property",
+                "Departed today",
+                "Departed earlier",
+                "Never stayed - visitor"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "item_description",
+      "title": "Description of the lost item",
+      "guidance": "Detail enough to match, taken from the claimant without prompting.",
+      "blocks": [
+        {
+          "key": "item_basics",
+          "type": "fields",
+          "label": "Item basics",
+          "fields": [
+            {
+              "key": "item_category",
+              "label": "Item category",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Clothing or outerwear",
+                "Bag or luggage",
+                "Phone or tablet",
+                "Laptop or electronics",
+                "Jewelry or watch",
+                "Wallet or purse",
+                "Identification document",
+                "Keys",
+                "Eyewear",
+                "Medication",
+                "Other personal item"
+              ]
+            },
+            {
+              "key": "brand_or_make",
+              "label": "Brand or make",
+              "units": 1.0
+            },
+            {
+              "key": "color",
+              "label": "Color",
+              "units": 0.7
+            },
+            {
+              "key": "size_or_model",
+              "label": "Size or model",
+              "units": 1.0
+            },
+            {
+              "key": "declared_value",
+              "label": "Value as stated",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "distinguishing_detail",
+          "type": "textarea",
+          "label": "Distinguishing detail only the owner would know",
+          "fields": [
+            {
+              "key": "detail_description",
+              "label": "Distinguishing detail of the lost item"
+            }
+          ],
+          "height": 62,
+          "guidance": "Take this before showing any item. Detail that only the owner would know is what makes a later ownership check meaningful."
+        },
+        {
+          "key": "special_handling_flags",
+          "type": "checklist",
+          "label": "Special handling flags raised by the claimant",
+          "items": [
+            "Item contains identification documents",
+            "Item contains payment cards or cash",
+            "Item contains prescribed medication",
+            "Item contains keys to a vehicle or property",
+            "Item is a mobility, hearing, or vision aid",
+            "Item has high stated value",
+            "Item contains data the claimant is concerned about",
+            "Item is perishable"
+          ],
+          "guidance": "A mobility, hearing, or vision aid, or a medication, is treated as urgent and escalated to the responsible manager immediately."
+        }
+      ]
+    },
+    {
+      "key": "search_performed",
+      "title": "Last-known movements and search performed",
+      "guidance": "Search where the item was, not where it is convenient to look.",
+      "blocks": [
+        {
+          "key": "movement_rows",
+          "type": "table",
+          "label": "Last-known movements to search",
+          "columns": [
+            {
+              "key": "place",
+              "label": "Place or area",
+              "units": 1.3
+            },
+            {
+              "key": "when_there",
+              "label": "When there",
+              "units": 1.0
+            },
+            {
+              "key": "confidence",
+              "label": "Claimant confidence",
+              "units": 1.15
+            },
+            {
+              "key": "searched",
+              "label": "Searched",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.25
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "search_steps",
+          "type": "checklist",
+          "label": "Search steps completed",
+          "items": [
+            "Current lost-and-found storage searched against the description",
+            "Recent intake log searched for the date range",
+            "Guest room searched by housekeeping where applicable",
+            "Function space and event area searched",
+            "Restaurant, bar, and lounge areas searched",
+            "Vehicle, valet, and shuttle checked",
+            "Fitness, pool, and locker areas searched",
+            "High-value safe checked by the responsible manager",
+            "Camera review requested where the area and time are known"
+          ]
+        },
+        {
+          "key": "search_result",
+          "type": "fields",
+          "label": "Search result",
+          "fields": [
+            {
+              "key": "search_status",
+              "label": "Search status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "In progress",
+                "Complete - no match",
+                "Complete - possible match",
+                "Complete - matched"
+              ]
+            },
+            {
+              "key": "searched_by",
+              "label": "Searched by",
+              "units": 1.0
+            },
+            {
+              "key": "search_completed",
+              "label": "Search completed",
+              "units": 1.15
+            },
+            {
+              "key": "areas_searched",
+              "label": "Areas searched",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "match_decision",
+      "title": "Match decision and routing",
+      "guidance": "A possible match is not a release; it routes to an ownership check.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Match decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Matched - release order raised",
+                "Possible match - check due",
+                "No match - search continues",
+                "No match - search closed",
+                "Withdrawn by claimant"
+              ]
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision at",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "tag_number",
+              "label": "Matched tag number",
+              "units": 1.2
+            },
+            {
+              "key": "release_order",
+              "label": "Release order ID",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "match_boundary",
+          "type": "notice",
+          "label": "How a match is handled",
+          "guidance": "A description that resembles a stored item is a possible match, not proof of ownership. Do not describe a stored item to a claimant, show it to them, or release it on the strength of a category and color alone. Ownership is tested on the release order by the responsible manager, and identification documents, medication, payment cards, and high-value items are never released without that check."
+        },
+        {
+          "key": "decision_notes",
+          "type": "textarea",
+          "label": "Why the item was or was not matched, and what the claimant was told",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Match decision notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "search_exceptions",
+      "title": "Unresolved searches and escalation",
+      "guidance": "An unfinished search stays open with an owner.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "An area could not be searched before the claimant departed",
+            "Camera retention will expire before a review can be completed",
+            "The item may have been taken by another guest",
+            "The description is too general to match against storage",
+            "A possible match exists but ownership cannot be established",
+            "The item is a mobility, hearing, or vision aid and is still missing",
+            "Prescribed medication is still missing",
+            "The claimant reports payment cards or identification missing"
+          ],
+          "guidance": "Missing payment cards or identification are escalated so the claimant can be advised to contact their own providers."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Unresolved search register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Unresolved item",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Tell the claimant the outcome, and record that you did.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Report closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - item released",
+                "Closed - no match found",
+                "Closed - claimant withdrew",
+                "Closed - no contact possible"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "contact_log",
+          "type": "table",
+          "label": "Claimant contact log",
+          "columns": [
+            {
+              "key": "contact_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "method",
+              "label": "Method",
+              "units": 0.8
+            },
+            {
+              "key": "by_whom",
+              "label": "By whom",
+              "units": 1.0
+            },
+            {
+              "key": "what_was_said",
+              "label": "What was said",
+              "units": 1.5
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Claimant told the search outcome with a date and a named contact",
+            "Description filed so a later intake can be matched against it",
+            "Recheck date set where the search is closed but the item may still arrive",
+            "Open searches transferred with named owners",
+            "Urgent items escalated to the responsible manager",
+            "Contact details retained only as long as applicable policy allows"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Search outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Report handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by duty manager",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

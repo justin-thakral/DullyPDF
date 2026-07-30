@@ -1,0 +1,666 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1845__safety_incident_report_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1845__safety_incident_report_form.pdf",
+  "slug": "safety-incident-report-form",
+  "title": "Safety Incident Report Form",
+  "subtitle": "Use this report to stabilize the event, preserve facts and evidence, analyze contributing factors, assign corrective work, and verify closeout for a safety incident workflow.",
+  "description": "An original operational safety incident report form that controls a workplace safety event and corrective-action record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the reporting worker, supervisor, or incident coordinator needs a traceable report so the qualified safety, occupational health, operations, or regulatory reviewer can stabilize, investigate, classify, notify, correct, reopen work, or escalate the safety event under the emergency procedure, hazard-control plan, incident-investigation process, reporting rules, and anti-retaliation policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "incident_intake",
+      "title": "Safety Incident incident intake and immediate response",
+      "guidance": "Protect people, records, access, assets, and ongoing operations before routine analysis.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Safety Incident identity",
+          "fields": [
+            {
+              "key": "incident_record",
+              "label": "Safety incident number",
+              "units": 0.85
+            },
+            {
+              "key": "event_date_time",
+              "label": "Event date and time",
+              "units": 0.8
+            },
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 0.8
+            },
+            {
+              "key": "site_location",
+              "label": "Site and exact location",
+              "units": 1.05
+            },
+            {
+              "key": "work_area_task",
+              "label": "Work area and task",
+              "units": 1.05
+            },
+            {
+              "key": "reporting_route",
+              "label": "Reporter or confidential route",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Incident ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "immediate_status",
+          "type": "fields",
+          "label": "Immediate response status",
+          "fields": [
+            {
+              "key": "incident_discovered",
+              "label": "Discovered date and time",
+              "units": 0.85
+            },
+            {
+              "key": "incident_reported",
+              "label": "Reported date and time",
+              "units": 0.85
+            },
+            {
+              "key": "current_condition",
+              "label": "Current condition",
+              "units": 0.95
+            },
+            {
+              "key": "work_paused",
+              "label": "Work or process paused?",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "urgent_route",
+              "label": "Urgent escalation route",
+              "units": 1.0
+            },
+            {
+              "key": "response_lead",
+              "label": "Response lead",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "emergency_boundary",
+          "type": "notice",
+          "label": "Immediate response boundary",
+          "guidance": "Use emergency, safety, medical, security, privacy, payroll, or law-enforcement channels when the event requires them. Do not delay urgent response to complete this form."
+        }
+      ]
+    },
+    {
+      "key": "factual_record",
+      "title": "Safety Incident event facts, sequence, and affected scope",
+      "guidance": "Preserve what was observed and when; distinguish facts from inference and avoid unnecessary sensitive detail.",
+      "blocks": [
+        {
+          "key": "initial_account",
+          "type": "textarea",
+          "label": "Initial factual account: what happened, how discovered, current state, and source of information",
+          "fields": [
+            {
+              "key": "account_detail",
+              "label": "Initial factual account"
+            }
+          ],
+          "height": 72
+        },
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Event and response timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.75
+            },
+            {
+              "key": "event_observation",
+              "label": "Event / observation",
+              "units": 1.35
+            },
+            {
+              "key": "source",
+              "label": "Source / witness",
+              "units": 0.85
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.05
+            },
+            {
+              "key": "actor",
+              "label": "Actor",
+              "units": 0.7
+            },
+            {
+              "key": "record_ref",
+              "label": "Record / evidence ref.",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "affected_scope",
+          "type": "fields",
+          "label": "Affected scope",
+          "fields": [
+            {
+              "key": "people_affected",
+              "label": "People or roles affected",
+              "units": 1.0
+            },
+            {
+              "key": "locations_affected",
+              "label": "Locations affected",
+              "units": 0.95
+            },
+            {
+              "key": "systems_assets",
+              "label": "Systems, assets, or records affected",
+              "units": 1.1
+            },
+            {
+              "key": "date_range",
+              "label": "Affected date or period",
+              "units": 0.85
+            },
+            {
+              "key": "known_impact",
+              "label": "Known operational impact",
+              "units": 1.0
+            },
+            {
+              "key": "scope_confidence",
+              "label": "Scope confidence",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Confirmed",
+                "Preliminary",
+                "Unknown"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evidence_preservation",
+      "title": "Safety Incident evidence and source preservation",
+      "guidance": "Retain evidence provenance, access limits, and gaps so later review can reproduce the event record.",
+      "blocks": [
+        {
+          "key": "evidence_sources",
+          "type": "checklist",
+          "label": "Safety Incident evidence sources",
+          "items": [
+            "Initial report, emergency response, and notification timeline",
+            "Scene, equipment, control, material, and environmental photographs",
+            "Reporter, witness, supervisor, and responder factual accounts",
+            "Procedure, permit, training, inspection, maintenance, and prior-event records",
+            "Alarm, sensor, access, vehicle, production, or system log",
+            "Hazard isolation, medical-routing, and exposure-control reference",
+            "Cause analysis and corrective-action verification",
+            "Qualified reporting decision, restart authorization, and worker communication"
+          ]
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Evidence item, source, custodian, preservation, access, and relevance",
+          "columns": [
+            {
+              "key": "evidence_item",
+              "label": "Evidence item",
+              "units": 1.15
+            },
+            {
+              "key": "source_time",
+              "label": "Source / time",
+              "units": 0.9
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 0.75
+            },
+            {
+              "key": "preservation",
+              "label": "Preservation / hash",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Access / privacy",
+              "units": 0.85
+            },
+            {
+              "key": "relevance",
+              "label": "Relevance / gap",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "missing_evidence",
+          "type": "textarea",
+          "label": "Missing, unavailable, changed, or time-limited evidence and effect on the review",
+          "fields": [
+            {
+              "key": "missing_detail",
+              "label": "Evidence gap and preservation narrative"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "analysis_containment",
+      "title": "Safety Incident contributing factors, containment, and escalation",
+      "guidance": "Look beyond the first error and identify system conditions, control failures, and recurrence exposure.",
+      "blocks": [
+        {
+          "key": "analysis_prompts",
+          "type": "checklist",
+          "label": "Incident and contributing-factor prompts",
+          "items": [
+            "Fatality, emergency, severe injury, hospitalization, amputation, or eye loss may require immediate external review",
+            "Continuing energy, chemical, biological, fire, structural, traffic, or violence hazard exists",
+            "Multiple workers, visitors, contractors, or public members may be affected",
+            "Exposure boundary, involved material, equipment status, or scene integrity is uncertain",
+            "Evidence could be lost through cleanup, repair, restart, or digital overwrite",
+            "Similar event, near miss, or unclosed corrective action occurred previously",
+            "Reporter raises retaliation, intimidation, suppression, or reporting-access concern",
+            "Work restarted or control was removed without the required authorization"
+          ]
+        },
+        {
+          "key": "factor_analysis",
+          "type": "table",
+          "label": "Factor, evidence, test, conclusion, and control gap",
+          "columns": [
+            {
+              "key": "factor",
+              "label": "Factor / hypothesis",
+              "units": 1.15
+            },
+            {
+              "key": "supporting_evidence",
+              "label": "Supporting evidence",
+              "units": 1.2
+            },
+            {
+              "key": "contrary_evidence",
+              "label": "Contrary evidence",
+              "units": 1.0
+            },
+            {
+              "key": "test_result",
+              "label": "Test / result",
+              "units": 0.9
+            },
+            {
+              "key": "control_gap",
+              "label": "Control gap / owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "containment_register",
+          "type": "table",
+          "label": "Immediate containment and affected-population review",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Containment action",
+              "units": 1.2
+            },
+            {
+              "key": "affected_scope",
+              "label": "Affected scope",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "implemented",
+              "label": "Implemented",
+              "units": 0.7
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.05
+            },
+            {
+              "key": "removal_condition",
+              "label": "Removal condition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "analysis_summary",
+          "type": "textarea",
+          "label": "Direct, contributing, systemic, and detection factors with rejected explanations",
+          "fields": [
+            {
+              "key": "analysis_detail",
+              "label": "Evidence-based incident analysis"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "corrective_notification",
+      "title": "Safety Incident corrective action and required notification review",
+      "guidance": "Assign durable corrective work and let qualified owners decide external or restricted notifications.",
+      "blocks": [
+        {
+          "key": "corrective_plan",
+          "type": "table",
+          "label": "Cause, corrective action, owner, due point, and effectiveness measure",
+          "columns": [
+            {
+              "key": "cause_gap",
+              "label": "Cause / control gap",
+              "units": 1.05
+            },
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "effectiveness",
+              "label": "Effectiveness measure",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "notification_review",
+          "type": "table",
+          "label": "Notification, decision owner, deadline, basis, and confirmation",
+          "columns": [
+            {
+              "key": "recipient_rule",
+              "label": "Recipient / rule",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 0.8
+            },
+            {
+              "key": "deadline",
+              "label": "Deadline",
+              "units": 0.65
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision / basis",
+              "units": 1.15
+            },
+            {
+              "key": "confirmation",
+              "label": "Confirmation / ref.",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "response_controls",
+          "type": "checklist",
+          "label": "Corrective-action and communication checks",
+          "items": [
+            "Immediate hazard and affected scope are controlled",
+            "Emergency, occupational-health, and external-reporting routes were reviewed",
+            "Investigation team has appropriate independence and worker participation",
+            "Evidence and factual accounts are sufficiently preserved",
+            "Cause analysis addresses system conditions and rejected alternatives",
+            "Interim and permanent controls have owners and due points",
+            "Restart criteria and authority are explicit",
+            "Reporter protection, communication, and effectiveness follow-up are documented"
+          ]
+        },
+        {
+          "key": "response_limitations",
+          "type": "textarea",
+          "label": "Temporary control, resource dependency, communication limit, residual exposure, and reopen trigger",
+          "fields": [
+            {
+              "key": "response_detail",
+              "label": "Corrective response and residual-risk narrative"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Safety Incident qualified review, handoff, and incident closeout",
+      "guidance": "Close only after containment, notification, corrective ownership, and follow-up evidence are reviewable.",
+      "blocks": [
+        {
+          "key": "incident_outcome",
+          "type": "fields",
+          "label": "Incident outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "incident_actions",
+          "type": "table",
+          "label": "Open safety incident action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "incident_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "incident_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "incident_signoff",
+          "type": "signatures",
+          "label": "Incident accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Safety, Occupational Health, Operations, Or Regulatory Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

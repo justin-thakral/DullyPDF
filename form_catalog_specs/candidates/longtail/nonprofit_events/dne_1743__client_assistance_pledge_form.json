@@ -1,0 +1,551 @@
+{
+  "schema_version": 1,
+  "catalog_id": "nonprofit_events/dne_1743__client_assistance_pledge_form",
+  "source_section": "nonprofit_events",
+  "source_filename": "dne_1743__client_assistance_pledge_form.pdf",
+  "slug": "client-assistance-pledge-form",
+  "title": "Client Assistance Pledge Form",
+  "subtitle": "Client Assistance workflow to record a proposed commitment, conditions, review, fulfillment evidence, and accountable closeout.",
+  "description": "An original client assistance pledge form for nonprofit operators to preserve assistance request identity, workflow evidence, decisions, exceptions, qualified review, and accountable closeout.",
+  "use_case": "Use when a nonprofit team must manage a assistance request through the pledge workflow while keeping consent, privacy, authority, evidence, escalation, and handoff visible.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "routing",
+      "title": "Client Assistance pledge routing",
+      "guidance": "Identify the record, source, priority, subject, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Pledge identity and routing",
+          "guidance": "Use this record ID on attachments, corrections, and follow-up.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Pledge record ID",
+              "units": 1
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "source_contact",
+              "label": "Source or requester",
+              "units": 1.3
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 1,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Urgent"
+              ]
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned record owner",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Client Assistance identity",
+          "guidance": "Preserve the identities used by the controlling program or partner record.",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Assistance request ID",
+              "units": 0.9
+            },
+            {
+              "key": "client_alias",
+              "label": "Client name or approved alias",
+              "units": 1.4
+            },
+            {
+              "key": "contact_route",
+              "label": "Safe contact route",
+              "units": 1.2
+            },
+            {
+              "key": "service_need",
+              "label": "Requested service",
+              "units": 1.3
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "context",
+      "title": "Client Assistance pledge scope and commitment terms",
+      "guidance": "Separate stated intent from accepted and fulfilled commitments.",
+      "blocks": [
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Client Assistance operating context",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "urgency",
+              "label": "Stated urgency",
+              "units": 1
+            },
+            {
+              "key": "service_area",
+              "label": "Service area",
+              "units": 1.1
+            },
+            {
+              "key": "household_scope",
+              "label": "Household scope",
+              "units": 1.1
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent or release status",
+              "units": 1.3
+            },
+            {
+              "key": "partner_route",
+              "label": "Partner or referral route",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Client Assistance readiness and record controls",
+          "guidance": "Confirm facts and routes; do not infer approval from a checked item.",
+          "items": [
+            "Client-stated need, priorities, and preferred safe contact route are recorded",
+            "Only information necessary for service coordination is collected",
+            "Consent, release, identity, and household evidence are referenced by status",
+            "Immediate danger, abuse, housing, food, health, or legal needs are routed",
+            "Eligibility or benefit questions are assigned to the authorized program owner",
+            "Language, accessibility, transportation, and communication barriers are identified",
+            "Referral consent, partner contact, and information-sharing limits are explicit",
+            "Promised service, owner, due point, and client communication are documented"
+          ]
+        },
+        {
+          "key": "workflow_controls",
+          "type": "checklist",
+          "label": "Pledge workflow controls",
+          "guidance": "Mark each applicable control and route any unmet condition.",
+          "items": [
+            "Pledging party and authorized contact are identified",
+            "Commitment scope, quantity or value, and timing are explicit",
+            "Conditions, restrictions, dependencies, and benefits are separated",
+            "Amendment, cancellation, and substitution routes are documented",
+            "Acceptance authority is distinct from intake or solicitation",
+            "Fulfillment evidence and acknowledgment owner are assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "details",
+      "title": "Client Assistance commitment schedule and deliverables",
+      "guidance": "Preserve repeated items and the evidence needed to reconstruct the record.",
+      "blocks": [
+        {
+          "key": "detail_register",
+          "type": "table",
+          "label": "Client Assistance pledged items, dates, and conditions",
+          "guidance": "Use one row per distinct item, activity, commitment, event, or service entry.",
+          "columns": [
+            {
+              "key": "commitment",
+              "label": "Commitment item",
+              "units": 1.5
+            },
+            {
+              "key": "measure",
+              "label": "Quantity or value",
+              "units": 1.1
+            },
+            {
+              "key": "due",
+              "label": "Due date or window",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition or dependency",
+              "units": 1.5
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "detail_narrative",
+          "type": "textarea",
+          "label": "Commitment intent, conditions, dependencies, communications, and expected fulfillment evidence",
+          "guidance": "Separate direct facts, attributed statements, and unresolved assumptions.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "detail_notes",
+              "label": "Commitment intent, conditions, dependencies, communications, and expected fulfillment evidence",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evidence",
+      "title": "Client Assistance evidence and completeness review",
+      "guidance": "Link the subject-specific evidence, record boundaries, and missing information.",
+      "blocks": [
+        {
+          "key": "subject_evidence",
+          "type": "checklist",
+          "label": "Client Assistance evidence review",
+          "guidance": "Retain source references and correction history in the approved record.",
+          "items": [
+            "Consent, release, identity, and household evidence are referenced by status",
+            "Immediate danger, abuse, housing, food, health, or legal needs are routed",
+            "Eligibility or benefit questions are assigned to the authorized program owner",
+            "Language, accessibility, transportation, and communication barriers are identified",
+            "Referral consent, partner contact, and information-sharing limits are explicit",
+            "Promised service, owner, due point, and client communication are documented",
+            "Denial, waitlist, partial assistance, and alternative-resource paths are visible",
+            "Case closure requires outcome, remaining need, and safe handoff confirmation"
+          ]
+        },
+        {
+          "key": "evidence_refs",
+          "type": "fields",
+          "label": "Evidence and communication references",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "primary_record_ref",
+              "label": "Primary record reference",
+              "units": 1.3
+            },
+            {
+              "key": "attachment_ref",
+              "label": "Attachment or evidence ref",
+              "units": 1.3
+            },
+            {
+              "key": "communication_ref",
+              "label": "Communication reference",
+              "units": 1.3
+            },
+            {
+              "key": "restricted_record_ref",
+              "label": "Restricted-record ref",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_owner",
+              "label": "Evidence owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision",
+      "title": "Client Assistance pledge decision and authorization",
+      "guidance": "Document the status, evidence basis, conditions, and accountable decision owner.",
+      "blocks": [
+        {
+          "key": "decision_status",
+          "type": "fields",
+          "label": "Pledge decision",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Decision status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Conditional",
+                "Pending",
+                "Declined",
+                "Withdrawn"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.9
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Decision evidence ref",
+              "units": 1.4
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "decision_basis",
+          "type": "checklist",
+          "label": "Decision and authorization basis",
+          "guidance": "",
+          "items": [
+            "Commitment terms and evidence match the stated pledge",
+            "Restrictions, benefits, capacity, and conflicts were reviewed",
+            "Binding, finance, tax, consent, and policy questions were routed",
+            "Acceptance conditions and authorized owner are explicit",
+            "Fulfillment, communication, and follow-up responsibilities are assigned"
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, conditions, limits, and next action",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Decision rationale, conditions, limits, and next action",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions",
+      "title": "Client Assistance exceptions and escalation",
+      "guidance": "Keep incomplete, sensitive, unsafe, disputed, or unauthorized work visible.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Pledge authority and record boundary",
+          "guidance": "A stated pledge is not fulfilled or accepted until the authorized owner confirms the terms, conditions, evidence, and receiving route. This workflow records client-stated needs and service coordination; it does not determine legal rights, medical needs, benefits, or program eligibility. Collect the minimum necessary information, honor safe-contact and consent limits, and route urgent or professional decisions to qualified owners. Hold unresolved work and route it to the qualified owner under applicable policy."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Client Assistance exception triggers",
+          "guidance": "Mark each applicable trigger and explain uncertain scope below.",
+          "items": [
+            "Safe contact, identity, consent, or information-sharing scope is uncertain",
+            "Immediate danger or urgent health, housing, food, abuse, or safety need is present",
+            "Eligibility, benefit, legal, medical, or professional decision is unresolved",
+            "Capacity, language, access, transport, funding, or partner gap blocks service",
+            "Referral, release, denial, waitlist, or partial-assistance status lacks an owner",
+            "Sensitive client information is outside the approved restricted record"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Client Assistance unresolved-item register",
+          "guidance": "Do not close a row until disposition and accountable ownership are explicit.",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Trigger or unresolved item",
+              "units": 1.5
+            },
+            {
+              "key": "action",
+              "label": "Immediate safeguard or action",
+              "units": 1.5
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.2
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "escalation_notes",
+          "type": "textarea",
+          "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout",
+      "title": "Client Assistance pledge closeout and handoff",
+      "guidance": "Reconcile the final status, transfer open work, and preserve accountable acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Pledge record closeout",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Open handoff",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.4
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.2
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Client Assistance open actions and limitations",
+          "guidance": "Carry forward every item that is not fully resolved at closeout.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open action or limitation",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status or handoff",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Client Assistance handoff confirmations",
+          "guidance": "Unchecked items remain part of the open handoff.",
+          "items": [
+            "Accepted commitment and changes were reconciled",
+            "Fulfillment evidence matches the final status",
+            "Conditions, benefits, and unresolved balances remain visible",
+            "Acknowledgment and receiving owners accepted the handoff",
+            "Cancellation or partial fulfillment was communicated",
+            "Client-stated need, priority, safe contact, and consent limits were reconciled",
+            "Services, referrals, owners, due points, and communication commitments were confirmed"
+          ]
+        },
+        {
+          "key": "final_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "guidance": "",
+          "height": 70,
+          "fields": [
+            {
+              "key": "outcome_notes",
+              "label": "Final outcome, remaining limits, communications, and acceptance notes",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "guidance": "Record accountable preparation and qualified review.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized client-services reviewer",
+              "units": 1.5
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

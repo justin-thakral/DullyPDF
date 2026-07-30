@@ -1,0 +1,540 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2217__catering_order_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2217__catering_order_incident_report_form.pdf",
+  "slug": "catering-order-incident-report-form",
+  "title": "Catering Order Incident Report Form",
+  "subtitle": "Record an off-premise catering failure - transit, temperature, shortage, or allergen exposure concern - and route the decision to the manager on duty.",
+  "description": "An original incident record for off-premise catering. It captures incident identity and where in the delivery it occurred, the factual account with transit and temperature history, the immediate response including any decision to withhold food, qualified review, corrective actions with verification, and a closeout naming residual risk.",
+  "use_case": "Use when a catering delivery fails: the vehicle is late or breaks down, a holding temperature falls outside the venue standard, an item is short or missing, site access is refused, or a guest raises an allergen concern. The report closes only after the manager on duty reviews it and corrective actions are verified.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident identity and delivery stage",
+      "guidance": "Fix the incident in time, place, and order.",
+      "blocks": [
+        {
+          "key": "incident_routing",
+          "type": "fields",
+          "label": "Incident record and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident record ID",
+              "units": 0.9
+            },
+            {
+              "key": "occurred_at",
+              "label": "Occurred at",
+              "units": 0.85
+            },
+            {
+              "key": "discovered_by",
+              "label": "Discovered by",
+              "units": 0.95
+            },
+            {
+              "key": "reported_to",
+              "label": "Reported to",
+              "units": 0.95
+            },
+            {
+              "key": "order_number",
+              "label": "Catering order number",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "delivery_context",
+          "type": "fields",
+          "label": "Delivery context",
+          "fields": [
+            {
+              "key": "site_name",
+              "label": "Delivery site",
+              "units": 1.1
+            },
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "guests_served",
+              "label": "Guests served",
+              "units": 0.9
+            },
+            {
+              "key": "delivery_stage",
+              "label": "Delivery stage",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Production",
+                "Packing and loading",
+                "In transit",
+                "Arrival and access",
+                "On-site setup",
+                "Service",
+                "Teardown and return"
+              ]
+            },
+            {
+              "key": "onsite_lead",
+              "label": "On-site lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Incident classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "What happened",
+              "units": 1.7,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Arrived outside the delivery window",
+                "Transport temperature excursion",
+                "Item short or missing on site",
+                "Wrong order delivered",
+                "Restricted portion given in error",
+                "Guest reported an allergic reaction",
+                "Guest illness reported",
+                "Vehicle breakdown or accident",
+                "Site access refused or blocked",
+                "Equipment failed on site",
+                "Spill, breakage, or property damage"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Assessed severity",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Minor - no guest impact",
+                "Moderate - service affected",
+                "Major - medical response",
+                "Critical - food withheld"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_facts",
+      "title": "Factual account and transit history",
+      "guidance": "The transit record usually explains the incident.",
+      "blocks": [
+        {
+          "key": "detection_context",
+          "type": "fields",
+          "label": "Detection and response context",
+          "fields": [
+            {
+              "key": "detected_how",
+              "label": "How it was detected",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Arrival temperature check",
+                "Site contact raised it",
+                "Guest raised it",
+                "Crew observed it",
+                "Driver reported it",
+                "Kitchen reconciliation"
+              ]
+            },
+            {
+              "key": "guests_affected",
+              "label": "Guests affected",
+              "units": 1.0
+            },
+            {
+              "key": "medical_response",
+              "label": "Medical response",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "None requested",
+                "Guest declined help",
+                "First aid on site",
+                "Emergency services called",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "first_action_at",
+              "label": "First action at",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account: what was observed, in what order, and by whom",
+          "fields": [
+            {
+              "key": "account_detail",
+              "label": "Factual account of the incident"
+            }
+          ],
+          "height": 76
+        },
+        {
+          "key": "transit_history",
+          "type": "table",
+          "label": "Transit and temperature history",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint",
+              "units": 1.2
+            },
+            {
+              "key": "clock_time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "reading",
+              "label": "Reading",
+              "units": 0.7
+            },
+            {
+              "key": "recorded_by",
+              "label": "Recorded by",
+              "units": 1.0
+            },
+            {
+              "key": "observation",
+              "label": "Observation",
+              "units": 1.4
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary for this report",
+          "guidance": "Record observed facts, times, readings, and actions. Do not record a guest's medical history or diagnosis, do not state a cause of illness, and do not record conclusions about liability or staff discipline. Collect only the contact detail needed to follow up and handle it under applicable privacy policy."
+        }
+      ]
+    },
+    {
+      "key": "immediate_response",
+      "title": "Immediate response and food disposition",
+      "guidance": "Withholding food is a legitimate outcome; record it plainly.",
+      "blocks": [
+        {
+          "key": "disposition_record",
+          "type": "fields",
+          "label": "Food disposition",
+          "fields": [
+            {
+              "key": "food_action",
+              "label": "Food action taken",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "None required",
+                "Item withheld from service",
+                "Item replaced from kitchen",
+                "Whole delivery withheld",
+                "Served after chef approval"
+              ]
+            },
+            {
+              "key": "decided_by",
+              "label": "Decided by",
+              "units": 0.95
+            },
+            {
+              "key": "decided_at",
+              "label": "Decided at",
+              "units": 0.8
+            },
+            {
+              "key": "chef_contacted",
+              "label": "Chef contacted at",
+              "units": 1.15
+            },
+            {
+              "key": "client_informed",
+              "label": "Client informed at",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "response_actions",
+          "type": "checklist",
+          "label": "Immediate response actions",
+          "items": [
+            "Affected food segregated on site and not served",
+            "Chef on duty contacted and the disposition decision recorded",
+            "Site contact informed by the on-site lead or manager",
+            "Replacement or substitution offered and the client response recorded",
+            "Remaining carriers rechecked and readings recorded",
+            "Guest offered assistance and the offer recorded",
+            "Damaged property photographed and reported to the site contact",
+            "Vehicle taken out of service where it failed"
+          ]
+        },
+        {
+          "key": "response_notes",
+          "type": "textarea",
+          "label": "What was done, in what order, and what the client and guests were told",
+          "fields": [
+            {
+              "key": "response_detail",
+              "label": "Immediate response detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and remediation decision",
+      "guidance": "The manager on duty decides, not the crew on site.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed - no change",
+                "Process change required",
+                "Retraining required",
+                "Referred to leadership"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "remediation",
+              "label": "Remediation approved",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "None required",
+                "Order replaced",
+                "Charge adjusted",
+                "Referred for approval"
+              ]
+            },
+            {
+              "key": "approval_reference",
+              "label": "Approval reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Do not serve and route to the responsible manager whenever a holding temperature is outside the venue standard, a restricted portion may have reached the wrong person, a guest reports a reaction or illness, or the chain of temperature control cannot be reconstructed. This report does not diagnose illness, determine the cause of harm, decide liability, or authorize compensation, and it does not replace the review applicable policy requires."
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Review rationale, requirements applied, and limits of the decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Qualified review rationale"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "corrective_actions",
+      "title": "Corrective actions and escalation",
+      "guidance": "Fix the cause, then prove the fix held.",
+      "blocks": [
+        {
+          "key": "corrective_register",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "cause_addressed",
+              "label": "Cause addressed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A guest received medical attention or was transported",
+            "More than one guest reported the same symptom",
+            "A restricted portion may have reached the wrong person",
+            "Food was served after a reading outside the venue standard",
+            "A vehicle accident or injury to a crew member occurred",
+            "A regulatory, insurance, or licensing question was raised",
+            "The client has requested a written account or compensation",
+            "The same failure has been recorded on a prior delivery"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Verification, closeout, and handoff",
+      "guidance": "Close on verified evidence, with residual risk accepted in writing.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Contained - actions open",
+                "Closed - verified",
+                "Closed with residual risk",
+                "Referred and closed"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_review_due",
+              "label": "Next review due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Food disposition recorded with the chef's decision",
+            "Transit and temperature history filed with the order record",
+            "Client and guest communication documented with date and author",
+            "Corrective actions verified as effective, not only completed",
+            "Residual risk described and accepted by the responsible manager",
+            "Report retained for the period required by applicable policy"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Verified outcome, residual risk, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Incident closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by manager on duty",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

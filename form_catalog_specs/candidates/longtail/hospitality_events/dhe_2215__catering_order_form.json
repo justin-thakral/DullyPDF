@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2215__catering_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2215__catering_order_form.pdf",
+  "slug": "catering-order-form",
+  "title": "Catering Order Form",
+  "subtitle": "The catering order the kitchen and driver work from: production quantities, allergen plan, pack list, transport holding, and on-site setup.",
+  "description": "An original off-premise catering order. It records order identity and delivery routing, production quantities by item with the allergen plan, the pack list and transport holding plan with equipment that must return, on-site setup and service instructions, authorization, open conditions, and distribution to the kitchen, driver, and on-site lead.",
+  "use_case": "Use as the single operating document for one off-premise catering delivery, from production through transport to on-site service and equipment return. The order closes when the kitchen, driver, and on-site lead have acknowledged the current revision.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Order identity and delivery routing",
+      "guidance": "Bind the order to the site, the window, and the driver.",
+      "blocks": [
+        {
+          "key": "order_routing",
+          "type": "fields",
+          "label": "Order identity and routing",
+          "fields": [
+            {
+              "key": "order_number",
+              "label": "Catering order number",
+              "units": 1.25
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.6
+            },
+            {
+              "key": "catering_lead",
+              "label": "Catering lead",
+              "units": 1.0
+            },
+            {
+              "key": "driver_assigned",
+              "label": "Driver assigned",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "delivery_window",
+          "type": "fields",
+          "label": "Delivery and service window",
+          "fields": [
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.6
+            },
+            {
+              "key": "depart_kitchen",
+              "label": "Depart kitchen",
+              "units": 1.0
+            },
+            {
+              "key": "arrive_site",
+              "label": "Arrive on site",
+              "units": 1.0
+            },
+            {
+              "key": "service_start",
+              "label": "Service start",
+              "units": 0.95
+            },
+            {
+              "key": "depart_site",
+              "label": "Depart site",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "client_billing",
+          "type": "fields",
+          "label": "Client and billing",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "site_contact",
+              "label": "Site contact",
+              "units": 1.0
+            },
+            {
+              "key": "site_phone",
+              "label": "Site phone",
+              "units": 0.85
+            },
+            {
+              "key": "billing_route",
+              "label": "Billing route",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not yet set",
+                "Invoice - approved credit",
+                "Card on file",
+                "Prepaid",
+                "Purchase order"
+              ]
+            },
+            {
+              "key": "po_reference",
+              "label": "PO reference",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "production_and_allergens",
+      "title": "Production quantities and allergen plan",
+      "guidance": "What the kitchen makes, and exactly how restricted portions are separated.",
+      "blocks": [
+        {
+          "key": "production_lines",
+          "type": "table",
+          "label": "Production lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item as described to guests",
+              "units": 1.7
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.75
+            },
+            {
+              "key": "portion_basis",
+              "label": "Portion basis",
+              "units": 0.9
+            },
+            {
+              "key": "hot_or_cold",
+              "label": "Hot or cold",
+              "units": 0.8
+            },
+            {
+              "key": "pack_format",
+              "label": "Pack format",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "allergen_plan",
+          "type": "table",
+          "label": "Allergen and dietary plan",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement stated by the client",
+              "units": 1.5
+            },
+            {
+              "key": "portions",
+              "label": "Portions",
+              "units": 0.65
+            },
+            {
+              "key": "separation",
+              "label": "How it is separated and labeled",
+              "units": 1.5
+            },
+            {
+              "key": "delivered_to",
+              "label": "Given to whom on site",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 0.95
+            }
+          ],
+          "rows": 5,
+          "guidance": "Restricted portions travel labeled and physically separated, and are handed to a named person on site."
+        },
+        {
+          "key": "allergen_boundary",
+          "type": "notice",
+          "label": "Allergen and dietary boundary",
+          "guidance": "This order records the dietary and allergen requirements the client provided and how the kitchen intends to separate and label them. It does not certify that any item is free of an allergen and it is not a medical or food-safety determination. The venue does not control the site after handover. Re-confirm each requirement with the client contact and the chef on duty, and route any requirement that cannot be met safely to the responsible manager."
+        }
+      ]
+    },
+    {
+      "key": "pack_and_transport",
+      "title": "Pack list, transport holding, and equipment out",
+      "guidance": "Everything that leaves the building, and how hot or cold it stays.",
+      "blocks": [
+        {
+          "key": "pack_list",
+          "type": "table",
+          "label": "Pack list and equipment out",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or equipment",
+              "units": 1.5
+            },
+            {
+              "key": "count_out",
+              "label": "Out",
+              "units": 0.5
+            },
+            {
+              "key": "container",
+              "label": "Container or carrier",
+              "units": 1.2
+            },
+            {
+              "key": "returns",
+              "label": "Must return",
+              "units": 0.75
+            },
+            {
+              "key": "packed_by",
+              "label": "Packed by",
+              "units": 0.95
+            }
+          ],
+          "rows": 8,
+          "guidance": "Mark every item that must come back; the return count is reconciled on the inventory log."
+        },
+        {
+          "key": "transport_plan",
+          "type": "fields",
+          "label": "Transport holding plan",
+          "fields": [
+            {
+              "key": "hot_method",
+              "label": "Hot holding method",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "None - no hot items",
+                "Insulated carrier",
+                "Heated cabinet",
+                "Chafers on site",
+                "Reheat on site"
+              ]
+            },
+            {
+              "key": "cold_method",
+              "label": "Cold holding method",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "None - no cold items",
+                "Ice packs",
+                "Iced tubs",
+                "Refrigerated vehicle",
+                "Client refrigeration"
+              ]
+            },
+            {
+              "key": "transit_minutes",
+              "label": "Transit minutes",
+              "units": 1.05
+            },
+            {
+              "key": "temp_check_points",
+              "label": "Temp check points",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "pack_controls",
+          "type": "checklist",
+          "label": "Pack and load controls",
+          "items": [
+            "Pack list checked item by item against the order before loading",
+            "Hot and cold items packed in separate carriers",
+            "Restricted portions packed separately and labeled",
+            "Serving utensils, chafer fuel, and lighters packed",
+            "Disposables, napkins, and service ware packed to the guest count",
+            "Signage, labels, and menu cards packed",
+            "Vehicle loaded so carriers stay upright and secured",
+            "Departure temperature readings taken and recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "onsite_service",
+      "title": "On-site setup and service instructions",
+      "guidance": "The crew on site has no kitchen to fall back on.",
+      "blocks": [
+        {
+          "key": "setup_sequence",
+          "type": "table",
+          "label": "Setup and service sequence",
+          "columns": [
+            {
+              "key": "clock_time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "step",
+              "label": "Step",
+              "units": 1.5
+            },
+            {
+              "key": "responsible",
+              "label": "Responsible",
+              "units": 1.0
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment needed",
+              "units": 1.2
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "onsite_instructions",
+          "type": "checklist",
+          "label": "On-site instructions",
+          "items": [
+            "Report to the named site contact on arrival",
+            "Set the buffet on client-provided surfaces as described in the order",
+            "Position tables clear of doorways and walkways",
+            "Keep chafer fuel away from linen, decor, and guests",
+            "Hand restricted portions directly to the named person",
+            "Label every item on the buffet as packed",
+            "Take and record a holding temperature after setup",
+            "Collect all returnable equipment before departure",
+            "Leave the space as found and remove waste as agreed"
+          ]
+        },
+        {
+          "key": "crew_assignment",
+          "type": "fields",
+          "label": "Crew and vehicle",
+          "fields": [
+            {
+              "key": "crew_size",
+              "label": "Crew size",
+              "units": 0.8
+            },
+            {
+              "key": "onsite_lead",
+              "label": "On-site lead",
+              "units": 1.05
+            },
+            {
+              "key": "vehicle",
+              "label": "Vehicle",
+              "units": 0.9
+            },
+            {
+              "key": "waste_removal",
+              "label": "Waste removal by",
+              "units": 1.2
+            },
+            {
+              "key": "return_by",
+              "label": "Return to kitchen by",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "order_conditions",
+      "title": "Authorization and open conditions",
+      "guidance": "Approve the order and keep unresolved conditions visible.",
+      "blocks": [
+        {
+          "key": "authorization_record",
+          "type": "fields",
+          "label": "Order authorization",
+          "fields": [
+            {
+              "key": "order_status",
+              "label": "Order status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending approval",
+                "Approved",
+                "Approved with conditions",
+                "Revised - reissued",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "final_count_due",
+              "label": "Final count due",
+              "units": 1.1
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 1.0
+            },
+            {
+              "key": "kitchen_ack",
+              "label": "Kitchen acknowledged",
+              "units": 1.25
+            },
+            {
+              "key": "client_confirmed",
+              "label": "Client confirmed on",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "condition_triggers",
+          "type": "checklist",
+          "label": "Open condition triggers",
+          "items": [
+            "Final guest count not received by the cutoff",
+            "Allergen plan not confirmed by the kitchen",
+            "Site access or parking still unconfirmed",
+            "No power confirmed for the warming equipment planned",
+            "Driver or vehicle not assigned",
+            "Rental service ware not confirmed for the delivery date",
+            "Named person to sign for the delivery not identified",
+            "Transit time exceeds the safe holding plan"
+          ]
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Open condition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Open condition",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "order_boundary",
+          "type": "notice",
+          "label": "Stop conditions and record boundary",
+          "guidance": "Stop and route to the responsible manager before departure if a holding temperature is outside the venue standard, if the allergen plan is unconfirmed, or if the site cannot support the equipment the menu requires. This order is an operating record; it does not certify food safety, grant a site permit, or interpret the signed agreement, and applicable venue policy governs where they differ."
+        }
+      ]
+    },
+    {
+      "key": "order_distribution",
+      "title": "Distribution, acknowledgment, and closeout",
+      "guidance": "Kitchen, driver, and on-site lead each hold the current revision.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Order closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Distributed",
+                "Revised - reissued",
+                "Delivered",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "distributed_on",
+              "label": "Distributed on",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "review_due",
+              "label": "Post-event review due",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "distribution_log",
+          "type": "table",
+          "label": "Distribution and acknowledgment",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "sent_on",
+              "label": "Sent on",
+              "units": 0.75
+            },
+            {
+              "key": "acknowledged_by",
+              "label": "Acknowledged by",
+              "units": 1.05
+            },
+            {
+              "key": "open_question",
+              "label": "Outstanding question",
+              "units": 1.45
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "distribution_confirmations",
+          "type": "checklist",
+          "label": "Distribution confirmations",
+          "items": [
+            "Kitchen holds the current revision and the allergen plan",
+            "Driver holds the site address, access notes, and arrival window",
+            "On-site lead holds the setup sequence and the return list",
+            "Rentals and disposables confirmed against the pack list",
+            "Accounting holds the billing route and final count basis",
+            "Superseded copies withdrawn from the kitchen and vehicle"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Distribution outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Order closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2322__irrigation_inspection_checklist_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2322__irrigation_inspection_checklist_form.pdf",
+  "slug": "irrigation-inspection-checklist-form",
+  "title": "Irrigation Inspection Checklist Form",
+  "subtitle": "Irrigation prepare the inspection, examine domain-specific conditions, record findings, assign corrections, decide status, and close the review.",
+  "description": "An original, workflow-complete irrigation inspection checklist covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use for a planned or triggered inspection that must preserve observed condition, finding severity, correction ownership, and an authorized disposition. The record is owned by the irrigation operations owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inspection_routing",
+      "title": "Irrigation inspection routing",
+      "guidance": "Identify the inspection, subject, inspector, and review route.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Inspection Checklist identity and routing",
+          "fields": [
+            {
+              "key": "inspection_id",
+              "label": "Inspection ID",
+              "units": 0.8
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.75
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection time",
+              "units": 0.7
+            },
+            {
+              "key": "inspection_type",
+              "label": "Inspection type",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Pre-use",
+                "Follow-up",
+                "Triggered",
+                "Other"
+              ]
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Irrigation Run Or Zone identity",
+          "fields": [
+            {
+              "key": "field_zone",
+              "label": "Field or irrigation zone",
+              "units": 1.0
+            },
+            {
+              "key": "system_type",
+              "label": "System type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Drip",
+                "Micro-sprinkler",
+                "Sprinkler",
+                "Pivot",
+                "Surface",
+                "Other"
+              ]
+            },
+            {
+              "key": "water_source",
+              "label": "Water source ID",
+              "units": 0.9
+            },
+            {
+              "key": "pump_station",
+              "label": "Pump or station ID",
+              "units": 0.9
+            },
+            {
+              "key": "crop_stage",
+              "label": "Crop and growth stage",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "inspection_preparation",
+      "title": "Irrigation inspection preparation",
+      "guidance": "Record conditions and evidence sources before making findings.",
+      "blocks": [
+        {
+          "key": "inspection_context",
+          "type": "fields",
+          "label": "Inspection context",
+          "fields": [
+            {
+              "key": "run_purpose",
+              "label": "Run purpose",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_ref",
+              "label": "Schedule or plan reference",
+              "units": 1.0
+            },
+            {
+              "key": "meter_start",
+              "label": "Starting meter reading",
+              "units": 0.85
+            },
+            {
+              "key": "pressure_ref",
+              "label": "Pressure target reference",
+              "units": 1.0
+            },
+            {
+              "key": "operator",
+              "label": "Assigned operator",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "preparation_checks",
+          "type": "checklist",
+          "label": "Preparation and prior-record review",
+          "items": [
+            "Source, pump, meter, and zone identity were recorded",
+            "Schedule or agronomic instruction reference was recorded",
+            "Starting and ending meter values were captured",
+            "Pressure, flow, and distribution observations were recorded",
+            "Filter, valve, emitter, or sprinkler condition was noted",
+            "Runoff, ponding, leaks, or blocked areas were identified",
+            "Weather, rainfall, and soil or crop context was noted",
+            "Variance, shutdown, and follow-up ownership were recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "condition_findings",
+      "title": "Irrigation condition findings",
+      "guidance": "Separate observed condition from disposition.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Irrigation inspection points",
+          "items": [
+            "Water source, pump, meter, and control identity are legible",
+            "Valves, filters, regulators, and gauges were observed",
+            "Mainlines, laterals, fittings, and visible leaks were observed",
+            "Emitters, nozzles, sprinklers, or outlets were sampled",
+            "Pressure and flow evidence was compared with the plan reference",
+            "Distribution gaps, runoff, ponding, and erosion signs were mapped",
+            "Sensors, timers, alarms, and remote controls were function-checked",
+            "Backflow or injection components were routed for qualified review",
+            "Water-quality or sampling records were checked when applicable",
+            "Open repairs and prior zone restrictions were compared"
+          ]
+        },
+        {
+          "key": "findings_register",
+          "type": "table",
+          "label": "Findings and evidence register",
+          "columns": [
+            {
+              "key": "inspection_point",
+              "label": "Point or location",
+              "units": 1.15
+            },
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.35
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 0.9
+            },
+            {
+              "key": "severity_status",
+              "label": "Severity or status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "inspection_determination",
+      "title": "Irrigation determination and correction",
+      "guidance": "Assign the condition decision and every required correction.",
+      "blocks": [
+        {
+          "key": "condition_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Conditional",
+                "Restricted or held",
+                "Correction required"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Correction and verification actions",
+          "columns": [
+            {
+              "key": "finding_ref",
+              "label": "Finding ref",
+              "units": 0.8
+            },
+            {
+              "key": "required_action",
+              "label": "Required action",
+              "units": 1.35
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification result",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Irrigation exceptions and escalation",
+      "guidance": "Escalate uncertainty and conditions outside the reviewer\u2019s authority.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Inspection authority boundary",
+          "guidance": "This record supports irrigation operations but does not set agronomic, water-quality, electrical, backflow, or injection requirements. Stop and route abnormal conditions to the qualified owner under current site procedures."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Irrigation exception triggers",
+          "items": [
+            "Source, meter, pump, or zone identity mismatch",
+            "Pressure, flow, volume, or run-time variance",
+            "Leak, blockage, runoff, ponding, or distribution gap",
+            "Sensor, controller, valve, or alarm failure",
+            "Water-quality, backflow, or injection concern",
+            "Allocation, access, crop instruction, or repair authority gap"
+          ]
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Escalation facts, immediate action, owner, due point, and disposition",
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Inspection escalation detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "inspection_closeout",
+      "title": "Irrigation inspection closeout",
+      "guidance": "Confirm correction ownership and transfer the inspection record.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Inspection Checklist closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Irrigation open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Irrigation handoff confirmations",
+          "items": [
+            "Irrigation findings and evidence were reconciled",
+            "Restrictions or holds were transferred to operations",
+            "Corrections and verification have owners and due points",
+            "Reinspection or follow-up review was scheduled",
+            "Inspection evidence and disposition were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Irrigation final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified irrigation reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

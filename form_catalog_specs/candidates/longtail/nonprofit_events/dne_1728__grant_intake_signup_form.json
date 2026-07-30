@@ -1,0 +1,551 @@
+{
+  "schema_version": 1,
+  "catalog_id": "nonprofit_events/dne_1728__grant_intake_signup_form",
+  "source_section": "nonprofit_events",
+  "source_filename": "dne_1728__grant_intake_signup_form.pdf",
+  "slug": "grant-intake-signup-form",
+  "title": "Grant Intake Signup Form",
+  "subtitle": "Grant Intake workflow to capture interest, available options, readiness, review, and confirmed next steps.",
+  "description": "An original grant intake signup form for nonprofit operators to preserve funding opportunity identity, workflow evidence, decisions, exceptions, qualified review, and accountable closeout.",
+  "use_case": "Use when a nonprofit team must manage a funding opportunity through the signup workflow while keeping consent, privacy, authority, evidence, escalation, and handoff visible.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "routing",
+      "title": "Grant Intake signup routing",
+      "guidance": "Identify the record, source, priority, subject, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Signup identity and routing",
+          "guidance": "Use this record ID on attachments, corrections, and follow-up.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Signup record ID",
+              "units": 1
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "source_contact",
+              "label": "Source or requester",
+              "units": 1.3
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 1,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Urgent"
+              ]
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned record owner",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Grant Intake identity",
+          "guidance": "Preserve the identities used by the controlling program or partner record.",
+          "fields": [
+            {
+              "key": "opportunity_id",
+              "label": "Opportunity ID",
+              "units": 0.9
+            },
+            {
+              "key": "funder_name",
+              "label": "Funder name",
+              "units": 1.3
+            },
+            {
+              "key": "program_name",
+              "label": "Funding program",
+              "units": 1.3
+            },
+            {
+              "key": "deadline",
+              "label": "Submission deadline",
+              "units": 1.1
+            },
+            {
+              "key": "lead_owner",
+              "label": "Lead owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "context",
+      "title": "Grant Intake signup profile and requested participation",
+      "guidance": "Define what the person is seeking before treating interest as acceptance.",
+      "blocks": [
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Grant Intake operating context",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "request_amount",
+              "label": "Proposed request",
+              "units": 1
+            },
+            {
+              "key": "project_period",
+              "label": "Project period",
+              "units": 1.2
+            },
+            {
+              "key": "eligibility_ref",
+              "label": "Eligibility reference",
+              "units": 1.2
+            },
+            {
+              "key": "match_need",
+              "label": "Match or cost share",
+              "units": 1.2
+            },
+            {
+              "key": "submission_route",
+              "label": "Submission route",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Grant Intake readiness and record controls",
+          "guidance": "Confirm facts and routes; do not infer approval from a checked item.",
+          "items": [
+            "Opportunity notice, version, deadline, and submission route are preserved",
+            "Applicant entity, program fit, geography, and eligibility basis are routed",
+            "Narrative, budget, attachments, assurances, and approvals are assigned",
+            "Match, cost share, partner, subaward, or commitment needs are identified",
+            "Conflicts of interest and reviewer independence are documented",
+            "Submission credentials and sensitive identifiers remain in approved systems",
+            "Submitted package, confirmation, and tracking number are retained",
+            "Award decisions are separated from internal recommendations"
+          ]
+        },
+        {
+          "key": "workflow_controls",
+          "type": "checklist",
+          "label": "Signup workflow controls",
+          "guidance": "Mark each applicable control and route any unmet condition.",
+          "items": [
+            "Signup purpose and requested participation are explicit",
+            "Availability and preferred communication are recorded",
+            "Requirements and prerequisites are visible before review",
+            "Capacity, waitlist, and alternate-option paths are available",
+            "No acceptance is implied before authorized review",
+            "Next contact, owner, and expected response date are assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "details",
+      "title": "Grant Intake signup options and availability",
+      "guidance": "Preserve repeated items and the evidence needed to reconstruct the record.",
+      "blocks": [
+        {
+          "key": "detail_register",
+          "type": "table",
+          "label": "Grant Intake requested options and fit review",
+          "guidance": "Use one row per distinct item, activity, commitment, event, or service entry.",
+          "columns": [
+            {
+              "key": "option",
+              "label": "Option or role",
+              "units": 1.4
+            },
+            {
+              "key": "window",
+              "label": "Date or window",
+              "units": 1.1
+            },
+            {
+              "key": "place",
+              "label": "Location or mode",
+              "units": 1.2
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or limit",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "detail_narrative",
+          "type": "textarea",
+          "label": "Interest, relevant experience, constraints, access needs, and requested outcome",
+          "guidance": "Separate direct facts, attributed statements, and unresolved assumptions.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "detail_notes",
+              "label": "Interest, relevant experience, constraints, access needs, and requested outcome",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evidence",
+      "title": "Grant Intake evidence and completeness review",
+      "guidance": "Link the subject-specific evidence, record boundaries, and missing information.",
+      "blocks": [
+        {
+          "key": "subject_evidence",
+          "type": "checklist",
+          "label": "Grant Intake evidence review",
+          "guidance": "Retain source references and correction history in the approved record.",
+          "items": [
+            "Narrative, budget, attachments, assurances, and approvals are assigned",
+            "Match, cost share, partner, subaward, or commitment needs are identified",
+            "Conflicts of interest and reviewer independence are documented",
+            "Submission credentials and sensitive identifiers remain in approved systems",
+            "Submitted package, confirmation, and tracking number are retained",
+            "Award decisions are separated from internal recommendations",
+            "Reporting, monitoring, records, and closeout obligations are summarized",
+            "Changes and unresolved conditions retain an authorized decision owner"
+          ]
+        },
+        {
+          "key": "evidence_refs",
+          "type": "fields",
+          "label": "Evidence and communication references",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "primary_record_ref",
+              "label": "Primary record reference",
+              "units": 1.3
+            },
+            {
+              "key": "attachment_ref",
+              "label": "Attachment or evidence ref",
+              "units": 1.3
+            },
+            {
+              "key": "communication_ref",
+              "label": "Communication reference",
+              "units": 1.3
+            },
+            {
+              "key": "restricted_record_ref",
+              "label": "Restricted-record ref",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_owner",
+              "label": "Evidence owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision",
+      "title": "Grant Intake signup decision and authorization",
+      "guidance": "Document the status, evidence basis, conditions, and accountable decision owner.",
+      "blocks": [
+        {
+          "key": "decision_status",
+          "type": "fields",
+          "label": "Signup decision",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Decision status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Conditional",
+                "Waitlisted",
+                "Declined",
+                "More information"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.9
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Decision evidence ref",
+              "units": 1.4
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "decision_basis",
+          "type": "checklist",
+          "label": "Decision and authorization basis",
+          "guidance": "",
+          "items": [
+            "Requested option and supporting information were reviewed",
+            "Capacity, prerequisites, restrictions, and conflicts were considered",
+            "Consent, privacy, and qualified-review needs are explicit",
+            "Conditions and exclusions are recorded in plain language",
+            "The applicant has a defined next step and contact route"
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, conditions, limits, and next action",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Decision rationale, conditions, limits, and next action",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions",
+      "title": "Grant Intake exceptions and escalation",
+      "guidance": "Keep incomplete, sensitive, unsafe, disputed, or unauthorized work visible.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Signup authority and record boundary",
+          "guidance": "A submitted signup is an expression of interest, not acceptance or authorization. Capacity, prerequisites, consent, privacy, and restrictions require review. This intake record does not establish applicant eligibility, approve costs, accept an award, or interpret grant terms. Use the current opportunity notice and submission system, preserve versioned evidence, and route legal, finance, compliance, conflict, and award decisions to authorized reviewers. Hold unresolved work and route it to the qualified owner under applicable policy."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Grant Intake exception triggers",
+          "guidance": "Mark each applicable trigger and explain uncertain scope below.",
+          "items": [
+            "Opportunity version, eligibility, deadline, or submission route is uncertain",
+            "Narrative, budget, attachment, assurance, or approval is incomplete",
+            "Match, partner, subaward, conflict, or restricted-cost issue is open",
+            "Submission failed, was rejected, or lacks confirmation and tracking evidence",
+            "Award terms, reporting, monitoring, property, or closeout duty is unclear",
+            "Legal, finance, compliance, or binding acceptance authority is unresolved"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Grant Intake unresolved-item register",
+          "guidance": "Do not close a row until disposition and accountable ownership are explicit.",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Trigger or unresolved item",
+              "units": 1.5
+            },
+            {
+              "key": "action",
+              "label": "Immediate safeguard or action",
+              "units": 1.5
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.2
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "escalation_notes",
+          "type": "textarea",
+          "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout",
+      "title": "Grant Intake signup closeout and handoff",
+      "guidance": "Reconcile the final status, transfer open work, and preserve accountable acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Signup record closeout",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Open handoff",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.4
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.2
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Grant Intake open actions and limitations",
+          "guidance": "Carry forward every item that is not fully resolved at closeout.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open action or limitation",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status or handoff",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Grant Intake handoff confirmations",
+          "guidance": "Unchecked items remain part of the open handoff.",
+          "items": [
+            "Final signup status and conditions were communicated",
+            "Required records and references were filed",
+            "Waitlist or follow-up work retains an owner",
+            "Receiving program owner accepted the handoff",
+            "No unresolved condition was silently closed",
+            "Opportunity version, deadline, eligibility basis, and submission route reconcile",
+            "Narrative, budget, attachments, commitments, and approvals were accounted for"
+          ]
+        },
+        {
+          "key": "final_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "guidance": "",
+          "height": 70,
+          "fields": [
+            {
+              "key": "outcome_notes",
+              "label": "Final outcome, remaining limits, communications, and acceptance notes",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "guidance": "Record accountable preparation and qualified review.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized grants reviewer",
+              "units": 1.5
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

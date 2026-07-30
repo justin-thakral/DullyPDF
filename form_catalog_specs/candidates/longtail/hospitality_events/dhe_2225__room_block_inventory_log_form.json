@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2225__room_block_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2225__room_block_inventory_log_form.pdf",
+  "slug": "room-block-inventory-log-form",
+  "title": "Room Block Inventory Log Form",
+  "subtitle": "Track nightly pickup against contracted inventory: rooms blocked, picked up, released, and the attrition exposure building toward cutoff.",
+  "description": "An original nightly pickup log for a contracted room block. It records the log period and the contracted pattern, pickup against block by night and room type, the movements that changed inventory, the cutoff and release position, attrition exposure, variances against the reservation system, and an accountable closeout.",
+  "use_case": "Use from block confirmation through cutoff, when rooms control and sales need to see whether a group will meet its contracted pattern and what should be released. The log closes when the cutoff position is recorded and the release decision is made.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_period",
+      "title": "Log period and contracted pattern",
+      "guidance": "State what was contracted before tracking what is picked up.",
+      "blocks": [
+        {
+          "key": "log_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.85
+            },
+            {
+              "key": "block_order_number",
+              "label": "Block order number",
+              "units": 1.35
+            },
+            {
+              "key": "block_code",
+              "label": "Block code",
+              "units": 0.85
+            },
+            {
+              "key": "log_owner",
+              "label": "Assigned log owner",
+              "units": 1.15
+            },
+            {
+              "key": "cutoff_date",
+              "label": "Cutoff date",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "contract_basis",
+          "type": "fields",
+          "label": "Contract basis",
+          "fields": [
+            {
+              "key": "group_name",
+              "label": "Group name",
+              "units": 1.2
+            },
+            {
+              "key": "rooms_contracted",
+              "label": "Rooms contracted",
+              "units": 1.2
+            },
+            {
+              "key": "attrition_allowance",
+              "label": "Attrition allowance",
+              "units": 1.35
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Daily",
+                "Twice weekly",
+                "Weekly"
+              ]
+            },
+            {
+              "key": "last_reviewed",
+              "label": "Last reviewed",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The reservation system is authoritative. This log is the working view that has to reconcile back to it."
+        }
+      ]
+    },
+    {
+      "key": "pickup_position",
+      "title": "Pickup against block by night",
+      "guidance": "Pickup is measured per night and room type, never as a total.",
+      "blocks": [
+        {
+          "key": "pickup_rows",
+          "type": "table",
+          "label": "Nightly pickup position",
+          "columns": [
+            {
+              "key": "stay_date",
+              "label": "Night",
+              "units": 0.75
+            },
+            {
+              "key": "room_type",
+              "label": "Room type",
+              "units": 1.1
+            },
+            {
+              "key": "blocked",
+              "label": "Blocked",
+              "units": 0.7
+            },
+            {
+              "key": "picked_up",
+              "label": "Picked up",
+              "units": 0.75
+            },
+            {
+              "key": "released",
+              "label": "Released",
+              "units": 0.75
+            },
+            {
+              "key": "remaining",
+              "label": "Remaining",
+              "units": 0.8
+            }
+          ],
+          "rows": 12,
+          "guidance": "A night at full pickup and a night at zero average to a healthy block that is not healthy."
+        },
+        {
+          "key": "position_summary",
+          "type": "fields",
+          "label": "Position summary",
+          "fields": [
+            {
+              "key": "peak_blocked",
+              "label": "Peak blocked",
+              "units": 1.0
+            },
+            {
+              "key": "peak_picked_up",
+              "label": "Peak picked up",
+              "units": 1.1
+            },
+            {
+              "key": "pickup_percent",
+              "label": "Pickup percent",
+              "units": 1.05
+            },
+            {
+              "key": "nights_at_risk",
+              "label": "Nights at risk",
+              "units": 1.05
+            },
+            {
+              "key": "days_to_cutoff",
+              "label": "Days to cutoff",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "movement_log",
+      "title": "Inventory movements",
+      "guidance": "Every add, release, and reassignment needs an authorizing name.",
+      "blocks": [
+        {
+          "key": "movement_rows",
+          "type": "table",
+          "label": "Inventory movement log",
+          "columns": [
+            {
+              "key": "action_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "stay_date",
+              "label": "Night",
+              "units": 0.7
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.3
+            },
+            {
+              "key": "rooms",
+              "label": "Rooms",
+              "units": 0.6
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.05
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "movement_controls",
+          "type": "checklist",
+          "label": "Movement controls",
+          "items": [
+            "Every addition to the block recorded with an authorizer",
+            "Rooms released back to general inventory the same business day",
+            "Room type substitutions recorded against the original commitment",
+            "Accessible room allocation preserved through every movement",
+            "Reservations outside the block but from the group identified and counted",
+            "Cancellations inside the cutoff window recorded with dates",
+            "Movements reconciled to the reservation system after each review"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cutoff_and_attrition",
+      "title": "Cutoff position, release, and attrition exposure",
+      "guidance": "The cutoff decision is the whole point of tracking pickup.",
+      "blocks": [
+        {
+          "key": "cutoff_position",
+          "type": "fields",
+          "label": "Cutoff position",
+          "fields": [
+            {
+              "key": "release_decision",
+              "label": "Release decision",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Release all unsold",
+                "Release in part",
+                "Extend cutoff",
+                "Hold to arrival",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decided_on",
+              "label": "Decided on",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "rooms_released",
+              "label": "Rooms released",
+              "units": 1.05
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attrition_exposure",
+          "type": "table",
+          "label": "Attrition exposure by night",
+          "columns": [
+            {
+              "key": "stay_date",
+              "label": "Night",
+              "units": 0.75
+            },
+            {
+              "key": "contracted",
+              "label": "Contracted",
+              "units": 0.9
+            },
+            {
+              "key": "picked_up",
+              "label": "Picked up",
+              "units": 0.85
+            },
+            {
+              "key": "shortfall",
+              "label": "Shortfall",
+              "units": 0.85
+            },
+            {
+              "key": "exposure_note",
+              "label": "Exposure note",
+              "units": 1.5
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record the shortfall as observed. The signed agreement, not this log, determines whether any charge applies."
+        },
+        {
+          "key": "cutoff_notes",
+          "type": "textarea",
+          "label": "Pickup trend, what the group was told, and the reasoning behind the release",
+          "fields": [
+            {
+              "key": "cutoff_detail",
+              "label": "Cutoff and release reasoning"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Variances, exceptions, and escalation",
+      "guidance": "Keep inventory defects visible until disposition.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Log position does not reconcile to the reservation system",
+            "A night is oversold against available inventory",
+            "Pickup on a peak night is materially behind the contracted pattern",
+            "Accessible rooms committed are no longer allocated",
+            "Rooms were released without a recorded decision or authorizer",
+            "Reservations exist at the group rate outside the block",
+            "Cutoff has passed with unsold rooms still held",
+            "A rooming list arrived after the contracted due date"
+          ]
+        },
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Variance register",
+          "columns": [
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 1.2
+            },
+            {
+              "key": "cause",
+              "label": "Cause or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "What this log does not decide",
+          "guidance": "This log records pickup, movements, and shortfall as observed. It does not release inventory on its own, does not override the reservation system, and does not determine whether an attrition or cancellation charge applies. Release, rate, and charge decisions stay with the responsible manager under the signed agreement."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Hand the arrival team a reconciled final position.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Log closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - reconciled",
+                "Closed with follow-up",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "arrival_date",
+              "label": "First arrival",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Final pickup position reconciled to the reservation system",
+            "Release decision recorded with an authorizer and a date",
+            "Attrition shortfall recorded and routed to the responsible manager",
+            "Accessible room allocation confirmed as intact at handoff",
+            "Unresolved variances transferred with named owners",
+            "Final position filed with the block order for the post-stay review"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Final position, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Pickup handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by revenue manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

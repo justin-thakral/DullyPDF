@@ -1,0 +1,614 @@
+{
+  "schema_version": 1,
+  "catalog_id": "legal_office/dlo_2121__document_request_intake_form",
+  "source_section": "legal_office",
+  "source_filename": "dlo_2121__document_request_intake_form.pdf",
+  "slug": "document-request-intake-form",
+  "title": "Document Request Intake Form",
+  "subtitle": "A controlled intake and triage record for a targeted request for documents or data that defines authority, categories, date range, custodians, format, secure transfer, privilege and privacy handling, receipt reconciliation, deficiency follow-up, and closure, carrying facts and source evidence through qualified decision, exception escalation, secure communication, and accountable handoff.",
+  "description": "This original Document Request Intake Form helps the request coordinator and supervising lawyer manage a targeted request for documents or data that defines authority, categories, date range, custodians, format, secure transfer, privilege and privacy handling, receipt reconciliation, deficiency follow-up, and closure. It opens the record, classifies the request, captures source facts and urgency, and routes a qualified accept, defer, decline, or escalation decision, while keeping jurisdiction-specific conclusions and professional judgment with authorized reviewers.",
+  "use_case": "Use when the request coordinator and supervising lawyer needs one fillable record that opens the record, classifies the request, captures source facts and urgency, and routes a qualified accept, defer, decline, or escalation decision for the controlled document request. Close only after the intake disposition is supported by evidence and accepted by the named recipient.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Legal Document Request record identity and routing",
+      "guidance": "Open one traceable record, establish authority, and assign accountable qualified review.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Legal Document Request record and responsible parties",
+          "fields": [
+            {
+              "key": "request_ref",
+              "label": "Document request reference",
+              "units": 1.2
+            },
+            {
+              "key": "matter_ref",
+              "label": "Matter reference",
+              "units": 1.0
+            },
+            {
+              "key": "request_recipient",
+              "label": "Recipient or custodian",
+              "units": 1.2
+            },
+            {
+              "key": "request_owner",
+              "label": "Request owner",
+              "units": 0.9
+            },
+            {
+              "key": "supervising_lawyer",
+              "label": "Supervising lawyer",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "timing_route",
+          "type": "fields",
+          "label": "Intake and Triage timing and route",
+          "fields": [
+            {
+              "key": "record_opened",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time and zone",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time sensitive",
+                "Urgent review",
+                "Stop and escalate"
+              ]
+            },
+            {
+              "key": "qualified_route",
+              "label": "Qualified review route",
+              "units": 1.1
+            },
+            {
+              "key": "next_due",
+              "label": "Next due point",
+              "units": 0.9
+            },
+            {
+              "key": "related_record",
+              "label": "Related record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "secure_boundary",
+          "type": "notice",
+          "label": "Confidential record boundary",
+          "guidance": "Use approved secure systems for protected communications and source files. Do not enter access credentials, complete account numbers, government identifiers, medical detail, or privileged source content in this routing form."
+        }
+      ]
+    },
+    {
+      "key": "domain_evidence",
+      "title": "Legal Document Request facts and source evidence",
+      "guidance": "Capture domain-specific facts, distinguish statements from verified evidence, and retain source references.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Legal Document Request matter profile",
+          "fields": [
+            {
+              "key": "request_purpose",
+              "label": "Purpose of collection",
+              "units": 1.3
+            },
+            {
+              "key": "date_range",
+              "label": "Responsive date range",
+              "units": 1.0
+            },
+            {
+              "key": "custodian_scope",
+              "label": "Custodian or source scope",
+              "units": 1.1
+            },
+            {
+              "key": "preferred_format",
+              "label": "Requested format",
+              "units": 0.9
+            },
+            {
+              "key": "secure_route",
+              "label": "Secure delivery route",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Requested response date",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "evidence_checkpoints",
+          "type": "checklist",
+          "label": "Legal Document Request evidence checkpoints",
+          "items": [
+            "Request authority and recipient authority are verified before transmission",
+            "Document categories are specific, proportionate, and tied to a stated purpose",
+            "Date ranges, custodians, repositories, and excluded sources are explicit",
+            "Native, image, metadata, paper, and structured-data format needs are distinguished",
+            "Secure transfer, encryption, access, and receipt-confirmation method is assigned",
+            "Privilege, work product, privacy, protective-order, and redaction review is routed",
+            "Originals, copies, chain of custody, and return obligations are distinguishable",
+            "Received items are inventoried without placing sensitive contents in this form"
+          ],
+          "guidance": "Check only supported items; explain any limitation in the evidence narrative."
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Legal Document Request evidence and action register",
+          "columns": [
+            {
+              "key": "category",
+              "label": "Document category",
+              "units": 1.3
+            },
+            {
+              "key": "source_range",
+              "label": "Source or range",
+              "units": 1.2
+            },
+            {
+              "key": "format",
+              "label": "Format",
+              "units": 0.7
+            },
+            {
+              "key": "received_ref",
+              "label": "Receipt ref",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.8
+            }
+          ],
+          "rows": 4,
+          "guidance": "Reference approved repositories; do not copy confidential source contents into the table."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Request purpose, collection limits, known repositories, unavailable sources, privilege or privacy concerns, and recipient questions",
+          "fields": [
+            {
+              "key": "context_narrative",
+              "label": "Request purpose, collection limits, known repositories, unavailable sources, privilege or privacy concerns, and recipient questions"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "workflow_record",
+      "title": "Legal Document Request intake and triage control record",
+      "guidance": "Turn the record purpose into traceable evidence, accountable actions, and reviewable decisions.",
+      "blocks": [
+        {
+          "key": "intake_definition",
+          "type": "fields",
+          "label": "Requested outcome, contact, and triage basis",
+          "fields": [
+            {
+              "key": "requested_outcome",
+              "label": "Requested outcome",
+              "units": 1.2
+            },
+            {
+              "key": "request_source",
+              "label": "Source of request",
+              "units": 0.9
+            },
+            {
+              "key": "target_date",
+              "label": "Requested target date",
+              "units": 0.9
+            },
+            {
+              "key": "classification",
+              "label": "Request classification",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "New request",
+                "Related request",
+                "Change in scope",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Triage decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "response_route",
+              "label": "Response route",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "intake_controls",
+          "type": "checklist",
+          "label": "Legal Document Request intake interview controls",
+          "items": [
+            "The client, custodian, or authorized third party describes the requested outcome in their own terms",
+            "The controlled document request is classified before any substantive action",
+            "Material dates, amounts, persons, and assumptions are read back for confirmation",
+            "Statements are visibly separated from verified records and third-party reports",
+            "Only necessary information is requested through an approved secure route",
+            "Language, access, accommodation, and communication needs are routed",
+            "No promise of representation, result, filing, clearance, or deadline action is made",
+            "Urgent, suspicious, unsafe, or professionally restricted matters are escalated"
+          ]
+        },
+        {
+          "key": "intake_questions",
+          "type": "table",
+          "label": "Initial question, response, and evidence map",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or fact",
+              "units": 1.2
+            },
+            {
+              "key": "response",
+              "label": "Response summary",
+              "units": 1.4
+            },
+            {
+              "key": "source",
+              "label": "Source or ref",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Status or due",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "intake_summary",
+          "type": "textarea",
+          "label": "Neutral intake summary, unresolved questions, and proposed next step",
+          "fields": [
+            {
+              "key": "summary",
+              "label": "Neutral intake summary, unresolved questions, and proposed next step"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Legal Document Request stop conditions, exceptions, and escalation",
+      "guidance": "Stop when authority, identity, evidence, deadline, confidentiality, or professional-duty controls are unresolved.",
+      "blocks": [
+        {
+          "key": "risk_triggers",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Request authority, recipient identity, or authority to release is uncertain",
+            "Scope may be overbroad, burdensome, duplicative, or unrelated to the stated purpose",
+            "A preservation duty, litigation hold, subpoena, order, or response deadline applies",
+            "Privileged, work-product, confidential, sealed, or protected information may be included",
+            "Personal, health, financial, trade-secret, or regulated data needs special handling",
+            "Collection may alter metadata, authenticity, chain of custody, or original evidence",
+            "A source is unavailable, deleted, inaccessible, or controlled by another person",
+            "Transmission route, access rights, or recipient verification is not secure"
+          ],
+          "guidance": "A checked item requires immediate protective action, a named owner, qualified review, and a final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Intake and Triage exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_facts",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "facts",
+              "label": "Objective facts, affected activity, containment, notifications, and review needed"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "qualified_review",
+          "type": "notice",
+          "label": "Qualified review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, professional duties, privilege, conflicts, consentability, deadlines, or court compliance. Follow applicable jurisdictional rules and current firm policy; route legal, ethics, privacy, tax, court, safety, and specialist questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Legal Document Request qualified decision and accountable authorization",
+      "guidance": "Record the authorized decision separately from preliminary analysis and prevent action beyond its evidence and scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Intake and Triage qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Deferred",
+                "Declined",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "review_expiry",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_controls",
+          "type": "checklist",
+          "label": "Legal Document Request decision and execution conditions",
+          "items": [
+            "Qualified lawyer approves the purpose, scope, authority, and timing",
+            "Categories, custodians, date ranges, formats, and exclusions are unambiguous",
+            "Privilege, privacy, redaction, protective-order, and security routes are assigned",
+            "Recipient instructions identify secure delivery and deficiency communication",
+            "Received material cannot be produced, filed, or disclosed without separate review",
+            "Any change in scope or recipient authority requires documented reauthorization"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Evidence considered, reasons, limits, alternatives, and required follow-up"
+            }
+          ],
+          "height": 50
+        },
+        {
+          "key": "decision_signatures",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, consents, notices, filings, or system approvals."
+        },
+        {
+          "key": "decision_limit",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Legal Document Request record as a substitute for legal advice, a required client agreement, informed consent, court paper, discovery response, privilege review, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Legal Document Request completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, limitations remain visible, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "outcome_handoff",
+          "type": "fields",
+          "label": "Intake and Triage outcome and primary handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final intake disposition",
+              "units": 1.2
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or task status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 1.0
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Legal Document Request closeout evidence",
+          "items": [
+            "Request transmission, recipient, date, and approved version are evidenced",
+            "Every requested category has received, unavailable, withdrawn, or pending status",
+            "Deficiencies and exceptions have an owner, due point, and escalation disposition",
+            "Received items are indexed to secure repositories and custody records",
+            "Privilege, privacy, redaction, and production review remain separate controls",
+            "Completion and any continuing preservation or return obligation are acknowledged"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with follow-up",
+                "Transferred",
+                "Declined",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_record_ref",
+              "label": "Final record reference",
+              "units": 1.1
+            },
+            {
+              "key": "retention_access",
+              "label": "Retention or access class",
+              "units": 1.0
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

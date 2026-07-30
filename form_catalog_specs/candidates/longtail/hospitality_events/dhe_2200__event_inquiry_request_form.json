@@ -1,0 +1,649 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2200__event_inquiry_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2200__event_inquiry_request_form.pdf",
+  "slug": "event-inquiry-request-form",
+  "title": "Event Inquiry Request Form",
+  "subtitle": "Capture an inbound event inquiry, screen the requested dates and spaces against existing holds, and route it to a named seller with a response commitment.",
+  "description": "An original intake record for inbound event enquiries. It captures requester identity and routing, the requested schedule and space profile, availability and hold screening evidence, the qualification decision, unresolved requirements, and the response handoff that closes the inquiry.",
+  "use_case": "Use when an event inquiry arrives by phone, web form, email, referral, or walk-in and a coordinator must record what was asked for, screen it against the master space calendar, and hand a qualified lead to a seller. The record closes when the response has been sent and every unresolved requirement has a named owner.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inquiry_intake",
+      "title": "Inquiry intake and requester routing",
+      "guidance": "Record how the inquiry arrived and who owns the response.",
+      "blocks": [
+        {
+          "key": "intake_routing",
+          "type": "fields",
+          "label": "Inquiry record and response routing",
+          "fields": [
+            {
+              "key": "inquiry_id",
+              "label": "Inquiry record ID",
+              "units": 0.85
+            },
+            {
+              "key": "received_at",
+              "label": "Received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Phone",
+                "Web inquiry form",
+                "Email",
+                "Walk-in",
+                "Referral",
+                "Partner or listing site",
+                "Repeat client"
+              ]
+            },
+            {
+              "key": "assigned_seller",
+              "label": "Assigned seller",
+              "units": 0.95
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.8
+            }
+          ],
+          "guidance": "Use this inquiry record ID on every quote, hold, and follow-up so the lead can be reconstructed later."
+        },
+        {
+          "key": "requester_identity",
+          "type": "fields",
+          "label": "Requester and organization",
+          "fields": [
+            {
+              "key": "organization",
+              "label": "Organization or host",
+              "units": 1.15
+            },
+            {
+              "key": "contact_name",
+              "label": "Primary contact",
+              "units": 1.0
+            },
+            {
+              "key": "contact_role",
+              "label": "Contact role",
+              "units": 0.85
+            },
+            {
+              "key": "contact_phone",
+              "label": "Phone",
+              "units": 0.75
+            },
+            {
+              "key": "contact_email",
+              "label": "Email",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "decision_profile",
+          "type": "fields",
+          "label": "Buying context",
+          "fields": [
+            {
+              "key": "preferred_contact",
+              "label": "Preferred contact method",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Phone",
+                "Email",
+                "Text message",
+                "In person"
+              ]
+            },
+            {
+              "key": "decision_maker",
+              "label": "Decision maker",
+              "units": 1.0
+            },
+            {
+              "key": "decision_by",
+              "label": "Client decides by",
+              "units": 0.85
+            },
+            {
+              "key": "budget_discussed",
+              "label": "Budget range discussed",
+              "units": 1.0
+            },
+            {
+              "key": "competing_venues",
+              "label": "Other venues considered",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Record only what the requester volunteered; do not infer budget or authority."
+        }
+      ]
+    },
+    {
+      "key": "event_requirements",
+      "title": "Requested event profile and space needs",
+      "guidance": "Capture what was asked for before checking whether it can be held.",
+      "blocks": [
+        {
+          "key": "event_profile",
+          "type": "fields",
+          "label": "Event profile",
+          "fields": [
+            {
+              "key": "event_type",
+              "label": "Event type",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Conference or seminar",
+                "Corporate meeting",
+                "Banquet or gala",
+                "Wedding or celebration",
+                "Social gathering",
+                "Trade or consumer show",
+                "Community or civic",
+                "Other"
+              ]
+            },
+            {
+              "key": "preferred_date",
+              "label": "Preferred date",
+              "units": 0.8
+            },
+            {
+              "key": "alternate_date",
+              "label": "Alternate date",
+              "units": 0.8
+            },
+            {
+              "key": "date_flexibility",
+              "label": "Date flexibility",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Fixed date only",
+                "Flexible within the week",
+                "Flexible within the month",
+                "Open to proposal"
+              ]
+            },
+            {
+              "key": "pattern_nights",
+              "label": "Days or nights needed",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "headcount_space",
+          "type": "fields",
+          "label": "Headcount and setup",
+          "fields": [
+            {
+              "key": "guests_expected",
+              "label": "Guests expected",
+              "units": 0.8
+            },
+            {
+              "key": "guests_minimum",
+              "label": "Guests minimum",
+              "units": 0.8
+            },
+            {
+              "key": "guest_basis",
+              "label": "Headcount basis",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Requester estimate",
+                "Prior-year actual",
+                "Registration to date",
+                "Guaranteed count"
+              ]
+            },
+            {
+              "key": "setup_style",
+              "label": "Requested setup",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Rounds",
+                "Theater",
+                "Classroom",
+                "U-shape",
+                "Hollow square",
+                "Standing reception",
+                "Exhibit floor",
+                "Mixed by session"
+              ]
+            },
+            {
+              "key": "space_requested",
+              "label": "Space requested",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "session_requirements",
+          "type": "table",
+          "label": "Requested schedule by time block",
+          "columns": [
+            {
+              "key": "block_date",
+              "label": "Date",
+              "units": 0.75
+            },
+            {
+              "key": "time_block",
+              "label": "Time block",
+              "units": 0.85
+            },
+            {
+              "key": "function",
+              "label": "Function",
+              "units": 1.05
+            },
+            {
+              "key": "space_requested",
+              "label": "Space requested",
+              "units": 1.0
+            },
+            {
+              "key": "headcount",
+              "label": "Guests",
+              "units": 0.5
+            },
+            {
+              "key": "setup_note",
+              "label": "Setup or service note",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "One row per distinct time block. Continue on a linked inquiry record when a multi-day pattern needs more rows."
+        },
+        {
+          "key": "requirement_flags",
+          "type": "checklist",
+          "label": "Services the requester raised at inquiry",
+          "items": [
+            "Food service requested",
+            "Bar or beverage service requested",
+            "Guest-room block requested",
+            "Audio-visual or production support requested",
+            "Accessibility accommodation requested",
+            "Dietary or allergen accommodation raised",
+            "Outside vendor, rental, or delivery expected",
+            "Loading dock or freight access needed",
+            "Signage or branding placement requested",
+            "Parking, valet, or shuttle requested"
+          ],
+          "guidance": "Tick only what the requester actually raised. Each ticked item must appear in the screening notes or the exception register."
+        }
+      ]
+    },
+    {
+      "key": "availability_screen",
+      "title": "Availability and hold screening",
+      "guidance": "Screen the request against the calendar before any commitment.",
+      "blocks": [
+        {
+          "key": "availability_result",
+          "type": "fields",
+          "label": "Availability screening result",
+          "fields": [
+            {
+              "key": "space_availability",
+              "label": "Space availability",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not yet checked",
+                "Available",
+                "Tentative hold exists",
+                "Conflict - alternate offered",
+                "Not available"
+              ]
+            },
+            {
+              "key": "conflicting_hold",
+              "label": "Conflicting hold ID",
+              "units": 0.95
+            },
+            {
+              "key": "hold_offered",
+              "label": "Hold offered",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "First hold",
+                "Second hold",
+                "Third hold",
+                "Definite space"
+              ]
+            },
+            {
+              "key": "hold_expires",
+              "label": "Hold expires",
+              "units": 0.8
+            },
+            {
+              "key": "rate_range",
+              "label": "Rate range quoted",
+              "units": 1.0
+            }
+          ],
+          "guidance": "A rate range quoted at inquiry is indicative only until the order and signed agreement are issued."
+        },
+        {
+          "key": "screening_confirmations",
+          "type": "checklist",
+          "label": "Screening evidence recorded",
+          "items": [
+            "Requested dates checked against the master space calendar",
+            "Existing holds and definite bookings reviewed for conflict",
+            "Capacity and egress limits for the requested setup confirmed with the responsible manager",
+            "Minimum revenue or headcount threshold reviewed against the request",
+            "Blackout dates, city-wide events, and rate periods reviewed",
+            "Food and beverage feasibility discussed with the culinary or beverage lead",
+            "Guest-room availability checked with rooms control when a block was requested",
+            "Accessibility accommodation request routed to the responsible manager"
+          ]
+        },
+        {
+          "key": "screening_notes",
+          "type": "textarea",
+          "label": "Screening findings, alternates offered, and client reaction",
+          "fields": [
+            {
+              "key": "screening_detail",
+              "label": "Availability screening findings"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "qualification_decision",
+      "title": "Qualification decision and authorization",
+      "guidance": "Decide what happens next and who authorized it.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Qualification decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Qualified - proposal to follow",
+                "Qualified - site visit first",
+                "Referred to an alternate date",
+                "Referred to another property",
+                "Declined - no availability",
+                "Declined - outside venue scope"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "next_step_owner",
+              "label": "Next step owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_step_due",
+              "label": "Next step due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale and what the client was told",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Qualification rationale"
+            }
+          ],
+          "height": 46
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Scope of this inquiry record",
+          "guidance": "This record captures requested requirements and availability screening. It is not a contract, a rate guarantee, a capacity determination, or a confirmed booking. Confirm capacity and egress limits, licensing, insurance, accessibility obligations, and pricing with the responsible manager before any commitment is communicated to the client."
+        }
+      ]
+    },
+    {
+      "key": "inquiry_exceptions",
+      "title": "Unresolved requirements and escalation",
+      "guidance": "Keep anything that blocks a response visible until it is disposed of.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Requested date unavailable and no alternate accepted",
+            "Headcount exceeds the confirmed capacity of the requested space",
+            "Accessibility accommodation cannot be met in the requested space",
+            "Dietary, allergen, or beverage service cannot be confirmed",
+            "Outside vendor insurance or licensing status unknown",
+            "Requested load-in window conflicts with another event",
+            "Deposit, credit, or payment terms unresolved",
+            "Response window missed or at risk"
+          ],
+          "guidance": "Tick every applicable trigger and open a register row for each one."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Unresolved requirement register",
+          "columns": [
+            {
+              "key": "trigger",
+              "label": "Trigger or gap",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Do not close a row until its disposition and accountable owner are explicit."
+        }
+      ]
+    },
+    {
+      "key": "inquiry_closeout",
+      "title": "Response, handoff, and closeout",
+      "guidance": "Close the inquiry with an outcome and an accountable next owner.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Inquiry closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Proposal sent",
+                "Site visit scheduled",
+                "Converted to definite",
+                "Lost - no availability",
+                "Lost - price",
+                "Lost - no client response",
+                "Withdrawn by requester"
+              ]
+            },
+            {
+              "key": "response_sent",
+              "label": "Response sent",
+              "units": 0.8
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "followup_log",
+          "type": "table",
+          "label": "Follow-up contact log",
+          "columns": [
+            {
+              "key": "contact_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "spoke_with",
+              "label": "Spoke with",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method",
+              "units": 0.7
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Requirements confirmed in writing with the requester",
+            "Hold status and expiry communicated to the requester",
+            "Open exceptions transferred with named owners",
+            "Accessibility and allergen requests carried into the event file",
+            "Lost-business reason recorded for pipeline review",
+            "Source and referral credit recorded"
+          ],
+          "guidance": "An unticked item stays part of the open handoff."
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Inquiry handoff detail"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by sales manager",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

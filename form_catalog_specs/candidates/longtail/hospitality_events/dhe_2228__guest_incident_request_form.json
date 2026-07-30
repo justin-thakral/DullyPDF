@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2228__guest_incident_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2228__guest_incident_request_form.pdf",
+  "slug": "guest-incident-request-form",
+  "title": "Guest Incident Request Form",
+  "subtitle": "Open a guest incident case and state what is being asked for: follow-up, investigation, property recovery, or routing to the insurer.",
+  "description": "An original intake record that opens a guest incident case. It captures who is raising it and on whose behalf, what is being asked of the venue, the facts as reported, urgency triage, the acceptance decision and case routing, unresolved information gaps, and the handoff to the responsible manager.",
+  "use_case": "Use when a guest, a companion, or a staff member asks the venue to act on something that happened - an injury, an illness, lost or damaged property, or a service failure - and a case has to be opened and routed. The request closes when the case is accepted and assigned, or declined with a recorded reason.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Request intake and routing",
+      "guidance": "Record who is asking, on whose behalf, and who owns the case.",
+      "blocks": [
+        {
+          "key": "intake_routing",
+          "type": "fields",
+          "label": "Request identity and routing",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request record ID",
+              "units": 0.9
+            },
+            {
+              "key": "received_at",
+              "label": "Received at",
+              "units": 0.85
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.95
+            },
+            {
+              "key": "assigned_manager",
+              "label": "Assigned manager",
+              "units": 1.2
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "raised_by",
+          "type": "fields",
+          "label": "Who raised it",
+          "fields": [
+            {
+              "key": "requester_name",
+              "label": "Requester name",
+              "units": 1.15
+            },
+            {
+              "key": "requester_relation",
+              "label": "Relationship to the guest",
+              "units": 1.5,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "The guest",
+                "Travelling companion",
+                "Group organizer",
+                "Staff member",
+                "Third party"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Best contact method",
+              "units": 1.25
+            },
+            {
+              "key": "channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "In person",
+                "Phone",
+                "Email",
+                "Review or survey",
+                "Group contact"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "case_subject",
+          "type": "fields",
+          "label": "Case subject",
+          "fields": [
+            {
+              "key": "guest_name",
+              "label": "Guest name",
+              "units": 1.15
+            },
+            {
+              "key": "stay_or_event",
+              "label": "Stay or event reference",
+              "units": 1.4
+            },
+            {
+              "key": "incident_date",
+              "label": "Incident date",
+              "units": 0.95
+            },
+            {
+              "key": "location_on_site",
+              "label": "Location on site",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "what_is_asked",
+      "title": "What is being asked of the venue",
+      "guidance": "The request itself, before any assessment of it.",
+      "blocks": [
+        {
+          "key": "request_type",
+          "type": "fields",
+          "label": "Request type",
+          "fields": [
+            {
+              "key": "primary_request",
+              "label": "Primary request",
+              "units": 1.7,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Investigate what happened",
+                "Medical follow-up coordination",
+                "Recover or replace property",
+                "Repair damaged property",
+                "Review charges on the account",
+                "Service recovery",
+                "Written account of the incident",
+                "Route to the insurer",
+                "Acknowledgment only"
+              ]
+            },
+            {
+              "key": "urgency",
+              "label": "Requested urgency",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Routine",
+                "Same day",
+                "Immediate"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "requested_actions",
+          "type": "table",
+          "label": "Actions the requester asked for",
+          "columns": [
+            {
+              "key": "action_requested",
+              "label": "Action requested",
+              "units": 1.5
+            },
+            {
+              "key": "in_their_words",
+              "label": "As they described it",
+              "units": 1.5
+            },
+            {
+              "key": "who_can_decide",
+              "label": "Who can decide it",
+              "units": 1.15
+            },
+            {
+              "key": "promised",
+              "label": "Promised or not",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record what was asked and whether anything was promised. Do not promise an outcome that needs a manager's approval."
+        },
+        {
+          "key": "reported_facts",
+          "type": "textarea",
+          "label": "The incident as reported by the requester, in their own terms",
+          "fields": [
+            {
+              "key": "reported_detail",
+              "label": "Incident as reported"
+            }
+          ],
+          "height": 72
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "Record boundary at intake",
+          "guidance": "Record only the facts needed to handle this case: what happened, when, where, who was involved, and what the venue did. Do not record a diagnosis, a medical history, treatment detail, an opinion about cause, an admission of fault, or a statement about staff discipline. Collect the minimum contact detail needed to complete follow-up and handle it under applicable privacy and retention policy."
+        }
+      ]
+    },
+    {
+      "key": "urgency_triage",
+      "title": "Urgency triage and immediate safety",
+      "guidance": "Some requests cannot wait for a case to be assigned.",
+      "blocks": [
+        {
+          "key": "triage_checks",
+          "type": "checklist",
+          "label": "Triage checks at intake",
+          "items": [
+            "Asked whether anyone needs medical attention now",
+            "Offered to call emergency services and recorded the response",
+            "Checked whether the hazard or condition is still present on site",
+            "Notified the manager on duty where a hazard is still present",
+            "Confirmed whether an incident report already exists for this event",
+            "Checked whether the guest is still on property",
+            "Asked whether the guest has a mobility or access need for follow-up",
+            "Confirmed whether other guests were affected"
+          ],
+          "guidance": "Intake staff record and route. They do not assess injury or give any medical guidance."
+        },
+        {
+          "key": "triage_result",
+          "type": "fields",
+          "label": "Triage result",
+          "fields": [
+            {
+              "key": "medical_need",
+              "label": "Medical attention",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "None requested",
+                "Guest declined help",
+                "First aid on site",
+                "Emergency services called",
+                "Guest sought own care",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "hazard_present",
+              "label": "Hazard still present",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not assessed",
+                "No",
+                "Yes - area secured",
+                "Yes - not yet secured"
+              ]
+            },
+            {
+              "key": "manager_notified_at",
+              "label": "Manager notified at",
+              "units": 1.35
+            },
+            {
+              "key": "existing_report",
+              "label": "Existing report ID",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "acceptance_decision",
+      "title": "Acceptance decision and case routing",
+      "guidance": "A manager accepts the case and names its owner.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Acceptance decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Accepted - case opened",
+                "Accepted - merged with case",
+                "Referred to the insurer",
+                "Referred to another department",
+                "Declined - not venue related",
+                "Withdrawn by requester"
+              ]
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision at",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "case_id",
+              "label": "Case ID assigned",
+              "units": 1.05
+            },
+            {
+              "key": "case_owner",
+              "label": "Case owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Stop and involve the responsible manager immediately when anyone may need medical attention, when a hazard is still present, when a guest alleges injury, or when the request involves an insurance claim or a legal demand. This request does not accept liability, admit fault, authorize compensation, or commit the venue to any remedy, and it does not replace the review that applicable policy requires."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Why the case was accepted, referred, or declined, and what the requester was told",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Acceptance rationale"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "information_gaps",
+      "title": "Information gaps and escalation",
+      "guidance": "A case opened on incomplete facts stays visible here.",
+      "blocks": [
+        {
+          "key": "gap_triggers",
+          "type": "checklist",
+          "label": "Information gap triggers",
+          "items": [
+            "The date, time, or location of the incident is not established",
+            "It is unclear whether the incident occurred on venue property",
+            "No staff member witnessed or was told about it at the time",
+            "The guest has left and cannot currently be reached",
+            "The requester is not the guest and consent to discuss is unclear",
+            "Property described cannot be identified or located",
+            "Charges disputed cannot be matched to a folio",
+            "Camera, log, or maintenance evidence may already be overwritten"
+          ]
+        },
+        {
+          "key": "gap_register",
+          "type": "table",
+          "label": "Information gap register",
+          "columns": [
+            {
+              "key": "gap",
+              "label": "Gap",
+              "units": 1.2
+            },
+            {
+              "key": "why_it_matters",
+              "label": "Why it matters",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4,
+          "guidance": "Evidence that expires - camera retention, logs, work orders - goes to the top of this register."
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Closeout and handoff to the case owner",
+      "guidance": "Hand the case over with the promises already made.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Request closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - case opened",
+                "Closed - referred",
+                "Closed - declined",
+                "Closed - withdrawn"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action_due",
+              "label": "Next action due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "promises_made",
+          "type": "table",
+          "label": "Commitments made to the requester",
+          "columns": [
+            {
+              "key": "commitment",
+              "label": "Commitment",
+              "units": 1.4
+            },
+            {
+              "key": "made_by",
+              "label": "Made by",
+              "units": 1.0
+            },
+            {
+              "key": "due_by",
+              "label": "Due by",
+              "units": 0.8
+            },
+            {
+              "key": "carried_to",
+              "label": "Carried to",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Case ID and owner communicated to the requester",
+            "Evidence preservation requested before retention periods expire",
+            "Commitments made at intake transferred to the case owner",
+            "Information gaps transferred with named owners",
+            "Insurer or legal referral recorded where applicable policy requires it",
+            "Record stored with restricted access under applicable privacy policy"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Intake outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Request handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -27,6 +27,10 @@ _EXPORTS = {
     "load_form_spec": (".models", "load_form_spec"),
     "open_batch_from_plan": (".batch_control", "open_batch_from_plan"),
     "register_existing_specs": (".worker_control", "register_existing_specs"),
+    "reconcile_reviewed_release": (
+        ".reviewed_release",
+        "reconcile_reviewed_release",
+    ),
     "render_form": (".renderer", "render_form"),
     "select_candidates": (".batch_plan", "select_candidates"),
     "validate_batch": (".pdf_qa", "validate_batch"),
@@ -51,6 +55,7 @@ __all__ = [
     "complete_spec_claim",
     "heartbeat_claim",
     "register_existing_specs",
+    "reconcile_reviewed_release",
     "load_form_spec",
     "open_batch_from_plan",
     "render_form",

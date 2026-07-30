@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2244__vendor_load_in_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2244__vendor_load_in_checklist_form.pdf",
+  "slug": "vendor-load-in-checklist-form",
+  "title": "Vendor Load-In Checklist Form",
+  "subtitle": "Verify venue readiness before arrival, observe the active load-in, and release each affected area only after completion checks.",
+  "description": "An original readiness and execution checklist that verifies the issued load-in order, dock and route conditions, receiving resources, arrival controls, observed exceptions, area restoration, and accountable closeout.",
+  "use_case": "Use on the operating day as the venue lead walks the arrival route before the vendor enters, monitors unloading and internal movement, records failed checks, and releases the route and staging areas after completion.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Checklist assignment and timing",
+      "guidance": "Identify the order, walkthrough lead, and planned operating window.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "checklist_id",
+              "label": "Checklist ID",
+              "units": 0.85
+            },
+            {
+              "key": "order_id",
+              "label": "Order ID",
+              "units": 0.85
+            },
+            {
+              "key": "walkthrough_by",
+              "label": "Walkthrough by",
+              "units": 1.15
+            },
+            {
+              "key": "arrival_window",
+              "label": "Arrival window",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Pre-walk inputs available",
+          "items": [
+            "Current load-in order and vendor contact are available",
+            "Vehicle description and crew count match the plan",
+            "Dock, curb, or arrival point owner is present",
+            "Freight lift or route access has been confirmed",
+            "Receiving rooms know their expected delivery sequence",
+            "Open conflicts from the request have dispositions"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Route readiness observations",
+      "guidance": "Record the condition and release result at each movement point.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Readiness walk",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.35
+            },
+            {
+              "key": "ready",
+              "label": "Ready",
+              "units": 0.65
+            },
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.15
+            },
+            {
+              "key": "verified",
+              "label": "Verified by",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Operating conditions",
+          "fields": [
+            {
+              "key": "weather",
+              "label": "Weather impact",
+              "units": 1.0
+            },
+            {
+              "key": "guest_traffic",
+              "label": "Guest traffic",
+              "units": 1.0
+            },
+            {
+              "key": "other_movements",
+              "label": "Other movement",
+              "units": 1.0
+            },
+            {
+              "key": "route_state",
+              "label": "Route state",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Active load-in confirmations",
+      "guidance": "Check the work as it occurs; a failed item needs an owner.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Execution checks",
+          "items": [
+            "Vendor checked in before unloading began",
+            "Vehicles remained in the assigned unloading position",
+            "Items followed the issued internal route",
+            "Protective measures remained in place during movement",
+            "Staging stayed within its assigned boundary",
+            "Receiving leads accepted units at their destinations"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Failed check and correction log",
+          "columns": [
+            {
+              "key": "failed_check",
+              "label": "Failed check",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Readiness decision and escalation",
+      "guidance": "Stop or reroute unresolved movement conditions.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Checklist outcome",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Approved",
+                "Declined",
+                "Needs review"
+              ]
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "release_time",
+              "label": "Release time",
+              "units": 1.0
+            },
+            {
+              "key": "incident_ref",
+              "label": "Incident ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Failed checks, route changes, and unresolved conditions",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Observation and disposition detail"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Walkthrough boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Area restoration and handoff",
+      "guidance": "Release only areas that are clear, restored, and accepted.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Area release record",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area",
+              "units": 1.15
+            },
+            {
+              "key": "condition",
+              "label": "Final condition",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Final route checks",
+          "items": [
+            "Vehicle and vendor crew departures are recorded",
+            "Dock, curb, lift, corridors, and staging are clear",
+            "Surface protection and temporary controls were removed",
+            "Damage, loss, or unresolved conditions were escalated",
+            "Checklist and supporting photos are filed with the order"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Walkthrough and closeout review",
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Completed by",
+              "units": 1.0
+            },
+            {
+              "key": "completed_at",
+              "label": "Completed at",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_at",
+              "label": "Reviewed at",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

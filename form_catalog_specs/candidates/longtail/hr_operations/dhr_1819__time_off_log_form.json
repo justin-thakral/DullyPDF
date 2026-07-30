@@ -1,0 +1,617 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1819__time_off_log_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1819__time_off_log_form.pdf",
+  "slug": "time-off-log-form",
+  "title": "Time Off Log Form",
+  "subtitle": "Use this log to record events in sequence, reconcile sources, identify trends and exceptions, and transfer the last known status for a time off workflow.",
+  "description": "An original operational time off log form that controls a absence request and leave-administration record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee, manager, scheduler, or leave administrator needs a traceable log so the qualified HR, leave, payroll, or policy reviewer can approve, conditionally approve, deny, pend, recode, extend, or route the requested absence under the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Time Off log period, ownership, and control",
+      "guidance": "Open a bounded log with a clear owner, source record, entry standard, and review cadence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Time Off identity",
+          "fields": [
+            {
+              "key": "leave_record",
+              "label": "Time-off record number",
+              "units": 0.8
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "department_role",
+              "label": "Department and role",
+              "units": 1.0
+            },
+            {
+              "key": "manager_scheduler",
+              "label": "Manager or scheduler",
+              "units": 0.9
+            },
+            {
+              "key": "request_submitted",
+              "label": "Submitted date and time",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Log ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "log_period",
+          "type": "fields",
+          "label": "Log period and entry control",
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.7
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.7
+            },
+            {
+              "key": "entry_owner",
+              "label": "Entry owner",
+              "units": 0.85
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 0.8
+            },
+            {
+              "key": "source_system",
+              "label": "Source system or register",
+              "units": 1.0
+            },
+            {
+              "key": "timezone_basis",
+              "label": "Time zone or date basis",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "baseline_rules",
+      "title": "Time Off baseline, entry rules, and expected evidence",
+      "guidance": "Define the expected operating state so each log entry can be interpreted later.",
+      "blocks": [
+        {
+          "key": "entry_requirements",
+          "type": "checklist",
+          "label": "Time Off log-entry requirements",
+          "items": [
+            "Employee, manager, work location, schedule, and time zone are verified",
+            "Requested dates, times, hours, recurrence, and partial-day boundaries are complete",
+            "Policy category and requested pay treatment are identified as provisional",
+            "Available balance or eligibility check has a system-of-record reference",
+            "Potential protected-leave or accommodation indicators are routed to HR",
+            "No diagnosis, genetic information, or unnecessary medical detail is recorded here",
+            "Documentation request, recipient, confidentiality route, and due point are clear",
+            "Coverage and handoff protect work without disclosing private reasons",
+            "Decision authority and any second-level review are identified",
+            "Payroll and scheduling entries match the approved boundaries",
+            "Extension, change, cancellation, and return instructions were communicated",
+            "Record retention and access follow the designated confidential process"
+          ]
+        },
+        {
+          "key": "evidence_sources",
+          "type": "checklist",
+          "label": "Supporting evidence and source records",
+          "items": [
+            "Employee request or absence notice with date and time",
+            "Current schedule, shift, or planned work calendar",
+            "Leave-policy category and applicable notice template",
+            "Balance, eligibility, or timekeeping system reference",
+            "Confidential-document receipt status without medical content",
+            "Manager coverage plan and operational handoff",
+            "Decision communication and employee acknowledgment",
+            "Payroll, schedule, extension, cancellation, or return update reference"
+          ]
+        },
+        {
+          "key": "baseline_notes",
+          "type": "textarea",
+          "label": "Opening status, carried items, data sources, known gaps, entry conventions, and review assumptions",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Log baseline and control notes"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "recurring_entries",
+      "title": "Time Off recurring event log",
+      "guidance": "Enter events in sequence and preserve actor, result, source, and next action.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Time Off event and status log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "event",
+              "label": "Request / notice event",
+              "units": 1.1
+            },
+            {
+              "key": "date_range",
+              "label": "Affected date / hours",
+              "units": 1.0
+            },
+            {
+              "key": "status_code",
+              "label": "Status / code",
+              "units": 0.85
+            },
+            {
+              "key": "actor_route",
+              "label": "Actor / recipient",
+              "units": 0.9
+            },
+            {
+              "key": "next_due",
+              "label": "Next action / due",
+              "units": 1.0
+            }
+          ],
+          "rows": 12
+        },
+        {
+          "key": "decision_change_log",
+          "type": "table",
+          "label": "Decision, correction, status change, reason, and authorization log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "prior_status",
+              "label": "Prior status",
+              "units": 0.8
+            },
+            {
+              "key": "new_status",
+              "label": "New status",
+              "units": 0.8
+            },
+            {
+              "key": "reason_evidence",
+              "label": "Reason / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.8
+            },
+            {
+              "key": "notice_ref",
+              "label": "Notice / system ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "sequence_notes",
+          "type": "textarea",
+          "label": "Sequence context, corrected entry, source conflict, missing interval, and interpretation limit",
+          "fields": [
+            {
+              "key": "sequence_detail",
+              "label": "Log sequence and correction notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "period_review",
+      "title": "Time Off trend, reconciliation, and period review",
+      "guidance": "Reconcile the log to source systems and identify patterns that require a decision or corrective action.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "table",
+          "label": "Population, source count, log count, variance, owner, and resolution",
+          "columns": [
+            {
+              "key": "population",
+              "label": "Population / segment",
+              "units": 1.05
+            },
+            {
+              "key": "source_total",
+              "label": "Source total",
+              "units": 0.7
+            },
+            {
+              "key": "log_total",
+              "label": "Log total",
+              "units": 0.7
+            },
+            {
+              "key": "variance",
+              "label": "Variance / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "period_checks",
+          "type": "checklist",
+          "label": "Period review and decision checks",
+          "items": [
+            "Requested date, time, duration, and recurrence pattern are internally consistent",
+            "Requested policy category matches the information appropriate for this record",
+            "Available balance or pay treatment was verified by the system owner",
+            "Notice timing and documentation status were reviewed under current policy",
+            "Coverage impact is recorded without treating coverage as the sole legal decision",
+            "Potential protected leave or accommodation was routed to a qualified administrator",
+            "Sensitive medical information is segregated from the routine personnel record",
+            "Payroll and scheduling systems can use the approved date and hour boundaries",
+            "Conditions, call-in expectations, and update route are specific and feasible",
+            "Decision is consistent with comparable requests and documented authority"
+          ]
+        },
+        {
+          "key": "period_outcome",
+          "type": "fields",
+          "label": "Period review outcome",
+          "fields": [
+            {
+              "key": "entries_reviewed",
+              "label": "Entries reviewed",
+              "units": 0.7
+            },
+            {
+              "key": "exceptions_open",
+              "label": "Open exceptions",
+              "units": 0.7
+            },
+            {
+              "key": "corrections_made",
+              "label": "Corrections made",
+              "units": 0.75
+            },
+            {
+              "key": "trend_status",
+              "label": "Trend status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Stable",
+                "Improving",
+                "Deteriorating",
+                "Mixed",
+                "Insufficient data"
+              ]
+            },
+            {
+              "key": "reviewer",
+              "label": "Period reviewer",
+              "units": 0.85
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "trend_analysis",
+          "type": "textarea",
+          "label": "Observed pattern, comparison basis, outlier, source limitation, operational effect, and decision need",
+          "fields": [
+            {
+              "key": "trend_detail",
+              "label": "Trend and reconciliation analysis"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Time Off unresolved event and escalation register",
+      "guidance": "Preserve exceptions separately from routine entries until final disposition.",
+      "blocks": [
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Log stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the qualified HR, leave, payroll, or policy reviewer under the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations."
+        },
+        {
+          "key": "log_triggers",
+          "type": "checklist",
+          "label": "Time Off exception and escalation triggers",
+          "items": [
+            "Confidential leave or medical information reached an unauthorized recipient",
+            "Approved dates, hours, code, or pay treatment were entered incorrectly",
+            "Employee, manager, scheduler, payroll, and leave systems show conflicting status",
+            "Required notice or decision communication was missed or sent late",
+            "Coverage action disclosed information beyond the operational need",
+            "Employee reports interference, retaliation, pressure, or discouragement",
+            "Return, extension, or recertification routing failed at a critical due point",
+            "Absence was denied, rescinded, or changed without the required qualified review"
+          ]
+        },
+        {
+          "key": "log_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Time Off period handoff and log closeout",
+      "guidance": "Transfer the last known status, open actions, and next required review to the receiving owner.",
+      "blocks": [
+        {
+          "key": "log_closeout_outcome",
+          "type": "fields",
+          "label": "Log outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_closeout_actions",
+          "type": "table",
+          "label": "Open time off action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "log_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "log_closeout_signoff",
+          "type": "signatures",
+          "label": "Log accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Leave, Payroll, Or Policy Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

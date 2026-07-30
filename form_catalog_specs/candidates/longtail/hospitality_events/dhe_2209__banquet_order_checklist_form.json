@@ -1,0 +1,500 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2209__banquet_order_checklist_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2209__banquet_order_checklist_form.pdf",
+  "slug": "banquet-order-checklist-form",
+  "title": "Banquet Order Checklist Form",
+  "subtitle": "The pre-function walk: set against diagram, exit paths, holding temperatures, allergen station controls, and staffing ready before doors open.",
+  "description": "An original pre-function readiness walk for a banquet. It records the walk identity and the order being checked, the room set against the diagram, service and equipment readiness, food holding temperature readings with the responsible checker, the release decision before doors open, blocking findings, and the closeout that hands the room to the captain.",
+  "use_case": "Use in the hour before doors open, when a captain and manager walk the room against the banquet event order. The walk closes when the room is released for service or the blocking findings have been escalated with a named owner.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "walk_identity",
+      "title": "Walk identity and order under check",
+      "guidance": "Name the walk, the order, and who is walking it.",
+      "blocks": [
+        {
+          "key": "walk_routing",
+          "type": "fields",
+          "label": "Walk identity and routing",
+          "fields": [
+            {
+              "key": "walk_id",
+              "label": "Walk record ID",
+              "units": 0.9
+            },
+            {
+              "key": "walk_time",
+              "label": "Walk start time",
+              "units": 0.95
+            },
+            {
+              "key": "walked_by",
+              "label": "Walked by",
+              "units": 0.95
+            },
+            {
+              "key": "manager_present",
+              "label": "Manager present",
+              "units": 1.05
+            },
+            {
+              "key": "doors_open",
+              "label": "Doors open at",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "order_under_check",
+          "type": "fields",
+          "label": "Order under check",
+          "fields": [
+            {
+              "key": "beo_number",
+              "label": "Banquet order number",
+              "units": 1.2
+            },
+            {
+              "key": "revision_checked",
+              "label": "Revision checked",
+              "units": 1.05
+            },
+            {
+              "key": "function_room",
+              "label": "Function room",
+              "units": 1.05
+            },
+            {
+              "key": "guarantee_count",
+              "label": "Guaranteed covers",
+              "units": 1.1
+            },
+            {
+              "key": "set_count",
+              "label": "Set covers",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "room_set_check",
+      "title": "Room set against the diagram",
+      "guidance": "Check what is on the floor against what was ordered.",
+      "blocks": [
+        {
+          "key": "set_checks",
+          "type": "checklist",
+          "label": "Set checks",
+          "items": [
+            "Table count and cover count match the order",
+            "Table positions match the diagram",
+            "Head table position and cover count correct",
+            "Linen, napkins, and chair covers correct and unmarked",
+            "Place settings complete and uniform across tables",
+            "Centerpieces placed and sightlines to the podium clear",
+            "Podium, microphone, and staging positioned",
+            "Dance floor laid, seamed, and edges secure",
+            "Registration and gift tables set",
+            "Seating chart and entrance signage placed"
+          ]
+        },
+        {
+          "key": "set_variances",
+          "type": "table",
+          "label": "Set variances found",
+          "columns": [
+            {
+              "key": "variance",
+              "label": "Variance from the order",
+              "units": 1.35
+            },
+            {
+              "key": "location",
+              "label": "Where",
+              "units": 0.85
+            },
+            {
+              "key": "corrected_by",
+              "label": "Corrected by",
+              "units": 1.0
+            },
+            {
+              "key": "corrected_at",
+              "label": "Corrected at",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "egress_and_access",
+      "title": "Exit paths, access, and guest routing",
+      "guidance": "Clearance is confirmed by the responsible manager before doors open.",
+      "blocks": [
+        {
+          "key": "egress_checks",
+          "type": "checklist",
+          "label": "Exit path and access checks",
+          "items": [
+            "Exit doors unobstructed and unlocked in the direction of travel",
+            "Aisle widths between tables confirmed with the responsible manager",
+            "Buffet and station positions clear of exit routes",
+            "Cabling, cords, and floor boxes covered or routed away from traffic",
+            "Accessible route from entrance to seating confirmed clear",
+            "Accessible seating positions set and reachable",
+            "Service doors and back-of-house paths clear for plate runs",
+            "Emergency lighting and exit signs visible from the floor"
+          ],
+          "guidance": "Record what was observed. This walk does not determine occupancy limits or clear a life-safety deficiency."
+        },
+        {
+          "key": "egress_result",
+          "type": "fields",
+          "label": "Exit path result",
+          "fields": [
+            {
+              "key": "egress_status",
+              "label": "Exit path status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not yet checked",
+                "Clear as observed",
+                "Corrected during the walk",
+                "Blocked - escalated"
+              ]
+            },
+            {
+              "key": "confirmed_by",
+              "label": "Confirmed by",
+              "units": 1.05
+            },
+            {
+              "key": "confirmed_at",
+              "label": "Confirmed at",
+              "units": 0.85
+            },
+            {
+              "key": "capacity_reference",
+              "label": "Capacity reference",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "food_and_service_ready",
+      "title": "Food holding, allergen control, and service readiness",
+      "guidance": "Take readings and record who took them.",
+      "blocks": [
+        {
+          "key": "holding_readings",
+          "type": "table",
+          "label": "Holding temperature readings",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or station",
+              "units": 1.3
+            },
+            {
+              "key": "reading",
+              "label": "Reading",
+              "units": 0.65
+            },
+            {
+              "key": "taken_at",
+              "label": "Taken at",
+              "units": 0.75
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.25
+            }
+          ],
+          "rows": 6,
+          "guidance": "Record the reading as observed with the time and the person who took it. Route any reading outside the venue's standard to the chef on duty."
+        },
+        {
+          "key": "service_ready_checks",
+          "type": "checklist",
+          "label": "Service readiness checks",
+          "items": [
+            "Allergen and dietary covers identified on the seating chart",
+            "Restricted plates marked and briefed to the assigned server",
+            "Chef on duty confirmed the dietary plan matches the order",
+            "Buffet labels and station signage in place",
+            "Serving utensils, chafers, and fuel in place and lit",
+            "Water, bread, and butter service staged",
+            "Server stations stocked and trash and bus paths set",
+            "Captain briefed the service team on the timeline",
+            "Bar tie-in confirmed with the beverage lead"
+          ]
+        },
+        {
+          "key": "staffing_ready",
+          "type": "fields",
+          "label": "Staffing at walk time",
+          "fields": [
+            {
+              "key": "servers_scheduled",
+              "label": "Servers scheduled",
+              "units": 1.1
+            },
+            {
+              "key": "servers_present",
+              "label": "Servers present",
+              "units": 1.05
+            },
+            {
+              "key": "captains_present",
+              "label": "Captains present",
+              "units": 1.05
+            },
+            {
+              "key": "bartenders_present",
+              "label": "Bartenders present",
+              "units": 1.2
+            },
+            {
+              "key": "ratio_met",
+              "label": "Planned ratio met",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "release_decision",
+      "title": "Release decision and blocking findings",
+      "guidance": "The room is released for service, or it is not.",
+      "blocks": [
+        {
+          "key": "release_record",
+          "type": "fields",
+          "label": "Release decision",
+          "fields": [
+            {
+              "key": "release_status",
+              "label": "Release status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Released for service",
+                "Released with follow-up",
+                "Held - findings open",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "released_at",
+              "label": "Released at",
+              "units": 0.85
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "reinspection_due",
+              "label": "Recheck due",
+              "units": 0.95
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "blocking_findings",
+          "type": "table",
+          "label": "Blocking findings register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Blocking finding",
+              "units": 1.25
+            },
+            {
+              "key": "why_blocking",
+              "label": "Why it blocks service",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "walk_boundary",
+          "type": "notice",
+          "label": "What this walk does and does not establish",
+          "guidance": "This walk records observations against the banquet event order. It is not a food-safety certification, an occupancy or egress determination, or a fire or life-safety inspection. Stop service and route to the responsible manager when an exit path is obstructed, a holding temperature is outside the venue standard, or a dietary requirement cannot be met as planned."
+        }
+      ]
+    },
+    {
+      "key": "walk_closeout",
+      "title": "Closeout and handoff to the captain",
+      "guidance": "Hand the room over with the findings that remain open.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Walk closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - room released",
+                "Closed with follow-up",
+                "Closed - function cancelled"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "handed_to",
+              "label": "Handed to",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "recheck_log",
+          "type": "table",
+          "label": "Recheck log during service",
+          "columns": [
+            {
+              "key": "recheck_time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "what_rechecked",
+              "label": "What was rechecked",
+              "units": 1.45
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.1
+            },
+            {
+              "key": "checked_by",
+              "label": "Checked by",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Set variances either corrected or recorded as accepted",
+            "Exit path status confirmed and recorded before doors opened",
+            "Holding readings and actions filed with the function record",
+            "Dietary plan confirmation obtained from the chef on duty",
+            "Open findings transferred to the captain with named owners",
+            "Walk record retained as required by applicable policy"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Release outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Walk handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Walk and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Walked and prepared by",
+              "units": 1.3
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.35
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

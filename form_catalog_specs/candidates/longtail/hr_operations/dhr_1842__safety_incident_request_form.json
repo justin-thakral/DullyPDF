@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1842__safety_incident_request_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1842__safety_incident_request_form.pdf",
+  "slug": "safety-incident-request-form",
+  "title": "Safety Incident Request Form",
+  "subtitle": "Use this request to route the need, test readiness, document review, authorize a bounded action, and verify implementation for a safety incident workflow.",
+  "description": "An original operational safety incident request form that controls a workplace safety event and corrective-action record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the reporting worker, supervisor, or incident coordinator needs a traceable request so the qualified safety, occupational health, operations, or regulatory reviewer can stabilize, investigate, classify, notify, correct, reopen work, or escalate the safety event under the emergency procedure, hazard-control plan, incident-investigation process, reporting rules, and anti-retaliation policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Safety Incident request identity and routing",
+      "guidance": "Open one traceable request and identify the responsible reviewers before work begins.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Safety Incident identity",
+          "fields": [
+            {
+              "key": "incident_record",
+              "label": "Safety incident number",
+              "units": 0.85
+            },
+            {
+              "key": "event_date_time",
+              "label": "Event date and time",
+              "units": 0.8
+            },
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 0.8
+            },
+            {
+              "key": "site_location",
+              "label": "Site and exact location",
+              "units": 1.05
+            },
+            {
+              "key": "work_area_task",
+              "label": "Work area and task",
+              "units": 1.05
+            },
+            {
+              "key": "reporting_route",
+              "label": "Reporter or confidential route",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Request ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_scope",
+          "type": "textarea",
+          "label": "Requested outcome, initiating event, business need, affected people or work, and explicit exclusions",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Request scope and job statement"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "requested_action",
+      "title": "Requested safety incident scope and operating need",
+      "guidance": "Describe the exact requested action and the evidence needed to evaluate it.",
+      "blocks": [
+        {
+          "key": "request_type",
+          "type": "checklist",
+          "label": "Safety Incident request type",
+          "items": [
+            "Immediate hazard control or emergency response request",
+            "Injury, illness, exposure, or symptom report needing qualified routing",
+            "Near miss or high-potential event investigation",
+            "Property, equipment, vehicle, or environmental safety event",
+            "Unsafe condition or unsafe-system observation",
+            "Work-stop, isolation, restricted-area, or restart review",
+            "Corrective-action, engineering-control, or procedure-change request",
+            "External reporting determination by a qualified safety reviewer"
+          ]
+        },
+        {
+          "key": "requested_components",
+          "type": "table",
+          "label": "Safety Incident requested components",
+          "columns": [
+            {
+              "key": "control_need",
+              "label": "Hazard / response need",
+              "units": 1.2
+            },
+            {
+              "key": "affected_scope",
+              "label": "Affected people / area",
+              "units": 1.05
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "qualified_owner",
+              "label": "Qualified owner",
+              "units": 0.8
+            },
+            {
+              "key": "required_by",
+              "label": "Required by",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Status / authority",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "business_need",
+          "type": "textarea",
+          "label": "Operational reason, intended result, assumptions, dependencies, alternatives, and timing impact",
+          "fields": [
+            {
+              "key": "need_detail",
+              "label": "Business need and requested result"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "readiness_impact",
+      "title": "Safety Incident readiness, policy, and impact review",
+      "guidance": "Confirm the request can be reviewed without bypassing privacy, safety, security, or authority controls.",
+      "blocks": [
+        {
+          "key": "readiness_checkpoints",
+          "type": "checklist",
+          "label": "Safety Incident readiness checkpoints",
+          "items": [
+            "Emergency services, first aid, medical evaluation, or evacuation need is addressed",
+            "Immediate hazard is isolated and affected area controlled",
+            "People are accounted for and qualified support is notified",
+            "Event time, location, task, equipment, material, and operating state are captured",
+            "Photographs, video, physical items, alarms, logs, and system data preserve provenance",
+            "Reporter and witness accounts are collected separately and without coaching",
+            "Exposure, injury, illness, or symptom information is routed confidentially",
+            "Potential recurrence and similarly exposed work are identified",
+            "Investigation considers systemic and root causes rather than worker blame",
+            "Corrective actions include owner, due point, interim control, and effectiveness test",
+            "Qualified reviewer makes recordability and external-notification decisions",
+            "Work restart and closeout require evidence that controls are effective"
+          ]
+        },
+        {
+          "key": "impact_routing",
+          "type": "fields",
+          "label": "Affected workflow and review route",
+          "fields": [
+            {
+              "key": "affected_team",
+              "label": "Affected team or function",
+              "units": 0.95
+            },
+            {
+              "key": "affected_location",
+              "label": "Affected location",
+              "units": 0.9
+            },
+            {
+              "key": "system_update",
+              "label": "System update required",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "To be determined"
+              ]
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy or restricted-record route",
+              "units": 1.0
+            },
+            {
+              "key": "cost_schedule_effect",
+              "label": "Cost or schedule effect",
+              "units": 0.95
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Request and authority boundary",
+          "guidance": "This request does not itself authorize action. The qualified safety, occupational health, operations, or regulatory reviewer must apply the emergency procedure, hazard-control plan, incident-investigation process, reporting rules, and anti-retaliation policy, resolve exceptions, and record any conditions before implementation."
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Safety Incident review, alternatives, and decision",
+      "guidance": "Compare the request to the governing evidence and document why the selected route is appropriate.",
+      "blocks": [
+        {
+          "key": "review_matrix",
+          "type": "table",
+          "label": "Requirement, evidence, finding, and decision matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement / question",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Reviewer / owner",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result / condition",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "request_decision",
+          "type": "fields",
+          "label": "Request decision and authority",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned for revision",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date or scope boundary",
+              "units": 1.1
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, alternatives rejected, approved limits, exception treatment, and communication plan",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Decision rationale and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "implementation_handoff",
+      "title": "Approved safety incident implementation and exception handoff",
+      "guidance": "Translate the decision into owned work without losing a condition or system update.",
+      "blocks": [
+        {
+          "key": "implementation_plan",
+          "type": "table",
+          "label": "Approved action, condition, system update, and completion evidence",
+          "columns": [
+            {
+              "key": "approved_action",
+              "label": "Approved action",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition / limit",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "system_record",
+              "label": "System / evidence ref.",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "implementation_checks",
+          "type": "checklist",
+          "label": "Implementation and communication controls",
+          "items": [
+            "Immediate hazard and affected scope are controlled",
+            "Emergency, occupational-health, and external-reporting routes were reviewed",
+            "Investigation team has appropriate independence and worker participation",
+            "Evidence and factual accounts are sufficiently preserved",
+            "Cause analysis addresses system conditions and rejected alternatives",
+            "Interim and permanent controls have owners and due points",
+            "Restart criteria and authority are explicit",
+            "Reporter protection, communication, and effectiveness follow-up are documented"
+          ]
+        },
+        {
+          "key": "implementation_variance",
+          "type": "textarea",
+          "label": "Implementation variance, failed dependency, changed fact, immediate action, and reapproval need",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Variance and reapproval narrative"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Safety Incident request completion and closeout",
+      "guidance": "Close only when the implemented result, remaining limits, and receiving ownership are verifiable.",
+      "blocks": [
+        {
+          "key": "request_outcome",
+          "type": "fields",
+          "label": "Request outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "request_actions",
+          "type": "table",
+          "label": "Open safety incident action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "request_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "request_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "request_signoff",
+          "type": "signatures",
+          "label": "Request accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Safety, Occupational Health, Operations, Or Regulatory Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

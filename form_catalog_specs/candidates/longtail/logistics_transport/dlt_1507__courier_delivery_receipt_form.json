@@ -1,0 +1,567 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1507__courier_delivery_receipt_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1507__courier_delivery_receipt_form.pdf",
+  "slug": "courier-delivery-receipt-form",
+  "title": "Courier Delivery Receipt Form",
+  "subtitle": "Reconcile the promised courier delivery with actual units, condition, custody, evidence, exceptions, receiving decision, and accountable handoff.",
+  "description": "An original, fillable courier delivery receipt form for controlling time-critical document or parcel consignment through delivery receipt identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use at Named recipient and exact handoff point when named recipient or controlled mailroom and the delivering custodian need one receipt that separates physical handoff from inspection, hold, commercial acceptance, and exception resolution.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Courier delivery receipt identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Courier record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Delivery Receipt record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Dispatch and tracking number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Envelope, parcel, pouch, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned courier dispatcher",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Identified Courier",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Pickup contact and controlled pickup point",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Named recipient and exact handoff point",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the dispatch order, tracking record, and custody manifest."
+        }
+      ]
+    },
+    {
+      "key": "delivery_commitment",
+      "title": "Courier delivery commitment and receiving readiness",
+      "guidance": "Confirm what was expected, where it was due, and which controls governed acceptance.",
+      "blocks": [
+        {
+          "key": "commitment",
+          "type": "fields",
+          "label": "Delivery commitment",
+          "fields": [
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled delivery window",
+              "units": 1.15
+            },
+            {
+              "key": "actual_arrival",
+              "label": "Actual arrival date and time",
+              "units": 1.1
+            },
+            {
+              "key": "service_level",
+              "label": "Service level and custody restriction",
+              "units": 1.35
+            },
+            {
+              "key": "recipient",
+              "label": "Named Recipient Or Controlled Mailroom",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "handling_requirements",
+          "type": "checklist",
+          "label": "Courier delivery and receiving controls",
+          "items": [
+            "Direct service with no intermediate stop",
+            "Tamper-evident pouch or seal",
+            "Named-recipient-only delivery",
+            "Identification verification under applicable policy",
+            "Continuous chain of custody",
+            "Do not x-ray or special screening instruction",
+            "Return signed document or receipt",
+            "Wait-and-return service"
+          ],
+          "guidance": "Confirm applicable controls before unloading, opening, moving, or accepting the delivered units."
+        },
+        {
+          "key": "receiving_conditions",
+          "type": "fields",
+          "label": "Receiving point and custody condition",
+          "fields": [
+            {
+              "key": "receiving_point",
+              "label": "Actual receiving point",
+              "units": 1.25
+            },
+            {
+              "key": "arriving_custodian",
+              "label": "Arriving custodian",
+              "units": 1.15
+            },
+            {
+              "key": "recipient_authority",
+              "label": "Recipient authority or role",
+              "units": 1.2
+            },
+            {
+              "key": "initial_status",
+              "label": "Initial receiving status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Ready to inspect",
+                "Held at receiving",
+                "Partial unload",
+                "Refused before unload"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "receipt_reconciliation",
+      "title": "Courier delivered-unit reconciliation",
+      "guidance": "Reconcile each delivered identity and quantity before relying on totals or signatures.",
+      "blocks": [
+        {
+          "key": "delivered_units",
+          "type": "table",
+          "label": "Courier Envelopes, Parcels, Seals, And Custody Units received",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Envelope, parcel, pouch, or seal ID",
+              "units": 1.35
+            },
+            {
+              "key": "expected",
+              "label": "Expected quantity",
+              "units": 0.85
+            },
+            {
+              "key": "received",
+              "label": "Received quantity",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Seal, envelope, and parcel condition",
+              "units": 1.15
+            },
+            {
+              "key": "control",
+              "label": "Service level and custody restriction",
+              "units": 1.15
+            },
+            {
+              "key": "variance",
+              "label": "Variance or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "receipt_totals",
+          "type": "fields",
+          "label": "Receipt totals and reconciliation",
+          "fields": [
+            {
+              "key": "expected_total",
+              "label": "Expected total",
+              "units": 0.9
+            },
+            {
+              "key": "received_total",
+              "label": "Received total",
+              "units": 0.9
+            },
+            {
+              "key": "accepted_total",
+              "label": "Accepted total",
+              "units": 0.9
+            },
+            {
+              "key": "held_total",
+              "label": "Held or refused total",
+              "units": 1.0
+            },
+            {
+              "key": "variance_total",
+              "label": "Unresolved variance total",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Manifested and accepted pieces"
+        }
+      ]
+    },
+    {
+      "key": "condition_evidence",
+      "title": "Courier condition inspection and receipt evidence",
+      "guidance": "Preserve observations made before the receiver changes packaging, custody, or physical condition.",
+      "blocks": [
+        {
+          "key": "condition_checks",
+          "type": "checklist",
+          "label": "Courier receipt inspection",
+          "items": [
+            "Dispatch number and tracking identity agree across label and manifest",
+            "Piece count and package identifiers agree with the pickup record",
+            "Tamper seal, pouch closure, and package surfaces show no unexplained change",
+            "Recipient name and acceptable alternate recipient rules are explicit",
+            "Required delivery deadline and escalation trigger are visible",
+            "Courier can preserve custody through access screening or security handoff",
+            "No prohibited or undeclared contents are apparent under applicable policy",
+            "Tracking scan can be captured at pickup, transfer, attempt, and delivery",
+            "Proof method protects confidential information unrelated to the delivery",
+            "Any seal, identity, count, deadline, or access discrepancy is stopped and routed"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Receipt evidence index",
+          "columns": [
+            {
+              "key": "evidence",
+              "label": "Evidence or observation",
+              "units": 1.45
+            },
+            {
+              "key": "unit",
+              "label": "Affected unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.9
+            },
+            {
+              "key": "reference",
+              "label": "Photo, scan, or record ref",
+              "units": 1.3
+            }
+          ],
+          "rows": 4,
+          "guidance": "Record only necessary proof and preserve privacy or security restrictions."
+        },
+        {
+          "key": "condition_narrative",
+          "type": "textarea",
+          "label": "Condition, count, custody, and acceptance narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Condition, count, custody, and acceptance narrative",
+              "multiline": true
+            }
+          ],
+          "height": 54,
+          "guidance": "Describe facts that cannot be reconstructed from the line table or evidence reference."
+        }
+      ]
+    },
+    {
+      "key": "receipt_exceptions",
+      "title": "Courier exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "receipt_exception_types",
+          "type": "checklist",
+          "label": "Courier exception indicators",
+          "items": [
+            "Sender is not ready at committed pickup time",
+            "Envelope, parcel, pouch, or seal identity differs from manifest",
+            "Package condition suggests opening, tampering, or damage",
+            "Courier cannot access the pickup or delivery control point",
+            "Named recipient or permitted alternate is unavailable",
+            "Delivery deadline is at risk or missed",
+            "Security screening conflicts with handling instruction",
+            "Tracking scan or signature capture is unavailable",
+            "Unplanned custody transfer or vehicle change is required",
+            "Sender, recipient, or dispatcher disputes the recorded piece count"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "receipt_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "receipt_decision",
+          "type": "fields",
+          "label": "Receipt hold, partial acceptance, refusal, or resolution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "receipt_acceptance",
+      "title": "Courier receipt decision and custody transfer",
+      "guidance": "Separate physical custody from final commercial, quality, safety, or financial acceptance.",
+      "blocks": [
+        {
+          "key": "acceptance_decision",
+          "type": "fields",
+          "label": "Receiving decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Receipt decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with exception",
+                "Partially accepted",
+                "Held pending review",
+                "Refused"
+              ]
+            },
+            {
+              "key": "custody_location",
+              "label": "Current custody or hold location",
+              "units": 1.35
+            },
+            {
+              "key": "notice_to",
+              "label": "Exception notice sent to",
+              "units": 1.05
+            },
+            {
+              "key": "notice_time",
+              "label": "Notice date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "handoff_attestation",
+          "type": "signatures",
+          "label": "Delivery and receiving attestation",
+          "fields": [
+            {
+              "key": "delivered_by",
+              "label": "Delivered by and date",
+              "units": 1.2
+            },
+            {
+              "key": "received_by",
+              "label": "Received by and date",
+              "units": 1.2
+            },
+            {
+              "key": "witness",
+              "label": "Witness or verifier",
+              "units": 1.05
+            },
+            {
+              "key": "proof_reference",
+              "label": "Receipt proof reference",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Attestation confirms the recorded physical event, not waiver of a concealed issue or unresolved review."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Courier delivery receipt closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and reconciled",
+                "Accepted with closed exception",
+                "Partial receipt closed",
+                "Transferred to claim or hold",
+                "Refused and returned"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this courier delivery receipt with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by courier service supervisor",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

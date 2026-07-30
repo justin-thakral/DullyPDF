@@ -141,6 +141,15 @@ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5173 npm run test:playwright:pdf-fonts
 
 This smoke signs in a temporary verified test user, sets global and per-field fonts, downloads editable and flat PDFs, renders first-page PNGs, reopens the saved template to confirm the font controls hydrate, and writes artifacts under `output/playwright/pdf-base14-fonts/`.
 
+The production form-catalog release browser gate is
+`npm run test:playwright:form-catalog-canary`. It requires the deterministic
+sample plan, exact release manifest, controlled-deploy Hosting receipt, and
+explicit expected source/manifest/sample-plan/Hosting identities. It drives
+exactly the one to three planned browser identities and writes evidence only
+under `mcp/debugging/mcp-screenshots/<release-id>/`. Use the complete release
+command in `../../test/docs/form-catalog-release-runbook.md`; this smoke is not a
+generic local UI test and consumes one generated-PDF download per canary.
+
 The owner smoke signs into the workspace with a Firebase custom token, opens a real fillable PDF in the editor, adds a signature anchor, saves a signing draft, and sends the immutable request with mocked signing endpoints. Both smoke scripts write screenshots and JSON summaries under `frontend/output/playwright/`.
 
 ## reCAPTCHA env flags

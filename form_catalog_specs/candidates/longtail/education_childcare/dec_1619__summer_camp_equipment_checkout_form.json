@@ -1,0 +1,591 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1619__summer_camp_equipment_checkout_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1619__summer_camp_equipment_checkout_form.pdf",
+  "slug": "summer-camp-equipment-checkout-form",
+  "title": "Summer Camp Equipment Checkout Form",
+  "subtitle": "An original operational equipment checkout for summer camp that connects identity, evidence, authority, exceptions, privacy, and accountable closeout.",
+  "description": "This Summer Camp Equipment Checkout Form supports the complete summer camp workflow from intake and routing through evidence, authorized decisions, exception ownership, qualified review, and final handoff.",
+  "use_case": "Use the Summer Camp Equipment Checkout Form when the assigned camp session lead needs one fillable record for camper session, activity participation, supervision, support, and release without inventing legal, medical, safety, consent, certification, or professional authority.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Summer camp equipment checkout identity and routing",
+      "guidance": "Connect this equipment checkout to one camper session, activity participation, supervision, support, and release record, an accountable owner, and the current review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Summer camp record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "program_date",
+              "label": "Program or record date",
+              "units": 1.0
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.8
+            },
+            {
+              "key": "site",
+              "label": "Camp site or activity area",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Session, cabin, or activity group",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Use the approved roster or case reference rather than creating a second identity."
+        },
+        {
+          "key": "participant_route",
+          "type": "fields",
+          "label": "Participant and responsible route",
+          "fields": [
+            {
+              "key": "participant_reference",
+              "label": "Camper or roster reference",
+              "units": 1.4
+            },
+            {
+              "key": "guardian_reference",
+              "label": "Guardian or authorized contact",
+              "units": 1.4
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Assigned camp session lead",
+              "units": 1.2
+            },
+            {
+              "key": "program_window",
+              "label": "Program, session, or shift window",
+              "units": 1.2
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Active",
+                "Held",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Record references and routing information only; keep sensitive details in approved systems."
+        },
+        {
+          "key": "scope_context",
+          "type": "textarea",
+          "label": "Summer camp scope, trigger, prior handoff, and known limitations",
+          "fields": [
+            {
+              "key": "scope_context",
+              "label": "Scope, trigger, prior handoff, and known limitations"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "checkout_basis",
+      "title": "Summer camp equipment request, custody, and authorized use",
+      "guidance": "Connect each item to one custodian, operating scope, expected return, and approved storage route.",
+      "blocks": [
+        {
+          "key": "custody_basis",
+          "type": "fields",
+          "label": "Checkout and custody basis",
+          "fields": [
+            {
+              "key": "request_reference",
+              "label": "Request or assignment ref.",
+              "units": 1.2
+            },
+            {
+              "key": "receiving_custodian",
+              "label": "Receiving custodian",
+              "units": 1.2
+            },
+            {
+              "key": "checkout_at",
+              "label": "Checkout date and time",
+              "units": 1.1
+            },
+            {
+              "key": "expected_return",
+              "label": "Expected return",
+              "units": 1.0
+            },
+            {
+              "key": "custody_status",
+              "label": "Custody status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Issued",
+                "Held",
+                "Returned"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "equipment_categories",
+          "type": "checklist",
+          "label": "Summer camp equipment and record categories",
+          "items": [
+            "Cabin, bunk, or labeled storage assignment",
+            "Program radio, phone, or charging kit",
+            "Approved aquatic or activity safety item",
+            "Accessibility, mobility, sensory, or communication support",
+            "Camp pack, rain gear, visibility item, or trail supply",
+            "Roster, emergency contact packet, or counselor kit",
+            "Meal or allergy support item in approved storage",
+            "Medication or emergency supply in separate authorized custody"
+          ]
+        },
+        {
+          "key": "equipment_boundary",
+          "type": "notice",
+          "label": "Equipment, access, and authority boundary",
+          "guidance": "This form records a summer-camp workflow; it does not create blanket guardian consent, certify swimming or activity ability, prescribe medical care, or replace emergency services and local camp rules. Stop activity, movement, or release when identity, permission, headcount, supervision, health support, or safety cannot be confirmed. Use minimum necessary information and route decisions to qualified authorized staff."
+        }
+      ]
+    },
+    {
+      "key": "checkout_lines",
+      "title": "Summer camp item checkout and condition record",
+      "guidance": "Use one row per distinct asset, kit, sealed record, key, device, or supply.",
+      "blocks": [
+        {
+          "key": "item_register",
+          "type": "table",
+          "label": "Item, identifier, condition, custody, return, and evidence",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or kit",
+              "units": 1.2
+            },
+            {
+              "key": "identifier",
+              "label": "Asset, seal, or record ID",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition or count out",
+              "units": 1.1
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian or user",
+              "units": 1.1
+            },
+            {
+              "key": "return_due",
+              "label": "Return due",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Use limit or evidence ref.",
+              "units": 1.2
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "condition_notes",
+          "type": "textarea",
+          "label": "Existing damage, missing component, privacy limit, special handling, and approved-use notes",
+          "fields": [
+            {
+              "key": "condition_notes",
+              "label": "Condition, missing component, privacy limit, handling, and approved use"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "use_controls",
+      "title": "Summer camp use controls, readiness, and exception routing",
+      "guidance": "Confirm only the controls relevant to the assigned item and documented role.",
+      "blocks": [
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Summer camp readiness and use controls",
+          "items": [
+            "Camper is assigned to the correct session and group",
+            "Guardian and emergency contact routes are current",
+            "Arrival, departure, and authorized pickup plan is recorded",
+            "Activity permissions and exclusions are separately visible",
+            "Aquatic, off-site, overnight, or transport review is complete when applicable",
+            "Allergy, medication, health, meal, and support references are privately routed",
+            "Cabin, counselor, buddy, and headcount assignments are known",
+            "Accessibility, communication, sensory, or behavioral supports are routed",
+            "Severe-weather, missing-camper, and emergency meeting routes are available",
+            "Open session conditions have owners and due points"
+          ]
+        },
+        {
+          "key": "verification_route",
+          "type": "fields",
+          "label": "Verification and operating route",
+          "fields": [
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.1
+            },
+            {
+              "key": "verification_at",
+              "label": "Verification date and time",
+              "units": 1.1
+            },
+            {
+              "key": "approved_setting",
+              "label": "Approved setting or group",
+              "units": 1.2
+            },
+            {
+              "key": "storage_route",
+              "label": "Storage or restricted-record route",
+              "units": 1.3
+            },
+            {
+              "key": "support_contact",
+              "label": "Support or escalation contact",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "use_exceptions",
+          "type": "table",
+          "label": "Item exception, immediate control, owner, due point, and disposition",
+          "columns": [
+            {
+              "key": "item_ref",
+              "label": "Item ref.",
+              "units": 0.9
+            },
+            {
+              "key": "exception",
+              "label": "Exception or variance",
+              "units": 1.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner and due point",
+              "units": 1.1
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or review",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "return_reconciliation",
+      "title": "Summer camp return, inventory reconciliation, and release",
+      "guidance": "Preserve checkout condition, document return facts, and assign every difference.",
+      "blocks": [
+        {
+          "key": "return_exceptions",
+          "type": "checklist",
+          "label": "Return and reconciliation exceptions",
+          "items": [
+            "Camper session or activity participation cannot proceed",
+            "Guardian, emergency contact, or release route is incomplete",
+            "Health, allergy, medication, aquatic, or support review is pending",
+            "Counselor, cabin, transport, or headcount assignment is unresolved",
+            "Immediate missing-camper, illness, injury, weather, or safety response is active",
+            "Departure, equipment, or session closeout remains unresolved"
+          ]
+        },
+        {
+          "key": "return_register",
+          "type": "table",
+          "label": "Item, return time, condition, count, receiving custodian, and variance",
+          "columns": [
+            {
+              "key": "item_ref",
+              "label": "Item or asset ref.",
+              "units": 1.1
+            },
+            {
+              "key": "returned_at",
+              "label": "Returned date and time",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition in",
+              "units": 1.0
+            },
+            {
+              "key": "count",
+              "label": "Count or seal status",
+              "units": 0.9
+            },
+            {
+              "key": "receiver",
+              "label": "Receiving custodian",
+              "units": 1.1
+            },
+            {
+              "key": "variance",
+              "label": "Variance or evidence ref.",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Summer camp custody release decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Approved as limited",
+                "Deferred",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "decision_at",
+              "label": "Decision date and time",
+              "units": 1.1
+            },
+            {
+              "key": "source_reference",
+              "label": "Policy or source ref.",
+              "units": 1.1
+            },
+            {
+              "key": "followup_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.2
+            }
+          ],
+          "guidance": "Record the authorized decision under current policy; this form does not grant authority to the preparer. Route uncertainty to the camp administrator, guardian, and qualified health, aquatic, or activity reviewer."
+        },
+        {
+          "key": "return_rationale",
+          "type": "textarea",
+          "label": "Unresolved loss, damage, access, record exposure, replacement, and recipient handoff",
+          "fields": [
+            {
+              "key": "return_notes",
+              "label": "Unresolved loss, damage, access, replacement, and handoff"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Summer camp outcome, closeout, and accountable handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and recipient visible.",
+      "blocks": [
+        {
+          "key": "closeout_controls",
+          "type": "checklist",
+          "label": "Summer camp closeout controls",
+          "items": [
+            "Final camper, cabin, and activity counts accepted",
+            "Guardian communication and release status recorded",
+            "Unresolved incident or support need has an owner",
+            "Equipment and private records returned to approved custody",
+            "Camp health, activity, or facilities follow-up linked",
+            "Session record stored with access and retention requirements"
+          ],
+          "guidance": "Check only completed controls; preserve unresolved work as an open action."
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Closed with handoff",
+                "Returned for action",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limitation",
+              "units": 1.3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.3
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "outcome_verification",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.3
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation",
+              "label": "Limitation or action",
+              "units": 1.3
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or route",
+              "units": 1.1
+            }
+          ],
+          "rows": 3,
+          "guidance": "Keep unresolved work visible until an accountable recipient accepts it."
+        },
+        {
+          "key": "unresolved_handoff",
+          "type": "textarea",
+          "label": "Unresolved work, child or participant impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "handoff_message",
+              "label": "Unresolved work, impact, evidence location, and handoff message"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Equipment Checkout closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by acknowledgment",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_at",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.6
+            },
+            {
+              "key": "recipient_at",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not legal consent, medical certification, or professional approval."
+        }
+      ]
+    }
+  ]
+}

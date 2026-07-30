@@ -1,0 +1,499 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2238__lost_and_found_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2238__lost_and_found_incident_report_form.pdf",
+  "slug": "lost-and-found-incident-report-form",
+  "title": "Lost and Found Incident Report Form",
+  "subtitle": "Record a custody failure: an item missing from storage, a release to the wrong person, missing contents, or a storage area breach.",
+  "description": "An original incident record for lost-and-found custody failures. It captures the incident identity and the item affected, the last known good custody position and where the chain broke, the immediate containment of the storage area, qualified review with any authority referral, corrective actions with verification, and a closeout naming residual risk.",
+  "use_case": "Use when the venue cannot account for stored property, an item was handed to the wrong person, contents are missing from a logged item, or the storage area was accessed without authorization. The report closes only after the responsible manager reviews it and corrective actions are verified.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident identity and item affected",
+      "guidance": "Fix the failure to a tag and a time.",
+      "blocks": [
+        {
+          "key": "incident_routing",
+          "type": "fields",
+          "label": "Incident record and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident record ID",
+              "units": 0.95
+            },
+            {
+              "key": "discovered_at",
+              "label": "Discovered at",
+              "units": 0.9
+            },
+            {
+              "key": "discovered_by",
+              "label": "Discovered by",
+              "units": 0.95
+            },
+            {
+              "key": "reported_to",
+              "label": "Reported to",
+              "units": 0.9
+            },
+            {
+              "key": "tag_number",
+              "label": "Item tag number",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "item_context",
+          "type": "fields",
+          "label": "Item and claimant context",
+          "fields": [
+            {
+              "key": "item_description",
+              "label": "Item as tagged",
+              "units": 1.55
+            },
+            {
+              "key": "found_date",
+              "label": "Found on",
+              "units": 0.8
+            },
+            {
+              "key": "storage_location",
+              "label": "Storage location",
+              "units": 1.15
+            },
+            {
+              "key": "claimant_name",
+              "label": "Claimant affected",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Incident classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "What happened",
+              "units": 1.7,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Item missing from storage",
+                "Contents missing from an item",
+                "Released to the wrong person",
+                "Released without an ownership check",
+                "Storage accessed without authorization",
+                "Cash count does not reconcile",
+                "Item disposed of before its holding period ended",
+                "Item damaged in storage",
+                "Shipment lost in transit",
+                "Suspected theft"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Assessed severity",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Minor - item recovered",
+                "Moderate - item not recovered",
+                "Major - high value or documents",
+                "Critical - suspected theft"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "custody_break",
+      "title": "Where the chain of custody broke",
+      "guidance": "Work back from the last verified position.",
+      "blocks": [
+        {
+          "key": "last_known",
+          "type": "fields",
+          "label": "Last verified custody",
+          "fields": [
+            {
+              "key": "last_verified_at",
+              "label": "Last verified at",
+              "units": 1.3
+            },
+            {
+              "key": "last_verified_by",
+              "label": "Verified by",
+              "units": 1.05
+            },
+            {
+              "key": "last_location",
+              "label": "Last recorded location",
+              "units": 1.5
+            },
+            {
+              "key": "gap_length",
+              "label": "Gap length",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "custody_timeline",
+          "type": "table",
+          "label": "Custody timeline reconstruction",
+          "columns": [
+            {
+              "key": "event_time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "what_the_record_shows",
+              "label": "What the record shows",
+              "units": 1.7
+            },
+            {
+              "key": "who_had_access",
+              "label": "Who had access",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source of the entry",
+              "units": 1.2
+            }
+          ],
+          "rows": 6,
+          "guidance": "Use the intake log, access log, release orders, and camera coverage. Mark which entries are records and which are recollections."
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account: what the records show and where they stop agreeing",
+          "fields": [
+            {
+              "key": "account_detail",
+              "label": "Factual account of the custody failure"
+            }
+          ],
+          "height": 72,
+          "guidance": "Record what the records show. Do not name a suspect, allege theft, or draw a conclusion about any individual."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary for this report",
+          "guidance": "Record facts, times, and record states only. Do not accuse an individual, record a suspicion as a finding, or describe anyone's conduct as theft. Do not record identification or payment card numbers. Where a criminal act may have occurred, route it to the responsible manager, who decides on any authority contact under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "containment",
+      "title": "Containment of storage and access",
+      "guidance": "Secure what remains before investigating what is gone.",
+      "blocks": [
+        {
+          "key": "containment_record",
+          "type": "fields",
+          "label": "Containment record",
+          "fields": [
+            {
+              "key": "storage_action",
+              "label": "Storage action taken",
+              "units": 1.45,
+              "field_type": "choice",
+              "options": [
+                "None required",
+                "Area secured and sealed",
+                "Locks or codes changed",
+                "Access list reduced",
+                "Full audit started",
+                "Area handed to security"
+              ]
+            },
+            {
+              "key": "secured_at",
+              "label": "Secured at",
+              "units": 0.85
+            },
+            {
+              "key": "secured_by",
+              "label": "Secured by",
+              "units": 1.0
+            },
+            {
+              "key": "manager_on_scene",
+              "label": "Manager attended",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "containment_actions",
+          "type": "checklist",
+          "label": "Containment actions completed",
+          "items": [
+            "Storage area secured and access suspended pending the audit",
+            "Full count of remaining tagged items completed and compared to the log",
+            "High-value safe contents verified against the safe log",
+            "Cash holdings counted by two people and reconciled",
+            "Access log pulled for the whole gap period",
+            "Camera retention requested for the storage area and the gap period",
+            "Recent release orders reviewed for a matching description",
+            "Claimant informed by the responsible manager, not by storage staff"
+          ]
+        },
+        {
+          "key": "containment_notes",
+          "type": "textarea",
+          "label": "What the audit found, what remains unaccounted for, and what the claimant was told",
+          "fields": [
+            {
+              "key": "containment_detail",
+              "label": "Containment and audit detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and referral",
+      "guidance": "The manager decides on referral, not the storage keeper.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed - process gap",
+                "Reviewed - record error",
+                "Referred to security",
+                "Referred to leadership"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "referral",
+              "label": "Referral made",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Internal security",
+                "Insurer notified",
+                "Police - by manager",
+                "Human resources"
+              ]
+            },
+            {
+              "key": "referral_reference",
+              "label": "Referral reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Stop and involve the responsible manager before contacting any authority, before questioning a staff member about a missing item, and before telling a claimant that their property was taken. This report does not establish that a theft occurred, identify a responsible person, accept liability for the loss, or authorize compensation, and it does not replace the review or notification applicable policy requires."
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Review rationale, requirements applied, and limits of the decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Qualified review rationale"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "corrective_actions",
+      "title": "Corrective actions and escalation",
+      "guidance": "A custody failure is a control failure.",
+      "blocks": [
+        {
+          "key": "corrective_register",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "cause_addressed",
+              "label": "Cause addressed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "An identification document or payment card cannot be accounted for",
+            "Cash cannot be reconciled",
+            "A high-value item cannot be accounted for",
+            "An item was released to someone who was not the owner",
+            "Storage was accessed by a person outside the access list",
+            "The claimant has made a claim or a legal demand",
+            "More than one item is unaccounted for in the same period",
+            "A prior custody failure was recorded in this period"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Verification, closeout, and handoff",
+      "guidance": "Close on a verified count, not a hopeful one.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Contained - audit open",
+                "Closed - item recovered",
+                "Closed - not recovered",
+                "Referred and closed"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Full storage count reconciled to the inventory log",
+            "Cash and high-value holdings verified by two people",
+            "Access list reviewed and reduced to those who need it",
+            "Claimant communication documented with date and author",
+            "Corrective actions verified as effective, not only completed",
+            "Referrals recorded per applicable policy",
+            "Report retained with restricted access for the required period"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Verified outcome, residual risk, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Incident closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

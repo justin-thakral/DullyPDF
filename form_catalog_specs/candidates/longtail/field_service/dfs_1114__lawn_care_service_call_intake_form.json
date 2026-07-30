@@ -1,0 +1,707 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1114__lawn_care_service_call_intake_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1114__lawn_care_service_call_intake_form.pdf",
+  "slug": "lawn-care-service-call-intake-form",
+  "title": "Lawn Care Service Call Intake Form",
+  "subtitle": "Control mowing, cultivation, irrigation review, treatment, and property handoff through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete lawn care service call intake for turf zones, plantings, irrigation features, and service equipment. It connects service plan, product label, site map, and instructions to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a lawn-service coordinator must triage and route a new lawn care request without promising scope before site, asset, hazard, access, and authorization facts are known.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Lawn Care request, customer, site, and asset identity",
+      "guidance": "Create one authoritative intake record before advice, dispatch, access, or work is promised.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Lawn Care service call intake reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service visit or route number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Property owner or authorized site contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Property and mapped lawn or planting zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Property zone, turf, planting, and treatment identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Property or route stop",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Lawn, bed, tree, or planting zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Turf or plant type",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Service-plan or prior-visit reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant lawn care context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant lawn care context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "condition_triage",
+      "title": "Lawn Care reported condition and immediate triage",
+      "guidance": "Preserve the caller's facts, distinguish an active hazard from a service symptom, and assign immediate controls.",
+      "blocks": [
+        {
+          "key": "reported_conditions",
+          "type": "checklist",
+          "label": "Reported condition, symptom, or service trigger",
+          "items": [
+            "Turf density, height, color, vigor, and bare areas",
+            "Weed, insect, disease, animal, and other pest evidence",
+            "Soil moisture, compaction, erosion, grade, and drainage",
+            "Irrigation coverage, leaks, heads, runoff, and schedule",
+            "Trees, shrubs, beds, edging, roots, and mulch condition",
+            "Mowing pattern, scalping, clipping, thatch, and previous service effects",
+            "Obstacles, debris, utilities, hardscape, vehicles, and fragile property",
+            "Slope, ground firmness, access width, gate, and traffic conditions",
+            "Weather, wind, heat, rainfall, and treatment suitability",
+            "Sensitive plants, water, pollinator habitat, and neighboring exposure"
+          ],
+          "guidance": "Select only observations reported or directly confirmed during intake."
+        },
+        {
+          "key": "condition_pattern",
+          "type": "fields",
+          "label": "Condition timing, recurrence, and current state",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.9
+            },
+            {
+              "key": "last_normal",
+              "label": "Last known acceptable condition",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current operating or site state",
+              "units": 1.05
+            },
+            {
+              "key": "people_impacted",
+              "label": "People, occupants, or operations affected",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "immediate_controls",
+          "type": "checklist",
+          "label": "Immediate controls communicated or already in place",
+          "items": [
+            "Property and treatment boundaries confirmed before work",
+            "People, children, pets, vehicles, and movable property cleared or protected",
+            "Hidden utilities, irrigation heads, drainage features, and obstacles identified",
+            "Slope, wet ground, traffic, heat, lightning, and other weather hazards assessed",
+            "Mower guards, discharge controls, blades, and service equipment inspected",
+            "Product label, applicator qualification, PPE, and application conditions verified",
+            "Water, wells, storm drains, pollinator areas, and neighboring property protected",
+            "Mowing height, route, clipping, pruning, and treatment instructions defined",
+            "Gate, key, alarm, and access controls preserved",
+            "Reentry, watering, cleanup, and follow-up instructions assigned"
+          ],
+          "guidance": "Record only controls that were actually communicated, confirmed, or assigned."
+        },
+        {
+          "key": "caller_account",
+          "type": "textarea",
+          "label": "Caller observations in their own words, actions already taken, instructions given, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Caller observations in their own words, actions already taken, instructions given, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "access_readiness",
+      "title": "Lawn Care access, authority, and visit readiness",
+      "guidance": "Confirm that the assigned person can reach the exact scope without creating a new access, exposure, or property risk.",
+      "blocks": [
+        {
+          "key": "access_assignment",
+          "type": "fields",
+          "label": "Access and authorized site contact",
+          "fields": [
+            {
+              "key": "access_contact",
+              "label": "On-site access contact",
+              "units": 1.0
+            },
+            {
+              "key": "access_method",
+              "label": "Gate, key, badge, escort, or entry method",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_window",
+              "label": "Authorized service window",
+              "units": 0.95
+            },
+            {
+              "key": "occupied_status",
+              "label": "Occupied or operating status",
+              "units": 0.95
+            },
+            {
+              "key": "special_access",
+              "label": "Parking, roof, utility, animal, or other access note",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Customer and site readiness confirmations",
+          "items": [
+            "Exact property, turf, planting, and treatment zone and affected area can be identified",
+            "Authorized contact will be available during the service window",
+            "Access restrictions, keys, alarms, gates, or escorts are understood",
+            "People, pets, vehicles, products, or operations can be protected",
+            "Utilities, controls, equipment, or records needed for diagnosis are accessible",
+            "Pre-visit customer preparation has been communicated",
+            "Photograph, privacy, security, or evidence restrictions are documented",
+            "Other contractor, landlord, fleet, facility, or authority coordination is assigned"
+          ]
+        },
+        {
+          "key": "customer_commitment",
+          "type": "fields",
+          "label": "Requested response and customer commitment",
+          "fields": [
+            {
+              "key": "requested_date",
+              "label": "Requested visit date or response time",
+              "units": 1.0
+            },
+            {
+              "key": "service_level",
+              "label": "Priority or service level",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Priority",
+                "Emergency triage",
+                "After-hours",
+                "Hold for review"
+              ]
+            },
+            {
+              "key": "cost_authority",
+              "label": "Diagnostic or visit charge authority",
+              "units": 1.0
+            },
+            {
+              "key": "approval_contact",
+              "label": "Additional-work approval contact",
+              "units": 1.05
+            },
+            {
+              "key": "communication_method",
+              "label": "Preferred update method",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "access_constraints",
+          "type": "textarea",
+          "label": "Access restrictions, customer preparation, privacy limits, occupancy conditions, and visit assumptions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Access restrictions, customer preparation, privacy limits, occupancy conditions, and visit assumptions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "history_evidence",
+      "title": "Lawn Care service history and available evidence",
+      "guidance": "Give the assigned technician enough traceable context for a productive and controlled first visit.",
+      "blocks": [
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Available lawn care evidence and records",
+          "items": [
+            "Property and zone map",
+            "Pre-service turf or plant photographs",
+            "Mowing height or service-setting record",
+            "Product, lot, rate, amount, and treated-area record",
+            "Weather and ground-condition record",
+            "Equipment inspection or route reference",
+            "Property damage or exception photographs",
+            "Post-service and customer-instruction record"
+          ]
+        },
+        {
+          "key": "history_log",
+          "type": "table",
+          "label": "Prior service, change, event, and result history",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or period",
+              "units": 0.8
+            },
+            {
+              "key": "event",
+              "label": "Service, change, or event",
+              "units": 1.3
+            },
+            {
+              "key": "party",
+              "label": "Provider or responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Result or recurrence",
+              "units": 1.2
+            },
+            {
+              "key": "reference",
+              "label": "Record or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "warranty_recall_context",
+          "type": "checklist",
+          "label": "Warranty, contract, recall, and other routing context",
+          "items": [
+            "Original service date and route record",
+            "Covered zone, treatment, or workmanship",
+            "Product, seed, plant, or material identity",
+            "Watering, mowing, and customer-care commitments",
+            "Weather, irrigation, construction, or pet changes",
+            "Observed result, damage, or recurrence date",
+            "Photographs and prior communication",
+            "Coverage term, exclusions, and proposed inspection window"
+          ]
+        },
+        {
+          "key": "history_limitations",
+          "type": "textarea",
+          "label": "Known history, unavailable records, conflicting information, and facts the technician must verify on site",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Known history, unavailable records, conflicting information, and facts the technician must verify on site",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "dispatch_plan",
+      "title": "Lawn Care dispatch decision and technician preparation",
+      "guidance": "Translate intake facts into an explicit assignment without implying that unverified work or price is authorized.",
+      "blocks": [
+        {
+          "key": "dispatch_assignment",
+          "type": "fields",
+          "label": "Dispatch and qualification assignment",
+          "fields": [
+            {
+              "key": "assigned_technician",
+              "label": "Qualified lawn-care technician or applicator",
+              "units": 1.2
+            },
+            {
+              "key": "qualification_ref",
+              "label": "License, certification, or qualification ref.",
+              "units": 1.1
+            },
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled arrival window",
+              "units": 0.95
+            },
+            {
+              "key": "dispatcher",
+              "label": "Lawn-service coordinator",
+              "units": 1.0
+            },
+            {
+              "key": "dispatch_status",
+              "label": "Dispatch status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Ready to dispatch",
+                "Awaiting customer",
+                "Awaiting qualified review",
+                "Refer to other provider",
+                "Emergency route"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "planned_service_scope",
+          "type": "checklist",
+          "label": "Likely diagnostic or service preparation",
+          "items": [
+            "Mow to the approved height and pattern",
+            "Edge approved hardscape and bed boundaries",
+            "Trim around obstacles without property damage",
+            "Collect or distribute clippings as authorized",
+            "Aerate, dethatch, seed, or topdress approved zones",
+            "Apply label-consistent fertilizer or control product",
+            "Adjust or report irrigation condition",
+            "Remove approved debris and restore gates",
+            "Photograph material property or plant condition",
+            "Communicate watering, reentry, and next-service instructions"
+          ],
+          "guidance": "This is a preparation list, not authorization to complete every listed task."
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Likely parts, tools, records, permits, and coordination needs",
+          "columns": [
+            {
+              "key": "need",
+              "label": "Resource or coordination need",
+              "units": 1.35
+            },
+            {
+              "key": "basis",
+              "label": "Intake basis",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Ready or pending",
+              "units": 0.8
+            },
+            {
+              "key": "reference",
+              "label": "Source or confirmation ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "technician_brief",
+          "type": "textarea",
+          "label": "Technician brief: outcome, scope, controls, access, evidence, and stop conditions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Technician brief: outcome, scope, controls, access, evidence, and stop conditions",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "guidance": "Verify the full intake record before arrival and stop or escalate when weather, chemical labeling, people or pets, hidden utilities, slope, equipment guarding, property boundary, or treatment condition is uncertain."
+        }
+      ]
+    },
+    {
+      "key": "intake_exceptions",
+      "title": "Lawn Care intake exception, containment, and escalation",
+      "guidance": "Make the trigger, immediate protection, decision owner, deadline, and dispatch restriction reconstructable.",
+      "blocks": [
+        {
+          "key": "intake_exception_indicators",
+          "type": "checklist",
+          "label": "Lawn Care exception and stop-work indicators",
+          "items": [
+            "People, pets, traffic, or property remain in the discharge or work zone",
+            "Hidden utility, irrigation, wire, drain, or obstacle location uncertain",
+            "Slope, wet ground, drop-off, heat, storm, or lightning condition unsafe",
+            "Equipment guard, blade, tire, control, or emergency stop is defective",
+            "Product label, qualification, PPE, weather, or application boundary not met",
+            "Spray drift, runoff, overspread, spill, or non-target plant exposure",
+            "Tree, branch, retaining wall, sinkhole, or structural condition appears unstable",
+            "Property line, customer instruction, or protected zone is disputed",
+            "Plant damage, disease, or condition exceeds authorized lawn-care scope",
+            "Work would conflict with irrigation, construction, occupants, or another vendor"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "intake_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Lawn Care service call intake closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Dispatched with confirmed controls",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this lawn care service call intake with the applicable customer agreement, manufacturer information, product instructions, site policy, licensing, safety, privacy, and retention requirements. It records the stated decision but does not create authority, coverage, compliance, or release when identity, evidence, scope, condition, or acceptance remains unresolved."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified lawn-care technician or applicator and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Turf, pesticide, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,677 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1901__personal_loan_document_checklist_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1901__personal_loan_document_checklist_form.pdf",
+  "slug": "personal-loan-document-checklist-form",
+  "title": "Personal Loan Document Readiness and Exception Checklist",
+  "subtitle": "A controlled document readiness review for an unsecured or secured personal borrowing request, including stated purpose, amount, term, repayment capacity, existing obligations, collateral if offered, and applicant communications, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Personal Loan workflow for an unsecured or secured personal borrowing request, including stated purpose, amount, term, repayment capacity, existing obligations, collateral if offered, and applicant communications. It is designed to define the required evidence set, inventory received versions, assess quality and freshness, reconcile discrepancies, request only necessary corrections, and obtain receiving-reviewer acceptance while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a consumer lending specialist must define the required evidence set, inventory received versions, assess quality and freshness, reconcile discrepancies, request only necessary corrections, and obtain receiving-reviewer acceptance for one loan request. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Personal Loan document readiness review identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Personal Loan record and responsible parties",
+          "fields": [
+            {
+              "key": "application_ref",
+              "label": "Application or inquiry reference",
+              "units": 1.2
+            },
+            {
+              "key": "applicant_name",
+              "label": "Applicant name",
+              "units": 1.2
+            },
+            {
+              "key": "secure_profile_ref",
+              "label": "Secure customer profile reference",
+              "units": 1.3
+            },
+            {
+              "key": "relationship_status",
+              "label": "Customer relationship",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "New",
+                "Existing",
+                "Former",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "branch_channel",
+              "label": "Branch or channel",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Document Readiness and Exception Checklist timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Personal Loan facts and evidence for document readiness review",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Personal Loan transaction or account profile",
+          "fields": [
+            {
+              "key": "requested_amount",
+              "label": "Requested amount",
+              "units": 0.9
+            },
+            {
+              "key": "loan_purpose",
+              "label": "Stated loan purpose",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Debt consolidation",
+                "Major purchase",
+                "Home project",
+                "Emergency expense",
+                "Education expense",
+                "Other stated purpose"
+              ]
+            },
+            {
+              "key": "desired_term",
+              "label": "Desired term",
+              "units": 0.8
+            },
+            {
+              "key": "funding_timeline",
+              "label": "Funding timeline",
+              "units": 0.9
+            },
+            {
+              "key": "security_type",
+              "label": "Security proposed",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Unsecured",
+                "Deposit secured",
+                "Other collateral",
+                "Undecided"
+              ]
+            },
+            {
+              "key": "joint_request_status",
+              "label": "Joint request status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Personal Loan evidence checkpoints",
+          "items": [
+            "Loan purpose and intended use are recorded in the applicant's own terms",
+            "Requested amount and preferred repayment period are distinguishable",
+            "Income source and frequency are recorded without unsupported conclusions",
+            "Housing expense and material recurring obligations are identified",
+            "Existing relationship and prior-loan references use secure system IDs",
+            "Any offered collateral is described without treating it as approved",
+            "Applicant communication preference and accessibility needs are routed",
+            "Credit inquiry consent and identity verification are stored by reference"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Personal Loan quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "capacity_item",
+              "label": "Income or obligation",
+              "units": 1.35
+            },
+            {
+              "key": "stated_amount",
+              "label": "Amount",
+              "units": 0.75
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency",
+              "units": 0.8
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 1.0
+            },
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Applicant goals, timing, repayment concerns, collateral context, and facts that a qualified reviewer should understand",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Personal Loan context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Personal Loan document readiness review analysis and control record",
+      "guidance": "Use the blocks below to define the required evidence set, inventory received versions, assess quality and freshness, reconcile discrepancies, request only necessary corrections, and obtain receiving-reviewer acceptance. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "document_request_scope",
+          "type": "fields",
+          "label": "Document request scope and control dates",
+          "fields": [
+            {
+              "key": "request_list_ref",
+              "label": "Required-item list reference",
+              "units": 1.2
+            },
+            {
+              "key": "request_issued_date",
+              "label": "Request issued date",
+              "units": 0.8
+            },
+            {
+              "key": "response_due_date",
+              "label": "Response due date",
+              "units": 0.8
+            },
+            {
+              "key": "package_received_date",
+              "label": "Package received date",
+              "units": 0.9
+            },
+            {
+              "key": "review_as_of_date",
+              "label": "Review as-of date",
+              "units": 0.8
+            },
+            {
+              "key": "receiving_reviewer",
+              "label": "Receiving reviewer",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "document_inventory",
+          "type": "table",
+          "label": "Personal Loan required-document inventory",
+          "columns": [
+            {
+              "key": "document_item",
+              "label": "Document or evidence",
+              "units": 1.3
+            },
+            {
+              "key": "period_version",
+              "label": "Period or version",
+              "units": 1.0
+            },
+            {
+              "key": "received_ref",
+              "label": "Received or secure ref",
+              "units": 1.1
+            },
+            {
+              "key": "quality",
+              "label": "Quality",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.8
+            },
+            {
+              "key": "followup_due",
+              "label": "Owner or due",
+              "units": 1.0
+            }
+          ],
+          "rows": 6,
+          "guidance": "Statuses should distinguish required, received, accepted, deficient, waived by qualified authority, and not applicable."
+        },
+        {
+          "key": "document_quality_controls",
+          "type": "checklist",
+          "label": "Document quality, necessity, and consistency controls",
+          "items": [
+            "Requested item is necessary for the documented stage and decision",
+            "Issuer or source, owner, period, version, and page count are identifiable",
+            "Document is complete, legible, current, and stored in the secure repository",
+            "Names, dates, amounts, and references reconcile across related evidence",
+            "Corrected, translated, amended, duplicate, and superseded versions are labeled",
+            "Signature, certification, freshness, or authenticity need has a review route",
+            "Sensitive data exposure is limited to approved users and retention",
+            "Waiver or substitution has authority, rationale, date, and scope"
+          ]
+        },
+        {
+          "key": "document_exception_log",
+          "type": "table",
+          "label": "Missing, deficient, inconsistent, or superseded-item follow-up",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Document exception",
+              "units": 1.4
+            },
+            {
+              "key": "decision_impact",
+              "label": "Decision impact",
+              "units": 1.1
+            },
+            {
+              "key": "request_action",
+              "label": "Correction requested",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "readiness_summary",
+          "type": "textarea",
+          "label": "Package readiness conclusion, accepted limitations, and receiver handoff",
+          "fields": [
+            {
+              "key": "readiness_summary_notes",
+              "label": "Document readiness summary"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Personal Loan stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Identity or contact information conflicts with the secure customer profile",
+            "Income amount, source, or frequency is incomplete or materially inconsistent",
+            "Material recurring obligations appear omitted or cannot be reconciled",
+            "Loan purpose is unclear, prohibited by policy, or inconsistent with evidence",
+            "Applicant reports pressure, coercion, impersonation, or third-party control",
+            "Protected-class information is being requested or used outside an approved process",
+            "Collateral ownership, lien position, or valuation needs specialist review",
+            "Repayment-capacity conclusion lacks documented inputs or qualified review",
+            "Required-item list lacks a qualified source or asks for unnecessary sensitive information",
+            "A deficient, altered, stale, or conflicting document could affect a decision"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Document Readiness and Exception Checklist exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Personal Loan decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Document Readiness and Exception Checklist qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Personal Loan decision and execution conditions",
+          "items": [
+            "Required, received, accepted, deficient, waived, and not-applicable statuses are distinct",
+            "Waivers and substitutions identify qualified authority and rationale",
+            "Approved amount, pricing, term, and fees match the qualified decision record",
+            "Any collateral condition is verified through the approved secured-loan process",
+            "Required disclosures and applicant notices are issued by the authorized channel",
+            "Credit decision reasons are specific, supportable, and handled under policy",
+            "No blank signature, unsupported promise, or unapproved exception remains",
+            "Funding is blocked until all approval conditions show completed evidence"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Personal Loan record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Personal Loan completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Document Readiness and Exception Checklist outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Personal Loan closeout evidence",
+          "items": [
+            "Final decision and specific conditions are linked to the applicant record",
+            "Applicant communication and required notice delivery are evidenced",
+            "Approved terms are separated from scenarios and preliminary estimates",
+            "Unmet conditions have an owner, due point, and escalation disposition",
+            "Funding or non-funding outcome is reconciled to the decision",
+            "Retention class and secure evidence location are assigned"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

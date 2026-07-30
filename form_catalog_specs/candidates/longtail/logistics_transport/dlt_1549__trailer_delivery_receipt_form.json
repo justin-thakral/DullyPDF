@@ -1,0 +1,567 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1549__trailer_delivery_receipt_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1549__trailer_delivery_receipt_form.pdf",
+  "slug": "trailer-delivery-receipt-form",
+  "title": "Trailer Delivery Receipt Form",
+  "subtitle": "Reconcile the promised trailer delivery with actual units, condition, custody, evidence, exceptions, receiving decision, and accountable handoff.",
+  "description": "An original, fillable trailer delivery receipt form for controlling trailer asset, interchange, load space, and road-readiness record through delivery receipt identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use at Assigned route, customer, carrier, or return yard when assigned driver, carrier, customer, or yard location and the delivering custodian need one receipt that separates physical handoff from inspection, hold, commercial acceptance, and exception resolution.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Trailer delivery receipt identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Trailer record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Delivery Receipt record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Trailer unit, VIN, and interchange number",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Plate, seal, work-order, or yard-location ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned fleet or yard coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Driver, Yard Hostler, Or Receiving Carrier",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Owning yard, customer dock, or prior carrier",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Assigned route, customer, carrier, or return yard",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the trailer master, inspection criteria, maintenance record, and interchange terms."
+        }
+      ]
+    },
+    {
+      "key": "delivery_commitment",
+      "title": "Trailer delivery commitment and receiving readiness",
+      "guidance": "Confirm what was expected, where it was due, and which controls governed acceptance.",
+      "blocks": [
+        {
+          "key": "commitment",
+          "type": "fields",
+          "label": "Delivery commitment",
+          "fields": [
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled delivery window",
+              "units": 1.15
+            },
+            {
+              "key": "actual_arrival",
+              "label": "Actual arrival date and time",
+              "units": 1.1
+            },
+            {
+              "key": "service_level",
+              "label": "Roadworthiness, defect, maintenance, and custody restriction",
+              "units": 1.35
+            },
+            {
+              "key": "recipient",
+              "label": "Assigned Driver, Carrier, Customer, Or Yard Location",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "handling_requirements",
+          "type": "checklist",
+          "label": "Trailer delivery and receiving controls",
+          "items": [
+            "Road-service assignment",
+            "Yard-only movement",
+            "Out-of-service hold",
+            "Maintenance routing",
+            "Sealed-load custody",
+            "Food-compatible clean trailer",
+            "Temperature-control equipment required",
+            "Customer-specific interchange condition"
+          ],
+          "guidance": "Confirm applicable controls before unloading, opening, moving, or accepting the delivered units."
+        },
+        {
+          "key": "receiving_conditions",
+          "type": "fields",
+          "label": "Receiving point and custody condition",
+          "fields": [
+            {
+              "key": "receiving_point",
+              "label": "Actual receiving point",
+              "units": 1.25
+            },
+            {
+              "key": "arriving_custodian",
+              "label": "Arriving custodian",
+              "units": 1.15
+            },
+            {
+              "key": "recipient_authority",
+              "label": "Recipient authority or role",
+              "units": 1.2
+            },
+            {
+              "key": "initial_status",
+              "label": "Initial receiving status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Ready to inspect",
+                "Held at receiving",
+                "Partial unload",
+                "Refused before unload"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "receipt_reconciliation",
+      "title": "Trailer delivered-unit reconciliation",
+      "guidance": "Reconcile each delivered identity and quantity before relying on totals or signatures.",
+      "blocks": [
+        {
+          "key": "delivered_units",
+          "type": "table",
+          "label": "Trailer Units, Seals, Defects, Equipment, Mileage, And Custody Events received",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Plate, seal, work-order, or yard-location ID",
+              "units": 1.35
+            },
+            {
+              "key": "expected",
+              "label": "Expected quantity",
+              "units": 0.85
+            },
+            {
+              "key": "received",
+              "label": "Received quantity",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Body, running gear, coupling, interior, and load-space condition",
+              "units": 1.15
+            },
+            {
+              "key": "control",
+              "label": "Roadworthiness, defect, maintenance, and custody restriction",
+              "units": 1.15
+            },
+            {
+              "key": "variance",
+              "label": "Variance or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "receipt_totals",
+          "type": "fields",
+          "label": "Receipt totals and reconciliation",
+          "fields": [
+            {
+              "key": "expected_total",
+              "label": "Expected total",
+              "units": 0.9
+            },
+            {
+              "key": "received_total",
+              "label": "Received total",
+              "units": 0.9
+            },
+            {
+              "key": "accepted_total",
+              "label": "Accepted total",
+              "units": 0.9
+            },
+            {
+              "key": "held_total",
+              "label": "Held or refused total",
+              "units": 1.0
+            },
+            {
+              "key": "variance_total",
+              "label": "Unresolved variance total",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Trailer, equipment, seal, and accessory count"
+        }
+      ]
+    },
+    {
+      "key": "condition_evidence",
+      "title": "Trailer condition inspection and receipt evidence",
+      "guidance": "Preserve observations made before the receiver changes packaging, custody, or physical condition.",
+      "blocks": [
+        {
+          "key": "condition_checks",
+          "type": "checklist",
+          "label": "Trailer receipt inspection",
+          "items": [
+            "Trailer unit, VIN, plate, owner, and assigned route records agree",
+            "Service brake components visible to the inspector and brake connections show no defect",
+            "Lighting devices, reflectors, tires, wheels, and mudflaps show no unsafe condition",
+            "Kingpin, fifth-wheel area, coupling devices, locking pins, and sliders appear secure",
+            "Landing gear, crank, crossmembers, rails, support frames, and body structure are sound",
+            "Doors, hinges, latches, seals, roof, walls, floor, and load-restraint points are serviceable",
+            "Interior is dry, clean, odor-free, and compatible with the intended cargo",
+            "Open maintenance, inspection due date, and reported defects are reviewed",
+            "Photos identify pre-existing damage before custody transfer",
+            "Any safety-critical or uncertain defect is withheld from road service pending qualified review"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Receipt evidence index",
+          "columns": [
+            {
+              "key": "evidence",
+              "label": "Evidence or observation",
+              "units": 1.45
+            },
+            {
+              "key": "unit",
+              "label": "Affected unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.9
+            },
+            {
+              "key": "reference",
+              "label": "Photo, scan, or record ref",
+              "units": 1.3
+            }
+          ],
+          "rows": 4,
+          "guidance": "Record only necessary proof and preserve privacy or security restrictions."
+        },
+        {
+          "key": "condition_narrative",
+          "type": "textarea",
+          "label": "Condition, count, custody, and acceptance narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Condition, count, custody, and acceptance narrative",
+              "multiline": true
+            }
+          ],
+          "height": 54,
+          "guidance": "Describe facts that cannot be reconstructed from the line table or evidence reference."
+        }
+      ]
+    },
+    {
+      "key": "receipt_exceptions",
+      "title": "Trailer exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "receipt_exception_types",
+          "type": "checklist",
+          "label": "Trailer exception indicators",
+          "items": [
+            "Trailer identity, ownership, plate, or assignment mismatch",
+            "Brake, light, tire, wheel, coupling, pin, or slider concern",
+            "Landing gear, rail, frame, crossmember, roof, wall, floor, or door damage",
+            "Leak, odor, debris, pest, contamination, or incompatible prior cargo",
+            "Maintenance due, open work order, or out-of-service status",
+            "Seal, lock, securement equipment, or accessory discrepancy",
+            "Pre-existing damage or interchange responsibility is disputed",
+            "Temperature-control or cargo-compatibility requirement cannot be met",
+            "Yard location or custody transfer cannot be verified",
+            "Road-service release lacks qualified authorization"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "receipt_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "receipt_decision",
+          "type": "fields",
+          "label": "Receipt hold, partial acceptance, refusal, or resolution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "receipt_acceptance",
+      "title": "Trailer receipt decision and custody transfer",
+      "guidance": "Separate physical custody from final commercial, quality, safety, or financial acceptance.",
+      "blocks": [
+        {
+          "key": "acceptance_decision",
+          "type": "fields",
+          "label": "Receiving decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Receipt decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with exception",
+                "Partially accepted",
+                "Held pending review",
+                "Refused"
+              ]
+            },
+            {
+              "key": "custody_location",
+              "label": "Current custody or hold location",
+              "units": 1.35
+            },
+            {
+              "key": "notice_to",
+              "label": "Exception notice sent to",
+              "units": 1.05
+            },
+            {
+              "key": "notice_time",
+              "label": "Notice date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "handoff_attestation",
+          "type": "signatures",
+          "label": "Delivery and receiving attestation",
+          "fields": [
+            {
+              "key": "delivered_by",
+              "label": "Delivered by and date",
+              "units": 1.2
+            },
+            {
+              "key": "received_by",
+              "label": "Received by and date",
+              "units": 1.2
+            },
+            {
+              "key": "witness",
+              "label": "Witness or verifier",
+              "units": 1.05
+            },
+            {
+              "key": "proof_reference",
+              "label": "Receipt proof reference",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Attestation confirms the recorded physical event, not waiver of a concealed issue or unresolved review."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Trailer delivery receipt closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and reconciled",
+                "Accepted with closed exception",
+                "Partial receipt closed",
+                "Transferred to claim or hold",
+                "Refused and returned"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this trailer delivery receipt with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified fleet maintenance or safety supervisor",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

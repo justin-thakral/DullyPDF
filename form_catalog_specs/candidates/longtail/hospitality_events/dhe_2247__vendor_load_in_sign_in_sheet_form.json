@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2247__vendor_load_in_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2247__vendor_load_in_sign_in_sheet_form.pdf",
+  "slug": "vendor-load-in-sign-in-sheet-form",
+  "title": "Vendor Load-In Sign-In Sheet Form",
+  "subtitle": "Record vendor personnel, vehicles, access devices, assigned areas, escorts, and reconciled departure from the load-in route.",
+  "description": "An original day-of access register for vendor crew and vehicles. It ties each arrival to a company and load-in order, records permitted work areas, badge or key custody, escort assignment, exceptions, checkout, and missing access-device follow-up without collecting unnecessary personal details.",
+  "use_case": "Use at the controlled arrival point when vendor personnel or vehicles enter for load-in, setup, service, strike, or collection. Close after departures and issued access items are reconciled or escalated.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Access station and roster owner",
+      "guidance": "Identify the operating period and the person controlling entry.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "sheet_id",
+              "label": "Sheet ID",
+              "units": 0.8
+            },
+            {
+              "key": "order_id",
+              "label": "Order ID",
+              "units": 0.85
+            },
+            {
+              "key": "access_date",
+              "label": "Access date",
+              "units": 0.9
+            },
+            {
+              "key": "checkin_lead",
+              "label": "Check-in lead",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Access desk readiness",
+          "items": [
+            "Current vendor and expected crew list is available",
+            "Permitted arrival point and work areas are identified",
+            "Badge, key, pass, and vehicle-pass stock is counted",
+            "Escort-required areas and assigned escorts are known",
+            "Vendor day-of contact is reachable",
+            "Departure and after-hours return procedure is posted"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Personnel and vehicle entry register",
+      "guidance": "Collect only the operational identity needed for controlled access.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Vendor arrival roster",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.15
+            },
+            {
+              "key": "company_role",
+              "label": "Company and role",
+              "units": 1.4
+            },
+            {
+              "key": "arrival",
+              "label": "In",
+              "units": 0.65
+            },
+            {
+              "key": "access_item",
+              "label": "Badge, key, or pass",
+              "units": 1.25
+            },
+            {
+              "key": "work_area",
+              "label": "Assigned area",
+              "units": 1.1
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Arrival context",
+          "fields": [
+            {
+              "key": "vehicle_count",
+              "label": "Vehicles",
+              "units": 0.8
+            },
+            {
+              "key": "crew_expected",
+              "label": "Crew expected",
+              "units": 1.0
+            },
+            {
+              "key": "crew_arrived",
+              "label": "Crew arrived",
+              "units": 1.0
+            },
+            {
+              "key": "escort_lead",
+              "label": "Escort lead",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Entry decisions and access exceptions",
+      "guidance": "Do not improvise access outside the issued order.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Entry controls",
+          "items": [
+            "Company and role matched the expected load-in activity",
+            "Work areas and route were explained before entry",
+            "Issued access items are traceable to one person",
+            "Vehicles received the correct arrival or parking direction",
+            "Unexpected arrivals were routed to the venue lead",
+            "Denied or delayed entries have a factual disposition"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Access exception register",
+          "columns": [
+            {
+              "key": "person_vehicle",
+              "label": "Person or vehicle",
+              "units": 1.25
+            },
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.25
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.05
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Roster status and escalation",
+      "guidance": "Keep unexplained people, vehicles, or access items visible.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Roster status",
+          "fields": [
+            {
+              "key": "sheet_status",
+              "label": "Sheet status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed",
+                "Escalated",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "checked_out",
+              "label": "Checked out",
+              "units": 1.0
+            },
+            {
+              "key": "items_returned",
+              "label": "Items returned",
+              "units": 1.0
+            },
+            {
+              "key": "open_exception",
+              "label": "Open exception",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Unexpected arrivals, access limits, and outstanding items",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Access exception and handoff detail"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Access record boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Departure reconciliation and handoff",
+      "guidance": "Reconcile the roster and all issued access devices.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Outstanding departure actions",
+          "columns": [
+            {
+              "key": "person_item",
+              "label": "Person or item",
+              "units": 1.25
+            },
+            {
+              "key": "issue",
+              "label": "Issue",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Roster closeout",
+          "items": [
+            "Departure times are recorded for all entered personnel",
+            "Vendor vehicles are accounted for at the end of the window",
+            "Badges, keys, passes, and vehicle passes are reconciled",
+            "Outstanding access items have a named recovery owner",
+            "Final roster is handed to the venue movement lead"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Access desk closeout",
+          "fields": [
+            {
+              "key": "opened_by",
+              "label": "Opened by",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened at",
+              "units": 0.85
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 1.0
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

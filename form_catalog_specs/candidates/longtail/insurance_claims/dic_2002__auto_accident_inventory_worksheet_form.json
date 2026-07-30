@@ -1,0 +1,528 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2002__auto_accident_inventory_worksheet_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2002__auto_accident_inventory_worksheet_form.pdf",
+  "slug": "auto-accident-inventory-worksheet-form",
+  "title": "Auto Accident Inventory Worksheet Form",
+  "subtitle": "A decision-ready auto accident inventory worksheet that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original auto accident inventory worksheet for collision event and involved vehicle with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the auto claim intake or adjusting owner must open and control a inventory worksheet for collision event and involved vehicle. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Auto Accident inventory worksheet identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Auto Accident inventory worksheet record",
+          "fields": [
+            {
+              "key": "worksheet_id",
+              "label": "Inventory worksheet ID",
+              "units": 0.95
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "inventory_cutoff",
+              "label": "Inventory as-of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.95
+            },
+            {
+              "key": "location_scope",
+              "label": "Location or schedule scope",
+              "units": 1.15
+            },
+            {
+              "key": "reconciliation_status",
+              "label": "Reconciliation status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "In review",
+                "Reconciled",
+                "Exception hold"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Auto Accident subject and event identity",
+          "fields": [
+            {
+              "key": "loss_date_time",
+              "label": "Collision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Road, intersection, or exact location",
+              "units": 1.25
+            },
+            {
+              "key": "vehicle_identity",
+              "label": "Vehicle and VIN suffix",
+              "units": 1.15
+            },
+            {
+              "key": "driver_relation",
+              "label": "Driver and relationship",
+              "units": 1.05
+            },
+            {
+              "key": "operability",
+              "label": "Operability and tow site",
+              "units": 1.0
+            },
+            {
+              "key": "trip_context",
+              "label": "Trip purpose or use at time of event",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Police agency and report reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Inventory Worksheet scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Auto Accident purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "inventory_scope",
+      "title": "Auto Accident inventory scope, method, and completeness",
+      "guidance": "Define the population, cutoff, source systems, and reconciliation method before recording items.",
+      "blocks": [
+        {
+          "key": "scope_control",
+          "type": "fields",
+          "label": "Inventory control totals and method",
+          "fields": [
+            {
+              "key": "source_population",
+              "label": "Source population or system",
+              "units": 1.15
+            },
+            {
+              "key": "cutoff_rule",
+              "label": "Cutoff rule and timestamp",
+              "units": 1.05
+            },
+            {
+              "key": "starting_count",
+              "label": "Starting expected count",
+              "units": 0.9
+            },
+            {
+              "key": "location_count",
+              "label": "Location or category count",
+              "units": 0.9
+            },
+            {
+              "key": "currency_unit",
+              "label": "Currency or measurement basis",
+              "units": 1.0
+            },
+            {
+              "key": "version_ref",
+              "label": "Source export or version ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "scope_checks",
+          "type": "checklist",
+          "label": "Auto Accident inventory setup checks",
+          "items": [
+            "Exact claim, policy, request, or service record was confirmed",
+            "Included and excluded categories are documented",
+            "Cutoff date and later additions are distinguishable",
+            "Source records and attachment locations are traceable",
+            "Ownership, interest, or responsible party is captured",
+            "Condition and pre-existing information are preserved",
+            "Duplicate, replacement, transferred, and withdrawn items are marked",
+            "Sensitive data is limited and stored through approved routes"
+          ]
+        },
+        {
+          "key": "method_notes",
+          "type": "textarea",
+          "label": "Inventory method, scope limits, and known gaps",
+          "fields": [
+            {
+              "key": "method",
+              "label": "Auto Accident source population, vehicle, part, expense, and affected-property categories, reconciliation approach, assumptions, and exclusions",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "detailed_inventory",
+      "title": "Auto Accident detailed inventory",
+      "guidance": "Use one row per independently traceable item, task, amount, document, or subject.",
+      "blocks": [
+        {
+          "key": "primary_inventory",
+          "type": "table",
+          "label": "Primary vehicle, part, expense, and affected-property register",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item or task ID",
+              "units": 0.85
+            },
+            {
+              "key": "description",
+              "label": "Description and location",
+              "units": 1.35
+            },
+            {
+              "key": "identity",
+              "label": "Model, date, party, or source",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Qty. / extent / status",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner or custodian",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "financial_status",
+          "type": "table",
+          "label": "Value, cost, payment, or transaction tracking",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.75
+            },
+            {
+              "key": "basis",
+              "label": "Claimed / estimated basis",
+              "units": 1.2
+            },
+            {
+              "key": "amount",
+              "label": "Amount or unit value",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Review or payment status",
+              "units": 1.0
+            },
+            {
+              "key": "support",
+              "label": "Invoice / estimate / system ref",
+              "units": 1.25
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.85
+            }
+          ],
+          "rows": 5,
+          "guidance": "Amounts are factual record entries, not coverage, valuation, or payment recommendations."
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "Inventory record boundary",
+          "guidance": "This record does not determine fault, liability, value, or coverage. Address emergencies first, avoid admissions or promises, preserve evidence, and route decisions to the authorized adjuster under the controlling policy and applicable requirements."
+        }
+      ]
+    },
+    {
+      "key": "evidence_reconciliation",
+      "title": "Auto Accident evidence support and reconciliation",
+      "guidance": "Link each material item to source evidence and make missing, duplicated, and conflicting records explicit.",
+      "blocks": [
+        {
+          "key": "expected_support",
+          "type": "checklist",
+          "label": "Auto Accident supporting evidence",
+          "items": [
+            "Scene overview and traffic-control photographs",
+            "All vehicle sides and close damage photographs",
+            "Driver, registration, and insurance exchange reference",
+            "Police or incident report request and receipt reference",
+            "Witness contact and statement source reference",
+            "Tow, storage, repair, rental, or appraisal documents",
+            "Dashcam, telematics, or camera-preservation reference",
+            "Injury, expense, wage, or passenger documents routed securely"
+          ]
+        },
+        {
+          "key": "reconciliation_register",
+          "type": "table",
+          "label": "Source-to-inventory reconciliation",
+          "columns": [
+            {
+              "key": "source",
+              "label": "Source or schedule",
+              "units": 1.1
+            },
+            {
+              "key": "expected",
+              "label": "Expected count or amount",
+              "units": 1.0
+            },
+            {
+              "key": "recorded",
+              "label": "Recorded count or amount",
+              "units": 1.0
+            },
+            {
+              "key": "variance",
+              "label": "Variance and reason",
+              "units": 1.1
+            },
+            {
+              "key": "action",
+              "label": "Action, owner, and due",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "control_totals",
+          "type": "fields",
+          "label": "Worksheet control totals",
+          "fields": [
+            {
+              "key": "recorded_count",
+              "label": "Recorded item count",
+              "units": 0.9
+            },
+            {
+              "key": "supported_count",
+              "label": "Evidence-supported count",
+              "units": 1.0
+            },
+            {
+              "key": "exception_count",
+              "label": "Exception count",
+              "units": 0.9
+            },
+            {
+              "key": "total_recorded",
+              "label": "Recorded total, if applicable",
+              "units": 1.0
+            },
+            {
+              "key": "total_verified",
+              "label": "Verified total, if applicable",
+              "units": 1.0
+            },
+            {
+              "key": "difference",
+              "label": "Unreconciled difference",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions_review",
+      "title": "Auto Accident inventory exceptions and decisions",
+      "guidance": "Keep every discrepancy open until its evidence, owner, review authority, and disposition are recorded.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Auto Accident inventory exception screen",
+          "items": [
+            "Vehicle location or ownership cannot be verified",
+            "Loss date, driver identity, or trip use conflicts across sources",
+            "Injury, child restraint, or accessibility issue lacks a route",
+            "Potential fraud indicator requires authorized special review",
+            "Tow, storage, salvage, or evidence-preservation deadline is near",
+            "Lawsuit, demand, citation, or government notice was received"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Inventory discrepancy and disposition",
+          "columns": [
+            {
+              "key": "item_ref",
+              "label": "Item or source ref",
+              "units": 0.9
+            },
+            {
+              "key": "discrepancy",
+              "label": "Missing, duplicate, or conflict",
+              "units": 1.3
+            },
+            {
+              "key": "investigation",
+              "label": "Verification action",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "decision",
+              "label": "Authorized disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "reconciliation_rationale",
+          "type": "textarea",
+          "label": "Reconciliation rationale and unresolved limitations",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Auto Accident differences, source reliability, evidence conflicts, decisions, and items excluded from totals",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Auto Accident inventory closeout, certification, and handoff",
+      "guidance": "Close only after totals, exceptions, evidence, and downstream ownership are independently reviewable.",
+      "blocks": [
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Inventory closeout checks",
+          "items": [
+            "Control totals reconcile to the stated source and cutoff",
+            "Each material item has a unique identity and evidence route",
+            "Amounts and status entries identify their source and date",
+            "No inventory entry implies an unauthorized coverage decision",
+            "Exceptions have final dispositions or accountable owners",
+            "The receiving reviewer can reproduce the reconciliation"
+          ]
+        },
+        {
+          "key": "final_reconciliation",
+          "type": "fields",
+          "label": "Final reconciliation and handoff",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final worksheet status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Reconciled",
+                "Reconciled with exceptions",
+                "Open",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "final_count",
+              "label": "Final item count",
+              "units": 0.9
+            },
+            {
+              "key": "open_count",
+              "label": "Open exception count",
+              "units": 0.9
+            },
+            {
+              "key": "recipient",
+              "label": "Receiving owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_action",
+              "label": "Next action or decision",
+              "units": 1.15
+            },
+            {
+              "key": "handoff_date",
+              "label": "Handoff date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "worksheet_signoff",
+          "type": "signatures",
+          "label": "Prepared, independently reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reconciled_by",
+              "label": "Reconciled by / date",
+              "units": 1.05
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified reviewer / date",
+              "units": 1.05
+            },
+            {
+              "key": "accepted_by",
+              "label": "Recipient / date",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

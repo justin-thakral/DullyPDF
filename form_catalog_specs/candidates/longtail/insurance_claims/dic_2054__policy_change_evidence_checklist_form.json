@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2054__policy_change_evidence_checklist_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2054__policy_change_evidence_checklist_form.pdf",
+  "slug": "policy-change-evidence-checklist-form",
+  "title": "Policy Change Evidence Checklist Form",
+  "subtitle": "A decision-ready policy change evidence checklist that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original policy change evidence checklist for prospective policy-administration request and requested effective date with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the policy service, underwriting, or authorized change owner must open and control a evidence checklist for prospective policy-administration request and requested effective date. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Policy Change evidence checklist identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Policy Change evidence checklist record",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Evidence review ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "review_cutoff",
+              "label": "Evidence cutoff date and time",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Evidence reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision or investigation owner",
+              "units": 1.1
+            },
+            {
+              "key": "package_status",
+              "label": "Evidence package status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Collecting",
+                "Ready for review",
+                "Gap hold",
+                "Accepted"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Policy Change subject and event identity",
+          "fields": [
+            {
+              "key": "policy_number",
+              "label": "Policy or account number",
+              "units": 1.0
+            },
+            {
+              "key": "named_insured",
+              "label": "Named insured or customer reference",
+              "units": 1.25
+            },
+            {
+              "key": "line_business",
+              "label": "Policy line or product",
+              "units": 1.15
+            },
+            {
+              "key": "policy_term",
+              "label": "Current policy term",
+              "units": 1.05
+            },
+            {
+              "key": "received_at",
+              "label": "Request date and channel",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date and time",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Policy term, request ID, and requested effective date"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Evidence Checklist scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Policy Change purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "evidence_plan",
+      "title": "Policy Change evidence plan, issues, and preservation priorities",
+      "guidance": "Tie evidence collection to specific questions; do not collect sensitive or irrelevant material merely because it exists.",
+      "blocks": [
+        {
+          "key": "issue_evidence_map",
+          "type": "table",
+          "label": "Issue-to-evidence plan",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Question or issue",
+              "units": 1.25
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Likely source",
+              "units": 1.0
+            },
+            {
+              "key": "priority",
+              "label": "Priority / expiry risk",
+              "units": 0.95
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "domain_evidence",
+          "type": "checklist",
+          "label": "Policy Change evidence checklist",
+          "items": [
+            "Dated requester instruction and authenticated source reference",
+            "Current declarations, schedule, or policy-data snapshot",
+            "Supporting ownership, registration, address, or interest document",
+            "Vehicle, property, payroll, operations, or exposure detail",
+            "Underwriting question, inspection, valuation, or approval record",
+            "Quote, premium, billing, payment, or finance acknowledgment",
+            "Issued endorsement, revised declarations, or transaction confirmation",
+            "Delivery, consent, rejection, withdrawal, and retention record"
+          ],
+          "guidance": "Check only when the item is received, verified, or preservation is documented."
+        },
+        {
+          "key": "preservation_control",
+          "type": "fields",
+          "label": "Preservation and collection control",
+          "fields": [
+            {
+              "key": "preservation_owner",
+              "label": "Preservation owner",
+              "units": 1.0
+            },
+            {
+              "key": "first_request",
+              "label": "First request date and time",
+              "units": 1.0
+            },
+            {
+              "key": "expiry_risk",
+              "label": "Earliest expiry or overwrite risk",
+              "units": 1.1
+            },
+            {
+              "key": "legal_hold_ref",
+              "label": "Hold or instruction ref, if any",
+              "units": 1.1
+            },
+            {
+              "key": "collection_method",
+              "label": "Approved collection method",
+              "units": 1.1
+            },
+            {
+              "key": "restricted_route",
+              "label": "Restricted evidence route",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "evidence_boundary",
+          "type": "notice",
+          "label": "Evidence and decision boundary",
+          "guidance": "This record is a request, not a binder, endorsement, certificate, coverage confirmation, or promise of effective date. Only authorized issuance changes the policy. Keep known losses and claim decisions separate and apply the controlling policy and jurisdiction requirements."
+        }
+      ]
+    },
+    {
+      "key": "receipt_quality",
+      "title": "Policy Change evidence receipt, authenticity, and quality review",
+      "guidance": "Preserve the original source and distinguish a complete record from an unreadable, altered, partial, or unsupported item.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Evidence receipt and quality register",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "description",
+              "label": "Item and exact source",
+              "units": 1.35
+            },
+            {
+              "key": "received",
+              "label": "Received date and method",
+              "units": 1.0
+            },
+            {
+              "key": "storage",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "quality",
+              "label": "Quality and verification",
+              "units": 1.15
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "quality_checks",
+          "type": "checklist",
+          "label": "Evidence quality checks",
+          "items": [
+            "Source identity and authority are recorded",
+            "Original file, record, or unaltered copy is retained",
+            "Relevant dates, times, locations, and subjects are visible",
+            "Metadata or system provenance is preserved when material",
+            "Corrections and annotations do not obscure the original",
+            "Duplicate and superseded versions are linked",
+            "Sensitive content is limited to approved access",
+            "Known limitations and missing pages are documented"
+          ]
+        },
+        {
+          "key": "quality_notes",
+          "type": "textarea",
+          "label": "Evidence quality, authenticity questions, and limitations",
+          "fields": [
+            {
+              "key": "quality_detail",
+              "label": "Policy Change source reliability, missing context, contradictions, alteration concerns, and follow-up needed",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "custody_disclosure",
+      "title": "Policy Change custody, privacy, disclosure, and access control",
+      "guidance": "Document who handled evidence and prevent unnecessary duplication or disclosure of restricted information.",
+      "blocks": [
+        {
+          "key": "custody_log",
+          "type": "table",
+          "label": "Custody and access log",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "from_to",
+              "label": "From / to or access role",
+              "units": 1.15
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose and authority",
+              "units": 1.2
+            },
+            {
+              "key": "location",
+              "label": "Storage / transfer ref",
+              "units": 1.1
+            },
+            {
+              "key": "ack",
+              "label": "Receipt or audit ref",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "privacy_controls",
+          "type": "checklist",
+          "label": "Privacy and disclosure controls",
+          "items": [
+            "Only necessary personal information was collected",
+            "Identity and authority were verified before disclosure",
+            "Medical, financial, credential, or legal material uses a restricted route",
+            "Public or shared copies omit unnecessary identifiers",
+            "Consent, subpoena, policy, or other disclosure authority is recorded",
+            "Third-party records retain source and permitted-use limits",
+            "Retention and deletion requirements are identified",
+            "An access or disclosure error has an incident route"
+          ]
+        },
+        {
+          "key": "access_summary",
+          "type": "fields",
+          "label": "Evidence access summary",
+          "fields": [
+            {
+              "key": "system_owner",
+              "label": "System or repository owner",
+              "units": 1.1
+            },
+            {
+              "key": "access_group",
+              "label": "Authorized access group",
+              "units": 1.05
+            },
+            {
+              "key": "retention_ref",
+              "label": "Retention rule reference",
+              "units": 1.1
+            },
+            {
+              "key": "disclosure_owner",
+              "label": "Disclosure decision owner",
+              "units": 1.05
+            },
+            {
+              "key": "last_audit",
+              "label": "Last access audit date",
+              "units": 0.95
+            },
+            {
+              "key": "incident_ref",
+              "label": "Privacy incident ref, if any",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "gaps_conflicts",
+      "title": "Policy Change evidence gaps, conflicting sources, and escalation",
+      "guidance": "Do not convert missing or inconsistent evidence into an unsupported conclusion.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Policy Change evidence exception screen",
+          "items": [
+            "Requester identity or authority is unverified",
+            "Requested effective date is backdated, ambiguous, or conflicts with a known loss",
+            "Current and requested policy states cannot be reconciled",
+            "Required underwriting, signature, payment, or supporting evidence is missing",
+            "Requested wording or certificate representation exceeds policy terms",
+            "Transaction was quoted, bound, issued, delivered, or declined without clear authority"
+          ]
+        },
+        {
+          "key": "gap_register",
+          "type": "table",
+          "label": "Gap, conflict, and follow-up register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Gap or conflict",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Decision or workflow impact",
+              "units": 1.15
+            },
+            {
+              "key": "request_action",
+              "label": "Request or verification action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or limitation",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_status",
+          "type": "fields",
+          "label": "Evidence escalation status",
+          "fields": [
+            {
+              "key": "escalation_owner",
+              "label": "Escalation owner",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            },
+            {
+              "key": "review_authority",
+              "label": "Review authority",
+              "units": 1.05
+            },
+            {
+              "key": "decision_deadline",
+              "label": "Decision or response due",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "package_handoff",
+      "title": "Policy Change evidence-package decision readiness and handoff",
+      "guidance": "The package can close only when evidence, gaps, access limits, and the receiving decision owner are explicit.",
+      "blocks": [
+        {
+          "key": "readiness_check",
+          "type": "checklist",
+          "label": "Evidence-package readiness",
+          "items": [
+            "Every material issue maps to supporting evidence or a stated gap",
+            "Evidence IDs, source, storage, and quality are traceable",
+            "Conflicts and unavailable evidence are not hidden",
+            "Restricted material has an authorized access route",
+            "No checklist item implies a coverage or legal conclusion",
+            "The qualified decision owner accepted the package"
+          ]
+        },
+        {
+          "key": "package_decision",
+          "type": "fields",
+          "label": "Package disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Evidence package disposition",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Ready for decision",
+                "Ready with limitations",
+                "Further collection",
+                "Expert review",
+                "Closed no decision"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Receiving decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "open_gaps",
+              "label": "Open gap count",
+              "units": 0.85
+            },
+            {
+              "key": "limitations_ref",
+              "label": "Limitations reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due",
+              "units": 1.1
+            },
+            {
+              "key": "handoff_date",
+              "label": "Handoff date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "evidence_signoff",
+          "type": "signatures",
+          "label": "Collector, reviewer, and decision-owner acceptance",
+          "fields": [
+            {
+              "key": "collected_by",
+              "label": "Collection owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "quality_review",
+              "label": "Quality reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "privacy_review",
+              "label": "Privacy reviewer / date",
+              "units": 1.05
+            },
+            {
+              "key": "accepted_by",
+              "label": "Decision owner / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

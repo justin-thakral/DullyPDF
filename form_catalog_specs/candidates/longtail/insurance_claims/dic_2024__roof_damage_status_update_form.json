@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2024__roof_damage_status_update_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2024__roof_damage_status_update_form.pdf",
+  "slug": "roof-damage-status-update-form",
+  "title": "Roof Damage Status Update Form",
+  "subtitle": "A decision-ready roof damage status update that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original roof damage status update for roof area, weather event, and interior water path with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the roof-loss claim and qualified inspection owner must open and control a status update for roof area, weather event, and interior water path. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Roof Damage status update identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Roof Damage status update record",
+          "fields": [
+            {
+              "key": "update_id",
+              "label": "Status update ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "as_of",
+              "label": "Verified as of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            },
+            {
+              "key": "current_owner",
+              "label": "Current accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "overall_stage",
+              "label": "Overall stage",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Intake",
+                "Investigation",
+                "Decision",
+                "Payment",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Roof Damage subject and event identity",
+          "fields": [
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 1.0
+            },
+            {
+              "key": "property_location",
+              "label": "Property and structure location",
+              "units": 1.25
+            },
+            {
+              "key": "roof_area",
+              "label": "Roof plane or elevation",
+              "units": 1.15
+            },
+            {
+              "key": "roof_system",
+              "label": "Roof material and age",
+              "units": 1.05
+            },
+            {
+              "key": "interior_area",
+              "label": "Interior affected area",
+              "units": 1.0
+            },
+            {
+              "key": "temporary_cover",
+              "label": "Temporary protection ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Roof plane, elevation, and weather-event reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Status Update scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Roof Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "verified_snapshot",
+      "title": "Roof Damage verified status snapshot",
+      "guidance": "Report the file state as of a precise time and identify the evidence behind each material status.",
+      "blocks": [
+        {
+          "key": "status_dimensions",
+          "type": "fields",
+          "label": "Roof Damage status dimensions",
+          "fields": [
+            {
+              "key": "access_method",
+              "label": "Access method/authority",
+              "units": 1.0
+            },
+            {
+              "key": "surface_condition",
+              "label": "Visible surface condition",
+              "units": 1.25
+            },
+            {
+              "key": "flashing_openings",
+              "label": "Flashing and penetrations",
+              "units": 1.15
+            },
+            {
+              "key": "drainage",
+              "label": "Drainage and ponding",
+              "units": 1.05
+            },
+            {
+              "key": "interior_signs",
+              "label": "Interior moisture signs",
+              "units": 1.0
+            },
+            {
+              "key": "weather_ref",
+              "label": "Weather or event ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "stage_indicators",
+          "type": "checklist",
+          "label": "Roof Damage active-work indicators",
+          "items": [
+            "Unprotected edge, unsafe ladder, steep slope, or fragile surface",
+            "Wet, icy, hot, loose, unstable, or storm-affected roof",
+            "Opening, missing material, displaced flashing, or active entry",
+            "Ceiling sag, wet electrical area, or falling material below",
+            "Hail, wind, tree, debris, animal, or contractor activity reported",
+            "Pre-existing wear, patch, prior leak, or maintenance issue visible",
+            "Solar, HVAC, antenna, skylight, or other penetration involved",
+            "Emergency tarp, seal, drain clearing, or temporary work occurred"
+          ]
+        },
+        {
+          "key": "milestone_history",
+          "type": "table",
+          "label": "Completed and planned milestone history",
+          "columns": [
+            {
+              "key": "milestone",
+              "label": "Milestone or decision",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned date",
+              "units": 0.85
+            },
+            {
+              "key": "completed",
+              "label": "Completed date",
+              "units": 0.85
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Status evidence ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_boundary",
+          "type": "notice",
+          "label": "Status communication boundary",
+          "guidance": "This record does not authorize roof access or structural conclusions. Do not enter or work on a wet, unstable, steep, electrically exposed, or otherwise unsafe roof. Qualified reviewers own access, repair, cause, valuation, and coverage decisions."
+        }
+      ]
+    },
+    {
+      "key": "workstream_status",
+      "title": "Roof Damage workstream, evidence, and decision status",
+      "guidance": "Track independent workstreams separately so a completed task does not hide an unresolved decision or dependency.",
+      "blocks": [
+        {
+          "key": "workstream_register",
+          "type": "table",
+          "label": "Workstream and next-action register",
+          "columns": [
+            {
+              "key": "workstream",
+              "label": "Workstream",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current verified state",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or system ref",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.05
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "status_evidence",
+          "type": "checklist",
+          "label": "Roof Damage status evidence sources",
+          "items": [
+            "Elevation, roof-plane, slope, and orientation photographs",
+            "Close photographs with location reference and scale when safe",
+            "Interior water-path and corresponding exterior-area photographs",
+            "Weather, hail, wind, tree, or event-verification reference",
+            "Roof age, invoice, warranty, prior repair, and maintenance records",
+            "Qualified roofer, engineer, consultant, or inspection report",
+            "Temporary protection scope, photographs, invoice, and dates",
+            "Estimate, diagram, measurement, material, and waste-factor support"
+          ]
+        },
+        {
+          "key": "decision_snapshot",
+          "type": "fields",
+          "label": "Decision and authority snapshot",
+          "fields": [
+            {
+              "key": "latest_decision",
+              "label": "Latest authorized decision",
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "basis_ref",
+              "label": "Decision-basis reference",
+              "units": 1.15
+            },
+            {
+              "key": "notice_status",
+              "label": "Required notice status",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Next review due",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requests_dependencies",
+      "title": "Roof Damage outstanding requests, dependencies, and commitments",
+      "guidance": "Record exactly what is needed, who owes it, when it was requested, and what happens if it remains outstanding.",
+      "blocks": [
+        {
+          "key": "request_register",
+          "type": "table",
+          "label": "Outstanding request and dependency register",
+          "columns": [
+            {
+              "key": "request",
+              "label": "Requested item or dependency",
+              "units": 1.3
+            },
+            {
+              "key": "requested_from",
+              "label": "Requested from",
+              "units": 1.0
+            },
+            {
+              "key": "requested_at",
+              "label": "Requested date",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status and response ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "commitment_register",
+          "type": "table",
+          "label": "Promised update and commitment control",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.0
+            },
+            {
+              "key": "commitment",
+              "label": "Committed update or action",
+              "units": 1.35
+            },
+            {
+              "key": "promised_by",
+              "label": "Promised by",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due date and time",
+              "units": 0.9
+            },
+            {
+              "key": "completion",
+              "label": "Completion evidence",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_narrative",
+          "type": "textarea",
+          "label": "Plain-language status narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Roof Damage completed work, pending work, reason for delay, uncertainty, and next expected update",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Roof Damage blockers, exceptions, and escalation",
+      "guidance": "A status update is incomplete if an overdue or disputed item lacks an accountable escalation path.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Roof Damage blocker and exception screen",
+          "items": [
+            "Roof access is unsafe or beyond inspector authorization",
+            "Temporary work may conceal or alter original conditions",
+            "Reported event date conflicts with weather or discovery records",
+            "Interior path cannot be correlated to an exterior area",
+            "Structural, electrical, asbestos, or contamination concern exists",
+            "Roof age, prior repair, maintenance, or ownership evidence conflicts"
+          ]
+        },
+        {
+          "key": "blocker_register",
+          "type": "table",
+          "label": "Blocker, escalation, and disposition",
+          "columns": [
+            {
+              "key": "blocker",
+              "label": "Blocker or disputed status",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Impact on claim or request",
+              "units": 1.15
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update due",
+              "units": 0.9
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or final state",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "timeliness_control",
+          "type": "fields",
+          "label": "Timeliness and oversight control",
+          "fields": [
+            {
+              "key": "oldest_open_date",
+              "label": "Oldest open-item date",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.0
+            },
+            {
+              "key": "deadline_basis",
+              "label": "Deadline source or requirement",
+              "units": 1.2
+            },
+            {
+              "key": "supervisor_review",
+              "label": "Supervisor review status",
+              "units": 1.0
+            },
+            {
+              "key": "complaint_route",
+              "label": "Complaint or escalation ref",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "communication_closeout",
+      "title": "Roof Damage status communication, next milestone, and closeout",
+      "guidance": "Confirm what was communicated, what remains open, and who accepted the next accountable action.",
+      "blocks": [
+        {
+          "key": "communication_checks",
+          "type": "checklist",
+          "label": "Status communication checks",
+          "items": [
+            "The as-of timestamp and source records are clear",
+            "Facts, estimates, pending reviews, and final decisions are distinct",
+            "The recipient was not given an unauthorized promise",
+            "Required privacy and identity verification were followed",
+            "Outstanding requests and promised updates have due points",
+            "The next accountable owner accepted the handoff"
+          ]
+        },
+        {
+          "key": "next_milestone",
+          "type": "fields",
+          "label": "Next milestone and update route",
+          "fields": [
+            {
+              "key": "next_milestone",
+              "label": "Next milestone",
+              "units": 1.1
+            },
+            {
+              "key": "milestone_owner",
+              "label": "Milestone owner",
+              "units": 1.0
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.85
+            },
+            {
+              "key": "next_update",
+              "label": "Next customer update due",
+              "units": 1.0
+            },
+            {
+              "key": "update_channel",
+              "label": "Approved update channel",
+              "units": 1.0
+            },
+            {
+              "key": "recipient",
+              "label": "Verified recipient",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "status_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and communicated",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "communicated_by",
+              "label": "Communicated by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Status version",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

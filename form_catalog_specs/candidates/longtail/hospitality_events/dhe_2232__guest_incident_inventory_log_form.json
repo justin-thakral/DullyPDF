@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2232__guest_incident_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2232__guest_incident_inventory_log_form.pdf",
+  "slug": "guest-incident-inventory-log-form",
+  "title": "Guest Incident Inventory Log Form",
+  "subtitle": "Track what the incident produced: retained items with chain of custody, guest property held, supplies used, and damaged venue property.",
+  "description": "An original property and supplies log for a guest incident case. It records the log identity and custody owner, retained items with an unbroken chain of custody, guest property held or taken for repair, first-aid and cleanup supplies consumed, damaged venue property with its work order, release and disposal decisions, and an accountable closeout.",
+  "use_case": "Use when an incident leaves physical items to account for: a retained mat, a guest's damaged property, supplies drawn from a kit, or venue equipment taken out of service. The log closes when every item is released, returned, or disposed of with an authorizing name.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "log_identity",
+      "title": "Log identity and custody owner",
+      "guidance": "One person owns custody at any moment.",
+      "blocks": [
+        {
+          "key": "log_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.9
+            },
+            {
+              "key": "case_id",
+              "label": "Case ID",
+              "units": 0.75
+            },
+            {
+              "key": "report_reference",
+              "label": "Incident report ID",
+              "units": 1.3
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened at",
+              "units": 0.8
+            },
+            {
+              "key": "custody_owner",
+              "label": "Custody owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "storage_basis",
+          "type": "fields",
+          "label": "Storage basis",
+          "fields": [
+            {
+              "key": "storage_location",
+              "label": "Secure storage location",
+              "units": 1.5
+            },
+            {
+              "key": "access_control",
+              "label": "Access control",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Locked cabinet",
+                "Locked office",
+                "Sealed and logged",
+                "Held by security"
+              ]
+            },
+            {
+              "key": "review_due",
+              "label": "Custody review due",
+              "units": 1.25
+            },
+            {
+              "key": "guest_name",
+              "label": "Guest name",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "retained_items",
+      "title": "Items retained and chain of custody",
+      "guidance": "An item with a gap in custody stops being useful.",
+      "blocks": [
+        {
+          "key": "retained_rows",
+          "type": "table",
+          "label": "Retained item register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item retained",
+              "units": 1.4
+            },
+            {
+              "key": "why_retained",
+              "label": "Why retained",
+              "units": 1.3
+            },
+            {
+              "key": "collected_at",
+              "label": "Collected",
+              "units": 0.8
+            },
+            {
+              "key": "collected_by",
+              "label": "Collected by",
+              "units": 1.0
+            },
+            {
+              "key": "label_reference",
+              "label": "Label ref",
+              "units": 0.9
+            }
+          ],
+          "rows": 6,
+          "guidance": "Bag, label, and log at the point of collection. Do not clean, test, or repair a retained item."
+        },
+        {
+          "key": "custody_transfers",
+          "type": "table",
+          "label": "Chain of custody transfers",
+          "columns": [
+            {
+              "key": "label_reference",
+              "label": "Label ref",
+              "units": 0.85
+            },
+            {
+              "key": "transferred_at",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "from_person",
+              "label": "From",
+              "units": 1.05
+            },
+            {
+              "key": "to_person",
+              "label": "To",
+              "units": 1.05
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.35
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "guest_property",
+      "title": "Guest property held or repaired",
+      "guidance": "The guest's own property needs a receipt and a return date.",
+      "blocks": [
+        {
+          "key": "guest_property_rows",
+          "type": "table",
+          "label": "Guest property register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Guest item",
+              "units": 1.35
+            },
+            {
+              "key": "condition",
+              "label": "Condition recorded",
+              "units": 1.3
+            },
+            {
+              "key": "held_or_sent",
+              "label": "Held or sent",
+              "units": 1.0
+            },
+            {
+              "key": "due_back",
+              "label": "Due back",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "property_controls",
+          "type": "checklist",
+          "label": "Guest property controls",
+          "items": [
+            "Guest given a written receipt for anything the venue took",
+            "Condition recorded and photographed before the item left the guest",
+            "Repair vendor and expected return date recorded",
+            "Guest told who to contact about the item and when",
+            "Replacement offered only with an approver recorded",
+            "Item returned in person or by a tracked method",
+            "Guest confirmation of return recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "supplies_and_damage",
+      "title": "Supplies consumed and venue property damaged",
+      "guidance": "Restock the kit and take damaged equipment out of service.",
+      "blocks": [
+        {
+          "key": "supplies_rows",
+          "type": "table",
+          "label": "Supplies consumed",
+          "columns": [
+            {
+              "key": "supply",
+              "label": "Supply used",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "from_kit",
+              "label": "From kit",
+              "units": 1.0
+            },
+            {
+              "key": "restock_due",
+              "label": "Restock due",
+              "units": 0.9
+            },
+            {
+              "key": "restocked_by",
+              "label": "Restocked by",
+              "units": 1.05
+            }
+          ],
+          "rows": 5,
+          "guidance": "A kit that is not restocked the same shift is the next incident's problem."
+        },
+        {
+          "key": "damage_rows",
+          "type": "table",
+          "label": "Venue property damaged",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Venue item",
+              "units": 1.3
+            },
+            {
+              "key": "damage",
+              "label": "Damage recorded",
+              "units": 1.3
+            },
+            {
+              "key": "out_of_service",
+              "label": "Out of service",
+              "units": 1.05
+            },
+            {
+              "key": "work_order",
+              "label": "Work order ref",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "release_and_disposal",
+      "title": "Release, disposal, and exceptions",
+      "guidance": "Nothing leaves custody without a named authorizer.",
+      "blocks": [
+        {
+          "key": "release_record",
+          "type": "fields",
+          "label": "Release decision",
+          "fields": [
+            {
+              "key": "release_status",
+              "label": "Release status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Held - case open",
+                "Released to guest",
+                "Released to insurer",
+                "Disposed of",
+                "Transferred to authority"
+              ]
+            },
+            {
+              "key": "released_at",
+              "label": "Released at",
+              "units": 0.9
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_reference",
+              "label": "Authorization ref",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "An item was cleaned, repaired, or discarded before it was logged",
+            "A custody transfer has no receiving name or time",
+            "Guest property is past its due-back date",
+            "A retained item is needed by the insurer and cannot be located",
+            "A first-aid kit was not restocked by the end of the shift",
+            "Damaged equipment is still in service",
+            "Storage was accessed by someone outside the access control"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "custody_boundary",
+          "type": "notice",
+          "label": "What this log does not decide",
+          "guidance": "This log records custody, condition, and movement. It does not value a guest's property, accept liability for damage or loss, authorize a replacement, or decide whether an item may be destroyed. Route valuation, replacement, and disposal decisions to the responsible manager and the insurer under applicable policy, and keep every item while a case or claim is open."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Close only when every item is accounted for.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Log closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - all accounted",
+                "Closed with items held",
+                "Closed with exception"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "retain_until",
+              "label": "Retain until",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Every retained item has an unbroken chain of custody",
+            "Guest property returned or its status recorded with a due date",
+            "Supplies restocked and the kit confirmed complete",
+            "Damaged equipment out of service with a work order reference",
+            "Release and disposal decisions carry an authorizing name",
+            "Open exceptions transferred with named owners",
+            "Log retained with the case record under applicable policy"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Custody outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Custody handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by responsible manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

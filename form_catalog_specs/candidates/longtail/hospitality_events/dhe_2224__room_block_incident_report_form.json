@@ -1,0 +1,519 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2224__room_block_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2224__room_block_incident_report_form.pdf",
+  "slug": "room-block-incident-report-form",
+  "title": "Room Block Incident Report Form",
+  "subtitle": "Record a failure against a contracted block - a walked guest, an oversell, an accessible room not delivered, or a rate dispute - and route the remedy.",
+  "description": "An original incident record for guest-room block failures. It captures incident identity and the guests affected, the factual account with the reservation and inventory history, the immediate remedy including relocation detail, qualified review, corrective actions with verification, and a closeout naming residual risk.",
+  "use_case": "Use when a group guest is turned away or relocated, the block was oversold, a committed accessible room was not delivered, or a rate or attrition charge is disputed at the desk. The report closes only after the manager on duty reviews it and the remedy is verified with the guest and the group contact.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident identity and guests affected",
+      "guidance": "Fix the incident in time, block, and guest.",
+      "blocks": [
+        {
+          "key": "incident_routing",
+          "type": "fields",
+          "label": "Incident record and routing",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident record ID",
+              "units": 0.9
+            },
+            {
+              "key": "occurred_at",
+              "label": "Occurred at",
+              "units": 0.85
+            },
+            {
+              "key": "discovered_by",
+              "label": "Discovered by",
+              "units": 0.95
+            },
+            {
+              "key": "reported_to",
+              "label": "Reported to",
+              "units": 0.95
+            },
+            {
+              "key": "block_order_number",
+              "label": "Block order number",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "block_context",
+          "type": "fields",
+          "label": "Block context",
+          "fields": [
+            {
+              "key": "group_name",
+              "label": "Group name",
+              "units": 1.2
+            },
+            {
+              "key": "stay_date",
+              "label": "Night affected",
+              "units": 1.0
+            },
+            {
+              "key": "guests_affected",
+              "label": "Guests affected",
+              "units": 1.1
+            },
+            {
+              "key": "rooms_affected",
+              "label": "Rooms affected",
+              "units": 1.05
+            },
+            {
+              "key": "manager_on_duty",
+              "label": "Manager on duty",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Incident classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "What happened",
+              "units": 1.7,
+              "field_type": "choice",
+              "options": [
+                "Not yet classified",
+                "Guest walked to another property",
+                "Guest relocated within the property",
+                "Block oversold against inventory",
+                "Accessible room not delivered",
+                "Connecting rooms not delivered",
+                "Reservation missing at arrival",
+                "Rate charged differs from the block rate",
+                "Charges routed to the wrong account",
+                "Attrition or no-show charge disputed",
+                "Rooming list not honored",
+                "Room not ready at arrival"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Assessed severity",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Minor - resolved at desk",
+                "Moderate - guest inconvenienced",
+                "Major - guest displaced",
+                "Critical - group relationship"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_facts",
+      "title": "Factual account and inventory history",
+      "guidance": "The inventory position at the time usually explains the failure.",
+      "blocks": [
+        {
+          "key": "detection_context",
+          "type": "fields",
+          "label": "Detection context",
+          "fields": [
+            {
+              "key": "detected_how",
+              "label": "How it was detected",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Guest at the desk",
+                "Group contact raised it",
+                "Arrivals report review",
+                "Night audit",
+                "Housekeeping report",
+                "Accounting reconciliation"
+              ]
+            },
+            {
+              "key": "occupancy_at_time",
+              "label": "Occupancy at the time",
+              "units": 1.35
+            },
+            {
+              "key": "rooms_available",
+              "label": "Rooms available",
+              "units": 1.1
+            },
+            {
+              "key": "first_action_at",
+              "label": "First action at",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account: the reservation state, the inventory position, and what the guest was told",
+          "fields": [
+            {
+              "key": "account_detail",
+              "label": "Factual account of the incident"
+            }
+          ],
+          "height": 76
+        },
+        {
+          "key": "reservation_history",
+          "type": "table",
+          "label": "Reservation and inventory history",
+          "columns": [
+            {
+              "key": "event_time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "what_happened",
+              "label": "What happened",
+              "units": 1.5
+            },
+            {
+              "key": "system_state",
+              "label": "System state",
+              "units": 1.2
+            },
+            {
+              "key": "recorded_by",
+              "label": "Recorded by",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary for this report",
+          "guidance": "Record observed facts, times, and actions. Do not record identification numbers, payment card details, health information, or conclusions about liability or staff discipline. Collect only the guest contact detail needed to complete the remedy and handle it under applicable privacy policy."
+        }
+      ]
+    },
+    {
+      "key": "immediate_remedy",
+      "title": "Immediate remedy and relocation detail",
+      "guidance": "A displaced guest needs a recorded remedy, not a verbal apology.",
+      "blocks": [
+        {
+          "key": "remedy_record",
+          "type": "fields",
+          "label": "Remedy record",
+          "fields": [
+            {
+              "key": "remedy_type",
+              "label": "Remedy provided",
+              "units": 1.4,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Room found on property",
+                "Relocated - venue paid",
+                "Relocated - transport paid",
+                "Rate corrected at desk",
+                "Charge reversed",
+                "None yet provided"
+              ]
+            },
+            {
+              "key": "alternate_property",
+              "label": "Alternate property",
+              "units": 1.25
+            },
+            {
+              "key": "nights_relocated",
+              "label": "Nights relocated",
+              "units": 1.15
+            },
+            {
+              "key": "cost_to_venue",
+              "label": "Cost to venue",
+              "units": 1.0
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "remedy_actions",
+          "type": "checklist",
+          "label": "Remedy actions completed",
+          "items": [
+            "Manager on duty spoke with the affected guest in person",
+            "Comparable accommodation confirmed before the guest was moved",
+            "Transport to and from the alternate property arranged and paid",
+            "First night and applicable charges covered per venue standard",
+            "Guest given a direct contact for the return move",
+            "Return to the property arranged for the following night where promised",
+            "Group contact informed by the manager on duty",
+            "Accessible room requirement re-confirmed before any reassignment",
+            "Charges corrected on the folio and the correction shown to the guest"
+          ]
+        },
+        {
+          "key": "remedy_notes",
+          "type": "textarea",
+          "label": "What was offered, what the guest accepted, and what remains promised",
+          "fields": [
+            {
+              "key": "remedy_detail",
+              "label": "Remedy detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and decision",
+      "guidance": "The manager decides the remedy and what changes.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Reviewed - no change",
+                "Process change required",
+                "Inventory control change",
+                "Referred to leadership"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "compensation",
+              "label": "Compensation approved",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "None required",
+                "Points or credit",
+                "Rate adjustment",
+                "Referred for approval"
+              ]
+            },
+            {
+              "key": "approval_reference",
+              "label": "Approval reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop conditions and authority boundary",
+          "guidance": "Route to the responsible manager before turning any guest away, before reassigning a committed accessible room, and before reversing or waiving a contracted charge. This report does not interpret the group agreement, determine liability, decide an accessibility obligation, or authorize compensation beyond the approver's limit, and it does not replace the review applicable policy requires."
+        },
+        {
+          "key": "review_rationale",
+          "type": "textarea",
+          "label": "Review rationale, requirements applied, and limits of the decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Qualified review rationale"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "corrective_actions",
+      "title": "Corrective actions and escalation",
+      "guidance": "Oversell exposure is a control problem, not bad luck.",
+      "blocks": [
+        {
+          "key": "corrective_register",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "cause_addressed",
+              "label": "Cause addressed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A guest was turned away from the property",
+            "A committed accessible room was not delivered",
+            "More than one guest from the block was affected on the same night",
+            "The group has threatened to cancel remaining nights or future business",
+            "A disputed charge exceeds the manager's approval limit",
+            "The block in the system did not match the block order",
+            "The same failure has been recorded on a prior group arrival"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Verification, closeout, and handoff",
+      "guidance": "Close only when the guest remedy is complete and verified.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Remedy in progress",
+                "Closed - verified",
+                "Closed with residual risk",
+                "Referred and closed"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_review_due",
+              "label": "Next review due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Guest confirmed the remedy was completed as promised",
+            "Folio corrections verified against the guest account",
+            "Group contact communication documented with date and author",
+            "Corrective actions verified as effective, not only completed",
+            "Residual risk described and accepted by the responsible manager",
+            "Report retained for the period required by applicable policy",
+            "Finding carried into the post-stay block review"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Verified outcome, residual risk, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Incident closeout detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by manager on duty",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

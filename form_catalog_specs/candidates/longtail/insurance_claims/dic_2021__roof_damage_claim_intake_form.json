@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2021__roof_damage_claim_intake_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2021__roof_damage_claim_intake_form.pdf",
+  "slug": "roof-damage-claim-intake-form",
+  "title": "Roof Damage Claim Intake Form",
+  "subtitle": "A decision-ready roof damage claim intake that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original roof damage claim intake for roof area, weather event, and interior water path with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the roof-loss claim and qualified inspection owner must open and control a claim intake for roof area, weather event, and interior water path. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Roof Damage claim intake identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Roof Damage claim intake record",
+          "fields": [
+            {
+              "key": "intake_id",
+              "label": "Claim intake record ID",
+              "units": 0.95
+            },
+            {
+              "key": "notice_received",
+              "label": "Notice received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim number, if assigned",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned intake owner",
+              "units": 1.05
+            },
+            {
+              "key": "triage_priority",
+              "label": "Triage priority",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Prompt",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Roof Damage subject and event identity",
+          "fields": [
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 1.0
+            },
+            {
+              "key": "property_location",
+              "label": "Property and structure location",
+              "units": 1.25
+            },
+            {
+              "key": "roof_area",
+              "label": "Roof plane or elevation",
+              "units": 1.15
+            },
+            {
+              "key": "roof_system",
+              "label": "Roof material and age",
+              "units": 1.05
+            },
+            {
+              "key": "interior_area",
+              "label": "Interior affected area",
+              "units": 1.0
+            },
+            {
+              "key": "temporary_cover",
+              "label": "Temporary protection ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Roof plane, elevation, and weather-event reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Claim Intake scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Roof Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "notice_and_response",
+      "title": "Roof Damage notice, immediate response, and factual account",
+      "guidance": "Separate direct observations from reported information and document urgent routing before ordinary intake.",
+      "blocks": [
+        {
+          "key": "initial_observations",
+          "type": "fields",
+          "label": "Roof Damage initial observations",
+          "fields": [
+            {
+              "key": "access_method",
+              "label": "Access method/authority",
+              "units": 1.0
+            },
+            {
+              "key": "surface_condition",
+              "label": "Visible surface condition",
+              "units": 1.25
+            },
+            {
+              "key": "flashing_openings",
+              "label": "Flashing and penetrations",
+              "units": 1.15
+            },
+            {
+              "key": "drainage",
+              "label": "Drainage and ponding",
+              "units": 1.05
+            },
+            {
+              "key": "interior_signs",
+              "label": "Interior moisture signs",
+              "units": 1.0
+            },
+            {
+              "key": "weather_ref",
+              "label": "Weather or event ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "triage_indicators",
+          "type": "checklist",
+          "label": "Roof Damage triage indicators",
+          "items": [
+            "Unprotected edge, unsafe ladder, steep slope, or fragile surface",
+            "Wet, icy, hot, loose, unstable, or storm-affected roof",
+            "Opening, missing material, displaced flashing, or active entry",
+            "Ceiling sag, wet electrical area, or falling material below",
+            "Hail, wind, tree, debris, animal, or contractor activity reported",
+            "Pre-existing wear, patch, prior leak, or maintenance issue visible",
+            "Solar, HVAC, antenna, skylight, or other penetration involved",
+            "Emergency tarp, seal, drain clearing, or temporary work occurred"
+          ],
+          "guidance": "Check only conditions reported or directly observed; explain source and uncertainty in the narrative."
+        },
+        {
+          "key": "event_narrative",
+          "type": "textarea",
+          "label": "Chronological notice and loss narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Roof Damage facts, source of each fact, sequence, immediate action, and unresolved questions",
+              "multiline": true
+            }
+          ],
+          "height": 78
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "Claim intake boundary",
+          "guidance": "This record does not authorize roof access or structural conclusions. Do not enter or work on a wet, unstable, steep, electrically exposed, or otherwise unsafe roof. Qualified reviewers own access, repair, cause, valuation, and coverage decisions."
+        }
+      ]
+    },
+    {
+      "key": "people_property_evidence",
+      "title": "Roof Damage involved parties, affected scope, and early evidence",
+      "guidance": "Collect only information needed for safe routing and the claim workflow; store restricted material in its approved system.",
+      "blocks": [
+        {
+          "key": "party_register",
+          "type": "table",
+          "label": "Involved-party and interest register",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role or interest",
+              "units": 0.9
+            },
+            {
+              "key": "identity_ref",
+              "label": "Name or approved identity ref",
+              "units": 1.15
+            },
+            {
+              "key": "contact_route",
+              "label": "Contact route",
+              "units": 1.0
+            },
+            {
+              "key": "reported_impact",
+              "label": "Reported impact or interest",
+              "units": 1.25
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "early_evidence",
+          "type": "checklist",
+          "label": "Roof Damage early evidence sources",
+          "items": [
+            "Elevation, roof-plane, slope, and orientation photographs",
+            "Close photographs with location reference and scale when safe",
+            "Interior water-path and corresponding exterior-area photographs",
+            "Weather, hail, wind, tree, or event-verification reference",
+            "Roof age, invoice, warranty, prior repair, and maintenance records",
+            "Qualified roofer, engineer, consultant, or inspection report",
+            "Temporary protection scope, photographs, invoice, and dates",
+            "Estimate, diagram, measurement, material, and waste-factor support"
+          ],
+          "guidance": "A checked item means it is received or preservation is confirmed; record gaps separately."
+        },
+        {
+          "key": "evidence_receipt",
+          "type": "table",
+          "label": "Evidence receipt and source log",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence item",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.05
+            },
+            {
+              "key": "received",
+              "label": "Received / preserved",
+              "units": 0.9
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "gap_note",
+              "label": "Quality or gap note",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "triage_investigation",
+      "title": "Roof Damage triage, investigation plan, and decision routing",
+      "guidance": "Define what is known, what must be verified, and who has authority for the next decision.",
+      "blocks": [
+        {
+          "key": "triage_decision",
+          "type": "fields",
+          "label": "Triage disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Intake disposition",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Assign for investigation",
+                "Request information",
+                "Urgent review",
+                "Refer",
+                "Close as duplicate"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.15
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 0.9
+            },
+            {
+              "key": "policy_record_ref",
+              "label": "Controlling policy-record ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "investigation_plan",
+          "type": "table",
+          "label": "Roof Damage verification and investigation plan",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question to resolve",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence or action needed",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "result_ref",
+              "label": "Result or record ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "triage_rationale",
+          "type": "textarea",
+          "label": "Triage rationale and uncertainty",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Roof Damage facts supporting the route, conflicts, limitations, and authority used",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Roof Damage exceptions, deadlines, and escalation",
+      "guidance": "Make each unresolved condition visible with an immediate action, owner, due point, and disposition.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Roof Damage exception screen",
+          "items": [
+            "Roof access is unsafe or beyond inspector authorization",
+            "Temporary work may conceal or alter original conditions",
+            "Reported event date conflicts with weather or discovery records",
+            "Interior path cannot be correlated to an exterior area",
+            "Structural, electrical, asbestos, or contamination concern exists",
+            "Roof age, prior repair, maintenance, or ownership evidence conflicts"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or conflict",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "route_owner",
+              "label": "Route and owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or deadline",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "notice_control",
+          "type": "fields",
+          "label": "Notice and deadline control",
+          "fields": [
+            {
+              "key": "notice_owner",
+              "label": "Notice owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.05
+            },
+            {
+              "key": "deadline_source",
+              "label": "Policy, system, or requirement ref",
+              "units": 1.2
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Roof Damage intake handoff and accountable closeout",
+      "guidance": "Close intake only when ownership, evidence, open issues, and the next communication are explicit.",
+      "blocks": [
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Handoff readiness",
+          "items": [
+            "Roof Damage identity and event references are consistent",
+            "Urgent safety, privacy, legal, or deadline routes are documented",
+            "Evidence received and missing evidence are distinguishable",
+            "No fault, value, liability, or coverage conclusion is implied",
+            "Open questions have owners and due points",
+            "The next responsible recipient accepted the handoff"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Intake closeout",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Intake outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Assigned",
+                "Referred",
+                "Duplicate",
+                "Withdrawn",
+                "Closed"
+              ]
+            },
+            {
+              "key": "open_items",
+              "label": "Remaining open-item count",
+              "units": 0.9
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due date",
+              "units": 1.2
+            },
+            {
+              "key": "handoff_ref",
+              "label": "Handoff evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "closed_at",
+              "label": "Intake closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "accepted_by",
+              "label": "Handoff accepted by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Record version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

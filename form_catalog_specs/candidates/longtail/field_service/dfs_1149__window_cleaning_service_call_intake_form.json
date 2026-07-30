@@ -1,0 +1,707 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1149__window_cleaning_service_call_intake_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1149__window_cleaning_service_call_intake_form.pdf",
+  "slug": "window-cleaning-service-call-intake-form",
+  "title": "Window Cleaning Service Call Intake Form",
+  "subtitle": "Control access setup, exclusion, glass cleaning, equipment control, inspection, and release through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete window cleaning service call intake for windows, frames, anchors, ladders, lifts, ropes, tools, and exclusion zones. It connects work plan, access method, anchors, products, and site approval to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a window-cleaning service coordinator must triage and route a new window cleaning request without promising scope before site, asset, hazard, access, and authorization facts are known.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Window Cleaning request, customer, site, and asset identity",
+      "guidance": "Create one authoritative intake record before advice, dispatch, access, or work is promised.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Window Cleaning service call intake reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service, route, or work-plan number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Building owner or authorized site contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Building facade, window group, and access point",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Building elevation, drop, anchor, equipment, and window identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Building, facade, elevation, or drop",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Window group, glass type, and frame",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Access method and equipment set",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Anchor, tieback, lift, ladder, or scaffold reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant window cleaning context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant window cleaning context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "condition_triage",
+      "title": "Window Cleaning reported condition and immediate triage",
+      "guidance": "Preserve the caller's facts, distinguish an active hazard from a service symptom, and assign immediate controls.",
+      "blocks": [
+        {
+          "key": "reported_conditions",
+          "type": "checklist",
+          "label": "Reported condition, symptom, or service trigger",
+          "items": [
+            "Building, elevation, window group, drop, and access-route identity",
+            "Roof, parapet, edge, skylight, ladder, lift, scaffold, and landing condition",
+            "Anchor, tieback, davit, outrigger, suspension, and building-information status",
+            "Rope, harness, connector, descender, lifeline, lanyard, and rescue equipment",
+            "Ladder rails, feet, locks, rungs, angle, support, and tie-off condition",
+            "Lift controls, alarms, guardrails, outriggers, tires, and inspection status",
+            "Wind, precipitation, lightning, heat, ice, visibility, and surface traction",
+            "Electrical conductors, facade projections, falling-object, and entanglement hazards",
+            "Glass crack, chip, seal, coating, tint, frame, screen, and pre-existing damage",
+            "Pedestrian, occupant, vehicle, door, landscaping, and drop-zone exposure"
+          ],
+          "guidance": "Select only observations reported or directly confirmed during intake."
+        },
+        {
+          "key": "condition_pattern",
+          "type": "fields",
+          "label": "Condition timing, recurrence, and current state",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.9
+            },
+            {
+              "key": "last_normal",
+              "label": "Last known acceptable condition",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current operating or site state",
+              "units": 1.05
+            },
+            {
+              "key": "people_impacted",
+              "label": "People, occupants, or operations affected",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "immediate_controls",
+          "type": "checklist",
+          "label": "Immediate controls communicated or already in place",
+          "items": [
+            "Facade, window group, access route, and public drop zone confirmed",
+            "Weather, wind, temperature, precipitation, lightning, and surface conditions assessed",
+            "Selected ladder, lift, scaffold, or rope-descent method is appropriate",
+            "Anchorage and building-provided equipment information verified before use",
+            "Independent fall protection, rescue plan, and communication method assigned where required",
+            "Ladders, ropes, connectors, harnesses, descenders, lifts, and tools inspected",
+            "Electrical lines, roof edges, skylights, fragile surfaces, and facade hazards identified",
+            "Pedestrians, occupants, doors, vehicles, landscaping, and lower levels excluded or protected",
+            "Glass type, coating, tint, sealant, frame, and chemical compatibility verified",
+            "Tools, water, hoses, buckets, and loose items tethered or otherwise controlled"
+          ],
+          "guidance": "Record only controls that were actually communicated, confirmed, or assigned."
+        },
+        {
+          "key": "caller_account",
+          "type": "textarea",
+          "label": "Caller observations in their own words, actions already taken, instructions given, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Caller observations in their own words, actions already taken, instructions given, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "access_readiness",
+      "title": "Window Cleaning access, authority, and visit readiness",
+      "guidance": "Confirm that the assigned person can reach the exact scope without creating a new access, exposure, or property risk.",
+      "blocks": [
+        {
+          "key": "access_assignment",
+          "type": "fields",
+          "label": "Access and authorized site contact",
+          "fields": [
+            {
+              "key": "access_contact",
+              "label": "On-site access contact",
+              "units": 1.0
+            },
+            {
+              "key": "access_method",
+              "label": "Gate, key, badge, escort, or entry method",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_window",
+              "label": "Authorized service window",
+              "units": 0.95
+            },
+            {
+              "key": "occupied_status",
+              "label": "Occupied or operating status",
+              "units": 0.95
+            },
+            {
+              "key": "special_access",
+              "label": "Parking, roof, utility, animal, or other access note",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Customer and site readiness confirmations",
+          "items": [
+            "Exact building facade, window, access system, and drop zone and affected area can be identified",
+            "Authorized contact will be available during the service window",
+            "Access restrictions, keys, alarms, gates, or escorts are understood",
+            "People, pets, vehicles, products, or operations can be protected",
+            "Utilities, controls, equipment, or records needed for diagnosis are accessible",
+            "Pre-visit customer preparation has been communicated",
+            "Photograph, privacy, security, or evidence restrictions are documented",
+            "Other contractor, landlord, fleet, facility, or authority coordination is assigned"
+          ]
+        },
+        {
+          "key": "customer_commitment",
+          "type": "fields",
+          "label": "Requested response and customer commitment",
+          "fields": [
+            {
+              "key": "requested_date",
+              "label": "Requested visit date or response time",
+              "units": 1.0
+            },
+            {
+              "key": "service_level",
+              "label": "Priority or service level",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Priority",
+                "Emergency triage",
+                "After-hours",
+                "Hold for review"
+              ]
+            },
+            {
+              "key": "cost_authority",
+              "label": "Diagnostic or visit charge authority",
+              "units": 1.0
+            },
+            {
+              "key": "approval_contact",
+              "label": "Additional-work approval contact",
+              "units": 1.05
+            },
+            {
+              "key": "communication_method",
+              "label": "Preferred update method",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "access_constraints",
+          "type": "textarea",
+          "label": "Access restrictions, customer preparation, privacy limits, occupancy conditions, and visit assumptions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Access restrictions, customer preparation, privacy limits, occupancy conditions, and visit assumptions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "history_evidence",
+      "title": "Window Cleaning service history and available evidence",
+      "guidance": "Give the assigned technician enough traceable context for a productive and controlled first visit.",
+      "blocks": [
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Available window cleaning evidence and records",
+          "items": [
+            "Building, facade, drop, and window-group map",
+            "Weather and site-condition record",
+            "Anchor or building-equipment information reference",
+            "Access and fall-protection equipment inspection",
+            "Exclusion-zone and access-setup photograph",
+            "Pre-existing glass, frame, or facade damage",
+            "Completed-window and quality-inspection record",
+            "Equipment reconciliation and site-release record"
+          ]
+        },
+        {
+          "key": "history_log",
+          "type": "table",
+          "label": "Prior service, change, event, and result history",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or period",
+              "units": 0.8
+            },
+            {
+              "key": "event",
+              "label": "Service, change, or event",
+              "units": 1.3
+            },
+            {
+              "key": "party",
+              "label": "Provider or responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Result or recurrence",
+              "units": 1.2
+            },
+            {
+              "key": "reference",
+              "label": "Record or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "warranty_recall_context",
+          "type": "checklist",
+          "label": "Warranty, contract, recall, and other routing context",
+          "items": [
+            "Original service date and work plan",
+            "Covered facade, elevation, window group, and task",
+            "Glass, frame, tint, coating, or screen identity",
+            "Access method and inspection record",
+            "Weather, construction, facade, occupant, or landscaping changes",
+            "Observed streak, residue, damage, or missed-area date",
+            "Photographs and prior communication",
+            "Coverage term, exclusions, safe-access need, and inspection window"
+          ]
+        },
+        {
+          "key": "history_limitations",
+          "type": "textarea",
+          "label": "Known history, unavailable records, conflicting information, and facts the technician must verify on site",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Known history, unavailable records, conflicting information, and facts the technician must verify on site",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "dispatch_plan",
+      "title": "Window Cleaning dispatch decision and technician preparation",
+      "guidance": "Translate intake facts into an explicit assignment without implying that unverified work or price is authorized.",
+      "blocks": [
+        {
+          "key": "dispatch_assignment",
+          "type": "fields",
+          "label": "Dispatch and qualification assignment",
+          "fields": [
+            {
+              "key": "assigned_technician",
+              "label": "Trained window-cleaning technician",
+              "units": 1.2
+            },
+            {
+              "key": "qualification_ref",
+              "label": "License, certification, or qualification ref.",
+              "units": 1.1
+            },
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled arrival window",
+              "units": 0.95
+            },
+            {
+              "key": "dispatcher",
+              "label": "Window-cleaning service coordinator",
+              "units": 1.0
+            },
+            {
+              "key": "dispatch_status",
+              "label": "Dispatch status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Ready to dispatch",
+                "Awaiting customer",
+                "Awaiting qualified review",
+                "Refer to other provider",
+                "Emergency route"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "planned_service_scope",
+          "type": "checklist",
+          "label": "Likely diagnostic or service preparation",
+          "items": [
+            "Establish access, exclusion, communication, and rescue controls",
+            "Inspect and stage access and fall-protection equipment",
+            "Protect occupants, property, landscaping, and lower levels",
+            "Confirm glass and chemical compatibility",
+            "Clean authorized interior or exterior window groups",
+            "Control water, hoses, tools, buckets, and falling-object exposure",
+            "Remove approved screen, debris, residue, or construction soil",
+            "Inspect glass, frame, seal, tint, and surrounding facade",
+            "Reconcile all equipment and restore access points",
+            "Document excluded windows, defects, and future-access needs"
+          ],
+          "guidance": "This is a preparation list, not authorization to complete every listed task."
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Likely parts, tools, records, permits, and coordination needs",
+          "columns": [
+            {
+              "key": "need",
+              "label": "Resource or coordination need",
+              "units": 1.35
+            },
+            {
+              "key": "basis",
+              "label": "Intake basis",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Ready or pending",
+              "units": 0.8
+            },
+            {
+              "key": "reference",
+              "label": "Source or confirmation ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "technician_brief",
+          "type": "textarea",
+          "label": "Technician brief: outcome, scope, controls, access, evidence, and stop conditions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Technician brief: outcome, scope, controls, access, evidence, and stop conditions",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "guidance": "Verify the full intake record before arrival and stop or escalate when anchorage, access equipment, fall protection, rescue, weather, electrical, public exclusion, facade, glass, or drop-zone condition is uncertain."
+        }
+      ]
+    },
+    {
+      "key": "intake_exceptions",
+      "title": "Window Cleaning intake exception, containment, and escalation",
+      "guidance": "Make the trigger, immediate protection, decision owner, deadline, and dispatch restriction reconstructable.",
+      "blocks": [
+        {
+          "key": "intake_exception_indicators",
+          "type": "checklist",
+          "label": "Window Cleaning exception and stop-work indicators",
+          "items": [
+            "Anchor, tieback, davit, roof, parapet, or building information unavailable",
+            "Required fall protection, rescue, communication, or competent review unavailable",
+            "Ladder, lift, scaffold, rope, harness, connector, or tool fails inspection",
+            "Wind, storm, lightning, ice, heat, visibility, or wet-surface condition unsafe",
+            "Electrical conductor, fragile roof, skylight, edge, or facade hazard uncontrolled",
+            "Pedestrian, occupant, vehicle, doorway, or lower-level exclusion cannot be maintained",
+            "Glass is cracked, loose, heat-stressed, coated, tinted, or incompatible with the method",
+            "Falling-object, water, hose, chemical, or equipment movement cannot be controlled",
+            "Facade access requires a method or height beyond the approved plan",
+            "Technician reports fatigue, medical, communication, or rescue-readiness concern"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "intake_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Window Cleaning service call intake closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Dispatched with confirmed controls",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This window cleaning service call intake is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when anchorage, access equipment, fall protection, rescue, weather, electrical, public exclusion, facade, glass, or drop-zone condition is uncertain. A access and fall-protection supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Trained window-cleaning technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Access and fall-protection supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1820__time_off_approval_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1820__time_off_approval_form.pdf",
+  "slug": "time-off-approval-form",
+  "title": "Time Off Approval Form",
+  "subtitle": "Use this approval to test evidence and authority, resolve conflicts, issue a bounded decision, and verify every resulting update for a time off workflow.",
+  "description": "An original operational time off approval form that controls a absence request and leave-administration record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee, manager, scheduler, or leave administrator needs a traceable approval so the qualified HR, leave, payroll, or policy reviewer can approve, conditionally approve, deny, pend, recode, extend, or route the requested absence under the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "approval_submission",
+      "title": "Time Off approval submission and authority route",
+      "guidance": "Identify the proposed action, submitter, decision authority, effective point, and required evidence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Time Off identity",
+          "fields": [
+            {
+              "key": "leave_record",
+              "label": "Time-off record number",
+              "units": 0.8
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "department_role",
+              "label": "Department and role",
+              "units": 1.0
+            },
+            {
+              "key": "manager_scheduler",
+              "label": "Manager or scheduler",
+              "units": 0.9
+            },
+            {
+              "key": "request_submitted",
+              "label": "Submitted date and time",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Approval ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "approval_control",
+          "type": "fields",
+          "label": "Approval control",
+          "fields": [
+            {
+              "key": "submitted_by",
+              "label": "Submitted by",
+              "units": 0.85
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 0.7
+            },
+            {
+              "key": "requested_decision",
+              "label": "Requested decision",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 0.85
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "proposed_action",
+          "type": "textarea",
+          "label": "Proposed action, purpose, exact scope, affected people or work, exclusions, and requested conditions",
+          "fields": [
+            {
+              "key": "proposal_detail",
+              "label": "Approval proposal and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "submission_completeness",
+      "title": "Time Off evidence completeness and readiness",
+      "guidance": "Reject unsupported assumptions before the decision reaches an approver.",
+      "blocks": [
+        {
+          "key": "approval_readiness",
+          "type": "checklist",
+          "label": "Time Off approval readiness",
+          "items": [
+            "Requested dates, hours, and pattern are complete",
+            "Qualified reviewer assessed policy and applicable leave requirements",
+            "Sensitive documents are routed to a separate restricted record",
+            "Balance and pay treatment were verified by an authorized system owner",
+            "Manager coverage input is separated from the eligibility decision",
+            "Decision and conditions are consistent, specific, and reviewable",
+            "Employee communication includes change, extension, and question routes",
+            "Payroll, schedule, and leave-administration updates have accountable owners"
+          ]
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Evidence package submitted",
+          "items": [
+            "Employee request or absence notice with date and time",
+            "Current schedule, shift, or planned work calendar",
+            "Leave-policy category and applicable notice template",
+            "Balance, eligibility, or timekeeping system reference",
+            "Confidential-document receipt status without medical content",
+            "Manager coverage plan and operational handoff",
+            "Decision communication and employee acknowledgment",
+            "Payroll, schedule, extension, cancellation, or return update reference"
+          ]
+        },
+        {
+          "key": "completeness_register",
+          "type": "table",
+          "label": "Required item, evidence, owner, status, and deficiency",
+          "columns": [
+            {
+              "key": "required_item",
+              "label": "Required item",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence / record",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency / due",
+              "units": 1.15
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "authority_policy",
+      "title": "Time Off policy, authority, and impact review",
+      "guidance": "Apply the current decision standard and record each reviewer within their actual authority.",
+      "blocks": [
+        {
+          "key": "policy_checks",
+          "type": "checklist",
+          "label": "Time Off policy and impact checks",
+          "items": [
+            "Requested date, time, duration, and recurrence pattern are internally consistent",
+            "Requested policy category matches the information appropriate for this record",
+            "Available balance or pay treatment was verified by the system owner",
+            "Notice timing and documentation status were reviewed under current policy",
+            "Coverage impact is recorded without treating coverage as the sole legal decision",
+            "Potential protected leave or accommodation was routed to a qualified administrator",
+            "Sensitive medical information is segregated from the routine personnel record",
+            "Payroll and scheduling systems can use the approved date and hour boundaries",
+            "Conditions, call-in expectations, and update route are specific and feasible",
+            "Decision is consistent with comparable requests and documented authority"
+          ]
+        },
+        {
+          "key": "reviewer_matrix",
+          "type": "table",
+          "label": "Review area, reviewer, authority, evidence, finding, and condition",
+          "columns": [
+            {
+              "key": "review_area",
+              "label": "Review area",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.75
+            },
+            {
+              "key": "authority",
+              "label": "Authority / limit",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.0
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition / route",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "impact_analysis",
+          "type": "textarea",
+          "label": "People, schedule, service, cost, payroll, privacy, security, safety, consistency, and system impacts",
+          "fields": [
+            {
+              "key": "impact_detail",
+              "label": "Cross-functional impact and authority analysis"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "conditions_exceptions",
+      "title": "Time Off conflicts, exceptions, and approval conditions",
+      "guidance": "Resolve material conflicts and convert every condition into owned, verifiable work.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the qualified HR, leave, payroll, or policy reviewer under the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations."
+        },
+        {
+          "key": "approval_triggers",
+          "type": "checklist",
+          "label": "Time Off exception and escalation triggers",
+          "items": [
+            "Confidential leave or medical information reached an unauthorized recipient",
+            "Approved dates, hours, code, or pay treatment were entered incorrectly",
+            "Employee, manager, scheduler, payroll, and leave systems show conflicting status",
+            "Required notice or decision communication was missed or sent late",
+            "Coverage action disclosed information beyond the operational need",
+            "Employee reports interference, retaliation, pressure, or discouragement",
+            "Return, extension, or recertification routing failed at a critical due point",
+            "Absence was denied, rescinded, or changed without the required qualified review"
+          ]
+        },
+        {
+          "key": "approval_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Approval condition, prerequisite, owner, due point, evidence, and expiry",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / prerequisite",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence required",
+              "units": 1.05
+            },
+            {
+              "key": "expiry",
+              "label": "Expiry / review",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "approval_decision",
+      "title": "Time Off approval decision and effective boundary",
+      "guidance": "Record one unambiguous decision with rationale, authority, conditions, and review date.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval boundary",
+          "guidance": "Approval is valid only within the stated scope and authority. The qualified HR, leave, payroll, or policy reviewer must apply the current leave policy, scheduling rules, payroll controls, confidentiality requirements, and applicable leave obligations; a signature does not override a required privacy, safety, security, legal, payroll, tax, or accommodation review."
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Approval decision",
+          "fields": [
+            {
+              "key": "approval_result",
+              "label": "Approval result",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date and scope",
+              "units": 1.1
+            },
+            {
+              "key": "expiry_review",
+              "label": "Expiry or review date",
+              "units": 0.85
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence relied upon, contrary evidence, alternatives, conditions, limits, and reason for decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Approval rationale and decision limits"
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "approval_signoff",
+          "type": "signatures",
+          "label": "Submission, qualified review, and decision authorization",
+          "fields": [
+            {
+              "key": "submitter_certification",
+              "label": "Submitter / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Leave, Payroll, Or Policy Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "approver_authorization",
+              "label": "Authorized approver / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approval_implementation",
+      "title": "Time Off implementation, notification, and approval closeout",
+      "guidance": "Verify that the approved outcome reached every affected system and recipient.",
+      "blocks": [
+        {
+          "key": "implementation_actions",
+          "type": "table",
+          "label": "Approved implementation, system update, notification, and verification",
+          "columns": [
+            {
+              "key": "action_update",
+              "label": "Action / system update",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "recipient_system",
+              "label": "Recipient / system",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "approval_closeout_outcome",
+          "type": "fields",
+          "label": "Approval outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "approval_closeout_actions",
+          "type": "table",
+          "label": "Open time off action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "approval_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "approval_closeout_signoff",
+          "type": "signatures",
+          "label": "Approval accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Hr, Leave, Payroll, Or Policy Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

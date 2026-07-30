@@ -1,0 +1,478 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2318__crop_scouting_maintenance_checklist_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2318__crop_scouting_maintenance_checklist_form.pdf",
+  "slug": "crop-scouting-maintenance-checklist-form",
+  "title": "Crop Scouting Maintenance Checklist Form",
+  "subtitle": "Crop Scouting route the work, prepare controls, record tasks and parts, test the result, manage unresolved conditions, and authorize return to use.",
+  "description": "An original, workflow-complete crop scouting maintenance checklist covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use for scheduled or corrective maintenance that needs task evidence, measurements, parts traceability, function checks, restrictions, and handoff. The record is owned by the crop management owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "maintenance_routing",
+      "title": "Crop Scouting maintenance routing",
+      "guidance": "Identify the work, subject, assigned person, and review owner.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Maintenance Checklist identity and routing",
+          "fields": [
+            {
+              "key": "work_record_id",
+              "label": "Maintenance record ID",
+              "units": 0.95
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.75
+            },
+            {
+              "key": "work_type",
+              "label": "Work type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Corrective",
+                "Condition-based",
+                "Follow-up"
+              ]
+            },
+            {
+              "key": "assigned_person",
+              "label": "Assigned maintainer",
+              "units": 1.0
+            },
+            {
+              "key": "work_supervisor",
+              "label": "Work supervisor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Scouting Visit identity",
+          "fields": [
+            {
+              "key": "field_block",
+              "label": "Field or block ID",
+              "units": 0.85
+            },
+            {
+              "key": "crop_variety",
+              "label": "Crop and variety",
+              "units": 1.05
+            },
+            {
+              "key": "growth_stage",
+              "label": "Growth stage",
+              "units": 0.85
+            },
+            {
+              "key": "scouted_area",
+              "label": "Scouted area and unit",
+              "units": 0.95
+            },
+            {
+              "key": "scout_name",
+              "label": "Scout name or crew",
+              "units": 1.05
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "work_preparation",
+      "title": "Crop Scouting work preparation",
+      "guidance": "Record instructions, condition, controls, and parts before work.",
+      "blocks": [
+        {
+          "key": "work_context",
+          "type": "fields",
+          "label": "Maintenance context",
+          "fields": [
+            {
+              "key": "scouting_method",
+              "label": "Scouting method",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Walking route",
+                "Transect",
+                "Trap check",
+                "Remote imagery",
+                "Targeted check"
+              ]
+            },
+            {
+              "key": "route_pattern",
+              "label": "Route or zone pattern",
+              "units": 1.0
+            },
+            {
+              "key": "sampling_unit",
+              "label": "Sampling unit",
+              "units": 0.8
+            },
+            {
+              "key": "prior_visit_ref",
+              "label": "Prior visit reference",
+              "units": 1.0
+            },
+            {
+              "key": "weather_soil",
+              "label": "Weather and soil context",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "prework_checks",
+          "type": "checklist",
+          "label": "Pre-work review and controls",
+          "items": [
+            "Route and sampled area were recorded",
+            "Crop stage and stand condition were observed",
+            "Insects, disease symptoms, and weeds were recorded separately",
+            "Beneficial organisms and non-target effects were noted",
+            "Water, nutrient, weather, and physical stress signs were noted",
+            "Counts, incidence, severity, or distribution basis was stated",
+            "Hot spots, boundaries, photos, and samples were referenced",
+            "Threshold source and qualified review need were identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_tasks",
+      "title": "Crop Scouting maintenance tasks",
+      "guidance": "Record completed tasks separately from measurements and findings.",
+      "blocks": [
+        {
+          "key": "task_checklist",
+          "type": "checklist",
+          "label": "Crop Scouting task checklist",
+          "items": [
+            "Field maps, route templates, and procedure version are current",
+            "Hand lens, sweep net, and sampling tools were examined",
+            "Trap or station IDs and placement records were reconciled",
+            "Camera, phone, GPS, or mapping device was function-checked",
+            "Meters and measurement tools have current check references",
+            "Sample bags, labels, seals, and markers are available",
+            "Batteries, chargers, and data storage were checked",
+            "Reference guides and threshold sources are current",
+            "Tools were cleaned and routed under field biosecurity procedure",
+            "Damaged tools, lost data, and calibration gaps were escalated"
+          ]
+        },
+        {
+          "key": "measurements_findings",
+          "type": "table",
+          "label": "Measurements, findings, and adjustments",
+          "columns": [
+            {
+              "key": "point_component",
+              "label": "Point or component",
+              "units": 1.15
+            },
+            {
+              "key": "before_result",
+              "label": "Before result",
+              "units": 1.0
+            },
+            {
+              "key": "work_adjustment",
+              "label": "Work or adjustment",
+              "units": 1.25
+            },
+            {
+              "key": "after_result",
+              "label": "After result",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "parts_and_service",
+      "title": "Crop Scouting parts and service evidence",
+      "guidance": "Preserve material, service, and removed-part traceability.",
+      "blocks": [
+        {
+          "key": "parts_register",
+          "type": "table",
+          "label": "Parts, materials, and outside service",
+          "columns": [
+            {
+              "key": "part_material",
+              "label": "Part or material",
+              "units": 1.2
+            },
+            {
+              "key": "part_lot",
+              "label": "Part or lot ID",
+              "units": 0.9
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "source_installer",
+              "label": "Source or installer",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "work_notes",
+          "type": "textarea",
+          "label": "Work performed, deviations from plan, and supporting references",
+          "fields": [
+            {
+              "key": "work_detail",
+              "label": "Crop Scouting maintenance detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "function_decision",
+      "title": "Crop Scouting function test and decision",
+      "guidance": "Separate the test evidence from return-to-use authorization.",
+      "blocks": [
+        {
+          "key": "return_decision",
+          "type": "fields",
+          "label": "Return-to-use decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Released",
+                "Released with restriction",
+                "Held for more work",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "test_evidence",
+          "type": "checklist",
+          "label": "Function and handback evidence",
+          "items": [
+            "Crop Scouting before-and-after results support the recorded status",
+            "Tasks, measurements, parts, and outside service are documented",
+            "Function testing is separate from return-to-use authorization",
+            "Restrictions and unfinished work have owners and due points",
+            "Qualified review was obtained where work or disposition exceeds authority"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_exceptions",
+      "title": "Crop Scouting unresolved conditions",
+      "guidance": "Preserve restrictions and route decisions beyond the maintainer\u2019s authority.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Maintenance authority boundary",
+          "guidance": "This record captures observations and evidence; it is not a diagnosis or treatment recommendation. Route uncertain, regulated, or consequential findings to a qualified crop professional or applicable authority before action."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Crop Scouting unresolved-condition triggers",
+          "items": [
+            "Field or sample identity cannot be reconciled",
+            "Area is inaccessible or route coverage is incomplete",
+            "Sample, photo, trap, or map evidence is missing",
+            "Observation conflicts with prior findings or threshold source",
+            "Potential regulated or high-consequence finding needs review",
+            "Recommendation, treatment, or handoff authority is unclear"
+          ]
+        },
+        {
+          "key": "restriction_record",
+          "type": "textarea",
+          "label": "Restriction, immediate action, owner, due point, and final disposition",
+          "fields": [
+            {
+              "key": "restriction_detail",
+              "label": "Maintenance restriction and escalation detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "maintenance_closeout",
+      "title": "Crop Scouting maintenance closeout",
+      "guidance": "Transfer restrictions, next service, and evidence to operations.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Maintenance Checklist closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Crop Scouting open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Crop Scouting handoff confirmations",
+          "items": [
+            "Work, measurements, parts, and removed material were reconciled",
+            "Restrictions and unfinished work were transferred to operations",
+            "Next maintenance, inspection, or verification point was assigned",
+            "Crop Scouting return-to-use handback was acknowledged",
+            "Work records, manuals, photos, and service evidence were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Crop Scouting final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified crop reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

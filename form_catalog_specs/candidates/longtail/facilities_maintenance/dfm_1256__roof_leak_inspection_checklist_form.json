@@ -1,0 +1,645 @@
+{
+  "catalog_id": "facilities_maintenance/dfm_1256__roof_leak_inspection_checklist_form",
+  "description": "An original, jurisdiction-neutral roof leak condition and safety inspection record for a roof and interior water-intrusion event whose source path, weather, membrane, penetrations, drainage, moisture spread, safety controls, and permanent correction must be traceable. It connects facility identity, asset-specific evidence, hazards, qualified decisions, exceptions, service status, and accountable closeout without replacing employer procedures or trade judgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.95
+            },
+            {
+              "key": "record_opened_date",
+              "label": "Opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time_zone",
+              "label": "Opened time and zone",
+              "units": 1.0
+            },
+            {
+              "key": "work_order_reference",
+              "label": "Work order or route",
+              "units": 1.1
+            },
+            {
+              "field_type": "choice",
+              "key": "priority",
+              "label": "Priority",
+              "options": [
+                "Select priority",
+                "Routine",
+                "Scheduled",
+                "Urgent",
+                "Emergency"
+              ],
+              "units": 0.8
+            }
+          ],
+          "key": "record_reference",
+          "label": "Record reference and timing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.15
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.05
+            },
+            {
+              "key": "asset_reference",
+              "label": "Asset or route reference",
+              "units": 1.0
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.15
+            }
+          ],
+          "key": "facility_routing",
+          "label": "Facility, location, and responsible parties",
+          "type": "fields"
+        },
+        {
+          "guidance": "This Roof Leak record organizes facts and evidence. It does not replace employer energy-control procedures, permits, manufacturer instructions, required inspection, emergency response, or qualified trade judgment. Stop and route any unsafe or uncertain condition.",
+          "key": "record_boundary",
+          "label": "Safety and authority boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Open one traceable record, identify the responsible parties, and set the review route.",
+      "key": "record_identity",
+      "title": "Roof Leak Inspection identity and routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "leak_event_id",
+              "label": "Leak event or asset ID",
+              "units": 1.0
+            },
+            {
+              "key": "building_roof_zone",
+              "label": "Building and roof zone",
+              "units": 1.2
+            },
+            {
+              "key": "interior_location",
+              "label": "Interior leak location",
+              "units": 1.15
+            },
+            {
+              "key": "roof_system",
+              "label": "Roof system or membrane",
+              "units": 1.1
+            },
+            {
+              "key": "roof_age_warranty",
+              "label": "Roof age and warranty ref",
+              "units": 1.05
+            },
+            {
+              "key": "weather_event",
+              "label": "Weather and event basis",
+              "units": 1.15
+            }
+          ],
+          "key": "asset_profile",
+          "label": "Roof Leak asset and system profile",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only directly observed or source-supported items; explain inaccessible, not applicable, or conflicting evidence below.",
+          "items": [
+            "Roof zone, interior symptom, exterior reference, and evidence map reconcile",
+            "Weather timing, rainfall, wind, snow, ice, temperature, and prior events are recorded",
+            "Membrane, seams, laps, flashing, edges, penetrations, curbs, and terminations are observed",
+            "Drains, scuppers, gutters, leaders, strainers, overflow paths, and ponding are documented",
+            "Mechanical, electrical, plumbing, skylight, hatch, wall, and facade interfaces are checked",
+            "Cuts, punctures, blisters, cracks, open seams, displaced materials, and prior patches are recorded",
+            "Deck condition, deflection, softness, corrosion, and structural concern are escalated",
+            "Insulation, core, ceiling, wall, floor, contents, and moisture spread are mapped",
+            "Active water near occupants, electrical equipment, fire protection, and critical operations is controlled",
+            "Fall protection, edge, skylight, ladder, hatch, weather, and walking-surface conditions are documented",
+            "Temporary dry-in, containment, drainage, tarping, and monitoring evidence is linked",
+            "Warranty, manufacturer, contractor, insurance, restoration, and permanent-repair routes are identified"
+          ],
+          "key": "evidence_checkpoints",
+          "label": "Roof Leak evidence checkpoints",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "roof_or_interior_point",
+              "label": "Roof or interior point",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition or water path",
+              "units": 1.15
+            },
+            {
+              "key": "moisture_extent",
+              "label": "Moisture or extent",
+              "units": 0.95
+            },
+            {
+              "key": "weather_time",
+              "label": "Weather or time",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "action",
+              "label": "Action or owner",
+              "units": 1.05
+            }
+          ],
+          "guidance": "Tie each entry to a location, source, reading condition, photo, tag, log, or other retrievable evidence.",
+          "key": "asset_register",
+          "label": "Roof source, water path, moisture, and evidence register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Roof Leak condition, recent history, known changes, evidence conflicts, and access limitations",
+              "multiline": true
+            }
+          ],
+          "height": 64,
+          "key": "asset_history",
+          "label": "Roof Leak condition, recent history, known changes, evidence conflicts, and access limitations",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Capture the exact asset context, supported observations, and source references.",
+      "key": "asset_evidence",
+      "title": "Roof Leak facts and source evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.85
+            },
+            {
+              "key": "inspection_basis",
+              "label": "Inspection basis",
+              "units": 1.15
+            },
+            {
+              "key": "lead_inspector",
+              "label": "Lead inspector",
+              "units": 1.05
+            },
+            {
+              "key": "credential_role",
+              "label": "Credential or role",
+              "units": 1.05
+            },
+            {
+              "key": "operating_state",
+              "label": "Operating state",
+              "units": 0.95
+            },
+            {
+              "key": "review_due",
+              "label": "Qualified review due",
+              "units": 1.0
+            }
+          ],
+          "key": "workflow_context",
+          "label": "Inspection scope, timing, and responsible roles",
+          "type": "fields"
+        },
+        {
+          "guidance": "A checked item confirms the control was addressed; it does not substitute for the referenced procedure, permit, test, or source.",
+          "items": [
+            "Inspection scope, access boundary, and excluded areas are explicit",
+            "Nameplate, location, configuration, and service state are verified",
+            "Required energy control and qualified-person limits are documented",
+            "Observations are separated from tests, assumptions, and prior reports",
+            "Every reading records conditions, units, instrument, and evidence source",
+            "Failed or inaccessible points have a reason, risk, owner, and due point",
+            "Deficiencies are prioritized by safety, service, damage, and recurrence impact",
+            "Inspection does not authorize adjustment, repair, reset, bypass, or return to service"
+          ],
+          "key": "workflow_controls",
+          "label": "Roof Leak inspection controls",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "inspection_point",
+              "label": "Inspection point",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding or condition",
+              "units": 1.2
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or source",
+              "units": 0.95
+            },
+            {
+              "key": "severity",
+              "label": "Severity",
+              "units": 0.7
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "action",
+              "label": "Action or owner",
+              "units": 1.05
+            }
+          ],
+          "key": "workflow_register",
+          "label": "Inspection point, finding, criterion, and action register",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection scope, material findings, inaccessible points, uncertainty, and proposed next action",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "key": "workflow_narrative",
+          "label": "Inspection scope, material findings, inaccessible points, uncertainty, and proposed next action",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Turn the form purpose into evidence, accountable actions, and a reviewable disposition.",
+      "key": "workflow_control",
+      "title": "Roof Leak inspection control record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "A checked condition requires immediate protective action, a named owner, qualified review, and a final disposition.",
+          "items": [
+            "Lightning, high wind, ice, snow, heat, darkness, or unstable weather makes roof access unsafe",
+            "Unprotected edge, skylight, opening, ladder, hatch, brittle surface, or fall-protection issue exists",
+            "Roof deck, curb, ceiling, wall, or structural surface appears unstable, soft, sagging, or collapsed",
+            "Active water contacts electrical, fire-protection, elevator, critical equipment, or occupied hazard area",
+            "Hazardous material, contaminated water, mold, biological growth, or unknown building material is suspected",
+            "Warranty, permit, qualified contractor, hot-work, access, or temporary-repair authorization is unresolved",
+            "Temporary tarp, drain, hose, containment, ballast, or patch could detach, overload, or redirect water",
+            "Interior leak location conflicts with roof evidence, moisture map, drainage path, or prior repair history"
+          ],
+          "key": "stop_conditions",
+          "label": "Stop and escalate when any condition is present",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate protective action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.95
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due point or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.7
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "key": "exception_register",
+          "label": "Roof Leak exception and protective-action register",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "exception_narrative",
+          "label": "Objective facts, affected people or service, containment, notifications, uncertainty, and qualified review needed",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not resolve a checked stop condition by inference, an unchecked box, or a generic sign-off. Preserve the condition, protective action, authority, evidence, owner, due point, and verified disposition.",
+          "key": "escalation_boundary",
+          "label": "Escalation record boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Stop when authority, access, energy control, safety, evidence, or service status is unresolved.",
+      "key": "exceptions_escalation",
+      "title": "Roof Leak stop conditions, exceptions, and escalation"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "options": [
+                "Select disposition",
+                "Acceptable",
+                "Monitor",
+                "Corrective work required",
+                "Restricted operation",
+                "Remove from service",
+                "Inspection incomplete"
+              ],
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.85
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.85
+            },
+            {
+              "key": "review_or_expiry",
+              "label": "Review or expiry date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 1.1
+            },
+            {
+              "key": "communication_route",
+              "label": "Communication route",
+              "units": 1.05
+            }
+          ],
+          "key": "decision_record",
+          "label": "Inspection decision, timing, and authority",
+          "type": "fields"
+        },
+        {
+          "guidance": "Check only controls supported by referenced evidence; unresolved controls remain open conditions.",
+          "items": [
+            "Inspection findings and evidence support the selected disposition",
+            "Every failed, suspect, or inaccessible item has an accountable follow-up",
+            "Operating restrictions identify scope, duration, owner, and stop trigger",
+            "Required specialist, code, manufacturer, or authority review is routed",
+            "Condition baseline and next inspection basis are recorded",
+            "Facility representative receives the approved inspection result",
+            "Qualified roofing reviewer approves source conclusion, repair method, materials, and warranty route",
+            "Roof access, fall protection, weather, electrical, structural, and occupant controls are accepted",
+            "Temporary dry-in has secure attachment, inspection frequency, weather limit, and removal trigger",
+            "Moisture, insulation, deck, ceiling, contents, microbial, and restoration impacts have owners",
+            "A permanent repair is separated from preliminary source tracing and emergency containment",
+            "Follow-up after rain or controlled testing is scheduled with acceptance evidence"
+          ],
+          "key": "decision_controls",
+          "label": "Roof Leak inspection decision controls",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "key": "decision_rationale",
+          "label": "Evidence considered, rejected alternatives, limitations, operating restrictions, monitoring, and required follow-up",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "key": "decision_approval",
+          "label": "Preparation, qualified review, and facility authorization",
+          "type": "signatures"
+        },
+        {
+          "guidance": "Do not use this Roof Leak record as permission for work outside the approved scope, as proof that an unperformed test passed, or as a substitute for required qualified-person, employer, authority, or manufacturer approval.",
+          "key": "decision_limitation",
+          "label": "Decision-use limitation",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Separate the authorized decision from preliminary observation and record its limits.",
+      "key": "qualified_decision",
+      "title": "Roof Leak qualified decision and authorization"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final inspection disposition",
+              "units": 1.2
+            },
+            {
+              "key": "service_or_asset_status",
+              "label": "Service or asset status",
+              "units": 1.0
+            },
+            {
+              "key": "final_evidence_reference",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "remaining_action_owner",
+              "label": "Remaining action owner",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.05
+            },
+            {
+              "key": "closure_date_time",
+              "label": "Closure date and time",
+              "units": 1.0
+            }
+          ],
+          "key": "outcome_handoff",
+          "label": "Inspection outcome and primary handoff",
+          "type": "fields"
+        },
+        {
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger before the record can be treated as closed.",
+          "items": [
+            "Roof and interior water paths have final observations, evidence IDs, and limitations",
+            "Drains, scuppers, gutters, overflow routes, strainers, and roof access are left serviceable",
+            "Temporary dry-in, patch, tarp, containment, and monitoring have documented custody",
+            "Wet insulation, deck, ceiling, wall, floor, contents, and remediation needs have owners",
+            "Warranty, contractor, insurance, tenant, occupant, and restoration communications are filed",
+            "Permanent repair, weather follow-up, moisture verification, and reopen trigger are scheduled"
+          ],
+          "key": "closeout_evidence",
+          "label": "Roof Leak closeout evidence",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "record_or_item",
+              "label": "Record or item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_owner",
+              "label": "Recipient or owner",
+              "units": 1.0
+            },
+            {
+              "key": "date_method",
+              "label": "Date and method",
+              "units": 0.95
+            },
+            {
+              "key": "status_due",
+              "label": "Status or due point",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_register",
+          "label": "Final evidence, communication, custody, and follow-up register",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "key": "closeout_summary",
+          "label": "Final condition, completed work, residual risk, open actions, custody, communication, monitoring, and reopen trigger",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close only when the final condition is evidenced and every open action has an owner.",
+      "key": "completion_handoff",
+      "title": "Roof Leak completion, evidence reconciliation, and handoff"
+    }
+  ],
+  "slug": "roof-leak-inspection-checklist-form",
+  "source_filename": "dfm_1256__roof_leak_inspection_checklist_form.pdf",
+  "source_section": "facilities_maintenance",
+  "subtitle": "Roof Leak: Capture asset identity, safe access, condition observations, operating evidence, deficiencies, disposition, and accountable closeout.",
+  "title": "Roof Leak Inspection Checklist Form",
+  "use_case": "Use when a facility owner, maintenance coordinator, qualified technician, or service vendor needs one traceable roof leak inspection record from opening through evidence-backed disposition, handoff, and follow-up."
+}

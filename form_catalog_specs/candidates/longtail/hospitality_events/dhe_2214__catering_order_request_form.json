@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2214__catering_order_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2214__catering_order_request_form.pdf",
+  "slug": "catering-order-request-form",
+  "title": "Catering Order Request Form",
+  "subtitle": "Take an off-premise catering request: delivery site, access and power constraints, service level, and what the kitchen needs to know before it quotes.",
+  "description": "An original intake record for off-premise catering. It captures requester routing, the delivery site with its access, parking, and power constraints, the requested service level and menu direction, a site feasibility screen, the quoting decision, unresolved site requirements, and the handoff into a catering order.",
+  "use_case": "Use when a client asks for catering delivered to a site the venue does not control, and the kitchen needs the site facts before it can quote. The request closes when the site screen is complete and either a catering order number is assigned or the request is declined.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "Catering request routing",
+      "guidance": "Record who asked, who owns the response, and by when.",
+      "blocks": [
+        {
+          "key": "request_identity",
+          "type": "fields",
+          "label": "Request identity and routing",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request record ID",
+              "units": 0.9
+            },
+            {
+              "key": "received_on",
+              "label": "Received on",
+              "units": 0.8
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.9
+            },
+            {
+              "key": "assigned_coordinator",
+              "label": "Assigned coordinator",
+              "units": 1.25
+            },
+            {
+              "key": "quote_due",
+              "label": "Quote due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "client_identity",
+          "type": "fields",
+          "label": "Client and contacts",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "ordering_contact",
+              "label": "Ordering contact",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Day-of site contact",
+              "units": 1.15
+            },
+            {
+              "key": "site_phone",
+              "label": "Site phone",
+              "units": 0.85
+            },
+            {
+              "key": "billing_contact",
+              "label": "Billing contact",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivery_site",
+      "title": "Delivery site and access constraints",
+      "guidance": "The site decides what the kitchen can actually send.",
+      "blocks": [
+        {
+          "key": "site_basics",
+          "type": "fields",
+          "label": "Site and timing",
+          "fields": [
+            {
+              "key": "site_name",
+              "label": "Site name",
+              "units": 1.1
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.5
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "guests_expected",
+              "label": "Guests expected",
+              "units": 1.0
+            },
+            {
+              "key": "service_start",
+              "label": "Service start",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "access_profile",
+          "type": "fields",
+          "label": "Access profile",
+          "fields": [
+            {
+              "key": "site_type",
+              "label": "Site type",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Office or boardroom",
+                "Private residence",
+                "Park or outdoor",
+                "Rented hall",
+                "Place of worship",
+                "Warehouse or industrial",
+                "School or campus"
+              ]
+            },
+            {
+              "key": "kitchen_access",
+              "label": "Kitchen access on site",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "None - fully transported",
+                "Sink and counter only",
+                "Warming oven available",
+                "Full kitchen available"
+              ]
+            },
+            {
+              "key": "power_available",
+              "label": "Power available",
+              "units": 1.1
+            },
+            {
+              "key": "load_in_distance",
+              "label": "Load-in distance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "site_constraints",
+          "type": "table",
+          "label": "Site constraints to plan around",
+          "columns": [
+            {
+              "key": "constraint",
+              "label": "Constraint",
+              "units": 1.35
+            },
+            {
+              "key": "detail",
+              "label": "Detail as described",
+              "units": 1.5
+            },
+            {
+              "key": "who_confirms",
+              "label": "Who confirms it",
+              "units": 1.05
+            },
+            {
+              "key": "workaround",
+              "label": "Planned workaround",
+              "units": 1.3
+            }
+          ],
+          "rows": 5,
+          "guidance": "Cover parking, elevator or stairs, dock hours, noise limits, and open flame restrictions at a minimum."
+        },
+        {
+          "key": "site_questions",
+          "type": "checklist",
+          "label": "Site questions asked of the client",
+          "items": [
+            "Parking or loading position identified for the delivery vehicle",
+            "Elevator, stair, or long-carry access described",
+            "Tables and surfaces for buffet setup confirmed as provided by the client",
+            "Power outlets available for warming equipment confirmed",
+            "Open flame or chafing fuel permitted at the site confirmed",
+            "Waste and recycling removal responsibility agreed",
+            "Access time before service and departure time after confirmed",
+            "On-site refrigeration availability confirmed",
+            "Accessible route for staff and guests described"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_and_menu",
+      "title": "Requested service level and menu direction",
+      "guidance": "Drop-off and staffed service are different products; state which.",
+      "blocks": [
+        {
+          "key": "service_level",
+          "type": "fields",
+          "label": "Service level requested",
+          "fields": [
+            {
+              "key": "service_model",
+              "label": "Service model",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Drop-off only",
+                "Drop-off with setup",
+                "Staffed buffet",
+                "Staffed plated",
+                "Passed reception",
+                "Boxed individual meals"
+              ]
+            },
+            {
+              "key": "staff_requested",
+              "label": "Staff requested",
+              "units": 1.0
+            },
+            {
+              "key": "service_hours",
+              "label": "Service hours",
+              "units": 1.0
+            },
+            {
+              "key": "budget_per_guest",
+              "label": "Budget per guest",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "menu_direction",
+          "type": "table",
+          "label": "Menu direction discussed",
+          "columns": [
+            {
+              "key": "course",
+              "label": "Course or item group",
+              "units": 1.15
+            },
+            {
+              "key": "direction",
+              "label": "Direction discussed",
+              "units": 1.5
+            },
+            {
+              "key": "transport_note",
+              "label": "Transport concern",
+              "units": 1.25
+            },
+            {
+              "key": "price_indication",
+              "label": "Price indication",
+              "units": 0.95
+            }
+          ],
+          "rows": 5,
+          "guidance": "Note items that travel badly at intake, before they reach a quote."
+        },
+        {
+          "key": "requirements_raised",
+          "type": "checklist",
+          "label": "Requirements raised by the client",
+          "items": [
+            "Dietary or allergen accommodation raised",
+            "Beverage service requested",
+            "Disposables, china, or rental service ware requested",
+            "Linen requested",
+            "Client will supply tables or equipment",
+            "Late-night or early-morning delivery requested",
+            "Multiple delivery drops requested",
+            "Signage or branded presentation requested"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "feasibility_decision",
+      "title": "Feasibility screen and quoting decision",
+      "guidance": "Kitchen and logistics answer before a price is given.",
+      "blocks": [
+        {
+          "key": "feasibility_screen",
+          "type": "table",
+          "label": "Feasibility screen",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area",
+              "units": 1.0
+            },
+            {
+              "key": "responder",
+              "label": "Responder",
+              "units": 1.0
+            },
+            {
+              "key": "can_deliver",
+              "label": "Can deliver",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Condition or constraint",
+              "units": 1.5
+            },
+            {
+              "key": "checked_on",
+              "label": "Checked on",
+              "units": 0.8
+            }
+          ],
+          "rows": 5,
+          "guidance": "Cover production capacity, transport equipment, vehicle and driver, staffing, and rentals."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Quoting decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Quote to be issued",
+                "Quote issued with conditions",
+                "Declined - site unsuitable",
+                "Declined - capacity",
+                "Declined - outside delivery area",
+                "Withdrawn by client"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "quoted_total",
+              "label": "Quoted total",
+              "units": 0.9
+            },
+            {
+              "key": "order_number",
+              "label": "Catering order number",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Scope of this request",
+          "guidance": "This request records what the client described and what each area confirmed it could deliver. It is not a quote, a confirmed menu, or an assurance that any item can be held safely at the site described. Confirm allergen requirements, transport holding, and any permit or site restriction with the responsible manager before the order is issued."
+        }
+      ]
+    },
+    {
+      "key": "request_exceptions",
+      "title": "Unresolved site requirements and escalation",
+      "guidance": "Site unknowns are the most common cause of a failed delivery.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Delivery site access could not be confirmed by the client",
+            "No power available for the warming equipment the menu needs",
+            "No suitable surface for the buffet as described",
+            "Requested item cannot be transported and held safely",
+            "Allergen requirement cannot be confirmed",
+            "Delivery window conflicts with another committed delivery",
+            "Site is outside the standard delivery area",
+            "Open flame is not permitted and the menu depends on it",
+            "Client cannot confirm who will sign for the delivery"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Unresolved requirement register",
+          "columns": [
+            {
+              "key": "trigger",
+              "label": "Trigger or gap",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Closeout and handoff to the catering order",
+      "guidance": "Carry the site facts forward; they are the whole job.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Request closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - order issued",
+                "Closed - declined",
+                "Closed - client withdrew",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action_due",
+              "label": "Next action due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "handoff_items",
+          "type": "table",
+          "label": "Site facts handed to the order",
+          "columns": [
+            {
+              "key": "fact",
+              "label": "Confirmed site fact",
+              "units": 1.35
+            },
+            {
+              "key": "source",
+              "label": "Confirmed by",
+              "units": 1.0
+            },
+            {
+              "key": "affects",
+              "label": "What it affects",
+              "units": 1.25
+            },
+            {
+              "key": "carried_to",
+              "label": "Carried to",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Site address, access, and contact verified with the client in writing",
+            "Power, surface, and flame constraints carried onto the order",
+            "Allergen and dietary direction carried to the kitchen in writing",
+            "Open exceptions transferred with named owners",
+            "Quoted basis and conditions filed with the order record"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Request outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Request handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by catering manager",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

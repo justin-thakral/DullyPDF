@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2017__water_damage_status_update_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2017__water_damage_status_update_form.pdf",
+  "slug": "water-damage-status-update-form",
+  "title": "Water Damage Status Update Form",
+  "subtitle": "A decision-ready water damage status update that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original water damage status update for water source, migration path, and affected materials with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the water-loss claim and mitigation coordination owner must open and control a status update for water source, migration path, and affected materials. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Water Damage status update identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Water Damage status update record",
+          "fields": [
+            {
+              "key": "update_id",
+              "label": "Status update ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "as_of",
+              "label": "Verified as of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            },
+            {
+              "key": "current_owner",
+              "label": "Current accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "overall_stage",
+              "label": "Overall stage",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Intake",
+                "Investigation",
+                "Decision",
+                "Payment",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Water Damage subject and event identity",
+          "fields": [
+            {
+              "key": "discovery_time",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "source_location",
+              "label": "Suspected source and exact location",
+              "units": 1.25
+            },
+            {
+              "key": "source_status",
+              "label": "Source active, stopped, or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "affected_levels",
+              "label": "Affected rooms, units, and levels",
+              "units": 1.05
+            },
+            {
+              "key": "occupancy_status",
+              "label": "Occupancy and access status",
+              "units": 1.0
+            },
+            {
+              "key": "mitigation_ref",
+              "label": "Mitigation company/job ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Source, affected level, and moisture-map reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Status Update scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Water Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "verified_snapshot",
+      "title": "Water Damage verified status snapshot",
+      "guidance": "Report the file state as of a precise time and identify the evidence behind each material status.",
+      "blocks": [
+        {
+          "key": "status_dimensions",
+          "type": "fields",
+          "label": "Water Damage status dimensions",
+          "fields": [
+            {
+              "key": "visible_water",
+              "label": "Standing or visible water extent",
+              "units": 1.0
+            },
+            {
+              "key": "migration",
+              "label": "Migration and adjoining areas",
+              "units": 1.25
+            },
+            {
+              "key": "materials",
+              "label": "Wet materials and contents",
+              "units": 1.15
+            },
+            {
+              "key": "utility_control",
+              "label": "Utility or source-isolation action",
+              "units": 1.05
+            },
+            {
+              "key": "moisture_ref",
+              "label": "Moisture survey ref",
+              "units": 1.0
+            },
+            {
+              "key": "prior_event",
+              "label": "Prior leak or repair ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "stage_indicators",
+          "type": "checklist",
+          "label": "Water Damage active-work indicators",
+          "items": [
+            "Active flow, standing water, or inaccessible shutoff remains",
+            "Electrical equipment, outlets, or wiring may be wet",
+            "Ceiling sag, structural movement, or falling material is present",
+            "Sewage, groundwater, chemicals, or unknown contamination suspected",
+            "Visible growth, odor, prolonged wetness, or hidden cavity concern",
+            "Multiple rooms, units, floors, or adjoining properties affected",
+            "Contents or moisture-sensitive equipment needs controlled movement",
+            "Emergency drying, extraction, containment, or temporary relocation began"
+          ]
+        },
+        {
+          "key": "milestone_history",
+          "type": "table",
+          "label": "Completed and planned milestone history",
+          "columns": [
+            {
+              "key": "milestone",
+              "label": "Milestone or decision",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned date",
+              "units": 0.85
+            },
+            {
+              "key": "completed",
+              "label": "Completed date",
+              "units": 0.85
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Status evidence ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_boundary",
+          "type": "notice",
+          "label": "Status communication boundary",
+          "guidance": "This record does not classify water, diagnose contamination, authorize entry into electrical or structurally unsafe areas, or determine coverage. Stop unsafe work and route source control, sampling, demolition, and claim decisions to qualified authority."
+        }
+      ]
+    },
+    {
+      "key": "workstream_status",
+      "title": "Water Damage workstream, evidence, and decision status",
+      "guidance": "Track independent workstreams separately so a completed task does not hide an unresolved decision or dependency.",
+      "blocks": [
+        {
+          "key": "workstream_register",
+          "type": "table",
+          "label": "Workstream and next-action register",
+          "columns": [
+            {
+              "key": "workstream",
+              "label": "Workstream",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current verified state",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or system ref",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.05
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "status_evidence",
+          "type": "checklist",
+          "label": "Water Damage status evidence sources",
+          "items": [
+            "Source and affected-area photographs before material removal",
+            "Moisture readings with location, instrument, date, and operator",
+            "Plumber, appliance, roofer, utility, or mitigation report",
+            "Water bills, alarms, maintenance, or prior leak records",
+            "Drying, extraction, equipment-placement, and monitoring logs",
+            "Removed material, contents, sample, or disposal authorization log",
+            "Repair, mitigation, temporary lodging, and utility receipts",
+            "Adjoining unit, landlord, tenant, or property-manager notices"
+          ]
+        },
+        {
+          "key": "decision_snapshot",
+          "type": "fields",
+          "label": "Decision and authority snapshot",
+          "fields": [
+            {
+              "key": "latest_decision",
+              "label": "Latest authorized decision",
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "basis_ref",
+              "label": "Decision-basis reference",
+              "units": 1.15
+            },
+            {
+              "key": "notice_status",
+              "label": "Required notice status",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Next review due",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requests_dependencies",
+      "title": "Water Damage outstanding requests, dependencies, and commitments",
+      "guidance": "Record exactly what is needed, who owes it, when it was requested, and what happens if it remains outstanding.",
+      "blocks": [
+        {
+          "key": "request_register",
+          "type": "table",
+          "label": "Outstanding request and dependency register",
+          "columns": [
+            {
+              "key": "request",
+              "label": "Requested item or dependency",
+              "units": 1.3
+            },
+            {
+              "key": "requested_from",
+              "label": "Requested from",
+              "units": 1.0
+            },
+            {
+              "key": "requested_at",
+              "label": "Requested date",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status and response ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "commitment_register",
+          "type": "table",
+          "label": "Promised update and commitment control",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.0
+            },
+            {
+              "key": "commitment",
+              "label": "Committed update or action",
+              "units": 1.35
+            },
+            {
+              "key": "promised_by",
+              "label": "Promised by",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due date and time",
+              "units": 0.9
+            },
+            {
+              "key": "completion",
+              "label": "Completion evidence",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_narrative",
+          "type": "textarea",
+          "label": "Plain-language status narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Water Damage completed work, pending work, reason for delay, uncertainty, and next expected update",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Water Damage blockers, exceptions, and escalation",
+      "guidance": "A status update is incomplete if an overdue or disputed item lacks an accountable escalation path.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Water Damage blocker and exception screen",
+          "items": [
+            "Water source remains active, inaccessible, or unverified",
+            "Wet electrical or structural condition blocks safe access",
+            "Contamination or microbial concern lacks qualified assessment",
+            "Materials were removed before condition and location were documented",
+            "Moisture readings conflict or omit affected cavities and boundaries",
+            "Adjoining unit, tenant, landlord, or recovery route is unresolved"
+          ]
+        },
+        {
+          "key": "blocker_register",
+          "type": "table",
+          "label": "Blocker, escalation, and disposition",
+          "columns": [
+            {
+              "key": "blocker",
+              "label": "Blocker or disputed status",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Impact on claim or request",
+              "units": 1.15
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update due",
+              "units": 0.9
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or final state",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "timeliness_control",
+          "type": "fields",
+          "label": "Timeliness and oversight control",
+          "fields": [
+            {
+              "key": "oldest_open_date",
+              "label": "Oldest open-item date",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.0
+            },
+            {
+              "key": "deadline_basis",
+              "label": "Deadline source or requirement",
+              "units": 1.2
+            },
+            {
+              "key": "supervisor_review",
+              "label": "Supervisor review status",
+              "units": 1.0
+            },
+            {
+              "key": "complaint_route",
+              "label": "Complaint or escalation ref",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "communication_closeout",
+      "title": "Water Damage status communication, next milestone, and closeout",
+      "guidance": "Confirm what was communicated, what remains open, and who accepted the next accountable action.",
+      "blocks": [
+        {
+          "key": "communication_checks",
+          "type": "checklist",
+          "label": "Status communication checks",
+          "items": [
+            "The as-of timestamp and source records are clear",
+            "Facts, estimates, pending reviews, and final decisions are distinct",
+            "The recipient was not given an unauthorized promise",
+            "Required privacy and identity verification were followed",
+            "Outstanding requests and promised updates have due points",
+            "The next accountable owner accepted the handoff"
+          ]
+        },
+        {
+          "key": "next_milestone",
+          "type": "fields",
+          "label": "Next milestone and update route",
+          "fields": [
+            {
+              "key": "next_milestone",
+              "label": "Next milestone",
+              "units": 1.1
+            },
+            {
+              "key": "milestone_owner",
+              "label": "Milestone owner",
+              "units": 1.0
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.85
+            },
+            {
+              "key": "next_update",
+              "label": "Next customer update due",
+              "units": 1.0
+            },
+            {
+              "key": "update_channel",
+              "label": "Approved update channel",
+              "units": 1.0
+            },
+            {
+              "key": "recipient",
+              "label": "Verified recipient",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "status_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and communicated",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "communicated_by",
+              "label": "Communicated by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Status version",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

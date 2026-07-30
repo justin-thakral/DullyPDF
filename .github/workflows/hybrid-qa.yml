@@ -165,9 +165,14 @@ jobs:
               - 'frontend/src/**/*.cjs'
             form_catalog_factory:
               - 'scripts/form_catalog_factory/**'
+              - 'scripts/form-catalog-gcs-transport.py'
               - 'scripts/validate-form-catalog-release.py'
+              - 'backend/requirements.txt'
+              - 'backend/requirements-dev.txt'
               - 'scripts/deploy-form-catalog-release.sh'
               - 'scripts/deploy-form-catalog-assets.sh'
+              - 'scripts/finalize-form-catalog-release.sh'
+              - 'scripts/form-catalog-production-lock.sh'
               - 'scripts/deploy-frontend.sh'
               - 'scripts/build-form-catalog-index.mjs'
               - 'frontend/src/components/pages/FormCatalogFormPage.tsx'
@@ -214,6 +219,12 @@ jobs:
           backend/.venv/bin/python -m pytest -q scripts/form_catalog_factory/tests
           backend/.venv/bin/python -m pytest -q backend/test/unit/scripts/test_form_catalog_release_foundation.py
 
+      - name: Run form catalog browser producer unit tests
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npm run test:playwright:form-catalog-canary:unit
+
       - name: Validate tracked form specifications
         run: |
           set -euo pipefail
@@ -225,7 +236,10 @@ jobs:
           set -euo pipefail
           bash -n scripts/deploy-form-catalog-release.sh
           bash -n scripts/deploy-form-catalog-assets.sh
+          bash -n scripts/finalize-form-catalog-release.sh
+          bash -n scripts/form-catalog-production-lock.sh
           backend/.venv/bin/python -m py_compile \
+            scripts/form-catalog-gcs-transport.py \
             scripts/validate-form-catalog-release.py \
             scripts/form_catalog_factory/*.py
           node --check scripts/build-form-catalog-index.mjs

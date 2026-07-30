@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2252__wedding_planning_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2252__wedding_planning_incident_report_form.pdf",
+  "slug": "wedding-planning-incident-report-form",
+  "title": "Wedding Planning Incident Report Form",
+  "subtitle": "Record a wedding-planning or event-day disruption as facts, preserve relevant evidence, route urgent decisions, and close corrective actions.",
+  "description": "An original incident record for schedule, supplier, service, property, guest-experience, access, or plan-control failures during wedding delivery. It separates observed facts from conclusions and routes safety, privacy, authority contact, compensation, and liability decisions to responsible roles.",
+  "use_case": "Use when an event lead must document a material departure from the approved wedding plan or an event-day incident. Address immediate needs first, record only necessary facts, preserve referenced evidence, and close only after qualified review and corrective-action handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_intake",
+      "title": "Incident identity and initial routing",
+      "guidance": "Create one record with a clear time, place, and accountable lead.",
+      "blocks": [
+        {
+          "key": "incident_record",
+          "type": "fields",
+          "label": "Incident record",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident ID",
+              "units": 0.85
+            },
+            {
+              "key": "reported_at",
+              "label": "Reported date and time",
+              "units": 1.0
+            },
+            {
+              "key": "event_id",
+              "label": "Wedding or event ID",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "event_lead",
+              "label": "Event lead",
+              "units": 1.0
+            },
+            {
+              "key": "reporter_contact",
+              "label": "Reporter contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Initial classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "Incident type",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Pending classification",
+                "Schedule disruption",
+                "Supplier failure",
+                "Service interruption",
+                "Property damage",
+                "Guest conflict",
+                "Access issue",
+                "Plan or revision error",
+                "Other"
+              ]
+            },
+            {
+              "key": "event_phase",
+              "label": "Event phase",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Setup",
+                "Ceremony",
+                "Cocktail period",
+                "Reception",
+                "Load-out",
+                "Post-event"
+              ]
+            },
+            {
+              "key": "urgency",
+              "label": "Initial urgency",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Routine follow-up",
+                "Manager review now",
+                "Urgent response"
+              ]
+            },
+            {
+              "key": "responsible_manager",
+              "label": "Responsible manager",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "immediate_response",
+      "title": "Immediate response and stabilization",
+      "guidance": "Record actions taken before starting a detailed review.",
+      "blocks": [
+        {
+          "key": "response_actions",
+          "type": "checklist",
+          "label": "Immediate actions considered",
+          "items": [
+            "Immediate medical or emergency needs routed first",
+            "Affected area paused or protected when needed",
+            "Event lead and responsible manager notified",
+            "Alternative space, supplier, or sequence considered",
+            "Affected guest or client contact identified",
+            "Relevant records and evidence preserved",
+            "Only necessary information shared with operating teams",
+            "Follow-up owner and next update time assigned"
+          ]
+        },
+        {
+          "key": "response_log",
+          "type": "table",
+          "label": "Immediate response log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "observed_need",
+              "label": "Observed need",
+              "units": 1.3
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "emergency_boundary",
+          "type": "notice",
+          "label": "Immediate-response boundary",
+          "guidance": "This form does not replace emergency procedures. Address urgent needs first under applicable venue policy. Do not delay assistance to complete the record, and do not use the form to diagnose an injury, determine fault, or direct an authority response."
+        }
+      ]
+    },
+    {
+      "key": "factual_record",
+      "title": "Factual timeline and evidence",
+      "guidance": "Separate observations, records, and reported accounts from conclusions.",
+      "blocks": [
+        {
+          "key": "timeline",
+          "type": "table",
+          "label": "Incident timeline",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "event",
+              "label": "Observed event",
+              "units": 1.4
+            },
+            {
+              "key": "source",
+              "label": "Source",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action or handoff",
+              "units": 1.25
+            },
+            {
+              "key": "record_ref",
+              "label": "Record reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Evidence and record register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence or record",
+              "units": 1.35
+            },
+            {
+              "key": "created_by",
+              "label": "Created by",
+              "units": 0.95
+            },
+            {
+              "key": "captured_at",
+              "label": "Captured at",
+              "units": 0.85
+            },
+            {
+              "key": "stored_at",
+              "label": "Stored at",
+              "units": 1.0
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Reference photos, messages, plan revisions, or service records without embedding unnecessary personal data."
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account",
+          "fields": [
+            {
+              "key": "account",
+              "label": "What was observed, reported, and verified"
+            }
+          ],
+          "height": 72,
+          "guidance": "State uncertainty and conflicting accounts explicitly."
+        }
+      ]
+    },
+    {
+      "key": "impact_review",
+      "title": "Operational impact and client communication",
+      "guidance": "Record what changed and what was communicated without admitting fault.",
+      "blocks": [
+        {
+          "key": "impact_summary",
+          "type": "fields",
+          "label": "Operational impact",
+          "fields": [
+            {
+              "key": "schedule_impact",
+              "label": "Schedule impact",
+              "units": 1.05
+            },
+            {
+              "key": "space_impact",
+              "label": "Space impact",
+              "units": 1.0
+            },
+            {
+              "key": "service_impact",
+              "label": "Service impact",
+              "units": 1.0
+            },
+            {
+              "key": "supplier_impact",
+              "label": "Supplier impact",
+              "units": 1.0
+            },
+            {
+              "key": "guest_impact",
+              "label": "Guest impact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Communication log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or role",
+              "units": 1.1
+            },
+            {
+              "key": "message",
+              "label": "Factual update",
+              "units": 1.4
+            },
+            {
+              "key": "sent_by",
+              "label": "Sent by",
+              "units": 0.9
+            },
+            {
+              "key": "next_update",
+              "label": "Next update",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and decision routing",
+      "guidance": "Route conclusions and sensitive decisions to the responsible role.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Review record",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Operational review complete",
+                "Referred to leadership",
+                "Referred under policy"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "policy_ref",
+              "label": "Applicable policy reference",
+              "units": 1.1
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_findings",
+          "type": "textarea",
+          "label": "Review findings and decision limits",
+          "fields": [
+            {
+              "key": "findings",
+              "label": "Reviewed findings, rationale, and limits"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Authority and privacy boundary",
+          "guidance": "Record facts needed for operational review. Do not diagnose, determine legal fault, promise compensation, accept liability, or decide whether an authority or insurer should be contacted. Limit personal details, follow applicable privacy and retention policy, and route those decisions to the qualified responsible role."
+        }
+      ]
+    },
+    {
+      "key": "corrective_closeout",
+      "title": "Corrective actions, closeout, and handoff",
+      "guidance": "Close the operational record only when residual work has an owner.",
+      "blocks": [
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Immediate operational needs are resolved or transferred",
+            "Client communication record is complete",
+            "Referenced evidence is stored with controlled access",
+            "Open corrective actions have owners and due points",
+            "Related supplier or service records are linked",
+            "Post-event review receives the verified findings",
+            "Retention and access follow applicable policy"
+          ]
+        },
+        {
+          "key": "qualified_closeout",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

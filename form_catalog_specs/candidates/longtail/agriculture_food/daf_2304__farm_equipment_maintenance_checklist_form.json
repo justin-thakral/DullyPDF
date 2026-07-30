@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2304__farm_equipment_maintenance_checklist_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2304__farm_equipment_maintenance_checklist_form.pdf",
+  "slug": "farm-equipment-maintenance-checklist-form",
+  "title": "Farm Equipment Maintenance Checklist Form",
+  "subtitle": "Farm Equipment route the work, prepare controls, record tasks and parts, test the result, manage unresolved conditions, and authorize return to use.",
+  "description": "An original, workflow-complete farm equipment maintenance checklist covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use for scheduled or corrective maintenance that needs task evidence, measurements, parts traceability, function checks, restrictions, and handoff. The record is owned by the fleet or farm operations owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "maintenance_routing",
+      "title": "Farm Equipment maintenance routing",
+      "guidance": "Identify the work, subject, assigned person, and review owner.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Maintenance Checklist identity and routing",
+          "fields": [
+            {
+              "key": "work_record_id",
+              "label": "Maintenance record ID",
+              "units": 0.95
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.75
+            },
+            {
+              "key": "work_type",
+              "label": "Work type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Corrective",
+                "Condition-based",
+                "Follow-up"
+              ]
+            },
+            {
+              "key": "assigned_person",
+              "label": "Assigned maintainer",
+              "units": 1.0
+            },
+            {
+              "key": "work_supervisor",
+              "label": "Work supervisor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Equipment Asset identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Equipment asset ID",
+              "units": 0.85
+            },
+            {
+              "key": "equipment_type",
+              "label": "Equipment type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Tractor",
+                "Harvester",
+                "Implement",
+                "Utility vehicle",
+                "Other"
+              ]
+            },
+            {
+              "key": "make_model",
+              "label": "Make and model",
+              "units": 1.15
+            },
+            {
+              "key": "serial_unit",
+              "label": "Serial or unit number",
+              "units": 0.95
+            },
+            {
+              "key": "assigned_location",
+              "label": "Assigned farm location",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "work_preparation",
+      "title": "Farm Equipment work preparation",
+      "guidance": "Record instructions, condition, controls, and parts before work.",
+      "blocks": [
+        {
+          "key": "work_context",
+          "type": "fields",
+          "label": "Maintenance context",
+          "fields": [
+            {
+              "key": "meter_start",
+              "label": "Starting meter reading",
+              "units": 0.8
+            },
+            {
+              "key": "meter_basis",
+              "label": "Meter basis",
+              "units": 0.7,
+              "field_type": "choice",
+              "options": [
+                "Engine hours",
+                "Odometer",
+                "Cycle count",
+                "Not available"
+              ]
+            },
+            {
+              "key": "implement_id",
+              "label": "Implement or attachment ID",
+              "units": 1.0
+            },
+            {
+              "key": "operator_name",
+              "label": "Assigned operator",
+              "units": 0.9
+            },
+            {
+              "key": "work_activity",
+              "label": "Planned field activity",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "prework_checks",
+          "type": "checklist",
+          "label": "Pre-work review and controls",
+          "items": [
+            "Pre-use condition review recorded",
+            "Fuel or charge level recorded",
+            "Fluid condition and visible leaks observed",
+            "Tires, tracks, or ground-contact parts observed",
+            "Guards, controls, and alerts checked per site policy",
+            "Attachment identity and connection status recorded",
+            "Meter change reconciled to the activity",
+            "Post-use restriction or service need recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_tasks",
+      "title": "Farm Equipment maintenance tasks",
+      "guidance": "Record completed tasks separately from measurements and findings.",
+      "blocks": [
+        {
+          "key": "task_checklist",
+          "type": "checklist",
+          "label": "Farm Equipment task checklist",
+          "items": [
+            "Energy-control status recorded under site procedure",
+            "Exterior, steps, and access areas examined",
+            "Lubrication points serviced per current manual",
+            "Fluid levels, filters, and leak evidence recorded",
+            "Belts, chains, hoses, and connections observed",
+            "Tires, tracks, wheels, and fasteners observed",
+            "Controls, brakes, steering, and indicators checked",
+            "Guards, shields, and interlocks reviewed",
+            "Attachment points and implement functions checked",
+            "Post-service function test and restrictions recorded"
+          ]
+        },
+        {
+          "key": "measurements_findings",
+          "type": "table",
+          "label": "Measurements, findings, and adjustments",
+          "columns": [
+            {
+              "key": "point_component",
+              "label": "Point or component",
+              "units": 1.15
+            },
+            {
+              "key": "before_result",
+              "label": "Before result",
+              "units": 1.0
+            },
+            {
+              "key": "work_adjustment",
+              "label": "Work or adjustment",
+              "units": 1.25
+            },
+            {
+              "key": "after_result",
+              "label": "After result",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "parts_and_service",
+      "title": "Farm Equipment parts and service evidence",
+      "guidance": "Preserve material, service, and removed-part traceability.",
+      "blocks": [
+        {
+          "key": "parts_register",
+          "type": "table",
+          "label": "Parts, materials, and outside service",
+          "columns": [
+            {
+              "key": "part_material",
+              "label": "Part or material",
+              "units": 1.2
+            },
+            {
+              "key": "part_lot",
+              "label": "Part or lot ID",
+              "units": 0.9
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "source_installer",
+              "label": "Source or installer",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "work_notes",
+          "type": "textarea",
+          "label": "Work performed, deviations from plan, and supporting references",
+          "fields": [
+            {
+              "key": "work_detail",
+              "label": "Farm Equipment maintenance detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "function_decision",
+      "title": "Farm Equipment function test and decision",
+      "guidance": "Separate the test evidence from return-to-use authorization.",
+      "blocks": [
+        {
+          "key": "return_decision",
+          "type": "fields",
+          "label": "Return-to-use decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Released",
+                "Released with restriction",
+                "Held for more work",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "test_evidence",
+          "type": "checklist",
+          "label": "Function and handback evidence",
+          "items": [
+            "Farm Equipment before-and-after results support the recorded status",
+            "Tasks, measurements, parts, and outside service are documented",
+            "Function testing is separate from return-to-use authorization",
+            "Restrictions and unfinished work have owners and due points",
+            "Qualified review was obtained where work or disposition exceeds authority"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_exceptions",
+      "title": "Farm Equipment unresolved conditions",
+      "guidance": "Preserve restrictions and route decisions beyond the maintainer\u2019s authority.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Maintenance authority boundary",
+          "guidance": "This record documents equipment workflow; it does not declare an asset safe or authorize work. Stop or restrict use when a condition falls outside the current manual or site procedure, and route the decision to a qualified person."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Farm Equipment unresolved-condition triggers",
+          "items": [
+            "Asset identity or meter is missing",
+            "Inspection or service interval cannot be verified",
+            "Defect remains open or condition changed",
+            "Attachment or task compatibility is unresolved",
+            "Operator assignment or access is unresolved",
+            "Required manual, part, or work record is unavailable"
+          ]
+        },
+        {
+          "key": "restriction_record",
+          "type": "textarea",
+          "label": "Restriction, immediate action, owner, due point, and final disposition",
+          "fields": [
+            {
+              "key": "restriction_detail",
+              "label": "Maintenance restriction and escalation detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "maintenance_closeout",
+      "title": "Farm Equipment maintenance closeout",
+      "guidance": "Transfer restrictions, next service, and evidence to operations.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Maintenance Checklist closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Farm Equipment open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Farm Equipment handoff confirmations",
+          "items": [
+            "Work, measurements, parts, and removed material were reconciled",
+            "Restrictions and unfinished work were transferred to operations",
+            "Next maintenance, inspection, or verification point was assigned",
+            "Farm Equipment return-to-use handback was acknowledged",
+            "Work records, manuals, photos, and service evidence were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Farm Equipment final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified equipment reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

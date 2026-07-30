@@ -1,0 +1,894 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1113__pest_control_follow_up_visit_checklist_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1113__pest_control_follow_up_visit_checklist_form.pdf",
+  "slug": "pest-control-follow-up-visit-checklist-form",
+  "title": "Pest Control Follow-Up Visit Checklist Form",
+  "subtitle": "Control inspection, monitoring, exclusion, treatment, and follow-up through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete pest control follow-up visit checklist for treatment zones, devices, products, and pest observations. It connects approved pest plan, product label, and site authorization to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified pest-management technician must compare a current pest control condition with prior service evidence, decide whether it is planned, recurring, incomplete, or new, and assign the next action.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "followup_identity",
+      "title": "Pest Control follow-up, original service, site, and asset identity",
+      "guidance": "Link the visit to the exact prior service outcome, affected scope, commitments, and evidence.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Pest Control follow-up visit checklist reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service record or application number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Customer or authorized site representative",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Service site and exact treatment or monitoring zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Target pest, site zone, device, and product identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Target pest or organism",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Structure, unit, or outdoor zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Account or service-plan number",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Prior application or device reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant pest control context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant pest control context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "prior_record_review",
+      "title": "Pest Control prior record, customer report, and visit objective",
+      "guidance": "Reconcile the original issue, completed work, stated limitation, and current report before changing scope.",
+      "blocks": [
+        {
+          "key": "prior_service_reference",
+          "type": "fields",
+          "label": "Original service, completion, and warranty reference",
+          "fields": [
+            {
+              "key": "original_record",
+              "label": "Original intake or work-order number",
+              "units": 1.15
+            },
+            {
+              "key": "original_completion",
+              "label": "Original completion date",
+              "units": 0.9
+            },
+            {
+              "key": "original_technician",
+              "label": "Original technician or crew",
+              "units": 1.0
+            },
+            {
+              "key": "warranty_reference",
+              "label": "Warranty or callback reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "prior_record_package",
+          "type": "checklist",
+          "label": "Prior record package reviewed",
+          "items": [
+            "Original requested outcome and affected scope",
+            "Initial observations, diagnostics, and measurements",
+            "Customer authorization and approved change records",
+            "Parts, products, materials, or services documented",
+            "Photographs, labels, diagrams, and source evidence",
+            "Completion tests and customer acceptance",
+            "Limitations, exclusions, and deferred actions",
+            "Warranty, callback, or follow-up commitments"
+          ]
+        },
+        {
+          "key": "current_report",
+          "type": "fields",
+          "label": "Current report and follow-up reason",
+          "fields": [
+            {
+              "key": "reported_by",
+              "label": "Current condition reported by",
+              "units": 1.0
+            },
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 0.9
+            },
+            {
+              "key": "reason",
+              "label": "Visit reason",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Planned verification",
+                "Monitor item due",
+                "Customer callback",
+                "Recurring condition",
+                "Warranty review",
+                "Corrective completion"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current use or access status",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "customer_current_account",
+          "type": "textarea",
+          "label": "Current condition in the reporter's words, timing, recurrence, affected scope, changes since service, and desired outcome",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Current condition in the reporter's words, timing, recurrence, affected scope, changes since service, and desired outcome",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "visit_readiness",
+      "title": "Pest Control follow-up access, safety, and evidence readiness",
+      "guidance": "Confirm present conditions independently; a prior completion record does not establish that the current condition is safe.",
+      "blocks": [
+        {
+          "key": "followup_controls",
+          "type": "checklist",
+          "label": "Present access, isolation, protection, and work controls",
+          "items": [
+            "Current product labeling is available before product handling or use",
+            "Applicator credential and assignment are appropriate to the planned task",
+            "Sensitive occupants, children, pets, food, feed, and medical concerns identified",
+            "Treatment, buffer, exclusion, and restricted-entry boundaries defined",
+            "Weather, ventilation, runoff, pollinator, and water conditions checked",
+            "Required PPE, first-aid information, spill kit, and emergency contact available",
+            "Product, EPA registration, lot, mix, rate, amount, and device identity traceable",
+            "Food-contact surfaces, utensils, toys, bedding, and personal items protected",
+            "Warning, notification, reentry, aeration, and cleanup instructions assigned",
+            "Unused product, rinsate, container, carcass, and contaminated material controlled"
+          ]
+        },
+        {
+          "key": "readiness_status",
+          "type": "fields",
+          "label": "Visit readiness and scope decision",
+          "fields": [
+            {
+              "key": "site_contact",
+              "label": "Onsite contact or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "scope_authorized",
+              "label": "Authorized follow-up scope",
+              "units": 1.2
+            },
+            {
+              "key": "access_status",
+              "label": "Access status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with restriction",
+                "Partially accessible",
+                "Access denied",
+                "Controlled hold"
+              ]
+            },
+            {
+              "key": "change_since_service",
+              "label": "Known change since prior service",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "stop_indicators",
+          "type": "checklist",
+          "label": "Observed hazard, damage, conflict, or stop-work indicator",
+          "items": [
+            "Target pest cannot be reliably identified",
+            "Product label, SDS, registration, or intended-use direction unavailable",
+            "Applicator credential or supervision requirement not satisfied",
+            "Child, pet, food, feed, medical, or other sensitive exposure unresolved",
+            "Wind, rain, temperature, runoff, pollinator, or water condition outside limits",
+            "PPE, first-aid, spill-response, or decontamination resources unavailable",
+            "Product spill, leak, damaged container, misapplication, or unintended exposure",
+            "Treatment area cannot be secured, ventilated, posted, or kept vacant as required",
+            "Observed organism, damage, or site condition requires another qualified discipline",
+            "Customer requests a rate, site, method, or reentry instruction outside labeling"
+          ]
+        },
+        {
+          "key": "readiness_exception",
+          "type": "textarea",
+          "label": "Unexpected condition, immediate control, affected boundary, person notified, and authority needed before proceeding",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, immediate control, affected boundary, person notified, and authority needed before proceeding",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "targeted_reinspection",
+      "title": "Pest Control targeted reinspection and comparison",
+      "guidance": "Compare like-for-like conditions where possible and distinguish a recurrence from a new or unrelated condition.",
+      "blocks": [
+        {
+          "key": "reinspection_points",
+          "type": "checklist",
+          "label": "Pest Control condition and service points rechecked",
+          "items": [
+            "Target-pest evidence, life stage, activity level, and identification basis",
+            "Entry points, harborage, nesting, trails, droppings, and damage",
+            "Food, water, moisture, waste, sanitation, and storage contributors",
+            "Interior and exterior structural gaps, screens, seals, and penetrations",
+            "Monitoring device identity, placement, condition, and count",
+            "Prior treatment location, response, residue, and recurrence pattern",
+            "Sensitive occupant, pet, pollinator, wildlife, and non-target exposure",
+            "Weather, ventilation, drainage, well, surface-water, and runoff conditions",
+            "Product storage, transport, container, label, and application-equipment condition",
+            "Customer preparation, access, notification, and reentry readiness"
+          ]
+        },
+        {
+          "key": "comparison_register",
+          "type": "table",
+          "label": "Prior-to-current finding and evidence comparison",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Asset, zone, component, or point",
+              "units": 1.2
+            },
+            {
+              "key": "prior",
+              "label": "Prior finding or baseline",
+              "units": 1.1
+            },
+            {
+              "key": "current",
+              "label": "Current finding",
+              "units": 1.1
+            },
+            {
+              "key": "change",
+              "label": "Change or recurrence pattern",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "followup_measurements",
+          "type": "table",
+          "label": "Repeat measurement, method, and comparison log",
+          "columns": [
+            {
+              "key": "measure",
+              "label": "Measurement or test",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.0
+            },
+            {
+              "key": "prior",
+              "label": "Prior result",
+              "units": 0.85
+            },
+            {
+              "key": "current",
+              "label": "Current result",
+              "units": 0.85
+            },
+            {
+              "key": "meaning",
+              "label": "Limit or interpretation",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Applicable concepts include: Activity or capture count, Treated area or linear distance, Product concentration or mix, Applied quantity or device count, Wind, temperature, humidity, or rainfall condition, Restricted-entry, ventilation, or follow-up interval."
+        },
+        {
+          "key": "followup_evidence",
+          "type": "checklist",
+          "label": "Follow-up evidence captured or linked",
+          "items": [
+            "Target-pest photograph or specimen reference",
+            "Monitoring-device map and count",
+            "Site-condition and entry-point photographs",
+            "Product label and EPA registration reference",
+            "Product lot, mix, rate, amount, and application method",
+            "Weather and treatment-condition record",
+            "Customer preparation and notification confirmation",
+            "Reentry, cleanup, and follow-up instructions delivered"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cause_scope_decision",
+      "title": "Pest Control cause, relationship, and scope decision",
+      "guidance": "Record the evidence for the relationship decision; do not imply warranty or fault from timing alone.",
+      "blocks": [
+        {
+          "key": "relationship_assessment",
+          "type": "fields",
+          "label": "Relationship to prior service",
+          "fields": [
+            {
+              "key": "relationship",
+              "label": "Relationship decision",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Planned verification",
+                "Prior service outcome confirmed",
+                "Prior issue recurred",
+                "Prior scope incomplete",
+                "New or unrelated condition",
+                "Unable to determine"
+              ]
+            },
+            {
+              "key": "affected_scope",
+              "label": "Affected asset, area, or service point",
+              "units": 1.2
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "decision_evidence",
+              "label": "Decision evidence reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "relationship_rationale",
+          "type": "textarea",
+          "label": "Observed cause, contributing condition, relationship to prior service, conflicting evidence, limitation, and required review",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Observed cause, contributing condition, relationship to prior service, conflicting evidence, limitation, and required review",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "coverage_routing",
+          "type": "fields",
+          "label": "Coverage and work routing",
+          "fields": [
+            {
+              "key": "coverage_status",
+              "label": "Coverage status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not applicable",
+                "Pending review",
+                "Covered callback",
+                "Customer-authorized new work",
+                "Third-party responsibility",
+                "Disputed or unresolved"
+              ]
+            },
+            {
+              "key": "route",
+              "label": "Work or decision route",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_ref",
+              "label": "Site approval and applicator qualification",
+              "units": 1.25
+            },
+            {
+              "key": "response_due",
+              "label": "Response or decision due",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "followup_action",
+      "title": "Pest Control follow-up action, change control, and verification",
+      "guidance": "Separate no-work verification, covered correction, and newly authorized work in the service record.",
+      "blocks": [
+        {
+          "key": "followup_tasks",
+          "type": "checklist",
+          "label": "Pest Control follow-up tasks performed",
+          "items": [
+            "Confirm target pest and treatment threshold",
+            "Install or service identified monitoring devices",
+            "Perform approved exclusion or sanitation correction",
+            "Prepare and apply label-consistent product",
+            "Treat only documented zones and quantities",
+            "Record weather and application conditions",
+            "Remove accessible pest debris or carcasses as authorized",
+            "Post required warning or service notification",
+            "Communicate reentry, aeration, and cleanup conditions",
+            "Schedule monitoring or treatment follow-up"
+          ]
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Action, affected scope, material, result, and performer",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or adjustment",
+              "units": 1.25
+            },
+            {
+              "key": "scope",
+              "label": "Affected scope",
+              "units": 1.05
+            },
+            {
+              "key": "material",
+              "label": "Part, product, or material",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Result or evidence",
+              "units": 1.1
+            },
+            {
+              "key": "performer",
+              "label": "Performer initials",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "change_authorization",
+          "type": "table",
+          "label": "Changed condition, added scope, authorization, and disposition",
+          "columns": [
+            {
+              "key": "change",
+              "label": "Changed condition or added scope",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Cost, timing, access, or risk impact",
+              "units": 1.2
+            },
+            {
+              "key": "decision",
+              "label": "Approved, declined, or deferred",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Authorizer and date",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "followup_verification",
+          "type": "checklist",
+          "label": "Follow-up outcome verification",
+          "items": [
+            "Treatment and device locations match the authorized service map",
+            "Product, rate, amount, and method match the controlling label",
+            "All application equipment and containers are reconciled",
+            "Warning, notification, ventilation, and reentry controls are in place",
+            "Food, personal items, pets, and sensitive areas remain protected",
+            "Spill, exposure, complaint, or non-target concern is absent or escalated",
+            "Customer received preparation, cleanup, and recurrence guidance",
+            "Monitoring or retreatment threshold and due date are assigned"
+          ]
+        },
+        {
+          "key": "verification_limits",
+          "type": "textarea",
+          "label": "Verification method, result, operating or environmental limitation, excluded scope, and trigger for another review",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Verification method, result, operating or environmental limitation, excluded scope, and trigger for another review",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "followup_outcome",
+      "title": "Pest Control follow-up outcome, communication, and next decision",
+      "guidance": "State what was confirmed, what remains unresolved, and who owns the next event.",
+      "blocks": [
+        {
+          "key": "visit_outcome",
+          "type": "fields",
+          "label": "Visit outcome and current status",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Follow-up outcome",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Prior outcome confirmed",
+                "Correction completed and verified",
+                "Monitor item remains open",
+                "New work authorized",
+                "Controlled hold",
+                "Unable to determine"
+              ]
+            },
+            {
+              "key": "current_use_status",
+              "label": "Use, access, or service status",
+              "units": 1.05
+            },
+            {
+              "key": "next_trigger",
+              "label": "Next visit, deadline, or trigger",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Next action owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "customer_communication",
+          "type": "textarea",
+          "label": "Outcome explained, limitations and care instructions, coverage decision, remaining action, escalation route, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Outcome explained, limitations and care instructions, coverage decision, remaining action, escalation route, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "followup_acknowledgment",
+          "type": "signatures",
+          "label": "Technician review and customer acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signoff",
+              "label": "Qualified pest-management technician and date",
+              "units": 1.25
+            },
+            {
+              "key": "qualified_review",
+              "label": "Pest-management compliance supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "customer_acknowledgment",
+              "label": "Customer or authorized site representative and date",
+              "units": 1.25
+            }
+          ],
+          "guidance": "Acknowledgment confirms receipt of the stated outcome and limitations; it does not waive unresolved rights or create a coverage decision."
+        }
+      ]
+    },
+    {
+      "key": "followup_exceptions",
+      "title": "Pest Control follow-up exception and escalation",
+      "guidance": "Preserve ownership for any unsafe, inaccessible, disputed, recurring, unsupported, or unresolved condition.",
+      "blocks": [
+        {
+          "key": "followup_exception_indicators",
+          "type": "checklist",
+          "label": "Pest Control exception and stop-work indicators",
+          "items": [
+            "Target pest cannot be reliably identified",
+            "Product label, SDS, registration, or intended-use direction unavailable",
+            "Applicator credential or supervision requirement not satisfied",
+            "Child, pet, food, feed, medical, or other sensitive exposure unresolved",
+            "Wind, rain, temperature, runoff, pollinator, or water condition outside limits",
+            "PPE, first-aid, spill-response, or decontamination resources unavailable",
+            "Product spill, leak, damaged container, misapplication, or unintended exposure",
+            "Treatment area cannot be secured, ventilated, posted, or kept vacant as required",
+            "Observed organism, damage, or site condition requires another qualified discipline",
+            "Customer requests a rate, site, method, or reentry instruction outside labeling"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "followup_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "followup_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Pest Control follow-up visit checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Follow-up completed and accepted",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This pest control follow-up visit checklist is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when target identification, product labeling, applicator qualification, occupant protection, weather, exposure, spill, or treatment boundary is uncertain. A pest-management compliance supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified pest-management technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Pest-management compliance supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

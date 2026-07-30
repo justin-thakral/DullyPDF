@@ -1,0 +1,740 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1058__concrete_change_order_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1058__concrete_change_order_request_form.pdf",
+  "slug": "concrete-change-order-request-form",
+  "title": "Concrete Change Order Request and Impact Decision",
+  "subtitle": "Preserve the concrete baseline, document the changed condition and evidence, price scope and schedule effects, obtain a clear decision, and control implementation.",
+  "description": "A decision-ready Concrete change order request covering contract and baseline identity, requester direction, field evidence, revised technical scope, quantity and cost support, schedule and safety effects, alternatives, authorization, rejection or hold handling, implementation, and closeout.",
+  "use_case": "Use when the concrete placement foreperson, project manager, estimator, customer, and authorized approver need a traceable Concrete change record before changed work proceeds, except for separately controlled emergency stabilization.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "change_identity",
+      "title": "Concrete change identity and baseline",
+      "guidance": "Anchor the request to the controlling contract, scope, revision, and responsible parties.",
+      "blocks": [
+        {
+          "key": "change_reference",
+          "type": "fields",
+          "label": "Change request reference",
+          "fields": [
+            {
+              "key": "change_number",
+              "label": "Change request number",
+              "units": 0.9
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.8
+            },
+            {
+              "key": "contract_ref",
+              "label": "Contract or work-order ref",
+              "units": 1.0
+            },
+            {
+              "key": "baseline_revision",
+              "label": "Baseline revision/date",
+              "units": 0.95
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "project_routing",
+          "type": "fields",
+          "label": "Project, site, and decision routing",
+          "fields": [
+            {
+              "key": "customer",
+              "label": "Customer or owner",
+              "units": 1.0
+            },
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "work_area",
+              "label": "Exact work area or system",
+              "units": 1.2
+            },
+            {
+              "key": "project_manager",
+              "label": "Project manager",
+              "units": 0.9
+            },
+            {
+              "key": "customer_reviewer",
+              "label": "Customer reviewer",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "change_origin",
+          "type": "fields",
+          "label": "Concrete change origin and status",
+          "fields": [
+            {
+              "key": "origin",
+              "label": "Change origin",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Owner request",
+                "Design revision",
+                "Field condition",
+                "Code/authority",
+                "Correction"
+              ]
+            },
+            {
+              "key": "direction_ref",
+              "label": "Direction, RFI, or bulletin ref",
+              "units": 1.05
+            },
+            {
+              "key": "noticed_date",
+              "label": "First noticed date",
+              "units": 0.8
+            },
+            {
+              "key": "urgency",
+              "label": "Urgency",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time sensitive",
+                "Critical path",
+                "Emergency route"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Pricing",
+                "Submitted",
+                "Approved",
+                "Rejected",
+                "Hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "baseline_scope",
+          "type": "textarea",
+          "label": "Original concrete scope, requirement, and pricing basis",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Quote the controlling baseline and identify what remains unchanged",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "condition_evidence",
+      "title": "Concrete changed condition and evidence",
+      "guidance": "Separate observed facts about the excavation, base, forms, reinforcement, concrete, finish, and cure from interpretation and request.",
+      "blocks": [
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Observed condition and source register",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Location/system",
+              "units": 1.1
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.45
+            },
+            {
+              "key": "source",
+              "label": "Drawing/detail/source",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Photo/measure ref",
+              "units": 1.0
+            },
+            {
+              "key": "observer",
+              "label": "Observer/date",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "changed_measurements",
+          "type": "fields",
+          "label": "Changed concrete quantities and values",
+          "fields": [
+            {
+              "key": "volume",
+              "label": "Calculated concrete volume",
+              "units": 0.9
+            },
+            {
+              "key": "thickness",
+              "label": "Specified thickness",
+              "units": 0.9
+            },
+            {
+              "key": "elevation",
+              "label": "Top elevation or grade",
+              "units": 0.9
+            },
+            {
+              "key": "reinforcement",
+              "label": "Reinforcement size/spacing",
+              "units": 0.9
+            },
+            {
+              "key": "strength",
+              "label": "Specified strength",
+              "units": 0.9
+            },
+            {
+              "key": "slump",
+              "label": "Specified slump",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "supporting_evidence",
+          "type": "checklist",
+          "label": "Supporting evidence collected",
+          "items": [
+            "Before-condition photographs",
+            "Marked drawing or detail",
+            "Field measurements or survey",
+            "RFI, bulletin, or written direction",
+            "Inspection or test record",
+            "Delivery, product, or availability record",
+            "Labor and equipment impact record",
+            "Schedule or predecessor evidence"
+          ]
+        },
+        {
+          "key": "condition_narrative",
+          "type": "textarea",
+          "label": "Changed condition, cause not assumed, and requested outcome",
+          "fields": [
+            {
+              "key": "condition_detail",
+              "label": "Describe observed facts, when discovered, immediate action, and requested resolution",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "revised_scope",
+      "title": "Revised Concrete scope and technical review",
+      "guidance": "Define the delta, retained work, interfaces, and technical acceptance path.",
+      "blocks": [
+        {
+          "key": "scope_impact",
+          "type": "checklist",
+          "label": "Concrete scope elements affected",
+          "items": [
+            "Layout, survey, excavation, subgrade, base, and compaction",
+            "Formwork, shores, reshores, bracing, release agent, and access",
+            "Reinforcing steel, mesh, dowels, chairs, cover, and impalement protection",
+            "Embeds, anchors, sleeves, blockouts, waterstops, and joint materials",
+            "Mix design, batch, delivery, access, pump, chute, and placement plan",
+            "Consolidation, screeding, elevation, slope, and surface tolerance",
+            "Finish, texture, edge, hardener, color, curing, and protection",
+            "Control, construction, isolation, expansion, and saw-cut joints",
+            "Sampling, slump, air, temperature, cylinders, and field tests",
+            "Form removal, repair, protection, as-builts, and owner handoff"
+          ]
+        },
+        {
+          "key": "scope_delta",
+          "type": "table",
+          "label": "Added, deleted, revised, or deferred scope",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Scope item",
+              "units": 1.35
+            },
+            {
+              "key": "action",
+              "label": "Add/delete/revise",
+              "units": 0.95
+            },
+            {
+              "key": "quantity",
+              "label": "Qty./measure",
+              "units": 0.85
+            },
+            {
+              "key": "detail",
+              "label": "Detail or method ref",
+              "units": 1.15
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance basis",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "technical_dependencies",
+          "type": "checklist",
+          "label": "Technical and coordination review",
+          "items": [
+            "Survey, excavation, subgrade, and geotechnical release",
+            "Formwork, shoring, reshoring, and structural review",
+            "Reinforcement, post-tension, embeds, sleeves, and MEP coordination",
+            "Testing agency and special-inspection readiness",
+            "Pump access, delivery route, washout, and site logistics",
+            "Architect or engineer pre-placement and loading release",
+            "Survey, excavation, subgrade, base, compaction, and elevations accepted",
+            "Forms, dimensions, bracing, release, and placement access accepted",
+            "Reinforcement, cover, splices, embeds, sleeves, and joints accepted",
+            "Mix, ticket, time, water addition, slump, air, and temperature recorded"
+          ]
+        },
+        {
+          "key": "alternatives",
+          "type": "textarea",
+          "label": "Alternatives, value option, temporary work, or no-change path",
+          "fields": [
+            {
+              "key": "alternative_detail",
+              "label": "Compare feasibility, risk, cost, schedule, and residual limitations",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "impact_pricing",
+      "title": "Concrete cost, schedule, and risk impact",
+      "guidance": "Provide auditable direct cost and time support with explicit overlap and credit treatment.",
+      "blocks": [
+        {
+          "key": "cost_detail",
+          "type": "table",
+          "label": "Change cost detail",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cost item",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Qty.",
+              "units": 0.6
+            },
+            {
+              "key": "labor",
+              "label": "Labor",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Material",
+              "units": 0.85
+            },
+            {
+              "key": "equip_sub",
+              "label": "Equip/sub",
+              "units": 0.85
+            },
+            {
+              "key": "amount",
+              "label": "Amount/credit",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "cost_summary",
+          "type": "fields",
+          "label": "Cost and schedule summary",
+          "fields": [
+            {
+              "key": "direct_cost",
+              "label": "Direct cost",
+              "units": 0.8
+            },
+            {
+              "key": "credit",
+              "label": "Credit",
+              "units": 0.75
+            },
+            {
+              "key": "markup",
+              "label": "Markup basis",
+              "units": 0.85
+            },
+            {
+              "key": "change_amount",
+              "label": "Requested amount",
+              "units": 0.95
+            },
+            {
+              "key": "calendar_days",
+              "label": "Calendar-day effect",
+              "units": 0.9
+            },
+            {
+              "key": "milestone_effect",
+              "label": "Affected milestone",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "schedule_impact",
+          "type": "table",
+          "label": "Schedule and sequence impact",
+          "columns": [
+            {
+              "key": "activity",
+              "label": "Activity/milestone",
+              "units": 1.25
+            },
+            {
+              "key": "baseline",
+              "label": "Baseline",
+              "units": 0.8
+            },
+            {
+              "key": "impact",
+              "label": "Impact/days",
+              "units": 0.85
+            },
+            {
+              "key": "mitigation",
+              "label": "Mitigation",
+              "units": 1.2
+            },
+            {
+              "key": "residual",
+              "label": "Residual effect",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "risk_effects",
+          "type": "checklist",
+          "label": "Concrete risk changes reviewed",
+          "items": [
+            "Excavation, access, soil, utilities, protection, and inspection verified",
+            "Formwork, shoring, reshoring, bracing, load, and stripping plan verified",
+            "Rebar impalement, protrusions, dowels, and access routes protected",
+            "Pump, boom, hose, outrigger, power-line, and exclusion zones controlled",
+            "Wet cement, skin, eye, wash water, and hygiene controls verified",
+            "Silica, cutting, grinding, chipping, dust, and respiratory routes addressed",
+            "Vehicle, backing, delivery, spotter, public, and struck-by zones controlled",
+            "Warranty or manufacturer effect reviewed",
+            "Inspection, permit, or authority effect reviewed",
+            "Existing completed work and rework identified"
+          ]
+        },
+        {
+          "key": "change_boundary",
+          "type": "notice",
+          "label": "Concrete change boundary",
+          "guidance": "This record does not approve formwork, shoring, excavation, mix design, placement loads, stripping, or structural acceptance and does not replace engineered plans, inspections, or competent-person duties. This request does not authorize changed work until the designated authority records a disposition."
+        }
+      ]
+    },
+    {
+      "key": "change_decision",
+      "title": "Concrete change decision and authorization",
+      "guidance": "Capture one clear disposition, conditions, amount, time, and authority.",
+      "blocks": [
+        {
+          "key": "decision_summary",
+          "type": "fields",
+          "label": "Decision and commercial disposition",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approve",
+                "Approve with condition",
+                "Revise/resubmit",
+                "Reject",
+                "Hold"
+              ]
+            },
+            {
+              "key": "approved_amount",
+              "label": "Approved amount/credit",
+              "units": 1.0
+            },
+            {
+              "key": "approved_days",
+              "label": "Approved time effect",
+              "units": 0.9
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "notice_to_proceed",
+              "label": "Proceed reference/date",
+              "units": 1.0
+            },
+            {
+              "key": "funding_cost_code",
+              "label": "Funding or cost code",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "textarea",
+          "label": "Decision conditions, limitations, retained exclusions, and reason",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Record what is authorized, rejected, deferred, or still unresolved",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "approval_checks",
+          "type": "checklist",
+          "label": "Change approval review completed",
+          "items": [
+            "Baseline and changed condition are traceable",
+            "Scope delta and retained work are explicit",
+            "Quantities, rates, quotes, and credits are supported",
+            "Schedule effect and mitigation are supported",
+            "Safety, permit, test, and warranty effects are routed",
+            "Customer and contractor authority are confirmed",
+            "Budget and cost code are assigned",
+            "Revised documents and field communication are assigned"
+          ]
+        },
+        {
+          "key": "change_authorization",
+          "type": "signatures",
+          "label": "Concrete change authorization",
+          "fields": [
+            {
+              "key": "contractor_preparer",
+              "label": "Contractor preparer",
+              "units": 0.95
+            },
+            {
+              "key": "contractor_approver",
+              "label": "Contractor approver",
+              "units": 0.95
+            },
+            {
+              "key": "customer_reviewer",
+              "label": "Customer reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "customer_authority",
+              "label": "Authorized customer",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "implementation_closeout",
+      "title": "Concrete change implementation and closeout",
+      "guidance": "Translate the disposition into controlled field documents, evidence, and final reconciliation.",
+      "blocks": [
+        {
+          "key": "implementation_package",
+          "type": "checklist",
+          "label": "Implementation package issued",
+          "items": [
+            "Approved change and conditions",
+            "Revised drawing, sketch, or detail",
+            "Updated work order or task plan",
+            "Updated material and procurement release",
+            "Updated schedule and milestone plan",
+            "Updated safety, permit, or isolation route",
+            "Inspection and test requirements",
+            "Affected crews and stakeholders notified"
+          ]
+        },
+        {
+          "key": "implementation_log",
+          "type": "table",
+          "label": "Implementation and verification log",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "area",
+              "label": "Area/task",
+              "units": 1.1
+            },
+            {
+              "key": "action",
+              "label": "Implemented action",
+              "units": 1.35
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence/test ref",
+              "units": 1.0
+            },
+            {
+              "key": "verified",
+              "label": "Verified by/status",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "closeout_reconciliation",
+          "type": "fields",
+          "label": "Change closeout reconciliation",
+          "fields": [
+            {
+              "key": "actual_start",
+              "label": "Actual start",
+              "units": 0.75
+            },
+            {
+              "key": "actual_finish",
+              "label": "Actual finish",
+              "units": 0.75
+            },
+            {
+              "key": "final_amount",
+              "label": "Final reconciled amount",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_update",
+              "label": "Schedule update ref",
+              "units": 0.95
+            },
+            {
+              "key": "asbuilt_ref",
+              "label": "As-built or closeout ref",
+              "units": 0.95
+            },
+            {
+              "key": "closeout_status",
+              "label": "Closeout status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with item",
+                "Pending evidence",
+                "Disputed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "final_handoff",
+          "type": "textarea",
+          "label": "Final outcome, variance, unresolved issue, and handoff",
+          "fields": [
+            {
+              "key": "final_detail",
+              "label": "Reconcile approved versus installed work, evidence, amount, time, and next owner",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Change implementation closeout",
+          "fields": [
+            {
+              "key": "field_verified",
+              "label": "Field verification",
+              "units": 0.95
+            },
+            {
+              "key": "manager_verified",
+              "label": "Project manager",
+              "units": 0.95
+            },
+            {
+              "key": "customer_ack",
+              "label": "Customer acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_date",
+              "label": "Closeout date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

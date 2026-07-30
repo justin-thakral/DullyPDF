@@ -1,0 +1,858 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1125__cleaning_service_warranty_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1125__cleaning_service_warranty_request_form.pdf",
+  "slug": "cleaning-service-warranty-request-form",
+  "title": "Cleaning Service Warranty Request Form",
+  "subtitle": "Control site preparation, cleaning, disinfection, inspection, and secure handoff through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete cleaning service warranty request for rooms, surfaces, fixtures, chemicals, tools, and controlled items. It connects cleaning plan, product label, safety data, and site instructions to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a cleaning-service coordinator must investigate a cleaning service warranty or callback without treating the request as a coverage decision before identity, chronology, condition, and evidence are reviewed.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "warranty_identity",
+      "title": "Cleaning Service warranty claimant, site, and service identity",
+      "guidance": "Anchor the request to the exact customer, prior service, covered scope, and current affected condition.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Cleaning Service warranty request reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service visit, route, or work-order number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Customer or authorized facility representative",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Facility and room-by-room service zones",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Building, room, surface, fixture, and task identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Facility, building, or account",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Room, floor, or service zone",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Surface or fixture category",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Service level and frequency",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant cleaning service context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant cleaning service context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "coverage_context",
+      "title": "Cleaning Service coverage basis and request completeness",
+      "guidance": "Capture the asserted coverage facts without promising eligibility, liability, repair, replacement, or payment.",
+      "blocks": [
+        {
+          "key": "coverage_inputs",
+          "type": "checklist",
+          "label": "Coverage and prior-service inputs supplied",
+          "items": [
+            "Original service date, crew, and work order",
+            "Covered room, surface, and task",
+            "Approved quality standard or service promise",
+            "Product, method, and inspection record",
+            "Customer access and preparation conditions",
+            "Observed deficiency and discovery date",
+            "Photographs and customer communication",
+            "Coverage exclusion, callback window, and proposed remedy"
+          ]
+        },
+        {
+          "key": "coverage_reference",
+          "type": "fields",
+          "label": "Warranty, agreement, and prior-work reference",
+          "fields": [
+            {
+              "key": "original_record",
+              "label": "Original invoice, work order, or service ref.",
+              "units": 1.25
+            },
+            {
+              "key": "completion_date",
+              "label": "Original completion date",
+              "units": 0.9
+            },
+            {
+              "key": "coverage_source",
+              "label": "Warranty or service-agreement source",
+              "units": 1.15
+            },
+            {
+              "key": "coverage_period",
+              "label": "Stated coverage period",
+              "units": 0.9
+            },
+            {
+              "key": "claim_date",
+              "label": "Request received date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "claimed_scope",
+          "type": "table",
+          "label": "Claimed item, prior work, current condition, and requested remedy",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Covered item, zone, or service",
+              "units": 1.2
+            },
+            {
+              "key": "prior_work",
+              "label": "Original work or material",
+              "units": 1.15
+            },
+            {
+              "key": "current_condition",
+              "label": "Current claimed condition",
+              "units": 1.2
+            },
+            {
+              "key": "requested_remedy",
+              "label": "Requested remedy",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "coverage_notice",
+          "type": "notice",
+          "label": "Coverage intake boundary",
+          "guidance": "Receipt of a warranty request confirms intake only. It is not a coverage decision, admission of responsibility, authorization to continue unsafe operation, or promise of a particular remedy."
+        }
+      ]
+    },
+    {
+      "key": "failure_facts",
+      "title": "Cleaning Service failure, recurrence, and change chronology",
+      "guidance": "Separate customer allegation, observed fact, prior performance, and intervening change so the review can be reconstructed.",
+      "blocks": [
+        {
+          "key": "failure_timing",
+          "type": "fields",
+          "label": "Failure and discovery timing",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "last_acceptable",
+              "label": "Last acceptable condition or result",
+              "units": 1.05
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.9
+            },
+            {
+              "key": "current_state",
+              "label": "Current operation, access, or site state",
+              "units": 1.05
+            },
+            {
+              "key": "notice_date",
+              "label": "Initial notice date and method",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "current_indicators",
+          "type": "checklist",
+          "label": "Current claimed condition and service-impact indicators",
+          "items": [
+            "Entry, occupancy, alarm, key, badge, and restricted-area status",
+            "Floor, wall, ceiling, window, fixture, and high-touch surface condition",
+            "Soil load, stain, residue, odor, spill, and previous-service condition",
+            "Restroom, kitchen, food-contact, clinical, or other special-area requirements",
+            "Chemical identity, label, SDS, dilution device, and secondary-container condition",
+            "Vacuum, extractor, machine, cord, plug, guard, pad, and tool condition",
+            "Sharps, bodily fluid, pest, mold, unknown powder, and other exposure indicators",
+            "Ventilation, drainage, electrical, slip, trip, and occupied-area conditions",
+            "Waste, recycling, linen, consumable, and restocking requirements",
+            "Quality standard, sampling method, photo permission, and inspection route"
+          ]
+        },
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Event, change, communication, and custody timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "event",
+              "label": "Observed event or change",
+              "units": 1.3
+            },
+            {
+              "key": "party",
+              "label": "Observer or responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action or communication",
+              "units": 1.1
+            },
+            {
+              "key": "reference",
+              "label": "Evidence reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "claimant_account",
+          "type": "textarea",
+          "label": "Claimant description, operating or site conditions, intervening work, care actions, and requested outcome",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Claimant description, operating or site conditions, intervening work, care actions, and requested outcome",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "evidence_diagnostics",
+      "title": "Cleaning Service warranty evidence and diagnostic intake",
+      "guidance": "Index original records and preserve current evidence before conditions are changed by repair, cleanup, use, or access.",
+      "blocks": [
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Available evidence and supporting records",
+          "items": [
+            "Room, zone, and task assignment",
+            "Pre-service condition or damage photographs",
+            "Product, label, SDS, dilution, and lot reference",
+            "Contact-time or process verification",
+            "Inspection score or defined quality sample",
+            "Waste, linen, consumable, and restocking record",
+            "Key, badge, alarm, and room-release record",
+            "Exception, exposure, damage, or customer communication reference"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Warranty document and evidence index",
+          "columns": [
+            {
+              "key": "record",
+              "label": "Document, photo, item, or record",
+              "units": 1.35
+            },
+            {
+              "key": "date",
+              "label": "Date or version",
+              "units": 0.9
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "claim_link",
+              "label": "Claimed-line or condition link",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Evidence location",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "diagnostic_results",
+          "type": "table",
+          "label": "Initial observation, measurement, and diagnostic results",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, item, or test",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Method or source",
+              "units": 1.0
+            },
+            {
+              "key": "expected",
+              "label": "Expected condition",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual observation",
+              "units": 1.05
+            },
+            {
+              "key": "limitation",
+              "label": "Limitation or evidence ref.",
+              "units": 1.1
+            }
+          ],
+          "rows": 5,
+          "guidance": "Applicable concepts include: Area or room count, Product dilution or concentration, Contact or dwell time, Inspection sample or quality score, Consumable, waste, or linen quantity, Start, completion, dry, or room-release time."
+        },
+        {
+          "key": "evidence_gaps",
+          "type": "textarea",
+          "label": "Missing, conflicting, changed, inaccessible, or unreliable evidence and its effect on review",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Missing, conflicting, changed, inaccessible, or unreliable evidence and its effect on review",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "containment_interim",
+      "title": "Cleaning Service interim control and preservation",
+      "guidance": "Protect people, property, evidence, and the claimed item while preserving the distinction between temporary help and a final remedy.",
+      "blocks": [
+        {
+          "key": "interim_controls",
+          "type": "checklist",
+          "label": "Interim control and preservation options",
+          "items": [
+            "Approved scope and room sequence confirmed before entry",
+            "Keys, badges, alarms, privacy, and restricted-area controls assigned",
+            "Chemical labels and safety data are available and containers are identified",
+            "Dilution, compatibility, ventilation, PPE, and dwell-time instructions verified",
+            "Wet-floor, trip, occupant, electrical, and equipment hazards controlled",
+            "Color-coded or otherwise separated tools prevent cross-contamination",
+            "Food, medications, records, valuables, electronics, and personal items protected",
+            "Sharps, blood, bodily fluid, mold, pest, or unknown material follows the approved route",
+            "Waste, laundry, reusable tools, and contaminated materials remain segregated",
+            "Room release, inspection, access restoration, and customer notification assigned"
+          ]
+        },
+        {
+          "key": "containment_log",
+          "type": "table",
+          "label": "Containment, temporary action, owner, and review deadline",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Affected scope",
+              "units": 1.15
+            },
+            {
+              "key": "control",
+              "label": "Interim control or temporary action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "deadline",
+              "label": "Review or response due",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or approval ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "interim_status",
+          "type": "fields",
+          "label": "Current custody, use, access, and service status",
+          "fields": [
+            {
+              "key": "use_status",
+              "label": "Use or access status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Available with no stated restriction",
+                "Restricted",
+                "Do not use",
+                "Secured or isolated",
+                "Temporary service",
+                "Unknown - review required"
+              ]
+            },
+            {
+              "key": "custody_location",
+              "label": "Current custody or controlled location",
+              "units": 1.15
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer update owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update date and time",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "coverage_decision",
+      "title": "Cleaning Service coverage review, remedy decision, and authorization",
+      "guidance": "Document the reviewed basis for coverage and the exact authorized remedy without turning a signature into a technical conclusion.",
+      "blocks": [
+        {
+          "key": "review_assignment",
+          "type": "fields",
+          "label": "Coverage and technical review assignment",
+          "fields": [
+            {
+              "key": "coverage_reviewer",
+              "label": "Coverage reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "technical_reviewer",
+              "label": "Cleaning, chemical-safety, or site supervisor",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 0.95
+            },
+            {
+              "key": "requirements_ref",
+              "label": "Agreement, label, policy, or technical ref.",
+              "units": 1.2
+            },
+            {
+              "key": "decision_status",
+              "label": "Review status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "More evidence required",
+                "Inspection required",
+                "Third-party review",
+                "Controlled hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "coverage_lines",
+          "type": "table",
+          "label": "Claimed line, coverage finding, rationale, and remedy",
+          "columns": [
+            {
+              "key": "claimed_line",
+              "label": "Claimed item or service",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Covered, excluded, or unresolved",
+              "units": 1.05
+            },
+            {
+              "key": "basis",
+              "label": "Decision basis",
+              "units": 1.2
+            },
+            {
+              "key": "remedy",
+              "label": "Authorized remedy",
+              "units": 1.0
+            },
+            {
+              "key": "limit",
+              "label": "Limit, condition, or approval ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "final_decision",
+          "type": "fields",
+          "label": "Warranty request decision and routing",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Partially approved",
+                "Inspection authorized",
+                "Goodwill response",
+                "Denied",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "remedy_owner",
+              "label": "Remedy owner",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response or remedy due",
+              "units": 0.95
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Coverage rationale, evidence relied upon, unresolved fact, approved remedy, limitation, and customer communication",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Coverage rationale, evidence relied upon, unresolved fact, approved remedy, limitation, and customer communication",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "decision_approval",
+          "type": "signatures",
+          "label": "Coverage and technical decision approval",
+          "fields": [
+            {
+              "key": "coverage_approval",
+              "label": "Coverage decision owner and date",
+              "units": 1.25
+            },
+            {
+              "key": "technical_approval",
+              "label": "Cleaning, chemical-safety, or site supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "customer_receipt",
+              "label": "Customer receipt acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "warranty_exceptions",
+      "title": "Cleaning Service warranty exception and escalation",
+      "guidance": "Route unsafe, disputed, missing-evidence, third-party, or out-of-scope conditions without implying a coverage outcome.",
+      "blocks": [
+        {
+          "key": "warranty_exception_indicators",
+          "type": "checklist",
+          "label": "Cleaning Service exception and stop-work indicators",
+          "items": [
+            "Chemical label, SDS, dilution, compatibility, or container identity uncertain",
+            "Uncontrolled mixture, reaction, spill, vapor, or exposure concern",
+            "Sharps, blood, bodily fluid, mold, pest, or unknown material outside scope",
+            "Wet floor, blocked egress, trip, electrical, or moving-equipment hazard",
+            "Ventilation, PPE, eyewash, first-aid, or spill-response resource unavailable",
+            "Occupied or restricted area cannot be isolated as required",
+            "Food, medication, record, valuable, electronic, or personal item may be affected",
+            "Surface or finish may be damaged by the proposed product or method",
+            "Security key, badge, alarm, door, or privacy-control discrepancy",
+            "Customer requests disinfection, remediation, or waste handling beyond authorization"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "warranty_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "warranty_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Cleaning Service warranty request closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Warranty decision communicated",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this cleaning service warranty request with the applicable customer agreement, manufacturer information, product instructions, site policy, licensing, safety, privacy, and retention requirements. It records the stated decision but does not create authority, coverage, compliance, or release when identity, evidence, scope, condition, or acceptance remains unresolved."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Trained cleaning technician or team lead and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Cleaning, chemical-safety, or site supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

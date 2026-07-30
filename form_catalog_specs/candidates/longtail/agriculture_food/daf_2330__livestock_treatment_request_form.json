@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2330__livestock_treatment_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2330__livestock_treatment_request_form.pdf",
+  "slug": "livestock-treatment-request-form",
+  "title": "Livestock Treatment Request Form",
+  "subtitle": "Livestock Treatment define the operational need, compare requirements and options, document review, authorize the response, manage exceptions, and verify fulfillment.",
+  "description": "An original, workflow-complete livestock treatment request workflow covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use when a requester needs an accountable decision and scheduled operational response supported by scope, evidence, constraints, and completion records. The record is owned by the herd or flock health owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "Livestock Treatment request routing",
+      "guidance": "Identify the requester, subject, urgency, and accountable route.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Request Workflow identity and routing",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request ID",
+              "units": 0.75
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "requester",
+              "label": "Requester",
+              "units": 0.9
+            },
+            {
+              "key": "requester_contact",
+              "label": "Requester contact",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Requested priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Urgent review",
+                "Planned"
+              ]
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Animal Treatment Event identity",
+          "fields": [
+            {
+              "key": "animal_group_id",
+              "label": "Animal or group ID",
+              "units": 1.0
+            },
+            {
+              "key": "species_class",
+              "label": "Species and production class",
+              "units": 1.1
+            },
+            {
+              "key": "head_count",
+              "label": "Number of animals",
+              "units": 0.75
+            },
+            {
+              "key": "pen_location",
+              "label": "Pen, pasture, or location",
+              "units": 1.0
+            },
+            {
+              "key": "condition_observed",
+              "label": "Condition or observation",
+              "units": 1.25
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "need_and_scope",
+      "title": "Livestock Treatment need and scope",
+      "guidance": "Define the operational outcome without treating the request as approval.",
+      "blocks": [
+        {
+          "key": "request_context",
+          "type": "fields",
+          "label": "Requested-work context",
+          "fields": [
+            {
+              "key": "product_name",
+              "label": "Product or treatment name",
+              "units": 1.1
+            },
+            {
+              "key": "product_lot",
+              "label": "Product lot and expiry",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_ref",
+              "label": "Veterinary or protocol ref",
+              "units": 1.15
+            },
+            {
+              "key": "dose_route",
+              "label": "Dose and route as directed",
+              "units": 1.0
+            },
+            {
+              "key": "administrator",
+              "label": "Person administering",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "scope_requirements",
+          "type": "checklist",
+          "label": "Livestock Treatment request requirements",
+          "items": [
+            "Animal or group identity, count, species, and class are stated",
+            "Observed condition, history, and urgency are described",
+            "Prior treatments and response are attached",
+            "Veterinary or approved protocol review is requested",
+            "Proposed product is not treated as authorization",
+            "Handling, isolation, and follow-up needs are identified",
+            "Food-product hold and withdrawal implications are routed",
+            "Decision owner, timing, and record destination are defined"
+          ]
+        },
+        {
+          "key": "need_statement",
+          "type": "textarea",
+          "label": "Need, evidence, constraints, and requested outcome",
+          "fields": [
+            {
+              "key": "request_detail",
+              "label": "Livestock Treatment request detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "options_and_resources",
+      "title": "Livestock Treatment options and resources",
+      "guidance": "Compare feasible responses, availability, and ownership.",
+      "blocks": [
+        {
+          "key": "response_options",
+          "type": "table",
+          "label": "Response option comparison",
+          "columns": [
+            {
+              "key": "option",
+              "label": "Option or resource",
+              "units": 1.3
+            },
+            {
+              "key": "quantity_scope",
+              "label": "Quantity or scope",
+              "units": 1.0
+            },
+            {
+              "key": "source_owner",
+              "label": "Source or owner",
+              "units": 1.0
+            },
+            {
+              "key": "lead_window",
+              "label": "Lead time or window",
+              "units": 0.9
+            },
+            {
+              "key": "status_constraint",
+              "label": "Status or constraint",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "schedule_resources",
+          "type": "fields",
+          "label": "Schedule and resource routing",
+          "fields": [
+            {
+              "key": "target_start",
+              "label": "Target start",
+              "units": 0.8
+            },
+            {
+              "key": "target_finish",
+              "label": "Target finish",
+              "units": 0.8
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned response owner",
+              "units": 1.1
+            },
+            {
+              "key": "resource_reference",
+              "label": "Resource or budget reference",
+              "units": 1.15
+            },
+            {
+              "key": "handoff_party",
+              "label": "Completion handoff party",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Livestock Treatment review and authorization",
+      "guidance": "Document who decided, on what evidence, and with which conditions.",
+      "blocks": [
+        {
+          "key": "authorization",
+          "type": "fields",
+          "label": "Request decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Deferred",
+                "Declined",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "decision_basis",
+          "type": "checklist",
+          "label": "Decision basis",
+          "items": [
+            "The livestock treatment need and supporting evidence were reviewed",
+            "Scope, resources, timing, and feasible options were compared",
+            "Constraints and required qualified review are explicit",
+            "Authorization conditions and exclusions are recorded",
+            "Fulfillment evidence and the accountable handoff are assigned"
+          ]
+        },
+        {
+          "key": "authorization_conditions",
+          "type": "textarea",
+          "label": "Decision rationale, authorization limits, and completion evidence",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Request decision and conditions"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "request_exceptions",
+      "title": "Livestock Treatment constraints and escalation",
+      "guidance": "Keep blockers and changed conditions visible through fulfillment.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Stop, hold, and authority boundary",
+          "guidance": "This record does not diagnose, prescribe, set a dose, or release an animal or food product. Follow current veterinary or authorized instructions and applicable requirements. Hold and escalate any identity, treatment, adverse response, withdrawal, discard, or release uncertainty."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Livestock Treatment exception triggers",
+          "items": [
+            "Animal or group identity is uncertain",
+            "Authorization, protocol, label, or prescription is missing",
+            "Product, lot, expiry, dose, route, or time discrepancy",
+            "Adverse response, missed dose, or treatment failure",
+            "Withdrawal, discard, or food-product hold is uncertain",
+            "Inventory, storage, administration, or record mismatch"
+          ],
+          "guidance": "Mark each applicable trigger and explain any uncertainty in the exception record."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Livestock Treatment request blocker register",
+          "columns": [
+            {
+              "key": "trigger",
+              "label": "Trigger or issue",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.25
+            }
+          ],
+          "rows": 3,
+          "guidance": "Do not close a row until its disposition and accountable owner are explicit."
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Livestock Treatment fulfillment and closeout",
+      "guidance": "Verify the delivered outcome and transfer remaining obligations.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Request Workflow closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Livestock Treatment open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Livestock Treatment handoff confirmations",
+          "items": [
+            "Delivered outcome was compared with the approved request",
+            "Authorization conditions and limitations were transferred",
+            "Shortfalls, substitutions, and open dependencies have owners",
+            "Requester or receiving owner acknowledged the handoff",
+            "Livestock Treatment request and fulfillment evidence were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Livestock Treatment final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Veterinary or authorized reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

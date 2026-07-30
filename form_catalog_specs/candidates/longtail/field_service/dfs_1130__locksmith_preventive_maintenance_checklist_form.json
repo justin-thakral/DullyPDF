@@ -1,0 +1,791 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1130__locksmith_preventive_maintenance_checklist_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1130__locksmith_preventive_maintenance_checklist_form.pdf",
+  "slug": "locksmith-preventive-maintenance-checklist-form",
+  "title": "Locksmith Preventive Maintenance Checklist Form",
+  "subtitle": "Control authority verification, access service, key control, testing, and secure release through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete locksmith service preventive maintenance checklist for openings, locks, keys, credentials, closers, and access devices. It connects verified access authority and approved security scope to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified locksmith must perform scheduled locksmith service maintenance against an identified plan while preserving readings, defects, deferrals, verification, and the next due event.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "maintenance_identity",
+      "title": "Locksmith maintenance plan, site, and asset identity",
+      "guidance": "Tie the planned interval, exact maintained scope, prior condition, and accountable parties to one visit.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Locksmith preventive maintenance checklist reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service request or controlled job number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Authorized property or access representative",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Authorized opening or access point",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Door, opening, vehicle, lock, keyway, or credential identifier",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Property, vehicle, or account",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Door, opening, safe, or asset",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Lock, keyway, or access-device type",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Authorized access window or case reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant locksmith service context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant locksmith service context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "plan_readiness",
+      "title": "Locksmith interval, criteria, and maintenance readiness",
+      "guidance": "Confirm the controlling plan and actual readiness before treating a checklist as authorization to work.",
+      "blocks": [
+        {
+          "key": "maintenance_interval",
+          "type": "fields",
+          "label": "Maintenance interval and controlling reference",
+          "fields": [
+            {
+              "key": "plan_reference",
+              "label": "Service plan, contract, or maintenance ref.",
+              "units": 1.2
+            },
+            {
+              "key": "last_service",
+              "label": "Last completed service",
+              "units": 0.9
+            },
+            {
+              "key": "due_basis",
+              "label": "Time, use, condition, or route basis",
+              "units": 1.05
+            },
+            {
+              "key": "current_due",
+              "label": "Current due date or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "criteria_source",
+              "label": "Controlling plan or criteria reference",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Pre-maintenance access and control readiness",
+          "items": [
+            "Minimum necessary identity and access authority verified",
+            "Property, vehicle, opening, and approved work scope matched",
+            "Reusable secrets, access codes, bitting data, and identity copies excluded from general notes",
+            "Fire-rated, egress, shared, master-key, and restricted-keyway conditions identified",
+            "Alarm, access-control, building, and affected-user coordination completed",
+            "Keys, blanks, cylinders, cores, credentials, and removed hardware controlled",
+            "Occupied area, property finishes, privacy, and emergency access protected",
+            "Additional openings, keys, credentials, or hierarchy changes require new approval",
+            "Door remains securable or an approved interim control is assigned",
+            "Functional, latch, lock, closer, credential, and egress tests defined"
+          ]
+        },
+        {
+          "key": "history_defects",
+          "type": "table",
+          "label": "Prior defect, recommendation, recurrence, and open-action review",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date or record ref.",
+              "units": 0.85
+            },
+            {
+              "key": "condition",
+              "label": "Condition or recommendation",
+              "units": 1.3
+            },
+            {
+              "key": "prior_action",
+              "label": "Prior action",
+              "units": 1.0
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner or escalation",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_assignment",
+          "type": "fields",
+          "label": "Technician, site contact, and service status",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Qualified locksmith",
+              "units": 1.15
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification or license reference",
+              "units": 1.05
+            },
+            {
+              "key": "site_contact",
+              "label": "Authorized property or access representative",
+              "units": 1.1
+            },
+            {
+              "key": "start_date_time",
+              "label": "Controlled start date and time",
+              "units": 0.95
+            },
+            {
+              "key": "readiness_status",
+              "label": "Readiness status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with restriction",
+                "Controlled hold",
+                "Refer for qualified review",
+                "Access unavailable"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "condition_checks",
+      "title": "Locksmith requirement-level condition inspection",
+      "guidance": "Record actual condition for each applicable point and identify the evidence or rationale for the result.",
+      "blocks": [
+        {
+          "key": "inspection_coverage",
+          "type": "checklist",
+          "label": "Locksmith inspection coverage",
+          "items": [
+            "Customer or representative access authority and scope",
+            "Door, frame, opening, vehicle, safe, or asset identity",
+            "Lock, cylinder, core, latch, strike, keyway, and hardware condition",
+            "Hinge, closer, alignment, clearance, binding, and door operation",
+            "Fire label, egress function, panic hardware, and shared-opening condition",
+            "Master-key, restricted-keyway, credential, and access-system relationship",
+            "Alarm, electric strike, maglock, sensor, intercom, and power interface",
+            "Existing keys, blanks, credentials, cores, and removed-hardware custody",
+            "Pre-existing damage, forced-entry evidence, and property-protection need",
+            "Required security function, user population, and emergency-access need"
+          ],
+          "guidance": "A check means the point was examined; the result table carries the actual finding."
+        },
+        {
+          "key": "inspection_results",
+          "type": "table",
+          "label": "Condition, criterion, result, and evidence register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, zone, or component",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Expected condition or criterion",
+              "units": 1.25
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, monitor, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or technician initials",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "inspection_context",
+          "type": "textarea",
+          "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Sampling, access, environmental conditions, unavailable points, and interpretation limits",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "maintenance_work",
+      "title": "Locksmith preventive service tasks and controlled materials",
+      "guidance": "Separate tasks completed from tasks merely considered, and preserve product, part, quantity, and removed-item custody.",
+      "blocks": [
+        {
+          "key": "maintenance_tasks",
+          "type": "checklist",
+          "label": "Preventive maintenance tasks completed",
+          "items": [
+            "Reconfirm authority and approved opening scope",
+            "Open, bypass, or gain entry only as authorized",
+            "Repair or replace approved lock and door hardware",
+            "Rekey approved cylinder or core",
+            "Cut, issue, and reconcile approved keys",
+            "Program and issue approved credential",
+            "Adjust strike, latch, hinge, or closer",
+            "Restore alarm or access-control interface",
+            "Test security, latch, closer, credential, and egress operation",
+            "Transfer keys, credentials, cores, and removed hardware securely"
+          ]
+        },
+        {
+          "key": "task_result_log",
+          "type": "table",
+          "label": "Maintenance action and result log",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Asset, zone, or point",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Maintenance action",
+              "units": 1.2
+            },
+            {
+              "key": "before",
+              "label": "Before condition",
+              "units": 1.0
+            },
+            {
+              "key": "after",
+              "label": "After condition",
+              "units": 1.0
+            },
+            {
+              "key": "technician_ref",
+              "label": "Technician or evidence ref.",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "materials_used",
+          "type": "table",
+          "label": "Parts, products, consumables, and quantities",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, product, or material",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Part, lot, label, or serial",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "application",
+              "label": "Used, installed, or removed",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or remaining stock",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "measurements_tests",
+      "title": "Locksmith measurements and post-maintenance verification",
+      "guidance": "Use repeatable observations to show the maintained scope reached the stated condition.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement and verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Measurement or test point",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Applicable measurement concepts include: Door, frame, backset, thickness, or hardware dimension, Latch, strike, clearance, alignment, or closer setting, Key, core, blank, or credential quantity, Voltage or signal at powered access hardware, Lock, latch, closer, credential, and egress test, Response, unlock, relock, or alarm-restoration time."
+        },
+        {
+          "key": "verification_checks",
+          "type": "checklist",
+          "label": "Post-maintenance condition and function checks",
+          "items": [
+            "Authority and final opening scope remain verified",
+            "Installed hardware matches the authorized function and finish",
+            "Door closes, latches, locks, unlocks, and releases as intended",
+            "Required egress and emergency-access function is preserved",
+            "Alarm and access-control interfaces return to the approved state",
+            "All keys, credentials, cores, blanks, and removed hardware are reconciled",
+            "No reusable security secret appears in unrestricted notes",
+            "Authorized representative accepted the secure handoff or documented a dispute"
+          ]
+        },
+        {
+          "key": "maintenance_evidence",
+          "type": "checklist",
+          "label": "Maintenance evidence retained",
+          "items": [
+            "Authority verification reference with minimum necessary detail",
+            "Opening, vehicle, lock, or credential identity",
+            "Pre-work condition and damage photographs",
+            "Approved scope and not-to-exceed reference",
+            "Installed hardware, cylinder, core, and part identifiers",
+            "Issued key or credential count and recipient",
+            "Functional, closer, latch, lock, and egress test results",
+            "Removed-hardware disposition and secure handoff"
+          ]
+        },
+        {
+          "key": "verification_limits",
+          "type": "textarea",
+          "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Test conditions, inaccessible point, condition to monitor, temporary improvement, and remaining uncertainty",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "defect_actions",
+      "title": "Locksmith defect containment and corrective-action routing",
+      "guidance": "A preventive checklist does not release an unsafe, unverified, or out-of-scope condition.",
+      "blocks": [
+        {
+          "key": "maintenance_defect_indicators",
+          "type": "checklist",
+          "label": "Locksmith exception and stop-work indicators",
+          "items": [
+            "Identity, occupancy, ownership, management, agency, or access authority disputed",
+            "Requested opening, vehicle, safe, key, or credential exceeds approved scope",
+            "Fire-rated, egress, panic, emergency-access, or shared-opening function uncertain",
+            "Master-key hierarchy, restricted keyway, or credential population may be affected",
+            "Alarm, access-control, intercom, power, or life-safety integration unavailable",
+            "Door, frame, glass, hinge, closer, structure, or finish may be damaged",
+            "Key, blank, core, credential, code, or removed-hardware custody discrepancy",
+            "Opening cannot be secured during or after work",
+            "Evidence of forced entry, tampering, crime, or safety concern requires escalation",
+            "Customer requests reusable security secrets in unrestricted notes or communications"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "maintenance_defect_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "maintenance_defect_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_decision",
+      "title": "Locksmith maintenance status and service decision",
+      "guidance": "Record the exact maintained scope, serviceability decision, restriction, next interval, and independent review.",
+      "blocks": [
+        {
+          "key": "maintenance_status",
+          "type": "fields",
+          "label": "Maintenance and serviceability decision",
+          "fields": [
+            {
+              "key": "maintenance_result",
+              "label": "Maintenance result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with monitor item",
+                "Partially completed",
+                "Controlled hold",
+                "Corrective repair required",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted asset, area, or service scope",
+              "units": 1.15
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Excluded or inaccessible scope",
+              "units": 1.05
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "next_service",
+          "type": "fields",
+          "label": "Next preventive interval and trigger",
+          "fields": [
+            {
+              "key": "next_due",
+              "label": "Next due date, use, route, or condition",
+              "units": 1.1
+            },
+            {
+              "key": "monitor_trigger",
+              "label": "Monitor or early-return trigger",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Service-plan owner",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_status",
+              "label": "Scheduling status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Owner to schedule",
+                "Parts pending",
+                "Corrective work first",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_review",
+          "type": "signatures",
+          "label": "Technician and qualified maintenance review",
+          "fields": [
+            {
+              "key": "technician_signoff",
+              "label": "Technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_review",
+              "label": "Locksmith, security, or egress supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "site_acknowledgment",
+              "label": "Site owner acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Locksmith preventive maintenance checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Maintenance completed and interval assigned",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This locksmith service preventive maintenance checklist is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when identity, access authority, property scope, key control, alarm integration, fire egress, security function, or credential custody is uncertain. A locksmith, security, or egress supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified locksmith and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Locksmith, security, or egress supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

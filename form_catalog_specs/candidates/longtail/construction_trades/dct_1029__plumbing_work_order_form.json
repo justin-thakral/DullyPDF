@@ -1,0 +1,731 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1029__plumbing_work_order_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1029__plumbing_work_order_form.pdf",
+  "slug": "plumbing-work-order-form",
+  "title": "Plumbing Work Order and Completion Record",
+  "subtitle": "Authorize plumbing work, translate scope into a controlled field plan, verify safe release and technical hold points, resolve exceptions, and close the order.",
+  "description": "A field-ready Plumbing work order covering customer and contract authority, site and crew routing, planned tasks and quantities, materials and dependencies, safe-work release, inspections and tests, changed conditions, completion evidence, customer handoff, and accountable closeout.",
+  "use_case": "Use when dispatch, a project manager, the plumbing foreperson, quality reviewers, and the customer need one authorized Plumbing work record from assignment through verified completion without treating the work order as a safety permit.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "work_authorization",
+      "title": "Plumbing work authorization and routing",
+      "guidance": "Identify the controlling agreement, accountable field team, location, and timing.",
+      "blocks": [
+        {
+          "key": "work_order_identity",
+          "type": "fields",
+          "label": "Work order identity and authority",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Work order number",
+              "units": 0.9
+            },
+            {
+              "key": "contract_ref",
+              "label": "Contract or proposal ref",
+              "units": 1.0
+            },
+            {
+              "key": "change_ref",
+              "label": "Approved change ref",
+              "units": 0.85
+            },
+            {
+              "key": "issued_date",
+              "label": "Issued date",
+              "units": 0.7
+            },
+            {
+              "key": "issued_by",
+              "label": "Issued by",
+              "units": 0.8
+            },
+            {
+              "key": "authorization",
+              "label": "Authorization status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Conditional",
+                "Planning only",
+                "Hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_project",
+          "type": "fields",
+          "label": "Customer, project, and work location",
+          "fields": [
+            {
+              "key": "customer",
+              "label": "Customer or owner",
+              "units": 1.0
+            },
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "site_location",
+              "label": "Site and exact work area",
+              "units": 1.25
+            },
+            {
+              "key": "site_contact",
+              "label": "Site contact",
+              "units": 0.85
+            },
+            {
+              "key": "contact_method",
+              "label": "Phone or email",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "assignment_schedule",
+          "type": "fields",
+          "label": "Plumbing assignment and schedule",
+          "fields": [
+            {
+              "key": "project_manager",
+              "label": "Project manager",
+              "units": 0.9
+            },
+            {
+              "key": "field_lead",
+              "label": "Plumbing Foreperson",
+              "units": 0.95
+            },
+            {
+              "key": "crew_shift",
+              "label": "Crew or shift",
+              "units": 0.8
+            },
+            {
+              "key": "planned_start",
+              "label": "Planned start",
+              "units": 0.8
+            },
+            {
+              "key": "required_finish",
+              "label": "Required finish",
+              "units": 0.85
+            },
+            {
+              "key": "customer_window",
+              "label": "Access or outage window",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized plumbing scope and completion outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Describe the work, location, limits, deliverable, and explicit exclusions",
+              "multiline": true
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "execution_plan",
+      "title": "Plumbing execution plan and resource control",
+      "guidance": "Translate the authorized scope into tasks for the water, drainage, vent, gas, fixture, and equipment systems.",
+      "blocks": [
+        {
+          "key": "scope_plan",
+          "type": "checklist",
+          "label": "Plumbing scope packages assigned",
+          "items": [
+            "Utility locate, excavation, bedding, service, and backfill",
+            "Domestic water, valves, backflow, insulation, and identification",
+            "Sanitary waste, vent, cleanouts, supports, and firestopping",
+            "Storm piping, roof drains, overflow, and site connection",
+            "Fuel-gas piping, valves, supports, test, and equipment tie-in",
+            "Fixtures, carriers, trim, accessories, and accessibility coordination",
+            "Water heaters, pumps, tanks, interceptors, and specialties",
+            "Medical, process, compressed-air, or specialty piping if scheduled",
+            "Pressure, leak, flow, flushing, disinfection, and functional testing",
+            "Labels, as-builts, training, permits, and owner handoff"
+          ]
+        },
+        {
+          "key": "task_plan",
+          "type": "table",
+          "label": "Plumbing task, crew, and production plan",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or area",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Qty./measure",
+              "units": 0.85
+            },
+            {
+              "key": "crew",
+              "label": "Crew/owner",
+              "units": 0.8
+            },
+            {
+              "key": "method",
+              "label": "Method/detail ref",
+              "units": 1.1
+            },
+            {
+              "key": "start_finish",
+              "label": "Start/finish",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.7
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Material, equipment, and access readiness",
+          "columns": [
+            {
+              "key": "resource",
+              "label": "Resource or material",
+              "units": 1.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "source",
+              "label": "Source/location",
+              "units": 1.0
+            },
+            {
+              "key": "needed",
+              "label": "Needed by",
+              "units": 0.8
+            },
+            {
+              "key": "readiness",
+              "label": "Readiness/issue",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "dependency_plan",
+          "type": "checklist",
+          "label": "Coordination and predecessor release",
+          "items": [
+            "Utility location and civil tie-in release",
+            "Structural opening, sleeve, and support coordination",
+            "Electrical power and control readiness",
+            "HVAC condensate, hydronic, gas, and equipment connection",
+            "Firestop, waterproofing, roofing, and finish coordination",
+            "Health, utility, plumbing, or gas authority inspection"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "safe_work_release",
+      "title": "Plumbing safe-work readiness and field release",
+      "guidance": "Record the route to controlling safety processes before work begins or conditions change.",
+      "blocks": [
+        {
+          "key": "hazard_controls",
+          "type": "checklist",
+          "label": "Plumbing hazard and control verification",
+          "items": [
+            "Utility locate, excavation permit, soil, access, and protection verified",
+            "Competent-person trench inspection and changing conditions recorded",
+            "Confined-space status, permit route, isolation, and rescue addressed",
+            "Water, gas, steam, pressure, chemical, and energy sources isolated",
+            "Hot work, brazing, soldering, fire watch, and ventilation controlled",
+            "Electrical tools, wet locations, GFCI, and temporary power controlled",
+            "Biological exposure, sewage, stagnant water, and hygiene addressed",
+            "Lead, asbestos, silica, mold, and legacy material routes addressed",
+            "Rigging, pipe handling, stored energy, and pinch points controlled",
+            "Public, occupant, open-hole, trip, and housekeeping hazards controlled"
+          ]
+        },
+        {
+          "key": "permit_release",
+          "type": "fields",
+          "label": "Permit, isolation, and release references",
+          "fields": [
+            {
+              "key": "pretask_ref",
+              "label": "Pre-task plan or JHA ref",
+              "units": 1.0
+            },
+            {
+              "key": "permit_ref",
+              "label": "Permit or authority ref",
+              "units": 0.95
+            },
+            {
+              "key": "isolation_ref",
+              "label": "Isolation or shutdown ref",
+              "units": 1.0
+            },
+            {
+              "key": "inspection_owner",
+              "label": "Competent/qualified owner",
+              "units": 1.0
+            },
+            {
+              "key": "release_time",
+              "label": "Work release date/time",
+              "units": 0.9
+            },
+            {
+              "key": "release_status",
+              "label": "Field release",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Released",
+                "Conditional",
+                "Stop",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "readiness_exceptions",
+          "type": "table",
+          "label": "Readiness exception and corrective-action register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or hazard",
+              "units": 1.4
+            },
+            {
+              "key": "control",
+              "label": "Control/action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due/recheck",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "work_order_boundary",
+          "type": "notice",
+          "label": "Plumbing work-order boundary",
+          "guidance": "This record is not an excavation or confined-space permit and does not replace utility locates, competent-person inspections, isolation, code permits, pressure-test procedures, or authority acceptance. Stop and escalate when the authorized scope, site condition, or control basis changes."
+        }
+      ]
+    },
+    {
+      "key": "quality_evidence",
+      "title": "Plumbing inspection, test, and completion evidence",
+      "guidance": "Record measurable acceptance evidence before work is concealed, energized, loaded, or handed off.",
+      "blocks": [
+        {
+          "key": "quality_gates",
+          "type": "checklist",
+          "label": "Plumbing quality and installation gates",
+          "items": [
+            "Routing, elevation, slope, and accessible service points verified",
+            "Pipe, fittings, joints, valves, supports, and anchors accepted",
+            "Sleeves, penetrations, firestopping, and waterproofing complete",
+            "Pressure, leak, flow, and drainage test records complete",
+            "Water system flushed, disinfected, sampled, and released as required",
+            "Fixtures, drains, traps, vents, pumps, and controls function",
+            "Insulation, heat trace, labels, valve tags, and access complete",
+            "Inspection, restoration, as-built, training, and manuals complete"
+          ]
+        },
+        {
+          "key": "inspection_log",
+          "type": "table",
+          "label": "Inspection and hold-point record",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area or system",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion/detail",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Result/reading",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Photo/test ref",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer/date",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "test_log",
+          "type": "table",
+          "label": "Plumbing test and verification log",
+          "columns": [
+            {
+              "key": "test",
+              "label": "Test or check",
+              "units": 1.2
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.85
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument/ref",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Accept/retest",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "test_coverage",
+          "type": "checklist",
+          "label": "Planned test and commissioning coverage",
+          "items": [
+            "Water pressure and visible leak test",
+            "Waste and vent test",
+            "Fuel-gas pressure test",
+            "Backflow assembly test",
+            "Flush and disinfection record",
+            "Fixture and drainage function",
+            "Pump and control sequence",
+            "Authority inspection acceptance"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field_control",
+      "title": "Plumbing field change, issue, and recovery control",
+      "guidance": "Keep unauthorized work separate from approved correction and change paths.",
+      "blocks": [
+        {
+          "key": "issue_register",
+          "type": "table",
+          "label": "Field issue, RFI, and changed-condition register",
+          "columns": [
+            {
+              "key": "ref",
+              "label": "Issue/RFI ref",
+              "units": 0.8
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.45
+            },
+            {
+              "key": "impact",
+              "label": "Scope/cost/time impact",
+              "units": 1.15
+            },
+            {
+              "key": "decision",
+              "label": "Decision/status",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner/due",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "deviation_detail",
+          "type": "textarea",
+          "label": "Deviation, rejected work, temporary condition, or recovery plan",
+          "fields": [
+            {
+              "key": "deviation_record",
+              "label": "Describe evidence, containment, authorization route, correction, and verification",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "change_control",
+          "type": "fields",
+          "label": "Change and stop-work control",
+          "fields": [
+            {
+              "key": "change_request_ref",
+              "label": "Change request ref",
+              "units": 0.95
+            },
+            {
+              "key": "stop_work_ref",
+              "label": "Stop-work ref",
+              "units": 0.85
+            },
+            {
+              "key": "customer_direction",
+              "label": "Customer direction ref",
+              "units": 1.0
+            },
+            {
+              "key": "approved_by",
+              "label": "Authorized by",
+              "units": 0.85
+            },
+            {
+              "key": "approval_date",
+              "label": "Approval date",
+              "units": 0.75
+            },
+            {
+              "key": "work_status",
+              "label": "Work status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Proceed",
+                "Proceed in part",
+                "Hold",
+                "Demobilize"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "field_acknowledgment",
+          "type": "signatures",
+          "label": "Field control acknowledgment",
+          "fields": [
+            {
+              "key": "field_lead_sign",
+              "label": "Field lead name/signature",
+              "units": 1.05
+            },
+            {
+              "key": "project_manager_sign",
+              "label": "Project manager",
+              "units": 1.0
+            },
+            {
+              "key": "quality_sign",
+              "label": "Quality reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "ack_date",
+              "label": "Acknowledgment date",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "completion_closeout",
+      "title": "Plumbing completion, customer handoff, and closeout",
+      "guidance": "Verify the deliverable, unresolved items, records, and final ownership.",
+      "blocks": [
+        {
+          "key": "closeout_package",
+          "type": "checklist",
+          "label": "Plumbing completion and closeout evidence",
+          "items": [
+            "Pressure, leak, flow, and drainage test records",
+            "Flush, disinfection, sampling, and release evidence",
+            "Backflow, gas, pump, and specialty certificates",
+            "Valve, equipment, fixture, and cleanout register",
+            "As-built routing, invert, and concealed-work photographs",
+            "Manuals, warranties, maintenance, and owner handoff"
+          ]
+        },
+        {
+          "key": "open_items",
+          "type": "table",
+          "label": "Open, deferred, warranty, and follow-up items",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open item",
+              "units": 1.45
+            },
+            {
+              "key": "temporary_state",
+              "label": "Safe temporary state",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.75
+            },
+            {
+              "key": "verification",
+              "label": "Closeout ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "completion_record",
+          "type": "fields",
+          "label": "Completion and customer handoff",
+          "fields": [
+            {
+              "key": "substantial_complete",
+              "label": "Substantial completion",
+              "units": 0.95
+            },
+            {
+              "key": "final_complete",
+              "label": "Final completion",
+              "units": 0.85
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer contact",
+              "units": 0.95
+            },
+            {
+              "key": "customer_status",
+              "label": "Handoff status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with items",
+                "Review pending",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "warranty_start",
+              "label": "Warranty start",
+              "units": 0.8
+            },
+            {
+              "key": "closeout_owner",
+              "label": "Closeout owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "completion_narrative",
+          "type": "textarea",
+          "label": "Completed work, operating condition, exceptions, and next action",
+          "fields": [
+            {
+              "key": "completion_detail",
+              "label": "Summarize what was verified, what remains, limitations, and accountable handoff",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "completion_signoff",
+          "type": "signatures",
+          "label": "Plumbing completion review",
+          "fields": [
+            {
+              "key": "field_completion",
+              "label": "Field lead name/signature",
+              "units": 1.0
+            },
+            {
+              "key": "quality_completion",
+              "label": "Quality reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "manager_completion",
+              "label": "Project manager",
+              "units": 0.95
+            },
+            {
+              "key": "customer_ack",
+              "label": "Customer acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "signoff_date",
+              "label": "Date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

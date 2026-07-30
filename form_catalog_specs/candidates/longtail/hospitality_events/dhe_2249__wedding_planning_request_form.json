@@ -1,0 +1,530 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2249__wedding_planning_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2249__wedding_planning_request_form.pdf",
+  "slug": "wedding-planning-request-form",
+  "title": "Wedding Planning Request Form",
+  "subtitle": "Turn a couple's first planning brief into a routed venue request with dated decisions, open constraints, and a clear proposal handoff.",
+  "description": "An original wedding-planning intake record for the ceremony, reception, guest experience, supplier dependencies, schedule, and venue review. It keeps preliminary wishes separate from approved commitments and gives every unresolved requirement an owner and due point.",
+  "use_case": "Use when a couple, planner, or host asks a venue team to scope a wedding. Close the request only when feasibility has been reviewed, the outcome has been communicated, and an approved request is linked to the next planning order or a declined request has a recorded reason.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_intake",
+      "title": "Planning request and routing",
+      "guidance": "Identify the celebration, decision contacts, and response owner.",
+      "blocks": [
+        {
+          "key": "request_record",
+          "type": "fields",
+          "label": "Request record",
+          "fields": [
+            {
+              "key": "request_id",
+              "label": "Request ID",
+              "units": 0.8
+            },
+            {
+              "key": "received_at",
+              "label": "Received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not recorded",
+                "Venue inquiry",
+                "Planner referral",
+                "Phone or email",
+                "Site visit",
+                "Existing client"
+              ]
+            },
+            {
+              "key": "planning_owner",
+              "label": "Planning owner",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "decision_contacts",
+          "type": "fields",
+          "label": "Couple and decision contacts",
+          "fields": [
+            {
+              "key": "primary_contact",
+              "label": "Primary contact",
+              "units": 1.1
+            },
+            {
+              "key": "partner_contact",
+              "label": "Partner contact",
+              "units": 1.1
+            },
+            {
+              "key": "planner_name",
+              "label": "Planner or coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "contact_method",
+              "label": "Preferred contact",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Email",
+                "Phone",
+                "Text",
+                "Planner"
+              ]
+            },
+            {
+              "key": "decision_contact",
+              "label": "Final decision contact",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "celebration_brief",
+      "title": "Celebration brief and guest experience",
+      "guidance": "Record the requested experience before testing venue feasibility.",
+      "blocks": [
+        {
+          "key": "event_profile",
+          "type": "fields",
+          "label": "Date, attendance, and format",
+          "fields": [
+            {
+              "key": "wedding_date",
+              "label": "Requested wedding date",
+              "units": 1.0
+            },
+            {
+              "key": "alternate_date",
+              "label": "Alternate date",
+              "units": 0.9
+            },
+            {
+              "key": "guest_count",
+              "label": "Expected guests",
+              "units": 0.75
+            },
+            {
+              "key": "ceremony_site",
+              "label": "Ceremony site",
+              "units": 1.1
+            },
+            {
+              "key": "reception_site",
+              "label": "Reception site",
+              "units": 1.1
+            },
+            {
+              "key": "event_style",
+              "label": "Celebration style",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Not stated",
+                "Ceremony only",
+                "Reception only",
+                "Ceremony + reception",
+                "Multi-event weekend",
+                "Other"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "requested_program",
+          "type": "table",
+          "label": "Requested program by time block",
+          "columns": [
+            {
+              "key": "event_part",
+              "label": "Event part",
+              "units": 1.15
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "space",
+              "label": "Space",
+              "units": 1.0
+            },
+            {
+              "key": "guests",
+              "label": "Guests",
+              "units": 0.55
+            },
+            {
+              "key": "setup",
+              "label": "Setup need",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "List ceremony, cocktail period, reception, rehearsal, or other distinct blocks."
+        },
+        {
+          "key": "experience_needs",
+          "type": "checklist",
+          "label": "Experience requirements raised",
+          "items": [
+            "Private preparation space requested",
+            "Ceremony rehearsal requested",
+            "Weather alternate requested",
+            "Accessible route or accommodation raised",
+            "Dietary or allergen accommodation raised",
+            "Cultural or religious setup requirement raised",
+            "Childcare, quiet room, or family space requested",
+            "Late-night, after-party, or send-off requested"
+          ],
+          "guidance": "Tick only requirements raised by the requester and route each sensitive need to the responsible venue role."
+        }
+      ]
+    },
+    {
+      "key": "supplier_dependencies",
+      "title": "Supplier and service dependencies",
+      "guidance": "Identify the teams whose availability controls the planning outcome.",
+      "blocks": [
+        {
+          "key": "supplier_register",
+          "type": "table",
+          "label": "Requested suppliers and service scope",
+          "columns": [
+            {
+              "key": "service",
+              "label": "Service",
+              "units": 1.05
+            },
+            {
+              "key": "supplier",
+              "label": "Supplier",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Selection status",
+              "units": 0.9
+            },
+            {
+              "key": "venue_need",
+              "label": "Venue dependency",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "dependency_checks",
+          "type": "checklist",
+          "label": "Dependencies to screen",
+          "items": [
+            "Catering model and meal period identified",
+            "Bar service request routed for separate review",
+            "Photography and video access needs identified",
+            "Music, production, and power needs identified",
+            "Floral, decor, and rental load-in needs identified",
+            "Cake or specialty food delivery needs identified",
+            "Transportation and parking needs identified",
+            "Guest-room or getting-ready room needs identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "feasibility_decision",
+      "title": "Feasibility review and planning decision",
+      "guidance": "Keep preliminary planning separate from an authorized venue commitment.",
+      "blocks": [
+        {
+          "key": "review_outcome",
+          "type": "fields",
+          "label": "Review outcome",
+          "fields": [
+            {
+              "key": "availability_result",
+              "label": "Date and space result",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Available to propose",
+                "Alternate required",
+                "Waitlist only",
+                "Unavailable"
+              ]
+            },
+            {
+              "key": "capacity_result",
+              "label": "Capacity review",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Within reviewed range",
+                "Setup revision needed",
+                "Manager review"
+              ]
+            },
+            {
+              "key": "proposal_status",
+              "label": "Proposal status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "In preparation",
+                "Ready to send",
+                "Sent",
+                "Not proceeding"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "decision_basis",
+          "type": "textarea",
+          "label": "Decision basis and options offered",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Feasibility findings and requester options"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "commitment_boundary",
+          "type": "notice",
+          "label": "Request-stage boundary",
+          "guidance": "This request records preferences and venue screening only. It does not reserve a date, approve capacity or egress, confirm an accommodation, approve alcohol service, or authorize a supplier. Route those decisions to the responsible venue role and use the issued agreement and planning order for approved commitments."
+        }
+      ]
+    },
+    {
+      "key": "planning_exceptions",
+      "title": "Constraints, exceptions, and escalation",
+      "guidance": "Make each unresolved planning constraint visible before proposal handoff.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Requested date or space is unavailable",
+            "Guest count conflicts with reviewed setup range",
+            "Weather alternate is unresolved",
+            "Accessibility request needs responsible-role review",
+            "Dietary or allergen request needs responsible-role review",
+            "Bar scope or service hours remain unresolved",
+            "Outside supplier requirement remains unresolved",
+            "Budget, deposit, or minimum commitment remains unresolved"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Planning exception register",
+          "columns": [
+            {
+              "key": "constraint",
+              "label": "Constraint",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Do not close a row until the requester-facing outcome and accountable owner are recorded."
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Response, handoff, and closeout",
+      "guidance": "Close with a communicated outcome and a named next owner.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Request closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Proposal issued",
+                "Site visit scheduled",
+                "Alternate offered",
+                "Declined",
+                "Withdrawn"
+              ]
+            },
+            {
+              "key": "response_sent_at",
+              "label": "Response sent",
+              "units": 0.85
+            },
+            {
+              "key": "next_record_id",
+              "label": "Next record ID",
+              "units": 0.95
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Requested program confirmed back to the contact",
+            "Preliminary assumptions marked as preliminary",
+            "Open constraints transferred with owners",
+            "Sensitive accommodations routed without unnecessary details",
+            "Supplier dependencies carried into the next record",
+            "Outcome and next response date communicated"
+          ]
+        },
+        {
+          "key": "response_handoff_log",
+          "type": "table",
+          "label": "Response and handoff log",
+          "columns": [
+            {
+              "key": "contact_time",
+              "label": "Contact time",
+              "units": 0.85
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.0
+            },
+            {
+              "key": "decision_shared",
+              "label": "Decision shared",
+              "units": 1.25
+            },
+            {
+              "key": "open_item",
+              "label": "Open item",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Record each material response or ownership transfer needed to close the request."
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and next-record context",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Request closeout and planning-order handoff detail"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "accountable_handoff",
+          "type": "signatures",
+          "label": "Prepared and reviewed",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

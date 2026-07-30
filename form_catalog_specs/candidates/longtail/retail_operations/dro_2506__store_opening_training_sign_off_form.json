@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2506__store_opening_training_sign_off_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2506__store_opening_training_sign_off_form.pdf",
+  "slug": "store-opening-training-sign-off-form",
+  "title": "Store Opening Training Sign-Off Form",
+  "subtitle": "A practical observed-practice training sign-off for store opening that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations observed-practice training sign-off for store opening covering opening readiness, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a opening lead opens one store opening record to plan instruction, observe practice, identify knowledge and authority limits, assign follow-up, and acknowledge the resulting work scope; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Opening training sign-off identity and routing",
+      "guidance": "Connect this training sign-off to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Opening record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Store or site",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Opening zone or shift",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned opening lead",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Opening event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Store Opening scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "training_plan",
+      "title": "Opening training plan and learner route",
+      "guidance": "Define the procedure revision, learning method, practice setting, supervisor, and authorized scope.",
+      "blocks": [
+        {
+          "key": "learner_session",
+          "type": "fields",
+          "label": "Learner and session",
+          "fields": [
+            {
+              "key": "learner_name",
+              "label": "Learner",
+              "units": 1.0
+            },
+            {
+              "key": "employee_or_vendor_id",
+              "label": "Employee or vendor ID",
+              "units": 0.95
+            },
+            {
+              "key": "trainer_name",
+              "label": "Trainer or coach",
+              "units": 1.0
+            },
+            {
+              "key": "session_date",
+              "label": "Session date",
+              "units": 0.75
+            },
+            {
+              "key": "procedure_version",
+              "label": "Procedure or policy version",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "competencies",
+          "type": "checklist",
+          "label": "Opening competencies",
+          "items": [
+            "Plans entry without exposing access credentials",
+            "Performs exterior observation before entry",
+            "Records key and alarm custody correctly",
+            "Conducts an ordered interior walkthrough",
+            "Distinguishes stop conditions from routine defects",
+            "Routes cash readiness to the cash procedure",
+            "Checks customer-facing systems and zones",
+            "Assigns exceptions with owners and due points",
+            "Makes and communicates the opening decision",
+            "Completes handoff and record retention"
+          ]
+        },
+        {
+          "key": "training_boundary",
+          "type": "notice",
+          "label": "Training and authorization boundary",
+          "guidance": "Do not enter, confront a person, disturb suspected evidence, or open to the public when conditions exceed current authorization. Record objective observations and references only; never place alarm codes, safe combinations, or reusable credentials in this form. Follow applicable store, emergency, safety, privacy, and security policy and route judgment to the authorized reviewer. This sign-off records observed practice and assigned limits; it is not a license, professional certification, or guarantee of future performance."
+        }
+      ]
+    },
+    {
+      "key": "observed_practice",
+      "title": "Opening coached practice and evidence",
+      "guidance": "Record the scenario, learner action, observable result, coaching, and next attempt rather than a generic pass mark.",
+      "blocks": [
+        {
+          "key": "practice_register",
+          "type": "table",
+          "label": "Observed practice register",
+          "columns": [
+            {
+              "key": "scenario",
+              "label": "Scenario or task",
+              "units": 1.2
+            },
+            {
+              "key": "learner_action",
+              "label": "Observed learner action",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Result or evidence",
+              "units": 1.05
+            },
+            {
+              "key": "coaching",
+              "label": "Coaching or correction",
+              "units": 1.2
+            },
+            {
+              "key": "observer",
+              "label": "Observer",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_scenarios",
+          "type": "checklist",
+          "label": "Exception scenarios reviewed",
+          "items": [
+            "Entry delayed or access unavailable",
+            "Opening stopped for unsafe condition",
+            "Alarm response or security review needed",
+            "Critical system or utility unavailable",
+            "Cash custody not reconciled",
+            "Public opening delayed or limited"
+          ]
+        },
+        {
+          "key": "practice_notes",
+          "type": "textarea",
+          "label": "Strengths, repeated errors, prompts required, evidence references, and conditions for another observation",
+          "fields": [
+            {
+              "key": "practice_detail",
+              "label": "Store Opening observed practice notes"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "knowledge_limits",
+      "title": "Opening knowledge check, limits, and escalation",
+      "guidance": "Confirm that the learner can identify sources, stop conditions, authorization limits, escalation owners, and handoff evidence.",
+      "blocks": [
+        {
+          "key": "condition_knowledge",
+          "type": "checklist",
+          "label": "Condition and exception knowledge",
+          "items": [
+            "Door, lock, glass, or exterior damage",
+            "Alarm, access, or key-control exception",
+            "Water, odor, utility, or equipment concern",
+            "Unexpected person, delivery, or overnight activity",
+            "Customer-area cleanliness or trip concern",
+            "POS, network, refrigeration, or lighting outage",
+            "Opening float or safe handoff incomplete",
+            "Staffing or trained-keyholder shortage"
+          ]
+        },
+        {
+          "key": "knowledge_register",
+          "type": "table",
+          "label": "Knowledge question and demonstrated response",
+          "columns": [
+            {
+              "key": "prompt",
+              "label": "Question or condition",
+              "units": 1.3
+            },
+            {
+              "key": "response",
+              "label": "Learner response",
+              "units": 1.35
+            },
+            {
+              "key": "expected_route",
+              "label": "Expected route or source",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Result or coaching need",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "knowledge_gaps",
+          "type": "textarea",
+          "label": "Knowledge gaps, restricted tasks, retraining topics, interim supervision, and evidence needed",
+          "fields": [
+            {
+              "key": "gap_detail",
+              "label": "Store Opening knowledge gaps and limits"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_followup",
+      "title": "Opening work authorization and follow-up plan",
+      "guidance": "Grant only the observed scope and state the supervision, expiry, reassessment, or restriction that applies.",
+      "blocks": [
+        {
+          "key": "authorization_scope",
+          "type": "fields",
+          "label": "Observed-practice decision",
+          "fields": [
+            {
+              "key": "readiness_decision",
+              "label": "Readiness decision",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Independent within scope",
+                "Supervised only",
+                "Additional practice",
+                "Restricted task",
+                "Not assigned"
+              ]
+            },
+            {
+              "key": "authorized_tasks",
+              "label": "Authorized task scope",
+              "units": 1.25
+            },
+            {
+              "key": "restricted_tasks",
+              "label": "Restricted or excluded tasks",
+              "units": 1.25
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.75
+            },
+            {
+              "key": "review_date",
+              "label": "Review or reassessment date",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "followup_plan",
+          "type": "table",
+          "label": "Training follow-up and reassessment",
+          "columns": [
+            {
+              "key": "topic",
+              "label": "Topic or task",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Practice or review action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Coach or owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_evidence",
+              "label": "Due point and evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Training authorization handoff",
+          "items": [
+            "Readiness decision communicated to scheduler",
+            "Restricted tasks visible to supervising owner",
+            "Procedure version and practice evidence linked",
+            "Coach accepted follow-up responsibility",
+            "Reassessment date or trigger recorded",
+            "Learner can identify the escalation route"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Opening outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Opening closeout controls",
+          "items": [
+            "Opening status communicated to store team",
+            "Unresolved work has an owner and due point",
+            "Cash and key custody handed to named owners",
+            "Service desk and sales floor release recorded",
+            "Facilities or vendor follow-up reference linked",
+            "Opening record stored in the approved location"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Store Opening residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Training Sign-Off closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2261__bar_service_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2261__bar_service_sign_in_sheet_form.pdf",
+  "slug": "bar-service-sign-in-sheet-form",
+  "title": "Bar Service Sign-In Sheet Form",
+  "subtitle": "Record assigned bar personnel, responsible-review status, station briefing, attendance, issued property, relief handoffs, and accountable departure.",
+  "description": "An original operational attendance and handoff sheet for beverage-service staff and approved contractors. It links each worker to a reviewed role, station, shift, briefing, issued property, relief handoff, exception record, and sign-out without collecting payroll or identity-document details.",
+  "use_case": "Use at service-lead check-in before a worker enters an assigned bar station. Record the responsible role's credential or assignment review result rather than copying personal documents. Close after people and issued property reconcile and every missing handoff has an owner.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "sheet_control",
+      "title": "Sheet control and service routing",
+      "guidance": "Tie attendance to the current bar order, service lead, and review source.",
+      "blocks": [
+        {
+          "key": "sheet_identity",
+          "type": "fields",
+          "label": "Sheet identity",
+          "fields": [
+            {
+              "key": "sheet_id",
+              "label": "Sign-in sheet ID",
+              "units": 0.9
+            },
+            {
+              "key": "order_id",
+              "label": "Bar order ID",
+              "units": 0.9
+            },
+            {
+              "key": "order_revision",
+              "label": "Order revision",
+              "units": 0.75
+            },
+            {
+              "key": "event_id",
+              "label": "Event ID",
+              "units": 0.9
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "service_lead",
+              "label": "Service lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_source",
+          "type": "fields",
+          "label": "Responsible-review source",
+          "fields": [
+            {
+              "key": "staffing_plan_ref",
+              "label": "Staffing plan reference",
+              "units": 1.1
+            },
+            {
+              "key": "policy_ref",
+              "label": "Applicable policy reference",
+              "units": 1.15
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "escalation_contact",
+              "label": "Escalation contact",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "assignment_reference",
+      "title": "Approved roles and station assignments",
+      "guidance": "Confirm the expected team before attendance is recorded.",
+      "blocks": [
+        {
+          "key": "assignment_plan",
+          "type": "table",
+          "label": "Approved assignment reference",
+          "columns": [
+            {
+              "key": "person_or_role",
+              "label": "Person or role",
+              "units": 1.25
+            },
+            {
+              "key": "employer",
+              "label": "Employer",
+              "units": 1.0
+            },
+            {
+              "key": "assignment",
+              "label": "Assignment",
+              "units": 1.0
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.75
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.85
+            },
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 0.9
+            }
+          ],
+          "rows": 6,
+          "guidance": "Record the result of responsible review; do not copy license, permit, or identity-document numbers."
+        },
+        {
+          "key": "roster_checks",
+          "type": "checklist",
+          "label": "Roster controls",
+          "items": [
+            "Current order and assignment plan are available",
+            "Responsible-role review status is recorded for each assignment",
+            "Station leads and relief coverage are identified",
+            "Setup, service, and closeout roles are covered",
+            "Outside contractor contact and venue sponsor are recorded",
+            "Unlisted or changed assignments have an approval route"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance",
+      "title": "Team sign-in, station, and sign-out",
+      "guidance": "Record only operational attendance and assignment details.",
+      "blocks": [
+        {
+          "key": "attendance_log",
+          "type": "table",
+          "label": "Service team attendance",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.15
+            },
+            {
+              "key": "employer_role",
+              "label": "Employer and role",
+              "units": 1.3
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.7
+            },
+            {
+              "key": "in_time",
+              "label": "In",
+              "units": 0.55
+            },
+            {
+              "key": "relief_handoff",
+              "label": "Relief handoff",
+              "units": 1.15
+            },
+            {
+              "key": "out_time",
+              "label": "Out",
+              "units": 0.55
+            }
+          ],
+          "rows": 10
+        },
+        {
+          "key": "attendance_control",
+          "type": "fields",
+          "label": "Attendance control",
+          "fields": [
+            {
+              "key": "expected_team",
+              "label": "Expected team",
+              "units": 0.85
+            },
+            {
+              "key": "checked_in",
+              "label": "Checked in",
+              "units": 0.75
+            },
+            {
+              "key": "checked_out",
+              "label": "Checked out",
+              "units": 0.8
+            },
+            {
+              "key": "still_on_duty",
+              "label": "Still on duty",
+              "units": 0.8
+            },
+            {
+              "key": "last_reconciled",
+              "label": "Last reconciled",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "briefing_property",
+      "title": "Briefing and issued-property custody",
+      "guidance": "Confirm the service briefing and track operational property.",
+      "blocks": [
+        {
+          "key": "briefing_topics",
+          "type": "checklist",
+          "label": "Briefing acknowledgment topics",
+          "items": [
+            "Authorized service scope, stations, and times reviewed",
+            "Applicable age-verification process reviewed",
+            "Service-refusal and manager-escalation route reviewed",
+            "Nonalcoholic and water support reviewed",
+            "Ingredient-question routing reviewed",
+            "Incident and emergency route reviewed",
+            "Cash, payment, product, key, and device custody reviewed",
+            "Relief handoff, last-service, and closeout duties reviewed"
+          ]
+        },
+        {
+          "key": "issued_property",
+          "type": "table",
+          "label": "Issued property register",
+          "columns": [
+            {
+              "key": "person",
+              "label": "Person",
+              "units": 1.1
+            },
+            {
+              "key": "item",
+              "label": "Key, radio, or device",
+              "units": 1.25
+            },
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.75
+            },
+            {
+              "key": "issued_at",
+              "label": "Issued at",
+              "units": 0.75
+            },
+            {
+              "key": "returned_at",
+              "label": "Returned at",
+              "units": 0.85
+            }
+          ],
+          "rows": 5,
+          "guidance": "Do not record payment credentials or access codes."
+        }
+      ]
+    },
+    {
+      "key": "attendance_exceptions",
+      "title": "Attendance exceptions and escalation",
+      "guidance": "Hold unreviewed assignments and preserve the current staffing decision.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "Worker or contractor is not on the assignment plan",
+            "Responsible-review status is missing or unclear",
+            "Assigned station or role differs from the current order",
+            "Briefing is incomplete or an instruction is unresolved",
+            "Relief coverage or required role is absent",
+            "Issued property cannot be accounted for",
+            "Worker leaves without an operational handoff",
+            "Attendance count cannot be reconciled"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Attendance exception register",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "assignment_boundary",
+          "type": "notice",
+          "label": "Assignment and record boundary",
+          "guidance": "This sheet records operational attendance and the result of responsible-role review. It does not independently certify a license, authorize alcohol service, determine employment status, or replace applicable policy. Do not copy identity documents, license numbers, payroll data, or payment credentials."
+        }
+      ]
+    },
+    {
+      "key": "team_closeout",
+      "title": "Attendance reconciliation and closeout",
+      "guidance": "Close after people, property, and station handoffs are accounted for.",
+      "blocks": [
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Checked-in and checked-out totals compared",
+            "Workers still on duty transferred to a named lead",
+            "Relief and station-close handoffs recorded",
+            "Keys, radios, and payment devices reconciled",
+            "Attendance exceptions have dispositions or owners",
+            "Related incidents retain their own qualified records",
+            "Completed sheet stored with appropriate access"
+          ]
+        },
+        {
+          "key": "lead_handoff",
+          "type": "signatures",
+          "label": "Service-lead closeout",
+          "fields": [
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 1.0
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "reviewed_at",
+              "label": "Reviewed at",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

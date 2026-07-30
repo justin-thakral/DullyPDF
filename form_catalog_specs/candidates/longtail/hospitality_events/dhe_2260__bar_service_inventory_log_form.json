@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2260__bar_service_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2260__bar_service_inventory_log_form.pdf",
+  "slug": "bar-service-inventory-log-form",
+  "title": "Bar Service Inventory Log Form",
+  "subtitle": "Reconcile beverage stock through receipt, controlled issue, transfer, return, waste, closing count, variance review, and custody handoff.",
+  "description": "An original beverage inventory and custody log for event bar operations. It links ordered product to lot or package identifiers, opening counts, station issues and transfers, returns, observed waste or breakage, closing counts, unexplained variances, and responsible review.",
+  "use_case": "Use for the product scope covered by one bar service order. Record movements when custody changes, use a continuation when more rows are required, and close only when counted quantities reconcile or every variance has an owner, review status, and final disposition.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Inventory log and count control",
+      "guidance": "Tie the count to the event, order revision, storage point, and counters.",
+      "blocks": [
+        {
+          "key": "log_identity",
+          "type": "fields",
+          "label": "Log identity",
+          "fields": [
+            {
+              "key": "inventory_id",
+              "label": "Inventory log ID",
+              "units": 0.95
+            },
+            {
+              "key": "order_id",
+              "label": "Bar order ID",
+              "units": 0.9
+            },
+            {
+              "key": "order_revision",
+              "label": "Order revision",
+              "units": 0.75
+            },
+            {
+              "key": "event_id",
+              "label": "Event ID",
+              "units": 0.9
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 0.8
+            },
+            {
+              "key": "inventory_owner",
+              "label": "Inventory owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "count_basis",
+          "type": "fields",
+          "label": "Count basis and custody",
+          "fields": [
+            {
+              "key": "storage_location",
+              "label": "Primary storage",
+              "units": 1.1
+            },
+            {
+              "key": "opening_count_at",
+              "label": "Opening count at",
+              "units": 0.9
+            },
+            {
+              "key": "closing_count_at",
+              "label": "Closing count at",
+              "units": 0.9
+            },
+            {
+              "key": "unit_basis",
+              "label": "Unit basis",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not selected",
+                "Sealed units",
+                "Bottles or cans",
+                "Cases",
+                "Kegs",
+                "Mixed units"
+              ]
+            },
+            {
+              "key": "count_method_ref",
+              "label": "Count method reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "receipt_opening",
+      "title": "Receipts and opening inventory",
+      "guidance": "Verify what entered custody before station issue begins.",
+      "blocks": [
+        {
+          "key": "receipt_log",
+          "type": "table",
+          "label": "Product receipt log",
+          "columns": [
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.8
+            },
+            {
+              "key": "description",
+              "label": "Product",
+              "units": 1.35
+            },
+            {
+              "key": "source",
+              "label": "Source",
+              "units": 0.95
+            },
+            {
+              "key": "received_qty",
+              "label": "Received qty",
+              "units": 0.75
+            },
+            {
+              "key": "received_at",
+              "label": "Received at",
+              "units": 0.8
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "opening_count",
+          "type": "table",
+          "label": "Opening inventory count",
+          "columns": [
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.8
+            },
+            {
+              "key": "description",
+              "label": "Product",
+              "units": 1.3
+            },
+            {
+              "key": "sealed_qty",
+              "label": "Sealed qty",
+              "units": 0.75
+            },
+            {
+              "key": "open_qty",
+              "label": "Open qty",
+              "units": 0.7
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "key": "issue_transfer",
+      "title": "Station issues and custody transfers",
+      "guidance": "Record each product movement at the point custody changes.",
+      "blocks": [
+        {
+          "key": "movement_log",
+          "type": "table",
+          "label": "Issue and transfer log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.6
+            },
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.75
+            },
+            {
+              "key": "movement",
+              "label": "Issue or transfer",
+              "units": 0.95
+            },
+            {
+              "key": "quantity",
+              "label": "Qty",
+              "units": 0.55
+            },
+            {
+              "key": "from_to",
+              "label": "From and to",
+              "units": 1.15
+            },
+            {
+              "key": "custodian",
+              "label": "Receiving custodian",
+              "units": 1.1
+            }
+          ],
+          "rows": 10
+        },
+        {
+          "key": "custody_controls",
+          "type": "checklist",
+          "label": "Custody controls",
+          "items": [
+            "Only assigned custodians receive product",
+            "Secure storage remains assigned during service",
+            "Station transfers are recorded when they occur",
+            "Client-supplied product remains separately identified",
+            "Returned sealed product remains distinguishable",
+            "Unscheduled product is held for responsible review",
+            "Keys or access devices have assigned custodians"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "returns_waste",
+      "title": "Returns, waste, and breakage",
+      "guidance": "Separate returnable stock from observed loss and unresolved variance.",
+      "blocks": [
+        {
+          "key": "return_log",
+          "type": "table",
+          "label": "Return and unused product log",
+          "columns": [
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.8
+            },
+            {
+              "key": "station",
+              "label": "Station",
+              "units": 0.75
+            },
+            {
+              "key": "sealed_return",
+              "label": "Sealed return",
+              "units": 0.85
+            },
+            {
+              "key": "open_return",
+              "label": "Open return",
+              "units": 0.8
+            },
+            {
+              "key": "returned_at",
+              "label": "Returned at",
+              "units": 0.85
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "waste_log",
+          "type": "table",
+          "label": "Observed waste and breakage",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.6
+            },
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.8
+            },
+            {
+              "key": "quantity",
+              "label": "Qty",
+              "units": 0.55
+            },
+            {
+              "key": "reason",
+              "label": "Observed reason",
+              "units": 1.3
+            },
+            {
+              "key": "reported_by",
+              "label": "Reported by",
+              "units": 1.0
+            },
+            {
+              "key": "record_ref",
+              "label": "Related record",
+              "units": 0.95
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record observed facts. Do not use a waste entry to explain an unverified shortage."
+        }
+      ]
+    },
+    {
+      "key": "closing_variance",
+      "title": "Closing count and variance review",
+      "guidance": "Reconcile by product and make unexplained differences explicit.",
+      "blocks": [
+        {
+          "key": "closing_count",
+          "type": "table",
+          "label": "Closing inventory count",
+          "columns": [
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.8
+            },
+            {
+              "key": "opening_plus",
+              "label": "Opening plus receipts",
+              "units": 1.0
+            },
+            {
+              "key": "recorded_out",
+              "label": "Recorded out",
+              "units": 0.85
+            },
+            {
+              "key": "closing_qty",
+              "label": "Closing qty",
+              "units": 0.75
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 0.7
+            },
+            {
+              "key": "counter",
+              "label": "Counter",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Variance register",
+          "columns": [
+            {
+              "key": "product_id",
+              "label": "Product ID",
+              "units": 0.8
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 0.75
+            },
+            {
+              "key": "evidence_check",
+              "label": "Evidence checked",
+              "units": 1.25
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "variance_decision",
+          "type": "fields",
+          "label": "Variance decision and authorization",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Recount required",
+                "Records corrected",
+                "Accepted for closeout",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "disposition_ref",
+              "label": "Disposition reference",
+              "units": 1.05
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "next_action_owner",
+              "label": "Next action owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "Inventory review boundary",
+          "guidance": "This log records counts, movements, and observed conditions. It does not establish theft, assign fault, determine financial liability, or replace applicable inventory, tax, licensing, or employment review. Restrict access and route unexplained or material variance to the responsible qualified role."
+        }
+      ]
+    },
+    {
+      "key": "inventory_closeout",
+      "title": "Responsible review and custody closeout",
+      "guidance": "Close only after physical stock and residual records have accountable owners.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Reconciliation outcome",
+          "fields": [
+            {
+              "key": "count_status",
+              "label": "Count status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Reconciled",
+                "Reconciled with variance",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "open_variances",
+              "label": "Open variances",
+              "units": 0.8
+            },
+            {
+              "key": "final_storage",
+              "label": "Final storage",
+              "units": 1.0
+            },
+            {
+              "key": "return_reference",
+              "label": "Return reference",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Review due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Opening, receipts, movements, returns, and closing counts compared",
+            "Unused product secured or released to assigned custody",
+            "Client-supplied and returnable product disposition recorded",
+            "Keys and storage access devices reconciled",
+            "Waste and breakage entries supported by observed records",
+            "Every variance disposition is reviewed by the responsible owner",
+            "Record access and retention follow applicable policy"
+          ]
+        },
+        {
+          "key": "custody_handoff",
+          "type": "table",
+          "label": "Final stock and record custody handoff",
+          "columns": [
+            {
+              "key": "asset_group",
+              "label": "Stock or record",
+              "units": 1.2
+            },
+            {
+              "key": "quantity_state",
+              "label": "Quantity or state",
+              "units": 1.1
+            },
+            {
+              "key": "custodian",
+              "label": "Receiving custodian",
+              "units": 1.05
+            },
+            {
+              "key": "location",
+              "label": "Destination",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Handoff reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "variance_handoff_notes",
+          "type": "textarea",
+          "label": "Residual variance and next-review context",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Unresolved evidence, limits, and accountable next action"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "count_review",
+          "type": "signatures",
+          "label": "Count and responsible review",
+          "fields": [
+            {
+              "key": "counted_by",
+              "label": "Counted by",
+              "units": 1.0
+            },
+            {
+              "key": "count_date",
+              "label": "Count date",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

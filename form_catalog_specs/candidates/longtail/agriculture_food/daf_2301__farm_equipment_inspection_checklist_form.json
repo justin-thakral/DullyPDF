@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2301__farm_equipment_inspection_checklist_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2301__farm_equipment_inspection_checklist_form.pdf",
+  "slug": "farm-equipment-inspection-checklist-form",
+  "title": "Farm Equipment Inspection Checklist Form",
+  "subtitle": "Farm Equipment prepare the inspection, examine domain-specific conditions, record findings, assign corrections, decide status, and close the review.",
+  "description": "An original, workflow-complete farm equipment inspection checklist covering identity and routing, domain observations and evidence, accountable decisions, exceptions and escalation, and completion handoff without replacing qualified judgment.",
+  "use_case": "Use for a planned or triggered inspection that must preserve observed condition, finding severity, correction ownership, and an authorized disposition. The record is owned by the fleet or farm operations owner and closes only after evidence, exceptions, disposition, and the next accountable handoff are documented.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inspection_routing",
+      "title": "Farm Equipment inspection routing",
+      "guidance": "Identify the inspection, subject, inspector, and review route.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Inspection Checklist identity and routing",
+          "fields": [
+            {
+              "key": "inspection_id",
+              "label": "Inspection ID",
+              "units": 0.8
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.75
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection time",
+              "units": 0.7
+            },
+            {
+              "key": "inspection_type",
+              "label": "Inspection type",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Pre-use",
+                "Follow-up",
+                "Triggered",
+                "Other"
+              ]
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Assign one owner and use the same record ID in attachments and follow-up."
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Equipment Asset identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Equipment asset ID",
+              "units": 0.85
+            },
+            {
+              "key": "equipment_type",
+              "label": "Equipment type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Tractor",
+                "Harvester",
+                "Implement",
+                "Utility vehicle",
+                "Other"
+              ]
+            },
+            {
+              "key": "make_model",
+              "label": "Make and model",
+              "units": 1.15
+            },
+            {
+              "key": "serial_unit",
+              "label": "Serial or unit number",
+              "units": 0.95
+            },
+            {
+              "key": "assigned_location",
+              "label": "Assigned farm location",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Preserve the identifiers used by the controlling farm, facility, or partner record."
+        }
+      ]
+    },
+    {
+      "key": "inspection_preparation",
+      "title": "Farm Equipment inspection preparation",
+      "guidance": "Record conditions and evidence sources before making findings.",
+      "blocks": [
+        {
+          "key": "inspection_context",
+          "type": "fields",
+          "label": "Inspection context",
+          "fields": [
+            {
+              "key": "meter_start",
+              "label": "Starting meter reading",
+              "units": 0.8
+            },
+            {
+              "key": "meter_basis",
+              "label": "Meter basis",
+              "units": 0.7,
+              "field_type": "choice",
+              "options": [
+                "Engine hours",
+                "Odometer",
+                "Cycle count",
+                "Not available"
+              ]
+            },
+            {
+              "key": "implement_id",
+              "label": "Implement or attachment ID",
+              "units": 1.0
+            },
+            {
+              "key": "operator_name",
+              "label": "Assigned operator",
+              "units": 0.9
+            },
+            {
+              "key": "work_activity",
+              "label": "Planned field activity",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "preparation_checks",
+          "type": "checklist",
+          "label": "Preparation and prior-record review",
+          "items": [
+            "Pre-use condition review recorded",
+            "Fuel or charge level recorded",
+            "Fluid condition and visible leaks observed",
+            "Tires, tracks, or ground-contact parts observed",
+            "Guards, controls, and alerts checked per site policy",
+            "Attachment identity and connection status recorded",
+            "Meter change reconciled to the activity",
+            "Post-use restriction or service need recorded"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "condition_findings",
+      "title": "Farm Equipment condition findings",
+      "guidance": "Separate observed condition from disposition.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Farm Equipment inspection points",
+          "items": [
+            "Asset plate and unit identity are legible",
+            "Frame, cab, and access points were observed",
+            "Tires, tracks, wheels, and fasteners were observed",
+            "Fluid levels and visible leak locations were recorded",
+            "Operating controls and indicators were function-checked",
+            "Guards and interlocks were reviewed under site procedure",
+            "Hitch, PTO, hydraulics, and attachment points were observed",
+            "Lights, audible alerts, and mirrors were observed",
+            "Required manuals and site equipment were accounted for",
+            "Open defects and prior restrictions were compared"
+          ]
+        },
+        {
+          "key": "findings_register",
+          "type": "table",
+          "label": "Findings and evidence register",
+          "columns": [
+            {
+              "key": "inspection_point",
+              "label": "Point or location",
+              "units": 1.15
+            },
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.35
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence ref",
+              "units": 0.9
+            },
+            {
+              "key": "severity_status",
+              "label": "Severity or status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "inspection_determination",
+      "title": "Farm Equipment determination and correction",
+      "guidance": "Assign the condition decision and every required correction.",
+      "blocks": [
+        {
+          "key": "condition_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Conditional",
+                "Restricted or held",
+                "Correction required"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Decision evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Correction and verification actions",
+          "columns": [
+            {
+              "key": "finding_ref",
+              "label": "Finding ref",
+              "units": 0.8
+            },
+            {
+              "key": "required_action",
+              "label": "Required action",
+              "units": 1.35
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification result",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Farm Equipment exceptions and escalation",
+      "guidance": "Escalate uncertainty and conditions outside the reviewer\u2019s authority.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Inspection authority boundary",
+          "guidance": "This record documents equipment workflow; it does not declare an asset safe or authorize work. Stop or restrict use when a condition falls outside the current manual or site procedure, and route the decision to a qualified person."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Farm Equipment exception triggers",
+          "items": [
+            "Asset identity or meter is missing",
+            "Inspection or service interval cannot be verified",
+            "Defect remains open or condition changed",
+            "Attachment or task compatibility is unresolved",
+            "Operator assignment or access is unresolved",
+            "Required manual, part, or work record is unavailable"
+          ]
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Escalation facts, immediate action, owner, due point, and disposition",
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Inspection escalation detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "inspection_closeout",
+      "title": "Farm Equipment inspection closeout",
+      "guidance": "Confirm correction ownership and transfer the inspection record.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Inspection Checklist closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with follow-up",
+                "Transferred",
+                "Open exception"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.75
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_commitments",
+          "type": "table",
+          "label": "Farm Equipment open actions and limitations",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open action or limitation",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status_handoff",
+              "label": "Status or handoff",
+              "units": 1.15
+            }
+          ],
+          "rows": 5,
+          "guidance": "Carry forward every item that is not fully resolved at closeout."
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Farm Equipment handoff confirmations",
+          "items": [
+            "Farm Equipment findings and evidence were reconciled",
+            "Restrictions or holds were transferred to operations",
+            "Corrections and verification have owners and due points",
+            "Reinspection or follow-up review was scheduled",
+            "Inspection evidence and disposition were filed"
+          ],
+          "guidance": "Unchecked items remain part of the open handoff."
+        },
+        {
+          "key": "final_handoff_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Farm Equipment final handoff detail"
+            }
+          ],
+          "height": 70
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified equipment reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

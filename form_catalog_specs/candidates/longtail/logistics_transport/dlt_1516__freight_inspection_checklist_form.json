@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1516__freight_inspection_checklist_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1516__freight_inspection_checklist_form.pdf",
+  "slug": "freight-inspection-checklist-form",
+  "title": "Freight Inspection Checklist Form",
+  "subtitle": "Set the freight inspection scope, test readiness and requirement-level evidence, contain deficiencies, authorize status, and preserve qualified closeout.",
+  "description": "An original, fillable freight inspection checklist form for controlling palletized, crated, or unitized freight shipment through inspection checklist identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use when a freight operations coordinator or qualified inspector must evaluate palletized, crated, or unitized freight shipment against the shipment record, carrier document, purchase order, and packing list and provide a traceable basis for release, restriction, hold, correction, or rejection.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Freight inspection checklist identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Freight record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Inspection Checklist record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Shipment, PRO, or bill-of-lading reference",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Pallet, crate, handling-unit, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned freight operations coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Carrier Driver And Terminal Handler",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Shipper dock and pickup appointment",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Consignee dock and delivery appointment",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the shipment record, carrier document, purchase order, and packing list."
+        }
+      ]
+    },
+    {
+      "key": "inspection_scope",
+      "title": "Freight inspection scope, criteria, and readiness",
+      "guidance": "Define the exact population and review basis so inspection conclusions remain bounded.",
+      "blocks": [
+        {
+          "key": "scope_criteria",
+          "type": "fields",
+          "label": "Inspection scope and criteria",
+          "fields": [
+            {
+              "key": "scope",
+              "label": "Palletized, Crated, Or Unitized Freight Shipment",
+              "units": 1.35
+            },
+            {
+              "key": "criteria",
+              "label": "Shipment Record, Carrier Document, Purchase Order, And Packing List",
+              "units": 1.45
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector name and role",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_time",
+              "label": "Inspection date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Freight readiness verification",
+          "items": [
+            "Shipment, purchase order, and carrier references identify the same freight",
+            "Handling-unit count, piece count, weight, and dimensions are reconciled",
+            "Pallets, crates, wrap, bands, and labels support ordinary freight handling",
+            "Load distribution, blocking, bracing, and securement are assigned for review",
+            "Trailer number, seal number, carrier, driver, and appointment are recorded",
+            "Dock equipment and labor support the weight and handling configuration",
+            "Hazard, food, temperature, high-value, or special handling status is routed",
+            "Shortage, overage, damage, refused freight, and redelivery paths are defined"
+          ],
+          "guidance": "A failed readiness item must be resolved, excluded with rationale, or carried into the exception section."
+        },
+        {
+          "key": "sample_basis",
+          "type": "fields",
+          "label": "Population, sample, and limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Population or total units",
+              "units": 1.05
+            },
+            {
+              "key": "sample",
+              "label": "Units actually inspected",
+              "units": 1.05
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.25
+            },
+            {
+              "key": "limitations",
+              "label": "Known access or evidence limits",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_results",
+      "title": "Freight requirement-level inspection results",
+      "guidance": "Record actual observations against explicit criteria and identify the evidence for each result.",
+      "blocks": [
+        {
+          "key": "requirement_results",
+          "type": "table",
+          "label": "Inspection result register",
+          "columns": [
+            {
+              "key": "unit",
+              "label": "Unit, point, or sample ID",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.35
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, or N/A",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "inspector",
+              "label": "Inspector initials",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "domain_checks",
+          "type": "checklist",
+          "label": "Freight detailed inspection points",
+          "items": [
+            "Shipment reference matches carrier document, purchase order, and packing list",
+            "Pallet, crate, and handling-unit count agrees with tendered quantity",
+            "Visible weight and dimension markings support the planned equipment",
+            "Pallet deck, crate panels, wrap, banding, and corner protection are intact",
+            "Labels remain readable and do not conflict across handling units",
+            "Seal number and trailer identity agree with dispatch records",
+            "Blocking, bracing, dunnage, and tiedowns appear suitable for the load configuration",
+            "No leakage, leaning, collapse, puncture, water exposure, or contamination is visible",
+            "Appointment, dock, liftgate, accessorial, and unloading needs are confirmed",
+            "A discrepancy is held for qualified review before tender, release, or disposition"
+          ],
+          "guidance": "Checkboxes indicate that the point was examined; the result table carries findings and evidence."
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Freight measurements and evidence package",
+      "guidance": "Preserve readings, instruments, identity, and evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, count, or verification log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or unit ID",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Calibration or evidence ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 5,
+          "guidance": "Use the method applicable to Handling units, pieces, and verified weight and Pallet, crate, wrap, and seal condition."
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Carrier document and purchase-order reference",
+            "Origin pallet or crate condition photographs",
+            "Certified or operational weight record",
+            "Trailer and seal identity",
+            "Dock arrival, loading, departure, and delivery timestamps",
+            "Handling-unit scans at each transfer",
+            "Destination condition and shortage notation",
+            "Exception inspection and mitigation record"
+          ]
+        },
+        {
+          "key": "inspection_narrative",
+          "type": "textarea",
+          "label": "Inspection observations, sampling limitations, and evidence interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection observations, sampling limitations, and evidence interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Freight exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "inspection_exception_types",
+          "type": "checklist",
+          "label": "Freight exception indicators",
+          "items": [
+            "Handling-unit or piece shortage, overage, or substitution",
+            "Visible crush, puncture, collapse, tilt, water, or contamination damage",
+            "Pallet, crate, wrap, banding, or securement is compromised",
+            "Trailer or seal identity differs from the shipment record",
+            "Weight, dimension, freight description, or equipment is inconsistent",
+            "Appointment is missed or consignee cannot unload",
+            "Freight is refused, partially accepted, or redirected",
+            "Temperature, food, hazardous, or special handling control is uncertain",
+            "Carrier document, purchase order, or packing list cannot be reconciled",
+            "Salvage, rework, return, or disposal instruction is unresolved"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "inspection_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_decision",
+          "type": "fields",
+          "label": "Inspection deficiency containment and disposition",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_release",
+      "title": "Freight inspection status and release decision",
+      "guidance": "Do not turn a checklist score into release when a critical exception or evidence gap remains.",
+      "blocks": [
+        {
+          "key": "release_decision",
+          "type": "fields",
+          "label": "Inspection decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Inspection status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with action",
+                "Restricted",
+                "On hold",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted unit or scope",
+              "units": 1.25
+            },
+            {
+              "key": "held_scope",
+              "label": "Held or excluded unit",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection and release authorization",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector signature and date",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Shipping Or Receiving Manager review",
+              "units": 1.45
+            },
+            {
+              "key": "release_owner",
+              "label": "Release or custody owner",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Freight inspection checklist closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Accepted and released",
+                "Accepted with closed action",
+                "Restricted handoff",
+                "Held for corrective work",
+                "Rejected or removed"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "Use this freight inspection checklist with the applicable customer commitment, carrier terms, site policy, and retention requirements. Do not infer acceptance or release from a signature alone; unresolved identity, count, condition, custody, or proof issues require an owner, escalation, and documented disposition."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by shipping or receiving manager",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

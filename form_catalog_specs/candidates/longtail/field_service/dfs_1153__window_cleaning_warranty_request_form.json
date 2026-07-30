@@ -1,0 +1,858 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1153__window_cleaning_warranty_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1153__window_cleaning_warranty_request_form.pdf",
+  "slug": "window-cleaning-warranty-request-form",
+  "title": "Window Cleaning Warranty Request Form",
+  "subtitle": "Control access setup, exclusion, glass cleaning, equipment control, inspection, and release through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete window cleaning warranty request for windows, frames, anchors, ladders, lifts, ropes, tools, and exclusion zones. It connects work plan, access method, anchors, products, and site approval to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a window-cleaning service coordinator must investigate a window cleaning warranty or callback without treating the request as a coverage decision before identity, chronology, condition, and evidence are reviewed.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "warranty_identity",
+      "title": "Window Cleaning warranty claimant, site, and service identity",
+      "guidance": "Anchor the request to the exact customer, prior service, covered scope, and current affected condition.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Window Cleaning warranty request reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service, route, or work-plan number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Building owner or authorized site contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Building facade, window group, and access point",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Building elevation, drop, anchor, equipment, and window identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Building, facade, elevation, or drop",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Window group, glass type, and frame",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Access method and equipment set",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Anchor, tieback, lift, ladder, or scaffold reference",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant window cleaning context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant window cleaning context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "coverage_context",
+      "title": "Window Cleaning coverage basis and request completeness",
+      "guidance": "Capture the asserted coverage facts without promising eligibility, liability, repair, replacement, or payment.",
+      "blocks": [
+        {
+          "key": "coverage_inputs",
+          "type": "checklist",
+          "label": "Coverage and prior-service inputs supplied",
+          "items": [
+            "Original service date and work plan",
+            "Covered facade, elevation, window group, and task",
+            "Glass, frame, tint, coating, or screen identity",
+            "Access method and inspection record",
+            "Weather, construction, facade, occupant, or landscaping changes",
+            "Observed streak, residue, damage, or missed-area date",
+            "Photographs and prior communication",
+            "Coverage term, exclusions, safe-access need, and inspection window"
+          ]
+        },
+        {
+          "key": "coverage_reference",
+          "type": "fields",
+          "label": "Warranty, agreement, and prior-work reference",
+          "fields": [
+            {
+              "key": "original_record",
+              "label": "Original invoice, work order, or service ref.",
+              "units": 1.25
+            },
+            {
+              "key": "completion_date",
+              "label": "Original completion date",
+              "units": 0.9
+            },
+            {
+              "key": "coverage_source",
+              "label": "Warranty or service-agreement source",
+              "units": 1.15
+            },
+            {
+              "key": "coverage_period",
+              "label": "Stated coverage period",
+              "units": 0.9
+            },
+            {
+              "key": "claim_date",
+              "label": "Request received date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "claimed_scope",
+          "type": "table",
+          "label": "Claimed item, prior work, current condition, and requested remedy",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Covered item, zone, or service",
+              "units": 1.2
+            },
+            {
+              "key": "prior_work",
+              "label": "Original work or material",
+              "units": 1.15
+            },
+            {
+              "key": "current_condition",
+              "label": "Current claimed condition",
+              "units": 1.2
+            },
+            {
+              "key": "requested_remedy",
+              "label": "Requested remedy",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "coverage_notice",
+          "type": "notice",
+          "label": "Coverage intake boundary",
+          "guidance": "Receipt of a warranty request confirms intake only. It is not a coverage decision, admission of responsibility, authorization to continue unsafe operation, or promise of a particular remedy."
+        }
+      ]
+    },
+    {
+      "key": "failure_facts",
+      "title": "Window Cleaning failure, recurrence, and change chronology",
+      "guidance": "Separate customer allegation, observed fact, prior performance, and intervening change so the review can be reconstructed.",
+      "blocks": [
+        {
+          "key": "failure_timing",
+          "type": "fields",
+          "label": "Failure and discovery timing",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "last_acceptable",
+              "label": "Last acceptable condition or result",
+              "units": 1.05
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.9
+            },
+            {
+              "key": "current_state",
+              "label": "Current operation, access, or site state",
+              "units": 1.05
+            },
+            {
+              "key": "notice_date",
+              "label": "Initial notice date and method",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "current_indicators",
+          "type": "checklist",
+          "label": "Current claimed condition and service-impact indicators",
+          "items": [
+            "Building, elevation, window group, drop, and access-route identity",
+            "Roof, parapet, edge, skylight, ladder, lift, scaffold, and landing condition",
+            "Anchor, tieback, davit, outrigger, suspension, and building-information status",
+            "Rope, harness, connector, descender, lifeline, lanyard, and rescue equipment",
+            "Ladder rails, feet, locks, rungs, angle, support, and tie-off condition",
+            "Lift controls, alarms, guardrails, outriggers, tires, and inspection status",
+            "Wind, precipitation, lightning, heat, ice, visibility, and surface traction",
+            "Electrical conductors, facade projections, falling-object, and entanglement hazards",
+            "Glass crack, chip, seal, coating, tint, frame, screen, and pre-existing damage",
+            "Pedestrian, occupant, vehicle, door, landscaping, and drop-zone exposure"
+          ]
+        },
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Event, change, communication, and custody timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "event",
+              "label": "Observed event or change",
+              "units": 1.3
+            },
+            {
+              "key": "party",
+              "label": "Observer or responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action or communication",
+              "units": 1.1
+            },
+            {
+              "key": "reference",
+              "label": "Evidence reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "claimant_account",
+          "type": "textarea",
+          "label": "Claimant description, operating or site conditions, intervening work, care actions, and requested outcome",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Claimant description, operating or site conditions, intervening work, care actions, and requested outcome",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "evidence_diagnostics",
+      "title": "Window Cleaning warranty evidence and diagnostic intake",
+      "guidance": "Index original records and preserve current evidence before conditions are changed by repair, cleanup, use, or access.",
+      "blocks": [
+        {
+          "key": "available_evidence",
+          "type": "checklist",
+          "label": "Available evidence and supporting records",
+          "items": [
+            "Building, facade, drop, and window-group map",
+            "Weather and site-condition record",
+            "Anchor or building-equipment information reference",
+            "Access and fall-protection equipment inspection",
+            "Exclusion-zone and access-setup photograph",
+            "Pre-existing glass, frame, or facade damage",
+            "Completed-window and quality-inspection record",
+            "Equipment reconciliation and site-release record"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Warranty document and evidence index",
+          "columns": [
+            {
+              "key": "record",
+              "label": "Document, photo, item, or record",
+              "units": 1.35
+            },
+            {
+              "key": "date",
+              "label": "Date or version",
+              "units": 0.9
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "claim_link",
+              "label": "Claimed-line or condition link",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Evidence location",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "diagnostic_results",
+          "type": "table",
+          "label": "Initial observation, measurement, and diagnostic results",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point, item, or test",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Method or source",
+              "units": 1.0
+            },
+            {
+              "key": "expected",
+              "label": "Expected condition",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual observation",
+              "units": 1.05
+            },
+            {
+              "key": "limitation",
+              "label": "Limitation or evidence ref.",
+              "units": 1.1
+            }
+          ],
+          "rows": 5,
+          "guidance": "Applicable concepts include: Elevation, drop, window count, or serviced area, Wind, temperature, precipitation, or surface condition, Anchor, access, ladder, lift, or equipment identifier, Rope, harness, connector, or inspection status, Water, product, or solution concentration, Start, suspension, restart, and completion time."
+        },
+        {
+          "key": "evidence_gaps",
+          "type": "textarea",
+          "label": "Missing, conflicting, changed, inaccessible, or unreliable evidence and its effect on review",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Missing, conflicting, changed, inaccessible, or unreliable evidence and its effect on review",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "containment_interim",
+      "title": "Window Cleaning interim control and preservation",
+      "guidance": "Protect people, property, evidence, and the claimed item while preserving the distinction between temporary help and a final remedy.",
+      "blocks": [
+        {
+          "key": "interim_controls",
+          "type": "checklist",
+          "label": "Interim control and preservation options",
+          "items": [
+            "Facade, window group, access route, and public drop zone confirmed",
+            "Weather, wind, temperature, precipitation, lightning, and surface conditions assessed",
+            "Selected ladder, lift, scaffold, or rope-descent method is appropriate",
+            "Anchorage and building-provided equipment information verified before use",
+            "Independent fall protection, rescue plan, and communication method assigned where required",
+            "Ladders, ropes, connectors, harnesses, descenders, lifts, and tools inspected",
+            "Electrical lines, roof edges, skylights, fragile surfaces, and facade hazards identified",
+            "Pedestrians, occupants, doors, vehicles, landscaping, and lower levels excluded or protected",
+            "Glass type, coating, tint, sealant, frame, and chemical compatibility verified",
+            "Tools, water, hoses, buckets, and loose items tethered or otherwise controlled"
+          ]
+        },
+        {
+          "key": "containment_log",
+          "type": "table",
+          "label": "Containment, temporary action, owner, and review deadline",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Affected scope",
+              "units": 1.15
+            },
+            {
+              "key": "control",
+              "label": "Interim control or temporary action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "deadline",
+              "label": "Review or response due",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or approval ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "interim_status",
+          "type": "fields",
+          "label": "Current custody, use, access, and service status",
+          "fields": [
+            {
+              "key": "use_status",
+              "label": "Use or access status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Available with no stated restriction",
+                "Restricted",
+                "Do not use",
+                "Secured or isolated",
+                "Temporary service",
+                "Unknown - review required"
+              ]
+            },
+            {
+              "key": "custody_location",
+              "label": "Current custody or controlled location",
+              "units": 1.15
+            },
+            {
+              "key": "customer_contact",
+              "label": "Customer update owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update date and time",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "coverage_decision",
+      "title": "Window Cleaning coverage review, remedy decision, and authorization",
+      "guidance": "Document the reviewed basis for coverage and the exact authorized remedy without turning a signature into a technical conclusion.",
+      "blocks": [
+        {
+          "key": "review_assignment",
+          "type": "fields",
+          "label": "Coverage and technical review assignment",
+          "fields": [
+            {
+              "key": "coverage_reviewer",
+              "label": "Coverage reviewer",
+              "units": 1.05
+            },
+            {
+              "key": "technical_reviewer",
+              "label": "Access and fall-protection supervisor",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 0.95
+            },
+            {
+              "key": "requirements_ref",
+              "label": "Agreement, label, policy, or technical ref.",
+              "units": 1.2
+            },
+            {
+              "key": "decision_status",
+              "label": "Review status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "More evidence required",
+                "Inspection required",
+                "Third-party review",
+                "Controlled hold"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "coverage_lines",
+          "type": "table",
+          "label": "Claimed line, coverage finding, rationale, and remedy",
+          "columns": [
+            {
+              "key": "claimed_line",
+              "label": "Claimed item or service",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Covered, excluded, or unresolved",
+              "units": 1.05
+            },
+            {
+              "key": "basis",
+              "label": "Decision basis",
+              "units": 1.2
+            },
+            {
+              "key": "remedy",
+              "label": "Authorized remedy",
+              "units": 1.0
+            },
+            {
+              "key": "limit",
+              "label": "Limit, condition, or approval ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "final_decision",
+          "type": "fields",
+          "label": "Warranty request decision and routing",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Partially approved",
+                "Inspection authorized",
+                "Goodwill response",
+                "Denied",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "remedy_owner",
+              "label": "Remedy owner",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response or remedy due",
+              "units": 0.95
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Coverage rationale, evidence relied upon, unresolved fact, approved remedy, limitation, and customer communication",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Coverage rationale, evidence relied upon, unresolved fact, approved remedy, limitation, and customer communication",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "decision_approval",
+          "type": "signatures",
+          "label": "Coverage and technical decision approval",
+          "fields": [
+            {
+              "key": "coverage_approval",
+              "label": "Coverage decision owner and date",
+              "units": 1.25
+            },
+            {
+              "key": "technical_approval",
+              "label": "Access and fall-protection supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "customer_receipt",
+              "label": "Customer receipt acknowledgment and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "warranty_exceptions",
+      "title": "Window Cleaning warranty exception and escalation",
+      "guidance": "Route unsafe, disputed, missing-evidence, third-party, or out-of-scope conditions without implying a coverage outcome.",
+      "blocks": [
+        {
+          "key": "warranty_exception_indicators",
+          "type": "checklist",
+          "label": "Window Cleaning exception and stop-work indicators",
+          "items": [
+            "Anchor, tieback, davit, roof, parapet, or building information unavailable",
+            "Required fall protection, rescue, communication, or competent review unavailable",
+            "Ladder, lift, scaffold, rope, harness, connector, or tool fails inspection",
+            "Wind, storm, lightning, ice, heat, visibility, or wet-surface condition unsafe",
+            "Electrical conductor, fragile roof, skylight, edge, or facade hazard uncontrolled",
+            "Pedestrian, occupant, vehicle, doorway, or lower-level exclusion cannot be maintained",
+            "Glass is cracked, loose, heat-stressed, coated, tinted, or incompatible with the method",
+            "Falling-object, water, hose, chemical, or equipment movement cannot be controlled",
+            "Facade access requires a method or height beyond the approved plan",
+            "Technician reports fatigue, medical, communication, or rescue-readiness concern"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "warranty_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "warranty_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Window Cleaning warranty request closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Warranty decision communicated",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This window cleaning warranty request is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when anchorage, access equipment, fall protection, rescue, weather, electrical, public exclusion, facade, glass, or drop-zone condition is uncertain. A access and fall-protection supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Trained window-cleaning technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Access and fall-protection supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

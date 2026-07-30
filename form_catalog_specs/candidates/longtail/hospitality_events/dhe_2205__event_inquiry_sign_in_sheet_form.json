@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2205__event_inquiry_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2205__event_inquiry_sign_in_sheet_form.pdf",
+  "slug": "event-inquiry-sign-in-sheet-form",
+  "title": "Event Inquiry Sign-In Sheet Form",
+  "subtitle": "Sign visitors in and out of a site visit, record escorting through back-of-house areas, and capture the commitments made while the client was on property.",
+  "description": "An original visitor register for inquiry site visits. It records the visit identity and host, each visitor's arrival and departure with badge issue and return, the access briefing given, an escort log for restricted areas, commitments made during the tour, exceptions such as an unreturned badge, and an accountable closeout.",
+  "use_case": "Use when prospective clients tour the property during an inquiry and the venue must know who is on site, who is escorting them, and what was promised. The record closes when every visitor has signed out, every badge is accounted for, and tour commitments have been transferred to the inquiry file.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "visit_identity",
+      "title": "Site visit identity and routing",
+      "guidance": "Bind the register to the inquiry and the host who owns the visit.",
+      "blocks": [
+        {
+          "key": "visit_routing",
+          "type": "fields",
+          "label": "Visit identity and routing",
+          "fields": [
+            {
+              "key": "visit_id",
+              "label": "Visit record ID",
+              "units": 0.9
+            },
+            {
+              "key": "visit_date",
+              "label": "Visit date",
+              "units": 0.8
+            },
+            {
+              "key": "inquiry_reference",
+              "label": "Inquiry reference",
+              "units": 1.05
+            },
+            {
+              "key": "host_name",
+              "label": "Visit host",
+              "units": 0.95
+            },
+            {
+              "key": "host_department",
+              "label": "Host department",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "visit_scope",
+          "type": "fields",
+          "label": "Visit scope",
+          "fields": [
+            {
+              "key": "client_organization",
+              "label": "Client organization",
+              "units": 1.2
+            },
+            {
+              "key": "spaces_toured",
+              "label": "Spaces to be toured",
+              "units": 1.2
+            },
+            {
+              "key": "arrival_window",
+              "label": "Arrival window",
+              "units": 0.9
+            },
+            {
+              "key": "meeting_point",
+              "label": "Meeting point",
+              "units": 1.0
+            },
+            {
+              "key": "escort_rule",
+              "label": "Escort rule",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Pending decision",
+                "Escort at all times",
+                "Back of house only",
+                "Public areas only"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "visitor_register",
+      "title": "Visitor sign-in and sign-out register",
+      "guidance": "One row per person on property, signed out before the record closes.",
+      "blocks": [
+        {
+          "key": "visitor_rows",
+          "type": "table",
+          "label": "Visitor register",
+          "columns": [
+            {
+              "key": "visitor_name",
+              "label": "Visitor name",
+              "units": 1.15
+            },
+            {
+              "key": "visitor_org",
+              "label": "Organization",
+              "units": 1.05
+            },
+            {
+              "key": "time_in",
+              "label": "Time in",
+              "units": 0.6
+            },
+            {
+              "key": "time_out",
+              "label": "Time out",
+              "units": 0.6
+            },
+            {
+              "key": "badge",
+              "label": "Badge",
+              "units": 0.6
+            },
+            {
+              "key": "initials",
+              "label": "Initials",
+              "units": 0.6
+            }
+          ],
+          "rows": 10,
+          "guidance": "Collect only what the visit requires. Do not record identification numbers, dates of birth, or other personal details on this sheet."
+        },
+        {
+          "key": "register_totals",
+          "type": "fields",
+          "label": "Register reconciliation",
+          "fields": [
+            {
+              "key": "expected_count",
+              "label": "Visitors expected",
+              "units": 1.05
+            },
+            {
+              "key": "signed_in_count",
+              "label": "Visitors signed in",
+              "units": 1.05
+            },
+            {
+              "key": "badges_issued",
+              "label": "Badges issued",
+              "units": 0.95
+            },
+            {
+              "key": "badges_returned",
+              "label": "Badges returned",
+              "units": 1.0
+            },
+            {
+              "key": "all_signed_out",
+              "label": "All signed out",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Pending",
+                "Yes - all signed out",
+                "No - see exceptions"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_briefing",
+      "title": "Access briefing and escort record",
+      "guidance": "State what was pointed out and who accompanied visitors where.",
+      "blocks": [
+        {
+          "key": "briefing_items",
+          "type": "checklist",
+          "label": "Briefing given at arrival",
+          "items": [
+            "Arrival route and accessible entrance confirmed with the visitor",
+            "Areas open to the visit identified and out-of-bounds areas stated",
+            "Back-of-house escort assigned where the escort rule requires it",
+            "Nearest exit route and assembly point pointed out",
+            "Photography and filming expectations stated",
+            "Active service, kitchen, and construction areas avoided",
+            "Loading dock access restricted unless escorted",
+            "Badge issued and its return point stated"
+          ],
+          "guidance": "This is an orientation record. It is not a safety certification and does not transfer responsibility to the visitor."
+        },
+        {
+          "key": "escort_log",
+          "type": "table",
+          "label": "Escort log for restricted areas",
+          "columns": [
+            {
+              "key": "log_time",
+              "label": "Time",
+              "units": 0.6
+            },
+            {
+              "key": "area_entered",
+              "label": "Area entered",
+              "units": 1.4
+            },
+            {
+              "key": "escort_name",
+              "label": "Escort",
+              "units": 1.0
+            },
+            {
+              "key": "handed_to",
+              "label": "Handed off to",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "tour_record",
+      "title": "Tour observations and commitments made",
+      "guidance": "Anything promised on the tour has to reach the inquiry file.",
+      "blocks": [
+        {
+          "key": "commitments",
+          "type": "table",
+          "label": "Commitments made during the visit",
+          "columns": [
+            {
+              "key": "commitment",
+              "label": "Commitment made",
+              "units": 1.4
+            },
+            {
+              "key": "made_by",
+              "label": "Made by",
+              "units": 0.9
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "recorded_in",
+              "label": "Recorded in",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "A verbal commitment that is not recorded here becomes a dispute later."
+        },
+        {
+          "key": "observations",
+          "type": "textarea",
+          "label": "Client reactions, objections, and spaces the client responded to",
+          "fields": [
+            {
+              "key": "observation_detail",
+              "label": "Site visit observations"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "visit_exceptions",
+      "title": "Exceptions and escalation",
+      "guidance": "Anything unresolved at departure stays open here.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "A visitor did not sign out",
+            "A badge was not returned",
+            "A visitor entered a restricted area without an escort",
+            "A visitor reported an injury, illness, or hazard",
+            "An accessibility need could not be met on the tour route",
+            "The visit overlapped an active event and disturbed it",
+            "More visitors arrived than were expected"
+          ],
+          "guidance": "A reported injury or illness is recorded and routed on the guest incident record, not resolved on this sheet."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "register_boundary",
+          "type": "notice",
+          "label": "Purpose and limits of this register",
+          "guidance": "This register exists to know who is on property during a site visit and to carry tour commitments into the inquiry file. It is not a security screening, an identity verification, or a safety clearance. Report any injury, illness, hazard, or security concern to the responsible manager immediately rather than closing it here."
+        }
+      ]
+    },
+    {
+      "key": "visit_closeout",
+      "title": "Closeout and handoff",
+      "guidance": "Account for every visitor and badge before closing.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Visit closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - all signed out",
+                "Closed with exception",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Every visitor row has a matching sign-out time",
+            "Badge issue and return counts reconcile",
+            "Tour commitments transferred to the inquiry record",
+            "Open exceptions transferred with named owners",
+            "Register retained for the period required by applicable policy"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Visit outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Visit handoff detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by visit host",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

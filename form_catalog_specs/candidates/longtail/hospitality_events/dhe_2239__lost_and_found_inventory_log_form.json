@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2239__lost_and_found_inventory_log_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2239__lost_and_found_inventory_log_form.pdf",
+  "slug": "lost-and-found-inventory-log-form",
+  "title": "Lost and Found Inventory Log Form",
+  "subtitle": "Hold the storage position: tagged items with holding periods, items reaching disposition, the cash ledger, and the count that proves it.",
+  "description": "An original storage inventory and disposition log. It records the log period and count basis, the tagged item register with holding-period status, items reaching their disposition date with the decision and authorizer, a separately reconciled cash and high-value ledger, count variances, and an accountable period closeout.",
+  "use_case": "Use for a defined period when storage must prove what it holds, what has passed its holding period, and what was released, returned, donated, or disposed of. The log closes when the physical count reconciles and every expired item has a recorded disposition.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_period",
+      "title": "Log period and count basis",
+      "guidance": "State the period, the counter, and the standard applied.",
+      "blocks": [
+        {
+          "key": "log_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "log_id",
+              "label": "Log record ID",
+              "units": 0.9
+            },
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.85
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.85
+            },
+            {
+              "key": "log_owner",
+              "label": "Storage owner",
+              "units": 1.0
+            },
+            {
+              "key": "counted_by",
+              "label": "Counted by",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "count_basis",
+          "type": "fields",
+          "label": "Count basis",
+          "fields": [
+            {
+              "key": "count_method",
+              "label": "Count method",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Full physical count",
+                "Cycle count by bin",
+                "High-value only",
+                "Spot count"
+              ]
+            },
+            {
+              "key": "second_counter",
+              "label": "Second counter",
+              "units": 1.1
+            },
+            {
+              "key": "standard_holding",
+              "label": "Standard holding period",
+              "units": 1.6
+            },
+            {
+              "key": "last_full_count",
+              "label": "Last full count",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "item_register",
+      "title": "Tagged item register",
+      "guidance": "One row per tag; the holding clock runs from the find date.",
+      "blocks": [
+        {
+          "key": "item_rows",
+          "type": "table",
+          "label": "Tagged items held",
+          "columns": [
+            {
+              "key": "tag_number",
+              "label": "Tag",
+              "units": 0.6
+            },
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.4
+            },
+            {
+              "key": "found_date",
+              "label": "Found",
+              "units": 0.7
+            },
+            {
+              "key": "bin",
+              "label": "Bin",
+              "units": 0.55
+            },
+            {
+              "key": "holding_ends",
+              "label": "Holding ends",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.9
+            }
+          ],
+          "rows": 12,
+          "guidance": "Status covers held, matched, released, expired, or escalated. An item with no holding-end date cannot reach a disposition."
+        },
+        {
+          "key": "register_totals",
+          "type": "fields",
+          "label": "Register totals",
+          "fields": [
+            {
+              "key": "items_held",
+              "label": "Items held",
+              "units": 0.95
+            },
+            {
+              "key": "items_added",
+              "label": "Added in period",
+              "units": 1.15
+            },
+            {
+              "key": "items_released",
+              "label": "Released in period",
+              "units": 1.3
+            },
+            {
+              "key": "items_expired",
+              "label": "Past holding period",
+              "units": 1.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "disposition",
+      "title": "Items reaching disposition",
+      "guidance": "An expired item needs a decision and an authorizer, not a shelf.",
+      "blocks": [
+        {
+          "key": "disposition_rows",
+          "type": "table",
+          "label": "Disposition decisions",
+          "columns": [
+            {
+              "key": "tag_number",
+              "label": "Tag",
+              "units": 0.6
+            },
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.3
+            },
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Basis",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.05
+            },
+            {
+              "key": "completed_on",
+              "label": "Completed",
+              "units": 0.8
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "disposition_controls",
+          "type": "checklist",
+          "label": "Disposition controls",
+          "items": [
+            "Holding period expired before any disposition was decided",
+            "Open lost reports rechecked against the item before disposition",
+            "Contact attempts to a known owner recorded before disposition",
+            "Identification documents routed for secure destruction or return, never donated",
+            "Payment cards routed for secure destruction and the issuer not contacted",
+            "Medication disposed of through the route applicable policy requires",
+            "High-value items reviewed by the responsible manager before disposition",
+            "Donation recipient and date recorded where an item was donated",
+            "Disposal method recorded so it can be evidenced later"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cash_and_valuables",
+      "title": "Cash and high-value ledger",
+      "guidance": "Money is counted by two people, every time.",
+      "blocks": [
+        {
+          "key": "cash_rows",
+          "type": "table",
+          "label": "Cash and high-value ledger",
+          "columns": [
+            {
+              "key": "entry_date",
+              "label": "Date",
+              "units": 0.7
+            },
+            {
+              "key": "tag_number",
+              "label": "Tag",
+              "units": 0.55
+            },
+            {
+              "key": "amount_or_item",
+              "label": "Amount or item",
+              "units": 1.3
+            },
+            {
+              "key": "movement",
+              "label": "In or out",
+              "units": 0.85
+            },
+            {
+              "key": "counted_by",
+              "label": "Counted by",
+              "units": 1.0
+            },
+            {
+              "key": "witnessed_by",
+              "label": "Witnessed by",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "cash_position",
+          "type": "fields",
+          "label": "Cash position",
+          "fields": [
+            {
+              "key": "opening_cash",
+              "label": "Opening balance",
+              "units": 1.1
+            },
+            {
+              "key": "cash_in",
+              "label": "Received in period",
+              "units": 1.2
+            },
+            {
+              "key": "cash_out",
+              "label": "Released in period",
+              "units": 1.2
+            },
+            {
+              "key": "closing_cash",
+              "label": "Closing balance",
+              "units": 1.1
+            },
+            {
+              "key": "safe_reference",
+              "label": "Safe reference",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "count_variances",
+      "title": "Count variances, exceptions, and escalation",
+      "guidance": "A variance is escalated, never adjusted away.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "A tagged item in the log cannot be found in storage",
+            "An item in storage has no matching log entry",
+            "Cash closing balance does not reconcile",
+            "An item is past its holding period with no disposition decision",
+            "An item was disposed of before its holding period ended",
+            "A release has no ownership check recorded",
+            "Storage access log shows an entry outside the access list",
+            "A high-value item is held outside the safe"
+          ]
+        },
+        {
+          "key": "variance_register",
+          "type": "table",
+          "label": "Variance register",
+          "columns": [
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 1.2
+            },
+            {
+              "key": "investigation",
+              "label": "What was checked",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalation route",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inventory_boundary",
+          "type": "notice",
+          "label": "What this log does not decide",
+          "guidance": "This log records what is held, for how long, and what happened to it. It does not value property, transfer ownership, authorize destruction of documents or medication, or settle a claim for a missing item. Any unexplained variance goes to the responsible manager on an incident record rather than being corrected in this log."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Period closeout and handoff",
+      "guidance": "Leave the next period a count it can trust.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Period closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - reconciled",
+                "Closed with variance open",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_count_due",
+              "label": "Next count due",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Physical count reconciled to the tagged item register",
+            "Cash and high-value holdings verified by two people",
+            "Every expired item has a recorded disposition and authorizer",
+            "Disposition evidence filed for donations and destructions",
+            "Open variances raised on an incident record with named owners",
+            "Access list reviewed for the period",
+            "Register carried forward as the next period's opening position"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Period outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Storage handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by duty manager",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

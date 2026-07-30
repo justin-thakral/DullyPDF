@@ -1,0 +1,704 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1040__electrical_safety_walk_checklist_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1040__electrical_safety_walk_checklist_form.pdf",
+  "slug": "electrical-safety-walk-checklist-form",
+  "title": "Electrical Safety Walk and Corrective Action Checklist",
+  "subtitle": "Plan the electrical walk, observe critical controls and changing conditions, stop or contain immediate hazards, assign corrective actions, verify closure, and hand off residual risk.",
+  "description": "A practical Electrical safety walk covering site and crew routing, work phases and interfaces, trade-specific hazard prompts, observation evidence, immediate controls, corrective-action ownership, stop-work and incident routing, repeat findings, verification, trend review, and accountable closeout.",
+  "use_case": "Use when the electrical foreperson, supervisor, competent or qualified personnel, and safety management need a documented Electrical field walk that supports the site program but never substitutes for required permits, training, or inspections.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "walk_identity",
+      "title": "Electrical safety walk identity and operating context",
+      "guidance": "Identify the inspected work, phase, people, boundaries, and controlling safety references.",
+      "blocks": [
+        {
+          "key": "walk_reference",
+          "type": "fields",
+          "label": "Safety walk reference",
+          "fields": [
+            {
+              "key": "walk_number",
+              "label": "Walk number",
+              "units": 0.75
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.8
+            },
+            {
+              "key": "walk_date_time",
+              "label": "Walk date and time",
+              "units": 0.9
+            },
+            {
+              "key": "walk_lead",
+              "label": "Walk lead",
+              "units": 0.85
+            },
+            {
+              "key": "field_lead",
+              "label": "Electrical Foreperson",
+              "units": 0.95
+            },
+            {
+              "key": "walk_type",
+              "label": "Walk type",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Pre-start",
+                "Focused",
+                "Post-event",
+                "Follow-up"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "site_context",
+          "type": "fields",
+          "label": "Project, location, and conditions",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.0
+            },
+            {
+              "key": "site_location",
+              "label": "Site and exact area",
+              "units": 1.2
+            },
+            {
+              "key": "crew_count",
+              "label": "Crew count",
+              "units": 0.7
+            },
+            {
+              "key": "weather_environment",
+              "label": "Weather/environment",
+              "units": 1.0
+            },
+            {
+              "key": "active_interfaces",
+              "label": "Active trades/interfaces",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "work_phases",
+          "type": "checklist",
+          "label": "Active Electrical work phases observed",
+          "items": [
+            "Service, utility interface, metering, and service equipment",
+            "Feeders, panels, switchgear, transformers, and distribution",
+            "Branch circuits, raceways, conductors, boxes, and supports",
+            "Lighting, controls, emergency lighting, and lighting devices",
+            "Receptacles, disconnects, equipment connections, and appliances",
+            "Grounding, bonding, electrodes, and equipotential connections",
+            "Fire alarm, communications, security, or low-voltage interfaces",
+            "Temporary power, shutdowns, cutovers, and phased energization",
+            "Identification, torque, continuity, insulation, and functional tests",
+            "Schedules, labels, as-builts, training, and owner handoff"
+          ]
+        },
+        {
+          "key": "program_references",
+          "type": "fields",
+          "label": "Controlling safety and authorization references",
+          "fields": [
+            {
+              "key": "pretask_ref",
+              "label": "Pre-task plan/JHA ref",
+              "units": 1.0
+            },
+            {
+              "key": "permit_ref",
+              "label": "Permit reference",
+              "units": 0.9
+            },
+            {
+              "key": "isolation_ref",
+              "label": "Isolation/LOTO ref",
+              "units": 0.95
+            },
+            {
+              "key": "competent_person",
+              "label": "Competent/qualified person",
+              "units": 1.0
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency/rescue route ref",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "critical_controls",
+      "title": "Electrical critical-control verification",
+      "guidance": "Observe the work and route each applicable control to the responsible site process.",
+      "blocks": [
+        {
+          "key": "trade_hazards",
+          "type": "checklist",
+          "label": "Electrical hazard and control prompts",
+          "items": [
+            "De-energization, lockout, tagout, and absence-of-voltage verified",
+            "Qualified-person scope and energized-work authorization confirmed",
+            "Arc, shock, approach, PPE, barricade, and standby controls verified",
+            "Temporary power, GFCI, grounding, cords, and wet locations controlled",
+            "Overhead, underground, concealed, and induced-voltage hazards addressed",
+            "Backfeed, generator, battery, capacitor, and stored energy controlled",
+            "Ladder, lift, roof, shaft, and elevated-work exposures controlled",
+            "Excavation, utility locate, concrete encasement, and access controlled",
+            "Dust, silica, lead, asbestos, firestop, and occupied-area routes addressed",
+            "Energization boundary, communication, and emergency response confirmed"
+          ]
+        },
+        {
+          "key": "control_verification",
+          "type": "table",
+          "label": "Critical-control verification record",
+          "columns": [
+            {
+              "key": "hazard",
+              "label": "Hazard/task",
+              "units": 1.2
+            },
+            {
+              "key": "required",
+              "label": "Required control",
+              "units": 1.35
+            },
+            {
+              "key": "observed",
+              "label": "Observed status",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence/ref",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Control owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "general_conditions",
+          "type": "checklist",
+          "label": "General site-condition prompts",
+          "items": [
+            "Access, egress, stairs, ladders, and walking surfaces",
+            "Housekeeping, waste, cords, hoses, and trip exposure",
+            "Barricades, signs, public, occupant, and adjacent-worker separation",
+            "PPE selection, condition, use, and replacement",
+            "Tools, guards, inspections, and manufacturer limits",
+            "Material storage, stacking, handling, and floor loading",
+            "Lighting, weather, heat, cold, and visibility",
+            "Emergency communication, first aid, fire, and rescue access"
+          ]
+        },
+        {
+          "key": "safety_boundary",
+          "type": "notice",
+          "label": "Electrical safety-walk boundary",
+          "guidance": "This record does not authorize energized work or energization and does not replace qualified-person decisions, energy control, permits, engineering studies, code inspection, or approved test procedures. The walk is an observation record, not a permit, training record, exposure plan, or competent-person certification."
+        }
+      ]
+    },
+    {
+      "key": "observation_evidence",
+      "title": "Electrical observation and evidence register",
+      "guidance": "Record location-specific facts, exposure, immediate action, and evidence without vague pass/fail shorthand.",
+      "blocks": [
+        {
+          "key": "observation_register",
+          "type": "table",
+          "label": "Electrical safety observation register",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Location/task",
+              "units": 1.1
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.45
+            },
+            {
+              "key": "exposure",
+              "label": "Who/what exposed",
+              "units": 1.0
+            },
+            {
+              "key": "immediate",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Photo/ref",
+              "units": 0.8
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "observation_summary",
+          "type": "fields",
+          "label": "Observation summary and escalation",
+          "fields": [
+            {
+              "key": "positive_count",
+              "label": "Positive controls",
+              "units": 0.85
+            },
+            {
+              "key": "action_count",
+              "label": "Actions issued",
+              "units": 0.8
+            },
+            {
+              "key": "stop_count",
+              "label": "Stop/hold actions",
+              "units": 0.85
+            },
+            {
+              "key": "repeat_count",
+              "label": "Repeat findings",
+              "units": 0.8
+            },
+            {
+              "key": "photo_range",
+              "label": "Photo/evidence range",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_owner",
+              "label": "Escalation owner",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "changing_conditions",
+          "type": "textarea",
+          "label": "Changing condition, unplanned work, interface, or control failure",
+          "fields": [
+            {
+              "key": "condition_detail",
+              "label": "Describe the sequence, immediate safe state, notification, and required reassessment",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "evidence_quality",
+          "type": "checklist",
+          "label": "Observation evidence quality",
+          "items": [
+            "Exact area and task identified",
+            "Observed fact separated from conclusion",
+            "Affected people or property identified",
+            "Immediate action and current state recorded",
+            "Photo or document reference retained",
+            "Responsible employer or owner identified",
+            "Required permit or specialist route identified",
+            "Recheck date or closure criterion assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "corrective_actions",
+      "title": "Electrical corrective action and verification",
+      "guidance": "Assign each action to one owner, deadline, closure criterion, and verifier.",
+      "blocks": [
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Electrical corrective-action register",
+          "columns": [
+            {
+              "key": "action_id",
+              "label": "Action ID",
+              "units": 0.75
+            },
+            {
+              "key": "finding",
+              "label": "Finding/location",
+              "units": 1.3
+            },
+            {
+              "key": "required_action",
+              "label": "Required action",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due",
+              "label": "Due/recheck",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status/ref",
+              "units": 0.9
+            }
+          ],
+          "rows": 10
+        },
+        {
+          "key": "priority_routing",
+          "type": "fields",
+          "label": "Priority and interim control",
+          "fields": [
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Immediate",
+                "Before restart",
+                "This shift",
+                "Scheduled"
+              ]
+            },
+            {
+              "key": "interim_control",
+              "label": "Interim control ref",
+              "units": 1.0
+            },
+            {
+              "key": "notified_to",
+              "label": "Notified to",
+              "units": 0.85
+            },
+            {
+              "key": "notification_time",
+              "label": "Notification time",
+              "units": 0.85
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closure_verification",
+          "type": "table",
+          "label": "Corrective-action closure verification",
+          "columns": [
+            {
+              "key": "action_id",
+              "label": "Action ID",
+              "units": 0.75
+            },
+            {
+              "key": "completed",
+              "label": "Completed action",
+              "units": 1.35
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence/ref",
+              "units": 1.0
+            },
+            {
+              "key": "verified",
+              "label": "Verified by/date",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Close/reopen",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "rejected_closure",
+          "type": "textarea",
+          "label": "Rejected, partial, overdue, or ineffective corrective action",
+          "fields": [
+            {
+              "key": "rejection_detail",
+              "label": "Record reason, renewed control, escalation, owner, and next deadline",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "incident_escalation",
+      "title": "Electrical stop-work, incident, and formal escalation",
+      "guidance": "Route emergencies and reportable events through their controlling processes immediately.",
+      "blocks": [
+        {
+          "key": "event_route",
+          "type": "fields",
+          "label": "Event and stop-work routing",
+          "fields": [
+            {
+              "key": "event_type",
+              "label": "Event type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Near miss",
+                "Injury/illness",
+                "Damage",
+                "Environmental",
+                "Stop work"
+              ]
+            },
+            {
+              "key": "event_time",
+              "label": "Event date/time",
+              "units": 0.85
+            },
+            {
+              "key": "event_report_ref",
+              "label": "Separate report ref",
+              "units": 1.0
+            },
+            {
+              "key": "area_secured",
+              "label": "Area/control ref",
+              "units": 0.9
+            },
+            {
+              "key": "management_notice",
+              "label": "Management notice",
+              "units": 0.95
+            },
+            {
+              "key": "authority_notice",
+              "label": "Authority notice ref",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "event_preservation",
+          "type": "checklist",
+          "label": "Immediate response and evidence prompts",
+          "items": [
+            "Emergency response activated when needed",
+            "Unsafe exposure stopped and area controlled",
+            "Required medical route addressed",
+            "Scene and evidence preserved when safe",
+            "Equipment or material isolated",
+            "Witness and notification references retained",
+            "Separate incident or regulatory process opened",
+            "Restart authority and conditions identified"
+          ]
+        },
+        {
+          "key": "event_facts",
+          "type": "textarea",
+          "label": "Observed event facts, immediate response, and current condition",
+          "fields": [
+            {
+              "key": "event_detail",
+              "label": "Do not assign blame; record direct observations, evidence, notifications, and handoff",
+              "multiline": true
+            }
+          ],
+          "height": 72
+        },
+        {
+          "key": "restart_review",
+          "type": "signatures",
+          "label": "Restart or continued-hold review",
+          "fields": [
+            {
+              "key": "field_supervisor",
+              "label": "Field supervisor",
+              "units": 0.95
+            },
+            {
+              "key": "safety_reviewer",
+              "label": "Safety reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "restart_status",
+              "label": "Restart status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Released",
+                "Conditional",
+                "Hold",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "review_date",
+              "label": "Review date/time",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "walk_closeout",
+      "title": "Electrical safety walk closeout and trend handoff",
+      "guidance": "Reconcile findings, identify repeat conditions, and route residual risk to named owners.",
+      "blocks": [
+        {
+          "key": "walk_reconciliation",
+          "type": "fields",
+          "label": "Walk finding reconciliation",
+          "fields": [
+            {
+              "key": "findings_total",
+              "label": "Total findings",
+              "units": 0.75
+            },
+            {
+              "key": "closed_on_site",
+              "label": "Closed on site",
+              "units": 0.75
+            },
+            {
+              "key": "open_actions",
+              "label": "Open actions",
+              "units": 0.75
+            },
+            {
+              "key": "overdue_actions",
+              "label": "Overdue actions",
+              "units": 0.8
+            },
+            {
+              "key": "repeat_findings",
+              "label": "Repeat findings",
+              "units": 0.8
+            },
+            {
+              "key": "walk_status",
+              "label": "Walk status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Open actions",
+                "Escalated",
+                "Follow-up required"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "trend_register",
+          "type": "table",
+          "label": "Repeat finding, trend, and program-action register",
+          "columns": [
+            {
+              "key": "trend",
+              "label": "Trend/category",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence/sample",
+              "units": 1.2
+            },
+            {
+              "key": "program_action",
+              "label": "Program action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due_status",
+              "label": "Due/status",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "crew_handoff",
+          "type": "textarea",
+          "label": "Crew feedback, lessons, residual risk, and next-walk focus",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Record positive controls, unresolved actions, communication, and follow-up plan",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        },
+        {
+          "key": "walk_signoff",
+          "type": "signatures",
+          "label": "Electrical safety walk review",
+          "fields": [
+            {
+              "key": "walk_lead_sign",
+              "label": "Walk lead name/signature",
+              "units": 1.0
+            },
+            {
+              "key": "field_lead_sign",
+              "label": "Field lead acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "safety_manager",
+              "label": "Safety manager review",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_date",
+              "label": "Review date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

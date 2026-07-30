@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1827__shift_swap_approval_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1827__shift_swap_approval_form.pdf",
+  "slug": "shift-swap-approval-form",
+  "title": "Shift Swap Approval Form",
+  "subtitle": "Use this approval to test evidence and authority, resolve conflicts, issue a bounded decision, and verify every resulting update for a shift swap workflow.",
+  "description": "An original operational shift swap approval form that controls a paired schedule-change and coverage record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the requesting workers, scheduler, or shift manager needs a traceable approval so the authorized scheduling, payroll, operations, or HR reviewer can approve, conditionally approve, deny, cancel, reverse, or correct the proposed shift exchange under the current schedule, role-qualification matrix, rest and overtime rules, labor agreement, and applicable scheduling policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "approval_submission",
+      "title": "Shift Swap approval submission and authority route",
+      "guidance": "Identify the proposed action, submitter, decision authority, effective point, and required evidence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Shift Swap identity",
+          "fields": [
+            {
+              "key": "swap_record",
+              "label": "Shift-swap record number",
+              "units": 0.8
+            },
+            {
+              "key": "worksite_department",
+              "label": "Worksite and department",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_period",
+              "label": "Schedule period",
+              "units": 0.8
+            },
+            {
+              "key": "requestor_reference",
+              "label": "Requesting worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "counterparty_reference",
+              "label": "Accepting worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "submitted_at",
+              "label": "Submitted date and time",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Approval ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "approval_control",
+          "type": "fields",
+          "label": "Approval control",
+          "fields": [
+            {
+              "key": "submitted_by",
+              "label": "Submitted by",
+              "units": 0.85
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 0.7
+            },
+            {
+              "key": "requested_decision",
+              "label": "Requested decision",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 0.85
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "proposed_action",
+          "type": "textarea",
+          "label": "Proposed action, purpose, exact scope, affected people or work, exclusions, and requested conditions",
+          "fields": [
+            {
+              "key": "proposal_detail",
+              "label": "Approval proposal and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "submission_completeness",
+      "title": "Shift Swap evidence completeness and readiness",
+      "guidance": "Reject unsupported assumptions before the decision reaches an approver.",
+      "blocks": [
+        {
+          "key": "approval_readiness",
+          "type": "checklist",
+          "label": "Shift Swap approval readiness",
+          "items": [
+            "Both original and proposed shift segments reconcile",
+            "Coverage, skill mix, qualification, and supervision remain sufficient",
+            "Both workers consented without coercion or undisclosed exchange",
+            "Rest, overtime, premium, and agreement rules were reviewed",
+            "Conflicts with leave, training, restrictions, or assignments are resolved",
+            "Manager and scheduler have authority for the affected locations",
+            "System updates and worker notifications have named owners",
+            "Conditional approval includes a deadline and automatic fallback"
+          ]
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Evidence package submitted",
+          "items": [
+            "Published original schedule and schedule-period reference",
+            "Worker identity, role, qualification, and access records",
+            "Paired worker acknowledgments with date and time",
+            "Coverage and skill-mix review",
+            "Rest, overtime, premium, or agreement-rule check",
+            "Manager, scheduler, or second-level decision",
+            "Updated scheduling and timekeeping system reference",
+            "Cancellation, no-show, correction, or payroll follow-up record"
+          ]
+        },
+        {
+          "key": "completeness_register",
+          "type": "table",
+          "label": "Required item, evidence, owner, status, and deficiency",
+          "columns": [
+            {
+              "key": "required_item",
+              "label": "Required item",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence / record",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency / due",
+              "units": 1.15
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "authority_policy",
+      "title": "Shift Swap policy, authority, and impact review",
+      "guidance": "Apply the current decision standard and record each reviewer within their actual authority.",
+      "blocks": [
+        {
+          "key": "policy_checks",
+          "type": "checklist",
+          "label": "Shift Swap policy and impact checks",
+          "items": [
+            "Original schedule segments exist and belong to the stated workers",
+            "Proposed worker is qualified for the location, role, task, and equipment",
+            "Required coverage, skill mix, supervision, and headcount remain intact",
+            "Rest, consecutive-day, fatigue, and scheduling limits were checked",
+            "Overtime, premium, differential, and labor-cost effects are known",
+            "Applicable notice, seniority, bidding, or agreement terms were reviewed",
+            "Both workers' consent is current, voluntary, and independently recorded",
+            "Conflicts with leave, training, restrictions, or other assignments are resolved",
+            "Scheduling and timekeeping systems can reflect the same approved segments",
+            "Cancellation and failed-handoff responsibilities are explicit"
+          ]
+        },
+        {
+          "key": "reviewer_matrix",
+          "type": "table",
+          "label": "Review area, reviewer, authority, evidence, finding, and condition",
+          "columns": [
+            {
+              "key": "review_area",
+              "label": "Review area",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.75
+            },
+            {
+              "key": "authority",
+              "label": "Authority / limit",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.0
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition / route",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "impact_analysis",
+          "type": "textarea",
+          "label": "People, schedule, service, cost, payroll, privacy, security, safety, consistency, and system impacts",
+          "fields": [
+            {
+              "key": "impact_detail",
+              "label": "Cross-functional impact and authority analysis"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "conditions_exceptions",
+      "title": "Shift Swap conflicts, exceptions, and approval conditions",
+      "guidance": "Resolve material conflicts and convert every condition into owned, verifiable work.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized scheduling, payroll, operations, or HR reviewer under the current schedule, role-qualification matrix, rest and overtime rules, labor agreement, and applicable scheduling policy."
+        },
+        {
+          "key": "approval_triggers",
+          "type": "checklist",
+          "label": "Shift Swap exception and escalation triggers",
+          "items": [
+            "Approved change was not entered or appeared differently in a system",
+            "Worker reported to the wrong time, role, unit, or location",
+            "No-show or uncovered interval followed the exchange",
+            "Worker lacked required qualification, access, or supervision",
+            "Rest, fatigue, overtime, premium, or agreement constraint was missed",
+            "Worker reports coercion, retaliation, side payment, or false consent",
+            "Cancellation or reversal was not communicated to every affected party",
+            "Timekeeping or payroll result does not match the approved schedule"
+          ]
+        },
+        {
+          "key": "approval_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Approval condition, prerequisite, owner, due point, evidence, and expiry",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / prerequisite",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence required",
+              "units": 1.05
+            },
+            {
+              "key": "expiry",
+              "label": "Expiry / review",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "approval_decision",
+      "title": "Shift Swap approval decision and effective boundary",
+      "guidance": "Record one unambiguous decision with rationale, authority, conditions, and review date.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval boundary",
+          "guidance": "Approval is valid only within the stated scope and authority. The authorized scheduling, payroll, operations, or HR reviewer must apply the current schedule, role-qualification matrix, rest and overtime rules, labor agreement, and applicable scheduling policy; a signature does not override a required privacy, safety, security, legal, payroll, tax, or accommodation review."
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Approval decision",
+          "fields": [
+            {
+              "key": "approval_result",
+              "label": "Approval result",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date and scope",
+              "units": 1.1
+            },
+            {
+              "key": "expiry_review",
+              "label": "Expiry or review date",
+              "units": 0.85
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence relied upon, contrary evidence, alternatives, conditions, limits, and reason for decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Approval rationale and decision limits"
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "approval_signoff",
+          "type": "signatures",
+          "label": "Submission, qualified review, and decision authorization",
+          "fields": [
+            {
+              "key": "submitter_certification",
+              "label": "Submitter / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Scheduling, Payroll, Operations, Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "approver_authorization",
+              "label": "Authorized approver / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approval_implementation",
+      "title": "Shift Swap implementation, notification, and approval closeout",
+      "guidance": "Verify that the approved outcome reached every affected system and recipient.",
+      "blocks": [
+        {
+          "key": "implementation_actions",
+          "type": "table",
+          "label": "Approved implementation, system update, notification, and verification",
+          "columns": [
+            {
+              "key": "action_update",
+              "label": "Action / system update",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "recipient_system",
+              "label": "Recipient / system",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "approval_closeout_outcome",
+          "type": "fields",
+          "label": "Approval outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "approval_closeout_actions",
+          "type": "table",
+          "label": "Open shift swap action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "approval_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "approval_closeout_signoff",
+          "type": "signatures",
+          "label": "Approval accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Scheduling, Payroll, Operations, Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

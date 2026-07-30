@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "catalog_id": "retail_operations/dro_2537__vendor_intake_request_form",
+  "source_section": "retail_operations",
+  "source_filename": "dro_2537__vendor_intake_request_form.pdf",
+  "slug": "vendor-intake-request-form",
+  "title": "Vendor Intake Request Form",
+  "subtitle": "A practical scope and authorization request for vendor intake that connects identity, observations and evidence, decision authority, exception ownership, and accountable closeout.",
+  "description": "An original retail-operations scope and authorization request for vendor intake covering vendor onboarding and access, evidence references, authorization, escalation, operating limits, disposition, and handoff without copying a third-party form.",
+  "use_case": "Use when a vendor coordinator opens one vendor intake record to define a requested outcome, assess impacts and dependencies, record authorization limits, assign approved work, and communicate the decision; closure requires a documented outcome, evidence route, responsible owner, and recipient acknowledgment.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "record_identity",
+      "title": "Vendor request identity and routing",
+      "guidance": "Connect this request to one location, operating period, accountable owner, and review route.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Vendor record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 0.85
+            },
+            {
+              "key": "business_date",
+              "label": "Business date",
+              "units": 0.75
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "site",
+              "label": "Business unit or site",
+              "units": 1.25
+            },
+            {
+              "key": "unit",
+              "label": "Vendor scope or route",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "routing",
+          "type": "fields",
+          "label": "Owner and operating route",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned vendor coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "shift_window",
+              "label": "Shift or time window",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Record status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Active",
+                "Hold",
+                "Review",
+                "Closed"
+              ]
+            },
+            {
+              "key": "related_reference",
+              "label": "Related record or ticket",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "record_scope",
+          "type": "textarea",
+          "label": "Vendor event scope, trigger, affected area, and prior handoff",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Vendor Intake scope and routing context"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "requested_scope",
+      "title": "Requested vendor intake action and business need",
+      "guidance": "Define the requested outcome, affected scope, timing, and exclusions before approval.",
+      "blocks": [
+        {
+          "key": "request_types",
+          "type": "checklist",
+          "label": "Vendor request type",
+          "items": [
+            "Onboard a new vendor",
+            "Renew or reactivate a vendor",
+            "Add a product, service, or site",
+            "Change sponsor, contact, or ownership reference",
+            "Request badge, key, delivery, system, or data access",
+            "Add or replace a subcontractor",
+            "Use an emergency or temporary vendor",
+            "Suspend or offboard a vendor"
+          ]
+        },
+        {
+          "key": "scope_lines",
+          "type": "table",
+          "label": "Requested scope lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Area, item, or action",
+              "units": 1.35
+            },
+            {
+              "key": "current_state",
+              "label": "Current state",
+              "units": 1.1
+            },
+            {
+              "key": "requested_outcome",
+              "label": "Requested outcome",
+              "units": 1.3
+            },
+            {
+              "key": "needed_by",
+              "label": "Needed by",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "business_need",
+          "type": "textarea",
+          "label": "Business need, trigger, customer or staff impact, assumptions, exclusions, and evidence",
+          "fields": [
+            {
+              "key": "business_need_detail",
+              "label": "Vendor Intake request rationale and evidence"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "readiness_impact",
+      "title": "Vendor readiness, dependencies, and impact review",
+      "guidance": "Identify what must be true before work starts and who owns affected operations.",
+      "blocks": [
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Readiness and impact indicators",
+          "items": [
+            "Vendor identity or authorized contact mismatch",
+            "Scope, site, product, or subcontractor unclear",
+            "Required document expired, missing, or not applicable",
+            "Data, system, key, badge, or after-hours access requested",
+            "Commercial setup differs from approved purchase route",
+            "Conflict or restricted-category review needed",
+            "Operational owner has not accepted the handoff",
+            "Start date precedes completed approvals"
+          ]
+        },
+        {
+          "key": "resource_route",
+          "type": "fields",
+          "label": "Resources and operating route",
+          "fields": [
+            {
+              "key": "requested_window",
+              "label": "Requested window",
+              "units": 0.9
+            },
+            {
+              "key": "affected_area",
+              "label": "Affected area or channel",
+              "units": 1.1
+            },
+            {
+              "key": "staff_owner",
+              "label": "Operations owner",
+              "units": 0.95
+            },
+            {
+              "key": "support_owner",
+              "label": "Support or vendor owner",
+              "units": 1.0
+            },
+            {
+              "key": "customer_impact",
+              "label": "Customer impact",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "None expected",
+                "Limited",
+                "Delay",
+                "Closure or hold",
+                "Unknown"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "request_boundary",
+          "type": "notice",
+          "label": "Scope and authority boundary",
+          "guidance": "Use references and status fields rather than copying tax identifiers, bank details, identity documents, credentials, or confidential contracts into this general form. A listed document is not a legal or professional validation. Follow applicable purchasing, access, privacy, security, and retention policy and route specialist judgments to the authorized reviewer."
+        }
+      ]
+    },
+    {
+      "key": "review_authorization",
+      "title": "Vendor review, alternatives, and authorization",
+      "guidance": "Separate requested scope from approved scope and preserve declined, deferred, or conditional items.",
+      "blocks": [
+        {
+          "key": "review_lines",
+          "type": "table",
+          "label": "Request review and decision lines",
+          "columns": [
+            {
+              "key": "request_ref",
+              "label": "Scope line",
+              "units": 0.8
+            },
+            {
+              "key": "review_result",
+              "label": "Review result or alternative",
+              "units": 1.35
+            },
+            {
+              "key": "decision",
+              "label": "Approve, defer, or decline",
+              "units": 1.15
+            },
+            {
+              "key": "condition",
+              "label": "Condition or reason",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_route",
+          "type": "fields",
+          "label": "Vendor request decision and authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Proceed",
+                "Proceed with limits",
+                "Hold",
+                "Escalate",
+                "Decline",
+                "Rework"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or approval ref.",
+              "units": 1.05
+            },
+            {
+              "key": "review_owner",
+              "label": "Review or follow-up owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, approved limits, required evidence, exception path, and communication plan",
+          "fields": [
+            {
+              "key": "decision_rationale_detail",
+              "label": "Vendor Intake authorization rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "request_handoff",
+      "title": "Vendor approved-work handoff and exception routing",
+      "guidance": "Translate the decision into an accountable assignment without implying that requested work is already complete.",
+      "blocks": [
+        {
+          "key": "assignment_register",
+          "type": "table",
+          "label": "Approved assignment and handoff",
+          "columns": [
+            {
+              "key": "approved_action",
+              "label": "Approved action",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Assigned owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "proof",
+              "label": "Completion evidence needed",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "handoff_requirements",
+          "type": "checklist",
+          "label": "Approved-request handoff requirements",
+          "items": [
+            "Approved scope and excluded scope communicated",
+            "Authorization reference linked to the assignment",
+            "Assigned owner accepted the work",
+            "Prerequisites and operating limits routed",
+            "Due point and escalation contact agreed",
+            "Required completion evidence defined"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Vendor outcome, closeout, and handoff",
+      "guidance": "Make the final outcome, remaining limitation, next action, owner, and acceptance visible.",
+      "blocks": [
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Vendor closeout controls",
+          "items": [
+            "Approved vendor ID and scope recorded",
+            "Site, system, and data access owners notified",
+            "Commercial setup reference linked in restricted system",
+            "Conditions and expiration dates have owners",
+            "Start or hold decision communicated to sponsor",
+            "Renewal and offboarding responsibility assigned"
+          ]
+        },
+        {
+          "key": "outcome_route",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with limits",
+                "Open follow-up",
+                "Transferred",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "remaining_limit",
+              "label": "Remaining limit",
+              "units": 1.15
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.1
+            },
+            {
+              "key": "next_owner",
+              "label": "Responsible owner",
+              "units": 0.95
+            },
+            {
+              "key": "due_point",
+              "label": "Due date or time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "acceptance_register",
+          "type": "table",
+          "label": "Outcome verification, recipient acceptance, and reopen decision",
+          "columns": [
+            {
+              "key": "outcome_item",
+              "label": "Outcome or item",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Verification evidence",
+              "units": 1.3
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "acceptance",
+              "label": "Accepted, limited, or reopened",
+              "units": 1.25
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "remaining_action_register",
+          "type": "table",
+          "label": "Remaining limitation, action, owner, due point, and recipient route",
+          "columns": [
+            {
+              "key": "limitation_action",
+              "label": "Limitation or action",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence needed",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "recipient_route",
+              "label": "Recipient or route",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "residual_record",
+          "type": "textarea",
+          "label": "Unresolved work, customer or staff impact, evidence location, and handoff message",
+          "fields": [
+            {
+              "key": "residual_detail",
+              "label": "Vendor Intake residual work and handoff"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "closeout_acknowledgment",
+          "type": "signatures",
+          "label": "Request closeout acknowledgment",
+          "fields": [
+            {
+              "key": "prepared_ack",
+              "label": "Prepared by acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "prepared_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "review_ack",
+              "label": "Reviewer or recipient acknowledgment",
+              "units": 1.35
+            },
+            {
+              "key": "review_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ],
+          "guidance": "Acknowledgment records preparation and receipt; it is not a legal, safety, or professional certification."
+        }
+      ]
+    }
+  ]
+}

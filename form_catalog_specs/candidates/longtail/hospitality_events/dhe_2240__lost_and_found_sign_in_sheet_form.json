@@ -1,0 +1,430 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2240__lost_and_found_sign_in_sheet_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2240__lost_and_found_sign_in_sheet_form.pdf",
+  "slug": "lost-and-found-sign-in-sheet-form",
+  "title": "Lost and Found Sign-In Sheet Form",
+  "subtitle": "Log every entry to the storage area and every signature that moves property, so custody can be reconstructed from one sheet.",
+  "description": "An original access and custody signature log for a lost-and-found storage area. It records the log period and access control basis, every entry to the area with reason and items touched, the release signature log, dual-control events for cash and valuables, access exceptions, and an accountable period closeout.",
+  "use_case": "Use as the running access and signature record for a storage area, so that when an item cannot be found the venue can say exactly who was in the room and what they moved. The log closes at the end of the period with every entry signed out.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_identity",
+      "title": "Log period and access basis",
+      "guidance": "State who is allowed in and how the area is secured.",
+      "blocks": [
+        {
+          "key": "log_routing",
+          "type": "fields",
+          "label": "Log identity and routing",
+          "fields": [
+            {
+              "key": "sheet_id",
+              "label": "Sheet record ID",
+              "units": 0.95
+            },
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.85
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.85
+            },
+            {
+              "key": "storage_location",
+              "label": "Storage location",
+              "units": 1.2
+            },
+            {
+              "key": "log_owner",
+              "label": "Storage owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "access_basis",
+          "type": "fields",
+          "label": "Access control basis",
+          "fields": [
+            {
+              "key": "access_method",
+              "label": "Access method",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not set",
+                "Key held at the desk",
+                "Coded lock",
+                "Card access",
+                "Escorted access only"
+              ]
+            },
+            {
+              "key": "authorized_count",
+              "label": "People on access list",
+              "units": 1.55
+            },
+            {
+              "key": "list_reviewed",
+              "label": "Access list reviewed",
+              "units": 1.4
+            },
+            {
+              "key": "camera_coverage",
+              "label": "Camera coverage",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_register",
+      "title": "Storage access register",
+      "guidance": "One row per entry, signed out before leaving.",
+      "blocks": [
+        {
+          "key": "access_rows",
+          "type": "table",
+          "label": "Access register",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.1
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.85
+            },
+            {
+              "key": "time_in",
+              "label": "In",
+              "units": 0.55
+            },
+            {
+              "key": "time_out",
+              "label": "Out",
+              "units": 0.55
+            },
+            {
+              "key": "reason",
+              "label": "Reason for entry",
+              "units": 1.3
+            },
+            {
+              "key": "tags_touched",
+              "label": "Tags touched",
+              "units": 0.9
+            }
+          ],
+          "rows": 12,
+          "guidance": "Recording which tags were handled is what makes this log useful after a discrepancy."
+        },
+        {
+          "key": "access_totals",
+          "type": "fields",
+          "label": "Access reconciliation",
+          "fields": [
+            {
+              "key": "entries_logged",
+              "label": "Entries logged",
+              "units": 1.15
+            },
+            {
+              "key": "all_signed_out",
+              "label": "All signed out",
+              "units": 1.15
+            },
+            {
+              "key": "escorted_entries",
+              "label": "Escorted entries",
+              "units": 1.25
+            },
+            {
+              "key": "unlisted_entries",
+              "label": "Entries off the list",
+              "units": 1.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "release_signatures",
+      "title": "Property release signature log",
+      "guidance": "Every item that leaves has a name against it.",
+      "blocks": [
+        {
+          "key": "release_rows",
+          "type": "table",
+          "label": "Release signature log",
+          "columns": [
+            {
+              "key": "tag_number",
+              "label": "Tag",
+              "units": 0.6
+            },
+            {
+              "key": "item",
+              "label": "Item released",
+              "units": 1.3
+            },
+            {
+              "key": "released_to",
+              "label": "Released to",
+              "units": 1.15
+            },
+            {
+              "key": "order_reference",
+              "label": "Release order",
+              "units": 1.0
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.05
+            },
+            {
+              "key": "signature",
+              "label": "Signature",
+              "units": 0.9
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "release_controls",
+          "type": "checklist",
+          "label": "Release controls",
+          "items": [
+            "Every release has an approved release order reference",
+            "Ownership check recorded before the item left storage",
+            "Recipient signed at the point of handover",
+            "Shipped items recorded with a tracking reference instead of a signature",
+            "Restricted item classes released only with manager authorization",
+            "Storage register updated so the tag no longer shows as held"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "dual_control",
+      "title": "Dual-control events",
+      "guidance": "Cash, valuables, and disposals need two people.",
+      "blocks": [
+        {
+          "key": "dual_rows",
+          "type": "table",
+          "label": "Dual-control event log",
+          "columns": [
+            {
+              "key": "event_time",
+              "label": "Time",
+              "units": 0.7
+            },
+            {
+              "key": "event",
+              "label": "Event",
+              "units": 1.4
+            },
+            {
+              "key": "first_person",
+              "label": "First person",
+              "units": 1.1
+            },
+            {
+              "key": "second_person",
+              "label": "Second person",
+              "units": 1.15
+            },
+            {
+              "key": "outcome",
+              "label": "Outcome recorded",
+              "units": 1.25
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "dual_notes",
+          "type": "textarea",
+          "label": "Anything observed during a dual-control event that needs following up",
+          "fields": [
+            {
+              "key": "dual_detail",
+              "label": "Dual-control observations"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "access_exceptions",
+      "title": "Access exceptions and escalation",
+      "guidance": "An unexplained entry is the earliest warning available.",
+      "blocks": [
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Exception triggers",
+          "items": [
+            "An entry has no sign-out time",
+            "Someone not on the access list entered the area",
+            "The area was found unlocked or open",
+            "A cash or valuables event was completed by one person",
+            "An item left storage without a release order reference",
+            "A recipient refused or was not asked to sign",
+            "Tags touched during an entry were not recorded",
+            "Camera coverage was obstructed or unavailable"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Access exception register",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception",
+              "units": 1.2
+            },
+            {
+              "key": "action_taken",
+              "label": "Action taken",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalation route",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Purpose and limits of this log",
+          "guidance": "This log exists to reconstruct who was in the storage area and what moved. It is not an accusation of anyone recorded in it, a performance record, or proof that an item was or was not taken. Restrict access to it, retain it only as applicable privacy and retention policy allows, and route any unexplained entry or missing item to the responsible manager on an incident record."
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Period closeout and handoff",
+      "guidance": "Close the period with every entry and release accounted for.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Period closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - all accounted",
+                "Closed with exception",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Handoff confirmations",
+          "items": [
+            "Every access row has a matching sign-out time",
+            "Every release row has an order reference and a signature or tracking",
+            "Dual-control events show two named people",
+            "Entries off the access list escalated with named owners",
+            "Log reconciled against the storage inventory register",
+            "Sheet stored securely and retained under applicable policy"
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Period outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Access log handoff detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by duty manager",
+              "units": 1.25
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

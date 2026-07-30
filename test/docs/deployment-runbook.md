@@ -34,6 +34,49 @@ Supported deploy environments:
 
 `backend_image` is allowed only for `backend` and `all`.
 
+Production `frontend` and `all` deploys also acquire the shared catalog
+production lock at
+`gs://dullypdf-form-catalog-assets-east4/catalog-release-state/production-deployment.lock`.
+The workflow holds it from the pre-deploy Firebase Hosting snapshot through the
+deploy, immediate Hosting-evidence creation, hosted smoke, failure rollback, and
+evidence upload. After the potentially long frontend build, `deploy-frontend.sh`
+re-verifies the exact remote lock generation and requires at least five minutes
+of remaining lease immediately before invoking Firebase. The receipt is created
+immediately after Firebase returns the new version, before any live smoke that
+can fail. A later workflow failure uses the still-held lock, original Firebase
+result, unchanged old catalog pointer, and exact current Hosting version to
+perform the guarded rollback. The rollback mutation and catalog pointer
+promotion repeat the same five-minute lease check at their own final mutation
+boundaries. If those identities cannot prove this run's target, the workflow
+refuses mutation and uploads a failure diagnostic. Dev and backend-only deploys
+do not take this lock.
+
+The release operator then runs
+`scripts/finalize-form-catalog-release.sh`. That controller reacquires the same
+lock and holds it continuously across exact Hosting/pointer classification,
+release-bound HTTP sampling, real browser fill/save/reopen canaries, one
+paginated exact inventory of the immutable GCS release prefix, and the
+generation-guarded pointer update. The inventory report is retained beside the
+browser evidence as `promotion-gcs-inventory.json`. It also arms an exit/signal
+fail-safe that rolls Hosting back before the pointer CAS and refuses mutation
+after promotion or unrelated state drift.
+
+If the controlled workflow cannot prove either unchanged Hosting or a verified
+rollback, it intentionally does not release the lease. Inspect the uploaded
+failure snapshot/diagnostic and
+`form-catalog-production-lock.json`; classify Hosting and the catalog pointer
+before repair. After a safe terminal state is established, release with the
+recorded owner/state file, which verifies the exact remote generation. If the
+state artifact is unavailable, wait for the two-hour `expiresAt` and let the
+next acquisition perform the generation-matched stale takeover. Never delete
+the lock object without an exact generation precondition.
+
+If the primary evidence artifact upload fails, the workflow rolls Hosting back
+and makes one separately named `form-catalog-hosting-recovery-*` upload attempt.
+It releases the lease only when that recovery artifact is durable and the local
+canonical rollback receipt validates. If both uploads fail, it retains the
+lease for manual classification.
+
 ## Auth
 
 GitHub-hosted deploys should authenticate with Workload Identity Federation
@@ -67,6 +110,15 @@ Required environment-level deploy material:
 - `development/FRONTEND_ENV_OVERRIDE_B64_DEV`
 - `production/BACKEND_ENV_FILE_B64_PROD`
 - `production/FRONTEND_ENV_OVERRIDE_B64_PROD`
+
+The first catalog train also requires a production browser-canary account.
+Until the post-live controller is moved into GitHub Actions, export either
+`DULLYPDF_E2E_EMAIL`/`DULLYPDF_E2E_PASSWORD` or
+`SMOKE_LOGIN_EMAIL`/`SMOKE_LOGIN_PASSWORD` in the shell that invokes the
+controller. If the controller is automated in the production environment,
+create equivalent environment secrets and pass them only to that step. Do not
+start a production catalog train until the account is configured and has one
+generated-PDF download available per planned browser canary.
 
 Operational expectation:
 

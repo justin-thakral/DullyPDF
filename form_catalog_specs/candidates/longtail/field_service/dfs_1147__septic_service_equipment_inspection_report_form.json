@@ -1,0 +1,784 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1147__septic_service_equipment_inspection_report_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1147__septic_service_equipment_inspection_report_form.pdf",
+  "slug": "septic-service-equipment-inspection-report-form",
+  "title": "Septic Service Equipment Inspection Report Form",
+  "subtitle": "Control site assessment, safe access, inspection, pumping, maintenance, transport, and handoff through verified identity, domain-specific observations, evidence, authorization, exception ownership, and accountable closeout.",
+  "description": "An original, workflow-complete septic service equipment inspection report for tanks, baffles, pumps, controls, distribution components, and drainfield observations. It connects system records, approved scope, and disposal authority to present conditions, repeatable evidence, decisions, unresolved work, and the receiving party's handoff.",
+  "use_case": "Use when a qualified septic-service technician must inspect tanks, baffles, pumps, controls, distribution components, and drainfield observations against stated criteria and issue a traceable condition, restriction, corrective-action, or release decision.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Septic Service inspection, site, asset, and inspector identity",
+      "guidance": "Define the exact inspected population, governing criteria, responsible parties, and record boundary.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Septic Service equipment inspection report reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Service, pumping, or inspection record number",
+              "units": 1.15
+            },
+            {
+              "key": "opened_date_time",
+              "label": "Opened date and time",
+              "units": 0.85
+            },
+            {
+              "key": "account_reference",
+              "label": "Customer, account, PO, or case",
+              "units": 1.05
+            },
+            {
+              "key": "record_status",
+              "label": "Record status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Assigned",
+                "On site",
+                "Controlled hold",
+                "Ready for review",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_site",
+          "type": "fields",
+          "label": "Customer, contact, and service location",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_contact",
+              "label": "Property owner or authorized contact",
+              "units": 1.15
+            },
+            {
+              "key": "phone_email",
+              "label": "Phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "service_location",
+              "label": "Septic system and access locations",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Permit, tank, component, vehicle, and disposal identifiers",
+          "fields": [
+            {
+              "key": "asset_type",
+              "label": "Property and system location",
+              "units": 1.05
+            },
+            {
+              "key": "asset_model",
+              "label": "Permit, design, or as-built reference",
+              "units": 1.1
+            },
+            {
+              "key": "asset_identifier",
+              "label": "Tank, pump, treatment-unit, or component type",
+              "units": 1.1
+            },
+            {
+              "key": "asset_history_ref",
+              "label": "Last inspection, pumping, or maintenance date",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "request_context",
+          "type": "textarea",
+          "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant septic service context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested outcome, reported condition, exact affected scope, timing, and relevant septic service context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "scope_readiness",
+      "title": "Septic Service inspection scope, criteria, and readiness",
+      "guidance": "Do not infer whole-asset or whole-site condition from a limited, inaccessible, or unqualified inspection.",
+      "blocks": [
+        {
+          "key": "inspection_assignment",
+          "type": "fields",
+          "label": "Inspection assignment and criteria",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Qualified septic-service technician",
+              "units": 1.2
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification, license, or training ref.",
+              "units": 1.1
+            },
+            {
+              "key": "inspection_date_time",
+              "label": "Inspection date and time",
+              "units": 0.95
+            },
+            {
+              "key": "criteria_reference",
+              "label": "Controlling plan or criteria reference",
+              "units": 1.3
+            },
+            {
+              "key": "inspection_type",
+              "label": "Inspection type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Initial",
+                "Periodic",
+                "Pre-service",
+                "Post-service",
+                "Incident or complaint",
+                "Return-to-service"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Inspection access and control readiness",
+          "items": [
+            "Property, system, access, buried-utility, and component locations confirmed",
+            "Tank, cover, riser, and surrounding ground assessed before opening",
+            "No person enters a tank or confined space under this general service record",
+            "People, children, pets, vehicles, and ignition sources excluded from the work zone",
+            "Sewage exposure PPE, hygiene, decontamination, and spill controls available",
+            "Hose, vacuum, truck, pump, valve, cap, and containment condition checked",
+            "Ventilation and atmospheric warning signs receive a stop-work response",
+            "Liquid, sludge, scum, effluent, and pumped volume observations traceable",
+            "Transport vehicle, manifest, receiving facility, and disposal route assigned",
+            "Covers, alarms, power, grade, and site security restored before release"
+          ]
+        },
+        {
+          "key": "population_sampling",
+          "type": "fields",
+          "label": "Population, sampling, and access limitation",
+          "fields": [
+            {
+              "key": "population",
+              "label": "Total assets, zones, or points",
+              "units": 0.9
+            },
+            {
+              "key": "inspected_count",
+              "label": "Actually inspected",
+              "units": 0.85
+            },
+            {
+              "key": "selection_method",
+              "label": "Selection or coverage method",
+              "units": 1.1
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Excluded or inaccessible scope",
+              "units": 1.15
+            },
+            {
+              "key": "known_limits",
+              "label": "Known evidence or access limits",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "preinspection_context",
+          "type": "textarea",
+          "label": "Operating state, environmental conditions, preparatory controls, known history, and inspection limitations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Operating state, environmental conditions, preparatory controls, known history, and inspection limitations",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "component_findings",
+      "title": "Septic Service component and condition findings",
+      "guidance": "Record actual observations at requirement level rather than converting a checkmark into a conclusion.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Septic Service detailed inspection points",
+          "items": [
+            "Permit, as-built, system age, use, occupancy, and maintenance history",
+            "Tank, riser, lid, baffle, tee, wall, seam, leak, and corrosion condition",
+            "Sludge and scum levels, liquid level, capacity, and pumping need",
+            "Inlet, outlet, filter, distribution box, piping, and flow condition",
+            "Pump, float, alarm, panel, electrical, and mechanical-component condition",
+            "Drainfield ponding, odor, surfacing effluent, vegetation, erosion, and vehicle load",
+            "Backup, slow drain, gurgling, sewage odor, leak, and recent high-use evidence",
+            "Roof, storm, sump, softener, grease, chemical, and prohibited connection concerns",
+            "Access, buried utilities, soil stability, traffic, weather, and neighboring exposure",
+            "Pumping vehicle, hose route, containment, transport, and receiving-facility readiness"
+          ]
+        },
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Inspection result and evidence register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Asset, component, zone, or point",
+              "units": 1.2
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.2
+            },
+            {
+              "key": "observation",
+              "label": "Actual observation",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, monitor, or N/A",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or inspector initials",
+              "units": 1.05
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "finding_context",
+          "type": "textarea",
+          "label": "Pattern, environmental influence, sampling basis, inaccessible point, and observation interpretation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pattern, environmental influence, sampling basis, inaccessible point, and observation interpretation",
+              "multiline": true
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "measurements_evidence",
+      "title": "Septic Service measurements, instruments, and evidence package",
+      "guidance": "Preserve readings and source evidence needed to reproduce the inspection decision.",
+      "blocks": [
+        {
+          "key": "measurement_log",
+          "type": "table",
+          "label": "Measurement, test, and instrument log",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Measurement or test point",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method or instrument",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected or limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Actual result",
+              "units": 0.9
+            },
+            {
+              "key": "calibration",
+              "label": "Calibration or evidence ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 6,
+          "guidance": "Applicable concepts include: Tank or compartment capacity, Sludge depth or distance to outlet, Scum depth or clearance, Liquid level or operating condition, Pumped volume or load quantity, Pump, float, alarm, flow, or electrical reading."
+        },
+        {
+          "key": "evidence_available",
+          "type": "checklist",
+          "label": "Available inspection evidence",
+          "items": [
+            "Permit, design, as-built, or system-location reference",
+            "Tank, lid, baffle, filter, pump, and alarm photographs",
+            "Sludge, scum, liquid-level, and capacity measurements",
+            "Drainfield and site-condition observations",
+            "Pumped compartment and volume record",
+            "Vehicle, operator, manifest, and load reference",
+            "Approved receiving-facility receipt",
+            "Restoration, repair recommendation, and customer instruction record"
+          ]
+        },
+        {
+          "key": "evidence_index",
+          "type": "table",
+          "label": "Evidence, source, affected scope, and record location",
+          "columns": [
+            {
+              "key": "evidence",
+              "label": "Evidence or source record",
+              "units": 1.35
+            },
+            {
+              "key": "scope",
+              "label": "Affected asset, zone, or point",
+              "units": 1.15
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.0
+            },
+            {
+              "key": "date",
+              "label": "Record date",
+              "units": 0.8
+            },
+            {
+              "key": "location",
+              "label": "Evidence location",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_limits",
+          "type": "textarea",
+          "label": "Unavailable method, calibration concern, conflicting result, photograph restriction, and remaining evidence gap",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unavailable method, calibration concern, conflicting result, photograph restriction, and remaining evidence gap",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "defect_control",
+      "title": "Septic Service defect classification, containment, and correction",
+      "guidance": "Separate the immediate protection from the corrective action and from the final serviceability decision.",
+      "blocks": [
+        {
+          "key": "defect_indicators",
+          "type": "checklist",
+          "label": "Defect, hazard, or uncertain-condition indicators",
+          "items": [
+            "Tank location, access, buried utility, or component identity uncertain",
+            "Cover, riser, tank, soil, or surrounding surface appears unstable",
+            "Confined-space entry, fall-in, engulfment, toxic gas, or oxygen concern",
+            "Ignition source, fire, explosion, electrical, or mechanical exposure",
+            "Sewage contact, splash, aerosol, spill, backup, or public exposure",
+            "Hose, vacuum, valve, truck, cap, containment, or traffic control defective",
+            "Unexpected industrial, hazardous, chemical, or prohibited waste suspected",
+            "Pumping may damage an unknown, fragile, or structurally compromised component",
+            "Transport manifest, vehicle authorization, facility acceptance, or disposal route unavailable",
+            "System failure, surfacing effluent, contamination, or repair need exceeds scope"
+          ]
+        },
+        {
+          "key": "defect_register",
+          "type": "table",
+          "label": "Defect priority, immediate control, correction, and verification",
+          "columns": [
+            {
+              "key": "defect",
+              "label": "Defect and affected scope",
+              "units": 1.25
+            },
+            {
+              "key": "priority",
+              "label": "Priority or consequence",
+              "units": 0.9
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "correction",
+              "label": "Corrective action and owner",
+              "units": 1.2
+            },
+            {
+              "key": "verification",
+              "label": "Due point or verification ref.",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "containment_status",
+          "type": "fields",
+          "label": "Containment and correction status",
+          "fields": [
+            {
+              "key": "use_status",
+              "label": "Use, access, or service status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Available",
+                "Available with restriction",
+                "Controlled hold",
+                "Removed from service",
+                "Refer to qualified review"
+              ]
+            },
+            {
+              "key": "contained_scope",
+              "label": "Contained or excluded scope",
+              "units": 1.1
+            },
+            {
+              "key": "correction_owner",
+              "label": "Correction owner",
+              "units": 1.0
+            },
+            {
+              "key": "verification_due",
+              "label": "Verification due",
+              "units": 0.95
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_decision",
+      "title": "Septic Service inspection status and release decision",
+      "guidance": "Base the stated status on explicit findings, test limits, defect control, and qualified authorization.",
+      "blocks": [
+        {
+          "key": "release_verification",
+          "type": "checklist",
+          "label": "Release and condition verification points",
+          "items": [
+            "Authorized tank or compartment was inspected and serviced",
+            "Pumped volume and remaining condition are documented",
+            "Baffles, tees, filter, pump, float, and alarm status are recorded",
+            "No visible spill, open access, unsecured cover, or uncontrolled exposure remains",
+            "Vehicle, manifest, receiving facility, and disposal receipt reconcile",
+            "System power, alarms, covers, grade, and access are restored",
+            "Failure indicators and repair recommendations have an owner and due point",
+            "Customer received use, water, maintenance, and emergency guidance"
+          ]
+        },
+        {
+          "key": "inspection_status",
+          "type": "fields",
+          "label": "Inspection and serviceability decision",
+          "fields": [
+            {
+              "key": "overall_status",
+              "label": "Overall status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with monitor item",
+                "Restricted",
+                "Corrective action required",
+                "Controlled hold",
+                "Unable to determine"
+              ]
+            },
+            {
+              "key": "accepted_scope",
+              "label": "Accepted asset, area, or scope",
+              "units": 1.15
+            },
+            {
+              "key": "excluded_scope",
+              "label": "Held, excluded, or inaccessible scope",
+              "units": 1.15
+            },
+            {
+              "key": "decision_basis",
+              "label": "Decision basis reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Inspection conclusion, evidence relied upon, limitation, service restriction, correction need, and reinspection trigger",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inspection conclusion, evidence relied upon, limitation, service restriction, correction need, and reinspection trigger",
+              "multiline": true
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "inspection_authorization",
+          "type": "signatures",
+          "label": "Inspection decision and release authorization",
+          "fields": [
+            {
+              "key": "inspector_signoff",
+              "label": "Inspector and date",
+              "units": 1.15
+            },
+            {
+              "key": "qualified_review",
+              "label": "Septic, wastewater, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "custody_owner",
+              "label": "Service, custody, or site owner and date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_exceptions",
+      "title": "Septic Service inspection exception and escalation",
+      "guidance": "Route any authority, access, evidence, defect, scope, or release conflict to an accountable owner.",
+      "blocks": [
+        {
+          "key": "inspection_exception_indicators",
+          "type": "checklist",
+          "label": "Septic Service exception and stop-work indicators",
+          "items": [
+            "Tank location, access, buried utility, or component identity uncertain",
+            "Cover, riser, tank, soil, or surrounding surface appears unstable",
+            "Confined-space entry, fall-in, engulfment, toxic gas, or oxygen concern",
+            "Ignition source, fire, explosion, electrical, or mechanical exposure",
+            "Sewage contact, splash, aerosol, spill, backup, or public exposure",
+            "Hose, vacuum, valve, truck, cap, containment, or traffic control defective",
+            "Unexpected industrial, hazardous, chemical, or prohibited waste suspected",
+            "Pumping may damage an unknown, fragile, or structurally compromised component",
+            "Transport manifest, vehicle authorization, facility acceptance, or disposal route unavailable",
+            "System failure, surfacing effluent, contamination, or repair need exceeds scope"
+          ],
+          "guidance": "Select the observed condition; do not use a generic exception when the actual trigger is known."
+        },
+        {
+          "key": "inspection_exception_actions",
+          "type": "table",
+          "label": "Exception containment, decision, and escalation register",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue and affected scope",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_point",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "decision_ref",
+              "label": "Decision or evidence ref.",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_exception_status",
+          "type": "fields",
+          "label": "Controlled hold or exception status",
+          "fields": [
+            {
+              "key": "interim_status",
+              "label": "Interim status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Awaiting authority",
+                "Awaiting qualified review",
+                "Routed to other service",
+                "Resolved"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "escalation_route",
+              "label": "Escalation route or reference",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "accountable_closeout",
+      "title": "Septic Service equipment inspection report closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Inspection completed and decision issued",
+                "Completed with limitation",
+                "Controlled hold",
+                "Routed to other service",
+                "Customer declined",
+                "Unresolved - escalated"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_location",
+              "label": "Evidence package location",
+              "units": 1.15
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This septic service equipment inspection report is an operational record, not a substitute for applicable law, licensing, product labeling, manufacturer instructions, site policy, safety requirements, or professional judgment. Stop affected work, access, application, operation, testing, or release when tank access, collapse, confined-space, toxic or flammable atmosphere, sewage exposure, buried utility, pumping, transport, disposal, or system condition is uncertain. A septic, wastewater, or safety supervisor must review the exception, authorize the controlling decision, and preserve its evidence before closeout."
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Qualified septic-service technician and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Septic, wastewater, or safety supervisor and date",
+              "units": 1.35
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance and date",
+              "units": 1.2
+            }
+          ],
+          "guidance": "A signature records accountability for the stated outcome; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

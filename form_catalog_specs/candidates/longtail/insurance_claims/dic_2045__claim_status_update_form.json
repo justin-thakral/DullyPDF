@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2045__claim_status_update_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2045__claim_status_update_form.pdf",
+  "slug": "claim-status-update-form",
+  "title": "Claim Status Update Form",
+  "subtitle": "A decision-ready claim status update that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original claim status update for claim-file stage, outstanding work, and next accountable milestone with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the claim status communication and diary owner must open and control a status update for claim-file stage, outstanding work, and next accountable milestone. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Claim status update identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Claim status update record",
+          "fields": [
+            {
+              "key": "update_id",
+              "label": "Status update ID",
+              "units": 0.9
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or service record",
+              "units": 1.05
+            },
+            {
+              "key": "as_of",
+              "label": "Verified as of date and time",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            },
+            {
+              "key": "current_owner",
+              "label": "Current accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "overall_stage",
+              "label": "Overall stage",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Intake",
+                "Investigation",
+                "Decision",
+                "Payment",
+                "Closed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Claim subject and event identity",
+          "fields": [
+            {
+              "key": "claim_number",
+              "label": "Claim or service record number",
+              "units": 1.0
+            },
+            {
+              "key": "claim_line",
+              "label": "Claim line and loss type",
+              "units": 1.25
+            },
+            {
+              "key": "loss_date",
+              "label": "Loss or incident date",
+              "units": 1.15
+            },
+            {
+              "key": "current_stage",
+              "label": "Current verified claim stage",
+              "units": 1.05
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.0
+            },
+            {
+              "key": "as_of",
+              "label": "Status verified as of date and time",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Claim number, line, and as-of timestamp"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Status Update scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Claim purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "verified_snapshot",
+      "title": "Claim verified status snapshot",
+      "guidance": "Report the file state as of a precise time and identify the evidence behind each material status.",
+      "blocks": [
+        {
+          "key": "status_dimensions",
+          "type": "fields",
+          "label": "Claim status dimensions",
+          "fields": [
+            {
+              "key": "last_milestone",
+              "label": "Last milestone and date",
+              "units": 1.0
+            },
+            {
+              "key": "next_milestone",
+              "label": "Next planned milestone and target",
+              "units": 1.25
+            },
+            {
+              "key": "coverage_stage",
+              "label": "Coverage review stage",
+              "units": 1.15
+            },
+            {
+              "key": "damage_stage",
+              "label": "Damage/investigation stage",
+              "units": 1.05
+            },
+            {
+              "key": "payment_stage",
+              "label": "Payment or recovery stage",
+              "units": 1.0
+            },
+            {
+              "key": "communication_stage",
+              "label": "Last customer update and method",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "stage_indicators",
+          "type": "checklist",
+          "label": "Claim active-work indicators",
+          "items": [
+            "First contact, acknowledgment, or assigned-owner confirmation is pending",
+            "Coverage, liability, damage, value, or causation review is incomplete",
+            "Requested document, estimate, statement, authorization, or inspection is pending",
+            "Reserve, payment, deductible, recovery, salvage, or subrogation activity exists",
+            "Vendor, appraiser, expert, legal, fraud, or management review is active",
+            "Deadline, promised update, diary date, or statutory route may be near",
+            "Customer, claimant, insured, or representative disputes the stated status",
+            "Claim is ready for closure only if remaining work and notices are resolved"
+          ]
+        },
+        {
+          "key": "milestone_history",
+          "type": "table",
+          "label": "Completed and planned milestone history",
+          "columns": [
+            {
+              "key": "milestone",
+              "label": "Milestone or decision",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned date",
+              "units": 0.85
+            },
+            {
+              "key": "completed",
+              "label": "Completed date",
+              "units": 0.85
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Status evidence ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_boundary",
+          "type": "notice",
+          "label": "Status communication boundary",
+          "guidance": "A status record reports verified file activity as of a stated time; it does not create coverage, waive requirements, promise payment, or replace an authorized decision notice. Separate facts, pending work, estimates, and final decisions and cite the controlling record."
+        }
+      ]
+    },
+    {
+      "key": "workstream_status",
+      "title": "Claim workstream, evidence, and decision status",
+      "guidance": "Track independent workstreams separately so a completed task does not hide an unresolved decision or dependency.",
+      "blocks": [
+        {
+          "key": "workstream_register",
+          "type": "table",
+          "label": "Workstream and next-action register",
+          "columns": [
+            {
+              "key": "workstream",
+              "label": "Workstream",
+              "units": 1.05
+            },
+            {
+              "key": "current_state",
+              "label": "Current verified state",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or system ref",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.05
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "status_evidence",
+          "type": "checklist",
+          "label": "Claim status evidence sources",
+          "items": [
+            "Claim-system status and assigned-owner confirmation",
+            "Diary, task, milestone, and promised-update records",
+            "Coverage correspondence and controlling-policy reference",
+            "Inspection, estimate, invoice, valuation, or expert report",
+            "Payment, deductible, recovery, salvage, or subrogation record",
+            "Customer, claimant, insured, or representative correspondence",
+            "Management, legal, fraud, complaint, or regulatory-review reference",
+            "Closure notice, reopen condition, and retention reference"
+          ]
+        },
+        {
+          "key": "decision_snapshot",
+          "type": "fields",
+          "label": "Decision and authority snapshot",
+          "fields": [
+            {
+              "key": "latest_decision",
+              "label": "Latest authorized decision",
+              "units": 1.15
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "basis_ref",
+              "label": "Decision-basis reference",
+              "units": 1.15
+            },
+            {
+              "key": "notice_status",
+              "label": "Required notice status",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Next review due",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requests_dependencies",
+      "title": "Claim outstanding requests, dependencies, and commitments",
+      "guidance": "Record exactly what is needed, who owes it, when it was requested, and what happens if it remains outstanding.",
+      "blocks": [
+        {
+          "key": "request_register",
+          "type": "table",
+          "label": "Outstanding request and dependency register",
+          "columns": [
+            {
+              "key": "request",
+              "label": "Requested item or dependency",
+              "units": 1.3
+            },
+            {
+              "key": "requested_from",
+              "label": "Requested from",
+              "units": 1.0
+            },
+            {
+              "key": "requested_at",
+              "label": "Requested date",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Status and response ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "commitment_register",
+          "type": "table",
+          "label": "Promised update and commitment control",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.0
+            },
+            {
+              "key": "commitment",
+              "label": "Committed update or action",
+              "units": 1.35
+            },
+            {
+              "key": "promised_by",
+              "label": "Promised by",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due date and time",
+              "units": 0.9
+            },
+            {
+              "key": "completion",
+              "label": "Completion evidence",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "status_narrative",
+          "type": "textarea",
+          "label": "Plain-language status narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Claim completed work, pending work, reason for delay, uncertainty, and next expected update",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Claim blockers, exceptions, and escalation",
+      "guidance": "A status update is incomplete if an overdue or disputed item lacks an accountable escalation path.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Claim blocker and exception screen",
+          "items": [
+            "System status conflicts with the latest dated evidence",
+            "No accountable owner or next update date is assigned",
+            "A promised communication or required route may be overdue",
+            "Coverage, liability, payment, or closure wording lacks authorization",
+            "Complaint, dispute, attorney, regulator, or vulnerable-person issue exists",
+            "Claim is marked closed while a task, payment, recovery, or notice remains"
+          ]
+        },
+        {
+          "key": "blocker_register",
+          "type": "table",
+          "label": "Blocker, escalation, and disposition",
+          "columns": [
+            {
+              "key": "blocker",
+              "label": "Blocker or disputed status",
+              "units": 1.25
+            },
+            {
+              "key": "impact",
+              "label": "Impact on claim or request",
+              "units": 1.15
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "next_update",
+              "label": "Next update due",
+              "units": 0.9
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or final state",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "timeliness_control",
+          "type": "fields",
+          "label": "Timeliness and oversight control",
+          "fields": [
+            {
+              "key": "oldest_open_date",
+              "label": "Oldest open-item date",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.0
+            },
+            {
+              "key": "deadline_basis",
+              "label": "Deadline source or requirement",
+              "units": 1.2
+            },
+            {
+              "key": "supervisor_review",
+              "label": "Supervisor review status",
+              "units": 1.0
+            },
+            {
+              "key": "complaint_route",
+              "label": "Complaint or escalation ref",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "communication_closeout",
+      "title": "Claim status communication, next milestone, and closeout",
+      "guidance": "Confirm what was communicated, what remains open, and who accepted the next accountable action.",
+      "blocks": [
+        {
+          "key": "communication_checks",
+          "type": "checklist",
+          "label": "Status communication checks",
+          "items": [
+            "The as-of timestamp and source records are clear",
+            "Facts, estimates, pending reviews, and final decisions are distinct",
+            "The recipient was not given an unauthorized promise",
+            "Required privacy and identity verification were followed",
+            "Outstanding requests and promised updates have due points",
+            "The next accountable owner accepted the handoff"
+          ]
+        },
+        {
+          "key": "next_milestone",
+          "type": "fields",
+          "label": "Next milestone and update route",
+          "fields": [
+            {
+              "key": "next_milestone",
+              "label": "Next milestone",
+              "units": 1.1
+            },
+            {
+              "key": "milestone_owner",
+              "label": "Milestone owner",
+              "units": 1.0
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.85
+            },
+            {
+              "key": "next_update",
+              "label": "Next customer update due",
+              "units": 1.0
+            },
+            {
+              "key": "update_channel",
+              "label": "Approved update channel",
+              "units": 1.0
+            },
+            {
+              "key": "recipient",
+              "label": "Verified recipient",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "status_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and communicated",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "communicated_by",
+              "label": "Communicated by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Status version",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2011__property_damage_policy_change_request_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2011__property_damage_policy_change_request_form.pdf",
+  "slug": "property-damage-policy-change-request-form",
+  "title": "Property Damage Policy Change Request Form",
+  "subtitle": "A decision-ready property damage policy change request that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original property damage policy change request for damaged premises, contents, and loss area with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the property claim intake or adjusting owner must open and control a policy change request for damaged premises, contents, and loss area. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Property Damage policy change request identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Property Damage policy change request record",
+          "fields": [
+            {
+              "key": "change_id",
+              "label": "Policy change request ID",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "request_received",
+              "label": "Request received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 1.0
+            },
+            {
+              "key": "service_owner",
+              "label": "Assigned policy-service owner",
+              "units": 1.1
+            },
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Received",
+                "Needs evidence",
+                "Under review",
+                "Issued",
+                "Declined"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Property Damage subject and event identity",
+          "fields": [
+            {
+              "key": "loss_date_time",
+              "label": "Reported loss date and time",
+              "units": 1.0
+            },
+            {
+              "key": "premises",
+              "label": "Property address and affected unit",
+              "units": 1.25
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy and current use",
+              "units": 1.15
+            },
+            {
+              "key": "interest",
+              "label": "Interest or occupancy role",
+              "units": 1.05
+            },
+            {
+              "key": "peril_reported",
+              "label": "Reported peril (unconfirmed)",
+              "units": 1.0
+            },
+            {
+              "key": "access_status",
+              "label": "Access and habitability",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Premises, unit, and loss-location reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Policy Change Request scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Property Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "requested_change",
+      "title": "Property Damage requested policy change and effective-date boundary",
+      "guidance": "Record the request exactly and keep prospective policy administration separate from any known event or claim decision.",
+      "blocks": [
+        {
+          "key": "change_categories",
+          "type": "checklist",
+          "label": "Property Damage change categories",
+          "items": [
+            "Property address, occupancy, or mailing information",
+            "Named insured, ownership, mortgagee, or additional interest",
+            "Renovation, vacancy, rental, or business-use information",
+            "Building, contents, scheduled property, or value information",
+            "Protective device, roof, utility, or hazard information",
+            "Requested coverage, limit, deductible, or endorsement review"
+          ]
+        },
+        {
+          "key": "change_register",
+          "type": "table",
+          "label": "Current-to-requested change register",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Subject or schedule item",
+              "units": 1.15
+            },
+            {
+              "key": "current_value",
+              "label": "Current policy record",
+              "units": 1.15
+            },
+            {
+              "key": "requested_value",
+              "label": "Requested future state",
+              "units": 1.2
+            },
+            {
+              "key": "effective_date",
+              "label": "Requested effective date",
+              "units": 1.0
+            },
+            {
+              "key": "reason_source",
+              "label": "Reason and source ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "request_authority",
+          "type": "fields",
+          "label": "Requester identity and instruction control",
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Requester name or approved ref",
+              "units": 1.1
+            },
+            {
+              "key": "relationship",
+              "label": "Relationship and authority",
+              "units": 1.1
+            },
+            {
+              "key": "authenticated_by",
+              "label": "Authentication method",
+              "units": 1.0
+            },
+            {
+              "key": "instruction_date",
+              "label": "Instruction date and time",
+              "units": 1.0
+            },
+            {
+              "key": "source_record",
+              "label": "Original instruction record",
+              "units": 1.15
+            },
+            {
+              "key": "consent_status",
+              "label": "Required consent status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "change_boundary",
+          "type": "notice",
+          "label": "Policy change and claim boundary",
+          "guidance": "This record does not authorize unsafe entry, demolition, disposal, repair scope, valuation, or coverage. Protect people, prevent further damage when safely authorized, retain evidence, and route technical and claim decisions to qualified reviewers."
+        }
+      ]
+    },
+    {
+      "key": "supporting_evidence",
+      "title": "Property Damage change evidence and review",
+      "guidance": "Do not treat an unsupported request, quote, or conversation as an issued policy transaction.",
+      "blocks": [
+        {
+          "key": "support_sources",
+          "type": "checklist",
+          "label": "Property Damage policy-change support",
+          "items": [
+            "Wide and close photographs of damaged and undamaged areas",
+            "Pre-loss inventory, receipts, ownership, or model references",
+            "Emergency-service, fire, police, or utility report reference",
+            "Temporary repair, mitigation, lodging, or continuity receipts",
+            "Contractor scope, estimate, invoice, or inspection reference",
+            "Prior repair, maintenance, or pre-existing condition records",
+            "Damaged-item retention, disposal authorization, and location log",
+            "Lease, mortgage, tenant, or additional-interest routing record"
+          ]
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Change-support and verification register",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Required support or question",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Source or provider",
+              "units": 1.0
+            },
+            {
+              "key": "received",
+              "label": "Received date",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Verified / gap / conflict",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Approved record ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "request_rationale",
+          "type": "textarea",
+          "label": "Requester explanation, known facts, and unresolved questions",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Property Damage reason for change, current conditions, source facts, requested timing, and information still needed",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "known_loss_separation",
+      "title": "Property Damage known-loss, claim, and timing separation",
+      "guidance": "Prevent a prospective service request from being mistaken for retroactive coverage or a claim determination.",
+      "blocks": [
+        {
+          "key": "timing_screen",
+          "type": "checklist",
+          "label": "Known-event and effective-date screen",
+          "items": [
+            "Requested effective date and exact time are stated",
+            "Request receipt timestamp and authenticated source are preserved",
+            "Known loss, incident, damage, demand, or claim was specifically screened",
+            "Any known event is routed to a separate claim or incident record",
+            "No one represented that the request is bound, issued, or retroactive",
+            "Cancellation, lapse, reinstatement, or replacement policy was screened",
+            "Underwriting and jurisdiction approval requirements were identified",
+            "Customer was told how final issuance or decline will be communicated"
+          ]
+        },
+        {
+          "key": "known_event_register",
+          "type": "table",
+          "label": "Known event and separate routing register",
+          "columns": [
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 0.9
+            },
+            {
+              "key": "event_summary",
+              "label": "Event, damage, or demand summary",
+              "units": 1.35
+            },
+            {
+              "key": "known_when",
+              "label": "When requester knew",
+              "units": 1.0
+            },
+            {
+              "key": "separate_route",
+              "label": "Claim or incident route",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Route owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "effective_date_decision",
+          "type": "fields",
+          "label": "Effective-date review",
+          "fields": [
+            {
+              "key": "requested_date",
+              "label": "Requested effective date",
+              "units": 1.0
+            },
+            {
+              "key": "permitted_date",
+              "label": "Approved or permitted date",
+              "units": 1.0
+            },
+            {
+              "key": "date_authority",
+              "label": "Authority or rule reference",
+              "units": 1.15
+            },
+            {
+              "key": "known_loss_review",
+              "label": "Known-loss review owner",
+              "units": 1.1
+            },
+            {
+              "key": "timing_decision",
+              "label": "Timing decision status",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approval_processing",
+      "title": "Property Damage underwriting, authorization, and transaction processing",
+      "guidance": "Keep request, quote, approval, binding, issuance, delivery, and acceptance as separate auditable states.",
+      "blocks": [
+        {
+          "key": "approval_route",
+          "type": "table",
+          "label": "Question, approval, and transaction route",
+          "columns": [
+            {
+              "key": "step",
+              "label": "Review or processing step",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Authorized owner",
+              "units": 1.0
+            },
+            {
+              "key": "decision",
+              "label": "Decision or result",
+              "units": 1.1
+            },
+            {
+              "key": "completed",
+              "label": "Completed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "record_ref",
+              "label": "Evidence or transaction ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "transaction_status",
+          "type": "fields",
+          "label": "Transaction status",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current transaction status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Request only",
+                "Quoted",
+                "Approved",
+                "Bound",
+                "Issued",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 1.0
+            },
+            {
+              "key": "transaction_id",
+              "label": "Policy transaction ID",
+              "units": 1.05
+            },
+            {
+              "key": "issued_effective",
+              "label": "Issued effective date and time",
+              "units": 1.05
+            },
+            {
+              "key": "billing_status",
+              "label": "Billing or premium status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, conditions, and customer-facing limits",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Property Damage approval basis, conditions, changes from request, unresolved issues, and authorized communication wording",
+              "multiline": true
+            }
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "exceptions_closeout",
+      "title": "Property Damage policy-change exceptions, delivery, and closeout",
+      "guidance": "Close only after the final state, effective date, issued documents, customer notice, and unresolved items are traceable.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Property Damage policy-change exception screen",
+          "items": [
+            "Premises is unsafe, unsecured, or not available for inspection",
+            "Damaged property may be discarded before review authorization",
+            "Cause, date, ownership, or pre-loss condition conflicts",
+            "Mold, contamination, fire residue, or hazardous material suspected",
+            "Temporary repair scope may alter or conceal damage evidence",
+            "Mortgagee, tenant, landlord, or other interest is unresolved"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Policy-change exception and resolution",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Exception or conflict",
+              "units": 1.25
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "approval",
+              "label": "Required approval",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Final resolution",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "delivery_checks",
+          "type": "checklist",
+          "label": "Issuance and delivery checks",
+          "items": [
+            "Issued documents match the authorized transaction",
+            "Effective date and time are clear",
+            "Superseded quote or draft is marked",
+            "Customer delivery and receipt route are recorded",
+            "Separate claim or known-event record remains linked",
+            "Open conditions have accountable owners and due points"
+          ]
+        },
+        {
+          "key": "change_signoff",
+          "type": "signatures",
+          "label": "Request, authorization, processing, and delivery",
+          "fields": [
+            {
+              "key": "request_recorded_by",
+              "label": "Request recorded by / date",
+              "units": 1.05
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by / date",
+              "units": 1.0
+            },
+            {
+              "key": "processed_by",
+              "label": "Processed by / date",
+              "units": 1.0
+            },
+            {
+              "key": "delivered_by",
+              "label": "Delivered by / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

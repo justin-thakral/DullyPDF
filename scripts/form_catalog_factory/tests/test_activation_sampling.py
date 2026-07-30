@@ -7,12 +7,36 @@ from pathlib import Path
 import pytest
 
 from scripts.form_catalog_factory.activation import ActivationError, build_active_contract
-from scripts.form_catalog_factory.sampling import build_sample_plan
+from scripts.form_catalog_factory.sampling import SamplingPlanError, build_sample_plan
 
 
 def _write(path: Path, payload: dict) -> Path:
     path.write_text(json.dumps(payload), encoding="utf-8")
     return path
+
+
+def _renderer_runtime() -> dict:
+    return {
+        "schemaVersion": 1,
+        "requirementsPath": "backend/requirements.txt",
+        "requirementsSha256": "1" * 64,
+        "pythonImplementation": "CPython",
+        "pythonVersion": "3.10.0",
+        "pythonExecutable": "python",
+        "pythonExecutableSha256": "2" * 64,
+        "packages": {
+            "pillow": "12.1.1",
+            "pypdf": "6.9.2",
+            "reportlab": "4.4.4",
+        },
+        "pdftoppmExecutable": "pdftoppm",
+        "pdftoppmExecutableSha256": "3" * 64,
+        "pdftoppmVersion": "pdftoppm version 25.01.0",
+        "pillowLibraries": {
+            "webp": {"available": True, "version": "1.5.0"},
+            "zlib": {"available": True, "version": "1.3.1"},
+        },
+    }
 
 
 def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: Path) -> None:
@@ -38,6 +62,9 @@ def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: 
         "schemaVersion": 1,
         "releaseId": "catalog-new",
         "sourceCommit": "b" * 40,
+        "baseCommit": "a" * 40,
+        "rendererCommit": "b" * 40,
+        "rendererRuntime": _renderer_runtime(),
         "previousReleaseId": "catalog-old",
         "createdAt": "2026-07-29T11:00:00Z",
         "forms": [
@@ -99,6 +126,9 @@ def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: 
 def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Path) -> None:
     release_id = "catalog-test"
     source_commit = "d" * 40
+    base_commit = "a" * 40
+    renderer_commit = source_commit
+    renderer_runtime = _renderer_runtime()
     items = []
     results = []
     forms = []
@@ -113,11 +143,32 @@ def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Pat
                 "filename": f"form_{index:02d}.pdf",
             }
         )
+        pdf = {
+            "sourcePath": f"assets/section/form_{index:02d}.pdf",
+            "objectPath": (
+                f"releases/{release_id}/assets/section/form_{index:02d}.pdf"
+            ),
+            "contentType": "application/pdf",
+            "sha256": f"{index:064x}",
+            "bytes": 100 + index,
+        }
+        thumbnail = {
+            "sourcePath": f"assets/section/form_{index:02d}.webp",
+            "objectPath": (
+                f"releases/{release_id}/assets/section/form_{index:02d}.webp"
+            ),
+            "contentType": "image/webp",
+            "sha256": f"{index + 100:064x}",
+            "bytes": 50 + index,
+        }
         results.append(
             {
                 "catalogId": catalog_id,
+                "ok": True,
                 "pageCount": index + 1,
                 "fieldCount": 50 + index,
+                "pdf": pdf,
+                "thumbnail": thumbnail,
             }
         )
         forms.append(
@@ -126,40 +177,56 @@ def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Pat
                 "slug": f"form-{index:02d}",
                 "sourceSection": "section",
                 "filename": f"form_{index:02d}.pdf",
-                "pdf": {
-                    "objectPath": (
-                        f"releases/{release_id}/assets/section/form_{index:02d}.pdf"
-                    ),
-                    "sha256": f"{index:064x}",
-                    "bytes": 100 + index,
-                },
-                "thumbnail": {
-                    "objectPath": (
-                        f"releases/{release_id}/assets/section/form_{index:02d}.webp"
-                    ),
-                    "sha256": f"{index + 100:064x}",
-                    "bytes": 50 + index,
-                },
+                "pageCount": index + 1,
+                "pdf": pdf,
+                "thumbnail": thumbnail,
             }
         )
+    selection_payload = {
+        "schemaVersion": 1,
+        "releaseId": release_id,
+        "targetCount": len(items),
+        "items": items,
+    }
     selection = _write(
         tmp_path / "selection.json",
-        {"releaseId": release_id, "items": items},
-    )
-    report = _write(
-        tmp_path / "report.json",
-        {
-            "releaseId": release_id,
-            "sourceCommit": source_commit,
-            "results": results,
-        },
+        selection_payload,
     )
     manifest = _write(
         tmp_path / "manifest.json",
         {
+            "schemaVersion": 1,
             "releaseId": release_id,
             "sourceCommit": source_commit,
+            "baseCommit": base_commit,
+            "rendererCommit": renderer_commit,
+            "rendererRuntime": renderer_runtime,
             "forms": forms,
+        },
+    )
+    report = _write(
+        tmp_path / "report.json",
+        {
+            "schemaVersion": 1,
+            "releaseId": release_id,
+            "sourceCommit": source_commit,
+            "baseCommit": base_commit,
+            "rendererCommit": renderer_commit,
+            "rendererRuntime": renderer_runtime,
+            "selectionDigest": hashlib.sha256(
+                json.dumps(
+                    selection_payload,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ).encode("utf-8")
+            ).hexdigest(),
+            "releaseManifestSha256": hashlib.sha256(
+                manifest.read_bytes()
+            ).hexdigest(),
+            "count": len(results),
+            "passed": True,
+            "results": results,
         },
     )
 
@@ -184,3 +251,20 @@ def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Pat
     assert first["manifestSha256"] == hashlib.sha256(
         manifest.read_bytes()
     ).hexdigest()
+
+    changed = json.loads(manifest.read_text(encoding="utf-8"))
+    changed["forms"][0]["pdf"]["sha256"] = "f" * 64
+    manifest.write_text(json.dumps(changed), encoding="utf-8")
+    report_payload = json.loads(report.read_text(encoding="utf-8"))
+    report_payload["releaseManifestSha256"] = hashlib.sha256(
+        manifest.read_bytes()
+    ).hexdigest()
+    report.write_text(json.dumps(report_payload), encoding="utf-8")
+
+    with pytest.raises(SamplingPlanError, match="pdf assets differ"):
+        build_sample_plan(
+            selection_path=selection,
+            build_report_path=report,
+            manifest_path=manifest,
+            random_count=4,
+        )

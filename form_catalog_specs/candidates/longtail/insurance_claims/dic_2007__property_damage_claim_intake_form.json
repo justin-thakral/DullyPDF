@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2007__property_damage_claim_intake_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2007__property_damage_claim_intake_form.pdf",
+  "slug": "dic-2007-property-damage-claim-intake-form-0cd0fbed",
+  "title": "Property Damage Claim Intake Form",
+  "subtitle": "A decision-ready property damage claim intake that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original property damage claim intake for damaged premises, contents, and loss area with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the property claim intake or adjusting owner must open and control a claim intake for damaged premises, contents, and loss area. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Property Damage claim intake identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Property Damage claim intake record",
+          "fields": [
+            {
+              "key": "intake_id",
+              "label": "Claim intake record ID",
+              "units": 0.95
+            },
+            {
+              "key": "notice_received",
+              "label": "Notice received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim number, if assigned",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned intake owner",
+              "units": 1.05
+            },
+            {
+              "key": "triage_priority",
+              "label": "Triage priority",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Prompt",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Property Damage subject and event identity",
+          "fields": [
+            {
+              "key": "loss_date_time",
+              "label": "Reported loss date and time",
+              "units": 1.0
+            },
+            {
+              "key": "premises",
+              "label": "Property address and affected unit",
+              "units": 1.25
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy and current use",
+              "units": 1.15
+            },
+            {
+              "key": "interest",
+              "label": "Interest or occupancy role",
+              "units": 1.05
+            },
+            {
+              "key": "peril_reported",
+              "label": "Reported peril (unconfirmed)",
+              "units": 1.0
+            },
+            {
+              "key": "access_status",
+              "label": "Access and habitability",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Premises, unit, and loss-location reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Claim Intake scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Property Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "notice_and_response",
+      "title": "Property Damage notice, immediate response, and factual account",
+      "guidance": "Separate direct observations from reported information and document urgent routing before ordinary intake.",
+      "blocks": [
+        {
+          "key": "initial_observations",
+          "type": "fields",
+          "label": "Property Damage initial observations",
+          "fields": [
+            {
+              "key": "damage_area",
+              "label": "Affected rooms or contents",
+              "units": 1.0
+            },
+            {
+              "key": "preexisting",
+              "label": "Visible pre-existing condition reference",
+              "units": 1.25
+            },
+            {
+              "key": "utility_status",
+              "label": "Electric, gas, and water status",
+              "units": 1.15
+            },
+            {
+              "key": "temporary_work",
+              "label": "Emergency protection",
+              "units": 1.05
+            },
+            {
+              "key": "occupancy_impact",
+              "label": "Occupancy or use impact",
+              "units": 1.0
+            },
+            {
+              "key": "contractor_ref",
+              "label": "Responder or contractor ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "triage_indicators",
+          "type": "checklist",
+          "label": "Property Damage triage indicators",
+          "items": [
+            "Fire, smoke, soot, heat, or fire-department response",
+            "Theft, vandalism, forced entry, or missing property",
+            "Wind, hail, fallen object, or exterior opening",
+            "Water, moisture, plumbing, appliance, or drainage involvement",
+            "Electrical arcing, damaged service, gas odor, or utility hazard",
+            "Structural movement, collapse, ceiling sag, or unsafe access",
+            "Contents, tenant improvements, or business property affected",
+            "Temporary lodging, loss of use, or continuity expense reported"
+          ],
+          "guidance": "Check only conditions reported or directly observed; explain source and uncertainty in the narrative."
+        },
+        {
+          "key": "event_narrative",
+          "type": "textarea",
+          "label": "Chronological notice and loss narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Property Damage facts, source of each fact, sequence, immediate action, and unresolved questions",
+              "multiline": true
+            }
+          ],
+          "height": 78
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "Claim intake boundary",
+          "guidance": "This record does not authorize unsafe entry, demolition, disposal, repair scope, valuation, or coverage. Protect people, prevent further damage when safely authorized, retain evidence, and route technical and claim decisions to qualified reviewers."
+        }
+      ]
+    },
+    {
+      "key": "people_property_evidence",
+      "title": "Property Damage involved parties, affected scope, and early evidence",
+      "guidance": "Collect only information needed for safe routing and the claim workflow; store restricted material in its approved system.",
+      "blocks": [
+        {
+          "key": "party_register",
+          "type": "table",
+          "label": "Involved-party and interest register",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role or interest",
+              "units": 0.9
+            },
+            {
+              "key": "identity_ref",
+              "label": "Name or approved identity ref",
+              "units": 1.15
+            },
+            {
+              "key": "contact_route",
+              "label": "Contact route",
+              "units": 1.0
+            },
+            {
+              "key": "reported_impact",
+              "label": "Reported impact or interest",
+              "units": 1.25
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "early_evidence",
+          "type": "checklist",
+          "label": "Property Damage early evidence sources",
+          "items": [
+            "Wide and close photographs of damaged and undamaged areas",
+            "Pre-loss inventory, receipts, ownership, or model references",
+            "Emergency-service, fire, police, or utility report reference",
+            "Temporary repair, mitigation, lodging, or continuity receipts",
+            "Contractor scope, estimate, invoice, or inspection reference",
+            "Prior repair, maintenance, or pre-existing condition records",
+            "Damaged-item retention, disposal authorization, and location log",
+            "Lease, mortgage, tenant, or additional-interest routing record"
+          ],
+          "guidance": "A checked item means it is received or preservation is confirmed; record gaps separately."
+        },
+        {
+          "key": "evidence_receipt",
+          "type": "table",
+          "label": "Evidence receipt and source log",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence item",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.05
+            },
+            {
+              "key": "received",
+              "label": "Received / preserved",
+              "units": 0.9
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "gap_note",
+              "label": "Quality or gap note",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "triage_investigation",
+      "title": "Property Damage triage, investigation plan, and decision routing",
+      "guidance": "Define what is known, what must be verified, and who has authority for the next decision.",
+      "blocks": [
+        {
+          "key": "triage_decision",
+          "type": "fields",
+          "label": "Triage disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Intake disposition",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Assign for investigation",
+                "Request information",
+                "Urgent review",
+                "Refer",
+                "Close as duplicate"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.15
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 0.9
+            },
+            {
+              "key": "policy_record_ref",
+              "label": "Controlling policy-record ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "investigation_plan",
+          "type": "table",
+          "label": "Property Damage verification and investigation plan",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question to resolve",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence or action needed",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "result_ref",
+              "label": "Result or record ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "triage_rationale",
+          "type": "textarea",
+          "label": "Triage rationale and uncertainty",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Property Damage facts supporting the route, conflicts, limitations, and authority used",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Property Damage exceptions, deadlines, and escalation",
+      "guidance": "Make each unresolved condition visible with an immediate action, owner, due point, and disposition.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Property Damage exception screen",
+          "items": [
+            "Premises is unsafe, unsecured, or not available for inspection",
+            "Damaged property may be discarded before review authorization",
+            "Cause, date, ownership, or pre-loss condition conflicts",
+            "Mold, contamination, fire residue, or hazardous material suspected",
+            "Temporary repair scope may alter or conceal damage evidence",
+            "Mortgagee, tenant, landlord, or other interest is unresolved"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or conflict",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "route_owner",
+              "label": "Route and owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or deadline",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "notice_control",
+          "type": "fields",
+          "label": "Notice and deadline control",
+          "fields": [
+            {
+              "key": "notice_owner",
+              "label": "Notice owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.05
+            },
+            {
+              "key": "deadline_source",
+              "label": "Policy, system, or requirement ref",
+              "units": 1.2
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Property Damage intake handoff and accountable closeout",
+      "guidance": "Close intake only when ownership, evidence, open issues, and the next communication are explicit.",
+      "blocks": [
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Handoff readiness",
+          "items": [
+            "Property Damage identity and event references are consistent",
+            "Urgent safety, privacy, legal, or deadline routes are documented",
+            "Evidence received and missing evidence are distinguishable",
+            "No fault, value, liability, or coverage conclusion is implied",
+            "Open questions have owners and due points",
+            "The next responsible recipient accepted the handoff"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Intake closeout",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Intake outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Assigned",
+                "Referred",
+                "Duplicate",
+                "Withdrawn",
+                "Closed"
+              ]
+            },
+            {
+              "key": "open_items",
+              "label": "Remaining open-item count",
+              "units": 0.9
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due date",
+              "units": 1.2
+            },
+            {
+              "key": "handoff_ref",
+              "label": "Handoff evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "closed_at",
+              "label": "Intake closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "accepted_by",
+              "label": "Handoff accepted by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Record version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2259__bar_service_incident_report_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2259__bar_service_incident_report_form.pdf",
+  "slug": "bar-service-incident-report-form",
+  "title": "Bar Service Incident Report Form",
+  "subtitle": "Document a beverage-service incident as observed facts, preserve necessary records, route immediate decisions, and close corrective follow-up.",
+  "description": "An original incident report for service refusal, identification concern, guest behavior, injury or illness concern, spill, breakage, property issue, payment dispute, product custody issue, or operating-plan failure. It keeps observations separate from conclusions and protects sensitive decisions.",
+  "use_case": "Use after immediate needs are addressed when a material bar-service event requires a traceable record. Limit personal details to what operations need, link source evidence rather than copying sensitive data, and close only after responsible review and corrective-action handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_intake",
+      "title": "Incident identity and routing",
+      "guidance": "Create one incident record tied to the order, station, and service lead.",
+      "blocks": [
+        {
+          "key": "incident_record",
+          "type": "fields",
+          "label": "Incident record",
+          "fields": [
+            {
+              "key": "incident_id",
+              "label": "Incident ID",
+              "units": 0.85
+            },
+            {
+              "key": "reported_at",
+              "label": "Reported date and time",
+              "units": 1.0
+            },
+            {
+              "key": "event_id",
+              "label": "Event ID",
+              "units": 0.9
+            },
+            {
+              "key": "order_id",
+              "label": "Bar order ID",
+              "units": 0.9
+            },
+            {
+              "key": "station",
+              "label": "Station or location",
+              "units": 1.0
+            },
+            {
+              "key": "service_lead",
+              "label": "Service lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Initial classification",
+          "fields": [
+            {
+              "key": "incident_type",
+              "label": "Incident type",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "Pending classification",
+                "Service refusal",
+                "Identification concern",
+                "Guest behavior concern",
+                "Injury or illness concern",
+                "Spill or breakage",
+                "Property or custody issue",
+                "Payment dispute",
+                "Order or control failure",
+                "Other"
+              ]
+            },
+            {
+              "key": "urgency",
+              "label": "Initial urgency",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Pending assessment",
+                "Routine follow-up",
+                "Manager review now",
+                "Urgent response"
+              ]
+            },
+            {
+              "key": "responsible_manager",
+              "label": "Responsible manager",
+              "units": 1.15
+            },
+            {
+              "key": "reporter_role",
+              "label": "Reporter role",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "immediate_actions",
+      "title": "Immediate needs and service control",
+      "guidance": "Address people and the operating area before completing the report.",
+      "blocks": [
+        {
+          "key": "response_checks",
+          "type": "checklist",
+          "label": "Immediate actions considered",
+          "items": [
+            "Emergency or medical needs routed without delay",
+            "Responsible manager and event lead notified",
+            "Affected service point paused or adjusted when needed",
+            "Guest moved from the operating area when appropriate",
+            "Spill, broken item, or access concern contained",
+            "Product, cash, or device custody protected",
+            "Relevant order, transaction, or station records preserved",
+            "Next update owner and time assigned"
+          ]
+        },
+        {
+          "key": "action_log",
+          "type": "table",
+          "label": "Immediate action log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "observed_need",
+              "label": "Observed need",
+              "units": 1.3
+            },
+            {
+              "key": "action",
+              "label": "Action taken",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "emergency_boundary",
+          "type": "notice",
+          "label": "Emergency and service boundary",
+          "guidance": "Address urgent needs first under applicable procedures. This report does not determine intoxication, diagnose a condition, establish age, or replace individual service judgment. Do not delay assistance or keep serving while an unresolved concern is being documented; stop and route it to the responsible role."
+        }
+      ]
+    },
+    {
+      "key": "factual_timeline",
+      "title": "Observed facts, accounts, and evidence",
+      "guidance": "Distinguish direct observation, reported account, and system record.",
+      "blocks": [
+        {
+          "key": "timeline",
+          "type": "table",
+          "label": "Incident timeline",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "event",
+              "label": "Observed event",
+              "units": 1.35
+            },
+            {
+              "key": "source",
+              "label": "Source type",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Action or handoff",
+              "units": 1.25
+            },
+            {
+              "key": "record_ref",
+              "label": "Record reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Referenced evidence",
+          "columns": [
+            {
+              "key": "record",
+              "label": "Record or evidence",
+              "units": 1.35
+            },
+            {
+              "key": "source",
+              "label": "Source",
+              "units": 0.95
+            },
+            {
+              "key": "captured_at",
+              "label": "Captured at",
+              "units": 0.85
+            },
+            {
+              "key": "stored_at",
+              "label": "Stored at",
+              "units": 1.05
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Do not record identification numbers, payment-card data, medical details, or unnecessary images."
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Factual account and uncertainty",
+          "fields": [
+            {
+              "key": "account",
+              "label": "Observed facts, reported accounts, and unresolved differences"
+            }
+          ],
+          "height": 72
+        }
+      ]
+    },
+    {
+      "key": "service_decision",
+      "title": "Service decision and communication record",
+      "guidance": "Record the responsible role's decision without inventing a reason.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Responsible service decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Service continued",
+                "Service paused",
+                "Service declined",
+                "Station closed",
+                "Transferred to manager"
+              ]
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision time",
+              "units": 0.8
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 1.0
+            },
+            {
+              "key": "policy_ref",
+              "label": "Applicable policy reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Communication log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.65
+            },
+            {
+              "key": "recipient_role",
+              "label": "Recipient or role",
+              "units": 1.15
+            },
+            {
+              "key": "factual_message",
+              "label": "Factual message",
+              "units": 1.35
+            },
+            {
+              "key": "sent_by",
+              "label": "Sent by",
+              "units": 0.9
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "qualified_review",
+      "title": "Qualified review and protected decisions",
+      "guidance": "Route legal, privacy, authority, insurance, and compensation questions.",
+      "blocks": [
+        {
+          "key": "review_record",
+          "type": "fields",
+          "label": "Qualified review",
+          "fields": [
+            {
+              "key": "review_status",
+              "label": "Review status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Pending review",
+                "Operational review complete",
+                "Leadership review",
+                "Referred under policy"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "referral",
+              "label": "Referral",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "None recorded",
+                "Venue leadership",
+                "Security",
+                "Insurer",
+                "Other responsible role"
+              ]
+            },
+            {
+              "key": "referral_ref",
+              "label": "Referral reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_findings",
+          "type": "textarea",
+          "label": "Review findings and decision limits",
+          "fields": [
+            {
+              "key": "findings",
+              "label": "Reviewed findings, applicable requirements, and limits"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "privacy_authority",
+          "type": "notice",
+          "label": "Privacy and authority boundary",
+          "guidance": "Record only facts necessary for operational review. Do not diagnose, label a guest, determine legal fault, accept liability, promise compensation, or decide on authority or insurer contact. Follow applicable privacy, retention, and access requirements and route protected decisions to the qualified responsible role."
+        }
+      ]
+    },
+    {
+      "key": "corrective_closeout",
+      "title": "Corrective actions and accountable closeout",
+      "guidance": "Close the record after evidence, decisions, and residual work are transferred.",
+      "blocks": [
+        {
+          "key": "corrective_register",
+          "type": "table",
+          "label": "Corrective action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "action",
+              "label": "Corrective action",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "Verification",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Immediate operational needs resolved or transferred",
+            "Service decision and responsible reviewer recorded",
+            "Referenced records stored with appropriate access",
+            "Inventory, cash, or property variances linked",
+            "Client or event-lead communication documented",
+            "Corrective actions have owners and due points",
+            "Applicable retention and privacy requirements applied"
+          ]
+        },
+        {
+          "key": "qualified_closeout",
+          "type": "signatures",
+          "label": "Preparation and qualified review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.75
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Responsible reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

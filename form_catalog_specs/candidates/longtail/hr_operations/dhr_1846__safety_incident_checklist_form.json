@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1846__safety_incident_checklist_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1846__safety_incident_checklist_form.pdf",
+  "slug": "safety-incident-checklist-form",
+  "title": "Safety Incident Checklist Form",
+  "subtitle": "Use this checklist to verify readiness and execution, expose failed checkpoints, authorize the next state, and preserve accountable handoff for a safety incident workflow.",
+  "description": "An original operational safety incident checklist form that controls a workplace safety event and corrective-action record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the reporting worker, supervisor, or incident coordinator needs a traceable checklist so the qualified safety, occupational health, operations, or regulatory reviewer can stabilize, investigate, classify, notify, correct, reopen work, or escalate the safety event under the emergency procedure, hazard-control plan, incident-investigation process, reporting rules, and anti-retaliation policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "checklist_assignment",
+      "title": "Safety Incident checklist assignment and operating boundary",
+      "guidance": "Identify the event, accountable operator, reviewer, applicable references, and required completion point.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Safety Incident identity",
+          "fields": [
+            {
+              "key": "incident_record",
+              "label": "Safety incident number",
+              "units": 0.85
+            },
+            {
+              "key": "event_date_time",
+              "label": "Event date and time",
+              "units": 0.8
+            },
+            {
+              "key": "reported_date_time",
+              "label": "Reported date and time",
+              "units": 0.8
+            },
+            {
+              "key": "site_location",
+              "label": "Site and exact location",
+              "units": 1.05
+            },
+            {
+              "key": "work_area_task",
+              "label": "Work area and task",
+              "units": 1.05
+            },
+            {
+              "key": "reporting_route",
+              "label": "Reporter or confidential route",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Checklist ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "execution_control",
+          "type": "fields",
+          "label": "Execution control",
+          "fields": [
+            {
+              "key": "checklist_date",
+              "label": "Checklist date",
+              "units": 0.7
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 0.85
+            },
+            {
+              "key": "work_window",
+              "label": "Work or review window",
+              "units": 0.9
+            },
+            {
+              "key": "reference_revision",
+              "label": "Policy or reference revision",
+              "units": 1.0
+            },
+            {
+              "key": "completion_due",
+              "label": "Completion due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_scope",
+          "type": "textarea",
+          "label": "Event scope, operating objective, affected population, exclusions, and required outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Checklist scope and job statement"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "readiness",
+      "title": "Safety Incident readiness and source-record verification",
+      "guidance": "Confirm the task is ready and the operator has the correct information before checking execution.",
+      "blocks": [
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Safety Incident readiness checks",
+          "items": [
+            "Emergency services, first aid, medical evaluation, or evacuation need is addressed",
+            "Immediate hazard is isolated and affected area controlled",
+            "People are accounted for and qualified support is notified",
+            "Event time, location, task, equipment, material, and operating state are captured",
+            "Photographs, video, physical items, alarms, logs, and system data preserve provenance",
+            "Reporter and witness accounts are collected separately and without coaching",
+            "Exposure, injury, illness, or symptom information is routed confidentially",
+            "Potential recurrence and similarly exposed work are identified"
+          ]
+        },
+        {
+          "key": "source_evidence",
+          "type": "checklist",
+          "label": "Source records and evidence available",
+          "items": [
+            "Initial report, emergency response, and notification timeline",
+            "Scene, equipment, control, material, and environmental photographs",
+            "Reporter, witness, supervisor, and responder factual accounts",
+            "Procedure, permit, training, inspection, maintenance, and prior-event records",
+            "Alarm, sensor, access, vehicle, production, or system log",
+            "Hazard isolation, medical-routing, and exposure-control reference",
+            "Cause analysis and corrective-action verification",
+            "Qualified reporting decision, restart authorization, and worker communication"
+          ]
+        },
+        {
+          "key": "readiness_status",
+          "type": "fields",
+          "label": "Readiness status",
+          "fields": [
+            {
+              "key": "ready_status",
+              "label": "Ready to proceed?",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "Yes with conditions",
+                "No",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "missing_item",
+              "label": "Missing item or dependency",
+              "units": 1.15
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.85
+            },
+            {
+              "key": "dependency_due",
+              "label": "Dependency due",
+              "units": 0.7
+            },
+            {
+              "key": "proceed_authority",
+              "label": "Proceed authority",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "execution",
+      "title": "Safety Incident execution checkpoints and traceable results",
+      "guidance": "Record each checkpoint against observable evidence and identify every condition that is not complete.",
+      "blocks": [
+        {
+          "key": "execution_checks",
+          "type": "checklist",
+          "label": "Safety Incident execution checkpoints",
+          "items": [
+            "Emergency services, first aid, medical evaluation, or evacuation need is addressed",
+            "Immediate hazard is isolated and affected area controlled",
+            "People are accounted for and qualified support is notified",
+            "Event time, location, task, equipment, material, and operating state are captured",
+            "Photographs, video, physical items, alarms, logs, and system data preserve provenance",
+            "Reporter and witness accounts are collected separately and without coaching",
+            "Exposure, injury, illness, or symptom information is routed confidentially",
+            "Potential recurrence and similarly exposed work are identified",
+            "Investigation considers systemic and root causes rather than worker blame",
+            "Corrective actions include owner, due point, interim control, and effectiveness test",
+            "Qualified reviewer makes recordability and external-notification decisions",
+            "Work restart and closeout require evidence that controls are effective"
+          ]
+        },
+        {
+          "key": "checkpoint_results",
+          "type": "table",
+          "label": "Checkpoint, observed evidence, result, operator, and follow-up",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint / item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_observed",
+              "label": "Evidence observed",
+              "units": 1.25
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.7
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.7
+            },
+            {
+              "key": "record_ref",
+              "label": "Record ref.",
+              "units": 0.8
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up / due",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Observed conditions, sequence, evidence references, deferred checks, and operating limitations",
+          "fields": [
+            {
+              "key": "execution_detail",
+              "label": "Execution evidence and limitation notes"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exception_control",
+      "title": "Safety Incident failed checkpoint and escalation control",
+      "guidance": "Do not hide an incomplete or failed checkpoint inside free text; route it with an owner and due point.",
+      "blocks": [
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the qualified safety, occupational health, operations, or regulatory reviewer under the emergency procedure, hazard-control plan, incident-investigation process, reporting rules, and anti-retaliation policy."
+        },
+        {
+          "key": "checklist_triggers",
+          "type": "checklist",
+          "label": "Safety Incident exception and escalation triggers",
+          "items": [
+            "Fatality, emergency, severe injury, hospitalization, amputation, or eye loss may require immediate external review",
+            "Continuing energy, chemical, biological, fire, structural, traffic, or violence hazard exists",
+            "Multiple workers, visitors, contractors, or public members may be affected",
+            "Exposure boundary, involved material, equipment status, or scene integrity is uncertain",
+            "Evidence could be lost through cleanup, repair, restart, or digital overwrite",
+            "Similar event, near miss, or unclosed corrective action occurred previously",
+            "Reporter raises retaliation, intimidation, suppression, or reporting-access concern",
+            "Work restarted or control was removed without the required authorization"
+          ]
+        },
+        {
+          "key": "checklist_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "verification_decision",
+      "title": "Safety Incident verification and proceed decision",
+      "guidance": "Use an independent review where required and state the exact boundary of any proceed decision.",
+      "blocks": [
+        {
+          "key": "verification_sample",
+          "type": "table",
+          "label": "Safety Incident verification sample",
+          "columns": [
+            {
+              "key": "factor",
+              "label": "Event / control factor",
+              "units": 1.15
+            },
+            {
+              "key": "expected_state",
+              "label": "Expected state",
+              "units": 1.05
+            },
+            {
+              "key": "evidence_observed",
+              "label": "Evidence observed",
+              "units": 1.25
+            },
+            {
+              "key": "gap_cause",
+              "label": "Gap / cause",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action / priority",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proceed_decision",
+          "type": "fields",
+          "label": "Verification and proceed decision",
+          "fields": [
+            {
+              "key": "completion_status",
+              "label": "Completion status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with conditions",
+                "Incomplete",
+                "Stopped",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "proceed_status",
+              "label": "Proceed status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Conditionally authorized",
+                "Not authorized",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective scope or time",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.7
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist and qualified-review boundary",
+          "guidance": "A completed checkbox is evidence only when the underlying condition was observed. The qualified safety, occupational health, operations, or regulatory reviewer must apply the emergency procedure, hazard-control plan, incident-investigation process, reporting rules, and anti-retaliation policy before any restricted, safety, security, legal, medical, payroll, or tax decision."
+        },
+        {
+          "key": "verification_signoff",
+          "type": "signatures",
+          "label": "Checklist performance and verification",
+          "fields": [
+            {
+              "key": "operator_signoff",
+              "label": "Performed by / date",
+              "units": 1.0
+            },
+            {
+              "key": "independent_verification",
+              "label": "Verified by / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority_signoff",
+              "label": "Decision authority / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "checklist_closeout",
+      "title": "Safety Incident checklist handoff and closeout",
+      "guidance": "Preserve the final state, unfinished work, receiving owner, and reopen trigger.",
+      "blocks": [
+        {
+          "key": "checklist_closeout_outcome",
+          "type": "fields",
+          "label": "Checklist outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_closeout_actions",
+          "type": "table",
+          "label": "Open safety incident action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "checklist_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "checklist_closeout_signoff",
+          "type": "signatures",
+          "label": "Checklist accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Qualified Safety, Occupational Health, Operations, Or Regulatory Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

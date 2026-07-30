@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "catalog_id": "insurance_claims/dic_2014__water_damage_claim_intake_form",
+  "source_section": "insurance_claims",
+  "source_filename": "dic_2014__water_damage_claim_intake_form.pdf",
+  "slug": "water-damage-claim-intake-form",
+  "title": "Water Damage Claim Intake Form",
+  "subtitle": "A decision-ready water damage claim intake that preserves identity, facts, evidence, authorization, exceptions, and accountable handoff without replacing the controlling policy or qualified judgment.",
+  "description": "An original water damage claim intake for water source, migration path, and affected materials with domain-specific intake, investigation, evidence, decision, escalation, audit, and closeout controls.",
+  "use_case": "Use when the water-loss claim and mitigation coordination owner must open and control a claim intake for water source, migration path, and affected materials. The record closes only after evidence and limitations are visible, authorized decisions are distinguishable from pending review, exceptions have owners, and the next recipient accepts the handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "record_control",
+      "title": "Water Damage claim intake identity and routing",
+      "guidance": "Tie this record to one subject, dated source, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Water Damage claim intake record",
+          "fields": [
+            {
+              "key": "intake_id",
+              "label": "Claim intake record ID",
+              "units": 0.95
+            },
+            {
+              "key": "notice_received",
+              "label": "Notice received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "policy_reference",
+              "label": "Policy or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim number, if assigned",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned intake owner",
+              "units": 1.05
+            },
+            {
+              "key": "triage_priority",
+              "label": "Triage priority",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Prompt",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ],
+          "guidance": "Use the same record identifiers in evidence, communications, and handoff."
+        },
+        {
+          "key": "domain_identity",
+          "type": "fields",
+          "label": "Water Damage subject and event identity",
+          "fields": [
+            {
+              "key": "discovery_time",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "source_location",
+              "label": "Suspected source and exact location",
+              "units": 1.25
+            },
+            {
+              "key": "source_status",
+              "label": "Source active, stopped, or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "affected_levels",
+              "label": "Affected rooms, units, and levels",
+              "units": 1.05
+            },
+            {
+              "key": "occupancy_status",
+              "label": "Occupancy and access status",
+              "units": 1.0
+            },
+            {
+              "key": "mitigation_ref",
+              "label": "Mitigation company/job ref",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Source, affected level, and moisture-map reference"
+        },
+        {
+          "key": "scope_statement",
+          "type": "textarea",
+          "label": "Claim Intake scope and opening facts",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Water Damage purpose, source wording, requested outcome, known limitations, and excluded work",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "notice_and_response",
+      "title": "Water Damage notice, immediate response, and factual account",
+      "guidance": "Separate direct observations from reported information and document urgent routing before ordinary intake.",
+      "blocks": [
+        {
+          "key": "initial_observations",
+          "type": "fields",
+          "label": "Water Damage initial observations",
+          "fields": [
+            {
+              "key": "visible_water",
+              "label": "Standing or visible water extent",
+              "units": 1.0
+            },
+            {
+              "key": "migration",
+              "label": "Migration and adjoining areas",
+              "units": 1.25
+            },
+            {
+              "key": "materials",
+              "label": "Wet materials and contents",
+              "units": 1.15
+            },
+            {
+              "key": "utility_control",
+              "label": "Utility or source-isolation action",
+              "units": 1.05
+            },
+            {
+              "key": "moisture_ref",
+              "label": "Moisture survey ref",
+              "units": 1.0
+            },
+            {
+              "key": "prior_event",
+              "label": "Prior leak or repair ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "triage_indicators",
+          "type": "checklist",
+          "label": "Water Damage triage indicators",
+          "items": [
+            "Active flow, standing water, or inaccessible shutoff remains",
+            "Electrical equipment, outlets, or wiring may be wet",
+            "Ceiling sag, structural movement, or falling material is present",
+            "Sewage, groundwater, chemicals, or unknown contamination suspected",
+            "Visible growth, odor, prolonged wetness, or hidden cavity concern",
+            "Multiple rooms, units, floors, or adjoining properties affected",
+            "Contents or moisture-sensitive equipment needs controlled movement",
+            "Emergency drying, extraction, containment, or temporary relocation began"
+          ],
+          "guidance": "Check only conditions reported or directly observed; explain source and uncertainty in the narrative."
+        },
+        {
+          "key": "event_narrative",
+          "type": "textarea",
+          "label": "Chronological notice and loss narrative",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Water Damage facts, source of each fact, sequence, immediate action, and unresolved questions",
+              "multiline": true
+            }
+          ],
+          "height": 78
+        },
+        {
+          "key": "intake_boundary",
+          "type": "notice",
+          "label": "Claim intake boundary",
+          "guidance": "This record does not classify water, diagnose contamination, authorize entry into electrical or structurally unsafe areas, or determine coverage. Stop unsafe work and route source control, sampling, demolition, and claim decisions to qualified authority."
+        }
+      ]
+    },
+    {
+      "key": "people_property_evidence",
+      "title": "Water Damage involved parties, affected scope, and early evidence",
+      "guidance": "Collect only information needed for safe routing and the claim workflow; store restricted material in its approved system.",
+      "blocks": [
+        {
+          "key": "party_register",
+          "type": "table",
+          "label": "Involved-party and interest register",
+          "columns": [
+            {
+              "key": "role",
+              "label": "Role or interest",
+              "units": 0.9
+            },
+            {
+              "key": "identity_ref",
+              "label": "Name or approved identity ref",
+              "units": 1.15
+            },
+            {
+              "key": "contact_route",
+              "label": "Contact route",
+              "units": 1.0
+            },
+            {
+              "key": "reported_impact",
+              "label": "Reported impact or interest",
+              "units": 1.25
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "early_evidence",
+          "type": "checklist",
+          "label": "Water Damage early evidence sources",
+          "items": [
+            "Source and affected-area photographs before material removal",
+            "Moisture readings with location, instrument, date, and operator",
+            "Plumber, appliance, roofer, utility, or mitigation report",
+            "Water bills, alarms, maintenance, or prior leak records",
+            "Drying, extraction, equipment-placement, and monitoring logs",
+            "Removed material, contents, sample, or disposal authorization log",
+            "Repair, mitigation, temporary lodging, and utility receipts",
+            "Adjoining unit, landlord, tenant, or property-manager notices"
+          ],
+          "guidance": "A checked item means it is received or preservation is confirmed; record gaps separately."
+        },
+        {
+          "key": "evidence_receipt",
+          "type": "table",
+          "label": "Evidence receipt and source log",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence item",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 1.05
+            },
+            {
+              "key": "received",
+              "label": "Received / preserved",
+              "units": 0.9
+            },
+            {
+              "key": "storage_ref",
+              "label": "Approved storage ref",
+              "units": 1.15
+            },
+            {
+              "key": "gap_note",
+              "label": "Quality or gap note",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "triage_investigation",
+      "title": "Water Damage triage, investigation plan, and decision routing",
+      "guidance": "Define what is known, what must be verified, and who has authority for the next decision.",
+      "blocks": [
+        {
+          "key": "triage_decision",
+          "type": "fields",
+          "label": "Triage disposition",
+          "fields": [
+            {
+              "key": "disposition",
+              "label": "Intake disposition",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Assign for investigation",
+                "Request information",
+                "Urgent review",
+                "Refer",
+                "Close as duplicate"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_adjuster",
+              "label": "Assigned adjuster or examiner",
+              "units": 1.15
+            },
+            {
+              "key": "next_contact_due",
+              "label": "Next contact due",
+              "units": 0.9
+            },
+            {
+              "key": "policy_record_ref",
+              "label": "Controlling policy-record ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "investigation_plan",
+          "type": "table",
+          "label": "Water Damage verification and investigation plan",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question to resolve",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_needed",
+              "label": "Evidence or action needed",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "result_ref",
+              "label": "Result or record ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "triage_rationale",
+          "type": "textarea",
+          "label": "Triage rationale and uncertainty",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Water Damage facts supporting the route, conflicts, limitations, and authority used",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Water Damage exceptions, deadlines, and escalation",
+      "guidance": "Make each unresolved condition visible with an immediate action, owner, due point, and disposition.",
+      "blocks": [
+        {
+          "key": "exception_screen",
+          "type": "checklist",
+          "label": "Water Damage exception screen",
+          "items": [
+            "Water source remains active, inaccessible, or unverified",
+            "Wet electrical or structural condition blocks safe access",
+            "Contamination or microbial concern lacks qualified assessment",
+            "Materials were removed before condition and location were documented",
+            "Moisture readings conflict or omit affected cavities and boundaries",
+            "Adjoining unit, tenant, landlord, or recovery route is unresolved"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition or conflict",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "route_owner",
+              "label": "Route and owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or deadline",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "notice_control",
+          "type": "fields",
+          "label": "Notice and deadline control",
+          "fields": [
+            {
+              "key": "notice_owner",
+              "label": "Notice owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_deadline",
+              "label": "Next applicable deadline",
+              "units": 1.05
+            },
+            {
+              "key": "deadline_source",
+              "label": "Policy, system, or requirement ref",
+              "units": 1.2
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 1.0
+            },
+            {
+              "key": "escalated_at",
+              "label": "Escalated date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Water Damage intake handoff and accountable closeout",
+      "guidance": "Close intake only when ownership, evidence, open issues, and the next communication are explicit.",
+      "blocks": [
+        {
+          "key": "handoff_checks",
+          "type": "checklist",
+          "label": "Handoff readiness",
+          "items": [
+            "Water Damage identity and event references are consistent",
+            "Urgent safety, privacy, legal, or deadline routes are documented",
+            "Evidence received and missing evidence are distinguishable",
+            "No fault, value, liability, or coverage conclusion is implied",
+            "Open questions have owners and due points",
+            "The next responsible recipient accepted the handoff"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Intake closeout",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Intake outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Assigned",
+                "Referred",
+                "Duplicate",
+                "Withdrawn",
+                "Closed"
+              ]
+            },
+            {
+              "key": "open_items",
+              "label": "Remaining open-item count",
+              "units": 0.9
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and due date",
+              "units": 1.2
+            },
+            {
+              "key": "handoff_ref",
+              "label": "Handoff evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "closed_at",
+              "label": "Intake closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified reviewer / date",
+              "units": 1.1
+            },
+            {
+              "key": "accepted_by",
+              "label": "Handoff accepted by / date",
+              "units": 1.1
+            },
+            {
+              "key": "record_version",
+              "label": "Record version",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "catalog_id": "nonprofit_events/dne_1725__event_sponsorship_donation_receipt_worksheet_form",
+  "source_section": "nonprofit_events",
+  "source_filename": "dne_1725__event_sponsorship_donation_receipt_worksheet_form.pdf",
+  "slug": "event-sponsorship-donation-receipt-worksheet-form",
+  "title": "Event Sponsorship Donation Receipt Worksheet Form",
+  "subtitle": "Event Sponsorship workflow to reconcile received contribution evidence, benefits, review, acknowledgment routing, exceptions, and record closeout.",
+  "description": "An original event sponsorship donation receipt worksheet form for nonprofit operators to preserve sponsor relationship identity, workflow evidence, decisions, exceptions, qualified review, and accountable closeout.",
+  "use_case": "Use when a nonprofit team must manage a sponsor relationship through the donation receipt worksheet workflow while keeping consent, privacy, authority, evidence, escalation, and handoff visible.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "routing",
+      "title": "Event Sponsorship donation receipt worksheet routing",
+      "guidance": "Identify the record, source, priority, subject, and accountable owner.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Donation Receipt Worksheet identity and routing",
+          "guidance": "Use this record ID on attachments, corrections, and follow-up.",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Substantiation worksheet ID",
+              "units": 1
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.9
+            },
+            {
+              "key": "source_contact",
+              "label": "Source or requester",
+              "units": 1.3
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 1,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Urgent"
+              ]
+            },
+            {
+              "key": "assigned_owner",
+              "label": "Assigned record owner",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Event Sponsorship identity",
+          "guidance": "Preserve the identities used by the controlling program or partner record.",
+          "fields": [
+            {
+              "key": "sponsor_id",
+              "label": "Sponsor record ID",
+              "units": 0.9
+            },
+            {
+              "key": "sponsor_name",
+              "label": "Sponsor legal or trade name",
+              "units": 1.5
+            },
+            {
+              "key": "contact_name",
+              "label": "Sponsor contact",
+              "units": 1.1
+            },
+            {
+              "key": "event_name",
+              "label": "Event name",
+              "units": 1.3
+            },
+            {
+              "key": "package",
+              "label": "Package or level",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "context",
+      "title": "Event Sponsorship received contribution and source evidence",
+      "guidance": "Record what was actually received without providing tax or valuation conclusions.",
+      "blocks": [
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Event Sponsorship operating context",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "commitment_type",
+              "label": "Cash or in-kind",
+              "units": 1
+            },
+            {
+              "key": "stated_value",
+              "label": "Stated value",
+              "units": 1
+            },
+            {
+              "key": "benefit_set",
+              "label": "Benefit set reference",
+              "units": 1.3
+            },
+            {
+              "key": "asset_due",
+              "label": "Logo or asset due",
+              "units": 1.1
+            },
+            {
+              "key": "fulfillment_owner",
+              "label": "Fulfillment owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "readiness_controls",
+          "type": "checklist",
+          "label": "Event Sponsorship readiness and record controls",
+          "guidance": "Confirm facts and routes; do not infer approval from a checked item.",
+          "items": [
+            "Sponsor identity, contact, event, and package are confirmed",
+            "Cash and in-kind components are separated and documented",
+            "Benefits, deliverables, limits, and fulfillment dates are explicit",
+            "Brand assets, approvals, placement, and usage period are recorded",
+            "Tickets, hospitality, recognition, or speaking access are quantified",
+            "Restricted categories, exclusivity, conflicts, or ethics concerns are routed",
+            "Payment or delivery evidence links to the sponsorship record",
+            "Substitutions and unmet benefits require documented approval"
+          ]
+        },
+        {
+          "key": "workflow_controls",
+          "type": "checklist",
+          "label": "Donation Receipt Worksheet workflow controls",
+          "guidance": "Mark each applicable control and route any unmet condition.",
+          "items": [
+            "Organization, donor, received date, and contribution evidence are identified",
+            "Cash amount is separated from noncash property description and quantity",
+            "Noncash value, when present, remains attributed to the donor or qualified source",
+            "Goods, services, admission, or other benefits returned to the donor are recorded",
+            "Restrictions, designations, refunds, reversals, and partial receipts are visible",
+            "Duplicate acknowledgments and corrected records preserve history",
+            "Charitable status, deductibility, appraisal, and tax conclusions are not made here",
+            "Authorized acknowledgment wording and delivery route are assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "details",
+      "title": "Event Sponsorship contribution lines and receipt evidence",
+      "guidance": "Preserve repeated items and the evidence needed to reconstruct the record.",
+      "blocks": [
+        {
+          "key": "detail_register",
+          "type": "table",
+          "label": "Event Sponsorship received contribution register",
+          "guidance": "Use one row per distinct item, activity, commitment, event, or service entry.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cash or property description",
+              "units": 1.6
+            },
+            {
+              "key": "received",
+              "label": "Received date",
+              "units": 1
+            },
+            {
+              "key": "measure",
+              "label": "Amount or quantity",
+              "units": 1.1
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.3
+            },
+            {
+              "key": "status",
+              "label": "Review status",
+              "units": 1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "detail_narrative",
+          "type": "textarea",
+          "label": "Contribution source, received evidence, donor restrictions, returned benefits, and unresolved substantiation gaps",
+          "guidance": "Separate direct facts, attributed statements, and unresolved assumptions.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "detail_notes",
+              "label": "Contribution source, received evidence, donor restrictions, returned benefits, and unresolved substantiation gaps",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "evidence",
+      "title": "Event Sponsorship evidence and completeness review",
+      "guidance": "Link the subject-specific evidence, record boundaries, and missing information.",
+      "blocks": [
+        {
+          "key": "subject_evidence",
+          "type": "checklist",
+          "label": "Event Sponsorship evidence review",
+          "guidance": "Retain source references and correction history in the approved record.",
+          "items": [
+            "Benefits, deliverables, limits, and fulfillment dates are explicit",
+            "Brand assets, approvals, placement, and usage period are recorded",
+            "Tickets, hospitality, recognition, or speaking access are quantified",
+            "Restricted categories, exclusivity, conflicts, or ethics concerns are routed",
+            "Payment or delivery evidence links to the sponsorship record",
+            "Substitutions and unmet benefits require documented approval",
+            "Event cancellation, postponement, refund, or credit terms are routed",
+            "Post-event proof and sponsor acceptance have accountable owners"
+          ]
+        },
+        {
+          "key": "evidence_refs",
+          "type": "fields",
+          "label": "Evidence and communication references",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "primary_record_ref",
+              "label": "Primary record reference",
+              "units": 1.3
+            },
+            {
+              "key": "attachment_ref",
+              "label": "Attachment or evidence ref",
+              "units": 1.3
+            },
+            {
+              "key": "communication_ref",
+              "label": "Communication reference",
+              "units": 1.3
+            },
+            {
+              "key": "restricted_record_ref",
+              "label": "Restricted-record ref",
+              "units": 1.3
+            },
+            {
+              "key": "evidence_owner",
+              "label": "Evidence owner",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision",
+      "title": "Event Sponsorship donation receipt worksheet decision and authorization",
+      "guidance": "Document the status, evidence basis, conditions, and accountable decision owner.",
+      "blocks": [
+        {
+          "key": "decision_status",
+          "type": "fields",
+          "label": "Donation Receipt Worksheet decision",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Decision status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Ready for acknowledgment",
+                "Needs review",
+                "Corrected",
+                "On hold",
+                "Not acknowledged"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.9
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Decision evidence ref",
+              "units": 1.4
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "decision_basis",
+          "type": "checklist",
+          "label": "Decision and authorization basis",
+          "guidance": "",
+          "items": [
+            "Received evidence agrees with the contribution description",
+            "Cash, noncash, benefit, restriction, refund, and correction facts reconcile",
+            "Donor-provided value remains separate from organization conclusions",
+            "Tax, status, appraisal, and disclosure questions were routed to qualified review",
+            "Authorized acknowledgment owner and record destination are assigned"
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision rationale, conditions, limits, and next action",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Decision rationale, conditions, limits, and next action",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions",
+      "title": "Event Sponsorship exceptions and escalation",
+      "guidance": "Keep incomplete, sensitive, unsafe, disputed, or unauthorized work visible.",
+      "blocks": [
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Donation Receipt Worksheet authority and record boundary",
+          "guidance": "This is an internal substantiation worksheet, not a donor tax receipt, appraisal, deductibility determination, or charitable-status statement. This worksheet does not create a sponsorship agreement, certify tax treatment, or authorize brand use. Apply current event, ethics, finance, privacy, and contract-review procedures. Route binding terms and unresolved sponsor benefits to authorized reviewers before fulfillment. Hold unresolved work and route it to the qualified owner under applicable policy."
+        },
+        {
+          "key": "exception_triggers",
+          "type": "checklist",
+          "label": "Event Sponsorship exception triggers",
+          "guidance": "Mark each applicable trigger and explain uncertain scope below.",
+          "items": [
+            "Sponsor identity, package, benefit, value, or due date is unclear",
+            "Brand, exclusivity, ethics, conflict, or restricted-category review is open",
+            "Payment, in-kind delivery, asset, ticket, or hospitality obligation is late",
+            "Venue, production, accessibility, or technical constraint affects fulfillment",
+            "Event change requires benefit substitution, credit, refund, or new approval",
+            "Agreement, tax, acknowledgment, or authority question needs qualified review"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Event Sponsorship unresolved-item register",
+          "guidance": "Do not close a row until disposition and accountable ownership are explicit.",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Trigger or unresolved item",
+              "units": 1.5
+            },
+            {
+              "key": "action",
+              "label": "Immediate safeguard or action",
+              "units": 1.5
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due point",
+              "units": 1.2
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "escalation_notes",
+          "type": "textarea",
+          "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+          "guidance": "",
+          "height": 54,
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Escalation facts, notifications, restrictions, and qualified-review route",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout",
+      "title": "Event Sponsorship donation receipt worksheet closeout and handoff",
+      "guidance": "Reconcile the final status, transfer open work, and preserve accountable acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Substantiation worksheet closeout",
+          "guidance": "",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Open handoff",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Record or evidence location",
+              "units": 1.4
+            },
+            {
+              "key": "next_owner",
+              "label": "Next accountable owner",
+              "units": 1.2
+            },
+            {
+              "key": "next_due",
+              "label": "Next action due",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Event Sponsorship open actions and limitations",
+          "guidance": "Carry forward every item that is not fully resolved at closeout.",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open action or limitation",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence needed",
+              "units": 1.3
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status or handoff",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "handoff_confirmations",
+          "type": "checklist",
+          "label": "Event Sponsorship handoff confirmations",
+          "guidance": "Unchecked items remain part of the open handoff.",
+          "items": [
+            "Contribution evidence and final worksheet values reconcile",
+            "Benefits, restrictions, refunds, reversals, and corrections are visible",
+            "Acknowledgment content was reviewed by an authorized owner",
+            "Delivery evidence and record location were filed",
+            "Open tax, value, identity, or duplicate-record issues retain owners",
+            "Sponsor, package, consideration, and benefit obligations were reconciled",
+            "Brand approvals, placement, tickets, hospitality, and access were documented"
+          ]
+        },
+        {
+          "key": "final_notes",
+          "type": "textarea",
+          "label": "Final outcome, remaining limits, communications, and acceptance notes",
+          "guidance": "",
+          "height": 70,
+          "fields": [
+            {
+              "key": "outcome_notes",
+              "label": "Final outcome, remaining limits, communications, and acceptance notes",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Accountable preparation and review",
+          "guidance": "Record accountable preparation and qualified review.",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.5
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.9
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized sponsorship reviewer",
+              "units": 1.5
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

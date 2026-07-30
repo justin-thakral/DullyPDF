@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "catalog_id": "legal_office/dlo_2110__conflict_check_document_request_form",
+  "source_section": "legal_office",
+  "source_filename": "dlo_2110__conflict_check_document_request_form.pdf",
+  "slug": "conflict-check-document-request-form",
+  "title": "Conflict Check Document Request Form",
+  "subtitle": "A controlled document request package record for a pre-engagement or new-party conflicts search that maps clients, adversaries, affiliates, witnesses, lawyers, prior matters, search terms, possible hits, analysis routing, and final clearance restrictions, carrying facts and source evidence through qualified decision, exception escalation, secure communication, and accountable handoff.",
+  "description": "This original Conflict Check Document Request Form helps the conflicts analyst and authorized ethics reviewer manage a pre-engagement or new-party conflicts search that maps clients, adversaries, affiliates, witnesses, lawyers, prior matters, search terms, possible hits, analysis routing, and final clearance restrictions. It defines a proportionate document need, recipient authority, secure transmission, receipt inventory, deficiency follow-up, and custody disposition, while keeping jurisdiction-specific conclusions and professional judgment with authorized reviewers.",
+  "use_case": "Use when the conflicts analyst and authorized ethics reviewer needs one fillable record that defines a proportionate document need, recipient authority, secure transmission, receipt inventory, deficiency follow-up, and custody disposition for the conflict-search request. Close only after the document request disposition is supported by evidence and accepted by the named recipient.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Conflict Check record identity and routing",
+      "guidance": "Open one traceable record, establish authority, and assign accountable qualified review.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Conflict Check record and responsible parties",
+          "fields": [
+            {
+              "key": "search_ref",
+              "label": "Conflict search reference",
+              "units": 1.1
+            },
+            {
+              "key": "proposed_client",
+              "label": "Proposed client",
+              "units": 1.2
+            },
+            {
+              "key": "requesting_lawyer",
+              "label": "Requesting lawyer",
+              "units": 1.0
+            },
+            {
+              "key": "practice_group",
+              "label": "Practice group",
+              "units": 0.9
+            },
+            {
+              "key": "conflicts_owner",
+              "label": "Conflicts analyst",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "timing_route",
+          "type": "fields",
+          "label": "Document Request Package timing and route",
+          "fields": [
+            {
+              "key": "record_opened",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time and zone",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time sensitive",
+                "Urgent review",
+                "Stop and escalate"
+              ]
+            },
+            {
+              "key": "qualified_route",
+              "label": "Qualified review route",
+              "units": 1.1
+            },
+            {
+              "key": "next_due",
+              "label": "Next due point",
+              "units": 0.9
+            },
+            {
+              "key": "related_record",
+              "label": "Related record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "secure_boundary",
+          "type": "notice",
+          "label": "Confidential record boundary",
+          "guidance": "Use approved secure systems for protected communications and source files. Do not enter access credentials, complete account numbers, government identifiers, medical detail, or privileged source content in this routing form."
+        }
+      ]
+    },
+    {
+      "key": "domain_evidence",
+      "title": "Conflict Check facts and source evidence",
+      "guidance": "Capture domain-specific facts, distinguish statements from verified evidence, and retain source references.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Conflict Check matter profile",
+          "fields": [
+            {
+              "key": "matter_summary",
+              "label": "Proposed matter summary",
+              "units": 1.4
+            },
+            {
+              "key": "primary_adverse",
+              "label": "Primary adverse party",
+              "units": 1.1
+            },
+            {
+              "key": "relationship_type",
+              "label": "Relationship or role",
+              "units": 1.0
+            },
+            {
+              "key": "search_scope",
+              "label": "Search database scope",
+              "units": 1.0
+            },
+            {
+              "key": "jurisdiction",
+              "label": "Jurisdiction or venue",
+              "units": 0.9
+            },
+            {
+              "key": "urgency",
+              "label": "Clearance needed by",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "evidence_checkpoints",
+          "type": "checklist",
+          "label": "Conflict Check evidence checkpoints",
+          "items": [
+            "Proposed client and client-side affiliates are identified with aliases",
+            "Adverse parties, affiliates, principals, and known aligned persons are listed",
+            "Witnesses, experts, insurers, lenders, and other material relationships are mapped",
+            "Matter description is specific enough to compare subject and transaction overlap",
+            "Search terms include former names, trade names, spellings, and entity parents",
+            "Every possible hit preserves its source matter and relationship context",
+            "Search output is treated as evidence for review, not an automated clearance",
+            "Sensitive prospective-client information is limited and access controlled"
+          ],
+          "guidance": "Check only supported items; explain any limitation in the evidence narrative."
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Conflict Check evidence and action register",
+          "columns": [
+            {
+              "key": "searched_name",
+              "label": "Name searched",
+              "units": 1.2
+            },
+            {
+              "key": "role_alias",
+              "label": "Role or alias",
+              "units": 1.0
+            },
+            {
+              "key": "result_ref",
+              "label": "Result ref",
+              "units": 0.9
+            },
+            {
+              "key": "relationship",
+              "label": "Relationship found",
+              "units": 1.3
+            },
+            {
+              "key": "triage",
+              "label": "Triage",
+              "units": 0.8
+            }
+          ],
+          "rows": 4,
+          "guidance": "Reference approved repositories; do not copy confidential source contents into the table."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Possible-hit context, relationship dates, matter similarity, adversity, confidential information, and facts requiring ethics review",
+          "fields": [
+            {
+              "key": "context_narrative",
+              "label": "Possible-hit context, relationship dates, matter similarity, adversity, confidential information, and facts requiring ethics review"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "workflow_record",
+      "title": "Conflict Check document request package control record",
+      "guidance": "Turn the record purpose into traceable evidence, accountable actions, and reviewable decisions.",
+      "blocks": [
+        {
+          "key": "request_definition",
+          "type": "fields",
+          "label": "Document need, recipient, timing, and secure route",
+          "fields": [
+            {
+              "key": "request_purpose",
+              "label": "Specific document purpose",
+              "units": 1.2
+            },
+            {
+              "key": "recipient_authority",
+              "label": "Recipient and authority",
+              "units": 1.1
+            },
+            {
+              "key": "scope_period",
+              "label": "Scope or date range",
+              "units": 1.0
+            },
+            {
+              "key": "delivery_format",
+              "label": "Requested format",
+              "units": 0.9
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.8
+            },
+            {
+              "key": "secure_method",
+              "label": "Secure transfer method",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "request_controls",
+          "type": "checklist",
+          "label": "Conflict Check document-request controls",
+          "items": [
+            "Each requested category is necessary for a stated legal-office task",
+            "Recipient identity and authority to provide the material are confirmed",
+            "Date range, custodian, repository, format, and exclusions are explicit",
+            "Request avoids credentials, originals, or sensitive data unless specifically required",
+            "Privilege, work product, privacy, confidentiality, and protective-order review is routed",
+            "Secure transmission, access, receipt confirmation, and retention are assigned",
+            "Unavailable, incomplete, or disputed materials have a deficiency response route",
+            "Received material cannot be disclosed, filed, or produced without separate authorization"
+          ]
+        },
+        {
+          "key": "request_items",
+          "type": "table",
+          "label": "Requested-document inventory and receipt reconciliation",
+          "columns": [
+            {
+              "key": "category",
+              "label": "Document or data",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Custodian or source",
+              "units": 1.1
+            },
+            {
+              "key": "range_format",
+              "label": "Range or format",
+              "units": 1.0
+            },
+            {
+              "key": "receipt",
+              "label": "Receipt or ref",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "request_instructions",
+          "type": "textarea",
+          "label": "Scope explanation, secure delivery instructions, exclusions, and deficiency route",
+          "fields": [
+            {
+              "key": "instructions",
+              "label": "Scope explanation, secure delivery instructions, exclusions, and deficiency route"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Conflict Check stop conditions, exceptions, and escalation",
+      "guidance": "Stop when authority, identity, evidence, deadline, confidentiality, or professional-duty controls are unresolved.",
+      "blocks": [
+        {
+          "key": "risk_triggers",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "A proposed representation appears directly adverse to a current client",
+            "Former-client work may be the same as or substantially related to this matter",
+            "A prospective-client consultation may have exposed significantly harmful information",
+            "Responsibilities to another client or person may materially limit representation",
+            "A lawyer's financial, personal, family, or prior-role interest may be implicated",
+            "A hit may be imputed across lawyers, offices, affiliates, or a lateral-hire team",
+            "Necessary disclosure cannot be made without revealing protected information",
+            "The issue may be nonconsentable or requires withdrawal, screening, or outside advice"
+          ],
+          "guidance": "A checked item requires immediate protective action, a named owner, qualified review, and a final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Document Request Package exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_facts",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "facts",
+              "label": "Objective facts, affected activity, containment, notifications, and review needed"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "qualified_review",
+          "type": "notice",
+          "label": "Qualified review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, professional duties, privilege, conflicts, consentability, deadlines, or court compliance. Follow applicable jurisdictional rules and current firm policy; route legal, ethics, privacy, tax, court, safety, and specialist questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Conflict Check qualified decision and accountable authorization",
+      "guidance": "Record the authorized decision separately from preliminary analysis and prevent action beyond its evidence and scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Document Request Package qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Deferred",
+                "Declined",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "review_expiry",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_controls",
+          "type": "checklist",
+          "label": "Conflict Check decision and execution conditions",
+          "items": [
+            "Qualified reviewer confirms the complete client and adverse-party identity map",
+            "Each possible hit has a disposition supported by source-matter facts",
+            "Current, former, and prospective-client duties are analyzed separately",
+            "Consentability, screening, notice, and withdrawal questions are not automated",
+            "Any required written informed consent is stored in the approved system",
+            "Clearance limits, affected lawyers, and recheck triggers are operationally explicit"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Evidence considered, reasons, limits, alternatives, and required follow-up"
+            }
+          ],
+          "height": 50
+        },
+        {
+          "key": "decision_signatures",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, consents, notices, filings, or system approvals."
+        },
+        {
+          "key": "decision_limit",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Conflict Check record as a substitute for legal advice, a required client agreement, informed consent, court paper, discovery response, privilege review, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Conflict Check completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, limitations remain visible, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "outcome_handoff",
+          "type": "fields",
+          "label": "Document Request Package outcome and primary handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final document request disposition",
+              "units": 1.2
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or task status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 1.0
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Conflict Check closeout evidence",
+          "items": [
+            "Final cleared, conditional, declined, or escalated status is recorded",
+            "Reviewer rationale and applicable jurisdictional rule source are referenced",
+            "Conditions, screens, consents, notices, and access limits have accountable owners",
+            "Search terms and hit dispositions remain available for later recheck",
+            "Matter opening is blocked unless the exact clearance conditions are met",
+            "New parties, affiliates, claims, lawyers, or lateral hires trigger re-screening"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with follow-up",
+                "Transferred",
+                "Declined",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_record_ref",
+              "label": "Final record reference",
+              "units": 1.1
+            },
+            {
+              "key": "retention_access",
+              "label": "Retention or access class",
+              "units": 1.0
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

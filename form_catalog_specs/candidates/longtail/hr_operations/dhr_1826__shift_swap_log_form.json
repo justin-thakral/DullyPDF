@@ -1,0 +1,617 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1826__shift_swap_log_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1826__shift_swap_log_form.pdf",
+  "slug": "shift-swap-log-form",
+  "title": "Shift Swap Log Form",
+  "subtitle": "Use this log to record events in sequence, reconcile sources, identify trends and exceptions, and transfer the last known status for a shift swap workflow.",
+  "description": "An original operational shift swap log form that controls a paired schedule-change and coverage record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the requesting workers, scheduler, or shift manager needs a traceable log so the authorized scheduling, payroll, operations, or HR reviewer can approve, conditionally approve, deny, cancel, reverse, or correct the proposed shift exchange under the current schedule, role-qualification matrix, rest and overtime rules, labor agreement, and applicable scheduling policy without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "log_control",
+      "title": "Shift Swap log period, ownership, and control",
+      "guidance": "Open a bounded log with a clear owner, source record, entry standard, and review cadence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Shift Swap identity",
+          "fields": [
+            {
+              "key": "swap_record",
+              "label": "Shift-swap record number",
+              "units": 0.8
+            },
+            {
+              "key": "worksite_department",
+              "label": "Worksite and department",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_period",
+              "label": "Schedule period",
+              "units": 0.8
+            },
+            {
+              "key": "requestor_reference",
+              "label": "Requesting worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "counterparty_reference",
+              "label": "Accepting worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "submitted_at",
+              "label": "Submitted date and time",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Log ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "log_period",
+          "type": "fields",
+          "label": "Log period and entry control",
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.7
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.7
+            },
+            {
+              "key": "entry_owner",
+              "label": "Entry owner",
+              "units": 0.85
+            },
+            {
+              "key": "review_cadence",
+              "label": "Review cadence",
+              "units": 0.8
+            },
+            {
+              "key": "source_system",
+              "label": "Source system or register",
+              "units": 1.0
+            },
+            {
+              "key": "timezone_basis",
+              "label": "Time zone or date basis",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "baseline_rules",
+      "title": "Shift Swap baseline, entry rules, and expected evidence",
+      "guidance": "Define the expected operating state so each log entry can be interpreted later.",
+      "blocks": [
+        {
+          "key": "entry_requirements",
+          "type": "checklist",
+          "label": "Shift Swap log-entry requirements",
+          "items": [
+            "Both workers and their employee references are verified",
+            "Original shift dates, times, zones, roles, and locations match the schedule",
+            "Proposed segments account for the full exchanged time",
+            "Role qualifications, credentials, access, and supervision remain sufficient",
+            "Coverage and skill mix are maintained for both affected shifts",
+            "Rest, consecutive-work, fatigue, and scheduling limits are reviewed",
+            "Overtime, premium, differential, and labor-agreement impacts are calculated",
+            "Both workers provided voluntary, current acknowledgment",
+            "Conflicting leave, training, restriction, or assignment is resolved",
+            "Manager and scheduler approvals are captured before the effective time",
+            "Schedule and timekeeping systems show matching final assignments",
+            "Each worker received confirmation and the cancellation route"
+          ]
+        },
+        {
+          "key": "evidence_sources",
+          "type": "checklist",
+          "label": "Supporting evidence and source records",
+          "items": [
+            "Published original schedule and schedule-period reference",
+            "Worker identity, role, qualification, and access records",
+            "Paired worker acknowledgments with date and time",
+            "Coverage and skill-mix review",
+            "Rest, overtime, premium, or agreement-rule check",
+            "Manager, scheduler, or second-level decision",
+            "Updated scheduling and timekeeping system reference",
+            "Cancellation, no-show, correction, or payroll follow-up record"
+          ]
+        },
+        {
+          "key": "baseline_notes",
+          "type": "textarea",
+          "label": "Opening status, carried items, data sources, known gaps, entry conventions, and review assumptions",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Log baseline and control notes"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "recurring_entries",
+      "title": "Shift Swap recurring event log",
+      "guidance": "Enter events in sequence and preserve actor, result, source, and next action.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Shift Swap event and status log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "swap_reference",
+              "label": "Swap / workers",
+              "units": 0.95
+            },
+            {
+              "key": "event",
+              "label": "Request / review event",
+              "units": 1.1
+            },
+            {
+              "key": "schedule_effect",
+              "label": "Schedule effect",
+              "units": 1.0
+            },
+            {
+              "key": "actor",
+              "label": "Actor / recipient",
+              "units": 0.85
+            },
+            {
+              "key": "status_next",
+              "label": "Status / next action",
+              "units": 1.0
+            }
+          ],
+          "rows": 12
+        },
+        {
+          "key": "decision_change_log",
+          "type": "table",
+          "label": "Decision, correction, status change, reason, and authorization log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.7
+            },
+            {
+              "key": "prior_status",
+              "label": "Prior status",
+              "units": 0.8
+            },
+            {
+              "key": "new_status",
+              "label": "New status",
+              "units": 0.8
+            },
+            {
+              "key": "reason_evidence",
+              "label": "Reason / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.8
+            },
+            {
+              "key": "notice_ref",
+              "label": "Notice / system ref.",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "sequence_notes",
+          "type": "textarea",
+          "label": "Sequence context, corrected entry, source conflict, missing interval, and interpretation limit",
+          "fields": [
+            {
+              "key": "sequence_detail",
+              "label": "Log sequence and correction notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "period_review",
+      "title": "Shift Swap trend, reconciliation, and period review",
+      "guidance": "Reconcile the log to source systems and identify patterns that require a decision or corrective action.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "table",
+          "label": "Population, source count, log count, variance, owner, and resolution",
+          "columns": [
+            {
+              "key": "population",
+              "label": "Population / segment",
+              "units": 1.05
+            },
+            {
+              "key": "source_total",
+              "label": "Source total",
+              "units": 0.7
+            },
+            {
+              "key": "log_total",
+              "label": "Log total",
+              "units": 0.7
+            },
+            {
+              "key": "variance",
+              "label": "Variance / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "period_checks",
+          "type": "checklist",
+          "label": "Period review and decision checks",
+          "items": [
+            "Original schedule segments exist and belong to the stated workers",
+            "Proposed worker is qualified for the location, role, task, and equipment",
+            "Required coverage, skill mix, supervision, and headcount remain intact",
+            "Rest, consecutive-day, fatigue, and scheduling limits were checked",
+            "Overtime, premium, differential, and labor-cost effects are known",
+            "Applicable notice, seniority, bidding, or agreement terms were reviewed",
+            "Both workers' consent is current, voluntary, and independently recorded",
+            "Conflicts with leave, training, restrictions, or other assignments are resolved",
+            "Scheduling and timekeeping systems can reflect the same approved segments",
+            "Cancellation and failed-handoff responsibilities are explicit"
+          ]
+        },
+        {
+          "key": "period_outcome",
+          "type": "fields",
+          "label": "Period review outcome",
+          "fields": [
+            {
+              "key": "entries_reviewed",
+              "label": "Entries reviewed",
+              "units": 0.7
+            },
+            {
+              "key": "exceptions_open",
+              "label": "Open exceptions",
+              "units": 0.7
+            },
+            {
+              "key": "corrections_made",
+              "label": "Corrections made",
+              "units": 0.75
+            },
+            {
+              "key": "trend_status",
+              "label": "Trend status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Stable",
+                "Improving",
+                "Deteriorating",
+                "Mixed",
+                "Insufficient data"
+              ]
+            },
+            {
+              "key": "reviewer",
+              "label": "Period reviewer",
+              "units": 0.85
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "trend_analysis",
+          "type": "textarea",
+          "label": "Observed pattern, comparison basis, outlier, source limitation, operational effect, and decision need",
+          "fields": [
+            {
+              "key": "trend_detail",
+              "label": "Trend and reconciliation analysis"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "log_exceptions",
+      "title": "Shift Swap unresolved event and escalation register",
+      "guidance": "Preserve exceptions separately from routine entries until final disposition.",
+      "blocks": [
+        {
+          "key": "log_boundary",
+          "type": "notice",
+          "label": "Log stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized scheduling, payroll, operations, or HR reviewer under the current schedule, role-qualification matrix, rest and overtime rules, labor agreement, and applicable scheduling policy."
+        },
+        {
+          "key": "log_triggers",
+          "type": "checklist",
+          "label": "Shift Swap exception and escalation triggers",
+          "items": [
+            "Approved change was not entered or appeared differently in a system",
+            "Worker reported to the wrong time, role, unit, or location",
+            "No-show or uncovered interval followed the exchange",
+            "Worker lacked required qualification, access, or supervision",
+            "Rest, fatigue, overtime, premium, or agreement constraint was missed",
+            "Worker reports coercion, retaliation, side payment, or false consent",
+            "Cancellation or reversal was not communicated to every affected party",
+            "Timekeeping or payroll result does not match the approved schedule"
+          ]
+        },
+        {
+          "key": "log_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "log_closeout",
+      "title": "Shift Swap period handoff and log closeout",
+      "guidance": "Transfer the last known status, open actions, and next required review to the receiving owner.",
+      "blocks": [
+        {
+          "key": "log_closeout_outcome",
+          "type": "fields",
+          "label": "Log outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_closeout_actions",
+          "type": "table",
+          "label": "Open shift swap action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "log_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "log_closeout_signoff",
+          "type": "signatures",
+          "label": "Log accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Scheduling, Payroll, Operations, Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,663 @@
+{
+  "schema_version": 1,
+  "catalog_id": "finance_lending/dfl_1950__bank_account_change_document_checklist_form",
+  "source_section": "finance_lending",
+  "source_filename": "dfl_1950__bank_account_change_document_checklist_form.pdf",
+  "slug": "bank-account-change-document-checklist-form",
+  "title": "Bank Account Change Document Readiness and Exception Checklist",
+  "subtitle": "A controlled document readiness review for a high-risk request to change a deposit account attribute or payment destination, using masked references, independent identity and authority checks, out-of-band confirmation, before-and-after audit evidence, effective-date controls, monitoring, and rapid fraud escalation, carrying the record from secure identity and evidence through qualified decision, exception escalation, customer communication, and accountable closeout.",
+  "description": "Original high-value Bank Account Change workflow for a high-risk request to change a deposit account attribute or payment destination, using masked references, independent identity and authority checks, out-of-band confirmation, before-and-after audit evidence, effective-date controls, monitoring, and rapid fraud escalation. It is designed to define the required evidence set, inventory received versions, assess quality and freshness, reconcile discrepancies, request only necessary corrections, and obtain receiving-reviewer acceptance while minimizing sensitive data and preserving a defensible evidence trail.",
+  "use_case": "Use when a deposit operations and fraud-control specialist must define the required evidence set, inventory received versions, assess quality and freshness, reconcile discrepancies, request only necessary corrections, and obtain receiving-reviewer acceptance for one bank-account change case. Closure requires a supported outcome, secure evidence references, customer or recipient communication, disposition of every exception, and an accountable handoff.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "record_identity_routing",
+      "title": "Bank Account Change document readiness review identity and routing",
+      "guidance": "Open one traceable record, use secure references, and assign an accountable qualified owner before collecting or changing financial information.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Bank Account Change record and responsible parties",
+          "fields": [
+            {
+              "key": "change_case_ref",
+              "label": "Account-change case reference",
+              "units": 1.2
+            },
+            {
+              "key": "customer_name",
+              "label": "Customer or business name",
+              "units": 1.2
+            },
+            {
+              "key": "secure_account_ref",
+              "label": "Secure account profile reference",
+              "units": 1.3
+            },
+            {
+              "key": "requester_name_role",
+              "label": "Requester name and role",
+              "units": 1.2
+            },
+            {
+              "key": "assigned_specialist",
+              "label": "Assigned operations specialist",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "routing_timing",
+          "type": "fields",
+          "label": "Document Readiness and Exception Checklist timing and route",
+          "fields": [
+            {
+              "key": "record_opened_date",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "record_opened_time",
+              "label": "Record opened time",
+              "units": 0.7
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Secure portal",
+                "Branch",
+                "Phone",
+                "Approved mail",
+                "Internal referral",
+                "Other approved route"
+              ]
+            },
+            {
+              "key": "priority_due",
+              "label": "Priority and due point",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review_route",
+              "label": "Qualified review route",
+              "units": 1.2
+            },
+            {
+              "key": "related_case_ref",
+              "label": "Related case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sensitive_data_boundary",
+          "type": "notice",
+          "label": "Secure-record boundary",
+          "guidance": "Do not enter Social Security numbers, login credentials, full account or routing numbers, full credit-report contents, authentication secrets, or source documents here. Store sensitive evidence only in the approved system and record its secure reference."
+        }
+      ]
+    },
+    {
+      "key": "domain_facts_evidence",
+      "title": "Bank Account Change facts and evidence for document readiness review",
+      "guidance": "Capture facts specific to this financial workflow, distinguish stated from verified information, and leave an evidence route for every material conclusion.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Bank Account Change transaction or account profile",
+          "fields": [
+            {
+              "key": "change_type",
+              "label": "Requested change type",
+              "units": 1.3,
+              "field_type": "choice",
+              "options": [
+                "External payment account",
+                "Direct-deposit destination",
+                "Automatic debit source",
+                "Ownership or signer",
+                "Contact or alert",
+                "Other controlled change"
+              ]
+            },
+            {
+              "key": "affected_product",
+              "label": "Affected product or service",
+              "units": 1.1
+            },
+            {
+              "key": "current_last_four",
+              "label": "Current account last four",
+              "units": 1.0
+            },
+            {
+              "key": "requested_last_four",
+              "label": "Requested account last four",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 0.9
+            },
+            {
+              "key": "request_channel",
+              "label": "Request channel",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "evidence_readiness",
+          "type": "checklist",
+          "label": "Bank Account Change evidence checkpoints",
+          "items": [
+            "Requester identity and authority are verified through approved layered controls",
+            "Current customer profile and trusted contact channel are independently retrieved",
+            "Current and requested accounts use masked references only",
+            "New account ownership or authorization evidence is securely referenced",
+            "Out-of-band confirmation does not rely on contact data supplied in the request",
+            "Recent profile, credential, device, address, payee, or alert changes are reviewed",
+            "Prenote, microdeposit, test, cooling-off, or enhanced review status is recorded when applicable",
+            "Affected recurring payments, deposits, refunds, sweeps, and pending items are inventoried"
+          ],
+          "guidance": "Check only when the item is present, current, and linked. Describe limitations or contradictions in the exception record."
+        },
+        {
+          "key": "domain_evidence_register",
+          "type": "table",
+          "label": "Bank Account Change quantitative and source-evidence register",
+          "columns": [
+            {
+              "key": "affected_flow",
+              "label": "Payment or deposit flow",
+              "units": 1.35
+            },
+            {
+              "key": "current_ref",
+              "label": "Current masked ref",
+              "units": 1.0
+            },
+            {
+              "key": "requested_ref",
+              "label": "Requested masked ref",
+              "units": 1.0
+            },
+            {
+              "key": "next_event",
+              "label": "Next date or event",
+              "units": 0.9
+            },
+            {
+              "key": "migration_status",
+              "label": "Migration status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4,
+          "guidance": "Use one row per material input or evidence item; preserve the source period and verification status."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Reason for change, trusted-channel verification, ownership or signer context, recent profile activity, affected transactions, timing, and fraud concerns",
+          "fields": [
+            {
+              "key": "domain_context_notes",
+              "label": "Bank Account Change context and evidence limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "workflow_analysis",
+      "title": "Bank Account Change document readiness review analysis and control record",
+      "guidance": "Use the blocks below to define the required evidence set, inventory received versions, assess quality and freshness, reconcile discrepancies, request only necessary corrections, and obtain receiving-reviewer acceptance. Preserve objective evidence, uncertainty, ownership, and due points.",
+      "blocks": [
+        {
+          "key": "document_request_scope",
+          "type": "fields",
+          "label": "Document request scope and control dates",
+          "fields": [
+            {
+              "key": "request_list_ref",
+              "label": "Required-item list reference",
+              "units": 1.2
+            },
+            {
+              "key": "request_issued_date",
+              "label": "Request issued date",
+              "units": 0.8
+            },
+            {
+              "key": "response_due_date",
+              "label": "Response due date",
+              "units": 0.8
+            },
+            {
+              "key": "package_received_date",
+              "label": "Package received date",
+              "units": 0.9
+            },
+            {
+              "key": "review_as_of_date",
+              "label": "Review as-of date",
+              "units": 0.8
+            },
+            {
+              "key": "receiving_reviewer",
+              "label": "Receiving reviewer",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "document_inventory",
+          "type": "table",
+          "label": "Bank Account Change required-document inventory",
+          "columns": [
+            {
+              "key": "document_item",
+              "label": "Document or evidence",
+              "units": 1.3
+            },
+            {
+              "key": "period_version",
+              "label": "Period or version",
+              "units": 1.0
+            },
+            {
+              "key": "received_ref",
+              "label": "Received or secure ref",
+              "units": 1.1
+            },
+            {
+              "key": "quality",
+              "label": "Quality",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.8
+            },
+            {
+              "key": "followup_due",
+              "label": "Owner or due",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Statuses should distinguish required, received, accepted, deficient, waived by qualified authority, and not applicable."
+        },
+        {
+          "key": "document_quality_controls",
+          "type": "checklist",
+          "label": "Document quality, necessity, and consistency controls",
+          "items": [
+            "Requested item is necessary for the documented stage and decision",
+            "Issuer or source, owner, period, version, and page count are identifiable",
+            "Document is complete, legible, current, and stored in the secure repository",
+            "Names, dates, amounts, and references reconcile across related evidence",
+            "Corrected, translated, amended, duplicate, and superseded versions are labeled",
+            "Signature, certification, freshness, or authenticity need has a review route",
+            "Sensitive data exposure is limited to approved users and retention",
+            "Waiver or substitution has authority, rationale, date, and scope"
+          ]
+        },
+        {
+          "key": "document_exception_log",
+          "type": "table",
+          "label": "Missing, deficient, inconsistent, or superseded-item follow-up",
+          "columns": [
+            {
+              "key": "exception",
+              "label": "Document exception",
+              "units": 1.4
+            },
+            {
+              "key": "decision_impact",
+              "label": "Decision impact",
+              "units": 1.1
+            },
+            {
+              "key": "request_action",
+              "label": "Correction requested",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "readiness_summary",
+          "type": "textarea",
+          "label": "Package readiness conclusion, accepted limitations, and receiver handoff",
+          "fields": [
+            {
+              "key": "readiness_summary_notes",
+              "label": "Document readiness summary"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Bank Account Change stop conditions, exceptions, and escalation",
+      "guidance": "Stop processing when authority, identity, evidence, safety, legality, fairness, privacy, fraud, or financial-crime controls are unresolved. Record facts rather than unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "stop_conditions",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Requester identity or authority cannot be independently verified",
+            "Request relies on changed email, phone, address, credentials, or device",
+            "New account ownership, signer relationship, or masked reference conflicts",
+            "Urgency, secrecy, remote-access software, coaching, or payment pressure is reported",
+            "Recent payee, profile, password, token, alert, or contact change raises concern",
+            "Pending payroll, benefit, refund, debit, credit, sweep, dispute, or return may be misdirected",
+            "Cooling-off, prenote, microdeposit, callback, or dual-control requirement is unmet",
+            "Fraud, elder or vulnerable-customer concern, legal order, or account restriction is present",
+            "Required-item list lacks a qualified source or asks for unnecessary sensitive information",
+            "A deficient, altered, stale, or conflicting document could affect a decision"
+          ],
+          "guidance": "A checked item requires an immediate protective action, named owner, qualified review route, and final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Document Readiness and Exception Checklist exception and escalation register",
+          "columns": [
+            {
+              "key": "exception_condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "final_disposition",
+              "label": "Final disposition",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_record",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "escalation_record_notes",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, creditworthiness, regulatory duties, fraud, sanctions status, or professional conclusions. Follow current institution policy and applicable requirements; route legal, compliance, underwriting, fraud, tax, accounting, or other professional questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Bank Account Change decision, conditions, and accountable authorization",
+      "guidance": "Record the qualified decision separately from preliminary analysis, identify every condition, and prevent execution beyond the approved scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Document Readiness and Exception Checklist qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "More information needed",
+                "Declined or rejected",
+                "Withdrawn",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "expiry_review_date",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority level",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "checklist",
+          "label": "Bank Account Change decision and execution conditions",
+          "items": [
+            "Required, received, accepted, deficient, waived, and not-applicable statuses are distinct",
+            "Waivers and substitutions identify qualified authority and rationale",
+            "Identity and signer authority pass approved layered verification",
+            "Out-of-band confirmation uses a pre-existing trusted channel",
+            "New account ownership or authorization evidence is accepted",
+            "All affected payment and deposit flows have migration dispositions",
+            "Required cooling-off, test, prenote, alert, and dual-control steps are complete",
+            "Activation occurs only after independent approval and fraud review"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "decision_rationale_notes",
+              "label": "Qualified decision rationale"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.1
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Independent authorizer",
+              "units": 1.1
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, disclosures, notices, or system approvals."
+        },
+        {
+          "key": "decision_boundary",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Bank Account Change record as a substitute for a required application, contract, disclosure, adverse-action notice, payment instruction, credit report, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Bank Account Change completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, remaining limitations are visible, customer communication is traceable, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "handoff_register",
+          "type": "fields",
+          "label": "Document Readiness and Exception Checklist outcome and primary handoff",
+          "fields": [
+            {
+              "key": "deliverable_action",
+              "label": "Final deliverable or action",
+              "units": 1.3
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence reference",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 0.9
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Bank Account Change closeout evidence",
+          "items": [
+            "Old and new account references remain masked and auditable",
+            "Identity, authority, ownership, and channel evidence are linked",
+            "Each affected flow is migrated, retained, stopped, or escalated",
+            "Cooling-off, tests, alerts, dual control, and activation are logged",
+            "Customer confirmation used an independently verified channel",
+            "Monitoring, rollback, fraud, and retention owners are assigned"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with open monitoring",
+                "Transferred",
+                "Withdrawn",
+                "Declined or rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.2
+            },
+            {
+              "key": "retention_class",
+              "label": "Retention class",
+              "units": 0.9
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

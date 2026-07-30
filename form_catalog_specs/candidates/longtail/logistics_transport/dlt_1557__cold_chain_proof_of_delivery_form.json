@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_1557__cold_chain_proof_of_delivery_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_1557__cold_chain_proof_of_delivery_form.pdf",
+  "slug": "cold-chain-proof-of-delivery-form",
+  "title": "Cold Chain Proof of Delivery Form",
+  "subtitle": "Authenticate the cold chain delivery through unit identity, custody events, recipient authority, location, timing, condition, and privacy-conscious proof.",
+  "description": "An original, fillable cold chain proof of delivery form for controlling temperature-controlled consignment and product-integrity record through proof of delivery identity, observations, evidence, decision, exceptions, escalation, completion, handoff, and final verification without replacing applicable requirements or professional review.",
+  "use_case": "Use after a cold chain delivery or failed attempt when operations must establish what was delivered, to whom, where, when, under which control, and how any evidence gap or dispute was routed.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Cold Chain proof of delivery identity and routing",
+      "guidance": "Anchor the record to the exact work, parties, locations, and source references.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Cold Chain record references",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Proof Of Delivery record number",
+              "units": 1.1
+            },
+            {
+              "key": "primary_id",
+              "label": "Shipment, order, lane, and protocol reference",
+              "units": 1.45
+            },
+            {
+              "key": "secondary_id",
+              "label": "Lot, pallet, shipper, logger, sensor, or seal ID",
+              "units": 1.45
+            },
+            {
+              "key": "record_date_time",
+              "label": "Record date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties_locations",
+          "type": "fields",
+          "label": "Responsible parties and route points",
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Assigned cold-chain logistics coordinator",
+              "units": 1.2
+            },
+            {
+              "key": "custodian",
+              "label": "Trained Cold-Chain Shipper, Carrier, And Receiver",
+              "units": 1.1
+            },
+            {
+              "key": "origin",
+              "label": "Qualified storage, pack-out, and loading location",
+              "units": 1.35
+            },
+            {
+              "key": "destination",
+              "label": "Approved receiving and quarantine location",
+              "units": 1.35
+            }
+          ],
+          "guidance": "Preserve linkage to the shipping protocol, product requirements, lane plan, and logger instructions."
+        }
+      ]
+    },
+    {
+      "key": "proof_commitment",
+      "title": "Cold Chain delivery obligation and proof standard",
+      "guidance": "Define the promised event and acceptable evidence before evaluating whether delivery was completed.",
+      "blocks": [
+        {
+          "key": "delivery_obligation",
+          "type": "fields",
+          "label": "Delivery obligation",
+          "fields": [
+            {
+              "key": "promised_window",
+              "label": "Promised delivery window",
+              "units": 1.1
+            },
+            {
+              "key": "actual_completion",
+              "label": "Actual completion date and time",
+              "units": 1.1
+            },
+            {
+              "key": "proof_standard",
+              "label": "Required proof method",
+              "units": 1.2
+            },
+            {
+              "key": "authorized_recipient",
+              "label": "Authorized Temperature-Controlled Receiving Location",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "proof_controls",
+          "type": "checklist",
+          "label": "Cold Chain custody and proof controls",
+          "items": [
+            "Maintain approved chilled range",
+            "Maintain approved frozen range",
+            "Protect from freezing",
+            "Qualified passive shipper",
+            "Active refrigerated equipment",
+            "Continuous logger or sensor monitoring",
+            "Minimize door-open and staging exposure",
+            "Quarantine on alarm, missing data, or uncertain control"
+          ],
+          "guidance": "Select the controls actually required for this delivery, not every available service feature."
+        },
+        {
+          "key": "route_assignment",
+          "type": "fields",
+          "label": "Route, custodian, and destination assignment",
+          "fields": [
+            {
+              "key": "route",
+              "label": "Route, trip, or movement reference",
+              "units": 1.25
+            },
+            {
+              "key": "custodian",
+              "label": "Trained Cold-Chain Shipper, Carrier, And Receiver",
+              "units": 1.2
+            },
+            {
+              "key": "destination",
+              "label": "Approved receiving and quarantine location",
+              "units": 1.4
+            },
+            {
+              "key": "contact_method",
+              "label": "Recipient contact method",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivery_timeline",
+      "title": "Cold Chain delivery event timeline",
+      "guidance": "Preserve the sequence of custody, location, timing, and proof-generating events.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Delivery milestone and custody log",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Event or custody change",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned time",
+              "units": 0.8
+            },
+            {
+              "key": "actual",
+              "label": "Actual time",
+              "units": 0.8
+            },
+            {
+              "key": "location",
+              "label": "Location or control point",
+              "units": 1.15
+            },
+            {
+              "key": "party",
+              "label": "Responsible party",
+              "units": 1.0
+            },
+            {
+              "key": "proof",
+              "label": "Scan, seal, or proof ref",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "timeline_reconciliation",
+          "type": "fields",
+          "label": "Timeline reconciliation",
+          "fields": [
+            {
+              "key": "first_attempt",
+              "label": "First attempt time",
+              "units": 1.0
+            },
+            {
+              "key": "completed_time",
+              "label": "Completion time",
+              "units": 1.0
+            },
+            {
+              "key": "custody_changes",
+              "label": "Custody changes",
+              "units": 0.9
+            },
+            {
+              "key": "unplanned_stops",
+              "label": "Unplanned stops or delays",
+              "units": 1.2
+            },
+            {
+              "key": "timeline_status",
+              "label": "Timeline status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with variance",
+                "Missing event",
+                "Conflicting evidence"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "delivered_scope",
+      "title": "Cold Chain delivered scope and recipient verification",
+      "guidance": "Tie proof to each relevant unit rather than treating one signature as proof for an unverified shipment.",
+      "blocks": [
+        {
+          "key": "delivered_units",
+          "type": "table",
+          "label": "Cold-Chain Lots, Shippers, Pallets, Sensors, Seals, And Controlled Quantities delivery proof",
+          "columns": [
+            {
+              "key": "unit_id",
+              "label": "Lot, pallet, shipper, logger, sensor, or seal ID",
+              "units": 1.35
+            },
+            {
+              "key": "quantity",
+              "label": "Delivered quantity",
+              "units": 0.8
+            },
+            {
+              "key": "condition",
+              "label": "Product, shipper, coolant, seal, and logger condition",
+              "units": 1.15
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or delivery point",
+              "units": 1.1
+            },
+            {
+              "key": "proof_method",
+              "label": "Proof method",
+              "units": 0.95
+            },
+            {
+              "key": "proof_ref",
+              "label": "Proof reference",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proof_evidence",
+          "type": "checklist",
+          "label": "Cold Chain proof package",
+          "items": [
+            "Approved shipping protocol and lane record",
+            "Product, lot, quantity, and pack-out record",
+            "Coolant conditioning and packaging configuration",
+            "Logger identity, calibration, start, and placement",
+            "Vehicle preconditioning and loading observation",
+            "Custody, seal, delay, and door-open events",
+            "Arrival readings and downloaded temperature history",
+            "Qualified excursion assessment and product disposition"
+          ],
+          "guidance": "Capture only the evidence needed to authenticate the event and follow privacy, access, and retention policy."
+        },
+        {
+          "key": "delivery_facts",
+          "type": "textarea",
+          "label": "Delivery location, recipient authority, custody, and condition facts",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Delivery location, recipient authority, custody, and condition facts",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "delivery_exceptions",
+      "title": "Cold Chain exception, containment, and escalation",
+      "guidance": "Make the trigger, affected scope, immediate control, owner, deadline, and escalation reconstructable.",
+      "blocks": [
+        {
+          "key": "delivery_exception_types",
+          "type": "checklist",
+          "label": "Cold Chain exception indicators",
+          "items": [
+            "Product, lot, quantity, range, route, or protocol mismatch",
+            "Packaging or coolant configuration differs from the approved pack-out",
+            "Logger missing, expired, uncalibrated, failed, stopped, or incorrectly placed",
+            "Vehicle or container not clean, compatible, or adequately preconditioned",
+            "Seal damage, shipper damage, leakage, contamination, or tampering",
+            "Temperature alarm, excursion, freeze event, or missing data interval",
+            "Delay, door-open exposure, power interruption, or unplanned transfer",
+            "Receiving site cannot maintain quarantine or controlled storage",
+            "Product released, moved, sold, or used before qualified disposition",
+            "Custody, timing, or evidence cannot reconstruct the exposure history"
+          ],
+          "guidance": "Select every observed condition; do not use a generic exception mark when the actual trigger is known."
+        },
+        {
+          "key": "delivery_action_log",
+          "type": "table",
+          "label": "Exception containment and action log",
+          "columns": [
+            {
+              "key": "issue_scope",
+              "label": "Issue and affected ID",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.9
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.8
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation or proof ref",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "delivery_decision",
+          "type": "fields",
+          "label": "Failed attempt, disputed delivery, or proof-gap decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Interim status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open - controlled",
+                "Open - escalated",
+                "Pending evidence",
+                "Resolved",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.1
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or deadline",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "proof_attestation",
+      "title": "Cold Chain proof validation and delivery attestation",
+      "guidance": "Validate evidence consistency and route disputes without overstating what the record proves.",
+      "blocks": [
+        {
+          "key": "proof_validation",
+          "type": "fields",
+          "label": "Proof validation",
+          "fields": [
+            {
+              "key": "proof_status",
+              "label": "Proof status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Validated",
+                "Validated with variance",
+                "Pending evidence",
+                "Disputed",
+                "Rejected"
+              ]
+            },
+            {
+              "key": "location_match",
+              "label": "Location evidence match",
+              "units": 1.05
+            },
+            {
+              "key": "recipient_match",
+              "label": "Recipient authority match",
+              "units": 1.1
+            },
+            {
+              "key": "quantity_match",
+              "label": "Quantity reconciliation",
+              "units": 1.05
+            },
+            {
+              "key": "review_reference",
+              "label": "Review or dispute reference",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "delivery_attestation",
+          "type": "signatures",
+          "label": "Delivery, recipient, and proof review",
+          "fields": [
+            {
+              "key": "delivering_party",
+              "label": "Delivering party attestation",
+              "units": 1.25
+            },
+            {
+              "key": "recipient_party",
+              "label": "Recipient acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "proof_reviewer",
+              "label": "Proof reviewed by",
+              "units": 1.15
+            },
+            {
+              "key": "attested_at",
+              "label": "Attestation date and time",
+              "units": 1.05
+            }
+          ],
+          "guidance": "A recipient acknowledgment records the observed handoff; final acceptance may remain subject to inspection or applicable terms."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Cold Chain proof of delivery closeout and accountable handoff",
+      "guidance": "Close only when outcome, remaining limitation, next action, evidence, and receiving ownership agree.",
+      "blocks": [
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and follow-up register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.4
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final outcome, handoff, and record location",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Proof validated",
+                "Validated with closed variance",
+                "Redelivery completed",
+                "Transferred to dispute or claim",
+                "Delivery not established"
+              ]
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.35
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Record boundary and stop condition",
+          "guidance": "This cold chain proof of delivery is an operational record, not a substitute for applicable law, contract terms, safety or product requirements, or professional judgment. Stop the affected movement, transfer, release, posting, or disposition when identity, evidence, authorization, or control is uncertain. A qualified qualified quality, food-safety, pharmacy, or product-integrity reviewer must review the exception and document the controlling decision."
+        },
+        {
+          "key": "closeout_approval",
+          "type": "signatures",
+          "label": "Prepared, reviewed, and accepted",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by and date",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified quality, food-safety, pharmacy, or product-integrity reviewer",
+              "units": 1.45
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner acceptance",
+              "units": 1.25
+            }
+          ],
+          "guidance": "A signature records accountability for the stated decision; it does not cure missing evidence or override a stop condition."
+        }
+      ]
+    }
+  ]
+}

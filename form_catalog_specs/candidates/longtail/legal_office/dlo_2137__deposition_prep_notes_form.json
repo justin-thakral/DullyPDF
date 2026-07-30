@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "catalog_id": "legal_office/dlo_2137__deposition_prep_notes_form",
+  "source_section": "legal_office",
+  "source_filename": "dlo_2137__deposition_prep_notes_form.pdf",
+  "slug": "deposition-prep-notes-form",
+  "title": "Deposition Prep Notes Form",
+  "subtitle": "A controlled controlled notes record for a preparation record connecting the deposition notice, witness role, testimony topics, prior statements, exhibits, logistics, truthful-answer ground rules, privilege boundaries, open investigation, accommodations, and readiness decision, carrying facts and source evidence through qualified decision, exception escalation, secure communication, and accountable handoff.",
+  "description": "This original Deposition Prep Notes Form helps the preparing lawyer and litigation team manage a preparation record connecting the deposition notice, witness role, testimony topics, prior statements, exhibits, logistics, truthful-answer ground rules, privilege boundaries, open investigation, accommodations, and readiness decision. It preserves a source-tagged chronology of statements, observations, questions, decisions, commitments, corrections, and unresolved follow-up, while keeping jurisdiction-specific conclusions and professional judgment with authorized reviewers.",
+  "use_case": "Use when the preparing lawyer and litigation team needs one fillable record that preserves a source-tagged chronology of statements, observations, questions, decisions, commitments, corrections, and unresolved follow-up for the deposition preparation session. Close only after the notes reconciliation is supported by evidence and accepted by the named recipient.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Deposition Preparation record identity and routing",
+      "guidance": "Open one traceable record, establish authority, and assign accountable qualified review.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Deposition Preparation record and responsible parties",
+          "fields": [
+            {
+              "key": "prep_ref",
+              "label": "Preparation session reference",
+              "units": 1.2
+            },
+            {
+              "key": "matter_ref",
+              "label": "Matter and case reference",
+              "units": 1.1
+            },
+            {
+              "key": "deponent_name",
+              "label": "Deponent name",
+              "units": 1.1
+            },
+            {
+              "key": "witness_role",
+              "label": "Witness or designee role",
+              "units": 1.0
+            },
+            {
+              "key": "preparing_lawyer",
+              "label": "Preparing lawyer",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "timing_route",
+          "type": "fields",
+          "label": "Controlled Notes timing and route",
+          "fields": [
+            {
+              "key": "record_opened",
+              "label": "Record opened date",
+              "units": 0.8
+            },
+            {
+              "key": "opened_time",
+              "label": "Opened time and zone",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time sensitive",
+                "Urgent review",
+                "Stop and escalate"
+              ]
+            },
+            {
+              "key": "qualified_route",
+              "label": "Qualified review route",
+              "units": 1.1
+            },
+            {
+              "key": "next_due",
+              "label": "Next due point",
+              "units": 0.9
+            },
+            {
+              "key": "related_record",
+              "label": "Related record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "secure_boundary",
+          "type": "notice",
+          "label": "Confidential record boundary",
+          "guidance": "Use approved secure systems for protected communications and source files. Do not enter access credentials, complete account numbers, government identifiers, medical detail, or privileged source content in this routing form."
+        }
+      ]
+    },
+    {
+      "key": "domain_evidence",
+      "title": "Deposition Preparation facts and source evidence",
+      "guidance": "Capture domain-specific facts, distinguish statements from verified evidence, and retain source references.",
+      "blocks": [
+        {
+          "key": "domain_profile",
+          "type": "fields",
+          "label": "Deposition Preparation matter profile",
+          "fields": [
+            {
+              "key": "deposition_date",
+              "label": "Deposition date and time",
+              "units": 1.0
+            },
+            {
+              "key": "location_method",
+              "label": "Location or remote method",
+              "units": 1.0
+            },
+            {
+              "key": "examining_counsel",
+              "label": "Examining counsel",
+              "units": 1.0
+            },
+            {
+              "key": "notice_scope",
+              "label": "Notice or topic scope",
+              "units": 1.2
+            },
+            {
+              "key": "recording_method",
+              "label": "Recording method",
+              "units": 0.9
+            },
+            {
+              "key": "accommodation",
+              "label": "Accommodation or interpreter",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "evidence_checkpoints",
+          "type": "checklist",
+          "label": "Deposition Preparation evidence checkpoints",
+          "items": [
+            "Current notice, subpoena, stipulation, order, and amended scope are identified",
+            "Deponent role and any organization-designee topics are explicitly mapped",
+            "Prior statements, pleadings, interviews, and testimony are located by reference",
+            "Potential exhibits and demonstratives are inventoried without coaching content",
+            "Material chronology, personal knowledge, and source limitations are distinguished",
+            "Logistics, oath, transcript, recording, breaks, and remote protocol are reviewed",
+            "Truthful-answer, listen, clarify, do-not-guess, and correction principles are covered",
+            "Privilege and instruction-not-to-answer questions are reserved for qualified counsel"
+          ],
+          "guidance": "Check only supported items; explain any limitation in the evidence narrative."
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Deposition Preparation evidence and action register",
+          "columns": [
+            {
+              "key": "topic",
+              "label": "Testimony topic",
+              "units": 1.2
+            },
+            {
+              "key": "knowledge",
+              "label": "Knowledge source",
+              "units": 1.1
+            },
+            {
+              "key": "prior_record",
+              "label": "Prior record ref",
+              "units": 1.0
+            },
+            {
+              "key": "exhibit_ref",
+              "label": "Exhibit ref",
+              "units": 0.8
+            },
+            {
+              "key": "open_issue",
+              "label": "Open issue",
+              "units": 0.9
+            }
+          ],
+          "rows": 4,
+          "guidance": "Reference approved repositories; do not copy confidential source contents into the table."
+        },
+        {
+          "key": "domain_context",
+          "type": "textarea",
+          "label": "Witness chronology, areas of personal knowledge, uncertainty, prior statements, anticipated exhibits, terminology, and investigation still needed",
+          "fields": [
+            {
+              "key": "context_narrative",
+              "label": "Witness chronology, areas of personal knowledge, uncertainty, prior statements, anticipated exhibits, terminology, and investigation still needed"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "workflow_record",
+      "title": "Deposition Preparation controlled notes control record",
+      "guidance": "Turn the record purpose into traceable evidence, accountable actions, and reviewable decisions.",
+      "blocks": [
+        {
+          "key": "note_session",
+          "type": "fields",
+          "label": "Note event, participants, and confidentiality context",
+          "fields": [
+            {
+              "key": "event_date",
+              "label": "Event date and time",
+              "units": 1.0
+            },
+            {
+              "key": "event_type",
+              "label": "Event or communication type",
+              "units": 1.0
+            },
+            {
+              "key": "participants",
+              "label": "Participants and roles",
+              "units": 1.3
+            },
+            {
+              "key": "author",
+              "label": "Note author",
+              "units": 0.9
+            },
+            {
+              "key": "privilege_label",
+              "label": "Privilege or access label",
+              "units": 1.0
+            },
+            {
+              "key": "source_record",
+              "label": "Source record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "note_controls",
+          "type": "checklist",
+          "label": "Deposition Preparation note integrity controls",
+          "items": [
+            "Direct quotation, paraphrase, observation, and inference are distinguishable",
+            "Each material statement identifies its speaker or source",
+            "Dates, names, amounts, and document references are verified or marked unverified",
+            "Questions asked, responses received, and unanswered questions are preserved",
+            "Legal analysis and client instructions are separated from factual narrative",
+            "Corrections and later-added information preserve author, date, and reason",
+            "Commitments, owners, deadlines, and communication routes are explicit",
+            "Sensitive detail is proportionate and stored under the correct access restriction"
+          ]
+        },
+        {
+          "key": "chronology",
+          "type": "table",
+          "label": "Source-tagged chronology and commitment log",
+          "columns": [
+            {
+              "key": "when",
+              "label": "Date or time",
+              "units": 0.8
+            },
+            {
+              "key": "speaker",
+              "label": "Source or speaker",
+              "units": 1.0
+            },
+            {
+              "key": "entry",
+              "label": "Fact or statement",
+              "units": 1.5
+            },
+            {
+              "key": "status",
+              "label": "Verified?",
+              "units": 0.7
+            },
+            {
+              "key": "action",
+              "label": "Action or ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "notes_narrative",
+          "type": "textarea",
+          "label": "Detailed narrative, uncertainty, analysis boundary, and unresolved follow-up",
+          "fields": [
+            {
+              "key": "narrative",
+              "label": "Detailed narrative, uncertainty, analysis boundary, and unresolved follow-up"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Deposition Preparation stop conditions, exceptions, and escalation",
+      "guidance": "Stop when authority, identity, evidence, deadline, confidentiality, or professional-duty controls are unresolved.",
+      "blocks": [
+        {
+          "key": "risk_triggers",
+          "type": "checklist",
+          "label": "Stop and escalate when any condition is present",
+          "items": [
+            "Notice, subpoena, topic list, order, or deposition date is missing or disputed",
+            "Witness role, personal knowledge, corporate designation, or authority is unclear",
+            "Material testimony conflicts with documents, prior statements, or other testimony",
+            "Potentially privileged, work-product, sealed, or protected information is implicated",
+            "Witness safety, health, language, disability, technology, or travel needs are unresolved",
+            "A litigation hold, preservation gap, missing source, or altered record is identified",
+            "Preparation risks suggesting facts, scripting testimony, or obscuring uncertainty",
+            "Counsel needs court relief, protective measures, stipulation, or specialist input"
+          ],
+          "guidance": "A checked item requires immediate protective action, a named owner, qualified review, and a final disposition."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Controlled Notes exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Exception or condition",
+              "units": 1.3
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_route",
+              "label": "Owner or route",
+              "units": 0.9
+            },
+            {
+              "key": "due_trigger",
+              "label": "Due or trigger",
+              "units": 0.8
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exception_facts",
+          "type": "textarea",
+          "label": "Objective facts, affected activity, containment, notifications, and review needed",
+          "fields": [
+            {
+              "key": "facts",
+              "label": "Objective facts, affected activity, containment, notifications, and review needed"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "qualified_review",
+          "type": "notice",
+          "label": "Qualified review and record boundary",
+          "guidance": "This template records operational facts and does not determine legal rights, professional duties, privilege, conflicts, consentability, deadlines, or court compliance. Follow applicable jurisdictional rules and current firm policy; route legal, ethics, privacy, tax, court, safety, and specialist questions to authorized reviewers."
+        }
+      ]
+    },
+    {
+      "key": "decision_authorization",
+      "title": "Deposition Preparation qualified decision and accountable authorization",
+      "guidance": "Record the authorized decision separately from preliminary analysis and prevent action beyond its evidence and scope.",
+      "blocks": [
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Controlled Notes qualified decision",
+          "fields": [
+            {
+              "key": "decision_outcome",
+              "label": "Decision outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Deferred",
+                "Declined",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.8
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.8
+            },
+            {
+              "key": "review_expiry",
+              "label": "Expiry or review date",
+              "units": 0.9
+            },
+            {
+              "key": "authority_level",
+              "label": "Decision authority",
+              "units": 1.0
+            },
+            {
+              "key": "notification_route",
+              "label": "Notification route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_controls",
+          "type": "checklist",
+          "label": "Deposition Preparation decision and execution conditions",
+          "items": [
+            "Qualified counsel confirms notice scope, applicable orders, and preparation limits",
+            "Witness understands truthful testimony, personal knowledge, and no-guess principles",
+            "Material inconsistencies and missing evidence have documented investigation owners",
+            "Privilege, confidentiality, protective-order, and exhibit issues have response plans",
+            "Logistics, technology, interpreter, accommodations, and backup route are confirmed",
+            "Readiness decision identifies limits and does not certify predicted testimony"
+          ],
+          "guidance": "Check only controls supported by cited evidence; unresolved items remain open conditions."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence considered, reasons, limits, alternatives, and required follow-up",
+          "fields": [
+            {
+              "key": "rationale",
+              "label": "Evidence considered, reasons, limits, alternatives, and required follow-up"
+            }
+          ],
+          "height": 50
+        },
+        {
+          "key": "decision_signatures",
+          "type": "signatures",
+          "label": "Preparation, qualified review, and independent authorization",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.8
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and scope; they do not replace required agreements, consents, notices, filings, or system approvals."
+        },
+        {
+          "key": "decision_limit",
+          "type": "notice",
+          "label": "Decision-use limitation",
+          "guidance": "Do not use this Deposition Preparation record as a substitute for legal advice, a required client agreement, informed consent, court paper, discovery response, privilege review, or specialist determination. Execute only the action evidenced in the approved system of record."
+        }
+      ]
+    },
+    {
+      "key": "completion_handoff",
+      "title": "Deposition Preparation completion, evidence reconciliation, and handoff",
+      "guidance": "Close only when the outcome is evidenced, limitations remain visible, and every open action has an accountable owner.",
+      "blocks": [
+        {
+          "key": "outcome_handoff",
+          "type": "fields",
+          "label": "Controlled Notes outcome and primary handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final notes reconciliation",
+              "units": 1.2
+            },
+            {
+              "key": "outcome_status",
+              "label": "Outcome or task status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Final evidence reference",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner or due point",
+              "units": 1.0
+            },
+            {
+              "key": "recipient_acceptance",
+              "label": "Recipient or acceptance",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_evidence",
+          "type": "checklist",
+          "label": "Deposition Preparation closeout evidence",
+          "items": [
+            "Preparation sessions, attendees, materials used, and outstanding tasks are recorded",
+            "Witness receives accurate logistics and counsel contact information",
+            "Open evidence, exhibit, privilege, and inconsistency questions have owners",
+            "Final notice scope and deposition logistics are independently reconfirmed",
+            "Preparation materials receive proper privilege, work-product, and access controls",
+            "Responsible lawyer records ready, conditional, postponed, or escalated disposition"
+          ],
+          "guidance": "Unchecked items require an exception disposition or a documented reopen trigger."
+        },
+        {
+          "key": "closure_record",
+          "type": "fields",
+          "label": "Closure status, custody, and retention",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with follow-up",
+                "Transferred",
+                "Declined",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "closed_date",
+              "label": "Closed date",
+              "units": 0.8
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.9
+            },
+            {
+              "key": "final_record_ref",
+              "label": "Final record reference",
+              "units": 1.1
+            },
+            {
+              "key": "retention_access",
+              "label": "Retention or access class",
+              "units": 1.0
+            },
+            {
+              "key": "reopen_trigger",
+              "label": "Reopen trigger",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

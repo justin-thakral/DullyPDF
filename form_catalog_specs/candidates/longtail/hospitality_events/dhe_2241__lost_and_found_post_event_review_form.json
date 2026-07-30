@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2241__lost_and_found_post_event_review_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2241__lost_and_found_post_event_review_form.pdf",
+  "slug": "lost-and-found-post-event-review-form",
+  "title": "Lost and Found Post-Event Review Form",
+  "subtitle": "Review the lost-and-found program for a period: return rate, where items go missing, unclaimed disposition, and custody failures.",
+  "description": "An original period review of a lost-and-found operation. It records the review scope and volumes, the return rate and how long returns take, the locations and event types that generate the most loss, the unclaimed disposition position, custody failures and their corrective actions, and the program changes carried forward.",
+  "use_case": "Use at the end of a review period, or after a large event season, when the venue needs to know whether property actually gets back to guests and where losses concentrate. The review closes when every finding has an owner and program changes are recorded.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "review_scope",
+      "title": "Review scope and volumes",
+      "guidance": "Set the period and the numbers the review is about.",
+      "blocks": [
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Review identity and routing",
+          "fields": [
+            {
+              "key": "review_id",
+              "label": "Review record ID",
+              "units": 0.95
+            },
+            {
+              "key": "period_start",
+              "label": "Period start",
+              "units": 0.85
+            },
+            {
+              "key": "period_end",
+              "label": "Period end",
+              "units": 0.85
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "program_owner",
+              "label": "Program owner",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "volume_summary",
+          "type": "fields",
+          "label": "Volume summary",
+          "fields": [
+            {
+              "key": "items_received",
+              "label": "Items received",
+              "units": 1.1
+            },
+            {
+              "key": "reports_taken",
+              "label": "Lost reports taken",
+              "units": 1.35
+            },
+            {
+              "key": "items_returned",
+              "label": "Items returned",
+              "units": 1.1
+            },
+            {
+              "key": "items_unclaimed",
+              "label": "Items unclaimed",
+              "units": 1.15
+            },
+            {
+              "key": "return_rate",
+              "label": "Return rate",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "return_performance",
+      "title": "Return performance",
+      "guidance": "A high intake with a low return rate is a storage problem, not a success.",
+      "blocks": [
+        {
+          "key": "return_rows",
+          "type": "table",
+          "label": "Return performance by category",
+          "columns": [
+            {
+              "key": "category",
+              "label": "Item category",
+              "units": 1.25
+            },
+            {
+              "key": "received",
+              "label": "Received",
+              "units": 0.8
+            },
+            {
+              "key": "returned",
+              "label": "Returned",
+              "units": 0.8
+            },
+            {
+              "key": "return_rate",
+              "label": "Rate",
+              "units": 0.7
+            },
+            {
+              "key": "median_days",
+              "label": "Days to return",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "performance_findings",
+          "type": "checklist",
+          "label": "Performance findings",
+          "items": [
+            "Every found item was logged on the shift it was handed in",
+            "Descriptions were detailed enough to match against lost reports",
+            "Open lost reports were rechecked against new intake",
+            "Guests were contacted proactively where the owner was identifiable",
+            "Urgent items reached their owners the same day",
+            "Shipping was offered and completed within the target window",
+            "Holding periods were applied consistently across categories"
+          ]
+        },
+        {
+          "key": "performance_notes",
+          "type": "textarea",
+          "label": "Where the process returned property well and where it did not",
+          "fields": [
+            {
+              "key": "performance_detail",
+              "label": "Return performance detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "loss_concentration",
+      "title": "Where loss concentrates",
+      "guidance": "Loss clusters by place and event type; find the cluster.",
+      "blocks": [
+        {
+          "key": "concentration_rows",
+          "type": "table",
+          "label": "Loss concentration by location and event",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Location or event type",
+              "units": 1.5
+            },
+            {
+              "key": "items",
+              "label": "Items",
+              "units": 0.65
+            },
+            {
+              "key": "share",
+              "label": "Share",
+              "units": 0.65
+            },
+            {
+              "key": "pattern",
+              "label": "Pattern observed",
+              "units": 1.5
+            },
+            {
+              "key": "action",
+              "label": "Action considered",
+              "units": 1.3
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "concentration_checks",
+          "type": "checklist",
+          "label": "Concentration checks",
+          "items": [
+            "Highest-volume locations identified and compared with the prior period",
+            "Event types that generate the most loss identified",
+            "Departure-day and checkout-time losses reviewed separately",
+            "Coat check, locker, and pool areas reviewed for repeat loss",
+            "Sweep routines after events reviewed for coverage and timing",
+            "Signage or reminder prompts considered for repeat locations",
+            "Housekeeping and event sweep handover reviewed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "unclaimed_position",
+      "title": "Unclaimed disposition position",
+      "guidance": "The disposition trail is the part that gets audited.",
+      "blocks": [
+        {
+          "key": "unclaimed_rows",
+          "type": "table",
+          "label": "Unclaimed disposition summary",
+          "columns": [
+            {
+              "key": "disposition",
+              "label": "Disposition route",
+              "units": 1.35
+            },
+            {
+              "key": "items",
+              "label": "Items",
+              "units": 0.7
+            },
+            {
+              "key": "value_band",
+              "label": "Value band",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.1
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence filed",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "disposition_summary",
+          "type": "fields",
+          "label": "Disposition summary",
+          "fields": [
+            {
+              "key": "expired_count",
+              "label": "Reached holding end",
+              "units": 1.4
+            },
+            {
+              "key": "donated_count",
+              "label": "Donated",
+              "units": 0.85
+            },
+            {
+              "key": "disposed_count",
+              "label": "Disposed",
+              "units": 0.9
+            },
+            {
+              "key": "cash_disposed",
+              "label": "Cash disposition",
+              "units": 1.2
+            },
+            {
+              "key": "pending_count",
+              "label": "Still pending",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Record boundary for this review",
+          "guidance": "This review is an internal program record. It does not value any item, resolve a claim for missing property, evaluate an individual employee, or authorize a change to a holding period or disposal route. Route policy changes, claims, and personnel matters to the responsible manager under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "custody_findings",
+      "title": "Custody failures and escalation",
+      "guidance": "Custody failures in the period, and whether the fixes held.",
+      "blocks": [
+        {
+          "key": "escalation_triggers",
+          "type": "checklist",
+          "label": "Escalation triggers",
+          "items": [
+            "A custody incident was recorded in the period",
+            "Cash or a high-value item could not be reconciled",
+            "An item was disposed of before its holding period ended",
+            "A release occurred without a recorded ownership check",
+            "Return rate fell materially against the prior period",
+            "Storage capacity is exhausted and items are held outside the area",
+            "A prior corrective action did not hold"
+          ]
+        },
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Finding and action register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "action_agreed",
+              "label": "Action agreed",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "verification",
+              "label": "How verified",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "review_closeout",
+      "title": "Program changes, closeout, and handoff",
+      "guidance": "Changes go where the next shift will meet them.",
+      "blocks": [
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Review closeout",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Final status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed - no actions",
+                "Closed with actions",
+                "Escalated to leadership",
+                "Superseded"
+              ]
+            },
+            {
+              "key": "closed_at",
+              "label": "Closed at",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Record location",
+              "units": 1.05
+            },
+            {
+              "key": "next_review_due",
+              "label": "Next review due",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "change_log",
+          "type": "table",
+          "label": "Program changes carried forward",
+          "columns": [
+            {
+              "key": "change",
+              "label": "Change made",
+              "units": 1.4
+            },
+            {
+              "key": "recorded_in",
+              "label": "Where recorded",
+              "units": 1.05
+            },
+            {
+              "key": "applies_to",
+              "label": "Applies to",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Closeout confirmations",
+          "items": [
+            "Volumes and return rate reconciled to the inventory log",
+            "Unclaimed dispositions supported by filed evidence",
+            "Custody findings carried to their incident records",
+            "Open findings transferred with named owners and due points",
+            "Program changes written into the named routine or briefing",
+            "Review filed with the program record"
+          ]
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Review outcome, remaining limitations, and handoff detail",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Review closeout detail"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.7
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by rooms director",
+              "units": 1.3
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

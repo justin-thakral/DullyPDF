@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1811__employee_equipment_checklist_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1811__employee_equipment_checklist_form.pdf",
+  "slug": "employee-equipment-checklist-form",
+  "title": "Employee Equipment Checklist Form",
+  "subtitle": "Use this checklist to verify readiness and execution, expose failed checkpoints, authorize the next state, and preserve accountable handoff for a employee equipment workflow.",
+  "description": "An original operational employee equipment checklist form that controls a employee asset and access package from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the hiring manager, workplace coordinator, or asset custodian needs a traceable checklist so the authorized workplace, IT, security, or HR reviewer can issue, ship, substitute, repair, recover, or deny the requested equipment package under the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "checklist_assignment",
+      "title": "Employee Equipment checklist assignment and operating boundary",
+      "guidance": "Identify the event, accountable operator, reviewer, applicable references, and required completion point.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Employee Equipment identity",
+          "fields": [
+            {
+              "key": "equipment_record",
+              "label": "Equipment record number",
+              "units": 0.8
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee or worker ID",
+              "units": 0.85
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "role_department",
+              "label": "Role and department",
+              "units": 1.05
+            },
+            {
+              "key": "work_location",
+              "label": "Primary work location",
+              "units": 0.9
+            },
+            {
+              "key": "needed_by",
+              "label": "Needed-by date",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Checklist ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "execution_control",
+          "type": "fields",
+          "label": "Execution control",
+          "fields": [
+            {
+              "key": "checklist_date",
+              "label": "Checklist date",
+              "units": 0.7
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 0.85
+            },
+            {
+              "key": "work_window",
+              "label": "Work or review window",
+              "units": 0.9
+            },
+            {
+              "key": "reference_revision",
+              "label": "Policy or reference revision",
+              "units": 1.0
+            },
+            {
+              "key": "completion_due",
+              "label": "Completion due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_scope",
+          "type": "textarea",
+          "label": "Event scope, operating objective, affected population, exclusions, and required outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Checklist scope and job statement"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "readiness",
+      "title": "Employee Equipment readiness and source-record verification",
+      "guidance": "Confirm the task is ready and the operator has the correct information before checking execution.",
+      "blocks": [
+        {
+          "key": "readiness_checks",
+          "type": "checklist",
+          "label": "Employee Equipment readiness checks",
+          "items": [
+            "Worker identity, role, department, manager, and location are confirmed",
+            "Role standard and approved equipment package are current",
+            "Each physical item has asset tag, serial, model, and condition recorded",
+            "Accessories, power components, cases, and adapters reconcile to the issue list",
+            "Device security baseline and required updates are complete",
+            "Approved applications and access setup are referenced without recording passwords",
+            "Shipment or handoff chain and recipient verification are documented",
+            "Support contact and priority route are known to the worker"
+          ]
+        },
+        {
+          "key": "source_evidence",
+          "type": "checklist",
+          "label": "Source records and evidence available",
+          "items": [
+            "Role-based equipment standard or approved exception",
+            "Manager request and cost-center authorization",
+            "Purchase, inventory, or stock reservation reference",
+            "Asset tag, serial, model, and condition record",
+            "Security build, update, and approved-software confirmation",
+            "Shipment tracking, custody transfer, or recipient confirmation",
+            "Repair, loss, damage, or security incident reference",
+            "Return receipt, data sanitization, redeployment, or disposal record"
+          ]
+        },
+        {
+          "key": "readiness_status",
+          "type": "fields",
+          "label": "Readiness status",
+          "fields": [
+            {
+              "key": "ready_status",
+              "label": "Ready to proceed?",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "Yes with conditions",
+                "No",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "missing_item",
+              "label": "Missing item or dependency",
+              "units": 1.15
+            },
+            {
+              "key": "dependency_owner",
+              "label": "Dependency owner",
+              "units": 0.85
+            },
+            {
+              "key": "dependency_due",
+              "label": "Dependency due",
+              "units": 0.7
+            },
+            {
+              "key": "proceed_authority",
+              "label": "Proceed authority",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "execution",
+      "title": "Employee Equipment execution checkpoints and traceable results",
+      "guidance": "Record each checkpoint against observable evidence and identify every condition that is not complete.",
+      "blocks": [
+        {
+          "key": "execution_checks",
+          "type": "checklist",
+          "label": "Employee Equipment execution checkpoints",
+          "items": [
+            "Worker identity, role, department, manager, and location are confirmed",
+            "Role standard and approved equipment package are current",
+            "Each physical item has asset tag, serial, model, and condition recorded",
+            "Accessories, power components, cases, and adapters reconcile to the issue list",
+            "Device security baseline and required updates are complete",
+            "Approved applications and access setup are referenced without recording passwords",
+            "Shipment or handoff chain and recipient verification are documented",
+            "Support contact and priority route are known to the worker",
+            "Loss, theft, damage, and suspected compromise escalation was explained",
+            "Return date, trigger, packaging, destination, and data handling are defined",
+            "Nonstandard or ergonomic need is routed to the designated review process",
+            "Asset register reflects the final custodian, location, and status"
+          ]
+        },
+        {
+          "key": "checkpoint_results",
+          "type": "table",
+          "label": "Checkpoint, observed evidence, result, operator, and follow-up",
+          "columns": [
+            {
+              "key": "checkpoint",
+              "label": "Checkpoint / item",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_observed",
+              "label": "Evidence observed",
+              "units": 1.25
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.7
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.7
+            },
+            {
+              "key": "record_ref",
+              "label": "Record ref.",
+              "units": 0.8
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up / due",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Observed conditions, sequence, evidence references, deferred checks, and operating limitations",
+          "fields": [
+            {
+              "key": "execution_detail",
+              "label": "Execution evidence and limitation notes"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exception_control",
+      "title": "Employee Equipment failed checkpoint and escalation control",
+      "guidance": "Do not hide an incomplete or failed checkpoint inside free text; route it with an owner and due point.",
+      "blocks": [
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized workplace, IT, security, or HR reviewer under the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route."
+        },
+        {
+          "key": "checklist_triggers",
+          "type": "checklist",
+          "label": "Employee Equipment exception and escalation triggers",
+          "items": [
+            "Device, badge, key, token, or accessory is lost or stolen",
+            "Equipment is damaged, unsafe, contaminated, or unusable",
+            "Asset tag, serial, assignment, or location record is inconsistent",
+            "Suspected unauthorized access, malware, or data exposure occurred",
+            "Shipment was misdirected, opened, incomplete, or not received",
+            "Unapproved software, peripheral, account, or configuration was identified",
+            "Return deadline was missed or recovered equipment remains unaccounted for",
+            "Equipment failure prevented a critical assigned task or safe work"
+          ]
+        },
+        {
+          "key": "checklist_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "verification_decision",
+      "title": "Employee Equipment verification and proceed decision",
+      "guidance": "Use an independent review where required and state the exact boundary of any proceed decision.",
+      "blocks": [
+        {
+          "key": "verification_sample",
+          "type": "table",
+          "label": "Employee Equipment verification sample",
+          "columns": [
+            {
+              "key": "asset_component",
+              "label": "Asset / component",
+              "units": 1.0
+            },
+            {
+              "key": "expected_standard",
+              "label": "Expected standard",
+              "units": 1.15
+            },
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.15
+            },
+            {
+              "key": "functional_result",
+              "label": "Function / security result",
+              "units": 1.0
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "proceed_decision",
+          "type": "fields",
+          "label": "Verification and proceed decision",
+          "fields": [
+            {
+              "key": "completion_status",
+              "label": "Completion status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with conditions",
+                "Incomplete",
+                "Stopped",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "proceed_status",
+              "label": "Proceed status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Conditionally authorized",
+                "Not authorized",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective scope or time",
+              "units": 1.0
+            },
+            {
+              "key": "recheck_due",
+              "label": "Recheck due",
+              "units": 0.7
+            },
+            {
+              "key": "decision_record",
+              "label": "Decision record",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "checklist_boundary",
+          "type": "notice",
+          "label": "Checklist and qualified-review boundary",
+          "guidance": "A completed checkbox is evidence only when the underlying condition was observed. The authorized workplace, IT, security, or HR reviewer must apply the approved role profile, asset standard, security baseline, purchasing policy, and accommodation route before any restricted, safety, security, legal, medical, payroll, or tax decision."
+        },
+        {
+          "key": "verification_signoff",
+          "type": "signatures",
+          "label": "Checklist performance and verification",
+          "fields": [
+            {
+              "key": "operator_signoff",
+              "label": "Performed by / date",
+              "units": 1.0
+            },
+            {
+              "key": "independent_verification",
+              "label": "Verified by / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority_signoff",
+              "label": "Decision authority / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "checklist_closeout",
+      "title": "Employee Equipment checklist handoff and closeout",
+      "guidance": "Preserve the final state, unfinished work, receiving owner, and reopen trigger.",
+      "blocks": [
+        {
+          "key": "checklist_closeout_outcome",
+          "type": "fields",
+          "label": "Checklist outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "checklist_closeout_actions",
+          "type": "table",
+          "label": "Open employee equipment action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "checklist_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "checklist_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "checklist_closeout_signoff",
+          "type": "signatures",
+          "label": "Checklist accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Workplace, It, Security, Or Hr Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hr_operations/dhr_1834__expense_reimbursement_approval_form",
+  "source_section": "hr_operations",
+  "source_filename": "dhr_1834__expense_reimbursement_approval_form.pdf",
+  "slug": "dhr-1834-expense-reimbursement-approval-form-4f7978b5",
+  "title": "Expense Reimbursement Approval Form",
+  "subtitle": "Use this approval to test evidence and authority, resolve conflicts, issue a bounded decision, and verify every resulting update for a expense reimbursement workflow.",
+  "description": "An original operational expense reimbursement approval form that controls a employee business-expense claim and substantiation record from identity and routing through evidence, qualified decision, exception management, implementation, handoff, and final verification.",
+  "use_case": "Use when the employee claimant, manager, or expense processor needs a traceable approval so the authorized manager, finance, payroll, tax, or compliance reviewer can reimburse, partially reimburse, return, deny, recode, offset an advance, or escalate the claim under the current expense policy, approval limits, receipt and substantiation rules, project coding, and applicable tax requirements without relying on an informal email, spreadsheet, or unreviewed narrative.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "approval_submission",
+      "title": "Expense Reimbursement approval submission and authority route",
+      "guidance": "Identify the proposed action, submitter, decision authority, effective point, and required evidence.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Expense Reimbursement identity",
+          "fields": [
+            {
+              "key": "expense_report",
+              "label": "Expense report number",
+              "units": 0.85
+            },
+            {
+              "key": "employee_reference",
+              "label": "Employee ID",
+              "units": 0.75
+            },
+            {
+              "key": "employee_name",
+              "label": "Employee name",
+              "units": 0.95
+            },
+            {
+              "key": "department_cost_center",
+              "label": "Department and cost center",
+              "units": 1.0
+            },
+            {
+              "key": "business_event",
+              "label": "Trip, project, or event",
+              "units": 1.05
+            },
+            {
+              "key": "submitted_date",
+              "label": "Submitted date",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Approval ownership and routing",
+          "fields": [
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Time-sensitive",
+                "Immediate escalation"
+              ]
+            },
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 0.8
+            },
+            {
+              "key": "related_record",
+              "label": "Related case or system record",
+              "units": 1.05
+            },
+            {
+              "key": "next_due",
+              "label": "Next review or due point",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "approval_control",
+          "type": "fields",
+          "label": "Approval control",
+          "fields": [
+            {
+              "key": "submitted_by",
+              "label": "Submitted by",
+              "units": 0.85
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 0.7
+            },
+            {
+              "key": "requested_decision",
+              "label": "Requested decision",
+              "units": 1.0
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 0.85
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "proposed_action",
+          "type": "textarea",
+          "label": "Proposed action, purpose, exact scope, affected people or work, exclusions, and requested conditions",
+          "fields": [
+            {
+              "key": "proposal_detail",
+              "label": "Approval proposal and scope"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "submission_completeness",
+      "title": "Expense Reimbursement evidence completeness and readiness",
+      "guidance": "Reject unsupported assumptions before the decision reaches an approver.",
+      "blocks": [
+        {
+          "key": "approval_readiness",
+          "type": "checklist",
+          "label": "Expense Reimbursement approval readiness",
+          "items": [
+            "Business purpose and connection are specific and supported",
+            "Every line is substantiated under the applicable policy",
+            "Duplicate, personal, refunded, and card-paid amounts are excluded",
+            "Advance and excess reimbursement are fully reconciled",
+            "Cost center, project, client, grant, and tax coding are valid",
+            "Exception approver has authority and no self-approval conflict",
+            "Approved total equals the sum of line-item dispositions",
+            "Payment and retention owners can complete the authorized outcome"
+          ]
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Evidence package submitted",
+          "items": [
+            "Expense report and claimant certification",
+            "Itemized receipt, invoice, ticket, or permitted alternate evidence",
+            "Mileage route, travel itinerary, or attendance support",
+            "Preapproval and policy-exception decision",
+            "Corporate-card transaction and cash-advance record",
+            "Currency-conversion, refund, credit, or allocation evidence",
+            "Manager, finance, tax, payroll, or grant review",
+            "Payment, amount-returned, recovery, or corrected-claim reference"
+          ]
+        },
+        {
+          "key": "completeness_register",
+          "type": "table",
+          "label": "Required item, evidence, owner, status, and deficiency",
+          "columns": [
+            {
+              "key": "required_item",
+              "label": "Required item",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence / record",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency / due",
+              "units": 1.15
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "authority_policy",
+      "title": "Expense Reimbursement policy, authority, and impact review",
+      "guidance": "Apply the current decision standard and record each reviewer within their actual authority.",
+      "blocks": [
+        {
+          "key": "policy_checks",
+          "type": "checklist",
+          "label": "Expense Reimbursement policy and impact checks",
+          "items": [
+            "Expense has a documented business connection and claimant",
+            "Date, merchant, location, amount, currency, and category reconcile",
+            "Receipt or permitted alternate evidence supports the amount",
+            "Business purpose identifies the work objective rather than a generic label",
+            "Attendees, mileage route, allocation, or other category detail is complete",
+            "Duplicate, personal, companion, refunded, and card-paid amounts are excluded",
+            "Policy limit, preapproval, timing, and exception requirements were reviewed",
+            "Advance, reimbursement, and amount owed back are correctly reconciled",
+            "Project, cost center, client, grant, and tax coding have an owner",
+            "Decision distinguishes allowed, reduced, returned, and denied line items"
+          ]
+        },
+        {
+          "key": "reviewer_matrix",
+          "type": "table",
+          "label": "Review area, reviewer, authority, evidence, finding, and condition",
+          "columns": [
+            {
+              "key": "review_area",
+              "label": "Review area",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer",
+              "units": 0.75
+            },
+            {
+              "key": "authority",
+              "label": "Authority / limit",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reviewed",
+              "units": 1.0
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 0.9
+            },
+            {
+              "key": "condition",
+              "label": "Condition / route",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "impact_analysis",
+          "type": "textarea",
+          "label": "People, schedule, service, cost, payroll, privacy, security, safety, consistency, and system impacts",
+          "fields": [
+            {
+              "key": "impact_detail",
+              "label": "Cross-functional impact and authority analysis"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "conditions_exceptions",
+      "title": "Expense Reimbursement conflicts, exceptions, and approval conditions",
+      "guidance": "Resolve material conflicts and convert every condition into owned, verifiable work.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval stop and escalation boundary",
+          "guidance": "Pause any action outside documented authority. Protect privacy, preserve the original evidence, and route urgent, safety, security, retaliation, or legal concerns to the authorized manager, finance, payroll, tax, or compliance reviewer under the current expense policy, approval limits, receipt and substantiation rules, project coding, and applicable tax requirements."
+        },
+        {
+          "key": "approval_triggers",
+          "type": "checklist",
+          "label": "Expense Reimbursement exception and escalation triggers",
+          "items": [
+            "Duplicate claim or prior payment was discovered",
+            "Receipt, amount, merchant, currency, or claimant identity is inconsistent",
+            "Corporate-card charge was also submitted as personal payment",
+            "Refund, credit, cancellation, or unused ticket was not reflected",
+            "Personal, companion, or otherwise excluded amount was included",
+            "Payment was sent to the wrong person, account, amount, or currency",
+            "Expense evidence exposed payment data beyond the required record",
+            "Suspected alteration, misrepresentation, policy circumvention, or retaliation arose"
+          ]
+        },
+        {
+          "key": "approval_register",
+          "type": "table",
+          "label": "Exception, immediate action, owner, due point, and disposition register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.95
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, privacy boundary, unresolved risk, and escalation rationale",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "condition_register",
+          "type": "table",
+          "label": "Approval condition, prerequisite, owner, due point, evidence, and expiry",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / prerequisite",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence required",
+              "units": 1.05
+            },
+            {
+              "key": "expiry",
+              "label": "Expiry / review",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "approval_decision",
+      "title": "Expense Reimbursement approval decision and effective boundary",
+      "guidance": "Record one unambiguous decision with rationale, authority, conditions, and review date.",
+      "blocks": [
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Approval boundary",
+          "guidance": "Approval is valid only within the stated scope and authority. The authorized manager, finance, payroll, tax, or compliance reviewer must apply the current expense policy, approval limits, receipt and substantiation rules, project coding, and applicable tax requirements; a signature does not override a required privacy, safety, security, legal, payroll, tax, or accommodation review."
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Approval decision",
+          "fields": [
+            {
+              "key": "approval_result",
+              "label": "Approval result",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Pending",
+                "Returned",
+                "Denied"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date and scope",
+              "units": 1.1
+            },
+            {
+              "key": "expiry_review",
+              "label": "Expiry or review date",
+              "units": 0.85
+            },
+            {
+              "key": "condition_owner",
+              "label": "Condition owner",
+              "units": 0.85
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Evidence relied upon, contrary evidence, alternatives, conditions, limits, and reason for decision",
+          "fields": [
+            {
+              "key": "rationale_detail",
+              "label": "Approval rationale and decision limits"
+            }
+          ],
+          "height": 64
+        },
+        {
+          "key": "approval_signoff",
+          "type": "signatures",
+          "label": "Submission, qualified review, and decision authorization",
+          "fields": [
+            {
+              "key": "submitter_certification",
+              "label": "Submitter / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Manager, Finance, Payroll, Tax, Or Compliance Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "approver_authorization",
+              "label": "Authorized approver / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "approval_implementation",
+      "title": "Expense Reimbursement implementation, notification, and approval closeout",
+      "guidance": "Verify that the approved outcome reached every affected system and recipient.",
+      "blocks": [
+        {
+          "key": "implementation_actions",
+          "type": "table",
+          "label": "Approved implementation, system update, notification, and verification",
+          "columns": [
+            {
+              "key": "action_update",
+              "label": "Action / system update",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "recipient_system",
+              "label": "Recipient / system",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "approval_closeout_outcome",
+          "type": "fields",
+          "label": "Approval outcome and handoff",
+          "fields": [
+            {
+              "key": "final_outcome",
+              "label": "Final outcome",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Completed with conditions",
+                "Pending follow-up",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or close date",
+              "units": 0.75
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.85
+            },
+            {
+              "key": "system_record",
+              "label": "System-of-record reference",
+              "units": 1.0
+            },
+            {
+              "key": "retention_route",
+              "label": "Retention or restricted-file route",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Follow-up review due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "approval_closeout_actions",
+          "type": "table",
+          "label": "Open expense reimbursement action and limitation register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due point",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Completion evidence",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "approval_closeout_handoff",
+          "type": "checklist",
+          "label": "Closeout and recipient handoff confirmations",
+          "items": [
+            "Final decision and effective boundary are recorded",
+            "Evidence supporting the outcome is linked and readable",
+            "Every unresolved action has an owner and due point",
+            "Sensitive information is routed only to the designated restricted record",
+            "Affected people and receiving systems received the necessary status",
+            "Conditions, limitations, and escalation triggers remain visible",
+            "Required payroll, schedule, access, asset, or workflow update is confirmed",
+            "Follow-up review or reopen condition has an accountable owner"
+          ]
+        },
+        {
+          "key": "approval_closeout_summary",
+          "type": "textarea",
+          "label": "Final evidence, decision rationale, remaining limitation, communication, and acceptance",
+          "fields": [
+            {
+              "key": "closeout_detail",
+              "label": "Closeout and handoff narrative"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "approval_closeout_signoff",
+          "type": "signatures",
+          "label": "Approval accountable review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "qualified_review",
+              "label": "Authorized Manager, Finance, Payroll, Tax, Or Compliance Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_ack",
+              "label": "Receiving owner acknowledgment / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

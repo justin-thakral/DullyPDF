@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2243__vendor_load_in_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2243__vendor_load_in_order_form.pdf",
+  "slug": "vendor-load-in-order-form",
+  "title": "Vendor Load-In Order Form",
+  "subtitle": "Issue the timed vendor movement plan, name the route and receiving leads, and control changes through load-in completion.",
+  "description": "An original load-in execution order with the authorized schedule, movement stages, crew and vehicle context, route and staging instructions, venue dependencies, change control, receiving handoffs, and completion acceptance.",
+  "use_case": "Use after a vendor load-in request is approved and venue teams need one issued operating record for arrival, unloading, internal movement, staging, setup delivery, exception handling, and final area release.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "identity_routing",
+      "title": "Issued order and command route",
+      "guidance": "Bind this instruction to the approved request and event.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "order_id",
+              "label": "Order ID",
+              "units": 0.8
+            },
+            {
+              "key": "request_id",
+              "label": "Request ID",
+              "units": 0.85
+            },
+            {
+              "key": "vendor_name",
+              "label": "Vendor",
+              "units": 1.15
+            },
+            {
+              "key": "event_name",
+              "label": "Event",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "intake_requirements",
+          "type": "checklist",
+          "label": "Order basis confirmed",
+          "items": [
+            "Approved request and attachments were reviewed",
+            "Vendor day-of lead acknowledged the issued window",
+            "Venue movement lead and receiving lead are named",
+            "Vehicle list and crew count are current",
+            "Destination rooms and setup release points are current",
+            "Known restrictions are written into this order"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Timed movement plan",
+      "guidance": "Sequence each stage so dock, route, and destination owners can act.",
+      "blocks": [
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Load-in stage schedule",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage",
+              "units": 1.15
+            },
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.75
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.15
+            },
+            {
+              "key": "lead",
+              "label": "Lead",
+              "units": 1.0
+            },
+            {
+              "key": "release",
+              "label": "Release check",
+              "units": 1.15
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Issued route resources",
+          "fields": [
+            {
+              "key": "vehicle_entry",
+              "label": "Vehicle entry",
+              "units": 1.0
+            },
+            {
+              "key": "unload_point",
+              "label": "Unload point",
+              "units": 1.0
+            },
+            {
+              "key": "internal_route",
+              "label": "Internal route",
+              "units": 1.0
+            },
+            {
+              "key": "staging_zone",
+              "label": "Staging zone",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_control",
+      "title": "Execution controls and changes",
+      "guidance": "Confirm required resources and keep deviations traceable.",
+      "blocks": [
+        {
+          "key": "decision_checks",
+          "type": "checklist",
+          "label": "Issued movement controls",
+          "items": [
+            "Dock or curb window is reserved for the order",
+            "Freight lift or alternate route is assigned",
+            "Surface and doorway protection owner is named",
+            "Restricted areas and guest-facing crossings are communicated",
+            "Empty cases, packaging, and waste destination is assigned",
+            "Only the named venue lead may release a route change"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Order change register",
+          "columns": [
+            {
+              "key": "change",
+              "label": "Requested change",
+              "units": 1.35
+            },
+            {
+              "key": "impact",
+              "label": "Timing or route impact",
+              "units": 1.35
+            },
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.95
+            },
+            {
+              "key": "authorized",
+              "label": "Authorized by",
+              "units": 0.95
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "disposition_escalation",
+      "title": "Order release and exception route",
+      "guidance": "Record whether the order is active, held, changed, or complete.",
+      "blocks": [
+        {
+          "key": "record_status",
+          "type": "fields",
+          "label": "Execution status",
+          "fields": [
+            {
+              "key": "order_status",
+              "label": "Order status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Open",
+                "Closed",
+                "Escalated",
+                "Transferred"
+              ]
+            },
+            {
+              "key": "movement_lead",
+              "label": "Movement lead",
+              "units": 1.0
+            },
+            {
+              "key": "active_window",
+              "label": "Active window",
+              "units": 1.0
+            },
+            {
+              "key": "completion_ref",
+              "label": "Completion ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "decision_narrative",
+          "type": "textarea",
+          "label": "Issued instructions, approved deviations, and stop conditions",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Execution instruction and change detail"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Movement authority boundary",
+          "guidance": "Record observed facts and venue instructions. Stop an unresolved movement, protect the affected area, and route safety, access, damage, or capacity decisions to the responsible venue role under applicable policy."
+        }
+      ]
+    },
+    {
+      "key": "closeout_handoff",
+      "title": "Receiving acceptance and order close",
+      "guidance": "Reconcile the route, destination, equipment, and remaining work.",
+      "blocks": [
+        {
+          "key": "handoff_actions",
+          "type": "table",
+          "label": "Stage acceptance record",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.15
+            },
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.75
+            },
+            {
+              "key": "remaining",
+              "label": "Remaining work",
+              "units": 1.45
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_confirmations",
+          "type": "checklist",
+          "label": "Order completion checks",
+          "items": [
+            "All scheduled units reached their assigned destination",
+            "Dock, lift, corridors, and staging area were released",
+            "Damage or access exceptions have linked incident records",
+            "Packaging, empties, and vendor equipment are accounted for",
+            "Incomplete setup work has a named receiving owner"
+          ]
+        },
+        {
+          "key": "accountable_review",
+          "type": "signatures",
+          "label": "Order issue and acceptance",
+          "fields": [
+            {
+              "key": "issued_by",
+              "label": "Issued by",
+              "units": 1.0
+            },
+            {
+              "key": "issued_at",
+              "label": "Issued at",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_at",
+              "label": "Accepted at",
+              "units": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
