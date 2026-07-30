@@ -220,6 +220,7 @@ def _run_active_release_contract(
     use_tracked_catalog: bool = False,
 ) -> subprocess.CompletedProcess[str]:
     script = """
+import { readFileSync } from 'node:fs';
 import {
   assertActiveReleaseSlugIdentity,
   buildActiveReleaseReplacementLookup,
@@ -229,7 +230,7 @@ import {
   FORM_CATALOG_ENTRIES,
 } from './frontend/src/config/formCatalogData.mjs';
 
-const input = JSON.parse(process.env.DULLYPDF_ACTIVE_RELEASE_TEST_INPUT);
+const input = JSON.parse(readFileSync(0, 'utf8'));
 const availableEntries = input.useTrackedCatalog
   ? FORM_CATALOG_ENTRIES.map((entry) => ({
       section: entry.sourceSection,
@@ -274,10 +275,7 @@ process.stdout.write(JSON.stringify(result));
     return subprocess.run(
         ["node", "--input-type=module", "-e", script],
         cwd=REPO_ROOT,
-        env={
-            **os.environ,
-            "DULLYPDF_ACTIVE_RELEASE_TEST_INPUT": json.dumps(test_input),
-        },
+        input=json.dumps(test_input),
         check=False,
         capture_output=True,
         text=True,
