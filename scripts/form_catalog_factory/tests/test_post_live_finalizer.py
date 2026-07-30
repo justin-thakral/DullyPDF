@@ -32,7 +32,11 @@ def _write_executable(path: Path, source: str) -> Path:
     return path
 
 
-def _fixture(tmp_path: Path) -> tuple[list[str], dict[str, str], Path]:
+def _fixture(
+    tmp_path: Path,
+    *,
+    previous_release_id: str | int | bool | None = "catalog-old",
+) -> tuple[list[str], dict[str, str], Path]:
     scripts = tmp_path / "scripts"
     scripts.mkdir()
     shutil.copy2(FINALIZER, scripts / FINALIZER.name)
@@ -117,10 +121,35 @@ with Path(os.environ["FAKE_OPERATIONS_LOG"]).open("a", encoding="utf-8") as log:
         f"""#!{sys.executable}
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
 if sys.argv[1:2] == ["-"]:
+    producer_mode = os.environ.get("FAKE_IDENTITY_PRODUCER_MODE")
+    if producer_mode:
+        result = subprocess.run(
+            [{sys.executable!r}, *sys.argv[1:]],
+            input=sys.stdin.buffer.read(),
+            check=False,
+            capture_output=True,
+        )
+        sys.stderr.buffer.write(result.stderr)
+        if result.returncode != 0:
+            raise SystemExit(result.returncode)
+        records = result.stdout.split(b"\\0")[:-1]
+        if producer_mode == "nonzero-after-output":
+            sys.stdout.buffer.write(result.stdout)
+            raise SystemExit(17)
+        if producer_mode == "eight-records":
+            sys.stdout.buffer.write(b"\\0".join(records[:8]) + b"\\0")
+            raise SystemExit(0)
+        if producer_mode == "ten-records":
+            sys.stdout.buffer.write(
+                b"\\0".join([*records, b"unexpected"]) + b"\\0"
+            )
+            raise SystemExit(0)
+        raise SystemExit(f"unsupported fake identity producer mode: {{producer_mode}}")
     os.execv({sys.executable!r}, [{sys.executable!r}, *sys.argv[1:]])
 args = sys.argv[1:]
 if args[:2] != ["-m", "scripts.form_catalog_factory"]:
@@ -133,14 +162,15 @@ def option(name):
 if command == "verify-active-mapping":
     Path(option("--output")).write_text("{{}}", encoding="utf-8")
 elif command == "snapshot-catalog-pointer":
+    pointer_exists = os.environ.get("FAKE_POINTER_EXISTS", "1") == "1"
     Path(option("--output")).write_text(
         json.dumps({{
             "schemaVersion": 1,
             "reportType": "form-catalog-active-pointer-snapshot",
-            "exists": True,
-            "generation": "4",
-            "sha256": "f" * 64,
-            "releaseId": "catalog-old",
+            "exists": pointer_exists,
+            "generation": "4" if pointer_exists else None,
+            "sha256": "f" * 64 if pointer_exists else None,
+            "releaseId": "catalog-old" if pointer_exists else None,
         }}),
         encoding="utf-8",
     )
@@ -198,7 +228,7 @@ else:
             "schemaVersion": 1,
             "releaseId": "catalog-new",
             "sourceCommit": "a" * 40,
-            "previousReleaseId": "catalog-old",
+            "previousReleaseId": previous_release_id,
             "forms": [{"catalogId": "section/form"}],
         },
     )
@@ -306,6 +336,145 @@ else:
         "FAKE_OPERATIONS_LOG": str(log_path),
     }
     return args, env, log_path
+
+
+def test_first_release_preserves_empty_previous_release_identity(
+    tmp_path: Path,
+) -> None:
+    args, env, log_path = _fixture(tmp_path, previous_release_id=None)
+    env["FAKE_POINTER_EXISTS"] = "0"
+
+    result = subprocess.run(
+        args,
+        cwd=tmp_path,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    operations = log_path.read_text(encoding="utf-8").splitlines()
+    assert result.returncode == 0, result.stderr
+    assert operations[1:4] == ["lock acquire", "live", "browser"]
+    assert any(item.startswith("deploy --action promote") for item in operations)
+    assert operations[-1] == "lock release"
+    assert "rollback" not in operations
+
+
+def test_identity_validation_failure_stops_before_production_operations(
+    tmp_path: Path,
+) -> None:
+    args, env, log_path = _fixture(tmp_path)
+    run_id_index = args.index("--expected-workflow-run-id") + 1
+    args[run_id_index] = "999"
+
+    result = subprocess.run(
+        args,
+        cwd=tmp_path,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "Hosting evidence workflowRunId mismatch" in result.stderr
+    assert "Release finalization identity validation failed." in result.stderr
+    assert not log_path.exists()
+
+
+def test_identity_producer_nonzero_exit_is_not_hidden(
+    tmp_path: Path,
+) -> None:
+    args, env, log_path = _fixture(tmp_path)
+    env["FAKE_IDENTITY_PRODUCER_MODE"] = "nonzero-after-output"
+
+    result = subprocess.run(
+        args,
+        cwd=tmp_path,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "Release finalization identity validation failed." in result.stderr
+    assert not log_path.exists()
+
+
+def test_identity_handoff_rejects_wrong_record_count(
+    tmp_path: Path,
+) -> None:
+    for record_mode in ("eight-records", "ten-records"):
+        case_dir = tmp_path / record_mode
+        case_dir.mkdir()
+        args, env, log_path = _fixture(case_dir)
+        env["FAKE_IDENTITY_PRODUCER_MODE"] = record_mode
+
+        result = subprocess.run(
+            args,
+            cwd=case_dir,
+            env=env,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        assert result.returncode == 1
+        assert (
+            "Release finalization identity handoff did not produce exactly nine fields."
+            in result.stderr
+        )
+        assert not log_path.exists()
+
+
+def test_identity_handoff_rejects_embedded_nul(
+    tmp_path: Path,
+) -> None:
+    args, env, log_path = _fixture(tmp_path, previous_release_id="\0")
+
+    result = subprocess.run(
+        args,
+        cwd=tmp_path,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "Release finalization identity contains a NUL byte" in result.stderr
+    assert not log_path.exists()
+
+
+def test_previous_release_id_must_be_null_or_nonempty(
+    tmp_path: Path,
+) -> None:
+    invalid_values = ("", "   ", False, 0)
+    for index, previous_release_id in enumerate(invalid_values):
+        case_dir = tmp_path / f"invalid-{index}"
+        case_dir.mkdir()
+        args, env, log_path = _fixture(
+            case_dir,
+            previous_release_id=previous_release_id,
+        )
+
+        result = subprocess.run(
+            args,
+            cwd=case_dir,
+            env=env,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        assert result.returncode == 1
+        assert (
+            "Release manifest previousReleaseId must be null or a nonempty string"
+            in result.stderr
+        )
+        assert not log_path.exists()
 
 
 def test_post_live_failure_rolls_back_under_same_lock(tmp_path: Path) -> None:

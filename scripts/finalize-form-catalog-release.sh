@@ -369,17 +369,8 @@ python3 -m scripts.form_catalog_factory verify-active-mapping \
   --expected-report "${ACTIVE_MAPPING_EVIDENCE}" \
   --output "${TMP_ACTIVE_RECHECK}" >/dev/null
 
-IFS=$'\t' read -r \
-  RELEASE_ID \
-  SOURCE_COMMIT \
-  PREVIOUS_RELEASE_ID \
-  MANIFEST_SHA256 \
-  HOSTING_VERSION \
-  ROLLBACK_HOSTING_VERSION \
-  HOSTING_RELEASE_NAME \
-  HOSTING_RELEASE_TIME \
-  SAMPLE_PLAN_SHA256 < <(
-  python3 - \
+FINALIZATION_IDENTITY_FILE="${TMP_CONTROL_INPUTS}/finalization-identity.bin"
+if ! python3 - \
     "${MANIFEST}" \
     "${HOSTING_EVIDENCE}" \
     "${ACTIVE_MAPPING_EVIDENCE}" \
@@ -389,7 +380,8 @@ IFS=$'\t' read -r \
     "${EXPECTED_WORKFLOW_RUN_ID}" \
     "${EXPECTED_WORKFLOW_RUN_ATTEMPT}" \
     "${ACTIVE_RELEASE_SNAPSHOT}" \
-    "${FORM_CATALOG_DATA_SNAPSHOT}" <<'PY'
+    "${FORM_CATALOG_DATA_SNAPSHOT}" \
+    >"${FINALIZATION_IDENTITY_FILE}" <<'PY'
 import hashlib
 import json
 import sys
@@ -424,6 +416,10 @@ previous_release_id = manifest.get("previousReleaseId")
 manifest_sha256 = sha(manifest_path)
 if source_commit != expected_commit:
     raise SystemExit("Release manifest sourceCommit does not match --expected-commit")
+if previous_release_id is not None and (
+    not isinstance(previous_release_id, str) or not previous_release_id.strip()
+):
+    raise SystemExit("Release manifest previousReleaseId must be null or a nonempty string")
 expected_identity = {
     "releaseId": release_id,
     "sourceCommit": source_commit,
@@ -475,9 +471,30 @@ values = (
 )
 if any(not isinstance(value, str) or not value for value in values[:2] + values[3:]):
     raise SystemExit("Release finalization evidence has a missing required identity")
-print("\t".join(values))
-PY
+if any("\0" in value for value in values):
+    raise SystemExit("Release finalization identity contains a NUL byte")
+sys.stdout.buffer.write(
+    b"\0".join(value.encode("utf-8") for value in values) + b"\0"
 )
+PY
+then
+  echo "Release finalization identity validation failed." >&2
+  exit 1
+fi
+mapfile -d '' -t FINALIZATION_IDENTITY <"${FINALIZATION_IDENTITY_FILE}"
+if [[ "${#FINALIZATION_IDENTITY[@]}" -ne 9 ]]; then
+  echo "Release finalization identity handoff did not produce exactly nine fields." >&2
+  exit 1
+fi
+RELEASE_ID="${FINALIZATION_IDENTITY[0]}"
+SOURCE_COMMIT="${FINALIZATION_IDENTITY[1]}"
+PREVIOUS_RELEASE_ID="${FINALIZATION_IDENTITY[2]}"
+MANIFEST_SHA256="${FINALIZATION_IDENTITY[3]}"
+HOSTING_VERSION="${FINALIZATION_IDENTITY[4]}"
+ROLLBACK_HOSTING_VERSION="${FINALIZATION_IDENTITY[5]}"
+HOSTING_RELEASE_NAME="${FINALIZATION_IDENTITY[6]}"
+HOSTING_RELEASE_TIME="${FINALIZATION_IDENTITY[7]}"
+SAMPLE_PLAN_SHA256="${FINALIZATION_IDENTITY[8]}"
 
 if [[ "${EXPECTED_COMMIT,,}" != "${SOURCE_COMMIT}" ]]; then
   echo "Expected source commit does not match the release manifest." >&2
