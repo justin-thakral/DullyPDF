@@ -258,6 +258,9 @@ command -v npm >/dev/null 2>&1 || {
 }
 
 TMP_CONTROL_INPUTS="$(mktemp -d)"
+TMP_BUILD_REPORT_SNAPSHOT="$(
+  mktemp "${BUILD_REPORT}.finalizer-snapshot.XXXXXX"
+)"
 TMP_ACTIVE_RECHECK="$(mktemp)"
 TMP_HOSTING_SNAPSHOT="$(mktemp)"
 TMP_POINTER_SNAPSHOT="$(mktemp)"
@@ -321,6 +324,7 @@ cleanup() {
     fi
   fi
   rm -f \
+    "${TMP_BUILD_REPORT_SNAPSHOT}" \
     "${TMP_ACTIVE_RECHECK}" \
     "${TMP_HOSTING_SNAPSHOT}" \
     "${TMP_POINTER_SNAPSHOT}" \
@@ -347,7 +351,11 @@ cp -- "${ACTIVE_RELEASE_CONTRACT}" "${TMP_CONTROL_INPUTS}/active.json"
 cp -- "${FORM_CATALOG_DATA}" "${TMP_CONTROL_INPUTS}/formCatalogData.mjs"
 cp -- "${SAMPLE_PLAN}" "${TMP_CONTROL_INPUTS}/sample-plan.json"
 cp -- "${SELECTION}" "${TMP_CONTROL_INPUTS}/selection.json"
-cp -- "${BUILD_REPORT}" "${TMP_CONTROL_INPUTS}/build-report.json"
+# Build-report QA paths are resolved relative to the report's parent directory.
+# Keep the immutable snapshot beside the original report so those paths still
+# resolve to the exact QA evidence named by the frozen ledger attestation.
+cp -- "${BUILD_REPORT}" "${TMP_BUILD_REPORT_SNAPSHOT}"
+chmod 0444 "${TMP_BUILD_REPORT_SNAPSHOT}"
 ACTIVE_RELEASE_SNAPSHOT="${TMP_CONTROL_INPUTS}/active.json"
 FORM_CATALOG_DATA_SNAPSHOT="${TMP_CONTROL_INPUTS}/formCatalogData.mjs"
 MANIFEST="${TMP_CONTROL_INPUTS}/release.json"
@@ -356,7 +364,7 @@ HOSTING_EVIDENCE="${TMP_CONTROL_INPUTS}/hosting-evidence.json"
 ACTIVE_MAPPING_EVIDENCE="${TMP_CONTROL_INPUTS}/active-mapping.json"
 SAMPLE_PLAN="${TMP_CONTROL_INPUTS}/sample-plan.json"
 SELECTION="${TMP_CONTROL_INPUTS}/selection.json"
-BUILD_REPORT="${TMP_CONTROL_INPUTS}/build-report.json"
+BUILD_REPORT="${TMP_BUILD_REPORT_SNAPSHOT}"
 
 python3 -m scripts.form_catalog_factory verify-active-mapping \
   --active-release "${ACTIVE_RELEASE_SNAPSHOT}" \

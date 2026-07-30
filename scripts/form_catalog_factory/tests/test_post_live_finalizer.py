@@ -3,8 +3,9 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import signal
+import shlex
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -590,7 +591,15 @@ def test_successful_post_live_gate_promotes_with_external_lock(
     operations = log_path.read_text(encoding="utf-8").splitlines()
     assert result.returncode == 0, result.stderr
     assert operations[1:4] == ["lock acquire", "live", "browser"]
-    promote = next(item for item in operations if item.startswith("deploy --action promote"))
+    promote = next(
+        item for item in operations if item.startswith("deploy --action promote")
+    )
+    promote_args = shlex.split(promote)
+    build_report_snapshot = Path(
+        promote_args[promote_args.index("--build-report") + 1]
+    )
+    assert build_report_snapshot != tmp_path / "build.json"
+    assert build_report_snapshot.parent == tmp_path
     assert "--external-production-lock-state" in promote
     assert "--external-production-lock-owner" in promote
     inventory_report = (

@@ -508,6 +508,9 @@ production lock, rechecks the exact pointer and Hosting release, then runs HTTP
 and browser gates and promotion without releasing the lock. The wrapper
 snapshots all small control inputs before the long-running gate so another
 authoring terminal cannot replace the rollback target or evidence mid-run.
+The build-report snapshot stays beside the original report because its QA paths
+are relative to that directory. Promotion reopens every QA and visual-review
+file and requires its bytes to match the frozen ledger attestation.
 The mapping verifier reads the canonical active/index paths from the recorded
 Hosting `deploymentCommit`, not mutable current `HEAD`, so a later unrelated
 commit in another terminal cannot invalidate the exact deployed bytes. Always
