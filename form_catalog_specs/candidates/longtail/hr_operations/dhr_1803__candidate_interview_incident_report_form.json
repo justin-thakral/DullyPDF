@@ -327,6 +327,7 @@
           "key": "analysis_prompts",
           "type": "checklist",
           "label": "Incident and contributing-factor prompts",
+          "guidance": "Select only evidence-supported conditions.",
           "items": [
             "Inappropriate or non-job-related question was asked",
             "Candidate information reached an unintended recipient",

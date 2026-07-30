@@ -327,6 +327,7 @@
           "key": "analysis_prompts",
           "type": "checklist",
           "label": "Incident and contributing-factor prompts",
+          "guidance": "Select only evidence-supported conditions.",
           "items": [
             "Device, badge, key, token, or accessory is lost or stolen",
             "Equipment is damaged, unsafe, contaminated, or unusable",

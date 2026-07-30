@@ -327,6 +327,7 @@
           "key": "analysis_prompts",
           "type": "checklist",
           "label": "Incident and contributing-factor prompts",
+          "guidance": "Select only evidence-supported conditions.",
           "items": [
             "Confidential leave or medical information reached an unauthorized recipient",
             "Approved dates, hours, code, or pay treatment were entered incorrectly",

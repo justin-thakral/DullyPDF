@@ -3,12 +3,17 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from pypdf import PdfReader
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 from scripts.form_catalog_factory.models import FormSpec, SpecValidationError
+from scripts.form_catalog_factory.pdf_qa import validate_pdf
 from scripts.form_catalog_factory.renderer import FormRenderer, render_form
+
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 def sample_payload() -> dict:
@@ -178,3 +183,52 @@ def test_long_checklist_item_wraps_without_dropping_words(tmp_path: Path) -> Non
         "Confirm the appliance electrical isolation method and document the "
         "verification result before any guarded panel is opened"
     ) in extracted
+
+
+@pytest.mark.parametrize(
+    ("relative_spec_path", "expected_widgets_per_page"),
+    (
+        (
+            "longtail/construction_trades/"
+            "dct_1026__hvac_installation_safety_walk_checklist_form.json",
+            [71, 68, 96, 20, 36],
+        ),
+        *(
+            (
+                f"longtail/hr_operations/{filename}",
+                [73, 59, 114, 40, 42],
+            )
+            for filename in (
+                "dhr_1803__candidate_interview_incident_report_form.json",
+                "dhr_1810__employee_equipment_incident_report_form.json",
+                "dhr_1817__time_off_incident_report_form.json",
+                "dhr_1824__shift_swap_incident_report_form.json",
+                "dhr_1838__training_attendance_incident_report_form.json",
+                "dhr_1859__remote_work_incident_report_form.json",
+            )
+        ),
+    ),
+)
+def test_selected_sparse_page_regressions_remain_balanced(
+    tmp_path: Path,
+    relative_spec_path: str,
+    expected_widgets_per_page: list[int],
+) -> None:
+    spec_path = (
+        REPO_ROOT / "form_catalog_specs" / "candidates" / relative_spec_path
+    )
+    payload = json.loads(spec_path.read_text(encoding="utf-8"))
+    spec = FormSpec.from_dict(payload)
+    output = render_form(spec, tmp_path / f"{spec.catalog_id.replace('/', '_')}.pdf")
+
+    result = validate_pdf(output, render=False, synthetic_fill=True)
+    assert result["ok"] is True
+    assert result["metrics"]["widgets_per_page"] == expected_widgets_per_page
+    assert all(
+        widget_count > 16 or lowest_ratio <= 0.55
+        for widget_count, lowest_ratio in zip(
+            result["metrics"]["widgets_per_page"][:-1],
+            result["metrics"]["lowest_widget_bottom_ratio_per_page"][:-1],
+            strict=True,
+        )
+    )

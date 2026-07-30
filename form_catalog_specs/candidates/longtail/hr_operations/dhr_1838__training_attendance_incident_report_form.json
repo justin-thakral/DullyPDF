@@ -327,6 +327,7 @@
           "key": "analysis_prompts",
           "type": "checklist",
           "label": "Incident and contributing-factor prompts",
+          "guidance": "Select only evidence-supported conditions.",
           "items": [
             "Wrong learner, course, revision, or session received attendance credit",
             "Roster signature or electronic evidence appears duplicated or misattributed",

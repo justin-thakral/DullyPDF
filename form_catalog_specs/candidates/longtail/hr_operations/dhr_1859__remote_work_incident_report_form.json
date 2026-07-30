@@ -327,6 +327,7 @@
           "key": "analysis_prompts",
           "type": "checklist",
           "label": "Incident and contributing-factor prompts",
+          "guidance": "Select only evidence-supported conditions.",
           "items": [
             "Device, credential, token, document, or storage media is lost or stolen",
             "Suspected phishing, malware, unauthorized access, or data disclosure occurred",

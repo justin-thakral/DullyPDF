@@ -327,6 +327,7 @@
           "key": "analysis_prompts",
           "type": "checklist",
           "label": "Incident and contributing-factor prompts",
+          "guidance": "Select only evidence-supported conditions.",
           "items": [
             "Approved change was not entered or appeared differently in a system",
             "Worker reported to the wrong time, role, unit, or location",
